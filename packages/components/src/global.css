@@ -1,0 +1,17 @@
+:root {
+  /* layer */
+  --kbq-layer-default: 0;
+  --kbq-layer-absolute: 1;
+
+  /* transition */
+  --kbq-transition-default: 120ms ease-in-out;
+  --kbq-transition-slow: 300ms ease-in-out;
+}
+
+.kbq-light {
+  color-scheme: light;
+}
+
+.kbq-dark {
+  color-scheme: dark;
+}

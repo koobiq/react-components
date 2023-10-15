@@ -1,0 +1,35 @@
+{
+  "name": "@koobiq/react-icons",
+  "version": "0.0.1-alpha.20",
+  "description": "A collection of icons",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./manifest.json": "./manifest.json"
+  },
+  "type": "module",
+  "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",
+    "clean:temp": "rimraf temp && rimraf src",
+    "lint:js": "eslint --ext .ts,.tsx src --fix",
+    "lint": "pnpm lint:js",
+    "type-check": "tsc --noEmit --pretty",
+    "copy:svgr-to-src": "tsx scripts/svgr-copy-to-src.ts",
+    "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",
+    "figma:export-icons": "pnpm clean:temp && tsx ../../node_modules/@figma-export/cli/bin/run use-config .figmaexportrc.ts && pnpm copy:svgr-to-src && pnpm lint && rimraf temp"
+  },
+  "files": ["dist", "manifest.json"],
+  "peerDependencies": {
+    "react": ">=18.0.0 <19.0.0"
+  },
+  "sideEffects": false
+}

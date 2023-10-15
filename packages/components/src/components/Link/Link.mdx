@@ -1,0 +1,63 @@
+import { Meta, Story, Props } from '../../../../../.storybook/components';
+
+import * as Stories from './Link.stories';
+
+<Meta of={Stories} />
+
+# Link
+
+The Link component is part of the typography and is used to display
+a link or button that visually looks like a hyperlink.
+
+<Story of={Stories.Base} />
+
+<Props />
+
+## Security
+
+When you use `target="_blank"` with Links, it is recommended to always set `rel="noopener"`
+or `rel="noreferrer"` when linking to third party content.
+
+- `rel="noopener"` prevents the new page from being able to access the `window.opener` property and ensures it runs in a separate process.
+  Without this, the target page can potentially redirect your page to a malicious URL.
+
+- `rel="noreferrer"` has the same effect, but also prevents the Referer header from being sent to the new page.
+  Removing the referrer header will affect analytics.
+
+## Variant
+
+To change the visual state of the link, use the `variant` property.
+
+<Story of={Stories.Variant} />
+
+## With icons
+
+You can add an icon using the `startIcon` and `endIcon` property.
+
+Both properties expect an icon component from our [icon library](?path=/docs/icons--docs).
+
+<Story of={Stories.WithIcons} />
+
+## Disabled
+
+A link can be disabled by passing the `disabled` property.
+
+<Story of={Stories.Disabled} />
+
+## Visitable
+
+This property is used to show that the Link has already been clicked.
+
+<Story of={Stories.Visitable} />
+
+## Root tag
+
+Use the `as` property to redefine the HTML-tag of the component to your own.
+
+<Story of={Stories.RootTag} />
+
+## Composition
+
+See an example showing the use of the component in [Typography](?path=/docs/components-typography--docs).
+
+<Story of={Stories.Composition} />

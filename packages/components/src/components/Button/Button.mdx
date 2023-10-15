@@ -1,0 +1,63 @@
+import { Meta, Story, Props } from '../../../../../.storybook/components';
+
+import * as Stories from './Button.stories';
+
+<Meta of={Stories} />
+
+# Button
+
+Button is a clickable UI component that triggers actions or events, styled according to the design-system.
+
+<Story of={Stories.Base} />
+
+<Props />
+
+## Variant
+
+To change the visual state of the button, use the `variant` property.
+
+<Story of={Stories.Variant} />
+
+## With icons
+
+You can add an icon using the `startIcon` and `endIcon` property.
+
+Both properties expect an icon component from our [icon library](?path=/docs/icons--docs).
+
+<Story of={Stories.WithIcons} />
+
+## Only icon
+
+A button can only consist of an icon.
+
+<Story of={Stories.OnlyIcon} />
+
+## Progress
+
+Add a progress indicator to a button by using the `progress` property.
+
+<Story of={Stories.Progress} />
+
+## Disabled
+
+A button can be disabled by passing the `disabled` property.
+
+<Story of={Stories.Disabled} />
+
+## Long label
+
+If the button is too wide for its container, it shrinks, the text gets cut off, and an ellipsis is added at the end.
+
+<Story of={Stories.LongLabel} />
+
+## Full width
+
+The `fullWidth` property will make a button fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Root tag
+
+Use the `as` property to redefine the HTML-tag of the component to your own.
+
+<Story of={Stories.RootTag} />

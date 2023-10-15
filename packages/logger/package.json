@@ -1,0 +1,30 @@
+{
+  "name": "@koobiq/logger",
+  "version": "0.0.1-alpha.20",
+  "description": "A client logger",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "type": "module",
+  "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",
+    "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",
+    "lint:js": "eslint --ext .ts,.tsx src --fix",
+    "lint": "pnpm lint:js",
+    "release": "pnpm publish",
+    "type-check": "tsc --noEmit --pretty"
+  },
+  "files": ["dist"],
+  "sideEffects": false
+}

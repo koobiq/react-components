@@ -1,0 +1,41 @@
+import { Meta, Story } from '../../../../../.storybook/components';
+
+import * as Stories from './useMediaQuery.stories';
+
+<Meta of={Stories} />
+
+# useMediaQuery
+
+This hook tracks the state of a [media query](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries).
+
+```tsx
+import { useMediaQuery } from '@koobiq/react-core';
+```
+
+## Definition
+
+```ts
+export type UseMediaQueryOptions = {
+  /**
+   * As `window.matchMedia()` is unavailable on the server,
+   * it returns a default matches during the first mount.
+   * @default false
+   */
+  defaultMatches: boolean[];
+  /**
+   * The `defaultMatches` property is what will be returned
+   * on the first mount if ssr is set to `true`.
+   * @default true
+   */
+  ssr?: boolean;
+};
+
+export function useMediaQuery(
+  query: string[],
+  options?: UseMediaQueryOptions
+): boolean[];
+```
+
+## Example
+
+<Story of={Stories.Example} />

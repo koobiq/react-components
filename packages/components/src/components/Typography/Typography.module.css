@@ -1,0 +1,226 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  margin: unset;
+  color: var(--kbq-foreground-contrast);
+}
+
+.display-big {
+  @mixin typography display-big;
+}
+
+.display-normal {
+  @mixin typography display-normal;
+}
+
+.display-compact {
+  @mixin typography display-compact;
+}
+
+.display-big-strong {
+  @mixin typography display-big-strong;
+}
+
+.display-normal-strong {
+  @mixin typography display-normal-strong;
+}
+
+.display-compact-strong {
+  @mixin typography display-compact-strong;
+}
+
+.headline {
+  @mixin typography headline;
+}
+
+.title {
+  @mixin typography title;
+}
+
+.subheading {
+  @mixin typography subheading;
+}
+
+.text-big {
+  @mixin typography text-big;
+}
+
+.text-big-strong {
+  @mixin typography text-big-strong;
+}
+
+.text-big-medium {
+  @mixin typography text-big-medium;
+}
+
+.text-normal {
+  @mixin typography text-normal;
+}
+
+.text-normal-strong {
+  @mixin typography text-normal-strong;
+}
+
+.text-normal-medium {
+  @mixin typography text-normal-medium;
+}
+
+.text-compact {
+  @mixin typography text-compact;
+}
+
+.text-compact-strong {
+  @mixin typography text-compact-strong;
+}
+
+.text-compact-medium {
+  @mixin typography text-compact-medium;
+}
+
+.caps-big {
+  @mixin typography caps-big;
+}
+
+.caps-big-strong {
+  @mixin typography caps-big-strong;
+}
+
+.caps-normal {
+  @mixin typography caps-normal;
+}
+
+.caps-normal-strong {
+  @mixin typography caps-normal-strong;
+}
+
+.caps-compact {
+  @mixin typography caps-compact;
+}
+
+.caps-compact-strong {
+  @mixin typography caps-compact-strong;
+}
+
+.mono-big {
+  @mixin typography mono-big;
+}
+
+.mono-big-strong {
+  @mixin typography mono-big-strong;
+}
+
+.mono-normal {
+  @mixin typography mono-normal;
+}
+
+.mono-normal-strong {
+  @mixin typography mono-normal-strong;
+}
+
+.mono-compact {
+  @mixin typography mono-compact;
+}
+
+.mono-compact-strong {
+  @mixin typography mono-compact-strong;
+}
+
+.mono-codeblock {
+  @mixin typography mono-codeblock;
+}
+
+.tabular-big {
+  @mixin typography tabular-big;
+}
+
+.tabular-big-strong {
+  @mixin typography tabular-big-strong;
+}
+
+.tabular-normal {
+  @mixin typography tabular-normal;
+}
+
+.tabular-normal-strong {
+  @mixin typography tabular-normal-strong;
+}
+
+.tabular-compact {
+  @mixin typography tabular-compact;
+}
+
+.tabular-compact-strong {
+  @mixin typography tabular-compact-strong;
+}
+
+.italic-big {
+  @mixin typography italic-big;
+}
+
+.italic-big-strong {
+  @mixin typography italic-big-strong;
+}
+
+.italic-normal {
+  @mixin typography italic-normal;
+}
+
+.italic-normal-strong {
+  @mixin typography italic-normal-strong;
+}
+
+.italic-compact {
+  @mixin typography italic-compact;
+}
+
+.italic-compact-strong {
+  @mixin typography italic-compact-strong;
+}
+
+.inherit {
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  font-feature-settings: inherit;
+  text-underline-offset: inherit;
+}
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.align_start {
+  text-align: start;
+}
+
+.align_end {
+  text-align: end;
+}
+
+.align_center {
+  text-align: center;
+}
+
+.align_initial {
+  text-align: initial;
+}
+
+.align_inherit {
+  text-align: inherit;
+}
+
+.ellipsis {
+  @mixin ellipsis;
+}

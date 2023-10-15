@@ -1,0 +1,46 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
+  "plugins": [
+    "stylelint-order",
+    "stylelint-plugin-logical-css",
+    "stylelint-prettier"
+  ],
+  "rules": {
+    "prettier/prettier": true,
+    "selector-class-pattern": null,
+    "number-max-precision": null,
+    "no-descending-specificity": null,
+    "media-query-no-invalid": null,
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["composes"]
+      }
+    ],
+    "rule-empty-line-before": [
+      "always",
+      { "except": ["after-single-line-comment", "first-nested"] }
+    ],
+    "declaration-empty-line-before": [
+      "never",
+      { "ignore": ["after-declaration"] }
+    ],
+    "custom-property-pattern": "^([a-z][a-z0-9_]*)(-[a-z0-9_]+)*$",
+    "order/order": ["custom-properties", "declarations", "rules"],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      { "ignorePseudoClasses": ["focus-visible", "global"] }
+    ],
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["define-mixin", "mixin"]
+      }
+    ],
+    "plugin/use-logical-properties-and-values": [
+      true,
+      { "severity": "warning" }
+    ],
+    "plugin/use-logical-units": [true, { "severity": "warning" }]
+  }
+}

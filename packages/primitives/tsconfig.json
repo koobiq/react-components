@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "jsxImportSource": "react",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "es2019",
+    "types": ["node", "@testing-library/jest-dom"],
+    "paths": {
+      "@koobiq/react-core": ["../core/src/"],
+      "@koobiq/react-icons": ["../icons/src/"],
+      "@koobiq/logger": ["../logger/src/"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["../../global.d.ts", "src"]
+}

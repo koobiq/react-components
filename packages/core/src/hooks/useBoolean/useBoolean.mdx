@@ -1,0 +1,36 @@
+import { Meta, Story } from '../../../../../.storybook/components';
+
+import * as Stories from './useBoolean.stories';
+
+<Meta of={Stories} />
+
+# useBoolean
+
+A hook for controlling a boolean value.
+
+```tsx
+import { useBoolean } from '@koobiq/react-core';
+```
+
+## Definition
+
+```ts
+export type UseBooleanControllers = {
+  /** Set the value to `true` */
+  on: () => void;
+  /** Set the value to `false` */
+  off: () => void;
+  /** Toggle the value to the opposite state */
+  toggle: () => void;
+  /** Set the value to a specific state */
+  set: Dispatch<SetStateAction<boolean>>;
+};
+
+type UseBooleanReturnValue = [boolean, UseBooleanControllers];
+
+export function useBoolean(defaultValue = false): UseBooleanReturnValue;
+```
+
+## Example
+
+<Story of={Stories.Example} />

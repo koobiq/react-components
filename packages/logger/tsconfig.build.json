@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "paths": {}
+  },
+  "exclude": [
+    "**/*/__tests__/*",
+    "**/*/__testfixtures__/*",
+    "**/*.test.*",
+    "**/*.stories.*",
+    "setupTests.ts"
+  ]
+}

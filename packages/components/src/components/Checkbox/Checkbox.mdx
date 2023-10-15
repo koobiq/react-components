@@ -1,0 +1,43 @@
+import { Meta, Story, Props } from '../../../../../.storybook/components';
+
+import * as Stories from './Checkbox.stories';
+
+<Meta of={Stories} />
+
+# Checkbox
+
+A checkbox is used in forms when a user needs to select multiple values from a range of available options.
+
+<Story of={Stories.Base} />
+
+<Props />
+
+## Size
+
+For normal or big checkboxes, use the `size` prop.
+
+<Story of={Stories.Size} />
+
+## Caption
+
+<Story of={Stories.Caption} />
+
+## Disabled
+
+<Story of={Stories.Disabled} />
+
+## Value
+
+<Story of={Stories.Value} />
+
+## Error
+
+<Story of={Stories.Error} />
+
+## Indeterminate
+
+<Story of={Stories.Indeterminate} />
+
+## Without label
+
+<Story of={Stories.WithoutLabel} />

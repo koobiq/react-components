@@ -1,0 +1,42 @@
+import { Meta, Story, Props } from '../../../../../.storybook/components';
+
+import * as Stories from './Badge.stories';
+
+<Meta of={Stories} />
+
+# Badge
+
+Badge is used to highlight the status, quantity, or other important characteristics of an object.
+
+<Story of={Stories.Base} />
+
+<Props />
+
+## Size
+
+For compact or normal badges, use the `size` prop.
+
+<Story of={Stories.Size} />
+
+## Variant
+
+Use the `variant` property to set the view of component.
+
+<Story of={Stories.Variant} />
+
+## With Icons
+
+You can add an icon using the `startIcon` and `endIcon` property.
+
+Both properties expect an icon component from our [icon library](?path=/docs/icons--docs).
+
+<Story of={Stories.WithIcons} />
+
+## Long label
+
+The text in the badge is always placed in one line.
+
+If the badge doesn't fit into the parent container in width, it is compressed,
+the text in the label is cut off and an ellipsis is added at the end.
+
+<Story of={Stories.LongLabel} />

@@ -1,0 +1,204 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  --button-gap: var(--kbq-size-xxs);
+  --button-border-color: transparent;
+  --button-outline-color: transparent;
+  --button-block-size: var(--kbq-size-3xl);
+  --button-border-radius: var(--kbq-size-s);
+  --button-padding-block: var(--kbq-size-xs);
+  --button-padding-inline: var(--kbq-size-m);
+  --button-outline-width: var(--kbq-size-3xs);
+  --button-boder-width: var(--kbq-size-border-width);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  flex-wrap: nowrap;
+  position: relative;
+  align-items: center;
+  min-inline-size: 0;
+  display: inline-flex;
+  text-decoration: none;
+  box-sizing: border-box;
+  justify-content: center;
+  color: var(--button-color);
+  block-size: var(--button-block-size);
+  background-color: var(--button-bg-color);
+  border-radius: var(--button-border-radius);
+  padding: var(--button-padding-block) var(--button-padding-inline);
+  transition:
+    border-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+
+  @mixin typography text-normal-medium;
+
+  /* border */
+  &::before {
+    inset: 0;
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: var(--kbq-layer-absolute);
+    transition: border-color var(--kbq-transition-default);
+    border: var(--button-boder-width) solid
+      var(--button-border-color, transparent);
+  }
+
+  /* focus-visible */
+  &::after {
+    content: '';
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: var(--kbq-layer-absolute);
+    transition: outline-color var(--kbq-transition-default);
+    outline-offset: calc(-1 * var(--button-outline-width) / 2);
+    outline: var(--button-outline-width) solid var(--button-outline-color);
+  }
+}
+
+.hovered {
+  --button-border-color: var(--button-border-color-hover);
+  background-color: var(--button-bg-color-hover);
+}
+
+.pressed {
+  --button-border-color: var(--button-border-color-active);
+  background-color: var(--button-bg-color-active);
+}
+
+.focusVisible {
+  --button-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.progress,
+.disabled {
+  cursor: not-allowed;
+}
+
+.disabled {
+  --button-border-color: var(--button-border-color-disabled);
+  color: var(--button-color-disabled);
+  background-color: var(--button-bg-color-disabled);
+}
+
+.fullWidth {
+  inline-size: 100%;
+}
+
+.onlyIcon {
+  --button-padding-inline: var(--button-padding-block);
+  inline-size: var(--button-block-size);
+}
+
+.loader {
+  inset: 0;
+  position: absolute;
+  border-radius: inherit;
+  background-image: linear-gradient(
+    135deg,
+    #0000000a 25%,
+    #ffffff1a 25%,
+    #ffffff1a 50%,
+    #0000000a 50%,
+    #0000000a 75%,
+    #ffffff1a 75%,
+    #ffffff1a 100%
+  );
+  animation: progress 1s linear infinite;
+  background-size: var(--button-block-size) var(--button-block-size);
+}
+
+.content {
+  display: flex;
+  min-inline-size: 0;
+  text-align: center;
+  align-items: center;
+  place-content: center;
+  gap: var(--button-gap);
+
+  & > *:not(.label) {
+    flex-shrink: 0;
+  }
+}
+
+.label {
+  padding-inline: var(--button-gap);
+
+  @mixin ellipsis;
+}
+
+.contrast-filled {
+  --button-color: var(--kbq-foreground-on-contrast);
+  --button-color-disabled: var(--kbq-states-foreground-disabled);
+  --button-bg-color: var(--kbq-background-contrast);
+  --button-bg-color-hover: var(--kbq-states-background-contrast-hover);
+  --button-bg-color-active: var(--kbq-states-background-contrast-active);
+  --button-bg-color-disabled: var(--kbq-states-background-disabled);
+}
+
+.fade-contrast-filled {
+  --button-color: var(--kbq-foreground-contrast);
+  --button-color-disabled: var(--kbq-states-foreground-disabled);
+  --button-bg-color: var(--kbq-background-contrast-fade);
+  --button-bg-color-hover: var(--kbq-states-background-contrast-fade-hover);
+  --button-bg-color-active: var(--kbq-states-background-contrast-fade-active);
+  --button-bg-color-disabled: var(--kbq-states-background-disabled);
+}
+
+.fade-contrast-outline {
+  --button-color: var(--kbq-foreground-contrast);
+  --button-color-disabled: var(--kbq-states-foreground-disabled);
+  --button-border-color: var(--kbq-line-contrast-fade);
+  --button-border-color-hover: var(--kbq-line-contrast-fade);
+  --button-border-color-active: var(--kbq-line-contrast-fade);
+  --button-border-color-disabled: var(--kbq-states-line-disabled);
+  --button-bg-color: var(--kbq-background-transparent);
+  --button-bg-color-hover: var(--kbq-states-background-transparent-hover);
+  --button-bg-color-active: var(--kbq-states-background-transparent-active);
+  --button-bg-color-disabled: var(--kbq-background-transparent);
+}
+
+.fade-theme-outline {
+  --button-color: var(--kbq-foreground-theme);
+  --button-color-disabled: var(--kbq-states-foreground-disabled);
+  --button-border-color: var(--kbq-line-theme-fade);
+  --button-border-color-hover: var(--kbq-line-theme-fade);
+  --button-border-color-active: var(--kbq-line-theme-fade);
+  --button-border-color-disabled: var(--kbq-states-line-disabled);
+  --button-bg-color: var(--kbq-background-transparent);
+  --button-bg-color-hover: var(--kbq-states-background-transparent-hover);
+  --button-bg-color-active: var(--kbq-states-background-transparent-active);
+  --button-bg-color-disabled: var(--kbq-background-transparent);
+}
+
+.contrast-transparent {
+  --button-color: var(--kbq-foreground-contrast);
+  --button-color-disabled: var(--kbq-states-foreground-disabled);
+  --button-bg-color: var(--kbq-background-transparent);
+  --button-bg-color-hover: var(--kbq-states-background-transparent-hover);
+  --button-bg-color-active: var(--kbq-states-background-transparent-active);
+  --button-bg-color-disabled: var(--kbq-background-transparent);
+}
+
+.theme-transparent {
+  --button-color: var(--kbq-foreground-theme);
+  --button-color-disabled: var(--kbq-states-foreground-disabled);
+  --button-bg-color: var(--kbq-background-transparent);
+  --button-bg-color-hover: var(--kbq-states-background-transparent-hover);
+  --button-bg-color-active: var(--kbq-states-background-transparent-active);
+  --button-bg-color-disabled: var(--kbq-background-transparent);
+}
+
+@keyframes progress {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 64px 0;
+  }
+}

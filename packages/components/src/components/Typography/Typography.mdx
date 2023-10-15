@@ -1,0 +1,45 @@
+import { Meta, Story, Props } from '../../../../../.storybook/components';
+
+import * as Stories from './Typography.stories';
+
+<Meta of={Stories} />
+
+# Typography
+
+Typography is a component that consistently styles text in
+an application and manages it in accordance with the rules of the design-system.
+
+<Story of={Stories.Base} />
+
+<Props />
+
+## Add fonts
+
+See the [guide](?path=/docs/fonts--docs) for adding a font to your application.
+
+## Variant
+
+Use the `variant` property to set the type and size of the text in the project.
+
+<Story of={Stories.Variant} />
+
+## Root tag
+
+Use the `as` property to redefine the HTML-tag of the component to your own.
+
+<Story of={Stories.RootTag} />
+
+## Align
+
+The `align` property sets the text alignment within a container.
+
+<Story of={Stories.Align} />
+
+## Ellipsis
+
+This property allows you to hide overflowing text.
+
+- `false` - used by default
+- `true` - hidden overflow content will be replaced with ellipsis …
+
+<Story of={Stories.Ellipsis} />

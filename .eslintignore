@@ -1,0 +1,8 @@
+!/.storybook
+build/
+dist/
+storybook-static/
+node_modules/
+.snapshots/
+*.min.js
+templates/nextjs/template

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "koobiq"
+  },
+  "targets": {
+    "koobiq": {
+      "hosting": {
+        "stable": [
+          "react-koobiq"
+        ]
+      }
+    }
+  }
+}

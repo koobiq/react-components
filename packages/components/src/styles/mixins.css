@@ -1,0 +1,23 @@
+/* stylelint-disable */
+@define-mixin typography $name {
+  font-size: var(--kbq-typography-$(name)-font-size);
+  font-weight: var(--kbq-typography-$(name)-font-weight);
+  line-height: var(--kbq-typography-$(name)-line-height);
+  font-family: var(--kbq-typography-$(name)-font-family);
+  font-style: var(--kbq-typography-$(name)-font-style);
+  text-transform: var(--kbq-typography-$(name)-text-transform);
+  font-feature-settings: var(--kbq-typography-$(name)-font-feature-settings);
+  letter-spacing: var(--kbq-typography-$(name)-letter-spacing);
+  text-underline-offset: calc(
+    (
+        var(--kbq-typography-$(name)-line-height) -
+          var(--kbq-typography-$(name)-font-size)
+      ) / 2
+  );
+}
+
+@define-mixin ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,146 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  --badge-padding-inline: ;
+  --badge-border-radius: ;
+  --badge-border-color: ;
+  --badge-block-size: ;
+  --badge-bg-color: ;
+  --badge-color: ;
+  --badge-gap: ;
+  outline: none;
+  align-items: center;
+  display: inline-flex;
+  text-decoration: none;
+  white-space: nowrap;
+  max-inline-size: 100%;
+  box-sizing: border-box;
+  gap: var(--badge-gap);
+  min-inline-size: var(--badge-block-size);
+  block-size: var(--badge-block-size);
+  border-radius: var(--badge-border-radius);
+  padding-inline: var(--badge-padding-inline);
+  background-color: var(--badge-bg-color);
+  border: 1px solid var(--badge-border-color);
+  color: var(--badge-color);
+}
+
+.label {
+  @mixin ellipsis;
+}
+
+.compact {
+  @mixin typography text-compact;
+
+  --badge-gap: var(--kbq-size-3xs);
+  --badge-border-radius: var(--kbq-size-xxs);
+  --badge-padding-inline: var(--kbq-size-xxs);
+  --badge-block-size: 16px;
+
+  .label {
+    @mixin typography text-compact-medium;
+  }
+}
+
+.normal {
+  @mixin typography text-normal;
+
+  --badge-gap: var(--kbq-size-xxs);
+  --badge-border-radius: var(--kbq-size-xxs);
+  --badge-padding-inline: var(--kbq-size-s);
+  --badge-block-size: 24px;
+
+  .label {
+    @mixin typography text-normal-medium;
+  }
+}
+
+.theme {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-theme);
+  --badge-color: var(--kbq-foreground-white);
+}
+
+.fade-theme {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-theme-fade);
+  --badge-color: var(--kbq-foreground-theme);
+}
+
+.outline-fade-theme {
+  --badge-bg-color: ;
+  --badge-border-color: var(--kbq-line-theme-fade);
+  --badge-color: var(--kbq-foreground-theme);
+}
+
+.error {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-error);
+  --badge-color: var(--kbq-foreground-white);
+}
+
+.fade-error {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-error-fade);
+  --badge-color: var(--kbq-foreground-error);
+}
+
+.outline-fade-error {
+  --badge-border-color: var(--kbq-line-error-fade);
+  --badge-bg-color: ;
+  --badge-color: var(--kbq-foreground-error);
+}
+
+.warning {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-warning);
+  --badge-color: var(--kbq-foreground-white);
+}
+
+.fade-warning {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-warning-fade);
+  --badge-color: var(--kbq-foreground-warning);
+}
+
+.outline-fade-warning {
+  --badge-border-color: var(--kbq-line-warning-fade);
+  --badge-bg-color: ;
+  --badge-color: var(--kbq-foreground-warning);
+}
+
+.success {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-success);
+  --badge-color: var(--kbq-foreground-white);
+}
+
+.fade-success {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-success-fade);
+  --badge-color: var(--kbq-foreground-success);
+}
+
+.outline-fade-success {
+  --badge-border-color: var(--kbq-line-success-fade);
+  --badge-bg-color: ;
+  --badge-color: var(--kbq-foreground-success);
+}
+
+.contrast {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-contrast);
+  --badge-color: var(--kbq-foreground-on-contrast);
+}
+
+.fade-contrast {
+  --badge-border-color: transparent;
+  --badge-bg-color: var(--kbq-background-contrast-fade);
+  --badge-color: var(--kbq-foreground-contrast);
+}
+
+.outline-fade-contrast {
+  --badge-border-color: var(--kbq-line-contrast-fade);
+  --badge-bg-color: ;
+  --badge-color: var(--kbq-foreground-contrast);
+}

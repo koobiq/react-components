@@ -1,0 +1,23 @@
+.grid {
+  display: grid;
+  place-items: center center;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(calc(var(--storybook-content-max-with) / 5), 1fr)
+  );
+}
+
+.grid-item {
+  gap: 1em;
+  display: flex;
+  block-size: 100px;
+  inline-size: 100%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.icon-name {
+  inline-size: 100%;
+  color: var(--kbq-foreground-contrast-tertiary);
+}

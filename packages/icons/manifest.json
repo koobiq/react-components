@@ -1,0 +1,2480 @@
+{
+  "icons": [
+    {
+      "componentName": "IconArrowDownToBracket16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowPointer16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightFromRectangle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightToRectangle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsRetweet16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsRotateBolt16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconAsterisk16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBarsSortBottom16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBarsSortCenter16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBarsSortTop16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBoltCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBoxArchiveArrowDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBriefcase16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartGaugeO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconClockBadgeLinux16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconClockBadgeWindows16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCompass16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconConnection16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconConnectionsLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconConnectionsStar16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCpu16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDataflow16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDesktopPlus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDiamond16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDiamondHalf16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDiamondInfo16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconException16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileBadgeArrowTurnRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileSharedO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFireFlame16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGlobeOnLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGridDots16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGripVerticalS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHandcuffs16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHardDrive16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconInbox16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconInfinity16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconIp4Rectangle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconIp6Rectangle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLayerGroup16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconListCollapse16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconListExpand16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLocationArrowCircleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLock25616",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLockMd516",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLockSha116",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMessageFaq16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMinusOctagon16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMinusSquare16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconNodeTree",
+      "size": "16"
+    },
+    {
+      "componentName": "IconNorthStar16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconNotebookUser16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconParagraphSign16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlusSquare16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRectanglesO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconReplace16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRuler16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconScale16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShield16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldDesktop16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldExclamation16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldUser16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldWrench16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSwords16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTableLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTelegramCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconText16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTextMagnifyingGlass16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconThumbsUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTowerBroadcast16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTraffic16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTriangleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUnit16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserBadgeFileText16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserBadgeGlobe16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserBadgeLocation16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserMask16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserViewfinder16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconVpn16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWidgetPlus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWifiTethering16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWorkflow16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconActiveDirectory16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconAix16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconAndroid16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconApple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsLeftRightRectangleHorizontalO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBlockBrick16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBsd16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCloud16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCloudO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDesktop16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDesktopMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGlobeDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGlobeMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHpux16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHypervisor16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconIdrac16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLinux16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMobile16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconNetworkDeviceDots16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPrinter16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRouter16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSap16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconServer16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSignalStream16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWindows16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowDownRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartArea16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartBarHorizontal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartBarVertical16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartBubble16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartDonut16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartHeatmap16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartIndex16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartIndexLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartLineMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartPie16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartStackedBarHorizontal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartStackedBarVertical16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDashboard16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFlowchart16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFlowchartDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconAnomaly16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconApi16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowCircleDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowCircleLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowCircleRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowCircleUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowDownLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowDownS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowDownToLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowLeftS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightArrowLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightCircleDotO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightFromBracket16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightThroughLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightToBracket16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRotateLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRotateLeftBadgeLinux16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRotateRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRotateRightDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowTurnDownLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowTurnDownRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpFromBracket16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpFromLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpFromRectangle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpRightFromSquare16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsLeftRightToLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsRotateReverse16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsRotateReverseSlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBackward16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBackwardStep16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBan16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBanDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBandAid16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBarsHorizontal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBarsProgress16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBell16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBellSlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBentoMenu16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBinoculars16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBolt16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBookOpen16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBox16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBoxArchive16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBoxOpen16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBranch16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBug16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBuildSet16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBuilding16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBurst16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCable16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCalendarDaysO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCalendarO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCalendarXmarkO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCapsule16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCertificateHorizontal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChannel16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChartNetwork16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCheck16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCheckBadgeAuto16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCheckCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCheckDouble16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCheckS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCheckboxMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronCircleDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronCircleLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronCircleRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronCircleUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronsExpand16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCircleDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCircleDotO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCircleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCircleXs16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconClock16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconClockBadgePause16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconClockBadgePlay16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconClockBadgeStop16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconClockRotateLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCode16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCompress16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCreditCard16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCrosshairs16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCrown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDatabase16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDiamondO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDiskDrive16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDrop16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEllipsisHorizontal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEllipsisHorizontalCircleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEllipsisVertical16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEnvelope16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEnvelopeBadgeArrowRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEnvelopeDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconExclamationCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconExclamationTriangle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEye16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEyeSlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFence16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileArchiveO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileBadgeArrowLeftO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileBadgeArrowRightO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileBadgeArrowThroughLineO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileBadgeBanO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileCodeO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileCutO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileExclamationO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileHorizontalO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileMultipleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFilePlusO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileTextO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFloppyDisk16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFlowchartXmark16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolder16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderBadgeArrowRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderBadgeMagnifyingGlass16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderBadgePlus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderOpen16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderOpenBadgeMagnifyingGlass16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFolderOpenDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconForward16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconForwardStep16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGear16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGlobe16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGossopka16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGridSquares16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGripVertical16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHashtag16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHourglassEnd16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHourglassHalf16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHourglassStart16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHouse16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconHouseO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconInfoCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconIp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconIpMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconKey16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconKeyboard16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLink16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLinkBroken16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLinkDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLinkMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconList16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconListBadgeXmark16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLock16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLockOpen16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMagnifyingGlass16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMagnifyingGlassBadgeSparkles16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMagnifyingGlassMinus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMagnifyingGlassPlus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMap16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMapSlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMessage16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMessageArrowRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMessageDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMinus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMinusCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMinusCircleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMinusCircleS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMinusS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconMoon16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconNetworkDevice16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconNetworkDeviceMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPaperPlane16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPaperclip16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPause16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPauseCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPencil16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPhone16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPin16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPinSlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlay16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlayCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlayRewind16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlug16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlusCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlusCircleS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPlusS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPulse16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconQl16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconQuestion16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconQuestionCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRegex16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRegistry16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRegistryMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRobot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSatelliteDish16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconScrollO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldCheck16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldHalf16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldSlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldXmark16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSliders16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSlidersDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSpeaker16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSpeakerWave16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSpinner16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSquare16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSquareDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSquareMultipleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconStar16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconStarO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconStop16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconStopCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSun16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSunMoon16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTable16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTableBadgeClock16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTag16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTagMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTrash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUrl16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUsbFlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUser16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserArrowTriangleUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserBadgeGear16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUserSecret16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWindowsArrowRotateLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWrapText16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWrapTextSlash16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWrench16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconWrenchBadgePlay16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconXmark16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconXmarkCircle16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconXmarkCircleS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconXmarkS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCertificateVertical16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGearBadgeArrowtriangleUpSquare16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGearBadgeSquare16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGearBadgeSquareO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGearBadgeSquareS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBarsBoldHorizontal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBoltRectangleVertical16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBoltRectangleVerticalO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDatabaseBadgeArrowDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileLines16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFileLinesShort16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCircleHalf16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBucketS316",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSparkles16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowDownOnRectangles16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpArrowDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowUpArrowDownDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBarsVertical16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDatabaseNormal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDatabaseRaw16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconExists16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFilter16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFilterDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconFormula16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGridGroup16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconGridGroupDot16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconJoin16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRectangleCheckered16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconScissors16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSigma16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowLeftToLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightToLine16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsCollapseDiagonal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsDownUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsExpandDiagonal16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowsUpDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleDownS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleLeftS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleRightS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDoubleUpS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronDownS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronLeftS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronRightS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronUpS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronsDownUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronsDownUpS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronsUpDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconChevronsUpDownS16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLocationArrowRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLocationArrowUp16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLocationChevronDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconLocationChevronLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSplitScreenBottom16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSplitScreenLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSplitScreenNoSplit16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSplitScreenRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconSplitScreenTop16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRectangleTriangleVerticalThin16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRectangleVerticalThin16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRectangleVerticalThinHalf16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRectangleVerticalThinLines16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRectangleVerticalThinO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldRibbon16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconShieldStar16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightFromArc16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconArrowRightToArc16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCloudBadgeGlobe16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCloudBadgeGlobeO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconCloudBadgeKeyO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconReachability16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconReachabilityFrom16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconReachabilityTo16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTopology16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTopologyLines16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTopologyStar16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEject16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconEjectDown16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconAlignCenter16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconAlignLeft16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconAlignRight16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBreakBlock16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconImage16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconListBadgePlus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconListOl16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconListUl16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconPalette16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconRedo16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTextBold16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTextFont16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTextItalic16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconTextUnderline16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconUndo16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconNorthEast16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconBookOpen24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCloudArrowUpO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconTableBadgeClock24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconActiveDirectory24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconAix24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconAndroid24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconApple24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowsLeftRightRectangleHorizontalO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBlockBrick24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBookMultiple24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBookMultipleO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBsd24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconClipboardCheck24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconClipboardCheckO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCloud24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCloudO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconDesktop24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconDesktopMultiple24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconGlobe24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconGlobeMultiple24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconHpux24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconHypervisor24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconIdrac24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconLinux24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMobile24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconNetworkDeviceDots24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconPrinter24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconRouter24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconSap24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconServer24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconSignalStream24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconTopology24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconWindows24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartArea24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartBarHorizontal24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartBarVertical24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartBubble24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartDonut24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartHeatmap24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartIndex24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartIndexLine24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartLine24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartLineMultiple24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartPie24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartStackedBarHorizontal24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChartStackedBarVertical24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconApi24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowRightToRectangle24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowRotateLeft24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowUpFromLine24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowsRotateReverse24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowsRotateReverseSlash24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBan24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBarsProgress24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBell24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBellSlash24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBentoMenu24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBranch24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCertificateHorizontal24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCheckCircle24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCircleO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconDiskDrive24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconEllipsisVertical24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconEnvelope24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconEnvelopeDot24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconExclamationCircle24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconFileBadgeBanO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconFileMultipleO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconFileO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconFolder24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconFolderOpen24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconGear24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconInfoCircle24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconKey24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconLinkMultiple24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconList24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconLock24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMagnifyingGlass24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMap24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMapSlash24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMessage24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMessageArrowRight24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMessageDot24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMinusCircle24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconMinusCircleO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconPaperclip24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconPencil24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconPlug24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconQuestionCircle24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconScrollO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconSliders24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconSources24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconTable24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconUser24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconUserMultiple24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconXmarkCircle24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconBarsVertical24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronDown24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronDownS24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronLeft24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronLeftS24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronRight24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronRightS24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronUp24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconChevronUpS24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowRightFromArc24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconArrowRightToArc24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCloudBadgeGlobeO24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCloudBadgeKeyO24",
+      "size": "24"
+    },
+    {
+      "componentName": "Icon3Columns32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconBarsHorizontal32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconBell32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconBoltO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconChartBarHorizontal32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconChartLineMultiple32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconCloudArrowDownO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconCloudArrowUpO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconDashboardO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconDatabaseO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconExclamationTriangle32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconFileLinesO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconFolderO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconList32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconPause32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconPlay32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconPlus32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconQuestionCircleO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconRadarO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconSliders32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconTableBadgeArrowDownCircle32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconXmark32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconBentoMenu32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconFileO32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconStop32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconChevronDown32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconChevronLeft32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconChevronRight32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconChevronUp32",
+      "size": "32"
+    },
+    {
+      "componentName": "IconChartBarHorizontal48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconChartLineMultiple48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconCheck48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconFileDocO48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconFilePdfO48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconArrowsRotate48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconPause48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconPlay48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconStop48",
+      "size": "48"
+    },
+    {
+      "componentName": "IconCloudArrowUpO64",
+      "size": "64"
+    },
+    {
+      "componentName": "IconPause64",
+      "size": "64"
+    },
+    {
+      "componentName": "IconPlay64",
+      "size": "64"
+    },
+    {
+      "componentName": "IconPlus64",
+      "size": "64"
+    },
+    {
+      "componentName": "IconStop64",
+      "size": "64"
+    }
+  ]
+}

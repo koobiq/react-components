@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Responsive UI" />
+
+# Responsive UI
+
+The instructions below describe how to use adaptive interfaces using Koobiq React.
+
+Koobiq React provides the following breakpoints by default:
+
+```js
+export const breakpoints: Breakpoints = {
+  xs: 0, // (min-width: 0px)
+  s: 480, // (min-width: 480px)
+  m: 768, // (min-width: 768px)
+  l: 1024, // (min-width: 1024px)
+  xl: 1280, // (min-width: 1280px)
+  xxl: 1536 // (min-width: 1536px)
+};
+```
+
+## Default breakpoints
+
+The `Provider` component helps you manage responsive breakpoints in your app.
+
+### Usage
+
+- Wrap the application with the `Provider` component to enable responsive breakpoints.
+- Access the breakpoints object from the `useBreakpoints` hook in your component.
+
+### Example
+
+```tsx
+import { Provider, useBreakpoints } from '@koobiq/react-components';
+
+const MyComponent = () => {
+  const { xs, l } = useBreakpoints();
+
+  return (
+    <div>
+      {xs && <p>Extra small screen active!</p>}
+      {l && <p>Large screen active!</p>}
+    </div>
+  );
+};
+
+const App = () => (
+  <Provider>
+    <MyComponent />
+  </Provider>
+);
+```
+
+## useMediaQuery
+
+The [useMediaQuery](?path=/docs/hooks-usemediaquery--docs) hook is a CSS media query hook for React. It listens for matches to a CSS media query,
+allowing you to dynamically respond to changes in screen size or other media features.

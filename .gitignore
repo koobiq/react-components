@@ -1,0 +1,17 @@
+node_modules
+dist
+.DS_Store
+.idea
+.firebase
+
+# Dotenv environment variables file
+.env
+
+# Vitest
+coverage
+
+# Storybook
+storybook-static
+
+# Turborepo cache directory
+.turbo

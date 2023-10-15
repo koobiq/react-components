@@ -1,0 +1,159 @@
+.base {
+  --flex-gap: 0;
+  --flex-order: 0;
+  --flex-type: flex;
+  --flex-wrap: nowrap;
+  --flex-direction: row;
+  --flex-align-items: flex-start;
+  --flex-justify-content: flex-start;
+  gap: var(--flex-gap);
+  order: var(--flex-order);
+  display: var(--flex-type);
+  align-items: var(--flex-align-items);
+  justify-content: var(--flex-justify-content);
+  flex-flow: var(--flex-direction) var(--flex-wrap);
+}
+
+.alignItems_flex-start {
+  --flex-align-items: flex-start;
+}
+
+.alignItems_flex-end {
+  --flex-align-items: flex-end;
+}
+
+.alignItems_center {
+  --flex-align-items: center;
+}
+
+.alignItems_baseline {
+  --flex-align-items: baseline;
+}
+
+.alignItems_stretch {
+  --flex-align-items: stretch;
+}
+
+.justifyContent_flex-start {
+  --flex-justify-content: flex-start;
+}
+
+.justifyContent_flex-end {
+  --flex-justify-content: flex-end;
+}
+
+.justifyContent_center {
+  --flex-justify-content: center;
+}
+
+.justifyContent_space-between {
+  --flex-justify-content: space-between;
+}
+
+.justifyContent_space-around {
+  --flex-justify-content: space-around;
+}
+
+.justifyContent_space-evenly {
+  --flex-justify-content: space-evenly;
+}
+
+.flex_flex {
+  --flex-type: flex;
+}
+
+.flex_inline-flex {
+  --flex-type: inline-flex;
+}
+
+.wrap_wrap {
+  --flex-wrap: wrap;
+}
+
+.wrap_nowrap {
+  --flex-wrap: nowrap;
+}
+
+.wrap_wrap-reverse {
+  --flex-wrap: wrap-reverse;
+}
+
+.direction_row {
+  --flex-direction: row;
+}
+
+.direction_row-reverse {
+  --flex-direction: row-reverse;
+}
+
+.direction_column {
+  --flex-direction: column;
+}
+
+.direction_column-reverse {
+  --flex-direction: column-reverse;
+}
+
+.order_-1 {
+  --flex-order: -1;
+}
+
+.order_0 {
+  --flex-order: 0;
+}
+
+.order_1 {
+  --flex-order: 1;
+}
+
+.gap_3xs {
+  --flex-gap: var(--kbq-size-3xs);
+}
+
+.gap_xxs {
+  --flex-gap: var(--kbq-size-xxs);
+}
+
+.gap_xs {
+  --flex-gap: var(--kbq-size-xs);
+}
+
+.gap_s {
+  --flex-gap: var(--kbq-size-s);
+}
+
+.gap_m {
+  --flex-gap: var(--kbq-size-m);
+}
+
+.gap_l {
+  --flex-gap: var(--kbq-size-l);
+}
+
+.gap_xl {
+  --flex-gap: var(--kbq-size-xl);
+}
+
+.gap_xxl {
+  --flex-gap: var(--kbq-size-xxl);
+}
+
+.gap_3xl {
+  --flex-gap: var(--kbq-size-3xl);
+}
+
+.gap_4xl {
+  --flex-gap: var(--kbq-size-4xl);
+}
+
+.gap_5xl {
+  --flex-gap: var(--kbq-size-5xl);
+}
+
+.gap_6xl {
+  --flex-gap: var(--kbq-size-6xl);
+}
+
+.gap_7xl {
+  --flex-gap: var(--kbq-size-7xl);
+}

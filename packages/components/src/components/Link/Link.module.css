@@ -1,0 +1,92 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  --link-gap: var(--kbq-size-xxs);
+  --link-outline-width: var(--kbq-size-3xs);
+  padding: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  transition: color 0ms;
+  text-decoration: underline;
+  color: var(--kbq-foreground-theme);
+  text-decoration-color: var(--kbq-line-theme-less);
+
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    text-decoration: none;
+    color: var(--kbq-states-foreground-disabled);
+    text-decoration-color: var(--kbq-states-line-disabled);
+  }
+}
+
+.hovered {
+  color: var(--kbq-states-foreground-theme-hover);
+  text-decoration-color: var(--kbq-line-theme-less);
+}
+
+.pressed {
+  color: var(--kbq-states-foreground-theme-active);
+  text-decoration-color: var(--kbq-line-theme-less);
+}
+
+.focusVisible {
+  color: var(--kbq-foreground-theme);
+  text-decoration-color: var(--kbq-line-theme-less);
+}
+
+.visitable:where(:visited) {
+  color: var(--kbq-foreground-visited);
+  text-decoration-color: var(--kbq-line-visited);
+}
+
+.visitable:where(.hovered:visited) {
+  color: var(--kbq-states-foreground-visited-hover);
+  text-decoration-color: var(--kbq-line-visited);
+}
+
+.visitable:where(.pressed:visited) {
+  color: var(--kbq-states-foreground-visited-active);
+  text-decoration-color: var(--kbq-line-visited);
+}
+
+.pseudo:where(:not(.pressed, .hovered)) {
+  text-decoration: none;
+}
+
+.pseudo:where(.focusVisible) {
+  outline: var(--link-outline-width) solid var(--kbq-states-line-focus-theme);
+  outline-offset: -1px;
+}
+
+.hasIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--link-gap);
+}
+
+.text-normal {
+  @mixin typography text-normal;
+}
+
+.text-big {
+  @mixin typography text-big;
+}
+
+.text-compact {
+  @mixin typography text-compact;
+}
+
+.inherit {
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  font-feature-settings: inherit;
+  text-underline-offset: inherit;
+}
