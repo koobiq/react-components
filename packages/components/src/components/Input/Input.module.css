@@ -1,0 +1,7 @@
+.hasStartAddon {
+  --field-padding-inline-start: 36px;
+}
+
+.hasEndAddon {
+  --field-padding-inline-end: 36px;
+}

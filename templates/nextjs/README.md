@@ -10,7 +10,7 @@ A create-next-app template for TypeScript Next.js apps with Koobiq React.
 
 - Open your terminal.
 - Navigate to the directory you would like to place your project in.
-- Run `npx create-next-app --example "https://github.com/..." my-app`, where `my-app` is the name of your project.
+- Run `npx create-next-app --example "https://github.com/koobiq/react-components/tree/main/templates/nextjs/template" my-app`, where `my-app` is the name of your project.
 
 This will create the folder `my-app` and initialize a new project inside.
 The project will be based on [Next.js](https://github.com/vercel/next.js/)

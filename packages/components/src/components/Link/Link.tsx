@@ -18,6 +18,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     endIcon,
     children,
     className,
+    style,
   } = props;
 
   const Tag = as;
@@ -47,6 +48,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
         focusVisible && s.focusVisible,
         className
       )}
+      style={style}
       ref={domRef}
     >
       {startIcon}

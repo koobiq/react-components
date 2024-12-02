@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type { TypographyPropVariant } from '../Typography';
 
@@ -24,4 +24,6 @@ export type LinkBaseProps = {
   pseudo?: boolean;
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles */
+  style?: CSSProperties;
 };

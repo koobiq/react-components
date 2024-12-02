@@ -1,0 +1,42 @@
+import { Status, Meta } from '../.storybook/components';
+
+<Meta title="Component Lifecycle" />
+
+# Component Lifecycle
+
+Components progress through the following development stages: **Draft**, **Experimental**, **Stable**, and **Deprecated**.
+
+## Draft
+
+<Status variant="draft" />
+
+Draft components are in the early stages of design and have not yet been added to the official specification.
+
+## Experimental
+
+<Status variant="experimental" />
+
+Experimental components are actively developed and available for beta testing.
+
+- They may not meet quality standards and could lack sufficient documentation.
+- The public API is unstable and subject to change.
+- Breaking changes may occur even in minor updates.
+
+## Stable
+
+<Status variant="stable" />
+
+Stable components are fully developed, backward compatible, and supported long-term.
+
+- They follow [semantic versioning](https://semver.org/), with changes to the API being rare and predictable.
+- These components meet quality standards and are safe for production use.
+
+## Deprecated
+
+<Status variant="deprecated" />
+
+Deprecated components are stable but scheduled for removal in a future major release.
+
+- They log a deprecation warning during local development when used.
+- No updates or bug fixes will be provided.
+- Users should transition to the recommended alternatives as outlined in the documentation.

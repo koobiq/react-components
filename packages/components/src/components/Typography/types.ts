@@ -68,8 +68,11 @@ export type TypographyPropAlign = (typeof typographyPropAlign)[number];
 export type TypographyBaseProps = {
   /** The variant to use. */
   variant?: TypographyPropVariant;
+  /** Set the display for the component. */
   display?: TypographyDisplayVariant;
+  /** Set the text-align on the component. */
   align?: TypographyPropAlign;
+  /** Hidden overflow content will be replaced by an ellipsis. */
   ellipsis?: boolean;
   /** The content of the component. */
   children?: ReactNode;

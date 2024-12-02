@@ -1,10 +1,6 @@
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 
-import {
-  IconArrowUpRightFromSquare16,
-  IconBolt16,
-  IconStar16,
-} from '@koobiq/react-icons';
+import { IconBolt16, IconNorthEast16, IconStar16 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -85,11 +81,17 @@ export const WithIcons: Story = {
       <Link href="#" startIcon={<IconBolt16 />}>
         Link
       </Link>
-      <Link href="#" endIcon={<IconArrowUpRightFromSquare16 />}>
-        Link
-      </Link>
       <Link href="#" startIcon={<IconStar16 />} endIcon={<IconStar16 />}>
         Link
+      </Link>
+      <Link
+        href="https://react.koobiq.io/"
+        target="_blank"
+        rel="noreferrer"
+        style={{ '--link-gap': 0 } as CSSProperties}
+        endIcon={<IconNorthEast16 />}
+      >
+        External link
       </Link>
     </div>
   ),

@@ -23,9 +23,11 @@
   &:hover {
     background-color: var(--kbq-states-background-transparent-hover);
   }
+
   &:active {
     background-color: var(--kbq-states-background-transparent-active);
   }
+
   &[aria-disabled] {
     opacity: 0.8;
     cursor: not-allowed;
@@ -42,6 +44,7 @@
 .link {
   position: absolute;
   inset: 0;
+
   &:focus-visible {
     border-radius: inherit;
     outline: 2px solid var(--kbq-states-line-focus-theme);
