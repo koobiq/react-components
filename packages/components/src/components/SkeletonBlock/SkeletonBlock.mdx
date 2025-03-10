@@ -1,0 +1,34 @@
+import {
+  Props,
+  Story,
+  Meta,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './SkeletonBlock.stories';
+
+<Meta of={Stories} />
+
+# SkeletonBlock
+
+<Status variant="draft" />
+
+Skeleton is preview placeholder for components that haven't loaded yet, reducing load-time frustration.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Example 1
+
+Wrap your component to Skeleton.
+
+<Story of={Stories.Example1} />
+
+## Example 2
+
+Model the skeletons for your component.
+
+<Story of={Stories.Example2} />

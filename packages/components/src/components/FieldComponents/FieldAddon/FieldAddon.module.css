@@ -1,0 +1,23 @@
+.base {
+  z-index: 1;
+  display: flex;
+  position: absolute;
+  block-size: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--kbq-icon-contrast-fade);
+  transition: color var(--kbq-transition-default);
+}
+
+.start {
+  padding-inline: var(--kbq-size-m) var(--kbq-size-s);
+}
+
+.end {
+  inset-inline-end: 0;
+  padding-inline: var(--kbq-size-s) var(--kbq-size-m);
+}
+
+.error {
+  color: var(--kbq-icon-error);
+}

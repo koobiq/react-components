@@ -1,4 +1,5 @@
-import { type CSSProperties, type ReactNode, useMemo } from 'react';
+import type { JSX, CSSProperties, ReactNode, Context } from 'react';
+import { useMemo } from 'react';
 
 import type {
   AriaLabelingProps,
@@ -96,4 +97,39 @@ export function useRenderProps<T>(
     defaultStyle,
     values,
   ]);
+}
+
+type ProviderValue<T> = [Context<T>, T];
+type ProviderValues<T extends unknown[]> = {
+  [K in keyof T]: ProviderValue<T[K]>;
+};
+
+interface ProviderProps<T extends unknown[]> {
+  values: ProviderValues<T>;
+  children: ReactNode;
+}
+
+export function Provider<T extends unknown[]>({
+  values,
+  children,
+}: ProviderProps<T>): JSX.Element {
+  return values.reduceRight(
+    (acc, [Context, value]) => (
+      <Context.Provider value={value}>{acc}</Context.Provider>
+    ),
+    children as JSX.Element
+  );
+}
+
+export function removeDataAttributes<T>(props: T): T {
+  const prefix = /^(data-.*)$/;
+  const filteredProps = {} as T;
+
+  for (const prop in props) {
+    if (!prefix.test(prop)) {
+      filteredProps[prop] = props[prop];
+    }
+  }
+
+  return filteredProps;
 }

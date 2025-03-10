@@ -2,7 +2,11 @@
 
 import { createContext, useContext } from 'react';
 
-export const ProviderContext = createContext<object>({});
+import type { ProviderProps } from './types';
+
+export const ProviderContext = createContext<ProviderProps>(
+  {} as ProviderProps
+);
 
 export function useProvider() {
   return useContext(ProviderContext);

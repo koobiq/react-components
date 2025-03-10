@@ -1,0 +1,11 @@
+.base {
+  --container-max-inline-size: intial;
+  --container-position: intial;
+  --container-margins: intial;
+  inline-size: 100%;
+  box-sizing: border-box;
+
+  max-inline-size: var(--container-max-inline-size);
+  margin-inline: var(--container-position);
+  padding: 0 var(--container-margins);
+}

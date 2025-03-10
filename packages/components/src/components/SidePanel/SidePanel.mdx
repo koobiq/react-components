@@ -1,0 +1,122 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './SidePanel.stories';
+
+<Meta of={Stories} />
+
+# SidePanel
+
+<Status variant="experimental" />
+
+SidePanel is a panel that slides out from the edges of the screen.
+It's often used for navigation, menus, or to display details about the page a user is on.
+
+```tsx
+import {
+  SidePanel,
+  SidePanelHeader,
+  SidePanelContent,
+  SidePanelFooter,
+} from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Subcomponents
+
+The component has the following helper components:
+
+- `SidePanelHeader` — header of the side panel
+- `SidePanelContent` — content area of the component for placing the main information
+- `SidePanelFooter` — footer of the component, can contain various actions.
+
+## Usage
+
+The best way to use a side panel control in most cases is to use
+the `control` render function with the `SidePanelPropControl` type.
+
+The render function provides control props for managing the side panel.
+Pass these props to your component.
+
+```tsx
+import { Button, SidePanel } from '@koobiq/react-components';
+
+<SidePanel control={(props) => <Button {...props}>Open</Button>}>
+  Content
+</SidePanel>;
+```
+
+To display the content of the side panel,
+it can use [subcomponents](#subcomponents) inside children.
+The `children` prop can be `ReactNode` or a render function with the `SidePanelPropContent` type.
+The render function can help pass a function to close the side panel.
+
+```tsx
+import {
+  Button,
+  SidePanel,
+  SidePanelHeader,
+  SidePanelContent,
+  SidePanelFooter,
+} from '@koobiq/react-components';
+
+<SidePanel control={(props) => <Button {...props}>Open</Button>}>
+  {({ close }) => (
+    <>
+      <SidePanelHeader>Title</SidePanelHeader>
+      <SidePanelContent>Content</SidePanelContent>
+      <SidePanelFooter>
+        <Button onClick={close}>Close</Button>
+      </SidePanelFooter>
+    </>
+  )}
+</SidePanel>;
+```
+
+You can also use controlled state to open the component and place the control element outside
+the component. For this, see the [Controlled open](#controlled-open) section.
+
+## Size
+
+The `size` prop sets the width of the side panel.
+
+<Story of={Stories.Size} />
+
+## Position
+
+Use the `position` prop to specify which side of the screen the side panel should originate from.
+
+<Story of={Stories.Position} />
+
+## Open
+
+### Default open
+
+SidePanel isn't opened by default. The `defaultOpen` prop can be used to set the default state.
+
+### Controlled open
+
+The `open` prop can be used to make the opened state controlled.
+The `onOpenChange` event is fired when the side panel's open state changes.
+
+<Story of={Stories.ControlledOpen} />
+
+## Settings
+
+You can adjust the interaction with the side panel using the following properties:
+
+- `hideCloseButton` — if `true`, the close button isn't shown
+- `hideBackdrop` — if `true`, the underlay (backdrop) under the side panel isn't shown
+- `disableExitOnClickOutside` — if `true`, the component won't close when clicked outside of it
+- `disableExitOnEscapeKeyDown` — if `true`, the component won't close when the ESC key is pressed.
+
+<Story of={Stories.Settings} />

@@ -13,3 +13,9 @@ export const BreakpointsContext = createContext<BreakpointsContextType>(
 export function useBreakpoints() {
   return useContext(BreakpointsContext);
 }
+
+export function useMatchedBreakpoints() {
+  const breakpoints = useContext(BreakpointsContext);
+
+  return Object.keys(breakpoints).filter((key: string) => breakpoints[key]);
+}

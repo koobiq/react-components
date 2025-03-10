@@ -1,3 +1,5 @@
+import { createRef } from 'react';
+
 import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -9,12 +11,19 @@ describe('Button', () => {
 
   const getButton = () => screen.getByTestId<HTMLButtonElement>('button');
 
+  it('should accept the ref', () => {
+    const ref = createRef<HTMLButtonElement>();
+    const { container } = render(<Button {...baseProps} ref={ref} />);
+    const button = container.querySelector('button');
+    expect(ref.current).toBe(button);
+  });
+
   it('should render the component with the correct label text', () => {
     render(<Button>Label</Button>);
     expect(screen.getByText('Label')).toBeInTheDocument();
   });
 
-  it('should render the component as a link with the correct tag and href attribute', () => {
+  it('should render as a custom element when passed the as prop', () => {
     render(
       <Button {...baseProps} as="a" href="htts://example.com">
         Label
@@ -24,6 +33,18 @@ describe('Button', () => {
     const button = screen.getByTestId('button');
     expect(button.tagName).toBe('A');
     expect(button).toHaveAttribute('href');
+  });
+
+  it('should accept a custom class', () => {
+    render(<Button {...baseProps} className="foo" />);
+
+    expect(getButton()).toHaveClass('foo');
+  });
+
+  it('should accept a name', () => {
+    render(<Button {...baseProps} name="foo" />);
+
+    expect(getButton()).toHaveAttribute('name', 'foo');
   });
 
   it('should call the onClick handler when clicked', async () => {

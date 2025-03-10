@@ -16,7 +16,13 @@ import * as Stories from './Typography.stories';
 Typography is a component that consistently styles text in
 an application and manages it in accordance with the rules of the design-system.
 
+```tsx
+import { Typography } from '@koobiq/react-components';
+```
+
 <Story of={Stories.Base} />
+
+## Props
 
 <Props />
 
@@ -26,27 +32,33 @@ See the [guide](?path=/docs/fonts--docs) for adding a font to your application.
 
 ## Variant
 
-Use the `variant` property to set the type and size of the text in the project.
+Use the `variant` prop to set the type and size of the text in the project.
 
 <Story of={Stories.Variant} />
 
 ## Root tag
 
-Use the `as` property to redefine the HTML-tag of the component to your own.
+Use the `as` prop to redefine the HTML-tag of the component to your own.
 
 <Story of={Stories.RootTag} />
 
 ## Align
 
-The `align` property sets the text alignment within a container.
+The `align` prop sets the text alignment within a container.
 
 <Story of={Stories.Align} />
 
+## Color
+
+The `color` prop specifies the text color. See all available colors in the [table of properties](#props).
+
+<Story of={Stories.Color} />
+
 ## Ellipsis
 
-This property allows you to hide overflowing text.
+This prop allows you to hide overflowing text.
 
-- `false` - used by default
-- `true` - hidden overflow content will be replaced with ellipsis …
+- `false` — used by default
+- `true` — hidden overflow content will be replaced with ellipsis …
 
 <Story of={Stories.Ellipsis} />

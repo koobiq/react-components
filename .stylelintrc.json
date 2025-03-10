@@ -41,6 +41,9 @@
       true,
       { "severity": "warning" }
     ],
-    "plugin/use-logical-units": [true, { "severity": "warning" }]
+    "plugin/use-logical-units": [
+      true,
+      { "severity": "warning", "ignore": ["vw", "vh"] }
+    ]
   }
 }

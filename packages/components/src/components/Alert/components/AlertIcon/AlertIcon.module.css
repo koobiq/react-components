@@ -1,0 +1,42 @@
+.base {
+  --alert-icon-bg-color: ;
+  --alert-icon-size: var(--kbq-size-3xl);
+  --alert-icon-color: var(--kbq-icon-on-contrast);
+  --alert-icon-margin: calc(var(--kbq-size-l) + var(--kbq-size-3xs)) 0
+    var(--kbq-size-l) var(--kbq-size-m);
+  display: flex;
+  flex-shrink: 0;
+  border-radius: 50%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--alert-icon-color);
+  margin: var(--alert-icon-margin);
+  block-size: var(--alert-icon-size);
+  inline-size: var(--alert-icon-size);
+  background-color: var(--alert-icon-bg-color);
+}
+
+.info {
+  --alert-icon-bg-color: var(--kbq-background-contrast);
+}
+
+.success {
+  --alert-icon-bg-color: var(--kbq-background-success);
+}
+
+.warning {
+  --alert-icon-bg-color: var(--kbq-background-warning);
+}
+
+.error {
+  --alert-icon-bg-color: var(--kbq-background-error);
+}
+
+.compact {
+  --alert-icon-size: var(--kbq-size-l);
+  --alert-icon-color: var(--alert-icon-bg-color);
+  --alert-icon-margin: calc(var(--kbq-size-m) + var(--kbq-size-3xs))
+    var(--kbq-size-s) 0 0;
+  background: none;
+}

@@ -7,33 +7,29 @@ import { Checkbox } from './index';
 
 describe('Checkbox', () => {
   const baseProps = {
-    children: 'Label',
-    'aria-label': 'input',
-    slotProps: {
-      root: { 'aria-label': 'root' },
-    },
+    'data-testid': 'root',
   };
 
-  const getRoot = () => screen.getByLabelText('root');
+  const getRoot = () => screen.getByTestId('root');
 
   describe('business logic', () => {
     it('should accept the ref', () => {
-      const ref = createRef<HTMLInputElement>();
+      const ref = createRef<HTMLLabelElement>();
       const { container } = render(<Checkbox {...baseProps} ref={ref} />);
-      const inputElement = container.querySelector('input');
-      expect(ref.current).toBe(inputElement);
+      const labelElement = container.querySelector('label');
+      expect(ref.current).toBe(labelElement);
     });
 
     it('should accept a custom class', () => {
-      render(<Checkbox {...baseProps} className="custom-class-name" />);
+      render(<Checkbox {...baseProps} className="foo" />);
 
-      expect(getRoot()).toHaveClass('custom-class-name');
+      expect(getRoot()).toHaveClass('foo');
     });
 
     it('should display the text', () => {
-      render(<Checkbox {...baseProps} />);
+      render(<Checkbox {...baseProps}>foo</Checkbox>);
 
-      expect(screen.getByText(baseProps.children)).toBeInTheDocument();
+      expect(screen.getByText('foo')).toBeInTheDocument();
     });
   });
 });

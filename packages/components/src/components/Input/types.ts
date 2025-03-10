@@ -1,15 +1,14 @@
-import type { ReactNode } from 'react';
+import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { UseTextFieldProps } from '@koobiq/react-primitives';
 
 import type {
   FieldCaptionProps,
-  FieldControlProps,
   FieldErrorProps,
   FieldInputProps,
   FieldLabelProps,
-} from './components';
+} from '../FieldComponents';
 
 export const inputPropVariant = ['filled', 'transparent'] as const;
 
@@ -59,14 +58,19 @@ export type InputProps = ExtendableProps<
      * @default false
      * */
     required?: boolean;
-    /** Slots */
+    /** Inline styles. */
+    style?: CSSProperties;
+    /** Unique identifier for testing purposes. */
+    'data-testid'?: string | number;
+    /** The props used for each slot inside. */
     slotProps?: {
-      root?: FieldControlProps;
       label?: FieldLabelProps;
-      caption?: FieldCaptionProps;
       input?: FieldInputProps;
+      caption?: FieldCaptionProps;
       errorMessage?: FieldErrorProps;
     };
   },
-  UseTextFieldProps
+  Omit<UseTextFieldProps, 'inputElementType'>
 >;
+
+export type InputRef = ComponentRef<'input'>;

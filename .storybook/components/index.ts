@@ -11,3 +11,4 @@ export * from './FrameworkGuide';
 export * from './Version';
 export * from './Introduction';
 export * from './Status';
+export * from './Alert';

@@ -66,6 +66,17 @@ export const Align: Story = {
   ),
 };
 
+export const Color: Story = {
+  render: () => (
+    <div className={flex({ gap: 'm' })}>
+      <Typography color="success">Text</Typography>
+      <Typography color="warning">Text</Typography>
+      <Typography color="theme">Text</Typography>
+      <Typography color="error">Text</Typography>
+    </div>
+  ),
+};
+
 export const Ellipsis: Story = {
   render: () => (
     <div className={flex({})} style={{ inlineSize: '50%' }}>

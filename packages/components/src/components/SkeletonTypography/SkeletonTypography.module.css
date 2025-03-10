@@ -1,0 +1,18 @@
+.base {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+
+  &::after {
+    font-size: 0;
+    content: '\00a0';
+  }
+}
+
+.skeleton {
+  block-size: calc(1em * 0.9);
+}

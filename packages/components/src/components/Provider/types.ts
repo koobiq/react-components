@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import type { I18nProviderProps } from '@koobiq/react-primitives';
+
 export type Breakpoints = {
   xs?: number;
   s?: number;
@@ -10,11 +12,8 @@ export type Breakpoints = {
   [custom: string]: number | undefined;
 };
 
-export type ProviderPropConfig = {
-  breakpoints: Breakpoints;
-};
-
 export type ProviderProps = {
   children?: ReactNode;
-  config?: ProviderPropConfig;
+  breakpoints?: Breakpoints;
+  locale?: I18nProviderProps['locale'];
 };

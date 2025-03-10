@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useRef } from 'react';
 import type {
   Dispatch,
@@ -6,7 +8,7 @@ import type {
   Ref as ReactRef,
 } from 'react';
 
-import { setRef } from '../../utils/setRef.js';
+import { setRef } from '../../utils';
 
 type Ref<T> = ReactRef<T> | Dispatch<SetStateAction<T | undefined>> | null;
 

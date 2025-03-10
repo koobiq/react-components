@@ -1,18 +1,13 @@
-import {
-  forwardRef,
-  type ComponentPropsWithRef,
-  type ElementType,
-  type ForwardRefExoticComponent,
-  type ForwardRefRenderFunction,
-  type ReactElement,
+import type {
+  ElementType,
+  ReactElement,
+  ComponentPropsWithRef,
+  ForwardRefRenderFunction,
+  ForwardRefExoticComponent,
 } from 'react';
+import { forwardRef } from 'react';
 
-type DistributiveOmit<T, K extends keyof any> = T extends any
-  ? Omit<T, K>
-  : never;
-
-type Merge<A, B> = Omit<A, keyof B> & B;
-type DistributiveMerge<A, B> = DistributiveOmit<A, keyof B> & B;
+import type { DistributiveMerge, Merge } from '../types';
 
 export type AsProps<
   Component extends ElementType,

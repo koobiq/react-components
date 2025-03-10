@@ -40,10 +40,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: BadgeBaseProps) => (
-    // eslint-disable-next-line no-alert
-    <Badge label="Badge" {...args} />
-  ),
+  render: (args: BadgeBaseProps) => <Badge label="Badge" {...args} />,
 };
 
 export const Size: Story = {
@@ -83,7 +80,7 @@ export const LongLabel: Story = {
   render: (args: BadgeBaseProps) => (
     <div style={{ display: 'flex', width: 180, overflow: 'hidden' }}>
       <Badge
-        label="Very-very-very long text"
+        label="A very-very-very long text"
         startIcon={<IconStar16 />}
         {...args}
       />

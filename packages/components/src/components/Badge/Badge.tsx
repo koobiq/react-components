@@ -1,7 +1,9 @@
+import type { ComponentPropsWithRef, ElementType } from 'react';
+
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import s from './Badge.module.css';
-import type { BadgeBaseProps } from './types';
+import type { BadgeBaseProps } from './index';
 
 export const Badge = polymorphicForwardRef<'span', BadgeBaseProps>(
   (
@@ -13,12 +15,14 @@ export const Badge = polymorphicForwardRef<'span', BadgeBaseProps>(
       startIcon,
       endIcon,
       label,
-      ...props
+      ...other
     },
     ref
   ) => (
     <Tag
-      {...props}
+      data-variant={variant}
+      data-size={size}
+      {...other}
       ref={ref}
       className={clsx(s.base, s[size], s[variant], className)}
     >
@@ -28,3 +32,7 @@ export const Badge = polymorphicForwardRef<'span', BadgeBaseProps>(
     </Tag>
   )
 );
+
+export type BadgeProps<As extends ElementType = 'span'> = ComponentPropsWithRef<
+  typeof Badge<As>
+>;

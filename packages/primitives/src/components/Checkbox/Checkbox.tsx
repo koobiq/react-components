@@ -3,31 +3,33 @@
 import type { ComponentRef } from 'react';
 import { forwardRef } from 'react';
 
-import { useDOMRef } from '@koobiq/react-core';
-import { mergeProps, VisuallyHidden } from 'react-aria';
+import { useDOMRef, mergeProps, filterDOMProps } from '@koobiq/react-core';
+import { VisuallyHidden } from '@react-aria/visually-hidden';
 
 import { useCheckbox } from '../../behaviors';
-import { useRenderProps } from '../../utils';
+import { removeDataAttributes, useRenderProps } from '../../utils';
 
 import type { CheckboxProps } from './index';
 
-export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
+export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
   (props, ref) => {
-    const { children, labelProps: labelPropsProp } = props;
+    const { children, inputRef } = props;
 
-    const domRef = useDOMRef<ComponentRef<'input'>>(ref);
+    const domRef = useDOMRef<ComponentRef<'input'>>(inputRef);
 
     const {
       hovered,
       error,
       checked,
+      focused,
+      pressed,
       focusVisible,
       indeterminate,
       labelProps,
       inputProps,
     } = useCheckbox(
       {
-        ...props,
+        ...removeDataAttributes(props),
         children: typeof children === 'function' ? true : children,
       },
       domRef
@@ -37,6 +39,8 @@ export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
       hovered,
       error,
       checked,
+      focused,
+      pressed,
       focusVisible,
       indeterminate,
       disabled: props.disabled || false,
@@ -47,10 +51,13 @@ export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
       values: renderValues,
     });
 
+    const DOMProps = filterDOMProps(props);
+    delete DOMProps.id;
+
     return (
-      <label {...mergeProps(labelProps, labelPropsProp, renderProps)}>
+      <label {...mergeProps(DOMProps, labelProps, renderProps)} ref={ref}>
         <VisuallyHidden>
-          <input {...inputProps} />
+          <input {...inputProps} ref={domRef} />
         </VisuallyHidden>
         {renderProps.children}
       </label>
@@ -58,4 +65,4 @@ export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
   }
 );
 
-Checkbox.displayName = 'CheckboxPrimitive';
+Checkbox.displayName = 'Checkbox';

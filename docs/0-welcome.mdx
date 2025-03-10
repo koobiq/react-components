@@ -30,18 +30,24 @@ pnpm add @koobiq/design-tokens @koobiq/react-components
 To make the theme available to Koobiq React, import design tokens before the component styles:
 
 ```tsx
+// General tokens for all themes
 import '@koobiq/design-tokens/web/css-tokens.css';
+// Tokens for a light theme, use .kbq-light
 import '@koobiq/design-tokens/web/css-tokens-light.css';
+// Tokens for a dark theme, use .kbq-dark
 import '@koobiq/design-tokens/web/css-tokens-dark.css';
+// Component styles
 import '@koobiq/react-components/style.css';
 
 import { Provider, Typography } from '@koobiq/react-components';
 
 export default function App() {
   return (
-    <Provider>
-      <Typography>Hello, Koobiq React!</Typography>
-    </Provider>
+    <div className="kbq-light">
+      <Provider>
+        <Typography>Hello, Koobiq React!</Typography>
+      </Provider>
+    </div>
   );
 }
 ```

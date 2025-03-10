@@ -1,0 +1,66 @@
+.base {
+  --modal-window-offset: 48px;
+  inset: 0;
+  display: flex;
+  position: fixed;
+  pointer-events: none;
+  z-index: var(--kbq-layer-modal);
+}
+
+/* states */
+.small {
+  --modal-window-inline-size: 400px;
+}
+
+.medium {
+  --modal-window-inline-size: 640px;
+}
+
+.large {
+  --modal-window-inline-size: 960px;
+}
+
+/* dialog */
+.dialog {
+  position: absolute;
+  pointer-events: auto;
+  inset-inline-start: 50%;
+  border-radius: var(--kbq-size-m);
+  inset-block-start: var(--modal-window-offset);
+  max-inline-size: var(--modal-window-inline-size);
+  inline-size: calc(100% - var(--modal-window-offset) * 2);
+  max-block-size: calc(100vh - var(--modal-window-offset) * 2);
+  transform: translate(-50%, 100px);
+  transition:
+    opacity var(--kbq-transition-slow),
+    transform var(--kbq-transition-slow);
+}
+
+/* animation */
+[data-transition='entering'] {
+  .dialog {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+[data-transition='entered'] {
+  .dialog {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+[data-transition='exiting'] {
+  .dialog {
+    opacity: 0;
+    transform: translate(-50%, 100px);
+  }
+}
+
+[data-transition='exited'] {
+  .dialog {
+    opacity: 0;
+    transform: translate(-50%, 100px);
+  }
+}

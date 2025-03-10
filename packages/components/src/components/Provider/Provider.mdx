@@ -1,0 +1,53 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Provider.stories';
+
+<Meta of={Stories} />
+
+# Provider
+
+<Status variant="experimental" />
+
+Wrap your application in a `Provider` to configure the general settings of your project, such as breakpoints, localization, etc.
+
+```tsx
+import { Provider } from '@koobiq/react-components';
+```
+
+## Props
+
+<Props />
+
+## Breakpoints
+
+The Provider component can be used to set the responsive breakpoints for your application,
+which are used by layout components and style props of all components within the Provider.
+
+```js
+export const defaultBreakpoints: Breakpoints = {
+  xs: 0, // (min-width: 0px)
+  s: 480, // (min-width: 480px)
+  m: 768, // (min-width: 768px)
+  l: 1024, // (min-width: 1024px)
+  xl: 1280, // (min-width: 1280px)
+  xxl: 1536 // (min-width: 1536px)
+};
+```
+
+These breakpoints can be overridden by passing the `breakpoints` prop to the Provider component.
+For more information, see the [Responsive UI](?path=/docs/responsive-ui--docs).
+
+<Story of={Stories.Breakpoints} />
+
+## Localization
+
+Another important setting for your application is the locale.
+By default, our library chooses the locale matching the user's browser/operating system language,
+but this can be overridden with the `locale` prop if you have an application specific setting.
+
+<Story of={Stories.Localization} />

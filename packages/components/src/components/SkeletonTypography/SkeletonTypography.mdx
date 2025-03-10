@@ -1,0 +1,37 @@
+import {
+  Props,
+  Story,
+  Meta,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './SkeletonTypography.stories';
+
+<Meta of={Stories} />
+
+# SkeletonTypography
+
+<Status variant="draft" />
+
+SkeletonTypography is a preview placeholder for text components that haven't loaded yet,
+reducing load-time frustration by displaying a temporary text-like shape until the actual content appears.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+For a skeleton of unloaded text, you can set the following properties:
+
+- `rows` – number of lines
+- `variant` – typography variant (see [Typography](?path=/docs/components-typography--docs) component)
+- `inlineSize` – size of line.
+
+## Example 1
+
+<Story of={Stories.Example1} />
+
+## Example 2
+
+<Story of={Stories.Example2} />

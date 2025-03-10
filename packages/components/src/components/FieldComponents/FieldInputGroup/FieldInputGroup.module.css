@@ -1,0 +1,23 @@
+.base {
+  --field-input-padding-inline-start: var(
+    --field-control-start-addon-inline-size,
+    var(--kbq-size-m)
+  );
+  --field-input-padding-inline-end: var(
+    --field-control-end-addon-inline-size,
+    var(--kbq-size-m)
+  );
+  --field-input-padding-block-start: var(--kbq-size-xs);
+  --field-input-padding-block-end: var(--kbq-size-xs);
+  display: flex;
+  inline-size: 100%;
+  position: relative;
+}
+
+.hasStartAddon {
+  --field-control-start-addon-inline-size: 36px;
+}
+
+.hasEndAddon {
+  --field-control-end-addon-inline-size: 36px;
+}

@@ -1,0 +1,77 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Toggle.stories';
+
+<Meta of={Stories} />
+
+# Toggle
+
+<Status variant="experimental" />
+
+Toggle is a component that is used to quickly switch between two possible states: "on" and "off".
+
+```tsx
+import { Toggle } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Label placement
+
+Use `labelPlacement` prop to set the position of the label.
+
+<Story of={Stories.LabelPlacement} />
+
+## Size
+
+For `normal` or `big` toggles, use the `size` prop.
+
+<Story of={Stories.Size} />
+
+## Disabled
+
+A toggle can be disabled by passing the `disabled` prop.
+
+<Story of={Stories.Disabled} />
+
+## Value
+
+### Default value
+
+Toggles are not checked by default. The `defaultChecked` prop can be used to set the default state.
+
+<Story of={Stories.DefaultValue} />
+
+### Controlled value
+
+The `checked` prop can be used to make the checked state controlled.
+The `onChange` event is fired when the user presses the toggle, and receives the new value.
+
+<Story of={Stories.ControlledValue} />
+
+## Error
+
+The `error` prop toggles the error state.
+
+<Story of={Stories.Error} />
+
+## Description
+
+Add content to the children of the Toggle component to add a description.
+
+<Story of={Stories.Description} />
+
+## Example
+
+Here is an example of a component interacting with a server API.
+
+<Story of={Stories.Example} />

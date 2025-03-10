@@ -1,0 +1,109 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './InputNumber.stories';
+
+<Meta of={Stories} />
+
+# InputNumber
+
+<Status variant="experimental" />
+
+A number field allows a user to enter a number, and increment or decrement the value using stepper buttons.
+
+```tsx
+import { InputNumber } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Addons
+
+You can add an extra content using the `startAddon` and `endAddon` prop.
+
+<Story of={Stories.Addons} />
+
+## Variant
+
+To change the visual state of the input, use the `variant` prop.
+
+<Story of={Stories.Variant} />
+
+## Error
+
+The `error` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+
+<Story of={Stories.Error} />
+
+## Disabled
+
+An input can be disabled by passing the `disabled` prop.
+
+<Story of={Stories.Disabled} />
+
+## Required
+
+To make a field required, add the `required` prop.
+If the field has a label, a required indicator will appear next to it.
+
+<Story of={Stories.Required} />
+
+## Read only
+
+The `readonly` boolean prop makes the InputNumber's text content immutable.
+Unlike `disabled`, the InputNumber remains focusable and the contents can still be copied.
+See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.
+
+<Story of={Stories.ReadOnly} />
+
+## Full width
+
+The `fullWidth` prop will make an input fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Value
+
+### Default value
+
+An InputNumber's value is empty by default, but an initial, uncontrolled, value can be provided using the `defaultValue` prop.
+
+<Story of={Stories.DefaultValue} />
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled.
+The `onChange` event is fired when the user edits the text, and receives the new value.
+
+<Story of={Stories.ControlledValue} />
+
+## Number formatting
+
+The default formatting style for `InputNumber` is decimal,
+but you can configure various aspects via the `formatOptions` prop.
+All options supported by [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) are supported, including configuration
+of minimum and maximum fraction digits, sign display, grouping separators, etc.
+Currently only standard notation is supported, though scientific, engineering, and compact
+notation may be supported in the future
+
+<Story of={Stories.NumberFormatting} />
+
+## Minimum and maximum values
+
+The `minValue` and `maxValue` props can be used to limit the entered value to a specific range.
+
+<Story of={Stories.MinimumMaximumValues} />
+
+## Step values
+
+The `step` prop can be used to snap the value to certain increments.
+
+<Story of={Stories.StepValues} />

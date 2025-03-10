@@ -12,13 +12,13 @@ import {
 import s from './Checkbox.module.css';
 import type { CheckboxProps } from './index';
 
-export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
+export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
   (props, ref) => {
     const {
       size = 'normal',
+      labelPlacement = 'end',
       children,
       className,
-      caption,
       slotProps,
       indeterminate,
       ...other
@@ -26,7 +26,6 @@ export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
 
     const commonProps: CheckboxPropsPrimitive = {
       indeterminate,
-      labelProps: { ...slotProps?.root, 'data-indeterminate': indeterminate },
       className: ({
         error,
         checked,
@@ -39,6 +38,7 @@ export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
           s.base,
           s[size],
           error && s.error,
+          s[labelPlacement],
           checked && s.checked,
           hovered && s.hovered,
           disabled && s.disabled,
@@ -49,30 +49,22 @@ export const Checkbox = forwardRef<ComponentRef<'input'>, CheckboxProps>(
       ...other,
     };
 
-    const checkboxProps = mergeProps({
-      className: s.checkbox,
-      ...slotProps?.checkbox,
-    });
-
-    const contentProps = mergeProps({
-      className: s.content,
-      ...slotProps?.content,
-    });
+    const boxProps = mergeProps({ className: s.checkbox }, slotProps?.box);
+    const labelProps = slotProps?.label;
 
     return (
-      <CheckboxPrimitive {...commonProps} ref={ref}>
+      <CheckboxPrimitive
+        data-indeterminate={indeterminate}
+        {...commonProps}
+        ref={ref}
+      >
         {({ checked, indeterminate }) => (
           <>
-            <div {...checkboxProps}>
+            <span {...boxProps}>
               {checked && !indeterminate && <IconCheckS16 />}
               {indeterminate && <IconMinusS16 />}
-            </div>
-            <div {...contentProps}>
-              {isNotNil(children) && <span className={s.text}>{children}</span>}
-              {isNotNil(caption) && (
-                <span className={s.caption}>{caption}</span>
-              )}
-            </div>
+            </span>
+            {isNotNil(children) && <span {...labelProps}>{children}</span>}
           </>
         )}
       </CheckboxPrimitive>

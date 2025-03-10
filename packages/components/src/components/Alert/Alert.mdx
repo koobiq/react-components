@@ -1,0 +1,68 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Alert.stories';
+
+<Meta of={Stories} />
+
+# Alert
+
+<Status variant="experimental" />
+
+Alert displays warning messages that require attention.
+
+```tsx
+import { Alert } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Status
+
+The `status` prop accepts four values representing different states: info, success, warning, and error.
+
+<Story of={Stories.Status} />
+
+## Colored
+
+Use the `colored` prop to map the background component to its variant status.
+
+<Story of={Stories.Colored} />
+
+## Compact
+
+Use the `compact` prop to set a compact view of the component.
+
+<Story of={Stories.Compact} />
+
+## Close button
+
+If you provide an `onClose` callback to the Alert, the component will display a close icon (✕).
+
+<Story of={Stories.CloseButton} />
+
+## Actions
+
+Add an action to your Alert with the `action` prop.
+
+<Story of={Stories.Action} />
+
+## Hidden icon
+
+Use the `hideIcon` prop to hide an information icon.
+
+<Story of={Stories.HiddenIcon} />
+
+## Custom icon
+
+Use the `icon` prop to set your own icon.
+
+<Story of={Stories.CustomIcon} />

@@ -1,0 +1,57 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ProgressSpinner.stories';
+
+<Meta of={Stories} />
+
+# ProgressSpinner
+
+<Status variant="experimental" />
+
+ProgressSpinner shows the progression of a system operation such as downloading, uploading, or processing, in a visual way.
+They can represent determinate or indeterminate progress.
+
+```tsx
+import { ProgressSpinner } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Size
+
+For `compact` or `big` progresses, use the `size` prop.
+
+<Story of={Stories.Size} />
+
+## Value
+
+ProgressBars are controlled with the `value` property.
+By default, the value property represents the current percentage of progress,
+as the minimum and maximum values default to 0 and 100, respectively.
+
+<Story of={Stories.Value} />
+
+Alternatively, a different scale can be used by setting the `minValue` and `maxValue` properties.
+
+<Story of={Stories.MinMaxValues} />
+
+## Indeterminate
+
+By default, ProgressBars are determinate. Use `variant` property as `indeterminate` when progress can't be calculated against a specific goal.
+
+<Story of={Stories.Indeterminate} />
+
+## Loading emulation
+
+See the example with progress loading emulation.
+
+<Story of={Stories.LoadingEmulation} />

@@ -1,0 +1,95 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Textarea.stories';
+
+<Meta of={Stories} />
+
+# Textarea
+
+<Status variant="experimental" />
+
+Textarea is an input element that allows users to enter and edit multiline text.
+
+```tsx
+import { Textarea } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Variant
+
+To change the visual state of the textarea, use the `variant` prop.
+
+<Story of={Stories.Variant} />
+
+## Error
+
+The `error` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+
+<Story of={Stories.Error} />
+
+## Disabled
+
+A textarea can be disabled by passing the `disabled` prop.
+
+<Story of={Stories.Disabled} />
+
+## Required
+
+To make a field required, add the `required` prop.
+If the field has a label, a required indicator will appear next to it.
+
+<Story of={Stories.Required} />
+
+## Read only
+
+The `readonly` boolean prop makes the Textarea's text content immutable.
+Unlike `disabled`, the Textarea remains focusable and the contents can still be copied.
+See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.
+
+<Story of={Stories.ReadOnly} />
+
+## Full width
+
+The `fullWidth` prop will make a textarea fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Rows and cols
+
+The `rows` and `cols` props to allow you to specify an exact size for the component to take.
+
+<Story of={Stories.RowsCols} />
+
+## Expand
+
+The `expand` prop determines how the block size (height) of the field will change:
+
+- `auto-size` — auto-change the block size (height) of the field according to the entered value.
+- `vertical-resize` — the ability to stretch the field vertically.
+
+<Story of={Stories.Expand} />
+
+## Value
+
+### Default value
+
+A Textarea's value is empty by default, but an initial, uncontrolled, value can be provided using the `defaultValue` prop.
+
+<Story of={Stories.DefaultValue} />
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled.
+The `onChange` event is fired when the user edits the text, and receives the new value.
+
+<Story of={Stories.ControlledValue} />

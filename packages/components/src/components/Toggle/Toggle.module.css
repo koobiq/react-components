@@ -1,0 +1,153 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  --toggle-track-block-size: 16px;
+  --toggle-track-inline-size: 28px;
+  --toggle-track-outline-color: transparent;
+  --toggle-track-border-radius: var(--kbq-size-s);
+  --toggle-track-bg-color: var(--kbq-background-bg);
+  --toggle-track-border-color: var(--kbq-line-contrast-less);
+  --toggle-thumb-size: 10px;
+  --toggle-thumb-border-color: transparent;
+  --toggle-thumb-bg-color: var(--kbq-icon-contrast);
+  --toggle-thumb-margin: calc(
+    (var(--toggle-track-block-size) - var(--toggle-thumb-size)) / 2
+  );
+  --toggle-color: var(--kbq-foreground-contrast);
+  color: var(--toggle-color);
+  cursor: pointer;
+  vertical-align: top;
+  display: inline-flex;
+  gap: var(--kbq-size-s);
+  align-items: flex-start;
+}
+
+.track {
+  position: relative;
+  outline-offset: -1px;
+  block-size: var(--toggle-track-block-size);
+  inline-size: var(--toggle-track-inline-size);
+  background-color: var(--toggle-track-bg-color);
+  margin-block: var(--toggle-track-margin-block);
+  border-radius: var(--toggle-track-border-radius);
+  outline: 2px solid var(--toggle-track-outline-color);
+  transition:
+    background-color var(--kbq-transition-default),
+    outline-color var(--kbq-transition-default);
+
+  /* thumb */
+  &::before {
+    content: '';
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: var(--toggle-thumb-margin);
+    block-size: var(--toggle-thumb-size);
+    inline-size: var(--toggle-thumb-size);
+    background: var(--toggle-thumb-bg-color);
+    border: 1px solid var(--toggle-thumb-border-color);
+    transition:
+      transform var(--kbq-transition-default),
+      background-color var(--kbq-transition-default);
+    display: block;
+  }
+
+  /* border */
+  &::after {
+    content: '';
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    transition: border-color var(--kbq-transition-default);
+    border: var(--kbq-size-border-width) solid var(--toggle-track-border-color);
+  }
+}
+
+/* labelPlacement */
+.start {
+  flex-direction: row-reverse;
+}
+
+.end {
+  flex-direction: row;
+}
+
+/* size */
+.normal {
+  --toggle-track-margin-block: var(--kbq-size-3xs);
+
+  @mixin typography text-normal;
+}
+
+.big {
+  --toggle-track-margin-block: var(--kbq-size-xxs);
+
+  @mixin typography text-big;
+}
+
+/* states */
+.hovered {
+  --toggle-track-bg-color: var(--kbq-states-background-transparent-hover);
+  --toggle-track-border-color: var(--kbq-line-contrast-less);
+}
+
+.checked {
+  --toggle-track-border-color: transparent;
+  --toggle-thumb-bg-color: var(--kbq-icon-white);
+  --toggle-track-bg-color: var(--kbq-background-theme);
+
+  .track::before {
+    transform: translate(
+      calc(
+        var(--toggle-track-inline-size) - var(--toggle-thumb-size) -
+          var(--toggle-thumb-margin) * 2
+      )
+    );
+  }
+}
+
+.checked:where(.hovered) {
+  --toggle-track-bg-color: var(--kbq-states-background-theme-hover);
+}
+
+.error {
+  --toggle-track-bg-color: var(--kbq-states-background-error-less);
+  --toggle-track-border-color: var(--kbq-line-error);
+  --toggle-thumb-bg-color: var(--kbq-icon-error);
+}
+
+.error:where(.checked) {
+  --toggle-track-bg-color: var(--kbq-background-error);
+  --toggle-track-border-color: var(--kbq-line-error);
+  --toggle-thumb-bg-color: var(--kbq-icon-white);
+}
+
+.error:where(.hovered) {
+  --toggle-track-bg-color: var(--kbq-states-background-error-fade-hover);
+  --toggle-track-border-color: var(--kbq-line-error);
+  --toggle-thumb-bg-color: var(--kbq-icon-error);
+}
+
+.error:where(.hovered.checked) {
+  --toggle-track-bg-color: var(--kbq-states-background-error-hover);
+  --toggle-track-border-color: var(--kbq-line-error);
+  --toggle-thumb-bg-color: var(--kbq-icon-white);
+}
+
+.focusVisible {
+  --toggle-track-border-color: transparent;
+  --toggle-track-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.focusVisible:where(.error) {
+  --toggle-track-outline-color: var(--kbq-states-line-focus-error);
+}
+
+.disabled {
+  --toggle-track-border-color: var(--kbq-states-line-disabled);
+  --toggle-track-bg-color: var(--kbq-states-background-disabled);
+  --toggle-thumb-bg-color: var(--kbq-states-icon-disabled);
+  --toggle-thumb-border-color: var(--kbq-states-icon-disabled);
+  --toggle-color: var(--kbq-states-foreground-disabled);
+  cursor: not-allowed;
+}

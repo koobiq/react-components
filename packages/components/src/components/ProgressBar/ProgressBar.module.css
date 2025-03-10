@@ -1,0 +1,47 @@
+.base {
+  --progressbar-track-bg-color: var(--kbq-background-contrast-fade);
+  --progressbar-track-border-radius: var(--kbq-size-3xs);
+  --progressbar-track-block-size: var(--kbq-size-xxs);
+  --progressbar-fill-bg-color: var(--kbq-icon-theme);
+  --progressbar-fill-translate-x: translateX(0%);
+  overflow: hidden;
+  position: relative;
+  block-size: var(--progressbar-track-block-size);
+  background-color: var(--progressbar-track-bg-color);
+  border-radius: var(--progressbar-track-border-radius);
+}
+
+.fill {
+  display: block;
+  inline-size: 100%;
+  block-size: inherit;
+  border-radius: inherit;
+  background-color: var(--progressbar-fill-bg-color);
+}
+
+.base:where(.indeterminate) {
+  .fill {
+    animation: progress-bar-animation 2s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+      infinite;
+  }
+}
+
+.base:where(:not(.indeterminate)) {
+  .fill {
+    transform-origin: left;
+    transform: var(--progressbar-fill-translate-x);
+    transition: transform var(--kbq-transition-slow);
+  }
+}
+
+@keyframes progress-bar-animation {
+  0% {
+    inline-size: 25%;
+    transform: translateX(-125%);
+  }
+
+  100% {
+    inline-size: 40%;
+    transform: translateX(250%);
+  }
+}

@@ -1,0 +1,17 @@
+.base {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  margin-inline-end: -8px;
+  visibility: hidden;
+  transition: opacity var(--kbq-transition-default);
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.counter {
+  inline-size: var(--kbq-size-3xl);
+}

@@ -1,0 +1,63 @@
+import {
+  Props,
+  Story,
+  Meta,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Container.stories';
+
+<Meta of={Stories} />
+
+# Container
+
+<Status variant="experimental" />
+
+The container centers your content horizontally. It's the most basic layout element.
+
+```tsx
+import { Container } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## MaxInlineSize
+
+A fluid container width is bounded by the `maxInlineSize` prop value.
+
+<Story of={Stories.MaxInlineSize} />
+
+## Margins
+
+You can set space between content and the left and right edges of the screen using `margins` prop.
+
+<Story of={Stories.Margins} />
+
+## Position
+
+You can set position of the screen using `position` prop.
+
+<Story of={Stories.Position} />
+
+## Fixed
+
+You can fix the width of container using the `fixed` prop.
+
+<Story of={Stories.Fixed} />
+
+## Responsive values
+
+You can switch the props' value based on the active breakpoint for each item.
+
+Responsive values is supported by:
+
+- `margins`
+- `position`
+- `fixed`
+- `maxInlineSize`
+
+<Story of={Stories.ResponsiveValues} />

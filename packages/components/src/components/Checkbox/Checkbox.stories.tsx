@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
+import { clsx, useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { flex } from '../layout';
+import { flex, spacing } from '../layout';
+import { Typography } from '../Typography';
 
 import { Checkbox } from './index';
 import { type CheckboxProps, checkboxPropSize } from './index';
@@ -35,14 +37,6 @@ export const Size = {
   ),
 };
 
-export const Caption: Story = {
-  render: (args: CheckboxProps) => (
-    <Checkbox {...args} caption="Caption">
-      Label
-    </Checkbox>
-  ),
-};
-
 export const Disabled: Story = {
   render: (args: CheckboxProps) => (
     <div className={flex({ gap: 'l' })}>
@@ -52,25 +46,32 @@ export const Disabled: Story = {
       <Checkbox {...args} disabled defaultChecked>
         Label
       </Checkbox>
-      <Checkbox {...args} caption="Caption" disabled defaultChecked>
-        Label
-      </Checkbox>
     </div>
   ),
 };
 
-export const Value: Story = {
+export const DefaultValue: Story = {
   render: function Render(args: CheckboxProps) {
-    const [checked, setChecked] = useState(true);
+    return (
+      <Checkbox {...args} defaultChecked>
+        Uncontrolled
+      </Checkbox>
+    );
+  },
+};
+
+export const ControlledValue: Story = {
+  render: function Render(args: CheckboxProps) {
+    const [checked, { toggle }] = useBoolean(true);
 
     return (
-      <div className={flex({ gap: 'l' })}>
-        <Checkbox {...args} defaultChecked>
+      <div className={flex({ gap: 's', direction: 'column' })}>
+        <Checkbox {...args} checked={checked} onChange={toggle}>
           Controlled
         </Checkbox>
-        <Checkbox {...args} checked={checked} onChange={setChecked}>
-          Uncontrolled
-        </Checkbox>
+        <Typography variant="tabular-compact">
+          Checkbox is {checked ? 'checked' : 'unchecked'}
+        </Typography>
       </div>
     );
   },
@@ -85,9 +86,66 @@ export const Error: Story = {
 };
 
 export const Indeterminate: Story = {
+  render: function Render(args: CheckboxProps) {
+    const [checked, setChecked] = useState([true, false]);
+
+    const handleChange1: CheckboxProps['onChange'] = (value) => {
+      setChecked([value, value]);
+    };
+
+    const handleChange2: CheckboxProps['onChange'] = (value) => {
+      setChecked([value, checked[1]]);
+    };
+
+    const handleChange3: CheckboxProps['onChange'] = (value) => {
+      setChecked([checked[0], value]);
+    };
+
+    const children = (
+      <div
+        className={clsx(
+          flex({ gap: 's', direction: 'column' }),
+          spacing({ mis: 'l' })
+        )}
+      >
+        <Checkbox checked={checked[0]} onChange={handleChange2}>
+          Child 1
+        </Checkbox>
+        <Checkbox checked={checked[1]} onChange={handleChange3}>
+          Child 2
+        </Checkbox>
+      </div>
+    );
+
+    return (
+      <div className={flex({ gap: 's', direction: 'column' })}>
+        <Checkbox
+          {...args}
+          onChange={handleChange1}
+          checked={checked[0] && checked[1]}
+          indeterminate={checked[0] !== checked[1]}
+        >
+          Parent
+        </Checkbox>
+        {children}
+      </div>
+    );
+  },
+};
+
+export const Description: Story = {
   render: (args: CheckboxProps) => (
-    <Checkbox {...args} indeterminate>
-      Label
+    <Checkbox
+      {...args}
+      slotProps={{
+        label: { className: flex({ direction: 'column', gap: '3xs' }) },
+      }}
+      defaultChecked
+    >
+      I agree to the terms and conditions
+      <Typography color="contrast-secondary" variant="text-compact">
+        By clicking this, you agree to our Terms and Privacy Policy.
+      </Typography>
     </Checkbox>
   ),
 };

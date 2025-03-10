@@ -78,9 +78,12 @@ type Story = StoryObj<typeof meta>;
 
 const blockStyle = {
   width: '6em',
-  color: '#fff',
-  height: '3em',
-  backgroundColor: '#06f',
+  textAlign: 'center',
+  padding: 'var(--kbq-size-m)',
+  color: 'var(--kbq-white-default)',
+  borderRadius: 'var(--kbq-size-s)',
+  fontFamily: 'var(--kbq-font-family-mono)',
+  backgroundColor: 'var(--kbq-background-theme)',
 } as CSSProperties;
 
 export const Example: Story = (props: FlexProps) => (

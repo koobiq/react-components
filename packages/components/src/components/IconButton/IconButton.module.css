@@ -1,0 +1,104 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  --icon-button-size: ;
+  --icon-button-color: ;
+  --icon-button-padding: ;
+  --icon-button-color-hover: ;
+  --icon-button-color-active: ;
+  --icon-button-outline-color: transparent;
+  --icon-button-outline-width: var(--kbq-size-3xs);
+  --icon-button-bg-color: var(--kbq-background-transparent);
+  --icon-button-color-disabled: var(--kbq-states-icon-disabled);
+  border: none;
+  flex-shrink: 0;
+  cursor: pointer;
+  flex-wrap: nowrap;
+  align-items: center;
+  display: inline-flex;
+  text-decoration: none;
+  vertical-align: middle;
+  box-sizing: border-box;
+  justify-content: center;
+  color: var(--icon-button-color);
+  block-size: var(--icon-button-size);
+  padding: var(--icon-button-padding);
+  inline-size: var(--icon-button-size);
+  background-color: var(--icon-button-bg-color);
+  outline-offset: calc(-1 * var(--icon-button-outline-width) / 2);
+  outline: var(--icon-button-outline-width) solid
+    var(--icon-button-outline-color);
+  transition:
+    outline-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+
+  @mixin typography text-normal-medium;
+}
+
+.l {
+  --icon-button-size: 24px;
+  --icon-button-padding: var(--kbq-size-xxs);
+}
+
+.xl {
+  --icon-button-size: 24px;
+  --icon-button-padding: 0;
+}
+
+.compact:where(.l) {
+  --icon-button-size: 16px;
+  --icon-button-padding: 0;
+}
+
+.hovered {
+  color: var(--icon-button-color-hover);
+}
+
+.pressed {
+  color: var(--icon-button-color-active);
+}
+
+.focusVisible {
+  --icon-button-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: var(--icon-button-color-disabled);
+}
+
+.theme {
+  --icon-button-color: var(--kbq-icon-theme);
+  --icon-button-color-hover: var(--kbq-states-icon-theme-hover);
+  --icon-button-color-active: var(--kbq-states-icon-theme-active);
+}
+
+.theme-contrast {
+  --icon-button-color: var(--kbq-icon-contrast);
+  --icon-button-color-hover: var(--kbq-states-icon-contrast-hover);
+  --icon-button-color-active: var(--kbq-states-icon-contrast-active);
+}
+
+.fade-contrast {
+  --icon-button-color: var(--kbq-icon-contrast-fade);
+  --icon-button-color-hover: var(--kbq-states-icon-contrast-fade-hover);
+  --icon-button-color-active: var(--kbq-states-icon-contrast-fade-active);
+}
+
+.error {
+  --icon-button-color: var(--kbq-icon-error);
+  --icon-button-color-hover: var(--kbq-states-icon-error-hover);
+  --icon-button-color-active: var(--kbq-states-icon-error-active);
+}
+
+.success {
+  --icon-button-color: var(--kbq-icon-success);
+  --icon-button-color-hover: var(--kbq-states-icon-success-hover);
+  --icon-button-color-active: var(--kbq-states-icon-success-active);
+}
+
+.warning {
+  --icon-button-color: var(--kbq-icon-warning);
+  --icon-button-color-hover: var(--kbq-states-icon-warning-hover);
+  --icon-button-color-active: var(--kbq-states-icon-warning-active);
+}

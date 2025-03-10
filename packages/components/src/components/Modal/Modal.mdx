@@ -1,0 +1,114 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Modal.stories';
+
+<Meta of={Stories} />
+
+# Modal
+
+<Status variant="experimental" />
+
+Modal is a window that appears in front of app content to provide critical
+information or ask for a decision.
+
+```tsx
+import {
+  Modal,
+  ModalHeader,
+  ModalContent,
+  ModalFooter,
+} from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Subcomponents
+
+The component has the following helper components:
+
+- `ModalHeader` — header of the modal window
+- `ModalContent` — content area of the component for placing the main information
+- `ModalFooter` — footer of the component, can contain various actions.
+
+## Usage
+
+The best way to use a modal control in most cases is to use
+the `control` render function with the `ModalPropControl` type.
+
+The render function provides control props for managing the modal window.
+Pass these props to your component.
+
+```tsx
+import { Button, Modal } from '@koobiq/react-components';
+
+<Modal control={(props) => <Button {...props}>Open</Button>}>Content</Modal>;
+```
+
+To display the content of the modal window,
+it can use [subcomponents](#subcomponents) inside children.
+The `children` prop can be `ReactNode` or a render function with the `ModalPropContent` type.
+The render function can help pass a function to close the modal window.
+
+```tsx
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalContent,
+  ModalFooter,
+} from '@koobiq/react-components';
+
+<Modal control={(props) => <Button {...props}>Open</Button>}>
+  {({ close }) => (
+    <>
+      <ModalHeader>Title</ModalHeader>
+      <ModalContent>Content</ModalContent>
+      <ModalFooter>
+        <Button onClick={close}>Close</Button>
+      </ModalFooter>
+    </>
+  )}
+</Modal>;
+```
+
+You can also use controlled state to open the component and place the control element outside
+the component. For this, see the [Controlled open](#controlled-open) section.
+
+## Size
+
+The `size` prop sets the width of the modal window.
+
+<Story of={Stories.Size} />
+
+## Open
+
+### Default open
+
+Modal isn't opened by default. The `defaultOpen` prop can be used to set the default state.
+
+### Controlled open
+
+The `open` prop can be used to make the opened state controlled.
+The `onOpenChange` event is fired when the modal's open state changes.
+
+<Story of={Stories.ControlledOpen} />
+
+## Settings
+
+You can adjust the interaction with the modal window using the following properties:
+
+- `hideCloseButton` — if `true`, the close button isn't shown
+- `hideBackdrop` — if `true`, the underlay (backdrop) under the modal window isn't shown
+- `disableExitOnClickOutside` — if `true`, the component won't close when clicked outside of it
+- `disableExitOnEscapeKeyDown` — if `true`, the component won't close when the ESC key is pressed.
+
+<Story of={Stories.Settings} />

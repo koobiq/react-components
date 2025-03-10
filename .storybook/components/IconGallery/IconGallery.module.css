@@ -26,9 +26,9 @@
   inset-block-start: 0;
   position: sticky;
   padding: var(--kbq-size-l) 0;
-  background-color: var(--kbq-background-bg);
   z-index: var(--kbq-layer-absolute);
   margin: calc(-1 * var(--kbq-size-l)) 0;
+  background-color: var(--kbq-background-bg);
 
   &::after {
     position: absolute;

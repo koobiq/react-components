@@ -1,8 +1,9 @@
+import { useLocale } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Typography } from '../Typography';
 
-import { Provider, useBreakpoints } from './index';
+import { Provider, useMatchedBreakpoints } from './index';
 
 const meta = {
   title: 'Components/Provider',
@@ -18,13 +19,40 @@ type Story = StoryObj<typeof meta>;
 
 export const Breakpoints: Story = {
   render: function Render() {
-    const { s } = useBreakpoints();
-    const isMobile = !s;
+    const App = () => {
+      const breakpoints = useMatchedBreakpoints();
+
+      return (
+        <Typography variant="mono-normal-strong">
+          Active breakpoints: {JSON.stringify(breakpoints)}
+        </Typography>
+      );
+    };
 
     return (
-      <Typography variant={isMobile ? 'text-compact' : 'text-big'}>
-        Text
-      </Typography>
+      <Provider>
+        <App />
+      </Provider>
+    );
+  },
+};
+
+export const Localization: Story = {
+  render: function Render() {
+    const App = () => {
+      const { locale } = useLocale();
+
+      return (
+        <Typography variant="mono-normal-strong">
+          Current locale: {locale}
+        </Typography>
+      );
+    };
+
+    return (
+      <Provider locale="en-US">
+        <App />
+      </Provider>
     );
   },
 };

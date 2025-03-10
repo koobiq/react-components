@@ -1,0 +1,70 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  --alert-padding: 0 var(--kbq-size-s) 0 var(--kbq-size-s);
+  --alert-content-padding: var(--kbq-size-l) var(--kbq-size-s) var(--kbq-size-l)
+    var(--kbq-size-m);
+  --alert-border-radius: var(--kbq-size-m);
+  --alert-bg-color: var(--kbq-background-contrast-fade);
+  display: flex;
+  overflow: auto;
+  inline-size: 100%;
+  position: relative;
+  box-sizing: border-box;
+  align-items: flex-start;
+  padding: var(--alert-padding);
+  background-color: var(--alert-bg-color);
+  border-radius: var(--alert-border-radius);
+}
+
+.content {
+  inline-size: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--alert-content-padding);
+}
+
+.title {
+  @mixin typography text-big-strong;
+  margin-block-end: var(--kbq-size-xxs);
+}
+
+.body {
+  @mixin typography text-normal;
+}
+
+.action {
+  display: flex;
+  gap: var(--kbq-size-m);
+  margin-block: var(--kbq-size-s) var(--kbq-size-3xs);
+}
+
+.closeIcon {
+  inline-size: var(--kbq-size-3xl);
+  block-size: var(--kbq-size-3xl);
+  margin-block-start: var(--kbq-size-xxs);
+  margin-inline-start: var(--kbq-size-3xs);
+}
+
+/* states */
+.compact {
+  --alert-padding: 0 var(--kbq-size-s) 0 var(--kbq-size-l);
+  --alert-content-padding: var(--kbq-size-m) var(--kbq-size-s) var(--kbq-size-m)
+    0;
+}
+
+.info:where(.colored) {
+  --alert-bg-color: var(--kbq-background-theme-fade);
+}
+
+.warning:where(.colored) {
+  --alert-bg-color: var(--kbq-background-warning-fade);
+}
+
+.error:where(.colored) {
+  --alert-bg-color: var(--kbq-background-error-fade);
+}
+
+.success:where(.colored) {
+  --alert-bg-color: var(--kbq-background-success-fade);
+}

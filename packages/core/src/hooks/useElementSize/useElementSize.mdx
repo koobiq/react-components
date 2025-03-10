@@ -1,0 +1,27 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './useElementSize.stories';
+
+<Meta of={Stories} />
+
+# useElementSize
+
+<Status variant="experimental" />
+
+A hook listens for size changes of the particular element and returns its width and height.
+
+```tsx
+import { useElementSize } from '@koobiq/react-core';
+```
+
+## Definition
+
+```ts
+export function useElementSize<T extends HTMLElement = any>(
+  options?: ResizeObserverOptions
+);
+```
+
+## Example
+
+<Story of={Stories.Example} />

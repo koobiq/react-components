@@ -1,0 +1,56 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './IconButton.stories';
+
+<Meta of={Stories} />
+
+# IconButton
+
+<Status variant="experimental" />
+
+The IconButton component integrates icons within buttons, combining the visual appeal of icons with the functionality of buttons.
+
+```tsx
+import { IconButton } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Size
+
+For `l` or `xl` buttons, use the `size` prop.
+
+<Story of={Stories.Size} />
+
+## Variant
+
+Use the `variant` prop to set the view of the component.
+
+<Story of={Stories.Variant} />
+
+## Disabled
+
+A button can be disabled by passing the `disabled` prop.
+
+<Story of={Stories.Disabled} />
+
+## Compact
+
+Use the `compact` prop to set a compact view of the component.
+
+<Story of={Stories.Compact} />
+
+## Root tag
+
+Use the `as` prop to redefine the HTML-tag of the component to your own.
+
+<Story of={Stories.RootTag} />

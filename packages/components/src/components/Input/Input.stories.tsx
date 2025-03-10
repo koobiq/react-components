@@ -1,12 +1,20 @@
 import { useState } from 'react';
 
-import { IconInfoCircle16, IconMagnifyingGlass16 } from '@koobiq/react-icons';
+import { useBoolean } from '@koobiq/react-core';
+import {
+  IconEye16,
+  IconEyeSlash16,
+  IconInfoCircle16,
+  IconMagnifyingGlass16,
+} from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { IconButton } from '../IconButton';
 import { flex } from '../layout';
 import { useBreakpoints } from '../Provider';
+import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
 import { Input, type InputProps, inputPropVariant } from './index';
@@ -222,7 +230,21 @@ export const Addons: Story = {
         />
         <Input
           label="endAddon"
-          endAddon={<IconInfoCircle16 />}
+          endAddon={
+            <Tooltip
+              placement="end"
+              control={() => (
+                <IconButton
+                  variant="fade-contrast"
+                  style={{ marginInlineEnd: '-8px' }}
+                >
+                  <IconInfoCircle16 />
+                </IconButton>
+              )}
+            >
+              Helper text
+            </Tooltip>
+          }
           placeholder="Seacrh"
           {...args}
         />
@@ -265,6 +287,33 @@ export const ControlledValue: Story = {
         />
         <Typography ellipsis>Current value: {value}</Typography>
       </div>
+    );
+  },
+};
+
+export const Password: Story = {
+  render: function Render(args: InputProps) {
+    const [hiddenPassword, { toggle }] = useBoolean(true);
+
+    return (
+      <Input
+        label="Password"
+        defaultValue="p@ssw0rd"
+        placeholder="Password"
+        {...(hiddenPassword && { type: 'password' })}
+        endAddon={
+          <IconButton
+            tabIndex={-1}
+            onClick={toggle}
+            variant="fade-contrast"
+            style={{ marginInlineEnd: '-8px' }}
+            aria-label={hiddenPassword ? 'show password' : 'hide password'}
+          >
+            {hiddenPassword ? <IconEye16 /> : <IconEyeSlash16 />}
+          </IconButton>
+        }
+        {...args}
+      />
     );
   },
 };

@@ -1,6 +1,6 @@
 export const config = {
   figmaFile: {
-    id: '72HEcN92QnW9IQSXzmIYZX',
+    id: 'WvUarBj8tO256vML4PkBLl',
     page: '✅ Icons',
   },
   output: {

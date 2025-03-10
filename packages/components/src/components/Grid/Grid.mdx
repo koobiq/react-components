@@ -1,0 +1,134 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+  Alert,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Grid.stories';
+
+<Meta of={Stories} />
+
+# Grid
+
+<Status variant="experimental" />
+
+Grid is a base tool for organizing content on a page.
+
+```tsx
+import { Grid, GridItem } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Grid
+
+You can set up the grid: choose the number of columns, change the gaps, and adjust the alignment.
+
+### Cols
+
+To add columns, use the `cols` prop.
+
+<Story of={Stories.Cols} />
+
+### Gaps
+
+You can adjust the spacing around rows and columns:
+
+- `gap` controls all spacing in the grid,
+- `colGap` controls spacing between columns,
+- `rowGap` controls spacing between rows.
+
+<Alert status="info">
+  The values specified in `colGap` and `rowGap` are more important and override
+  what you specified in `gap`.
+</Alert>
+
+<Story of={Stories.Gap} />
+
+### Alignment of items
+
+You can align the content of cells:
+
+- `justifyItems` sets how items are aligned along the main axis,
+- `alignItems` sets how items are aligned along the cross axis.
+
+<Story of={Stories.AlignmentItems} />
+
+### Responsive values
+
+You can switch the props' value based on the active breakpoint.
+
+<Story of={Stories.ResponsiveValues} />
+
+Responsive values is supported by:
+
+- `cols`
+- `gap`
+- `colGap`
+- `rowGap`
+- `justifyItems`
+- `alignItems`
+
+## GridItem
+
+GridItem is a box where you can place content. It can take up one or more rows or columns, and move within the grid.
+
+### Col
+
+To set the number of columns a grid item spans, use the `col` prop.
+
+<Story of={Stories.Col} />
+
+### Row
+
+To set the number of rows a grid item spans, use the `row` prop.
+
+<Story of={Stories.Row} />
+
+### ColStart
+
+To move an item to a specific column, use the `colStart` prop.
+
+<Story of={Stories.ColStart} />
+
+### RowStart
+
+To move an item to a specific row, use the `rowStart` prop.
+
+<Story of={Stories.RowStart} />
+
+### Self-alignment
+
+You can align individual items:
+
+- `justifySelf` sets how a single item is aligned along the main axis.
+- `alignSelf` sets how a single item is aligned along the cross axis.
+
+<Story of={Stories.SelfAlignment} />
+
+### Responsive values
+
+You can switch the props' value based on the active breakpoint for each item.
+
+<Story of={Stories.ResponsiveValuesItems} />
+
+Responsive values is supported by:
+
+- `col`
+- `colStart`
+- `row`
+- `rowStart`
+- `justifySelf`
+- `alignSelf`
+
+## Nested
+
+Grids can be nested inside each other.
+
+<Story of={Stories.Nested} />

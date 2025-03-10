@@ -1,0 +1,68 @@
+.base {
+  inset: 0;
+  display: flex;
+  position: fixed;
+  pointer-events: none;
+  z-index: var(--kbq-layer-modal);
+}
+
+/* states */
+.small {
+  --side-panel-size: 400px;
+}
+
+.medium {
+  --side-panel-size: 640px;
+}
+
+.large {
+  --side-panel-size: 960px;
+}
+
+.left {
+  --side-panel-start-position: -100%;
+  justify-content: flex-start;
+}
+
+.right {
+  --side-panel-start-position: 100%;
+  justify-content: flex-end;
+}
+
+/* dialog */
+.dialog {
+  --dialog-padding-inline-size: var(--kbq-size-3xl);
+  border-radius: 0;
+  block-size: 100%;
+  inline-size: 100%;
+  position: absolute;
+  pointer-events: auto;
+  max-inline-size: var(--side-panel-size);
+  transition: transform var(--kbq-transition-slow);
+  transform: translate(var(--side-panel-start-position), 0);
+}
+
+/* animation */
+[data-transition='entering'] {
+  .dialog {
+    transform: translate(0, 0);
+  }
+}
+
+[data-transition='entered'] {
+  .dialog {
+    transform: translate(0, 0);
+  }
+}
+
+[data-transition='exiting'] {
+  .dialog {
+    transform: translate(var(--side-panel-start-position), 0);
+  }
+}
+
+[data-transition='exited'] {
+  .dialog {
+    transform: translate(var(--side-panel-start-position), 0);
+  }
+}

@@ -62,7 +62,7 @@ export const Base: Story = {
   ),
 };
 
-export const WithIcons = {
+export const WithIcons: Story = {
   render: (args: ButtonBaseProps) => (
     <Button
       startIcon={<IconPlus16 />}
@@ -74,7 +74,7 @@ export const WithIcons = {
   ),
 };
 
-export const OnlyIcon = {
+export const OnlyIcon: Story = {
   render: (args: ButtonBaseProps) => (
     <div className={flex({ gap: 'l' })}>
       {buttonPropVariant.map((variant) => (
@@ -91,7 +91,7 @@ export const OnlyIcon = {
   ),
 };
 
-export const Progress = {
+export const Progress: Story = {
   render: (args: ButtonBaseProps) => (
     <Button progress {...args}>
       Button
@@ -99,7 +99,7 @@ export const Progress = {
   ),
 };
 
-export const Variant = {
+export const Variant: Story = {
   render: (args: ButtonBaseProps) => (
     <div
       className={flex({ gap: 'l', direction: 'column', alignItems: 'stretch' })}
@@ -118,7 +118,7 @@ export const Variant = {
   ),
 };
 
-export const Disabled = {
+export const Disabled: Story = {
   render: function Render(args: ButtonBaseProps) {
     const [checked, setChecked] = useState(false);
 
@@ -135,7 +135,7 @@ export const Disabled = {
   },
 };
 
-export const LongLabel = {
+export const LongLabel: Story = {
   render: (args: ButtonBaseProps) => (
     <div className={flex({})} style={{ inlineSize: 240 }}>
       <Button startIcon={<IconPlus16 />} {...args}>
@@ -145,7 +145,7 @@ export const LongLabel = {
   ),
 };
 
-export const FullWidth = {
+export const FullWidth: Story = {
   render: (args: ButtonBaseProps) => (
     <div className={flex({})} style={{ inlineSize: 240 }}>
       <Button startIcon={<IconPlus16 />} fullWidth {...args}>
@@ -155,13 +155,17 @@ export const FullWidth = {
   ),
 };
 
-export const RootTag = {
+export const RootTag: Story = {
   render: () => {
     const VisuallyHiddenInput: FC<ComponentProps<'input'>> = (props) => {
       const inputStyle = {
         inset: 0,
-        opacity: 0,
+        blockSize: 1,
+        inlineSize: 1,
+        overflow: 'hidden',
         position: 'absolute',
+        whiteSpace: 'nowrap',
+        clipPath: 'inset(50%)',
       } as CSSProperties;
 
       return <input style={inputStyle} {...props} />;
@@ -174,6 +178,7 @@ export const RootTag = {
         </Button>
         <Button
           as="label"
+          tabIndex={-1}
           startIcon={<IconArrowUpFromBracket16 />}
           onMouseDown={(e: MouseEvent<HTMLLabelElement>) => e.preventDefault()}
         >

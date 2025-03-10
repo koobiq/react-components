@@ -1,0 +1,41 @@
+.base {
+  --skeleton-inline-size: ;
+  --skeleton-block-size: ;
+  --skeleton-loader-width: 100px;
+  --skeleton-bg-color: var(--kbq-background-contrast-fade);
+  --skeleton-wave-color: var(--kbq-background-bg-tertiary);
+  --skeleton-border-radius: var(--kbq-size-xxs);
+  display: flex;
+  visibility: initial;
+  border-radius: var(--skeleton-border-radius);
+  background-color: var(--skeleton-bg-color);
+  background-image: linear-gradient(
+    to right,
+    var(--skeleton-bg-color) 0%,
+    var(--skeleton-wave-color) calc(var(--skeleton-loader-width) / 2),
+    var(--skeleton-bg-color) var(--skeleton-loader-width)
+  );
+  animation: skeleton-wave 2.5s linear infinite;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  inline-size: var(--skeleton-inline-size);
+  block-size: var(--skeleton-block-size);
+}
+
+.hasChildren {
+  max-inline-size: fit-content;
+
+  & > * {
+    visibility: hidden;
+  }
+}
+
+@keyframes skeleton-wave {
+  0% {
+    background-position: calc(-1 * var(--skeleton-loader-width));
+  }
+
+  100% {
+    background-position: 100vw;
+  }
+}

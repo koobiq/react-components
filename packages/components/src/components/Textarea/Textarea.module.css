@@ -1,0 +1,8 @@
+.auto-size {
+  resize: none;
+}
+
+.vertical-resize {
+  resize: block;
+  overflow: auto;
+}

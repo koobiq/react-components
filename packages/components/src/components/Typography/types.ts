@@ -52,7 +52,7 @@ export type TypographyPropVariant = (typeof typographyPropVariant)[number];
 export const typographyPropDisplay = [
   'block',
   'inline',
-  'inlineBlock',
+  'inline-block',
 ] as const;
 export type TypographyDisplayVariant = (typeof typographyPropDisplay)[number];
 
@@ -65,8 +65,33 @@ export const typographyPropAlign = [
 ] as const;
 export type TypographyPropAlign = (typeof typographyPropAlign)[number];
 
+export const typographyPropColor = [
+  'white',
+  'white-secondary',
+  'theme',
+  'theme-secondary',
+  'contrast',
+  'on-contrast',
+  'contrast-secondary',
+  'contrast-tertiary',
+  'error',
+  'error-secondary',
+  'error-tertiary',
+  'error-less',
+  'success',
+  'success-less',
+  'success-secondary',
+  'warning',
+  'warning-secondary',
+  'visited',
+] as const;
+export type TypographyPropColor = (typeof typographyPropColor)[number];
+
 export type TypographyBaseProps = {
-  /** The variant to use. */
+  /**
+   * The variant to use.
+   * @default text-normal
+   * */
   variant?: TypographyPropVariant;
   /** Set the display for the component. */
   display?: TypographyDisplayVariant;
@@ -78,4 +103,9 @@ export type TypographyBaseProps = {
   children?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
+  /**
+   * Text color.
+   * @default contrast
+   * */
+  color?: TypographyPropColor;
 };

@@ -1,72 +1,53 @@
 'use client';
 
-import type { ElementType, RefObject } from 'react';
+import type { RefObject } from 'react';
 
-import type { ExtendableProps } from '@koobiq/react-core';
-import type { AriaButtonOptions } from '@react-aria/button';
-import {
-  mergeProps,
-  useFocusRing,
-  useHover,
-  usePress,
-  useButton as useButtonReactAria,
-  type AriaLinkOptions,
-  type LinkAria,
-} from 'react-aria';
+import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
+import { useButton as useButtonReactAria } from '@react-aria/button';
 
-type UseButtonProps = ExtendableProps<
-  Omit<AriaButtonOptions<ElementType>, 'isDisabled'>,
-  {
-    disabled?: boolean;
-    onClick?: AriaLinkOptions['onPress'];
-  }
->;
+import type { ButtonOptions } from '../types';
+
+export type UseButtonProps = ButtonOptions;
 
 export function useButton(
   props: UseButtonProps,
   ref: RefObject<Element | null>
 ) {
-  const { onClick, disabled, ...otherProps } = props;
+  const { onClick, onPress, disabled, ...otherProps } = props;
 
   const {
     focusProps,
     isFocused: focused,
     isFocusVisible: focusVisible,
-  } = useFocusRing();
+  } = useFocusRing({
+    within: true,
+  });
 
   const { hoverProps, isHovered: hovered } = useHover({
     ...props,
     isDisabled: disabled,
   });
 
-  const { pressProps, isPressed: pressed } = usePress({
-    ref,
-    isDisabled: disabled,
-    preventFocusOnPress: true,
-  });
+  const { buttonProps: commonButtonProps, isPressed: pressed } =
+    useButtonReactAria(
+      {
+        ...otherProps,
+        onPress: onPress || onClick,
+        isDisabled: disabled,
+      },
+      ref
+    );
 
-  const { buttonProps: commonButtonProps } = useButtonReactAria(
-    {
-      ...otherProps,
-      onPress: onClick,
-      isDisabled: disabled,
-    },
-    ref
-  );
-
-  const buttonProps: LinkAria['linkProps'] = mergeProps(
-    focusProps,
-    hoverProps,
-    pressProps,
-    commonButtonProps
-  );
+  const buttonProps = mergeProps(commonButtonProps, focusProps, hoverProps);
 
   return {
-    buttonProps,
     pressed,
-    disabled,
     hovered,
     focused,
+    disabled,
+    buttonProps,
     focusVisible,
   };
 }
+
+export type UseButtonReturn = ReturnType<typeof useButton>;

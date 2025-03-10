@@ -15,19 +15,21 @@ import * as Stories from './Checkbox.stories';
 
 A checkbox is used in forms when a user needs to select multiple values from a range of available options.
 
+```tsx
+import { Checkbox } from '@koobiq/react-components';
+```
+
 <Story of={Stories.Base} />
+
+## Props
 
 <Props />
 
 ## Size
 
-For normal or big checkboxes, use the `size` prop.
+For `normal` or `big` checkboxes, use the `size` prop.
 
 <Story of={Stories.Size} />
-
-## Caption
-
-<Story of={Stories.Caption} />
 
 ## Disabled
 
@@ -37,7 +39,18 @@ A checkbox can be disabled by passing the `disabled` property.
 
 ## Value
 
-<Story of={Stories.Value} />
+### Default value
+
+Checkboxes are not checked by default. The `defaultChecked` prop can be used to set the default state.
+
+<Story of={Stories.DefaultValue} />
+
+### Controlled value
+
+The `checked` prop can be used to make the checked state controlled.
+The `onChange` event is fired when the user presses the checkbox, and receives the new value.
+
+<Story of={Stories.ControlledValue} />
 
 ## Error
 
@@ -47,8 +60,20 @@ The `error` property toggles the error state.
 
 ## Indeterminate
 
+A checkbox input can only have two states in a form: checked or unchecked.
+
+Visually, there are three states a checkbox can be in: checked, unchecked, or indeterminate.
+
 <Story of={Stories.Indeterminate} />
 
+## Description
+
+Add content to the children of the Checkbox component to add a description.
+
+<Story of={Stories.Description} />
+
 ## Without label
+
+You can use a component without a label, see the example.
 
 <Story of={Stories.WithoutLabel} />

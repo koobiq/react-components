@@ -1,6 +1,9 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ExtendableProps } from '@koobiq/react-core';
 
-type SharedProps = {
+import type { UseLinkProps } from '../../behaviors';
+import type { RenderProps } from '../../utils';
+
+export type LinkRenderProps = {
   hovered: boolean;
   focused: boolean;
   pressed: boolean;
@@ -8,21 +11,7 @@ type SharedProps = {
   focusVisible: boolean;
 };
 
-export type LinkBaseProps = {
-  children?:
-    | ReactNode
-    | ((
-        values: SharedProps & { defaultChildren: ReactNode | undefined }
-      ) => ReactNode);
-  className?:
-    | string
-    | ((
-        values: SharedProps & { defaultClassName: string | undefined }
-      ) => string);
-  style?:
-    | CSSProperties
-    | ((
-        values: SharedProps & { defaultStyle: CSSProperties }
-      ) => CSSProperties | undefined);
-  disabled?: boolean;
-};
+export type LinkBaseProps = ExtendableProps<
+  RenderProps<LinkRenderProps>,
+  UseLinkProps
+>;

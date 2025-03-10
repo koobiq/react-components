@@ -1,23 +1,20 @@
 'use client';
 
-import type { ExtendableProps } from '@koobiq/react-core';
-import type { FocusableElement, RefObject } from '@react-types/shared';
-import {
-  useHover,
-  mergeProps,
-  useFocusRing,
-  useLink as useLinkReactAria,
-} from 'react-aria';
-import type { LinkAria, AriaLinkOptions } from 'react-aria';
+import type { RefObject } from 'react';
 
-type UseLinkProps = ExtendableProps<
-  Omit<AriaLinkOptions, 'isDisabled'>,
-  { disabled?: boolean; onClick?: AriaLinkOptions['onPress'] }
+import type { ExtendableProps } from '@koobiq/react-core';
+import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
+import type { LinkAria, AriaLinkOptions } from '@react-aria/link';
+import { useLink as useLinkReactAria } from '@react-aria/link';
+
+export type UseLinkProps = ExtendableProps<
+  { disabled?: boolean; onClick?: AriaLinkOptions['onPress'] },
+  Omit<AriaLinkOptions, 'isDisabled'>
 >;
 
 export function useLink(
   props: UseLinkProps,
-  ref: RefObject<FocusableElement | null>
+  ref: RefObject<HTMLElement | null>
 ) {
   const { disabled, onClick, ...otherProps } = props;
 

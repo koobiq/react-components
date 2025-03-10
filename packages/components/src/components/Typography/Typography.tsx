@@ -1,13 +1,22 @@
+import type { ComponentPropsWithRef, ElementType } from 'react';
+
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
+import { Text } from '@koobiq/react-primitives';
+
+import { utilClasses } from '../../styles/utility';
 
 import type { TypographyBaseProps } from './types.js';
 import s from './Typography.module.css';
+
+const foregroundColor = utilClasses.color.foreground;
+const textVariant = utilClasses.typography;
 
 export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
   (
     {
       variant = 'text-normal',
-      as: Tag = 'p',
+      color = 'contrast',
+      as = 'p',
       children,
       ellipsis,
       display,
@@ -17,21 +26,31 @@ export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
     },
     ref
   ) => (
-    <Tag
+    <Text
+      as={as}
+      data-align={align}
+      data-color={color}
+      data-variant={variant}
+      data-display={display}
+      data-ellipsis={ellipsis}
       className={clsx(
         s.base,
-        variant && s[variant],
         display && s[display],
         ellipsis && s.ellipsis,
-        align && s[`align_${align}`],
+        align && s[`align-${align}`],
+        textVariant[variant],
+        foregroundColor[color],
         className
       )}
       {...other}
       ref={ref}
     >
       {children}
-    </Tag>
+    </Text>
   )
 );
 
 Typography.displayName = 'Typography';
+
+export type TypographyProps<As extends ElementType = 'p'> =
+  ComponentPropsWithRef<typeof Typography<As>>;

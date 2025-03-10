@@ -135,16 +135,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const wrapperStyle = {
-  backgroundColor: '#b3d1ff',
   display: 'inline-block',
+  borderRadius: 'var(--kbq-size-s)',
+  backgroundColor: 'var(--kbq-background-theme-fade)',
 } as CSSProperties;
 
 const blockStyle = {
-  color: '#fff',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '#06f',
+  borderRadius: 'var(--kbq-size-s)',
+  color: 'var(--kbq-white-default)',
+  fontFamily: 'var(--kbq-font-family-mono)',
+  backgroundColor: 'var(--kbq-background-theme)',
 } as CSSProperties;
 
 export const Example: Story = (props: SpacingProps) => (

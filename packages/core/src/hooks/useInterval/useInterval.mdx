@@ -1,0 +1,30 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './useInterval.stories';
+
+<Meta of={Stories} />
+
+# useInterval
+
+<Status variant="stable" />
+
+Custom hook that creates an interval that invokes a callback function at a specified delay using the [setInterval API](https://developer.mozilla.org/en-US/docs/Web/API/Window/setInterval).
+
+```tsx
+import { useInterval } from '@koobiq/react-core';
+```
+
+## Definition
+
+```ts
+export function useInterval(
+  /** A callback function that will be triggered at a given interval */
+  callback: () => void,
+  /** Time interval in milliseconds */
+  interval: number | null
+): void;
+```
+
+## Example
+
+<Story of={Stories.Example} />

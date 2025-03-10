@@ -2,101 +2,92 @@
 
 import { type ComponentRef, forwardRef } from 'react';
 
-import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
-import { useTextField } from '@koobiq/react-primitives';
+import { mergeProps, useDOMRef } from '@koobiq/react-core';
 
 import {
   FieldInput,
-  FieldAddon,
   FieldLabel,
   FieldControl,
+  FieldError,
   FieldCaption,
   FieldInputGroup,
-  FieldError,
-} from './components';
-import s from './Input.module.css';
-import { type InputProps } from './types';
+  type FieldControlProps,
+} from '../FieldComponents';
 
-export const Input = forwardRef<ComponentRef<'input'>, InputProps>(
-  (props, ref) => {
-    const {
-      variant = 'filled',
-      fullWidth = false,
-      hiddenLabel = false,
-      required = false,
-      errorMessage,
-      slotProps,
-      caption,
-      className,
+import type { InputProps, InputRef } from './index';
+
+export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
+  const {
+    variant = 'filled',
+    fullWidth = false,
+    hiddenLabel = false,
+    label,
+    startAddon,
+    endAddon,
+    errorMessage,
+    slotProps,
+    caption,
+    ...other
+  } = props;
+
+  const domRef = useDOMRef<ComponentRef<'input'>>(ref);
+
+  const rootProps: FieldControlProps = mergeProps(
+    {
       label,
-      startAddon,
-      endAddon,
-    } = props;
-
-    const domRef = useDOMRef<ComponentRef<'input'>>(ref);
-
-    const { error, ...commonProps } = useTextField(props, domRef);
-
-    const hasStartAddon = !!startAddon;
-    const hasEndAddon = !!endAddon;
-
-    const rootProps = mergeProps({
-      className,
       fullWidth,
-      ...slotProps?.root,
-    });
+      errorMessage,
+      'data-variant': variant,
+      'data-fullwidth': fullWidth,
+    },
+    other
+  );
 
-    const labelProps = mergeProps({
-      hiddenLabel,
-      required,
-      ...commonProps.labelProps,
-      ...slotProps?.label,
-    });
+  return (
+    <FieldControl {...rootProps}>
+      {({ error, required, disabled }) => {
+        const labelProps = mergeProps(
+          { hidden: hiddenLabel, required },
+          slotProps?.label
+        );
 
-    const inputProps = mergeProps({
-      error,
-      variant,
-      className: clsx(
-        hasEndAddon && s.hasEndAddon,
-        hasStartAddon && s.hasStartAddon
-      ),
-      ...commonProps.inputProps,
-      ...slotProps?.input,
-      ref: domRef,
-    });
+        const inputProps = mergeProps(
+          {
+            error,
+            variant,
+            disabled,
+            ref: domRef,
+          },
+          slotProps?.input
+        );
 
-    const captionProps = mergeProps({
-      ...commonProps.descriptionProps,
-      ...slotProps?.caption,
-    });
+        const captionProps = slotProps?.caption;
 
-    const errorProps = mergeProps({
-      error,
-      ...commonProps.errorMessageProps,
-      ...slotProps?.errorMessage,
-    });
+        const errorProps = mergeProps({ error }, slotProps?.errorMessage);
 
-    return (
-      <FieldControl {...rootProps}>
-        <FieldLabel {...labelProps}>{labelProps.children || label}</FieldLabel>
-        <FieldInputGroup>
-          <FieldAddon placement="start" error={error}>
-            {startAddon}
-          </FieldAddon>
-          <FieldInput {...inputProps} />
-          <FieldAddon placement="end" error={error}>
-            {endAddon}
-          </FieldAddon>
-        </FieldInputGroup>
-        <FieldCaption {...captionProps}>
-          {captionProps.children || caption}
-        </FieldCaption>
-        <FieldError {...errorProps}>
-          {captionProps.children || errorMessage}
-        </FieldError>
-      </FieldControl>
-    );
-  }
-);
+        return (
+          <>
+            <FieldLabel {...labelProps}>
+              {labelProps?.children || label}
+            </FieldLabel>
+            <FieldInputGroup
+              error={error}
+              endAddon={endAddon}
+              startAddon={startAddon}
+            >
+              <FieldInput {...inputProps} />
+            </FieldInputGroup>
+            <FieldCaption {...captionProps}>
+              {captionProps?.children || caption}
+            </FieldCaption>
+            <FieldError {...errorProps}>
+              {errorProps.children || errorMessage}
+            </FieldError>
+          </>
+        );
+      }}
+    </FieldControl>
+  );
+});
 
 Input.displayName = 'Input';

@@ -2,26 +2,27 @@
 
 import type { RefObject } from 'react';
 
-import type { AriaTextFieldProps } from 'react-aria';
-import { useTextField as useTextFieldReactAria } from 'react-aria';
+import type { AriaTextFieldOptions } from '@react-aria/textfield';
+import { useTextField as useTextFieldReactAria } from '@react-aria/textfield';
 
 export type UseTextFieldProps = {
+  error?: boolean;
   readonly?: boolean;
   required?: boolean;
   disabled?: boolean;
-  error?: boolean;
+  inputElementType?: 'input' | 'textarea';
 } & Omit<
-  AriaTextFieldProps,
+  AriaTextFieldOptions<'input' | 'textarea'>,
   'isDisabled' | 'isInvalid' | 'isRequired' | 'isReadOnly'
 >;
 
 export function useTextField(
   props: UseTextFieldProps,
-  ref: RefObject<HTMLInputElement | null>
+  ref: RefObject<HTMLInputElement | HTMLTextAreaElement | null>
 ) {
   const { disabled, error, label, readonly, required, ...other } = props;
 
-  const { isInvalid, ...textFieldProps } = useTextFieldReactAria<'input'>(
+  const { isInvalid, ...textFieldProps } = useTextFieldReactAria(
     {
       isDisabled: disabled,
       isReadOnly: readonly,
@@ -39,3 +40,5 @@ export function useTextField(
     ...textFieldProps,
   };
 }
+
+export type UseTextFieldReturn = ReturnType<typeof useTextField>;

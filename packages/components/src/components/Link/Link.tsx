@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentRef } from 'react';
+import type { ComponentPropsWithRef, ComponentRef, ElementType } from 'react';
 
 import { clsx, useDOMRef, polymorphicForwardRef } from '@koobiq/react-core';
 import { useLink } from '@koobiq/react-primitives';
@@ -59,3 +59,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
 });
 
 Link.displayName = 'Link';
+
+export type LinkProps<As extends ElementType = 'a'> = ComponentPropsWithRef<
+  typeof Link<As>
+>;

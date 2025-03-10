@@ -1,5 +1,7 @@
 'use client';
 
+import type { ComponentPropsWithRef, ElementType } from 'react';
+
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import type { ButtonBaseProps as ButtonPrimitiveProps } from '@koobiq/react-primitives';
 import { Button as ButtonPrimitive } from '@koobiq/react-primitives';
@@ -72,3 +74,6 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
 );
 
 Button.displayName = 'Button';
+
+export type ButtonProps<As extends ElementType = 'button'> =
+  ComponentPropsWithRef<typeof Button<As>>;

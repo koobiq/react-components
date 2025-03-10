@@ -2,11 +2,14 @@
 
 import type { ComponentRef } from 'react';
 
-import { polymorphicForwardRef, useDOMRef } from '@koobiq/react-core';
-import { mergeProps } from 'react-aria';
+import {
+  useDOMRef,
+  mergeProps,
+  polymorphicForwardRef,
+} from '@koobiq/react-core';
 
-import { useLink } from '../../behaviors/index.js';
-import { useRenderProps } from '../../utils/index.js';
+import { useLink } from '../../behaviors';
+import { useRenderProps } from '../../utils';
 
 import type { LinkBaseProps } from './types.js';
 
@@ -40,4 +43,4 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   );
 });
 
-Link.displayName = 'LinkPrimitive';
+Link.displayName = 'Link';

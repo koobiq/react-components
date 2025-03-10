@@ -1,5 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 
+import type { ButtonOptions } from '@koobiq/react-primitives';
+
 import type { TypographyPropVariant } from '../Typography';
 
 export type LinkPropVariant = Extract<
@@ -26,4 +28,5 @@ export type LinkBaseProps = {
   className?: string;
   /** Inline styles */
   style?: CSSProperties;
+  onClick?: ButtonOptions['onPress'];
 };

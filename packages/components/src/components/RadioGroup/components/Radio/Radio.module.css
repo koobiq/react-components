@@ -1,0 +1,138 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  --radio-size: ;
+  --radio-opacity: 0;
+  --radio-margin-block: ;
+  --radio-border-radius: 50%;
+  --radio-icon-color: transparent;
+  --radio-outline-color: transparent;
+  --radio-color: var(--kbq-foreground-contrast);
+  --radio-icon-size: var(--kbq-size-xs);
+  --radio-outline-width: var(--kbq-size-3xs);
+  --radio-bg-color: var(--kbq-background-bg);
+  --radio-border-width: var(--kbq-size-border-width);
+  --radio-border-color: var(--kbq-line-contrast-fade);
+  cursor: pointer;
+  vertical-align: top;
+  display: inline-flex;
+  gap: var(--kbq-size-s);
+  align-items: flex-start;
+  color: var(--radio-color);
+}
+
+.circle {
+  position: relative;
+  box-sizing: border-box;
+  block-size: var(--radio-size);
+  color: var(--radio-icon-color);
+  inline-size: var(--radio-size);
+  background: var(--radio-bg-color);
+  margin-block: var(--radio-margin-block);
+  border-radius: var(--radio-border-radius);
+  border: var(--radio-border-width) solid var(--radio-border-color);
+  transition:
+    background-color var(--kbq-transition-default),
+    border var(--kbq-transition-default),
+    outline-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+  outline-offset: calc(-1 * var(--radio-outline-width) / 2);
+  outline: var(--radio-outline-width) solid var(--radio-outline-color);
+
+  &::before {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    opacity: var(--radio-opacity);
+    background-color: currentcolor;
+    transform: translate(-50%, -50%);
+    block-size: var(--radio-icon-size);
+    inline-size: var(--radio-icon-size);
+    transition: opacity var(--kbq-transition-default);
+  }
+}
+
+.normal {
+  --radio-size: var(--kbq-size-l);
+  --radio-margin-block: var(--kbq-size-3xs);
+
+  @mixin typography text-normal;
+}
+
+.big {
+  --radio-size: var(--kbq-size-l);
+  --radio-margin-block: var(--kbq-size-xxs);
+
+  @mixin typography text-big;
+}
+
+.hovered {
+  --radio-bg-color: var(--kbq-states-background-transparent-hover);
+  --radio-border-color: var(--kbq-line-contrast-fade);
+}
+
+.checked {
+  --radio-icon-color: var(--kbq-white-default);
+  --radio-border-color: var(--kbq-background-theme);
+  --radio-bg-color: var(--kbq-background-theme);
+  --radio-opacity: 1;
+}
+
+.checked:where(.hovered) {
+  --radio-icon-color: var(--kbq-white-default);
+  --radio-bg-color: var(--kbq-states-background-theme-hover);
+  --radio-border-color: var(--kbq-states-background-theme-hover);
+}
+
+.error {
+  --radio-border-color: var(--kbq-line-error);
+}
+
+.error:where(.hovered) {
+  --radio-border-color: var(--kbq-line-error);
+  --radio-bg-color: var(--kbq-states-background-error-fade-hover);
+}
+
+.error:where(.checked) {
+  --radio-icon-color: var(--kbq-white-default);
+  --radio-border-color: var(--kbq-background-error);
+  --radio-bg-color: var(--kbq-background-error);
+}
+
+.error:where(.checked.hovered) {
+  --radio-icon-color: var(--kbq-white-default);
+  --radio-border-color: var(--kbq-states-background-error-hover);
+  --radio-bg-color: var(--kbq-states-background-error-hover);
+}
+
+.focusVisible {
+  --radio-border-color: transparent;
+  --radio-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.focusVisible:where(.error) {
+  --radio-border-color: transparent;
+  --radio-outline-color: var(--kbq-states-line-focus-error);
+}
+
+.disabled {
+  --radio-bg-color: var(--kbq-states-background-disabled);
+  --radio-border-color: var(--kbq-states-line-disabled);
+  --radio-color: var(--kbq-states-foreground-disabled);
+  cursor: not-allowed;
+}
+
+.checked:where(.disabled) {
+  --radio-icon-color: var(--kbq-states-icon-disabled);
+}
+
+/* labelPlacement */
+.start {
+  flex-direction: row-reverse;
+}
+
+.end {
+  flex-direction: row;
+}

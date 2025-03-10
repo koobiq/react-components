@@ -1,0 +1,30 @@
+.base {
+  --progressbar-spin-color: var(--kbq-icon-theme);
+  display: inline-flex;
+}
+
+.spin {
+  fill: none;
+  stroke: currentcolor;
+  color: var(--progressbar-spin-color);
+  transform: rotate(-90deg);
+}
+
+.circle {
+  transition: 0.3s linear;
+}
+
+.indeterminate {
+  animation: progress-spin-animation 1.5s
+    cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+@keyframes progress-spin-animation {
+  0% {
+    transform: rotate(-90deg);
+  }
+
+  100% {
+    transform: rotate(270deg);
+  }
+}

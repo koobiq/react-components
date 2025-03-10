@@ -1,31 +1,56 @@
 'use client';
 
-import type { Ref } from 'react';
+import type { RefObject } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
-import type { RefObject } from '@react-types/shared';
 import {
   useHover,
   mergeProps,
   useFocusRing,
-  useCheckbox as useCheckboxReactAria,
-} from 'react-aria';
-import type { AriaCheckboxProps, CheckboxAria } from 'react-aria';
-import { useToggleState } from 'react-stately';
+  useToggleState,
+} from '@koobiq/react-core';
+import { useCheckbox as useCheckboxReactAria } from '@react-aria/checkbox';
+import type { AriaCheckboxProps } from '@react-aria/checkbox';
 
 export type UseCheckboxProps = ExtendableProps<
   {
+    /**
+     * If `true`, the component will indicate an error.
+     * @default false
+     * */
     error?: boolean;
+    /**
+     * If `true`, the component is checked.
+     * @default false
+     * */
     checked?: boolean;
+    /** It prevents the user from changing the value of the checkbox.
+     * @default false
+     */
     readonly?: boolean;
+    /**
+     * If `true`, the component is disabled.
+     * @default false
+     * */
     disabled?: boolean;
+    /**
+     * If `true`, the input element is required.
+     * @default false
+     * */
     required?: boolean;
+    /**
+     * If `true`, the component appears indeterminate.
+     * @default false
+     * */
     indeterminate?: boolean;
+    /** The default checked state. Use when the component is not controlled. */
     defaultChecked?: boolean;
+    /** Callback fired when the state is changed. */
     onChange?: (checked: boolean) => void;
   },
   Omit<
     AriaCheckboxProps,
+    | 'onChange'
     | 'isRequired'
     | 'isInvalid'
     | 'isReadOnly'
@@ -85,14 +110,9 @@ export function useCheckbox(
     inputRef
   );
 
-  const labelProps: CheckboxAria['labelProps'] = mergeProps(
-    hoverProps,
-    commonLabelProps
-  );
+  const labelProps = mergeProps(hoverProps, commonLabelProps);
 
-  const inputProps: CheckboxAria['inputProps'] & {
-    ref: Ref<HTMLInputElement>;
-  } = mergeProps(focusProps, commonInputProps, {
+  const inputProps = mergeProps(focusProps, commonInputProps, {
     ref: inputRef,
   });
 

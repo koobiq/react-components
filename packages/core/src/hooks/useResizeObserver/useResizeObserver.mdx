@@ -1,0 +1,31 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './useResizeObserver.stories';
+
+<Meta of={Stories} />
+
+# useResizeObserver
+
+<Status variant="experimental" />
+
+A hook listens for size changes of the particular element and returns its size and position.
+
+```tsx
+import { useResizeObserver } from '@koobiq/react-core';
+```
+
+Use the [useElementSize](?path=/docs/hooks-useelementsize--docs) hook if you only need to track width and height changes.
+
+## Definition
+
+```ts
+type ObserverRect = Omit<DOMRectReadOnly, 'toJSON'>;
+
+function useResizeObserver<T extends HTMLElement = any>(
+  options?: ResizeObserverOptions
+): readonly [React.RefObject<T>, ObserverRect];
+```
+
+## Example
+
+<Story of={Stories.Example} />

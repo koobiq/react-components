@@ -13,23 +13,29 @@ import * as Stories from './Button.stories';
 
 <Status variant="experimental" />
 
-Button is a clickable UI component that triggers actions or events, styled according to the design-system.
+The Button is a clickable UI component that triggers actions or events.
+
+```tsx
+import { Button } from '@koobiq/react-components';
+```
 
 <Story of={Stories.Base} />
+
+## Props
 
 <Props />
 
 ## Variant
 
-To change the visual state of the button, use the `variant` property.
+To change the visual state of the button, use the `variant` prop.
 
 <Story of={Stories.Variant} />
 
 ## With icons
 
-You can add an icon using the `startIcon` and `endIcon` property.
+You can add an icon using the `startIcon` and `endIcon` prop.
 
-Both properties expect an icon component from our [icon library](?path=/docs/icons--docs).
+Both props expect an icon component from our [icon library](?path=/docs/icons--docs).
 
 <Story of={Stories.WithIcons} />
 
@@ -41,13 +47,13 @@ A button can only consist of an icon.
 
 ## Progress
 
-Add a progress indicator to a button by using the `progress` property.
+Add a progress indicator to a button by using the `progress` prop.
 
 <Story of={Stories.Progress} />
 
 ## Disabled
 
-A button can be disabled by passing the `disabled` property.
+A button can be disabled by passing the `disabled` prop.
 
 <Story of={Stories.Disabled} />
 
@@ -59,12 +65,12 @@ If the button is too wide for its container, it shrinks, the text gets cut off, 
 
 ## Full width
 
-The `fullWidth` property will make a button fit to its parent width.
+The `fullWidth` prop will make a button fit to its parent width.
 
 <Story of={Stories.FullWidth} />
 
 ## Root tag
 
-Use the `as` property to redefine the HTML-tag of the component to your own.
+Use the `as` prop to redefine the HTML-tag of the component to your own.
 
 <Story of={Stories.RootTag} />

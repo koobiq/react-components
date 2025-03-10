@@ -1,3 +1,5 @@
+@import url('./mixins.css');
+
 .hide-visually {
   border: 0;
   clip: rect(0, 0, 0, 0);
@@ -9,4 +11,262 @@
   position: absolute;
   inline-size: 1px;
   white-space: nowrap;
+}
+
+/* colors */
+.foreground-white {
+  color: var(--kbq-foreground-white);
+}
+
+.foreground-white-secondary {
+  color: var(--kbq-foreground-white-secondary);
+}
+
+.foreground-theme {
+  color: var(--kbq-foreground-theme);
+}
+
+.foreground-theme-secondary {
+  color: var(--kbq-foreground-theme-secondary);
+}
+
+.foreground-contrast {
+  color: var(--kbq-foreground-contrast);
+}
+
+.foreground-on-contrast {
+  color: var(--kbq-foreground-on-contrast);
+}
+
+.foreground-contrast-secondary {
+  color: var(--kbq-foreground-contrast-secondary);
+}
+
+.foreground-contrast-tertiary {
+  color: var(--kbq-foreground-contrast-tertiary);
+}
+
+.foreground-error {
+  color: var(--kbq-foreground-error);
+}
+
+.foreground-error-secondary {
+  color: var(--kbq-foreground-error-secondary);
+}
+
+.foreground-error-tertiary {
+  color: var(--kbq-foreground-error-tertiary);
+}
+
+.foreground-error-less {
+  color: var(--kbq-foreground-error-less);
+}
+
+.foreground-success {
+  color: var(--kbq-foreground-success);
+}
+
+.foreground-success-less {
+  color: var(--kbq-foreground-success-less);
+}
+
+.foreground-success-secondary {
+  color: var(--kbq-foreground-success-secondary);
+}
+
+.foreground-warning {
+  color: var(--kbq-foreground-warning);
+}
+
+.foreground-warning-secondary {
+  color: var(--kbq-foreground-warning-secondary);
+}
+
+.foreground-visited {
+  color: var(--kbq-foreground-visited);
+}
+
+/* typography */
+.display-big {
+  @mixin typography display-big;
+}
+
+.display-normal {
+  @mixin typography display-normal;
+}
+
+.display-compact {
+  @mixin typography display-compact;
+}
+
+.display-big-strong {
+  @mixin typography display-big-strong;
+}
+
+.display-normal-strong {
+  @mixin typography display-normal-strong;
+}
+
+.display-compact-strong {
+  @mixin typography display-compact-strong;
+}
+
+.headline {
+  @mixin typography headline;
+}
+
+.title {
+  @mixin typography title;
+}
+
+.subheading {
+  @mixin typography subheading;
+}
+
+.text-big {
+  @mixin typography text-big;
+}
+
+.text-big-strong {
+  @mixin typography text-big-strong;
+}
+
+.text-big-medium {
+  @mixin typography text-big-medium;
+}
+
+.text-normal {
+  @mixin typography text-normal;
+}
+
+.text-normal-strong {
+  @mixin typography text-normal-strong;
+}
+
+.text-normal-medium {
+  @mixin typography text-normal-medium;
+}
+
+.text-compact {
+  @mixin typography text-compact;
+}
+
+.text-compact-strong {
+  @mixin typography text-compact-strong;
+}
+
+.text-compact-medium {
+  @mixin typography text-compact-medium;
+}
+
+.caps-big {
+  @mixin typography caps-big;
+}
+
+.caps-big-strong {
+  @mixin typography caps-big-strong;
+}
+
+.caps-normal {
+  @mixin typography caps-normal;
+}
+
+.caps-normal-strong {
+  @mixin typography caps-normal-strong;
+}
+
+.caps-compact {
+  @mixin typography caps-compact;
+}
+
+.caps-compact-strong {
+  @mixin typography caps-compact-strong;
+}
+
+.mono-big {
+  @mixin typography mono-big;
+}
+
+.mono-big-strong {
+  @mixin typography mono-big-strong;
+}
+
+.mono-normal {
+  @mixin typography mono-normal;
+}
+
+.mono-normal-strong {
+  @mixin typography mono-normal-strong;
+}
+
+.mono-compact {
+  @mixin typography mono-compact;
+}
+
+.mono-compact-strong {
+  @mixin typography mono-compact-strong;
+}
+
+.mono-codeblock {
+  @mixin typography mono-codeblock;
+}
+
+.tabular-big {
+  @mixin typography tabular-big;
+}
+
+.tabular-big-strong {
+  @mixin typography tabular-big-strong;
+}
+
+.tabular-normal {
+  @mixin typography tabular-normal;
+}
+
+.tabular-normal-strong {
+  @mixin typography tabular-normal-strong;
+}
+
+.tabular-compact {
+  @mixin typography tabular-compact;
+}
+
+.tabular-compact-strong {
+  @mixin typography tabular-compact-strong;
+}
+
+.italic-big {
+  @mixin typography italic-big;
+}
+
+.italic-big-strong {
+  @mixin typography italic-big-strong;
+}
+
+.italic-normal {
+  @mixin typography italic-normal;
+}
+
+.italic-normal-strong {
+  @mixin typography italic-normal-strong;
+}
+
+.italic-compact {
+  @mixin typography italic-compact;
+}
+
+.italic-compact-strong {
+  @mixin typography italic-compact-strong;
+}
+
+.inherit {
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  font-feature-settings: inherit;
+  text-underline-offset: inherit;
 }

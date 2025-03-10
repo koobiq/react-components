@@ -1,0 +1,131 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Popover.stories';
+
+<Meta of={Stories} />
+
+# Popover
+
+<Status variant="experimental" />
+
+Popover component as an overlay whose position is anchored to an element in the user interface.
+
+```tsx
+import {
+  Popover,
+  PopoverHeader,
+  PopoverContent,
+  PopoverFooter,
+} from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Subcomponents
+
+The component has the following helper components:
+
+- `PopoverHeader` — header of the popover
+- `PopoverContent` — content area of the component for placing the main information
+- `PopoverFooter` — footer of the component, can contain various actions.
+
+## Usage
+
+The best way to use a popover's control in most cases is to use
+the `control` render function with the `PopoverPropControl` type.
+
+The render function provides control props for managing the popover.
+Pass these props to your component.
+
+```tsx
+import { Button, Popover } from '@koobiq/react-components';
+
+<Popover control={(props) => <Button {...props}>Open</Button>}>
+  Content
+</Popover>;
+```
+
+To display the content of the popover,
+it can use [subcomponents](#subcomponents) inside children.
+The `children` prop can be `ReactNode` or a render function with the `PopoverPropContent` type.
+The render function can help pass a function to close the popover.
+
+```tsx
+import {
+  Button,
+  Popover,
+  PopoverHeader,
+  PopoverContent,
+  PopoverFooter,
+} from '@koobiq/react-components';
+
+<Popover control={(props) => <Button {...props}>Open</Button>}>
+  {({ close }) => (
+    <>
+      <PopoverHeader>Title</PopoverHeader>
+      <PopoverContent>Content</PopoverContent>
+      <PopoverFooter>
+        <Button onClick={close}>Close</Button>
+      </PopoverFooter>
+    </>
+  )}
+</Popover>;
+```
+
+You can also use controlled state to open the component and place the control element outside
+the component. For this, see the [Controlled open state](#controlled-open-state) section.
+
+## Size
+
+The `size` prop sets the width of the popover.
+
+<Story of={Stories.Size} />
+
+## Arrow
+
+By default, the popover has an arrow pointing to the anchor element.
+When `hideArrow` is set to `true`, the popover appears without this arrow, making it looks like a floating box.
+
+<Story of={Stories.Arrow} />
+
+## Placement
+
+The popover's placement with respect to its anchor element can be adjusted
+using the `placement` prop. See a full list of available placement
+combinations in the [table of properties](#props). Popovers will also automatically flip to the opposite direction
+if there isn't enough space.
+
+<Story of={Stories.Placement} />
+
+## Offsets
+
+The popover's offset with respect to its anchor element can be
+adjusted using the `offset` and `crossOffset` props. The `offset` prop
+controls the spacing applied along the main axis between the element and its
+anchor element whereas the `crossOffset` prop handles the spacing applied along the cross axis.
+
+<Story of={Stories.Offsets} />
+
+## Controlled open state
+
+The `open` prop can be used to make the opened state controlled.
+The `onOpenChange` event is fired when the popover's open state changes.
+
+In addition, the `anchorRef` prop must be set to the element that the popover should be positioned relative to.
+
+<Story of={Stories.ControlledOpen} />
+
+## Customization
+
+See the example showing the custom content of the component.
+
+<Story of={Stories.Customization} />
