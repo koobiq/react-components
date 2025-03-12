@@ -12,3 +12,4 @@ export * from './Version';
 export * from './Introduction';
 export * from './Status';
 export * from './Alert';
+export * from './Issues';
