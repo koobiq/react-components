@@ -1,0 +1,34 @@
+name: '❓Ask a question'
+description: Ask any question about our library
+
+title: 'Question: (fill in)'
+labels:
+  - question
+
+body:
+  - type: textarea
+    id: question-description
+    attributes:
+      label: Describe the question
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Library version
+      description: Please provide version.
+      placeholder: 0.0.1
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Validations
+      description: Before submitting the issue, please make sure you do the following.
+      options:
+        - label: Read the [docs](https://react.koobiq.io/).
+          required: true
+        - label: Check that there isn't [already an issue](https://github.com/koobiq/react-components/issues) that reports the same bug to avoid creating a duplicate.
+          required: true
