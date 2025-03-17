@@ -1,4 +1,5 @@
 import type {
+  ComponentPropsWithRef,
   CSSProperties,
   ReactElement,
   ReactNode,
@@ -7,6 +8,8 @@ import type {
 } from 'react';
 
 import type { ButtonOptions } from '@koobiq/react-primitives';
+
+import type { DialogProps } from '../Dialog';
 
 export type PopoverPropContent =
   | ReactNode
@@ -117,4 +120,9 @@ export type PopoverProps = {
    * @default 0
    */
   crossOffset?: number;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    dialog?: DialogProps;
+    arrow?: ComponentPropsWithRef<'div'>;
+  };
 };

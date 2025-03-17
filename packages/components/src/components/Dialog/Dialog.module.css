@@ -7,9 +7,6 @@
   pointer-events: auto;
   flex-direction: column;
   box-sizing: border-box;
-  border-radius: var(--kbq-size-m);
-  box-shadow: var(--kbq-shadow-overlay);
-  background-color: var(--kbq-background-bg);
 }
 
 /* container */

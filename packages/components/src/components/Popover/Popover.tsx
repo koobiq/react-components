@@ -1,7 +1,7 @@
 'use client';
 
+import type { ComponentRef, CSSProperties } from 'react';
 import { cloneElement, forwardRef, isValidElement, useRef } from 'react';
-import type { ComponentRef } from 'react';
 
 import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
 import {
@@ -21,18 +21,23 @@ import { normalizeInlineSize } from './utils';
 export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
   (props, ref) => {
     const {
-      arrowBoundaryOffset = 20,
-      size = 'medium',
-      hideArrow = false,
       placement: placementProp = 'top',
+      arrowBoundaryOffset = 20,
+      hideArrow = false,
+      size = 'medium',
       crossOffset = 0,
       offset = 0,
-      open: openProp,
-      anchorRef,
-      isNonModal,
+      slotProps,
       disableExitOnEscapeKeyDown,
       disableFocusManagement,
       portalContainer,
+      hideCloseButton,
+      open: openProp,
+      className,
+      defaultOpen,
+      onOpenChange,
+      isNonModal,
+      anchorRef,
       children,
       control,
       ...other
@@ -45,6 +50,8 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
 
     const state = useOverlayTriggerState({
       isOpen: openProp,
+      onOpenChange,
+      defaultOpen,
       ...other,
     });
 
@@ -57,35 +64,26 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
       { ...state, isOpen: openState }
     );
 
-    const { popoverProps, underlayProps, arrowProps, placement } = usePopover(
+    const {
+      popoverProps,
+      underlayProps,
+      arrowProps: arrowPropsCommon,
+      placement,
+    } = usePopover(
       {
         ...props,
         offset,
         isNonModal,
         crossOffset,
         maxHeight: 480,
-        placement: placementProp,
         popoverRef: domRef,
         arrowBoundaryOffset,
         containerPadding: 24,
+        placement: placementProp,
         isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
         triggerRef: anchorRef || controlRef,
       },
       { ...state, isOpen: opened }
-    );
-
-    const dialogProps = mergeProps(
-      popoverProps,
-      {
-        onClose: state.close,
-        className: clsx(s.base, s[size]),
-        style: {
-          ...popoverProps.style,
-          '--popover-inline-size': normalizeInlineSize(size),
-        },
-        ref: domRef,
-      },
-      other
     );
 
     const resolvedChildren = () => {
@@ -98,6 +96,22 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
     };
 
     const { isDisabled, onPress, ...otherTriggerProps } = triggerProps;
+
+    const arrowProps = mergeProps(
+      { className: s.arrow },
+      arrowPropsCommon,
+      slotProps?.arrow
+    );
+
+    const dialogProps = mergeProps(
+      {
+        role: 'dialog',
+        className: s.dialog,
+        onClose: state.close,
+        hideCloseButton,
+      },
+      slotProps?.dialog
+    );
 
     return (
       <>
@@ -123,25 +137,26 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
               disableFocusManagement={disableFocusManagement}
             >
               <div {...underlayProps} className={s.underlay} />
-              <Dialog
-                {...dialogProps}
-                role="dialog"
+              <div
+                ref={domRef}
                 data-size={size}
                 data-arrow={showArrow}
-                data-transition={transition}
                 data-placement={placement}
-                {...(showArrow && {
-                  startAddon: (
-                    <div
-                      {...arrowProps}
-                      className={s.arrow}
-                      data-placement={placement}
-                    />
-                  ),
-                })}
+                data-transition={transition}
+                className={clsx(s.base, s[size], className)}
+                {...mergeProps(popoverProps, other)}
+                style={
+                  {
+                    ...popoverProps.style,
+                    '--popover-inline-size': normalizeInlineSize(size),
+                  } as CSSProperties
+                }
               >
-                {resolvedChildren()}
-              </Dialog>
+                {showArrow && (
+                  <div {...arrowProps} data-placement={placement} />
+                )}
+                <Dialog {...dialogProps}>{resolvedChildren()}</Dialog>
+              </div>
             </Overlay>
           )}
         </Transition>

@@ -1,46 +1,146 @@
 'use client';
 
-import { type ComponentRef, forwardRef } from 'react';
+import { cloneElement, forwardRef, isValidElement } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
+import {
+  Overlay,
+  useModalOverlay,
+  useOverlayTrigger,
+  useOverlayTriggerState,
+} from '@koobiq/react-primitives';
+import { Transition } from 'react-transition-group';
 
-import { ModalTrigger } from '../ModalTrigger';
+import { Backdrop } from '../Backdrop';
+import { Dialog, type DialogProps } from '../Dialog';
 
 import s from './Modal.module.css';
-import type { ModalProps } from './types';
+import type { ModalProps, ModalRef } from './types';
 
-export const Modal = forwardRef<ComponentRef<'div'>, ModalProps>(
-  (props, ref) => {
-    const {
-      size = 'medium',
-      hideCloseButton = false,
-      slotProps: slotPropsProp,
-      children,
-      className,
-      ...other
-    } = props;
+export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
+  const {
+    hideCloseButton = false,
+    size = 'medium',
+    disableExitOnEscapeKeyDown,
+    disableExitOnClickOutside,
+    disableFocusManagement,
+    portalContainer,
+    open: openProp,
+    hideBackdrop,
+    onOpenChange,
+    defaultOpen,
+    children,
+    control,
+    slotProps,
+    ...other
+  } = props;
 
-    const slopProps = {
-      ...slotPropsProp,
-      dialog: {
-        ...slotPropsProp?.dialog,
-        className: clsx(s.dialog, slotPropsProp?.dialog?.className),
-      },
-    };
+  const state = useOverlayTriggerState({
+    isOpen: openProp,
+    onOpenChange,
+    defaultOpen,
+    ...other,
+  });
 
-    return (
-      <ModalTrigger
-        data-size={size}
-        slotProps={slopProps}
-        hideCloseButton={hideCloseButton}
-        className={clsx(s.base, s[size], className)}
-        {...other}
-        ref={ref}
+  const { isOpen: openState, close } = state;
+
+  const [opened, { on, off }] = useBoolean(openState);
+
+  const modalRef = useDOMRef(null);
+  const containerRef = useDOMRef(ref);
+
+  const { triggerProps, overlayProps } = useOverlayTrigger(
+    { type: 'dialog' },
+    { ...state, isOpen: openState }
+  );
+
+  const { modalProps: modalCommonProps, underlayProps } = useModalOverlay(
+    {
+      ...props,
+      isDismissable: !disableExitOnClickOutside,
+      isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
+    },
+    { ...state, isOpen: opened },
+    modalRef
+  );
+
+  const resolvedChildren = () => {
+    if (typeof children === 'function')
+      return cloneElement(children({ close }), overlayProps);
+
+    if (isValidElement(children)) return cloneElement(children, overlayProps);
+
+    return children;
+  };
+
+  const containerProps = mergeProps(
+    {
+      className: clsx(s.base, s[size]),
+      ref: containerRef,
+      'data-size': size,
+    },
+    other
+  );
+
+  const backdropProps = mergeProps(
+    { open: openState && !hideBackdrop },
+    underlayProps,
+    slotProps?.backdrop
+  );
+
+  const dialogProps: DialogProps = mergeProps(
+    {
+      onClose: close,
+      role: 'dialog',
+      hideCloseButton,
+      children: resolvedChildren(),
+    },
+    slotProps?.dialog
+  );
+
+  const modalProps = mergeProps(
+    modalCommonProps,
+    {
+      ref: modalRef,
+      className: s.modal,
+    },
+    slotProps?.modal
+  );
+
+  const { isDisabled, onPress, ...otherTriggerProps } = triggerProps;
+
+  return (
+    <>
+      {control?.({
+        onClick: onPress,
+        disabled: isDisabled,
+        ...otherTriggerProps,
+      })}
+      <Transition
+        onEnter={on}
+        timeout={300}
+        onExited={off}
+        in={openState}
+        nodeRef={containerRef}
+        unmountOnExit
+        appear
       >
-        {children}
-      </ModalTrigger>
-    );
-  }
-);
+        {(transition) => (
+          <Overlay
+            portalContainer={portalContainer}
+            disableFocusManagement={disableFocusManagement}
+          >
+            <div {...containerProps} data-transition={transition}>
+              <Backdrop {...backdropProps} />
+              <div {...modalProps}>
+                <Dialog {...dialogProps} />
+              </div>
+            </div>
+          </Overlay>
+        )}
+      </Transition>
+    </>
+  );
+});
 
 Modal.displayName = 'Modal';

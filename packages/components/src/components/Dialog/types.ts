@@ -8,33 +8,30 @@ import type { AriaDialogProps } from '@koobiq/react-primitives';
 
 import type { DialogCloseButtonProps } from './components';
 
-export type DialogProps = ExtendableComponentPropsWithRef<
-  {
-    /** The content of the component. */
-    children?: ReactNode;
-    /** Additional CSS-classes. */
-    className?: string;
-    /** Unique identifier for testing purposes. */
-    'data-testid'?: string | number;
-    /** A callback function called when the user clicks the dialog's close button. */
-    onClose?(): void;
-    /** Addon placed before the children. */
-    startAddon?: ReactNode;
-    /** Addon placed after the children. */
-    endAddon?: ReactNode;
+export type DialogBaseProps = {
+  /** The content of the component. */
+  children?: ReactNode;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Unique identifier for testing purposes. */
+  'data-testid'?: string | number;
+  /** A callback function called when the user clicks the dialog's close button. */
+  onClose?(): void;
+  /**
+   * If `true`, the close button isn't shown.
+   * @default false
+   * */
+  hideCloseButton?: boolean;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    container?: ComponentPropsWithRef<'div'> & DataAttributeProps;
+    'close-button'?: DialogCloseButtonProps;
+  };
+} & AriaDialogProps;
 
-    /**
-     * If `true`, the close button isn't shown.
-     * @default false
-     * */
-    hideCloseButton?: boolean;
-    /** The props used for each slot inside. */
-    slotProps?: {
-      container?: ComponentPropsWithRef<'div'> & DataAttributeProps;
-      'close-button'?: DialogCloseButtonProps;
-    };
-  } & AriaDialogProps,
-  'div'
+export type DialogProps = ExtendableComponentPropsWithRef<
+  DialogBaseProps,
+  'section'
 >;
 
-export type DialogRef = ComponentRef<'div'>;
+export type DialogRef = ComponentRef<'section'>;
