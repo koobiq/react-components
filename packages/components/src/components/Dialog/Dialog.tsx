@@ -21,18 +21,7 @@ import { DialogContext } from './DialogContext';
 import type { DialogProps, DialogRef } from './types';
 
 export const Dialog = forwardRef<DialogRef, DialogProps>(
-  (
-    {
-      children,
-      onClose,
-      hideCloseButton,
-      startAddon,
-      endAddon,
-      slotProps,
-      ...other
-    },
-    ref
-  ) => {
+  ({ onClose, children, slotProps, hideCloseButton, ...other }, ref) => {
     const [topOverflow, { set: setTopOverflow }] = useBoolean();
     const [bottomOverflow, { set: setBottomOverflow }] = useBoolean();
     const contentRef = useRef<HTMLDivElement | null>(null);
@@ -88,14 +77,12 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
           slots: { content: { ref: useMultiRef([contentRef, innerRef]) } },
         }}
       >
-        <div {...rootProps} ref={domRef}>
+        <section {...rootProps} ref={domRef}>
           {showCloseButton && (
             <DialogCloseButton {...slotProps?.['close-button']} />
           )}
-          {startAddon}
           <div {...containerProps}>{children}</div>
-          {endAddon}
-        </div>
+        </section>
       </DialogContext.Provider>
     );
   }

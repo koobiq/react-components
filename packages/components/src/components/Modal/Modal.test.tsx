@@ -4,23 +4,38 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { Link } from '../Link';
+
 import { Modal } from './Modal';
-import s from './Modal.module.css';
 import { type ModalProps, modalPropSize } from './types';
 
 describe('Modal', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const onOpenChange = vi.fn();
+
   const baseProps: ModalProps = {
-    'data-testid': 'root',
+    'data-testid': 'modal',
+    onOpenChange,
     slotProps: {
       dialog: {
         'data-testid': 'dialog',
       },
+      backdrop: {
+        'data-testid': 'backdrop',
+      },
     },
   };
 
-  const getRoot = () => screen.getByTestId('root');
+  const getModal = () => screen.getByTestId('modal');
   const getDialog = () => screen.getByTestId('dialog');
-  const getBackdrop = () => screen.getByTestId('backdrop');
+
+  function getBackdrop(): HTMLDivElement | null {
+    return screen.queryByTestId('backdrop');
+  }
+
   const getCloseButton = () => screen.getByTestId('close-button');
 
   it('should forward a ref', () => {
@@ -28,7 +43,7 @@ describe('Modal', () => {
 
     render(<Modal {...baseProps} ref={ref} open />);
 
-    expect(ref.current).toBe(getRoot());
+    expect(ref.current).toBe(getModal());
   });
 
   it('should merge a custom class name with the default ones', () => {
@@ -36,7 +51,7 @@ describe('Modal', () => {
 
     render(<Modal {...baseProps} className={className} open />);
 
-    const root = getRoot();
+    const root = getModal();
     expect(root?.className).toContain(className);
   });
 
@@ -44,7 +59,7 @@ describe('Modal', () => {
     it.each(modalPropSize)('should apply the size as a "%s"', (size) => {
       render(<Modal {...baseProps} size={size} open />);
 
-      expect(getRoot()).toHaveAttribute('data-size', size);
+      expect(getModal()).toHaveAttribute('data-size', size);
     });
   });
 
@@ -68,7 +83,6 @@ describe('Modal', () => {
         );
 
         const dialog = getDialog();
-        expect(dialog).toHaveClass(s.dialog);
         expect(dialog).toHaveClass('foo');
         expect(dialogRef.current).toBe(dialog);
       });
@@ -135,6 +149,157 @@ describe('Modal', () => {
 
       expect(onOpenChange).toHaveBeenCalledTimes(1);
       expect(onClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('should apply the focus trap', async () => {
+    render(
+      <>
+        <button />
+        <Modal defaultOpen>
+          <input data-testid="input" />
+        </Modal>
+      </>
+    );
+
+    await userEvent.tab();
+    await userEvent.tab();
+
+    expect(screen.getByTestId('input')).toHaveFocus();
+  });
+
+  it('should not apply the focus trap when {disableFocusManagement} is set', async () => {
+    render(
+      <>
+        <button data-testid="button" />
+        <Modal defaultOpen hideCloseButton disableFocusManagement>
+          <input data-testid="input" />
+        </Modal>
+      </>
+    );
+
+    await userEvent.tab();
+    await userEvent.tab();
+    await userEvent.tab();
+
+    expect(screen.getByTestId('button')).toHaveFocus();
+  });
+
+  it('should call the {onOpenChange} callback when the click outside is completed', async () => {
+    const { rerender } = render(<Modal {...baseProps} open={false} />);
+
+    await userEvent.click(document.body);
+
+    rerender(
+      <>
+        <button data-testid="button" />
+        <Modal {...baseProps} open />
+      </>
+    );
+
+    await userEvent.click(screen.getByTestId('button'));
+
+    expect(onOpenChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not call the {onOpenChange} callback when the click outside is completed and the {disableExitOnClickOutside} is set', async () => {
+    render(
+      <>
+        <button data-testid="button" />
+        <Modal {...baseProps} open disableExitOnClickOutside />
+      </>
+    );
+
+    await userEvent.click(screen.getByTestId('button'));
+
+    expect(onOpenChange).toHaveBeenCalledTimes(0);
+  });
+
+  it('should call the {onOpenChange} callback when the {ESC} is pressed', async () => {
+    const { rerender } = render(<Modal {...baseProps} open />);
+
+    await userEvent.keyboard('{Escape}');
+
+    expect(onOpenChange).toHaveBeenCalledTimes(1);
+
+    rerender(<Modal {...baseProps} open={false} />);
+
+    await userEvent.keyboard('{Escape}');
+
+    expect(onOpenChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call the {onOpenChange} callback when the {ESC} is pressed and the {disableExitOnEscapeKeyDown} is set', async () => {
+    render(<Modal {...baseProps} open disableExitOnEscapeKeyDown />);
+
+    await userEvent.keyboard('{Escape}');
+
+    expect(onOpenChange).toHaveBeenCalledTimes(0);
+  });
+
+  it('should hide the backdrop when {hideBackdrop} is set', async () => {
+    render(<Modal {...baseProps} defaultOpen hideBackdrop />);
+
+    expect(getBackdrop()).not.toBeInTheDocument();
+  });
+
+  describe('control', () => {
+    it('should open the component when the control is clicked', async () => {
+      const onOpenChange = vi.fn((value) => value);
+
+      render(
+        <Modal
+          {...baseProps}
+          onOpenChange={onOpenChange}
+          control={(props) => (
+            <Link as="button" data-testid="control" {...props} />
+          )}
+        />
+      );
+
+      await userEvent.click(screen.getByTestId('control'));
+
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
+
+      expect(onOpenChange.mock.results[0]?.value).toStrictEqual(true);
+    });
+  });
+
+  describe('content', () => {
+    it('should display the content as the string', () => {
+      render(
+        <Modal {...baseProps} defaultOpen>
+          foo
+        </Modal>
+      );
+
+      expect(screen.getByText('foo')).toBeInTheDocument();
+    });
+
+    it('should display the content as the render function', () => {
+      render(
+        <Modal {...baseProps} defaultOpen>
+          {() => <>foo</>}
+        </Modal>
+      );
+
+      expect(screen.getByText('foo')).toBeInTheDocument();
+    });
+
+    it('should close the component when the {close} is fired', async () => {
+      const onOpenChange = vi.fn((value) => value);
+
+      render(
+        <Modal {...baseProps} onOpenChange={onOpenChange} defaultOpen>
+          {({ close }) => <button onClick={close} data-testid="close" />}
+        </Modal>
+      );
+
+      await userEvent.click(screen.getByTestId('close'));
+
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
+
+      expect(onOpenChange.mock.results[0]?.value).toStrictEqual(false);
     });
   });
 });

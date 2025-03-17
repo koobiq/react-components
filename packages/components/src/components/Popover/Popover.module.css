@@ -1,6 +1,10 @@
 .base {
   --popover-inline-size: ;
+  display: flex;
   min-block-size: 48px;
+  border-radius: var(--kbq-size-m);
+  box-shadow: var(--kbq-shadow-overlay);
+  background-color: var(--kbq-background-bg);
   inline-size: var(--popover-inline-size);
   transition:
     opacity var(--kbq-transition-slow),
@@ -49,11 +53,6 @@
   background-color: var(--kbq-background-bg);
 }
 
-.underlay {
-  inset: 0;
-  position: fixed;
-}
-
 .arrow[data-placement='top'] {
   inset-block-end: -5px;
   transform: translate(-50%) rotate(45deg);
@@ -72,6 +71,18 @@
 .arrow[data-placement='right'] {
   inset-inline-start: -5px;
   transform: translateY(-50%) rotate(45deg);
+}
+
+/* underlay */
+.underlay {
+  inset: 0;
+  position: fixed;
+}
+
+/* dialog */
+.dialog {
+  border-radius: inherit;
+  background-color: inherit;
 }
 
 /* transition */
