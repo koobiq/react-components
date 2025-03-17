@@ -49,8 +49,8 @@
   inline-size: 12px;
   block-size: 12px;
   position: absolute;
-  box-shadow: var(--kbq-shadow-overlay);
-  background-color: var(--kbq-background-bg);
+  box-shadow: inherit;
+  background-color: inherit;
 }
 
 .arrow[data-placement='top'] {
