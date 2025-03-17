@@ -170,11 +170,11 @@
   },
   "browserslist": [
     "defaults and supports es6-module",
-    "chrome > 88",
-    "safari > 14",
-    "firefox > 78",
-    "opera > 75",
-    "edge > 88"
+    "chrome > 105",
+    "safari > 15.4",
+    "firefox > 121",
+    "opera > 91",
+    "edge > 105"
   ],
   "packageManager": "pnpm@9.12.2"
 }
