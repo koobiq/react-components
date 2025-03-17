@@ -9,7 +9,7 @@
     "node": ">=20",
     "pnpm": ">=9.0.0"
   },
-  "firstRelease": false,
+  "firstRelease": true,
   "scripts": {
     "prepare": "husky",
     "dev": "pnpm install && pnpm storybook",
