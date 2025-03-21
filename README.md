@@ -17,7 +17,7 @@ Here are a few helpful links for getting started with Koobiq React:
 ## 📦 Packages
 
 - [@koobiq/react-components](https://github.com/koobiq/react-components/tree/main/packages/components) — the React component library.
-- [@koobiq/react-primitives](https://github.com/koobiq/react-components/tree/main/packages/primitives) — a collection of unstyled React-components and hooks.
+- [@koobiq/react-primitives](https://github.com/koobiq/react-components/tree/main/packages/primitives) — a collection of unstyled React-components and behavior hooks.
 - [@koobiq/react-icons](https://github.com/koobiq/react-components/tree/main/packages/icons) — a collection of React-icons.
 - [@koobiq/react-core](https://github.com/koobiq/react-components/tree/main/packages/core) — common utilities and hooks used by Koobiq React packages.
 - [@koobiq/logger](https://github.com/koobiq/react-components/tree/main/packages/logger) — the utilities for displaying the log on the client side.

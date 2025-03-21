@@ -1,43 +1,26 @@
 # @koobiq/react-components
 
-## Getting Started
+Koobiq React is an open-source design system for designers and developers, focused on designing products related to information security.
 
-Install the component library with the following command:
+## Installation
 
-```bash
-pnpm add @koobiq/design-tokens @koobiq/react-components
+Depending on your preference, run one of the following in your terminal:
+
+```sh
+# With npm
+npm install @koobiq/react-components
+
+# With yarn
+yarn add @koobiq/react-components
+
+# With pnpm
+yarn add @koobiq/react-components
 ```
 
-### Usage
+## Usage
 
-```tsx
-import '@koobiq/design-tokens/web/css-tokens.css';
-import '@koobiq/design-tokens/web/css-tokens-light.css';
-import '@koobiq/design-tokens/web/css-tokens-dark.css';
-import '@koobiq/react-components/style.css';
-
-import { Typography } from '@koobiq/react-components';
-
-export default function App() {
-  return <Typography>Hello, Koobiq React!</Typography>;
-}
-```
+To get started with the library, read [the documentation](https://react.koobiq.io/).
 
 ## Browser Support
 
-[Check compatible browsers](https://browsersl.ist/#q=defaults+and+supports+es6-module%2C%0A++++chrome+%3E+88%2C%0A++++safari+%3E+14%2C%0A++++firefox+%3E+78%2C%0A++++opera+%3E+75%2C%0A++++edge+%3E+88)
-
-## Development
-
-Follow these steps to start the development mode:
-
-- Clone the repository and navigate to the created directory.
-- Run the command `pnpm dev` in the terminal.
-
-Documentation will be available at [http://localhost:6006](http://localhost:6006).
-All development is conducted there. For convenience, you can go directly to the page of the component you are working on.
-
-### Prerequisites
-
-- Node.js v20
-- pnpm v9
+[Check compatible browsers](https://browsersl.ist/#q=defaults+and+supports+es6-module%2C%0A++++chrome+%3E+105%2C%0A++++safari+%3E+15.4%2C%0A++++firefox+%3E+121%2C%0A++++opera+%3E+91%2C%0A++++edge+%3E+105)
