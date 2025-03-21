@@ -1,6 +1,6 @@
 {
   "name": "koobiq-react",
-  "version": "0.0.1-alpha.58",
+  "version": "0.0.1-beta.1",
   "description": "",
   "private": true,
   "workspaces": ["packages/*", "templates/*"],
@@ -9,7 +9,7 @@
     "node": ">=20",
     "pnpm": ">=9.0.0"
   },
-  "firstRelease": true,
+  "firstRelease": false,
   "scripts": {
     "prepare": "husky",
     "dev": "pnpm install && pnpm storybook",
