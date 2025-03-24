@@ -10,6 +10,8 @@
     "format": "prettier --write \"{,!(.next)/**/}*.{ts, tsx}\""
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.5",
+    "@fontsource/jetbrains-mono": "^5.2.5",
     "@koobiq/design-tokens": "^3.12.1",
     "@koobiq/react-components": "0.0.1-beta.2",
     "@koobiq/react-icons": "0.0.1-beta.2",
