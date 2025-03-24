@@ -1,0 +1,10 @@
+.base {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.heading {
+  padding: var(--kbq-size-s) var(--kbq-size-m);
+}
