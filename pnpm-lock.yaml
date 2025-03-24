@@ -385,6 +385,12 @@ importers:
 
   templates/nextjs/template:
     dependencies:
+      '@fontsource/inter':
+        specifier: ^5.2.5
+        version: 5.2.5
+      '@fontsource/jetbrains-mono':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@koobiq/design-tokens':
         specifier: ^3.12.1
         version: 3.12.1
@@ -1176,6 +1182,12 @@ packages:
   '@figma-export/utils@6.0.0':
     resolution: {integrity: sha512-CtpYqvjUAxxvAEUGmlpC5F5ECdxMc2rlXDO6ayPvX4Owtpbbsb4A04LoH2WVTm/Pc406N0jSs9Oj4aXFo6mUvg==}
     engines: {node: '>= 18.17'}
+
+  '@fontsource/inter@5.2.5':
+    resolution: {integrity: sha512-kbsPKj0S4p44JdYRFiW78Td8Ge2sBVxi/PIBwmih+RpSXUdvS9nbs1HIiuUSPtRMi14CqLEZ/fbk7dj7vni1Sg==}
+
+  '@fontsource/jetbrains-mono@5.2.5':
+    resolution: {integrity: sha512-TPZ9b/uq38RMdrlZZkl0RwN8Ju9JxuqMETrw76pUQFbGtE1QbwQaNsLlnUrACNNBNbd0NZRXiJJSkC8ajPgbew==}
 
   '@formatjs/ecma402-abstract@2.2.4':
     resolution: {integrity: sha512-lFyiQDVvSbQOpU+WFd//ILolGj4UgA/qXrKeZxdV14uKiAUiPAtX6XAn7WBCRi7Mx6I7EybM9E5yYn4BIpZWYg==}
@@ -8444,6 +8456,10 @@ snapshots:
       - debug
 
   '@figma-export/utils@6.0.0': {}
+
+  '@fontsource/inter@5.2.5': {}
+
+  '@fontsource/jetbrains-mono@5.2.5': {}
 
   '@formatjs/ecma402-abstract@2.2.4':
     dependencies:
