@@ -1,0 +1,7 @@
+.base {
+  flex-grow: 1;
+  display: flex;
+  min-inline-size: 0;
+  gap: var(--kbq-size-3xs);
+  flex-direction: column;
+}

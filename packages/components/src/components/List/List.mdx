@@ -1,0 +1,115 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './List.stories';
+
+<Meta of={Stories} />
+
+# List
+
+<Status variant="experimental" />
+
+List displays a list of options and allows a user to select one or more of them.
+
+```tsx
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListSection,
+} from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Subcomponents
+
+The component has the following helper components:
+
+- `ListItem` — list item component.
+- `ListSection` — a group of items.
+- `ListItemText` — a component to show text in an item.
+
+## Usage
+
+List consists of a container element, with a list of items or sections inside.
+Users can select one or more items by clicking, tapping, or navigating with the keyboard.
+
+```tsx
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListSection,
+} from '@koobiq/react-components';
+
+<List>
+  <ListItem>
+    <ListItemText caption="description">label</ListItemText>
+  </ListItem>
+  <ListSection label="group">
+    <ListItem>
+      <ListItemText caption="description">label</ListItemText>
+    </ListItem>
+  </ListSection>
+</List>;
+```
+
+## Content
+
+List accepts static and dynamic collections. The examples above show static collections,
+which can be used when the full list of options is known ahead of time.
+Dynamic collections, as shown below, can be used when the options come from an external data
+source such as an API call, or update over time.
+
+As seen below, an iterable list of options is passed to the `List` using the `items` prop.
+Each item accepts an `id` prop, which is passed to the `onSelectionChange` handler to identify the selected item.
+Alternatively, if the item objects contain an id property, as shown in the example below, then this is used automatically and an `id` prop is not required.
+
+<Story of={Stories.DynamicCollections} />
+
+## Selection
+
+List supports multiple selection modes.
+By default, selection is disabled, however this can be changed using the `selectionMode` prop.
+
+Use `defaultSelectedKeys` to provide a default set of selected items (uncontrolled) and `selectedKeys`
+to set the selected items (controlled). The value of the selected keys must match the `id` prop of the items.
+
+<Story of={Stories.SelectionStory} />
+
+## Disabled items
+
+List supports marking items as disabled using the `disabledKeys` prop.
+Each key in this list corresponds with the `key` prop passed to the `ListItem` component,
+or automatically derived from the values passed to the items prop.
+
+<Story of={Stories.DisabledItems} />
+
+## Links
+
+By default, interacting with an item in a List triggers `onSelectionChange`.
+Alternatively, items may be links to another page or website. This can be achieved
+by passing the `href` prop to the `ListItem` component.
+
+<Story of={Stories.Links} />
+
+## Sections
+
+List supports sections with headings in order to group options.
+Sections can be used by wrapping groups of `ListItem` in a `ListSection` component.
+Each `ListSection` takes a `title` and `key` prop.
+
+<Story of={Stories.Sections} />
+
+## Other examples
+
+<Story of={Stories.OtherExamples} />
