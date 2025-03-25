@@ -1,10 +1,10 @@
 import type {
+  Ref,
+  RefObject,
   ReactNode,
   ComponentRef,
-  Ref,
   ReactElement,
   HTMLAttributes,
-  RefObject,
 } from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
@@ -110,6 +110,11 @@ export type TooltipProps = {
   id?: string;
   /** Additional CSS-classes. */
   className?: string;
+  /**
+   * The container element in which the component portal will be placed.
+   * @default document.body
+   */
+  portalContainer?: Element;
 } & DataAttributeProps;
 
 export type TooltipRef = ComponentRef<'div'>;

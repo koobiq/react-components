@@ -390,3 +390,36 @@ export const Offsets: Story = {
     );
   },
 };
+
+export const PortalContainer: Story = {
+  name: 'Portal container',
+  render: function Render(args: TooltipProps) {
+    const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
+    return (
+      <div
+        ref={setContainer}
+        style={{
+          width: 100,
+          height: 100,
+          display: 'flex',
+          position: 'relative',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {container && (
+          <Tooltip
+            portalContainer={container}
+            control={() => (
+              <Button variant="fade-contrast-filled">Hover me</Button>
+            )}
+            {...args}
+          >
+            Tooltip
+          </Tooltip>
+        )}
+      </div>
+    );
+  },
+};

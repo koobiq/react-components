@@ -40,6 +40,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     open: openProp,
     offset: offsetProp,
     arrowBoundaryOffset,
+    portalContainer,
     ...other
   } = props;
 
@@ -111,7 +112,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
         appear
       >
         {(transition) => (
-          <Overlay>
+          <Overlay portalContainer={portalContainer}>
             <div
               {...mergeProps(localTooltipProps, tooltipProps)}
               data-arrow={showArrow}
