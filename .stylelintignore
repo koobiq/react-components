@@ -2,5 +2,6 @@ node_modules/
 build/
 dist/
 public/
+coverage/
 storybook-static/
 templates/nextjs/template

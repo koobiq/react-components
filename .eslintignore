@@ -3,6 +3,7 @@ build/
 dist/
 storybook-static/
 node_modules/
+coverage/
 .snapshots/
 *.min.js
 templates/nextjs/template
