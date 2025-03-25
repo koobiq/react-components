@@ -24,7 +24,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@koobiq/design-tokens": "^3.11.2",
+    "@koobiq/design-tokens": "^3.12.1",
     "@koobiq/logger": "workspace:*",
     "@koobiq/react-core": "workspace:*",
     "@koobiq/react-icons": "workspace:*",
