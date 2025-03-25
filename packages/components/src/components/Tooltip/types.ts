@@ -1,16 +1,17 @@
 import type {
-  Ref,
-  RefObject,
   ReactNode,
+  RefObject,
   ComponentRef,
   ReactElement,
-  HTMLAttributes,
+  DOMAttributes,
 } from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
 
 export type TooltipPropControl = (
-  props: HTMLAttributes<HTMLButtonElement> & { ref?: Ref<HTMLButtonElement> }
+  props: DOMAttributes<HTMLElement> & {
+    ref: ((node: HTMLElement | null) => void) | null;
+  }
 ) => ReactElement;
 
 export const tooltipPropPlacement = [

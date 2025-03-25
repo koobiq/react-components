@@ -8,6 +8,7 @@ import {
   mergeProps,
   useBoolean,
   FocusableProvider,
+  useMultiRef,
 } from '@koobiq/react-core';
 import {
   Overlay,
@@ -59,7 +60,8 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   });
 
   const domRef = useDOMRef<ComponentRef<'div'>>(ref);
-  const controlRef = useRef<HTMLButtonElement | null>(null);
+  const controlRef = useRef<HTMLElement | null>(null);
+  const controlRefCallback = useMultiRef([controlRef]);
 
   const { triggerProps, tooltipProps } = useTooltipTrigger(
     {
@@ -97,7 +99,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     <>
       <FocusableProvider {...triggerProps} ref={controlRef}>
         {control?.({
-          ref: controlRef,
+          ref: controlRefCallback,
           ...triggerProps,
         })}
       </FocusableProvider>

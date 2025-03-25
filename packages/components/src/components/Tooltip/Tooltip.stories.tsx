@@ -411,9 +411,7 @@ export const PortalContainer: Story = {
         {container && (
           <Tooltip
             portalContainer={container}
-            control={() => (
-              <Button variant="fade-contrast-filled">Hover me</Button>
-            )}
+            control={(props) => <Typography {...props}>Hover me</Typography>}
             {...args}
           >
             Tooltip
