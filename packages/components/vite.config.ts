@@ -26,6 +26,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       fileName: (_, entryName: string) => `${entryName}.js`,
       formats: ['es'],
+      cssFileName: 'style',
     },
     minify: false,
     target: browserslistToEsbuild(browserslist(browsers)),
