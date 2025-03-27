@@ -84,6 +84,7 @@ export const typographyPropColor = [
   'warning',
   'warning-secondary',
   'visited',
+  'inherit',
 ] as const;
 export type TypographyPropColor = (typeof typographyPropColor)[number];
 

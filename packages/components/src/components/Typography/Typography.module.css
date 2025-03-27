@@ -39,3 +39,7 @@
 .ellipsis {
   @mixin ellipsis;
 }
+
+.color-inherit {
+  color: inherit;
+}
