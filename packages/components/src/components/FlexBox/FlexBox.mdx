@@ -1,0 +1,79 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Alert,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './FlexBox.stories.tsx';
+
+<Meta of={Stories} />
+
+# FlexBox
+
+<Status variant="experimental" />
+
+FlexBox is a layout component that uses [CSS Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox) to arrange its children in a row or column.
+It helps you control gaps, alignment, and direction without writing custom CSS.
+
+```tsx
+import { FlexBox } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Gaps
+
+You can adjust the spacing around rows and columns:
+
+- `gap` controls all spacing in the flex box,
+- `colGap` controls spacing between columns,
+- `rowGap` controls spacing between rows.
+
+<Alert status="info">
+  The values specified in `colGap` and `rowGap` are more important and override
+  what you specified in `gap`.
+</Alert>
+
+<Story of={Stories.Gap} />
+
+## Direction
+
+Use the `direction` prop to set the `flex-direction` of items inside a flex container.
+
+<Story of={Stories.Direction} />
+
+## Alignment
+
+Use `alignItems` and `justifyContent` props to control the alignment and spacing of items inside a flex container:
+
+- `alignItems` – controls how items are aligned along the cross axis (e.g., top to bottom).
+- `justifyContent` – controls how items are spaced along the main axis (e.g., left to right).
+
+<Story of={Stories.Alignment} />
+
+## Responsive values
+
+You can switch the props' value based on the active breakpoint for each item.
+
+<Story of={Stories.ResponsiveValues} />
+
+Responsive values is supported by:
+
+- `gap`
+- `colGap`
+- `rowGap`
+- `alignItems`
+- `justifyContent`
+- `wrap`
+- `flex`
+- `direction`
+
+## Example
+
+<Story of={Stories.Example} />
