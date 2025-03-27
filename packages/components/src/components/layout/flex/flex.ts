@@ -56,13 +56,24 @@ export const flexPropOrder = [-1, 0, 1] as const;
 export type FlexPropOrder = (typeof flexPropOrder)[number];
 
 export type FlexProps = {
-  alignItems?: FlexPropAlignItems;
-  justifyContent?: FlexPropJustifyContent;
-  flex?: FlexPropFlex;
-  wrap?: FlexPropWrap;
-  direction?: FlexPropDirection;
+  /** Defines the `gap` property. */
   gap?: FlexPropGap;
+  /** Defines the `column-gap` property. */
+  colGap?: FlexPropGap;
+  /** Defines the `row-gap` property. */
+  rowGap?: FlexPropGap;
+  /** Defines the `display` property with `flex` or `inline-flex` value. */
+  flex?: FlexPropFlex;
+  /** Defines the `flex-wrap` property. */
+  wrap?: FlexPropWrap;
+  /** Defines the `order` property. */
   order?: FlexPropOrder;
+  /** Defines the `flex-direction` property. */
+  direction?: FlexPropDirection;
+  /** Defines the `align-items` property. */
+  alignItems?: FlexPropAlignItems;
+  /** Defines the `justify-content` property. */
+  justifyContent?: FlexPropJustifyContent;
 };
 
 export type FlexParams = (props: FlexProps, className?: string) => string;
@@ -75,17 +86,23 @@ export const flex: FlexParams = (props, className) => {
     wrap,
     direction,
     gap,
+    rowGap: rowGapProp,
+    colGap: colGapProp,
     order: orderProp,
   } = props;
 
   const order = String(orderProp);
 
+  const colGap = colGapProp ?? gap;
+  const rowGap = rowGapProp ?? gap;
+
   return clsx(
     s.base,
-    gap && s[`gap_${gap}`],
     flex && s[`flex_${flex}`],
     wrap && s[`wrap_${wrap}`],
     order && s[`order_${order}`],
+    rowGap && s[`gap_row_${rowGap}`],
+    colGap && s[`gap_column_${colGap}`],
     direction && s[`direction_${direction}`],
     alignItems && s[`alignItems_${alignItems}`],
     justifyContent && s[`justifyContent_${justifyContent}`],

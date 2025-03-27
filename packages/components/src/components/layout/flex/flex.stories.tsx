@@ -77,13 +77,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const blockStyle = {
-  width: '6em',
-  textAlign: 'center',
-  padding: 'var(--kbq-size-m)',
-  color: 'var(--kbq-white-default)',
-  borderRadius: 'var(--kbq-size-s)',
-  fontFamily: 'var(--kbq-font-family-mono)',
-  backgroundColor: 'var(--kbq-background-theme)',
+  flex: 1,
+  width: 100,
+  height: 32,
+  borderRadius: 8,
+  backgroundColor: 'var(--kbq-background-contrast-fade)',
 } as CSSProperties;
 
 export const Example: Story = (props: FlexProps) => (
@@ -94,36 +92,28 @@ export const Example: Story = (props: FlexProps) => (
         alignItems: 'center',
         justifyContent: 'center',
       })}
-    >
-      item-1
-    </div>
+    />
     <div
       style={blockStyle}
       className={flex({
         alignItems: 'center',
         justifyContent: 'center',
       })}
-    >
-      item-2
-    </div>
+    />
     <div
       style={blockStyle}
       className={flex({
         alignItems: 'center',
         justifyContent: 'center',
       })}
-    >
-      item-3
-    </div>
+    />
     <div
       style={blockStyle}
       className={flex({
         alignItems: 'center',
         justifyContent: 'center',
       })}
-    >
-      item-4
-    </div>
+    />
     <div
       style={blockStyle}
       className={flex({
@@ -131,9 +121,7 @@ export const Example: Story = (props: FlexProps) => (
         justifyContent: 'center',
         order: props.order,
       })}
-    >
-      item-5
-    </div>
+    />
   </div>
 );
 
