@@ -11,8 +11,8 @@ import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
-import { flex } from '../layout';
 import { useBreakpoints } from '../Provider';
 import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
@@ -64,10 +64,8 @@ export const Base: Story = {
 
 export const Variant: Story = {
   render: function Render(args) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputPropVariant.map((variant) => (
           <Input
             key={variant}
@@ -78,17 +76,15 @@ export const Variant: Story = {
             {...args}
           />
         ))}
-      </div>
+      </FlexBox>
     );
   },
 };
 
 export const Error: Story = {
   render: function Render(args: InputProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputPropVariant.map((variant) => (
           <Input
             key={variant}
@@ -101,7 +97,7 @@ export const Error: Story = {
             {...args}
           />
         ))}
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -133,10 +129,8 @@ export const LongLabel: Story = {
 
 export const Disabled: Story = {
   render: function Render(args: InputProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputPropVariant.map((variant) => (
           <Input
             key={variant}
@@ -149,17 +143,15 @@ export const Disabled: Story = {
             {...args}
           />
         ))}
-      </div>
+      </FlexBox>
     );
   },
 };
 
 export const Required: Story = {
   render: function Render(args: InputProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Input
           label="Name"
           caption="required"
@@ -175,7 +167,7 @@ export const Required: Story = {
           required
           {...args}
         />
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -197,10 +189,7 @@ export const ReadOnly: Story = {
 
 export const Autofill: Story = {
   render: (args: InputProps) => (
-    <div
-      className={flex({ direction: 'column', gap: 'm' })}
-      style={{ inlineSize: 220 }}
-    >
+    <FlexBox gap="m" direction="column" style={{ inlineSize: 220 }}>
       <Typography>
         Click on the text box and choose any option suggested by your browser.
       </Typography>
@@ -212,16 +201,14 @@ export const Autofill: Story = {
         fullWidth
         {...args}
       />
-    </div>
+    </FlexBox>
   ),
 };
 
 export const Addons: Story = {
   render: function Render(args: InputProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Input
           label="startAddon"
           startAddon={<IconMagnifyingGlass16 />}
@@ -248,7 +235,7 @@ export const Addons: Story = {
           placeholder="Seacrh"
           {...args}
         />
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -271,13 +258,7 @@ export const ControlledValue: Story = {
     const [value, setState] = useState('Sophia');
 
     return (
-      <div
-        className={flex({
-          gap: 'm',
-          direction: 'column',
-          alignItems: 'stretch',
-        })}
-      >
+      <FlexBox gap="m" direction="column" alignItems="stretch">
         <Input
           label="Name"
           onChange={setState}
@@ -286,7 +267,7 @@ export const ControlledValue: Story = {
           {...args}
         />
         <Typography ellipsis>Current value: {value}</Typography>
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -320,9 +301,9 @@ export const Password: Story = {
 
 export const Composition: Story = {
   render: (args: InputProps) => (
-    <div className={flex({ gap: 'm' })}>
+    <FlexBox gap="m">
       <Input aria-label="input" placeholder="Placeholder" {...args} />
       <Button>Button</Button>
-    </div>
+    </FlexBox>
   ),
 };
