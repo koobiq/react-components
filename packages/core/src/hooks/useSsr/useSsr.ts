@@ -1,6 +1,8 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
-import { isBrowser } from '../../utils/index.js';
+import { isBrowser } from '../../utils';
 
 type SsrState = {
   isBrowser: boolean;
