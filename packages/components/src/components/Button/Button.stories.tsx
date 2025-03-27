@@ -16,7 +16,7 @@ import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from '../Checkbox';
-import { flex } from '../layout';
+import { FlexBox } from '../FlexBox';
 
 import { type ButtonBaseProps, buttonPropVariant } from './index.js';
 import { Button } from './index.js';
@@ -76,7 +76,7 @@ export const WithIcons: Story = {
 
 export const OnlyIcon: Story = {
   render: (args: ButtonBaseProps) => (
-    <div className={flex({ gap: 'l' })}>
+    <FlexBox gap="l">
       {buttonPropVariant.map((variant) => (
         <Button
           key={variant}
@@ -87,7 +87,7 @@ export const OnlyIcon: Story = {
           {...args}
         />
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -101,9 +101,7 @@ export const Progress: Story = {
 
 export const Variant: Story = {
   render: (args: ButtonBaseProps) => (
-    <div
-      className={flex({ gap: 'l', direction: 'column', alignItems: 'stretch' })}
-    >
+    <FlexBox gap="l" direction="column" alignItems="stretch">
       {buttonPropVariant.map((variant) => (
         <Button
           startIcon={<IconPlus16 />}
@@ -114,7 +112,7 @@ export const Variant: Story = {
           variant = {variant}
         </Button>
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -123,35 +121,35 @@ export const Disabled: Story = {
     const [checked, setChecked] = useState(false);
 
     return (
-      <div className={flex({ gap: 'l', direction: 'column' })}>
+      <FlexBox gap="l" direction="column">
         <Button progress={checked} disabled {...args}>
           Button
         </Button>
         <Checkbox checked={checked} onChange={setChecked}>
           Progress
         </Checkbox>
-      </div>
+      </FlexBox>
     );
   },
 };
 
 export const LongLabel: Story = {
   render: (args: ButtonBaseProps) => (
-    <div className={flex({})} style={{ inlineSize: 240 }}>
+    <FlexBox style={{ inlineSize: 240 }}>
       <Button startIcon={<IconPlus16 />} {...args}>
         A very, very, very long label inside the button
       </Button>
-    </div>
+    </FlexBox>
   ),
 };
 
 export const FullWidth: Story = {
   render: (args: ButtonBaseProps) => (
-    <div className={flex({})} style={{ inlineSize: 240 }}>
+    <FlexBox style={{ inlineSize: 240 }}>
       <Button startIcon={<IconPlus16 />} fullWidth {...args}>
         Button
       </Button>
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -172,7 +170,7 @@ export const RootTag: Story = {
     };
 
     return (
-      <div className={flex({ gap: 'l' })}>
+      <FlexBox gap="l">
         <Button as="a" href="#" endIcon={<IconArrowUpRightFromSquare16 />}>
           Link
         </Button>
@@ -189,7 +187,7 @@ export const RootTag: Story = {
             multiple
           />
         </Button>
-      </div>
+      </FlexBox>
     );
   },
 };
