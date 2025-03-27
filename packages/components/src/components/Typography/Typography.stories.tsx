@@ -73,6 +73,7 @@ export const Color: Story = {
       <Typography color="warning">Text</Typography>
       <Typography color="theme">Text</Typography>
       <Typography color="error">Text</Typography>
+      <Typography color="inherit">Text</Typography>
     </div>
   ),
 };

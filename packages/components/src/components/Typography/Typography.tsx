@@ -35,11 +35,11 @@ export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
       data-ellipsis={ellipsis}
       className={clsx(
         s.base,
+        textVariant[variant],
         display && s[display],
         ellipsis && s.ellipsis,
         align && s[`align-${align}`],
-        textVariant[variant],
-        foregroundColor[color],
+        color === 'inherit' ? s['color-inherit'] : foregroundColor[color],
         className
       )}
       {...other}
