@@ -1,4 +1,9 @@
-import { Meta, Story, Status } from '../../../../../.storybook/components';
+import {
+  Meta,
+  Story,
+  Status,
+  Alert,
+} from '../../../../../.storybook/components';
 
 import * as Stories from './useMediaQuery.stories';
 
@@ -13,6 +18,12 @@ This hook tracks the state of a [media query](https://developer.mozilla.org/en-U
 ```tsx
 import { useMediaQuery } from '@koobiq/react-core';
 ```
+
+<Alert status="warning">
+  Keep in mind this API relies on the users browser support of
+  `window.matchMedia` and will always return false if it is not supported or
+  does not exist (e.g. during serverside rendering).
+</Alert>
 
 ## Definition
 
