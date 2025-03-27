@@ -1,4 +1,5 @@
 export * from './Provider';
+export * from './FlexBox';
 export * from './Container';
 export * from './Alert';
 export * from './Button';
