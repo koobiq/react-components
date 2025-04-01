@@ -334,6 +334,33 @@ export const ControlledOpen: Story = {
   },
 };
 
+export const Hover: Story = {
+  name: 'Mouse hover interaction',
+  render: function Render(args: PopoverProps) {
+    const anchorRef = useRef<HTMLButtonElement | null>(null);
+    const [open, { on, off, set }] = useBoolean(false);
+
+    return (
+      <>
+        <Button onHoverStart={on} onHoverEnd={off} ref={anchorRef}>
+          Hover with a Popover
+        </Button>
+        <Popover
+          size="auto"
+          slotProps={{ backdrop: { hidden: true } }}
+          open={open}
+          anchorRef={anchorRef}
+          onOpenChange={(open) => set(open)}
+          hideCloseButton
+          {...args}
+        >
+          <div style={{ padding: 16 }}>I use Popover</div>
+        </Popover>
+      </>
+    );
+  },
+};
+
 export const Customization: Story = {
   render: (args: PopoverProps) => (
     <Popover
