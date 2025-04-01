@@ -68,7 +68,7 @@ export type TooltipProps = {
    * */
   placement?: TooltipPropPlacement;
   /** The ref for the element which the popover positions itself with respect to. */
-  anchorRef?: RefObject<HTMLElement>;
+  anchorRef?: RefObject<HTMLElement | null>;
   /**
    * The minimum distance the arrow's edge should be from the edge of the overlay element.
    * @default 0
