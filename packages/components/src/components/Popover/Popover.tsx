@@ -113,6 +113,14 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
       slotProps?.dialog
     );
 
+    const backdropProps = mergeProps(
+      {
+        className: s.underlay,
+      },
+      slotProps?.backdrop,
+      underlayProps
+    );
+
     return (
       <>
         {control?.({
@@ -136,7 +144,7 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
               portalContainer={portalContainer}
               disableFocusManagement={disableFocusManagement}
             >
-              <div {...underlayProps} className={s.underlay} />
+              <div {...backdropProps} />
               <div
                 ref={domRef}
                 data-size={size}

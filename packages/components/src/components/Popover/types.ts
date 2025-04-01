@@ -124,5 +124,6 @@ export type PopoverProps = {
   slotProps?: {
     dialog?: DialogProps;
     arrow?: ComponentPropsWithRef<'div'>;
+    backdrop?: ComponentPropsWithRef<'div'>;
   };
 };
