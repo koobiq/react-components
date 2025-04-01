@@ -3,7 +3,7 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
-import { clsx, isNotNil, useDOMRef, mergeProps } from '@koobiq/react-core';
+import { isNotNil, useDOMRef, mergeProps, clsx } from '@koobiq/react-core';
 import { useListBox, useListState } from '@koobiq/react-primitives';
 
 import { Typography } from '../Typography';
@@ -16,7 +16,7 @@ export function ListRender<T extends object>(
   props: ListProps<T>,
   ref: Ref<ListRef>
 ) {
-  const { className, label } = props;
+  const { label, className, style, slotProps } = props;
 
   const domRef = useDOMRef(ref);
 
@@ -24,25 +24,28 @@ export function ListRender<T extends object>(
 
   const { listBoxProps, labelProps } = useListBox(props, state, domRef);
 
+  const titleProps = mergeProps(
+    {
+      className: s.label,
+      variant: 'text-normal-strong',
+    },
+    slotProps?.label,
+    labelProps
+  );
+
   const listProps = mergeProps(
     {
-      className: clsx(s.base, className),
+      style,
       ref: domRef,
+      className: clsx(s.base, className),
     },
+    slotProps?.list,
     listBoxProps
   );
 
   return (
     <>
-      {isNotNil(label) && (
-        <Typography
-          variant="text-normal-strong"
-          className={s.label}
-          {...labelProps}
-        >
-          {label}
-        </Typography>
-      )}
+      {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
       <ul {...listProps}>
         {[...state.collection].map((item) =>
           item.type === 'section' ? (

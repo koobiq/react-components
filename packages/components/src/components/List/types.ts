@@ -1,6 +1,15 @@
-import type { ComponentRef, ReactElement, ReactNode, Ref } from 'react';
+import type {
+  ComponentPropsWithRef,
+  ComponentRef,
+  CSSProperties,
+  ReactElement,
+  ReactNode,
+  Ref,
+} from 'react';
 
 import type { AriaListBoxProps } from '@koobiq/react-primitives';
+
+import type { TypographyProps } from '../Typography';
 
 export const listPropSelectionMode = ['none', 'single', 'multiple'] as const;
 
@@ -33,8 +42,11 @@ export type ListBaseProps<T extends object> = {
   label?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /** The type of selection that is allowed in the collection. */
   selectionMode?: ListPropSelectionMode;
+  /** Ref to the HTML ul-element. */
   ref?: Ref<HTMLElement>;
   /** The contents of the collection. */
   children?: ListPropChildren<T>;
@@ -55,6 +67,11 @@ export type ListBaseProps<T extends object> = {
   onAction?: ListPropOnAction<T>;
   /** How multiple selection should behave in the collection. */
   selectionBehavior?: ListPropSelectionBehavior<T>;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    label?: TypographyProps;
+    list?: ComponentPropsWithRef<'div'>;
+  };
 };
 
 export type ListProps<T extends object> = ListBaseProps<T>;
