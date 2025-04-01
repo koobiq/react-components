@@ -9,13 +9,21 @@ import { useBreakpoints } from './utils';
 export type BreakpointsProviderProps = {
   children: ReactNode;
   breakpoints: Breakpoints;
+  defaultMatches?: boolean[];
 };
 
 export const BreakpointsProvider = ({
   children,
+  defaultMatches,
   breakpoints: _breakpoints,
 }: BreakpointsProviderProps) => {
-  const breakpoints = useBreakpoints(_breakpoints);
+  const breakpoints = useBreakpoints(
+    _breakpoints,
+    defaultMatches && {
+      ssr: true,
+      defaultMatches,
+    }
+  );
 
   return (
     <BreakpointsContext.Provider value={breakpoints}>

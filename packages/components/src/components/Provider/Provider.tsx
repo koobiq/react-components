@@ -17,12 +17,16 @@ export const defaultBreakpoints: Breakpoints = {
 
 export const Provider = ({
   breakpoints = defaultBreakpoints,
+  breakpointsFallback,
   children,
   locale,
 }: ProviderProps) => (
   <ProviderContext.Provider value={{ breakpoints, locale }}>
     <I18nProvider locale={locale}>
-      <BreakpointsProvider breakpoints={breakpoints}>
+      <BreakpointsProvider
+        breakpoints={breakpoints}
+        defaultMatches={breakpointsFallback}
+      >
         {children}
       </BreakpointsProvider>
     </I18nProvider>
