@@ -23,6 +23,7 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
     const {
       placement: placementProp = 'top',
       arrowBoundaryOffset = 20,
+      containerPadding = 12,
       hideArrow = false,
       size = 'medium',
       crossOffset = 0,
@@ -76,9 +77,9 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
         isNonModal,
         crossOffset,
         maxHeight: 480,
+        containerPadding,
         popoverRef: domRef,
         arrowBoundaryOffset,
-        containerPadding: 24,
         placement: placementProp,
         isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
         triggerRef: anchorRef || controlRef,

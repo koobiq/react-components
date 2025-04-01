@@ -109,6 +109,12 @@ export type PopoverProps = {
    */
   arrowBoundaryOffset?: number;
   /**
+   * The placement padding that should be applied between the element and its
+   * surrounding container.
+   * @default 12
+   */
+  containerPadding?: number;
+  /**
    * The additional offset applied along the main axis between the element and its
    * anchor element.
    * @default 0
