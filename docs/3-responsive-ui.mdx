@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/blocks';
+import { Alert } from '../.storybook/components';
 
 <Meta title="Responsive UI" />
 
@@ -27,6 +28,31 @@ The `Provider` component helps you manage responsive breakpoints in your app.
 
 - Wrap the application with the `Provider` component to enable responsive breakpoints.
 - Access the breakpoints object from the `useBreakpoints` hook in your component.
+
+### Server-Side Rendering
+
+<Alert status="warning">
+  Server-side rendering and client-side media queries are fundamentally at odds.
+  Be aware of the tradeoff. The support can only be partial.
+</Alert>
+
+Use `breakpointsFallback` on the server because media queries can't run without a real screen.
+It provides default values for breakpoints during server-side rendering to ensure consistent UI on first load.
+
+You can set values for `breakpointsFallback` using the userAgent, for example to check if it's a phone or a desktop.
+But this gives only a basic idea of the device. If you need more accurate results, it's better to use
+[CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries).
+
+```tsx
+import { Provider } from '@koobiq/react-components';
+
+const App = () => (
+  // On the server, all breakpoints up to size "l" will be considered active
+  <Provider breakpointsFallback={[true, true, true, true]}>
+    My application
+  </Provider>
+);
+```
 
 ### Example
 
