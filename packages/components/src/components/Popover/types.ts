@@ -88,7 +88,7 @@ export type PopoverProps = {
    * */
   placement?: PopoverPropPlacement;
   /** The ref for the element which the popover positions itself with respect to. */
-  anchorRef?: RefObject<HTMLElement>;
+  anchorRef?: RefObject<HTMLElement | null>;
   /**
    * If `true`, the arrow isn't shown.
    * @default false
