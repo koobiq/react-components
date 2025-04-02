@@ -32,6 +32,7 @@ export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
     disableFocusManagement,
     disableExitOnClickOutside,
     disableExitOnEscapeKeyDown,
+    shouldCloseOnInteractOutside,
     ...other
   } = props;
 
@@ -57,6 +58,7 @@ export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
   const { modalProps: modalCommonProps, underlayProps } = useModalOverlay(
     {
       ...props,
+      shouldCloseOnInteractOutside,
       isDismissable: !disableExitOnClickOutside,
       isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
     },
