@@ -79,6 +79,13 @@ export type SidePanelProps = {
    * @default false
    */
   disableFocusManagement?: boolean;
+  /**
+   * When user interacts with the argument element outside of the overlay ref,
+   * return true if onClose should be called. This gives you a chance to filter
+   * out interaction with elements that should not dismiss the overlay.
+   * By default, onClose will always be called on interaction outside the overlay ref.
+   */
+  shouldCloseOnInteractOutside?: (element: Element) => boolean;
   /** The props used for each slot inside. */
   slotProps?: {
     dialog?: DialogProps;
