@@ -21,26 +21,26 @@ import { normalizeInlineSize } from './utils';
 export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
   (props, ref) => {
     const {
-      placement: placementProp = 'top',
-      arrowBoundaryOffset = 20,
-      containerPadding = 12,
-      hideArrow = false,
+      offset = 0,
       size = 'medium',
       crossOffset = 0,
-      offset = 0,
+      hideArrow = false,
+      containerPadding = 12,
+      arrowBoundaryOffset = 20,
+      placement: placementProp = 'top',
+      control,
+      children,
+      anchorRef,
       slotProps,
-      disableExitOnEscapeKeyDown,
-      disableFocusManagement,
-      portalContainer,
-      hideCloseButton,
-      open: openProp,
       className,
+      isNonModal,
       defaultOpen,
       onOpenChange,
-      isNonModal,
-      anchorRef,
-      children,
-      control,
+      open: openProp,
+      portalContainer,
+      hideCloseButton,
+      disableFocusManagement,
+      disableExitOnEscapeKeyDown,
       ...other
     } = props;
 
@@ -50,9 +50,9 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
     const controlRef = useRef<HTMLButtonElement | null>(null);
 
     const state = useOverlayTriggerState({
-      isOpen: openProp,
-      onOpenChange,
       defaultOpen,
+      onOpenChange,
+      isOpen: openProp,
       ...other,
     });
 
@@ -81,8 +81,8 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
         popoverRef: domRef,
         arrowBoundaryOffset,
         placement: placementProp,
-        isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
         triggerRef: anchorRef || controlRef,
+        isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
       },
       { ...state, isOpen: opened }
     );
@@ -107,9 +107,9 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
     const dialogProps = mergeProps(
       {
         role: 'dialog',
+        hideCloseButton,
         className: s.dialog,
         onClose: state.close,
-        hideCloseButton,
       },
       slotProps?.dialog
     );
@@ -125,8 +125,8 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
     return (
       <>
         {control?.({
-          onClick: onPress,
           ref: controlRef,
+          onClick: onPress,
           disabled: isDisabled,
           ...otherTriggerProps,
         })}

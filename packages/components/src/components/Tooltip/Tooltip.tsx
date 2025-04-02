@@ -28,20 +28,20 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const {
     delay = 120,
     disabled = false,
-    defaultOpen,
     closeDelay = 120,
     hideArrow = false,
     variant = 'contrast',
-    onOpenChange,
     placement: placementProp = 'top',
     control,
     children,
     anchorRef,
     crossOffset,
+    defaultOpen,
+    onOpenChange,
     open: openProp,
+    portalContainer,
     offset: offsetProp,
     arrowBoundaryOffset,
-    portalContainer,
     ...other
   } = props;
 

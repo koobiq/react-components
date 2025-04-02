@@ -19,19 +19,19 @@ import type { ModalProps, ModalRef } from './types';
 
 export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
   const {
-    hideCloseButton = false,
     size = 'medium',
-    disableExitOnEscapeKeyDown,
-    disableExitOnClickOutside,
-    disableFocusManagement,
-    portalContainer,
-    open: openProp,
+    hideCloseButton = false,
+    control,
+    children,
+    slotProps,
+    defaultOpen,
     hideBackdrop,
     onOpenChange,
-    defaultOpen,
-    children,
-    control,
-    slotProps,
+    open: openProp,
+    portalContainer,
+    disableFocusManagement,
+    disableExitOnClickOutside,
+    disableExitOnEscapeKeyDown,
     ...other
   } = props;
 
@@ -75,9 +75,9 @@ export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
 
   const containerProps = mergeProps(
     {
-      className: clsx(s.base, s[size]),
       ref: containerRef,
       'data-size': size,
+      className: clsx(s.base, s[size]),
     },
     other
   );
