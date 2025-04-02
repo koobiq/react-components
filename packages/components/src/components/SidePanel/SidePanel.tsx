@@ -20,20 +20,20 @@ import type { SidePanelProps, SidePanelRef } from './types';
 export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
   (props, ref) => {
     const {
-      hideCloseButton = false,
-      position = 'left',
       size = 'medium',
-      disableExitOnEscapeKeyDown,
-      disableExitOnClickOutside,
-      disableFocusManagement,
-      portalContainer,
-      open: openProp,
-      hideBackdrop,
-      onOpenChange,
-      defaultOpen,
-      children,
+      position = 'left',
+      hideCloseButton = false,
       control,
+      children,
       slotProps,
+      defaultOpen,
+      onOpenChange,
+      hideBackdrop,
+      open: openProp,
+      portalContainer,
+      disableFocusManagement,
+      disableExitOnClickOutside,
+      disableExitOnEscapeKeyDown,
       ...other
     } = props;
 
@@ -77,10 +77,10 @@ export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
 
     const containerProps = mergeProps(
       {
-        className: clsx(s.base, s[size], s[position]),
+        ref: containerRef,
         'data-size': size,
         'data-position': position,
-        ref: containerRef,
+        className: clsx(s.base, s[size], s[position]),
       },
       other
     );
@@ -104,8 +104,8 @@ export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
     const panelProps = mergeProps(
       modalCommonProps,
       {
-        className: s.panel,
         ref: modalRef,
+        className: s.panel,
       },
       slotProps?.panel
     );
