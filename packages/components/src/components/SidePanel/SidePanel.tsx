@@ -34,6 +34,7 @@ export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
       disableFocusManagement,
       disableExitOnClickOutside,
       disableExitOnEscapeKeyDown,
+      shouldCloseOnInteractOutside,
       ...other
     } = props;
 
@@ -59,6 +60,7 @@ export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
     const { modalProps: modalCommonProps, underlayProps } = useModalOverlay(
       {
         ...props,
+        shouldCloseOnInteractOutside,
         isDismissable: !disableExitOnClickOutside,
         isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
       },
