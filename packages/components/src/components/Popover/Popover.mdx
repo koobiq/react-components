@@ -115,6 +115,18 @@ anchor element whereas the `crossOffset` prop handles the spacing applied along 
 
 <Story of={Stories.Offsets} />
 
+## Click outside exceptions
+
+Use `shouldCloseOnInteractOutside` function to control whether the popover should close when
+the user interacts with an element outside its ref.
+
+This function receives the target element of the interaction. Return `true` to trigger onClose, or `false` to prevent closing.
+This allows you to exclude specific elements from dismissing the popover.
+
+By default, onClose is always called when interacting outside the popover.
+
+<Story of={Stories.ShouldCloseOnInteractOutside} />
+
 ## Controlled open state
 
 The `open` prop can be used to make the opened state controlled.
