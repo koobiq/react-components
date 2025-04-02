@@ -41,6 +41,7 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
       hideCloseButton,
       disableFocusManagement,
       disableExitOnEscapeKeyDown,
+      shouldCloseOnInteractOutside,
       ...other
     } = props;
 
@@ -81,6 +82,7 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
         popoverRef: domRef,
         arrowBoundaryOffset,
         placement: placementProp,
+        shouldCloseOnInteractOutside,
         triggerRef: anchorRef || controlRef,
         isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
       },
