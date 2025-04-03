@@ -1,3 +1,5 @@
 packages:
   - 'packages/*'
+  - 'templates/*'
   - 'templates/nextjs/*'
+  - 'templates/vite/*'

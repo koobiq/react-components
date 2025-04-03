@@ -37,7 +37,7 @@ export const FrameworkGuide = () => {
           aria-label="next-js"
         />
       </div>
-      <div className={classes.template} aria-disabled>
+      <div className={classes.template}>
         <div className={classes.title}>
           <img src={vite} width={32} height={32} alt="vitejs" />
           <Typography variant="title" as="span">
@@ -47,6 +47,11 @@ export const FrameworkGuide = () => {
         <Typography variant="text-big" as="span">
           A template for Vite with Koobiq React
         </Typography>
+        <a
+          className={classes.link}
+          href="https://github.com/koobiq/react-components/tree/main/templates/vite/template"
+          aria-label="vite-js"
+        />
       </div>
     </div>
   );
