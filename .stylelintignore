@@ -5,3 +5,4 @@ public/
 coverage/
 storybook-static/
 templates/nextjs/template
+templates/vite/template

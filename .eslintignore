@@ -7,3 +7,4 @@ coverage/
 .snapshots/
 *.min.js
 templates/nextjs/template
+templates/vite/template

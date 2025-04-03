@@ -1,0 +1,20 @@
+html,
+body {
+  background-color: var(--kbq-background-bg);
+}
+
+#root {
+  display: flex;
+  block-size: 100vh;
+  max-inline-size: 100vw;
+  overflow-inline: hidden;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
