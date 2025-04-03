@@ -69,7 +69,7 @@ type ComponentProps = {
 };
 
 const Component = (props) => {
-  if (process.env.NODE_ENV !== 'production' && props.variant) {
+  if (process.env.NODE_ENV !== 'production' && props.old) {
     deprecate('The "old" prop is deprecated. Use "new" prop to replace it.');
   }
 
