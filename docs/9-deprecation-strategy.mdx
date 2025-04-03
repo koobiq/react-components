@@ -1,0 +1,78 @@
+import { Meta } from '@storybook/blocks';
+import { Alert } from '../.storybook/components';
+import { Link } from '@koobiq/react-components';
+
+<Meta title="Deprecation Strategy" />
+
+# Deprecation Strategy
+
+The design-system team aims to maintain backward compatibility when updating components. However, this isn't always possible.
+
+We deprecate components in our library when:
+
+- A new component is available that replaces the old one.
+- There's a better way to solve the same problem.
+
+We understand that replacing a deprecated component takes time and effort.
+That's why we provide a clear and safe strategy to help teams transition with minimal risk and at a comfortable pace.
+
+## Dual support
+
+If a component is deprecated and a replacement is available, the new version will be named with the `Next` prefix.
+For example, if `Component` is deprecated, the replacement will be called `ComponentNext`.
+
+This allows continued development of similar new components while avoiding the necessity to do a breaking
+version change in the library.
+
+During the next major version release we would delete the deprecated component and drop Next from the new component.
+
+## Documenting Deprecations
+
+See details on how to annotate components for deprecation.
+
+**Deprecating components**
+
+To deprecate a component in the library, the component export
+should be annotated with a JSDoc comment including the `@deprecated`.
+
+```tsx
+/**
+ * @deprecated
+ * This component has been deprecated, please use ComponentNext instead.
+ */
+const Component = () => {
+  // Some component
+};
+```
+
+In the documentation, highlight that the component is no longer supported and link to the new one:
+
+<Alert status="error" title="This component has been deprecated">
+  Please use <Link>ComponentNext</Link> instead.
+</Alert>
+
+**Deprecating props**
+
+To deprecate a prop on a component, the types should be updated to be annotated with a JSDOC
+comment included the `@deprecated`.
+
+```tsx
+import { deprecate } from '@koobiq/logger';
+
+type ComponentProps = {
+  /**
+   * @deprecated
+   * The "old" prop is deprecated. Use "new" prop to replace it.
+   */
+  old?: string;
+  // ...
+};
+
+const Component = (props) => {
+  if (process.env.NODE_ENV !== 'production' && props.variant) {
+    deprecate('The "old" prop is deprecated. Use "new" prop to replace it.');
+  }
+
+  // ...
+};
+```
