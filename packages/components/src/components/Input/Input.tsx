@@ -61,6 +61,15 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           slotProps?.input
         );
 
+        const groupProps = mergeProps(
+          {
+            error,
+            endAddon,
+            startAddon,
+          },
+          slotProps?.group
+        );
+
         const captionProps = slotProps?.caption;
 
         const errorProps = mergeProps({ error }, slotProps?.errorMessage);
@@ -70,11 +79,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
             <FieldLabel {...labelProps}>
               {labelProps?.children || label}
             </FieldLabel>
-            <FieldInputGroup
-              error={error}
-              endAddon={endAddon}
-              startAddon={startAddon}
-            >
+            <FieldInputGroup {...groupProps}>
               <FieldInput {...inputProps} />
             </FieldInputGroup>
             <FieldCaption {...captionProps}>

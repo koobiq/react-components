@@ -12,7 +12,7 @@ import { FieldAddon } from '../FieldAddon';
 import s from './FieldInputGroup.module.css';
 import { FieldInputGroupContext } from './FieldInputGroupContext';
 
-export type FieldInputGroupBaseProps = ExtendableComponentPropsWithRef<
+export type FieldInputGroupProps = ExtendableComponentPropsWithRef<
   {
     children?: ReactNode;
     startAddon?: ReactNode;
@@ -26,7 +26,7 @@ export type FieldInputGroupBaseProps = ExtendableComponentPropsWithRef<
 
 export const FieldInputGroup = forwardRef<
   ComponentRef<'div'>,
-  FieldInputGroupBaseProps
+  FieldInputGroupProps
 >(({ children, className, startAddon, endAddon, error, ...other }, ref) => {
   const { value } = useInputContext();
   const hasStartAddon = !!startAddon;
