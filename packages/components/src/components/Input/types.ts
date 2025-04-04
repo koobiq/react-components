@@ -8,6 +8,7 @@ import type {
   FieldErrorProps,
   FieldInputProps,
   FieldLabelProps,
+  FieldInputGroupProps,
 } from '../FieldComponents';
 
 export const inputPropVariant = ['filled', 'transparent'] as const;
@@ -67,6 +68,7 @@ export type InputProps = ExtendableProps<
       label?: FieldLabelProps;
       input?: FieldInputProps;
       caption?: FieldCaptionProps;
+      group?: FieldInputGroupProps;
       errorMessage?: FieldErrorProps;
     };
   },
