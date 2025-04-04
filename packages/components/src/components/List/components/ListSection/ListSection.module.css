@@ -6,5 +6,6 @@
 }
 
 .heading {
+  box-sizing: border-box;
   padding: var(--kbq-size-s) var(--kbq-size-m);
 }

@@ -6,6 +6,7 @@
   display: flex;
   cursor: pointer;
   text-decoration: none;
+  box-sizing: border-box;
   gap: var(--kbq-size-s);
   border-radius: var(--kbq-size-s);
   color: var(--kbq-foreground-contrast);
