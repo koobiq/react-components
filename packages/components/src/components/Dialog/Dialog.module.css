@@ -4,6 +4,7 @@
   outline: none;
   display: flex;
   position: relative;
+  min-block-size: 48px;
   pointer-events: auto;
   flex-direction: column;
   box-sizing: border-box;

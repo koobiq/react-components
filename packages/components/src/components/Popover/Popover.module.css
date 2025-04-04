@@ -1,7 +1,6 @@
 .base {
   --popover-inline-size: ;
   display: flex;
-  min-block-size: 48px;
   border-radius: var(--kbq-size-m);
   box-shadow: var(--kbq-shadow-overlay);
   background-color: var(--kbq-background-bg);
