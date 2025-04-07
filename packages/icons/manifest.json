@@ -1,6 +1,10 @@
 {
   "icons": [
     {
+      "componentName": "IconNorthEast16",
+      "size": ".16"
+    },
+    {
       "componentName": "IconArrowDownToBracket16",
       "size": "16"
     },
@@ -102,6 +106,10 @@
     },
     {
       "componentName": "IconDesktopPlus16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDesktopPlusO16",
       "size": "16"
     },
     {
@@ -394,6 +402,14 @@
     },
     {
       "componentName": "IconDesktopMultiple16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDesktopMultipleO16",
+      "size": "16"
+    },
+    {
+      "componentName": "IconDesktopO16",
       "size": "16"
     },
     {
@@ -1905,10 +1921,6 @@
       "size": "16"
     },
     {
-      "componentName": "IconNorthEast16",
-      "size": "16"
-    },
-    {
       "componentName": "IconBookOpen24",
       "size": "24"
     },
@@ -2354,6 +2366,10 @@
     },
     {
       "componentName": "IconArrowRightToArc24",
+      "size": "24"
+    },
+    {
+      "componentName": "IconCloudBadgeGlobe24",
       "size": "24"
     },
     {
