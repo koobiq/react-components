@@ -1,0 +1,46 @@
+.base {
+  --animated-icon-direction: ;
+  --animated-icon-transition-function: cubic-bezier(0.7, 0, 0.5, 1);
+  --animated-icon-transition: 300ms;
+  position: relative;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  transition: transform var(--animated-icon-transition)
+    var(--animated-icon-transition-function);
+  transform: var(--animated-icon-direction);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform var(--animated-icon-transition)
+      var(--animated-icon-transition-function),
+    opacity var(--animated-icon-transition)
+      var(--animated-icon-transition-function);
+}
+
+/* animation */
+.icon[data-transition='entering'] {
+  opacity: 1;
+  transform: scale(1);
+  position: absolute;
+}
+
+.icon[data-transition='entered'] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.icon[data-transition='exiting'] {
+  opacity: 0;
+  transform: scale(0.1);
+  position: absolute;
+}
+
+.icon[data-transition='exited'] {
+  opacity: 0;
+  transform: scale(0.1);
+}

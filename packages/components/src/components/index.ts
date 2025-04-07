@@ -23,4 +23,5 @@ export * from './SidePanel';
 export * from './Popover';
 export * from './Tooltip';
 export * from './List';
+export * from './AnimatedIcon';
 export * from './layout';
