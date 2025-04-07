@@ -1,0 +1,35 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './useRefs.stories';
+
+<Meta of={Stories} />
+
+# useRefs
+
+<Status variant="experimental" />
+
+This hook to create an array of refs.
+
+```tsx
+import { useRefs } from '@koobiq/react-core';
+```
+
+## Definition
+
+```ts
+export type UseRefsReturn<
+  T,
+  Keys extends number | readonly string[],
+> = Keys extends readonly string[]
+  ? Record<Keys[number], RefObject<T>>
+  : Array<RefObject<T>>;
+
+export const useRefs = <T, Keys extends number | readonly string[] = number>(
+  keys: Keys,
+  deps: unknown[] = []
+): UseRefsReturn<T, Keys>;
+```
+
+## Example
+
+<Story of={Stories.Example} />
