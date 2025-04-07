@@ -4,17 +4,16 @@ import { useBoolean } from '@koobiq/react-core';
 import {
   IconEye16,
   IconEyeSlash16,
-  IconInfoCircle16,
   IconMagnifyingGlass16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { AnimatedIcon } from '../AnimatedIcon';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
 import { useBreakpoints } from '../Provider';
-import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
 import { Input, type InputProps, inputPropVariant } from './index';
@@ -217,21 +216,7 @@ export const Addons: Story = {
         />
         <Input
           label="endAddon"
-          endAddon={
-            <Tooltip
-              placement="end"
-              control={() => (
-                <IconButton
-                  variant="fade-contrast"
-                  style={{ marginInlineEnd: '-8px' }}
-                >
-                  <IconInfoCircle16 />
-                </IconButton>
-              )}
-            >
-              Helper text
-            </Tooltip>
-          }
+          endAddon={<IconMagnifyingGlass16 />}
           placeholder="Seacrh"
           {...args}
         />
@@ -261,8 +246,8 @@ export const ControlledValue: Story = {
       <FlexBox gap="m" direction="column" alignItems="stretch">
         <Input
           label="Name"
-          onChange={setState}
           value={value}
+          onChange={setState}
           placeholder="Sophia"
           {...args}
         />
@@ -279,18 +264,23 @@ export const Password: Story = {
     return (
       <Input
         label="Password"
-        defaultValue="p@ssw0rd"
         placeholder="Password"
+        defaultValue="p@ssw0rd"
         {...(hiddenPassword && { type: 'password' })}
         endAddon={
           <IconButton
-            tabIndex={-1}
             onClick={toggle}
             variant="fade-contrast"
             style={{ marginInlineEnd: '-8px' }}
             aria-label={hiddenPassword ? 'show password' : 'hide password'}
           >
-            {hiddenPassword ? <IconEye16 /> : <IconEyeSlash16 />}
+            <AnimatedIcon
+              activeIndex={+hiddenPassword}
+              icons={[
+                <IconEye16 key="eye" />,
+                <IconEyeSlash16 key="eye-slash" />,
+              ]}
+            />
           </IconButton>
         }
         {...args}
