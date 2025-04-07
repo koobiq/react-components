@@ -35,6 +35,7 @@ export const Base: Story = {
             <IconArrowDownToBracket16 key="arrow-down" />,
             <ProgressSpinner
               key="spinner"
+              aria-label="progress"
               slotProps={{ spin: { style: { color: 'inherit' } } }}
             />,
           ]}
