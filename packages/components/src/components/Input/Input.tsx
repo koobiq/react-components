@@ -30,7 +30,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     ...other
   } = props;
 
-  const domRef = useDOMRef<ComponentRef<'input'>>(ref);
+  const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
   const rootProps: FieldControlProps = mergeProps(
     {
@@ -56,7 +56,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
             error,
             variant,
             disabled,
-            ref: domRef,
+            ref: inputRef,
           },
           slotProps?.input
         );
