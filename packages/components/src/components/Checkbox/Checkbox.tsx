@@ -9,6 +9,8 @@ import {
   type CheckboxProps as CheckboxPropsPrimitive,
 } from '@koobiq/react-primitives';
 
+import { AnimatedIcon } from '../AnimatedIcon';
+
 import s from './Checkbox.module.css';
 import type { CheckboxProps } from './index';
 
@@ -58,15 +60,25 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
         {...commonProps}
         ref={ref}
       >
-        {({ checked, indeterminate }) => (
-          <>
-            <span {...boxProps}>
-              {checked && !indeterminate && <IconCheckS16 />}
-              {indeterminate && <IconMinusS16 />}
-            </span>
-            {isNotNil(children) && <span {...labelProps}>{children}</span>}
-          </>
-        )}
+        {({ checked, indeterminate }) => {
+          // unchecked = -1, checked = 0, indeterminate = 1,
+          const activeIndex = indeterminate ? 1 : Number(Boolean(checked)) - 1;
+
+          return (
+            <>
+              <span {...boxProps}>
+                <AnimatedIcon
+                  icons={[
+                    <IconCheckS16 key="checked" />,
+                    <IconMinusS16 key="indeterminate" />,
+                  ]}
+                  activeIndex={activeIndex}
+                />
+              </span>
+              {isNotNil(children) && <span {...labelProps}>{children}</span>}
+            </>
+          );
+        }}
       </CheckboxPrimitive>
     );
   }
