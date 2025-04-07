@@ -11,3 +11,4 @@ export * from './useIsFirstRender/index.js';
 export * from './useEventListener/index.js';
 export * from './useResizeObserver/index.js';
 export * from './useElementSize/index.js';
+export * from './useRefs/index.js';
