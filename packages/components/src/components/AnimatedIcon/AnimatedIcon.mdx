@@ -1,0 +1,40 @@
+import {
+  Props,
+  Story,
+  Meta,
+  Status,
+  Alert,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './AnimatedIcon.stories';
+
+<Meta of={Stories} />
+
+# AnimatedIcon
+
+<Status variant="experimental" />
+
+This component for creating animated icon transformations.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Icons
+
+The `icons` prop holds the list of animated icons. The `activeIndex` prop sets which icon is active.
+
+<Story of={Stories.Icons} />
+
+## Directions
+
+The `directions` prop controls the icon's direction and can be set to its rotation angle.
+
+<Alert>
+  If only one icon is used, the `activeIndex` prop controls its current
+  direction.
+</Alert>
+
+<Story of={Stories.Directions} />
