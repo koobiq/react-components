@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { StoryObj } from '@storybook/react';
 
-import { flex } from '../layout';
+import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
 import {
@@ -38,13 +38,13 @@ export const Base: Story = {
 
 export const Size = {
   render: (args: RadioGroupBaseProps) => (
-    <div className={flex({ gap: '3xl' })}>
+    <FlexBox gap="3xl">
       {radioGroupPropSize.map((size) => (
         <RadioGroup
           key={size}
           size={size}
-          label={`size = ${size}`}
           defaultValue="one"
+          label={`size = ${size}`}
           {...args}
         >
           <Radio value="one">One</Radio>
@@ -52,14 +52,14 @@ export const Size = {
           <Radio value="three">Three</Radio>
         </RadioGroup>
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
 export const Disabled: Story = {
   render: (args: RadioGroupBaseProps) => (
-    <div className={flex({ gap: '3xl' })}>
-      <RadioGroup label="Disabled group" disabled defaultValue="one" {...args}>
+    <FlexBox gap="3xl">
+      <RadioGroup label="Disabled group" defaultValue="one" disabled {...args}>
         <Radio value="one">One</Radio>
         <Radio value="two">Two</Radio>
         <Radio value="three">Three</Radio>
@@ -72,13 +72,13 @@ export const Disabled: Story = {
           Three
         </Radio>
       </RadioGroup>
-    </div>
+    </FlexBox>
   ),
 };
 
 export const Error: Story = {
   render: (args: RadioGroupBaseProps) => (
-    <RadioGroup label="Label" error defaultValue="one" {...args}>
+    <RadioGroup label="Label" defaultValue="one" error {...args}>
       <Radio value="one">One</Radio>
       <Radio value="two">Two</Radio>
       <Radio value="three">Three</Radio>
@@ -103,7 +103,7 @@ export const ControlledValue: Story = {
     const [value, setValue] = useState('one');
 
     return (
-      <div className={flex({ gap: 'm', direction: 'column' })}>
+      <FlexBox gap="m" direction="column">
         <RadioGroup
           label="Сontrolled"
           onChange={setValue}
@@ -115,7 +115,7 @@ export const ControlledValue: Story = {
           <Radio value="three">Three</Radio>
         </RadioGroup>
         <Typography>You have selected: {value}</Typography>
-      </div>
+      </FlexBox>
     );
   },
 };
