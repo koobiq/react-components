@@ -7,10 +7,10 @@
   --radio-border-radius: 50%;
   --radio-icon-color: transparent;
   --radio-outline-color: transparent;
-  --radio-color: var(--kbq-foreground-contrast);
   --radio-icon-size: var(--kbq-size-xs);
   --radio-outline-width: var(--kbq-size-3xs);
   --radio-bg-color: var(--kbq-background-bg);
+  --radio-color: var(--kbq-foreground-contrast);
   --radio-border-width: var(--kbq-size-border-width);
   --radio-border-color: var(--kbq-line-contrast-fade);
   cursor: pointer;
@@ -22,8 +22,10 @@
 }
 
 .circle {
-  position: relative;
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
+  justify-content: center;
   block-size: var(--radio-size);
   color: var(--radio-icon-color);
   inline-size: var(--radio-size);
@@ -34,24 +36,18 @@
   transition:
     background-color var(--kbq-transition-default),
     border var(--kbq-transition-default),
-    outline-color var(--kbq-transition-default),
-    color var(--kbq-transition-default);
+    outline-color var(--kbq-transition-default);
   outline-offset: calc(-1 * var(--radio-outline-width) / 2);
   outline: var(--radio-outline-width) solid var(--radio-outline-color);
+}
 
-  &::before {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    opacity: var(--radio-opacity);
-    background-color: currentcolor;
-    transform: translate(-50%, -50%);
-    block-size: var(--radio-icon-size);
-    inline-size: var(--radio-icon-size);
-    transition: opacity var(--kbq-transition-default);
-  }
+.icon {
+  opacity: 0;
+  flex-shrink: 0;
+  transform: scale(0.1);
+  transition:
+    transform var(--kbq-transition-slow),
+    opacity var(--kbq-transition-slow);
 }
 
 .normal {
@@ -78,6 +74,11 @@
   --radio-border-color: var(--kbq-background-theme);
   --radio-bg-color: var(--kbq-background-theme);
   --radio-opacity: 1;
+
+  .icon {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .checked:where(.hovered) {

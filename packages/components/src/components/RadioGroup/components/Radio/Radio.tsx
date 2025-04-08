@@ -2,6 +2,7 @@ import { type ComponentRef } from 'react';
 import { forwardRef } from 'react';
 
 import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
+import { IconCircleXs16 } from '@koobiq/react-icons';
 import { Radio as RadioPrimitive } from '@koobiq/react-primitives';
 import { type RadioProps as RadioPropsPrimitive } from '@koobiq/react-primitives';
 
@@ -46,7 +47,9 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
 
     return (
       <RadioPrimitive {...commonProps} ref={ref}>
-        <span {...circleProps} />
+        <span {...circleProps}>
+          <IconCircleXs16 className={s.icon} />
+        </span>
         {isNotNil(children) && <span {...labelProps}>{children}</span>}
       </RadioPrimitive>
     );
