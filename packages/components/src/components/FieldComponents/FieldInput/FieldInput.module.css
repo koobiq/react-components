@@ -82,6 +82,10 @@
   --field-input-placeholder-color: var(--kbq-foreground-error-tertiary);
 }
 
+.disabled {
+  cursor: not-allowed;
+}
+
 .filled:where(.disabled) {
   --field-input-color: var(--kbq-states-foreground-disabled);
   --field-input-border-color: var(--kbq-states-line-disabled);
