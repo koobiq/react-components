@@ -5,17 +5,22 @@
   --link-outline-width: var(--kbq-size-3xs);
   padding: 0;
   border: none;
-  outline: none;
   cursor: pointer;
   background: none;
-  transition: color 0ms;
   text-decoration: underline;
   color: var(--kbq-foreground-theme);
+  outline: var(--link-outline-width) solid;
+  outline-color: transparent;
   text-decoration-color: var(--kbq-line-theme-less);
+  transition:
+    color var(--kbq-transition-default),
+    outline var(--kbq-transition-default),
+    text-decoration-color var(--kbq-transition-default);
 
   &[aria-disabled='true'] {
     cursor: not-allowed;
     text-decoration: none;
+    outline-color: transparent;
     color: var(--kbq-states-foreground-disabled);
     text-decoration-color: var(--kbq-states-line-disabled);
   }
@@ -33,6 +38,7 @@
 
 .focusVisible {
   color: var(--kbq-foreground-theme);
+  outline-color: var(--kbq-states-line-focus-theme);
   text-decoration-color: var(--kbq-line-theme-less);
 }
 
@@ -51,13 +57,9 @@
   text-decoration-color: var(--kbq-line-visited);
 }
 
-.pseudo:where(:not(.pressed, .hovered)) {
-  text-decoration: none;
-}
-
-.pseudo:where(.focusVisible) {
-  outline: var(--link-outline-width) solid var(--kbq-states-line-focus-theme);
-  outline-offset: -1px;
+.pseudo:where(:not(.pressed, .hovered)),
+.pseudo[aria-disabled='true'] {
+  text-decoration-color: transparent;
 }
 
 .hasIcon {
