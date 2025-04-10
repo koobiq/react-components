@@ -45,7 +45,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args: LinkBaseProps) => (
-    <Link href="#" {...args}>
+    <Link href="https://react.koobiq.io" target="_blank" {...args}>
       Link
     </Link>
   ),
