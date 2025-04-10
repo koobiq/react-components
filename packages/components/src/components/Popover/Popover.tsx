@@ -86,7 +86,7 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
         triggerRef: anchorRef || controlRef,
         isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
       },
-      { ...state, isOpen: opened }
+      { ...state, isOpen: openState || opened }
     );
 
     const resolvedChildren = () => {
