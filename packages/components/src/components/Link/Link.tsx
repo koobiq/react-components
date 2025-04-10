@@ -31,6 +31,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
       as={as}
       disabled={disabled}
       elementType={elementType}
+      {...(disabled && { tabIndex: -1 })}
       className={({ hovered, pressed, focusVisible }) =>
         clsx(
           s.base,

@@ -33,6 +33,28 @@ describe('Link', () => {
     expect(screen.getByText(baseProps.children)).toBeInTheDocument();
   });
 
+  it('should be blocked when in a disabled state', async () => {
+    const props = {
+      ...baseProps,
+      onClick: vi.fn(),
+      href: '#',
+      disabled: true,
+    };
+
+    render(<Link {...props} />);
+
+    const link = getRoot();
+
+    await userEvent.tab();
+
+    expect(link).not.toHaveFocus();
+
+    await userEvent.click(link);
+
+    expect(props.onClick).toHaveBeenCalledTimes(0);
+    expect(link).toHaveAttribute('aria-disabled', 'true');
+  });
+
   describe('button', () => {
     it('should be like a button with as=button', async () => {
       const props = {
