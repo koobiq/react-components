@@ -37,7 +37,11 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   });
 
   return (
-    <Tag {...mergeProps(linkProps, renderProps)} ref={ref}>
+    <Tag
+      {...mergeProps(linkProps, renderProps)}
+      tabIndex={props.tabIndex || linkProps.tabIndex}
+      ref={domRef}
+    >
       {renderProps.children}
     </Tag>
   );
