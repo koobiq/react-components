@@ -24,6 +24,7 @@ export const Base = {
       aria-label="Numbers"
       selectionMode="single"
       defaultSelectedKeys={['first']}
+      autoFocus
       {...args}
     >
       <ListItem key="first">

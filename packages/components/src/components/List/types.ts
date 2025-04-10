@@ -67,6 +67,8 @@ export type ListBaseProps<T extends object> = {
   onAction?: ListPropOnAction<T>;
   /** How multiple selection should behave in the collection. */
   selectionBehavior?: ListPropSelectionBehavior<T>;
+  /** Whether to autofocus the list or an option. */
+  autoFocus?: boolean | 'first' | 'last';
   /** The props used for each slot inside. */
   slotProps?: {
     label?: TypographyProps;
