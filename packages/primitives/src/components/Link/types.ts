@@ -12,6 +12,6 @@ export type LinkRenderProps = {
 };
 
 export type LinkBaseProps = ExtendableProps<
-  RenderProps<LinkRenderProps>,
+  RenderProps<LinkRenderProps> & { tabIndex?: number },
   UseLinkProps
 >;
