@@ -7,7 +7,6 @@ body {
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--kbq-background-bg);
 }
 
 * {

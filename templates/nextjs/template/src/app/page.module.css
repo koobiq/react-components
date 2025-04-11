@@ -1,18 +1,15 @@
 .body {
   flex: 1 1;
   display: flex;
-  margin-block-end: 56px;
+  margin-block: 56px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--kbq-size-3xl);
 }
 
-.header {
-  inline-size: 100vw;
-  block-size: 64px;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  padding: var(--kbq-size-l);
+.definition {
+  width: 80%;
+  text-align: center;
+  max-width: 480px;
 }
