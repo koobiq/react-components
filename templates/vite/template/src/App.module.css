@@ -1,18 +1,25 @@
-.body {
+.content {
   flex: 1 1;
   display: flex;
-  margin-block-end: 56px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--kbq-size-3xl);
 }
 
-.header {
-  inline-size: 100vw;
-  block-size: 64px;
+.definition {
+  width: 80%;
+  text-align: center;
+  max-width: 480px;
+}
+
+.footer {
   display: flex;
   align-items: center;
-  box-sizing: border-box;
-  padding: var(--kbq-size-l);
+  justify-content: center;
+  gap: var(--kbq-size-m);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 64px;
 }

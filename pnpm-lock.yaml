@@ -446,8 +446,11 @@ importers:
   templates/vite/template:
     dependencies:
       '@koobiq/react-components':
-        specifier: ^0.0.1-beta.7
-        version: 0.0.1-beta.7(@koobiq/design-tokens@3.12.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.0.1-beta.9
+        version: 0.0.1-beta.9(@koobiq/design-tokens@3.12.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@koobiq/react-core':
+        specifier: ^0.0.1-beta.9
+        version: 0.0.1-beta.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       prettier:
         specifier: ^3.3.3
         version: 3.5.3
@@ -1454,29 +1457,13 @@ packages:
   '@koobiq/design-tokens@3.12.1':
     resolution: {integrity: sha512-mROGt9r61y7LbP314bCWRxdyzya6H2K/14VLadQodeztazfygJiB52uHVOQsJcotyCDPEq2kiOYgaykQU/9GBA==}
 
-  '@koobiq/logger@0.0.1-beta.7':
-    resolution: {integrity: sha512-lU8rpzbNQNEvwyWb5Z0KgSpOLUd0USn2AjSIGLiY4G5F6a3KuuMMRKQupfRqEUKT8tYvLwPWI0xf98TfK6q6Gw==}
-
   '@koobiq/logger@0.0.1-beta.9':
     resolution: {integrity: sha512-m02FRVRzx6YG2kJoTo1chlR3rteYWzhw4g7RXDeCxrThOAfLtpjXytOmy/y7fFhCqEcy/Tp+shvSDXOZ/XKd+g==}
-
-  '@koobiq/react-components@0.0.1-beta.7':
-    resolution: {integrity: sha512-skGLuKktItInvGrAnPQLxoNK6mpdJ6H/83j49BRAq5vq92gOm4rq6T1dth8anVtyL9jm+JkfzjrLY2IfvTjqDw==}
-    peerDependencies:
-      '@koobiq/design-tokens': ^3.11.2
-      react: 18.x || 19.x
-      react-dom: 18.x || 19.x
 
   '@koobiq/react-components@0.0.1-beta.9':
     resolution: {integrity: sha512-hW70Jm1RLhrS60YU9n2IaT4PWVaZaeWN7tNl4Pj5fl8g6HENTJPwMzA7Zj2DWufQkWjd9d8NIHzVlthEGXcNEA==}
     peerDependencies:
       '@koobiq/design-tokens': ^3.11.2
-      react: 18.x || 19.x
-      react-dom: 18.x || 19.x
-
-  '@koobiq/react-core@0.0.1-beta.7':
-    resolution: {integrity: sha512-xhvPFwBvdYWOGnQV5JhPb4zCLbasG2yltsvrytUheJZI4aJrMYK8MuHH3r08Ugr1qmyS+jlBDKOKLUnVCu5Crw==}
-    peerDependencies:
       react: 18.x || 19.x
       react-dom: 18.x || 19.x
 
@@ -1486,21 +1473,10 @@ packages:
       react: 18.x || 19.x
       react-dom: 18.x || 19.x
 
-  '@koobiq/react-icons@0.0.1-beta.7':
-    resolution: {integrity: sha512-jm9t6Ip8K9DySa+n7MZrlB/d90ZkCBYexDgtzJTrcTDnR7zfoLa1LB+PJ7bSClf0AkIIgenSrNjNt3OxiySTEw==}
-    peerDependencies:
-      react: 18.x || 19.x
-
   '@koobiq/react-icons@0.0.1-beta.9':
     resolution: {integrity: sha512-INBa3fP/O5ZlmwBKYamxKY5ZciC+xk1GY/WBrkL7i1eCDzWrIiHH4NRiLErSpr/qFsdg8FNgP0uSNjgQSE1bOQ==}
     peerDependencies:
       react: 18.x || 19.x
-
-  '@koobiq/react-primitives@0.0.1-beta.7':
-    resolution: {integrity: sha512-hj1qcMZzOweDdjD31cypnXzSpd0TElSzZHdG//1fvMyJCs4lCZhqtI8WYwg+xTHPph4pREauheZU67J9fWpv3Q==}
-    peerDependencies:
-      react: 18.x || 19.x
-      react-dom: 18.x || 19.x
 
   '@koobiq/react-primitives@0.0.1-beta.9':
     resolution: {integrity: sha512-J8CNmvrqh/qAhiAOYIjVyp6fZMvXotknUdVr7v7lm56f4l3G6mVOU8TMZ9q/pBgxFjo5kYvkl8BJJZjm2PnOyA==}
@@ -9009,23 +8985,7 @@ snapshots:
 
   '@koobiq/design-tokens@3.12.1': {}
 
-  '@koobiq/logger@0.0.1-beta.7': {}
-
   '@koobiq/logger@0.0.1-beta.9': {}
-
-  '@koobiq/react-components@0.0.1-beta.7(@koobiq/design-tokens@3.12.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@koobiq/design-tokens': 3.12.1
-      '@koobiq/logger': 0.0.1-beta.7
-      '@koobiq/react-core': 0.0.1-beta.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@koobiq/react-icons': 0.0.1-beta.7(react@18.3.1)
-      '@koobiq/react-primitives': 0.0.1-beta.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react-transition-group': 4.4.12(@types/react@18.3.12)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
 
   '@koobiq/react-components@0.0.1-beta.9(@koobiq/design-tokens@3.12.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -9041,15 +9001,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@koobiq/react-core@0.0.1-beta.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-aria/focus': 3.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/interactions': 3.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/utils': 3.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-stately/toggle': 3.8.0(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
   '@koobiq/react-core@0.0.1-beta.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-aria/focus': 3.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -9059,40 +9010,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@koobiq/react-icons@0.0.1-beta.7(react@18.3.1)':
-    dependencies:
-      react: 18.3.1
-
   '@koobiq/react-icons@0.0.1-beta.9(react@18.3.1)':
     dependencies:
       react: 18.3.1
-
-  '@koobiq/react-primitives@0.0.1-beta.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@koobiq/logger': 0.0.1-beta.7
-      '@koobiq/react-core': 0.0.1-beta.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/button': 3.11.0(react@18.3.1)
-      '@react-aria/checkbox': 3.15.0(react@18.3.1)
-      '@react-aria/dialog': 3.5.20(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/i18n': 3.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/link': 3.7.7(react@18.3.1)
-      '@react-aria/listbox': 3.14.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/numberfield': 3.11.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/overlays': 3.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/progress': 3.4.18(react@18.3.1)
-      '@react-aria/radio': 3.10.10(react@18.3.1)
-      '@react-aria/textfield': 3.15.0(react@18.3.1)
-      '@react-aria/toggle': 3.10.10(react@18.3.1)
-      '@react-aria/tooltip': 3.7.10(react@18.3.1)
-      '@react-aria/visually-hidden': 3.8.18(react@18.3.1)
-      '@react-stately/collections': 3.12.2(react@18.3.1)
-      '@react-stately/list': 3.12.0(react@18.3.1)
-      '@react-stately/numberfield': 3.9.8(react@18.3.1)
-      '@react-stately/overlays': 3.6.12(react@18.3.1)
-      '@react-stately/radio': 3.10.9(react@18.3.1)
-      '@react-stately/tooltip': 3.5.0(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
 
   '@koobiq/react-primitives@0.0.1-beta.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
