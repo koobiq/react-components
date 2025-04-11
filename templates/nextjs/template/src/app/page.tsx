@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import {
+  Link,
   Button,
   spacing,
   FlexBox,
@@ -19,7 +20,7 @@ export default function Home() {
   return (
     <Provider>
       <AnimatedBackground />
-      <div className={s.body}>
+      <div className={s.content}>
         <FlexBox gap="m" alignItems="center">
           <Image
             src={logo}
@@ -48,6 +49,23 @@ export default function Home() {
         >
           Explore more
         </Button>
+      </div>
+      <div className={s.footer}>
+        <Link
+          href="https://react.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </Link>
+        <Typography color="theme">•</Typography>
+        <Link
+          href="https://nextjs.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn Next.js
+        </Link>
       </div>
     </Provider>
   );
