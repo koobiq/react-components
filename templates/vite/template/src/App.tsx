@@ -6,61 +6,63 @@ import {
   Provider,
   Typography,
 } from '@koobiq/react-components';
-import {
-  IconSun16,
-  IconSunMoon16,
-  IconChevronCircleRight16,
-} from '@koobiq/react-icons';
+
+import { IconChevronCircleRight16 } from '@koobiq/react-icons';
+
+import logo from './assets/koobiq.svg';
 
 import s from './App.module.css';
-import logo from './assets/koobiq.svg';
-import { useTheme } from './components';
+import { AnimatedBackground } from './components';
 
-const FIGMA_URL =
-  'https://www.figma.com/files/1227251916042954276/project/84583639?fuid=1426165683279684887';
-
-export default function App() {
-  const { theme, setTheme } = useTheme();
-
-  const isDark = theme === 'kbq-dark';
-
+export default function Home() {
   return (
     <Provider>
-      <header className={s.header}>
-        <Button
-          variant="contrast-transparent"
-          className={spacing({ mis: 'auto' })}
-          startIcon={isDark ? <IconSun16 /> : <IconSunMoon16 />}
-          onClick={() => setTheme(isDark ? 'kbq-light' : 'kbq-dark')}
-          onlyIcon
-        />
-      </header>
-      <div className={s.body}>
-        <FlexBox gap="s" direction="column" alignItems="center">
+      <AnimatedBackground />
+      <div className={s.content}>
+        <FlexBox gap="m" alignItems="center">
           <img
-            width={40}
             src={logo}
-            height={40}
+            width={24}
+            height={24}
             alt="koobiq logo"
-            className={spacing({ m: 'm' })}
+            className={spacing({ mie: 'xs' })}
           />
-          <Typography variant="display-compact-strong" align="center">
-            Koobiq React
-          </Typography>
-          <Typography variant="headline" align="center">
-            Vite.js
+          <Typography as="h1" variant="headline" align="center">
+            Koobiq&nbsp;
+            <Typography color="contrast-secondary" as="span" variant="headline">
+              + Vite
+            </Typography>
           </Typography>
         </FlexBox>
+        <Typography variant="text-big" className={s.definition}>
+          Koobiq React is an open-source design system for designers and
+          developers, focused on designing products related to cybersecurity.
+        </Typography>
         <Button
           as="a"
           target="_blank"
+          rel="noopener noreferrer"
           href="https://react.koobiq.io/"
           startIcon={<IconChevronCircleRight16 />}
         >
-          Visit the website
+          Explore more
         </Button>
-        <Link href={FIGMA_URL} target="_blank" variant="text-big">
-          Koobiq for Figma
+      </div>
+      <div className={s.footer}>
+        <Link
+          href="https://react.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </Link>
+        <Typography color="theme">•</Typography>
+        <Link
+          href="https://vite.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn Vite
         </Link>
       </div>
     </Provider>
