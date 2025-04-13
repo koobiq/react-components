@@ -47,10 +47,10 @@
 }
 
 .svg:nth-child(2) {
-  left: 32%;
+  left: 22%;
   animation: raise2 16s linear infinite;
-  animation-delay: 0s;
-  transform: scale(0) rotate(228deg);
+  animation-delay: 3s;
+  transform: scale(0.8) rotate(128deg);
   z-index: -5;
   filter: blur(4px);
 }
@@ -58,23 +58,23 @@
 @keyframes raise2 {
   to {
     bottom: 150vh;
-    transform: scale(0) rotate(227deg);
+    transform: scale(1.2) rotate(327deg);
   }
 }
 
 .svg:nth-child(3) {
-  left: 19%;
-  animation: raise3 20s linear infinite;
-  animation-delay: -4s;
-  transform: scale(0.6) rotate(131deg);
+  left: 32%;
+  animation: raise3 16s linear infinite;
+  animation-delay: 0s;
+  transform: scale(0.4) rotate(228deg);
   z-index: -4;
-  filter: blur(3px);
+  filter: blur(4px);
 }
 
 @keyframes raise3 {
   to {
     bottom: 150vh;
-    transform: scale(0.6) rotate(307deg);
+    transform: scale(0.7) rotate(307deg);
   }
 }
 
