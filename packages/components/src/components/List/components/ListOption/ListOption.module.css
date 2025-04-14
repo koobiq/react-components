@@ -8,6 +8,7 @@
   text-decoration: none;
   box-sizing: border-box;
   gap: var(--kbq-size-s);
+  align-items: center;
   border-radius: var(--kbq-size-s);
   color: var(--kbq-foreground-contrast);
   background-color: var(--list-item-bg-color);

@@ -4,23 +4,27 @@ import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
 import { isNotNil, useDOMRef, mergeProps, clsx } from '@koobiq/react-core';
-import { useListBox, useListState } from '@koobiq/react-primitives';
+import {
+  type ListState,
+  useListBox,
+  useListState,
+} from '@koobiq/react-primitives';
 
 import { Typography } from '../Typography';
 
 import { ListOption, ListSection } from './components';
 import s from './List.module.css';
-import type { ListComponent, ListProps, ListRef } from './types';
+import type { ListComponent, ListProps, ListRef, ListBaseProps } from './types';
 
-export function ListRender<T extends object>(
-  props: ListProps<T>,
-  ref: Ref<ListRef>
-) {
-  const { label, className, style, slotProps } = props;
+export type ListInnerProps<T extends object> = {
+  state: ListState<T>;
+  listRef?: Ref<HTMLUListElement>;
+} & Omit<ListBaseProps<T>, 'ref'>;
 
-  const domRef = useDOMRef(ref);
+export function ListInner<T extends object>(props: ListInnerProps<T>) {
+  const { label, className, style, slotProps, state, listRef } = props;
 
-  const state = useListState(props);
+  const domRef = useDOMRef(listRef);
 
   const { listBoxProps, labelProps } = useListBox(props, state, domRef);
 
@@ -57,6 +61,12 @@ export function ListRender<T extends object>(
       </ul>
     </>
   );
+}
+
+function ListRender<T extends object>(props: ListProps<T>, ref: Ref<ListRef>) {
+  const state = useListState(props);
+
+  return <ListInner listRef={ref} {...props} state={state} />;
 }
 
 export const List = forwardRef(ListRender) as ListComponent;
