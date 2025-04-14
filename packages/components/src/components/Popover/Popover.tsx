@@ -134,10 +134,9 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
         })}
         <Transition
           onEnter={on}
-          timeout={300}
+          timeout={120}
           onExited={off}
           in={openState}
-          key={placement}
           nodeRef={domRef}
           unmountOnExit
           appear
