@@ -105,10 +105,9 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
       </FocusableProvider>
       <Transition
         onEnter={on}
-        timeout={300}
+        timeout={120}
         onExited={off}
         in={openState}
-        key={placement}
         nodeRef={domRef}
         unmountOnExit
         appear

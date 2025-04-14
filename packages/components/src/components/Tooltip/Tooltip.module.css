@@ -11,25 +11,7 @@
   z-index: var(--kbq-layer-modal);
   border-radius: var(--kbq-size-s);
   background-color: var(--tooltip-bg-color);
-  transition:
-    opacity var(--kbq-transition-slow),
-    transform var(--kbq-transition-slow);
-}
-
-.base[data-placement='top'] {
-  --popover-transform: translateY(-10px);
-}
-
-.base[data-placement='bottom'] {
-  --popover-transform: translateY(10px);
-}
-
-.base[data-placement='left'] {
-  --popover-transform: translateX(-10px);
-}
-
-.base[data-placement='right'] {
-  --popover-transform: translateX(10px);
+  transition: opacity var(--kbq-transition-default);
 }
 
 .base[data-placement='top'][data-arrow='true'] {
@@ -134,10 +116,8 @@
 
 .base[data-transition='exiting'] {
   opacity: 0;
-  transform: var(--popover-transform);
 }
 
 .base[data-transition='exited'] {
   opacity: 0;
-  transform: var(--popover-transform);
 }
