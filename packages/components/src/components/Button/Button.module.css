@@ -60,12 +60,12 @@
   }
 }
 
-.hovered {
+.hovered:not(.progress) {
   --button-border-color: var(--button-border-color-hover);
   background-color: var(--button-bg-color-hover);
 }
 
-.pressed {
+.pressed:not(.progress) {
   --button-border-color: var(--button-border-color-active);
   background-color: var(--button-bg-color-active);
 }
