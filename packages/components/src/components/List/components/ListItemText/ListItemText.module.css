@@ -5,3 +5,7 @@
   gap: var(--kbq-size-3xs);
   flex-direction: column;
 }
+
+[data-slot='select-value'] .caption {
+  display: none;
+}

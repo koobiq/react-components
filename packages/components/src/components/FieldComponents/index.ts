@@ -1,6 +1,7 @@
 export * from './FieldControl';
 export * from './FieldNumberControl';
 export * from './FieldInput';
+export * from './FieldSelect';
 export * from './FieldLabel';
 export * from './FieldAddon';
 export * from './FieldCaption';

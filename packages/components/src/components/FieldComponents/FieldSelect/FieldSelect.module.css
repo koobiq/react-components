@@ -1,0 +1,66 @@
+@import url('../../../styles/mixins.css');
+
+.base {
+  --field-input-outline-width: var(--kbq-size-3xs);
+  --field-input-color: var(--kbq-foreground-contrast);
+  --field-input-border-color: var(--kbq-line-contrast-fade);
+  --field-input-outline-color: var(--kbq-states-line-focus-theme);
+  --field-input-bg-color: var(--kbq-background-bg);
+  --field-input-placeholder-color: var(--kbq-foreground-contrast-tertiary);
+  display: flex;
+  cursor: pointer;
+  block-size: 32px;
+  inline-size: 100%;
+  align-items: center;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  border-radius: var(--kbq-size-s);
+  color: var(--field-input-color);
+  background: var(--field-input-bg-color);
+  border: 1px solid var(--field-input-border-color);
+  outline: var(--field-input-outline-width) solid transparent;
+  padding-block: var(--field-input-padding-block-start)
+    var(--field-input-padding-block-end);
+  padding-inline: var(--field-input-padding-inline-start)
+    var(--field-input-padding-inline-end);
+  transition:
+    color var(--kbq-transition-default),
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    border-color var(--kbq-transition-default);
+
+  &:focus,
+  &[aria-expanded='true'] {
+    outline-color: var(--field-input-outline-color);
+  }
+}
+
+.content {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  white-space: nowrap;
+  gap: var(--kbq-size-s);
+  text-overflow: ellipsis;
+
+  @mixin typography text-normal;
+}
+
+.error {
+  --field-input-color: var(--kbq-foreground-error);
+  --field-input-border-color: var(--kbq-line-error);
+  --field-input-outline-color: var(--kbq-states-line-focus-error);
+  --field-input-bg-color: var(--kbq-states-background-error-less);
+  --field-input-placeholder-color: var(--kbq-foreground-error-tertiary);
+}
+
+.disabled {
+  --field-input-color: var(--kbq-states-foreground-disabled);
+  --field-input-border-color: var(--kbq-states-line-disabled);
+  --field-input-bg-color: var(--kbq-states-background-disabled);
+  cursor: not-allowed;
+}
+
+.hasPlaceholder {
+  --field-input-color: var(--field-input-placeholder-color);
+}
