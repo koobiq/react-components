@@ -29,8 +29,7 @@
     background-color var(--kbq-transition-default),
     border-color var(--kbq-transition-default);
 
-  &:focus,
-  &[aria-expanded='true'] {
+  &:focus {
     outline-color: var(--field-input-outline-color);
   }
 }
