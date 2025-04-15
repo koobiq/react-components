@@ -7,7 +7,11 @@ import type {
   RefObject,
 } from 'react';
 
-import type { ButtonOptions } from '@koobiq/react-primitives';
+import type {
+  ButtonOptions,
+  OverlayTriggerState,
+} from '@koobiq/react-primitives';
+import type { TransitionProps } from 'react-transition-group/Transition';
 
 import type { DialogProps } from '../Dialog';
 
@@ -42,7 +46,7 @@ export type PopoverPropSize =
   | (typeof popoverPropSize)[number]
   | CSSProperties['inlineSize'];
 
-export type PopoverProps = {
+export type PopoverBaseProps = {
   /** If `true`, the component is shown. */
   open?: boolean;
   /** The default open state. Use when the component is not controlled. */
@@ -133,10 +137,19 @@ export type PopoverProps = {
    * By default, onClose will always be called on interaction outside the popover ref.
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
+  type?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid';
   /** The props used for each slot inside. */
   slotProps?: {
     dialog?: DialogProps;
     arrow?: ComponentPropsWithRef<'div'>;
     backdrop?: ComponentPropsWithRef<'div'>;
+    transition?: TransitionProps<HTMLElement>;
   };
 };
+
+export type PopoverInnerProps = {
+  state: OverlayTriggerState;
+  popoverRef?: Ref<HTMLDivElement>;
+} & Omit<PopoverBaseProps, 'ref'>;
+
+export type PopoverProps = PopoverBaseProps;
