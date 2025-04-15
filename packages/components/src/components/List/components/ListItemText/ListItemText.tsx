@@ -41,6 +41,7 @@ export const ListItemText = forwardRef<ListItemTextRef, ListItemTextProps>(
         <Typography
           as="span"
           color="contrast-secondary"
+          className={s.caption}
           variant="text-compact"
           {...slotProps?.caption}
         >

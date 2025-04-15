@@ -7,7 +7,7 @@ import type {
   Ref,
 } from 'react';
 
-import type { AriaListBoxProps } from '@koobiq/react-primitives';
+import type { AriaListBoxProps, ListState } from '@koobiq/react-primitives';
 
 import type { TypographyProps } from '../Typography';
 
@@ -79,6 +79,11 @@ export type ListBaseProps<T extends object> = {
 export type ListProps<T extends object> = ListBaseProps<T>;
 
 export type ListRef = ComponentRef<'ul'>;
+
+export type ListInnerProps<T extends object> = {
+  state: ListState<T>;
+  listRef?: Ref<HTMLUListElement>;
+} & Omit<ListBaseProps<T>, 'ref'>;
 
 export type ListComponent = <T extends object>(
   props: ListProps<T>

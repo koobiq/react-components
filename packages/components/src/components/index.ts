@@ -24,4 +24,5 @@ export * from './Popover';
 export * from './Tooltip';
 export * from './List';
 export * from './AnimatedIcon';
+export * from './Select';
 export * from './layout';
