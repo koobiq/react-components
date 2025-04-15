@@ -19,6 +19,7 @@ import {
   useOverlayPosition,
   type AriaModalOverlayProps,
 } from '@react-aria/overlays';
+import { useSelect, HiddenSelect } from '@react-aria/select';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
 import { Item, Section } from '@react-stately/collections';
 import { useListState, type ListState } from '@react-stately/list';
@@ -26,6 +27,7 @@ import {
   useOverlayTriggerState,
   type OverlayTriggerState,
 } from '@react-stately/overlays';
+import { useSelectState } from '@react-stately/select';
 import type { TooltipTriggerProps } from '@react-stately/tooltip';
 import { useTooltipTriggerState } from '@react-stately/tooltip';
 import type {
@@ -39,15 +41,20 @@ import type {
 export * from './behaviors/index.js';
 export * from './components/index.js';
 export {
+  Item,
   Overlay,
+  Section,
   useLocale,
   useDialog,
   useOption,
+  useSelect,
   usePopover,
   useListBox,
   useTooltip,
   I18nProvider,
   useListState,
+  HiddenSelect,
+  useSelectState,
   useModalOverlay,
   useOverlayTrigger,
   useTooltipTrigger,
@@ -56,14 +63,12 @@ export {
   useOverlayTriggerState,
   useTooltipTriggerState,
   useLocalizedStringFormatter,
-  Item,
-  Section,
-  type ListState,
   type Node,
   type ItemProps,
+  type ListState,
+  type HoverEvent,
   type LinkDOMProps,
   type SectionProps,
-  type HoverEvent,
   type AriaDialogProps,
   type I18nProviderProps,
   type AriaListBoxProps,
