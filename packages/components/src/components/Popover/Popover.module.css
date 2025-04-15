@@ -26,6 +26,14 @@
   margin-inline-start: 10px;
 }
 
+/* container */
+.container {
+  display: flex;
+  inline-size: 100%;
+  border-radius: inherit;
+  background-color: inherit;
+}
+
 /* arrow */
 .arrow {
   z-index: -1;
