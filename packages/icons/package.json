@@ -17,6 +17,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "directory": "packages/icons",
+    "url": "git+https://github.com/koobiq/react-components.git"
+  },
   "scripts": {
     "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",
     "clean:temp": "rimraf temp && rimraf src",
