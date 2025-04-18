@@ -21,6 +21,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "directory": "packages/core",
+    "url": "git+https://github.com/koobiq/react-components.git"
+  },
   "sideEffects": false,
   "dependencies": {
     "@react-aria/focus": "^3.18.0",

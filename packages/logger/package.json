@@ -16,6 +16,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "directory": "packages/logger",
+    "url": "git+https://github.com/koobiq/react-components.git"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",

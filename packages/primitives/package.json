@@ -16,6 +16,11 @@
       "default": "./dist/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "directory": "packages/primitives",
+    "url": "git+https://github.com/koobiq/react-components.git"
+  },
   "type": "module",
   "files": ["dist"],
   "publishConfig": {
