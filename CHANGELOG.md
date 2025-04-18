@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.1-beta.12](https://github.com/koobiq/react-components/compare/0.0.1-beta.11...0.0.1-beta.12) (2025-04-18)
+
+### 🚀 Features
+
+- **components/Alert:** mark the component as stable ([f2f7316](https://github.com/koobiq/react-components/commit/f2f7316fc165464f8ccbd4323a92ed7c094e77a0))
+- **components/Badge:** mark the component as stable ([56c3d89](https://github.com/koobiq/react-components/commit/56c3d8956d1e0ab1743e6fb0db77766751e1ce7f))
+- **components/Container:** mark the component as stable ([6585478](https://github.com/koobiq/react-components/commit/65854788983495ca714023973175bd58b548b376))
+- **components/FlexBox:** mark the component as stable ([599ddba](https://github.com/koobiq/react-components/commit/599ddbaf8cda56adc1635c2a2555b8ce915f01af))
+- **components/Grid:** mark the component as stable ([3b521ee](https://github.com/koobiq/react-components/commit/3b521ee0fd9dee818f74a604f36f8c570eb6146c))
+
+### 🐞 Bug Fixes
+
+- **components/Popover:** resolve React warnings related to DOM attributes ([7dde183](https://github.com/koobiq/react-components/commit/7dde1832b35dd1f0aa276a73609b10c8f5eb1914))
+
 ## [0.0.1-beta.11](https://github.com/koobiq/react-components/compare/0.0.1-beta.10...0.0.1-beta.11) (2025-04-15)
 
 ### 🐞 Bug Fixes
