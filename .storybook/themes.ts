@@ -2,7 +2,8 @@ import { create } from '@storybook/theming';
 
 export const brand = {
   brandTitle: 'Koobiq React',
-  brandTarget: '_self',
+  brandUrl: 'https://github.com/koobiq/react-components',
+  brandTarget: '_blank',
   fontBase:
     "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;", // var(--kbq-font-family-base)
   fontCode:
