@@ -176,14 +176,16 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
 
 export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
   (props, ref) => {
-    const { open, ...other } = props;
+    const { open, onOpenChange, defaultOpen, ...other } = props;
 
     const state = useOverlayTriggerState({
       isOpen: open,
+      onOpenChange,
+      defaultOpen,
       ...other,
     });
 
-    return <PopoverInner popoverRef={ref} {...props} state={state} />;
+    return <PopoverInner popoverRef={ref} {...other} state={state} />;
   }
 );
 
