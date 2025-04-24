@@ -46,6 +46,16 @@ export type PopoverPropSize =
   | (typeof popoverPropSize)[number]
   | CSSProperties['inlineSize'];
 
+export const popoverPropType = [
+  'dialog',
+  'menu',
+  'listbox',
+  'tree',
+  'grid',
+] as const;
+
+export type PopoverPropType = (typeof popoverPropType)[number];
+
 export type PopoverBaseProps = {
   /** If `true`, the component is shown. */
   open?: boolean;
@@ -53,7 +63,7 @@ export type PopoverBaseProps = {
   defaultOpen?: boolean;
   /** The content of the component. */
   children?: PopoverPropContent;
-  /** The render function of the control for displaying the modal window. */
+  /** The render function of the control for displaying the popover. */
   control?: PopoverPropControl;
   /**
    * Component width size.
@@ -137,7 +147,7 @@ export type PopoverBaseProps = {
    * By default, onClose will always be called on interaction outside the popover ref.
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
-  type?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid';
+  type?: PopoverPropType;
   /** The props used for each slot inside. */
   slotProps?: {
     dialog?: DialogProps;

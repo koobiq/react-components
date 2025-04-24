@@ -48,6 +48,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
   const showArrow = !hideArrow;
 
   const domRef = useDOMRef<ComponentRef<'div'>>(popoverRef);
+
   const controlRef = useRef<HTMLButtonElement | null>(null);
 
   const openState = state.isOpen;
