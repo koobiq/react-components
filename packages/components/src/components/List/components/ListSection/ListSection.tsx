@@ -8,13 +8,12 @@ import { ListOption } from '../ListOption';
 
 import s from './ListSection.module.css';
 
-export function ListSection<T>({
-  section,
-  state,
-}: {
+export type ListSectionProps<T> = {
   section: Node<T>;
   state: ListState<T>;
-}) {
+};
+
+export function ListSection<T>({ section, state }: ListSectionProps<T>) {
   const { itemProps, headingProps, groupProps } = useListBoxSection({
     heading: section.rendered,
     'aria-label': section['aria-label'],
