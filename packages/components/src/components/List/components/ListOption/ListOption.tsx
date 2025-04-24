@@ -12,13 +12,12 @@ import s from './ListOption.module.css';
 
 const textVariant = utilClasses.typography;
 
-export function ListOption<T>({
-  item,
-  state,
-}: {
+export type ListOptionProps<T> = {
   item: Node<T>;
   state: ListState<T>;
-}) {
+};
+
+export function ListOption<T>({ item, state }: ListOptionProps<T>) {
   const ref = useRef(null);
 
   const {
@@ -32,7 +31,9 @@ export function ListOption<T>({
 
   const { isPressed: pressed, pressProps } = usePress({ isDisabled: disabled });
 
-  const Tag: ElementType = item.props.href ? 'a' : 'li';
+  const { href } = item.props;
+
+  const Tag: ElementType = href ? 'a' : 'li';
 
   return (
     <Tag
@@ -42,8 +43,8 @@ export function ListOption<T>({
         hovered && s.hovered,
         pressed && s.pressed,
         selected && s.selected,
-        textVariant['text-normal'],
         disabled && s.disabled,
+        textVariant['text-normal'],
         focusVisible && s.focusVisible
       )}
       ref={ref}
