@@ -5,7 +5,7 @@ import { isString } from '@koobiq/react-core';
 import { utilClasses } from '../../styles/utility';
 import type { Selection } from '../../types';
 import { Checkbox } from '../Checkbox';
-import { flex } from '../layout';
+import { FlexBox } from '../FlexBox';
 
 import { ListItemText } from './components';
 import type { ListProps } from './index';
@@ -190,13 +190,7 @@ export const Sections = {
     ];
 
     return (
-      <div
-        className={flex({
-          direction: 'column',
-          alignItems: 'stretch',
-          gap: 'l',
-        })}
-      >
+      <FlexBox direction="column" alignItems="stretch" gap="l">
         <section>
           <List label="Static collections:" selectionMode="multiple">
             <ListSection title="Group 1">
@@ -228,7 +222,7 @@ export const Sections = {
             )}
           </List>
         </section>
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -239,13 +233,7 @@ export const OtherExamples = {
     const [selected, setSelected] = useState<Selection>(new Set([1, 2]));
 
     return (
-      <div
-        className={flex({
-          direction: 'column',
-          alignItems: 'stretch',
-          gap: 'l',
-        })}
-      >
+      <FlexBox direction="column" alignItems="stretch" gap="l">
         <List
           aria-label="Numbers"
           selectionMode="single"
@@ -321,7 +309,7 @@ export const OtherExamples = {
             </ListItem>
           )}
         </List>
-      </div>
+      </FlexBox>
     );
   },
 };
