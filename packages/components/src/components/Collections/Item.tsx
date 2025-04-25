@@ -3,13 +3,13 @@
 import type { CSSProperties, FC } from 'react';
 
 import type { ItemProps } from '@koobiq/react-primitives';
-import { Item } from '@koobiq/react-primitives';
+import { Item as AriaItem } from '@koobiq/react-primitives';
 
 type ItemComponent<T> = FC<ItemProps<T>> & {
   getCollectionNode: unknown;
 };
 
-const ItemInner = Item as ItemComponent<unknown>;
+const ItemInner = AriaItem as ItemComponent<unknown>;
 
 export type ListItemProps<T> = ItemProps<T> & {
   /** Additional CSS-classes. */
@@ -20,8 +20,8 @@ export type ListItemProps<T> = ItemProps<T> & {
   'data-testid'?: string | number;
 };
 
-export function ListItem<T>(props: ListItemProps<T>) {
+export function Item<T>(props: ListItemProps<T>) {
   return <Item {...props} />;
 }
 
-ListItem.getCollectionNode = ItemInner.getCollectionNode;
+Item.getCollectionNode = ItemInner.getCollectionNode;

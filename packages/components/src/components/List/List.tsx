@@ -11,11 +11,17 @@ import {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
+import { Item, Section } from '../Collections';
 import { Typography } from '../Typography';
 
-import { ListOption, ListSection } from './components';
+import { ListItemText, ListOption, ListSection } from './components';
 import s from './List.module.css';
-import type { ListComponent, ListProps, ListRef, ListBaseProps } from './types';
+import type {
+  ListComponentProps,
+  ListProps,
+  ListRef,
+  ListBaseProps,
+} from './types';
 
 const { list } = utilClasses;
 
@@ -72,4 +78,16 @@ function ListRender<T extends object>(props: ListProps<T>, ref: Ref<ListRef>) {
   return <ListInner listRef={ref} {...props} state={state} />;
 }
 
-export const List = forwardRef(ListRender) as ListComponent;
+const ListComponent = forwardRef(ListRender) as ListComponentProps;
+
+type CompoundedComponent = typeof ListComponent & {
+  Item: typeof Item;
+  Section: typeof Section;
+  ItemText: typeof ListItemText;
+};
+
+export const List = ListComponent as CompoundedComponent;
+
+List.Item = Item;
+List.Section = Section;
+List.ItemText = ListItemText;

@@ -1,4 +1,5 @@
-export { List } from './List';
+export * from './List';
+export * from './components/ListItemText';
 export * from './types';
-export * from './ListItem';
-export * from './ListSection';
+
+export { Item as ListItem, Section as ListSection } from '../Collections';
