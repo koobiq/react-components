@@ -7,14 +7,17 @@ import type { Selection } from '../../types';
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
 
-import { ListItemText } from './components';
 import type { ListProps } from './index';
-import { List, ListItem, ListSection } from './index';
+import { List } from './index';
 
 export default {
   title: 'Components/List',
   component: List,
-  subcomponents: { ListItem, ListSection, ListItemText },
+  subcomponents: {
+    'List.Item': List.Item,
+    'List.Section': List.Section,
+    'List.ItemText': List.ItemText,
+  },
   argTypes: {},
 };
 
@@ -27,21 +30,21 @@ export const Base = {
       autoFocus
       {...args}
     >
-      <ListItem key="first">
-        <ListItemText>First</ListItemText>
-      </ListItem>
-      <ListItem key="second">
-        <ListItemText>Second</ListItemText>
-      </ListItem>
-      <ListItem key="third">
-        <ListItemText>Third</ListItemText>
-      </ListItem>
-      <ListItem key="fourth">
-        <ListItemText>Fourth</ListItemText>
-      </ListItem>
-      <ListItem key="fifth">
-        <ListItemText>Fifth</ListItemText>
-      </ListItem>
+      <List.Item key="first">
+        <List.ItemText>First</List.ItemText>
+      </List.Item>
+      <List.Item key="second">
+        <List.ItemText>Second</List.ItemText>
+      </List.Item>
+      <List.Item key="third">
+        <List.ItemText>Third</List.ItemText>
+      </List.Item>
+      <List.Item key="fourth">
+        <List.ItemText>Fourth</List.ItemText>
+      </List.Item>
+      <List.Item key="fifth">
+        <List.ItemText>Fifth</List.ItemText>
+      </List.Item>
     </List>
   ),
 };
@@ -64,7 +67,7 @@ export const DynamicCollections = {
 
     return (
       <List selectionMode="single" items={options}>
-        {(item) => <ListItem>{item.name}</ListItem>}
+        {(item) => <List.Item>{item.name}</List.Item>}
       </List>
     );
   },
@@ -108,7 +111,7 @@ export const SelectionStory = {
             setSelected(selected);
           }}
         >
-          {(item) => <ListItem>{item.id}</ListItem>}
+          {(item) => <List.Item>{item.id}</List.Item>}
         </List>
         <section
           style={sectionStyle}
@@ -146,7 +149,7 @@ export const DisabledItems = {
         defaultSelectedKeys={[2, 3]}
         disabledKeys={[1, 2]}
       >
-        {(item) => <ListItem>{item.name}</ListItem>}
+        {(item) => <List.Item>{item.name}</List.Item>}
       </List>
     );
   },
@@ -155,15 +158,15 @@ export const DisabledItems = {
 export const Links = {
   render: () => (
     <List aria-label="Links">
-      <ListItem href="https://apple.com/" target="_blank">
+      <List.Item href="https://apple.com/" target="_blank">
         Apple
-      </ListItem>
-      <ListItem href="https://google.com/" target="_blank">
+      </List.Item>
+      <List.Item href="https://google.com/" target="_blank">
         Google
-      </ListItem>
-      <ListItem href="https://microsoft.com/" target="_blank">
+      </List.Item>
+      <List.Item href="https://microsoft.com/" target="_blank">
         Microsoft
-      </ListItem>
+      </List.Item>
     </List>
   ),
 };
@@ -193,16 +196,16 @@ export const Sections = {
       <FlexBox direction="column" alignItems="stretch" gap="l">
         <section>
           <List label="Static collections:" selectionMode="multiple">
-            <ListSection title="Group 1">
-              <ListItem>Item 1</ListItem>
-              <ListItem>Item 2</ListItem>
-              <ListItem>Item 3</ListItem>
-            </ListSection>
-            <ListSection title="Group 2">
-              <ListItem>Item 1</ListItem>
-              <ListItem>Item 2</ListItem>
-              <ListItem>Item 3</ListItem>
-            </ListSection>
+            <List.Section title="Group 1">
+              <List.Item>Item 1</List.Item>
+              <List.Item>Item 2</List.Item>
+              <List.Item>Item 3</List.Item>
+            </List.Section>
+            <List.Section title="Group 2">
+              <List.Item>Item 1</List.Item>
+              <List.Item>Item 2</List.Item>
+              <List.Item>Item 3</List.Item>
+            </List.Section>
           </List>
         </section>
         <section>
@@ -212,13 +215,13 @@ export const Sections = {
             items={options}
           >
             {(item) => (
-              <ListSection
+              <List.Section
                 key={item.name}
                 items={item.children}
                 title={item.name}
               >
-                {(item) => <ListItem>{item.name}</ListItem>}
-              </ListSection>
+                {(item) => <List.Item>{item.name}</List.Item>}
+              </List.Section>
             )}
           </List>
         </section>
@@ -239,23 +242,23 @@ export const OtherExamples = {
           selectionMode="single"
           defaultSelectedKeys={['1']}
         >
-          <ListItem key="1">
-            <ListItemText caption="HelperText">First</ListItemText>
-          </ListItem>
-          <ListItem key="2">
-            <ListItemText>Second</ListItemText>
-          </ListItem>
-          <ListItem key="3">
-            <ListItemText>Third</ListItemText>
-          </ListItem>
-          <ListItem key="4">
-            <ListItemText>Fourth</ListItemText>
-          </ListItem>
-          <ListItem key="5">
-            <ListItemText>Fifth</ListItemText>
-          </ListItem>
-          <ListItem key="6">
-            <ListItemText
+          <List.Item key="1">
+            <List.ItemText caption="HelperText">First</List.ItemText>
+          </List.Item>
+          <List.Item key="2">
+            <List.ItemText>Second</List.ItemText>
+          </List.Item>
+          <List.Item key="3">
+            <List.ItemText>Third</List.ItemText>
+          </List.Item>
+          <List.Item key="4">
+            <List.ItemText>Fourth</List.ItemText>
+          </List.Item>
+          <List.Item key="5">
+            <List.ItemText>Fifth</List.ItemText>
+          </List.Item>
+          <List.Item key="6">
+            <List.ItemText
               slotProps={{
                 text: { ellipsis: true },
                 caption: { ellipsis: true },
@@ -269,10 +272,10 @@ export const OtherExamples = {
               tempore totam! Aperiam beatae, distinctio dolores doloribus ea
               error explicabo iusto nam nobis, non nostrum quaerat quas quasi
               quibusdam quidem sapiente voluptas.
-            </ListItemText>
-          </ListItem>
-          <ListItem key="7">
-            <ListItemText
+            </List.ItemText>
+          </List.Item>
+          <List.Item key="7">
+            <List.ItemText
               slotProps={{
                 caption: { ellipsis: true },
               }}
@@ -285,8 +288,8 @@ export const OtherExamples = {
               tempore totam! Aperiam beatae, distinctio dolores doloribus ea
               error explicabo iusto nam nobis, non nostrum quaerat quas quasi
               quibusdam quidem sapiente voluptas.
-            </ListItemText>
-          </ListItem>
+            </List.ItemText>
+          </List.Item>
         </List>
         <List
           selectionMode="multiple"
@@ -301,12 +304,12 @@ export const OtherExamples = {
           ]}
         >
           {(item) => (
-            <ListItem>
+            <List.Item>
               <Checkbox
                 checked={!isString(selected) && selected.has(item.id)}
               />
               {item.name}
-            </ListItem>
+            </List.Item>
           )}
         </List>
       </FlexBox>

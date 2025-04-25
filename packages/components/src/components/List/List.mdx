@@ -16,12 +16,7 @@ import * as Stories from './List.stories';
 List displays a list of options and allows a user to select one or more of them.
 
 ```tsx
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListSection,
-} from '@koobiq/react-components';
+import { List } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -34,9 +29,9 @@ import {
 
 The component has the following helper components:
 
-- `ListItem` — list item component.
-- `ListSection` — a group of items.
-- `ListItemText` — a component to show text in an item.
+- `List.Item` — list item component.
+- `List.Section` — a group of items.
+- `List.ItemText` — a component to show text in an item.
 
 ## Usage
 
@@ -44,22 +39,17 @@ List consists of a container element, with a list of items or sections inside.
 Users can select one or more items by clicking, tapping, or navigating with the keyboard.
 
 ```tsx
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListSection,
-} from '@koobiq/react-components';
+import { List } from '@koobiq/react-components';
 
 <List>
-  <ListItem>
-    <ListItemText caption="description">label</ListItemText>
-  </ListItem>
-  <ListSection label="group">
-    <ListItem>
-      <ListItemText caption="description">label</ListItemText>
-    </ListItem>
-  </ListSection>
+  <List.Item>
+    <List.ItemText caption="description">label</List.ItemText>
+  </List.Item>
+  <List.Section label="group">
+    <List.Item>
+      <List.ItemText caption="description">label</List.ItemText>
+    </List.Item>
+  </List.Section>
 </List>;
 ```
 
@@ -89,7 +79,7 @@ to set the selected items (controlled). The value of the selected keys must matc
 ## Disabled items
 
 List supports marking items as disabled using the `disabledKeys` prop.
-Each key in this list corresponds with the `key` prop passed to the `ListItem` component,
+Each key in this list corresponds with the `key` prop passed to the `List.Item` component,
 or automatically derived from the values passed to the items prop.
 
 <Story of={Stories.DisabledItems} />
@@ -98,15 +88,15 @@ or automatically derived from the values passed to the items prop.
 
 By default, interacting with an item in a List triggers `onSelectionChange`.
 Alternatively, items may be links to another page or website. This can be achieved
-by passing the `href` prop to the `ListItem` component.
+by passing the `href` prop to the `List.Item` component.
 
 <Story of={Stories.Links} />
 
 ## Sections
 
 List supports sections with headings in order to group options.
-Sections can be used by wrapping groups of `ListItem` in a `ListSection` component.
-Each `ListSection` takes a `title` and `key` prop.
+Sections can be used by wrapping groups of `List.Item` in a `List.Section` component.
+Each `List.Section` takes a `title` and `key` prop.
 
 <Story of={Stories.Sections} />
 

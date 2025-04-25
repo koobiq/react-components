@@ -3,7 +3,7 @@ import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-import { List, ListItem } from './index';
+import { List } from './index';
 
 describe('List', () => {
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('List', () => {
 
     render(
       <List {...baseProps} ref={ref}>
-        <ListItem>item</ListItem>
+        <List.Item>item</List.Item>
       </List>
     );
 
@@ -38,7 +38,7 @@ describe('List', () => {
 
     render(
       <List {...baseProps} className={className}>
-        <ListItem>item</ListItem>
+        <List.Item>item</List.Item>
       </List>
     );
 
@@ -52,9 +52,9 @@ describe('List', () => {
 
       render(
         <List {...baseProps}>
-          <ListItem className={className} data-testid="item">
+          <List.Item className={className} data-testid="item">
             item
-          </ListItem>
+          </List.Item>
         </List>
       );
 
