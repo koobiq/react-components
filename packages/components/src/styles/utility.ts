@@ -74,4 +74,6 @@ export const utilClasses = {
   hideVisually: s['hide-visually'],
   color,
   typography,
+  list: s.list,
+  listItem: s['list-item'],
 };
