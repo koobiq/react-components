@@ -15,6 +15,7 @@ import {
 } from '@koobiq/react-primitives';
 import type { Node } from '@koobiq/react-primitives';
 
+import { Item, Section } from '../Collections';
 import {
   FieldLabel,
   FieldError,
@@ -22,10 +23,10 @@ import {
   FieldCaption,
   FieldInputGroup,
 } from '../FieldComponents';
-import { ListInner } from '../List/List';
+import { ListItemText, ListInner } from '../List';
 import { PopoverInner } from '../Popover';
 
-import type { SelectRef, SelectProps, SelectComponent } from './index';
+import type { SelectRef, SelectProps, SelectComponentProp } from './index';
 import s from './Select.module.css';
 
 function SelectRender<T extends object>(
@@ -217,4 +218,16 @@ function SelectRender<T extends object>(
   );
 }
 
-export const Select = forwardRef(SelectRender) as SelectComponent;
+const SelectComponent = forwardRef(SelectRender) as SelectComponentProp;
+
+type CompoundedComponent = typeof SelectComponent & {
+  Item: typeof Item;
+  Section: typeof Section;
+  ItemText: typeof ListItemText;
+};
+
+export const Select = SelectComponent as CompoundedComponent;
+
+Select.Item = Item;
+Select.Section = Section;
+Select.ItemText = ListItemText;

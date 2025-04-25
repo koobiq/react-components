@@ -105,7 +105,7 @@ export type SelectProps<T extends object> = {
   };
 };
 
-export type SelectComponent = <T extends object>(
+export type SelectComponentProp = <T extends object>(
   props: SelectProps<T>
 ) => ReactElement | null;
 

@@ -12,8 +12,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
-import { ListItem, ListSection } from '../List';
-import { ListItemText } from '../List/components';
 import { useBreakpoints } from '../Provider';
 import { Typography } from '../Typography';
 
@@ -26,7 +24,11 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  subcomponents: { ListItem, ListSection, ListItemText },
+  subcomponents: {
+    'Select.Item': Select.Item,
+    'Select.Section': Select.Section,
+    'Select.ItemText': Select.ItemText,
+  },
   argTypes: {},
 } satisfies Meta<typeof Select>;
 
@@ -56,17 +58,17 @@ export const Base: Story = {
       placeholder="Select an option"
       {...args}
     >
-      <ListItem key="bruteforce">Bruteforce</ListItem>
-      <ListItem key="complex-attack">Complex Attack</ListItem>
-      <ListItem key="ddos">DDoS</ListItem>
-      <ListItem key="dos">DoS</ListItem>
-      <ListItem key="hips-alert">HIPS Alert</ListItem>
-      <ListItem key="ids-ips-alert">IDS/IPS Alert</ListItem>
-      <ListItem key="identity-theft">Identity Theft</ListItem>
-      <ListItem key="miscellaneous">Miscellaneous</ListItem>
-      <ListItem key="network-attack">Network Attack</ListItem>
-      <ListItem key="post-compromise">Post Compromise</ListItem>
-      <ListItem key="potential-attack">Potential Attack</ListItem>
+      <Select.Item key="bruteforce">Bruteforce</Select.Item>
+      <Select.Item key="complex-attack">Complex Attack</Select.Item>
+      <Select.Item key="ddos">DDoS</Select.Item>
+      <Select.Item key="dos">DoS</Select.Item>
+      <Select.Item key="hips-alert">HIPS Alert</Select.Item>
+      <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
+      <Select.Item key="identity-theft">Identity Theft</Select.Item>
+      <Select.Item key="miscellaneous">Miscellaneous</Select.Item>
+      <Select.Item key="network-attack">Network Attack</Select.Item>
+      <Select.Item key="post-compromise">Post Compromise</Select.Item>
+      <Select.Item key="potential-attack">Potential Attack</Select.Item>
     </Select>
   ),
 };
@@ -95,7 +97,7 @@ export const Content: Story = {
         placeholder="Select an option"
         caption="Dynamic collections"
       >
-        {(item) => <ListItem key={item.name}>{item.name}</ListItem>}
+        {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -129,7 +131,7 @@ export const Selection: Story = {
           placeholder="Select an option"
           onSelectionChange={(selected) => setAttack(selected)}
         >
-          {(item) => <ListItem key={item.name}>{item.name}</ListItem>}
+          {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
         </Select>
         <Typography>Selected: {attack}</Typography>
       </FlexBox>
@@ -148,7 +150,7 @@ export const Error: Story = {
         errorMessage="This field is required"
         error
       >
-        {(item) => <ListItem>{item.name}</ListItem>}
+        {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -165,7 +167,7 @@ export const Disabled: Story = {
         placeholder="Select an option"
         disabled
       >
-        {(item) => <ListItem>{item.name}</ListItem>}
+        {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -182,7 +184,7 @@ export const DisabledOptions: Story = {
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
       >
-        {(item) => <ListItem>{item.name}</ListItem>}
+        {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -200,7 +202,7 @@ export const Required: Story = {
           placeholder="Select an option"
           required
         >
-          {(item) => <ListItem>{item.name}</ListItem>}
+          {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
         <Select
           items={options}
@@ -211,7 +213,7 @@ export const Required: Story = {
           slotProps={{ label: { required: false } }}
           required
         >
-          {(item) => <ListItem>{item.name}</ListItem>}
+          {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
       </FlexBox>
     );
@@ -230,7 +232,7 @@ export const FullWidth: Story = {
           placeholder="Select an option"
           fullWidth
         >
-          {(item) => <ListItem>{item.name}</ListItem>}
+          {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
       </div>
     );
@@ -252,7 +254,7 @@ export const Open: Story = {
           placeholder="Select an option"
           style={{ inlineSize: 200 }}
         >
-          {(item) => <ListItem>{item.name}</ListItem>}
+          {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
         <Button onClick={toggle}>{open ? 'Close' : 'Open'}</Button>
       </FlexBox>
@@ -283,10 +285,10 @@ export const WithIcons: Story = {
         style={{ inlineSize: 200 }}
       >
         {({ id, icon: Icon }) => (
-          <ListItem>
+          <Select.Item>
             <Icon />
-            <ListItemText>{id}</ListItemText>
-          </ListItem>
+            <Select.ItemText>{id}</Select.ItemText>
+          </Select.Item>
         )}
       </Select>
     );
@@ -316,9 +318,9 @@ export const WithItemDetails: Story = {
         style={{ inlineSize: 200 }}
       >
         {({ id, caption }) => (
-          <ListItem>
-            <ListItemText caption={caption}>{id}</ListItemText>
-          </ListItem>
+          <Select.Item>
+            <Select.ItemText caption={caption}>{id}</Select.ItemText>
+          </Select.Item>
         )}
       </Select>
     );
@@ -354,9 +356,13 @@ export const Section: Story = {
         style={{ inlineSize: 200 }}
       >
         {(item) => (
-          <ListSection key={item.name} items={item.children} title={item.name}>
-            {(item) => <ListItem>{item.name}</ListItem>}
-          </ListSection>
+          <Select.Section
+            key={item.name}
+            items={item.children}
+            title={item.name}
+          >
+            {(item) => <Select.Item>{item.name}</Select.Item>}
+          </Select.Section>
         )}
       </Select>
     );
