@@ -3,7 +3,7 @@ import { createRef } from 'react';
 import { render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { Grid, GridItem } from './index';
+import { Grid } from './index';
 import type { GridProps, GridItemProps } from './index';
 
 describe('Grid', () => {
@@ -32,7 +32,7 @@ describe('Grid', () => {
   });
 });
 
-describe('GridItem', () => {
+describe('Grid.Item', () => {
   const baseProps = {};
 
   it('should merge a custom class name with the default ones', () => {
@@ -43,7 +43,7 @@ describe('GridItem', () => {
       className,
     };
 
-    const { container } = render(<GridItem {...props} />);
+    const { container } = render(<Grid.Item {...props} />);
 
     const grid = container.querySelector('div');
 
@@ -52,7 +52,7 @@ describe('GridItem', () => {
 
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
-    const { container } = render(<GridItem {...baseProps} ref={ref} />);
+    const { container } = render(<Grid.Item {...baseProps} ref={ref} />);
     const grid = container.querySelector('div');
     expect(ref.current).toBe(grid);
   });
