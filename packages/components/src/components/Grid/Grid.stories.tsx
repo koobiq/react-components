@@ -2,13 +2,13 @@ import type { CSSProperties } from 'react';
 
 import type { StoryObj } from '@storybook/react';
 
-import { Grid, GridItem } from './index';
-import type { GridBaseProps } from './index.js';
+import { Grid } from './index';
+import type { GridBaseProps } from './index';
 
 const meta = {
   title: 'Components/Grid',
   component: Grid,
-  subcomponents: { GridItem },
+  subcomponents: { 'Grid.Item': Grid.Item },
 };
 
 export default meta;
@@ -25,17 +25,17 @@ const itemStyle = {
 export const Base: Story = {
   render: (args: GridBaseProps) => (
     <Grid cols={3} gap="m" {...args}>
-      <GridItem style={itemStyle}>01</GridItem>
-      <GridItem style={itemStyle} col={2}>
+      <Grid.Item style={itemStyle}>01</Grid.Item>
+      <Grid.Item style={itemStyle} col={2}>
         02
-      </GridItem>
-      <GridItem style={itemStyle} col={2}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={2}>
         03
-      </GridItem>
-      <GridItem style={itemStyle}>04</GridItem>
-      <GridItem style={itemStyle}>05</GridItem>
-      <GridItem style={itemStyle}>06</GridItem>
-      <GridItem style={itemStyle}>07</GridItem>
+      </Grid.Item>
+      <Grid.Item style={itemStyle}>04</Grid.Item>
+      <Grid.Item style={itemStyle}>05</Grid.Item>
+      <Grid.Item style={itemStyle}>06</Grid.Item>
+      <Grid.Item style={itemStyle}>07</Grid.Item>
     </Grid>
   ),
 };
@@ -43,10 +43,10 @@ export const Base: Story = {
 export const Cols: Story = {
   render: (args: GridBaseProps) => (
     <Grid gap="m" cols={4} {...args}>
-      <GridItem style={itemStyle}>01</GridItem>
-      <GridItem style={itemStyle}>02</GridItem>
-      <GridItem style={itemStyle}>03</GridItem>
-      <GridItem style={itemStyle}>04</GridItem>
+      <Grid.Item style={itemStyle}>01</Grid.Item>
+      <Grid.Item style={itemStyle}>02</Grid.Item>
+      <Grid.Item style={itemStyle}>03</Grid.Item>
+      <Grid.Item style={itemStyle}>04</Grid.Item>
     </Grid>
   ),
 };
@@ -54,10 +54,10 @@ export const Cols: Story = {
 export const Gap: Story = {
   render: (args: GridBaseProps) => (
     <Grid gap="m" rowGap="xxl" cols={2} {...args}>
-      <GridItem style={itemStyle}>01</GridItem>
-      <GridItem style={itemStyle}>02</GridItem>
-      <GridItem style={itemStyle}>03</GridItem>
-      <GridItem style={itemStyle}>04</GridItem>
+      <Grid.Item style={itemStyle}>01</Grid.Item>
+      <Grid.Item style={itemStyle}>02</Grid.Item>
+      <Grid.Item style={itemStyle}>03</Grid.Item>
+      <Grid.Item style={itemStyle}>04</Grid.Item>
     </Grid>
   ),
 };
@@ -66,10 +66,10 @@ export const AlignmentItems: Story = {
   name: 'Alignment items',
   render: (args: GridBaseProps) => (
     <Grid gap="m" justifyItems="center" cols={2} {...args}>
-      <GridItem style={itemStyle}>01</GridItem>
-      <GridItem style={itemStyle}>02</GridItem>
-      <GridItem style={itemStyle}>03</GridItem>
-      <GridItem style={itemStyle}>04</GridItem>
+      <Grid.Item style={itemStyle}>01</Grid.Item>
+      <Grid.Item style={itemStyle}>02</Grid.Item>
+      <Grid.Item style={itemStyle}>03</Grid.Item>
+      <Grid.Item style={itemStyle}>04</Grid.Item>
     </Grid>
   ),
 };
@@ -77,18 +77,18 @@ export const AlignmentItems: Story = {
 export const Col: Story = {
   render: (args: GridBaseProps) => (
     <Grid gap="m" cols={4} {...args}>
-      <GridItem style={itemStyle} col={3}>
+      <Grid.Item style={itemStyle} col={3}>
         01
-      </GridItem>
-      <GridItem style={itemStyle} col={1}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={1}>
         02
-      </GridItem>
-      <GridItem style={itemStyle} col={1}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={1}>
         03
-      </GridItem>
-      <GridItem style={itemStyle} col={3}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={3}>
         04
-      </GridItem>
+      </Grid.Item>
     </Grid>
   ),
 };
@@ -97,15 +97,15 @@ export const ColStart: Story = {
   name: 'ColStart',
   render: (args: GridBaseProps) => (
     <Grid gap="m" cols={4} {...args}>
-      <GridItem style={itemStyle} col={2} colStart={2}>
+      <Grid.Item style={itemStyle} col={2} colStart={2}>
         01
-      </GridItem>
-      <GridItem style={itemStyle} col={1} colStart={2}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={1} colStart={2}>
         02
-      </GridItem>
-      <GridItem style={itemStyle} col={1}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={1}>
         03
-      </GridItem>
+      </Grid.Item>
     </Grid>
   ),
 };
@@ -113,18 +113,18 @@ export const ColStart: Story = {
 export const Row: Story = {
   render: (args: GridBaseProps) => (
     <Grid gap="m" cols={4} {...args}>
-      <GridItem style={itemStyle} col={2} row={2}>
+      <Grid.Item style={itemStyle} col={2} row={2}>
         01
-      </GridItem>
-      <GridItem style={itemStyle} col={1}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={1}>
         02
-      </GridItem>
-      <GridItem style={itemStyle} col={1}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={1}>
         03
-      </GridItem>
-      <GridItem style={itemStyle} col={2}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={2}>
         04
-      </GridItem>
+      </Grid.Item>
     </Grid>
   ),
 };
@@ -133,18 +133,18 @@ export const RowStart: Story = {
   name: 'RowStart',
   render: (args: GridBaseProps) => (
     <Grid gap="xl" cols={4} {...args}>
-      <GridItem style={itemStyle} col={2}>
+      <Grid.Item style={itemStyle} col={2}>
         01
-      </GridItem>
-      <GridItem style={itemStyle} col={2}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={2}>
         02
-      </GridItem>
-      <GridItem rowStart={3} style={itemStyle} col={2}>
+      </Grid.Item>
+      <Grid.Item rowStart={3} style={itemStyle} col={2}>
         03
-      </GridItem>
-      <GridItem rowStart={3} style={itemStyle} col={2}>
+      </Grid.Item>
+      <Grid.Item rowStart={3} style={itemStyle} col={2}>
         04
-      </GridItem>
+      </Grid.Item>
     </Grid>
   ),
 };
@@ -153,12 +153,12 @@ export const SelfAlignment: Story = {
   name: 'Self-alignment',
   render: (args: GridBaseProps) => (
     <Grid gap="m" cols={2} {...args}>
-      <GridItem style={itemStyle} alignSelf="center" justifySelf="center">
+      <Grid.Item style={itemStyle} alignSelf="center" justifySelf="center">
         01
-      </GridItem>
-      <GridItem style={itemStyle}>02</GridItem>
-      <GridItem style={itemStyle}>03</GridItem>
-      <GridItem style={itemStyle}>04</GridItem>
+      </Grid.Item>
+      <Grid.Item style={itemStyle}>02</Grid.Item>
+      <Grid.Item style={itemStyle}>03</Grid.Item>
+      <Grid.Item style={itemStyle}>04</Grid.Item>
     </Grid>
   ),
 };
@@ -166,14 +166,14 @@ export const SelfAlignment: Story = {
 export const Nested: Story = {
   render: (args: GridBaseProps) => (
     <Grid gap="xl" cols={3} {...args}>
-      <GridItem style={itemStyle}>01</GridItem>
-      <GridItem style={itemStyle}>02</GridItem>
-      <GridItem>
+      <Grid.Item style={itemStyle}>01</Grid.Item>
+      <Grid.Item style={itemStyle}>02</Grid.Item>
+      <Grid.Item>
         <Grid cols={1} gap="xl">
-          <GridItem style={itemStyle}>03</GridItem>
-          <GridItem style={itemStyle}>04</GridItem>
+          <Grid.Item style={itemStyle}>03</Grid.Item>
+          <Grid.Item style={itemStyle}>04</Grid.Item>
         </Grid>
-      </GridItem>
+      </Grid.Item>
     </Grid>
   ),
 };
@@ -182,10 +182,10 @@ export const ResponsiveValues: Story = {
   name: 'Responsive values',
   render: (args: GridBaseProps) => (
     <Grid gap={{ xs: 'xl', l: '6xl' }} cols={{ m: 4, xs: 1 }} {...args}>
-      <GridItem style={itemStyle}>01</GridItem>
-      <GridItem style={itemStyle}>02</GridItem>
-      <GridItem style={itemStyle}>03</GridItem>
-      <GridItem style={itemStyle}>04</GridItem>
+      <Grid.Item style={itemStyle}>01</Grid.Item>
+      <Grid.Item style={itemStyle}>02</Grid.Item>
+      <Grid.Item style={itemStyle}>03</Grid.Item>
+      <Grid.Item style={itemStyle}>04</Grid.Item>
     </Grid>
   ),
 };
@@ -194,18 +194,18 @@ export const ResponsiveValuesItems: Story = {
   name: 'Responsive values for items',
   render: (args: GridBaseProps) => (
     <Grid gap="m" cols={2} {...args}>
-      <GridItem style={itemStyle} col={{ xs: 2, m: 1 }}>
+      <Grid.Item style={itemStyle} col={{ xs: 2, m: 1 }}>
         01
-      </GridItem>
-      <GridItem style={itemStyle} col={{ xs: 2, m: 1 }}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={{ xs: 2, m: 1 }}>
         02
-      </GridItem>
-      <GridItem style={itemStyle} col={{ xs: 2, m: 1 }}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={{ xs: 2, m: 1 }}>
         03
-      </GridItem>
-      <GridItem style={itemStyle} col={{ xs: 2, m: 1 }}>
+      </Grid.Item>
+      <Grid.Item style={itemStyle} col={{ xs: 2, m: 1 }}>
         04
-      </GridItem>
+      </Grid.Item>
     </Grid>
   ),
 };

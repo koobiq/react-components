@@ -7,11 +7,12 @@ import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { getResponsiveValue } from '../../utils';
 import { useMatchedBreakpoints } from '../Provider';
 
+import { GridItem } from './components';
 import s from './Grid.module.css';
 import type { GridBaseProps } from './types';
 import { normalizeGap } from './utils';
 
-export const Grid = polymorphicForwardRef<'div', GridBaseProps>(
+const GridComponent = polymorphicForwardRef<'div', GridBaseProps>(
   (
     {
       as: Tag = 'div',
@@ -59,8 +60,16 @@ export const Grid = polymorphicForwardRef<'div', GridBaseProps>(
   }
 );
 
-Grid.displayName = 'Grid';
+GridComponent.displayName = 'Grid';
 
 export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<
-  typeof Grid<As>
+  typeof GridComponent<As>
 >;
+
+type CompoundedComponent = typeof GridComponent & {
+  Item: typeof GridItem;
+};
+
+export const Grid = GridComponent as CompoundedComponent;
+
+Grid.Item = GridItem;
