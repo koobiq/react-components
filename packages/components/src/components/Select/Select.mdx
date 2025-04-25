@@ -16,12 +16,7 @@ import * as Stories from './Select.stories';
 A select displays a collapsible list of options and allows a user to select one of them.
 
 ```tsx
-import {
-  Select,
-  ListItem,
-  ListSection,
-  ListItemText,
-} from '@koobiq/react-components';
+import { Select } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -66,7 +61,7 @@ When the select component is disabled, it cannot be interacted with.
 ## Disabled options
 
 Select supports marking items as disabled using the `disabledKeys` prop.
-Each key in this list corresponds with the `key` prop passed to the `ListItem` component.
+Each key in this list corresponds with the `key` prop passed to the `Select.Item` component.
 
 <Story of={Stories.DisabledOptions} />
 

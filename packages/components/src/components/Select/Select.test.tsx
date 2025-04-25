@@ -4,8 +4,6 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { ListItem } from '../List';
-
 import { Select, type SelectProps } from './index';
 
 describe('Select', () => {
@@ -72,9 +70,9 @@ describe('Select', () => {
     it(`should set the defaultSelectedKey correctly`, () => {
       render(
         <Select {...baseProps} defaultSelectedKey="1">
-          <ListItem key="1">1</ListItem>
-          <ListItem key="2">2</ListItem>
-          <ListItem key="3">3</ListItem>
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
         </Select>
       );
 
@@ -90,9 +88,9 @@ describe('Select', () => {
           onSelectionChange={onSelectionChange}
           defaultOpen
         >
-          <ListItem key="1">1</ListItem>
-          <ListItem key="2">2</ListItem>
-          <ListItem key="3">3</ListItem>
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
         </Select>
       );
 
