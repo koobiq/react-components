@@ -10,11 +10,14 @@ import {
   useListState,
 } from '@koobiq/react-primitives';
 
+import { utilClasses } from '../../styles/utility';
 import { Typography } from '../Typography';
 
 import { ListOption, ListSection } from './components';
 import s from './List.module.css';
 import type { ListComponent, ListProps, ListRef, ListBaseProps } from './types';
+
+const { list } = utilClasses;
 
 export type ListInnerProps<T extends object> = {
   state: ListState<T>;
@@ -41,7 +44,7 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
     {
       style,
       ref: domRef,
-      className: clsx(s.base, className),
+      className: clsx(list, className),
     },
     slotProps?.list,
     listBoxProps

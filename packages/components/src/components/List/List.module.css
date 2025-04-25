@@ -1,11 +1,3 @@
-.base {
-  margin: 0;
-  padding: 0;
-  outline: none;
-  overflow: auto;
-  list-style: none;
-}
-
 .label {
   padding: var(--kbq-size-xs) var(--kbq-size-m);
 }

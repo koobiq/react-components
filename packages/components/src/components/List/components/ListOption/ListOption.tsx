@@ -8,9 +8,8 @@ import type { ListState, Node } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 
-import s from './ListOption.module.css';
-
 const textVariant = utilClasses.typography;
+const { listItem } = utilClasses;
 
 export type ListOptionProps<T> = {
   item: Node<T>;
@@ -38,18 +37,13 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
   return (
     <Tag
       {...mergeProps(optionProps, hoverProps, pressProps)}
-      className={clsx(
-        s.base,
-        hovered && s.hovered,
-        pressed && s.pressed,
-        selected && s.selected,
-        disabled && s.disabled,
-        textVariant['text-normal'],
-        focusVisible && s.focusVisible,
-        className
-      )}
+      className={clsx(listItem, textVariant['text-normal'], className)}
       style={style}
       ref={ref}
+      data-hovered={hovered}
+      data-pressed={pressed}
+      data-disabled={disabled}
+      data-selected={selected}
       data-focus-visible={focusVisible}
     >
       {item.rendered}
