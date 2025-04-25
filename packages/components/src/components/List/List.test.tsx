@@ -19,6 +19,7 @@ describe('List', () => {
   };
 
   const getRoot = () => screen.getByTestId('root');
+  const getItem = () => screen.getByTestId('item');
 
   it('should forward a ref', () => {
     const ref = createRef<HTMLUListElement>();
@@ -43,5 +44,22 @@ describe('List', () => {
 
     const root = getRoot();
     expect(root?.className).toContain(className);
+  });
+
+  describe('check an item', () => {
+    it('should merge a custom class name with the default ones', () => {
+      const className = 'foo';
+
+      render(
+        <List {...baseProps}>
+          <ListItem className={className} data-testid="item">
+            item
+          </ListItem>
+        </List>
+      );
+
+      const root = getItem();
+      expect(root?.className).toContain(className);
+    });
   });
 });

@@ -18,6 +18,8 @@ export type ListOptionProps<T> = {
 };
 
 export function ListOption<T>({ item, state }: ListOptionProps<T>) {
+  const { href, className, style } = item.props;
+
   const ref = useRef(null);
 
   const {
@@ -31,8 +33,6 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
 
   const { isPressed: pressed, pressProps } = usePress({ isDisabled: disabled });
 
-  const { href } = item.props;
-
   const Tag: ElementType = href ? 'a' : 'li';
 
   return (
@@ -45,8 +45,10 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
         selected && s.selected,
         disabled && s.disabled,
         textVariant['text-normal'],
-        focusVisible && s.focusVisible
+        focusVisible && s.focusVisible,
+        className
       )}
+      style={style}
       ref={ref}
       data-focus-visible={focusVisible}
     >
