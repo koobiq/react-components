@@ -12,6 +12,14 @@ import {
   type AriaListBoxProps,
 } from '@react-aria/listbox';
 import {
+  useMenu,
+  useMenuItem,
+  useMenuSection,
+  useMenuTrigger,
+  type AriaMenuOptions,
+  type AriaMenuProps,
+} from '@react-aria/menu';
+import {
   Overlay,
   usePopover,
   useModalOverlay,
@@ -24,6 +32,7 @@ import { useSeparator } from '@react-aria/separator';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
 import { Item, Section } from '@react-stately/collections';
 import { useListState, type ListState } from '@react-stately/list';
+import { useMenuTriggerState } from '@react-stately/menu';
 import {
   useOverlayTriggerState,
   type OverlayTriggerState,
@@ -31,6 +40,7 @@ import {
 import { useSelectState } from '@react-stately/select';
 import type { TooltipTriggerProps } from '@react-stately/tooltip';
 import { useTooltipTriggerState } from '@react-stately/tooltip';
+import { useTreeState, type TreeState } from '@react-stately/tree';
 import type {
   Node,
   PressEvent,
@@ -47,6 +57,7 @@ export {
   Item,
   Overlay,
   Section,
+  useMenu,
   useLocale,
   useDialog,
   useOption,
@@ -54,20 +65,26 @@ export {
   usePopover,
   useListBox,
   useTooltip,
-  I18nProvider,
   useListState,
   HiddenSelect,
+  I18nProvider,
+  useMenuItem,
+  useTreeState,
   useSeparator,
+  useMenuSection,
+  useMenuTrigger,
   useSelectState,
   useModalOverlay,
   useOverlayTrigger,
   useTooltipTrigger,
   useListBoxSection,
   useOverlayPosition,
+  useMenuTriggerState,
   useOverlayTriggerState,
   useTooltipTriggerState,
   useLocalizedStringFormatter,
   type Node,
+  type TreeState,
   type ItemProps,
   type ListState,
   type PressEvent,
@@ -75,9 +92,11 @@ export {
   type LinkDOMProps,
   type FocusableElement,
   type SectionProps,
+  type AriaMenuProps,
   type AriaDialogProps,
-  type I18nProviderProps,
+  type AriaMenuOptions,
   type AriaListBoxProps,
+  type I18nProviderProps,
   type TooltipTriggerProps,
   type OverlayTriggerState,
   type AriaModalOverlayProps,
