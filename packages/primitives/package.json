@@ -22,7 +22,9 @@
     "url": "git+https://github.com/koobiq/react-components.git"
   },
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -36,6 +38,7 @@
     "@react-aria/i18n": "^3.12.4",
     "@react-aria/link": "^3.7.0",
     "@react-aria/listbox": "^3.14.2",
+    "@react-aria/menu": "^3.18.2",
     "@react-aria/numberfield": "^3.11.8",
     "@react-aria/overlays": "^3.23.4",
     "@react-aria/progress": "^3.4.17",
@@ -48,11 +51,13 @@
     "@react-aria/visually-hidden": "^3.8.0",
     "@react-stately/collections": "^3.12.2",
     "@react-stately/list": "^3.12.0",
+    "@react-stately/menu": "^3.9.3",
     "@react-stately/numberfield": "^3.9.7",
     "@react-stately/overlays": "^3.6.11",
     "@react-stately/radio": "^3.10.8",
     "@react-stately/select": "^3.6.11",
-    "@react-stately/tooltip": "^3.4.13"
+    "@react-stately/tooltip": "^3.4.13",
+    "@react-stately/tree": "^3.8.9"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

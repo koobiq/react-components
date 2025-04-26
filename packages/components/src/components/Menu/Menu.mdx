@@ -1,0 +1,56 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Menu.stories';
+
+<Meta of={Stories} />
+
+# Menu
+
+<Status variant="experimental" />
+
+A menu displays a list of actions or options that a user can choose.
+
+```tsx
+import { Menu } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Content
+
+<Story of={Stories.Content} />
+
+## Selection
+
+### Single
+
+<Story of={Stories.SelectionSingle} />
+
+### Multiple
+
+<Story of={Stories.SelectionMultiple} />
+
+## Links
+
+<Story of={Stories.Links} />
+
+## Sections
+
+List supports sections with headings in order to group options.
+Sections can be used by wrapping groups of `ListItem` in a `ListSection` component.
+Each `ListSection` takes a `title` and `key` prop.
+
+<Story of={Stories.Sections} />
+
+## Disabled items
+
+<Story of={Stories.DisabledItems} />
