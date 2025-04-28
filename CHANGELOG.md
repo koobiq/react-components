@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.0.1-beta.13](https://github.com/koobiq/react-components/compare/0.0.1-beta.12...0.0.1-beta.13) (2025-04-28)
+
+### 🚀 Features
+
+- **components/Button:** migrate to react-aria `onPress` event ([96c8ed3](https://github.com/koobiq/react-components/commit/96c8ed3a746041dd8723c1f02d442e41603e7681))
+- **components/Grid:** import subcomponents via Grid.Item ([501474c](https://github.com/koobiq/react-components/commit/501474c7019ec0a50426dd42e54de12be53eac61))
+- **components/Link:** migrate to react-aria `onPress` event ([40885c7](https://github.com/koobiq/react-components/commit/40885c7073e553f514cf26c5ab54a1ca2f2b65e6))
+- **components/List:** import components via `List.Item`, `List.Section`, `List.ItemText` ([f66baed](https://github.com/koobiq/react-components/commit/f66baed6c53308f605970847acbe02589a46ec81))
+- **components/Modal:** import components via `Modal.Header`, `Modal.Body`, `Modal.Footer` ([6474c9f](https://github.com/koobiq/react-components/commit/6474c9ff8cfe78bd1aa9e5638b1bc92f1fa346db))
+- **components/Popover:** import components via `Popover.Header`, `Popover.Body`, `Popover.Footer` ([f1c0d82](https://github.com/koobiq/react-components/commit/f1c0d822bf9c9a468cbd4e6eac172b0f37180a80))
+- **components/Select:** import components via `Select.Item`, `Select.Section`, `Select.ItemText` ([092e6d2](https://github.com/koobiq/react-components/commit/092e6d265045d315d5b7d756af6d0d184f797dd1))
+- **components/SidePanel:** import components via `SidePanel.Header`, `SidePanel.Body`, `SidePanel.Footer` ([6a00b0e](https://github.com/koobiq/react-components/commit/6a00b0e849419b9001b8c31c2328a0e62939df7a))
+- **core:** add useDebounceCallback hook ([b84af37](https://github.com/koobiq/react-components/commit/b84af3705af5d0399c3cacdf67edddc558a4028b))
+
+### 🐞 Bug Fixes
+
+- **components/ListItem:** add common props (className, style, data-testid) ([7b9376c](https://github.com/koobiq/react-components/commit/7b9376c1978d33ecfba3df8deee860151e229988))
+
 ## [0.0.1-beta.12](https://github.com/koobiq/react-components/compare/0.0.1-beta.11...0.0.1-beta.12) (2025-04-18)
 
 ### 🚀 Features
