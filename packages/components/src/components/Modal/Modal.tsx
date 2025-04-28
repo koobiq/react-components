@@ -13,11 +13,12 @@ import { Transition } from 'react-transition-group';
 
 import { Backdrop } from '../Backdrop';
 import { Dialog, type DialogProps } from '../Dialog';
+import { DialogHeader, DialogFooter, DialogContent } from '../Dialog';
 
 import s from './Modal.module.css';
 import type { ModalProps, ModalRef } from './types';
 
-export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
+const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
   const {
     size = 'medium',
     hideCloseButton = false,
@@ -144,4 +145,16 @@ export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
   );
 });
 
-Modal.displayName = 'Modal';
+ModalComponent.displayName = 'Modal';
+
+type CompoundedComponent = typeof ModalComponent & {
+  Header: typeof DialogHeader;
+  Body: typeof DialogContent;
+  Footer: typeof DialogFooter;
+};
+
+export const Modal = ModalComponent as CompoundedComponent;
+
+Modal.Header = DialogHeader;
+Modal.Body = DialogContent;
+Modal.Footer = DialogFooter;

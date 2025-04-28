@@ -17,12 +17,7 @@ Modal is a window that appears in front of app content to provide critical
 information or ask for a decision.
 
 ```tsx
-import {
-  Modal,
-  ModalHeader,
-  ModalContent,
-  ModalFooter,
-} from '@koobiq/react-components';
+import { Modal } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -35,9 +30,9 @@ import {
 
 The component has the following helper components:
 
-- `ModalHeader` — header of the modal window
-- `ModalContent` — content area of the component for placing the main information
-- `ModalFooter` — footer of the component, can contain various actions.
+- `Modal.Header` — header of the modal window
+- `Modal.Body` — body of the component for placing the main information
+- `Modal.Footer` — footer of the component, can contain various actions.
 
 ## Usage
 
@@ -59,22 +54,16 @@ The `children` prop can be `ReactNode` or a render function with the `ModalPropC
 The render function can help pass a function to close the modal window.
 
 ```tsx
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalContent,
-  ModalFooter,
-} from '@koobiq/react-components';
+import { Button, Modal } from '@koobiq/react-components';
 
 <Modal control={(props) => <Button {...props}>Open</Button>}>
   {({ close }) => (
     <>
-      <ModalHeader>Title</ModalHeader>
-      <ModalContent>Content</ModalContent>
-      <ModalFooter>
-        <Button onClick={close}>Close</Button>
-      </ModalFooter>
+      <Modal.Header>Title</Modal.Header>
+      <Modal.Body>Content</Modal.Body>
+      <Modal.Footer>
+        <Button onPress={close}>Close</Button>
+      </Modal.Footer>
     </>
   )}
 </Modal>;
