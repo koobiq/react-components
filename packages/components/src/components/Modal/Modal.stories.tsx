@@ -8,19 +8,17 @@ import { spacing } from '../layout';
 import { Textarea } from '../Textarea';
 import { Toggle } from '../Toggle';
 
-import {
-  Modal,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  type ModalProps,
-} from './index';
+import { Modal, type ModalProps } from './index';
 import { modalPropSize } from './index.js';
 
 const meta = {
   title: 'Components/Modal',
   component: Modal,
-  subcomponents: { ModalHeader, ModalContent, ModalFooter },
+  subcomponents: {
+    'Modal.Header': Modal.Header,
+    'Modal.Body': Modal.Body,
+    'Modal.Footer': Modal.Footer,
+  },
   parameters: {
     layout: 'centered',
   },
@@ -39,8 +37,8 @@ export const Base: Story = {
       >
         {({ close }) => (
           <>
-            <ModalHeader>Create access group</ModalHeader>
-            <ModalContent>
+            <Modal.Header>Create access group</Modal.Header>
+            <Modal.Body>
               <Input
                 label="Name"
                 placeholder="Enter a name"
@@ -53,13 +51,13 @@ export const Base: Story = {
                 label="Description"
                 rows={3}
               />
-            </ModalContent>
-            <ModalFooter>
+            </Modal.Body>
+            <Modal.Footer>
               <Button onPress={close}>Ok</Button>
-              <Button variant="fade-contrast-filled" onPress={close}>
+              <Button onPress={close} variant="fade-contrast-filled">
                 Cancel
               </Button>
-            </ModalFooter>
+            </Modal.Footer>
           </>
         )}
       </Modal>
@@ -80,11 +78,11 @@ export const Size: Story = {
           >
             {({ close }) => (
               <>
-                <ModalHeader>I have a {size} size</ModalHeader>
-                <ModalContent>But there&#39;s nothing to say…</ModalContent>
-                <ModalFooter>
+                <Modal.Header>I have a {size} size</Modal.Header>
+                <Modal.Body>But there&#39;s nothing to say…</Modal.Body>
+                <Modal.Footer>
                   <Button onPress={close}>Ok</Button>
-                </ModalFooter>
+                </Modal.Footer>
               </>
             )}
           </Modal>
@@ -103,8 +101,8 @@ export const ControlledOpen: Story = {
       <>
         <Button onPress={on}>Open</Button>
         <Modal open={open} size="small" onOpenChange={set} {...args}>
-          <ModalHeader>Create access group</ModalHeader>
-          <ModalContent>
+          <Modal.Header>Create access group</Modal.Header>
+          <Modal.Body>
             <Input
               label="Name"
               placeholder="Enter a name"
@@ -117,13 +115,13 @@ export const ControlledOpen: Story = {
               label="Description"
               rows={3}
             />
-          </ModalContent>
-          <ModalFooter>
+          </Modal.Body>
+          <Modal.Footer>
             <Button onPress={off}>Ok</Button>
             <Button variant="fade-contrast-filled" onPress={off}>
               Cancel
             </Button>
-          </ModalFooter>
+          </Modal.Footer>
         </Modal>
       </>
     );
@@ -152,8 +150,8 @@ export const Settings: Story = {
       >
         {({ close }) => (
           <>
-            <ModalHeader>Adjust me</ModalHeader>
-            <ModalContent>
+            <Modal.Header>Adjust me</Modal.Header>
+            <Modal.Body>
               <FlexBox gap="l" direction="column">
                 <Toggle
                   checked={hideBackdrop}
@@ -180,10 +178,10 @@ export const Settings: Story = {
                   Disable the exit by pressing ESC key
                 </Toggle>
               </FlexBox>
-            </ModalContent>
-            <ModalFooter>
+            </Modal.Body>
+            <Modal.Footer>
               <Button onPress={close}>Ok</Button>
-            </ModalFooter>
+            </Modal.Footer>
           </>
         )}
       </Modal>
