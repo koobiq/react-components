@@ -19,14 +19,14 @@ export type DialogCloseButtonProps = ButtonProps;
 export const DialogCloseButton = forwardRef<
   DialogCloseButtonRef,
   DialogCloseButtonProps
->(({ onClick, ...other }, ref) => {
+>(({ onPress, ...other }, ref) => {
   const { close } = useDialogProvider();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <div className={s.closeButton}>
       <Button
-        {...mergeProps({ onClick: close }, { onClick })}
+        {...mergeProps({ onPress: close }, { onPress })}
         aria-label={stringFormatter.format('close')}
         startIcon={<IconXmark16 />}
         variant="contrast-transparent"

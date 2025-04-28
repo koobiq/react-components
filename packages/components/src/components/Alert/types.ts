@@ -38,7 +38,7 @@ export type AlertBaseProps = {
   /** Override default icon. */
   icon?: ReactNode;
   /** A callback function called when the user clicks the alert's close button. */
-  onClose?: IconButtonProps['onClick'];
+  onClose?: IconButtonProps['onPress'];
   slotProps?: {
     content?: ComponentPropsWithRef<'div'>;
     statusIcon?: ComponentPropsWithRef<'div'>;

@@ -55,8 +55,8 @@ export const Base: Story = {
               />
             </ModalContent>
             <ModalFooter>
-              <Button onClick={close}>Ok</Button>
-              <Button variant="fade-contrast-filled" onClick={close}>
+              <Button onPress={close}>Ok</Button>
+              <Button variant="fade-contrast-filled" onPress={close}>
                 Cancel
               </Button>
             </ModalFooter>
@@ -101,7 +101,7 @@ export const ControlledOpen: Story = {
 
     return (
       <>
-        <Button onClick={on}>Open</Button>
+        <Button onPress={on}>Open</Button>
         <Modal open={open} size="small" onOpenChange={set} {...args}>
           <ModalHeader>Create access group</ModalHeader>
           <ModalContent>
@@ -119,8 +119,8 @@ export const ControlledOpen: Story = {
             />
           </ModalContent>
           <ModalFooter>
-            <Button onClick={off}>Ok</Button>
-            <Button variant="fade-contrast-filled" onClick={off}>
+            <Button onPress={off}>Ok</Button>
+            <Button variant="fade-contrast-filled" onPress={off}>
               Cancel
             </Button>
           </ModalFooter>
@@ -182,7 +182,7 @@ export const Settings: Story = {
               </FlexBox>
             </ModalContent>
             <ModalFooter>
-              <Button onClick={close}>Ok</Button>
+              <Button onPress={close}>Ok</Button>
             </ModalFooter>
           </>
         )}

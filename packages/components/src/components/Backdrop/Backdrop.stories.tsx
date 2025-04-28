@@ -41,7 +41,7 @@ export const Base: Story = {
 
     return (
       <div style={containerStyle}>
-        <Button onClick={on}>Show the backdrop</Button>
+        <Button onPress={on}>Show the backdrop</Button>
         <Backdrop
           open={open}
           zIndex={5}

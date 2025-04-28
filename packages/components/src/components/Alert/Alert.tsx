@@ -59,7 +59,7 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
       {
         'aria-label': stringFormatter.format('close'),
         variant: 'fade-contrast',
-        onClick: onClose,
+        onPress: onClose,
         className: s.closeIcon,
       },
       slotProps?.closeIcon
