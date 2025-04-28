@@ -12,12 +12,18 @@ import {
 import { Transition } from 'react-transition-group';
 
 import { Backdrop } from '../Backdrop';
-import { Dialog, type DialogProps } from '../Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  type DialogProps,
+} from '../Dialog';
 
 import s from './SidePanel.module.css';
 import type { SidePanelProps, SidePanelRef } from './types';
 
-export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
+const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
   (props, ref) => {
     const {
       size = 'medium',
@@ -148,4 +154,16 @@ export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
   }
 );
 
-SidePanel.displayName = 'SidePanel';
+SidePanelComponent.displayName = 'SidePanel';
+
+type CompoundedComponent = typeof SidePanelComponent & {
+  Header: typeof DialogHeader;
+  Body: typeof DialogContent;
+  Footer: typeof DialogFooter;
+};
+
+export const SidePanel = SidePanelComponent as CompoundedComponent;
+
+SidePanel.Header = DialogHeader;
+SidePanel.Body = DialogContent;
+SidePanel.Footer = DialogFooter;

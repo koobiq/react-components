@@ -7,9 +7,6 @@ import { Toggle } from '../Toggle';
 
 import {
   SidePanel,
-  SidePanelContent,
-  SidePanelFooter,
-  SidePanelHeader,
   sidePanelPropPosition,
   type SidePanelProps,
   sidePanelPropSize,
@@ -18,7 +15,11 @@ import {
 const meta = {
   title: 'Components/SidePanel',
   component: SidePanel,
-  subcomponents: { SidePanelHeader, SidePanelContent, SidePanelFooter },
+  subcomponents: {
+    'SidePanel.Header': SidePanel.Header,
+    'SidePanel.Body': SidePanel.Body,
+    'SidePanel.Footer': SidePanel.Footer,
+  },
   parameters: {
     layout: 'centered',
   },
@@ -37,10 +38,10 @@ export const Base: Story = {
       >
         {({ close }) => (
           <>
-            <SidePanelHeader>
+            <SidePanel.Header>
               Web Security: Safeguarding the Digital World
-            </SidePanelHeader>
-            <SidePanelContent>
+            </SidePanel.Header>
+            <SidePanel.Body>
               <FlexBox gap="m" direction="column">
                 <span>
                   Web security is a crucial aspect of modern digital
@@ -87,13 +88,13 @@ export const Base: Story = {
                   and data in an increasingly connected world.
                 </span>
               </FlexBox>
-            </SidePanelContent>
-            <SidePanelFooter>
+            </SidePanel.Body>
+            <SidePanel.Footer>
               <Button onPress={close}>Ok</Button>
               <Button variant="fade-contrast-filled" onPress={close}>
                 Cancel
               </Button>
-            </SidePanelFooter>
+            </SidePanel.Footer>
           </>
         )}
       </SidePanel>
@@ -114,13 +115,11 @@ export const Size: Story = {
           >
             {({ close }) => (
               <>
-                <SidePanelHeader>I have a {size} size</SidePanelHeader>
-                <SidePanelContent>
-                  But there&#39;s nothing to say…
-                </SidePanelContent>
-                <SidePanelFooter>
+                <SidePanel.Header>I have a {size} size</SidePanel.Header>
+                <SidePanel.Body>But there&#39;s nothing to say…</SidePanel.Body>
+                <SidePanel.Footer>
                   <Button onPress={close}>Ok</Button>
-                </SidePanelFooter>
+                </SidePanel.Footer>
               </>
             )}
           </SidePanel>
@@ -145,13 +144,13 @@ export const Position: Story = {
           >
             {({ close }) => (
               <>
-                <SidePanelHeader>I have a {position} position</SidePanelHeader>
-                <SidePanelContent>
-                  But there&#39;s nothing to say…
-                </SidePanelContent>
-                <SidePanelFooter>
+                <SidePanel.Header>
+                  I have a {position} position
+                </SidePanel.Header>
+                <SidePanel.Body>But there&#39;s nothing to say…</SidePanel.Body>
+                <SidePanel.Footer>
                   <Button onPress={close}>Ok</Button>
-                </SidePanelFooter>
+                </SidePanel.Footer>
               </>
             )}
           </SidePanel>
@@ -170,10 +169,10 @@ export const ControlledOpen: Story = {
       <>
         <Button onPress={on}>Open</Button>
         <SidePanel open={open} size="small" onOpenChange={set} {...args}>
-          <SidePanelHeader>
+          <SidePanel.Header>
             Web Security: Safeguarding the Digital World
-          </SidePanelHeader>
-          <SidePanelContent>
+          </SidePanel.Header>
+          <SidePanel.Body>
             <FlexBox gap="m" direction="column">
               <span>
                 Web security is a crucial aspect of modern digital
@@ -219,13 +218,13 @@ export const ControlledOpen: Story = {
                 data in an increasingly connected world.
               </span>
             </FlexBox>
-          </SidePanelContent>
-          <SidePanelFooter>
+          </SidePanel.Body>
+          <SidePanel.Footer>
             <Button onPress={off}>Ok</Button>
             <Button variant="fade-contrast-filled" onPress={off}>
               Cancel
             </Button>
-          </SidePanelFooter>
+          </SidePanel.Footer>
         </SidePanel>
       </>
     );
@@ -254,8 +253,8 @@ export const Settings: Story = {
       >
         {({ close }) => (
           <>
-            <SidePanelHeader>Adjust me</SidePanelHeader>
-            <SidePanelContent>
+            <SidePanel.Header>Adjust me</SidePanel.Header>
+            <SidePanel.Body>
               <FlexBox gap="l" direction="column">
                 <Toggle
                   checked={hideBackdrop}
@@ -282,10 +281,10 @@ export const Settings: Story = {
                   Disable the exit by pressing ESC key
                 </Toggle>
               </FlexBox>
-            </SidePanelContent>
-            <SidePanelFooter>
+            </SidePanel.Body>
+            <SidePanel.Footer>
               <Button onPress={close}>Ok</Button>
-            </SidePanelFooter>
+            </SidePanel.Footer>
           </>
         )}
       </SidePanel>
