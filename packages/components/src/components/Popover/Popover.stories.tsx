@@ -4,7 +4,8 @@ import { capitalizeFirstLetter, useBoolean } from '@koobiq/react-core';
 import { IconSparkles16 } from '@koobiq/react-icons';
 import type { StoryObj } from '@storybook/react';
 
-import { Button, type ButtonPropOnClick } from '../Button';
+import type { PressEvent } from '../../types';
+import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
 import { InputNumber } from '../InputNumber';
@@ -15,10 +16,10 @@ import image from './__stories__/img.webp';
 import {
   Popover,
   PopoverContent,
-  PopoverHeader,
   PopoverFooter,
-  popoverPropSize,
+  PopoverHeader,
   type PopoverPropPlacement,
+  popoverPropSize,
 } from './index';
 import type { PopoverProps } from './index.js';
 
@@ -38,9 +39,9 @@ export const Base: Story = {
   render: (args: PopoverProps) => (
     <Popover
       size="auto"
+      control={(props) => <Button {...props}>Open</Button>}
       hideCloseButton
       {...args}
-      control={(props) => <Button {...props}>Open</Button>}
     >
       <PopoverHeader>I&#39;m a popover!</PopoverHeader>
     </Popover>
@@ -51,10 +52,10 @@ export const Arrow: Story = {
   render: (args: PopoverProps) => (
     <Popover
       size="auto"
+      control={(props) => <Button {...props}>Open</Button>}
       hideCloseButton
       hideArrow
       {...args}
-      control={(props) => <Button {...props}>Open</Button>}
     >
       <PopoverHeader>I&#39;m a popover!</PopoverHeader>
     </Popover>
@@ -72,9 +73,9 @@ export const Offsets: Story = {
           size="auto"
           offset={offset}
           crossOffset={crossOffset}
+          control={(props) => <Button {...props}>Open</Button>}
           hideCloseButton
           {...args}
-          control={(props) => <Button {...props}>Open</Button>}
         >
           <PopoverHeader>I&#39;m a popover!</PopoverHeader>
         </Popover>
@@ -120,7 +121,7 @@ export const Size: Story = {
                 <PopoverHeader>{capitalizeFirstLetter(size)}</PopoverHeader>
                 <PopoverContent>{text}</PopoverContent>
                 <PopoverFooter>
-                  <Button onClick={close}>Ok</Button>
+                  <Button onPress={close}>Ok</Button>
                 </PopoverFooter>
               </>
             )}
@@ -136,7 +137,7 @@ export const Size: Story = {
               <PopoverHeader>Custom size = 50%</PopoverHeader>
               <PopoverContent>{text}</PopoverContent>
               <PopoverFooter>
-                <Button onClick={close}>Ok</Button>
+                <Button onPress={close}>Ok</Button>
               </PopoverFooter>
             </>
           )}
@@ -152,22 +153,19 @@ export const Placement: Story = {
     const [placement, setPlacement] = useState<PopoverPropPlacement>();
     const anchorRef = useRef<HTMLElement | null>(null);
 
-    const handleClick = (placement: PopoverPropPlacement) => {
-      const fn: ButtonPropOnClick = (e) => {
+    const handlePress =
+      (placement: PopoverPropPlacement) => (e: PressEvent) => {
         toggle();
         setPlacement(placement);
         anchorRef.current = e.target as HTMLElement;
       };
-
-      return fn;
-    };
 
     return (
       <Grid cols={{ xs: 3, m: 5 }} gap="l">
         <GridItem colStart={{ xs: 1, m: 2 }}>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('top start')}
+            onPress={handlePress('top start')}
             fullWidth
           >
             top start
@@ -176,7 +174,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('top')}
+            onPress={handlePress('top')}
             fullWidth
           >
             top
@@ -185,7 +183,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('top end')}
+            onPress={handlePress('top end')}
             fullWidth
           >
             top end
@@ -194,7 +192,7 @@ export const Placement: Story = {
         <GridItem colStart={{ xs: 1, m: 2 }}>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('start top')}
+            onPress={handlePress('start top')}
             fullWidth
           >
             start top
@@ -203,7 +201,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('start')}
+            onPress={handlePress('start')}
             fullWidth
           >
             start
@@ -212,7 +210,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('start bottom')}
+            onPress={handlePress('start bottom')}
             fullWidth
           >
             start bottom
@@ -221,7 +219,7 @@ export const Placement: Story = {
         <GridItem colStart={{ xs: 1, m: 2 }}>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('end top')}
+            onPress={handlePress('end top')}
             fullWidth
           >
             end top
@@ -230,7 +228,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('end')}
+            onPress={handlePress('end')}
             fullWidth
           >
             end
@@ -239,7 +237,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('end bottom')}
+            onPress={handlePress('end bottom')}
             fullWidth
           >
             end bottom
@@ -248,7 +246,7 @@ export const Placement: Story = {
         <GridItem colStart={{ xs: 1, m: 2 }}>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('bottom start')}
+            onPress={handlePress('bottom start')}
             fullWidth
           >
             bottom start
@@ -257,7 +255,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('bottom')}
+            onPress={handlePress('bottom')}
             fullWidth
           >
             bottom
@@ -266,7 +264,7 @@ export const Placement: Story = {
         <GridItem>
           <Button
             variant="fade-contrast-filled"
-            onClick={handleClick('bottom end')}
+            onPress={handlePress('bottom end')}
             fullWidth
           >
             bottom end
@@ -305,7 +303,7 @@ export const ControlledOpen: Story = {
           <Typography align="center" ref={anchorRef}>
             Drop anchor here
           </Typography>
-          <Button onClick={on}>Open</Button>
+          <Button onPress={on}>Open</Button>
         </FlexBox>
         <Popover
           size="auto"
@@ -357,7 +355,7 @@ export const ShouldCloseOnInteractOutside: Story = {
 
     return (
       <>
-        <Button onClick={toggle} ref={anchorRef}>
+        <Button onPress={toggle} ref={anchorRef}>
           {open ? 'Close' : 'Open'}
         </Button>
         <Popover
@@ -381,12 +379,12 @@ export const Customization: Story = {
   render: (args: PopoverProps) => (
     <Popover
       offset={8}
-      {...args}
       control={(props) => (
         <Button startIcon={<IconSparkles16 />} {...props}>
           Make magic
         </Button>
       )}
+      {...args}
     >
       {({ close }) => (
         <>
@@ -408,7 +406,7 @@ export const Customization: Story = {
                 <br />
                 You&#39;re welcome. 😌✨
               </Typography>
-              <Button variant="fade-contrast-filled" onClick={close}>
+              <Button variant="fade-contrast-filled" onPress={close}>
                 Thanks
               </Button>
             </FlexBox>

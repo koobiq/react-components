@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { Link } from '../Link';
+import { Button } from '../Button';
 
 import { Modal } from './Modal';
 import { type ModalProps, modalPropSize } from './types';
@@ -251,9 +251,7 @@ describe('Modal', () => {
         <Modal
           {...baseProps}
           onOpenChange={onOpenChange}
-          control={(props) => (
-            <Link as="button" data-testid="control" {...props} />
-          )}
+          control={(props) => <Button data-testid="control" {...props} />}
         />
       );
 

@@ -37,7 +37,7 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
     const { hovered, pressed, focused, focusVisible, buttonProps } = useButton(
       {
         ...commonProps,
-        ...(loading && {
+        ...((loading || disabled) && {
           onPress: undefined,
           onPressStart: undefined,
           onPressEnd: undefined,

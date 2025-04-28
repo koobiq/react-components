@@ -1,13 +1,5 @@
+import { useBoolean } from '@koobiq/react-core';
 import {
-  type ComponentProps,
-  type CSSProperties,
-  type FC,
-  type MouseEvent,
-  useState,
-} from 'react';
-
-import {
-  IconArrowUpFromBracket16,
   IconArrowUpRightFromSquare16,
   IconChevronDown16,
   IconPlus16,
@@ -56,7 +48,7 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   render: (args: ButtonBaseProps) => (
     // eslint-disable-next-line no-alert
-    <Button onClick={() => alert('Click')} {...args}>
+    <Button onPress={() => alert('Press')} {...args}>
       Button
     </Button>
   ),
@@ -118,14 +110,14 @@ export const Variant: Story = {
 
 export const Disabled: Story = {
   render: function Render(args: ButtonBaseProps) {
-    const [checked, setChecked] = useState(false);
+    const [checked, { set }] = useBoolean(false);
 
     return (
       <FlexBox gap="l" direction="column">
         <Button progress={checked} disabled {...args}>
           Button
         </Button>
-        <Checkbox checked={checked} onChange={setChecked}>
+        <Checkbox checked={checked} onChange={set}>
           Progress
         </Checkbox>
       </FlexBox>
@@ -154,40 +146,9 @@ export const FullWidth: Story = {
 };
 
 export const RootTag: Story = {
-  render: () => {
-    const VisuallyHiddenInput: FC<ComponentProps<'input'>> = (props) => {
-      const inputStyle = {
-        inset: 0,
-        blockSize: 1,
-        inlineSize: 1,
-        overflow: 'hidden',
-        position: 'absolute',
-        whiteSpace: 'nowrap',
-        clipPath: 'inset(50%)',
-      } as CSSProperties;
-
-      return <input style={inputStyle} {...props} />;
-    };
-
-    return (
-      <FlexBox gap="l">
-        <Button as="a" href="#" endIcon={<IconArrowUpRightFromSquare16 />}>
-          Link
-        </Button>
-        <Button
-          as="label"
-          tabIndex={-1}
-          startIcon={<IconArrowUpFromBracket16 />}
-          onMouseDown={(e: MouseEvent<HTMLLabelElement>) => e.preventDefault()}
-        >
-          Upload files
-          <VisuallyHiddenInput
-            type="file"
-            onChange={(event) => console.log(event.target.files)}
-            multiple
-          />
-        </Button>
-      </FlexBox>
-    );
-  },
+  render: () => (
+    <Button as="a" href="#" endIcon={<IconArrowUpRightFromSquare16 />}>
+      Link
+    </Button>
+  ),
 };

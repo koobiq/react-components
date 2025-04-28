@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { Link } from '../Link';
+import { Button } from '../Button';
 
 import { SidePanel } from './SidePanel';
 import {
@@ -264,7 +264,7 @@ describe('SidePanel', () => {
           {...baseProps}
           onOpenChange={onOpenChange}
           control={(props) => (
-            <Link as="button" data-testid="control" {...props} />
+            <Button as="button" data-testid="control" {...props} />
           )}
         />
       );

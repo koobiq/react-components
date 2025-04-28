@@ -31,11 +31,13 @@ import { useSelectState } from '@react-stately/select';
 import type { TooltipTriggerProps } from '@react-stately/tooltip';
 import { useTooltipTriggerState } from '@react-stately/tooltip';
 import type {
-  HoverEvent,
   Node,
+  PressEvent,
+  HoverEvent,
   ItemProps,
   SectionProps,
   LinkDOMProps,
+  FocusableElement,
 } from '@react-types/shared';
 
 export * from './behaviors/index.js';
@@ -66,8 +68,10 @@ export {
   type Node,
   type ItemProps,
   type ListState,
+  type PressEvent,
   type HoverEvent,
   type LinkDOMProps,
+  type FocusableElement,
   type SectionProps,
   type AriaDialogProps,
   type I18nProviderProps,

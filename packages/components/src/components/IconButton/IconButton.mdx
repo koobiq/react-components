@@ -25,6 +25,14 @@ import { IconButton } from '@koobiq/react-components';
 
 <Props />
 
+## Events
+
+IconButton supports user interactions via mouse, keyboard, and touch.
+You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event,
+but normalized to support all interaction methods equally.
+
+In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the button.
+
 ## Size
 
 For `l` or `xl` buttons, use the `size` prop.

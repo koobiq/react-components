@@ -44,7 +44,7 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   render: (args: IconButtonBaseProps) => (
     // eslint-disable-next-line no-alert
-    <IconButton onClick={() => alert('Click')} {...args}>
+    <IconButton onPress={() => alert('Click')} {...args}>
       {args.children || <IconMagnifyingGlass24 />}
     </IconButton>
   ),

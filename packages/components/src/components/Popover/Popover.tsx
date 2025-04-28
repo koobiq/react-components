@@ -92,7 +92,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     return children;
   };
 
-  const { isDisabled, onPress, ...otherTriggerProps } = triggerProps;
+  const { isDisabled, ...otherTriggerProps } = triggerProps;
 
   const arrowProps = mergeProps(
     { className: s.arrow },
@@ -133,7 +133,6 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     <>
       {control?.({
         ref: controlRef,
-        onClick: onPress,
         disabled: isDisabled,
         ...otherTriggerProps,
       })}
