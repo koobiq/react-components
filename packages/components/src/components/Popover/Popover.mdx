@@ -16,12 +16,7 @@ import * as Stories from './Popover.stories';
 Popover component as an overlay whose position is anchored to an element in the user interface.
 
 ```tsx
-import {
-  Popover,
-  PopoverHeader,
-  PopoverContent,
-  PopoverFooter,
-} from '@koobiq/react-components';
+import { Popover } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -34,9 +29,9 @@ import {
 
 The component has the following helper components:
 
-- `PopoverHeader` — header of the popover
-- `PopoverContent` — content area of the component for placing the main information
-- `PopoverFooter` — footer of the component, can contain various actions.
+- `Popover.Header` — header of the popover
+- `Popover.Body` — body of the component for placing the main information
+- `Popover.Footer` — footer of the component, can contain various actions.
 
 ## Usage
 
@@ -60,22 +55,16 @@ The `children` prop can be `ReactNode` or a render function with the `PopoverPro
 The render function can help pass a function to close the popover.
 
 ```tsx
-import {
-  Button,
-  Popover,
-  PopoverHeader,
-  PopoverContent,
-  PopoverFooter,
-} from '@koobiq/react-components';
+import { Button, Popover } from '@koobiq/react-components';
 
 <Popover control={(props) => <Button {...props}>Open</Button>}>
   {({ close }) => (
     <>
-      <PopoverHeader>Title</PopoverHeader>
-      <PopoverContent>Content</PopoverContent>
-      <PopoverFooter>
+      <Popover.Header>Title</Popover.Header>
+      <Popover.Body>Content</Popover.Body>
+      <Popover.Footer>
         <Button onClick={close}>Close</Button>
-      </PopoverFooter>
+      </Popover.Footer>
     </>
   )}
 </Popover>;
