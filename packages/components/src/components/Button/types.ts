@@ -13,8 +13,6 @@ export const buttonPropVariant = [
 
 export type ButtonPropVariant = (typeof buttonPropVariant)[number];
 
-export type ButtonPropOnClick = ButtonOptions['onPress'];
-
 export type ButtonBaseProps = {
   /** The content of the component. */
   children?: ReactNode;
@@ -55,5 +53,4 @@ export type ButtonBaseProps = {
   onHoverStart?: (e: HoverEvent) => void;
   /** Handler that is called when a hover interaction ends. */
   onHoverEnd?: (e: HoverEvent) => void;
-  onClick?: ButtonPropOnClick;
-};
+} & ButtonOptions;

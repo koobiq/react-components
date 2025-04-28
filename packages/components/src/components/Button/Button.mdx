@@ -25,6 +25,14 @@ import { Button } from '@koobiq/react-components';
 
 <Props />
 
+## Events
+
+Button supports user interactions via mouse, keyboard, and touch.
+You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event,
+but normalized to support all interaction methods equally.
+
+In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the button.
+
 ## Variant
 
 To change the visual state of the button, use the `variant` prop.

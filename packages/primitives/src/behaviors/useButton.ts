@@ -13,7 +13,7 @@ export function useButton(
   props: UseButtonProps,
   ref: RefObject<Element | null>
 ) {
-  const { onClick, onPress, disabled, ...otherProps } = props;
+  const { disabled, ...otherProps } = props;
 
   const {
     focusProps,
@@ -32,7 +32,6 @@ export function useButton(
     useButtonReactAria(
       {
         ...otherProps,
-        onPress: onPress || onClick,
         isDisabled: disabled,
       },
       ref

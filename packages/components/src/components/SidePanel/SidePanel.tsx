@@ -112,12 +112,11 @@ export const SidePanel = forwardRef<SidePanelRef, SidePanelProps>(
       slotProps?.panel
     );
 
-    const { isDisabled, onPress, ...otherTriggerProps } = triggerProps;
+    const { isDisabled, ...otherTriggerProps } = triggerProps;
 
     return (
       <>
         {control?.({
-          onClick: onPress,
           disabled: isDisabled,
           ...otherTriggerProps,
         })}

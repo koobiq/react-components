@@ -45,5 +45,5 @@ export type IconButtonBaseProps = {
   /** Handler that is called when a hover interaction starts. */
   onHoverStart?: (e: HoverEvent) => void;
   /** Handler that is called when a hover interaction ends. */
-  onClick?: ButtonOptions['onPress'];
-};
+  onHoverEnd?: (e: HoverEvent) => void;
+} & ButtonOptions;

@@ -109,12 +109,11 @@ export const Modal = forwardRef<ModalRef, ModalProps>((props, ref) => {
     slotProps?.modal
   );
 
-  const { isDisabled, onPress, ...otherTriggerProps } = triggerProps;
+  const { isDisabled, ...otherTriggerProps } = triggerProps;
 
   return (
     <>
       {control?.({
-        onClick: onPress,
         disabled: isDisabled,
         ...otherTriggerProps,
       })}

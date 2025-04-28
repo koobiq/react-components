@@ -1,11 +1,10 @@
-import { useState } from 'react';
-
 import { useBoolean } from '@koobiq/react-core';
 import type { StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { FlexBox } from '../FlexBox';
 import { Input } from '../Input';
-import { flex, spacing } from '../layout';
+import { spacing } from '../layout';
 import { Textarea } from '../Textarea';
 import { Toggle } from '../Toggle';
 
@@ -14,9 +13,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  type ModalPropControl,
   type ModalProps,
-  type ModalPropSize,
 } from './index';
 import { modalPropSize } from './index.js';
 
@@ -72,37 +69,27 @@ export const Base: Story = {
 
 export const Size: Story = {
   render: function Render(args: ModalProps) {
-    const [size, setSize] = useState<ModalPropSize>();
-
-    const control: ModalPropControl = ({ onClick, ...other }) => (
-      <div className={flex({ gap: 'l' })}>
-        {modalPropSize.map((size) => (
-          <Button
-            onClick={(e) => {
-              onClick?.(e);
-              setSize(size);
-            }}
-            key={size}
-            {...other}
-          >
-            size = {size}
-          </Button>
-        ))}
-      </div>
-    );
-
     return (
-      <Modal size={size} control={control} {...args}>
-        {({ close }) => (
-          <>
-            <ModalHeader>I have a {size} size</ModalHeader>
-            <ModalContent>But there&#39;s nothing to say…</ModalContent>
-            <ModalFooter>
-              <Button onClick={close}>Ok</Button>
-            </ModalFooter>
-          </>
-        )}
-      </Modal>
+      <FlexBox gap="l">
+        {modalPropSize.map((size) => (
+          <Modal
+            key={size}
+            size={size}
+            control={(props) => <Button {...props}>size = {size}</Button>}
+            {...args}
+          >
+            {({ close }) => (
+              <>
+                <ModalHeader>I have a {size} size</ModalHeader>
+                <ModalContent>But there&#39;s nothing to say…</ModalContent>
+                <ModalFooter>
+                  <Button onPress={close}>Ok</Button>
+                </ModalFooter>
+              </>
+            )}
+          </Modal>
+        ))}
+      </FlexBox>
     );
   },
 };
@@ -167,7 +154,7 @@ export const Settings: Story = {
           <>
             <ModalHeader>Adjust me</ModalHeader>
             <ModalContent>
-              <div className={flex({ direction: 'column', gap: 'l' })}>
+              <FlexBox gap="l" direction="column">
                 <Toggle
                   checked={hideBackdrop}
                   onChange={setHideBackdrop.toggle}
@@ -192,7 +179,7 @@ export const Settings: Story = {
                 >
                   Disable the exit by pressing ESC key
                 </Toggle>
-              </div>
+              </FlexBox>
             </ModalContent>
             <ModalFooter>
               <Button onClick={close}>Ok</Button>

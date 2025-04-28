@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { Link } from '../Link';
+import { Button } from '../Button';
 
 import { Popover, popoverPropSize } from './index';
 
@@ -95,9 +95,7 @@ describe('Popover', () => {
         <Popover
           {...baseProps}
           onOpenChange={onOpenChange}
-          control={(props) => (
-            <Link as="button" data-testid="control" {...props} />
-          )}
+          control={(props) => <Button data-testid="control" {...props} />}
         />
       );
 
