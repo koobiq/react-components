@@ -1,11 +1,12 @@
 import { type CSSProperties, useState } from 'react';
 
+import { useBoolean } from '@koobiq/react-core';
 import { IconBolt16, IconNorthEast16, IconStar16 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from '../Checkbox';
-import { flex } from '../layout';
+import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
 import type { LinkBaseProps } from './index.js';
@@ -53,13 +54,7 @@ export const Base: Story = {
 
 export const Variant: Story = {
   render: () => (
-    <div
-      className={flex({
-        gap: 'm',
-        direction: 'column',
-        alignItems: 'center',
-      })}
-    >
+    <FlexBox gap="m" direction="column" alignItems="center">
       <Link href="#" variant="text-compact">
         variant = text-compact
       </Link>
@@ -69,15 +64,13 @@ export const Variant: Story = {
       <Link href="#" variant="text-big">
         variant = text-big
       </Link>
-    </div>
+    </FlexBox>
   ),
 };
 
 export const WithIcons: Story = {
   render: () => (
-    <div
-      className={flex({ gap: 'm', direction: 'column', alignItems: 'center' })}
-    >
+    <FlexBox gap="m" direction="column" alignItems="center">
       <Link href="#" startIcon={<IconBolt16 />}>
         Link
       </Link>
@@ -85,15 +78,15 @@ export const WithIcons: Story = {
         Link
       </Link>
       <Link
-        href="https://react.koobiq.io/"
         target="_blank"
         rel="noreferrer"
-        style={{ '--link-gap': 0 } as CSSProperties}
         endIcon={<IconNorthEast16 />}
+        href="https://react.koobiq.io/"
+        style={{ '--link-gap': 0 } as CSSProperties}
       >
         External link
       </Link>
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -110,52 +103,52 @@ export const Visitable: Story = {
     const [visitable, setVisitable] = useState(true);
 
     return (
-      <div className={flex({ gap: 'l', direction: 'column' })}>
+      <FlexBox gap="l" direction="column">
         <Link href="https://react.koobiq.io/" visitable={visitable}>
           Link
         </Link>
         <Checkbox checked={visitable} onChange={setVisitable}>
           Visitable
         </Checkbox>
-      </div>
+      </FlexBox>
     );
   },
 };
 
 export const RootTag: Story = {
   render: function Render() {
-    const [disabled, setDisabled] = useState(false);
-    const [pseudo, setPseudo] = useState(true);
+    const [disabled, setDisabled] = useBoolean(false);
+    const [pseudo, setPseudo] = useBoolean(true);
 
     return (
-      <div className={flex({ gap: 'l', direction: 'column' })}>
-        <div className={flex({ gap: 'xl' })}>
+      <FlexBox gap="l" direction="column">
+        <FlexBox gap="xl">
           <Link
             as="button"
-            onClick={() => alert("I'm a button")}
-            disabled={disabled}
             pseudo={pseudo}
+            disabled={disabled}
+            onPress={() => alert("I'm a button")}
           >
             Button
           </Link>
           <Link
             as="span"
-            onClick={() => alert("I'm a span")}
-            disabled={disabled}
             pseudo={pseudo}
+            disabled={disabled}
+            onPress={() => alert("I'm a span")}
           >
             Pseudo-link
           </Link>
-        </div>
-        <div className={flex({ gap: 'xl' })}>
-          <Checkbox checked={disabled} onChange={setDisabled}>
+        </FlexBox>
+        <FlexBox gap="xl">
+          <Checkbox checked={disabled} onChange={setDisabled.set}>
             Disabled
           </Checkbox>
-          <Checkbox checked={pseudo} onChange={setPseudo}>
+          <Checkbox checked={pseudo} onChange={setPseudo.set}>
             Pseudo
           </Checkbox>
-        </div>
-      </div>
+        </FlexBox>
+      </FlexBox>
     );
   },
 };

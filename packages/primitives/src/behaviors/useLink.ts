@@ -8,7 +8,7 @@ import type { LinkAria, AriaLinkOptions } from '@react-aria/link';
 import { useLink as useLinkReactAria } from '@react-aria/link';
 
 export type UseLinkProps = ExtendableProps<
-  { disabled?: boolean; onClick?: AriaLinkOptions['onPress'] },
+  { disabled?: boolean },
   Omit<AriaLinkOptions, 'isDisabled'>
 >;
 
@@ -16,7 +16,7 @@ export function useLink(
   props: UseLinkProps,
   ref: RefObject<HTMLElement | null>
 ) {
-  const { disabled, onClick, ...otherProps } = props;
+  const { disabled, ...otherProps } = props;
 
   const { hoverProps, isHovered } = useHover({
     ...otherProps,
@@ -28,7 +28,6 @@ export function useLink(
   const { linkProps: commonLinkProps, isPressed } = useLinkReactAria(
     {
       ...otherProps,
-      onPress: onClick,
       isDisabled: disabled,
     },
     ref
