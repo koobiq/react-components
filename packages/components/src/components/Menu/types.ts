@@ -50,7 +50,7 @@ export type MenuProps<T extends object> = {
   disabledKeys?: MenuPropDisabledKeys<T>;
 };
 
-export type MenuComponent = <T extends object>(
+export type MenuComponentProps = <T extends object>(
   props: MenuProps<T>
 ) => ReactElement | null;
 
