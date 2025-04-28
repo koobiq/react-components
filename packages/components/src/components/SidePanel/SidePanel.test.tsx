@@ -135,7 +135,7 @@ describe('SidePanel', () => {
 
     test('should call the onOpenChange handler when clicked', async () => {
       const onOpenChange = vi.fn();
-      const onClick = vi.fn();
+      const onPress = vi.fn();
 
       render(
         <SidePanel
@@ -145,7 +145,7 @@ describe('SidePanel', () => {
               slotProps: {
                 'close-button': {
                   'data-testid': 'close-button',
-                  onClick,
+                  onPress,
                 },
               },
             },
@@ -160,7 +160,7 @@ describe('SidePanel', () => {
       await userEvent.click(closeButton);
 
       expect(onOpenChange).toHaveBeenCalledTimes(1);
-      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(onPress).toHaveBeenCalledTimes(1);
     });
   });
 

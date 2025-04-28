@@ -17,12 +17,7 @@ SidePanel is a panel that slides out from the edges of the screen.
 It's often used for navigation, menus, or to display details about the page a user is on.
 
 ```tsx
-import {
-  SidePanel,
-  SidePanelHeader,
-  SidePanelContent,
-  SidePanelFooter,
-} from '@koobiq/react-components';
+import { SidePanel } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -35,9 +30,9 @@ import {
 
 The component has the following helper components:
 
-- `SidePanelHeader` — header of the side panel
-- `SidePanelContent` — content area of the component for placing the main information
-- `SidePanelFooter` — footer of the component, can contain various actions.
+- `SidePanel.Header` — header of the side panel
+- `SidePanel.Body` — body of the component for placing the main information
+- `SidePanel.Footer` — footer of the component, can contain various actions.
 
 ## Usage
 
@@ -61,22 +56,16 @@ The `children` prop can be `ReactNode` or a render function with the `SidePanelP
 The render function can help pass a function to close the side panel.
 
 ```tsx
-import {
-  Button,
-  SidePanel,
-  SidePanelHeader,
-  SidePanelContent,
-  SidePanelFooter,
-} from '@koobiq/react-components';
+import { Button, SidePanel } from '@koobiq/react-components';
 
 <SidePanel control={(props) => <Button {...props}>Open</Button>}>
   {({ close }) => (
     <>
-      <SidePanelHeader>Title</SidePanelHeader>
-      <SidePanelContent>Content</SidePanelContent>
-      <SidePanelFooter>
-        <Button onClick={close}>Close</Button>
-      </SidePanelFooter>
+      <SidePanel.Header>Title</SidePanel.Header>
+      <SidePanel.Body>Content</SidePanel.Body>
+      <SidePanel.Footer>
+        <Button onPress={close}>Close</Button>
+      </SidePanel.Footer>
     </>
   )}
 </SidePanel>;
