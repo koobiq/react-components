@@ -13,7 +13,7 @@ import {
 import { Transition } from 'react-transition-group';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-import { Dialog } from '../Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';
 
 import s from './Popover.module.css';
 import type { PopoverInnerProps, PopoverProps } from './types';
@@ -174,7 +174,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
   );
 };
 
-export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
+const PopoverComponent = forwardRef<ComponentRef<'div'>, PopoverProps>(
   (props, ref) => {
     const { open, onOpenChange, defaultOpen, ...other } = props;
 
@@ -189,4 +189,16 @@ export const Popover = forwardRef<ComponentRef<'div'>, PopoverProps>(
   }
 );
 
-Popover.displayName = 'Popover';
+PopoverComponent.displayName = 'Popover';
+
+type CompoundedComponent = typeof PopoverComponent & {
+  Header: typeof DialogHeader;
+  Body: typeof DialogContent;
+  Footer: typeof DialogFooter;
+};
+
+export const Popover = PopoverComponent as CompoundedComponent;
+
+Popover.Header = DialogHeader;
+Popover.Body = DialogContent;
+Popover.Footer = DialogFooter;

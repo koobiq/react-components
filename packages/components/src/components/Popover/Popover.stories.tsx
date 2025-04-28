@@ -13,20 +13,17 @@ import { spacing } from '../layout';
 import { Typography } from '../Typography';
 
 import image from './__stories__/img.webp';
-import {
-  Popover,
-  PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
-  type PopoverPropPlacement,
-  popoverPropSize,
-} from './index';
+import { Popover, type PopoverPropPlacement, popoverPropSize } from './index';
 import type { PopoverProps } from './index.js';
 
 const meta = {
   title: 'Components/Popover',
   component: Popover,
-  subcomponents: { PopoverHeader, PopoverContent, PopoverFooter },
+  subcomponents: {
+    'Popover.Header': Popover.Header,
+    'Popover.Body': Popover.Body,
+    'Popover.Footer': Popover.Footer,
+  },
   parameters: {
     layout: 'centered',
   },
@@ -43,7 +40,7 @@ export const Base: Story = {
       hideCloseButton
       {...args}
     >
-      <PopoverHeader>I&#39;m a popover!</PopoverHeader>
+      <Popover.Header>I&#39;m a popover!</Popover.Header>
     </Popover>
   ),
 };
@@ -57,7 +54,7 @@ export const Arrow: Story = {
       hideArrow
       {...args}
     >
-      <PopoverHeader>I&#39;m a popover!</PopoverHeader>
+      <Popover.Header>I&#39;m a popover!</Popover.Header>
     </Popover>
   ),
 };
@@ -77,7 +74,7 @@ export const Offsets: Story = {
           hideCloseButton
           {...args}
         >
-          <PopoverHeader>I&#39;m a popover!</PopoverHeader>
+          <Popover.Header>I&#39;m a popover!</Popover.Header>
         </Popover>
         <FlexBox gap="m">
           <InputNumber
@@ -118,11 +115,11 @@ export const Size: Story = {
           >
             {({ close }) => (
               <>
-                <PopoverHeader>{capitalizeFirstLetter(size)}</PopoverHeader>
-                <PopoverContent>{text}</PopoverContent>
-                <PopoverFooter>
+                <Popover.Header>{capitalizeFirstLetter(size)}</Popover.Header>
+                <Popover.Body>{text}</Popover.Body>
+                <Popover.Footer>
                   <Button onPress={close}>Ok</Button>
-                </PopoverFooter>
+                </Popover.Footer>
               </>
             )}
           </Popover>
@@ -134,11 +131,11 @@ export const Size: Story = {
         >
           {({ close }) => (
             <>
-              <PopoverHeader>Custom size = 50%</PopoverHeader>
-              <PopoverContent>{text}</PopoverContent>
-              <PopoverFooter>
+              <Popover.Header>Custom size = 50%</Popover.Header>
+              <Popover.Body>{text}</Popover.Body>
+              <Popover.Footer>
                 <Button onPress={close}>Ok</Button>
-              </PopoverFooter>
+              </Popover.Footer>
             </>
           )}
         </Popover>
@@ -279,7 +276,7 @@ export const Placement: Story = {
           hideCloseButton
           {...args}
         >
-          <PopoverContent>Check out my placement</PopoverContent>
+          <Popover.Body>Check out my placement</Popover.Body>
         </Popover>
       </Grid>
     );
@@ -313,7 +310,7 @@ export const ControlledOpen: Story = {
           hideCloseButton
           {...args}
         >
-          <PopoverHeader>I&#39;m a popover!</PopoverHeader>
+          <Popover.Header>I&#39;m a popover!</Popover.Header>
         </Popover>
       </>
     );
