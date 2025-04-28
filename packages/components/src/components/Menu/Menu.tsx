@@ -6,11 +6,13 @@ import { forwardRef, useRef } from 'react';
 import { useDOMRef } from '@koobiq/react-core';
 import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 
+import { Item, Section } from '../Collections';
+import { ListItemText } from '../List';
 import { PopoverInner } from '../Popover';
 import type { PopoverInnerProps } from '../Popover';
 
 import { MenuInner } from './components';
-import type { MenuProps, MenuComponent, MenuRef } from './index';
+import type { MenuProps, MenuComponentProps, MenuRef } from './index';
 import s from './Menu.module.css';
 
 function MenuRender<T extends object>(
@@ -61,4 +63,16 @@ function MenuRender<T extends object>(
   );
 }
 
-export const Menu = forwardRef(MenuRender) as MenuComponent;
+const MenuComponent = forwardRef(MenuRender) as MenuComponentProps;
+
+type CompoundedComponent = typeof MenuComponent & {
+  Item: typeof Item;
+  Section: typeof Section;
+  ItemText: typeof ListItemText;
+};
+
+export const Menu = MenuComponent as CompoundedComponent;
+
+Menu.Item = Item;
+Menu.Section = Section;
+Menu.ItemText = ListItemText;

@@ -13,13 +13,17 @@ import type { Selection } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 
-import { Menu, MenuItem, MenuSection } from './index';
+import { Menu } from './index';
 import type { MenuProps } from './index';
 
 const meta = {
   title: 'Components/Menu',
   component: Menu,
-  subcomponents: {},
+  subcomponents: {
+    'Menu.Item': Menu.Item,
+    'Menu.Section': Menu.Section,
+    'Menu.ItemText': Menu.ItemText,
+  },
   parameters: {
     layout: 'centered',
   },
@@ -31,10 +35,10 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   render: (args: MenuProps<object>) => (
     <Menu control={(props) => <Button {...props}>Menu</Button>} {...args}>
-      <MenuItem key="open">Open</MenuItem>
-      <MenuItem key="rename">Rename…</MenuItem>
-      <MenuItem key="duplicate">Duplicate</MenuItem>
-      <MenuItem key="delete">Delete…</MenuItem>
+      <Menu.Item key="open">Open</Menu.Item>
+      <Menu.Item key="rename">Rename…</Menu.Item>
+      <Menu.Item key="duplicate">Duplicate</Menu.Item>
+      <Menu.Item key="delete">Delete…</Menu.Item>
     </Menu>
   ),
 };
@@ -57,7 +61,7 @@ export const Content: Story = {
         onAction={(id) => alert(id)}
         control={(props) => <Button {...props}>Actions</Button>}
       >
-        {(item) => <MenuItem href={item.href}>{item.name}</MenuItem>}
+        {(item) => <Menu.Item href={item.href}>{item.name}</Menu.Item>}
       </Menu>
     );
   },
@@ -83,7 +87,7 @@ export const SelectionSingle: Story = {
         onSelectionChange={setSelected}
         control={(props) => <Button {...props}>View</Button>}
       >
-        {(item) => <MenuItem key={item.id}>{item.name}</MenuItem>}
+        {(item) => <Menu.Item key={item.id}>{item.name}</Menu.Item>}
       </Menu>
     );
   },
@@ -111,7 +115,7 @@ export const SelectionMultiple: Story = {
         onSelectionChange={setSelected}
         control={(props) => <Button {...props}>View</Button>}
       >
-        {(item) => <MenuItem key={item.id}>{item.name}</MenuItem>}
+        {(item) => <Menu.Item key={item.id}>{item.name}</Menu.Item>}
       </Menu>
     );
   },
@@ -132,7 +136,7 @@ export const DisabledItems = {
         disabledKeys={['paste']}
         control={(props) => <Button {...props}>Actions</Button>}
       >
-        {(item) => <MenuItem>{item.name}</MenuItem>}
+        {(item) => <Menu.Item>{item.name}</Menu.Item>}
       </Menu>
     );
   },
@@ -144,15 +148,15 @@ export const Links = {
       aria-label="Links"
       control={(props) => <Button {...props}>Actions</Button>}
     >
-      <MenuItem href="https://apple.com/" target="_blank">
+      <Menu.Item href="https://apple.com/" target="_blank">
         Apple
-      </MenuItem>
-      <MenuItem href="https://google.com/" target="_blank">
+      </Menu.Item>
+      <Menu.Item href="https://google.com/" target="_blank">
         Google
-      </MenuItem>
-      <MenuItem href="https://microsoft.com/" target="_blank">
+      </Menu.Item>
+      <Menu.Item href="https://microsoft.com/" target="_blank">
         Microsoft
-      </MenuItem>
+      </Menu.Item>
     </Menu>
   ),
 };
@@ -180,43 +184,43 @@ export const Sections = {
     return (
       <FlexBox alignItems="stretch" gap="l">
         <Menu control={(props) => <Button {...props}>Actions</Button>}>
-          <MenuSection title="Styles">
-            <MenuItem>
+          <Menu.Section title="Styles">
+            <Menu.Item>
               <IconTextBold16 />
               Bold
-            </MenuItem>
-            <MenuItem>
+            </Menu.Item>
+            <Menu.Item>
               <IconTextUnderline16 />
               Underline
-            </MenuItem>
-          </MenuSection>
-          <MenuSection title="Align">
-            <MenuItem>
+            </Menu.Item>
+          </Menu.Section>
+          <Menu.Section title="Align">
+            <Menu.Item>
               <IconAlignLeft16 />
               Left
-            </MenuItem>
-            <MenuItem>
+            </Menu.Item>
+            <Menu.Item>
               <IconAlignCenter16 />
               Middle
-            </MenuItem>
-            <MenuItem>
+            </Menu.Item>
+            <Menu.Item>
               <IconAlignRight16 />
               Right
-            </MenuItem>
-          </MenuSection>
+            </Menu.Item>
+          </Menu.Section>
         </Menu>
         <Menu
           items={options}
           control={(props) => <Button {...props}>Actions</Button>}
         >
           {(item) => (
-            <MenuSection
+            <Menu.Section
               key={item.name}
               items={item.children}
               title={item.name}
             >
-              {(item) => <MenuItem>{item.name}</MenuItem>}
-            </MenuSection>
+              {(item) => <Menu.Item>{item.name}</Menu.Item>}
+            </Menu.Section>
           )}
         </Menu>
       </FlexBox>
