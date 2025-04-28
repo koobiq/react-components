@@ -13,6 +13,7 @@ import { Transition } from 'react-transition-group';
 import s from './Backdrop.module.css';
 import type { BackdropBaseProps } from './index';
 
+// TODO: integrate usePress for handling press interactions
 export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
   (props, ref) => {
     const {

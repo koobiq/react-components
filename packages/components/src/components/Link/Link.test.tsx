@@ -36,7 +36,7 @@ describe('Link', () => {
   it('should be blocked when in a disabled state', async () => {
     const props = {
       ...baseProps,
-      onClick: vi.fn(),
+      onPress: vi.fn(),
       href: '#',
       disabled: true,
     };
@@ -51,7 +51,7 @@ describe('Link', () => {
 
     await userEvent.click(link);
 
-    expect(props.onClick).toHaveBeenCalledTimes(0);
+    expect(props.onPress).toHaveBeenCalledTimes(0);
     expect(link).toHaveAttribute('aria-disabled', 'true');
   });
 
@@ -59,7 +59,7 @@ describe('Link', () => {
     it('should be like a button with as=button', async () => {
       const props = {
         ...baseProps,
-        onClick: vi.fn(),
+        onPress: vi.fn(),
       };
 
       render(<Link {...props} as="button" />);
@@ -69,13 +69,13 @@ describe('Link', () => {
 
       await userEvent.click(linkAsButton);
 
-      expect(props.onClick).toHaveBeenCalledTimes(1);
+      expect(props.onPress).toHaveBeenCalledTimes(1);
     });
 
     it('should be blocked, unfocused, non-clickable, and have correct accessibility attributes when in a disabled state', async () => {
       const props = {
         ...baseProps,
-        onClick: vi.fn(),
+        onPress: vi.fn(),
         disabled: true,
       };
 
@@ -90,7 +90,7 @@ describe('Link', () => {
       await userEvent.click(linkAsButton);
 
       expect(linkAsButton).toBeDisabled();
-      expect(props.onClick).toHaveBeenCalledTimes(0);
+      expect(props.onPress).toHaveBeenCalledTimes(0);
       expect(linkAsButton).toHaveAttribute('aria-disabled', 'true');
     });
   });

@@ -269,7 +269,7 @@ export const Password: Story = {
         {...(hiddenPassword && { type: 'password' })}
         endAddon={
           <IconButton
-            onClick={toggle}
+            onPress={toggle}
             variant="fade-contrast"
             style={{ marginInlineEnd: '-8px' }}
             aria-label={hiddenPassword ? 'show password' : 'hide password'}

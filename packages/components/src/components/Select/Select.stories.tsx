@@ -256,7 +256,7 @@ export const Open: Story = {
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
-        <Button onClick={toggle}>{open ? 'Close' : 'Open'}</Button>
+        <Button onPress={toggle}>{open ? 'Close' : 'Open'}</Button>
       </FlexBox>
     );
   },

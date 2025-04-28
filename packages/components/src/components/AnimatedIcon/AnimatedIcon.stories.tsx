@@ -29,7 +29,7 @@ export const Base: Story = {
     const [state, { toggle }] = useBoolean(false);
 
     return (
-      <IconButton onClick={toggle} variant="theme-contrast">
+      <IconButton onPress={toggle} variant="theme-contrast">
         <AnimatedIcon
           icons={[
             <IconArrowDownToBracket16 key="arrow-down" />,
@@ -52,7 +52,7 @@ export const Icons: Story = {
     const [state, { toggle }] = useBoolean(false);
 
     return (
-      <IconButton onClick={toggle} variant="theme-contrast">
+      <IconButton onPress={toggle} variant="theme-contrast">
         <AnimatedIcon
           icons={[<IconStarO16 key="star" />, <IconStar16 key="star-o" />]}
           activeIndex={+state}
@@ -68,7 +68,7 @@ export const Directions: Story = {
     const [state, { toggle }] = useBoolean(false);
 
     return (
-      <IconButton onClick={toggle} variant="theme-contrast">
+      <IconButton onPress={toggle} variant="theme-contrast">
         <AnimatedIcon
           icons={[<IconChevronDown16 key="chevron" />]}
           directions={[0, 180]}

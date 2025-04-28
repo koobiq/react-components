@@ -83,14 +83,14 @@ export const Action: Story = {
           <Link
             as="button"
             pseudo
-            onClick={() => alert('Submit the first action')}
+            onPress={() => alert('Submit the first action')}
           >
             First action
           </Link>
           <Link
             as="button"
             pseudo
-            onClick={() => alert('Submit the second action')}
+            onPress={() => alert('Submit the second action')}
           >
             Second action
           </Link>
@@ -143,7 +143,7 @@ export const CloseButton: Story = {
         {text}
       </Alert>
     ) : (
-      <Button onClick={on}>Re-open</Button>
+      <Button onPress={on}>Re-open</Button>
     );
   },
 };
