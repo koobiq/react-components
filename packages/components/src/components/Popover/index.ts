@@ -1,4 +1,4 @@
-import { DialogHeader, DialogFooter, DialogContent } from '../Dialog';
+import { Dialog } from '../Dialog';
 
 export * from './Popover';
 export * from './types';
@@ -7,14 +7,14 @@ export * from './types';
  * @deprecated
  * This component has been deprecated, please use `Popover.Header` instead.
  */
-export const PopoverHeader = DialogHeader;
+export const PopoverHeader = Dialog.Header;
 /**
  * @deprecated
  * This component has been deprecated, please use `Popover.Body` instead.
  */
-export const PopoverContent = DialogContent;
+export const PopoverContent = Dialog.Body;
 /**
  * @deprecated
  * This component has been deprecated, please use `Popover.Footer` instead.
  */
-export const PopoverFooter = DialogFooter;
+export const PopoverFooter = Dialog.Footer;

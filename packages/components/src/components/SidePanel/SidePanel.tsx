@@ -12,13 +12,7 @@ import {
 import { Transition } from 'react-transition-group';
 
 import { Backdrop } from '../Backdrop';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  type DialogProps,
-} from '../Dialog';
+import { Dialog, type DialogProps } from '../Dialog';
 
 import s from './SidePanel.module.css';
 import type { SidePanelProps, SidePanelRef } from './types';
@@ -157,13 +151,13 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
 SidePanelComponent.displayName = 'SidePanel';
 
 type CompoundedComponent = typeof SidePanelComponent & {
-  Header: typeof DialogHeader;
-  Body: typeof DialogContent;
-  Footer: typeof DialogFooter;
+  Header: typeof Dialog.Header;
+  Body: typeof Dialog.Body;
+  Footer: typeof Dialog.Footer;
 };
 
 export const SidePanel = SidePanelComponent as CompoundedComponent;
 
-SidePanel.Header = DialogHeader;
-SidePanel.Body = DialogContent;
-SidePanel.Footer = DialogFooter;
+SidePanel.Header = Dialog.Header;
+SidePanel.Body = Dialog.Body;
+SidePanel.Footer = Dialog.Footer;
