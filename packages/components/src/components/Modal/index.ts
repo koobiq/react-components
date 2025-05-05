@@ -1,4 +1,4 @@
-import { DialogHeader, DialogFooter, DialogContent } from '../Dialog';
+import { Dialog } from '../Dialog';
 
 export * from './Modal';
 export * from './types';
@@ -7,14 +7,14 @@ export * from './types';
  * @deprecated
  * This component has been deprecated, please use `Modal.Header` instead.
  */
-export const ModalHeader = DialogHeader;
+export const ModalHeader = Dialog.Header;
 /**
  * @deprecated
  * This component has been deprecated, please use `Modal.Body` instead.
  */
-export const ModalContent = DialogContent;
+export const ModalContent = Dialog.Body;
 /**
  * @deprecated
  * This component has been deprecated, please use `Modal.Footer` instead.
  */
-export const ModalFooter = DialogFooter;
+export const ModalFooter = Dialog.Footer;

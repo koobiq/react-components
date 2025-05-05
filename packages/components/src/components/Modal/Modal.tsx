@@ -13,7 +13,6 @@ import { Transition } from 'react-transition-group';
 
 import { Backdrop } from '../Backdrop';
 import { Dialog, type DialogProps } from '../Dialog';
-import { DialogHeader, DialogFooter, DialogContent } from '../Dialog';
 
 import s from './Modal.module.css';
 import type { ModalProps, ModalRef } from './types';
@@ -148,13 +147,13 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
 ModalComponent.displayName = 'Modal';
 
 type CompoundedComponent = typeof ModalComponent & {
-  Header: typeof DialogHeader;
-  Body: typeof DialogContent;
-  Footer: typeof DialogFooter;
+  Header: typeof Dialog.Header;
+  Body: typeof Dialog.Body;
+  Footer: typeof Dialog.Footer;
 };
 
 export const Modal = ModalComponent as CompoundedComponent;
 
-Modal.Header = DialogHeader;
-Modal.Body = DialogContent;
-Modal.Footer = DialogFooter;
+Modal.Header = Dialog.Header;
+Modal.Body = Dialog.Body;
+Modal.Footer = Dialog.Footer;

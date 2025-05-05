@@ -1,4 +1,4 @@
 export * from './DialoglHeader';
-export * from './DialogContent';
+export * from './DialogBody';
 export * from './DialogFooter';
 export * from './DialogCloseButton';

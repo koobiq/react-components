@@ -13,9 +13,9 @@ import { utilClasses } from '../../../styles/utility';
 import s from '../Dialog.module.css';
 import { useDialogProvider } from '../DialogContext';
 
-export type DialogContentRef = ComponentRef<'div'>;
+export type DialogBodyRef = ComponentRef<'div'>;
 
-export type DialogContentProps = ExtendableComponentPropsWithRef<
+export type DialogBodyProps = ExtendableComponentPropsWithRef<
   {
     /** Additional CSS-classes. */
     className?: string;
@@ -27,11 +27,11 @@ export type DialogContentProps = ExtendableComponentPropsWithRef<
   'div'
 >;
 
-export const DialogContent = forwardRef<DialogContentRef, DialogContentProps>(
+export const DialogBody = forwardRef<DialogBodyRef, DialogBodyProps>(
   ({ children, className, ...other }, ref) => {
     const { slots } = useDialogProvider();
 
-    const { content: { ref: contextRef } = {} } = slots || {};
+    const { body: { ref: contextRef } = {} } = slots || {};
 
     return (
       <div
@@ -49,4 +49,4 @@ export const DialogContent = forwardRef<DialogContentRef, DialogContentProps>(
   }
 );
 
-DialogContent.displayName = 'DialogContent';
+DialogBody.displayName = 'DialogBody';

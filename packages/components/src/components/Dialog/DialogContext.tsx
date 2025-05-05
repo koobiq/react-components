@@ -2,12 +2,12 @@
 
 import { createContext, useContext } from 'react';
 
-import type { DialogContentProps } from './components';
+import type { DialogBodyProps } from './index';
 
 export type DialogContextProps = {
   close?(): void;
   slots?: {
-    content?: DialogContentProps;
+    body?: DialogBodyProps;
   };
 };
 

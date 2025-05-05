@@ -9,7 +9,7 @@ import { useLocalizedStringFormatter } from '@koobiq/react-primitives';
 
 import { Button, type ButtonProps } from '../../Button';
 import s from '../Dialog.module.css';
-import { useDialogProvider } from '../index';
+import { useDialogProvider } from '../DialogContext';
 import intlMessages from '../intl.json';
 
 export type DialogCloseButtonRef = ComponentRef<'button'>;

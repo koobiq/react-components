@@ -15,12 +15,17 @@ import { useDialog } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 
-import { DialogCloseButton } from './components';
+import {
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  DialogCloseButton,
+} from './components';
 import s from './Dialog.module.css';
 import { DialogContext } from './DialogContext';
 import type { DialogProps, DialogRef } from './types';
 
-export const Dialog = forwardRef<DialogRef, DialogProps>(
+const DialogComponent = forwardRef<DialogRef, DialogProps>(
   ({ onClose, children, slotProps, hideCloseButton, ...other }, ref) => {
     const [topOverflow, { set: setTopOverflow }] = useBoolean();
     const [bottomOverflow, { set: setBottomOverflow }] = useBoolean();
@@ -74,7 +79,7 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
       <DialogContext.Provider
         value={{
           close: onClose,
-          slots: { content: { ref: useMultiRef([contentRef, innerRef]) } },
+          slots: { body: { ref: useMultiRef([contentRef, innerRef]) } },
         }}
       >
         <section {...rootProps} ref={domRef}>
@@ -88,4 +93,16 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
   }
 );
 
-Dialog.displayName = 'Dialog';
+DialogComponent.displayName = 'Dialog';
+
+type CompoundedComponent = typeof DialogComponent & {
+  Header: typeof DialogHeader;
+  Body: typeof DialogBody;
+  Footer: typeof DialogFooter;
+};
+
+export const Dialog = DialogComponent as CompoundedComponent;
+
+Dialog.Header = DialogHeader;
+Dialog.Body = DialogBody;
+Dialog.Footer = DialogFooter;
