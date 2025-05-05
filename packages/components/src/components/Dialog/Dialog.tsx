@@ -1,17 +1,16 @@
 'use client';
 
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useEffect } from 'react';
 
 import {
   useDOMRef,
   mergeProps,
   clsx,
   useBoolean,
-  useMultiRef,
   useElementSize,
   useEventListener,
 } from '@koobiq/react-core';
-import { useDialog } from '@koobiq/react-primitives';
+import { ButtonContext, Provider, useDialog } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 
@@ -20,16 +19,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogCloseButton,
+  DialogBodyContext,
 } from './components';
 import s from './Dialog.module.css';
-import { DialogContext } from './DialogContext';
 import type { DialogProps, DialogRef } from './types';
 
 const DialogComponent = forwardRef<DialogRef, DialogProps>(
   ({ onClose, children, slotProps, hideCloseButton, ...other }, ref) => {
     const [topOverflow, { set: setTopOverflow }] = useBoolean();
     const [bottomOverflow, { set: setBottomOverflow }] = useBoolean();
-    const contentRef = useRef<HTMLDivElement | null>(null);
     const domRef = useDOMRef<DialogRef>(ref);
 
     const { dialogProps } = useDialog(other, domRef);
@@ -61,26 +59,35 @@ const DialogComponent = forwardRef<DialogRef, DialogProps>(
       );
     };
 
-    const { ref: innerRef, height } = useElementSize();
+    const { ref: bodyRef, height } = useElementSize();
 
     useEffect(() => {
-      if (contentRef.current) updateOverflow(contentRef.current);
-    }, [contentRef.current, height]);
+      if (bodyRef.current) updateOverflow(bodyRef.current);
+    }, [bodyRef.current, height]);
 
     useEventListener({
-      element: contentRef,
+      element: bodyRef,
       eventName: 'scroll',
       handler: () => {
-        updateOverflow(contentRef.current);
+        updateOverflow(bodyRef.current);
       },
     });
 
     return (
-      <DialogContext.Provider
-        value={{
-          close: onClose,
-          slots: { body: { ref: useMultiRef([contentRef, innerRef]) } },
-        }}
+      <Provider
+        values={[
+          [DialogBodyContext, { ref: bodyRef }],
+          [
+            ButtonContext,
+            {
+              slots: {
+                close: {
+                  onPress: onClose,
+                },
+              },
+            },
+          ],
+        ]}
       >
         <section {...rootProps} ref={domRef}>
           {showCloseButton && (
@@ -88,7 +95,7 @@ const DialogComponent = forwardRef<DialogRef, DialogProps>(
           )}
           <div {...containerProps}>{children}</div>
         </section>
-      </DialogContext.Provider>
+      </Provider>
     );
   }
 );
