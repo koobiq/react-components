@@ -1,17 +1,17 @@
 'use client';
 
-import { forwardRef } from 'react';
 import type { ReactNode, ComponentRef } from 'react';
+import { forwardRef, useContext, createContext } from 'react';
 
 import {
   clsx,
   type ExtendableComponentPropsWithRef,
+  mergeProps,
   useMultiRef,
 } from '@koobiq/react-core';
 
 import { utilClasses } from '../../../styles/utility';
 import s from '../Dialog.module.css';
-import { useDialogProvider } from '../DialogContext';
 
 export type DialogBodyRef = ComponentRef<'div'>;
 
@@ -27,11 +27,12 @@ export type DialogBodyProps = ExtendableComponentPropsWithRef<
   'div'
 >;
 
+export const DialogBodyContext = createContext<DialogBodyProps>({});
+
 export const DialogBody = forwardRef<DialogBodyRef, DialogBodyProps>(
   ({ children, className, ...other }, ref) => {
-    const { slots } = useDialogProvider();
-
-    const { body: { ref: contextRef } = {} } = slots || {};
+    const defaultProps = useContext(DialogBodyContext);
+    const { ref: contextRef } = mergeProps(defaultProps, other);
 
     return (
       <div
