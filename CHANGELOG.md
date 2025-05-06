@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.1-beta.14](https://github.com/koobiq/react-components/compare/0.0.1-beta.13...0.0.1-beta.14) (2025-05-06)
+
+### 🚀 Features
+
+- **components/Dialog:** import components via `Dialog.Header`, `Dialog.Body`, `Dialog.Footer` ([91fb292](https://github.com/koobiq/react-components/commit/91fb29263c444c145440f2e57ef65690e878b2f9))
+- **components:** add the `Divider` component ([a84dfb5](https://github.com/koobiq/react-components/commit/a84dfb5c9c191ece144daa020aa96fa2bb061b6e))
+- **primitives:** export common utilities ([ca659d9](https://github.com/koobiq/react-components/commit/ca659d9f2691f88dbafe188f0fe03065208a1177))
+
+### 🐞 Bug Fixes
+
+- **components/Typography:** deprecate `TypographyDisplayVariant` ([1f29252](https://github.com/koobiq/react-components/commit/1f292520c26d08159212d4aa5488911a57a5f159))
+
 ## [0.0.1-beta.13](https://github.com/koobiq/react-components/compare/0.0.1-beta.12...0.0.1-beta.13) (2025-04-28)
 
 ### 🚀 Features
