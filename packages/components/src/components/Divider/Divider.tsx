@@ -20,7 +20,11 @@ export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
       ...other
     } = props;
 
-    const { separatorProps } = useSeparator({ ...other, orientation });
+    const { separatorProps } = useSeparator({
+      ...other,
+      orientation,
+      elementType: Tag as string,
+    });
 
     const hasPaddings = !disablePaddings;
 

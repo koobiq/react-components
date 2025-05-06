@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 export const dividerPropDisplay = ['block', 'inline', 'inlineBlock'] as const;
 
 export const dividerPropOrientation = ['horizontal', 'vertical'] as const;
@@ -8,8 +6,6 @@ export type DividerPropOrientation = (typeof dividerPropOrientation)[number];
 export type DividerPropDisplay = (typeof dividerPropDisplay)[number];
 
 export type DividerBaseProps = {
-  /** The content of the component. */
-  children?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
   /**

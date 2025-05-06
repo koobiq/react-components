@@ -13,6 +13,8 @@ import * as Stories from './Divider.stories';
 
 <Status variant="experimental" />
 
+A divider is used to visually separate blocks of content.
+
 ```tsx
 import { Divider } from '@koobiq/react-components';
 ```
@@ -25,4 +27,24 @@ import { Divider } from '@koobiq/react-components';
 
 ## Orientation
 
+Use the `orientation` prop to change the `Divider` from horizontal to vertical.
+
 <Story of={Stories.Orientation} />
+
+## Flex Item
+
+Use the `flexItem` prop to display the Divider when it's being used in a flex container.
+
+<Story of={Stories.FlexItem} />
+
+## Root Tag
+
+Use the `as` prop to redefine the HTML-tag of the component to your own.
+
+<Story of={Stories.RootTag} />
+
+## Divider Text
+
+Below is an example of how to center text within the `Divider` component.
+
+<Story of={Stories.DividerText} />
