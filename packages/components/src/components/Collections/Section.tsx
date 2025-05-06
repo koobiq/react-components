@@ -23,7 +23,7 @@ export type SectionProps<T> = {
 };
 
 export function Section<T>(props: SectionProps<T>) {
-  return <Section {...props} />;
+  return <AriaSection {...props} />;
 }
 
 Section.getCollectionNode = SectionInner.getCollectionNode;
