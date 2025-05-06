@@ -54,7 +54,14 @@ export const typographyPropDisplay = [
   'inline',
   'inline-block',
 ] as const;
+
+/**
+ * @deprecated
+ * This type has been deprecated, please use `TypographyPropDisplay` instead.
+ */
 export type TypographyDisplayVariant = (typeof typographyPropDisplay)[number];
+
+export type TypographyPropDisplay = (typeof typographyPropDisplay)[number];
 
 export const typographyPropAlign = [
   'start',
@@ -95,7 +102,7 @@ export type TypographyBaseProps = {
    * */
   variant?: TypographyPropVariant;
   /** Set the display for the component. */
-  display?: TypographyDisplayVariant;
+  display?: TypographyPropDisplay;
   /** Set the text-align on the component. */
   align?: TypographyPropAlign;
   /** Hidden overflow content will be replaced by an ellipsis. */
