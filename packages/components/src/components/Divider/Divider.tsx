@@ -13,6 +13,7 @@ export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
     const {
       as: Tag = 'div',
       orientation = 'horizontal',
+      disablePaddings = false,
       flexItem = false,
       display,
       className,
@@ -21,6 +22,8 @@ export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
 
     const { separatorProps } = useSeparator({ ...other, orientation });
 
+    const hasPaddings = !disablePaddings;
+
     return (
       <Tag
         {...separatorProps}
@@ -28,6 +31,7 @@ export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
           s.base,
           s[orientation],
           display && s[display],
+          hasPaddings && s.hasPaddings,
           flexItem && s.flexItem,
           className
         )}
