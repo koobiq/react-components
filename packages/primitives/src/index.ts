@@ -20,6 +20,7 @@ import {
   type AriaModalOverlayProps,
 } from '@react-aria/overlays';
 import { useSelect, HiddenSelect } from '@react-aria/select';
+import { useSeparator } from '@react-aria/separator';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
 import { Item, Section } from '@react-stately/collections';
 import { useListState, type ListState } from '@react-stately/list';
@@ -56,6 +57,7 @@ export {
   I18nProvider,
   useListState,
   HiddenSelect,
+  useSeparator,
   useSelectState,
   useModalOverlay,
   useOverlayTrigger,

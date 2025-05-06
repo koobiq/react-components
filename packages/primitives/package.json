@@ -41,6 +41,7 @@
     "@react-aria/progress": "^3.4.17",
     "@react-aria/radio": "^3.10.9",
     "@react-aria/select": "^3.15.3",
+    "@react-aria/separator": "^3.4.8",
     "@react-aria/textfield": "^3.14.0",
     "@react-aria/toggle": "^3.10.10",
     "@react-aria/tooltip": "^3.7.9",

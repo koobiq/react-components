@@ -1,0 +1,41 @@
+.base {
+  margin: 0;
+  flex-shrink: 0;
+  border-style: solid;
+  border-color: var(--kbq-line-contrast-less);
+}
+
+.block {
+  display: block;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.inline {
+  display: inline;
+}
+
+.vertical {
+  --divider-paddings: 0 var(--kbq-size-xxs);
+  block-size: 100%;
+  inline-size: 0;
+  border-width: 0 1px 0 0;
+}
+
+.horizontal {
+  --divider-paddings: var(--kbq-size-xxs) 0;
+  block-size: 0;
+  inline-size: 100%;
+  border-width: 0 0 1px;
+}
+
+.hasPaddings {
+  margin: var(--divider-paddings);
+}
+
+.flexItem {
+  block-size: auto;
+  align-self: stretch;
+}
