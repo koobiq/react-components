@@ -1,17 +1,12 @@
 import { useState } from 'react';
 
-import {
-  IconAlignCenter16,
-  IconAlignLeft16,
-  IconAlignRight16,
-  IconTextBold16,
-  IconTextUnderline16,
-} from '@koobiq/react-icons';
 import type { StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../types';
 import { Button } from '../Button';
+import { Divider } from '../Divider';
 import { FlexBox } from '../FlexBox';
+import { Typography } from '../Typography';
 
 import { Menu } from './index';
 import type { MenuProps } from './index';
@@ -35,10 +30,25 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   render: (args: MenuProps<object>) => (
     <Menu control={(props) => <Button {...props}>Menu</Button>} {...args}>
+      <Menu.Header key="header">
+        <Typography
+          variant="caps-compact"
+          style={{ padding: '1em' }}
+          align="center"
+        >
+          Header
+        </Typography>
+      </Menu.Header>
+      <Menu.Divider />
       <Menu.Item key="open">Open</Menu.Item>
       <Menu.Item key="rename">Rename…</Menu.Item>
       <Menu.Item key="duplicate">Duplicate</Menu.Item>
-      <Menu.Item key="delete">Delete…</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="delete" textValue="Delete">
+        <Menu.ItemText slotProps={{ text: { color: 'error' } }}>
+          Delete…
+        </Menu.ItemText>
+      </Menu.Item>
     </Menu>
   ),
 };
@@ -103,6 +113,7 @@ export const SelectionMultiple: Story = {
     const items = [
       { id: 'console', name: 'Console' },
       { id: 'searchbar', name: 'Searchbar' },
+      { type: 'separator', id: 'separator-1' },
       { id: 'tools', name: 'Tools' },
       { id: 'sidebar', name: 'Sidebar' },
     ];
@@ -115,7 +126,13 @@ export const SelectionMultiple: Story = {
         onSelectionChange={setSelected}
         control={(props) => <Button {...props}>View</Button>}
       >
-        {(item) => <Menu.Item key={item.id}>{item.name}</Menu.Item>}
+        {(item) =>
+          item.type === 'separator' ? (
+            <Divider key={item.id || 'adsdas'} />
+          ) : (
+            <Menu.Item key={item.id}>{item.name}</Menu.Item>
+          )
+        }
       </Menu>
     );
   },
@@ -171,6 +188,7 @@ export const Sections = {
           { id: 3, name: 'Underline' },
         ],
       },
+      { type: 'divider', id: 'divider-2' },
       {
         name: 'Align',
         children: [
@@ -185,43 +203,33 @@ export const Sections = {
       <FlexBox alignItems="stretch" gap="l">
         <Menu control={(props) => <Button {...props}>Actions</Button>}>
           <Menu.Section title="Styles">
-            <Menu.Item>
-              <IconTextBold16 />
-              Bold
-            </Menu.Item>
-            <Menu.Item>
-              <IconTextUnderline16 />
-              Underline
-            </Menu.Item>
+            <Menu.Item>Bold</Menu.Item>
+            <Menu.Item>Underline</Menu.Item>
           </Menu.Section>
+          <Menu.Divider />
           <Menu.Section title="Align">
-            <Menu.Item>
-              <IconAlignLeft16 />
-              Left
-            </Menu.Item>
-            <Menu.Item>
-              <IconAlignCenter16 />
-              Middle
-            </Menu.Item>
-            <Menu.Item>
-              <IconAlignRight16 />
-              Right
-            </Menu.Item>
+            <Menu.Item>Left</Menu.Item>
+            <Menu.Item>Middle</Menu.Item>
+            <Menu.Item>Right</Menu.Item>
           </Menu.Section>
         </Menu>
         <Menu
           items={options}
           control={(props) => <Button {...props}>Actions</Button>}
         >
-          {(item) => (
-            <Menu.Section
-              key={item.name}
-              items={item.children}
-              title={item.name}
-            >
-              {(item) => <Menu.Item>{item.name}</Menu.Item>}
-            </Menu.Section>
-          )}
+          {(item) =>
+            item.type === 'divider' ? (
+              <Menu.Divider />
+            ) : (
+              <Menu.Section
+                key={item.name}
+                items={item.children}
+                title={item.name}
+              >
+                {(item) => <Menu.Item>{item.name}</Menu.Item>}
+              </Menu.Section>
+            )
+          }
         </Menu>
       </FlexBox>
     );

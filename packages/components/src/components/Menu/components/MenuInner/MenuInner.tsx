@@ -7,6 +7,7 @@ import { useMenu, useTreeState } from '@koobiq/react-primitives';
 import type { AriaMenuOptions } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
+import { Divider } from '../../../Divider';
 import { MenuItem } from '../MenuItem';
 import { MenuSection } from '../MenuSection';
 
@@ -26,21 +27,35 @@ export function MenuInner<T extends object>(props: MenuInnerProps<T>) {
 
   const multiple = props.selectionMode === 'multiple';
 
+  const renderItems = (treeState: typeof state) =>
+    [...treeState.collection].map((item) => {
+      if (item.type === 'header')
+        return (
+          <header key={item.key} role="presentation">
+            {item.rendered}
+          </header>
+        );
+
+      if (item.type === 'divider')
+        return <Divider key={item.key} className={s.divider} />;
+
+      if (item.type === 'item')
+        return <MenuItem key={item.key} item={item} state={state} />;
+
+      if (item.type === 'section')
+        return <MenuSection key={item.key} section={item} state={state} />;
+
+      return null;
+    });
+
   return (
     <ul
       {...menuProps}
       className={clsx(s.base, list)}
-      ref={ref}
-      style={{ width: 120 }}
       {...(multiple && { 'aria-multiselectable': true })}
+      ref={ref}
     >
-      {[...state.collection].map((item) =>
-        item.type === 'section' ? (
-          <MenuSection key={item.key} section={item} state={state} />
-        ) : (
-          <MenuItem key={item.key} item={item} state={state} />
-        )
-      )}
+      {renderItems(state)}
     </ul>
   );
 }

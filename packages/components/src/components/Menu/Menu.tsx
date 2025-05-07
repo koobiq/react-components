@@ -6,7 +6,7 @@ import { forwardRef, useRef } from 'react';
 import { useDOMRef } from '@koobiq/react-core';
 import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 
-import { Item, Section } from '../Collections';
+import { Divider, Item, Section, Header } from '../Collections';
 import { ListItemText } from '../List';
 import { PopoverInner } from '../Popover';
 import type { PopoverInnerProps } from '../Popover';
@@ -67,7 +67,9 @@ const MenuComponent = forwardRef(MenuRender) as MenuComponentProps;
 
 type CompoundedComponent = typeof MenuComponent & {
   Item: typeof Item;
+  Header: typeof Header;
   Section: typeof Section;
+  Divider: typeof Divider;
   ItemText: typeof ListItemText;
 };
 
@@ -75,4 +77,6 @@ export const Menu = MenuComponent as CompoundedComponent;
 
 Menu.Item = Item;
 Menu.Section = Section;
+Menu.Header = Header;
+Menu.Divider = Divider;
 Menu.ItemText = ListItemText;
