@@ -22,8 +22,9 @@ export type SectionProps<T> = {
   items?: AriaSectionProps<T>['items'];
 };
 
-export function Section<T>(props: SectionProps<T>) {
-  return <AriaSection {...props} />;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function Section<T>(_props: SectionProps<T>) {
+  return null;
 }
 
 Section.getCollectionNode = SectionInner.getCollectionNode;

@@ -20,8 +20,9 @@ export type ItemProps<T> = AriaItemProps<T> & {
   'data-testid'?: string | number;
 };
 
-export function Item<T>(props: ItemProps<T>) {
-  return <AriaItem {...props} />;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function Item<T>(_props: ItemProps<T>) {
+  return null;
 }
 
 Item.getCollectionNode = ItemInner.getCollectionNode;
