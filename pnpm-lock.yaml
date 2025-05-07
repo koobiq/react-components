@@ -358,6 +358,9 @@ importers:
       '@react-aria/select':
         specifier: ^3.15.3
         version: 3.15.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/separator':
+        specifier: ^3.4.8
+        version: 3.4.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-aria/textfield':
         specifier: ^3.14.0
         version: 3.15.0(react@18.3.1)
@@ -1807,6 +1810,12 @@ packages:
 
   '@react-aria/selection@3.24.0':
     resolution: {integrity: sha512-RfGXVc04zz41NVIW89/a3quURZ4LT/GJLkiajQK2VjhisidPdrAWkcfjjWJj0n+tm5gPWbi9Rs5R/Rc8mrvq8Q==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-aria/separator@3.4.8':
+    resolution: {integrity: sha512-ncuOSTBF/qbNumnW/IRz+xyr+Ud85eCF0Expw4XWhKjAZfzJd86MxPY5ZsxE7pYLOcRWdOSIH1/obwwwSz8ALQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -9681,6 +9690,14 @@ snapshots:
       '@react-aria/interactions': 3.25.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-aria/utils': 3.28.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-stately/selection': 3.20.1(react@18.3.1)
+      '@react-types/shared': 3.29.0(react@18.3.1)
+      '@swc/helpers': 0.5.15
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  '@react-aria/separator@3.4.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-aria/utils': 3.28.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-types/shared': 3.29.0(react@18.3.1)
       '@swc/helpers': 0.5.15
       react: 18.3.1
