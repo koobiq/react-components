@@ -1,6 +1,6 @@
 .base {
   padding: var(--kbq-size-xxs);
-  max-inline-size: 300px;
+  inline-size: 100%;
 }
 
 .divider {
