@@ -56,7 +56,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
 
     return (
       <label {...mergeProps(DOMProps, labelProps, renderProps)} ref={ref}>
-        <VisuallyHidden>
+        <VisuallyHidden elementType="span">
           <input {...inputProps} ref={domRef} />
         </VisuallyHidden>
         {renderProps.children}
