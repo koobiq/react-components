@@ -4,7 +4,6 @@ import type { StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../types';
 import { Button } from '../Button';
-import { Divider } from '../Divider';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
@@ -18,6 +17,8 @@ const meta = {
     'Menu.Item': Menu.Item,
     'Menu.Section': Menu.Section,
     'Menu.ItemText': Menu.ItemText,
+    'Menu.Divider': Menu.Divider,
+    'Menu.Header': Menu.Header,
   },
   parameters: {
     layout: 'centered',
@@ -128,7 +129,7 @@ export const SelectionMultiple: Story = {
       >
         {(item) =>
           item.type === 'separator' ? (
-            <Divider key={item.id || 'adsdas'} />
+            <Menu.Divider key={item.id} />
           ) : (
             <Menu.Item key={item.id}>{item.name}</Menu.Item>
           )
