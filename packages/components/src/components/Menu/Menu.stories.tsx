@@ -5,7 +5,6 @@ import type { StoryObj } from '@storybook/react';
 import type { Selection } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
-import { Typography } from '../Typography';
 
 import { Menu } from './index';
 import type { MenuProps } from './index';
@@ -30,26 +29,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args: MenuProps<object>) => (
-    <Menu control={(props) => <Button {...props}>Menu</Button>} {...args}>
-      <Menu.Header key="header">
-        <Typography
-          variant="caps-compact"
-          style={{ padding: '1em' }}
-          align="center"
-        >
-          Header
-        </Typography>
-      </Menu.Header>
-      <Menu.Divider />
-      <Menu.Item key="open">Open</Menu.Item>
-      <Menu.Item key="rename">Rename…</Menu.Item>
+    <Menu
+      control={(props) => <Button {...props}>Actions</Button>}
+      onAction={(key) => alert(key)}
+      {...args}
+    >
+      <Menu.Item key="open">New</Menu.Item>
+      <Menu.Item key="rename">Open</Menu.Item>
+      <Menu.Item key="close">Close</Menu.Item>
+      <Menu.Item key="save">Save</Menu.Item>
       <Menu.Item key="duplicate">Duplicate</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="delete" textValue="Delete">
-        <Menu.ItemText slotProps={{ text: { color: 'error' } }}>
-          Delete…
-        </Menu.ItemText>
-      </Menu.Item>
+      <Menu.Item key="rename">Rename</Menu.Item>
+      <Menu.Item key="move">Move</Menu.Item>
     </Menu>
   ),
 };
@@ -57,8 +48,8 @@ export const Base: Story = {
 export const Content: Story = {
   render: function Render() {
     const items = [
-      { id: 'new', name: 'New', href: '#' },
-      { id: 'open', name: 'Open', href: '#' },
+      { id: 'new', name: 'New' },
+      { id: 'open', name: 'Open' },
       { id: 'close', name: 'Close' },
       { id: 'save', name: 'Save' },
       { id: 'duplicate', name: 'Duplicate' },
@@ -69,10 +60,10 @@ export const Content: Story = {
     return (
       <Menu
         items={items}
-        onAction={(id) => alert(id)}
+        onAction={(key) => alert(key)}
         control={(props) => <Button {...props}>Actions</Button>}
       >
-        {(item) => <Menu.Item href={item.href}>{item.name}</Menu.Item>}
+        {(item) => <Menu.Item key={item.id}>{item.name}</Menu.Item>}
       </Menu>
     );
   },
@@ -114,7 +105,6 @@ export const SelectionMultiple: Story = {
     const items = [
       { id: 'console', name: 'Console' },
       { id: 'searchbar', name: 'Searchbar' },
-      { type: 'separator', id: 'separator-1' },
       { id: 'tools', name: 'Tools' },
       { id: 'sidebar', name: 'Sidebar' },
     ];
@@ -127,13 +117,7 @@ export const SelectionMultiple: Story = {
         onSelectionChange={setSelected}
         control={(props) => <Button {...props}>View</Button>}
       >
-        {(item) =>
-          item.type === 'separator' ? (
-            <Menu.Divider key={item.id} />
-          ) : (
-            <Menu.Item key={item.id}>{item.name}</Menu.Item>
-          )
-        }
+        {(item) => <Menu.Item key={item.id}>{item.name}</Menu.Item>}
       </Menu>
     );
   },

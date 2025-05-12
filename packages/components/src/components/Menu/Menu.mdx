@@ -37,9 +37,20 @@ The component has the following helper components:
 
 ## Content
 
+The `Menu` accepts both static and dynamic collections,
+so it can display options you know ahead of time or ones that arrive or change later.
+For dynamic collections, just pass your items via the items prop and give each a unique `key`;
+when you click an option, the Menu calls `onAction` with that `key`.
+
 <Story of={Stories.Content} />
 
 ## Selection
+
+Menu supports multiple selection modes.
+By default, selection is disabled, however this can be changed using the `selectionMode` prop.
+Use `defaultSelectedKeys` to provide a default set of selected items (uncontrolled)
+and `selectedKeys` to set the selected items (controlled).
+The value of the selected keys must match the `key` prop of the items.
 
 ### Single
 
@@ -50,6 +61,12 @@ The component has the following helper components:
 <Story of={Stories.SelectionMultiple} />
 
 ## Links
+
+By default, interacting with an item in a Menu triggers `onAction` and optionally
+`onSelectionChange` depending on the `selectionMode`.
+Alternatively, items may be links to another page or website.
+This can be achieved by passing the `href` prop to the `Menu.Item` component.
+Link items in a menu are not selectable.
 
 <Story of={Stories.Links} />
 
