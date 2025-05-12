@@ -19,6 +19,7 @@
   gap: var(--kbq-size-s);
   align-items: flex-start;
   color: var(--radio-color);
+  position: relative;
 }
 
 .circle {

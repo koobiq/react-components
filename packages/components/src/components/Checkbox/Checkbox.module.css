@@ -13,6 +13,7 @@
   gap: var(--kbq-size-s);
   color: var(--checkbox-color);
   align-items: flex-start;
+  position: relative;
 }
 
 .checkbox {
