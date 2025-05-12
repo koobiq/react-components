@@ -53,7 +53,7 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
 
     return (
       <label {...mergeProps(DOMProps, labelProps, renderProps)} ref={ref}>
-        <VisuallyHidden>
+        <VisuallyHidden elementType="span">
           <input {...inputProps} ref={domRef} />
         </VisuallyHidden>
         {renderProps.children}
