@@ -1,6 +1,6 @@
 {
   "name": "@koobiq/react-components",
-  "version": "0.0.1-beta.14",
+  "version": "0.0.1-beta.15",
   "scripts": {
     "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",
     "lint:js": "eslint --ext .ts,.tsx src --fix",

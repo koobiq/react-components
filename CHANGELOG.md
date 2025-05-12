@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.0.1-beta.15](https://github.com/koobiq/react-components/compare/0.0.1-beta.14...0.0.1-beta.15) (2025-05-12)
+
+### 🚀 Features
+
+- **icons:** improve the `IconShieldUser16` ([353a323](https://github.com/koobiq/react-components/commit/353a32381052779fa9c4671520378929d36c2c98))
+
+### 🐞 Bug Fixes
+
+- **components/Сheckbox/Radio/Toggle:** use <span> for VisuallyHidden ([47f808c](https://github.com/koobiq/react-components/commit/47f808c3d1d66ef77c4a4563bc18e7b25a6ed370))
+- correct scroll layout for Checkbox, Radio and Toggle ([7237d25](https://github.com/koobiq/react-components/commit/7237d25d3b3d1a8782d927b82e91887c2f2c2603))
+
 ## [0.0.1-beta.14](https://github.com/koobiq/react-components/compare/0.0.1-beta.13...0.0.1-beta.14) (2025-05-06)
 
 ### 🚀 Features
