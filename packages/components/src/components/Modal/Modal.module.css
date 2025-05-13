@@ -43,6 +43,7 @@
 
 /* modal */
 .modal {
+  display: flex;
   position: absolute;
   pointer-events: auto;
   inset-inline-start: 50%;
