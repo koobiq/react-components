@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.16](https://github.com/koobiq/react-components/compare/0.0.1-beta.15...0.0.1-beta.16) (2025-05-13)
+
+### 🐞 Bug Fixes
+
+- **components/Modal:** fix a scroll ([1abd7e7](https://github.com/koobiq/react-components/commit/1abd7e79993d0ea0d8a9347ea48942088cef6ea6))
+
 ## [0.0.1-beta.15](https://github.com/koobiq/react-components/compare/0.0.1-beta.14...0.0.1-beta.15) (2025-05-12)
 
 ### 🚀 Features
