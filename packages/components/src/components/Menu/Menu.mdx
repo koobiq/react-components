@@ -72,12 +72,38 @@ Link items in a menu are not selectable.
 
 ## Sections
 
-List supports sections with headings in order to group options.
-Sections can be used by wrapping groups of `ListItem` in a `ListSection` component.
-Each `ListSection` takes a `title` and `key` prop.
+Menu supports sections with headings in order to group options.
+Sections can be used by wrapping groups of `Menu.Item` in a `Menu.Section` component.
+Each `Menu.Section` takes a `title` and `key` prop.
 
 <Story of={Stories.Sections} />
 
 ## Disabled items
 
+Menu supports marking items as disabled using the `disabledKeys` prop.
+Each key in this list corresponds with the key prop passed to the `Menu.Item` component,
+or automatically derived from the values passed to the items prop.
+
 <Story of={Stories.DisabledItems} />
+
+## Placement
+
+The menu's placement with respect to its anchor element can be adjusted
+using the `placement` prop. See a full list of available placement
+combinations in the [table of properties](#props). Menus
+will also automatically flip to the opposite direction if there isn't enough space.
+
+<Story of={Stories.Placement} />
+
+## Open
+
+### Default open
+
+Menu isn't opened by default. The `defaultOpen` prop can be used to set the default state.
+
+### Controlled open
+
+The `open` prop can be used to make the opened state controlled.
+The `onOpenChange` event is fired when the menu's open state changes.
+
+<Story of={Stories.Open} />

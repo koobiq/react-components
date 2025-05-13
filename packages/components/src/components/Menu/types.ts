@@ -1,6 +1,8 @@
-import type { ComponentRef, ReactElement, Ref } from 'react';
+import type { ComponentRef, ReactElement, Ref, RefObject } from 'react';
 
 import type { ButtonOptions, AriaMenuProps } from '@koobiq/react-primitives';
+
+import type { PopoverPropPlacement } from '../Popover';
 
 export type MenuPropControl = (
   props: ButtonOptions & { ref?: Ref<HTMLButtonElement> }
@@ -25,13 +27,15 @@ export type MenuPropSelectionChange<T extends object> =
 export type MenuPropDisabledKeys<T extends object> =
   AriaMenuProps<T>['disabledKeys'];
 
+export type MenuPropPlacement = PopoverPropPlacement;
+
 export type MenuProps<T extends object> = {
   /** The contents of the collection. */
   children?: MenuPropChildren<T>;
   /** The render function of the control for displaying the modal window. */
   control?: MenuPropControl;
   /** Whether the overlay is open by default (controlled). */
-  isOpen?: boolean;
+  open?: boolean;
   /** Whether the overlay is open by default (uncontrolled). */
   defaultOpen?: boolean;
   /** Handler that is called when the overlay's open state changes. */
@@ -45,9 +49,18 @@ export type MenuProps<T extends object> = {
    * the collection's `selectionBehavior` prop and the interaction modality.
    */
   onAction?: MenuPropOnAction<T>;
+  /** The currently selected keys in the collection (controlled). */
   selectedKeys?: MenuPropSelected<T>;
+  /** Handler that is called when the selection changes. */
   onSelectionChange?: MenuPropSelectionChange<T>;
   disabledKeys?: MenuPropDisabledKeys<T>;
+  /** The ref for the element which the popover positions itself with respect to. */
+  anchorRef?: RefObject<HTMLElement | null>;
+  /**
+   * The placement of the element with respect to its anchor element.
+   * @default bottom start
+   * */
+  placement?: MenuPropPlacement;
 };
 
 export type MenuComponentProps = <T extends object>(

@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
+import { useBoolean } from '@koobiq/react-core';
 import type { StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { popoverPropPlacement } from '../Popover';
 
-import { Menu } from './index';
-import type { MenuProps } from './index';
+import type { MenuPropPlacement, MenuProps } from './index';
+import { Menu } from './Menu';
 
 const meta = {
   title: 'Components/Menu',
@@ -216,6 +218,58 @@ export const Sections = {
             )
           }
         </Menu>
+      </FlexBox>
+    );
+  },
+};
+
+export const Placement: Story = {
+  render: function Render() {
+    const [selected, setSelected] = useState<Selection>(new Set(['top']));
+
+    const options = popoverPropPlacement.map((placement) => ({
+      id: placement,
+    }));
+
+    return (
+      <Menu
+        items={options}
+        placement={Array.from(selected)[0] as MenuPropPlacement}
+        selectionMode="single"
+        selectedKeys={selected}
+        onSelectionChange={setSelected}
+        control={(props) => <Button {...props}>Placement</Button>}
+      >
+        {(item) => <Menu.Item>{item.id}</Menu.Item>}
+      </Menu>
+    );
+  },
+};
+
+export const Open: Story = {
+  render: function Render() {
+    const options = [
+      { id: 'copy', name: 'Copy' },
+      { id: 'cut', name: 'Cut' },
+      { id: 'paste', name: 'Paste' },
+    ];
+
+    const [open, { toggle, set }] = useBoolean(false);
+    const anchorRef = useRef<HTMLButtonElement>(null);
+
+    return (
+      <FlexBox gap="m">
+        <Menu
+          open={open}
+          items={options}
+          onOpenChange={set}
+          anchorRef={anchorRef}
+        >
+          {(item) => <Menu.Item>{item.name}</Menu.Item>}
+        </Menu>
+        <Button onPress={toggle} ref={anchorRef}>
+          {open ? 'Close' : 'Open'}
+        </Button>
       </FlexBox>
     );
   },

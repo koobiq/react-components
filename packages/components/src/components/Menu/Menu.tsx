@@ -19,8 +19,8 @@ function MenuRender<T extends object>(
   props: Omit<MenuProps<T>, 'ref'>,
   ref: Ref<MenuRef>
 ) {
-  const { control } = props;
-  const state = useMenuTriggerState(props);
+  const { control, open, anchorRef, placement = 'bottom start' } = props;
+  const state = useMenuTriggerState({ ...props, isOpen: open });
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
@@ -32,7 +32,7 @@ function MenuRender<T extends object>(
     controlRef
   );
 
-  const { isDisabled, onPress, ...otherMenuTriggerProps } = menuTriggerProps;
+  const { isDisabled, ...otherMenuTriggerProps } = menuTriggerProps;
 
   const popoverProps: PopoverInnerProps = {
     state,
@@ -40,20 +40,19 @@ function MenuRender<T extends object>(
     size: 'auto',
     hideArrow: true,
     popoverRef: domRef,
-    anchorRef: controlRef,
+    anchorRef: anchorRef || controlRef,
   };
 
   return (
     <>
       {control?.({
         ref: controlRef,
-        onClick: onPress,
         disabled: isDisabled,
         ...otherMenuTriggerProps,
       })}
       <PopoverInner
         type="menu"
-        placement="bottom start"
+        placement={placement}
         className={s.popover}
         {...popoverProps}
       >
