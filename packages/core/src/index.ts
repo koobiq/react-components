@@ -1,5 +1,5 @@
 import { useFocusRing, FocusableProvider } from '@react-aria/focus';
-import { useHover, usePress } from '@react-aria/interactions';
+import { useHover, usePress, Pressable } from '@react-aria/interactions';
 import { mergeProps, filterDOMProps } from '@react-aria/utils';
 import { useToggleState } from '@react-stately/toggle';
 
@@ -9,6 +9,7 @@ export * from './hooks/index.js';
 export * from './utils/index.js';
 export {
   FocusableProvider,
+  Pressable,
   mergeProps,
   useFocusRing,
   useHover,

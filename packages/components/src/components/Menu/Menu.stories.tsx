@@ -1,13 +1,24 @@
 import { useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
+import {
+  IconArrowRightToBracket16,
+  IconBell16,
+  IconDashboard16,
+  IconGear16,
+  IconMessage16,
+  IconPlus16,
+} from '@koobiq/react-icons';
 import type { StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { spacing } from '../layout';
 import { popoverPropPlacement } from '../Popover';
+import { Typography } from '../Typography';
 
+import avatar from './__stories__/avatar.webp';
 import type { MenuPropPlacement, MenuProps } from './index';
 import { Menu } from './Menu';
 
@@ -165,7 +176,28 @@ export const Links = {
   ),
 };
 
-export const Sections = {
+export const SectionsStatic = {
+  name: 'Sections: Static items',
+  render: function Render() {
+    return (
+      <Menu control={(props) => <Button {...props}>Actions</Button>}>
+        <Menu.Section title="Styles">
+          <Menu.Item>Bold</Menu.Item>
+          <Menu.Item>Underline</Menu.Item>
+        </Menu.Section>
+        <Menu.Divider />
+        <Menu.Section title="Align">
+          <Menu.Item>Left</Menu.Item>
+          <Menu.Item>Middle</Menu.Item>
+          <Menu.Item>Right</Menu.Item>
+        </Menu.Section>
+      </Menu>
+    );
+  },
+};
+
+export const SectionsDynamic = {
+  name: 'Sections: Dynamic items',
   render: function Render() {
     const options = [
       {
@@ -187,38 +219,24 @@ export const Sections = {
     ];
 
     return (
-      <FlexBox alignItems="stretch" gap="l">
-        <Menu control={(props) => <Button {...props}>Actions</Button>}>
-          <Menu.Section title="Styles">
-            <Menu.Item>Bold</Menu.Item>
-            <Menu.Item>Underline</Menu.Item>
-          </Menu.Section>
-          <Menu.Divider />
-          <Menu.Section title="Align">
-            <Menu.Item>Left</Menu.Item>
-            <Menu.Item>Middle</Menu.Item>
-            <Menu.Item>Right</Menu.Item>
-          </Menu.Section>
-        </Menu>
-        <Menu
-          items={options}
-          control={(props) => <Button {...props}>Actions</Button>}
-        >
-          {(item) =>
-            item.type === 'divider' ? (
-              <Menu.Divider />
-            ) : (
-              <Menu.Section
-                key={item.name}
-                items={item.children}
-                title={item.name}
-              >
-                {(item) => <Menu.Item>{item.name}</Menu.Item>}
-              </Menu.Section>
-            )
-          }
-        </Menu>
-      </FlexBox>
+      <Menu
+        items={options}
+        control={(props) => <Button {...props}>Actions</Button>}
+      >
+        {(item) =>
+          item.type === 'divider' ? (
+            <Menu.Divider />
+          ) : (
+            <Menu.Section
+              key={item.name}
+              items={item.children}
+              title={item.name}
+            >
+              {(item) => <Menu.Item>{item.name}</Menu.Item>}
+            </Menu.Section>
+          )
+        }
+      </Menu>
     );
   },
 };
@@ -271,6 +289,64 @@ export const Open: Story = {
           {open ? 'Close' : 'Open'}
         </Button>
       </FlexBox>
+    );
+  },
+};
+
+export const Dividers: Story = {
+  render: function Render() {
+    return (
+      <Menu
+        control={(props) => (
+          <Menu.Control {...props}>
+            <span role="button" style={{ borderRadius: 24, cursor: 'pointer' }}>
+              <img
+                src={avatar}
+                alt="Sophia Bellmont"
+                width={48}
+                height={48}
+                style={{ borderRadius: 'inherit' }}
+              />
+            </span>
+          </Menu.Control>
+        )}
+      >
+        <Menu.Header>
+          <FlexBox gap="xs" direction="column" className={spacing({ p: 'm' })}>
+            <Typography variant="text-normal-strong">
+              Sophia Bellmont
+            </Typography>
+            <Typography color="contrast-secondary">@Sophia</Typography>
+          </FlexBox>
+        </Menu.Header>
+        <Menu.Divider />
+        <Menu.Item>
+          <IconDashboard16 />
+          Dashboard
+        </Menu.Item>
+        <Menu.Item>
+          <IconBell16 />
+          <Menu.ItemText>Notifications</Menu.ItemText>
+        </Menu.Item>
+        <Menu.Item>
+          <IconPlus16 />
+          Create team
+        </Menu.Item>
+        <Menu.Item>
+          <IconGear16 />
+          Settings
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item>
+          <IconMessage16 />
+          Contact Support
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item>
+          <IconArrowRightToBracket16 />
+          Log out
+        </Menu.Item>
+      </Menu>
     );
   },
 };

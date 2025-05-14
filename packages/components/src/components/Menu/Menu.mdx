@@ -76,7 +76,13 @@ Menu supports sections with headings in order to group options.
 Sections can be used by wrapping groups of `Menu.Item` in a `Menu.Section` component.
 Each `Menu.Section` takes a `title` and `key` prop.
 
-<Story of={Stories.Sections} />
+### Static items
+
+<Story of={Stories.SectionsStatic} />
+
+### Dynamic items
+
+<Story of={Stories.SectionsDynamic} />
 
 ## Disabled items
 
@@ -94,6 +100,12 @@ combinations in the [table of properties](#props). Menus
 will also automatically flip to the opposite direction if there isn't enough space.
 
 <Story of={Stories.Placement} />
+
+## Dividers
+
+Dividers may be added between menu items or sections in order to create non-labeled groupings.
+
+<Story of={Stories.Dividers} />
 
 ## Open
 

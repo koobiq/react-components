@@ -3,7 +3,7 @@
 import type { Ref } from 'react';
 import { forwardRef, useRef } from 'react';
 
-import { useDOMRef } from '@koobiq/react-core';
+import { useDOMRef, Pressable } from '@koobiq/react-core';
 import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 
 import { Divider, Item, Section, Header } from '../Collections';
@@ -70,6 +70,7 @@ type CompoundedComponent = typeof MenuComponent & {
   Section: typeof Section;
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
+  Control: typeof Pressable;
 };
 
 export const Menu = MenuComponent as CompoundedComponent;
@@ -79,3 +80,4 @@ Menu.Section = Section;
 Menu.Header = Header;
 Menu.Divider = Divider;
 Menu.ItemText = ListItemText;
+Menu.Control = Pressable;
