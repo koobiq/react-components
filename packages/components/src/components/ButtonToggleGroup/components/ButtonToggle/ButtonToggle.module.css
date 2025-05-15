@@ -1,0 +1,29 @@
+.base {
+  --button-toggle-color: var(--kbq-foreground-contrast);
+  --button-toggle-bg-color: var(--kbq-background-contrast-fade);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--kbq-size-xxs);
+  block-size: var(--kbq-size-xxl);
+  min-inline-size: var(--kbq-size-3xl);
+  padding: 0 var(--kbq-size-xs);
+  color: var(--button-toggle-color);
+  border-radius: var(--kbq-size-xxs);
+  background-color: var(--button-toggle-bg-color);
+}
+
+.focusVisible {
+  outline: 2px solid var(--kbq-states-line-focus-theme);
+  outline-offset: -1px;
+}
+
+.base svg {
+  color: var(--kbq-icon-contrast-fade);
+}
+
+.selected {
+  --button-toggle-bg-color: var(--kbq-background-card);
+}

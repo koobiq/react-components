@@ -1,0 +1,7 @@
+.base {
+  display: flex;
+  gap: var(--kbq-size-xxs);
+  padding: var(--kbq-size-xxs);
+  border-radius: var(--kbq-size-s);
+  background-color: var(--kbq-background-contrast-fade);
+}

@@ -1,3 +1,9 @@
+import {
+  useToggleButtonGroup,
+  useToggleButtonGroupItem,
+  type AriaToggleButtonGroupProps,
+  type AriaToggleButtonGroupItemProps,
+} from '@react-aria/button';
 import { useDialog, type AriaDialogProps } from '@react-aria/dialog';
 import {
   useLocale,
@@ -38,6 +44,10 @@ import {
   type OverlayTriggerState,
 } from '@react-stately/overlays';
 import { useSelectState } from '@react-stately/select';
+import {
+  useToggleGroupState,
+  type ToggleGroupState,
+} from '@react-stately/toggle';
 import type { TooltipTriggerProps } from '@react-stately/tooltip';
 import { useTooltipTriggerState } from '@react-stately/tooltip';
 import { useTreeState, type TreeState } from '@react-stately/tree';
@@ -80,8 +90,11 @@ export {
   useListBoxSection,
   useOverlayPosition,
   useMenuTriggerState,
+  useToggleGroupState,
+  useToggleButtonGroup,
   useOverlayTriggerState,
   useTooltipTriggerState,
+  useToggleButtonGroupItem,
   useLocalizedStringFormatter,
   type Node,
   type TreeState,
@@ -92,6 +105,7 @@ export {
   type LinkDOMProps,
   type FocusableElement,
   type SectionProps,
+  type ToggleGroupState,
   type AriaMenuProps,
   type AriaDialogProps,
   type AriaMenuOptions,
@@ -100,6 +114,8 @@ export {
   type TooltipTriggerProps,
   type OverlayTriggerState,
   type AriaModalOverlayProps,
+  type AriaToggleButtonGroupProps,
+  type AriaToggleButtonGroupItemProps,
 };
 export * from './types';
 export * from './utils';
