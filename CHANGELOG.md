@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.17](https://github.com/koobiq/react-components/compare/0.0.1-beta.16...0.0.1-beta.17) (2025-05-15)
+
+### 🚀 Features
+
+- **components:** add experimental `Menu` component ([c11bd5f](https://github.com/koobiq/react-components/commit/c11bd5fcbbdf0561f278eab6cf12add7d50d14d3))
+
 ## [0.0.1-beta.16](https://github.com/koobiq/react-components/compare/0.0.1-beta.15...0.0.1-beta.16) (2025-05-13)
 
 ### 🐞 Bug Fixes
