@@ -1,8 +1,14 @@
-import type { ComponentRef, ReactElement, Ref, RefObject } from 'react';
+import type {
+  ComponentRef,
+  CSSProperties,
+  ReactElement,
+  Ref,
+  RefObject,
+} from 'react';
 
 import type { ButtonOptions, AriaMenuProps } from '@koobiq/react-primitives';
 
-import type { PopoverPropPlacement } from '../Popover';
+import type { PopoverInnerProps, PopoverPropPlacement } from '../Popover';
 
 export type MenuPropControl = (
   props: ButtonOptions & { ref?: Ref<HTMLButtonElement> }
@@ -30,6 +36,12 @@ export type MenuPropDisabledKeys<T extends object> =
 export type MenuPropPlacement = PopoverPropPlacement;
 
 export type MenuProps<T extends object> = {
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Unique identifier for testing purposes. */
+  'data-testid'?: string | number;
+  /** Inline styles. */
+  style?: CSSProperties;
   /** The contents of the collection. */
   children?: MenuPropChildren<T>;
   /** The render function of the control for displaying the modal window. */
@@ -61,6 +73,12 @@ export type MenuProps<T extends object> = {
    * @default bottom start
    * */
   placement?: MenuPropPlacement;
+  /** Ref to the popover */
+  ref?: Ref<HTMLDivElement>;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    popover?: PopoverInnerProps;
+  };
 };
 
 export type MenuComponentProps = <T extends object>(

@@ -3,7 +3,7 @@
 import type { Ref } from 'react';
 import { forwardRef, useRef } from 'react';
 
-import { useDOMRef, Pressable } from '@koobiq/react-core';
+import { useDOMRef, Pressable, mergeProps, clsx } from '@koobiq/react-core';
 import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 
 import { Divider, Item, Section, Header } from '../Collections';
@@ -19,7 +19,18 @@ function MenuRender<T extends object>(
   props: Omit<MenuProps<T>, 'ref'>,
   ref: Ref<MenuRef>
 ) {
-  const { control, open, anchorRef, placement = 'bottom start' } = props;
+  const {
+    placement = 'bottom start',
+    'data-testid': testId,
+    control,
+    style,
+    open,
+    anchorRef,
+    className,
+    slotProps,
+    ...otherProps
+  } = props;
+
   const state = useMenuTriggerState({ ...props, isOpen: open });
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
@@ -34,14 +45,20 @@ function MenuRender<T extends object>(
 
   const { isDisabled, ...otherMenuTriggerProps } = menuTriggerProps;
 
-  const popoverProps: PopoverInnerProps = {
-    state,
-    offset: 4,
-    size: 'auto',
-    hideArrow: true,
-    popoverRef: domRef,
-    anchorRef: anchorRef || controlRef,
-  };
+  const popoverProps: PopoverInnerProps = mergeProps(
+    {
+      style,
+      state,
+      offset: 4,
+      size: 'auto',
+      hideArrow: true,
+      popoverRef: domRef,
+      'data-testid': testId,
+      anchorRef: anchorRef || controlRef,
+      className: clsx(s.popover, className),
+    },
+    slotProps?.popover
+  );
 
   return (
     <>
@@ -50,13 +67,8 @@ function MenuRender<T extends object>(
         disabled: isDisabled,
         ...otherMenuTriggerProps,
       })}
-      <PopoverInner
-        type="menu"
-        placement={placement}
-        className={s.popover}
-        {...popoverProps}
-      >
-        <MenuInner {...props} {...menuProps} />
+      <PopoverInner type="menu" placement={placement} {...popoverProps}>
+        <MenuInner {...otherProps} {...menuProps} />
       </PopoverInner>
     </>
   );
