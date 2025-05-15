@@ -1,0 +1,12 @@
+.base {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.heading {
+  user-select: none;
+  box-sizing: border-box;
+  padding: var(--kbq-size-s) var(--kbq-size-m);
+}

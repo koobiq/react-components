@@ -1,0 +1,9 @@
+.base {
+  padding: var(--kbq-size-xxs);
+  inline-size: 100%;
+}
+
+.divider {
+  margin-inline: calc(var(--kbq-size-xxs) * -1);
+  inline-size: initial;
+}

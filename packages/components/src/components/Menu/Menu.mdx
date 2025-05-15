@@ -1,0 +1,121 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Menu.stories';
+
+<Meta of={Stories} />
+
+# Menu
+
+<Status variant="experimental" />
+
+A menu displays a list of actions or options that a user can choose.
+
+```tsx
+import { Menu } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Subcomponents
+
+The component has the following helper components:
+
+- `Menu.Header` — menu header component
+- `Menu.Divider` — menu divider component
+- `Menu.Item` — menu item component
+- `Menu.Section` — a group of menu items
+- `Menu.ItemText` — component to show text in a menu item.
+
+## Content
+
+The `Menu` accepts both static and dynamic collections,
+so it can display options you know ahead of time or ones that arrive or change later.
+For dynamic collections, just pass your items via the items prop and give each a unique `key`;
+when you click an option, the Menu calls `onAction` with that `key`.
+
+<Story of={Stories.Content} />
+
+## Selection
+
+Menu supports multiple selection modes.
+By default, selection is disabled, however this can be changed using the `selectionMode` prop.
+Use `defaultSelectedKeys` to provide a default set of selected items (uncontrolled)
+and `selectedKeys` to set the selected items (controlled).
+The value of the selected keys must match the `key` prop of the items.
+
+### Single
+
+<Story of={Stories.SelectionSingle} />
+
+### Multiple
+
+<Story of={Stories.SelectionMultiple} />
+
+## Links
+
+By default, interacting with an item in a Menu triggers `onAction` and optionally
+`onSelectionChange` depending on the `selectionMode`.
+Alternatively, items may be links to another page or website.
+This can be achieved by passing the `href` prop to the `Menu.Item` component.
+Link items in a menu are not selectable.
+
+<Story of={Stories.Links} />
+
+## Sections
+
+Menu supports sections with headings in order to group options.
+Sections can be used by wrapping groups of `Menu.Item` in a `Menu.Section` component.
+Each `Menu.Section` takes a `title` and `key` prop.
+
+### Static items
+
+<Story of={Stories.SectionsStatic} />
+
+### Dynamic items
+
+<Story of={Stories.SectionsDynamic} />
+
+## Disabled items
+
+Menu supports marking items as disabled using the `disabledKeys` prop.
+Each key in this list corresponds with the key prop passed to the `Menu.Item` component,
+or automatically derived from the values passed to the items prop.
+
+<Story of={Stories.DisabledItems} />
+
+## Placement
+
+The menu's placement with respect to its anchor element can be adjusted
+using the `placement` prop. See a full list of available placement
+combinations in the [table of properties](#props). Menus
+will also automatically flip to the opposite direction if there isn't enough space.
+
+<Story of={Stories.Placement} />
+
+## Dividers
+
+Dividers may be added between menu items or sections in order to create non-labeled groupings.
+
+<Story of={Stories.Dividers} />
+
+## Open
+
+### Default open
+
+Menu isn't opened by default. The `defaultOpen` prop can be used to set the default state.
+
+### Controlled open
+
+The `open` prop can be used to make the opened state controlled.
+The `onOpenChange` event is fired when the menu's open state changes.
+
+<Story of={Stories.Open} />
