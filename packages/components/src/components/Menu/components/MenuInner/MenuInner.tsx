@@ -29,23 +29,26 @@ export function MenuInner<T extends object>(props: MenuInnerProps<T>) {
 
   const renderItems = (treeState: typeof state) =>
     [...treeState.collection].map((item) => {
-      if (item.type === 'header')
-        return (
-          <header key={item.key} role="presentation">
-            {item.rendered}
-          </header>
-        );
+      switch (item.type) {
+        case 'header':
+          return (
+            <header key={item.key} role="presentation">
+              {item.rendered}
+            </header>
+          );
 
-      if (item.type === 'divider')
-        return <Divider key={item.key} className={s.divider} />;
+        case 'divider':
+          return <Divider key={item.key} className={s.divider} />;
 
-      if (item.type === 'item')
-        return <MenuItem key={item.key} item={item} state={state} />;
+        case 'item':
+          return <MenuItem key={item.key} item={item} state={state} />;
 
-      if (item.type === 'section')
-        return <MenuSection key={item.key} section={item} state={state} />;
+        case 'section':
+          return <MenuSection key={item.key} section={item} state={state} />;
 
-      return null;
+        default:
+          return null;
+      }
     });
 
   return (
