@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { type CSSProperties, useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -47,8 +47,8 @@ export const Base: Story = {
       onAction={(key) => alert(key)}
       {...args}
     >
-      <Menu.Item key="open">New</Menu.Item>
-      <Menu.Item key="rename">Open</Menu.Item>
+      <Menu.Item key="new">New</Menu.Item>
+      <Menu.Item key="open">Open</Menu.Item>
       <Menu.Item key="close">Close</Menu.Item>
       <Menu.Item key="save">Save</Menu.Item>
       <Menu.Item key="duplicate">Duplicate</Menu.Item>
@@ -295,19 +295,31 @@ export const Open: Story = {
 
 export const Dividers: Story = {
   render: function Render() {
+    const buttonStyle: CSSProperties = {
+      width: 48,
+      height: 48,
+      borderRadius: '50%',
+      overflow: 'hidden',
+      padding: 0,
+      border: 'none',
+      background: 'transparent',
+      cursor: 'pointer',
+    };
+
+    const imgStyle: CSSProperties = {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      display: 'block',
+    };
+
     return (
       <Menu
         control={(props) => (
           <Menu.Control {...props}>
-            <span role="button" style={{ borderRadius: 24, cursor: 'pointer' }}>
-              <img
-                src={avatar}
-                alt="Sophia Bellmont"
-                width={48}
-                height={48}
-                style={{ borderRadius: 'inherit' }}
-              />
-            </span>
+            <div role="button" style={buttonStyle}>
+              <img src={avatar} alt="Sophia Bellmont" style={imgStyle} />
+            </div>
           </Menu.Control>
         )}
       >
