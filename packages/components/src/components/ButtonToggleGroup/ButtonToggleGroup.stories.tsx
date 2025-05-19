@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   IconAlignCenter16,
   IconAlignLeft16,
@@ -5,6 +7,9 @@ import {
   IconBug16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { FlexBox } from '../FlexBox';
+import { Typography, type TypographyPropAlign } from '../Typography';
 
 import type { ButtonToggleGroupBaseProps } from './index.js';
 import { ButtonToggleGroup, ButtonToggle } from './index.js';
@@ -87,6 +92,40 @@ export const LongText: Story = {
       </ButtonToggle>
     </ButtonToggleGroup>
   ),
+};
+
+export const ControlledSelected: Story = {
+  render: function Render(args: ButtonToggleGroupBaseProps) {
+    const [selected, setSelected] = useState<Set<string | number>>(
+      new Set(['center'])
+    );
+
+    const align = Array.from(selected)[0] as TypographyPropAlign;
+
+    return (
+      <FlexBox direction="column" gap="l" style={{ width: 300 }}>
+        <ButtonToggleGroup
+          selectedKeys={selected}
+          onSelectionChange={setSelected}
+          style={{ inlineSize: 'inherit' }}
+          {...args}
+        >
+          <ButtonToggle id="start" icon={<IconAlignLeft16 />}>
+            Left
+          </ButtonToggle>
+          <ButtonToggle id="center" icon={<IconAlignCenter16 />}>
+            Center
+          </ButtonToggle>
+          <ButtonToggle id="end" icon={<IconAlignRight16 />}>
+            Right
+          </ButtonToggle>
+        </ButtonToggleGroup>
+        <Typography align={align}>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, quos!
+        </Typography>
+      </FlexBox>
+    );
+  },
 };
 
 export const EqualItemSize: Story = {
