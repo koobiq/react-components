@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import {
   clsx,
@@ -38,8 +38,15 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     const containerRef = useRef<HTMLSpanElement | null>(null);
     const contentRef = useRef<HTMLSpanElement | null>(null);
 
-    const { state, setSelectedRect, animated, equalItemSize } =
-      useButtonToggleGroupContext();
+    const {
+      state,
+      setSelectedRect,
+      animated,
+      equalItemSize,
+      rootContainerSize,
+    } = useButtonToggleGroupContext();
+
+    const [overflowX, setOverflowX] = useState<boolean>(false);
 
     const {
       buttonProps,
@@ -67,9 +74,12 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
       }
     }, [selected]);
 
-    const overflowX =
-      (contentRef.current?.scrollWidth || 0) >
-      (contentRef.current?.clientWidth || 0);
+    useEffect(() => {
+      setOverflowX(
+        (contentRef.current?.scrollWidth || 0) >
+          (contentRef.current?.clientWidth || 0)
+      );
+    }, [rootContainerSize]);
 
     return (
       <Tooltip
