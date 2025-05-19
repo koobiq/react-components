@@ -63,7 +63,23 @@ export const FullWidth: Story = {
   ),
 };
 
-export const Disabled: Story = {
+export const DisabledGroup: Story = {
+  render: (args: ButtonToggleGroupBaseProps) => (
+    <ButtonToggleGroup defaultSelectedKeys={['center']} disabled {...args}>
+      <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
+        Left
+      </ButtonToggle>
+      <ButtonToggle id="center" icon={<IconAlignCenter16 />}>
+        Center
+      </ButtonToggle>
+      <ButtonToggle id="right" icon={<IconAlignRight16 />}>
+        Right
+      </ButtonToggle>
+    </ButtonToggleGroup>
+  ),
+};
+
+export const DisabledItem: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
     <ButtonToggleGroup defaultSelectedKeys={['center']} {...args}>
       <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
@@ -99,7 +115,8 @@ export const LongText: Story = {
   ),
 };
 
-export const ControlledSelected: Story = {
+export const ControlledSelection: Story = {
+  name: 'Controlled selection',
   render: function Render(args: ButtonToggleGroupBaseProps) {
     const [selected, setSelected] = useState<Set<string | number>>(
       new Set(['center'])

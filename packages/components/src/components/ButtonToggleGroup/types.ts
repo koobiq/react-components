@@ -3,9 +3,13 @@ import type { ComponentRef, ReactNode } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { AriaToggleButtonGroupProps } from '@koobiq/react-primitives';
 
-export type ButtonToggleGroupBaseProps = AriaToggleButtonGroupProps & {
+export type ButtonToggleGroupBaseProps = Omit<
+  AriaToggleButtonGroupProps,
+  'isDisabled'
+> & {
   children?: ReactNode;
   fullWidth?: boolean;
+  disabled?: boolean;
   equalItemSize?: boolean;
 };
 

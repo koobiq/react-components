@@ -23,13 +23,25 @@ export const ButtonToggleGroup = forwardRef<
   ButtonToggleGroupRef,
   ButtonToggleGroupProps
 >((props, ref) => {
-  const { style, className, fullWidth = false, equalItemSize = false } = props;
+  const {
+    style,
+    className,
+    fullWidth = false,
+    equalItemSize = false,
+    disabled,
+    children,
+  } = props;
+
   const [animated, setAnimated] = useBoolean(false);
 
   const domRef = useDOMRef<ButtonToggleGroupRef>(ref);
   const thumbRef = useRef<HTMLDivElement | null>(null);
 
-  const state = useToggleGroupState({ ...props, disallowEmptySelection: true });
+  const state = useToggleGroupState({
+    ...props,
+    isDisabled: disabled,
+    disallowEmptySelection: true,
+  });
 
   const [selectedRect, setSelectedRect] = useState<DOMRect>();
 
@@ -39,7 +51,7 @@ export const ButtonToggleGroup = forwardRef<
     (selectedRect?.left || 0) - (parentRect?.left || 0);
 
   const { groupProps: groupPropsAria } = useToggleButtonGroup(
-    { ...props, disallowEmptySelection: true },
+    { ...props, isDisabled: disabled, disallowEmptySelection: true },
     state,
     domRef
   );
@@ -94,7 +106,7 @@ export const ButtonToggleGroup = forwardRef<
     >
       <div {...groupProps}>
         {selectedRect && animated && <div {...thumbProps} />}
-        <div className={clsx(s.inner)}>{props.children}</div>
+        <div className={clsx(s.inner)}>{children}</div>
       </div>
     </ButtonToggleGroupContext.Provider>
   );
