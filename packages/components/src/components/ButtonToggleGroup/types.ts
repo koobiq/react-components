@@ -4,19 +4,10 @@ import type {
   DataAttributeProps,
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
-import type { AriaToggleButtonGroupProps } from '@koobiq/react-primitives';
 
 export type ButtonToggleGroupKey = string | number;
 
-export type ButtonToggleGroupBaseProps = Omit<
-  AriaToggleButtonGroupProps,
-  | 'isDisabled'
-  | 'orientation'
-  | 'selectedKeys'
-  | 'selectionMode'
-  | 'onSelectionChange'
-  | 'defaultSelectedKeys'
-> & {
+export type ButtonToggleGroupBaseProps = {
   /**
    * Whether all items are disabled.
    * @default false

@@ -27,9 +27,11 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     const {
       disabled: disabledProp = false,
       children,
+      id,
       icon,
       className,
       slotProps,
+      ...other
     } = props;
 
     const domRef = useDOMRef<ButtonToggleRef>(ref);
@@ -45,7 +47,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
       isSelected: selected,
       isDisabled: disabled,
     } = useToggleButtonGroupItem(
-      { ...props, isDisabled: disabledProp },
+      { id, isDisabled: disabledProp },
       state!,
       domRef
     );
@@ -74,6 +76,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
         delay={300}
         anchorRef={domRef}
         disabled={!overflowX}
+        {...slotProps?.tooltip}
         control={({ ref: controlRef, ...controlProps }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
           const rootRef = useMultiRef([domRef, controlRef]);
@@ -99,7 +102,8 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
             controlProps,
             focusProps,
             hoverProps,
-            buttonProps
+            buttonProps,
+            other
           );
 
           const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);

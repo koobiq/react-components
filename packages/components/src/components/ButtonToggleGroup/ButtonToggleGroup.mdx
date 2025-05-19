@@ -29,7 +29,7 @@ import { ButtonToggleGroup, ButtonToggle } from '@koobiq/react-components';
 
 You can add an icon using the `icon` prop.
 
-Both props expect an icon component from our [icon library](?path=/docs/icons--docs).
+Prop expects an icon component from our [icon library](?path=/docs/icons--docs).
 
 <Story of={Stories.Icon} />
 
@@ -53,14 +53,21 @@ Individual items can be disabled using the `disabled` prop on each ButtonToggle.
 
 <Story of={Stories.DisabledItem} />
 
-## LongText
-
-<Story of={Stories.LongText} />
-
 ## EqualItemSize
 
 <Story of={Stories.EqualItemSize} />
 
-## Controlled selection
+## Long Text
 
-<Story of={Stories.ControlledSelection} />
+If the content of a `ButtonToggle` is too wide for its container,
+the text will be truncated with an ellipsis, and a tooltip showing
+the full text will appear on hover or focus.
+
+<Story of={Stories.LongText} />
+
+## Selection
+
+Setting a selected option can be done by using the `defaultSelectedKey` or `selectedKey` prop.
+The selected key corresponds to the `id` prop of `ButtonToggle`.
+
+<Story of={Stories.Selection} />

@@ -34,7 +34,7 @@ export const ButtonToggleGroup = forwardRef<
     slotProps,
     defaultSelectedKey,
     onSelectionChange: onSelectionChangeProp,
-    ...otherProps
+    ...other
   } = props;
 
   const [animated, setAnimated] = useBoolean(false);
@@ -50,7 +50,7 @@ export const ButtonToggleGroup = forwardRef<
     (selectedRect?.left || 0) - (parentRect?.left || 0);
 
   const state = useToggleGroupState({
-    ...otherProps,
+    ...other,
     isDisabled: disabled,
     selectionMode: 'single',
     disallowEmptySelection: true,
@@ -63,7 +63,7 @@ export const ButtonToggleGroup = forwardRef<
 
   const { groupProps: groupPropsAria } = useToggleButtonGroup(
     {
-      ...otherProps,
+      ...other,
       isDisabled: disabled,
       selectionMode: 'single',
       disallowEmptySelection: true,
@@ -104,6 +104,7 @@ export const ButtonToggleGroup = forwardRef<
       ref: domRef,
       style,
     },
+    other,
     groupPropsAria
   );
 

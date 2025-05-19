@@ -96,11 +96,33 @@ export const DisabledItem: Story = {
   ),
 };
 
+export const EqualItemSize: Story = {
+  render: (args: ButtonToggleGroupBaseProps) => (
+    <ButtonToggleGroup
+      defaultSelectedKey="first"
+      style={{ inlineSize: 300 }}
+      equalItemSize
+      {...args}
+    >
+      <ButtonToggle id="first" icon={<IconBug16 />}>
+        First
+      </ButtonToggle>
+      <ButtonToggle id="second" icon={<IconBug16 />}>
+        Second
+      </ButtonToggle>
+      <ButtonToggle id="third" icon={<IconBug16 />}>
+        Third
+      </ButtonToggle>
+    </ButtonToggleGroup>
+  ),
+};
+
 export const LongText: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
     <ButtonToggleGroup
       defaultSelectedKey="first"
       style={{ inlineSize: 360 }}
+      equalItemSize
       {...args}
     >
       <ButtonToggle id="first" icon={<IconBug16 />}>
@@ -116,8 +138,7 @@ export const LongText: Story = {
   ),
 };
 
-export const ControlledSelection: Story = {
-  name: 'Controlled selection',
+export const Selection: Story = {
   render: function Render(args: ButtonToggleGroupBaseProps) {
     const [selected, setSelected] = useState<string | number>('center');
 
@@ -145,27 +166,6 @@ export const ControlledSelection: Story = {
       </FlexBox>
     );
   },
-};
-
-export const EqualItemSize: Story = {
-  render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup
-      defaultSelectedKey="first"
-      style={{ inlineSize: 300 }}
-      equalItemSize
-      {...args}
-    >
-      <ButtonToggle id="first" icon={<IconBug16 />}>
-        First
-      </ButtonToggle>
-      <ButtonToggle id="second" icon={<IconBug16 />}>
-        Second
-      </ButtonToggle>
-      <ButtonToggle id="third" icon={<IconBug16 />}>
-        Lorem ipsum dolor sit amet.
-      </ButtonToggle>
-    </ButtonToggleGroup>
-  ),
 };
 
 export const Icon: Story = {
