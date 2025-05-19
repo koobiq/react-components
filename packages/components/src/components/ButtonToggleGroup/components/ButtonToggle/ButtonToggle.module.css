@@ -70,7 +70,7 @@
   --button-toggle-outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.inner {
+.container {
   position: relative;
   inline-size: 100%;
   align-items: center;

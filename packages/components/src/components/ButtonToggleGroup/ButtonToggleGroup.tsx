@@ -90,10 +90,14 @@ export const ButtonToggleGroup = forwardRef<
     ref: thumbRef,
     className: clsx(s.thumb),
     style: {
-      width: `${selectedRect?.width}px`,
+      inlineSize: `${selectedRect?.width}px`,
       transform: `translateX(${leftRelativeToParent}px)`,
     },
   });
+
+  const containerProps = {
+    className: clsx(s.container),
+  };
 
   return (
     <ButtonToggleGroupContext.Provider
@@ -106,7 +110,7 @@ export const ButtonToggleGroup = forwardRef<
     >
       <div {...groupProps}>
         {selectedRect && animated && <div {...thumbProps} />}
-        <div className={clsx(s.inner)}>{children}</div>
+        <div {...containerProps}>{children}</div>
       </div>
     </ButtonToggleGroupContext.Provider>
   );

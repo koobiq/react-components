@@ -24,9 +24,9 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
   (props, ref) => {
-    const { disabled: disabledProp, children, icon } = props;
+    const { disabled: disabledProp, children, icon, className } = props;
     const domRef = useDOMRef<ButtonToggleRef>(ref);
-    const innerRef = useRef<HTMLSpanElement | null>(null);
+    const containerRef = useRef<HTMLSpanElement | null>(null);
     const contentRef = useRef<HTMLSpanElement | null>(null);
 
     const { state, setSelectedRect, animated, equalItemSize } =
@@ -52,7 +52,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
 
     useEffect(() => {
       if (selected && setSelectedRect) {
-        const selectedRect = innerRef.current?.getBoundingClientRect();
+        const selectedRect = containerRef.current?.getBoundingClientRect();
 
         setSelectedRect(selectedRect);
       }
@@ -65,16 +65,15 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     return (
       <Tooltip
         delay={300}
-        anchorRef={innerRef}
         disabled={!overflowX}
+        anchorRef={containerRef}
         control={({ ref: controlRef, ...controlProps }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
           const rootRef = useMultiRef([domRef, controlRef]);
 
-          return (
-            <button
-              {...mergeProps(controlProps, focusProps, hoverProps, buttonProps)}
-              className={clsx(
+          const rootProps = mergeProps(
+            {
+              className: clsx(
                 s.base,
                 textNormalMedium,
                 hovered && s.hovered,
@@ -83,18 +82,29 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
                 animated && s.animated,
                 disabled && s.disabled,
                 focusVisible && s.focusVisible,
-                equalItemSize && s.equalItemSize
-              )}
-              data-pressed={pressed}
-              data-selected={selected}
-              ref={rootRef}
-            >
-              <span className={s.inner} ref={innerRef}>
-                {isNotNil(icon) && <span className={s.icon}>{icon}</span>}
+                equalItemSize && s.equalItemSize,
+                className
+              ),
+              'data-pressed': pressed,
+              'data-selected': selected,
+              ref: rootRef,
+            },
+            controlProps,
+            focusProps,
+            hoverProps,
+            buttonProps
+          );
+
+          const iconProps = { className: s.icon };
+          const containerProps = { className: s.container, ref: containerRef };
+          const contentProps = { className: s.content, ref: contentRef };
+
+          return (
+            <button {...rootProps}>
+              <span {...containerProps}>
+                {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
                 {isNotNil(children) && (
-                  <span className={s.content} ref={contentRef}>
-                    {children}
-                  </span>
+                  <span {...contentProps}>{children}</span>
                 )}
               </span>
             </button>

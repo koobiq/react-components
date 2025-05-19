@@ -8,6 +8,8 @@ export type ButtonToggleProps = Omit<
 > & {
   icon?: ReactNode;
   disabled?: boolean;
+  /** Additional CSS-classes. */
+  className?: string;
 };
 
 export type ButtonToggleRef = ComponentRef<'button'>;
