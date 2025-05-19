@@ -24,12 +24,16 @@ export const ButtonToggleGroup = forwardRef<
   ButtonToggleGroupProps
 >((props, ref) => {
   const {
-    style,
-    className,
-    fullWidth = false,
     equalItemSize = false,
-    disabled,
+    fullWidth = false,
+    disabled = false,
+    selectedKey,
+    style,
     children,
+    className,
+    defaultSelectedKey,
+    onSelectionChange: onSelectionChangeProp,
+    ...otherProps
   } = props;
 
   const [animated, setAnimated] = useBoolean(false);
@@ -37,33 +41,49 @@ export const ButtonToggleGroup = forwardRef<
   const domRef = useDOMRef<ButtonToggleGroupRef>(ref);
   const thumbRef = useRef<HTMLDivElement | null>(null);
 
-  const state = useToggleGroupState({
-    ...props,
-    isDisabled: disabled,
-    disallowEmptySelection: true,
-  });
-
+  const firstRender = useIsFirstRender();
   const [selectedRect, setSelectedRect] = useState<DOMRect>();
-
   const parentRect = domRef.current?.getBoundingClientRect();
 
   const leftRelativeToParent =
     (selectedRect?.left || 0) - (parentRect?.left || 0);
 
+  const state = useToggleGroupState({
+    ...otherProps,
+    isDisabled: disabled,
+    selectionMode: 'single',
+    disallowEmptySelection: true,
+    onSelectionChange: (keys) => {
+      onSelectionChangeProp?.(Array.from(keys)[0]);
+    },
+    selectedKeys: selectedKey ? [selectedKey] : undefined,
+    defaultSelectedKeys: defaultSelectedKey ? [defaultSelectedKey] : undefined,
+  });
+
   const { groupProps: groupPropsAria } = useToggleButtonGroup(
-    { ...props, isDisabled: disabled, disallowEmptySelection: true },
+    {
+      ...otherProps,
+      isDisabled: disabled,
+      selectionMode: 'single',
+      disallowEmptySelection: true,
+      onSelectionChange: (keys) => {
+        onSelectionChangeProp?.(Array.from(keys)[0]);
+      },
+      selectedKeys: selectedKey ? [selectedKey] : undefined,
+      defaultSelectedKeys: defaultSelectedKey
+        ? [defaultSelectedKey]
+        : undefined,
+    },
     state,
     domRef
   );
 
-  const firstRender = useIsFirstRender();
-
-  const selectedKey = Array.from(state.selectedKeys)[0];
+  const selectedKeyState = Array.from(state.selectedKeys)[0];
 
   // start animation
   useLayoutEffect(() => {
-    if (!firstRender) setAnimated.on();
-  }, [selectedKey]);
+    if (!firstRender && selectedKeyState) setAnimated.on();
+  }, [selectedKeyState, firstRender]);
 
   // end animation
   useEventListener({

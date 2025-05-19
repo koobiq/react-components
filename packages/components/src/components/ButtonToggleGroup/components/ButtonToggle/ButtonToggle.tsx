@@ -24,7 +24,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
   (props, ref) => {
-    const { disabled: disabledProp, children, icon, className } = props;
+    const { disabled: disabledProp = false, children, icon, className } = props;
     const domRef = useDOMRef<ButtonToggleRef>(ref);
     const containerRef = useRef<HTMLSpanElement | null>(null);
     const contentRef = useRef<HTMLSpanElement | null>(null);
@@ -65,8 +65,8 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     return (
       <Tooltip
         delay={300}
+        anchorRef={domRef}
         disabled={!overflowX}
-        anchorRef={containerRef}
         control={({ ref: controlRef, ...controlProps }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
           const rootRef = useMultiRef([domRef, controlRef]);

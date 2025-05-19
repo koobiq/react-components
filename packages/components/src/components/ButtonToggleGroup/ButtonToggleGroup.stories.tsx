@@ -20,6 +20,7 @@ import { ButtonToggleGroup, ButtonToggle } from './index.js';
 const meta = {
   title: 'Components/ButtonToggleGroup',
   component: ButtonToggleGroup,
+  subcomponents: { ButtonToggle, ButtonToggleGroup },
   parameters: {
     layout: 'centered',
   },
@@ -31,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup defaultSelectedKeys={['center']} {...args}>
+    <ButtonToggleGroup defaultSelectedKey="center" {...args}>
       <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
         Left
       </ButtonToggle>
@@ -48,7 +49,7 @@ export const Base: Story = {
 export const FullWidth: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
     <FlexBox style={{ inlineSize: 400 }}>
-      <ButtonToggleGroup defaultSelectedKeys={['left']} fullWidth {...args}>
+      <ButtonToggleGroup defaultSelectedKey="left" fullWidth {...args}>
         <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
           Left
         </ButtonToggle>
@@ -65,7 +66,7 @@ export const FullWidth: Story = {
 
 export const DisabledGroup: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup defaultSelectedKeys={['center']} disabled {...args}>
+    <ButtonToggleGroup defaultSelectedKey="center" disabled {...args}>
       <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
         Left
       </ButtonToggle>
@@ -81,7 +82,7 @@ export const DisabledGroup: Story = {
 
 export const DisabledItem: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup defaultSelectedKeys={['center']} {...args}>
+    <ButtonToggleGroup defaultSelectedKey="center" {...args}>
       <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
         Left
       </ButtonToggle>
@@ -98,7 +99,7 @@ export const DisabledItem: Story = {
 export const LongText: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
     <ButtonToggleGroup
-      defaultSelectedKeys={['first']}
+      defaultSelectedKey="first"
       style={{ inlineSize: 360 }}
       {...args}
     >
@@ -118,16 +119,12 @@ export const LongText: Story = {
 export const ControlledSelection: Story = {
   name: 'Controlled selection',
   render: function Render(args: ButtonToggleGroupBaseProps) {
-    const [selected, setSelected] = useState<Set<string | number>>(
-      new Set(['center'])
-    );
-
-    const align = Array.from(selected)[0] as TypographyPropAlign;
+    const [selected, setSelected] = useState<string | number>('center');
 
     return (
       <FlexBox direction="column" gap="l" style={{ width: 300 }}>
         <ButtonToggleGroup
-          selectedKeys={selected}
+          selectedKey={selected}
           onSelectionChange={setSelected}
           style={{ inlineSize: 'inherit' }}
           {...args}
@@ -142,7 +139,7 @@ export const ControlledSelection: Story = {
             Right
           </ButtonToggle>
         </ButtonToggleGroup>
-        <Typography align={align}>
+        <Typography align={selected as TypographyPropAlign}>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, quos!
         </Typography>
       </FlexBox>
@@ -153,7 +150,7 @@ export const ControlledSelection: Story = {
 export const EqualItemSize: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
     <ButtonToggleGroup
-      defaultSelectedKeys={['first']}
+      defaultSelectedKey="first"
       style={{ inlineSize: 300 }}
       equalItemSize
       {...args}
@@ -173,7 +170,7 @@ export const EqualItemSize: Story = {
 
 export const Icon: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup equalItemSize {...args}>
+    <ButtonToggleGroup defaultSelectedKey="bold" equalItemSize {...args}>
       <ButtonToggle id="bold" icon={<IconTextBold16 />} />
       <ButtonToggle id="italic" icon={<IconTextItalic16 />} />
       <ButtonToggle id="underline" icon={<IconTextUnderline16 />} />
