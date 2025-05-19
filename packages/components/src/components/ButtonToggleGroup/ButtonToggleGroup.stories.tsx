@@ -5,6 +5,9 @@ import {
   IconAlignLeft16,
   IconAlignRight16,
   IconBug16,
+  IconTextBold16,
+  IconTextItalic16,
+  IconTextUnderline16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -44,17 +47,19 @@ export const Base: Story = {
 
 export const FullWidth: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup defaultSelectedKeys={['left']} fullWidth {...args}>
-      <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
-        Left
-      </ButtonToggle>
-      <ButtonToggle id="center" icon={<IconAlignCenter16 />}>
-        Center
-      </ButtonToggle>
-      <ButtonToggle id="right" icon={<IconAlignRight16 />}>
-        Right
-      </ButtonToggle>
-    </ButtonToggleGroup>
+    <FlexBox style={{ inlineSize: 400 }}>
+      <ButtonToggleGroup defaultSelectedKeys={['left']} fullWidth {...args}>
+        <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
+          Left
+        </ButtonToggle>
+        <ButtonToggle id="center" icon={<IconAlignCenter16 />}>
+          Center
+        </ButtonToggle>
+        <ButtonToggle id="right" icon={<IconAlignRight16 />}>
+          Right
+        </ButtonToggle>
+      </ButtonToggleGroup>
+    </FlexBox>
   ),
 };
 
@@ -145,6 +150,16 @@ export const EqualItemSize: Story = {
       <ButtonToggle id="third" icon={<IconBug16 />}>
         Lorem ipsum dolor sit amet.
       </ButtonToggle>
+    </ButtonToggleGroup>
+  ),
+};
+
+export const Icon: Story = {
+  render: (args: ButtonToggleGroupBaseProps) => (
+    <ButtonToggleGroup equalItemSize {...args}>
+      <ButtonToggle id="bold" icon={<IconTextBold16 />} />
+      <ButtonToggle id="italic" icon={<IconTextItalic16 />} />
+      <ButtonToggle id="underline" icon={<IconTextUnderline16 />} />
     </ButtonToggleGroup>
   ),
 };

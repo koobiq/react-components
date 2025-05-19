@@ -9,6 +9,7 @@ import {
   mergeProps,
   useMultiRef,
   useFocusRing,
+  isNotNil,
 } from '@koobiq/react-core';
 import { useToggleButtonGroupItem } from '@koobiq/react-primitives';
 
@@ -23,7 +24,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
   (props, ref) => {
-    const { disabled } = props;
+    const { disabled, children, icon } = props;
     const domRef = useDOMRef<ButtonToggleRef>(ref);
     const innerRef = useRef<HTMLSpanElement | null>(null);
     const contentRef = useRef<HTMLSpanElement | null>(null);
@@ -67,7 +68,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
         disabled={!overflowX}
         control={({ ref: controlRef, ...controlProps }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
-          const rootRef = useMultiRef([ref, controlRef]);
+          const rootRef = useMultiRef([domRef, controlRef]);
 
           return (
             <button
@@ -88,16 +89,18 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
               ref={rootRef}
             >
               <span className={s.inner} ref={innerRef}>
-                {props.icon}
-                <span className={s.content} ref={contentRef}>
-                  {props.children}
-                </span>
+                {isNotNil(icon) && <span className={s.icon}>{icon}</span>}
+                {isNotNil(children) && (
+                  <span className={s.content} ref={contentRef}>
+                    {children}
+                  </span>
+                )}
               </span>
             </button>
           );
         }}
       >
-        {props.children}
+        {children}
       </Tooltip>
     );
   }
