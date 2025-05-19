@@ -1,7 +1,27 @@
 .base {
-  display: flex;
-  gap: var(--kbq-size-xxs);
-  padding: var(--kbq-size-xxs);
+  flex-wrap: nowrap;
+  position: relative;
+  display: inline-flex;
   border-radius: var(--kbq-size-s);
   background-color: var(--kbq-background-contrast-fade);
+}
+
+.thumb {
+  position: absolute;
+  box-sizing: border-box;
+  inset-block: var(--kbq-size-xxs);
+  border-radius: var(--kbq-size-xxs);
+  background-color: var(--kbq-background-card);
+  transition:
+    inline-size var(--kbq-transition-default),
+    transform var(--kbq-transition-default);
+}
+
+.fullWidth {
+  inline-size: 100%;
+}
+
+.inner {
+  display: flex;
+  inline-size: 100%;
 }

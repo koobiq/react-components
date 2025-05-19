@@ -1,6 +1,15 @@
-import { useRef } from 'react';
+'use client';
 
-import { clsx } from '@koobiq/react-core';
+import { useRef, useState, forwardRef, useLayoutEffect } from 'react';
+
+import {
+  clsx,
+  useDOMRef,
+  mergeProps,
+  useBoolean,
+  useIsFirstRender,
+  useEventListener,
+} from '@koobiq/react-core';
 import {
   useToggleGroupState,
   useToggleButtonGroup,
@@ -8,23 +17,87 @@ import {
 
 import s from './ButtonToggleGroup.module.css';
 import { ButtonToggleGroupContext } from './ButtonToggleGroupContext';
-import type { ButtonToggleGroupProps } from './types';
+import type { ButtonToggleGroupProps, ButtonToggleGroupRef } from './types';
 
-export const ButtonToggleGroup = (props: ButtonToggleGroupProps) => {
+export const ButtonToggleGroup = forwardRef<
+  ButtonToggleGroupRef,
+  ButtonToggleGroupProps
+>((props, ref) => {
+  const { style, className, fullWidth = false, equalItemSize = false } = props;
+  const [animated, setAnimated] = useBoolean(false);
+
+  const domRef = useDOMRef<ButtonToggleGroupRef>(ref);
+  const thumbRef = useRef<HTMLDivElement | null>(null);
+
   const state = useToggleGroupState({ ...props, disallowEmptySelection: true });
-  const ref = useRef<HTMLDivElement | null>(null);
 
-  const { groupProps } = useToggleButtonGroup(
+  const [selectedRect, setSelectedRect] = useState<DOMRect>();
+
+  const parentRect = domRef.current?.getBoundingClientRect();
+
+  const leftRelativeToParent =
+    (selectedRect?.left || 0) - (parentRect?.left || 0);
+
+  const { groupProps: groupPropsAria } = useToggleButtonGroup(
     { ...props, disallowEmptySelection: true },
     state,
-    ref
+    domRef
   );
 
-  return (
-    <div {...groupProps} className={clsx(s.base)} ref={ref}>
-      <ButtonToggleGroupContext.Provider value={state}>
-        {props.children}
-      </ButtonToggleGroupContext.Provider>
-    </div>
+  const firstRender = useIsFirstRender();
+
+  const selectedKey = Array.from(state.selectedKeys)[0];
+
+  // start animation
+  useLayoutEffect(() => {
+    if (!firstRender) setAnimated.on();
+  }, [selectedKey]);
+
+  // end animation
+  useEventListener({
+    element: thumbRef,
+    handler: setAnimated.off,
+    eventName: 'transitionend',
+  });
+
+  const groupProps = mergeProps(
+    {
+      className: clsx(
+        s.base,
+        fullWidth && s.fullWidth,
+        equalItemSize && s.equalItemSize,
+        className
+      ),
+      ref: domRef,
+      style,
+    },
+    groupPropsAria
   );
-};
+
+  const thumbProps = mergeProps({
+    ref: thumbRef,
+    className: clsx(s.thumb),
+    style: {
+      width: `${selectedRect?.width}px`,
+      transform: `translateX(${leftRelativeToParent}px)`,
+    },
+  });
+
+  return (
+    <ButtonToggleGroupContext.Provider
+      value={{
+        state,
+        animated,
+        equalItemSize,
+        setSelectedRect,
+      }}
+    >
+      <div {...groupProps}>
+        {selectedRect && animated && <div {...thumbProps} />}
+        <div className={clsx(s.inner)}>{props.children}</div>
+      </div>
+    </ButtonToggleGroupContext.Provider>
+  );
+});
+
+ButtonToggleGroup.displayName = 'ButtonToggleGroup';
