@@ -27,4 +27,5 @@ export * from './AnimatedIcon';
 export * from './Select';
 export * from './Divider';
 export * from './Menu';
+export * from './ButtonToggleGroup';
 export * from './layout';

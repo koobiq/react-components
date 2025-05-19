@@ -85,7 +85,7 @@ export const DisabledItem: Story = {
       <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
         Left
       </ButtonToggle>
-      <ButtonToggle id="center" disabled icon={<IconAlignCenter16 />}>
+      <ButtonToggle id="center" icon={<IconAlignCenter16 />} disabled>
         Center
       </ButtonToggle>
       <ButtonToggle id="right" icon={<IconAlignRight16 />}>
