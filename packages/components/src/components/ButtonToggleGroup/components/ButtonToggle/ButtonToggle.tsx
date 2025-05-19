@@ -24,7 +24,14 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
   (props, ref) => {
-    const { disabled: disabledProp = false, children, icon, className } = props;
+    const {
+      disabled: disabledProp = false,
+      children,
+      icon,
+      className,
+      slotProps,
+    } = props;
+
     const domRef = useDOMRef<ButtonToggleRef>(ref);
     const containerRef = useRef<HTMLSpanElement | null>(null);
     const contentRef = useRef<HTMLSpanElement | null>(null);
@@ -95,9 +102,17 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
             buttonProps
           );
 
-          const iconProps = { className: s.icon };
-          const containerProps = { className: s.container, ref: containerRef };
-          const contentProps = { className: s.content, ref: contentRef };
+          const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
+
+          const containerProps = mergeProps(
+            { className: s.container, ref: containerRef },
+            slotProps?.container
+          );
+
+          const contentProps = mergeProps(
+            { className: s.content, ref: contentRef },
+            slotProps?.content
+          );
 
           return (
             <button {...rootProps}>

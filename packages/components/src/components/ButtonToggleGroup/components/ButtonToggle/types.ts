@@ -1,5 +1,6 @@
-import type { ComponentRef, ReactNode } from 'react';
+import type { ComponentPropsWithRef, ComponentRef, ReactNode } from 'react';
 
+import type { DataAttributeProps } from '@koobiq/react-core';
 import type { AriaToggleButtonGroupItemProps } from '@koobiq/react-primitives';
 
 export type ButtonToggleProps = Omit<
@@ -15,6 +16,12 @@ export type ButtonToggleProps = Omit<
   disabled?: boolean;
   /** Additional CSS-classes. */
   className?: string;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    icon?: ComponentPropsWithRef<'span'> & DataAttributeProps;
+    content?: ComponentPropsWithRef<'span'> & DataAttributeProps;
+    container?: ComponentPropsWithRef<'span'> & DataAttributeProps;
+  };
 };
 
 export type ButtonToggleRef = ComponentRef<'button'>;

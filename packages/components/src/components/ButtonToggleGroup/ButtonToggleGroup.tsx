@@ -31,6 +31,7 @@ export const ButtonToggleGroup = forwardRef<
     style,
     children,
     className,
+    slotProps,
     defaultSelectedKey,
     onSelectionChange: onSelectionChangeProp,
     ...otherProps
@@ -106,18 +107,24 @@ export const ButtonToggleGroup = forwardRef<
     groupPropsAria
   );
 
-  const thumbProps = mergeProps({
-    ref: thumbRef,
-    className: clsx(s.thumb),
-    style: {
-      inlineSize: `${selectedRect?.width}px`,
-      transform: `translateX(${leftRelativeToParent}px)`,
+  const thumbProps = mergeProps(
+    {
+      ref: thumbRef,
+      className: clsx(s.thumb),
+      style: {
+        inlineSize: `${selectedRect?.width}px`,
+        transform: `translateX(${leftRelativeToParent}px)`,
+      },
     },
-  });
+    slotProps?.thumb
+  );
 
-  const containerProps = {
-    className: clsx(s.container),
-  };
+  const containerProps = mergeProps(
+    {
+      className: clsx(s.container),
+    },
+    slotProps?.container
+  );
 
   return (
     <ButtonToggleGroupContext.Provider

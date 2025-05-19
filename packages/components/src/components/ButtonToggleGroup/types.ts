@@ -1,6 +1,9 @@
-import type { ComponentRef, ReactNode } from 'react';
+import type { ComponentPropsWithRef, ComponentRef, ReactNode } from 'react';
 
-import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import type {
+  DataAttributeProps,
+  ExtendableComponentPropsWithRef,
+} from '@koobiq/react-core';
 import type { AriaToggleButtonGroupProps } from '@koobiq/react-primitives';
 
 export type ButtonToggleGroupKey = string | number;
@@ -37,6 +40,13 @@ export type ButtonToggleGroupBaseProps = Omit<
   defaultSelectedKey?: ButtonToggleGroupKey;
   /** Handler that is called when the selection changes. */
   onSelectionChange?: (keys: ButtonToggleGroupKey) => void;
+  /** Unique identifier for testing purposes. */
+  'data-testid'?: string | number;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    thumb?: ComponentPropsWithRef<'div'> & DataAttributeProps;
+    container?: ComponentPropsWithRef<'div'> & DataAttributeProps;
+  };
 };
 
 export type ButtonToggleGroupProps = ExtendableComponentPropsWithRef<
