@@ -1,5 +1,13 @@
 @import url('../../../../styles/mixins.css');
 
+[data-animated='true'] .base {
+  --button-toggle-bg-color: transparent;
+}
+
+[data-equal-item-size='true'] .base {
+  flex: 1;
+}
+
 .base {
   --button-toggle-block-size: var(--kbq-size-xxl);
   --button-toggle-outline-width: var(--kbq-size-3xs);
@@ -34,10 +42,6 @@
   }
 }
 
-.equalItemSize {
-  flex: 1;
-}
-
 .hovered {
   --button-toggle-bg-color: var(--kbq-states-background-contrast-fade-hover);
 }
@@ -62,10 +66,6 @@
 
 .disabled:where(.selected) {
   --button-toggle-bg-color: var(--kbq-states-background-disabled);
-}
-
-.animated {
-  --button-toggle-bg-color: transparent;
 }
 
 .focusVisible {

@@ -9,7 +9,7 @@ import {
   useBoolean,
   usePrevious,
   useEventListener,
-  useResizeObserver,
+  useElementSize,
 } from '@koobiq/react-core';
 import {
   useToggleGroupState,
@@ -47,9 +47,17 @@ export const ButtonToggleGroup = forwardRef<
   const domRef = useDOMRef<ButtonToggleGroupRef>(ref);
   const thumbRef = useRef<HTMLDivElement | null>(null);
 
-  const [selectedRect, setSelectedRect] = useState<DOMRect>();
-  const [containerRef, { width: containerWidth }] = useResizeObserver();
+  const { ref: containerRef } = useElementSize();
   const containerRect = containerRef.current?.getBoundingClientRect();
+
+  const [selectedElement, setSelectedElement] =
+    useState<HTMLButtonElement | null>(null);
+
+  const selectedRect = selectedElement?.getBoundingClientRect();
+
+  const onSelectedElementChange = (element: HTMLButtonElement) => {
+    setSelectedElement(element);
+  };
 
   const thumbLeftOffset =
     (selectedRect?.left || 0) - (containerRect?.left || 0);
@@ -102,6 +110,8 @@ export const ButtonToggleGroup = forwardRef<
         equalItemSize && s.equalItemSize,
         className
       ),
+      'data-animated': animated,
+      'data-equal-item-size': equalItemSize,
       ref: domRef,
       style,
     },
@@ -131,13 +141,7 @@ export const ButtonToggleGroup = forwardRef<
 
   return (
     <ButtonToggleGroupContext.Provider
-      value={{
-        state,
-        animated,
-        equalItemSize,
-        setSelectedRect,
-        containerWidth,
-      }}
+      value={{ state, onSelectedElementChange }}
     >
       <div {...groupProps}>
         {animated && <div {...thumbProps} />}

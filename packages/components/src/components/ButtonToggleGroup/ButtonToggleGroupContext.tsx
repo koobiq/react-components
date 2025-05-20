@@ -1,16 +1,12 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import type { Dispatch, SetStateAction } from 'react';
 
 import type { ToggleGroupState } from '@koobiq/react-primitives';
 
 export type ButtonToggleGroupContextProps = {
-  animated?: boolean;
-  containerWidth?: number;
-  equalItemSize?: boolean;
   state: ToggleGroupState | null;
-  setSelectedRect?: Dispatch<SetStateAction<DOMRect | undefined>>;
+  onSelectedElementChange?: (element: HTMLButtonElement) => void;
 };
 
 export const ButtonToggleGroupContext =

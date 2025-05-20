@@ -10,7 +10,6 @@ import {
   useMultiRef,
   useFocusRing,
   isNotNil,
-  useEventListener,
   useBoolean,
   useElementSize,
 } from '@koobiq/react-core';
@@ -41,8 +40,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
 
     const contentRef = useRef<HTMLSpanElement | null>(null);
 
-    const { state, setSelectedRect, animated, equalItemSize, containerWidth } =
-      useButtonToggleGroupContext();
+    const { state, onSelectedElementChange } = useButtonToggleGroupContext();
 
     const { ref: containerRef, width: elementSizeWidth } = useElementSize();
 
@@ -66,12 +64,6 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
 
     const { focusProps, isFocusVisible: focusVisible } = useFocusRing({});
 
-    const handleSetSelectedRect = () => {
-      const selectedRect = containerRef.current?.getBoundingClientRect();
-
-      setSelectedRect?.(selectedRect);
-    };
-
     const handleSetShowTooltip = () => {
       setShowTooltip(
         (contentRef.current?.scrollWidth || 0) >
@@ -80,14 +72,10 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     };
 
     useEffect(() => {
-      if (selected) handleSetSelectedRect();
-    }, [selected, containerWidth]);
-
-    useEventListener({
-      active: selected,
-      eventName: 'resize',
-      handler: handleSetSelectedRect,
-    });
+      if (selected && containerRef.current) {
+        onSelectedElementChange?.(containerRef.current);
+      }
+    }, [selected]);
 
     useEffect(handleSetShowTooltip, [elementSizeWidth, children]);
 
@@ -111,10 +99,8 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
                 hovered && s.hovered,
                 pressed && s.pressed,
                 selected && s.selected,
-                animated && s.animated,
                 disabled && s.disabled,
                 focusVisible && s.focusVisible,
-                equalItemSize && s.equalItemSize,
                 className
               ),
               'data-pressed': pressed,
