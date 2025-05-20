@@ -171,9 +171,17 @@ export const Selection: Story = {
 export const Icon: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
     <ButtonToggleGroup defaultSelectedKey="bold" equalItemSize {...args}>
-      <ButtonToggle id="bold" icon={<IconTextBold16 />} />
-      <ButtonToggle id="italic" icon={<IconTextItalic16 />} />
-      <ButtonToggle id="underline" icon={<IconTextUnderline16 />} />
+      <ButtonToggle id="bold" icon={<IconTextBold16 />} aria-label="bold" />
+      <ButtonToggle
+        id="italic"
+        icon={<IconTextItalic16 />}
+        aria-label="italic"
+      />
+      <ButtonToggle
+        id="underline"
+        icon={<IconTextUnderline16 />}
+        aria-label="underline"
+      />
     </ButtonToggleGroup>
   ),
 };
