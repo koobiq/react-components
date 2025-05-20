@@ -1,4 +1,5 @@
 .base {
+  overflow: hidden;
   flex-wrap: nowrap;
   position: relative;
   display: inline-flex;
