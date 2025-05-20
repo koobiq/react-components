@@ -7,9 +7,9 @@ import {
   useDOMRef,
   mergeProps,
   useBoolean,
-  useEventListener,
-  useElementSize,
   usePrevious,
+  useEventListener,
+  useResizeObserver,
 } from '@koobiq/react-core';
 import {
   useToggleGroupState,
@@ -44,9 +44,12 @@ export const ButtonToggleGroup = forwardRef<
   const thumbRef = useRef<HTMLDivElement | null>(null);
 
   const [selectedRect, setSelectedRect] = useState<DOMRect>();
-  const parentRect = domRef.current?.getBoundingClientRect();
+  const [containerRef, { width: containerWidth }] = useResizeObserver();
+  const containerRect = containerRef.current?.getBoundingClientRect();
 
-  const thumbLeftOffset = (selectedRect?.left || 0) - (parentRect?.left || 0);
+  const thumbLeftOffset =
+    (selectedRect?.left || 0) - (containerRect?.left || 0);
+
   const thumbWidth = selectedRect?.width;
 
   const config: Parameters<typeof useToggleGroupState>[0] = {
@@ -72,8 +75,6 @@ export const ButtonToggleGroup = forwardRef<
   const selectedKey = Array.from(state.selectedKeys)[0];
 
   const prevSelectedKey = usePrevious(selectedKey);
-
-  const { ref: elementSizeRef, width: rootContainerSize } = useElementSize();
 
   // Start animation
   useLayoutEffect(() => {
@@ -119,7 +120,7 @@ export const ButtonToggleGroup = forwardRef<
   const containerProps = mergeProps(
     {
       className: clsx(s.container),
-      ref: elementSizeRef,
+      ref: containerRef,
     },
     slotProps?.container
   );
@@ -131,7 +132,7 @@ export const ButtonToggleGroup = forwardRef<
         animated,
         equalItemSize,
         setSelectedRect,
-        rootContainerSize,
+        containerWidth,
       }}
     >
       <div {...groupProps}>

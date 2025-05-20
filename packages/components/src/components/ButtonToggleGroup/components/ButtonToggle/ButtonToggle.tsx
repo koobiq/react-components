@@ -38,13 +38,8 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     const containerRef = useRef<HTMLSpanElement | null>(null);
     const contentRef = useRef<HTMLSpanElement | null>(null);
 
-    const {
-      state,
-      setSelectedRect,
-      animated,
-      equalItemSize,
-      rootContainerSize,
-    } = useButtonToggleGroupContext();
+    const { state, setSelectedRect, animated, equalItemSize, containerWidth } =
+      useButtonToggleGroupContext();
 
     const [overflowX, setOverflowX] = useState<boolean>(false);
 
@@ -79,7 +74,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
         (contentRef.current?.scrollWidth || 0) >
           (contentRef.current?.clientWidth || 0)
       );
-    }, [rootContainerSize]);
+    }, [containerWidth]);
 
     return (
       <Tooltip
