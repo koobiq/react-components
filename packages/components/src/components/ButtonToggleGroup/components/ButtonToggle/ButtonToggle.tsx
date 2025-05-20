@@ -10,7 +10,6 @@ import {
   useMultiRef,
   useFocusRing,
   isNotNil,
-  useBoolean,
   useElementSize,
 } from '@koobiq/react-core';
 import { useToggleButtonGroupItem } from '@koobiq/react-primitives';
@@ -42,9 +41,11 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
 
     const { state, onSelectedElementChange } = useButtonToggleGroupContext();
 
-    const { ref: containerRef, width: elementSizeWidth } = useElementSize();
+    const { ref: containerRef } = useElementSize();
 
-    const [showTooltip, { set: setShowTooltip }] = useBoolean(false);
+    const showTooltip =
+      (contentRef.current?.scrollWidth || 0) >
+      (contentRef.current?.clientWidth || 0);
 
     const {
       buttonProps,
@@ -64,20 +65,9 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
 
     const { focusProps, isFocusVisible: focusVisible } = useFocusRing({});
 
-    const handleSetShowTooltip = () => {
-      setShowTooltip(
-        (contentRef.current?.scrollWidth || 0) >
-          (contentRef.current?.clientWidth || 0)
-      );
-    };
-
     useEffect(() => {
-      if (selected && containerRef.current) {
-        onSelectedElementChange?.(containerRef.current);
-      }
+      if (selected) onSelectedElementChange?.(containerRef.current);
     }, [selected]);
-
-    useEffect(handleSetShowTooltip, [elementSizeWidth, children]);
 
     const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
