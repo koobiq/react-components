@@ -89,7 +89,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
       handler: handleSetSelectedRect,
     });
 
-    useEffect(handleSetShowTooltip, [elementSizeWidth]);
+    useEffect(handleSetShowTooltip, [elementSizeWidth, children]);
 
     const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
