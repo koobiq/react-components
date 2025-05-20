@@ -4,7 +4,8 @@
   --button-toggle-block-size: var(--kbq-size-xxl);
   --button-toggle-outline-width: var(--kbq-size-3xs);
   --button-toggle-padding-block: var(--kbq-size-xxs);
-  --button-toggle-padding-inline: var(--kbq-size-3xs);
+  --button-toggle-padding-inline-start: var(--kbq-size-3xs);
+  --button-toggle-padding-inline-end: var(--kbq-size-3xs);
   --button-toggle-color: var(--kbq-foreground-contrast);
   --button-toggle-icon-color: var(--kbq-icon-contrast-fade);
   --button-toggle-bg-color: var(--kbq-background-contrast-fade);
@@ -18,17 +19,18 @@
   display: inline-flex;
   background: transparent;
   padding-block: var(--button-toggle-padding-block);
-  padding-inline: var(--button-toggle-padding-inline);
+  padding-inline-start: var(--button-toggle-padding-inline-start);
+  padding-inline-end: var(--button-toggle-padding-inline-end);
   block-size: calc(
     var(--button-toggle-block-size) + 2 * var(--button-toggle-padding-block)
   );
 
   &:first-child {
-    --button-toggle-padding-inline: var(--kbq-size-xxs) var(--kbq-size-3xs);
+    --button-toggle-padding-inline-start: var(--kbq-size-xxs);
   }
 
   &:last-child {
-    --button-toggle-padding-inline: var(--kbq-size-3xs) var(--kbq-size-xxs);
+    --button-toggle-padding-inline-end: var(--kbq-size-xxs);
   }
 }
 
