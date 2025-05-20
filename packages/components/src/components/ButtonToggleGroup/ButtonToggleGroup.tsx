@@ -20,6 +20,8 @@ import s from './ButtonToggleGroup.module.css';
 import { ButtonToggleGroupContext } from './ButtonToggleGroupContext';
 import type { ButtonToggleGroupProps, ButtonToggleGroupRef } from './types';
 
+const MAX_ITEMS = 5;
+
 export const ButtonToggleGroup = forwardRef<
   ButtonToggleGroupRef,
   ButtonToggleGroupProps
@@ -29,14 +31,16 @@ export const ButtonToggleGroup = forwardRef<
     fullWidth = false,
     disabled = false,
     style,
-    children,
     className,
     slotProps,
     defaultSelectedKey,
+    children: childrenProp,
     selectedKey: selectedKeyProp,
     onSelectionChange: onSelectionChangeProp,
     ...other
   } = props;
+
+  const children = childrenProp?.slice(0, MAX_ITEMS);
 
   const [animated, setAnimated] = useBoolean(false);
 
@@ -136,7 +140,7 @@ export const ButtonToggleGroup = forwardRef<
       }}
     >
       <div {...groupProps}>
-        {selectedRect && animated && <div {...thumbProps} />}
+        {animated && <div {...thumbProps} />}
         <div {...containerProps}>{children}</div>
       </div>
     </ButtonToggleGroupContext.Provider>

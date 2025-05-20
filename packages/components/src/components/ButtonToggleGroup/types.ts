@@ -1,9 +1,11 @@
-import type { ComponentPropsWithRef, ComponentRef, ReactNode } from 'react';
+import type { ComponentPropsWithRef, ComponentRef, ReactElement } from 'react';
 
 import type {
   DataAttributeProps,
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
+
+import type { ButtonToggleProps } from './components';
 
 export type ButtonToggleGroupKey = string | number;
 
@@ -19,7 +21,7 @@ export type ButtonToggleGroupBaseProps = {
    * */
   fullWidth?: boolean;
   /** The contents of the collection. */
-  children?: ReactNode;
+  children?: Array<ReactElement<ButtonToggleProps>>;
   /**
    * If `true`, each item's width will be equal.
    * @default false
