@@ -12,6 +12,7 @@ import {
   isNotNil,
   useEventListener,
   useBoolean,
+  useElementSize,
 } from '@koobiq/react-core';
 import { useToggleButtonGroupItem } from '@koobiq/react-primitives';
 
@@ -37,11 +38,13 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     } = props;
 
     const domRef = useDOMRef<ButtonToggleRef>(ref);
-    const containerRef = useRef<HTMLSpanElement | null>(null);
+
     const contentRef = useRef<HTMLSpanElement | null>(null);
 
     const { state, setSelectedRect, animated, equalItemSize, containerWidth } =
       useButtonToggleGroupContext();
+
+    const { ref: containerRef, width: elementSizeWidth } = useElementSize();
 
     const [showTooltip, { set: setShowTooltip }] = useBoolean(false);
 
@@ -86,7 +89,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
       handler: handleSetSelectedRect,
     });
 
-    useEffect(handleSetShowTooltip, [containerWidth]);
+    useEffect(handleSetShowTooltip, [elementSizeWidth]);
 
     const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
