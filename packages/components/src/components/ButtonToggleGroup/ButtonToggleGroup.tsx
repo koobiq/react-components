@@ -28,12 +28,12 @@ export const ButtonToggleGroup = forwardRef<
     equalItemSize = false,
     fullWidth = false,
     disabled = false,
-    selectedKey,
     style,
     children,
     className,
     slotProps,
     defaultSelectedKey,
+    selectedKey: selectedKeyProp,
     onSelectionChange: onSelectionChangeProp,
     ...other
   } = props;
@@ -46,10 +46,10 @@ export const ButtonToggleGroup = forwardRef<
   const [selectedRect, setSelectedRect] = useState<DOMRect>();
   const parentRect = domRef.current?.getBoundingClientRect();
 
-  const leftRelativeToParent =
-    (selectedRect?.left || 0) - (parentRect?.left || 0);
+  const thumbLeftOffset = (selectedRect?.left || 0) - (parentRect?.left || 0);
+  const thumbWidth = selectedRect?.width;
 
-  const state = useToggleGroupState({
+  const config: Parameters<typeof useToggleGroupState>[0] = {
     ...other,
     isDisabled: disabled,
     selectionMode: 'single',
@@ -57,42 +57,32 @@ export const ButtonToggleGroup = forwardRef<
     onSelectionChange: (keys) => {
       onSelectionChangeProp?.(Array.from(keys)[0]);
     },
-    selectedKeys: selectedKey ? [selectedKey] : undefined,
+    selectedKeys: selectedKeyProp ? [selectedKeyProp] : undefined,
     defaultSelectedKeys: defaultSelectedKey ? [defaultSelectedKey] : undefined,
-  });
+  };
+
+  const state = useToggleGroupState(config);
 
   const { groupProps: groupPropsAria } = useToggleButtonGroup(
-    {
-      ...other,
-      isDisabled: disabled,
-      selectionMode: 'single',
-      disallowEmptySelection: true,
-      onSelectionChange: (keys) => {
-        onSelectionChangeProp?.(Array.from(keys)[0]);
-      },
-      selectedKeys: selectedKey ? [selectedKey] : undefined,
-      defaultSelectedKeys: defaultSelectedKey
-        ? [defaultSelectedKey]
-        : undefined,
-    },
+    config,
     state,
     domRef
   );
 
-  const selectedKeyState = Array.from(state.selectedKeys)[0];
+  const selectedKey = Array.from(state.selectedKeys)[0];
 
-  const prevSelectedKey = usePrevious(selectedKeyState);
+  const prevSelectedKey = usePrevious(selectedKey);
 
   const { ref: elementSizeRef, width: rootContainerSize } = useElementSize();
 
-  // start animation
+  // Start animation
   useLayoutEffect(() => {
     if (prevSelectedKey) {
       setAnimated.on();
     }
-  }, [selectedKeyState]);
+  }, [selectedKey]);
 
-  // end animation
+  // End animation
   useEventListener({
     element: thumbRef,
     handler: setAnimated.off,
@@ -119,8 +109,8 @@ export const ButtonToggleGroup = forwardRef<
       ref: thumbRef,
       className: clsx(s.thumb),
       style: {
-        inlineSize: `${selectedRect?.width}px`,
-        transform: `translateX(${leftRelativeToParent}px)`,
+        inlineSize: `${thumbWidth}px`,
+        transform: `translateX(${thumbLeftOffset}px)`,
       },
     },
     slotProps?.thumb
