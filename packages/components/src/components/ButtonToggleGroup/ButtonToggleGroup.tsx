@@ -48,21 +48,17 @@ export const ButtonToggleGroup = forwardRef<
   const thumbRef = useRef<HTMLDivElement | null>(null);
 
   const { ref: containerRef } = useElementSize();
-  const containerRect = containerRef.current?.getBoundingClientRect();
 
   const [selectedElement, setSelectedElement] =
     useState<HTMLButtonElement | null>(null);
-
-  const selectedRect = selectedElement?.getBoundingClientRect();
 
   const onSelectedElementChange = (element: HTMLButtonElement) => {
     setSelectedElement(element);
   };
 
-  const thumbLeftOffset =
-    (selectedRect?.left || 0) - (containerRect?.left || 0);
+  const thumbLeftOffset = selectedElement?.offsetLeft;
 
-  const thumbWidth = selectedRect?.width;
+  const thumbWidth = selectedElement?.offsetWidth;
 
   const config: Parameters<typeof useToggleGroupState>[0] = {
     ...other,
