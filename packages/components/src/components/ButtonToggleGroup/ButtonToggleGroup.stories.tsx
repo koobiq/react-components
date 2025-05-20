@@ -11,7 +11,10 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { spacing } from '../layout';
+import { Modal } from '../Modal';
 import { Typography, type TypographyPropAlign } from '../Typography';
 
 import type { ButtonToggleGroupBaseProps } from './index.js';
@@ -183,5 +186,40 @@ export const Icon: Story = {
         aria-label="underline"
       />
     </ButtonToggleGroup>
+  ),
+};
+
+export const Composition: Story = {
+  render: (args: ButtonToggleGroupBaseProps) => (
+    <Modal control={(props) => <Button {...props}>Open</Button>}>
+      <Modal.Header>Test</Modal.Header>
+      <Modal.Body>
+        <ButtonToggleGroup
+          defaultSelectedKey="bold"
+          equalItemSize
+          fullWidth
+          {...args}
+        >
+          <ButtonToggle id="bold" icon={<IconTextBold16 />} aria-label="bold" />
+          <ButtonToggle
+            id="italic"
+            icon={<IconTextItalic16 />}
+            aria-label="italic"
+          />
+          <ButtonToggle
+            id="underline"
+            icon={<IconTextUnderline16 />}
+            aria-label="underline"
+          >
+            Lorem ipsum dolor.
+          </ButtonToggle>
+        </ButtonToggleGroup>
+        <div className={spacing({ mbs: 'l' })}>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A dolor
+          iusto possimus quisquam repellat! Consectetur neque non quia quod
+          quos!
+        </div>
+      </Modal.Body>
+    </Modal>
   ),
 };

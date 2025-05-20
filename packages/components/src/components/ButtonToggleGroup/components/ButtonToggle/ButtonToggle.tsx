@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 
 import {
   clsx,
@@ -10,6 +10,8 @@ import {
   useMultiRef,
   useFocusRing,
   isNotNil,
+  useEventListener,
+  useBoolean,
 } from '@koobiq/react-core';
 import { useToggleButtonGroupItem } from '@koobiq/react-primitives';
 
@@ -41,7 +43,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     const { state, setSelectedRect, animated, equalItemSize, containerWidth } =
       useButtonToggleGroupContext();
 
-    const [overflowX, setOverflowX] = useState<boolean>(false);
+    const [showTooltip, { set: setShowTooltip }] = useBoolean(false);
 
     const {
       buttonProps,
@@ -61,26 +63,38 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
 
     const { focusProps, isFocusVisible: focusVisible } = useFocusRing({});
 
-    useEffect(() => {
-      if (selected && setSelectedRect) {
-        const selectedRect = containerRef.current?.getBoundingClientRect();
+    const handleSetSelectedRect = () => {
+      const selectedRect = containerRef.current?.getBoundingClientRect();
 
-        setSelectedRect(selectedRect);
-      }
-    }, [selected]);
+      setSelectedRect?.(selectedRect);
+    };
 
-    useEffect(() => {
-      setOverflowX(
+    const handleSetShowTooltip = () => {
+      setShowTooltip(
         (contentRef.current?.scrollWidth || 0) >
           (contentRef.current?.clientWidth || 0)
       );
-    }, [containerWidth]);
+    };
+
+    useEffect(() => {
+      if (selected) handleSetSelectedRect();
+    }, [selected, containerWidth]);
+
+    useEventListener({
+      active: selected,
+      eventName: 'resize',
+      handler: handleSetSelectedRect,
+    });
+
+    useEffect(handleSetShowTooltip, [containerWidth]);
+
+    const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
     return (
       <Tooltip
         delay={300}
         anchorRef={domRef}
-        disabled={!overflowX}
+        disabled={!showTooltip}
         {...slotProps?.tooltip}
         control={({ ref: controlRef, ...controlProps }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -110,8 +124,6 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
             buttonProps,
             other
           );
-
-          const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
           const containerProps = mergeProps(
             { className: s.container, ref: containerRef },
