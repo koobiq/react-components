@@ -193,8 +193,8 @@ export const Icon: Story = {
 
 export const Playground: Story = {
   render: function Render(args: ButtonToggleGroupBaseProps) {
-    const [isBlock, { set: setIsBlock }] = useBoolean(false);
-    const [hasEqualItemSize, { set: setHasEqualItemSize }] = useBoolean(false);
+    const [isBlock, { set: setIsBlock }] = useBoolean(true);
+    const [hasEqualItemSize, { set: setHasEqualItemSize }] = useBoolean(true);
 
     return (
       <Modal control={(props) => <Button {...props}>Open</Button>}>
