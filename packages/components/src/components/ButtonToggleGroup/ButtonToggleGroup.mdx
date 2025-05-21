@@ -43,7 +43,7 @@ The `isBlock` prop will make a component fit to its parent width.
 
 ### Group
 
-All buttons within a ButtonToggleGroup can be disabled using the `isDisabled` prop.
+All buttons within a `ButtonToggleGroup` can be disabled using the `isDisabled` prop.
 
 <Story of={Stories.DisabledGroup} />
 
@@ -54,6 +54,9 @@ Individual items can be disabled using the `isDisabled` prop on each ButtonToggl
 <Story of={Stories.DisabledItem} />
 
 ## EqualItemSize
+
+By default, the `ButtonToggle` in a group adjusts its width to fit its content.
+To make them all the same width, set the `hasEqualItemSize` prop to `true`.
 
 <Story of={Stories.EqualItemSize} />
 
