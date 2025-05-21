@@ -24,6 +24,7 @@
 }
 
 .track {
+  flex-shrink: 0;
   position: relative;
   outline-offset: -1px;
   block-size: var(--toggle-track-block-size);

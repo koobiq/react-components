@@ -23,6 +23,7 @@
     outline-color var(--kbq-transition-default),
     color var(--kbq-transition-default);
   display: flex;
+  flex-shrink: 0;
   position: relative;
   align-items: center;
   box-sizing: border-box;
@@ -36,10 +37,6 @@
   background-color: var(--checkbox-bg-color);
   outline-offset: calc(-1 * var(--checkbox-outline-width) / 2);
   outline: var(--checkbox-outline-width) solid var(--checkbox-outline-color);
-
-  & > * {
-    flex-shrink: 0;
-  }
 }
 
 .normal {
