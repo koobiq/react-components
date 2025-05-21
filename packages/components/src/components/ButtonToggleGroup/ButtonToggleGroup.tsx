@@ -27,9 +27,9 @@ export const ButtonToggleGroup = forwardRef<
   ButtonToggleGroupProps
 >((props, ref) => {
   const {
-    equalItemSize = false,
-    fullWidth = false,
-    disabled = false,
+    isBlock = false,
+    isDisabled = false,
+    hasEqualItemSize = false,
     style,
     className,
     slotProps,
@@ -42,7 +42,7 @@ export const ButtonToggleGroup = forwardRef<
 
   const children = childrenProp?.slice(0, MAX_ITEMS);
 
-  const [animated, setAnimated] = useBoolean(false);
+  const [isAnimated, setAnimated] = useBoolean(false);
 
   const domRef = useDOMRef<ButtonToggleGroupRef>(ref);
   const thumbRef = useRef<HTMLDivElement | null>(null);
@@ -62,7 +62,7 @@ export const ButtonToggleGroup = forwardRef<
 
   const config: Parameters<typeof useToggleGroupState>[0] = {
     ...other,
-    isDisabled: disabled,
+    isDisabled,
     selectionMode: 'single',
     disallowEmptySelection: true,
     onSelectionChange: (keys) => {
@@ -102,12 +102,13 @@ export const ButtonToggleGroup = forwardRef<
     {
       className: clsx(
         s.base,
-        fullWidth && s.fullWidth,
-        equalItemSize && s.equalItemSize,
+        isBlock && s.block,
+        hasEqualItemSize && s.hasEqualItemSize,
         className
       ),
-      'data-animated': animated,
-      'data-equal-item-size': equalItemSize,
+      'data-block': isBlock,
+      'data-animated': isAnimated,
+      'data-equal-item-size': hasEqualItemSize,
       ref: domRef,
       style,
     },
@@ -140,7 +141,7 @@ export const ButtonToggleGroup = forwardRef<
       value={{ state, onSelectedElementChange }}
     >
       <div {...groupProps}>
-        {animated && <div {...thumbProps} />}
+        {isAnimated && <div {...thumbProps} />}
         <div {...containerProps}>{children}</div>
       </div>
     </ButtonToggleGroupContext.Provider>

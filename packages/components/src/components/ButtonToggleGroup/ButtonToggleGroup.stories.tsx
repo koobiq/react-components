@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useBoolean } from '@koobiq/react-core';
 import {
   IconAlignCenter16,
   IconAlignLeft16,
@@ -12,6 +13,7 @@ import {
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
 import { Modal } from '../Modal';
@@ -51,8 +53,8 @@ export const Base: Story = {
 
 export const FullWidth: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <FlexBox style={{ inlineSize: 400 }}>
-      <ButtonToggleGroup defaultSelectedKey="left" fullWidth {...args}>
+    <div style={{ inlineSize: 400 }}>
+      <ButtonToggleGroup defaultSelectedKey="left" isBlock {...args}>
         <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
           Left
         </ButtonToggle>
@@ -63,13 +65,13 @@ export const FullWidth: Story = {
           Right
         </ButtonToggle>
       </ButtonToggleGroup>
-    </FlexBox>
+    </div>
   ),
 };
 
 export const DisabledGroup: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup defaultSelectedKey="center" disabled {...args}>
+    <ButtonToggleGroup defaultSelectedKey="center" isDisabled {...args}>
       <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
         Left
       </ButtonToggle>
@@ -89,7 +91,7 @@ export const DisabledItem: Story = {
       <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
         Left
       </ButtonToggle>
-      <ButtonToggle id="center" icon={<IconAlignCenter16 />} disabled>
+      <ButtonToggle id="center" icon={<IconAlignCenter16 />} isDisabled>
         Center
       </ButtonToggle>
       <ButtonToggle id="right" icon={<IconAlignRight16 />}>
@@ -104,7 +106,7 @@ export const EqualItemSize: Story = {
     <ButtonToggleGroup
       defaultSelectedKey="first"
       style={{ inlineSize: 300 }}
-      equalItemSize
+      hasEqualItemSize
       {...args}
     >
       <ButtonToggle id="first" icon={<IconBug16 />}>
@@ -125,7 +127,7 @@ export const LongText: Story = {
     <ButtonToggleGroup
       defaultSelectedKey="first"
       style={{ inlineSize: 360 }}
-      equalItemSize
+      hasEqualItemSize
       {...args}
     >
       <ButtonToggle id="first" icon={<IconBug16 />}>
@@ -173,7 +175,7 @@ export const Selection: Story = {
 
 export const Icon: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup defaultSelectedKey="bold" equalItemSize {...args}>
+    <ButtonToggleGroup defaultSelectedKey="bold" hasEqualItemSize {...args}>
       <ButtonToggle id="bold" icon={<IconTextBold16 />} aria-label="bold" />
       <ButtonToggle
         id="italic"
@@ -189,37 +191,69 @@ export const Icon: Story = {
   ),
 };
 
-export const Composition: Story = {
-  render: (args: ButtonToggleGroupBaseProps) => (
-    <Modal control={(props) => <Button {...props}>Open</Button>}>
-      <Modal.Header>Test</Modal.Header>
-      <Modal.Body>
-        <ButtonToggleGroup
-          defaultSelectedKey="bold"
-          equalItemSize
-          fullWidth
-          {...args}
-        >
-          <ButtonToggle id="bold" icon={<IconTextBold16 />} aria-label="bold" />
-          <ButtonToggle
-            id="italic"
-            icon={<IconTextItalic16 />}
-            aria-label="italic"
-          />
-          <ButtonToggle
-            id="underline"
-            icon={<IconTextUnderline16 />}
-            aria-label="underline"
-          >
-            Lorem ipsum dolor.
-          </ButtonToggle>
-        </ButtonToggleGroup>
-        <div className={spacing({ mbs: 'l' })}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A dolor
-          iusto possimus quisquam repellat! Consectetur neque non quia quod
-          quos!
-        </div>
-      </Modal.Body>
-    </Modal>
-  ),
+export const Playground: Story = {
+  render: function Render(args: ButtonToggleGroupBaseProps) {
+    const [isBlock, { set: setIsBlock }] = useBoolean(false);
+    const [hasEqualItemSize, { set: setHasEqualItemSize }] = useBoolean(false);
+
+    return (
+      <Modal control={(props) => <Button {...props}>Open</Button>}>
+        {({ close }) => (
+          <>
+            <Modal.Header>Playground</Modal.Header>
+            <Modal.Body>
+              <ButtonToggleGroup
+                defaultSelectedKey="bold"
+                isBlock={isBlock}
+                hasEqualItemSize={hasEqualItemSize}
+                {...args}
+              >
+                <ButtonToggle
+                  id="bold"
+                  icon={<IconTextBold16 />}
+                  aria-label="bold"
+                />
+                <ButtonToggle
+                  id="italic"
+                  icon={<IconTextItalic16 />}
+                  aria-label="italic"
+                />
+                <ButtonToggle
+                  id="underline"
+                  icon={<IconTextUnderline16 />}
+                  aria-label="underline"
+                >
+                  Lorem ipsum dolor.
+                </ButtonToggle>
+              </ButtonToggleGroup>
+              <div className={spacing({ mbs: 'l' })}>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A
+                dolor iusto possimus quisquam repellat! Consectetur neque non
+                quia quod quos!
+              </div>
+              <FlexBox
+                gap="s"
+                alignItems="center"
+                className={spacing({ mbs: 'l' })}
+              >
+                <Typography variant="text-normal-strong">Settings:</Typography>
+                <Checkbox checked={isBlock} onChange={setIsBlock}>
+                  isBlock
+                </Checkbox>
+                <Checkbox
+                  checked={hasEqualItemSize}
+                  onChange={setHasEqualItemSize}
+                >
+                  hasEqualItemSize
+                </Checkbox>
+              </FlexBox>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onPress={close}>Ok</Button>
+            </Modal.Footer>
+          </>
+        )}
+      </Modal>
+    );
+  },
 };

@@ -26,7 +26,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
   (props, ref) => {
     const {
-      disabled: disabledProp = false,
+      isDisabled: isDisabledProp = false,
       children,
       id,
       icon,
@@ -47,27 +47,20 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
       (contentRef.current?.scrollWidth || 0) >
       (contentRef.current?.clientWidth || 0);
 
-    const {
-      buttonProps,
-      isPressed: pressed,
-      isSelected: selected,
-      isDisabled: disabled,
-    } = useToggleButtonGroupItem(
-      { id, isDisabled: disabledProp },
-      state!,
-      domRef
-    );
+    const { buttonProps, isPressed, isSelected, isDisabled } =
+      useToggleButtonGroupItem(
+        { id, isDisabled: isDisabledProp },
+        state!,
+        domRef
+      );
 
-    const { hoverProps, isHovered: hovered } = useHover({
-      ...props,
-      isDisabled: disabled,
-    });
+    const { hoverProps, isHovered } = useHover({ ...props, isDisabled });
 
-    const { focusProps, isFocusVisible: focusVisible } = useFocusRing({});
+    const { focusProps, isFocusVisible } = useFocusRing({});
 
     useEffect(() => {
-      if (selected) onSelectedElementChange?.(containerRef.current);
-    }, [selected]);
+      if (isSelected) onSelectedElementChange?.(containerRef.current);
+    }, [isSelected]);
 
     const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
@@ -86,15 +79,18 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
               className: clsx(
                 s.base,
                 textNormalMedium,
-                hovered && s.hovered,
-                pressed && s.pressed,
-                selected && s.selected,
-                disabled && s.disabled,
-                focusVisible && s.focusVisible,
+                isHovered && s.hovered,
+                isPressed && s.pressed,
+                isSelected && s.selected,
+                isDisabled && s.disabled,
+                isFocusVisible && s.focusVisible,
                 className
               ),
-              'data-pressed': pressed,
-              'data-selected': selected,
+              'data-hovered': isHovered,
+              'data-pressed': isPressed,
+              'data-selected': isSelected,
+              'data-disabled': isDisabled,
+              'data-focus-visible': isFocusVisible,
               ref: rootRef,
             },
             controlProps,

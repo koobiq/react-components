@@ -7,7 +7,7 @@
   background-color: var(--kbq-background-contrast-fade);
 }
 
-.fullWidth {
+.block {
   inline-size: 100%;
 }
 

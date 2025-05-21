@@ -19,7 +19,7 @@ export type ButtonToggleProps = ExtendableComponentPropsWithRef<
      * If `true`, the component is disabled.
      * @default false
      * */
-    disabled?: boolean;
+    isDisabled?: boolean;
     /** Additional CSS-classes. */
     className?: string;
     /** The props used for each slot inside. */
