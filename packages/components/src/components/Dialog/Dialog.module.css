@@ -3,6 +3,7 @@
   flex-grow: 1;
   outline: none;
   display: flex;
+  overflow: hidden;
   position: relative;
   min-block-size: 48px;
   pointer-events: auto;
