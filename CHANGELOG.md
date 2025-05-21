@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.1-beta.18](https://github.com/koobiq/react-components/compare/0.0.1-beta.17...0.0.1-beta.18) (2025-05-21)
+
+### 🐞 Bug Fixes
+
+- **components/Checkbox,Radio,Toggle:** prevent controls from shrinking in flex containers ([5c30ac4](https://github.com/koobiq/react-components/commit/5c30ac4e3cb1250e08c80c52308a73a8620a325e))
+- **components/Modal:** handle horizontal scrolling in dialog window ([64cf66a](https://github.com/koobiq/react-components/commit/64cf66a70422c1249637256d3285262d307888b0))
+
 ## [0.0.1-beta.17](https://github.com/koobiq/react-components/compare/0.0.1-beta.16...0.0.1-beta.17) (2025-05-15)
 
 ### 🚀 Features
