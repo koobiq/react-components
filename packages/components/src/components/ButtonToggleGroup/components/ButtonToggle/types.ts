@@ -29,6 +29,8 @@ export type ButtonToggleProps = ExtendableComponentPropsWithRef<
       content?: ComponentPropsWithRef<'span'> & DataAttributeProps;
       container?: ComponentPropsWithRef<'span'> & DataAttributeProps;
     };
+    /** Unique identifier for testing purposes. */
+    'data-testid'?: string | number;
   },
   'div'
 >;
