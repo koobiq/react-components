@@ -1,5 +1,6 @@
 import { useRef, forwardRef, useEffect, useReducer } from 'react';
 
+import { once } from '@koobiq/logger';
 import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
 import {
   useToggleGroupState,
@@ -27,13 +28,21 @@ export const ButtonToggleGroup = forwardRef<
     className,
     slotProps,
     defaultSelectedKey,
-    children: childrenProp,
+    children,
     selectedKey: selectedKeyProp,
     onSelectionChange: onSelectionChangeProp,
     ...other
   } = props;
 
-  const children = childrenProp?.slice(0, MAX_ITEMS);
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    children?.length &&
+    children?.length > MAX_ITEMS
+  ) {
+    once.warn(
+      `Use a ButtonToggleGroup to allow selection of up to ${MAX_ITEMS} options.`
+    );
+  }
 
   const domRef = useDOMRef<ButtonToggleGroupRef>(ref);
   const thumbRef = useRef<HTMLDivElement | null>(null);
@@ -132,6 +141,7 @@ export const ButtonToggleGroup = forwardRef<
         <Transition
           in={isAnimated}
           timeout={200}
+          nodeRef={thumbRef}
           exit={false}
           onEntered={() => {
             dispatch({ type: 'SET_SAVED', payload: { savedKey: selectedKey } });
