@@ -6,9 +6,6 @@ import {
   IconAlignLeft16,
   IconAlignRight16,
   IconBug16,
-  IconTextBold16,
-  IconTextItalic16,
-  IconTextUnderline16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -175,17 +172,17 @@ export const Selection: Story = {
 
 export const Icon: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
-    <ButtonToggleGroup defaultSelectedKey="bold" hasEqualItemSize {...args}>
-      <ButtonToggle id="bold" icon={<IconTextBold16 />} aria-label="bold" />
+    <ButtonToggleGroup defaultSelectedKey="left" hasEqualItemSize {...args}>
+      <ButtonToggle id="left" icon={<IconAlignLeft16 />} aria-label="left" />
       <ButtonToggle
-        id="italic"
-        icon={<IconTextItalic16 />}
-        aria-label="italic"
+        id="center"
+        icon={<IconAlignCenter16 />}
+        aria-label="center"
       />
       <ButtonToggle
-        id="underline"
-        icon={<IconTextUnderline16 />}
-        aria-label="underline"
+        id="right"
+        icon={<IconAlignRight16 />}
+        aria-label="rigght"
       />
     </ButtonToggleGroup>
   ),
@@ -228,19 +225,19 @@ export const Playground: Story = {
                 {...args}
               >
                 <ButtonToggle
-                  id="bold"
-                  icon={<IconTextBold16 />}
-                  aria-label="bold"
+                  id="left"
+                  icon={<IconAlignLeft16 />}
+                  aria-label="left"
                 />
                 <ButtonToggle
-                  id="italic"
-                  icon={<IconTextItalic16 />}
-                  aria-label="italic"
+                  id="center"
+                  icon={<IconAlignCenter16 />}
+                  aria-label="center"
                 />
                 <ButtonToggle
-                  id="underline"
-                  icon={<IconTextUnderline16 />}
-                  aria-label="underline"
+                  id="right"
+                  icon={<IconAlignLeft16 />}
+                  aria-label="right"
                 >
                   Lorem ipsum dolor.
                 </ButtonToggle>
@@ -257,11 +254,9 @@ export const Playground: Story = {
               >
                 <Typography variant="text-normal-strong">Settings:</Typography>
                 <FlexBox gap="m">
-                  <Button onPress={() => setSelected('bold')}>Bold</Button>
-                  <Button onPress={() => setSelected('italic')}>Italic</Button>
-                  <Button onPress={() => setSelected('underline')}>
-                    Underline
-                  </Button>
+                  <Button onPress={() => setSelected('left')}>Left</Button>
+                  <Button onPress={() => setSelected('center')}>Center</Button>
+                  <Button onPress={() => setSelected('right')}>Right</Button>
                   <Button onPress={() => setSelected('none')}>None</Button>
                   <Button
                     variant="fade-contrast-filled"
