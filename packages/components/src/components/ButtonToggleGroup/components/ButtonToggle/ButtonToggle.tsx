@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 
 import {
   clsx,
@@ -39,7 +39,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
 
     const contentRef = useRef<HTMLSpanElement | null>(null);
 
-    const { state, onSelectedElementChange } = useButtonToggleGroupContext();
+    const { state, savedKey } = useButtonToggleGroupContext();
 
     const { ref: containerRef } = useElementSize();
 
@@ -57,10 +57,6 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
     const { hoverProps, isHovered } = useHover({ ...props, isDisabled });
 
     const { focusProps, isFocusVisible } = useFocusRing({});
-
-    useEffect(() => {
-      if (isSelected) onSelectedElementChange?.(containerRef.current);
-    }, [isSelected]);
 
     const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
@@ -81,7 +77,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
                 textNormalMedium,
                 isHovered && s.hovered,
                 isPressed && s.pressed,
-                isSelected && s.selected,
+                savedKey === id && s.selected,
                 isDisabled && s.disabled,
                 isFocusVisible && s.focusVisible,
                 className

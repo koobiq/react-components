@@ -6,7 +6,7 @@ import type { ToggleGroupState } from '@koobiq/react-primitives';
 
 export type ButtonToggleGroupContextProps = {
   state: ToggleGroupState | null;
-  onSelectedElementChange?: (element: HTMLButtonElement) => void;
+  savedKey?: string | number;
 };
 
 export const ButtonToggleGroupContext =

@@ -1,4 +1,9 @@
 .base {
+  --thumb-inline-size-start: ;
+  --thumb-transform-start: ;
+  --thumb-inline-size-end: ;
+  --thumb-transform-end: ;
+
   overflow: hidden;
   flex-wrap: nowrap;
   position: relative;
@@ -17,9 +22,21 @@
   inset-block: var(--kbq-size-xxs);
   border-radius: var(--kbq-size-xxs);
   background-color: var(--kbq-background-card);
+  inline-size: var(--thumb-inline-size-start);
+  transform: var(--thumb-transform-start);
   transition:
-    inline-size var(--kbq-transition-default),
-    transform var(--kbq-transition-default);
+    inline-size 200ms ease-in,
+    transform 200ms ease-in;
+}
+
+.thumb[data-transition='entering'] {
+  inline-size: var(--thumb-inline-size-end);
+  transform: var(--thumb-transform-end);
+}
+
+.thumb[data-transition='entered'] {
+  inline-size: var(--thumb-inline-size-end);
+  transform: var(--thumb-transform-end);
 }
 
 .container {

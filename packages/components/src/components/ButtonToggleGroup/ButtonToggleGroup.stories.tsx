@@ -194,6 +194,7 @@ export const Icon: Story = {
 export const Playground: Story = {
   render: function Render(args: ButtonToggleGroupBaseProps) {
     const [isBlock, { set: setIsBlock }] = useBoolean(true);
+    const [selected, setSelected] = useState<string | number>();
     const [hasEqualItemSize, { set: setHasEqualItemSize }] = useBoolean(true);
 
     return (
@@ -203,9 +204,27 @@ export const Playground: Story = {
             <Modal.Header>Playground</Modal.Header>
             <Modal.Body>
               <ButtonToggleGroup
-                defaultSelectedKey="bold"
                 isBlock={isBlock}
+                defaultSelectedKey="first"
                 hasEqualItemSize={hasEqualItemSize}
+                {...args}
+              >
+                <ButtonToggle id="first" icon={<IconBug16 />}>
+                  First
+                </ButtonToggle>
+                <ButtonToggle id="second" icon={<IconBug16 />}>
+                  Second
+                </ButtonToggle>
+                <ButtonToggle id="third" icon={<IconBug16 />}>
+                  Third
+                </ButtonToggle>
+              </ButtonToggleGroup>
+              <ButtonToggleGroup
+                isBlock={isBlock}
+                selectedKey={selected}
+                onSelectionChange={setSelected}
+                hasEqualItemSize={hasEqualItemSize}
+                className={spacing({ mbs: 'l' })}
                 {...args}
               >
                 <ButtonToggle
@@ -232,20 +251,39 @@ export const Playground: Story = {
                 quia quod quos!
               </div>
               <FlexBox
-                gap="s"
-                alignItems="center"
+                gap="m"
+                direction="column"
                 className={spacing({ mbs: 'l' })}
               >
                 <Typography variant="text-normal-strong">Settings:</Typography>
-                <Checkbox checked={isBlock} onChange={setIsBlock}>
-                  isBlock
-                </Checkbox>
-                <Checkbox
-                  checked={hasEqualItemSize}
-                  onChange={setHasEqualItemSize}
-                >
-                  hasEqualItemSize
-                </Checkbox>
+                <FlexBox gap="m">
+                  <Button onPress={() => setSelected('bold')}>Bold</Button>
+                  <Button onPress={() => setSelected('italic')}>Italic</Button>
+                  <Button onPress={() => setSelected('underline')}>
+                    Underline
+                  </Button>
+                  <Button onPress={() => setSelected('none')}>None</Button>
+                  <Button
+                    variant="fade-contrast-filled"
+                    onPress={() => setSelected('')}
+                  >
+                    Reset
+                  </Button>
+                </FlexBox>
+
+                <Typography>Current key: {selected}</Typography>
+
+                <FlexBox gap="m">
+                  <Checkbox checked={isBlock} onChange={setIsBlock}>
+                    isBlock
+                  </Checkbox>
+                  <Checkbox
+                    checked={hasEqualItemSize}
+                    onChange={setHasEqualItemSize}
+                  >
+                    hasEqualItemSize
+                  </Checkbox>
+                </FlexBox>
               </FlexBox>
             </Modal.Body>
             <Modal.Footer>

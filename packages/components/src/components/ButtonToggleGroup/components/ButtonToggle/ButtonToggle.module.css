@@ -27,8 +27,8 @@
   display: inline-flex;
   background: transparent;
   padding-block: var(--button-toggle-padding-block);
-  padding-inline-start: var(--button-toggle-padding-inline-start);
-  padding-inline-end: var(--button-toggle-padding-inline-end);
+  padding-inline: var(--button-toggle-padding-inline-start)
+    var(--button-toggle-padding-inline-end);
   block-size: calc(
     var(--button-toggle-block-size) + 2 * var(--button-toggle-padding-block)
   );
