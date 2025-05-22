@@ -22,11 +22,10 @@ import { ButtonToggleGroup, ButtonToggle } from './index.js';
 const meta = {
   title: 'Components/ButtonToggleGroup',
   component: ButtonToggleGroup,
-  subcomponents: { ButtonToggle, ButtonToggleGroup },
+  subcomponents: { ButtonToggle },
   parameters: {
     layout: 'centered',
   },
-  argTypes: {},
 } satisfies Meta<typeof ButtonToggleGroup>;
 
 export default meta;
