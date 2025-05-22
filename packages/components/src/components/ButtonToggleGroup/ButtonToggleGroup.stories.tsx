@@ -190,6 +190,7 @@ export const Icon: Story = {
 export const Playground: Story = {
   render: function Render(args: ButtonToggleGroupBaseProps) {
     const [isBlock, { set: setIsBlock }] = useBoolean(true);
+    const [isDisabled, { set: setIsDisabled }] = useBoolean(false);
     const [selected, setSelected] = useState<string | number>();
     const [hasEqualItemSize, { set: setHasEqualItemSize }] = useBoolean(true);
 
@@ -216,6 +217,7 @@ export const Playground: Story = {
                 </ButtonToggle>
               </ButtonToggleGroup>
               <ButtonToggleGroup
+                isDisabled={isDisabled}
                 isBlock={isBlock}
                 selectedKey={selected}
                 onSelectionChange={setSelected}
@@ -270,6 +272,9 @@ export const Playground: Story = {
                 <FlexBox gap="m">
                   <Checkbox checked={isBlock} onChange={setIsBlock}>
                     isBlock
+                  </Checkbox>
+                  <Checkbox checked={isDisabled} onChange={setIsDisabled}>
+                    isDisabled
                   </Checkbox>
                   <Checkbox
                     checked={hasEqualItemSize}
