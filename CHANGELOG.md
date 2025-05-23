@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.19](https://github.com/koobiq/react-components/compare/0.0.1-beta.18...0.0.1-beta.19) (2025-05-23)
+
+### 🚀 Features
+
+- **components:** add the `ButtonToggleGroup` and `ButtonToggle` components ([ceb10ad](https://github.com/koobiq/react-components/commit/ceb10ad045ca032c9d273a16e4be616f911385c6))
+
 ## [0.0.1-beta.18](https://github.com/koobiq/react-components/compare/0.0.1-beta.17...0.0.1-beta.18) (2025-05-21)
 
 ### 🐞 Bug Fixes
