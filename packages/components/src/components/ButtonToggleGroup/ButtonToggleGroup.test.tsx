@@ -28,7 +28,7 @@ const renderComponent = ({
   </ButtonToggleGroup>
 );
 
-describe('segmented-control', () => {
+describe('ButtonToggleGroup', () => {
   it('should onChange get correct id', () => {
     const onSelectionChange = vi.fn();
 
