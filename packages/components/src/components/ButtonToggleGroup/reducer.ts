@@ -1,3 +1,5 @@
+'use client';
+
 export type AnimationStateType = {
   isAnimated?: boolean;
   start?: [number, number];

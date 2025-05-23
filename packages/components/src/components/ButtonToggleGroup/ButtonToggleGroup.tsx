@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, forwardRef, useEffect, useReducer } from 'react';
 
 import { once } from '@koobiq/logger';
