@@ -1,0 +1,44 @@
+.base {
+  --thumb-inline-size-start: ;
+  --thumb-transform-start: ;
+  --thumb-inline-size-end: ;
+  --thumb-transform-end: ;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  position: relative;
+  display: inline-flex;
+  border-radius: var(--kbq-size-s);
+  background-color: var(--kbq-background-contrast-fade);
+}
+
+.block {
+  inline-size: 100%;
+}
+
+.thumb {
+  position: absolute;
+  box-sizing: border-box;
+  inset-block: var(--kbq-size-xxs);
+  border-radius: var(--kbq-size-xxs);
+  background-color: var(--kbq-background-card);
+  inline-size: var(--thumb-inline-size-start);
+  transform: var(--thumb-transform-start);
+  transition:
+    inline-size 200ms ease-in,
+    transform 200ms ease-in;
+}
+
+.thumb[data-transition='entering'] {
+  inline-size: var(--thumb-inline-size-end);
+  transform: var(--thumb-transform-end);
+}
+
+.thumb[data-transition='entered'] {
+  inline-size: var(--thumb-inline-size-end);
+  transform: var(--thumb-transform-end);
+}
+
+.container {
+  display: flex;
+  inline-size: 100%;
+}

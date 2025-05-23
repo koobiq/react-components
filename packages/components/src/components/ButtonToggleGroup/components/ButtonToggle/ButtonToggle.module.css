@@ -1,0 +1,106 @@
+@import url('../../../../styles/mixins.css');
+
+[data-animated='true'] .base {
+  --button-toggle-bg-color: transparent;
+}
+
+[data-equal-item-size='true'] .base {
+  flex: 1;
+}
+
+.base {
+  --button-toggle-block-size: var(--kbq-size-xxl);
+  --button-toggle-outline-width: var(--kbq-size-3xs);
+  --button-toggle-padding-block: var(--kbq-size-xxs);
+  --button-toggle-padding-inline-start: var(--kbq-size-3xs);
+  --button-toggle-padding-inline-end: var(--kbq-size-3xs);
+  --button-toggle-color: var(--kbq-foreground-contrast);
+  --button-toggle-icon-color: var(--kbq-icon-contrast-fade);
+  --button-toggle-bg-color: var(--kbq-background-contrast-fade);
+  --button-toggle-outline-color: transparent;
+  flex: auto;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  min-inline-size: 0;
+  align-items: center;
+  display: inline-flex;
+  background: transparent;
+  padding-block: var(--button-toggle-padding-block);
+  padding-inline: var(--button-toggle-padding-inline-start)
+    var(--button-toggle-padding-inline-end);
+  block-size: calc(
+    var(--button-toggle-block-size) + 2 * var(--button-toggle-padding-block)
+  );
+
+  &:first-child {
+    --button-toggle-padding-inline-start: var(--kbq-size-xxs);
+  }
+
+  &:last-child {
+    --button-toggle-padding-inline-end: var(--kbq-size-xxs);
+  }
+}
+
+.hovered {
+  --button-toggle-bg-color: var(--kbq-states-background-contrast-fade-hover);
+}
+
+.pressed {
+  --button-toggle-bg-color: var(--kbq-states-background-contrast-fade-active);
+}
+
+.selected {
+  --button-toggle-bg-color: var(--kbq-background-card);
+}
+
+.selected:where(.pressed) {
+  --button-toggle-bg-color: var(--kbq-states-background-transparent-active);
+}
+
+.disabled {
+  --button-toggle-color: var(--kbq-states-foreground-disabled);
+  --button-toggle-icon-color: inherit;
+  cursor: not-allowed;
+}
+
+.disabled:where(.selected) {
+  --button-toggle-bg-color: var(--kbq-states-background-disabled);
+}
+
+.focusVisible {
+  --button-toggle-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.container {
+  position: relative;
+  inline-size: 100%;
+  align-items: center;
+  display: inline-flex;
+  box-sizing: border-box;
+  outline-offset: -1px;
+  justify-content: center;
+  gap: var(--kbq-size-xxs);
+  padding: 0 var(--kbq-size-xs);
+  color: var(--button-toggle-color);
+  border-radius: var(--kbq-size-xxs);
+  min-inline-size: var(--kbq-size-3xl);
+  block-size: var(--button-toggle-block-size);
+  background-color: var(--button-toggle-bg-color);
+  outline: var(--button-toggle-outline-width) solid;
+  outline-color: var(--button-toggle-outline-color);
+  transition: outline var(--kbq-transition-default);
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--button-toggle-icon-color);
+}
+
+.content {
+  @mixin ellipsis;
+}

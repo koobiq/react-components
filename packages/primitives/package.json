@@ -54,6 +54,7 @@
     "@react-stately/overlays": "^3.6.11",
     "@react-stately/radio": "^3.10.8",
     "@react-stately/select": "^3.6.11",
+    "@react-stately/toggle": "^3.7.0",
     "@react-stately/tooltip": "^3.4.13",
     "@react-stately/tree": "^3.8.9"
   },

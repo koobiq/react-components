@@ -1,0 +1,82 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ButtonToggleGroup.stories';
+
+<Meta of={Stories} />
+
+# ButtonToggleGroup
+
+<Status variant="experimental" />
+
+Display multiple options and allow users to select a single option.
+
+```tsx
+import { ButtonToggleGroup, ButtonToggle } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Icon
+
+You can add an icon using the `icon` prop.
+
+Prop expects an icon component from our [icon library](?path=/docs/icons--docs).
+
+<Story of={Stories.Icon} />
+
+## Block
+
+The `isBlock` prop will make a component fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Disabled
+
+### Group
+
+All buttons within a `ButtonToggleGroup` can be disabled using the `isDisabled` prop.
+
+<Story of={Stories.DisabledGroup} />
+
+### Item
+
+Individual items can be disabled using the `isDisabled` prop on each ButtonToggle.
+
+<Story of={Stories.DisabledItem} />
+
+## EqualItemSize
+
+By default, the `ButtonToggle` in a group adjusts its width to fit its content.
+To make them all the same width, set the `hasEqualItemSize` prop to `true`.
+
+<Story of={Stories.EqualItemSize} />
+
+## Long Text
+
+If the content of a `ButtonToggle` is too wide for its container,
+the text will be truncated with an ellipsis, and a tooltip showing
+the full text will appear on hover or focus.
+
+<Story of={Stories.LongText} />
+
+## Selection
+
+Setting a selected option can be done by using the `defaultSelectedKey` or `selectedKey` prop.
+The selected key corresponds to the `id` prop of `ButtonToggle`.
+
+<Story of={Stories.Selection} />
+
+## Playground
+
+You can adjust the component's settings in this example.
+
+<Story of={Stories.Playground} />
