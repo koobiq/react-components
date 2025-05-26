@@ -8,6 +8,7 @@ import type { AriaMenuOptions } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { Divider } from '../../../Divider';
+import { MenuHeader } from '../MenuHeader';
 import { MenuItem } from '../MenuItem';
 import { MenuSection } from '../MenuSection';
 
@@ -31,11 +32,7 @@ export function MenuInner<T extends object>(props: MenuInnerProps<T>) {
     [...treeState.collection].map((item) => {
       switch (item.type) {
         case 'header':
-          return (
-            <header key={item.key} role="presentation">
-              {item.rendered}
-            </header>
-          );
+          return <MenuHeader key={item.key} item={item} />;
 
         case 'divider':
           return <Divider key={item.key} className={s.divider} />;
