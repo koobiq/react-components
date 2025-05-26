@@ -18,6 +18,7 @@ describe('Menu', () => {
   };
 
   const getRoot = () => screen.getByTestId('root');
+  const getHeader = () => screen.getByTestId('header');
 
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -42,5 +43,22 @@ describe('Menu', () => {
 
     const root = getRoot();
     expect(root?.className).toContain(className);
+  });
+
+  describe('check Menu.Header', () => {
+    const className = 'foo';
+
+    it('should merge a custom class name with the default ones', () => {
+      render(
+        <Menu open>
+          <Menu.Header className={className} data-testid="header">
+            item
+          </Menu.Header>
+        </Menu>
+      );
+
+      const header = getHeader();
+      expect(header?.className).toContain(className);
+    });
   });
 });
