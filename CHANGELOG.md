@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.20](https://github.com/koobiq/react-components/compare/0.0.1-beta.19...0.0.1-beta.20) (2025-05-26)
+
+### 🐞 Bug Fixes
+
+- **components/Menu.Header:** support merging of custom className ([#51](https://github.com/koobiq/react-components/issues/51)) ([13f1d2a](https://github.com/koobiq/react-components/commit/13f1d2a619510297ccb56e16c88fd0a9ea85a9e4))
+
 ## [0.0.1-beta.19](https://github.com/koobiq/react-components/compare/0.0.1-beta.18...0.0.1-beta.19) (2025-05-23)
 
 ### 🚀 Features

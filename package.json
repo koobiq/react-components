@@ -1,6 +1,6 @@
 {
   "name": "koobiq-react",
-  "version": "0.0.1-beta.19",
+  "version": "0.0.1-beta.20",
   "description": "",
   "private": true,
   "workspaces": ["packages/*", "templates/*"],
