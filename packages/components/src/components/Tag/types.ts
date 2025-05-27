@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import type { IconButtonProps } from '../IconButton';
 
@@ -28,5 +28,11 @@ export type TagBaseProps = {
   isDisabled?: boolean;
   /** A callback function called when the user clicks the tag's close button. */
   onClose?: IconButtonProps['onPress'];
+  /** The props used for each slot inside. */
+  slotProps?: {
+    icon?: ComponentPropsWithRef<'span'>;
+    content?: ComponentPropsWithRef<'span'>;
+    closeIcon?: IconButtonProps;
+  };
   children?: never;
 };

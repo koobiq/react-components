@@ -9,10 +9,12 @@ import {
   isNotNil,
 } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
+import { useLocalizedStringFormatter } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 import { IconButton } from '../IconButton';
 
+import intlMessages from './intl.json';
 import s from './Tag.module.css';
 import type { TagBaseProps } from './types';
 import { matchVariantToCloseButton } from './utils';
@@ -27,8 +29,11 @@ export const Tag = polymorphicForwardRef<'div', TagBaseProps>((props, ref) => {
     label,
     icon,
     onClose,
+    slotProps,
     ...other
   } = props;
+
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const { hoverProps, isHovered } = useHover(props);
 
@@ -61,21 +66,45 @@ export const Tag = polymorphicForwardRef<'div', TagBaseProps>((props, ref) => {
     hoverProps
   );
 
+  const contentProps = mergeProps(
+    {
+      className: s.content,
+    },
+    slotProps?.content
+  );
+
+  const iconProps = mergeProps(
+    {
+      className: s.icon,
+    },
+    slotProps?.icon
+  );
+
+  const closeIcon = mergeProps(
+    {
+      'aria-label': stringFormatter.format('close'),
+      size: 'l',
+      tabIndex: -1,
+      variant: matchVariantToCloseButton[variant],
+      disabled: isDisabled,
+      className: s.cancelIcon,
+      onPress: onClose,
+      compact: true,
+    },
+    slotProps?.closeIcon
+  );
+
   return (
     <Tag {...tagProps}>
-      {isNotNil(icon) && <span className={s.icon}>{icon}</span>}
-      {isNotNil(label) && <span className={s.content}>{label}</span>}
+      {isNotNil(icon) && (
+        <span {...iconProps}>{iconProps.children ?? icon}</span>
+      )}
+      {isNotNil(label) && (
+        <span {...contentProps}>{contentProps.children ?? label}</span>
+      )}
       {isNotNil(onClose) && typeof onClose === 'function' && (
-        <IconButton
-          size="l"
-          tabIndex={-1}
-          variant={matchVariantToCloseButton[variant]}
-          disabled={isDisabled}
-          className={s.cancelIcon}
-          onPress={onClose}
-          compact
-        >
-          <IconXmarkS16 />
+        <IconButton {...closeIcon}>
+          {closeIcon.children || <IconXmarkS16 />}
         </IconButton>
       )}
     </Tag>
