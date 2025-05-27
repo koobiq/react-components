@@ -11,7 +11,7 @@ type ItemComponent<T> = FC<AriaItemProps<T>> & {
 
 const ItemInner = AriaItem as ItemComponent<unknown>;
 
-export type ItemProps<T> = AriaItemProps<T> & {
+export type TagProps<T> = AriaItemProps<T> & {
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */
@@ -22,8 +22,8 @@ export type ItemProps<T> = AriaItemProps<T> & {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function Item<T>(_props: ItemProps<T>) {
+export function Tag<T>(_props: TagProps<T>) {
   return null;
 }
 
-Item.getCollectionNode = ItemInner.getCollectionNode;
+Tag.getCollectionNode = ItemInner.getCollectionNode;

@@ -35,8 +35,15 @@ import {
 } from '@react-aria/overlays';
 import { useSelect, HiddenSelect } from '@react-aria/select';
 import { useSeparator } from '@react-aria/separator';
+import {
+  useTag,
+  useTagGroup,
+  type AriaTagGroupProps,
+  type AriaTagProps,
+} from '@react-aria/tag';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
 import { Item, Section } from '@react-stately/collections';
+import { useListData } from '@react-stately/data';
 import { useListState, type ListState } from '@react-stately/list';
 import { useMenuTriggerState } from '@react-stately/menu';
 import {
@@ -75,10 +82,13 @@ export {
   usePopover,
   useListBox,
   useTooltip,
+  useTag,
+  useTagGroup,
   useListState,
   HiddenSelect,
   I18nProvider,
   useMenuItem,
+  useListData,
   useTreeState,
   useSeparator,
   useMenuSection,
@@ -99,6 +109,8 @@ export {
   type Node,
   type TreeState,
   type ItemProps,
+  type AriaTagGroupProps,
+  type AriaTagProps,
   type ListState,
   type PressEvent,
   type HoverEvent,

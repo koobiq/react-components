@@ -30,3 +30,4 @@ export * from './Menu';
 export * from './ButtonToggleGroup';
 export * from './Tag';
 export * from './layout';
+export { useListData } from '@koobiq/react-primitives';
