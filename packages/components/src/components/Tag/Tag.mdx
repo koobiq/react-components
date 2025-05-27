@@ -13,7 +13,7 @@ import * as Stories from './Tag.stories';
 
 <Status variant="stable" />
 
-...
+Used for marking and categorization.
 
 <Story of={Stories.Base} />
 
@@ -23,20 +23,34 @@ import * as Stories from './Tag.stories';
 
 ## Variant
 
+To change the visual state of the Tag, use the `variant` prop.
+
 <Story of={Stories.Variant} />
 
 ## Icon
+
+You can add an icon using the `icon` prop.
+
+Prop expects an icon component from our [icon library](?path=/docs/icons--docs).
 
 <Story of={Stories.Icon} />
 
 ## Disabled
 
+Tag ca be disabled using the `isDisabled` prop.
+
 <Story of={Stories.Disabled} />
 
-## Cancel
+## Close button
+
+If you provide an `onClose` callback to the Tag, the component will display a close icon (✕).
 
 <Story of={Stories.Cancel} />
 
-## Long text
+## Long label
+
+The text in the tag is always placed in one line.
+
+If the tag is too wide for its container, it shrinks: the label text is cut off and ellipsis is added at the end.
 
 <Story of={Stories.LongText} />

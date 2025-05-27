@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import type { IconButtonProps } from '../IconButton';
+
 export const tagPropVariant = [
   'theme-fade',
   'contrast-fade',
@@ -10,9 +12,21 @@ export const tagPropVariant = [
 export type TagPropVariant = (typeof tagPropVariant)[number];
 
 export type TagBaseProps = {
-  children?: ReactNode;
+  /** The label of the component. */
+  label?: ReactNode;
+  /** Icon placed before the children. */
   icon?: ReactNode;
+  /**
+   * The variant to use.
+   * @default theme-fade
+   * */
   variant?: TagPropVariant;
+  /**
+   * If `true`, the component is disabled.
+   * @default false
+   * */
   isDisabled?: boolean;
-  onCancel?: () => void;
+  /** A callback function called when the user clicks the tag's close button. */
+  onClose?: IconButtonProps['onPress'];
+  children?: never;
 };

@@ -24,9 +24,9 @@ export const Tag = polymorphicForwardRef<'div', TagBaseProps>((props, ref) => {
     as: Tag = 'div',
     variant = 'theme-fade',
     isDisabled = false,
-    children,
+    label,
     icon,
-    onCancel,
+    onClose,
     ...other
   } = props;
 
@@ -52,7 +52,7 @@ export const Tag = polymorphicForwardRef<'div', TagBaseProps>((props, ref) => {
       'aria-disabled': isDisabled,
       'data-disabled': isDisabled,
       'data-focus-visible': isFocusVisible,
-      tabIndex: -1,
+      ...(!isDisabled && { tabIndex: -1 }),
       ...other,
       ref,
     },
@@ -64,14 +64,15 @@ export const Tag = polymorphicForwardRef<'div', TagBaseProps>((props, ref) => {
   return (
     <Tag {...tagProps}>
       {isNotNil(icon) && <span className={s.icon}>{icon}</span>}
-      {isNotNil(children) && <span className={s.content}>{children}</span>}
-      {isNotNil(onCancel) && typeof onCancel === 'function' && (
+      {isNotNil(label) && <span className={s.content}>{label}</span>}
+      {isNotNil(onClose) && typeof onClose === 'function' && (
         <IconButton
           size="l"
+          tabIndex={-1}
           variant={matchVariantToCloseButton[variant]}
           disabled={isDisabled}
           className={s.cancelIcon}
-          onPress={onCancel}
+          onPress={onClose}
           compact
         >
           <IconXmarkS16 />

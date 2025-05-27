@@ -20,9 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args: TagBaseProps) => (
-    <Tag icon={<IconCheckCircle16 />} {...args}>
-      Tag
-    </Tag>
+    <Tag label="Tag" icon={<IconCheckCircle16 />} {...args} />
   ),
 };
 
@@ -34,11 +32,10 @@ export const Variant: Story = {
           icon={<IconCheckCircle16 />}
           key={variant}
           variant={variant}
-          onCancel={() => alert('Cancel')}
+          label={variant}
+          onClose={() => alert('Cancel')}
           {...args}
-        >
-          {variant}
-        </Tag>
+        />
       ))}
     </div>
   ),
@@ -46,35 +43,30 @@ export const Variant: Story = {
 
 export const Icon: Story = {
   render: (args: TagBaseProps) => (
-    <Tag icon={<IconCheckCircle16 />} {...args}>
-      Tag
-    </Tag>
+    <Tag label="Tag" icon={<IconCheckCircle16 />} {...args} />
   ),
 };
 
 export const Disabled: Story = {
   render: (args: TagBaseProps) => (
     <Tag
+      label="Tag"
       icon={<IconCheckCircle16 />}
-      onCancel={() => alert('Cancel')}
+      onClose={() => alert('Cancel')}
       isDisabled
       {...args}
-    >
-      Tag
-    </Tag>
+    />
   ),
 };
 
 export const Cancel: Story = {
   render: (args: TagBaseProps) => (
     <Tag
+      label="Tag"
       icon={<IconCheckCircle16 />}
-      variant="warning-fade"
-      onCancel={() => alert('Cancel')}
+      onClose={() => alert('Cancel')}
       {...args}
-    >
-      Tag
-    </Tag>
+    />
   ),
 };
 
@@ -83,12 +75,10 @@ export const LongText: Story = {
     <FlexBox style={{ inlineSize: 200 }}>
       <Tag
         icon={<IconCheckCircle16 />}
-        variant="warning-fade"
-        onCancel={() => alert('Cancel')}
+        onClose={() => alert('Cancel')}
+        label="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, tenetur!"
         {...args}
-      >
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, tenetur!
-      </Tag>
+      />
     </FlexBox>
   ),
 };
