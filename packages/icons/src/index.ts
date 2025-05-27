@@ -348,6 +348,7 @@ export * from './IconSpeaker16.js';
 export * from './IconSpeakerWave16.js';
 export * from './IconSpinner16.js';
 export * from './IconSquare16.js';
+export * from './IconSquareClipboard16.js';
 export * from './IconSquareDot16.js';
 export * from './IconSquareMultipleO16.js';
 export * from './IconStar16.js';
