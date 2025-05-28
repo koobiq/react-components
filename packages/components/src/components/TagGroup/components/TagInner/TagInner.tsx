@@ -8,12 +8,17 @@ import {
   isNotNil,
 } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
-import type { AriaTagProps, ListState } from '@koobiq/react-primitives';
+import {
+  type AriaTagProps,
+  type ListState,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-primitives';
 import { useTag } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { IconButton } from '../../../IconButton';
 import type { TagGroupPropVariant, TagProps } from '../../index';
+import intlMessages from '../../intl.json';
 
 import s from './TagInner.module.css';
 import { matchVariantToCloseButton } from './utils';
@@ -33,6 +38,8 @@ export function TagInner<T>(props: TagInnerProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
   const { slotProps, icon, className, style } = item.props as TagProps<T>;
   const ref = useRef(null);
+
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
     within: false,
@@ -78,10 +85,11 @@ export function TagInner<T>(props: TagInnerProps<T>) {
   const removeButtonProps = mergeProps(
     {
       tabIndex: -1,
-      variant: matchVariantToCloseButton[variant],
+      compact: true,
       disabled: isDisabled,
       className: s.cancelIcon,
-      compact: true,
+      variant: matchVariantToCloseButton[variant],
+      'aria-label': stringFormatter.format('close'),
     },
     removeButtonPropsAria,
     slotProps?.removeIcon
