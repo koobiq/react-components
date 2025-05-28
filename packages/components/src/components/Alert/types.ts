@@ -39,6 +39,7 @@ export type AlertBaseProps = {
   icon?: ReactNode;
   /** A callback function called when the user clicks the alert's close button. */
   onClose?: IconButtonProps['onPress'];
+  /** The props used for each slot inside. */
   slotProps?: {
     content?: ComponentPropsWithRef<'div'>;
     statusIcon?: ComponentPropsWithRef<'div'>;
