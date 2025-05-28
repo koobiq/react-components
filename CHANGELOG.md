@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.1-beta.21](https://github.com/koobiq/react-components/compare/0.0.1-beta.20...0.0.1-beta.21) (2025-05-28)
+
+### 🚀 Features
+
+- **components:** add the `TagGroup` ([66c5d3e](https://github.com/koobiq/react-components/commit/66c5d3e18ae5144d352fd357d91ae5481bad4df6))
+- **icons:** add `IconSquareClipboard16` and refine other icons ([1dd405f](https://github.com/koobiq/react-components/commit/1dd405f11267b42dd80041bf4ac4cf2d8452824e))
+
 ## [0.0.1-beta.20](https://github.com/koobiq/react-components/compare/0.0.1-beta.19...0.0.1-beta.20) (2025-05-26)
 
 ### 🐞 Bug Fixes
