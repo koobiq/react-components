@@ -3,14 +3,21 @@ import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { TagGroup, Tag, type TagGroupProps, type TagProps } from './index';
+import { TagGroup, Tag, type TagGroupProps } from './index';
 
 const TAG_GROUP__TEST_ID = 'TAG_GROUP';
 
 const renderComponent = (props: Omit<TagGroupProps<object>, 'children'>) => (
   <TagGroup {...props} aria-label="tag-group">
     <Tag key={1}>one</Tag>
-    <Tag key={2}>two</Tag>
+    <Tag
+      key={2}
+      data-testid={TAG_GROUP__TEST_ID}
+      className="bar"
+      style={{ padding: 20 }}
+    >
+      two
+    </Tag>
     <Tag key={3}>Three</Tag>
     <Tag key={4}>Four</Tag>
   </TagGroup>
@@ -57,40 +64,24 @@ describe('TagGroup', () => {
   });
 
   describe('check Tag', () => {
-    const renderComponent = (props: Omit<TagProps<object>, 'children'>) => (
-      <TagGroup {...props} aria-label="tag-group">
-        <Tag key="tag" data-testid={TAG_GROUP__TEST_ID} {...props}>
-          Tag
-        </Tag>
-      </TagGroup>
-    );
-
     const getTag = () => screen.getByTestId(TAG_GROUP__TEST_ID);
 
     it('should set className', () => {
-      const className = 'foo';
+      render(renderComponent({}));
 
-      render(
-        renderComponent({
-          className,
-        })
-      );
-
-      expect(getTag()).toHaveClass(className);
+      expect(getTag()).toHaveClass('bar');
     });
 
     it('should set custom style', () => {
-      const style = { padding: 20 };
+      render(renderComponent({}));
 
-      const { container } = render(
-        renderComponent({
-          style,
-        })
-      );
+      expect(getTag()).toHaveStyle('padding: 20px');
+    });
 
-      const firstElement = container.firstChild;
+    it('should be disabled', () => {
+      render(renderComponent({}));
 
-      expect(firstElement).toHaveStyle('padding: 20px');
+      expect(getTag()).not.toHaveFocus();
     });
   });
 });

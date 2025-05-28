@@ -31,7 +31,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagInner<T>(props: TagInnerProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
-  const { slotProps, icon, className } = item.props as TagProps<T>;
+  const { slotProps, icon, className, style } = item.props as TagProps<T>;
   const ref = useRef(null);
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
@@ -60,6 +60,7 @@ export function TagInner<T>(props: TagInnerProps<T>) {
         textNormalMedium,
         className
       ),
+      style,
       'data-variant': variant,
       'data-focused': isFocused,
       'data-pressed': isPressed,
