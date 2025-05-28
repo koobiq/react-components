@@ -1,4 +1,4 @@
-import { IconCheckCircle16 } from '@koobiq/react-icons';
+import { IconGlobe16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
@@ -21,11 +21,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args: TagGroupProps<object>) => (
-    <TagGroup aria-label="Categories" {...args}>
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
+    <TagGroup aria-label="Libraries" {...args}>
+      <Tag key="react">React</Tag>
+      <Tag key="typescript">Typescript</Tag>
+      <Tag key="storybook">Storybook</Tag>
+      <Tag key="tailwind">Tailwind</Tag>
     </TagGroup>
   ),
 };
@@ -38,13 +38,13 @@ export const Variant: Story = {
           key={variant}
           variant={variant}
           onRemove={() => undefined}
-          aria-label="Categories"
+          aria-label="Libraries"
           {...args}
         >
-          <Tag key="news">News</Tag>
-          <Tag key="travel">Travel</Tag>
-          <Tag key="gaming">Gaming</Tag>
-          <Tag key="shopping">Shopping</Tag>
+          <Tag key="react">React</Tag>
+          <Tag key="typescript">Typescript</Tag>
+          <Tag key="storybook">Storybook</Tag>
+          <Tag key="tailwind">Tailwind</Tag>
         </TagGroup>
       ))}
     </FlexBox>
@@ -53,18 +53,18 @@ export const Variant: Story = {
 
 export const RemoveTags: Story = {
   render: function Render() {
-    const list = useListData({
+    const list = useListData<{ id: number; name: string }>({
       initialItems: [
-        { id: 1, name: 'News' },
-        { id: 2, name: 'Travel' },
-        { id: 3, name: 'Gaming' },
-        { id: 4, name: 'Shopping' },
+        { id: 1, name: 'React' },
+        { id: 2, name: 'Typescript' },
+        { id: 3, name: 'Storybook' },
+        { id: 4, name: 'Tailwind' },
       ],
     });
 
     return (
       <TagGroup
-        label="Categories"
+        aria-label="Libraries"
         items={list.items}
         onRemove={(keys) => list.remove(...keys)}
       >
@@ -76,37 +76,49 @@ export const RemoveTags: Story = {
 
 export const DisabledTags: Story = {
   render: (args: TagGroupProps<object>) => (
-    <TagGroup disabledKeys={['tuna']} {...args}>
-      <Tag key="lettuce">Lettuce</Tag>
-      <Tag key="tomato">Tomato</Tag>
-      <Tag key="cheese">Cheese</Tag>
-      <Tag key="tuna">Tuna Salad</Tag>
-      <Tag key="egg">Egg Salad</Tag>
-      <Tag key="ham">Ham</Tag>
+    <TagGroup aria-label="Methods" disabledKeys={['delete']} {...args}>
+      <Tag key="get">GET</Tag>
+      <Tag key="post">POST</Tag>
+      <Tag key="put">PUT</Tag>
+      <Tag key="patch">PATCH</Tag>
+      <Tag key="delete">DELETE</Tag>
     </TagGroup>
   ),
 };
 
 export const Icon: Story = {
   render: (args: TagGroupProps<object>) => (
-    <TagGroup {...args}>
-      <Tag key="lettuce" icon={<IconCheckCircle16 />}>
-        Lettuce
+    <TagGroup aria-label="Methods" {...args}>
+      <Tag key="get" icon={<IconGlobe16 />}>
+        GET
       </Tag>
-      <Tag key="tomato" icon={<IconCheckCircle16 />}>
-        Tomato
+      <Tag key="post" icon={<IconGlobe16 />}>
+        POST
       </Tag>
-      <Tag key="cheese" icon={<IconCheckCircle16 />}>
-        Cheese
+      <Tag key="put" icon={<IconGlobe16 />}>
+        PUT
       </Tag>
-      <Tag key="tuna" icon={<IconCheckCircle16 />}>
-        Tuna Salad
+      <Tag key="patch" icon={<IconGlobe16 />}>
+        PATCH
       </Tag>
-      <Tag key="egg" icon={<IconCheckCircle16 />}>
-        Egg Salad
+      <Tag key="delete" icon={<IconGlobe16 />}>
+        DELETE
       </Tag>
-      <Tag key="ham" icon={<IconCheckCircle16 />}>
-        Ham
+    </TagGroup>
+  ),
+};
+
+export const Links: Story = {
+  render: (args: TagGroupProps<object>) => (
+    <TagGroup aria-label="Libraries" {...args}>
+      <Tag href="https://react.dev/" target="_blank">
+        React
+      </Tag>
+      <Tag href="https://www.typescriptlang.org/" target="_blank">
+        Typescript
+      </Tag>
+      <Tag href="https://storybook.js.org/" target="_blank">
+        Storybook
       </Tag>
     </TagGroup>
   ),

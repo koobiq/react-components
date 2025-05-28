@@ -1,9 +1,16 @@
 'use client';
 
-import type { CSSProperties, FC } from 'react';
+import type {
+  ComponentPropsWithRef,
+  CSSProperties,
+  FC,
+  ReactNode,
+} from 'react';
 
 import { Item as AriaItem } from '@koobiq/react-primitives';
 import type { ItemProps as AriaItemProps } from '@koobiq/react-primitives';
+
+import type { IconButtonProps } from '../IconButton';
 
 type ItemComponent<T> = FC<AriaItemProps<T>> & {
   getCollectionNode: unknown;
@@ -18,7 +25,14 @@ export type TagProps<T> = AriaItemProps<T> & {
   style?: CSSProperties;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
-  icon?: any;
+  /** Icon placed before the children. */
+  icon?: ReactNode;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    icon?: ComponentPropsWithRef<'span'>;
+    content?: ComponentPropsWithRef<'span'>;
+    closeIcon?: IconButtonProps;
+  };
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -11,14 +11,14 @@ import { IconXmarkS16 } from '@koobiq/react-icons';
 import type { AriaTagProps, ListState } from '@koobiq/react-primitives';
 import { useTag } from '@koobiq/react-primitives';
 
-import { utilClasses } from '../../../styles/utility';
-import { IconButton } from '../../IconButton';
-import type { TagGroupPropVariant } from '../types';
+import { utilClasses } from '../../../../styles/utility';
+import { IconButton } from '../../../IconButton';
+import type { TagGroupPropVariant } from '../../types';
 
-import s from './Tag.module.css';
+import s from './TagInner.module.css';
 import { matchVariantToCloseButton } from './utils';
 
-export type TagProps<T> = AriaTagProps<T> & {
+export type TagInnerProps<T> = AriaTagProps<T> & {
   state: ListState<T>;
   /**
    * The variant to use.
@@ -29,7 +29,7 @@ export type TagProps<T> = AriaTagProps<T> & {
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
-export function Tag<T>(props: TagProps<T>) {
+export function TagInner<T>(props: TagInnerProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
   const ref = useRef(null);
 
@@ -81,7 +81,7 @@ export function Tag<T>(props: TagProps<T>) {
   );
 
   return (
-    <div ref={ref} {...rootProps} data-focus-visible={isFocusVisible}>
+    <div ref={ref} {...rootProps}>
       <div {...gridCellProps}>
         {isNotNil(item.props.icon) && (
           <span className={s.icon}>{item.props.icon}</span>

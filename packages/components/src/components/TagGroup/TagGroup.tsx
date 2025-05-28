@@ -1,9 +1,9 @@
 import { forwardRef, type Ref } from 'react';
 
-import { useDOMRef } from '@koobiq/react-core';
+import { useDOMRef, mergeProps, clsx } from '@koobiq/react-core';
 import { useTagGroup, useListState } from '@koobiq/react-primitives';
 
-import { Tag } from './components';
+import { TagInner } from './components';
 import s from './TagGroup.module.css';
 import type {
   TagGroupComponentProp,
@@ -15,17 +15,22 @@ function TagGroupRender<T extends object>(
   props: Omit<TagGroupProps<T>, 'ref'>,
   ref: Ref<TagGroupRef>
 ) {
-  const { variant = 'theme-fade' } = props;
+  const { variant = 'theme-fade', style, className } = props;
   const domRef = useDOMRef(ref);
 
   const state = useListState(props);
 
   const { gridProps } = useTagGroup(props, state, domRef);
 
+  const rootProps = mergeProps(
+    { className: clsx(s.base, className), style, ref: domRef },
+    gridProps
+  );
+
   return (
-    <div className={s.base} {...gridProps} ref={domRef}>
+    <div {...rootProps}>
       {[...state.collection].map((item) => (
-        <Tag key={item.key} item={item} variant={variant} state={state} />
+        <TagInner key={item.key} item={item} variant={variant} state={state} />
       ))}
     </div>
   );

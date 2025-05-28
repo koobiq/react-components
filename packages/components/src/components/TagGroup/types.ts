@@ -1,4 +1,4 @@
-import type { ComponentRef, ReactElement } from 'react';
+import type { ComponentRef, CSSProperties, ReactElement, Ref } from 'react';
 
 import type { AriaTagGroupProps } from '@koobiq/react-primitives';
 
@@ -23,16 +23,27 @@ export const tagGroupPropVariant = [
 export type TagGroupPropVariant = (typeof tagGroupPropVariant)[number];
 
 export type TagGroupProps<T extends object> = {
+  /** The contents of the collection. */
   children?: TagGroupPropChildren<T>;
+  /** Item objects in the collection. */
   items?: TagGroupPropItems<T>;
+  /** Handler that is called when a user deletes a tag.  */
   onRemove?: TagGroupPropOnRemove<T>;
-  label?: string | number;
   /**
    * The variant to use.
    * @default theme-fade
    * */
   variant?: TagGroupPropVariant;
+  /** The item keys that are disabled. These items cannot be selected, focused, or otherwise interacted with. */
   disabledKeys?: TagGroupPropDisabledKeys<T>;
+  /** Ref to the HTML ul-element. */
+  ref?: Ref<HTMLElement>;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Unique identifier for testing purposes. */
+  'data-testid'?: string | number;
+  /** Inline styles. */
+  style?: CSSProperties;
 };
 
 export type TagGroupComponentProp = <T extends object>(

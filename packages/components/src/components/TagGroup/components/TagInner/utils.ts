@@ -1,5 +1,5 @@
-import type { IconButtonPropVariant } from '../../IconButton';
-import type { TagGroupPropVariant } from '../types';
+import type { IconButtonPropVariant } from '../../../IconButton';
+import type { TagGroupPropVariant } from '../../types';
 
 export const matchVariantToCloseButton: Record<
   TagGroupPropVariant,
