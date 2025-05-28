@@ -29,9 +29,10 @@ export type TagProps<T> = AriaItemProps<T> & {
   icon?: ReactNode;
   /** The props used for each slot inside. */
   slotProps?: {
+    root?: ComponentPropsWithRef<'div'>;
     icon?: ComponentPropsWithRef<'span'>;
     content?: ComponentPropsWithRef<'span'>;
-    closeIcon?: IconButtonProps;
+    removeIcon?: IconButtonProps;
   };
 };
 

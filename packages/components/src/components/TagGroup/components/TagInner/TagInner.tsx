@@ -13,7 +13,7 @@ import { useTag } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { IconButton } from '../../../IconButton';
-import type { TagGroupPropVariant } from '../../types';
+import type { TagGroupPropVariant, TagProps } from '../../index';
 
 import s from './TagInner.module.css';
 import { matchVariantToCloseButton } from './utils';
@@ -31,6 +31,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagInner<T>(props: TagInnerProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
+  const { slotProps, icon } = item.props as TagProps<T>;
   const ref = useRef(null);
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
@@ -66,7 +67,8 @@ export function TagInner<T>(props: TagInnerProps<T>) {
     },
     rowProps,
     hoverProps,
-    focusProps
+    focusProps,
+    slotProps?.root
   );
 
   const removeButtonProps = mergeProps(
@@ -77,17 +79,30 @@ export function TagInner<T>(props: TagInnerProps<T>) {
       className: s.cancelIcon,
       compact: true,
     },
-    removeButtonPropsAria
+    removeButtonPropsAria,
+    slotProps?.removeIcon
+  );
+
+  const contentProps = mergeProps(
+    {
+      className: s.content,
+    },
+    slotProps?.content
+  );
+
+  const iconProps = mergeProps(
+    {
+      className: s.icon,
+    },
+    slotProps?.icon
   );
 
   return (
     <div ref={ref} {...rootProps}>
       <div {...gridCellProps}>
-        {isNotNil(item.props.icon) && (
-          <span className={s.icon}>{item.props.icon}</span>
-        )}
+        {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
         {isNotNil(item.rendered) && (
-          <span className={s.content}>{item.rendered}</span>
+          <span {...contentProps}>{item.rendered}</span>
         )}
         {allowsRemoving && (
           <IconButton size="l" {...removeButtonProps}>

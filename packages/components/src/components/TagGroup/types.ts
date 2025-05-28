@@ -1,4 +1,10 @@
-import type { ComponentRef, CSSProperties, ReactElement, Ref } from 'react';
+import type {
+  ComponentPropsWithRef,
+  ComponentRef,
+  CSSProperties,
+  ReactElement,
+  Ref,
+} from 'react';
 
 import type { AriaTagGroupProps } from '@koobiq/react-primitives';
 
@@ -44,6 +50,10 @@ export type TagGroupProps<T extends object> = {
   'data-testid'?: string | number;
   /** Inline styles. */
   style?: CSSProperties;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    root?: ComponentPropsWithRef<'div'>;
+  };
 };
 
 export type TagGroupComponentProp = <T extends object>(

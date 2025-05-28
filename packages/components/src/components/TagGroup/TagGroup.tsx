@@ -15,7 +15,7 @@ function TagGroupRender<T extends object>(
   props: Omit<TagGroupProps<T>, 'ref'>,
   ref: Ref<TagGroupRef>
 ) {
-  const { variant = 'theme-fade', style, className } = props;
+  const { variant = 'theme-fade', style, className, slotProps } = props;
   const domRef = useDOMRef(ref);
 
   const state = useListState(props);
@@ -24,7 +24,8 @@ function TagGroupRender<T extends object>(
 
   const rootProps = mergeProps(
     { className: clsx(s.base, className), style, ref: domRef },
-    gridProps
+    gridProps,
+    slotProps?.root
   );
 
   return (
