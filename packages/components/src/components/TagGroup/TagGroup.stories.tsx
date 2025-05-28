@@ -11,6 +11,7 @@ import { type TagGroupProps } from './types';
 const meta = {
   title: 'Components/TagGroup',
   component: TagGroup,
+  subcomponents: { Tag },
   parameters: {
     layout: 'centered',
   },
