@@ -31,7 +31,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagInner<T>(props: TagInnerProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
-  const { slotProps, icon } = item.props as TagProps<T>;
+  const { slotProps, icon, className } = item.props as TagProps<T>;
   const ref = useRef(null);
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
@@ -44,6 +44,7 @@ export function TagInner<T>(props: TagInnerProps<T>) {
     removeButtonProps: removeButtonPropsAria,
     allowsRemoving,
     isDisabled,
+    isPressed,
   } = useTag(props, state, ref);
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
@@ -56,10 +57,12 @@ export function TagInner<T>(props: TagInnerProps<T>) {
         isFocused && s.focused,
         isHovered && s.hovered,
         isDisabled && s.disabled,
-        textNormalMedium
+        textNormalMedium,
+        className
       ),
       'data-variant': variant,
       'data-focused': isFocused,
+      'data-pressed': isPressed,
       'data-hovered': isHovered,
       'aria-disabled': isDisabled,
       'data-disabled': isDisabled,
