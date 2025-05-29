@@ -11,7 +11,7 @@ import {
 } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
-import { Backdrop } from '../Backdrop';
+import { Backdrop, type BackdropProps } from '../Backdrop';
 import { Dialog, type DialogProps } from '../Dialog';
 
 import s from './SidePanel.module.css';
@@ -87,8 +87,10 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       other
     );
 
-    const backdropProps = mergeProps(
-      { open: openState && !hideBackdrop },
+    const backdropProps = mergeProps<
+      [BackdropProps, BackdropProps, BackdropProps | undefined]
+    >(
+      { isOpen: openState && !hideBackdrop },
       underlayProps,
       slotProps?.backdrop
     );

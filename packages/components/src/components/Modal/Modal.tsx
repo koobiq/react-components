@@ -11,7 +11,7 @@ import {
 } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
-import { Backdrop } from '../Backdrop';
+import { Backdrop, type BackdropProps } from '../Backdrop';
 import { Dialog, type DialogProps } from '../Dialog';
 
 import s from './Modal.module.css';
@@ -84,11 +84,9 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
     other
   );
 
-  const backdropProps = mergeProps(
-    { open: openState && !hideBackdrop },
-    underlayProps,
-    slotProps?.backdrop
-  );
+  const backdropProps = mergeProps<
+    [BackdropProps, BackdropProps, BackdropProps | undefined]
+  >({ isOpen: openState && !hideBackdrop }, underlayProps, slotProps?.backdrop);
 
   const dialogProps: DialogProps = mergeProps(
     {
