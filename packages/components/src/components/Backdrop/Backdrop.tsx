@@ -7,6 +7,7 @@ import {
   type ElementType,
 } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, useDOMRef, polymorphicForwardRef } from '@koobiq/react-core';
 import { Transition } from 'react-transition-group';
 
@@ -19,7 +20,8 @@ export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
     const {
       as: Tag = 'div',
       duration = 300,
-      open: openProp = false,
+      open = false,
+      isOpen: isOpenProp = false,
       style: styleProp,
       zIndex,
       children,
@@ -27,7 +29,15 @@ export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
       ...other
     } = props;
 
+    const isOpen = isOpenProp || open;
+
     const domRef = useDOMRef<ComponentRef<'div'>>(ref);
+
+    if (process.env.NODE_ENV !== 'production' && open) {
+      deprecate(
+        'The "open" prop is deprecated. Use "isOpen" prop to replace it.'
+      );
+    }
 
     const style = {
       '--backdrop-z-index': zIndex,
@@ -37,7 +47,7 @@ export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
 
     return (
       <Transition
-        in={openProp}
+        in={isOpen}
         nodeRef={domRef}
         timeout={duration}
         appear

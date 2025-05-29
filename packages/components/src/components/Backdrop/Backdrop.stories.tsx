@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: function Render(args: BackdropBaseProps) {
-    const [open, { on, off }] = useBoolean(true);
+    const [isOpen, { on, off }] = useBoolean(true);
 
     const containerStyle = {
       inlineSize: 240,
@@ -43,7 +43,7 @@ export const Base: Story = {
       <div style={containerStyle}>
         <Button onPress={on}>Show the backdrop</Button>
         <Backdrop
-          open={open}
+          isOpen={isOpen}
           zIndex={5}
           onClick={off}
           style={{ cursor: 'pointer' }}
