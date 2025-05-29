@@ -1,4 +1,4 @@
-import { type CSSProperties, useState } from 'react';
+import { type CSSProperties } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import { IconBolt16, IconNorthEast16, IconStar16 } from '@koobiq/react-icons';
@@ -92,7 +92,7 @@ export const WithIcons: Story = {
 
 export const Disabled: Story = {
   render: () => (
-    <Link href="#" disabled>
+    <Link href="#" isDisabled>
       Link
     </Link>
   ),
@@ -100,14 +100,14 @@ export const Disabled: Story = {
 
 export const Visitable: Story = {
   render: function Render() {
-    const [visitable, setVisitable] = useState(true);
+    const [isVisitable, { set: setVisitable }] = useBoolean(true);
 
     return (
       <FlexBox gap="l" direction="column">
-        <Link href="https://react.koobiq.io/" visitable={visitable}>
+        <Link href="https://react.koobiq.io/" isVisitable={isVisitable}>
           Link
         </Link>
-        <Checkbox checked={visitable} onChange={setVisitable}>
+        <Checkbox checked={isVisitable} onChange={setVisitable}>
           Visitable
         </Checkbox>
       </FlexBox>
@@ -117,34 +117,34 @@ export const Visitable: Story = {
 
 export const RootTag: Story = {
   render: function Render() {
-    const [disabled, setDisabled] = useBoolean(false);
-    const [pseudo, setPseudo] = useBoolean(true);
+    const [isDisabled, { set: setIsDisabled }] = useBoolean(false);
+    const [isPseudo, { set: setIsPseudo }] = useBoolean(true);
 
     return (
       <FlexBox gap="l" direction="column">
         <FlexBox gap="xl">
           <Link
             as="button"
-            pseudo={pseudo}
-            disabled={disabled}
+            isPseudo={isPseudo}
+            isDisabled={isDisabled}
             onPress={() => alert("I'm a button")}
           >
             Button
           </Link>
           <Link
             as="span"
-            pseudo={pseudo}
-            disabled={disabled}
+            isPseudo={isPseudo}
+            isDisabled={isDisabled}
             onPress={() => alert("I'm a span")}
           >
             Pseudo-link
           </Link>
         </FlexBox>
         <FlexBox gap="xl">
-          <Checkbox checked={disabled} onChange={setDisabled.set}>
+          <Checkbox checked={isDisabled} onChange={setIsDisabled}>
             Disabled
           </Checkbox>
-          <Checkbox checked={pseudo} onChange={setPseudo.set}>
+          <Checkbox checked={isPseudo} onChange={setIsPseudo}>
             Pseudo
           </Checkbox>
         </FlexBox>

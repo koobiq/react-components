@@ -82,15 +82,15 @@ export const Action: Story = {
         <>
           <Link
             as="button"
-            pseudo
             onPress={() => alert('Submit the first action')}
+            isPseudo
           >
             First action
           </Link>
           <Link
             as="button"
-            pseudo
             onPress={() => alert('Submit the second action')}
+            isPseudo
           >
             Second action
           </Link>
@@ -117,7 +117,7 @@ export const CustomIcon: Story = {
       icon={<IconUserSecret16 />}
       title="Important information about incognito mode"
       action={
-        <Link href="#" pseudo>
+        <Link href="#" isPseudo>
           See details
         </Link>
       }

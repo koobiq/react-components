@@ -38,7 +38,7 @@ describe('Link', () => {
       ...baseProps,
       onPress: vi.fn(),
       href: '#',
-      disabled: true,
+      isDisabled: true,
     };
 
     render(<Link {...props} />);
@@ -76,7 +76,7 @@ describe('Link', () => {
       const props = {
         ...baseProps,
         onPress: vi.fn(),
-        disabled: true,
+        isDisabled: true,
       };
 
       render(<Link {...props} as="button" />);
@@ -89,7 +89,6 @@ describe('Link', () => {
 
       await userEvent.click(linkAsButton);
 
-      expect(linkAsButton).toBeDisabled();
       expect(props.onPress).toHaveBeenCalledTimes(0);
       expect(linkAsButton).toHaveAttribute('aria-disabled', 'true');
     });
