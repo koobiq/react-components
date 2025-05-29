@@ -5,12 +5,12 @@ import type { ButtonOptions } from '../../types';
 import type { RenderProps } from '../../utils';
 
 export type ButtonRenderProps = {
-  hovered: boolean;
-  focused: boolean;
-  pressed: boolean;
-  loading: boolean;
-  disabled: boolean;
-  focusVisible: boolean;
+  isHovered: boolean;
+  isFocused: boolean;
+  isPressed: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
+  isFocusVisible: boolean;
 };
 
 export type ButtonBaseProps = ExtendableProps<
@@ -44,6 +44,6 @@ export type ButtonBaseProps = ExtendableProps<
     formTarget?: string;
     tabIndex?: number;
     slot?: string;
-    loading?: boolean;
+    isLoading?: boolean;
   }
 >;

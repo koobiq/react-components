@@ -18,6 +18,25 @@ export const iconButtonPropSize = ['l', 'xl'] as const;
 
 export type IconButtonPropSize = (typeof iconButtonPropSize)[number];
 
+type IconButtonBaseDeprecatedProps = {
+  /**
+   * @deprecated
+   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
+   *
+   * If `true`, the component is disabled.
+   * @default false
+   * */
+  disabled?: boolean;
+  /**
+   * @deprecated
+   * The "compact" prop is deprecated. Use "isCompact" prop to replace it.
+   *
+   * If `true`, reduce the size of the component canvas.
+   * @default false
+   * */
+  compact?: boolean;
+};
+
 export type IconButtonBaseProps = ExtendableProps<
   {
     /** The content of the component. */
@@ -31,7 +50,7 @@ export type IconButtonBaseProps = ExtendableProps<
      * If `true`, the component is disabled.
      * @default false
      * */
-    disabled?: boolean;
+    isDisabled?: boolean;
     /**
      * Size of the component
      * @default xl
@@ -41,13 +60,13 @@ export type IconButtonBaseProps = ExtendableProps<
      * If `true`, reduce the size of the component canvas.
      * @default false
      * */
-    compact?: boolean;
+    isCompact?: boolean;
     /** Additional CSS-classes. */
     className?: string;
     /** Handler that is called when a hover interaction starts. */
     onHoverStart?: (e: HoverEvent) => void;
     /** Handler that is called when a hover interaction ends. */
     onHoverEnd?: (e: HoverEvent) => void;
-  },
+  } & IconButtonBaseDeprecatedProps,
   UseButtonProps
 >;

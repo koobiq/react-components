@@ -60,12 +60,12 @@
   }
 }
 
-.hovered:not(.progress) {
+.hovered:not(.loading) {
   --button-border-color: var(--button-border-color-hover);
   background-color: var(--button-bg-color-hover);
 }
 
-.pressed:not(.progress) {
+.pressed:not(.loading) {
   --button-border-color: var(--button-border-color-active);
   background-color: var(--button-bg-color-active);
 }
@@ -74,7 +74,7 @@
   --button-outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.progress,
+.loading,
 .disabled {
   cursor: not-allowed;
 }

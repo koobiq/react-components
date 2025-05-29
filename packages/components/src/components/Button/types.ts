@@ -14,6 +14,25 @@ export const buttonPropVariant = [
 
 export type ButtonPropVariant = (typeof buttonPropVariant)[number];
 
+type ButtonBaseDeprecatedProps = {
+  /**
+   * @deprecated
+   * The "progress" prop is deprecated. Use "isLoading" prop to replace it.
+   *
+   * If `true`, the progress indicator is shown and the button becomes disabled.
+   * @default false
+   * */
+  progress?: boolean;
+  /**
+   * @deprecated
+   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
+   *
+   * If `true`, the component is disabled.
+   * @default false
+   * */
+  disabled?: boolean;
+};
+
 export type ButtonBaseProps = ExtendableProps<
   {
     /** The content of the component. */
@@ -27,12 +46,12 @@ export type ButtonBaseProps = ExtendableProps<
      * If `true`, the progress indicator is shown and the button becomes disabled.
      * @default false
      * */
-    progress?: boolean;
+    isLoading?: boolean;
     /**
      * If `true`, the component is disabled.
      * @default false
      * */
-    disabled?: boolean;
+    isDisabled?: boolean;
     /**
      * If `true`, only the icon is shown, and the button has same sides.
      * @default false
@@ -55,6 +74,6 @@ export type ButtonBaseProps = ExtendableProps<
     onHoverStart?: (e: HoverEvent) => void;
     /** Handler that is called when a hover interaction ends. */
     onHoverEnd?: (e: HoverEvent) => void;
-  },
+  } & ButtonBaseDeprecatedProps,
   UseButtonProps
 >;

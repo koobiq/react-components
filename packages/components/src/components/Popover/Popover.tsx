@@ -92,8 +92,6 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     return children;
   };
 
-  const { isDisabled, ...otherTriggerProps } = triggerProps;
-
   const arrowProps = mergeProps(
     { className: s.arrow },
     arrowPropsCommon,
@@ -133,8 +131,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     <>
       {control?.({
         ref: controlRef,
-        disabled: isDisabled,
-        ...otherTriggerProps,
+        ...triggerProps,
       })}
       <Transition {...transitionProps}>
         {(transition) => (

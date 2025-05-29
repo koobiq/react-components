@@ -2,6 +2,7 @@
 
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import type { ButtonBaseProps as ButtonPrimitiveProps } from '@koobiq/react-primitives';
 import { Button as ButtonPrimitive } from '@koobiq/react-primitives';
@@ -14,6 +15,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
     {
       as: Tag = 'button',
       variant = 'contrast-filled',
+      isLoading: isLoadingProp = false,
+      isDisabled: isDisabledProp = false,
       onlyIcon = false,
       fullWidth = false,
       progress = false,
@@ -26,33 +29,48 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
     },
     ref
   ) => {
+    const isLoading = isLoadingProp || progress;
+    const isDisabled = isDisabledProp || disabled;
+
+    if (process.env.NODE_ENV !== 'production' && progress) {
+      deprecate(
+        'The "progress" prop is deprecated. Use "isLoading" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && disabled) {
+      deprecate(
+        'The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      );
+    }
+
     const iconOnly = (!children || onlyIcon) && (startIcon || endIcon);
 
     const classNameFn: ButtonPrimitiveProps['className'] = ({
-      hovered,
-      disabled,
-      loading,
-      focusVisible,
-      pressed,
+      isHovered,
+      isDisabled,
+      isLoading,
+      isPressed,
+      isFocusVisible,
     }) =>
       clsx(
         s.base,
         variant && s[variant],
-        hovered && s.hovered,
-        pressed && s.pressed,
+        isHovered && s.hovered,
+        isPressed && s.pressed,
         onlyIcon && s.onlyIcon,
-        disabled && s.disabled,
-        loading && s.progress,
+        isDisabled && s.disabled,
+        isLoading && s.loading,
         fullWidth && s.fullWidth,
-        focusVisible && s.focusVisible,
+        isFocusVisible && s.focusVisible,
         className
       );
 
     return (
       <ButtonPrimitive
         as={Tag}
-        loading={progress}
-        disabled={disabled}
+        isLoading={isLoading}
+        isDisabled={isDisabled}
         className={classNameFn}
         {...other}
         ref={ref}
@@ -67,7 +85,7 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
             </>
           )}
         </span>
-        {progress && <div className={s.loader} />}
+        {isLoading && <div className={s.loader} />}
       </ButtonPrimitive>
     );
   }

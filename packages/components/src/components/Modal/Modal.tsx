@@ -107,14 +107,9 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
     slotProps?.modal
   );
 
-  const { isDisabled, ...otherTriggerProps } = triggerProps;
-
   return (
     <>
-      {control?.({
-        disabled: isDisabled,
-        ...otherTriggerProps,
-      })}
+      {control?.(triggerProps)}
       <Transition
         onEnter={on}
         timeout={300}

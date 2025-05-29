@@ -13,39 +13,28 @@ export function useButton(
   props: UseButtonProps,
   ref: RefObject<Element | null>
 ) {
-  const { disabled, ...otherProps } = props;
+  const { isDisabled } = props;
 
-  const {
-    focusProps,
-    isFocused: focused,
-    isFocusVisible: focusVisible,
-  } = useFocusRing({
+  const { focusProps, isFocused, isFocusVisible } = useFocusRing({
     within: true,
   });
 
-  const { hoverProps, isHovered: hovered } = useHover({
-    ...props,
-    isDisabled: disabled,
-  });
+  const { hoverProps, isHovered } = useHover(props);
 
-  const { buttonProps: commonButtonProps, isPressed: pressed } =
-    useButtonReactAria(
-      {
-        ...otherProps,
-        isDisabled: disabled,
-      },
-      ref
-    );
+  const { buttonProps: commonButtonProps, isPressed } = useButtonReactAria(
+    props,
+    ref
+  );
 
   const buttonProps = mergeProps(commonButtonProps, focusProps, hoverProps);
 
   return {
-    pressed,
-    hovered,
-    focused,
-    disabled,
+    isPressed,
+    isHovered,
+    isFocused,
+    isDisabled,
     buttonProps,
-    focusVisible,
+    isFocusVisible,
   };
 }
 
