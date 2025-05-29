@@ -136,9 +136,9 @@ export const CustomIcon: Story = {
 
 export const CloseButton: Story = {
   render: function Render(args: AlertBaseProps) {
-    const [open, { on, off }] = useBoolean(true);
+    const [isOpen, { on, off }] = useBoolean(true);
 
-    return open ? (
+    return isOpen ? (
       <Alert title="Title" onClose={off} {...args}>
         {text}
       </Alert>
