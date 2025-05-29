@@ -10,11 +10,11 @@ import s from './Alert.module.css';
 
 export const Alert: FC<AlertProps> = ({ children, className, ...other }) => (
   <KoobiqAlert
-    colored
-    compact
     status="info"
-    {...other}
     className={clsx(s.base, 'sb-unstyled', className)}
+    isColored
+    isCompact
+    {...other}
   >
     {children}
   </KoobiqAlert>

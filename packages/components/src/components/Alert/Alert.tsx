@@ -2,6 +2,7 @@
 
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import {
   clsx,
   isNotNil,
@@ -26,6 +27,8 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
       compact = false,
       as: Tag = 'div',
       hideIcon = false,
+      isColored: isColoredProp = false,
+      isCompact: isCompactProp = false,
       slotProps,
       icon,
       onClose,
@@ -37,6 +40,21 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
     },
     ref
   ) => {
+    const isColored = isColoredProp || colored;
+    const isCompact = isCompactProp || compact;
+
+    if (process.env.NODE_ENV !== 'production' && colored) {
+      deprecate(
+        'The "colored" prop is deprecated. Use "isColored" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && compact) {
+      deprecate(
+        'The "compact" prop is deprecated. Use "isCompact" prop to replace it.'
+      );
+    }
+
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
     const contentProps = mergeProps(
@@ -50,7 +68,7 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
       {
         icon,
         status,
-        compact,
+        isCompact,
       },
       slotProps?.statusIcon
     );
@@ -73,8 +91,8 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
         className={clsx(
           s.base,
           s[status],
-          compact && s.compact,
-          colored && s.colored,
+          isCompact && s.compact,
+          isColored && s.colored,
           className
         )}
       >

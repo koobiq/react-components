@@ -47,7 +47,7 @@ export const Colored: Story = {
   render: (args: AlertBaseProps) => (
     <div className={flex({ gap: 'l', alignItems: 'center', wrap: 'wrap' })}>
       {alertPropStatus.map((status) => (
-        <Alert title="Title" key={status} status={status} colored {...args}>
+        <Alert title="Title" key={status} status={status} isColored {...args}>
           This is a {status} Alert.
         </Alert>
       ))}
@@ -63,8 +63,8 @@ export const Compact: Story = {
           title="Title"
           key={status}
           status={status}
-          compact
-          colored
+          isCompact
+          isColored
           {...args}
         >
           This is a {status} Alert.

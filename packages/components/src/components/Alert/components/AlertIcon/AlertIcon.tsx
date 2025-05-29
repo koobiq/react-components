@@ -7,12 +7,12 @@ import type { AlertIconProps } from './types';
 import { matchStatusToIcon } from './utils';
 
 export const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(
-  ({ status = 'info', icon, compact }, ref) => (
+  ({ status = 'info', icon, isCompact }, ref) => (
     <div
-      className={clsx(s.base, status && s[status], compact && s.compact)}
+      className={clsx(s.base, status && s[status], isCompact && s.compact)}
       ref={ref}
     >
-      {icon || matchStatusToIcon[compact ? 'compact' : 'normal'][status]}
+      {icon || matchStatusToIcon[isCompact ? 'compact' : 'normal'][status]}
     </div>
   )
 );
