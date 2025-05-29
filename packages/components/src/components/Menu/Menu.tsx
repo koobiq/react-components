@@ -43,8 +43,6 @@ function MenuRender<T extends object>(
     controlRef
   );
 
-  const { isDisabled, ...otherMenuTriggerProps } = menuTriggerProps;
-
   const popoverProps: PopoverInnerProps = mergeProps(
     {
       style,
@@ -64,8 +62,7 @@ function MenuRender<T extends object>(
     <>
       {control?.({
         ref: controlRef,
-        disabled: isDisabled,
-        ...otherMenuTriggerProps,
+        ...menuTriggerProps,
       })}
       <PopoverInner type="menu" placement={placement} {...popoverProps}>
         <MenuInner {...otherProps} {...menuProps} />

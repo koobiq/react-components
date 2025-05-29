@@ -83,9 +83,9 @@ export const OnlyIcon: Story = {
   ),
 };
 
-export const Progress: Story = {
+export const Loading: Story = {
   render: (args: ButtonBaseProps) => (
-    <Button progress {...args}>
+    <Button isLoading {...args}>
       Button
     </Button>
   ),
@@ -110,14 +110,14 @@ export const Variant: Story = {
 
 export const Disabled: Story = {
   render: function Render(args: ButtonBaseProps) {
-    const [checked, { set }] = useBoolean(false);
+    const [isLoading, { set }] = useBoolean(false);
 
     return (
       <FlexBox gap="l" direction="column">
-        <Button progress={checked} disabled {...args}>
+        <Button isLoading={isLoading} isDisabled {...args}>
           Button
         </Button>
-        <Checkbox checked={checked} onChange={set}>
+        <Checkbox checked={isLoading} onChange={set}>
           Progress
         </Checkbox>
       </FlexBox>

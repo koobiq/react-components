@@ -20,8 +20,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
     const commonProps = useSlottedContext(props, ButtonContext, slot);
 
     const {
-      loading,
-      disabled,
+      isLoading,
+      isDisabled,
       value,
       name,
       form,
@@ -34,33 +34,33 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
 
     const domRef = useDOMRef<ComponentRef<'button'>>(ref);
 
-    const { hovered, pressed, focused, focusVisible, buttonProps } = useButton(
-      {
-        ...commonProps,
-        ...((loading || disabled) && {
-          onPress: undefined,
-          onPressStart: undefined,
-          onPressEnd: undefined,
-          onPressChange: undefined,
-          onPressUp: undefined,
-          onKeyDown: undefined,
-          onKeyUp: undefined,
-          onClick: undefined,
-          href: undefined,
-        }),
-        disabled,
-        elementType: as,
-      },
-      domRef
-    );
+    const { isHovered, isPressed, isFocused, isFocusVisible, buttonProps } =
+      useButton(
+        {
+          ...commonProps,
+          ...((isLoading || isDisabled) && {
+            onPress: undefined,
+            onPressStart: undefined,
+            onPressEnd: undefined,
+            onPressChange: undefined,
+            onPressUp: undefined,
+            onKeyDown: undefined,
+            onKeyUp: undefined,
+            onClick: undefined,
+            href: undefined,
+          }),
+          elementType: as,
+        },
+        domRef
+      );
 
     const renderValues = {
-      hovered,
-      pressed,
-      focused,
-      focusVisible,
-      loading: loading || false,
-      disabled: disabled || false,
+      isHovered,
+      isPressed,
+      isFocused,
+      isFocusVisible,
+      isLoading: isLoading || false,
+      isDisabled: isDisabled || false,
     };
 
     const renderProps = useRenderProps({
@@ -82,14 +82,14 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         }}
         {...buttonProps}
         {...renderProps}
-        data-hovered={hovered}
-        data-pressed={pressed}
-        data-focused={focused}
-        data-disabled={disabled}
-        data-focus-visible={focusVisible}
+        data-hovered={isHovered}
+        data-pressed={isPressed}
+        data-focused={isFocused}
+        data-disabled={isDisabled}
+        data-focus-visible={isFocusVisible}
         tabIndex={tabIndex || buttonProps.tabIndex}
-        aria-disabled={loading ? 'true' : buttonProps['aria-disabled']}
-        aria-busy={loading}
+        aria-disabled={isLoading ? 'true' : buttonProps['aria-disabled']}
+        aria-busy={isLoading}
         ref={domRef}
       >
         {renderProps.children}

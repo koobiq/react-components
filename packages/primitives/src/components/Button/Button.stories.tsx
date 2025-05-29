@@ -21,7 +21,7 @@ export const Base: Story = {
     <Button
       {...args}
       className="test"
-      style={({ hovered, pressed }) => {
+      style={({ isHovered, isPressed }) => {
         const commonStyle: CSSProperties = {
           padding: 16,
           fontSize: 16,
@@ -39,14 +39,14 @@ export const Base: Story = {
 
         return {
           ...commonStyle,
-          ...(hovered && { opacity: 0.9 }),
-          ...(pressed && { opacity: 0.8 }),
+          ...(isHovered && { opacity: 0.9 }),
+          ...(isPressed && { opacity: 0.8 }),
         };
       }}
     >
-      {({ focusVisible }) => (
+      {({ isFocusVisible }) => (
         <>
-          {focusVisible && (
+          {isFocusVisible && (
             <div
               style={{
                 inset: 0,

@@ -114,14 +114,9 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       slotProps?.panel
     );
 
-    const { isDisabled, ...otherTriggerProps } = triggerProps;
-
     return (
       <>
-        {control?.({
-          disabled: isDisabled,
-          ...otherTriggerProps,
-        })}
+        {control?.(triggerProps)}
         <Transition
           onEnter={on}
           timeout={300}

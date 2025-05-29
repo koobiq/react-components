@@ -86,7 +86,7 @@ export const Variant: Story = {
 
 export const Disabled: Story = {
   render: (args: IconButtonBaseProps) => (
-    <IconButton disabled {...args}>
+    <IconButton isDisabled {...args}>
       <IconMagnifyingGlass24 />
     </IconButton>
   ),
@@ -94,7 +94,7 @@ export const Disabled: Story = {
 
 export const Compact: Story = {
   render: (args: IconButtonBaseProps) => (
-    <IconButton size="l" compact {...args}>
+    <IconButton size="l" isCompact {...args}>
       <IconMagnifyingGlass16 />
     </IconButton>
   ),
