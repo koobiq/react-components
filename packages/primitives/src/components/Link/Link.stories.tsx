@@ -23,7 +23,7 @@ export const Base: Story = {
   render: (args: LinkBaseProps) => (
     <Link
       {...args}
-      style={({ hovered, pressed }) => {
+      style={({ isHovered, isPressed }) => {
         const commonStyle: CSSProperties = {
           fontSize: 16,
           color: 'light-dark(#000, #fff)',
@@ -37,19 +37,19 @@ export const Base: Story = {
 
         return {
           ...commonStyle,
-          ...(hovered && { opacity: 0.9 }),
-          ...(pressed && { opacity: 0.8 }),
+          ...(isHovered && { opacity: 0.9 }),
+          ...(isPressed && { opacity: 0.8 }),
         };
       }}
     >
-      {({ hovered, focusVisible }) => (
+      {({ isHovered, isFocusVisible }) => (
         <>
           {
             <div
               style={
                 {
                   transform: 'translateY(0)',
-                  ...((hovered || focusVisible) && {
+                  ...((isHovered || isFocusVisible) && {
                     transform: 'translateY(2px)',
                   }),
                   height: 2,

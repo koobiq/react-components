@@ -2,50 +2,37 @@
 
 import type { RefObject } from 'react';
 
-import type { ExtendableProps } from '@koobiq/react-core';
 import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
 import type { LinkAria, AriaLinkOptions } from '@react-aria/link';
 import { useLink as useLinkReactAria } from '@react-aria/link';
 
-export type UseLinkProps = ExtendableProps<
-  { disabled?: boolean },
-  Omit<AriaLinkOptions, 'isDisabled'>
->;
+export type UseLinkProps = AriaLinkOptions;
 
 export function useLink(
   props: UseLinkProps,
   ref: RefObject<HTMLElement | null>
 ) {
-  const { disabled, ...otherProps } = props;
-
-  const { hoverProps, isHovered } = useHover({
-    ...otherProps,
-    isDisabled: disabled,
-  });
+  const { hoverProps, isHovered } = useHover(props);
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
 
   const { linkProps: commonLinkProps, isPressed } = useLinkReactAria(
-    {
-      ...otherProps,
-      isDisabled: disabled,
-    },
+    props,
     ref
   );
 
   const linkProps: LinkAria['linkProps'] = mergeProps(
-    { disabled },
+    commonLinkProps,
     focusProps,
-    hoverProps,
-    commonLinkProps
+    hoverProps
   );
 
   return {
     linkProps,
-    pressed: isPressed,
-    hovered: isHovered,
-    focused: isFocused,
-    focusVisible: isFocusVisible,
+    isPressed,
+    isHovered,
+    isFocused,
+    isFocusVisible,
   };
 }
 

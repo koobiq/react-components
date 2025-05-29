@@ -2,6 +2,7 @@
 
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Link as LinkPrimitive } from '@koobiq/react-primitives';
 
@@ -11,6 +12,9 @@ import type { LinkBaseProps } from './types';
 export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   const {
     variant = 'text-normal',
+    isVisitable: isVisitableProp = false,
+    isPseudo: isPseudoProp = false,
+    isDisabled: isDisabledProp = false,
     visitable = false,
     pseudo = false,
     disabled,
@@ -22,26 +26,48 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     ...other
   } = props;
 
+  const isVisitable = isVisitableProp || visitable;
+  const isDisabled = isDisabledProp || disabled;
+  const isPseudo = isPseudoProp || pseudo;
+
   const hasIcon = Boolean(startIcon || endIcon);
+
+  if (process.env.NODE_ENV !== 'production' && visitable) {
+    deprecate(
+      'The "visitable" prop is deprecated. Use "isVisitable" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && pseudo) {
+    deprecate(
+      'The "pseudo" prop is deprecated. Use "isPseudo" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && disabled) {
+    deprecate(
+      'The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+    );
+  }
 
   const elementType = as !== 'a' && as !== 'button' ? `${as}` : undefined;
 
   return (
     <LinkPrimitive
       as={as}
-      disabled={disabled}
+      isDisabled={isDisabled}
       elementType={elementType}
-      {...(disabled && { tabIndex: -1 })}
-      className={({ hovered, pressed, focusVisible }) =>
+      {...(isDisabled && { tabIndex: -1 })}
+      className={({ isHovered, isPressed, isFocusVisible }) =>
         clsx(
           s.base,
           s[variant],
-          pseudo && s.pseudo,
-          hovered && s.hovered,
-          pressed && s.pressed,
+          isPseudo && s.pseudo,
+          isHovered && s.hovered,
+          isPressed && s.pressed,
           hasIcon && s.hasIcon,
-          visitable && s.visitable,
-          focusVisible && s.focusVisible,
+          isVisitable && s.visitable,
+          isFocusVisible && s.focusVisible,
           className
         )
       }

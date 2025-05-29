@@ -11,7 +11,4 @@ export type ButtonOptions = Omit<
   disabled?: boolean;
 };
 
-export type LinkOptions = Omit<AriaLinkOptions, 'isDisabled'> & {
-  /** Whether the button is disabled. */
-  disabled?: boolean;
-};
+export type LinkOptions = AriaLinkOptions;
