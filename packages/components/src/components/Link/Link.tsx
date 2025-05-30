@@ -12,9 +12,9 @@ import type { LinkBaseProps } from './types';
 export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   const {
     variant = 'text-normal',
-    isVisitable: isVisitableProp = false,
     isPseudo: isPseudoProp = false,
     isDisabled: isDisabledProp = false,
+    allowVisited: allowVisitedProp = false,
     visitable = false,
     pseudo = false,
     disabled,
@@ -26,7 +26,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     ...other
   } = props;
 
-  const isVisitable = isVisitableProp || visitable;
+  const allowVisited = allowVisitedProp || visitable;
   const isDisabled = isDisabledProp || disabled;
   const isPseudo = isPseudoProp || pseudo;
 
@@ -34,7 +34,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
 
   if (process.env.NODE_ENV !== 'production' && visitable) {
     deprecate(
-      'The "visitable" prop is deprecated. Use "isVisitable" prop to replace it.'
+      'The "visitable" prop is deprecated. Use "allowVisited" prop to replace it.'
     );
   }
 
@@ -66,7 +66,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
           isHovered && s.hovered,
           isPressed && s.pressed,
           hasIcon && s.hasIcon,
-          isVisitable && s.visitable,
+          allowVisited && s.allowVisited,
           isFocusVisible && s.focusVisible,
           className
         )

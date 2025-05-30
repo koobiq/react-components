@@ -98,17 +98,17 @@ export const Disabled: Story = {
   ),
 };
 
-export const Visitable: Story = {
+export const AllowVisited: Story = {
   render: function Render() {
-    const [isVisitable, { set: setVisitable }] = useBoolean(true);
+    const [allowVisited, { set: setAllowVisited }] = useBoolean(true);
 
     return (
       <FlexBox gap="l" direction="column">
-        <Link href="https://react.koobiq.io/" isVisitable={isVisitable}>
+        <Link href="https://react.koobiq.io/" allowVisited={allowVisited}>
           Link
         </Link>
-        <Checkbox checked={isVisitable} onChange={setVisitable}>
-          Visitable
+        <Checkbox checked={allowVisited} onChange={setAllowVisited}>
+          AllowVisited
         </Checkbox>
       </FlexBox>
     );

@@ -47,7 +47,7 @@ export type LinkBaseProps = ExtendableProps<
     /** If `true`, the component is disabled. */
     isDisabled?: boolean;
     /** If `true`, displays :visited CSS-state. */
-    isVisitable?: boolean;
+    allowVisited?: boolean;
     /** If `true`, displays the link as a pseudo-link. */
     isPseudo?: boolean;
     /** Additional CSS-classes. */

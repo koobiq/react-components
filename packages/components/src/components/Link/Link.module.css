@@ -42,17 +42,17 @@
   text-decoration-color: var(--kbq-line-theme-less);
 }
 
-.visitable:where(:visited) {
+.allowVisited:where(:visited) {
   color: var(--kbq-foreground-visited);
   text-decoration-color: var(--kbq-line-visited);
 }
 
-.visitable:where(.hovered:visited) {
+.allowVisited:where(.hovered:visited) {
   color: var(--kbq-states-foreground-visited-hover);
   text-decoration-color: var(--kbq-line-visited);
 }
 
-.visitable:where(.pressed:visited) {
+.allowVisited:where(.pressed:visited) {
   color: var(--kbq-states-foreground-visited-active);
   text-decoration-color: var(--kbq-line-visited);
 }
