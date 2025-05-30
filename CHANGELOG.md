@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.1-beta.22](https://github.com/koobiq/react-components/compare/0.0.1-beta.21...0.0.1-beta.22) (2025-05-30)
+
+### ⚠ BREAKING CHANGES
+
+- **components/ButtonToggleGroup:** The "isBlock" prop is removed. Use "fullWidth" prop to replace it.
+
+### 🚀 Features
+
+- **components/Alert:** add `isCompact` & `isColored`, deprecate `compact` & `colored` ([05a9ad5](https://github.com/koobiq/react-components/commit/05a9ad57c35e844ef34132176f1ecdfdf4cb38e6))
+- **components/Backdrop:** add `isOpen` prop, deprecate `open` ([1ba8b26](https://github.com/koobiq/react-components/commit/1ba8b2612ed5e6f910fbb289f37ccfa81636bb92))
+- **components/Button/IconButton:** rethink logical prop naming ([8bb43c3](https://github.com/koobiq/react-components/commit/8bb43c3213abd5af10a5e3a544975c7e0b8f9aeb))
+- **components/ButtonToggleGroup:** add `fullWidth`; remove `isBlock` ([#58](https://github.com/koobiq/react-components/issues/58)) ([2c802a8](https://github.com/koobiq/react-components/commit/2c802a88f162a5ee42d455d005d706957d841fbc))
+- **components/Link:** add `allowVisited`; deprecate visitable ([0d9af52](https://github.com/koobiq/react-components/commit/0d9af52012320969a7bca4f583fdd6a0144ac7b7))
+- **components/Link:** add `isDisabled`, `isVisitable`, `isPseudo`; deprecate disabled, visitable, pseudo ([96a3d45](https://github.com/koobiq/react-components/commit/96a3d45f9292afc399540606f0bc59ad615ae0a0))
+
 ## [0.0.1-beta.21](https://github.com/koobiq/react-components/compare/0.0.1-beta.20...0.0.1-beta.21) (2025-05-28)
 
 ### 🚀 Features
