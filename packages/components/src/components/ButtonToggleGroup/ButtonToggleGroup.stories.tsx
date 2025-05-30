@@ -50,7 +50,7 @@ export const Base: Story = {
 export const FullWidth: Story = {
   render: (args: ButtonToggleGroupBaseProps) => (
     <div style={{ inlineSize: 400 }}>
-      <ButtonToggleGroup defaultSelectedKey="left" isBlock {...args}>
+      <ButtonToggleGroup defaultSelectedKey="left" fullWidth {...args}>
         <ButtonToggle id="left" icon={<IconAlignLeft16 />}>
           Left
         </ButtonToggle>
@@ -189,7 +189,7 @@ export const Icon: Story = {
 
 export const Playground: Story = {
   render: function Render(args: ButtonToggleGroupBaseProps) {
-    const [isBlock, { set: setIsBlock }] = useBoolean(true);
+    const [fullWidth, { set: setFullWidth }] = useBoolean(true);
     const [isDisabled, { set: setIsDisabled }] = useBoolean(false);
     const [selected, setSelected] = useState<string | number>();
     const [hasEqualItemSize, { set: setHasEqualItemSize }] = useBoolean(true);
@@ -201,7 +201,7 @@ export const Playground: Story = {
             <Modal.Header>Playground</Modal.Header>
             <Modal.Body>
               <ButtonToggleGroup
-                isBlock={isBlock}
+                fullWidth={fullWidth}
                 defaultSelectedKey="first"
                 hasEqualItemSize={hasEqualItemSize}
                 {...args}
@@ -218,7 +218,7 @@ export const Playground: Story = {
               </ButtonToggleGroup>
               <ButtonToggleGroup
                 isDisabled={isDisabled}
-                isBlock={isBlock}
+                fullWidth={fullWidth}
                 selectedKey={selected}
                 onSelectionChange={setSelected}
                 hasEqualItemSize={hasEqualItemSize}
@@ -270,8 +270,8 @@ export const Playground: Story = {
                 <Typography>Current key: {selected}</Typography>
 
                 <FlexBox gap="m">
-                  <Checkbox checked={isBlock} onChange={setIsBlock}>
-                    isBlock
+                  <Checkbox checked={fullWidth} onChange={setFullWidth}>
+                    fullWidth
                   </Checkbox>
                   <Checkbox checked={isDisabled} onChange={setIsDisabled}>
                     isDisabled
