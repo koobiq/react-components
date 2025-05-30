@@ -19,7 +19,7 @@ export type ButtonToggleGroupBaseProps = {
    * If `true`, the button will take up the full width of its container.
    * @default false
    * */
-  isBlock?: boolean;
+  fullWidth?: boolean;
   /** The contents of the collection. */
   children?: Array<ReactElement<ButtonToggleProps>>;
   /**

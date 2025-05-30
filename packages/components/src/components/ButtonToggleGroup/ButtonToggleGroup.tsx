@@ -23,7 +23,7 @@ export const ButtonToggleGroup = forwardRef<
   ButtonToggleGroupProps
 >((props, ref) => {
   const {
-    isBlock = false,
+    fullWidth = false,
     isDisabled = false,
     hasEqualItemSize = false,
     style,
@@ -107,11 +107,11 @@ export const ButtonToggleGroup = forwardRef<
     {
       className: clsx(
         s.base,
-        isBlock && s.block,
+        fullWidth && s.fullWidth,
         hasEqualItemSize && s.hasEqualItemSize,
         className
       ),
-      'data-block': isBlock,
+      'data-fullwidth': fullWidth,
       'data-animated': isAnimated,
       'data-equal-item-size': hasEqualItemSize,
       ref: domRef,
