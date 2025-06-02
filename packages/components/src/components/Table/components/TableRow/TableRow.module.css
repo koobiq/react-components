@@ -4,6 +4,10 @@
   transition: background-color var(--kbq-transition-default);
 }
 
+.base:last-child td {
+  border-block-end: 0 solid;
+}
+
 .hovered {
   background-color: var(--kbq-states-background-transparent-hover);
 }

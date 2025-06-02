@@ -4,6 +4,14 @@
   color: var(--kbq-foreground-contrast-secondary);
 }
 
+[data-divider='row'] .base {
+  border-block-end: 1px solid var(--kbq-line-contrast-less);
+}
+
+[data-divider='column'] .base:not(:last-child) {
+  border-inline-end: 1px solid var(--kbq-line-contrast-less);
+}
+
 .focusVisible {
   box-shadow: inset 0 0 0 2px orange;
 }
