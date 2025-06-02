@@ -29,5 +29,6 @@ export * from './Divider';
 export * from './Menu';
 export * from './ButtonToggleGroup';
 export * from './TagGroup';
+export * from './Table';
 export * from './layout';
 export { useListData } from '@koobiq/react-primitives';

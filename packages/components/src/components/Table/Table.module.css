@@ -1,0 +1,8 @@
+.tableColumnHeader {
+  color: var(--kbq-foreground-contrast-secondary);
+}
+
+.tableCell {
+  outline: none;
+  padding: 10px var(--kbq-size-s);
+}
