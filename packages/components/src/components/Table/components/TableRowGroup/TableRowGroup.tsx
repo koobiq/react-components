@@ -1,6 +1,9 @@
 import type { ReactNode, ElementType } from 'react';
 
+import { clsx } from '@koobiq/react-core';
 import { useTableRowGroup } from '@koobiq/react-primitives';
+
+import s from './TableRowGroup.module.css';
 
 export type TableRowGroupProps = {
   children: ReactNode;
@@ -13,11 +16,7 @@ export function TableRowGroup({ type: Element, children }: TableRowGroupProps) {
   return (
     <Element
       {...rowGroupProps}
-      style={
-        Element === 'thead'
-          ? { borderBottom: '2px solid var(--spectrum-global-color-gray-800)' }
-          : null
-      }
+      className={clsx(s.base, Element === 'thead' && s.thead)}
     >
       {children}
     </Element>
