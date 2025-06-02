@@ -42,6 +42,10 @@ import {
   useTableHeaderRow,
   useTableColumnHeader,
   useTableRowGroup,
+  type AriaTableProps,
+  type AriaTableCellProps,
+  type GridRowProps,
+  type AriaTableColumnHeaderProps,
 } from '@react-aria/table';
 import {
   useTag,
@@ -66,6 +70,8 @@ import {
   TableBody,
   TableHeader,
   useTableState,
+  type TableStateProps,
+  type TableState,
 } from '@react-stately/table';
 import {
   useToggleGroupState,
@@ -135,8 +141,14 @@ export {
   useToggleButtonGroupItem,
   useLocalizedStringFormatter,
   type Node,
+  type TableState,
   type TreeState,
   type ItemProps,
+  type GridRowProps,
+  type AriaTableColumnHeaderProps,
+  type AriaTableCellProps,
+  type AriaTableProps,
+  type TableStateProps,
   type AriaTagGroupProps,
   type AriaTagProps,
   type ListState,

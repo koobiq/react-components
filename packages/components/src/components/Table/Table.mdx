@@ -1,0 +1,27 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Table.stories';
+
+<Meta of={Stories} />
+
+# Table
+
+<Status variant="experimental" />
+
+A table displays data in rows and columns and enables a user to navigate its contents via directional navigation keys,
+and optionally supports row selection and sorting.
+
+```tsx
+import { Table } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
