@@ -1,0 +1,13 @@
+.base {
+  outline: none;
+  cursor: default;
+  transition: background-color var(--kbq-transition-default);
+}
+
+.hovered {
+  background-color: var(--kbq-states-background-transparent-hover);
+}
+
+.focusVisible {
+  box-shadow: inset 0 0 0 2px orange;
+}

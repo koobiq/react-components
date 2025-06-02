@@ -30,22 +30,22 @@ export const Base: Story = {
         <Table.Row>
           <Table.Cell>Games</Table.Cell>
           <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>6/7/2020</Table.Cell>
+          <Table.Cell>06/07/2024</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Program Files</Table.Cell>
           <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>4/7/2021</Table.Cell>
+          <Table.Cell>04/07/2023</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>bootmgr</Table.Cell>
           <Table.Cell>System file</Table.Cell>
-          <Table.Cell>11/20/2010</Table.Cell>
+          <Table.Cell>11/20/2015</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>log.txt</Table.Cell>
           <Table.Cell>Text Document</Table.Cell>
-          <Table.Cell>1/18/2016</Table.Cell>
+          <Table.Cell>01/18/2019</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
