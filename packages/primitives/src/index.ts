@@ -36,6 +36,14 @@ import {
 import { useSelect, HiddenSelect } from '@react-aria/select';
 import { useSeparator } from '@react-aria/separator';
 import {
+  useTable,
+  useTableCell,
+  useTableRow,
+  useTableHeaderRow,
+  useTableColumnHeader,
+  useTableRowGroup,
+} from '@react-aria/table';
+import {
   useTag,
   useTagGroup,
   type AriaTagGroupProps,
@@ -51,6 +59,14 @@ import {
   type OverlayTriggerState,
 } from '@react-stately/overlays';
 import { useSelectState } from '@react-stately/select';
+import {
+  Cell,
+  Column,
+  Row,
+  TableBody,
+  TableHeader,
+  useTableState,
+} from '@react-stately/table';
 import {
   useToggleGroupState,
   type ToggleGroupState,
@@ -75,6 +91,11 @@ export {
   Overlay,
   Section,
   useMenu,
+  Cell,
+  Column,
+  Row,
+  TableBody,
+  TableHeader,
   useLocale,
   useDialog,
   useOption,
@@ -83,6 +104,7 @@ export {
   useListBox,
   useTooltip,
   useTag,
+  useTable,
   useTagGroup,
   useListState,
   HiddenSelect,
@@ -91,6 +113,7 @@ export {
   useListData,
   useTreeState,
   useSeparator,
+  useTableState,
   useMenuSection,
   useMenuTrigger,
   useSelectState,
@@ -99,6 +122,11 @@ export {
   useTooltipTrigger,
   useListBoxSection,
   useOverlayPosition,
+  useTableCell,
+  useTableRow,
+  useTableHeaderRow,
+  useTableColumnHeader,
+  useTableRowGroup,
   useMenuTriggerState,
   useToggleGroupState,
   useToggleButtonGroup,
