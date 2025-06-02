@@ -1,6 +1,6 @@
-import { forwardRef, useRef } from 'react';
+import { forwardRef, type Ref } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
 import {
   Row,
   Cell,
@@ -20,12 +20,21 @@ import {
   TableHeaderRow,
   TableColumnHeader,
 } from './components';
-import type { TableComponentProp, TableProps } from './types';
+import s from './Table.module.css';
+import type { TableComponentProp, TableProps, TableRef } from './types';
 
 const textNormal = utilClasses.typography['text-normal'];
 
-function TableRender<T extends object>(props: TableProps<T>) {
-  const { selectionMode, selectionBehavior } = props;
+function TableRender<T extends object>(
+  props: TableProps<T>,
+  ref?: Ref<TableRef>
+) {
+  const {
+    selectionMode,
+    selectionBehavior,
+    divider = 'none',
+    className,
+  } = props;
 
   const state = useTableState({
     ...props,
@@ -33,17 +42,21 @@ function TableRender<T extends object>(props: TableProps<T>) {
       selectionMode === 'multiple' && selectionBehavior !== 'replace',
   });
 
-  const ref = useRef<HTMLTableElement | null>(null);
+  const domRef = useDOMRef<HTMLTableElement>(ref);
   const { collection } = state;
-  const { gridProps } = useTable({}, state, ref);
+  const { gridProps } = useTable({}, state, domRef);
+
+  const tableProps = mergeProps(
+    {
+      className: clsx(s.base, textNormal, className),
+      'data-divider': divider,
+      ref: domRef,
+    },
+    gridProps
+  );
 
   return (
-    <table
-      {...gridProps}
-      ref={ref}
-      style={{ borderCollapse: 'collapse' }}
-      className={clsx(textNormal)}
-    >
+    <table {...tableProps}>
       <TableRowGroup type="thead">
         {collection.headerRows.map((headerRow) => (
           <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
