@@ -1,23 +1,24 @@
-import type { ReactNode, ElementType } from 'react';
+import type { ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 import { useTableRowGroup } from '@koobiq/react-primitives';
 
-import s from './TableRowGroup.module.css';
+import s from '../../Table.module.css';
 
 export type TableRowGroupProps = {
   children: ReactNode;
-  type: ElementType;
+  type: 'thead' | 'tbody';
 };
 
-export function TableRowGroup({ type: Element, children }: TableRowGroupProps) {
+export function TableRowGroup({
+  type = 'thead',
+  children,
+}: TableRowGroupProps) {
+  const Element = type;
   const { rowGroupProps } = useTableRowGroup();
 
   return (
-    <Element
-      {...rowGroupProps}
-      className={clsx(s.base, Element === 'thead' && s.thead)}
-    >
+    <Element {...rowGroupProps} className={clsx(s[type])}>
       {children}
     </Element>
   );
