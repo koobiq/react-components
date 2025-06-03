@@ -72,6 +72,8 @@ import {
   useTableState,
   type TableStateProps,
   type TableState,
+  type CellProps,
+  type RowProps,
 } from '@react-stately/table';
 import {
   useToggleGroupState,
@@ -144,6 +146,8 @@ export {
   type TableState,
   type TreeState,
   type ItemProps,
+  type CellProps,
+  type RowProps,
   type GridRowProps,
   type AriaTableColumnHeaderProps,
   type AriaTableCellProps,

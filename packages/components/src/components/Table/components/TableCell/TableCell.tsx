@@ -16,10 +16,13 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
   const { gridCellProps } = useTableCell({ node: cell }, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
 
+  const { style, className } = cell.props;
+
   return (
     <td
       {...mergeProps(gridCellProps, focusProps)}
-      className={clsx(s.cell, isFocusVisible && s.focusVisible)}
+      className={clsx(s.cell, isFocusVisible && s.focusVisible, className)}
+      style={style}
       ref={ref}
     >
       {cell.rendered}

@@ -24,6 +24,8 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
     ref
   );
 
+  const { style, className } = item.props;
+
   const { isFocusVisible, focusProps } = useFocusRing();
   const { isHovered, hoverProps } = useHover({});
 
@@ -34,9 +36,11 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
         isHovered && s.hovered,
         isPressed && s.pressed,
         isSelected && s.selected,
-        isFocusVisible && s.focusVisible
+        isFocusVisible && s.focusVisible,
+        className
       )}
       {...mergeProps(rowProps, hoverProps, focusProps)}
+      style={style}
       ref={ref}
     >
       {children}
