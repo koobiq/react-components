@@ -8,8 +8,7 @@ import type {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
-
-import s from './TableColumnHeader.module.css';
+import s from '../../Table.module.css';
 
 type TableColumnHeaderProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
@@ -35,7 +34,11 @@ export function TableColumnHeader<T>({
 
   return (
     <th
-      className={clsx(s.base, isFocusVisible && s.focusVisible, textNormal)}
+      className={clsx(
+        s['header-cell'],
+        isFocusVisible && s.focusVisible,
+        textNormal
+      )}
       {...mergeProps(columnHeaderProps, focusProps)}
       style={{
         textAlign: (column.colSpan ?? 0) > 1 ? 'center' : 'left',

@@ -1,3 +1,94 @@
 .base {
-  border-collapse: collapse;
+  --table-cell-padding: 10px var(--kbq-size-s);
+  --table-cell-color: var(--kbq-foreground-contrast);
+  --table-header-cell-padding: 10px var(--kbq-size-s);
+  --table-header-cell-color: var(--kbq-foreground-contrast-secondary);
+  --table-border: 1px solid var(--kbq-line-contrast-less);
+  border-spacing: 0;
+}
+
+.fullWidth {
+  inline-size: 100%;
+}
+
+.base:where([data-divider='none']) {
+  .cell:first-child {
+    border-top-left-radius: var(--kbq-size-s);
+    border-bottom-left-radius: var(--kbq-size-s);
+  }
+
+  .cell:last-child {
+    border-top-right-radius: var(--kbq-size-s);
+    border-bottom-right-radius: var(--kbq-size-s);
+  }
+
+  .row:first-child {
+    .cell:first-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: var(--kbq-size-s);
+    }
+
+    .cell:last-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: var(--kbq-size-s);
+    }
+  }
+}
+
+.base:where([data-divider='row']) .cell {
+  border-block-end: var(--table-border);
+}
+
+.base:where([data-divider='column']) {
+  .cell:not(:last-child) {
+    border-inline-end: var(--table-border);
+  }
+
+  .header-cell:not(:last-child) {
+    border-inline-end: var(--table-border);
+  }
+}
+
+.base:where([data-sticky-header='true']) .thead {
+  position: sticky;
+  inset-block-start: 0;
+  background-color: var(--kbq-background-bg);
+}
+
+/* cell */
+.cell {
+  outline: none;
+  box-sizing: border-box;
+  color: var(--table-cell-color);
+  padding: var(--table-cell-padding);
+}
+
+/* row */
+.row {
+  outline: none;
+  cursor: default;
+  box-sizing: border-box;
+  transition: background-color var(--kbq-transition-default);
+
+  &.hovered {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &:last-child .cell {
+    border-block-end: 0 solid;
+  }
+}
+
+/* header-cell */
+.header-cell {
+  outline: none;
+  cursor: default;
+  border-block-end: var(--table-border);
+  color: var(--table-header-cell-color);
+  padding: var(--table-header-cell-padding);
+}
+
+/* states */
+.focusVisible {
+  box-shadow: inset 0 0 0 2px var(--kbq-states-line-focus-theme);
 }

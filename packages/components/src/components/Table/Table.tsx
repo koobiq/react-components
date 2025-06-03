@@ -30,10 +30,13 @@ function TableRender<T extends object>(
   ref?: Ref<TableRef>
 ) {
   const {
-    selectionMode,
-    selectionBehavior,
+    stickyHeader = false,
+    fullWidth = false,
     divider = 'none',
+    selectionBehavior,
+    selectionMode,
     className,
+    style,
   } = props;
 
   const state = useTableState({
@@ -44,12 +47,15 @@ function TableRender<T extends object>(
 
   const domRef = useDOMRef<HTMLTableElement>(ref);
   const { collection } = state;
-  const { gridProps } = useTable({}, state, domRef);
+  const { gridProps } = useTable({ 'aria-label': '' }, state, domRef);
 
   const tableProps = mergeProps(
     {
-      className: clsx(s.base, textNormal, className),
+      className: clsx(s.base, fullWidth && s.fullWidth, textNormal, className),
       'data-divider': divider,
+      'data-fullwidth': fullWidth,
+      'data-sticky-header': stickyHeader,
+      style,
       ref: domRef,
     },
     gridProps

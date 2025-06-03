@@ -4,7 +4,7 @@ import { useFocusRing, mergeProps, clsx } from '@koobiq/react-core';
 import { useTableCell } from '@koobiq/react-primitives';
 import type { TableState, AriaTableCellProps } from '@koobiq/react-primitives';
 
-import s from './TableCell.module.css';
+import s from '../../Table.module.css';
 
 type TableCellProps<T> = {
   cell: AriaTableCellProps['node'];
@@ -19,7 +19,7 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
   return (
     <td
       {...mergeProps(gridCellProps, focusProps)}
-      className={clsx(s.base, isFocusVisible && s.focusVisible)}
+      className={clsx(s.cell, isFocusVisible && s.focusVisible)}
       ref={ref}
     >
       {cell.rendered}

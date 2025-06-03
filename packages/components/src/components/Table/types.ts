@@ -2,7 +2,7 @@ import type { ComponentRef, CSSProperties, ReactElement, Ref } from 'react';
 
 import type { TableStateProps } from '@koobiq/react-primitives';
 
-export const tablePropDivider = ['none', 'row', 'column'] as const;
+export const tablePropDivider = ['none', 'row'] as const;
 
 export type TablePropDivider = (typeof tablePropDivider)[number];
 
@@ -16,7 +16,13 @@ export type TableProps<T> = {
    * @default none
    */
   divider?: TablePropDivider;
-  /** Ref to the control */
+  /**
+   * If `true`, the table will take up the full width of its container.
+   * @default false
+   * */
+  fullWidth?: boolean;
+  stickyHeader?: boolean;
+  /** Ref to the control. */
   ref?: Ref<HTMLTableElement>;
 } & TableStateProps<T>;
 
