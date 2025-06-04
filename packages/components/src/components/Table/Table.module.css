@@ -13,24 +13,24 @@
 
 .base:where([data-divider='none']) {
   .cell:first-child {
-    border-top-left-radius: var(--kbq-size-s);
-    border-bottom-left-radius: var(--kbq-size-s);
+    border-start-start-radius: var(--kbq-size-s);
+    border-end-start-radius: var(--kbq-size-s);
   }
 
   .cell:last-child {
-    border-top-right-radius: var(--kbq-size-s);
-    border-bottom-right-radius: var(--kbq-size-s);
+    border-start-end-radius: var(--kbq-size-s);
+    border-end-end-radius: var(--kbq-size-s);
   }
 
   .row:first-child {
     .cell:first-child {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: var(--kbq-size-s);
+      border-start-start-radius: 0;
+      border-end-start-radius: var(--kbq-size-s);
     }
 
     .cell:last-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: var(--kbq-size-s);
+      border-start-end-radius: 0;
+      border-end-end-radius: var(--kbq-size-s);
     }
   }
 }

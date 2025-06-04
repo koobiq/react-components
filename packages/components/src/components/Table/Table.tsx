@@ -1,15 +1,10 @@
 import { forwardRef, type Ref } from 'react';
 
 import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
-import {
-  useTable,
-  TableBody,
-  TableHeader,
-  useTableState,
-} from '@koobiq/react-primitives';
+import { useTable, useTableState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
-import { Cell, Row, Column } from '../Collections';
+import { Cell, Row, Column, TableBody, TableHeader } from '../Collections';
 
 import {
   TableRow,

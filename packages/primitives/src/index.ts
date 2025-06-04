@@ -75,6 +75,8 @@ import {
   type CellProps,
   type ColumnProps,
   type RowProps,
+  type TableHeaderProps,
+  type TableBodyProps,
 } from '@react-stately/table';
 import {
   useToggleGroupState,
@@ -146,6 +148,8 @@ export {
   type Node,
   type TableState,
   type TreeState,
+  type TableHeaderProps,
+  type TableBodyProps,
   type ItemProps,
   type CellProps,
   type ColumnProps,
