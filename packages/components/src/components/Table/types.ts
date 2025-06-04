@@ -21,6 +21,10 @@ export type TableProps<T> = {
    * @default false
    * */
   fullWidth?: boolean;
+  /**
+   * Flag indicating a fixed table header.
+   * @default false
+   * */
   stickyHeader?: boolean;
   /** Ref to the control. */
   ref?: Ref<HTMLTableElement>;

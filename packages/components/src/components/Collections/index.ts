@@ -5,3 +5,5 @@ export * from './Header';
 export * from './Cell';
 export * from './Row';
 export * from './Column';
+export * from './TableBody';
+export * from './TableHeader';
