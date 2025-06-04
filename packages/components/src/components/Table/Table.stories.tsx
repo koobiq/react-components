@@ -371,3 +371,40 @@ export const StickyHeader: Story = {
     );
   },
 };
+
+export const Alignment: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: (args: TableProps<object>) => (
+    <Table aria-label="Example static collection table" {...args}>
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Type</Table.Column>
+        <Table.Column>Date Modified</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Games</Table.Cell>
+          <Table.Cell align="center">File folder</Table.Cell>
+          <Table.Cell align="right">06/07/2024</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Program Files</Table.Cell>
+          <Table.Cell align="center">File folder</Table.Cell>
+          <Table.Cell align="right">04/07/2023</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>bootmgr</Table.Cell>
+          <Table.Cell align="center">System file</Table.Cell>
+          <Table.Cell align="right">11/20/2015</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>a_very_very_long_file_name.txt</Table.Cell>
+          <Table.Cell align="center">Text Document</Table.Cell>
+          <Table.Cell align="right">01/18/2019</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+};
