@@ -73,6 +73,7 @@ import {
   type TableStateProps,
   type TableState,
   type CellProps,
+  type ColumnProps,
   type RowProps,
 } from '@react-stately/table';
 import {
@@ -147,6 +148,7 @@ export {
   type TreeState,
   type ItemProps,
   type CellProps,
+  type ColumnProps,
   type RowProps,
   type GridRowProps,
   type AriaTableColumnHeaderProps,

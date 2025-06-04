@@ -8,6 +8,7 @@ import type {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
+import type { ColumnProps } from '../../../Collections';
 import s from '../../Table.module.css';
 
 type TableColumnHeaderProps<T> = {
@@ -29,37 +30,25 @@ export function TableColumnHeader<T>({
     ref
   );
 
+  const { style, className, align, valign }: ColumnProps<T> = column.props;
+
   const { isFocusVisible, focusProps } = useFocusRing();
-  const arrowIcon = state.sortDescriptor?.direction === 'ascending' ? '▲' : '▼';
 
   return (
     <th
+      align={align}
       className={clsx(
         s['header-cell'],
         isFocusVisible && s.focusVisible,
-        textNormal
+        valign && s[valign],
+        textNormal,
+        className
       )}
+      style={style}
       {...mergeProps(columnHeaderProps, focusProps)}
-      style={{
-        textAlign: (column.colSpan ?? 0) > 1 ? 'center' : 'left',
-      }}
       ref={ref}
     >
       {column.rendered}
-      {column.props.allowsSorting && (
-        <span
-          aria-hidden="true"
-          style={{
-            padding: '0 2px',
-            visibility:
-              state.sortDescriptor?.column === column.key
-                ? 'visible'
-                : 'hidden',
-          }}
-        >
-          {arrowIcon}
-        </span>
-      )}
     </th>
   );
 }
