@@ -32,7 +32,7 @@ export type ButtonToggleGroupBaseProps = {
   /** The initial selected key in the collection (uncontrolled). */
   defaultSelectedKey?: ButtonToggleGroupKey;
   /** Handler that is called when the selection changes. */
-  onSelectionChange?: (keys: ButtonToggleGroupKey) => void;
+  onSelectionChange?: (key: ButtonToggleGroupKey) => void;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
   /** The props used for each slot inside. */
