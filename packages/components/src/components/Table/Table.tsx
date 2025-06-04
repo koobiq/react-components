@@ -2,7 +2,6 @@ import { forwardRef, type Ref } from 'react';
 
 import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
 import {
-  Column,
   useTable,
   TableBody,
   TableHeader,
@@ -10,7 +9,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
-import { Cell, Row } from '../Collections';
+import { Cell, Row, Column } from '../Collections';
 
 import {
   TableRow,

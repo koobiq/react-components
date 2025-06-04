@@ -377,11 +377,11 @@ export const Alignment: Story = {
     layout: 'centered',
   },
   render: (args: TableProps<object>) => (
-    <Table aria-label="Example static collection table" {...args}>
+    <Table aria-label="Alignment" {...args}>
       <Table.Header>
         <Table.Column>Name</Table.Column>
-        <Table.Column>Type</Table.Column>
-        <Table.Column>Date Modified</Table.Column>
+        <Table.Column align="center">Type</Table.Column>
+        <Table.Column align="right">Date Modified</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row>
@@ -400,8 +400,13 @@ export const Alignment: Story = {
           <Table.Cell align="right">11/20/2015</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>a_very_very_long_file_name.txt</Table.Cell>
-          <Table.Cell align="center">Text Document</Table.Cell>
+          <Table.Cell>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi,
+            fugiat.
+          </Table.Cell>
+          <Table.Cell align="center" valign="top">
+            Text Document
+          </Table.Cell>
           <Table.Cell align="right">01/18/2019</Table.Cell>
         </Table.Row>
       </Table.Body>

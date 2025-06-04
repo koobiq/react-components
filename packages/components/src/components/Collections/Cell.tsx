@@ -13,10 +13,12 @@ const CellInner = AriaCell as CellComponent;
 
 export const cellPropAlign = ['left', 'right', 'center'] as const;
 export const cellPropVerticalAlign = [
+  'baseline',
   'top',
   'middle',
   'bottom',
-  'baseline',
+  'sub',
+  'text-top',
 ] as const;
 
 export type CellPropAlign = (typeof cellPropAlign)[number];

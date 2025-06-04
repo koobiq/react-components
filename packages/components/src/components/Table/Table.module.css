@@ -92,3 +92,27 @@
 .focusVisible {
   box-shadow: inset 0 0 0 2px var(--kbq-states-line-focus-theme);
 }
+
+.top {
+  vertical-align: top;
+}
+
+.baseline {
+  vertical-align: baseline;
+}
+
+.middle {
+  vertical-align: middle;
+}
+
+.bottom {
+  vertical-align: bottom;
+}
+
+.sub {
+  vertical-align: sub;
+}
+
+.text-top {
+  vertical-align: text-top;
+}
