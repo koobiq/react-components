@@ -22,7 +22,14 @@
     border-end-end-radius: var(--kbq-size-s);
   }
 
+  .row {
+    border-radius: var(--kbq-size-s);
+  }
+
   .row:first-child {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+
     .cell:first-child {
       border-start-start-radius: 0;
       border-end-start-radius: var(--kbq-size-s);
@@ -35,17 +42,9 @@
   }
 }
 
-.base:where([data-divider='row']) .cell {
-  border-block-end: var(--table-border);
-}
-
-.base:where([data-divider='column']) {
-  .cell:not(:last-child) {
-    border-inline-end: var(--table-border);
-  }
-
-  .header-cell:not(:last-child) {
-    border-inline-end: var(--table-border);
+.base:where([data-divider='row']) {
+  .cell {
+    border-block-end: var(--table-border);
   }
 }
 
@@ -90,7 +89,8 @@
 
 /* states */
 .focusVisible {
-  box-shadow: inset 0 0 0 2px var(--kbq-states-line-focus-theme);
+  outline-offset: -2px;
+  outline: 2px solid var(--kbq-states-line-focus-theme);
 }
 
 .top {
