@@ -4,6 +4,7 @@ import { useFocusRing, mergeProps, clsx } from '@koobiq/react-core';
 import { useTableCell } from '@koobiq/react-primitives';
 import type { TableState, AriaTableCellProps } from '@koobiq/react-primitives';
 
+import type { CellProps } from '../../../Collections';
 import s from '../../Table.module.css';
 
 type TableCellProps<T> = {
@@ -16,10 +17,12 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
   const { gridCellProps } = useTableCell({ node: cell }, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
 
-  const { style, className } = cell.props;
+  const { style, className, align, valign }: CellProps = cell.props;
 
   return (
     <td
+      align={align}
+      valign={valign}
       {...mergeProps(gridCellProps, focusProps)}
       className={clsx(s.cell, isFocusVisible && s.focusVisible, className)}
       style={style}
