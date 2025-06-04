@@ -20,7 +20,12 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
   const { gridCellProps } = useTableCell({ node: cell }, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
 
-  const { style, className, align, valign }: CellProps = cell.props;
+  const {
+    style,
+    className,
+    align = 'left',
+    valign = 'middle',
+  }: CellProps = cell.props;
 
   return (
     <td
