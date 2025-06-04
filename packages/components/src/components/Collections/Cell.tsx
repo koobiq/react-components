@@ -11,6 +11,17 @@ type CellComponent = FC<AriaCellProps> & {
 
 const CellInner = AriaCell as CellComponent;
 
+export const cellPropAlign = ['left', 'right', 'center'] as const;
+export const cellPropVerticalAlign = [
+  'top',
+  'middle',
+  'bottom',
+  'baseline',
+] as const;
+
+export type CellPropAlign = (typeof cellPropAlign)[number];
+export type CellPropVerticalAlign = (typeof cellPropVerticalAlign)[number];
+
 export type CellProps = AriaCellProps & {
   /** Additional CSS-classes. */
   className?: string;
@@ -18,6 +29,10 @@ export type CellProps = AriaCellProps & {
   style?: CSSProperties;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
+  /** Horizontal alignment of the cell content. */
+  align?: CellPropAlign;
+  /** Vertical alignment of the cell content. */
+  valign?: CellPropVerticalAlign;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
