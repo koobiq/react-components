@@ -31,9 +31,15 @@ export type ColumnProps<T> = AriaColumnProps<T> & {
   style?: CSSProperties;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
-  /** Horizontal alignment of the column content. */
+  /**
+   * Horizontal alignment of the cell content.
+   * @default left
+   * */
   align?: ColumnPropAlign;
-  /** Vertical alignment of the column content. */
+  /**
+   * Vertical alignment of the cell content.
+   * @default middle
+   * */
   valign?: ColumnPropVerticalAlign;
 };
 

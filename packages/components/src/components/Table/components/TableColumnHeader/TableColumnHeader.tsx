@@ -30,7 +30,12 @@ export function TableColumnHeader<T>({
     ref
   );
 
-  const { style, className, align, valign }: ColumnProps<T> = column.props;
+  const {
+    style,
+    className,
+    align = 'left',
+    valign = 'middle',
+  }: ColumnProps<T> = column.props;
 
   const { isFocusVisible, focusProps } = useFocusRing();
 
