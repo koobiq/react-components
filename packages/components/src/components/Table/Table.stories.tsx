@@ -5,7 +5,6 @@ import type { StoryObj } from '@storybook/react';
 import { Badge } from '../Badge';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
-import { Typography } from '../Typography';
 
 import { Table } from './index';
 import type { TablePropDivider, TableProps } from './types';
@@ -25,6 +24,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const formatDate = (dateString: string): string =>
+  new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(
+    new Date(dateString)
+  );
+
 export const Base: Story = {
   parameters: {
     layout: 'centered',
@@ -42,33 +46,21 @@ export const Base: Story = {
       </Table.Header>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>
-            <Typography variant="text-normal-strong">
-              Social Engineering
-            </Typography>
-          </Table.Cell>
+          <Table.Cell>Social Engineering</Table.Cell>
           <Table.Cell>Manipulation of individuals to gain access</Table.Cell>
           <Table.Cell>
             <Badge label="Medium" variant="fade-warning" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>
-            <Typography variant="text-normal-strong">
-              Zero-Day Exploits
-            </Typography>
-          </Table.Cell>
+          <Table.Cell>Zero-Day Exploits</Table.Cell>
           <Table.Cell>Unknown vulnerabilities exploited immediately</Table.Cell>
           <Table.Cell>
             <Badge label="High" variant="fade-error" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>
-            <Typography variant="text-normal-strong">
-              Insider Threats
-            </Typography>
-          </Table.Cell>
+          <Table.Cell>Insider Threats</Table.Cell>
           <Table.Cell>
             Malicious or careless actions by internal users
           </Table.Cell>
@@ -77,11 +69,7 @@ export const Base: Story = {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>
-            <Typography variant="text-normal-strong">
-              Supply Chain Attack
-            </Typography>
-          </Table.Cell>
+          <Table.Cell>Supply Chain Attack</Table.Cell>
           <Table.Cell>
             Compromise of third-party software or services
           </Table.Cell>
@@ -90,11 +78,7 @@ export const Base: Story = {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>
-            <Typography variant="text-normal-strong">
-              Denial of Service
-            </Typography>
-          </Table.Cell>
+          <Table.Cell>Denial of Service</Table.Cell>
           <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
           <Table.Cell>
             <Badge label="Low-Medium" variant="fade-contrast" />
@@ -166,38 +150,22 @@ export const Divider: Story = {
             <Table.Row>
               <Table.Cell>home</Table.Cell>
               <Table.Cell>File folder</Table.Cell>
-              <Table.Cell>
-                {new Intl.DateTimeFormat(undefined, {
-                  dateStyle: 'medium',
-                }).format(new Date('2024-06-07'))}
-              </Table.Cell>
+              <Table.Cell>{formatDate('2024-06-07')}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>etc</Table.Cell>
               <Table.Cell>File folder</Table.Cell>
-              <Table.Cell>
-                {new Intl.DateTimeFormat(undefined, {
-                  dateStyle: 'medium',
-                }).format(new Date('2023-04-07'))}
-              </Table.Cell>
+              <Table.Cell>{formatDate('2023-04-07')}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>vmlinuz</Table.Cell>
               <Table.Cell>System file</Table.Cell>
-              <Table.Cell>
-                {new Intl.DateTimeFormat(undefined, {
-                  dateStyle: 'medium',
-                }).format(new Date('2015-11-20'))}
-              </Table.Cell>
+              <Table.Cell>{formatDate('2015-11-20')}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>log.txt</Table.Cell>
               <Table.Cell>Text file</Table.Cell>
-              <Table.Cell>
-                {new Intl.DateTimeFormat(undefined, {
-                  dateStyle: 'medium',
-                }).format(new Date('2019-01-18'))}
-              </Table.Cell>
+              <Table.Cell>{formatDate('2019-01-18')}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -229,33 +197,25 @@ export const DynamicCollection: Story = {
         id: 1,
         name: 'home',
         type: 'File folder',
-        date: new Intl.DateTimeFormat(undefined, {
-          dateStyle: 'medium',
-        }).format(new Date('2024-06-07')),
+        date: formatDate('2024-06-07'),
       },
       {
         id: 2,
         name: 'etc',
         type: 'File folder',
-        date: new Intl.DateTimeFormat(undefined, {
-          dateStyle: 'medium',
-        }).format(new Date('2023-04-07')),
+        date: formatDate('2023-04-07'),
       },
       {
         id: 3,
         name: 'vmlinuz',
         type: 'System file',
-        date: new Intl.DateTimeFormat(undefined, {
-          dateStyle: 'medium',
-        }).format(new Date('2015-11-20')),
+        date: formatDate('2015-11-20'),
       },
       {
         id: 4,
         name: 'log.txt',
         type: 'Text file',
-        date: new Intl.DateTimeFormat(undefined, {
-          dateStyle: 'medium',
-        }).format(new Date('2019-01-18')),
+        date: formatDate('2019-01-18'),
       },
     ];
 
@@ -290,38 +250,22 @@ export const FullWidth: Story = {
         <Table.Row>
           <Table.Cell>home</Table.Cell>
           <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2024-06-07'))}
-          </Table.Cell>
+          <Table.Cell>{formatDate('2024-06-07')}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>etc</Table.Cell>
           <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2023-04-07'))}
-          </Table.Cell>
+          <Table.Cell>{formatDate('2023-04-07')}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>vmlinuz</Table.Cell>
           <Table.Cell>System file</Table.Cell>
-          <Table.Cell>
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2015-11-20'))}
-          </Table.Cell>
+          <Table.Cell>{formatDate('2015-11-20')}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>log.txt</Table.Cell>
           <Table.Cell>Text file</Table.Cell>
-          <Table.Cell>
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2019-01-18'))}
-          </Table.Cell>
+          <Table.Cell>{formatDate('2019-01-18')}</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
@@ -487,38 +431,22 @@ export const Alignment: Story = {
         <Table.Row>
           <Table.Cell align="center">home</Table.Cell>
           <Table.Cell align="center">File folder</Table.Cell>
-          <Table.Cell align="center">
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2024-06-07'))}
-          </Table.Cell>
+          <Table.Cell align="center">{formatDate('2024-06-07')}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell align="center">etc</Table.Cell>
           <Table.Cell align="center">File folder</Table.Cell>
-          <Table.Cell align="center">
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2023-04-07'))}
-          </Table.Cell>
+          <Table.Cell align="center">{formatDate('2023-04-07')}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell align="center">vmlinuz</Table.Cell>
           <Table.Cell align="center">System file</Table.Cell>
-          <Table.Cell align="center">
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2015-11-20'))}
-          </Table.Cell>
+          <Table.Cell align="center">{formatDate('2015-11-20')}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell align="center">log.txt</Table.Cell>
           <Table.Cell align="center">Text file</Table.Cell>
-          <Table.Cell align="center">
-            {new Intl.DateTimeFormat(undefined, {
-              dateStyle: 'medium',
-            }).format(new Date('2019-01-18'))}
-          </Table.Cell>
+          <Table.Cell align="center">{formatDate('2019-01-18')}</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
