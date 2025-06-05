@@ -9,6 +9,12 @@ export type TablePropDivider = (typeof tablePropDivider)[number];
 
 export type TablePropChildren<T> = TableStateProps<T>['children'];
 
+export type TablePropBlockSize = CSSProperties['blockSize'];
+
+export type TablePropMinBlockSize = CSSProperties['minBlockSize'];
+
+export type TablePropMaxBlockSize = CSSProperties['maxInlineSize'];
+
 export type TableProps<T> = ExtendableComponentPropsWithRef<
   {
     /** Inline styles. */
@@ -36,9 +42,15 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
      * */
     children?: TablePropChildren<T>;
     /** Ref to the control. */
-    ref?: Ref<HTMLTableElement>;
+    ref?: Ref<HTMLDivElement>;
+    /** Height of the table container. */
+    blockSize?: TablePropBlockSize;
+    /** Minimum height of the table container. */
+    minBlockSize?: TablePropMinBlockSize;
+    /** Maximum height of the table container. */
+    maxBlockSize?: TablePropMaxBlockSize;
   },
-  'table'
+  'div'
 >;
 
 export type TableComponentProp = <T extends object>(
