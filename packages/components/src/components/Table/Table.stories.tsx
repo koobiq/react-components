@@ -30,7 +30,8 @@ export const Base: Story = {
   render: (args: TableProps<object>) => (
     <Table
       aria-label="Example static collection table"
-      style={{ height: '210px', maxWidth: '400px' }}
+      blockSize={210}
+      maxBlockSize={400}
       {...args}
     >
       <Table.Header>
@@ -194,7 +195,7 @@ export const DynamicCollection: Story = {
 
 export const FullWidth: Story = {
   render: (args: TableProps<object>) => (
-    <Table aria-label="Example static collection table" fullWidth {...args}>
+    <Table aria-label="Example the table with a full width" fullWidth {...args}>
       <Table.Header>
         <Table.Column>Name</Table.Column>
         <Table.Column>Type</Table.Column>
@@ -345,29 +346,27 @@ export const StickyHeader: Story = {
     ];
 
     return (
-      <div
-        style={{
-          blockSize: 300,
-          overflow: 'auto',
-        }}
+      <Table
+        aria-label="The table with users"
+        blockSize={300}
+        stickyHeader
+        fullWidth
       >
-        <Table aria-label="Users" stickyHeader fullWidth>
-          <Table.Header columns={columns}>
-            {(column) => <Table.Column>{column.name}</Table.Column>}
-          </Table.Header>
-          <Table.Body items={users}>
-            {(item) => (
-              <Table.Row>
-                {(columnKey) => (
-                  <Table.Cell>
-                    {item[columnKey as keyof (typeof users)[0]]}
-                  </Table.Cell>
-                )}
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
-      </div>
+        <Table.Header columns={columns}>
+          {(column) => <Table.Column>{column.name}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={users}>
+          {(item) => (
+            <Table.Row>
+              {(columnKey) => (
+                <Table.Cell>
+                  {item[columnKey as keyof (typeof users)[0]]}
+                </Table.Cell>
+              )}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
     );
   },
 };
