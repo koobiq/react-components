@@ -2,8 +2,10 @@ import { useState } from 'react';
 
 import type { StoryObj } from '@storybook/react';
 
+import { Badge } from '../Badge';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
+import { Typography } from '../Typography';
 
 import { Table } from './index';
 import type { TablePropDivider, TableProps } from './types';
@@ -30,35 +32,73 @@ export const Base: Story = {
   render: (args: TableProps<object>) => (
     <Table
       aria-label="Example static collection table"
-      blockSize={210}
       maxBlockSize={400}
       {...args}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Type</Table.Column>
-        <Table.Column>Date Modified</Table.Column>
+        <Table.Column>Threat Category</Table.Column>
+        <Table.Column>Description</Table.Column>
+        <Table.Column>Risk Level</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>Games</Table.Cell>
-          <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>06/07/2024</Table.Cell>
+          <Table.Cell>
+            <Typography variant="text-normal-strong">
+              Social Engineering
+            </Typography>
+          </Table.Cell>
+          <Table.Cell>Manipulation of individuals to gain access</Table.Cell>
+          <Table.Cell>
+            <Badge label="Medium" variant="fade-warning" />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Program Files</Table.Cell>
-          <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>04/07/2023</Table.Cell>
+          <Table.Cell>
+            <Typography variant="text-normal-strong">
+              Zero-Day Exploits
+            </Typography>
+          </Table.Cell>
+          <Table.Cell>Unknown vulnerabilities exploited immediately</Table.Cell>
+          <Table.Cell>
+            <Badge label="High" variant="fade-error" />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>bootmgr</Table.Cell>
-          <Table.Cell>System file</Table.Cell>
-          <Table.Cell>11/20/2015</Table.Cell>
+          <Table.Cell>
+            <Typography variant="text-normal-strong">
+              Insider Threats
+            </Typography>
+          </Table.Cell>
+          <Table.Cell>
+            Malicious or careless actions by internal users
+          </Table.Cell>
+          <Table.Cell>
+            <Badge label="Medium–High" variant="fade-error" />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>log.txt</Table.Cell>
-          <Table.Cell>Text Document</Table.Cell>
-          <Table.Cell>01/18/2019</Table.Cell>
+          <Table.Cell>
+            <Typography variant="text-normal-strong">
+              Supply Chain Attack
+            </Typography>
+          </Table.Cell>
+          <Table.Cell>
+            Compromise of third-party software or services
+          </Table.Cell>
+          <Table.Cell>
+            <Badge label="High" variant="fade-error" />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            <Typography variant="text-normal-strong">
+              Denial of Service
+            </Typography>
+          </Table.Cell>
+          <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
+          <Table.Cell>
+            <Badge label="Low-Medium" variant="fade-contrast" />
+          </Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
@@ -114,7 +154,8 @@ export const Divider: Story = {
         <Table
           divider={divider}
           aria-label="Example static collection table"
-          style={{ height: '210px', maxWidth: '400px' }}
+          blockSize={210}
+          maxBlockSize={410}
         >
           <Table.Header>
             <Table.Column>Name</Table.Column>
@@ -123,24 +164,40 @@ export const Divider: Story = {
           </Table.Header>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Games</Table.Cell>
+              <Table.Cell>home</Table.Cell>
               <Table.Cell>File folder</Table.Cell>
-              <Table.Cell>06/07/2024</Table.Cell>
+              <Table.Cell>
+                {new Intl.DateTimeFormat(undefined, {
+                  dateStyle: 'medium',
+                }).format(new Date('2024-06-07'))}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Program Files</Table.Cell>
+              <Table.Cell>etc</Table.Cell>
               <Table.Cell>File folder</Table.Cell>
-              <Table.Cell>04/07/2023</Table.Cell>
+              <Table.Cell>
+                {new Intl.DateTimeFormat(undefined, {
+                  dateStyle: 'medium',
+                }).format(new Date('2023-04-07'))}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>bootmgr</Table.Cell>
+              <Table.Cell>vmlinuz</Table.Cell>
               <Table.Cell>System file</Table.Cell>
-              <Table.Cell>11/20/2015</Table.Cell>
+              <Table.Cell>
+                {new Intl.DateTimeFormat(undefined, {
+                  dateStyle: 'medium',
+                }).format(new Date('2015-11-20'))}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>log.txt</Table.Cell>
-              <Table.Cell>Text Document</Table.Cell>
-              <Table.Cell>01/18/2019</Table.Cell>
+              <Table.Cell>Text file</Table.Cell>
+              <Table.Cell>
+                {new Intl.DateTimeFormat(undefined, {
+                  dateStyle: 'medium',
+                }).format(new Date('2019-01-18'))}
+              </Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -168,10 +225,38 @@ export const DynamicCollection: Story = {
     ];
 
     const rows: Row[] = [
-      { id: 1, name: 'Games', date: '6/7/2020', type: 'File folder' },
-      { id: 2, name: 'Program Files', date: '4/7/2021', type: 'File folder' },
-      { id: 3, name: 'bootmgr', date: '11/20/2010', type: 'System file' },
-      { id: 4, name: 'log.txt', date: '1/18/2016', type: 'Text Document' },
+      {
+        id: 1,
+        name: 'home',
+        type: 'File folder',
+        date: new Intl.DateTimeFormat(undefined, {
+          dateStyle: 'medium',
+        }).format(new Date('2024-06-07')),
+      },
+      {
+        id: 2,
+        name: 'etc',
+        type: 'File folder',
+        date: new Intl.DateTimeFormat(undefined, {
+          dateStyle: 'medium',
+        }).format(new Date('2023-04-07')),
+      },
+      {
+        id: 3,
+        name: 'vmlinuz',
+        type: 'System file',
+        date: new Intl.DateTimeFormat(undefined, {
+          dateStyle: 'medium',
+        }).format(new Date('2015-11-20')),
+      },
+      {
+        id: 4,
+        name: 'log.txt',
+        type: 'Text file',
+        date: new Intl.DateTimeFormat(undefined, {
+          dateStyle: 'medium',
+        }).format(new Date('2019-01-18')),
+      },
     ];
 
     return (
@@ -203,24 +288,40 @@ export const FullWidth: Story = {
       </Table.Header>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>Games</Table.Cell>
+          <Table.Cell>home</Table.Cell>
           <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>06/07/2024</Table.Cell>
+          <Table.Cell>
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2024-06-07'))}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Program Files</Table.Cell>
+          <Table.Cell>etc</Table.Cell>
           <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>04/07/2023</Table.Cell>
+          <Table.Cell>
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2023-04-07'))}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>bootmgr</Table.Cell>
+          <Table.Cell>vmlinuz</Table.Cell>
           <Table.Cell>System file</Table.Cell>
-          <Table.Cell>11/20/2015</Table.Cell>
+          <Table.Cell>
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2015-11-20'))}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>log.txt</Table.Cell>
-          <Table.Cell>Text Document</Table.Cell>
-          <Table.Cell>01/18/2019</Table.Cell>
+          <Table.Cell>Text file</Table.Cell>
+          <Table.Cell>
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2019-01-18'))}
+          </Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
@@ -255,8 +356,8 @@ export const StickyHeader: Story = {
       {
         id: 3,
         firstName: 'Sophia',
-        lastName: 'Patel',
-        email: 'sophia.patel@example.org',
+        lastName: 'Bellmont',
+        email: 'sophia.bellmont@example.org',
         role: 'Subscriber',
       },
       {
@@ -378,35 +479,46 @@ export const Alignment: Story = {
   render: (args: TableProps<object>) => (
     <Table aria-label="Alignment" {...args}>
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column align="center">Name</Table.Column>
         <Table.Column align="center">Type</Table.Column>
-        <Table.Column align="right">Date Modified</Table.Column>
+        <Table.Column align="center">Date Modified</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>Games</Table.Cell>
+          <Table.Cell align="center">home</Table.Cell>
           <Table.Cell align="center">File folder</Table.Cell>
-          <Table.Cell align="right">06/07/2024</Table.Cell>
+          <Table.Cell align="center">
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2024-06-07'))}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Program Files</Table.Cell>
+          <Table.Cell align="center">etc</Table.Cell>
           <Table.Cell align="center">File folder</Table.Cell>
-          <Table.Cell align="right">04/07/2023</Table.Cell>
+          <Table.Cell align="center">
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2023-04-07'))}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>bootmgr</Table.Cell>
+          <Table.Cell align="center">vmlinuz</Table.Cell>
           <Table.Cell align="center">System file</Table.Cell>
-          <Table.Cell align="right">11/20/2015</Table.Cell>
+          <Table.Cell align="center">
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2015-11-20'))}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi,
-            fugiat.
+          <Table.Cell align="center">log.txt</Table.Cell>
+          <Table.Cell align="center">Text file</Table.Cell>
+          <Table.Cell align="center">
+            {new Intl.DateTimeFormat(undefined, {
+              dateStyle: 'medium',
+            }).format(new Date('2019-01-18'))}
           </Table.Cell>
-          <Table.Cell align="center" valign="top">
-            Text Document
-          </Table.Cell>
-          <Table.Cell align="right">01/18/2019</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
