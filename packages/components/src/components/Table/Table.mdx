@@ -36,13 +36,24 @@ import { Table } from '@koobiq/react-components';
 
 ## Full width
 
+The `fullWidth` prop will make a table fit to its parent width.
+
 <Story of={Stories.FullWidth} />
 
 ## Dynamic Collection
 
+So far, our examples have shown static collections,
+where the data is hard coded. Dynamic collections, as shown below, can be used when
+the table data comes from an external data source such as an API, or updates over time.
+In the example below, both the columns and the rows are provided to the table via a render function.
+You can also make the columns static and only the rows dynamic.
+
 <Story of={Stories.DynamicCollection} />
 
 ## Sticky Header
+
+The `stickyHeader` prop lets you fix the table's header so that when you scroll through the table's content,
+the header always stays visible. This makes it much easier to work with tables containing lots of data.
 
 <Story of={Stories.StickyHeader} />
 
