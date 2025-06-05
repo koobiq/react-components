@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { forwardRef, type ReactNode, type Ref } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 import { useTableRowGroup } from '@koobiq/react-primitives';
@@ -10,16 +10,17 @@ export type TableRowGroupProps = {
   type: 'thead' | 'tbody';
 };
 
-export function TableRowGroup({
-  type = 'thead',
-  children,
-}: TableRowGroupProps) {
-  const Element = type;
-  const { rowGroupProps } = useTableRowGroup();
+export const TableRowGroup = forwardRef(
+  ({ type = 'thead', children }: TableRowGroupProps, ref: Ref<any>) => {
+    const Element = type;
+    const { rowGroupProps } = useTableRowGroup();
 
-  return (
-    <Element {...rowGroupProps} className={clsx(s[type])}>
-      {children}
-    </Element>
-  );
-}
+    return (
+      <Element {...rowGroupProps} ref={ref} className={clsx(s[type])}>
+        {children}
+      </Element>
+    );
+  }
+);
+
+TableRowGroup.displayName = 'TableRowGroup';

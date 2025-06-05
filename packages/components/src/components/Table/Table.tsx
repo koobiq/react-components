@@ -11,6 +11,7 @@ import {
   useDOMRef,
   mergeProps,
   type DataAttributeProps,
+  useElementSize,
 } from '@koobiq/react-core';
 import { useTable, useTableState } from '@koobiq/react-primitives';
 
@@ -61,6 +62,8 @@ function TableRender<T extends object>(
     gridProps
   );
 
+  const { ref: theadRef, height } = useElementSize();
+
   const containerProps: ComponentPropsWithRef<'div'> & DataAttributeProps = {
     className: clsx(s.base, fullWidth && s.fullWidth, textNormal, className),
     'data-divider': divider,
@@ -71,6 +74,7 @@ function TableRender<T extends object>(
       '--table-container-block-size': normalizeBlockSize(blockSize),
       '--table-container-min-block-size': normalizeBlockSize(minBlockSize),
       '--table-container-max-block-size': normalizeBlockSize(maxBlockSize),
+      '--table-container-scroll-padding-top': `${height}px`,
     } as CSSProperties,
     ref: domRef,
     ...other,
@@ -79,7 +83,7 @@ function TableRender<T extends object>(
   return (
     <div {...containerProps}>
       <table {...tableProps}>
-        <TableRowGroup type="thead">
+        <TableRowGroup type="thead" ref={theadRef}>
           {collection.headerRows.map((headerRow) => (
             <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
               {[...headerRow.childNodes].map((column) => (
