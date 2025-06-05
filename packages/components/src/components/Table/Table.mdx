@@ -28,9 +28,14 @@ import { Table } from '@koobiq/react-components';
 
 ## Links
 
+Table rows may also be links to another page or website.
+This can be achieved by passing the `href` prop to the `Table.Row` component.
+
 <Story of={Stories.Links} />
 
 ## Divider
+
+You can add row dividers to the table by using the `divider` prop.
 
 <Story of={Stories.Divider} />
 
@@ -58,5 +63,8 @@ the header always stays visible. This makes it much easier to work with tables c
 <Story of={Stories.StickyHeader} />
 
 ## Alignment
+
+You can set horizontal and vertical alignment for the `Table.Column`
+and `Table.Cell` components using the `align` and `valign` props.
 
 <Story of={Stories.Alignment} />
