@@ -14,6 +14,11 @@ export type TablePropSelectionMode<T> = TableStateProps<T>['selectionMode'];
 export type TablePropSelectionBehavior<T> =
   TableStateProps<T>['selectionBehavior'];
 
+export type TablePropOnSelectionChange<T> =
+  TableStateProps<T>['onSelectionChange'];
+
+export type TablePropSelectedKeys<T> = TableStateProps<T>['selectedKeys'];
+
 export type TablePropBlockSize = CSSProperties['blockSize'];
 
 export type TablePropMinBlockSize = CSSProperties['minBlockSize'];
@@ -26,6 +31,10 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
     selectionBehavior?: TablePropSelectionBehavior<T>;
     /** The type of selection that is allowed in the collection. */
     selectionMode?: TablePropSelectionMode<T>;
+    /** The currently selected keys in the collection (controlled). */
+    selectedKeys?: TablePropSelectedKeys<T>;
+    /** Handler that is called when the selection changes. */
+    onSelectionChange?: TablePropOnSelectionChange<T>;
     /** Inline styles. */
     style?: CSSProperties;
     /** Additional CSS-classes. */
