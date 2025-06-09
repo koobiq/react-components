@@ -63,7 +63,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const controlRef = useRef<HTMLElement | null>(null);
   const controlRefCallback = useMultiRef([controlRef]);
 
-  const { triggerProps, tooltipProps } = useTooltipTrigger(
+  const { triggerProps, tooltipProps: tooltipTriggerProps } = useTooltipTrigger(
     {
       delay,
       closeDelay,
@@ -93,7 +93,21 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     targetRef: anchorRef || controlRef,
   });
 
-  const { tooltipProps: localTooltipProps } = useTooltip(overlayProps, state);
+  const { tooltipProps: tooltipCommonProps } = useTooltip(overlayProps, state);
+
+  const tooltipProps = mergeProps(
+    {
+      className: clsx(
+        s.base,
+        s[variant],
+        utilClasses.typography['text-normal']
+      ),
+      ref: domRef,
+    },
+    other,
+    tooltipCommonProps,
+    tooltipTriggerProps
+  );
 
   return (
     <>
@@ -115,18 +129,11 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
         {(transition) => (
           <Overlay portalContainer={portalContainer}>
             <div
-              {...mergeProps(localTooltipProps, tooltipProps)}
+              {...tooltipProps}
               data-arrow={showArrow}
               data-variant={variant}
               data-placement={placement}
               data-transition={transition}
-              className={clsx(
-                s.base,
-                s[variant],
-                utilClasses.typography['text-normal']
-              )}
-              {...other}
-              ref={domRef}
             >
               {showArrow && (
                 <div

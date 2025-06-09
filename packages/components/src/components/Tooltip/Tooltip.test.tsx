@@ -5,6 +5,7 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Tooltip, tooltipPropVariant } from './index';
+import s from './Tooltip.module.css';
 
 describe('Tooltip', () => {
   beforeEach(() => {
@@ -34,6 +35,7 @@ describe('Tooltip', () => {
 
     const root = getRoot();
     expect(root?.className).toContain(className);
+    expect(root?.className).toContain(s.base);
   });
 
   describe('check the variant prop', () => {
