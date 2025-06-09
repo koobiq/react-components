@@ -1,18 +1,13 @@
-import {
-  type ComponentPropsWithRef,
-  type CSSProperties,
-  forwardRef,
-  type Ref,
-  useRef,
-} from 'react';
+import type { ComponentPropsWithRef, CSSProperties, Ref } from 'react';
+import { forwardRef, useRef } from 'react';
 
 import {
   clsx,
   useDOMRef,
   mergeProps,
-  type DataAttributeProps,
   useElementSize,
 } from '@koobiq/react-core';
+import type { DataAttributeProps } from '@koobiq/react-core';
 import { useTable, useTableState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
@@ -24,6 +19,8 @@ import {
   TableRowGroup,
   TableHeaderRow,
   TableColumnHeader,
+  TableSelectAllCell,
+  TableCheckboxCell,
 } from './components';
 import s from './Table.module.css';
 import type { TableComponentProp, TableProps, TableRef } from './types';
@@ -38,6 +35,8 @@ function TableRender<T extends object>(
   const {
     stickyHeader = false,
     fullWidth = false,
+    selectionMode,
+    selectionBehavior,
     divider = 'none',
     className,
     blockSize,
@@ -49,6 +48,8 @@ function TableRender<T extends object>(
 
   const state = useTableState({
     ...props,
+    showSelectionCheckboxes:
+      selectionMode === 'multiple' && selectionBehavior !== 'replace',
   });
 
   const domRef = useDOMRef<HTMLTableElement>(ref);
@@ -86,22 +87,34 @@ function TableRender<T extends object>(
         <TableRowGroup type="thead" ref={theadRef}>
           {collection.headerRows.map((headerRow) => (
             <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-              {[...headerRow.childNodes].map((column) => (
-                <TableColumnHeader
-                  key={column.key}
-                  column={column}
-                  state={state}
-                />
-              ))}
+              {[...headerRow.childNodes].map((column) =>
+                column.props.isSelectionCell ? (
+                  <TableSelectAllCell
+                    key={column.key}
+                    column={column}
+                    state={state}
+                  />
+                ) : (
+                  <TableColumnHeader
+                    key={column.key}
+                    column={column}
+                    state={state}
+                  />
+                )
+              )}
             </TableHeaderRow>
           ))}
         </TableRowGroup>
         <TableRowGroup type="tbody">
           {[...collection.body.childNodes].map((row) => (
             <TableRow key={row.key} item={row} state={state}>
-              {[...row.childNodes].map((cell) => (
-                <TableCell key={cell.key} cell={cell} state={state} />
-              ))}
+              {[...row.childNodes].map((cell) =>
+                cell.props.isSelectionCell ? (
+                  <TableCheckboxCell key={cell.key} cell={cell} state={state} />
+                ) : (
+                  <TableCell key={cell.key} cell={cell} state={state} />
+                )
+              )}
             </TableRow>
           ))}
         </TableRowGroup>

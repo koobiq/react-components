@@ -1,112 +1,181 @@
-/* container */
+/* Variables and Defaults */
 .base {
-  --table-container-block-size: ;
-  --table-container-max-block-size: unset;
+  /* Layout sizing */
+  --table-container-block-size: unset;
   --table-container-min-block-size: unset;
-  --table-container-scroll-padding-top: ;
+  --table-container-max-block-size: unset;
+
+  /* Scroll padding for sticky headers */
+  --table-container-scroll-padding-top: 0;
+
+  /* Cell & header styling */
   --table-cell-padding: 10px var(--kbq-size-s);
   --table-cell-color: var(--kbq-foreground-contrast);
   --table-header-cell-padding: 10px var(--kbq-size-s);
   --table-header-cell-color: var(--kbq-foreground-contrast-secondary);
+
+  /* Borders */
   --table-border: 1px solid var(--kbq-line-contrast-less);
+
+  /* Base container properties */
   overflow: auto;
   block-size: var(--table-container-block-size);
   min-block-size: var(--table-container-min-block-size);
   max-block-size: var(--table-container-max-block-size);
-  scroll-padding-top: var(--table-container-scroll-padding-top);
+  scroll-padding-block-start: var(--table-container-scroll-padding-top);
 }
 
+/* Full-width modifier */
 .fullWidth .table {
   inline-size: 100%;
 }
 
-.base:where([data-divider='none']) {
-  .cell:first-child {
-    border-start-start-radius: var(--kbq-size-s);
-    border-end-start-radius: var(--kbq-size-s);
-  }
+/* Divider: none */
+.base[data-divider='none'] {
+  .cell {
+    /* Round corners only on the very first/last cells of the entire table */
+    &:first-child {
+      border-start-start-radius: var(--kbq-size-s);
+      border-end-start-radius: var(--kbq-size-s);
+    }
 
-  .cell:last-child {
-    border-start-end-radius: var(--kbq-size-s);
-    border-end-end-radius: var(--kbq-size-s);
+    &:last-child {
+      border-start-end-radius: var(--kbq-size-s);
+      border-end-end-radius: var(--kbq-size-s);
+    }
   }
 
   .row {
     border-radius: var(--kbq-size-s);
-  }
 
-  .row:first-child {
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
-
-    .cell:first-child {
+    /* Remove top corners on the first data row, keep only bottom corners rounded */
+    &:first-child {
       border-start-start-radius: 0;
-      border-end-start-radius: var(--kbq-size-s);
-    }
-
-    .cell:last-child {
       border-start-end-radius: 0;
-      border-end-end-radius: var(--kbq-size-s);
+
+      .cell:first-child {
+        border-start-start-radius: 0;
+        border-end-start-radius: var(--kbq-size-s);
+      }
+
+      .cell:last-child {
+        border-start-end-radius: 0;
+        border-end-end-radius: var(--kbq-size-s);
+      }
     }
   }
 }
 
-.base:where([data-divider='row']) {
+/* Divider: row */
+.base[data-divider='row'] {
   .cell {
     border-block-end: var(--table-border);
   }
 }
 
-.base:where([data-sticky-header='true']) .thead {
+/* Sticky header */
+.base[data-sticky-header='true'] .thead {
   position: sticky;
   inset-block-start: 0;
   background-color: var(--kbq-background-bg);
+  z-index: 1;
 }
 
-/* table */
+/* Table resets */
 .table {
   border-spacing: 0;
 }
 
-/* cell */
+/* Selection / Focus styling for multi-select tables */
+.table[aria-multiselectable='true'] {
+  .row {
+    /* If a selected/focus-visible row has another adjacent with same state, remove corner rounding */
+    &:is([data-selected='true'], [data-focus-visible='true']):has(
+        + :is([data-selected='true'], [data-focus-visible='true'])
+      ) {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+
+      .cell:first-child {
+        border-end-start-radius: 0;
+      }
+
+      .cell:last-child {
+        border-end-end-radius: 0;
+      }
+    }
+
+    /* If adjacent selected/focus-visible, remove corner rounding on top */
+    &:is([data-selected='true'], [data-focus-visible='true'])
+      + :is([data-selected='true'], [data-focus-visible='true']) {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+
+      .cell:first-child {
+        border-start-start-radius: 0;
+      }
+
+      .cell:last-child {
+        border-start-end-radius: 0;
+      }
+    }
+  }
+}
+
+/* Table cells */
 .cell {
-  outline: none;
   box-sizing: border-box;
   color: var(--table-cell-color);
   padding: var(--table-cell-padding);
+  outline: none;
+  transition: border-radius var(--kbq-transition-default);
 }
 
-/* row */
+/* Table rows */
 .row {
-  outline: none;
-  cursor: default;
   box-sizing: border-box;
-  transition: background-color var(--kbq-transition-default);
+  cursor: default;
+  outline: none;
+  transition:
+    background-color var(--kbq-transition-default),
+    border-radius var(--kbq-transition-default);
 
+  /* Hover and active states */
   &.hovered {
     background-color: var(--kbq-states-background-transparent-hover);
   }
 
+  &.pressed {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  &.selected {
+    background-color: var(--kbq-background-theme-less);
+  }
+
+  /* Remove bottom border on the very last row */
   &:last-child .cell {
-    border-block-end: 0 solid;
+    border-block-end: none;
   }
 }
 
-/* header-cell */
+/* Header cells */
 .header-cell {
-  outline: none;
+  box-sizing: border-box;
   cursor: default;
-  border-block-end: var(--table-border);
-  color: var(--table-header-cell-color);
+  outline: none;
   padding: var(--table-header-cell-padding);
+  color: var(--table-header-cell-color);
+  border-block-end: var(--table-border);
 }
 
-/* states */
+/* Focus */
 .focusVisible {
   outline-offset: -2px;
   outline: 2px solid var(--kbq-states-line-focus-theme);
 }
 
+/* Vertical alignment helpers */
 .top {
   vertical-align: top;
 }
