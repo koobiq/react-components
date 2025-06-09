@@ -27,16 +27,9 @@ export function TableCheckboxCell<T>({
     state
   );
 
-  const { isSelected, isDisabled, isIndeterminate, ...other } = checkboxProps;
-
   return (
     <td className={s.cell} {...gridCellProps} ref={ref}>
-      <Checkbox
-        checked={isSelected}
-        disabled={isDisabled}
-        indeterminate={isIndeterminate}
-        {...other}
-      />
+      <Checkbox {...checkboxProps} />
     </td>
   );
 }

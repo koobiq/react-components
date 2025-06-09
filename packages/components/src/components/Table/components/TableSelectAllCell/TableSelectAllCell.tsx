@@ -30,19 +30,12 @@ export function TableSelectAllCell<T>({
 
   const { checkboxProps } = useTableSelectAllCheckbox(state);
 
-  const { isSelected, isDisabled, isIndeterminate, ...other } = checkboxProps;
-
   return (
     <th className={s['header-cell']} {...columnHeaderProps} ref={ref}>
       {state.selectionManager.selectionMode === 'single' ? (
         <VisuallyHidden>{checkboxProps['aria-label']}</VisuallyHidden>
       ) : (
-        <Checkbox
-          checked={isSelected}
-          disabled={isDisabled}
-          indeterminate={isIndeterminate}
-          {...other}
-        />
+        <Checkbox {...checkboxProps} />
       )}
     </th>
   );
