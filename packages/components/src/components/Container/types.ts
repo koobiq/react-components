@@ -26,6 +26,17 @@ export type ContainerMaxInlineSizeProp = CSSProperties['maxInlineSize'];
 export const containerPositionProp = ['start', 'center', 'end'] as const;
 export type ContainerPositionProp = (typeof containerPositionProp)[number];
 
+type ContainerDeprecatedProps = {
+  /**
+   * @deprecated
+   * The "fixed" prop is deprecated. Use "isFixed" prop to replace it.
+   *
+   * If `true`, doesn't set the max-inline-size of the container.
+   * @default false
+   * */
+  fixed?: boolean;
+};
+
 export type ContainerBaseProps = {
   /**
    * Container position.
@@ -45,11 +56,11 @@ export type ContainerBaseProps = {
    * If `true`, doesn't set the max-inline-size of the container.
    * @default false
    * */
-  fixed?: boolean;
+  isFixed?: boolean;
   /** The content of the component. */
   children?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
-};
+} & ContainerDeprecatedProps;

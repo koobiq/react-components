@@ -2,6 +2,7 @@
 
 import type { ComponentPropsWithRef, CSSProperties, ElementType } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { getResponsiveValue } from '../../utils';
@@ -22,12 +23,21 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
       margins: marginsProp = 0,
       position: positionProp = 'center',
       fixed = false,
+      isFixed: isFixedProp = false,
       children,
       className,
       maxInlineSize: maxInlineSizeProp,
       style: styleProp,
       ...other
     } = props;
+
+    const isFixed = isFixedProp || fixed;
+
+    if (process.env.NODE_ENV !== 'production' && fixed) {
+      deprecate(
+        'Container. The "fixed" prop is deprecated. Use "isFixed" prop to replace it.'
+      );
+    }
 
     const breakpoints = useMatchedBreakpoints();
 
@@ -37,7 +47,7 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
 
     const style = {
       ...styleProp,
-      '--container-max-inline-size': fixed
+      '--container-max-inline-size': isFixed
         ? undefined
         : normalizeMaxInlineSize(maxInlineSize),
       '--container-position': normalizePosition(position),
@@ -46,6 +56,9 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
 
     return (
       <Tag
+        data-fixed={isFixed}
+        data-margins={margins}
+        data-position={position}
         className={clsx(s.base, className)}
         style={style}
         {...other}
