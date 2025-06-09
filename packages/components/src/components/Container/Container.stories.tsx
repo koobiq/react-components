@@ -66,7 +66,7 @@ export const Position: Story = {
 export const Fixed: Story = {
   name: 'Responsive values',
   render: (args: ContainerBaseProps) => (
-    <Container style={{ ...containerStyle, width: 600 }} fixed {...args}>
+    <Container style={{ ...containerStyle, width: 600 }} isFixed {...args}>
       <div style={boxStyle} />
     </Container>
   ),
