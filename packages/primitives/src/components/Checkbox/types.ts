@@ -6,14 +6,14 @@ import type { UseCheckboxProps } from '../../behaviors';
 import type { RenderProps } from '../../utils';
 
 export type CheckboxRenderProps = {
-  error?: boolean;
-  pressed?: boolean;
-  checked?: boolean;
-  hovered?: boolean;
-  focused?: boolean;
-  disabled?: boolean;
-  focusVisible?: boolean;
-  indeterminate?: boolean;
+  isInvalid?: boolean;
+  isPressed?: boolean;
+  isSelected?: boolean;
+  isHovered?: boolean;
+  isFocused?: boolean;
+  isDisabled?: boolean;
+  isFocusVisible?: boolean;
+  isIndeterminate?: boolean;
 };
 
 type CheckboxBaseProps = RenderProps<CheckboxRenderProps> & {

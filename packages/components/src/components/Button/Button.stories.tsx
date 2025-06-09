@@ -117,7 +117,7 @@ export const Disabled: Story = {
         <Button isLoading={isLoading} isDisabled {...args}>
           Button
         </Button>
-        <Checkbox checked={isLoading} onChange={set}>
+        <Checkbox isSelected={isLoading} onChange={set}>
           Progress
         </Checkbox>
       </FlexBox>

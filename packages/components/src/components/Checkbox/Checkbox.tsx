@@ -2,6 +2,7 @@
 
 import { forwardRef, type ComponentRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
 import { IconCheckS16, IconMinusS16 } from '@koobiq/react-icons';
 import {
@@ -19,50 +20,123 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     const {
       size = 'normal',
       labelPlacement = 'end',
+      disabled = false,
+      isDisabled: isDisabledProp = false,
+      checked = false,
+      isSelected: isSelectedProp = false,
+      error = false,
+      isInvalid: isInvalidProp = false,
+      defaultChecked = false,
+      defaultSelected: defaultSelectedProp = false,
+      readonly = false,
+      isReadOnly: isReadOnlyProp = false,
+      required = false,
+      isRequired: isRequiredProp = false,
+      indeterminate = false,
+      isIndeterminate: isIndeterminateProp = false,
       children,
       className,
       slotProps,
-      indeterminate,
       ...other
     } = props;
 
+    const isDisabled = isDisabledProp || disabled;
+    const isSelected = isSelectedProp || checked;
+    const isInvalid = isInvalidProp || error;
+    const defaultSelected = defaultSelectedProp || defaultChecked;
+    const isReadOnly = isReadOnlyProp || readonly;
+    const isRequired = isRequiredProp || required;
+    const isIndeterminate = isIndeterminateProp || indeterminate;
+
     const commonProps: CheckboxPropsPrimitive = {
-      indeterminate,
+      isIndeterminate,
+      isDisabled,
+      isSelected,
+      isInvalid,
+      isRequired,
+      isReadOnly,
+      defaultSelected,
       className: ({
-        error,
-        checked,
-        hovered,
-        disabled,
-        focusVisible,
-        indeterminate,
+        isInvalid,
+        isSelected,
+        isHovered,
+        isDisabled,
+        isFocusVisible,
+        isIndeterminate,
       }) =>
         clsx(
           s.base,
           s[size],
-          error && s.error,
           s[labelPlacement],
-          checked && s.checked,
-          hovered && s.hovered,
-          disabled && s.disabled,
-          focusVisible && s.focusVisible,
-          indeterminate && s.indeterminate,
+          isInvalid && s.invalid,
+          isHovered && s.hovered,
+          isDisabled && s.disabled,
+          isSelected && s.selected,
+          isFocusVisible && s.focusVisible,
+          isIndeterminate && s.indeterminate,
           className
         ),
       ...other,
     };
+
+    if (process.env.NODE_ENV !== 'production' && disabled) {
+      deprecate(
+        'The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && checked) {
+      deprecate(
+        'The "checked" prop is deprecated. Use "isSelected" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && error) {
+      deprecate(
+        'The "error" prop is deprecated. Use "isInvalid" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && defaultChecked) {
+      deprecate(
+        'The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && readonly) {
+      deprecate(
+        'The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && required) {
+      deprecate(
+        'The "required" prop is deprecated. Use "isRequired" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && indeterminate) {
+      deprecate(
+        'The "indeterminate" prop is deprecated. Use "isIndeterminate" prop to replace it.'
+      );
+    }
 
     const boxProps = mergeProps({ className: s.checkbox }, slotProps?.box);
     const labelProps = slotProps?.label;
 
     return (
       <CheckboxPrimitive
-        data-indeterminate={indeterminate}
+        data-size={size}
+        data-indeterminate={isIndeterminate}
+        data-label-placement={labelPlacement}
         {...commonProps}
         ref={ref}
       >
-        {({ checked, indeterminate }) => {
+        {({ isSelected, isIndeterminate }) => {
           // unchecked = -1, checked = 0, indeterminate = 1,
-          const activeIndex = indeterminate ? 1 : Number(Boolean(checked)) - 1;
+          const activeIndex = isIndeterminate
+            ? 1
+            : Number(Boolean(isSelected)) - 1;
 
           return (
             <>

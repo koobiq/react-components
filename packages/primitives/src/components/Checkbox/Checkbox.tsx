@@ -18,13 +18,15 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     const domRef = useDOMRef<ComponentRef<'input'>>(inputRef);
 
     const {
-      hovered,
-      error,
-      checked,
-      focused,
-      pressed,
-      focusVisible,
-      indeterminate,
+      isHovered,
+      isInvalid,
+      isSelected,
+      isFocused,
+      isPressed,
+      isReadOnly,
+      isDisabled,
+      isFocusVisible,
+      isIndeterminate,
       labelProps,
       inputProps,
     } = useCheckbox(
@@ -36,14 +38,14 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     );
 
     const renderValues = {
-      hovered,
-      error,
-      checked,
-      focused,
-      pressed,
-      focusVisible,
-      indeterminate,
-      disabled: props.disabled || false,
+      isHovered,
+      isInvalid,
+      isSelected,
+      isFocused,
+      isPressed,
+      isFocusVisible,
+      isIndeterminate,
+      isDisabled: props.isDisabled || false,
     };
 
     const renderProps = useRenderProps({
@@ -55,7 +57,18 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     delete DOMProps.id;
 
     return (
-      <label {...mergeProps(DOMProps, labelProps, renderProps)} ref={ref}>
+      <label
+        data-hovered={isHovered}
+        data-pressed={isPressed}
+        data-focused={isFocused}
+        data-invalid={isInvalid}
+        data-selected={isSelected}
+        data-disabled={isDisabled}
+        data-read-only={isReadOnly}
+        data-focus-visible={isFocusVisible}
+        {...mergeProps(DOMProps, labelProps, renderProps)}
+        ref={ref}
+      >
         <VisuallyHidden elementType="span">
           <input {...inputProps} ref={domRef} />
         </VisuallyHidden>

@@ -270,14 +270,14 @@ export const Playground: Story = {
                 <Typography>Current key: {selected}</Typography>
 
                 <FlexBox gap="m">
-                  <Checkbox checked={fullWidth} onChange={setFullWidth}>
+                  <Checkbox isSelected={fullWidth} onChange={setFullWidth}>
                     fullWidth
                   </Checkbox>
-                  <Checkbox checked={isDisabled} onChange={setIsDisabled}>
+                  <Checkbox isSelected={isDisabled} onChange={setIsDisabled}>
                     isDisabled
                   </Checkbox>
                   <Checkbox
-                    checked={hasEqualItemSize}
+                    isSelected={hasEqualItemSize}
                     onChange={setHasEqualItemSize}
                   >
                     hasEqualItemSize

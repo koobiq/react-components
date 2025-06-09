@@ -306,7 +306,7 @@ export const OtherExamples = {
           {(item) => (
             <List.Item>
               <Checkbox
-                checked={!isString(selected) && selected.has(item.id)}
+                isSelected={!isString(selected) && selected.has(item.id)}
               />
               {item.name}
             </List.Item>
