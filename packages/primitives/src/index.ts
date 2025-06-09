@@ -40,6 +40,8 @@ import {
   useTableCell,
   useTableRow,
   useTableHeaderRow,
+  useTableSelectAllCheckbox,
+  useTableSelectionCheckbox,
   useTableColumnHeader,
   useTableRowGroup,
   type AriaTableProps,
@@ -54,6 +56,7 @@ import {
   type AriaTagProps,
 } from '@react-aria/tag';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
+import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { Item, Section } from '@react-stately/collections';
 import { useListData } from '@react-stately/data';
 import { useListState, type ListState } from '@react-stately/list';
@@ -137,6 +140,8 @@ export {
   useTableRow,
   useTableHeaderRow,
   useTableColumnHeader,
+  useTableSelectAllCheckbox,
+  useTableSelectionCheckbox,
   useTableRowGroup,
   useMenuTriggerState,
   useToggleGroupState,
@@ -145,6 +150,7 @@ export {
   useTooltipTriggerState,
   useToggleButtonGroupItem,
   useLocalizedStringFormatter,
+  VisuallyHidden,
   type Node,
   type TableState,
   type TreeState,

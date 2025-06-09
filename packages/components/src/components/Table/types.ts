@@ -9,6 +9,11 @@ export type TablePropDivider = (typeof tablePropDivider)[number];
 
 export type TablePropChildren<T> = TableStateProps<T>['children'];
 
+export type TablePropSelectionMode<T> = TableStateProps<T>['selectionMode'];
+
+export type TablePropSelectionBehavior<T> =
+  TableStateProps<T>['selectionBehavior'];
+
 export type TablePropBlockSize = CSSProperties['blockSize'];
 
 export type TablePropMinBlockSize = CSSProperties['minBlockSize'];
@@ -17,6 +22,10 @@ export type TablePropMaxBlockSize = CSSProperties['maxInlineSize'];
 
 export type TableProps<T> = ExtendableComponentPropsWithRef<
   {
+    /** How multiple selection should behave in the collection. */
+    selectionBehavior?: TablePropSelectionBehavior<T>;
+    /** The type of selection that is allowed in the collection. */
+    selectionMode?: TablePropSelectionMode<T>;
     /** Inline styles. */
     style?: CSSProperties;
     /** Additional CSS-classes. */
