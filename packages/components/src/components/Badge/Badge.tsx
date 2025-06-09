@@ -5,7 +5,6 @@ import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import s from './Badge.module.css';
 import type { BadgeBaseProps } from './index';
 
-// TODO: integrate usePress for handling press interactions
 export const Badge = polymorphicForwardRef<'span', BadgeBaseProps>(
   (
     {

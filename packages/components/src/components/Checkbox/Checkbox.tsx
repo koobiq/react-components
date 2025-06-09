@@ -81,43 +81,43 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
 
     if (process.env.NODE_ENV !== 'production' && disabled) {
       deprecate(
-        'The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+        'Checkbox. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && checked) {
       deprecate(
-        'The "checked" prop is deprecated. Use "isSelected" prop to replace it.'
+        'Checkbox. The "checked" prop is deprecated. Use "isSelected" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && error) {
       deprecate(
-        'The "error" prop is deprecated. Use "isInvalid" prop to replace it.'
+        'Checkbox. The "error" prop is deprecated. Use "isInvalid" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && defaultChecked) {
       deprecate(
-        'The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.'
+        'Checkbox. The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && readonly) {
       deprecate(
-        'The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
+        'Checkbox. The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && required) {
       deprecate(
-        'The "required" prop is deprecated. Use "isRequired" prop to replace it.'
+        'Checkbox. The "required" prop is deprecated. Use "isRequired" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && indeterminate) {
       deprecate(
-        'The "indeterminate" prop is deprecated. Use "isIndeterminate" prop to replace it.'
+        'Checkbox. The "indeterminate" prop is deprecated. Use "isIndeterminate" prop to replace it.'
       );
     }
 

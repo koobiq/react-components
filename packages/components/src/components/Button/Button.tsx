@@ -34,13 +34,13 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
 
     if (process.env.NODE_ENV !== 'production' && progress) {
       deprecate(
-        'The "progress" prop is deprecated. Use "isLoading" prop to replace it.'
+        'Button. The "progress" prop is deprecated. Use "isLoading" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && disabled) {
       deprecate(
-        'The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+        'Button. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
       );
     }
 

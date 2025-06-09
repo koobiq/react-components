@@ -31,13 +31,13 @@ export const IconButton = polymorphicForwardRef<'button', IconButtonBaseProps>(
 
     if (process.env.NODE_ENV !== 'production' && compact) {
       deprecate(
-        'The "compact" prop is deprecated. Use "isCompact" prop to replace it.'
+        'IconButton. The "compact" prop is deprecated. Use "isCompact" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && disabled) {
       deprecate(
-        'The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+        'IconButton. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
       );
     }
 

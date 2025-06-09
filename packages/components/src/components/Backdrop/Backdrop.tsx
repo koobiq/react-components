@@ -14,7 +14,6 @@ import { Transition } from 'react-transition-group';
 import s from './Backdrop.module.css';
 import type { BackdropBaseProps } from './index';
 
-// TODO: integrate usePress for handling press interactions
 export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
   (props, ref) => {
     const {
@@ -35,7 +34,7 @@ export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
 
     if (process.env.NODE_ENV !== 'production' && open) {
       deprecate(
-        'The "open" prop is deprecated. Use "isOpen" prop to replace it.'
+        'Backdrop. The "open" prop is deprecated. Use "isOpen" prop to replace it.'
       );
     }
 

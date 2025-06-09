@@ -45,13 +45,13 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
 
     if (process.env.NODE_ENV !== 'production' && colored) {
       deprecate(
-        'The "colored" prop is deprecated. Use "isColored" prop to replace it.'
+        'Alert. The "colored" prop is deprecated. Use "isColored" prop to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && compact) {
       deprecate(
-        'The "compact" prop is deprecated. Use "isCompact" prop to replace it.'
+        'Alert. The "compact" prop is deprecated. Use "isCompact" prop to replace it.'
       );
     }
 
