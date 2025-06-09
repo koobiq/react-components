@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import type { StoryObj } from '@storybook/react';
 
+import type { Selection } from '../../types';
 import { Badge } from '../Badge';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
@@ -525,4 +526,52 @@ export const MultiSelection: Story = {
       </Table.Body>
     </Table>
   ),
+};
+
+export const ControlledSelection: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: function Render() {
+    const columns = [
+      { name: 'Name', uid: 'name' },
+      { name: 'Type', uid: 'type' },
+      { name: 'Level', uid: 'level' },
+    ];
+
+    const rows = [
+      { id: 1, name: 'Charizard', type: 'Fire, Flying', level: '67' },
+      { id: 2, name: 'Blastoise', type: 'Water', level: '56' },
+      { id: 3, name: 'Venusaur', type: 'Grass, Poison', level: '83' },
+      { id: 4, name: 'Pikachu', type: 'Electric', level: '100' },
+    ];
+
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([2]));
+
+    return (
+      <Table
+        aria-label="Table with controlled selection"
+        selectionMode="multiple"
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+      >
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column key={column.uid}>{column.name}</Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {(item) => (
+            <Table.Row>
+              {(columnKey) => (
+                <Table.Cell>
+                  {item[columnKey as keyof (typeof rows)[0]]}
+                </Table.Cell>
+              )}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+  },
 };
