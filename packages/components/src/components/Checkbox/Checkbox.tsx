@@ -105,7 +105,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
 
     if (process.env.NODE_ENV !== 'production' && readonly) {
       deprecate(
-        'The "readonly" prop is deprecated. Use "isReadonly" prop to replace it.'
+        'The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
       );
     }
 
