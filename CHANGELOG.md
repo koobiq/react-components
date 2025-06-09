@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.0.1-beta.23](https://github.com/koobiq/react-components/compare/0.0.1-beta.22...0.0.1-beta.23) (2025-06-09)
+
+### 🚀 Features
+
+- **components/List:** enhance styling of disabled list item ([7307ec5](https://github.com/koobiq/react-components/commit/7307ec5b8f928c9160caf454e34d068fad787f70))
+
+### 🐞 Bug Fixes
+
+- **components/ButtonToggleGroup:** correct ts signature for `onSelectionChange` ([ba79281](https://github.com/koobiq/react-components/commit/ba79281dc88b345c30292d036ad19a1b652dbc68))
+- **components/Tooltip:** correct custom class definition ([40c3d19](https://github.com/koobiq/react-components/commit/40c3d199e9b1a6562c01b81a3f07acf0a2e31b03))
+
 ## [0.0.1-beta.22](https://github.com/koobiq/react-components/compare/0.0.1-beta.21...0.0.1-beta.22) (2025-05-30)
 
 ### ⚠ BREAKING CHANGES
