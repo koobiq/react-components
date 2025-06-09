@@ -30,6 +30,9 @@ export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
 
     return (
       <Tag
+        data-flex-item={flexItem}
+        data-orientation={orientation}
+        data-disable-paddings={disablePaddings}
         {...separatorProps}
         className={clsx(
           s.base,
