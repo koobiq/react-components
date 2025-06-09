@@ -20,18 +20,18 @@ export const Base: Story = {
     <Checkbox
       aria-label="checkbox"
       {...args}
-      style={({ hovered, pressed }) => ({
+      style={({ isHovered, isPressed }) => ({
         cursor: 'pointer',
         position: 'relative',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        ...(hovered && { opacity: 0.9 }),
-        ...(pressed && { opacity: 0.8 }),
+        ...(isHovered && { opacity: 0.9 }),
+        ...(isPressed && { opacity: 0.8 }),
       })}
     >
-      {({ checked }) =>
-        checked ? (
+      {({ isSelected }) =>
+        isSelected ? (
           <IconStar16 width={24} height={24} />
         ) : (
           <IconStarO16 width={24} height={24} />

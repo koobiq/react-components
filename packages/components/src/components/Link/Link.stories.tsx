@@ -107,7 +107,7 @@ export const AllowVisited: Story = {
         <Link href="https://react.koobiq.io/" allowVisited={allowVisited}>
           Link
         </Link>
-        <Checkbox checked={allowVisited} onChange={setAllowVisited}>
+        <Checkbox isSelected={allowVisited} onChange={setAllowVisited}>
           AllowVisited
         </Checkbox>
       </FlexBox>
@@ -141,10 +141,10 @@ export const RootTag: Story = {
           </Link>
         </FlexBox>
         <FlexBox gap="xl">
-          <Checkbox checked={isDisabled} onChange={setIsDisabled}>
+          <Checkbox isSelected={isDisabled} onChange={setIsDisabled}>
             Disabled
           </Checkbox>
-          <Checkbox checked={isPseudo} onChange={setIsPseudo}>
+          <Checkbox isSelected={isPseudo} onChange={setIsPseudo}>
             Pseudo
           </Checkbox>
         </FlexBox>

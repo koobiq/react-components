@@ -62,34 +62,34 @@
   --checkbox-border-color: var(--kbq-line-contrast-fade);
 }
 
-.checked {
+.selected {
   --checkbox-icon-color: var(--kbq-white-default);
   --checkbox-bg-color: var(--kbq-background-theme);
   --checkbox-border-color: var(--kbq-background-theme);
 }
 
-.checked:where(.hovered) {
+.selected:where(.hovered) {
   --checkbox-icon-color: var(--kbq-white-default);
   --checkbox-bg-color: var(--kbq-states-background-theme-hover);
   --checkbox-border-color: var(--kbq-states-background-theme-hover);
 }
 
-.error {
+.invalid {
   --checkbox-border-color: var(--kbq-line-error);
 }
 
-.error:where(.hovered) {
+.invalid:where(.hovered) {
   --checkbox-border-color: var(--kbq-line-error);
   --checkbox-bg-color: var(--kbq-states-background-error-fade-hover);
 }
 
-.error:where(.checked) {
+.invalid:where(.selected) {
   --checkbox-icon-color: var(--kbq-white-default);
   --checkbox-border-color: var(--kbq-background-error);
   --checkbox-bg-color: var(--kbq-background-error);
 }
 
-.error:where(.checked.hovered) {
+.invalid:where(.selected.hovered) {
   --checkbox-icon-color: var(--kbq-white-default);
   --checkbox-border-color: var(--kbq-states-background-error-hover);
   --checkbox-bg-color: var(--kbq-states-background-error-hover);
@@ -100,7 +100,7 @@
   --checkbox-outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.focusVisible:where(.error) {
+.focusVisible:where(.invalid) {
   --checkbox-border-color: transparent;
   --checkbox-outline-color: var(--kbq-states-line-focus-error);
 }
@@ -124,7 +124,7 @@
   cursor: not-allowed;
 }
 
-.checked:where(.disabled) {
+.selected:where(.disabled) {
   --checkbox-icon-color: var(--kbq-states-icon-disabled);
 }
 

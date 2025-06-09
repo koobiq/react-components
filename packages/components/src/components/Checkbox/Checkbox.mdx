@@ -33,7 +33,7 @@ For `normal` or `big` checkboxes, use the `size` prop.
 
 ## Disabled
 
-A checkbox can be disabled by passing the `disabled` property.
+A checkbox can be disabled by passing the `isDisabled` prop.
 
 <Story of={Stories.Disabled} />
 
@@ -41,28 +41,30 @@ A checkbox can be disabled by passing the `disabled` property.
 
 ### Default value
 
-Checkboxes are not checked by default. The `defaultChecked` prop can be used to set the default state.
+Checkboxes are not checked by default. The `defaultSelected` prop can be used to set the default state.
 
 <Story of={Stories.DefaultValue} />
 
 ### Controlled value
 
-The `checked` prop can be used to make the checked state controlled.
+The `isSelected` prop can be used to make the checked state controlled.
 The `onChange` event is fired when the user presses the checkbox, and receives the new value.
 
 <Story of={Stories.ControlledValue} />
 
-## Error
+## Invalid
 
-The `error` property toggles the error state.
+The `isInvalid` prop toggles the invalid state.
 
-<Story of={Stories.Error} />
+<Story of={Stories.Invalid} />
 
 ## Indeterminate
 
 A checkbox input can only have two states in a form: checked or unchecked.
 
 Visually, there are three states a checkbox can be in: checked, unchecked, or indeterminate.
+
+The `isInvalid` prop toggles the indeterminate state.
 
 <Story of={Stories.Indeterminate} />
 

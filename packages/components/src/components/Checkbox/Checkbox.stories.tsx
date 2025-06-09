@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import { clsx, useBoolean } from '@koobiq/react-core';
+import { useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { FlexBox } from '../FlexBox';
 import { flex, spacing } from '../layout';
 import { Typography } from '../Typography';
 
@@ -27,33 +28,33 @@ export const Base: Story = {
 
 export const Size = {
   render: (args: CheckboxProps) => (
-    <div className={flex({ gap: 'l', direction: 'column' })}>
+    <FlexBox gap="l" direction="column">
       {checkboxPropSize.map((size) => (
-        <Checkbox key={size} {...args} size={size} defaultChecked>
+        <Checkbox key={size} {...args} size={size} defaultSelected>
           size = {size}
         </Checkbox>
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
 export const Disabled: Story = {
   render: (args: CheckboxProps) => (
-    <div className={flex({ gap: 'l' })}>
-      <Checkbox {...args} disabled>
+    <FlexBox gap="l">
+      <Checkbox {...args} isDisabled>
         Label
       </Checkbox>
-      <Checkbox {...args} disabled defaultChecked>
+      <Checkbox {...args} isDisabled defaultSelected>
         Label
       </Checkbox>
-    </div>
+    </FlexBox>
   ),
 };
 
 export const DefaultValue: Story = {
   render: function Render(args: CheckboxProps) {
     return (
-      <Checkbox {...args} defaultChecked>
+      <Checkbox {...args} defaultSelected>
         Uncontrolled
       </Checkbox>
     );
@@ -62,24 +63,24 @@ export const DefaultValue: Story = {
 
 export const ControlledValue: Story = {
   render: function Render(args: CheckboxProps) {
-    const [checked, { toggle }] = useBoolean(true);
+    const [isSelected, { toggle }] = useBoolean(true);
 
     return (
-      <div className={flex({ gap: 's', direction: 'column' })}>
-        <Checkbox {...args} checked={checked} onChange={toggle}>
+      <FlexBox gap="s" direction="column">
+        <Checkbox {...args} isSelected={isSelected} onChange={toggle}>
           Controlled
         </Checkbox>
         <Typography variant="tabular-compact">
-          Checkbox is {checked ? 'checked' : 'unchecked'}
+          Checkbox is {isSelected ? 'checked' : 'unchecked'}
         </Typography>
-      </div>
+      </FlexBox>
     );
   },
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   render: (args: CheckboxProps) => (
-    <Checkbox {...args} error defaultChecked>
+    <Checkbox {...args} isInvalid defaultSelected>
       Label
     </Checkbox>
   ),
@@ -87,48 +88,43 @@ export const Error: Story = {
 
 export const Indeterminate: Story = {
   render: function Render(args: CheckboxProps) {
-    const [checked, setChecked] = useState([true, false]);
+    const [selectedGroup, setSelectedGroup] = useState([true, false]);
 
     const handleChange1: CheckboxProps['onChange'] = (value) => {
-      setChecked([value, value]);
+      setSelectedGroup([value, value]);
     };
 
     const handleChange2: CheckboxProps['onChange'] = (value) => {
-      setChecked([value, checked[1]]);
+      setSelectedGroup([value, selectedGroup[1]]);
     };
 
     const handleChange3: CheckboxProps['onChange'] = (value) => {
-      setChecked([checked[0], value]);
+      setSelectedGroup([selectedGroup[0], value]);
     };
 
     const children = (
-      <div
-        className={clsx(
-          flex({ gap: 's', direction: 'column' }),
-          spacing({ mis: 'l' })
-        )}
-      >
-        <Checkbox checked={checked[0]} onChange={handleChange2}>
+      <FlexBox gap="s" direction="column" className={spacing({ mis: 'l' })}>
+        <Checkbox isSelected={selectedGroup[0]} onChange={handleChange2}>
           Child 1
         </Checkbox>
-        <Checkbox checked={checked[1]} onChange={handleChange3}>
+        <Checkbox isSelected={selectedGroup[1]} onChange={handleChange3}>
           Child 2
         </Checkbox>
-      </div>
+      </FlexBox>
     );
 
     return (
-      <div className={flex({ gap: 's', direction: 'column' })}>
+      <FlexBox gap="s" direction="column">
         <Checkbox
           {...args}
           onChange={handleChange1}
-          checked={checked[0] && checked[1]}
-          indeterminate={checked[0] !== checked[1]}
+          isSelected={selectedGroup[0] && selectedGroup[1]}
+          isIndeterminate={selectedGroup[0] !== selectedGroup[1]}
         >
           Parent
         </Checkbox>
         {children}
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -140,7 +136,7 @@ export const Description: Story = {
       slotProps={{
         label: { className: flex({ direction: 'column', gap: '3xs' }) },
       }}
-      defaultChecked
+      defaultSelected
     >
       I agree to the terms and conditions
       <Typography color="contrast-secondary" variant="text-compact">
@@ -152,6 +148,6 @@ export const Description: Story = {
 
 export const WithoutLabel: Story = {
   render: (args: CheckboxProps) => (
-    <Checkbox {...args} aria-label="Checkbox" defaultChecked />
+    <Checkbox {...args} aria-label="Checkbox" defaultSelected />
   ),
 };
