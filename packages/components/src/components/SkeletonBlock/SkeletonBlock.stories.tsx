@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
-import { flex } from '../layout';
+import { FlexBox } from '../FlexBox';
 import { Toggle } from '../Toggle';
 
 import type { SkeletonBlockBaseProps } from './index';
@@ -30,19 +30,19 @@ export const Base: Story = {
 export const Example1: Story = {
   name: 'Example 1',
   render: function Render(args: SkeletonBlockBaseProps) {
-    const [show, { toggle }] = useBoolean(false);
+    const [isShown, { toggle }] = useBoolean(false);
 
     return (
-      <div className={flex({ gap: 'm', direction: 'column' })}>
+      <FlexBox gap="m" direction="column">
         <Toggle onChange={toggle}>Skeletonization</Toggle>
-        {show ? (
+        {isShown ? (
           <SkeletonBlock {...args}>
             <Button>Send message</Button>
           </SkeletonBlock>
         ) : (
           <Button>Send message</Button>
         )}
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -50,23 +50,20 @@ export const Example1: Story = {
 export const Example2: Story = {
   name: 'Example 2',
   render: function Render() {
-    const [show, { toggle }] = useBoolean(false);
+    const [isShown, { toggle }] = useBoolean(false);
 
     return (
-      <div className={flex({ gap: 'm', direction: 'column' })}>
+      <FlexBox gap="m" direction="column">
         <Toggle onChange={toggle}>Skeletonization</Toggle>
-        {show ? (
-          <div
-            className={flex({ gap: 's', alignItems: 'center' })}
-            style={{ blockSize: 20 }}
-          >
+        {isShown ? (
+          <FlexBox gap="s" alignItems="center" style={{ blockSize: 20 }}>
             <SkeletonBlock inlineSize={16} blockSize={16} />
             <SkeletonBlock inlineSize={100} blockSize={16} />
-          </div>
+          </FlexBox>
         ) : (
           <Checkbox>Check me</Checkbox>
         )}
-      </div>
+      </FlexBox>
     );
   },
 };

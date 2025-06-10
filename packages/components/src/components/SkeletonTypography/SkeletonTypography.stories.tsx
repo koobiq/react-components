@@ -1,15 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
-import { flex, spacing } from '../layout';
-import { Modal, ModalContent, ModalFooter, ModalHeader } from '../Modal';
-import {
-  SidePanel,
-  SidePanelContent,
-  SidePanelFooter,
-  SidePanelHeader,
-} from '../SidePanel';
+import { spacing } from '../layout';
+import { Modal } from '../Modal';
+import { SidePanel } from '../SidePanel';
 import { SkeletonBlock } from '../SkeletonBlock';
 import { Typography } from '../Typography';
 
@@ -45,28 +41,28 @@ export const Example1: Story = {
     return (
       <Grid cols={{ xs: 1, l: 2 }} gap="3xl">
         <GridItem>
-          <Typography variant="headline" className={spacing({ mbe: 'l' })}>
-            Title
-          </Typography>
-          <Typography variant="title" className={spacing({ mbe: 'l' })}>
-            Subtitle
-          </Typography>
-          <Typography variant="text-normal">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias cum
-            deleniti ducimus, ea esse inventore obcaecati ratione repellendus
-            repudiandae velit.
-          </Typography>
+          <FlexBox gap="s" direction="column" alignItems="stretch">
+            <Typography variant="headline">Title</Typography>
+            <Typography variant="title">Subtitle</Typography>
+            <Typography variant="text-normal">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias
+              cum deleniti ducimus, ea esse inventore obcaecati ratione
+              repellendus repudiandae velit.
+            </Typography>
+          </FlexBox>
         </GridItem>
         <GridItem>
-          <Typography variant="headline" className={spacing({ mbe: 'l' })}>
-            <SkeletonTypography inlineSize={200} />
-          </Typography>
-          <Typography variant="title" className={spacing({ mbe: 'l' })}>
-            <SkeletonTypography inlineSize={180} />
-          </Typography>
-          <Typography variant="text-normal">
-            <SkeletonTypography inlineSize="100%" rows={3} />
-          </Typography>
+          <FlexBox gap="s" direction="column" alignItems="stretch">
+            <Typography variant="headline">
+              <SkeletonTypography inlineSize={90} />
+            </Typography>
+            <Typography variant="title">
+              <SkeletonTypography inlineSize={120} />
+            </Typography>
+            <Typography variant="text-normal">
+              <SkeletonTypography inlineSize="100%" rows={3} />
+            </Typography>
+          </FlexBox>
         </GridItem>
       </Grid>
     );
@@ -77,50 +73,50 @@ export const Example2: Story = {
   name: 'Example 2',
   render: function Render() {
     return (
-      <div className={flex({ gap: 'm' })}>
+      <FlexBox gap="m">
         <Modal control={(props) => <Button {...props}>Modal</Button>}>
-          <ModalHeader>
+          <Modal.Header>
             <SkeletonTypography variant="inherit" inlineSize={100} />
-          </ModalHeader>
-          <ModalContent>
+          </Modal.Header>
+          <Modal.Body>
             <SkeletonBlock
               inlineSize="100%"
               blockSize={200}
               className={spacing({ mbe: 'm' })}
             />
             <SkeletonTypography variant="inherit" rows={10} />
-          </ModalContent>
-          <ModalFooter>
+          </Modal.Body>
+          <Modal.Footer>
             <SkeletonBlock>
               <Button>Accept</Button>
             </SkeletonBlock>
             <SkeletonBlock>
               <Button>Close</Button>
             </SkeletonBlock>
-          </ModalFooter>
+          </Modal.Footer>
         </Modal>
         <SidePanel control={(props) => <Button {...props}>SidePanel</Button>}>
-          <SidePanelHeader>
+          <SidePanel.Header>
             <SkeletonTypography variant="inherit" inlineSize={100} />
-          </SidePanelHeader>
-          <SidePanelContent>
+          </SidePanel.Header>
+          <SidePanel.Body>
             <SkeletonBlock
               inlineSize="100%"
               blockSize={200}
               className={spacing({ mbe: 'm' })}
             />
             <SkeletonTypography variant="inherit" rows={10} />
-          </SidePanelContent>
-          <SidePanelFooter>
+          </SidePanel.Body>
+          <SidePanel.Footer>
             <SkeletonBlock>
               <Button>Accept</Button>
             </SkeletonBlock>
             <SkeletonBlock>
               <Button>Close</Button>
             </SkeletonBlock>
-          </SidePanelFooter>
+          </SidePanel.Footer>
         </SidePanel>
-      </div>
+      </FlexBox>
     );
   },
 };
