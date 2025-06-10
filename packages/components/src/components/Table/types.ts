@@ -2,6 +2,7 @@ import type { ComponentRef, CSSProperties, ReactElement, Ref } from 'react';
 
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { TableStateProps } from '@koobiq/react-primitives';
+import type { Key } from '@react-types/shared';
 
 export const tablePropDivider = ['none', 'row'] as const;
 
@@ -19,6 +20,11 @@ export type TablePropOnSelectionChange<T> =
 
 export type TablePropSelectedKeys<T> = TableStateProps<T>['selectedKeys'];
 
+export type TablePropDefaultSelectedKeys<T> =
+  TableStateProps<T>['defaultSelectedKeys'];
+
+export type TablePropDisabledKeys<T> = TableStateProps<T>['disabledKeys'];
+
 export type TablePropBlockSize = CSSProperties['blockSize'];
 
 export type TablePropMinBlockSize = CSSProperties['minBlockSize'];
@@ -33,8 +39,16 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
     selectionMode?: TablePropSelectionMode<T>;
     /** The currently selected keys in the collection (controlled). */
     selectedKeys?: TablePropSelectedKeys<T>;
+    /** The initial selected keys in the collection (uncontrolled). */
+    defaultSelectedKeys?: TablePropDefaultSelectedKeys<T>;
     /** Handler that is called when the selection changes. */
     onSelectionChange?: TablePropOnSelectionChange<T>;
+    /** A list of row keys to disable. */
+    disabledKeys?: TablePropDisabledKeys<T>;
+    /** Handler that is called when a user performs an action on the row. */
+    onRowAction?: (key: Key) => void;
+    /** Handler that is called when a user performs an action on the cell. */
+    onCellAction?: (key: Key) => void;
     /** Inline styles. */
     style?: CSSProperties;
     /** Additional CSS-classes. */

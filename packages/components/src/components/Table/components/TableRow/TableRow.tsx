@@ -16,7 +16,7 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
   const ref = useRef<HTMLTableRowElement | null>(null);
   const isSelected = state.selectionManager.isSelected(item.key);
 
-  const { rowProps, isPressed } = useTableRow(
+  const { rowProps, isPressed, isDisabled } = useTableRow(
     {
       node: item,
     },
@@ -27,7 +27,7 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
   const { style, className } = item.props;
 
   const { isFocusVisible, focusProps } = useFocusRing();
-  const { isHovered, hoverProps } = useHover({});
+  const { isHovered, hoverProps } = useHover({ isDisabled });
 
   return (
     <tr
@@ -36,6 +36,7 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
         isHovered && s.hovered,
         isPressed && s.pressed,
         isSelected && s.selected,
+        isDisabled && s.disabled,
         isFocusVisible && s.focusVisible,
         className
       )}
