@@ -20,20 +20,20 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     const {
       size = 'normal',
       labelPlacement = 'end',
-      disabled = false,
-      isDisabled: isDisabledProp = false,
-      checked = false,
-      isSelected: isSelectedProp = false,
-      error = false,
-      isInvalid: isInvalidProp = false,
-      defaultChecked = false,
-      defaultSelected: defaultSelectedProp = false,
-      readonly = false,
-      isReadOnly: isReadOnlyProp = false,
-      required = false,
-      isRequired: isRequiredProp = false,
-      indeterminate = false,
-      isIndeterminate: isIndeterminateProp = false,
+      disabled,
+      isDisabled: isDisabledProp,
+      checked,
+      isSelected: isSelectedProp,
+      error,
+      isInvalid: isInvalidProp,
+      defaultChecked,
+      defaultSelected: defaultSelectedProp,
+      readonly,
+      isReadOnly: isReadOnlyProp,
+      required,
+      isRequired: isRequiredProp,
+      indeterminate,
+      isIndeterminate: isIndeterminateProp,
       children,
       className,
       slotProps,
@@ -41,9 +41,9 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     } = props;
 
     const isDisabled = isDisabledProp || disabled;
-    const isSelected = isSelectedProp || checked;
+    const isSelected = isSelectedProp ?? checked;
     const isInvalid = isInvalidProp || error;
-    const defaultSelected = defaultSelectedProp || defaultChecked;
+    const defaultSelected = defaultSelectedProp ?? defaultChecked;
     const isReadOnly = isReadOnlyProp || readonly;
     const isRequired = isRequiredProp || required;
     const isIndeterminate = isIndeterminateProp || indeterminate;
@@ -79,43 +79,43 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
       ...other,
     };
 
-    if (process.env.NODE_ENV !== 'production' && disabled) {
+    if (process.env.NODE_ENV !== 'production' && isNotNil(disabled)) {
       deprecate(
         'Checkbox. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && checked) {
+    if (process.env.NODE_ENV !== 'production' && isNotNil(checked)) {
       deprecate(
         'Checkbox. The "checked" prop is deprecated. Use "isSelected" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && error) {
+    if (process.env.NODE_ENV !== 'production' && isNotNil(error)) {
       deprecate(
         'Checkbox. The "error" prop is deprecated. Use "isInvalid" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && defaultChecked) {
+    if (process.env.NODE_ENV !== 'production' && isNotNil(defaultChecked)) {
       deprecate(
         'Checkbox. The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && readonly) {
+    if (process.env.NODE_ENV !== 'production' && isNotNil(readonly)) {
       deprecate(
         'Checkbox. The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && required) {
+    if (process.env.NODE_ENV !== 'production' && isNotNil(required)) {
       deprecate(
         'Checkbox. The "required" prop is deprecated. Use "isRequired" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && indeterminate) {
+    if (process.env.NODE_ENV !== 'production' && isNotNil(indeterminate)) {
       deprecate(
         'Checkbox. The "indeterminate" prop is deprecated. Use "isIndeterminate" prop to replace it.'
       );
