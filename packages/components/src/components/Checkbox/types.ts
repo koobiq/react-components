@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef, ReactNode } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 
 export const checkboxPropSize = ['normal', 'big'] as const;
 
@@ -8,6 +8,8 @@ export const checkboxPropLabelPlacement = ['start', 'end'] as const;
 
 export type CheckboxPropLabelPlacement =
   (typeof checkboxPropLabelPlacement)[number];
+
+export type CheckboxPropOnChange = (selected: boolean) => void;
 
 type CheckboxDeprecatedProps = {
   /**
@@ -73,6 +75,8 @@ export type CheckboxProps = {
   children?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /**
    * Size.
    * @default normal
@@ -118,7 +122,7 @@ export type CheckboxProps = {
    * */
   defaultSelected?: boolean;
   /** Callback fired when the state is changed. */
-  onChange?: (selected: boolean) => void;
+  onChange?: CheckboxPropOnChange;
   /** The props used for each slot inside. */
   slotProps?: {
     box?: ComponentPropsWithRef<'span'>;
