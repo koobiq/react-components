@@ -36,8 +36,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0
       '@koobiq/design-tokens':
-        specifier: ^3.12.1
-        version: 3.12.1
+        specifier: ^3.13.2
+        version: 3.13.2
       '@storybook/addon-a11y':
         specifier: ^8.6.9
         version: 8.6.9(storybook@8.6.9(prettier@3.5.3))
@@ -474,7 +474,7 @@ importers:
     dependencies:
       '@koobiq/react-components':
         specifier: 0.0.1-beta.14
-        version: 0.0.1-beta.14(@koobiq/design-tokens@3.12.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.0.1-beta.14(@koobiq/design-tokens@3.13.2)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@koobiq/react-core':
         specifier: 0.0.1-beta.14
         version: 0.0.1-beta.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1501,6 +1501,9 @@ packages:
 
   '@koobiq/design-tokens@3.12.1':
     resolution: {integrity: sha512-mROGt9r61y7LbP314bCWRxdyzya6H2K/14VLadQodeztazfygJiB52uHVOQsJcotyCDPEq2kiOYgaykQU/9GBA==}
+
+  '@koobiq/design-tokens@3.13.2':
+    resolution: {integrity: sha512-hIKw0CnsbclqjtTqGCQu9KigwHweQLn8sUZy2X+PJiv1IZarDPjFnK6zMLheygwMKqD2psiNVkYt2y9CLcNmWg==}
 
   '@koobiq/logger@0.0.1-beta.14':
     resolution: {integrity: sha512-yaoxUTXNbmQpUUY5x8/m+O/AH4LTiZlhR88mpyx1SncuzbmDeEIKxotvCFZStZh1O4RI87/8vxlss7Ph3OjDWA==}
@@ -9323,11 +9326,27 @@ snapshots:
 
   '@koobiq/design-tokens@3.12.1': {}
 
+  '@koobiq/design-tokens@3.13.2': {}
+
   '@koobiq/logger@0.0.1-beta.14': {}
 
   '@koobiq/react-components@0.0.1-beta.14(@koobiq/design-tokens@3.12.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@koobiq/design-tokens': 3.12.1
+      '@koobiq/logger': 0.0.1-beta.14
+      '@koobiq/react-core': 0.0.1-beta.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@koobiq/react-icons': 0.0.1-beta.14(react@18.3.1)
+      '@koobiq/react-primitives': 0.0.1-beta.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react-transition-group': 4.4.12(@types/react@18.3.12)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/react'
+
+  '@koobiq/react-components@0.0.1-beta.14(@koobiq/design-tokens@3.13.2)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@koobiq/design-tokens': 3.13.2
       '@koobiq/logger': 0.0.1-beta.14
       '@koobiq/react-core': 0.0.1-beta.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@koobiq/react-icons': 0.0.1-beta.14(react@18.3.1)
