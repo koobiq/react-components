@@ -140,7 +140,7 @@
     background-color var(--kbq-transition-default),
     border-radius var(--kbq-transition-default);
 
-  /* Hover and active states */
+  /* Hover, active and selected states */
   &.hovered {
     background-color: var(--kbq-states-background-transparent-hover);
   }
@@ -151,6 +151,14 @@
 
   &.selected {
     background-color: var(--kbq-background-theme-less);
+  }
+
+  &.selected:where(.hovered) {
+    background-color: var(--kbq-states-background-theme-less-hover);
+  }
+
+  &.selected:where(.pressed) {
+    background-color: var(--kbq-states-background-theme-less-active);
   }
 
   /* Remove bottom border on the very last row */

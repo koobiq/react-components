@@ -575,3 +575,91 @@ export const ControlledSelection: Story = {
     );
   },
 };
+
+export const DisabledRows: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: function Render() {
+    return (
+      <Table
+        aria-label="Table with selection"
+        selectionMode="multiple"
+        disabledKeys={['3']}
+        defaultSelectedKeys={['3']}
+      >
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Type</Table.Column>
+          <Table.Column>Level</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row key="1">
+            <Table.Cell>Charizard</Table.Cell>
+            <Table.Cell>Fire, Flying</Table.Cell>
+            <Table.Cell>67</Table.Cell>
+          </Table.Row>
+          <Table.Row key="2">
+            <Table.Cell>Blastoise</Table.Cell>
+            <Table.Cell>Water</Table.Cell>
+            <Table.Cell>56</Table.Cell>
+          </Table.Row>
+          <Table.Row key="3">
+            <Table.Cell>Venusaur</Table.Cell>
+            <Table.Cell>Grass, Poison</Table.Cell>
+            <Table.Cell>83</Table.Cell>
+          </Table.Row>
+          <Table.Row key="4">
+            <Table.Cell>Pikachu</Table.Cell>
+            <Table.Cell>Electric</Table.Cell>
+            <Table.Cell>100</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    );
+  },
+};
+
+export const RowActions: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: function Render() {
+    return (
+      <Table
+        aria-label="Table with selection"
+        selectionMode="multiple"
+        onRowAction={(key) => alert(`Opening item ${key}...`)}
+        onCellAction={(key) => alert(`Opening cell ${key}...`)}
+      >
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Type</Table.Column>
+          <Table.Column>Level</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row key="1">
+            <Table.Cell>Charizard</Table.Cell>
+            <Table.Cell>Fire, Flying</Table.Cell>
+            <Table.Cell>67</Table.Cell>
+          </Table.Row>
+          <Table.Row key="2">
+            <Table.Cell>Blastoise</Table.Cell>
+            <Table.Cell>Water</Table.Cell>
+            <Table.Cell>56</Table.Cell>
+          </Table.Row>
+          <Table.Row key="3">
+            <Table.Cell>Venusaur</Table.Cell>
+            <Table.Cell>Grass, Poison</Table.Cell>
+            <Table.Cell>83</Table.Cell>
+          </Table.Row>
+          <Table.Row key="4">
+            <Table.Cell>Pikachu</Table.Cell>
+            <Table.Cell>Electric</Table.Cell>
+            <Table.Cell>100</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    );
+  },
+};
