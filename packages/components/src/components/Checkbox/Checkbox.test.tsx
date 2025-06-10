@@ -89,11 +89,6 @@ describe('Checkbox', () => {
       );
     });
 
-    it('should render the Checkbox label text', async () => {
-      render(<Checkbox>label</Checkbox>);
-      expect(screen.getByText('label')).toBeInTheDocument();
-    });
-
     it('should display the text', () => {
       render(<Checkbox {...baseProps}>foo</Checkbox>);
 
