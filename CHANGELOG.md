@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.1-beta.24](https://github.com/koobiq/react-components/compare/0.0.1-beta.23...0.0.1-beta.24) (2025-06-10)
+
+### 🚀 Features
+
+- **components/Checkbox:** add isDisabled, isInvalid, isSelected, isReadOnly, isRequired, isIndeterminate, defaultSelected ([61a21bf](https://github.com/koobiq/react-components/commit/61a21bf6b093530be22ba25ffb0af51c19c7b676))
+- **components/Checkbox:** add type declaration for `style` prop ([1f37414](https://github.com/koobiq/react-components/commit/1f37414b3560f639622badd08152b3a4cbcaaabb))
+- **components/Container:** add `isFixed`, deprecate `fixed` ([e58b0e3](https://github.com/koobiq/react-components/commit/e58b0e3f7cadae534d22091e1ab64175484225a9))
+- **components/Divider:** add helper data-attributes for customization ([c1c7536](https://github.com/koobiq/react-components/commit/c1c7536013140fc3c54ab00451e35f02f3867ce4))
+- **components/SkeletonBlock:** mark the component as experimental ([184bb83](https://github.com/koobiq/react-components/commit/184bb836cd6004930ee04f521df9aacbfc35c16c))
+- **components/SkeletonBlock:** update styles to match design system specs ([04669dd](https://github.com/koobiq/react-components/commit/04669ddf45a67ee42ded86ee39a325121b244f4e))
+- **components/SkeletonTypography:** mark the component as experimental ([b534196](https://github.com/koobiq/react-components/commit/b534196fdc54a4975ab7137c2df8b014af10dec9))
+- **components:** bump @koobiq/design-tokens from 3.12.1 to 3.13.2 ([4962229](https://github.com/koobiq/react-components/commit/4962229c90d3852c367859bdada21bc5caf5ba4b))
+
+### 🐞 Bug Fixes
+
+- **components/Checkbox:** correct `defaultSelected` behavior ([07f6726](https://github.com/koobiq/react-components/commit/07f67262e7f4ff194ec95d08264a947d6a251254))
+
 ## [0.0.1-beta.23](https://github.com/koobiq/react-components/compare/0.0.1-beta.22...0.0.1-beta.23) (2025-06-09)
 
 ### 🚀 Features
