@@ -530,6 +530,7 @@ export const SingleSelection: Story = {
   render: (args: TableProps<object>) => (
     <LanguageTable
       aria-label="Table with selection"
+      defaultSelectedKeys={[2]}
       selectionMode="single"
       {...args}
     />
