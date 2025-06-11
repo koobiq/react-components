@@ -23,6 +23,9 @@ export type TablePropSelectedKeys<T> = TableStateProps<T>['selectedKeys'];
 export type TablePropDefaultSelectedKeys<T> =
   TableStateProps<T>['defaultSelectedKeys'];
 
+export type TablePropDisabledBehavior<T> =
+  TableStateProps<T>['disabledBehavior'];
+
 export type TablePropDisabledKeys<T> = TableStateProps<T>['disabledKeys'];
 
 export type TablePropBlockSize = CSSProperties['blockSize'];
@@ -45,6 +48,8 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
     onSelectionChange?: TablePropOnSelectionChange<T>;
     /** A list of row keys to disable. */
     disabledKeys?: TablePropDisabledKeys<T>;
+    /** Whether `disabledKeys` applies to all interactions, or only selection. */
+    disabledBehavior?: TablePropDisabledBehavior<T>;
     /** Handler that is called when a user performs an action on the row. */
     onRowAction?: (key: Key) => void;
     /** Handler that is called when a user performs an action on the cell. */
