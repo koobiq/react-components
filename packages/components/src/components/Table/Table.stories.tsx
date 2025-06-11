@@ -454,40 +454,85 @@ export const Alignment: Story = {
   ),
 };
 
+const LanguageTable = (props: TableProps<object>) => {
+  const columns = [
+    { name: 'ID', uid: 'id' },
+    { name: 'Language', uid: 'language' },
+    { name: 'Paradigm', uid: 'paradigm' },
+    { name: 'First Appeared', uid: 'firstAppeared' },
+  ];
+
+  const rows = [
+    {
+      id: 1,
+      language: 'Python',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '1991',
+    },
+    {
+      id: 2,
+      language: 'JavaScript',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '1995',
+    },
+    {
+      id: 3,
+      language: 'Rust',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '2010',
+    },
+    {
+      id: 4,
+      language: 'Go',
+      paradigm: 'Concurrent, Imperative',
+      firstAppeared: '2009',
+    },
+    {
+      id: 5,
+      language: 'TypeScript',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '2012',
+    },
+    {
+      id: 6,
+      language: 'Kotlin',
+      paradigm: 'Object-oriented, Functional',
+      firstAppeared: '2011',
+    },
+  ];
+
+  return (
+    <Table {...props}>
+      <Table.Header columns={columns}>
+        {(column) => (
+          <Table.Column key={column.uid}>{column.name}</Table.Column>
+        )}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {(item) => (
+          <Table.Row>
+            {(columnKey) => (
+              <Table.Cell>
+                {item[columnKey as keyof (typeof rows)[0]]}
+              </Table.Cell>
+            )}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  );
+};
+
 export const SingleSelection: Story = {
   parameters: {
     layout: 'centered',
   },
   render: (args: TableProps<object>) => (
-    <Table aria-label="Table with selection" selectionMode="single" {...args}>
-      <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Type</Table.Column>
-        <Table.Column>Level</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row key="1">
-          <Table.Cell>Charizard</Table.Cell>
-          <Table.Cell>Fire, Flying</Table.Cell>
-          <Table.Cell>67</Table.Cell>
-        </Table.Row>
-        <Table.Row key="2">
-          <Table.Cell>Blastoise</Table.Cell>
-          <Table.Cell>Water</Table.Cell>
-          <Table.Cell>56</Table.Cell>
-        </Table.Row>
-        <Table.Row key="3">
-          <Table.Cell>Venusaur</Table.Cell>
-          <Table.Cell>Grass, Poison</Table.Cell>
-          <Table.Cell>83</Table.Cell>
-        </Table.Row>
-        <Table.Row key="4">
-          <Table.Cell>Pikachu</Table.Cell>
-          <Table.Cell>Electric</Table.Cell>
-          <Table.Cell>100</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <LanguageTable
+      aria-label="Table with selection"
+      selectionMode="single"
+      {...args}
+    />
   ),
 };
 
@@ -496,35 +541,12 @@ export const MultiSelection: Story = {
     layout: 'centered',
   },
   render: (args: TableProps<object>) => (
-    <Table aria-label="Table with selection" selectionMode="multiple" {...args}>
-      <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Type</Table.Column>
-        <Table.Column>Level</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row key="1">
-          <Table.Cell>Charizard</Table.Cell>
-          <Table.Cell>Fire, Flying</Table.Cell>
-          <Table.Cell>67</Table.Cell>
-        </Table.Row>
-        <Table.Row key="2">
-          <Table.Cell>Blastoise</Table.Cell>
-          <Table.Cell>Water</Table.Cell>
-          <Table.Cell>56</Table.Cell>
-        </Table.Row>
-        <Table.Row key="3">
-          <Table.Cell>Venusaur</Table.Cell>
-          <Table.Cell>Grass, Poison</Table.Cell>
-          <Table.Cell>83</Table.Cell>
-        </Table.Row>
-        <Table.Row key="4">
-          <Table.Cell>Pikachu</Table.Cell>
-          <Table.Cell>Electric</Table.Cell>
-          <Table.Cell>100</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <LanguageTable
+      aria-label="Table with selection"
+      selectionMode="multiple"
+      {...args}
+      {...args}
+    />
   ),
 };
 
@@ -533,45 +555,15 @@ export const ControlledSelection: Story = {
     layout: 'centered',
   },
   render: function Render() {
-    const columns = [
-      { name: 'Name', uid: 'name' },
-      { name: 'Type', uid: 'type' },
-      { name: 'Level', uid: 'level' },
-    ];
-
-    const rows = [
-      { id: 1, name: 'Charizard', type: 'Fire, Flying', level: '67' },
-      { id: 2, name: 'Blastoise', type: 'Water', level: '56' },
-      { id: 3, name: 'Venusaur', type: 'Grass, Poison', level: '83' },
-      { id: 4, name: 'Pikachu', type: 'Electric', level: '100' },
-    ];
-
     const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([2]));
 
     return (
-      <Table
+      <LanguageTable
         aria-label="Table with controlled selection"
         selectionMode="multiple"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
-      >
-        <Table.Header columns={columns}>
-          {(column) => (
-            <Table.Column key={column.uid}>{column.name}</Table.Column>
-          )}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {(item) => (
-            <Table.Row>
-              {(columnKey) => (
-                <Table.Cell>
-                  {item[columnKey as keyof (typeof rows)[0]]}
-                </Table.Cell>
-              )}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
+      />
     );
   },
 };
@@ -582,40 +574,13 @@ export const DisabledRows: Story = {
   },
   render: function Render() {
     return (
-      <Table
-        aria-label="Table with selection"
+      <LanguageTable
+        aria-label="Table with disabled rows"
         selectionMode="multiple"
-        disabledKeys={['3']}
-        defaultSelectedKeys={['3']}
-      >
-        <Table.Header>
-          <Table.Column>Name</Table.Column>
-          <Table.Column>Type</Table.Column>
-          <Table.Column>Level</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row key="1">
-            <Table.Cell>Charizard</Table.Cell>
-            <Table.Cell>Fire, Flying</Table.Cell>
-            <Table.Cell>67</Table.Cell>
-          </Table.Row>
-          <Table.Row key="2">
-            <Table.Cell>Blastoise</Table.Cell>
-            <Table.Cell>Water</Table.Cell>
-            <Table.Cell>56</Table.Cell>
-          </Table.Row>
-          <Table.Row key="3">
-            <Table.Cell>Venusaur</Table.Cell>
-            <Table.Cell>Grass, Poison</Table.Cell>
-            <Table.Cell>83</Table.Cell>
-          </Table.Row>
-          <Table.Row key="4">
-            <Table.Cell>Pikachu</Table.Cell>
-            <Table.Cell>Electric</Table.Cell>
-            <Table.Cell>100</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
+        disabledBehavior="all"
+        disabledKeys={[3, 4]}
+        defaultSelectedKeys={[3]}
+      />
     );
   },
 };
@@ -626,40 +591,12 @@ export const RowActions: Story = {
   },
   render: function Render() {
     return (
-      <Table
-        aria-label="Table with selection"
+      <LanguageTable
+        aria-label="Table with row actions"
         selectionMode="multiple"
         onRowAction={(key) => alert(`Opening item ${key}...`)}
         onCellAction={(key) => alert(`Opening cell ${key}...`)}
-      >
-        <Table.Header>
-          <Table.Column>Name</Table.Column>
-          <Table.Column>Type</Table.Column>
-          <Table.Column>Level</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row key="1">
-            <Table.Cell>Charizard</Table.Cell>
-            <Table.Cell>Fire, Flying</Table.Cell>
-            <Table.Cell>67</Table.Cell>
-          </Table.Row>
-          <Table.Row key="2">
-            <Table.Cell>Blastoise</Table.Cell>
-            <Table.Cell>Water</Table.Cell>
-            <Table.Cell>56</Table.Cell>
-          </Table.Row>
-          <Table.Row key="3">
-            <Table.Cell>Venusaur</Table.Cell>
-            <Table.Cell>Grass, Poison</Table.Cell>
-            <Table.Cell>83</Table.Cell>
-          </Table.Row>
-          <Table.Row key="4">
-            <Table.Cell>Pikachu</Table.Cell>
-            <Table.Cell>Electric</Table.Cell>
-            <Table.Cell>100</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
+      />
     );
   },
 };
