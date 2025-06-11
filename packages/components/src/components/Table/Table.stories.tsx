@@ -551,6 +551,21 @@ export const MultiSelection: Story = {
   ),
 };
 
+export const SelectionBehavior: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: function Render() {
+    return (
+      <LanguageTable
+        aria-label="Table with selection"
+        selectionMode="multiple"
+        selectionBehavior="replace"
+      />
+    );
+  },
+};
+
 export const ControlledSelection: Story = {
   parameters: {
     layout: 'centered',
@@ -596,7 +611,6 @@ export const RowActions: Story = {
         aria-label="Table with row actions"
         selectionMode="multiple"
         onRowAction={(key) => alert(`Opening item ${key}...`)}
-        onCellAction={(key) => alert(`Opening cell ${key}...`)}
       />
     );
   },
