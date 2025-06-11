@@ -161,6 +161,16 @@
     background-color: var(--kbq-states-background-theme-less-active);
   }
 
+  &.disabled {
+    background-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+
+  &.disabled:where(.selected) {
+    background-color: var(--kbq-background-theme-less);
+  }
+
   /* Remove bottom border on the very last row */
   &:last-child .cell {
     border-block-end: none;
