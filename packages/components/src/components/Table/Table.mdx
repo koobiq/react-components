@@ -71,19 +71,35 @@ and `Table.Cell` components using the `align` and `valign` props.
 
 ## Selection
 
+By default, Table doesn't allow row selection but this can be enabled using the `selectionMode` prop.
+Use `defaultSelectedKeys` to provide a default set of selected rows.
+Note that the value of the selected keys must match the `key` prop of the row.
+
 ### Single
+
+The example below enables single selection mode, and uses `defaultSelectedKeys`
+to select the row with key equal to "2". A user can click on a different row to change the selection,
+or click on the same row again to deselect it entirely.
 
 <Story of={Stories.SingleSelection} />
 
 ### Multiple
 
+Multiple selection can be enabled by setting `selectionMode` to `multiple`.
+
 <Story of={Stories.MultiSelection} />
 
 ### Controlled selection
 
+To programmatically control row selection, use the `selectedKeys` prop paired with the `onSelectionChange` callback.
+The `key` prop from the selected rows will be passed into the callback when the row is pressed, allowing you to update state accordingly.
+
 <Story of={Stories.ControlledSelection} />
 
 ### Disabled rows
+
+You can disable specific rows by providing an array of keys to Table via the `disabledKeys` prop.
+This will prevent rows from being selectable as shown in the example below.
 
 <Story of={Stories.DisabledRows} />
 
