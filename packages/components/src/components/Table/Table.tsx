@@ -43,7 +43,6 @@ function TableRender<T extends object>(
     maxBlockSize,
     minBlockSize,
     style: styleProp,
-    ...other
   } = props;
 
   const state = useTableState({
@@ -78,7 +77,6 @@ function TableRender<T extends object>(
       '--table-container-scroll-padding-top': `${height}px`,
     } as CSSProperties,
     ref: domRef,
-    ...other,
   };
 
   return (
