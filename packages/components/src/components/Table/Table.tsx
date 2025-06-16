@@ -38,6 +38,7 @@ function TableRender<T extends object>(
     stickyHeader = false,
     fullWidth = false,
     divider = 'none',
+    slotProps,
     selectionMode,
     selectionBehavior,
     className,
@@ -61,7 +62,8 @@ function TableRender<T extends object>(
 
   const tableProps = mergeProps(
     { ref: tableRef, className: s.table },
-    gridProps
+    gridProps,
+    slotProps?.table
   );
 
   const { ref: theadRef, height } = useElementSize();

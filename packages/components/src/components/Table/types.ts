@@ -1,4 +1,10 @@
-import type { ComponentRef, CSSProperties, ReactElement, Ref } from 'react';
+import type {
+  ComponentPropsWithRef,
+  ComponentRef,
+  CSSProperties,
+  ReactElement,
+  Ref,
+} from 'react';
 
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { TableStateProps } from '@koobiq/react-primitives';
@@ -86,6 +92,11 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
     minBlockSize?: TablePropMinBlockSize;
     /** Maximum height of the table container. */
     maxBlockSize?: TablePropMaxBlockSize;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      container?: ComponentPropsWithRef<'div'>;
+      table?: ComponentPropsWithRef<'table'>;
+    };
   },
   'div'
 >;
