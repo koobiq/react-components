@@ -68,20 +68,29 @@ function TableRender<T extends object>(
 
   const { ref: theadRef, height } = useElementSize();
 
-  const containerProps: ComponentPropsWithRef<'div'> & DataAttributeProps = {
-    className: clsx(s.base, fullWidth && s.fullWidth, textNormal, className),
-    'data-divider': divider,
-    'data-fullwidth': fullWidth,
-    'data-sticky-header': stickyHeader,
-    style: {
-      ...styleProp,
-      '--table-container-block-size': normalizeBlockSize(blockSize),
-      '--table-container-min-block-size': normalizeBlockSize(minBlockSize),
-      '--table-container-max-block-size': normalizeBlockSize(maxBlockSize),
-      '--table-container-scroll-padding-top': `${height}px`,
-    } as CSSProperties,
-    ref: domRef,
-  };
+  const containerProps: ComponentPropsWithRef<'div'> & DataAttributeProps =
+    mergeProps(
+      {
+        className: clsx(
+          s.base,
+          fullWidth && s.fullWidth,
+          textNormal,
+          className
+        ),
+        'data-divider': divider,
+        'data-fullwidth': fullWidth,
+        'data-sticky-header': stickyHeader,
+        style: {
+          ...styleProp,
+          '--table-container-block-size': normalizeBlockSize(blockSize),
+          '--table-container-min-block-size': normalizeBlockSize(minBlockSize),
+          '--table-container-max-block-size': normalizeBlockSize(maxBlockSize),
+          '--table-container-scroll-padding-top': `${height}px`,
+        } as CSSProperties,
+        ref: domRef,
+      },
+      slotProps?.container
+    );
 
   return (
     <div {...containerProps}>
