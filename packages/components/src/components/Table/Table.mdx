@@ -1,0 +1,104 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Table.stories';
+
+<Meta of={Stories} />
+
+# Table
+
+<Status variant="experimental" />
+
+A table displays data in rows and columns and enables a user to navigate its contents
+via directional navigation keys, and optionally supports row selection.
+
+```tsx
+import { Table } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Divider
+
+You can add row dividers to the table by using the `divider` prop.
+
+<Story of={Stories.Divider} />
+
+## Full width
+
+The `fullWidth` prop will make a table fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Dynamic Collection
+
+So far, our examples have shown static collections,
+where the data is hard coded. Dynamic collections, as shown below, can be used when
+the table data comes from an external data source such as an API, or updates over time.
+In the example below, both the columns and the rows are provided to the table via a render function.
+You can also make the columns static and only the rows dynamic.
+
+<Story of={Stories.DynamicCollection} />
+
+## Sticky Header
+
+The `stickyHeader` prop lets you fix the table's header so that when you scroll through the table's content,
+the header always stays visible. This makes it much easier to work with tables containing lots of data.
+
+<Story of={Stories.StickyHeader} />
+
+## Alignment
+
+You can set horizontal and vertical alignment for the `Table.Column`
+and `Table.Cell` components using the `align` and `valign` props.
+
+<Story of={Stories.Alignment} />
+
+## Selection
+
+By default, Table doesn't allow row selection but this can be enabled using the `selectionMode` prop.
+Use `defaultSelectedKeys` to provide a default set of selected rows.
+Note that the value of the selected keys must match the `key` prop of the row.
+
+### Single
+
+The example below enables single selection mode, and uses `defaultSelectedKeys`
+to select the row with key equal to "2". A user can click on a different row to change the selection,
+or click on the same row again to deselect it entirely.
+
+<Story of={Stories.SingleSelection} />
+
+### Multiple
+
+Multiple selection can be enabled by setting `selectionMode` to `multiple`.
+
+<Story of={Stories.MultiSelection} />
+
+### Controlled selection
+
+To programmatically control row selection, use the `selectedKeys` prop paired with the `onSelectionChange` callback.
+The `key` prop from the selected rows will be passed into the callback when the row is pressed, allowing you to update state accordingly.
+
+<Story of={Stories.ControlledSelection} />
+
+### Disabled rows
+
+You can disable specific rows by providing an array of keys to Table via the `disabledKeys` prop.
+This will prevent rows from being selectable as shown in the example below.
+
+<Story of={Stories.DisabledRows} />
+
+## Links
+
+Table rows may also be links to another page or website.
+This can be achieved by passing the `href` prop to the `Table.Row` component.
+
+<Story of={Stories.Links} />

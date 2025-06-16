@@ -36,12 +36,27 @@ import {
 import { useSelect, HiddenSelect } from '@react-aria/select';
 import { useSeparator } from '@react-aria/separator';
 import {
+  useTable,
+  useTableCell,
+  useTableRow,
+  useTableHeaderRow,
+  useTableSelectAllCheckbox,
+  useTableSelectionCheckbox,
+  useTableColumnHeader,
+  useTableRowGroup,
+  type AriaTableProps,
+  type AriaTableCellProps,
+  type GridRowProps,
+  type AriaTableColumnHeaderProps,
+} from '@react-aria/table';
+import {
   useTag,
   useTagGroup,
   type AriaTagGroupProps,
   type AriaTagProps,
 } from '@react-aria/tag';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
+import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { Item, Section } from '@react-stately/collections';
 import { useListData } from '@react-stately/data';
 import { useListState, type ListState } from '@react-stately/list';
@@ -51,6 +66,21 @@ import {
   type OverlayTriggerState,
 } from '@react-stately/overlays';
 import { useSelectState } from '@react-stately/select';
+import {
+  Cell,
+  Column,
+  Row,
+  TableBody,
+  TableHeader,
+  useTableState,
+  type TableStateProps,
+  type TableState,
+  type CellProps,
+  type ColumnProps,
+  type RowProps,
+  type TableHeaderProps,
+  type TableBodyProps,
+} from '@react-stately/table';
 import {
   useToggleGroupState,
   type ToggleGroupState,
@@ -75,6 +105,11 @@ export {
   Overlay,
   Section,
   useMenu,
+  Cell,
+  Column,
+  Row,
+  TableBody,
+  TableHeader,
   useLocale,
   useDialog,
   useOption,
@@ -83,6 +118,7 @@ export {
   useListBox,
   useTooltip,
   useTag,
+  useTable,
   useTagGroup,
   useListState,
   HiddenSelect,
@@ -91,6 +127,7 @@ export {
   useListData,
   useTreeState,
   useSeparator,
+  useTableState,
   useMenuSection,
   useMenuTrigger,
   useSelectState,
@@ -99,6 +136,13 @@ export {
   useTooltipTrigger,
   useListBoxSection,
   useOverlayPosition,
+  useTableCell,
+  useTableRow,
+  useTableHeaderRow,
+  useTableColumnHeader,
+  useTableSelectAllCheckbox,
+  useTableSelectionCheckbox,
+  useTableRowGroup,
   useMenuTriggerState,
   useToggleGroupState,
   useToggleButtonGroup,
@@ -106,9 +150,21 @@ export {
   useTooltipTriggerState,
   useToggleButtonGroupItem,
   useLocalizedStringFormatter,
+  VisuallyHidden,
   type Node,
+  type TableState,
   type TreeState,
+  type TableHeaderProps,
+  type TableBodyProps,
   type ItemProps,
+  type CellProps,
+  type ColumnProps,
+  type RowProps,
+  type GridRowProps,
+  type AriaTableColumnHeaderProps,
+  type AriaTableCellProps,
+  type AriaTableProps,
+  type TableStateProps,
   type AriaTagGroupProps,
   type AriaTagProps,
   type ListState,
