@@ -149,4 +149,23 @@ describe('Table', () => {
       expect([...onSelectionChange.mock.calls[0][0]]).toEqual([1, 3, 2]);
     });
   });
+
+  it('should not trigger onSelectionChange when clicking a disabled item', async () => {
+    const onSelectionChange = vi.fn();
+
+    render(
+      renderComponent({
+        selectionMode: 'multiple',
+        selectedKeys: [1, 3],
+        onSelectionChange,
+        disabledKeys: [1],
+      })
+    );
+
+    const first = document.querySelector('[data-key="1"]');
+
+    if (first) await userEvent.click(first);
+
+    expect(onSelectionChange).toBeCalledTimes(0);
+  });
 });
