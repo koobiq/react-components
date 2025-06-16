@@ -1,7 +1,8 @@
 import { createRef } from 'react';
 
 import { render } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { userEvent } from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
 
 import { Table } from './index';
 import type { TableProps } from './types';
@@ -44,11 +45,13 @@ const renderComponent = (props: Omit<TableProps<object>, 'children'>) => {
   return (
     <Table aria-label="Example table" {...props}>
       <Table.Header columns={columns}>
-        {(column) => <Table.Column>{column.name}</Table.Column>}
+        {(column) => (
+          <Table.Column key={column.key}>{column.name}</Table.Column>
+        )}
       </Table.Header>
       <Table.Body items={rows}>
         {(item) => (
-          <Table.Row key={item.id}>
+          <Table.Row>
             {(columnKey) => (
               <Table.Cell>{item[columnKey as keyof Row]}</Table.Cell>
             )}
@@ -97,5 +100,53 @@ describe('Table', () => {
 
     const tagGroup = container.querySelector(`div`);
     expect(ref.current).toBe(tagGroup);
+  });
+
+  describe('check a single selection mode', () => {
+    it('should update selection when a different item is clicked', async () => {
+      const onSelectionChange = vi.fn();
+
+      render(
+        renderComponent({
+          selectionMode: 'single',
+          onSelectionChange,
+          selectedKeys: [1],
+        })
+      );
+
+      const first = document.querySelector('[data-key="1"]');
+      const second = document.querySelector('[data-key="2"]');
+
+      expect(first).toHaveAttribute('data-selected', 'true');
+
+      if (second) await userEvent.click(second);
+
+      expect([...onSelectionChange.mock.calls[0][0]]).toEqual([2]);
+    });
+  });
+
+  describe('check a multiple selection mode', () => {
+    it('should update selection when a different item is clicked', async () => {
+      const onSelectionChange = vi.fn();
+
+      render(
+        renderComponent({
+          selectionMode: 'multiple',
+          onSelectionChange,
+          selectedKeys: [1, 3],
+        })
+      );
+
+      const first = document.querySelector('[data-key="1"]');
+      const second = document.querySelector('[data-key="2"]');
+      const third = document.querySelector('[data-key="3"]');
+
+      expect(first).toHaveAttribute('data-selected', 'true');
+      expect(third).toHaveAttribute('data-selected', 'true');
+
+      if (second) await userEvent.click(second);
+
+      expect([...onSelectionChange.mock.calls[0][0]]).toEqual([1, 3, 2]);
+    });
   });
 });

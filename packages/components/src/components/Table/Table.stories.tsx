@@ -546,7 +546,6 @@ export const MultiSelection: Story = {
       aria-label="Table with selection"
       selectionMode="multiple"
       {...args}
-      {...args}
     />
   ),
 };
