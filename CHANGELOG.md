@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.1-beta.25](https://github.com/koobiq/react-components/compare/0.0.1-beta.24...0.0.1-beta.25) (2025-06-16)
+
+### 🚀 Features
+
+- add Table component ([42cb2b7](https://github.com/koobiq/react-components/commit/42cb2b7a06f0ee871368efd3dc8535539ec19ce4))
+
+### 🐞 Bug Fixes
+
+- **components/TagGroup:** ensure client-side rendering with 'use client' directive ([ff63d14](https://github.com/koobiq/react-components/commit/ff63d14ab6dd5a2cdbe832166849bed647b0538b))
+
 ## [0.0.1-beta.24](https://github.com/koobiq/react-components/compare/0.0.1-beta.23...0.0.1-beta.24) (2025-06-10)
 
 ### 🚀 Features
