@@ -1,3 +1,5 @@
+'use client';
+
 import { type ReactNode, useRef } from 'react';
 
 import { useFocusRing, mergeProps, useHover, clsx } from '@koobiq/react-core';

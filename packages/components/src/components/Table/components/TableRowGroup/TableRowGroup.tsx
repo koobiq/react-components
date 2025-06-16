@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, type ReactNode, type Ref } from 'react';
 
 import { clsx } from '@koobiq/react-core';

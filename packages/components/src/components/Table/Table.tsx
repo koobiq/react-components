@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithRef, CSSProperties, Ref } from 'react';
 import { forwardRef, useRef } from 'react';
 
@@ -35,9 +37,9 @@ function TableRender<T extends object>(
   const {
     stickyHeader = false,
     fullWidth = false,
+    divider = 'none',
     selectionMode,
     selectionBehavior,
-    divider = 'none',
     className,
     blockSize,
     maxBlockSize,
