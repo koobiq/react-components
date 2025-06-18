@@ -1,13 +1,24 @@
+import { createCalendar, today } from '@internationalized/date';
 import {
   useToggleButtonGroup,
   useToggleButtonGroupItem,
   type AriaToggleButtonGroupProps,
   type AriaToggleButtonGroupItemProps,
 } from '@react-aria/button';
+import {
+  useCalendar,
+  useCalendarCell,
+  useCalendarGrid,
+  type AriaCalendarProps,
+  type AriaCalendarCellProps,
+  type AriaCalendarGridProps,
+  type DateValue,
+} from '@react-aria/calendar';
 import { useDialog, type AriaDialogProps } from '@react-aria/dialog';
 import {
   useLocale,
   I18nProvider,
+  useDateFormatter,
   useLocalizedStringFormatter,
   type I18nProviderProps,
 } from '@react-aria/i18n';
@@ -57,6 +68,7 @@ import {
 } from '@react-aria/tag';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { useCalendarState, type CalendarState } from '@react-stately/calendar';
 import { Item, Section } from '@react-stately/collections';
 import { useListData } from '@react-stately/data';
 import { useListState, type ListState } from '@react-stately/list';
@@ -119,14 +131,19 @@ export {
   useTooltip,
   useTag,
   useTable,
+  today,
   useTagGroup,
   useListState,
   HiddenSelect,
   I18nProvider,
   useMenuItem,
   useListData,
+  useCalendar,
+  useCalendarCell,
+  useCalendarGrid,
   useTreeState,
   useSeparator,
+  createCalendar,
   useTableState,
   useMenuSection,
   useMenuTrigger,
@@ -138,6 +155,8 @@ export {
   useOverlayPosition,
   useTableCell,
   useTableRow,
+  useDateFormatter,
+  useCalendarState,
   useTableHeaderRow,
   useTableColumnHeader,
   useTableSelectAllCheckbox,
@@ -152,6 +171,7 @@ export {
   useLocalizedStringFormatter,
   VisuallyHidden,
   type Node,
+  type DateValue,
   type TableState,
   type TreeState,
   type TableHeaderProps,
@@ -161,6 +181,8 @@ export {
   type ColumnProps,
   type RowProps,
   type GridRowProps,
+  type AriaCalendarGridProps,
+  type AriaCalendarCellProps,
   type AriaTableColumnHeaderProps,
   type AriaTableCellProps,
   type AriaTableProps,
@@ -170,6 +192,8 @@ export {
   type ListState,
   type PressEvent,
   type HoverEvent,
+  type CalendarState,
+  type AriaCalendarProps,
   type LinkDOMProps,
   type FocusableElement,
   type SectionProps,
