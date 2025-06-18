@@ -8,7 +8,7 @@ import type {
 
 import type { ButtonOptions, AriaMenuProps } from '@koobiq/react-primitives';
 
-import type { PopoverInnerProps, PopoverPropPlacement } from '../Popover';
+import type { PopoverBaseProps, PopoverPropPlacement } from '../Popover';
 
 export type MenuPropControl = (
   props: ButtonOptions & { ref?: Ref<HTMLButtonElement> }
@@ -77,7 +77,7 @@ export type MenuProps<T extends object> = {
   ref?: Ref<HTMLDivElement>;
   /** The props used for each slot inside. */
   slotProps?: {
-    popover?: PopoverInnerProps;
+    popover?: PopoverBaseProps;
   };
 };
 
