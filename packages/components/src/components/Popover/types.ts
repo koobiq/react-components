@@ -148,6 +148,11 @@ export type PopoverBaseProps = {
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
   type?: PopoverPropType;
+  /**
+   * The maxBlockSize specified for the overlay element.
+   * @default 480
+   */
+  maxBlockSize?: number;
   /** The props used for each slot inside. */
   slotProps?: {
     dialog?: DialogProps;
