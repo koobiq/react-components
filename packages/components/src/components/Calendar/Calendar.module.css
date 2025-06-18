@@ -1,0 +1,89 @@
+.base {
+  border: 1px solid red;
+  display: flex;
+  gap: var(--kbq-size-3xs);
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+  padding-block: var(--kbq-size-m);
+  block-size: 294px;
+
+  td,
+  th {
+    padding: 0;
+  }
+}
+
+/* table */
+.table {
+  border-spacing: 0;
+  padding-inline: var(--kbq-size-m);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding-inline: var(--kbq-size-xxs);
+}
+
+.actions {
+  margin-inline-start: auto;
+}
+
+.divider {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: calc(-1 * var(--kbq-size-m));
+    block-size: 1px;
+    background-color: var(--kbq-line-contrast-less);
+  }
+}
+
+.cell {
+  inline-size: 40px;
+  block-size: 32px;
+}
+
+/* cell */
+.cell:where(:not([hidden])) {
+  color: var(--kbq-foreground-contrast);
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--kbq-size-s);
+}
+
+.today {
+  color: var(--kbq-foreground-theme);
+}
+
+.hovered {
+  background-color: var(--kbq-states-background-transparent-hover);
+}
+
+.pressed {
+  background-color: var(--kbq-states-background-transparent-active);
+}
+
+.selected {
+  background-color: var(--kbq-background-contrast);
+  color: var(--kbq-foreground-on-contrast);
+}
+
+/* week day */
+.weekDay {
+  color: var(--kbq-foreground-contrast-tertiary);
+  inline-size: 40px;
+  block-size: 32px;
+}
+
+.popover {
+  min-inline-size: 200px;
+}

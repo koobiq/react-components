@@ -1,0 +1,27 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Calendar.stories';
+
+<Meta of={Stories} />
+
+# Calendar
+
+<Status variant="experimental" />
+
+Provides the behavior and accessibility implementation for a calendar component.
+A calendar displays one or more date grids and allows users to select a single date.
+
+```tsx
+import { Calendar } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
