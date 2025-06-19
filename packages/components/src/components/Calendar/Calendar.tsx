@@ -53,7 +53,7 @@ function CalendarRender<T extends DateValue>(
         prevButtonProps={prevButtonProps}
         nextButtonProps={nextButtonProps}
       />
-      <CalendarGrid state={state} firstDayOfWeek={props.firstDayOfWeek} />
+      <CalendarGrid state={state} />
     </div>
   );
 }
