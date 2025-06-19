@@ -158,7 +158,7 @@ export type PopoverBaseProps = {
     dialog?: DialogProps;
     arrow?: ComponentPropsWithRef<'div'>;
     backdrop?: ComponentPropsWithRef<'div'>;
-    transition?: TransitionProps<HTMLElement>;
+    transition?: Partial<TransitionProps<HTMLElement>>;
   };
 };
 
