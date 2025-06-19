@@ -10,7 +10,8 @@ import type {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
-import s from '../../Calendar.module.css';
+
+import s from './CalendarCell.module.css';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
@@ -45,7 +46,7 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
         {...mergeProps(hoverProps, focusProps, buttonProps)}
         ref={ref}
         className={clsx(
-          s.cell,
+          s.base,
           isToday && s.today,
           isPressed && s.pressed,
           isHovered && s.hovered,

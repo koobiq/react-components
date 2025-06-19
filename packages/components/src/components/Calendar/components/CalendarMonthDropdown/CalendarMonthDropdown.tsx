@@ -70,6 +70,7 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
           {...props}
           className={clsx(isOpen && s.open)}
           variant="contrast-transparent"
+          isDisabled={state.isDisabled}
           endIcon={<IconChevronDown16 />}
         >
           {capitalizeFirstLetter(selectedMonthName).replace(/\.$/, '')}
