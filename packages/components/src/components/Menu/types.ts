@@ -1,4 +1,5 @@
 import type {
+  ComponentPropsWithRef,
   ComponentRef,
   CSSProperties,
   ReactElement,
@@ -78,6 +79,7 @@ export type MenuProps<T extends object> = {
   /** The props used for each slot inside. */
   slotProps?: {
     popover?: PopoverBaseProps;
+    list?: ComponentPropsWithRef<'ul'>;
   };
 };
 

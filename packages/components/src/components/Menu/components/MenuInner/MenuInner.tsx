@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef } from 'react';
+import type { ComponentRef, Ref, ReactElement } from 'react';
+import { forwardRef } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useDOMRef } from '@koobiq/react-core';
 import { useMenu, useTreeState } from '@koobiq/react-primitives';
 import type { AriaMenuOptions } from '@koobiq/react-primitives';
 
@@ -18,13 +19,23 @@ export type MenuInnerProps<T> = AriaMenuOptions<T>;
 
 const { list } = utilClasses;
 
-export function MenuInner<T extends object>(props: MenuInnerProps<T>) {
+export type MenuInnerComponentProp = <T extends object>(
+  props: MenuInnerProps<T>
+) => ReactElement | null;
+
+export type MenuInnerRef = ComponentRef<'ul'>;
+
+function MenuInnerRender<T extends object>(
+  props: MenuInnerProps<T>,
+  ref: Ref<MenuInnerRef>
+) {
   // Create menu state based on the incoming props
   const state = useTreeState(props);
 
   // Get props for the menu element
-  const ref = useRef(null);
-  const { menuProps } = useMenu(props, state, ref);
+
+  const domRef = useDOMRef(ref);
+  const { menuProps } = useMenu(props, state, domRef);
 
   const multiple = props.selectionMode === 'multiple';
 
@@ -53,9 +64,11 @@ export function MenuInner<T extends object>(props: MenuInnerProps<T>) {
       {...menuProps}
       className={clsx(s.base, list)}
       {...(multiple && { 'aria-multiselectable': true })}
-      ref={ref}
+      ref={domRef}
     >
       {renderItems(state)}
     </ul>
   );
 }
+
+export const MenuInner = forwardRef(MenuInnerRender) as MenuInnerComponentProp;

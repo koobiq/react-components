@@ -28,7 +28,7 @@ function MenuRender<T extends object>(
     anchorRef,
     className,
     slotProps,
-    ...otherProps
+    ...other
   } = props;
 
   const state = useMenuTriggerState({ ...props, isOpen: open });
@@ -58,6 +58,8 @@ function MenuRender<T extends object>(
     slotProps?.popover
   );
 
+  const listProps = mergeProps(menuProps, other, slotProps?.list);
+
   return (
     <>
       {control?.({
@@ -65,7 +67,7 @@ function MenuRender<T extends object>(
         ...menuTriggerProps,
       })}
       <PopoverInner type="menu" placement={placement} {...popoverProps}>
-        <MenuInner {...otherProps} {...menuProps} />
+        <MenuInner {...listProps} />
       </PopoverInner>
     </>
   );
