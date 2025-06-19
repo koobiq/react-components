@@ -50,7 +50,11 @@ export const Locale: Story = {
         </ButtonToggleGroup>
         <Provider locale={selected === 'system' ? undefined : 'en-US'}>
           <div style={containerStyle}>
-            <Calendar aria-label="Event date" {...args} />
+            <Calendar
+              aria-label="Event date"
+              firstDayOfWeek={selected === 'system' ? undefined : 'sun'}
+              {...args}
+            />
           </div>
         </Provider>
       </FlexBox>

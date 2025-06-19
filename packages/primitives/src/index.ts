@@ -1,4 +1,8 @@
-import { createCalendar, today } from '@internationalized/date';
+import {
+  createCalendar,
+  today,
+  getWeeksInMonth,
+} from '@internationalized/date';
 import {
   useToggleButtonGroup,
   useToggleButtonGroupItem,
@@ -133,6 +137,7 @@ export {
   useTable,
   today,
   useTagGroup,
+  getWeeksInMonth,
   useListState,
   HiddenSelect,
   I18nProvider,

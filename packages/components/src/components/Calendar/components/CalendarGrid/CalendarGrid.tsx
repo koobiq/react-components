@@ -1,9 +1,11 @@
 'use client';
 
 import { clsx } from '@koobiq/react-core';
-import type {
-  AriaCalendarGridProps,
-  CalendarState,
+import {
+  type AriaCalendarGridProps,
+  type CalendarState,
+  useLocale,
+  getWeeksInMonth,
 } from '@koobiq/react-primitives';
 import { useCalendarGrid } from '@koobiq/react-primitives';
 
@@ -18,10 +20,15 @@ type CalendarGridProps = {
 } & AriaCalendarGridProps;
 
 export function CalendarGrid({ state, ...props }: CalendarGridProps) {
-  const { gridProps, headerProps, weekDays, weeksInMonth } = useCalendarGrid(
+  const { locale } = useLocale();
+
+  const { gridProps, headerProps, weekDays } = useCalendarGrid(
     { ...props, weekdayStyle: 'short' },
     state
   );
+
+  // Get the number of weeks in the month so we can render the proper number of rows.
+  const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 
   return (
     <table {...gridProps} className={clsx(s.table, textNormal)}>
