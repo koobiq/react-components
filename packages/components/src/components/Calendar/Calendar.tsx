@@ -1,4 +1,7 @@
-import { clsx } from '@koobiq/react-core';
+import { forwardRef } from 'react';
+import type { Ref } from 'react';
+
+import { clsx, mergeProps } from '@koobiq/react-core';
 import {
   useLocale,
   useCalendar,
@@ -11,12 +14,18 @@ import { utilClasses } from '../../styles/utility';
 
 import s from './Calendar.module.css';
 import { CalendarGrid, CalendarHeader } from './components';
-import type { CalendarProps } from './types';
+import type {
+  CalendarComponentProp,
+  CalendarProps,
+  CalendarRef,
+} from './types';
 
 const textNormal = utilClasses.typography['text-normal'];
 
-// https://codesandbox.io/p/sandbox/affectionate-rosalind-tdm323?file=%2Fsrc%2FCalendar.js%3A40%2C10
-export function Calendar(props: CalendarProps<DateValue>) {
+function CalendarRender<T extends DateValue>(
+  props: CalendarProps<T>,
+  ref: Ref<CalendarRef>
+) {
   const { locale } = useLocale();
 
   const state = useCalendarState({
@@ -30,8 +39,13 @@ export function Calendar(props: CalendarProps<DateValue>) {
     state
   );
 
+  const rootProps = mergeProps(
+    { className: clsx(s.base, textNormal), ref },
+    calendarProps
+  );
+
   return (
-    <div {...calendarProps} className={clsx(s.base, textNormal)}>
+    <div {...rootProps}>
       <CalendarHeader
         state={state}
         prevButtonProps={prevButtonProps}
@@ -41,3 +55,5 @@ export function Calendar(props: CalendarProps<DateValue>) {
     </div>
   );
 }
+
+export const Calendar = forwardRef(CalendarRender) as CalendarComponentProp;
