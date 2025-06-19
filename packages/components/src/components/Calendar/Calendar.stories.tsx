@@ -61,3 +61,13 @@ export const Locale: Story = {
     );
   },
 };
+
+export const Disabled: Story = {
+  render: function Render(args: CalendarProps) {
+    return (
+      <div style={containerStyle}>
+        <Calendar aria-label="Event date" isDisabled {...args} />
+      </div>
+    );
+  },
+};

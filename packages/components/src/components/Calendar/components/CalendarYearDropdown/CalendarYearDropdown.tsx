@@ -75,6 +75,7 @@ export function CalendarYearDropdown({ state }: CalendarYearDropdownProps) {
             className={clsx(isOpen && s.open)}
             variant="contrast-transparent"
             endIcon={<IconChevronDown16 />}
+            isDisabled={state.isDisabled}
           >
             {selectedYearName}
           </Button>

@@ -37,6 +37,7 @@ export const CalendarHeader = (props: CalendarHeaderProps) => {
             const date = today(state.timeZone);
             state.setFocusedDate(date);
           }}
+          isDisabled={state.isDisabled}
           variant="contrast-transparent"
           startIcon={<IconCircleXs16 />}
           onlyIcon
