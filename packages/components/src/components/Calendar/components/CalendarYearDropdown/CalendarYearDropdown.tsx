@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 
 import { clsx, useBoolean } from '@koobiq/react-core';
