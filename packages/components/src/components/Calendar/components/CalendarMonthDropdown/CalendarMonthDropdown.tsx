@@ -20,9 +20,14 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
   const [isOpen, { on, off }] = useBoolean();
 
   const formatter = useDateFormatter({
-    month: 'short',
+    month: 'long',
     timeZone: state.timeZone,
   });
+
+  const selectedMonthName = useDateFormatter({
+    month: 'short',
+    timeZone: state.timeZone,
+  }).format(state.focusedDate.toDate(state.timeZone));
 
   const menuRef = useRef<HTMLUListElement | null>(null);
 
@@ -58,9 +63,6 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
     months.push({ id: i, name: formatter.format(date.toDate(state.timeZone)) });
   }
 
-  const selectedMonthName =
-    months.find(({ id }) => id === state.focusedDate.month)?.name ?? '';
-
   return (
     <Menu
       control={(props) => (
@@ -70,7 +72,7 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
           variant="contrast-transparent"
           endIcon={<IconChevronDown16 />}
         >
-          {capitalizeFirstLetter(selectedMonthName)}
+          {capitalizeFirstLetter(selectedMonthName).replace(/\.$/, '')}
         </Button>
       )}
       className={s.popover}
