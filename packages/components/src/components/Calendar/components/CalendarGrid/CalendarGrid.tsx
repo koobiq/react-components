@@ -1,3 +1,5 @@
+'use client';
+
 import { clsx } from '@koobiq/react-core';
 import type {
   AriaCalendarGridProps,
