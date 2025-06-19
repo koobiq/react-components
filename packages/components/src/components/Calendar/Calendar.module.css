@@ -1,5 +1,4 @@
 .base {
-  border: 1px solid red;
   display: flex;
   gap: var(--kbq-size-3xs);
   flex-direction: column;
@@ -16,8 +15,9 @@
 
 /* table */
 .table {
-  border-spacing: 0;
   padding-inline: var(--kbq-size-m);
+  border-collapse: separate;
+  border-spacing: 0 var(--kbq-size-3xs);
 }
 
 .header {
@@ -45,12 +45,25 @@
   }
 }
 
-.cell {
-  inline-size: 40px;
-  block-size: 32px;
+/* button */
+.open {
+  background-color: var(--button-bg-color-active);
 }
 
 /* cell */
+.cell {
+  inline-size: 40px;
+  block-size: 32px;
+  --table-cell-outline-color: transparent;
+  --table-cell-outline-width: var(--kbq-size-3xs);
+  outline: var(--table-cell-outline-width) solid var(--table-cell-outline-color);
+  outline-offset: -2px;
+  transition:
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+}
+
 .cell:where(:not([hidden])) {
   color: var(--kbq-foreground-contrast);
   display: flex;
@@ -70,6 +83,10 @@
 
 .pressed {
   background-color: var(--kbq-states-background-transparent-active);
+}
+
+.focusVisible {
+  --table-cell-outline-color: var(--kbq-states-line-focus-theme);
 }
 
 .selected {
