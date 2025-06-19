@@ -34,8 +34,8 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
     <table {...gridProps} className={clsx(s.table, textNormal)}>
       <thead {...headerProps}>
         <tr>
-          {weekDays.map((day, index) => (
-            <th className={clsx(s.weekDay, textNormal)} key={index}>
+          {weekDays.map((day, i) => (
+            <th className={clsx(s.weekDay, textNormal)} key={i}>
               {day}
             </th>
           ))}

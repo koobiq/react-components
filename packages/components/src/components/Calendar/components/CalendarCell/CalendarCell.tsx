@@ -26,13 +26,13 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
 
   const {
     cellProps,
-    buttonProps,
     isSelected,
-    isOutsideVisibleRange,
     isDisabled,
     isPressed,
+    buttonProps,
     isUnavailable,
     formattedDate,
+    isOutsideVisibleRange,
   } = useCalendarCell({ date }, state, ref);
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
@@ -44,18 +44,18 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
       <div
         {...mergeProps(hoverProps, focusProps, buttonProps)}
         ref={ref}
-        hidden={isOutsideVisibleRange}
         className={clsx(
           s.cell,
-          isHovered && s.hovered,
-          isSelected && s.selected,
-          isSelected && textNormalMedium,
           isToday && s.today,
-          isFocusVisible && s.focusVisible,
-          isDisabled && s.disabled,
           isPressed && s.pressed,
-          isUnavailable && s.unavailable
+          isHovered && s.hovered,
+          isDisabled && s.disabled,
+          isSelected && s.selected,
+          isUnavailable && s.unavailable,
+          isSelected && textNormalMedium,
+          isFocusVisible && s.focusVisible
         )}
+        hidden={isOutsideVisibleRange}
       >
         {formattedDate}
       </div>
