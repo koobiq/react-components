@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { clsx, useHover, mergeProps } from '@koobiq/react-core';
+import { clsx, useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
 import { today, useCalendarCell } from '@koobiq/react-primitives';
 import type {
   CalendarState,
@@ -35,10 +35,12 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
 
+  const { focusProps, isFocusVisible } = useFocusRing({});
+
   return (
     <td {...cellProps}>
       <div
-        {...mergeProps(hoverProps, buttonProps)}
+        {...mergeProps(hoverProps, focusProps, buttonProps)}
         ref={ref}
         hidden={isOutsideVisibleRange}
         className={clsx(
@@ -47,6 +49,7 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
           isSelected && s.selected,
           isSelected && textNormalMedium,
           isToday && s.today,
+          isFocusVisible && s.focusVisible,
           isDisabled && s.disabled,
           isPressed && s.pressed,
           isUnavailable && s.unavailable

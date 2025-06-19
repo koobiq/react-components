@@ -1,3 +1,6 @@
+import { useRef, useEffect } from 'react';
+
+import { clsx, useBoolean } from '@koobiq/react-core';
 import { IconChevronDown16 } from '@koobiq/react-icons';
 import { type CalendarState, useDateFormatter } from '@koobiq/react-primitives';
 
@@ -12,11 +15,33 @@ type CalendarMonthDropdownProps = {
 
 export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
   const months: { id: number; name: string }[] = [];
+  const [isOpen, { on, off }] = useBoolean();
 
   const formatter = useDateFormatter({
-    month: 'long',
+    month: 'short',
     timeZone: state.timeZone,
   });
+
+  const menuRef = useRef<HTMLUListElement | null>(null);
+
+  useEffect(() => {
+    if (!menuRef.current || !state.focusedDate.month) return;
+
+    const container = menuRef.current;
+
+    const selectedEl = container.querySelector(
+      `[data-key="${state.focusedDate.month}"]`
+    );
+
+    if (selectedEl instanceof HTMLElement) {
+      const containerHeight = container.offsetHeight;
+      const elementTop = selectedEl.offsetTop;
+      const elementHeight = selectedEl.offsetHeight;
+
+      container.scrollTop =
+        elementTop - containerHeight / 2 + elementHeight / 2;
+    }
+  }, [state.focusedDate.month, isOpen]);
 
   // Format the name of each month in the year according to the
   // current locale and calendar system. Note that in some calendar
@@ -39,6 +64,7 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
       control={(props) => (
         <Button
           {...props}
+          className={clsx(isOpen && s.open)}
           variant="contrast-transparent"
           endIcon={<IconChevronDown16 />}
         >
@@ -47,8 +73,17 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
       )}
       className={s.popover}
       slotProps={{
+        list: {
+          ref: menuRef,
+        },
         popover: {
           maxBlockSize: 265,
+          slotProps: {
+            transition: {
+              onEnter: on,
+              onExited: off,
+            },
+          },
         },
       }}
       items={months}

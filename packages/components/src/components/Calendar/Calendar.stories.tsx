@@ -15,7 +15,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: CalendarProps) => (
-    <Calendar aria-label="Event date" {...args} />
-  ),
+  render: function Render(args: CalendarProps) {
+    const containerStyle = {
+      borderRadius: 'var(--kbq-size-m)',
+      boxShadow: 'var(--kbq-shadow-overlay)',
+    };
+
+    return (
+      <div style={containerStyle}>
+        <Calendar aria-label="Event date" {...args} />
+      </div>
+    );
+  },
 };
