@@ -17,17 +17,22 @@ type CalendarMonthDropdownProps = {
 
 export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
   const months: { id: number; name: string }[] = [];
+  const disabledKeys = new Set<number>();
   const [isOpen, { on, off }] = useBoolean();
 
-  const formatter = useDateFormatter({
+  const longFormatter = useDateFormatter({
     month: 'long',
     timeZone: state.timeZone,
   });
 
-  const selectedMonthName = useDateFormatter({
+  const shortFormatter = useDateFormatter({
     month: 'short',
     timeZone: state.timeZone,
-  }).format(state.focusedDate.toDate(state.timeZone));
+  });
+
+  const selectedMonthName = shortFormatter.format(
+    state.focusedDate.toDate(state.timeZone)
+  );
 
   const menuRef = useRef<HTMLUListElement | null>(null);
 
@@ -50,17 +55,27 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
     }
   }, [state.focusedDate.month, isOpen]);
 
-  // Format the name of each month in the year according to the
-  // current locale and calendar system. Note that in some calendar
-  // systems, such as the Hebrew, the number of months may differ
-  // between years.
   const numMonths = state.focusedDate.calendar.getMonthsInYear(
     state.focusedDate
   );
 
+  const minDate = state.minValue;
+  const maxDate = state.maxValue;
+
   for (let i = 1; i <= numMonths; i++) {
     const date = state.focusedDate.set({ month: i });
-    months.push({ id: i, name: formatter.format(date.toDate(state.timeZone)) });
+
+    const isBeforeMin = minDate && date.compare(minDate) < 0;
+    const isAfterMax = maxDate && date.compare(maxDate) > 0;
+
+    if (isBeforeMin || isAfterMax) {
+      disabledKeys.add(i);
+    }
+
+    months.push({
+      id: i,
+      name: longFormatter.format(date.toDate(state.timeZone)),
+    });
   }
 
   return (
@@ -92,6 +107,7 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
         },
       }}
       items={months}
+      disabledKeys={disabledKeys}
       selectionMode="single"
       selectedKeys={new Set([state.focusedDate.month])}
       onSelectionChange={(keys) => {
