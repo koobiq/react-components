@@ -50,4 +50,12 @@ Another important setting for your application is the locale.
 By default, our library chooses the locale matching the user's browser/operating system language,
 but this can be overridden with the `locale` prop if you have an application specific setting.
 
+To determine the current locale in your component, import and use the `useLocale` hook from the library:
+
+```tsx
+import { useLocale } from '@koobiq/react-components';
+
+const { locale } = useLocale();
+```
+
 <Story of={Stories.Localization} />

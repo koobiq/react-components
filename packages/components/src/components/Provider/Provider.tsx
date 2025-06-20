@@ -1,10 +1,12 @@
 'use client';
 
-import { I18nProvider } from '@koobiq/react-primitives';
+import { I18nProvider, useLocale } from '@koobiq/react-primitives';
 
 import { BreakpointsProvider } from './BreakpointsProvider';
 import { ProviderContext } from './ProviderContext';
 import type { Breakpoints, ProviderProps } from './types';
+
+export { useLocale };
 
 export const defaultBreakpoints: Breakpoints = {
   xs: 0, // (min-width: 0px)
