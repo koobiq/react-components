@@ -90,7 +90,7 @@ export function CalendarYearDropdown({ state }: CalendarYearDropdownProps) {
           state.setFocusedDate(date);
         }}
       >
-        {(item) => <Menu.Item>{item.id}</Menu.Item>}
+        {(item) => <Menu.Item textValue={String(item.id)}>{item.id}</Menu.Item>}
       </Menu>
     </>
   );

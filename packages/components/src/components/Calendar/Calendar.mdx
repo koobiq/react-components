@@ -35,3 +35,12 @@ import { Calendar } from '@koobiq/react-components';
 The `isDisabled` boolean prop makes the Calendar disabled. Cells cannot be focused or selected.
 
 <Story of={Stories.Disabled} />
+
+## Min and Max values
+
+By default, Calendar allows selecting any date. The `minValue` and `maxValue` props can also be used to prevent
+the user from selecting dates outside a certain range.
+
+This example only accepts dates after today.
+
+<Story of={Stories.MinMaxValues} />
