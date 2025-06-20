@@ -1,8 +1,8 @@
 .base {
-  inline-size: 40px;
-  block-size: 32px;
   --table-cell-outline-color: transparent;
   --table-cell-outline-width: var(--kbq-size-3xs);
+  inline-size: 40px;
+  block-size: 32px;
   outline: var(--table-cell-outline-width) solid var(--table-cell-outline-color);
   outline-offset: -2px;
   transition:

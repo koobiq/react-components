@@ -88,6 +88,7 @@ export const MinMaxValues: Story = {
         <Calendar
           aria-label="Event date"
           minValue={today(getLocalTimeZone())}
+          maxValue={today(getLocalTimeZone()).add({ months: 8 })}
           value={value}
           onChange={setValue}
           {...args}

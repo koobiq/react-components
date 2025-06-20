@@ -18,17 +18,14 @@ export function CalendarYearDropdown({ state }: CalendarYearDropdownProps) {
   const years: { id: number }[] = [];
   const [isOpen, { on, off }] = useBoolean();
 
-  // Format 20 years on each side of the current year according
-  // to the current locale and calendar system.
-  for (let i = -20; i <= 20; i++) {
-    const date = state.focusedDate.add({ years: i });
-
-    years.push({
-      id: date.year,
-    });
-  }
-
   const menuRef = useRef<HTMLUListElement | null>(null);
+
+  const minYear = state.minValue?.year ?? state.focusedDate.year - 20;
+  const maxYear = state.maxValue?.year ?? state.focusedDate.year + 20;
+
+  for (let y = minYear; y <= maxYear; y++) {
+    years.push({ id: y });
+  }
 
   useEffect(() => {
     if (!menuRef.current || !state.focusedDate.year) return;
@@ -53,45 +50,43 @@ export function CalendarYearDropdown({ state }: CalendarYearDropdownProps) {
     years.find(({ id }) => id === state.focusedDate.year)?.id ?? '';
 
   return (
-    <>
-      <Menu
-        slotProps={{
-          list: {
-            ref: menuRef,
-          },
-          popover: {
-            maxBlockSize: 265,
-            slotProps: {
-              transition: {
-                onEnter: on,
-                onExited: off,
-              },
+    <Menu
+      slotProps={{
+        list: {
+          ref: menuRef,
+        },
+        popover: {
+          maxBlockSize: 265,
+          slotProps: {
+            transition: {
+              onEnter: on,
+              onExited: off,
             },
           },
-        }}
-        control={(props) => (
-          <Button
-            {...props}
-            className={clsx(isOpen && s.open)}
-            variant="contrast-transparent"
-            endIcon={<IconChevronDown16 />}
-            isDisabled={state.isDisabled}
-          >
-            {selectedYearName}
-          </Button>
-        )}
-        className={s.popover}
-        items={years}
-        selectionMode="single"
-        selectedKeys={new Set([state.focusedDate.year])}
-        onSelectionChange={(keys) => {
-          const value = Array.from(keys)[0];
-          const date = state.focusedDate.set({ year: +value });
-          state.setFocusedDate(date);
-        }}
-      >
-        {(item) => <Menu.Item textValue={String(item.id)}>{item.id}</Menu.Item>}
-      </Menu>
-    </>
+        },
+      }}
+      control={(props) => (
+        <Button
+          {...props}
+          className={clsx(isOpen && s.open)}
+          variant="contrast-transparent"
+          endIcon={<IconChevronDown16 />}
+          isDisabled={state.isDisabled}
+        >
+          {selectedYearName}
+        </Button>
+      )}
+      className={s.popover}
+      items={years}
+      selectionMode="single"
+      selectedKeys={new Set([state.focusedDate.year])}
+      onSelectionChange={(keys) => {
+        const value = Array.from(keys)[0];
+        const date = state.focusedDate.set({ year: +value });
+        state.setFocusedDate(date);
+      }}
+    >
+      {(item) => <Menu.Item textValue={String(item.id)}>{item.id}</Menu.Item>}
+    </Menu>
   );
 }
