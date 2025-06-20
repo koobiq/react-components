@@ -5,12 +5,13 @@ import {
   parseDate,
   today,
   getLocalTimeZone,
+  isWeekend,
 } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
-import { Provider } from '../Provider';
+import { Provider, useLocale } from '../Provider';
 
 import { Calendar, type CalendarProps } from './index.js';
 
@@ -94,6 +95,22 @@ export const MinMaxValues: Story = {
           {...args}
         />
       </div>
+    );
+  },
+};
+
+export const UnavailableDates: Story = {
+  name: 'Unavailable dates',
+  render: function Render() {
+    const { locale } = useLocale();
+
+    const isDateUnavailable = (date: DateValue) => isWeekend(date, locale);
+
+    return (
+      <Calendar
+        aria-label="Appointment date"
+        isDateUnavailable={isDateUnavailable}
+      />
     );
   },
 };

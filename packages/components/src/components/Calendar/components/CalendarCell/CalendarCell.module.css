@@ -41,7 +41,8 @@
   color: var(--kbq-foreground-on-contrast);
 }
 
-.disabled {
+.disabled,
+.unavailable {
   color: var(--kbq-states-foreground-disabled);
   cursor: not-allowed;
 }
