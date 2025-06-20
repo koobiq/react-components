@@ -1,5 +1,11 @@
 import { useState } from 'react';
 
+import {
+  type DateValue,
+  parseDate,
+  today,
+  getLocalTimeZone,
+} from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
@@ -26,7 +32,7 @@ const containerStyle = {
 };
 
 export const Base: Story = {
-  render: function Render(args: CalendarProps) {
+  render: function Render(args: CalendarProps<DateValue>) {
     return (
       <div style={containerStyle}>
         <Calendar aria-label="Event date" {...args} />
@@ -36,7 +42,7 @@ export const Base: Story = {
 };
 
 export const Locale: Story = {
-  render: function Render(args: CalendarProps) {
+  render: function Render(args: CalendarProps<DateValue>) {
     const [selected, setSelected] = useState<string | number>('system');
 
     return (
@@ -63,10 +69,29 @@ export const Locale: Story = {
 };
 
 export const Disabled: Story = {
-  render: function Render(args: CalendarProps) {
+  render: function Render(args: CalendarProps<DateValue>) {
     return (
       <div style={containerStyle}>
         <Calendar aria-label="Event date" isDisabled {...args} />
+      </div>
+    );
+  },
+};
+
+export const MinMaxValues: Story = {
+  name: 'MinValue and MaxValue',
+  render: function Render(args: CalendarProps<DateValue>) {
+    const [value, setValue] = useState<DateValue>(parseDate('2025-05-01'));
+
+    return (
+      <div style={containerStyle}>
+        <Calendar
+          aria-label="Event date"
+          minValue={today(getLocalTimeZone())}
+          value={value}
+          onChange={setValue}
+          {...args}
+        />
       </div>
     );
   },

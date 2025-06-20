@@ -2,6 +2,8 @@ import {
   createCalendar,
   today,
   getWeeksInMonth,
+  parseDate,
+  getLocalTimeZone,
 } from '@internationalized/date';
 import {
   useToggleButtonGroup,
@@ -136,6 +138,8 @@ export {
   useTag,
   useTable,
   today,
+  parseDate,
+  getLocalTimeZone,
   useTagGroup,
   getWeeksInMonth,
   useListState,
