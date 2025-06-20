@@ -36,7 +36,9 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
     isOutsideVisibleRange,
   } = useCalendarCell({ date }, state, ref);
 
-  const { hoverProps, isHovered } = useHover({ isDisabled });
+  const { hoverProps, isHovered } = useHover({
+    isDisabled: isDisabled || isUnavailable,
+  });
 
   const { focusProps, isFocusVisible } = useFocusRing({});
 

@@ -1,11 +1,4 @@
 import {
-  createCalendar,
-  today,
-  getWeeksInMonth,
-  parseDate,
-  getLocalTimeZone,
-} from '@internationalized/date';
-import {
   useToggleButtonGroup,
   useToggleButtonGroupItem,
   type AriaToggleButtonGroupProps,
@@ -116,6 +109,8 @@ import type {
   FocusableElement,
 } from '@react-types/shared';
 
+export * from '@internationalized/date';
+
 export * from './behaviors/index.js';
 export * from './components/index.js';
 export {
@@ -137,11 +132,7 @@ export {
   useTooltip,
   useTag,
   useTable,
-  today,
-  parseDate,
-  getLocalTimeZone,
   useTagGroup,
-  getWeeksInMonth,
   useListState,
   HiddenSelect,
   I18nProvider,
@@ -152,7 +143,6 @@ export {
   useCalendarGrid,
   useTreeState,
   useSeparator,
-  createCalendar,
   useTableState,
   useMenuSection,
   useMenuTrigger,
