@@ -45,4 +45,11 @@ the user from selecting dates outside a certain range.
 
 ## Unavailable dates
 
+Calendar supports marking certain dates as unavailable.
+These dates remain focusable with the keyboard so that navigation is consistent,
+but cannot be selected by the user.
+
+The `isDateUnavailable` prop accepts a callback that is called to evaluate
+whether each visible date is unavailable.
+
 <Story of={Stories.UnavailableDates} />
