@@ -42,7 +42,7 @@ function CalendarRender<T extends DateValue>(
   );
 
   const rootProps = mergeProps(
-    { className: clsx(s.base, textNormal), ref },
+    { className: clsx(s.base, textNormal, props.className), ref },
     calendarProps
   );
 
