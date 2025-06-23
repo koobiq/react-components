@@ -49,7 +49,7 @@ export const Value: Story = {
     const [value, setValue] = useState(parseDate('2025-02-03'));
 
     return (
-      <FlexBox gap="l">
+      <FlexBox gap="l" direction={{ xs: 'column', m: 'row' }}>
         <Calendar
           aria-label="Date (uncontrolled)"
           defaultValue={parseDate('2025-02-03')}
