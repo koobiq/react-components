@@ -1,48 +1,13 @@
 .base {
+  --calendar-cell-inline-size: 40px;
+  --calendar-cell-block-size: 32px;
   display: flex;
-  gap: var(--kbq-size-3xs);
+  block-size: 294px;
+  align-items: center;
   flex-direction: column;
   box-sizing: border-box;
-  align-items: center;
+  gap: var(--kbq-size-3xs);
   padding-block: var(--kbq-size-m);
-  block-size: 294px;
-
-  td,
-  th {
-    padding: 0;
-  }
-}
-
-/* table */
-.table {
-  padding-inline: var(--kbq-size-m);
-  border-collapse: separate;
-  border-spacing: 0 var(--kbq-size-3xs);
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  inline-size: 100%;
-  box-sizing: border-box;
-  padding-inline: var(--kbq-size-xxs);
-}
-
-.actions {
-  margin-inline-start: auto;
-}
-
-.divider {
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline: calc(-1 * var(--kbq-size-m));
-    block-size: 1px;
-    background-color: var(--kbq-line-contrast-less);
-  }
 }
 
 /* button */
@@ -50,13 +15,7 @@
   background-color: var(--button-bg-color-active);
 }
 
-/* week day */
-.weekDay {
-  color: var(--kbq-foreground-contrast-tertiary);
-  inline-size: 40px;
-  block-size: 32px;
-}
-
+/* popover */
 .popover {
   min-inline-size: 200px;
 }

@@ -8,10 +8,11 @@ import {
 import { today, useLocalizedStringFormatter } from '@koobiq/react-primitives';
 
 import { Button } from '../../../Button';
-import s from '../../Calendar.module.css';
 import intlMessages from '../../intl.json';
 import { CalendarMonthDropdown } from '../CalendarMonthDropdown';
 import { CalendarYearDropdown } from '../CalendarYearDropdown';
+
+import s from './CalendarHeader.module.css';
 
 type CalendarHeaderProps = {
   prevButtonProps: any;
@@ -25,7 +26,7 @@ export const CalendarHeader = (props: CalendarHeaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
-    <div className={s.header}>
+    <div className={s.base}>
       <CalendarMonthDropdown state={state} />
       <CalendarYearDropdown state={state} />
       <div className={s.actions}>

@@ -1,10 +1,10 @@
 .base {
   --table-cell-outline-color: transparent;
   --table-cell-outline-width: var(--kbq-size-3xs);
-  inline-size: 40px;
-  block-size: 32px;
-  outline: var(--table-cell-outline-width) solid var(--table-cell-outline-color);
+  block-size: var(--calendar-cell-block-size);
+  inline-size: var(--calendar-cell-inline-size);
   outline-offset: -2px;
+  outline: var(--table-cell-outline-width) solid var(--table-cell-outline-color);
   transition:
     outline-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),

@@ -10,8 +10,9 @@ import {
 import { useCalendarGrid } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
-import s from '../../Calendar.module.css';
 import { CalendarCell } from '../CalendarCell';
+
+import s from './CalendarGrid.module.css';
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -31,7 +32,7 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
   const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 
   return (
-    <table {...gridProps} className={clsx(s.table, textNormal)}>
+    <table {...gridProps} className={clsx(s.base, textNormal)}>
       <thead {...headerProps}>
         <tr>
           {weekDays.map((day, i) => (
