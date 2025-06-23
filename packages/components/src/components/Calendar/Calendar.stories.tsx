@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
+import type { DateValue } from '@koobiq/react-primitives';
 import {
-  type DateValue,
   parseDate,
   today,
-  getLocalTimeZone,
   isWeekend,
+  getLocalTimeZone,
 } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -38,6 +38,26 @@ export const Base: Story = {
       <div style={containerStyle}>
         <Calendar aria-label="Event date" {...args} />
       </div>
+    );
+  },
+};
+
+export const Value: Story = {
+  render: function Render() {
+    const [value, setValue] = useState(parseDate('2025-02-03'));
+
+    return (
+      <FlexBox gap="l">
+        <Calendar
+          aria-label="Date (uncontrolled)"
+          defaultValue={parseDate('2025-02-03')}
+        />
+        <Calendar
+          aria-label="Date (controlled)"
+          value={value}
+          onChange={setValue}
+        />
+      </FlexBox>
     );
   },
 };

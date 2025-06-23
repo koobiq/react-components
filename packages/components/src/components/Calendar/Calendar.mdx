@@ -26,6 +26,19 @@ import { Calendar } from '@koobiq/react-components';
 
 <Props />
 
+## Value
+
+A Calendar has no selection by default. An initial, uncontrolled value can be
+provided to the Calendar using the `defaultValue` prop. Alternatively, a controlled value
+can be provided using the `value` prop.
+
+Date values are provided using objects in the
+[@internationalized/date](https://github.com/adobe/react-spectrum/tree/main/packages/@internationalized/date) package.
+This library handles correct international date manipulation across calendars,
+time zones, and other localization concerns.
+
+<Story of={Stories.Value} />
+
 ## Locale
 
 <Story of={Stories.Locale} />
