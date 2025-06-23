@@ -2,13 +2,15 @@ import { useState } from 'react';
 
 import type { DateValue } from '@koobiq/react-primitives';
 import {
-  parseDate,
   today,
   isWeekend,
+  parseDate,
+  CalendarDate,
   getLocalTimeZone,
 } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Button } from '../Button';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 import { Provider, useLocale } from '../Provider';
@@ -131,6 +133,23 @@ export const UnavailableDates: Story = {
         aria-label="Appointment date"
         isDateUnavailable={isDateUnavailable}
       />
+    );
+  },
+};
+
+export const FocusedDate: Story = {
+  name: 'Controlling the focused date',
+  render: function Render() {
+    const defaultDate = new CalendarDate(2024, 7, 1);
+    const [focusedDate, setFocusedDate] = useState(defaultDate);
+
+    return (
+      <FlexBox direction="column" gap="l" alignItems="center">
+        <Button onPress={() => setFocusedDate(defaultDate)}>
+          Reset focused date
+        </Button>
+        <Calendar focusedValue={focusedDate} onFocusChange={setFocusedDate} />
+      </FlexBox>
     );
   },
 };

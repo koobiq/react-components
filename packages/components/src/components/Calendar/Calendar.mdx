@@ -66,3 +66,13 @@ The `isDateUnavailable` prop accepts a callback that is called to evaluate
 whether each visible date is unavailable.
 
 <Story of={Stories.UnavailableDates} />
+
+## Controlling the focused date
+
+By default, the selected date is focused when a Calendar first mounts.
+If no `value` or `defaultValue` prop is provided, then the current date is focused.
+However, Calendar supports controlling which date is focused using the `focusedValue` and `onFocusChange` props.
+This also determines which month is visible. The `defaultFocusedValue` prop allows setting the initial focused date when the Calendar
+first mounts, without controlling it.
+
+<Story of={Stories.FocusedDate} />
