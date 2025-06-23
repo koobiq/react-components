@@ -23,6 +23,7 @@ All development is conducted there. For convenience, you can go directly to the 
 Our technology stack:
 
 - [React](https://react.dev/)
+- [React-Aria](https://react-spectrum.adobe.com/react-aria/index.html)
 - [Typescript](https://www.typescriptlang.org/)
 - [Lightning CSS](https://lightningcss.dev/)
 
