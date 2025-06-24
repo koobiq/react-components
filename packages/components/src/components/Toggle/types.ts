@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef, CSSProperties } from 'react';
 
 import type { UseToggleProps } from '@koobiq/react-primitives';
 
@@ -14,6 +14,8 @@ export type TogglePropLabelPlacement =
 export type ToggleProps = UseToggleProps & {
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /**
    * Size.
    * @default normal
