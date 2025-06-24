@@ -42,7 +42,12 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
     const labelProps = slotProps?.label;
 
     return (
-      <TogglePrimitive {...commonProps} ref={ref}>
+      <TogglePrimitive
+        data-size={size}
+        data-label-placement={labelPlacement}
+        {...commonProps}
+        ref={ref}
+      >
         <span {...trackProps} />
         {isNotNil(children) && <span {...labelProps}>{children}</span>}
       </TogglePrimitive>
