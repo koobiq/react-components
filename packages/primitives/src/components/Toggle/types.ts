@@ -6,13 +6,13 @@ import type { UseToggleProps } from '../../behaviors';
 import type { RenderProps } from '../../utils';
 
 export type ToggleRenderProps = {
-  error?: boolean;
-  pressed?: boolean;
-  checked?: boolean;
-  hovered?: boolean;
-  focused?: boolean;
-  disabled?: boolean;
-  focusVisible?: boolean;
+  isInvalid?: boolean;
+  isPressed?: boolean;
+  isSelected?: boolean;
+  isHovered?: boolean;
+  isFocused?: boolean;
+  isDisabled?: boolean;
+  isFocusVisible?: boolean;
 };
 
 type ToggleBaseProps = RenderProps<ToggleRenderProps> & {

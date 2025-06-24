@@ -93,7 +93,7 @@
   --toggle-track-border-color: var(--kbq-line-contrast-less);
 }
 
-.checked {
+.selected {
   --toggle-track-border-color: transparent;
   --toggle-thumb-bg-color: var(--kbq-icon-white);
   --toggle-track-bg-color: var(--kbq-background-theme);
@@ -108,29 +108,29 @@
   }
 }
 
-.checked:where(.hovered) {
+.selected:where(.hovered) {
   --toggle-track-bg-color: var(--kbq-states-background-theme-hover);
 }
 
-.error {
+.invalid {
   --toggle-track-bg-color: var(--kbq-states-background-error-less);
   --toggle-track-border-color: var(--kbq-line-error);
   --toggle-thumb-bg-color: var(--kbq-icon-error);
 }
 
-.error:where(.checked) {
+.invalid:where(.selected) {
   --toggle-track-bg-color: var(--kbq-background-error);
   --toggle-track-border-color: var(--kbq-line-error);
   --toggle-thumb-bg-color: var(--kbq-icon-white);
 }
 
-.error:where(.hovered) {
+.invalid:where(.hovered) {
   --toggle-track-bg-color: var(--kbq-states-background-error-fade-hover);
   --toggle-track-border-color: var(--kbq-line-error);
   --toggle-thumb-bg-color: var(--kbq-icon-error);
 }
 
-.error:where(.hovered.checked) {
+.invalid:where(.hovered.selected) {
   --toggle-track-bg-color: var(--kbq-states-background-error-hover);
   --toggle-track-border-color: var(--kbq-line-error);
   --toggle-thumb-bg-color: var(--kbq-icon-white);
@@ -141,7 +141,7 @@
   --toggle-track-outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.focusVisible:where(.error) {
+.focusVisible:where(.invalid) {
   --toggle-track-outline-color: var(--kbq-states-line-focus-error);
 }
 
