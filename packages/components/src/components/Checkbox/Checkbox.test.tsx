@@ -158,7 +158,7 @@ describe('Checkbox', () => {
       expect(inputEl).toHaveAttribute('aria-invalid', 'true');
 
       rerender(
-        <Checkbox {...baseProps} aria-label="input" isIndeterminate={false} />
+        <Checkbox {...baseProps} aria-label="input" isInvalid={false} />
       );
 
       expect(inputEl).not.toHaveAttribute('aria-invalid', 'true');
