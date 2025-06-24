@@ -1,6 +1,7 @@
 import { useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { FlexBox } from '../FlexBox';
 import { flex } from '../layout';
 import { Typography } from '../Typography';
 
@@ -35,7 +36,7 @@ export const LabelPlacement = {
     layout: 'centered',
   },
   render: (args: ToggleProps) => (
-    <div className={flex({ gap: 'l', direction: 'column' })}>
+    <FlexBox gap="l" direction="column">
       {togglePropLabelPlacement.map((placement) => (
         <Toggle
           key={placement}
@@ -46,7 +47,7 @@ export const LabelPlacement = {
           placement = {placement}
         </Toggle>
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -55,13 +56,13 @@ export const Size = {
     layout: 'centered',
   },
   render: (args: ToggleProps) => (
-    <div className={flex({ gap: 'l', direction: 'column' })}>
+    <FlexBox gap="l" direction="column">
       {togglePropSize.map((size) => (
         <Toggle key={size} size={size} defaultChecked {...args}>
           size = {size}
         </Toggle>
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -70,14 +71,14 @@ export const Disabled: Story = {
     layout: 'centered',
   },
   render: (args: ToggleProps) => (
-    <div className={flex({ gap: 'l' })}>
+    <FlexBox gap="l">
       <Toggle {...args} disabled>
         Label
       </Toggle>
       <Toggle {...args} disabled defaultChecked>
         Label
       </Toggle>
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -102,14 +103,14 @@ export const ControlledValue: Story = {
     const [checked, { toggle }] = useBoolean(true);
 
     return (
-      <div className={flex({ gap: 's', direction: 'column' })}>
+      <FlexBox gap="s" direction="column">
         <Toggle checked={checked} onChange={toggle} {...args}>
           Controlled
         </Toggle>
         <Typography variant="tabular-compact">
           Toggle is {checked ? 'checked' : 'unchecked'}
         </Typography>
-      </div>
+      </FlexBox>
     );
   },
 };
