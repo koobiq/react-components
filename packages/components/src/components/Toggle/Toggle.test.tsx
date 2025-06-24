@@ -13,11 +13,11 @@ import {
 } from './index';
 
 const ControlledToggle = ({
-  checked: checkedProp,
+  isSelected: isSelectedProp,
   onChange: onChangeProp,
   ...restProps
 }: Omit<ToggleProps, 'children'>) => {
-  const [isSelected, { set }] = useBoolean(checkedProp);
+  const [isSelected, { set }] = useBoolean(isSelectedProp);
 
   const onChange: ToggleProps['onChange'] = (value) => {
     onChangeProp?.(value);
@@ -28,7 +28,7 @@ const ControlledToggle = ({
     <Toggle
       aria-label="input"
       data-testid="root"
-      checked={isSelected}
+      isSelected={isSelected}
       onChange={onChange}
       {...restProps}
     />
@@ -116,35 +116,35 @@ describe('Toggle', () => {
       expect(onChange).toBeCalledWith(true);
     });
 
-    it('should render as checked when checked is true (uncontrolled mode)', async () => {
-      render(<Toggle {...baseProps} defaultChecked aria-label="input" />);
+    it('should render as checked when isSelected is true (uncontrolled mode)', async () => {
+      render(<Toggle {...baseProps} defaultSelected aria-label="input" />);
 
       const inputEl = screen.getByLabelText('input');
       expect(inputEl).toBeChecked();
     });
 
-    it('should be disabled when disabled prop sets true', async () => {
+    it('should be disabled when isDisabled prop sets true', async () => {
       const { rerender } = render(
-        <Toggle {...baseProps} aria-label="input" disabled />
+        <Toggle {...baseProps} aria-label="input" isDisabled />
       );
 
       const inputEl = screen.getByLabelText('input');
 
-      rerender(<Toggle {...baseProps} aria-label="input" disabled={false} />);
+      rerender(<Toggle {...baseProps} aria-label="input" isDisabled={false} />);
 
       expect(inputEl).not.toBeDisabled();
     });
 
-    it('should be invalid when error prop sets true', async () => {
+    it('should be invalid when isInvalid prop sets true', async () => {
       const { rerender } = render(
-        <Toggle {...baseProps} aria-label="input" error />
+        <Toggle {...baseProps} aria-label="input" isInvalid />
       );
 
       const inputEl = screen.getByLabelText('input');
 
       expect(inputEl).toHaveAttribute('aria-invalid', 'true');
 
-      rerender(<Toggle {...baseProps} aria-label="input" error={false} />);
+      rerender(<Toggle {...baseProps} aria-label="input" isInvalid={false} />);
 
       expect(inputEl).not.toHaveAttribute('aria-invalid', 'true');
     });

@@ -25,7 +25,7 @@ export const Base: Story = {
     layout: 'centered',
   },
   render: (args: ToggleProps) => (
-    <Toggle defaultChecked {...args}>
+    <Toggle defaultSelected {...args}>
       Wi-Fi
     </Toggle>
   ),
@@ -41,7 +41,7 @@ export const LabelPlacement = {
         <Toggle
           key={placement}
           labelPlacement={placement}
-          defaultChecked
+          defaultSelected
           {...args}
         >
           placement = {placement}
@@ -58,7 +58,7 @@ export const Size = {
   render: (args: ToggleProps) => (
     <FlexBox gap="l" direction="column">
       {togglePropSize.map((size) => (
-        <Toggle key={size} size={size} defaultChecked {...args}>
+        <Toggle key={size} size={size} defaultSelected {...args}>
           size = {size}
         </Toggle>
       ))}
@@ -72,10 +72,10 @@ export const Disabled: Story = {
   },
   render: (args: ToggleProps) => (
     <FlexBox gap="l">
-      <Toggle {...args} disabled>
+      <Toggle {...args} isDisabled>
         Label
       </Toggle>
-      <Toggle {...args} disabled defaultChecked>
+      <Toggle {...args} isDisabled defaultSelected>
         Label
       </Toggle>
     </FlexBox>
@@ -88,7 +88,7 @@ export const DefaultValue: Story = {
   },
   render: function Render(args: ToggleProps) {
     return (
-      <Toggle defaultChecked {...args}>
+      <Toggle defaultSelected {...args}>
         Uncontrolled
       </Toggle>
     );
@@ -100,27 +100,27 @@ export const ControlledValue: Story = {
     layout: 'centered',
   },
   render: function Render(args: ToggleProps) {
-    const [checked, { toggle }] = useBoolean(true);
+    const [isSelected, { toggle }] = useBoolean(true);
 
     return (
       <FlexBox gap="s" direction="column">
-        <Toggle checked={checked} onChange={toggle} {...args}>
+        <Toggle isSelected={isSelected} onChange={toggle} {...args}>
           Controlled
         </Toggle>
         <Typography variant="tabular-compact">
-          Toggle is {checked ? 'checked' : 'unchecked'}
+          Toggle is {isSelected ? 'checked' : 'unchecked'}
         </Typography>
       </FlexBox>
     );
   },
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   parameters: {
     layout: 'centered',
   },
   render: (args: ToggleProps) => (
-    <Toggle {...args} error defaultChecked>
+    <Toggle {...args} isInvalid defaultSelected>
       Label
     </Toggle>
   ),
@@ -136,7 +136,7 @@ export const Description: Story = {
       slotProps={{
         label: { className: flex({ direction: 'column', gap: '3xs' }) },
       }}
-      defaultChecked
+      defaultSelected
     >
       Switch Component
       <Typography color="contrast-secondary" variant="text-compact">
@@ -148,8 +148,10 @@ export const Description: Story = {
 
 export const Example: Story = {
   render: function Render(args: ToggleProps) {
-    const [loading, { on: startLoading, off: stopLoading }] = useBoolean(false);
-    const [connected, { set: setConnected }] = useBoolean(false);
+    const [isLoading, { on: startLoading, off: stopLoading }] =
+      useBoolean(false);
+
+    const [isConnected, { set: setConnected }] = useBoolean(false);
 
     const simulateVpnConnection = (checked: boolean) =>
       new Promise<string>((resolve, reject) => {
@@ -168,39 +170,39 @@ export const Example: Story = {
         }
       });
 
-    const handleVpnToggle = async (checked: boolean) => {
+    const handleVpnToggle = async (isChecked: boolean) => {
       startLoading();
 
       try {
-        const message = await simulateVpnConnection(checked);
-        setConnected(checked);
+        const message = await simulateVpnConnection(isChecked);
+        setConnected(isChecked);
         console.log(message);
       } catch (error) {
-        setConnected(!checked);
+        setConnected(!isChecked);
         console.error(error);
       } finally {
         stopLoading();
       }
     };
 
-    const handleChange: ToggleProps['onChange'] = (checked) => {
-      setConnected(checked);
+    const handleChange: ToggleProps['onChange'] = (isChecked) => {
+      setConnected(isChecked);
 
-      if (!loading) {
-        handleVpnToggle(checked);
+      if (!isLoading) {
+        handleVpnToggle(isChecked);
       }
     };
 
     const getStatusMessage = () => {
-      if (loading && connected) return 'Connecting to VPN…';
-      if (loading && !connected) return 'Disconnecting from VPN…';
-      if (connected) return 'VPN Connected';
+      if (isLoading && isConnected) return 'Connecting to VPN…';
+      if (isLoading && !isConnected) return 'Disconnecting from VPN…';
+      if (isConnected) return 'VPN Connected';
 
       return 'VPN Disconnected';
     };
 
     return (
-      <Toggle checked={connected} onChange={handleChange} {...args}>
+      <Toggle isSelected={isConnected} onChange={handleChange} {...args}>
         {getStatusMessage()}
       </Toggle>
     );

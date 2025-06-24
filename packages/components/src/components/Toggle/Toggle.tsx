@@ -2,6 +2,7 @@
 
 import { type ComponentRef, forwardRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
 import {
   Toggle as TogglePrimitive,
@@ -16,23 +17,80 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
     const {
       size = 'normal',
       labelPlacement = 'end',
+      disabled,
+      isDisabled: isDisabledProp,
+      checked,
+      isSelected: isSelectedProp,
+      error,
+      isInvalid: isInvalidProp,
+      defaultChecked,
+      defaultSelected: defaultSelectedProp,
+      readonly,
+      isReadOnly: isReadOnlyProp,
       children,
       slotProps,
       className,
       ...other
     } = props;
 
+    const isDisabled = isDisabledProp || disabled;
+    const isSelected = isSelectedProp ?? checked;
+    const isInvalid = isInvalidProp || error;
+    const defaultSelected = defaultSelectedProp ?? defaultChecked;
+    const isReadOnly = isReadOnlyProp || readonly;
+
+    if (process.env.NODE_ENV !== 'production' && isNotNil(disabled)) {
+      deprecate(
+        'Toggle. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && isNotNil(checked)) {
+      deprecate(
+        'Toggle. The "checked" prop is deprecated. Use "isSelected" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && isNotNil(error)) {
+      deprecate(
+        'Toggle. The "error" prop is deprecated. Use "isInvalid" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && isNotNil(defaultChecked)) {
+      deprecate(
+        'Toggle. The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && isNotNil(readonly)) {
+      deprecate(
+        'Toggle. The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
+      );
+    }
+
     const commonProps: TogglePropsPrimitive = {
-      className: ({ checked, hovered, focusVisible, disabled, error }) =>
+      isDisabled,
+      isSelected,
+      isInvalid,
+      isReadOnly,
+      defaultSelected,
+      className: ({
+        isInvalid,
+        isHovered,
+        isFocusVisible,
+        isDisabled,
+        isSelected,
+      }) =>
         clsx(
           s.base,
           s[size],
-          error && s.error,
           s[labelPlacement],
-          hovered && s.hovered,
-          checked && s.checked,
-          disabled && s.disabled,
-          focusVisible && s.focusVisible,
+          isInvalid && s.invalid,
+          isHovered && s.hovered,
+          isSelected && s.selected,
+          isDisabled && s.disabled,
+          isFocusVisible && s.focusVisible,
           className
         ),
       ...other,

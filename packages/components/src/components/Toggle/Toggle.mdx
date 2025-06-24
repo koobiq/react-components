@@ -39,7 +39,7 @@ For `normal` or `big` toggles, use the `size` prop.
 
 ## Disabled
 
-A toggle can be disabled by passing the `disabled` prop.
+A toggle can be disabled by passing the `isDisabled` prop.
 
 <Story of={Stories.Disabled} />
 
@@ -47,22 +47,22 @@ A toggle can be disabled by passing the `disabled` prop.
 
 ### Default value
 
-Toggles are not checked by default. The `defaultChecked` prop can be used to set the default state.
+Toggles are not checked by default. The `defaultSelected` prop can be used to set the default state.
 
 <Story of={Stories.DefaultValue} />
 
 ### Controlled value
 
-The `checked` prop can be used to make the checked state controlled.
+The `isSelected` prop can be used to make the checked state controlled.
 The `onChange` event is fired when the user presses the toggle, and receives the new value.
 
 <Story of={Stories.ControlledValue} />
 
-## Error
+## Invalid
 
-The `error` prop toggles the error state.
+The `isInvalid` prop toggles the error state.
 
-<Story of={Stories.Error} />
+<Story of={Stories.Invalid} />
 
 ## Description
 

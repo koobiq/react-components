@@ -18,12 +18,12 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
     const domRef = useDOMRef<ComponentRef<'input'>>(inputRef);
 
     const {
-      hovered,
-      error,
-      checked,
-      focused,
-      pressed,
-      focusVisible,
+      isHovered,
+      isInvalid,
+      isSelected,
+      isFocused,
+      isPressed,
+      isFocusVisible,
       labelProps,
       inputProps,
     } = useToggle(
@@ -35,13 +35,13 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
     );
 
     const renderValues = {
-      hovered,
-      error,
-      checked,
-      focused,
-      pressed,
-      focusVisible,
-      disabled: props.disabled || false,
+      isHovered,
+      isInvalid,
+      isSelected,
+      isFocused,
+      isPressed,
+      isFocusVisible,
+      isDisabled: props.isDisabled || false,
     };
 
     const renderProps = useRenderProps({
