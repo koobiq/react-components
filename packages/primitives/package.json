@@ -43,6 +43,7 @@
     "@react-aria/radio": "^3.10.9",
     "@react-aria/select": "^3.15.3",
     "@react-aria/separator": "^3.4.8",
+    "@react-aria/switch": "^3.7.5",
     "@react-aria/table": "^3.17.3",
     "@react-aria/tag": "^3.6.0",
     "@react-aria/textfield": "^3.14.0",

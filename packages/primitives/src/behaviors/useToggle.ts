@@ -9,8 +9,8 @@ import {
   useToggleState,
 } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
+import { useSwitch as useSwitchReactAria } from '@react-aria/switch';
 import type { AriaToggleProps } from '@react-aria/toggle';
-import { useToggle as useToggleReactAria } from '@react-aria/toggle';
 
 export type UseToggleProps = ExtendableProps<
   {
@@ -55,8 +55,7 @@ export function useToggle(
   props: UseToggleProps,
   ref: RefObject<HTMLInputElement | null>
 ) {
-  const { error, checked, disabled, required, defaultChecked, onChange } =
-    props;
+  const { error, checked, disabled, defaultChecked, onChange } = props;
 
   const state = useToggleState({
     isSelected: checked,
@@ -73,18 +72,15 @@ export function useToggle(
   const {
     labelProps: commonLabelProps,
     inputProps: commonInputProps,
-    isInvalid,
     isDisabled,
     isSelected,
     isReadOnly,
     isPressed,
     ...other
-  } = useToggleReactAria(
+  } = useSwitchReactAria(
     {
       ...props,
-      isInvalid: error,
       isDisabled: disabled,
-      isRequired: required,
     },
     state,
     ref
@@ -98,8 +94,8 @@ export function useToggle(
 
   return {
     labelProps,
-    inputProps,
-    error: isInvalid,
+    inputProps: { ...inputProps, 'aria-invalid': error },
+    error,
     pressed: isPressed,
     hovered: isHovered,
     focused: isFocused,
