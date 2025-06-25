@@ -1,39 +1,25 @@
-/* Variables and Defaults */
-.base {
-  /* Layout sizing */
-  --table-container-block-size: unset;
+.container {
+  --table-container-block-size: 100%;
   --table-container-min-block-size: unset;
   --table-container-max-block-size: unset;
-
-  /* Scroll padding for sticky headers */
   --table-container-scroll-padding-top: 0;
-
-  /* Cell & header styling */
   --table-cell-padding: 10px var(--kbq-size-s);
   --table-cell-color: var(--kbq-foreground-contrast);
   --table-header-cell-padding: 10px var(--kbq-size-s);
-  --table-header-cell-color: var(--kbq-foreground-contrast-secondary);
-
-  /* Borders */
   --table-border: 1px solid var(--kbq-line-contrast-less);
-
-  /* Base container properties */
-  overflow: auto;
+  --table-header-cell-color: var(--kbq-foreground-contrast-secondary);
   block-size: var(--table-container-block-size);
   min-block-size: var(--table-container-min-block-size);
   max-block-size: var(--table-container-max-block-size);
   scroll-padding-block-start: var(--table-container-scroll-padding-top);
 }
 
-/* Full-width modifier */
-.fullWidth .table {
+.fullWidth .base {
   inline-size: 100%;
 }
 
-/* Divider: none */
-.base[data-divider='none'] {
-  .cell {
-    /* Round corners only on the very first/last cells of the entire table */
+[data-divider='none'] {
+  tbody td {
     &:first-child {
       border-start-start-radius: var(--kbq-size-s);
       border-end-start-radius: var(--kbq-size-s);
@@ -45,20 +31,19 @@
     }
   }
 
-  .row {
+  tbody tr {
     border-radius: var(--kbq-size-s);
 
-    /* Remove top corners on the first data row, keep only bottom corners rounded */
     &:first-child {
       border-start-start-radius: 0;
       border-start-end-radius: 0;
 
-      .cell:first-child {
+      td:first-child {
         border-start-start-radius: 0;
         border-end-start-radius: var(--kbq-size-s);
       }
 
-      .cell:last-child {
+      td:last-child {
         border-start-end-radius: 0;
         border-end-end-radius: var(--kbq-size-s);
       }
@@ -66,154 +51,57 @@
   }
 }
 
-/* Divider: row */
-.base[data-divider='row'] {
-  .cell {
+[data-divider='row'] {
+  tbody td {
     border-block-end: var(--table-border);
   }
 }
 
-/* Sticky header */
-.base[data-sticky-header='true'] .thead {
-  position: sticky;
-  inset-block-start: 0;
-  background-color: var(--kbq-background-bg);
-  z-index: 1;
+[data-sticky-header='true'] {
+  overflow-block: auto;
+
+  thead {
+    z-index: 1;
+    position: sticky;
+    inset-block-start: 0;
+    background-color: var(--kbq-background-bg);
+  }
 }
 
-/* Table resets */
-.table {
+/* Table */
+.base {
   border-spacing: 0;
 }
 
-/* Selection / Focus styling for multi-select tables */
-.table[aria-multiselectable='true'] {
-  .row {
-    /* If a selected/focus-visible row has another adjacent with same state, remove corner rounding */
+[aria-multiselectable='true'] tbody {
+  tr {
     &:is([data-selected='true'], [data-focus-visible='true']):has(
         + :is([data-selected='true'], [data-focus-visible='true'])
       ) {
       border-end-start-radius: 0;
       border-end-end-radius: 0;
 
-      .cell:first-child {
+      td:first-child {
         border-end-start-radius: 0;
       }
 
-      .cell:last-child {
+      td:last-child {
         border-end-end-radius: 0;
       }
     }
 
-    /* If adjacent selected/focus-visible, remove corner rounding on top */
     &:is([data-selected='true'], [data-focus-visible='true'])
       + :is([data-selected='true'], [data-focus-visible='true']) {
       border-start-start-radius: 0;
       border-start-end-radius: 0;
 
-      .cell:first-child {
+      td:first-child {
         border-start-start-radius: 0;
       }
 
-      .cell:last-child {
+      td:last-child {
         border-start-end-radius: 0;
       }
     }
   }
-}
-
-/* Table cells */
-.cell {
-  box-sizing: border-box;
-  color: var(--table-cell-color);
-  padding: var(--table-cell-padding);
-  outline: none;
-  transition: border-radius var(--kbq-transition-default);
-}
-
-/* Table rows */
-.row {
-  box-sizing: border-box;
-  cursor: default;
-  outline: none;
-  transition:
-    background-color var(--kbq-transition-default),
-    border-radius var(--kbq-transition-default);
-
-  /* Hover, active and selected states */
-  &.hovered {
-    background-color: var(--kbq-states-background-transparent-hover);
-  }
-
-  &.pressed {
-    background-color: var(--kbq-states-background-transparent-active);
-  }
-
-  &.selected {
-    background-color: var(--kbq-background-theme-less);
-  }
-
-  &.selected:where(.hovered) {
-    background-color: var(--kbq-states-background-theme-less-hover);
-  }
-
-  &.selected:where(.pressed) {
-    background-color: var(--kbq-states-background-theme-less-active);
-  }
-
-  &.disabled {
-    background-color: transparent;
-    cursor: not-allowed;
-    opacity: 0.3;
-  }
-
-  &.disabled:where(.selected) {
-    background-color: var(--kbq-background-theme-less);
-  }
-
-  /* Remove bottom border on the very last row */
-  &:last-child .cell {
-    border-block-end: none;
-  }
-}
-
-/* Header cells */
-.header-cell {
-  box-sizing: border-box;
-  cursor: default;
-  outline: none;
-  padding: var(--table-header-cell-padding);
-  color: var(--table-header-cell-color);
-  border-block-end: var(--table-border);
-}
-
-/* Focus */
-.focusVisible {
-  outline-offset: -2px;
-  outline: 2px solid var(--kbq-states-line-focus-theme);
-}
-
-/* Vertical alignment helpers */
-.top {
-  vertical-align: top;
-}
-
-.baseline {
-  vertical-align: baseline;
-}
-
-.middle {
-  vertical-align: middle;
-}
-
-.bottom {
-  vertical-align: bottom;
-}
-
-.sub {
-  vertical-align: sub;
-}
-
-.text-top {
-  vertical-align: text-top;
 }

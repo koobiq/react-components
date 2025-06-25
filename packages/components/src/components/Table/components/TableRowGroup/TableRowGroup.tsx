@@ -2,10 +2,7 @@
 
 import { forwardRef, type ReactNode, type Ref } from 'react';
 
-import { clsx } from '@koobiq/react-core';
 import { useTableRowGroup } from '@koobiq/react-primitives';
-
-import s from '../../Table.module.css';
 
 export type TableRowGroupProps = {
   children: ReactNode;
@@ -18,7 +15,7 @@ export const TableRowGroup = forwardRef(
     const { rowGroupProps } = useTableRowGroup();
 
     return (
-      <Element {...rowGroupProps} ref={ref} className={clsx(s[type])}>
+      <Element {...rowGroupProps} ref={ref}>
         {children}
       </Element>
     );
