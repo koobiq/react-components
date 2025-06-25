@@ -5,7 +5,12 @@ import {
   IconChevronRight16,
   IconCircleXs16,
 } from '@koobiq/react-icons';
-import { today, useLocalizedStringFormatter } from '@koobiq/react-primitives';
+import {
+  type CalendarState,
+  type CalendarAria,
+  today,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-primitives';
 
 import { Button } from '../../../Button';
 import intlMessages from '../../intl.json';
@@ -15,9 +20,9 @@ import { CalendarYearDropdown } from '../CalendarYearDropdown';
 import s from './CalendarHeader.module.css';
 
 type CalendarHeaderProps = {
-  prevButtonProps: any;
-  nextButtonProps: any;
-  state: any;
+  prevButtonProps: CalendarAria['prevButtonProps'];
+  nextButtonProps: CalendarAria['nextButtonProps'];
+  state: CalendarState;
 };
 
 export const CalendarHeader = (props: CalendarHeaderProps) => {

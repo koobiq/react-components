@@ -12,6 +12,7 @@ import {
   type AriaCalendarCellProps,
   type AriaCalendarGridProps,
   type DateValue,
+  type CalendarAria,
 } from '@react-aria/calendar';
 import { useDialog, type AriaDialogProps } from '@react-aria/dialog';
 import {
@@ -170,6 +171,7 @@ export {
   useLocalizedStringFormatter,
   VisuallyHidden,
   type Node,
+  type CalendarAria,
   type DateValue,
   type TableState,
   type TreeState,
