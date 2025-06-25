@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.0.1-beta.26](https://github.com/koobiq/react-components/compare/0.0.1-beta.25...0.0.1-beta.26) (2025-06-25)
+
+### 🚀 Features
+
+- **components/Menu:** add `slotProps.list` for list customization ([675f6bd](https://github.com/koobiq/react-components/commit/675f6bd04f086456d21ae14223cfbebbd70d03c1))
+- **components/Popover:** add `maxBlockSize` prop ([02dfa7c](https://github.com/koobiq/react-components/commit/02dfa7c6efd70a374006b57b09a87a250378e80f))
+- **components/Toggle:** add isDisabled, isInvalid, isSelected, isReadOnly, defaultSelected ([1d74853](https://github.com/koobiq/react-components/commit/1d74853039c0723012df6f5e9b63953aedfee177))
+- **components:** add `capitalizeFirstLetter` utility ([fa7c3a2](https://github.com/koobiq/react-components/commit/fa7c3a26d0b521e4ff112be8412f0b00fecd0249))
+- **components:** add Calendar component ([f75b56f](https://github.com/koobiq/react-components/commit/f75b56f5bdbe8aee5a4c4a83349f9f954a448d53))
+- **components:** export `useLocale` from the library ([66b16f8](https://github.com/koobiq/react-components/commit/66b16f80fb3ea5ad9f52e40e92a9435511b5a5ad))
+
+### 🐞 Bug Fixes
+
+- **components/Menu:** correct slotProps typing ([8634822](https://github.com/koobiq/react-components/commit/8634822f1f3e17d29ef605660977a74092cd228f))
+- **components/Popover:** correct slotProps typing ([30b0cf4](https://github.com/koobiq/react-components/commit/30b0cf40e3db0a44a494fa26f4d4a63b51a5aa61))
+- **components/Table:** refine component layout and fix CSS bugs ([922f1f8](https://github.com/koobiq/react-components/commit/922f1f81a623a2f7db650cc50525c0c6bfa14b7a))
+- **components/Toggle:** add type declaration for `style` prop ([446402d](https://github.com/koobiq/react-components/commit/446402d7c093cb1c990b8496e9b51c83608188d2))
+
 ## [0.0.1-beta.25](https://github.com/koobiq/react-components/compare/0.0.1-beta.24...0.0.1-beta.25) (2025-06-16)
 
 ### 🚀 Features
