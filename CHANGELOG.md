@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.27](https://github.com/koobiq/react-components/compare/0.0.1-beta.26...0.0.1-beta.27) (2025-06-25)
+
+### 🚀 Features
+
+- **components:** mark SkeletonBlock and SkeletonTypography as stable ([1f6e1b1](https://github.com/koobiq/react-components/commit/1f6e1b1fc3ef4cb53f320bd5782c667c2d2c24a3))
+
 ## [0.0.1-beta.26](https://github.com/koobiq/react-components/compare/0.0.1-beta.25...0.0.1-beta.26) (2025-06-25)
 
 ### 🚀 Features
