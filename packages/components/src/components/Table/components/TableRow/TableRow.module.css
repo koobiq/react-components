@@ -1,0 +1,48 @@
+.base {
+  box-sizing: border-box;
+  cursor: default;
+  outline: none;
+  transition:
+    background-color var(--kbq-transition-default),
+    border-radius var(--kbq-transition-default);
+
+  /* Remove bottom border on the very last row */
+  &:last-child td {
+    border-block-end: none;
+  }
+}
+
+.hovered {
+  background-color: var(--kbq-states-background-transparent-hover);
+}
+
+.pressed {
+  background-color: var(--kbq-states-background-transparent-active);
+}
+
+.selected {
+  background-color: var(--kbq-background-theme-less);
+}
+
+.selected:where(.hovered) {
+  background-color: var(--kbq-states-background-theme-less-hover);
+}
+
+.selected:where(.pressed) {
+  background-color: var(--kbq-states-background-theme-less-active);
+}
+
+.disabled {
+  background-color: transparent;
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.disabled:where(.selected) {
+  background-color: var(--kbq-background-theme-less);
+}
+
+.focusVisible {
+  outline-offset: -2px;
+  outline: 2px solid var(--kbq-states-line-focus-theme);
+}

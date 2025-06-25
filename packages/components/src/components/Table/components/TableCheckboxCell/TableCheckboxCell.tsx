@@ -10,7 +10,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Checkbox } from '../../../Checkbox';
-import s from '../../Table.module.css';
+import s from '../TableCell/TableCell.module.css';
 
 type TableCheckboxCellProps<T> = {
   cell: AriaTableCellProps['node'];
@@ -30,7 +30,7 @@ export function TableCheckboxCell<T>({
   );
 
   return (
-    <td className={s.cell} {...gridCellProps} ref={ref}>
+    <td className={s.base} {...gridCellProps} ref={ref}>
       <Checkbox {...checkboxProps} />
     </td>
   );

@@ -61,7 +61,7 @@ function TableRender<T extends object>(
   const { gridProps } = useTable(props, state, tableRef);
 
   const tableProps = mergeProps(
-    { ref: tableRef, className: s.table },
+    { ref: tableRef, className: s.base },
     gridProps,
     slotProps?.table
   );
@@ -72,7 +72,7 @@ function TableRender<T extends object>(
     mergeProps(
       {
         className: clsx(
-          s.base,
+          s.container,
           fullWidth && s.fullWidth,
           textNormal,
           className

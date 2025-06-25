@@ -11,7 +11,8 @@ import type {
 
 import { utilClasses } from '../../../../styles/utility';
 import type { ColumnProps } from '../../../Collections';
-import s from '../../Table.module.css';
+
+import s from './TableColumnHeader.module.css';
 
 type TableColumnHeaderProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
@@ -45,9 +46,9 @@ export function TableColumnHeader<T>({
     <th
       align={align}
       className={clsx(
-        s['header-cell'],
-        isFocusVisible && s.focusVisible,
+        s.base,
         valign && s[valign],
+        isFocusVisible && s.focusVisible,
         textNormal,
         className
       )}

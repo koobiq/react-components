@@ -6,7 +6,7 @@ import { useFocusRing, mergeProps, useHover, clsx } from '@koobiq/react-core';
 import { useTableRow } from '@koobiq/react-primitives';
 import type { TableState, GridRowProps } from '@koobiq/react-primitives';
 
-import s from '../../Table.module.css';
+import s from './TableRow.module.css';
 
 type TableRowProps<T> = {
   item: GridRowProps<T>['node'];
@@ -34,7 +34,7 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
   return (
     <tr
       className={clsx(
-        s.row,
+        s.base,
         isHovered && s.hovered,
         isPressed && s.pressed,
         isSelected && s.selected,

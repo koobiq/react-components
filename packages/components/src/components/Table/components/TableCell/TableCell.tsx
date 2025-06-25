@@ -8,7 +8,8 @@ import type { TableState, AriaTableCellProps } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import type { CellProps } from '../../../Collections';
-import s from '../../Table.module.css';
+
+import s from './TableCell.module.css';
 
 type TableCellProps<T> = {
   cell: AriaTableCellProps['node'];
@@ -34,7 +35,7 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
       align={align}
       {...mergeProps(gridCellProps, focusProps)}
       className={clsx(
-        s.cell,
+        s.base,
         textNormal,
         valign && s[valign],
         isFocusVisible && s.focusVisible,

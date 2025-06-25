@@ -11,7 +11,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Checkbox } from '../../../Checkbox';
-import s from '../../Table.module.css';
+import s from '../TableColumnHeader/TableColumnHeader.module.css';
 
 type TableSelectAllCellProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
@@ -33,7 +33,7 @@ export function TableSelectAllCell<T>({
   const { checkboxProps } = useTableSelectAllCheckbox(state);
 
   return (
-    <th className={s['header-cell']} {...columnHeaderProps} ref={ref}>
+    <th className={s.base} {...columnHeaderProps} ref={ref}>
       {state.selectionManager.selectionMode === 'single' ? (
         <VisuallyHidden>{checkboxProps['aria-label']}</VisuallyHidden>
       ) : (

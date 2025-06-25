@@ -1,0 +1,36 @@
+.base {
+  outline: none;
+  box-sizing: border-box;
+  color: var(--table-cell-color);
+  padding: var(--table-cell-padding);
+  transition: border-radius var(--kbq-transition-default);
+}
+
+.top {
+  vertical-align: top;
+}
+
+.baseline {
+  vertical-align: baseline;
+}
+
+.middle {
+  vertical-align: middle;
+}
+
+.bottom {
+  vertical-align: bottom;
+}
+
+.sub {
+  vertical-align: sub;
+}
+
+.text-top {
+  vertical-align: text-top;
+}
+
+.focusVisible {
+  outline-offset: -2px;
+  outline: 2px solid var(--kbq-states-line-focus-theme);
+}
