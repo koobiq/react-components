@@ -1,0 +1,21 @@
+.base {
+  --calendar-cell-inline-size: 40px;
+  --calendar-cell-block-size: 32px;
+  display: flex;
+  block-size: 294px;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: var(--kbq-size-3xs);
+  padding-block: var(--kbq-size-m);
+}
+
+/* button */
+.open {
+  background-color: var(--button-bg-color-active);
+}
+
+/* popover */
+.popover {
+  min-inline-size: 200px;
+}

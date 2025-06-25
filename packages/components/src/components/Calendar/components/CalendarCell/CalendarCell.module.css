@@ -1,0 +1,48 @@
+.base {
+  --table-cell-outline-color: transparent;
+  --table-cell-outline-width: var(--kbq-size-3xs);
+  block-size: var(--calendar-cell-block-size);
+  inline-size: var(--calendar-cell-inline-size);
+  outline-offset: -2px;
+  outline: var(--table-cell-outline-width) solid var(--table-cell-outline-color);
+  transition:
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+}
+
+.base:where(:not([hidden])) {
+  color: var(--kbq-foreground-contrast);
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--kbq-size-s);
+}
+
+.today {
+  color: var(--kbq-foreground-theme);
+}
+
+.hovered {
+  background-color: var(--kbq-states-background-transparent-hover);
+}
+
+.pressed {
+  background-color: var(--kbq-states-background-transparent-active);
+}
+
+.focusVisible {
+  --table-cell-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.selected {
+  background-color: var(--kbq-background-contrast);
+  color: var(--kbq-foreground-on-contrast);
+}
+
+.disabled,
+.unavailable {
+  color: var(--kbq-states-foreground-disabled);
+  cursor: not-allowed;
+}
