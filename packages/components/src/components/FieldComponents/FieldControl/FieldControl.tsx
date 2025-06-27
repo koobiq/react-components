@@ -1,28 +1,25 @@
-import { forwardRef } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import { clsx } from '@koobiq/react-core';
-import type { TextFieldProps, TextFieldRef } from '@koobiq/react-primitives';
-import { TextField } from '@koobiq/react-primitives';
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import s from './FieldControl.module.css';
 
-export type FieldControlProps = TextFieldProps & {
+export type FieldControlBaseProps = {
   fullWidth?: boolean;
   className?: string;
 };
 
-export type FieldControlRef = TextFieldRef;
-
-export const FieldControl = forwardRef<FieldControlRef, FieldControlProps>(
-  ({ fullWidth = false, children, className, ...other }, ref) => (
-    <TextField
+export const FieldControl = polymorphicForwardRef<'div', FieldControlBaseProps>(
+  ({ fullWidth = false, className, as: Tag = 'div', ...other }, ref) => (
+    <Tag
       className={clsx(s.base, fullWidth && s.fullWidth, className)}
       {...other}
       ref={ref}
-    >
-      {children}
-    </TextField>
+    />
   )
 );
+
+export type FieldControlProps<As extends ElementType = 'div'> =
+  ComponentPropsWithRef<typeof FieldControl<As>>;
 
 FieldControl.displayName = 'FieldControl';

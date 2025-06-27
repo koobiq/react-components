@@ -22,6 +22,7 @@ import {
   FieldSelect,
   FieldCaption,
   FieldInputGroup,
+  FieldControl,
 } from '../FieldComponents';
 import { ListItemText, ListInner } from '../List';
 import { PopoverInner } from '../Popover';
@@ -190,7 +191,7 @@ function SelectRender<T extends object>(
 
   return (
     <>
-      <div {...rootProps}>
+      <FieldControl {...rootProps}>
         <FieldLabel {...labelProps}>{props.label}</FieldLabel>
         <HiddenSelect
           state={state}
@@ -210,7 +211,7 @@ function SelectRender<T extends object>(
         <FieldError {...errorProps}>
           {errorProps.children || errorMessage}
         </FieldError>
-      </div>
+      </FieldControl>
       <PopoverInner {...popoverProps}>
         <ListInner {...listProps} />
       </PopoverInner>

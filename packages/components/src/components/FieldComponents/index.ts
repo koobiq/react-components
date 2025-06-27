@@ -1,5 +1,4 @@
 export * from './FieldControl';
-export * from './FieldNumberControl';
 export * from './FieldInput';
 export * from './FieldSelect';
 export * from './FieldLabel';

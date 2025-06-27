@@ -3,7 +3,7 @@ import type { ComponentPropsWithRef } from 'react';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Input, Textarea } from '@koobiq/react-primitives';
 
-import type { InputPropVariant } from '../../Input/types';
+import type { InputPropVariant } from '../../Input';
 
 import s from './FieldInput.module.css';
 
