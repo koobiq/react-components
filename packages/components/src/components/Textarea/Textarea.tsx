@@ -3,8 +3,9 @@
 import { forwardRef } from 'react';
 
 import { mergeProps } from '@koobiq/react-core';
+import { TextField } from '@koobiq/react-primitives';
 
-import { FieldControl, type FieldControlProps } from '../FieldComponents';
+import { FieldControl } from '../FieldComponents';
 
 import { TextareaContextConsumer } from './components';
 import type { TextareaProps, TextareaRef } from './index';
@@ -24,7 +25,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
     ...other
   } = props;
 
-  const rootProps: FieldControlProps = mergeProps(
+  const rootProps = mergeProps(
     {
       label,
       fullWidth,
@@ -36,7 +37,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
   );
 
   return (
-    <FieldControl inputElementType="textarea" {...rootProps}>
+    <FieldControl as={TextField} inputElementType="textarea" {...rootProps}>
       {(values) => (
         <TextareaContextConsumer
           {...values}

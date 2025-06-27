@@ -3,6 +3,7 @@
 import { type ComponentRef, forwardRef } from 'react';
 
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
+import { TextField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
@@ -11,7 +12,6 @@ import {
   FieldError,
   FieldCaption,
   FieldInputGroup,
-  type FieldControlProps,
 } from '../FieldComponents';
 
 import type { InputProps, InputRef } from './index';
@@ -32,7 +32,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
   const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
-  const rootProps: FieldControlProps = mergeProps(
+  const rootProps = mergeProps(
     {
       label,
       fullWidth,
@@ -44,7 +44,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   );
 
   return (
-    <FieldControl {...rootProps}>
+    <FieldControl as={TextField} {...rootProps}>
       {({ error, required, disabled }) => {
         const labelProps = mergeProps(
           { hidden: hiddenLabel, required },

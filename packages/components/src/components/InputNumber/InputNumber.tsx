@@ -3,6 +3,7 @@
 import { type ComponentRef, forwardRef } from 'react';
 
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
+import { NumberField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
@@ -10,8 +11,7 @@ import {
   FieldError,
   FieldCaption,
   FieldInputGroup,
-  FieldNumberControl,
-  type FieldNumberControlProps,
+  FieldControl,
 } from '../FieldComponents';
 
 import { InputNumberCounterControls } from './components';
@@ -34,7 +34,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
     const domRef = useDOMRef<ComponentRef<'input'>>(ref);
 
-    const rootProps: FieldNumberControlProps = mergeProps(
+    const rootProps = mergeProps(
       {
         label,
         fullWidth,
@@ -46,7 +46,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
     );
 
     return (
-      <FieldNumberControl {...rootProps}>
+      <FieldControl as={NumberField} {...rootProps}>
         {({ error, required, disabled }) => {
           const labelProps = mergeProps(
             { hidden: hiddenLabel, required },
@@ -88,7 +88,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
             </>
           );
         }}
-      </FieldNumberControl>
+      </FieldControl>
     );
   }
 );
