@@ -285,7 +285,7 @@ export const WithIcons: Story = {
         style={{ inlineSize: 200 }}
       >
         {({ id, icon: Icon }) => (
-          <Select.Item>
+          <Select.Item textValue={id}>
             <Icon />
             <Select.ItemText>{id}</Select.ItemText>
           </Select.Item>
@@ -318,7 +318,7 @@ export const WithItemDetails: Story = {
         style={{ inlineSize: 200 }}
       >
         {({ id, caption }) => (
-          <Select.Item>
+          <Select.Item textValue={id}>
             <Select.ItemText caption={caption}>{id}</Select.ItemText>
           </Select.Item>
         )}
