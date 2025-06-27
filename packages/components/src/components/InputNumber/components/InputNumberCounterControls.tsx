@@ -18,7 +18,7 @@ export const InputNumberCounterControls = () => {
         slot="increment"
         variant="fade-contrast"
         size="l"
-        compact
+        isCompact
       >
         <IconChevronUp16 />
       </IconButton>
@@ -27,7 +27,7 @@ export const InputNumberCounterControls = () => {
         slot="decrement"
         variant="fade-contrast"
         size="l"
-        compact
+        isCompact
       >
         <IconChevronDown16 />
       </IconButton>
