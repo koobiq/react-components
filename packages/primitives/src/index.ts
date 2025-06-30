@@ -67,6 +67,7 @@ import {
   type AriaTagProps,
 } from '@react-aria/tag';
 import { useTooltip, useTooltipTrigger } from '@react-aria/tooltip';
+import { RouterProvider, useRouter } from '@react-aria/utils';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useCalendarState, type CalendarState } from '@react-stately/calendar';
 import { Item, Section } from '@react-stately/collections';
@@ -169,6 +170,8 @@ export {
   useTooltipTriggerState,
   useToggleButtonGroupItem,
   useLocalizedStringFormatter,
+  RouterProvider,
+  useRouter,
   VisuallyHidden,
   type Node,
   type CalendarAria,

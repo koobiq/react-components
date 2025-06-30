@@ -33,3 +33,4 @@ export * from './Table';
 export * from './Calendar';
 export * from './layout';
 export { useListData } from '@koobiq/react-primitives';
+export { useRouter, RouterProvider } from '@koobiq/react-primitives';
