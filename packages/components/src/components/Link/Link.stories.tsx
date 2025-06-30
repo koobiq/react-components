@@ -3,10 +3,12 @@ import { type CSSProperties } from 'react';
 import { useBoolean } from '@koobiq/react-core';
 import { IconBolt16, IconNorthEast16, IconStar16 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
+import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
+import { RouterProvider } from '../index';
 import { Typography } from '../Typography';
 
 import type { LinkBaseProps } from './index.js';
@@ -162,4 +164,18 @@ export const Composition: Story = {
       </Link>
     </Typography>
   ),
+};
+
+export const RouterProviderStory: Story = {
+  render: function Render() {
+    return (
+      <RouterProvider
+        navigate={(href) => {
+          linkTo(href)();
+        }}
+      >
+        <Link href="Icons">Link</Link>
+      </RouterProvider>
+    );
+  },
 };
