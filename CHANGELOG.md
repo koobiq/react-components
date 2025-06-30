@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.0.1-beta.28](https://github.com/koobiq/react-components/compare/0.0.1-beta.27...0.0.1-beta.28) (2025-06-30)
+
+### ⚠ BREAKING CHANGES
+
+- **components/Table:** remove `fullWidth` prop
+- **icons:** remove IconSquareClipboard16
+
+### 🚀 Features
+
+- **components:** add experimental RouterProvider ([8f47ebc](https://github.com/koobiq/react-components/commit/8f47ebc4715d18afa9ee4932b356b0384c62211a))
+- **icons:** add social icons and other new icons ([ab62397](https://github.com/koobiq/react-components/commit/ab6239779bcd2667ea2845faae3615ce32635388))
+
+### 🐞 Bug Fixes
+
+- **components/Table:** remove `fullWidth` prop ([bac6615](https://github.com/koobiq/react-components/commit/bac66151215075517654614756ff018ae4de76bd))
+
 ## [0.0.1-beta.27](https://github.com/koobiq/react-components/compare/0.0.1-beta.26...0.0.1-beta.27) (2025-06-25)
 
 ### 🚀 Features
