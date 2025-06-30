@@ -130,8 +130,8 @@ export const Divider: Story = {
         <ButtonToggleGroup
           selectedKey={divider}
           onSelectionChange={(key) => setDivider(key as TablePropDivider)}
-          fullWidth
           hasEqualItemSize
+          fullWidth
         >
           <ButtonToggle id="none">None</ButtonToggle>
           <ButtonToggle id="row">Row</ButtonToggle>
@@ -237,40 +237,6 @@ export const DynamicCollection: Story = {
       </Table>
     );
   },
-};
-
-export const FullWidth: Story = {
-  render: (args: TableProps<object>) => (
-    <Table aria-label="Example the table with a full width" fullWidth {...args}>
-      <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Type</Table.Column>
-        <Table.Column>Date Modified</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>home</Table.Cell>
-          <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>{formatDate('2024-06-07')}</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>etc</Table.Cell>
-          <Table.Cell>File folder</Table.Cell>
-          <Table.Cell>{formatDate('2023-04-07')}</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>vmlinuz</Table.Cell>
-          <Table.Cell>System file</Table.Cell>
-          <Table.Cell>{formatDate('2015-11-20')}</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>log.txt</Table.Cell>
-          <Table.Cell>Text file</Table.Cell>
-          <Table.Cell>{formatDate('2019-01-18')}</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
 };
 
 export const StickyHeader: Story = {
@@ -392,12 +358,7 @@ export const StickyHeader: Story = {
     ];
 
     return (
-      <Table
-        aria-label="The table with users"
-        blockSize={300}
-        stickyHeader
-        fullWidth
-      >
+      <Table aria-label="The table with users" blockSize={300} stickyHeader>
         <Table.Header columns={columns}>
           {(column) => <Table.Column>{column.name}</Table.Column>}
         </Table.Header>
