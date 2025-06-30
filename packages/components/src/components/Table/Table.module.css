@@ -14,10 +14,6 @@
   scroll-padding-block-start: var(--table-container-scroll-padding-top);
 }
 
-.base {
-  inline-size: 100%;
-}
-
 [data-divider='none'] {
   tbody td {
     &:first-child {
@@ -71,6 +67,7 @@
 /* Table */
 .base {
   border-spacing: 0;
+  inline-size: 100%;
 }
 
 [aria-multiselectable='true'] tbody {
