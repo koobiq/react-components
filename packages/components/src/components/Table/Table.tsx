@@ -36,7 +36,6 @@ function TableRender<T extends object>(
 ) {
   const {
     stickyHeader = false,
-    fullWidth = false,
     divider = 'none',
     slotProps,
     selectionMode,
@@ -71,14 +70,8 @@ function TableRender<T extends object>(
   const containerProps: ComponentPropsWithRef<'div'> & DataAttributeProps =
     mergeProps(
       {
-        className: clsx(
-          s.container,
-          fullWidth && s.fullWidth,
-          textNormal,
-          className
-        ),
+        className: clsx(s.container, textNormal, className),
         'data-divider': divider,
-        'data-fullwidth': fullWidth,
         'data-sticky-header': stickyHeader,
         style: {
           ...styleProp,

@@ -14,7 +14,7 @@
   scroll-padding-block-start: var(--table-container-scroll-padding-top);
 }
 
-.fullWidth .base {
+.base {
   inline-size: 100%;
 }
 

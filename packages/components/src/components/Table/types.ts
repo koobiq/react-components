@@ -70,11 +70,6 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
      */
     divider?: TablePropDivider;
     /**
-     * If `true`, the table will take up the full width of its container.
-     * @default false
-     * */
-    fullWidth?: boolean;
-    /**
      * Flag indicating a fixed table header.
      * @default false
      * */
