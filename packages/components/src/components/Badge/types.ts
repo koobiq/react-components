@@ -24,18 +24,25 @@ export const badgePropVariant = [
 
 export type BadgePropVariant = (typeof badgePropVariant)[number];
 
+type BadgeBaseDeprecatedProps = {
+  /**
+   * @deprecated
+   * The "label" prop is deprecated. Use "children" prop to replace it.
+   * The label of the component. */
+  label?: ReactNode;
+};
+
 export type BadgeBaseProps = {
   /** The variant to use. */
   variant?: BadgePropVariant;
   /** The size of the component. */
   size?: BadgePropSize;
-  /** The label of the component. */
-  label?: ReactNode;
+  /** The content of the component. */
+  children?: ReactNode;
   /** Icon placed before the children. */
   startIcon?: ReactNode;
   /** Icon placed after the children. */
   endIcon?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
-  children?: never;
-};
+} & BadgeBaseDeprecatedProps;
