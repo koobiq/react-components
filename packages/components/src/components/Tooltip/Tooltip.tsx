@@ -2,6 +2,7 @@
 
 import { type ComponentRef, forwardRef, useRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import {
   clsx,
   useDOMRef,
@@ -9,6 +10,7 @@ import {
   useBoolean,
   FocusableProvider,
   useMultiRef,
+  isNotNil,
 } from '@koobiq/react-core';
 import {
   Overlay,
@@ -27,7 +29,10 @@ import type { TooltipProps, TooltipRef } from './types';
 export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const {
     delay = 120,
-    disabled = false,
+    disabled,
+    open,
+    isDisabled: isDisabledProp = false,
+    isOpen: isOpenProp = false,
     closeDelay = 120,
     hideArrow = false,
     variant = 'contrast',
@@ -38,12 +43,26 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     crossOffset,
     defaultOpen,
     onOpenChange,
-    open: openProp,
     portalContainer,
     offset: offsetProp,
     arrowBoundaryOffset,
     ...other
   } = props;
+
+  const isOpen = isOpenProp || open;
+  const isDisabled = isDisabledProp || disabled;
+
+  if (process.env.NODE_ENV !== 'production' && isNotNil(open)) {
+    deprecate(
+      'Tooltip. The "open" prop is deprecated. Use "isOpen" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && isNotNil(disabled)) {
+    deprecate(
+      'Tooltip. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+    );
+  }
 
   const showArrow = !hideArrow;
 
@@ -54,8 +73,8 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     closeDelay,
     defaultOpen,
     onOpenChange,
-    isOpen: openProp,
-    isDisabled: disabled,
+    isOpen,
+    isDisabled,
     ...other,
   });
 
@@ -66,11 +85,11 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const { triggerProps, tooltipProps: tooltipTriggerProps } = useTooltipTrigger(
     {
       delay,
+      isOpen,
+      isDisabled,
       closeDelay,
       defaultOpen,
       onOpenChange,
-      isOpen: openProp,
-      isDisabled: disabled,
       ...other,
     },
     state,

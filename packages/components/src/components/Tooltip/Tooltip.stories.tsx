@@ -5,10 +5,10 @@ import { IconQuestionCircle24 } from '@koobiq/react-icons';
 import type { StoryObj } from '@storybook/react';
 
 import { Button, type ButtonProps } from '../Button';
+import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
 import { IconButton } from '../IconButton';
 import { InputNumber } from '../InputNumber';
-import { flex } from '../layout';
 import { Typography } from '../Typography';
 
 import {
@@ -47,7 +47,7 @@ export const Base: Story = {
 
 export const Trigger: Story = {
   render: (args: TooltipProps) => (
-    <div className={flex({ gap: 'l' })}>
+    <FlexBox gap="l">
       <Tooltip
         {...args}
         control={() => <Button variant="fade-contrast-filled">Hover me</Button>}
@@ -61,26 +61,26 @@ export const Trigger: Story = {
       >
         This is a tooltip
       </Tooltip>
-    </div>
+    </FlexBox>
   ),
 };
 
 export const Variant: Story = {
   render: (args: TooltipProps) => (
-    <div className={flex({ gap: 'l' })}>
+    <FlexBox gap="l">
       {tooltipPropVariant.map((variant) => (
         <Tooltip
           key={variant}
           variant={variant}
-          {...args}
           control={() => (
             <Button variant="fade-contrast-filled">{variant}</Button>
           )}
+          {...args}
         >
           This is a tooltip
         </Tooltip>
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -88,7 +88,7 @@ export const Disabled: Story = {
   render: (args: TooltipProps) => (
     <Tooltip
       control={() => <Button variant="fade-contrast-filled">Disabled</Button>}
-      disabled
+      isDisabled
       {...args}
     >
       This is a tooltip
@@ -99,9 +99,9 @@ export const Disabled: Story = {
 export const Arrow: Story = {
   render: (args: TooltipProps) => (
     <Tooltip
+      control={() => <Button variant="fade-contrast-filled">Hover me</Button>}
       hideArrow
       {...args}
-      control={() => <Button variant="fade-contrast-filled">Hover me</Button>}
     >
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi deserunt
       dolores expedita facilis quos rerum sint. Accusamus ad amet corporis,
@@ -119,13 +119,7 @@ export const Delays: Story = {
     const [closeDelay, setCloseDelay] = useState<number>(1200);
 
     return (
-      <div
-        className={flex({
-          gap: 'xl',
-          direction: 'column',
-          alignItems: 'center',
-        })}
-      >
+      <FlexBox gap="xl" direction="column" alignItems="center">
         <Tooltip
           delay={delay}
           closeDelay={closeDelay}
@@ -136,7 +130,7 @@ export const Delays: Story = {
         >
           This is a tooltip
         </Tooltip>
-        <div className={flex({ gap: 'm' })}>
+        <FlexBox gap="m">
           <InputNumber
             label="delay"
             placeholder="delay"
@@ -149,8 +143,8 @@ export const Delays: Story = {
             value={closeDelay}
             onChange={setCloseDelay}
           />
-        </div>
-      </div>
+        </FlexBox>
+      </FlexBox>
     );
   },
 };
@@ -159,16 +153,14 @@ export const ControlledOpen: Story = {
   name: 'Controlled open',
   render: function Render(args: TooltipProps) {
     const anchorRef = useRef<HTMLParagraphElement | null>(null);
-    const [open, { on, off, set }] = useBoolean(false);
+    const [isOpen, { on, off, set }] = useBoolean(false);
 
     return (
       <>
-        <div
-          className={flex({
-            gap: 'l',
-            direction: 'column',
-            alignItems: 'center',
-          })}
+        <FlexBox
+          gap="l"
+          direction="column"
+          alignItems="center"
           style={{ width: 240 }}
         >
           <Typography align="center" ref={anchorRef}>
@@ -181,9 +173,9 @@ export const ControlledOpen: Story = {
           >
             Hover me
           </Button>
-        </div>
+        </FlexBox>
         <Tooltip
-          open={open}
+          isOpen={isOpen}
           anchorRef={anchorRef}
           onOpenChange={(open) => set(open)}
           {...args}
@@ -197,7 +189,7 @@ export const ControlledOpen: Story = {
 
 export const Placement: Story = {
   render: function Render(args: TooltipProps) {
-    const [open, { on, off, set }] = useBoolean();
+    const [isOpen, { on, off, set }] = useBoolean();
     const [placement, setPlacement] = useState<TooltipPropPlacement>();
     const anchorRef = useRef<HTMLElement | null>(null);
 
@@ -336,7 +328,7 @@ export const Placement: Story = {
         <Tooltip
           delay={0}
           closeDelay={0}
-          open={open}
+          isOpen={isOpen}
           onOpenChange={(open) => set(open)}
           placement={placement}
           anchorRef={anchorRef}
@@ -355,24 +347,18 @@ export const Offsets: Story = {
     const [crossOffset, setCrossOffset] = useState<number>(0);
 
     return (
-      <div
-        className={flex({
-          gap: 'xl',
-          direction: 'column',
-          alignItems: 'center',
-        })}
-      >
+      <FlexBox gap="xl" direction="column" alignItems="center">
         <Tooltip
           offset={offset}
           crossOffset={crossOffset}
-          {...args}
           control={() => (
             <Button variant="fade-contrast-filled">Hover me</Button>
           )}
+          {...args}
         >
           This is a tooltip
         </Tooltip>
-        <div className={flex({ gap: 'm' })}>
+        <FlexBox gap="m">
           <InputNumber
             label="offest"
             placeholder="offset"
@@ -385,8 +371,8 @@ export const Offsets: Story = {
             value={crossOffset}
             onChange={setCrossOffset}
           />
-        </div>
-      </div>
+        </FlexBox>
+      </FlexBox>
     );
   },
 };
