@@ -31,8 +31,8 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     delay = 120,
     disabled,
     open,
-    isDisabled: isDisabledProp = false,
-    isOpen: isOpenProp = false,
+    isDisabled: isDisabledProp,
+    isOpen: isOpenProp,
     closeDelay = 120,
     hideArrow = false,
     variant = 'contrast',
@@ -49,8 +49,8 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     ...other
   } = props;
 
-  const isOpen = isOpenProp || open;
-  const isDisabled = isDisabledProp || disabled;
+  const isOpen = isOpenProp ?? open;
+  const isDisabled = isDisabledProp ?? disabled;
 
   if (process.env.NODE_ENV !== 'production' && isNotNil(open)) {
     deprecate(
