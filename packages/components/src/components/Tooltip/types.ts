@@ -7,10 +7,11 @@ import type {
 } from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
+import type { FocusableElement } from '@koobiq/react-primitives';
 
 export type TooltipPropControl = (
-  props: DOMAttributes<HTMLElement> & {
-    ref: ((node: HTMLElement | null) => void) | null;
+  props: DOMAttributes<FocusableElement | null> & {
+    ref: ((node: FocusableElement | null) => void) | null;
   }
 ) => ReactElement;
 

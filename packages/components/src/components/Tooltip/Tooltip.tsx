@@ -18,6 +18,7 @@ import {
   useTooltipTrigger,
   useOverlayPosition,
   useTooltipTriggerState,
+  type FocusableElement,
 } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
@@ -79,7 +80,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   });
 
   const domRef = useDOMRef<ComponentRef<'div'>>(ref);
-  const controlRef = useRef<HTMLElement | null>(null);
+  const controlRef = useRef<FocusableElement>(null);
   const controlRefCallback = useMultiRef([controlRef]);
 
   const { triggerProps, tooltipProps: tooltipTriggerProps } = useTooltipTrigger(
