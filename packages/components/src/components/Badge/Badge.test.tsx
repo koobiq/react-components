@@ -19,7 +19,7 @@ describe('Badge', () => {
   });
 
   it('should render the component with the correct label text', () => {
-    render(<Badge label="Label" />);
+    render(<Badge>Label</Badge>);
     expect(screen.getByText('Label')).toBeInTheDocument();
   });
 
