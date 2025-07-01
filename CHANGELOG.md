@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.1-beta.29](https://github.com/koobiq/react-components/compare/0.0.1-beta.28...0.0.1-beta.29) (2025-07-01)
+
+### 🚀 Features
+
+- **components/Badge:** replace label prop with children ([66e029b](https://github.com/koobiq/react-components/commit/66e029b3f611eeffe32de551f148d8020416750f))
+- **components/Tooltip:** add isDisabled and isOpen props ([9e02ece](https://github.com/koobiq/react-components/commit/9e02ecec43a49c7382b45c00805467153ac7904c))
+
+### 🐞 Bug Fixes
+
+- **components/Tooltip:** allow SVG element as a valid trigger without type error ([4acdc3e](https://github.com/koobiq/react-components/commit/4acdc3e5576f64fca3292069fc6ebd571414c780))
+- **components/Tooltip:** fix "WARN: A component changed from uncontrolled to controlled." ([c0402c1](https://github.com/koobiq/react-components/commit/c0402c107d2c18b915282b2b0d1697e54767c9b3))
+- **components/Tooltip:** fix control element not triggering open ([def2ef8](https://github.com/koobiq/react-components/commit/def2ef8c6f118822f6cdb6996d8ee709ffa73ebb))
+
 ## [0.0.1-beta.28](https://github.com/koobiq/react-components/compare/0.0.1-beta.27...0.0.1-beta.28) (2025-06-30)
 
 ### ⚠ BREAKING CHANGES
