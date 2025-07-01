@@ -2,14 +2,10 @@
 
 import type { RefObject } from 'react';
 
-import {
-  mergeProps,
-  useFocusRing,
-  useHover,
-  useToggleState,
-} from '@koobiq/react-core';
+import { mergeProps, useFocusRing, useHover } from '@koobiq/react-core';
 import { useSwitch as useSwitchReactAria } from '@react-aria/switch';
 import type { AriaSwitchProps } from '@react-aria/switch';
+import { useToggleState } from '@react-stately/toggle';
 
 export type UseToggleProps = AriaSwitchProps & { isInvalid?: boolean };
 

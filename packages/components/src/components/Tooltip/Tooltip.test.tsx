@@ -4,6 +4,8 @@ import { act, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { IconButton } from '../IconButton';
+
 import { Tooltip, tooltipPropVariant } from './index';
 import s from './Tooltip.module.css';
 
@@ -95,8 +97,29 @@ describe('Tooltip', () => {
       });
 
       expect(onOpenChange).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('foo')).toBeVisible();
+      expect(onOpenChange).toBeCalledWith(true);
+    });
 
-      expect(onOpenChange.mock.results[0]?.value).toStrictEqual(true);
+    it('should display tooltip on focus when Koobiq Button is used as control', async () => {
+      const onOpenChange = vi.fn((value) => value);
+
+      render(
+        <Tooltip
+          {...baseProps}
+          trigger="focus"
+          onOpenChange={onOpenChange}
+          control={() => <IconButton data-testid="control"></IconButton>}
+        >
+          foo
+        </Tooltip>
+      );
+
+      await user.tab();
+
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('foo')).toBeVisible();
+      expect(onOpenChange).toBeCalledWith(true);
     });
   });
 

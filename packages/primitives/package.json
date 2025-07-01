@@ -50,7 +50,7 @@
     "@react-aria/tag": "^3.6.0",
     "@react-aria/textfield": "^3.14.0",
     "@react-aria/toggle": "^3.10.10",
-    "@react-aria/tooltip": "^3.7.9",
+    "@react-aria/tooltip": "^3.8.5",
     "@react-aria/utils": "^3.29.1",
     "@react-aria/visually-hidden": "^3.8.0",
     "@react-stately/calendar": "^3.8.2",
@@ -64,7 +64,7 @@
     "@react-stately/select": "^3.6.11",
     "@react-stately/table": "^3.14.2",
     "@react-stately/toggle": "^3.7.0",
-    "@react-stately/tooltip": "^3.4.13",
+    "@react-stately/tooltip": "^3.5.5",
     "@react-stately/tree": "^3.8.9"
   },
   "peerDependencies": {

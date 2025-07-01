@@ -2,14 +2,10 @@
 
 import type { RefObject } from 'react';
 
-import {
-  useHover,
-  mergeProps,
-  useFocusRing,
-  useToggleState,
-} from '@koobiq/react-core';
+import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
 import { useCheckbox as useCheckboxReactAria } from '@react-aria/checkbox';
 import type { AriaCheckboxProps } from '@react-aria/checkbox';
+import { useToggleState } from '@react-stately/toggle';
 
 export type UseCheckboxProps = AriaCheckboxProps;
 
