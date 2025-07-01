@@ -41,6 +41,23 @@ export type TooltipPropVariant = (typeof tooltipPropVariant)[number];
 
 export type TooltipPropPlacement = (typeof tooltipPropPlacement)[number];
 
+type TooltipDeprecatedProps = {
+  /**
+   * @deprecated
+   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
+   * If `true`, the component is shown.
+   * @default false
+   * */
+  open?: boolean;
+  /**
+   * @deprecated
+   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
+   * If `true`, the component is disabled.
+   * @default false
+   * */
+  disabled?: boolean;
+};
+
 export type TooltipProps = {
   /**
    * The variant to use.
@@ -48,7 +65,7 @@ export type TooltipProps = {
    * */
   variant?: TooltipPropVariant;
   /** If `true`, the component is shown. */
-  open?: boolean;
+  isOpen?: boolean;
   /** The default open state. Use when the component is not controlled. */
   defaultOpen?: boolean;
   /** Handler that is called when the overlay's open state changes. */
@@ -57,7 +74,7 @@ export type TooltipProps = {
    * If `true`, the tooltip should be disabled, independent of the trigger.
    * @default false
    * */
-  disabled?: boolean;
+  isDisabled?: boolean;
   /** The content of the component. */
   children?: ReactNode;
   /** The render function of the control for displaying the tooltip. */
@@ -116,6 +133,7 @@ export type TooltipProps = {
    * @default document.body
    */
   portalContainer?: Element;
-} & DataAttributeProps;
+} & TooltipDeprecatedProps &
+  DataAttributeProps;
 
 export type TooltipRef = ComponentRef<'div'>;

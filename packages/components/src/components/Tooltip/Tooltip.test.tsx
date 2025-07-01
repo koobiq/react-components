@@ -25,7 +25,7 @@ describe('Tooltip', () => {
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
 
-    render(<Tooltip {...baseProps} ref={ref} open />);
+    render(<Tooltip {...baseProps} ref={ref} isOpen />);
 
     expect(ref.current).toBe(getRoot());
   });
@@ -33,7 +33,7 @@ describe('Tooltip', () => {
   it('should merge a custom class name with the default ones', () => {
     const className = 'foo';
 
-    render(<Tooltip {...baseProps} className={className} open />);
+    render(<Tooltip {...baseProps} className={className} isOpen />);
 
     const root = getRoot();
     expect(root?.className).toContain(className);
@@ -44,7 +44,7 @@ describe('Tooltip', () => {
     it.each(tooltipPropVariant)(
       'should apply the size as a "%s"',
       (variant) => {
-        render(<Tooltip {...baseProps} variant={variant} open />);
+        render(<Tooltip {...baseProps} variant={variant} isOpen />);
 
         expect(getRoot()).toHaveAttribute('data-variant', variant);
       }
@@ -52,11 +52,11 @@ describe('Tooltip', () => {
   });
 
   test('check the hideArrow prop', () => {
-    const { rerender } = render(<Tooltip {...baseProps} open />);
+    const { rerender } = render(<Tooltip {...baseProps} isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'true');
 
-    rerender(<Tooltip {...baseProps} hideArrow open />);
+    rerender(<Tooltip {...baseProps} hideArrow isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'false');
   });
@@ -78,7 +78,7 @@ describe('Tooltip', () => {
   });
 
   describe('control', () => {
-    it('should open the component when the control is focused', async () => {
+    it('should isOpen the component when the control is focused', async () => {
       const onOpenChange = vi.fn((value) => value);
 
       render(
