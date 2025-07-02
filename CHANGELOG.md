@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.30](https://github.com/koobiq/react-components/compare/0.0.1-beta.29...0.0.1-beta.30) (2025-07-02)
+
+### 🚀 Features
+
+- implement unified deprecation handling for legacy props ([065b421](https://github.com/koobiq/react-components/commit/065b4212a7971d15ce2e967e3ffdf8da28b256c4))
+
 ## [0.0.1-beta.29](https://github.com/koobiq/react-components/compare/0.0.1-beta.28...0.0.1-beta.29) (2025-07-01)
 
 ### 🚀 Features
