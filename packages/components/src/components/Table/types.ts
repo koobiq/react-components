@@ -72,12 +72,12 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
     /**
      * Flag indicating a fixed table header.
      * @default false
-     * */
+     */
     stickyHeader?: boolean;
     /**
      * The elements that make up the table.
      * Includes the Table.Header, Table.Body, Table.Column, and Table.Row.
-     * */
+     */
     children?: TablePropChildren<T>;
     /** Ref to the control. */
     ref?: Ref<HTMLDivElement>;

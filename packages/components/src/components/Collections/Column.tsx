@@ -42,12 +42,12 @@ export type ColumnProps<T> = Omit<
   /**
    * Horizontal alignment of the cell content.
    * @default left
-   * */
+   */
   align?: ColumnPropAlign;
   /**
    * Vertical alignment of the cell content.
    * @default middle
-   * */
+   */
   valign?: ColumnPropVerticalAlign;
 };
 

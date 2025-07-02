@@ -67,7 +67,7 @@ describe('Button', () => {
       const props = {
         ...baseProps,
         onClick: vi.fn(),
-        progress: true,
+        isLoading: true,
       };
 
       render(<Button {...props} />);
@@ -90,7 +90,7 @@ describe('Button', () => {
       const props = {
         ...baseProps,
         onClick: vi.fn(),
-        disabled: true,
+        isDisabled: true,
       };
 
       render(<Button {...props} />);
@@ -113,7 +113,7 @@ describe('Button', () => {
       const props = {
         ...baseProps,
         onClick: vi.fn(),
-        progress: true,
+        isLoading: true,
       };
 
       render(<Button {...props} as="a" href="#" />);
@@ -136,7 +136,7 @@ describe('Button', () => {
       const props = {
         ...baseProps,
         onClick: vi.fn(),
-        disabled: true,
+        isDisabled: true,
       };
 
       render(<Button {...props} as="a" href="#" />);

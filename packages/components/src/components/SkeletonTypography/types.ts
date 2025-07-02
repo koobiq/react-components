@@ -8,7 +8,7 @@ export type SkeletonTypographyBaseProps = {
   /**
    * Variant of typography.
    * @default text-normal
-   * */
+   */
   variant?: SkeletonTypographyPropVariant;
   /** Number of lines per paragraph. */
   rows?: number;

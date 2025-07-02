@@ -11,33 +11,32 @@ import s from './IconButton.module.css';
 import type { IconButtonBaseProps } from './types.js';
 
 export const IconButton = polymorphicForwardRef<'button', IconButtonBaseProps>(
-  (
-    {
+  (props, ref) => {
+    const {
       as: Tag = 'button',
       variant = 'theme',
       size = 'xl',
-      compact = false,
-      disabled = false,
-      isCompact: isCompactProp = false,
-      isDisabled: isDisabledProp = false,
+      compact,
+      disabled,
+      isCompact: isCompactProp,
+      isDisabled: isDisabledProp,
       children,
       className,
       ...other
-    },
-    ref
-  ) => {
-    const isCompact = isCompactProp || compact;
-    const isDisabled = isDisabledProp || disabled;
+    } = props;
 
-    if (process.env.NODE_ENV !== 'production' && compact) {
+    const isCompact = isCompactProp ?? compact ?? false;
+    const isDisabled = isDisabledProp ?? disabled ?? false;
+
+    if (process.env.NODE_ENV !== 'production' && 'compact' in props) {
       deprecate(
-        'IconButton. The "compact" prop is deprecated. Use "isCompact" prop to replace it.'
+        'IconButton: the "compact" prop is deprecated. Use "isCompact" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && disabled) {
+    if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
       deprecate(
-        'IconButton. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+        'IconButton: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
       );
     }
 

@@ -34,12 +34,12 @@ export type CellProps = AriaCellProps & {
   /**
    * Horizontal alignment of the cell content.
    * @default left
-   * */
+   */
   align?: CellPropAlign;
   /**
    * Vertical alignment of the cell content.
    * @default middle
-   * */
+   */
   valign?: CellPropVerticalAlign;
 };
 

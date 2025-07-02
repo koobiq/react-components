@@ -10,7 +10,6 @@ import {
   useBoolean,
   FocusableProvider,
   useMultiRef,
-  isNotNil,
 } from '@koobiq/react-core';
 import {
   Overlay,
@@ -51,17 +50,17 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   } = props;
 
   const isOpen = isOpenProp ?? open;
-  const isDisabled = isDisabledProp ?? disabled;
+  const isDisabled = isDisabledProp ?? disabled ?? false;
 
-  if (process.env.NODE_ENV !== 'production' && isNotNil(open)) {
+  if (process.env.NODE_ENV !== 'production' && 'open' in props) {
     deprecate(
-      'Tooltip. The "open" prop is deprecated. Use "isOpen" prop to replace it.'
+      'Tooltip: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
     );
   }
 
-  if (process.env.NODE_ENV !== 'production' && isNotNil(disabled)) {
+  if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
     deprecate(
-      'Tooltip. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      'Tooltip: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
     );
   }
 

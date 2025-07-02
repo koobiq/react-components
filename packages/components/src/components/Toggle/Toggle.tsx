@@ -33,39 +33,39 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
       ...other
     } = props;
 
-    const isDisabled = isDisabledProp || disabled;
+    const isDisabled = isDisabledProp ?? disabled ?? false;
     const isSelected = isSelectedProp ?? checked;
-    const isInvalid = isInvalidProp || error;
+    const isInvalid = isInvalidProp ?? error ?? false;
     const defaultSelected = defaultSelectedProp ?? defaultChecked;
-    const isReadOnly = isReadOnlyProp || readonly;
+    const isReadOnly = isReadOnlyProp ?? readonly ?? false;
 
-    if (process.env.NODE_ENV !== 'production' && isNotNil(disabled)) {
+    if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
       deprecate(
-        'Toggle. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+        'Toggle: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && isNotNil(checked)) {
+    if (process.env.NODE_ENV !== 'production' && 'checked' in props) {
       deprecate(
-        'Toggle. The "checked" prop is deprecated. Use "isSelected" prop to replace it.'
+        'Toggle: the "checked" prop is deprecated. Use "isSelected" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && isNotNil(error)) {
+    if (process.env.NODE_ENV !== 'production' && 'error' in props) {
       deprecate(
-        'Toggle. The "error" prop is deprecated. Use "isInvalid" prop to replace it.'
+        'Toggle: the "error" prop is deprecated. Use "isInvalid" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && isNotNil(defaultChecked)) {
+    if (process.env.NODE_ENV !== 'production' && 'defaultChecked' in props) {
       deprecate(
-        'Toggle. The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.'
+        'Toggle: the "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && isNotNil(readonly)) {
+    if (process.env.NODE_ENV !== 'production' && 'readonly' in props) {
       deprecate(
-        'Toggle. The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
+        'Toggle: the "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
       );
     }
 

@@ -6,20 +6,20 @@ export const alertPropStatus = ['info', 'warning', 'error', 'success'] as const;
 
 export type AlertPropStatus = (typeof alertPropStatus)[number];
 
-type AlertBaseDeprecatedProps = {
+type AlertDeprecatedProps = {
   /**
+   * If `true`, compact mode will be enabled in the alert.
+   *
    * @deprecated
    * The "compact" prop is deprecated. Use "isCompact" prop to replace it.
-   *
-   * If `true`, compact mode will be enabled in the alert.
-   * */
+   */
   compact?: boolean;
   /**
+   * If `true`, background color will be enabled in the alert.
+   *
    * @deprecated
    * The "colored" prop is deprecated. Use "isColored" prop to replace it.
-   *
-   * If `true`, background color will be enabled in the alert.
-   * */
+   */
   colored?: boolean;
 };
 
@@ -27,7 +27,7 @@ export type AlertBaseProps = {
   /**
    * The status of the component.
    * @default info
-   * */
+   */
   status?: AlertPropStatus;
   /**
    * If `true`, compact mode will be enabled in the alert.
@@ -62,4 +62,4 @@ export type AlertBaseProps = {
     statusIcon?: ComponentPropsWithRef<'div'>;
     closeIcon?: IconButtonProps;
   };
-} & AlertBaseDeprecatedProps;
+} & AlertDeprecatedProps;

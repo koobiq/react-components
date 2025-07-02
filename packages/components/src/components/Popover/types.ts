@@ -68,12 +68,12 @@ export type PopoverBaseProps = {
   /**
    * Component width size.
    * @default medium
-   * */
+   */
   size?: PopoverPropSize;
   /**
    * If `true`, the close button isn't shown.
    * @default false
-   * */
+   */
   hideCloseButton?: boolean;
   /** Handler that is called when the modal's open state changes. */
   onOpenChange?: (open: boolean) => void;
@@ -99,14 +99,14 @@ export type PopoverBaseProps = {
   /**
    * The placement of the element with respect to its anchor element.
    * @default top
-   * */
+   */
   placement?: PopoverPropPlacement;
   /** The ref for the element which the popover positions itself with respect to. */
   anchorRef?: RefObject<HTMLElement | null>;
   /**
    * If `true`, the arrow isn't shown.
    * @default false
-   * */
+   */
   hideArrow?: boolean;
   /**
    * Whether the popover is non-modal, i.e. elements outside the popover may be

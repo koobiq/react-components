@@ -24,7 +24,7 @@ export type ProgressSpinnerBaseProps = {
   /**
    * Size.
    * @default compact
-   * */
+   */
   size?: ProgressSpinnerPropSize;
   /**
    * The smallest value allowed for the input.
@@ -41,7 +41,7 @@ export type ProgressSpinnerBaseProps = {
   /**
    * The variant to use. Use indeterminate or query when there is no progress value.
    * @default determinate
-   * */
+   */
   variant?: ProgressSpinnerPropVariant;
   /** The props used for each slot inside. */
   slotProps?: {

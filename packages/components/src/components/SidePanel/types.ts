@@ -28,12 +28,12 @@ export type SidePanelProps = {
   /**
    * Component width size.
    * @default medium
-   * */
+   */
   size?: SidePanelPropSize;
   /**
    * Side from which the side panel will appear.
    * @default left
-   * */
+   */
   position?: SidePanelPropPosition;
   /** If `true`, the component is shown. */
   open?: boolean;
@@ -46,7 +46,7 @@ export type SidePanelProps = {
   /**
    * If `true`, the close button isn't shown.
    * @default false
-   * */
+   */
   hideCloseButton?: boolean;
   /** Handler that is called when the modal's open state changes. */
   onOpenChange?: (open: boolean) => void;

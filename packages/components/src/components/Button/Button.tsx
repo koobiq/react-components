@@ -11,36 +11,35 @@ import s from './Button.module.css';
 import type { ButtonBaseProps } from './types.js';
 
 export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
-  (
-    {
+  (props, ref) => {
+    const {
       as: Tag = 'button',
       variant = 'contrast-filled',
-      isLoading: isLoadingProp = false,
-      isDisabled: isDisabledProp = false,
       onlyIcon = false,
       fullWidth = false,
-      progress = false,
-      disabled = false,
+      isLoading: isLoadingProp,
+      isDisabled: isDisabledProp,
+      progress,
+      disabled,
       children,
       startIcon,
       endIcon,
       className,
       ...other
-    },
-    ref
-  ) => {
-    const isLoading = isLoadingProp || progress;
-    const isDisabled = isDisabledProp || disabled;
+    } = props;
 
-    if (process.env.NODE_ENV !== 'production' && progress) {
+    const isLoading = isLoadingProp ?? progress ?? false;
+    const isDisabled = isDisabledProp ?? disabled ?? false;
+
+    if (process.env.NODE_ENV !== 'production' && 'progress' in props) {
       deprecate(
-        'Button. The "progress" prop is deprecated. Use "isLoading" prop to replace it.'
+        'Button: the "progress" prop is deprecated. Use "isLoading" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && disabled) {
+    if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
       deprecate(
-        'Button. The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+        'Button: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
       );
     }
 

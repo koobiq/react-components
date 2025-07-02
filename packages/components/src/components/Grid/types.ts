@@ -32,14 +32,14 @@ export type GridBaseProps = {
   /**
    * Control item alignment on the horizontal axis.
    * Defines the default `justifySelf` for all items in the grid.
-   * */
+   */
   justifyItems?:
     | CSSProperties['justifyItems']
     | ResponsiveValue<CSSProperties['justifyItems']>;
   /**
    * Control item alignment on the vertical axis.
    * Defines the default `alignSelf` for all items in the grid.
-   * */
+   */
   alignItems?:
     | CSSProperties['alignItems']
     | ResponsiveValue<CSSProperties['alignItems']>;

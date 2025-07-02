@@ -99,7 +99,7 @@ export type TypographyBaseProps = {
   /**
    * The variant to use.
    * @default text-normal
-   * */
+   */
   variant?: TypographyPropVariant;
   /** Set the display for the component. */
   display?: TypographyPropDisplay;
@@ -114,6 +114,6 @@ export type TypographyBaseProps = {
   /**
    * Text color.
    * @default contrast
-   * */
+   */
   color?: TypographyPropColor;
 };

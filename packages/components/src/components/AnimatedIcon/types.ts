@@ -8,7 +8,7 @@ export type AnimatedIconBaseProps = {
   /**
    * Animation duration in milliseconds.
    * @default 300
-   * */
+   */
   transition?: number;
   /** Index of the active icon. */
   activeIndex?: number;

@@ -10,27 +10,30 @@ export type LinkPropVariant = Extract<
   'text-compact' | 'text-normal' | 'text-big' | 'inherit'
 >;
 
-type LinkBaseDeprecatedProps = {
+type LinkDeprecatedProps = {
   /**
+   * If `true`, the component is disabled.
+   * @default false
+   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
-   *
-   * If `true`, the component is disabled.
-   * */
+   */
   disabled?: boolean;
   /**
+   * If `true`, displays :visited CSS-state.
+   * @default false
+   *
    * @deprecated
    * The "visitable" prop is deprecated. Use "isVisitable" prop to replace it.
-   *
-   * If `true`, displays :visited CSS-state.
-   * */
+   */
   visitable?: boolean;
   /**
+   * If `true`, displays the link as a pseudo-link.
+   * @default false
+   *
    * @deprecated
    * The "pseudo" prop is deprecated. Use "isPseudo" prop to replace it.
-   *
-   * If `true`, displays the link as a pseudo-link.
-   * */
+   */
   pseudo?: boolean;
 };
 
@@ -44,16 +47,25 @@ export type LinkBaseProps = ExtendableProps<
     startIcon?: ReactNode;
     /** Icon placed after the children. */
     endIcon?: ReactNode;
-    /** If `true`, the component is disabled. */
+    /**
+     * If `true`, the component is disabled.
+     * @default false
+     */
     isDisabled?: boolean;
-    /** If `true`, displays :visited CSS-state. */
+    /**
+     * If `true`, displays :visited CSS-state.
+     * @default false
+     */
     allowVisited?: boolean;
-    /** If `true`, displays the link as a pseudo-link. */
+    /**
+     * If `true`, displays the link as a pseudo-link.
+     * @default false
+     */
     isPseudo?: boolean;
     /** Additional CSS-classes. */
     className?: string;
     /** Inline styles */
     style?: CSSProperties;
-  } & LinkBaseDeprecatedProps,
+  } & LinkDeprecatedProps,
   UseLinkProps
 >;

@@ -64,7 +64,7 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
       <Tooltip
         delay={300}
         anchorRef={domRef}
-        disabled={!showTooltip}
+        isDisabled={!showTooltip}
         {...slotProps?.tooltip}
         control={({ ref: controlRef, ...controlProps }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks

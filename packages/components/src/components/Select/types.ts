@@ -46,31 +46,31 @@ export type SelectProps<T extends object> = {
   /**
    * If `true`, the input will indicate an error.
    * @default false
-   * */
+   */
   error?: boolean;
   /** Message for the error state */
   errorMessage?: string | number;
   /**
    * If `true`, the label is hidden. Be sure to add aria-label to the input element.
    * @default false
-   * */
+   */
   hiddenLabel?: boolean;
   /** The helper text content. */
   caption?: string | number;
   /**
    * If true, the input will take up the full width of its container.
    * @default false
-   * */
+   */
   fullWidth?: boolean;
   /**
    * If `true`, the component is disabled.
    * @default false
-   * */
+   */
   disabled?: boolean;
   /**
    * If `true`, the label is displayed as required and the input element is required.
    * @default false
-   * */
+   */
   required?: boolean;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;

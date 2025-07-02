@@ -24,7 +24,7 @@ export type ModalProps = {
   /**
    * Component width size.
    * @default medium
-   * */
+   */
   size?: ModalPropSize;
   /** If `true`, the component is shown. */
   open?: boolean;
@@ -37,7 +37,7 @@ export type ModalProps = {
   /**
    * If `true`, the close button isn't shown.
    * @default false
-   * */
+   */
   hideCloseButton?: boolean;
   /** Handler that is called when the modal's open state changes. */
   onOpenChange?: (open: boolean) => void;
