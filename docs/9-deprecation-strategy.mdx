@@ -37,6 +37,8 @@ should be annotated with a JSDoc comment including the `@deprecated`.
 
 ```tsx
 /**
+ * Description of the component goes here.
+ *
  * @deprecated
  * This component has been deprecated, please use ComponentNext instead.
  */
@@ -61,16 +63,20 @@ import { deprecate } from '@koobiq/logger';
 
 type ComponentProps = {
   /**
+   * Description of the prop goes here.
+   *
    * @deprecated
-   * The "old" prop is deprecated. Use "new" prop to replace it.
+   * The "legacyProp" prop is deprecated. Use "nextProp" prop to replace it.
    */
-  old?: string;
+  legacyProp?: string;
   // ...
 };
 
 const Component = (props) => {
-  if (process.env.NODE_ENV !== 'production' && props.old) {
-    deprecate('The "old" prop is deprecated. Use "new" prop to replace it.');
+  if (process.env.NODE_ENV !== 'production' && 'legacyProp' in props) {
+    deprecate(
+      'Component: the "legacyProp" prop is deprecated. Use "nextProp" prop to replace it.'
+    );
   }
 
   // ...
