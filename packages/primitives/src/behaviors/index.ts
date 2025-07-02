@@ -1,7 +1,6 @@
 export * from './useButton.js';
 export * from './useCheckbox.js';
 export * from './useLink.js';
-export * from './useTextField.js';
 export * from './useToggle.js';
 export * from './useRadio.js';
 export * from './useRadioGroup.js';

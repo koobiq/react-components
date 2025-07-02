@@ -39,9 +39,9 @@ describe('Input', () => {
     expect(screen.getByText('label')).toBeInTheDocument();
   });
 
-  it('should be blocked when disabled={true} is set', async () => {
+  it('should be disabled when isDisabled is true', async () => {
     const handleChange = vi.fn();
-    render(<Input {...baseProps} onChange={handleChange} disabled />);
+    render(<Input {...baseProps} onChange={handleChange} isDisabled />);
 
     expect(getInput()).toBeDisabled();
 
@@ -50,8 +50,8 @@ describe('Input', () => {
     expect(handleChange).not.toHaveBeenCalled();
   });
 
-  it('should be required when set to required', () => {
-    render(<Input {...baseProps} required />);
+  it('should be required when isRequired is true', () => {
+    render(<Input {...baseProps} isRequired />);
 
     expect(getInput()).toBeRequired();
   });
@@ -62,10 +62,30 @@ describe('Input', () => {
     expect(getRoot()).toHaveTextContent('helper');
   });
 
-  it('should display a errorMessage', () => {
-    render(<Input {...baseProps} errorMessage="fail" error />);
+  it('should display an errorMessage', () => {
+    render(<Input {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
+  });
+
+  it('should NOT display a caption when isInvalid is true', () => {
+    render(
+      <Input
+        {...baseProps}
+        errorMessage="fail"
+        caption="description"
+        isInvalid
+      />
+    );
+
+    expect(getRoot()).toHaveTextContent('fail');
+    expect(getRoot()).not.toHaveTextContent('description');
+  });
+
+  it('should NOT display an errorMessage when isInvalid is false', () => {
+    render(<Input {...baseProps} errorMessage="fail" />);
+
+    expect(getRoot()).not.toHaveTextContent('fail');
   });
 
   describe('value', () => {
@@ -116,26 +136,26 @@ describe('Input', () => {
       expect(getRoot()).toHaveAttribute('data-fullwidth', 'true');
     });
 
-    it('check the disabled prop', () => {
-      render(<Input {...baseProps} disabled />);
+    it('check the isDisabled prop', () => {
+      render(<Input {...baseProps} isDisabled />);
 
       expect(getRoot()).toHaveAttribute('data-disabled', 'true');
     });
 
-    it('check the required prop', () => {
-      render(<Input {...baseProps} required />);
+    it('check the isRequired prop', () => {
+      render(<Input {...baseProps} isRequired />);
 
       expect(getRoot()).toHaveAttribute('data-required', 'true');
     });
 
-    it('check the error prop', () => {
-      render(<Input {...baseProps} error />);
+    it('check the isInvalid prop', () => {
+      render(<Input {...baseProps} isInvalid />);
 
-      expect(getRoot()).toHaveAttribute('data-error', 'true');
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
     });
 
-    it('check the readonly prop', () => {
-      render(<Input {...baseProps} readonly />);
+    it('check the isReadOnly prop', () => {
+      render(<Input {...baseProps} isReadOnly />);
 
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });

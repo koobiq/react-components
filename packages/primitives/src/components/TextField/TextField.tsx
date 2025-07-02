@@ -3,8 +3,8 @@
 import { forwardRef, useRef } from 'react';
 
 import { filterDOMProps } from '@koobiq/react-core';
+import { useTextField } from '@react-aria/textfield';
 
-import { useTextField } from '../../behaviors';
 import { Provider, removeDataAttributes, useRenderProps } from '../../utils';
 import { InputContext } from '../Input';
 import { LabelContext } from '../Label';
@@ -15,12 +15,12 @@ import type { TextFieldProps, TextFieldRef } from './index';
 
 export const TextField = forwardRef<TextFieldRef, TextFieldProps>(
   (props, ref) => {
-    const { disabled, readonly, required } = props;
+    const { isDisabled, isReadOnly, isRequired } = props;
 
     const inputRef = useRef(null);
 
     const {
-      error,
+      isInvalid,
       labelProps,
       inputProps,
       descriptionProps,
@@ -33,10 +33,10 @@ export const TextField = forwardRef<TextFieldRef, TextFieldProps>(
     const renderProps = useRenderProps({
       ...props,
       values: {
-        error: error || false,
-        disabled: disabled || false,
-        readonly: readonly || false,
-        required: required || false,
+        isInvalid: isInvalid || false,
+        isDisabled: isDisabled || false,
+        isReadOnly: isReadOnly || false,
+        isRequired: isRequired || false,
       },
     });
 
@@ -44,10 +44,10 @@ export const TextField = forwardRef<TextFieldRef, TextFieldProps>(
       <div
         {...DOMProps}
         {...renderProps}
-        data-error={error || undefined}
-        data-readonly={readonly || undefined}
-        data-required={required || undefined}
-        data-disabled={props.disabled || undefined}
+        data-invalid={isInvalid || undefined}
+        data-readonly={isReadOnly || undefined}
+        data-required={isRequired || undefined}
+        data-disabled={isDisabled || undefined}
         ref={ref}
       >
         <Provider

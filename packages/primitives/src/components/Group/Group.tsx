@@ -17,9 +17,9 @@ export const Group = forwardRef<GroupRef, GroupProps>((props, ref) => {
   const defaultProps = useGroupContext();
   const commonProps = mergeProps(defaultProps, props);
 
-  const { error = false, disabled = false, ...other } = commonProps;
+  const { isInvalid = false, isDisabled = false, ...other } = commonProps;
 
-  const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
+  const { hoverProps, isHovered } = useHover({ isDisabled });
 
   const { isFocused, isFocusVisible, focusProps } = useFocusRing({
     within: true,
@@ -28,11 +28,11 @@ export const Group = forwardRef<GroupRef, GroupProps>((props, ref) => {
   const renderProps = useRenderProps({
     ...props,
     values: {
-      hovered: isHovered,
-      focusWithin: isFocused,
-      focusVisible: isFocusVisible,
-      disabled,
-      error,
+      isHovered,
+      isFocusWithin: isFocused,
+      isFocusVisible,
+      isDisabled,
+      isInvalid,
     },
   });
 

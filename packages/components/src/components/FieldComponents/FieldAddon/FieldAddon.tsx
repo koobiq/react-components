@@ -12,7 +12,7 @@ export type FieldAddonPlacement = (typeof fieldAddonPropPlacement)[number];
 
 export type FieldAddonProps = ExtendableComponentPropsWithRef<
   {
-    error?: boolean;
+    isInvalid?: boolean;
     children?: ReactNode;
     placement?: FieldAddonPlacement;
   },
@@ -21,12 +21,17 @@ export type FieldAddonProps = ExtendableComponentPropsWithRef<
 
 export const FieldAddon = forwardRef<ComponentRef<'div'>, FieldAddonProps>(
   (
-    { placement = 'start', error = false, className, children, ...other },
+    { placement = 'start', isInvalid = false, className, children, ...other },
     ref
   ) =>
     isNotNil(children) ? (
       <div
-        className={clsx(s.base, s[placement], error && s.error, className)}
+        className={clsx(
+          s.base,
+          s[placement],
+          isInvalid && s.invalid,
+          className
+        )}
         {...other}
         ref={ref}
       >

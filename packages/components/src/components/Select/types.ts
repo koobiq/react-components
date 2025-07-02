@@ -26,6 +26,39 @@ export type SelectKey = string | number;
 
 export type SelectPropOnSelectionChange = (selected: SelectKey) => void;
 
+type SelectDeprecatedProps = {
+  /**
+   * @deprecated
+   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
+   *
+   * If `true`, the component is disabled.
+   * @default false
+   * */
+  disabled?: boolean;
+  /**
+   * @deprecated
+   * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
+   *
+   * If `true`, the input will indicate an error.
+   * @default false
+   * */
+  error?: boolean;
+  /**
+   * @deprecated
+   * The "required" prop is deprecated. Use "isRequired" prop to replace it.
+   *
+   * If `true`, the label is displayed as required and the input element is required.
+   * @default false
+   * */
+  required?: boolean;
+  /**
+   * @deprecated
+   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
+   *
+   * Sets the open state of the menu. */
+  open?: boolean;
+};
+
 export type SelectProps<T extends object> = {
   /** Additional CSS-classes. */
   className?: string;
@@ -47,7 +80,7 @@ export type SelectProps<T extends object> = {
    * If `true`, the input will indicate an error.
    * @default false
    */
-  error?: boolean;
+  isInvalid?: boolean;
   /** Message for the error state */
   errorMessage?: string | number;
   /**
@@ -66,12 +99,12 @@ export type SelectProps<T extends object> = {
    * If `true`, the component is disabled.
    * @default false
    */
-  disabled?: boolean;
+  isDisabled?: boolean;
   /**
    * If `true`, the label is displayed as required and the input element is required.
    * @default false
    */
-  required?: boolean;
+  isRequired?: boolean;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
   /** Ref to the control */
@@ -85,7 +118,7 @@ export type SelectProps<T extends object> = {
   /** Handler that is called when the selection changes. */
   onSelectionChange?: SelectPropOnSelectionChange;
   /** Sets the open state of the menu. */
-  open?: boolean;
+  isOpen?: boolean;
   /** Sets the default open state of the menu. */
   defaultOpen?: boolean;
   /** Method that is called when the open state of the menu changes. */
@@ -103,7 +136,7 @@ export type SelectProps<T extends object> = {
     group?: FieldInputGroupProps;
     errorMessage?: FieldErrorProps;
   };
-};
+} & SelectDeprecatedProps;
 
 export type SelectComponentProp = <T extends object>(
   props: SelectProps<T>

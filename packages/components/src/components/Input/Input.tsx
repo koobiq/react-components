@@ -12,6 +12,12 @@ import {
   FieldError,
   FieldCaption,
   FieldInputGroup,
+  type FieldLabelProps,
+  type FieldInputGroupProps,
+  type FieldCaptionProps,
+  type FieldErrorProps,
+  type FieldInputProps,
+  type FieldControlProps,
 } from '../FieldComponents';
 
 import type { InputProps, InputRef } from './index';
@@ -21,6 +27,14 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     variant = 'filled',
     fullWidth = false,
     hiddenLabel = false,
+    disabled = false,
+    isDisabled: isDisabledProp = false,
+    error = false,
+    isInvalid: isInvalidProp = false,
+    required = false,
+    isRequired: isRequiredProp = false,
+    readonly = false,
+    isReadOnly: isReadOnlyProp = false,
     label,
     startAddon,
     endAddon,
@@ -30,49 +44,69 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     ...other
   } = props;
 
+  const isDisabled = isDisabledProp || disabled;
+  const isRequired = isRequiredProp || required;
+  const isReadOnly = isReadOnlyProp || readonly;
+  const isInvalid = isInvalidProp || error;
+
   const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
-  const rootProps = mergeProps(
+  const rootProps = mergeProps<
+    [FieldControlProps<typeof TextField>, FieldControlProps | undefined]
+  >(
     {
       label,
       fullWidth,
+      isDisabled,
+      isRequired,
+      isReadOnly,
+      isInvalid,
       errorMessage,
       'data-variant': variant,
       'data-fullwidth': fullWidth,
+      ...other,
     },
-    other
+    slotProps?.root
   );
 
   return (
     <FieldControl as={TextField} {...rootProps}>
-      {({ error, required, disabled }) => {
-        const labelProps = mergeProps(
-          { hidden: hiddenLabel, required },
-          slotProps?.label
-        );
+      {({ isInvalid, isRequired, isDisabled }) => {
+        const labelProps = mergeProps<
+          [FieldLabelProps, FieldLabelProps | undefined]
+        >({ hidden: hiddenLabel, isRequired }, slotProps?.label);
 
-        const inputProps = mergeProps(
+        const inputProps = mergeProps<
+          [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
+        >(
           {
-            error,
             variant,
-            disabled,
+            isInvalid,
+            isDisabled,
             ref: inputRef,
           },
           slotProps?.input
         );
 
-        const groupProps = mergeProps(
+        const groupProps = mergeProps<
+          [FieldInputGroupProps, FieldInputGroupProps | undefined]
+        >(
           {
-            error,
             endAddon,
+            isInvalid,
             startAddon,
           },
           slotProps?.group
         );
 
-        const captionProps = slotProps?.caption;
+        const captionProps: FieldCaptionProps | undefined = mergeProps(
+          { isInvalid },
+          slotProps?.caption
+        );
 
-        const errorProps = mergeProps({ error }, slotProps?.errorMessage);
+        const errorProps = mergeProps<
+          [FieldErrorProps, FieldErrorProps | undefined]
+        >({ isInvalid }, slotProps?.errorMessage);
 
         return (
           <>

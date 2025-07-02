@@ -17,9 +17,9 @@ export type FieldInputGroupProps = ExtendableComponentPropsWithRef<
     children?: ReactNode;
     startAddon?: ReactNode;
     endAddon?: ReactNode;
-    disabled?: boolean;
+    isDisabled?: boolean;
     className?: string;
-    error?: boolean;
+    isInvalid?: boolean;
     /** The props used for each slot inside. */
     slotProps?: {
       start?: FieldAddonProps;
@@ -34,7 +34,15 @@ export const FieldInputGroup = forwardRef<
   FieldInputGroupProps
 >(
   (
-    { children, className, startAddon, endAddon, error, slotProps, ...other },
+    {
+      children,
+      className,
+      startAddon,
+      endAddon,
+      isInvalid,
+      slotProps,
+      ...other
+    },
     ref
   ) => {
     const { value } = useInputContext();
@@ -53,15 +61,23 @@ export const FieldInputGroup = forwardRef<
         {...other}
         ref={ref}
       >
-        {({ hovered, focusWithin, disabled }) => (
+        {({ isHovered, isFocusWithin, isDisabled }) => (
           <FieldInputGroupContext.Provider
-            value={{ disabled, hovered, hasValue, focusWithin }}
+            value={{ isDisabled, isHovered, hasValue, isFocusWithin }}
           >
-            <FieldAddon placement="start" error={error} {...slotProps?.start}>
+            <FieldAddon
+              placement="start"
+              isInvalid={isInvalid}
+              {...slotProps?.start}
+            >
               {startAddon}
             </FieldAddon>
             {children}
-            <FieldAddon placement="end" error={error} {...slotProps?.end}>
+            <FieldAddon
+              placement="end"
+              isInvalid={isInvalid}
+              {...slotProps?.end}
+            >
               {endAddon}
             </FieldAddon>
           </FieldInputGroupContext.Provider>

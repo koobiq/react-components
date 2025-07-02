@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react';
 
 export type FieldInputGroupContextProps = {
-  disabled?: boolean;
+  isDisabled?: boolean;
   hasValue?: boolean;
-  hovered?: boolean;
-  focusWithin?: boolean;
+  isHovered?: boolean;
+  isFocusWithin?: boolean;
 };
 
 export const FieldInputGroupContext =

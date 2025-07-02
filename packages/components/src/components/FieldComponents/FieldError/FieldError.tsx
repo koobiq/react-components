@@ -5,12 +5,12 @@ import { Text, type TextProps, type TextRef } from '@koobiq/react-primitives';
 
 import s from './FieldError.module.css';
 
-export type FieldErrorProps = TextProps & { error?: boolean };
+export type FieldErrorProps = TextProps & { isInvalid?: boolean };
 export type FieldErrorRef = TextRef;
 
 export const FieldError = forwardRef<FieldErrorRef, FieldErrorProps>(
-  ({ children, className, error = false, ...other }, ref) =>
-    isNotNil(children) && error ? (
+  ({ children, className, isInvalid = false, ...other }, ref) =>
+    isNotNil(children) && isInvalid ? (
       <Text
         className={clsx(s.base, className)}
         slot="errorMessage"

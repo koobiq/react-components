@@ -66,7 +66,7 @@
   --field-input-placeholder-color: var(--kbq-foreground-contrast-tertiary);
 }
 
-.filled:where(.error) {
+.filled:where(.invalid) {
   --field-input-color: var(--kbq-foreground-error);
   --field-input-border-color: var(--kbq-line-error);
   --field-input-outline-color: var(--kbq-states-line-focus-error);
@@ -74,7 +74,7 @@
   --field-input-placeholder-color: var(--kbq-foreground-error-tertiary);
 }
 
-.transparent:where(.error) {
+.transparent:where(.invalid) {
   --field-input-color: var(--kbq-foreground-error);
   --field-input-border-color: transparent;
   --field-input-outline-color: transparent;

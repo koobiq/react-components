@@ -18,6 +18,6 @@
   padding-inline: var(--kbq-size-s) var(--kbq-size-m);
 }
 
-.error {
+.invalid {
   color: var(--kbq-icon-error);
 }

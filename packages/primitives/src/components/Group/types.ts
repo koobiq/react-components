@@ -9,8 +9,8 @@ import type { RenderProps } from '../../utils';
 
 export type GroupBaseProps = ExtendableComponentPropsWithRef<
   {
-    disabled?: boolean;
-    error?: boolean;
+    isDisabled?: boolean;
+    isInvalid?: boolean;
   },
   'div'
 >;
@@ -18,13 +18,13 @@ export type GroupBaseProps = ExtendableComponentPropsWithRef<
 export type GroupRef = ComponentRef<'div'>;
 
 export type GroupRenderProps = {
-  indeterminate?: boolean;
+  isIndeterminate?: boolean;
   percentage?: number;
-  hovered: boolean;
-  focusWithin: boolean;
-  focusVisible: boolean;
-  disabled: boolean;
-  error: boolean;
+  isHovered: boolean;
+  isFocusWithin: boolean;
+  isFocusVisible: boolean;
+  isDisabled: boolean;
+  isInvalid: boolean;
 };
 
 export type GroupProps = ExtendableProps<

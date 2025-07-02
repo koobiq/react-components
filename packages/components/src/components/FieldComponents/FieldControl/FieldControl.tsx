@@ -1,13 +1,17 @@
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
+import {
+  clsx,
+  type DataAttributeProps,
+  polymorphicForwardRef,
+} from '@koobiq/react-core';
 
 import s from './FieldControl.module.css';
 
 export type FieldControlBaseProps = {
   fullWidth?: boolean;
   className?: string;
-};
+} & DataAttributeProps;
 
 export const FieldControl = polymorphicForwardRef<'div', FieldControlBaseProps>(
   ({ fullWidth = false, className, as: Tag = 'div', ...other }, ref) => (

@@ -8,8 +8,8 @@ import type { InputPropVariant } from '../../Input';
 import s from './FieldInput.module.css';
 
 export type FieldInputBaseProps = {
-  error?: boolean;
-  disabled?: boolean;
+  isInvalid?: boolean;
+  isDisabled?: boolean;
   className?: string;
   'data-testid'?: string;
   as?: 'input' | 'textarea';
@@ -23,9 +23,9 @@ export const FieldInput = polymorphicForwardRef<
 >(
   (
     {
-      error = false,
+      isInvalid = false,
       as = 'input',
-      disabled = false,
+      isDisabled = false,
       variant = 'filled',
       className,
       ...other
@@ -40,8 +40,8 @@ export const FieldInput = polymorphicForwardRef<
         className={clsx(
           s.base,
           s[variant],
-          error && s.error,
-          disabled && s.disabled,
+          isInvalid && s.invalid,
+          isDisabled && s.disabled,
           className
         )}
         ref={ref}
