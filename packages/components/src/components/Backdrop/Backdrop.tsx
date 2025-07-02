@@ -19,8 +19,8 @@ export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
     const {
       as: Tag = 'div',
       duration = 300,
-      open = false,
-      isOpen: isOpenProp = false,
+      open,
+      isOpen: isOpenProp,
       style: styleProp,
       zIndex,
       children,
@@ -28,13 +28,13 @@ export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
       ...other
     } = props;
 
-    const isOpen = isOpenProp || open;
+    const isOpen = isOpenProp ?? open ?? false;
 
     const domRef = useDOMRef<ComponentRef<'div'>>(ref);
 
-    if (process.env.NODE_ENV !== 'production' && open) {
+    if (process.env.NODE_ENV !== 'production' && 'open' in props) {
       deprecate(
-        'Backdrop. The "open" prop is deprecated. Use "isOpen" prop to replace it.'
+        'Backdrop: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
       );
     }
 

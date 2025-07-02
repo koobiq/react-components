@@ -13,19 +13,19 @@ export type ButtonToggleGroupBaseProps = {
   /**
    * Whether all items are disabled.
    * @default false
-   * */
+   */
   isDisabled?: boolean;
   /**
    * If `true`, the button will take up the full width of its container.
    * @default false
-   * */
+   */
   fullWidth?: boolean;
   /** The contents of the collection. */
   children?: Array<ReactElement<ButtonToggleProps>>;
   /**
    * If `true`, each item's width will be equal.
    * @default false
-   * */
+   */
   hasEqualItemSize?: boolean;
   /** The currently selected key in the collection (controlled). */
   selectedKey?: ButtonToggleGroupKey;

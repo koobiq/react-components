@@ -29,9 +29,9 @@ export type RadioGroupBaseProps = ExtendableProps<
     /**
      * Size.
      * @default normal
-     * */
+     */
     size?: RadioGroupPropSize;
-    /** Slots */
+    /** Slots. */
     slotProps?: {
       root?: ComponentPropsWithRef<'div'>;
       description?: RadioGroupDescriptionProps;

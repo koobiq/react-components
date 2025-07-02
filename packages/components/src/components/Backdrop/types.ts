@@ -1,12 +1,12 @@
 import type { CSSProperties, ReactNode } from 'react';
 
-type BackdropBaseDeprecatedProps = {
+type BackdropDeprecatedProps = {
   /**
+   * If `true`, the component is shown.
+   *
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
-   *
-   * If `true`, the component is shown.
-   * */
+   */
   open?: boolean;
 };
 
@@ -25,4 +25,4 @@ export type BackdropBaseProps = {
   zIndex?: CSSProperties['zIndex'];
   /** Unique identifier for testing purposes. */
   'data-testid'?: string;
-} & BackdropBaseDeprecatedProps;
+} & BackdropDeprecatedProps;

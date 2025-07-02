@@ -20,15 +20,15 @@ import type { AlertBaseProps } from './index';
 import intlMessages from './intl.json';
 
 export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
-  (
-    {
+  (props, ref) => {
+    const {
       status = 'info',
-      colored = false,
-      compact = false,
       as: Tag = 'div',
       hideIcon = false,
-      isColored: isColoredProp = false,
-      isCompact: isCompactProp = false,
+      colored,
+      compact,
+      isColored: isColoredProp,
+      isCompact: isCompactProp,
       slotProps,
       icon,
       onClose,
@@ -37,21 +37,20 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
       className,
       children,
       ...other
-    },
-    ref
-  ) => {
-    const isColored = isColoredProp || colored;
-    const isCompact = isCompactProp || compact;
+    } = props;
 
-    if (process.env.NODE_ENV !== 'production' && colored) {
+    const isColored = isColoredProp ?? colored ?? false;
+    const isCompact = isCompactProp ?? compact ?? false;
+
+    if (process.env.NODE_ENV !== 'production' && 'colored' in props) {
       deprecate(
-        'Alert. The "colored" prop is deprecated. Use "isColored" prop to replace it.'
+        'Alert: the "colored" prop is deprecated. Use "isColored" prop to replace it.'
       );
     }
 
-    if (process.env.NODE_ENV !== 'production' && compact) {
+    if (process.env.NODE_ENV !== 'production' && 'compact' in props) {
       deprecate(
-        'Alert. The "compact" prop is deprecated. Use "isCompact" prop to replace it.'
+        'Alert: the "compact" prop is deprecated. Use "isCompact" prop to replace it.'
       );
     }
 

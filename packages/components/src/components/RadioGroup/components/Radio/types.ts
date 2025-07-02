@@ -21,7 +21,7 @@ export type RadioProps = UseRadioProps & {
   /**
    * The position of the label.
    * @default end
-   * */
+   */
   labelPlacement?: RadioPropLabelPlacement;
   /** Additional CSS-classes. */
   className?: string;

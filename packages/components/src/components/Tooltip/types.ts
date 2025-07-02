@@ -44,18 +44,18 @@ export type TooltipPropPlacement = (typeof tooltipPropPlacement)[number];
 
 type TooltipDeprecatedProps = {
   /**
-   * @deprecated
-   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    * If `true`, the component is shown.
    * @default false
-   * */
+   *
+   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
+   */
   open?: boolean;
   /**
+   * If `true`, the component is disabled.
+   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
-   * If `true`, the component is disabled.
-   * @default false
-   * */
+   */
   disabled?: boolean;
 };
 
@@ -63,7 +63,7 @@ export type TooltipProps = {
   /**
    * The variant to use.
    * @default contrast
-   * */
+   */
   variant?: TooltipPropVariant;
   /** If `true`, the component is shown. */
   isOpen?: boolean;
@@ -74,7 +74,7 @@ export type TooltipProps = {
   /**
    * If `true`, the tooltip should be disabled, independent of the trigger.
    * @default false
-   * */
+   */
   isDisabled?: boolean;
   /** The content of the component. */
   children?: ReactNode;
@@ -83,7 +83,7 @@ export type TooltipProps = {
   /**
    * The placement of the element with respect to its anchor element.
    * @default top
-   * */
+   */
   placement?: TooltipPropPlacement;
   /** The ref for the element which the popover positions itself with respect to. */
   anchorRef?: RefObject<HTMLElement | null>;
@@ -107,7 +107,7 @@ export type TooltipProps = {
   /**
    * If `true`, the arrow isn't shown.
    * @default false
-   * */
+   */
   hideArrow?: boolean;
   /**
    * The delay time for the tooltip to show up.

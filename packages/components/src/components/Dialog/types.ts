@@ -20,7 +20,7 @@ export type DialogBaseProps = {
   /**
    * If `true`, the close button isn't shown.
    * @default false
-   * */
+   */
   hideCloseButton?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {

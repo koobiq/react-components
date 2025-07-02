@@ -28,12 +28,12 @@ export type ContainerPositionProp = (typeof containerPositionProp)[number];
 
 type ContainerDeprecatedProps = {
   /**
-   * @deprecated
-   * The "fixed" prop is deprecated. Use "isFixed" prop to replace it.
-   *
    * If `true`, doesn't set the max-inline-size of the container.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "fixed" prop is deprecated. Use "isFixed" prop to replace it.
+   */
   fixed?: boolean;
 };
 
@@ -41,7 +41,7 @@ export type ContainerBaseProps = {
   /**
    * Container position.
    * @default center
-   * */
+   */
   position?: ContainerPositionProp | ResponsiveValue<ContainerPositionProp>;
   /** Determine the max-inline-size of the container. */
   maxInlineSize?:
@@ -50,12 +50,12 @@ export type ContainerBaseProps = {
   /**
    * Margins are the space between content and the left and right edges of the screen.
    * @default 0
-   * */
+   */
   margins?: ContainerMarginsProp | ResponsiveValue<ContainerMarginsProp>;
   /**
    * If `true`, doesn't set the max-inline-size of the container.
    * @default false
-   * */
+   */
   isFixed?: boolean;
   /** The content of the component. */
   children?: ReactNode;

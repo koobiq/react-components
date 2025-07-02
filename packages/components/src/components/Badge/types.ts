@@ -24,11 +24,13 @@ export const badgePropVariant = [
 
 export type BadgePropVariant = (typeof badgePropVariant)[number];
 
-type BadgeBaseDeprecatedProps = {
+type BadgeDeprecatedProps = {
   /**
+   * The label of the component.
+   *
    * @deprecated
    * The "label" prop is deprecated. Use "children" prop to replace it.
-   * The label of the component. */
+   */
   label?: ReactNode;
 };
 
@@ -45,4 +47,4 @@ export type BadgeBaseProps = {
   endIcon?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
-} & BadgeBaseDeprecatedProps;
+} & BadgeDeprecatedProps;

@@ -13,60 +13,58 @@ export type CheckboxPropOnChange = (selected: boolean) => void;
 
 type CheckboxDeprecatedProps = {
   /**
-   * @deprecated
-   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
-   *
    * If `true`, the component is disabled.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
+   */
   disabled?: boolean;
   /**
-   * @deprecated
-   * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
-   *
    * If `true`, the component will indicate an error.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
+   */
   error?: boolean;
   /**
+   * If `true`, the component is checked.
+   *
    * @deprecated
    * The "checked" prop is deprecated. Use "isSelected" prop to replace it.
-   *
-   * If `true`, the component is checked.
-   * @default false
-   * */
+   */
   checked?: boolean;
   /**
-   * @deprecated
-   * The "readonly" prop is deprecated. Use "isReadonly" prop to replace it.
-   *
    * It prevents the user from changing the value of the checkbox.
    * @default false
+   *
+   * @deprecated
+   * The "readonly" prop is deprecated. Use "isReadonly" prop to replace it.
    */
   readonly?: boolean;
   /**
-   * @deprecated
-   * The "required" prop is deprecated. Use "isRequired" prop to replace it.
-   *
    * If `true`, the input element is required.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "required" prop is deprecated. Use "isRequired" prop to replace it.
+   */
   required?: boolean;
   /**
-   * @deprecated
-   * The "indeterminate" prop is deprecated. Use "isIndeterminate" prop to replace it.
-   *
    * If `true`, the component appears indeterminate.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "indeterminate" prop is deprecated. Use "isIndeterminate" prop to replace it.
+   */
   indeterminate?: boolean;
   /**
+   * The default checked state. Use when the component is not controlled.
+   *
    * @deprecated
    * The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.
-   *
-   * The default checked state. Use when the component is not controlled.
-   * @default false
-   * */
+   */
   defaultChecked?: boolean;
 };
 
@@ -80,7 +78,7 @@ export type CheckboxProps = {
   /**
    * Size.
    * @default normal
-   * */
+   */
   size?: CheckboxPropSize;
   /**
    * The position of the label.
@@ -90,36 +88,31 @@ export type CheckboxProps = {
   /**
    * If `true`, the component will indicate an error.
    * @default false
-   * */
+   */
   isInvalid?: boolean;
-  /**
-   * If `true`, the component is checked.
-   * @default false
-   * */
+  /** If `true`, the component is checked. */
   isSelected?: boolean;
-  /** It prevents the user from changing the value of the checkbox.
+  /**
+   * It prevents the user from changing the value of the checkbox.
    * @default false
    */
   isReadOnly?: boolean;
   /**
    * If `true`, the component is disabled.
    * @default false
-   * */
+   */
   isDisabled?: boolean;
   /**
    * If `true`, the input element is required.
    * @default false
-   * */
+   */
   isRequired?: boolean;
   /**
    * If `true`, the component appears indeterminate.
    * @default false
-   * */
+   */
   isIndeterminate?: boolean;
-  /**
-   * The default checked state. Use when the component is not controlled.
-   * @default false
-   * */
+  /** The default checked state. Use when the component is not controlled. */
   defaultSelected?: boolean;
   /** Callback fired when the state is changed. */
   onChange?: CheckboxPropOnChange;

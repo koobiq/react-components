@@ -22,8 +22,8 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
       as: Tag = 'div',
       margins: marginsProp = 0,
       position: positionProp = 'center',
-      fixed = false,
-      isFixed: isFixedProp = false,
+      fixed,
+      isFixed: isFixedProp,
       children,
       className,
       maxInlineSize: maxInlineSizeProp,
@@ -31,11 +31,11 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
       ...other
     } = props;
 
-    const isFixed = isFixedProp || fixed;
+    const isFixed = isFixedProp ?? fixed ?? false;
 
-    if (process.env.NODE_ENV !== 'production' && fixed) {
+    if (process.env.NODE_ENV !== 'production' && 'fixed' in props) {
       deprecate(
-        'Container. The "fixed" prop is deprecated. Use "isFixed" prop to replace it.'
+        'Container: the "fixed" prop is deprecated. Use "isFixed" prop to replace it.'
       );
     }
 

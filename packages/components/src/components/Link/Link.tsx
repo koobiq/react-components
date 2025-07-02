@@ -12,11 +12,11 @@ import type { LinkBaseProps } from './types';
 export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   const {
     variant = 'text-normal',
-    isPseudo: isPseudoProp = false,
-    isDisabled: isDisabledProp = false,
-    allowVisited: allowVisitedProp = false,
-    visitable = false,
-    pseudo = false,
+    isPseudo: isPseudoProp,
+    isDisabled: isDisabledProp,
+    allowVisited: allowVisitedProp,
+    visitable,
+    pseudo,
     disabled,
     as = 'a',
     startIcon,
@@ -26,27 +26,27 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     ...other
   } = props;
 
-  const allowVisited = allowVisitedProp || visitable;
-  const isDisabled = isDisabledProp || disabled;
-  const isPseudo = isPseudoProp || pseudo;
+  const allowVisited = allowVisitedProp ?? visitable ?? false;
+  const isDisabled = isDisabledProp ?? disabled ?? false;
+  const isPseudo = isPseudoProp ?? pseudo ?? false;
 
   const hasIcon = Boolean(startIcon || endIcon);
 
-  if (process.env.NODE_ENV !== 'production' && visitable) {
+  if (process.env.NODE_ENV !== 'production' && 'visitable' in props) {
     deprecate(
-      'The "visitable" prop is deprecated. Use "allowVisited" prop to replace it.'
+      'Link: the "visitable" prop is deprecated. Use "allowVisited" prop to replace it.'
     );
   }
 
-  if (process.env.NODE_ENV !== 'production' && pseudo) {
+  if (process.env.NODE_ENV !== 'production' && 'pseudo' in props) {
     deprecate(
-      'The "pseudo" prop is deprecated. Use "isPseudo" prop to replace it.'
+      'Link: the "pseudo" prop is deprecated. Use "isPseudo" prop to replace it.'
     );
   }
 
-  if (process.env.NODE_ENV !== 'production' && disabled) {
+  if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
     deprecate(
-      'The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      'Link: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
     );
   }
 

@@ -14,22 +14,22 @@ export const buttonPropVariant = [
 
 export type ButtonPropVariant = (typeof buttonPropVariant)[number];
 
-type ButtonBaseDeprecatedProps = {
+type ButtonDeprecatedProps = {
   /**
-   * @deprecated
-   * The "progress" prop is deprecated. Use "isLoading" prop to replace it.
-   *
    * If `true`, the progress indicator is shown and the button becomes disabled.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "progress" prop is deprecated. Use "isLoading" prop to replace it.
+   */
   progress?: boolean;
   /**
-   * @deprecated
-   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
-   *
    * If `true`, the component is disabled.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
+   */
   disabled?: boolean;
 };
 
@@ -40,29 +40,29 @@ export type ButtonBaseProps = ExtendableProps<
     /**
      * The variant to use.
      * @default contrast-filled
-     * */
+     */
     variant?: ButtonPropVariant;
     /**
      * If `true`, the progress indicator is shown and the button becomes disabled.
      * @default false
-     * */
+     */
     isLoading?: boolean;
     /**
      * If `true`, the component is disabled.
      * @default false
-     * */
+     */
     isDisabled?: boolean;
     /**
      * If `true`, only the icon is shown, and the button has same sides.
      * @default false
-     * */
+     */
     onlyIcon?: boolean;
     /** Additional CSS-classes. */
     className?: string;
     /**
      * If `true`, the button will take up the full width of its container.
      * @default false
-     * */
+     */
     fullWidth?: boolean;
     /** Icon placed before the children. */
     startIcon?: ReactNode;
@@ -74,6 +74,6 @@ export type ButtonBaseProps = ExtendableProps<
     onHoverStart?: (e: HoverEvent) => void;
     /** Handler that is called when a hover interaction ends. */
     onHoverEnd?: (e: HoverEvent) => void;
-  } & ButtonBaseDeprecatedProps,
+  } & ButtonDeprecatedProps,
   UseButtonProps
 >;
