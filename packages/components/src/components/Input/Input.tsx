@@ -2,6 +2,7 @@
 
 import { type ComponentRef, forwardRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
 import { TextField } from '@koobiq/react-primitives';
 
@@ -26,15 +27,16 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     variant = 'filled',
     fullWidth = false,
-    hiddenLabel = false,
-    disabled = false,
-    isDisabled: isDisabledProp = false,
-    error = false,
-    isInvalid: isInvalidProp = false,
-    required = false,
-    isRequired: isRequiredProp = false,
-    readonly = false,
-    isReadOnly: isReadOnlyProp = false,
+    hiddenLabel,
+    hideLabel: hideLabelProp,
+    disabled,
+    isDisabled: isDisabledProp,
+    error,
+    isInvalid: isInvalidProp,
+    required,
+    isRequired: isRequiredProp,
+    readonly,
+    isReadOnly: isReadOnlyProp,
     label,
     startAddon,
     endAddon,
@@ -44,10 +46,41 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     ...other
   } = props;
 
-  const isDisabled = isDisabledProp || disabled;
-  const isRequired = isRequiredProp || required;
-  const isReadOnly = isReadOnlyProp || readonly;
-  const isInvalid = isInvalidProp || error;
+  const isDisabled = isDisabledProp ?? disabled ?? false;
+  const isRequired = isRequiredProp ?? required ?? false;
+  const isReadOnly = isReadOnlyProp ?? readonly ?? false;
+  const isInvalid = isInvalidProp ?? error ?? false;
+  const hideLabel = hideLabelProp ?? hiddenLabel ?? false;
+
+  if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
+    deprecate(
+      'Input: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'required' in props) {
+    deprecate(
+      'Input: the "required" prop is deprecated. Use "isRequired" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'error' in props) {
+    deprecate(
+      'Input: the "error" prop is deprecated. Use "isInvalid" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'readonly' in props) {
+    deprecate(
+      'Input: the "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'hiddenLabel' in props) {
+    deprecate(
+      'Input: the "hiddenLabel" prop is deprecated. Use "hideLabel" prop to replace it.'
+    );
+  }
 
   const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
@@ -74,7 +107,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       {({ isInvalid, isRequired, isDisabled }) => {
         const labelProps = mergeProps<
           [FieldLabelProps, FieldLabelProps | undefined]
-        >({ hidden: hiddenLabel, isRequired }, slotProps?.label);
+        >({ isHidden: hideLabel, isRequired }, slotProps?.label);
 
         const inputProps = mergeProps<
           [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
