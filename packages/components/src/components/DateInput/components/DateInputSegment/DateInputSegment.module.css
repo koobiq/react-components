@@ -1,0 +1,11 @@
+.base {
+  &:focus {
+    outline: none;
+    color: HighlightText;
+    background-color: Highlight;
+  }
+}
+
+.placeholder {
+  color: var(--kbq-foreground-contrast-tertiary);
+}

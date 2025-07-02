@@ -14,6 +14,13 @@ import {
   type DateValue,
   type CalendarAria,
 } from '@react-aria/calendar';
+import {
+  useDatePicker,
+  useDateField,
+  useDateSegment,
+  type AriaDateFieldProps,
+  type AriaDatePickerProps,
+} from '@react-aria/datepicker';
 import { useDialog, type AriaDialogProps } from '@react-aria/dialog';
 import {
   useLocale,
@@ -72,6 +79,12 @@ import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useCalendarState, type CalendarState } from '@react-stately/calendar';
 import { Item, Section } from '@react-stately/collections';
 import { useListData } from '@react-stately/data';
+import {
+  useDatePickerState,
+  useDateFieldState,
+  type DateSegment,
+  type DateFieldState,
+} from '@react-stately/datepicker';
 import { useListState, type ListState } from '@react-stately/list';
 import { useMenuTriggerState } from '@react-stately/menu';
 import {
@@ -150,6 +163,7 @@ export {
   useMenuTrigger,
   useSelectState,
   useModalOverlay,
+  useDatePickerState,
   useOverlayTrigger,
   useTooltipTrigger,
   useListBoxSection,
@@ -163,6 +177,10 @@ export {
   useTableSelectAllCheckbox,
   useTableSelectionCheckbox,
   useTableRowGroup,
+  useDatePicker,
+  useDateField,
+  useDateSegment,
+  useDateFieldState,
   useMenuTriggerState,
   useToggleGroupState,
   useToggleButtonGroup,
@@ -176,8 +194,12 @@ export {
   type Node,
   type CalendarAria,
   type DateValue,
+  type AriaDatePickerProps,
+  type AriaDateFieldProps,
+  type DateFieldState,
   type TableState,
   type TreeState,
+  type DateSegment,
   type TableHeaderProps,
   type TableBodyProps,
   type ItemProps,
