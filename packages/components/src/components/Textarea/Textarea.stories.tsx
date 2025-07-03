@@ -57,7 +57,7 @@ export const Error: Story = {
         aria-label="error"
         placeholder="Placeholder"
         errorMessage="This field is required"
-        error
+        isInvalid
         {...args}
       />
     );
@@ -81,17 +81,6 @@ export const FullWidth: Story = {
   },
 };
 
-export const LongLabel: Story = {
-  render: (args: TextareaProps) => (
-    <div style={{ inlineSize: 220 }}>
-      <Textarea
-        label="A very-very-very long label font the textarea"
-        {...args}
-      />
-    </div>
-  ),
-};
-
 export const Disabled: Story = {
   render: function Render(args: TextareaProps) {
     return (
@@ -99,7 +88,7 @@ export const Disabled: Story = {
         caption="disabled"
         aria-label="disabled"
         placeholder="Placeholder"
-        disabled
+        isDisabled
         {...args}
       />
     );
@@ -156,15 +145,15 @@ export const Required: Story = {
           label="Tell us your story"
           caption="required"
           placeholder="Placeholder"
-          required
+          isRequired
           {...args}
         />
         <Textarea
           label="Tell us your story"
           caption="required, without indicator"
           placeholder="Placeholder"
-          slotProps={{ label: { required: false } }}
-          required
+          slotProps={{ label: { isRequired: false } }}
+          isRequired
           {...args}
         />
       </div>
@@ -180,7 +169,7 @@ export const ReadOnly: Story = {
         caption="read-only"
         placeholder="Your story"
         defaultValue="It was a dark and stormy night..."
-        readonly
+        isReadOnly
         {...args}
       />
     );

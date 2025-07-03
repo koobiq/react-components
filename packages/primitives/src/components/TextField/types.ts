@@ -1,4 +1,4 @@
-import type { ComponentRef } from 'react';
+import type { ComponentRef, ReactElement } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { AriaTextFieldProps } from '@react-aria/textfield';
@@ -28,11 +28,17 @@ export type TextFieldRenderProps = {
   isRequired: boolean;
 };
 
-type TextFieldBaseProps = RenderProps<TextFieldRenderProps>;
+type TextFieldBaseProps = RenderProps<TextFieldRenderProps> & {
+  inputElementType?: 'input' | 'textarea';
+};
 
-export type TextFieldProps = ExtendableProps<
+export type TextFieldProps<T = HTMLInputElement> = ExtendableProps<
   TextFieldBaseProps,
-  AriaTextFieldProps
+  AriaTextFieldProps<T>
 >;
+
+export type TextFieldComponentProps = <T = HTMLInputElement>(
+  props: TextFieldProps<T>
+) => ReactElement | null;
 
 export type TextFieldRef = ComponentRef<'div'>;

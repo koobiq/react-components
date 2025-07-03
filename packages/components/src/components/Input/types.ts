@@ -1,7 +1,7 @@
 import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
-import type { TextFieldProps } from '@koobiq/react-primitives';
+import type { TextField, TextFieldProps } from '@koobiq/react-primitives';
 
 import type {
   FieldCaptionProps,
@@ -99,7 +99,8 @@ export type InputProps = ExtendableProps<
      * @default false
      */
     isDisabled?: boolean;
-    /** If `true`, the input can be selected but not changed by the user.
+    /**
+     * If `true`, the input can be selected but not changed by the user.
      * @default false
      */
     isReadOnly?: boolean;
@@ -121,7 +122,7 @@ export type InputProps = ExtendableProps<
     'data-testid'?: string | number;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FieldControlProps;
+      root?: FieldControlProps<typeof TextField<HTMLInputElement>>;
       label?: FieldLabelProps;
       caption?: FieldCaptionProps;
       group?: FieldInputGroupProps;
@@ -129,7 +130,10 @@ export type InputProps = ExtendableProps<
       input?: FieldInputProps<'input'>;
     };
   } & InputDeprecatedProps,
-  Omit<TextFieldProps, 'description' | 'validationBehavior' | 'validate'>
+  Omit<
+    TextFieldProps<HTMLInputElement>,
+    'description' | 'validationBehavior' | 'validate'
+  >
 >;
 
 export type InputRef = ComponentRef<'input'>;

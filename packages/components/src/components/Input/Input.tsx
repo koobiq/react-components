@@ -85,7 +85,10 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
   const rootProps = mergeProps<
-    [FieldControlProps<typeof TextField>, FieldControlProps | undefined]
+    [
+      FieldControlProps<typeof TextField<HTMLInputElement>>,
+      FieldControlProps<typeof TextField<HTMLInputElement>> | undefined,
+    ]
   >(
     {
       label,
@@ -103,7 +106,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   );
 
   return (
-    <FieldControl as={TextField} {...rootProps}>
+    <FieldControl as={TextField} inputElementType="input" {...rootProps}>
       {({ isInvalid, isRequired, isDisabled }) => {
         const labelProps = mergeProps<
           [FieldLabelProps, FieldLabelProps | undefined]
