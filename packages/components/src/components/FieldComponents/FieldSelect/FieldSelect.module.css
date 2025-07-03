@@ -45,7 +45,7 @@
   @mixin typography text-normal;
 }
 
-.error {
+.invalid {
   --field-input-color: var(--kbq-foreground-error);
   --field-input-border-color: var(--kbq-line-error);
   --field-input-outline-color: var(--kbq-states-line-focus-error);

@@ -54,7 +54,7 @@ type InputDeprecatedProps = {
    * @default false
    *
    * @deprecated
-   * The "hiddenLabel" prop is deprecated. Use "hideLabel" prop to replace it.
+   * The "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.
    */
   hiddenLabel?: boolean;
 };
@@ -107,7 +107,7 @@ export type InputProps = ExtendableProps<
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
      * @default false
      */
-    hideLabel?: boolean;
+    isLabelHidden?: boolean;
     /** The helper text content. */
     caption?: string | number;
     /**

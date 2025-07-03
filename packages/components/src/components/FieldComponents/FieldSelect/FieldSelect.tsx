@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, type ReactNode, type Ref } from 'react';
 
 import { clsx, isNotNil } from '@koobiq/react-core';
 import { Button } from '@koobiq/react-primitives';
@@ -8,20 +8,21 @@ import type { InputPropVariant } from '../../Input';
 import s from './FieldSelect.module.css';
 
 export type FieldSelectProps = {
-  error?: boolean;
-  disabled?: boolean;
+  isInvalid?: boolean;
+  isDisabled?: boolean;
   className?: string;
   children?: ReactNode;
   'data-testid'?: string;
   variant?: InputPropVariant;
   placeholder?: string | number;
+  ref?: Ref<HTMLButtonElement>;
 };
 
 export const FieldSelect = forwardRef<HTMLButtonElement, FieldSelectProps>(
   (
     {
-      error = false,
-      disabled = false,
+      isInvalid = false,
+      isDisabled = false,
       variant = 'filled',
       placeholder,
       children,
@@ -32,13 +33,13 @@ export const FieldSelect = forwardRef<HTMLButtonElement, FieldSelectProps>(
   ) => (
     <Button
       {...other}
-      disabled={disabled}
+      isDisabled={isDisabled}
       data-slot="select-value"
       className={clsx(
         s.base,
         s[variant],
-        error && s.error,
-        disabled && s.disabled,
+        isInvalid && s.invalid,
+        isDisabled && s.disabled,
         !isNotNil(children) && s.hasPlaceholder,
         className
       )}

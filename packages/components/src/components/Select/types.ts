@@ -28,35 +28,44 @@ export type SelectPropOnSelectionChange = (selected: SelectKey) => void;
 
 type SelectDeprecatedProps = {
   /**
-   * @deprecated
-   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
-   *
    * If `true`, the component is disabled.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
+   */
   disabled?: boolean;
   /**
-   * @deprecated
-   * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
-   *
    * If `true`, the input will indicate an error.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
+   */
   error?: boolean;
   /**
-   * @deprecated
-   * The "required" prop is deprecated. Use "isRequired" prop to replace it.
-   *
    * If `true`, the label is displayed as required and the input element is required.
    * @default false
-   * */
+   *
+   * @deprecated
+   * The "required" prop is deprecated. Use "isRequired" prop to replace it.
+   */
   required?: boolean;
   /**
+   * Sets the open state of the menu.
+   *
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
-   *
-   * Sets the open state of the menu. */
+   */
   open?: boolean;
+  /**
+   * If `true`, the label is hidden. Be sure to add aria-label to the input element.
+   * @default false
+   *
+   * @deprecated
+   * The "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.
+   */
+  hiddenLabel?: boolean;
 };
 
 export type SelectProps<T extends object> = {
@@ -87,7 +96,7 @@ export type SelectProps<T extends object> = {
    * If `true`, the label is hidden. Be sure to add aria-label to the input element.
    * @default false
    */
-  hiddenLabel?: boolean;
+  isLabelHidden?: boolean;
   /** The helper text content. */
   caption?: string | number;
   /**

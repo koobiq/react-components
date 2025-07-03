@@ -28,7 +28,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     variant = 'filled',
     fullWidth = false,
     hiddenLabel,
-    hideLabel: hideLabelProp,
+    isLabelHidden: isLabelHiddenProp,
     disabled,
     isDisabled: isDisabledProp,
     error,
@@ -50,7 +50,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const isRequired = isRequiredProp ?? required ?? false;
   const isReadOnly = isReadOnlyProp ?? readonly ?? false;
   const isInvalid = isInvalidProp ?? error ?? false;
-  const hideLabel = hideLabelProp ?? hiddenLabel ?? false;
+  const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
 
   if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
     deprecate(
@@ -78,7 +78,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
   if (process.env.NODE_ENV !== 'production' && 'hiddenLabel' in props) {
     deprecate(
-      'Input: the "hiddenLabel" prop is deprecated. Use "hideLabel" prop to replace it.'
+      'Input: the "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.'
     );
   }
 
@@ -107,7 +107,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       {({ isInvalid, isRequired, isDisabled }) => {
         const labelProps = mergeProps<
           [FieldLabelProps, FieldLabelProps | undefined]
-        >({ isHidden: hideLabel, isRequired }, slotProps?.label);
+        >({ isHidden: isLabelHidden, isRequired }, slotProps?.label);
 
         const inputProps = mergeProps<
           [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
