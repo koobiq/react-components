@@ -82,3 +82,30 @@ The `fullWidth` prop will make a button fit to its parent width.
 Use the `as` prop to redefine the HTML-tag of the component to your own.
 
 <Story of={Stories.RootTag} />
+
+## Integration
+
+### Next.js
+
+Integrating navigation into a Button using Next.js Link:
+
+```tsx
+import NextLink from 'next/link';
+
+type ButtonLinkProps = Omit<ButtonProps<'a'>, 'href'> & { href: string };
+
+const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
+  ({ href, ...other }, ref) => {
+    return (
+      <Button
+        {...other}
+        as={(props: typeof other) => (
+          <NextLink {...props} href={href} ref={ref} />
+        )}
+      />
+    );
+  }
+);
+
+ButtonLink.displayName = 'ButtonLink';
+```
