@@ -7,4 +7,3 @@ export * from './useRadioGroup.js';
 export * from './useRadioGroupState.js';
 export * from './useProgressBar.js';
 export * from './useNumberField.js';
-export * from './useNumberFieldState.js';

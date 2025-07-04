@@ -16,7 +16,7 @@ import type { NumberFieldProps, NumberFieldRef } from './index';
 
 export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
   (props, ref) => {
-    const { disabled, readonly, required, error } = props;
+    const { isDisabled, isReadOnly, isRequired, isInvalid } = props;
 
     const inputRef = useRef(null);
 
@@ -36,10 +36,10 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
     const renderProps = useRenderProps({
       ...props,
       values: {
-        error: error || false,
-        disabled: disabled || false,
-        readonly: readonly || false,
-        required: required || false,
+        isInvalid: isInvalid || false,
+        isDisabled: isDisabled || false,
+        isReadonly: isReadOnly || false,
+        isRequired: isRequired || false,
       },
     });
 
@@ -47,10 +47,10 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
       <div
         {...DOMProps}
         {...renderProps}
-        data-error={error || undefined}
-        data-readonly={readonly || undefined}
-        data-required={required || undefined}
-        data-disabled={props.disabled || undefined}
+        data-invalid={isInvalid || undefined}
+        data-readonly={isReadOnly || undefined}
+        data-required={isRequired || undefined}
+        data-disabled={isDisabled || undefined}
         ref={ref}
       >
         <Provider

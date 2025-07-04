@@ -2,6 +2,7 @@
 
 import { type ComponentRef, forwardRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
 import { NumberField } from '@koobiq/react-primitives';
 
@@ -12,6 +13,12 @@ import {
   FieldCaption,
   FieldInputGroup,
   FieldControl,
+  type FieldControlProps,
+  type FieldLabelProps,
+  type FieldCaptionProps,
+  type FieldErrorProps,
+  type FieldInputGroupProps,
+  type FieldInputProps,
 } from '../FieldComponents';
 
 import { InputNumberCounterControls } from './components';
@@ -22,7 +29,16 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
     const {
       variant = 'filled',
       fullWidth = false,
-      hiddenLabel = false,
+      hiddenLabel,
+      isLabelHidden: isLabelHiddenProp,
+      disabled,
+      isDisabled: isDisabledProp,
+      error,
+      isInvalid: isInvalidProp,
+      required,
+      isRequired: isRequiredProp,
+      readonly,
+      isReadOnly: isReadOnlyProp,
       label,
       startAddon,
       endAddon,
@@ -32,51 +48,116 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
       ...other
     } = props;
 
-    const domRef = useDOMRef<ComponentRef<'input'>>(ref);
+    const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
-    const rootProps = mergeProps(
+    const isDisabled = isDisabledProp ?? disabled ?? false;
+    const isRequired = isRequiredProp ?? required ?? false;
+    const isReadOnly = isReadOnlyProp ?? readonly ?? false;
+    const isInvalid = isInvalidProp ?? error ?? false;
+    const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
+
+    if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
+      deprecate(
+        'InputNumber: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && 'required' in props) {
+      deprecate(
+        'InputNumber: the "required" prop is deprecated. Use "isRequired" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && 'error' in props) {
+      deprecate(
+        'InputNumber: the "error" prop is deprecated. Use "isInvalid" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && 'readonly' in props) {
+      deprecate(
+        'InputNumber: the "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && 'hiddenLabel' in props) {
+      deprecate(
+        'InputNumber: the "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.'
+      );
+    }
+
+    const rootProps = mergeProps<
+      [
+        FieldControlProps<typeof NumberField>,
+        FieldControlProps<typeof NumberField> | undefined,
+      ]
+    >(
       {
         label,
         fullWidth,
+        isDisabled,
+        isRequired,
+        isReadOnly,
+        isInvalid,
         errorMessage,
         'data-variant': variant,
         'data-fullwidth': fullWidth,
+        ...other,
       },
-      other
+      slotProps?.root
     );
 
     return (
       <FieldControl as={NumberField} {...rootProps}>
-        {({ error, required, disabled }) => {
-          const labelProps = mergeProps(
-            { hidden: hiddenLabel, required },
-            slotProps?.label
-          );
+        {({ isInvalid, isRequired, isDisabled }) => {
+          const labelProps = mergeProps<
+            [FieldLabelProps, FieldLabelProps | undefined]
+          >({ isHidden: isLabelHidden, isRequired }, slotProps?.label);
 
-          const inputProps = mergeProps(
-            { error, variant, disabled, ref: domRef },
+          const inputProps = mergeProps<
+            [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
+          >(
+            {
+              variant,
+              isInvalid,
+              isDisabled,
+              ref: inputRef,
+            },
             slotProps?.input
           );
 
-          const captionProps = slotProps?.caption;
-          const errorProps = mergeProps({ error }, slotProps?.errorMessage);
+          const captionProps: FieldCaptionProps | undefined = mergeProps(
+            { isInvalid },
+            slotProps?.caption
+          );
+
+          const errorProps = mergeProps<
+            [FieldErrorProps, FieldErrorProps | undefined]
+          >({ isInvalid }, slotProps?.errorMessage);
+
+          const groupProps = mergeProps<
+            [FieldInputGroupProps, FieldInputGroupProps | undefined]
+          >(
+            {
+              endAddon: (
+                <>
+                  {endAddon}
+                  <InputNumberCounterControls />
+                </>
+              ),
+              isInvalid,
+              startAddon,
+              isDisabled,
+            },
+            slotProps?.group
+          );
 
           return (
             <>
               <FieldLabel {...labelProps}>
                 {labelProps?.children || label}
               </FieldLabel>
-              <FieldInputGroup
-                error={error}
-                disabled={disabled}
-                startAddon={startAddon}
-                endAddon={
-                  <>
-                    {endAddon}
-                    <InputNumberCounterControls />
-                  </>
-                }
-              >
+              <FieldInputGroup {...groupProps}>
                 <FieldInput {...inputProps} />
               </FieldInputGroup>
               <FieldCaption {...captionProps}>
