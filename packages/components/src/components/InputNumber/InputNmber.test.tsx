@@ -45,7 +45,7 @@ describe('InputNumber', () => {
 
     expect(getInputNumber()).toBeDisabled();
 
-    await userEvent.type(getInputNumber(), 'hello');
+    await userEvent.type(getInputNumber(), '250');
 
     expect(handleChange).not.toHaveBeenCalled();
   });
