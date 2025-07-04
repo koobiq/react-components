@@ -74,3 +74,17 @@ Use the `as` property to redefine the HTML-tag of the component to your own.
 See an example showing the use of the component in [Typography](?path=/docs/components-typography--docs).
 
 <Story of={Stories.Composition} />
+
+## Integration
+
+### Next.js
+
+Integrating navigation into a Link using Next.js Link:
+
+```tsx
+import NextLink from 'next/link';
+
+<Link as={NextLink} href="/some_page">
+  Some page
+</Link>;
+```
