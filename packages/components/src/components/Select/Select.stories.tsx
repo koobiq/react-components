@@ -148,7 +148,7 @@ export const Error: Story = {
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
         errorMessage="This field is required"
-        error
+        isInvalid
       >
         {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>
@@ -165,7 +165,7 @@ export const Disabled: Story = {
         label="Attack type"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
-        disabled
+        isDisabled
       >
         {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>
@@ -200,7 +200,7 @@ export const Required: Story = {
           label="Attack type"
           style={{ inlineSize: 200 }}
           placeholder="Select an option"
-          required
+          isRequired
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
@@ -210,8 +210,8 @@ export const Required: Story = {
           style={{ inlineSize: 200 }}
           placeholder="Select an option"
           caption="required, without indicator"
-          slotProps={{ label: { required: false } }}
-          required
+          slotProps={{ label: { isRequired: false } }}
+          isRequired
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
@@ -241,22 +241,22 @@ export const FullWidth: Story = {
 
 export const Open: Story = {
   render: function Render() {
-    const [open, { toggle, set }] = useBoolean(false);
+    const [isOpen, { toggle, set }] = useBoolean(false);
 
     return (
       <FlexBox gap="m">
         <Select
-          open={open}
+          isOpen={isOpen}
           items={options}
-          hiddenLabel
           onOpenChange={set}
           label="Attack type"
           placeholder="Select an option"
           style={{ inlineSize: 200 }}
+          isLabelHidden
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
-        <Button onPress={toggle}>{open ? 'Close' : 'Open'}</Button>
+        <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
       </FlexBox>
     );
   },

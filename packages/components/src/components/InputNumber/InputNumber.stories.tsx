@@ -4,8 +4,8 @@ import { IconRuler16 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
-import { flex } from '../layout';
 import { useBreakpoints } from '../Provider';
 import { Typography } from '../Typography';
 
@@ -54,10 +54,8 @@ export const Base: Story = {
 
 export const Variant: Story = {
   render: function Render(args) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputNumberPropVariant.map((variant) => (
           <InputNumber
             key={variant}
@@ -67,17 +65,15 @@ export const Variant: Story = {
             {...args}
           />
         ))}
-      </div>
+      </FlexBox>
     );
   },
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   render: function Render(args: InputNumberProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputNumberPropVariant.map((variant) => (
           <InputNumber
             key={variant}
@@ -85,11 +81,11 @@ export const Error: Story = {
             aria-label="error"
             placeholder={`variant = ${variant}`}
             errorMessage="This field is required"
-            error
+            isInvalid
             {...args}
           />
         ))}
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -113,10 +109,8 @@ export const FullWidth: Story = {
 
 export const Disabled: Story = {
   render: function Render(args: InputNumberProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputNumberPropVariant.map((variant) => (
           <InputNumber
             key={variant}
@@ -124,37 +118,35 @@ export const Disabled: Story = {
             caption="disabled"
             aria-label="disabled"
             placeholder={`variant = ${variant}`}
-            disabled
+            isDisabled
             {...args}
           />
         ))}
-      </div>
+      </FlexBox>
     );
   },
 };
 
 export const Required: Story = {
   render: function Render(args: InputNumberProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <InputNumber
           label="Number"
           caption="required"
           placeholder="Enter a number"
-          required
+          isRequired
           {...args}
         />
         <InputNumber
           label="Number"
           caption="required, without indicator"
           placeholder="Enter a number"
-          slotProps={{ label: { required: false } }}
-          required
+          slotProps={{ label: { isRequired: false } }}
+          isRequired
           {...args}
         />
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -167,7 +159,7 @@ export const ReadOnly: Story = {
         caption="read-only"
         defaultValue={100}
         placeholder="read-only"
-        readonly
+        isReadOnly
         {...args}
       />
     );
@@ -211,13 +203,7 @@ export const ControlledValue: Story = {
     const [value, setState] = useState(100);
 
     return (
-      <div
-        className={flex({
-          gap: 'm',
-          direction: 'column',
-          alignItems: 'stretch',
-        })}
-      >
+      <FlexBox gap="m" direction="column" alignItems="stretch">
         <InputNumber
           label="Number"
           onChange={setState}
@@ -226,7 +212,7 @@ export const ControlledValue: Story = {
           {...args}
         />
         <Typography ellipsis>Current value: {value}</Typography>
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -338,12 +324,7 @@ export const StepValues: Story = {
   name: 'Step values',
   render: function Render() {
     return (
-      <div
-        className={flex({
-          gap: 'm',
-          direction: 'column',
-        })}
-      >
+      <FlexBox gap="m" direction="column">
         <InputNumber label="Step" step={10} />
         <InputNumber label="Step + minValue" minValue={2} step={3} />
         <InputNumber
@@ -352,7 +333,7 @@ export const StepValues: Story = {
           maxValue={21}
           step={3}
         />
-      </div>
+      </FlexBox>
     );
   },
 };

@@ -80,7 +80,7 @@ export const Variant: Story = {
   },
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   render: function Render(args: InputProps) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
@@ -92,7 +92,8 @@ export const Error: Story = {
             placeholder={`variant = ${variant}`}
             startAddon={<IconMagnifyingGlass16 />}
             errorMessage="This field is required"
-            error
+            caption="Description"
+            isInvalid
             {...args}
           />
         ))}
@@ -118,14 +119,6 @@ export const FullWidth: Story = {
   },
 };
 
-export const LongLabel: Story = {
-  render: (args: InputProps) => (
-    <div style={{ inlineSize: 220 }}>
-      <Input label="A very-very-very long label font the input" {...args} />
-    </div>
-  ),
-};
-
 export const Disabled: Story = {
   render: function Render(args: InputProps) {
     return (
@@ -138,7 +131,7 @@ export const Disabled: Story = {
             aria-label="disabled"
             placeholder={`variant = ${variant}`}
             startAddon={<IconMagnifyingGlass16 />}
-            disabled
+            isDisabled
             {...args}
           />
         ))}
@@ -155,15 +148,15 @@ export const Required: Story = {
           label="Name"
           caption="required"
           placeholder="Sophia"
-          required
+          isRequired
           {...args}
         />
         <Input
           label="Name"
           caption="required, without indicator"
           placeholder="Sophia"
-          slotProps={{ label: { required: false } }}
-          required
+          slotProps={{ label: { isRequired: false } }}
+          isRequired
           {...args}
         />
       </FlexBox>
@@ -179,7 +172,7 @@ export const ReadOnly: Story = {
         caption="read-only"
         defaultValue="Sophia"
         placeholder="read-only"
-        readonly
+        isReadOnly
         {...args}
       />
     );

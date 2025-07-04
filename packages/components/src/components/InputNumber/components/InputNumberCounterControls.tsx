@@ -7,9 +7,9 @@ import { IconButton } from '../../IconButton';
 import s from './InputNumberCounterControls.module.css';
 
 export const InputNumberCounterControls = () => {
-  const { hovered, hasValue, focusWithin } = useFieldInputGroup();
+  const { isHovered, hasValue, isFocusWithin } = useFieldInputGroup();
 
-  const visible = (hovered || focusWithin) && hasValue;
+  const visible = (isHovered || isFocusWithin) && hasValue;
 
   return (
     <div className={clsx(s.base, visible && s.visible)}>

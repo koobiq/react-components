@@ -4,73 +4,73 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { Input, type InputProps } from './index';
+import { Textarea, type TextareaProps } from './index';
 
-describe('Input', () => {
-  const baseProps: InputProps = {
+describe('Textarea', () => {
+  const baseProps: TextareaProps = {
     'data-testid': 'root',
     label: 'label',
     slotProps: {
-      input: {
-        'data-testid': 'input',
+      textarea: {
+        'data-testid': 'textarea',
       },
     },
   };
 
   const getRoot = () => screen.getByTestId('root');
-  const getInput = () => screen.getByTestId('input');
+  const getTextarea = () => screen.getByTestId('textarea');
 
   it('should accept a ref', () => {
-    const ref = createRef<HTMLInputElement>();
-    const { container } = render(<Input {...baseProps} ref={ref} />);
-    const field = container.querySelector(`input`);
+    const ref = createRef<HTMLTextAreaElement>();
+    const { container } = render(<Textarea {...baseProps} ref={ref} />);
+    const field = container.querySelector(`textarea`);
     expect(ref.current).toBe(field);
   });
 
   it('should merge a custom class name with the default ones', () => {
-    render(<Input {...baseProps} className="foo" />);
+    render(<Textarea {...baseProps} className="foo" />);
 
     expect(getRoot()).toHaveClass('foo');
   });
 
   it('should display the label', () => {
-    render(<Input {...baseProps} />);
+    render(<Textarea {...baseProps} />);
 
     expect(screen.getByText('label')).toBeInTheDocument();
   });
 
   it('should be disabled when isDisabled is true', async () => {
     const handleChange = vi.fn();
-    render(<Input {...baseProps} onChange={handleChange} isDisabled />);
+    render(<Textarea {...baseProps} onChange={handleChange} isDisabled />);
 
-    expect(getInput()).toBeDisabled();
+    expect(getTextarea()).toBeDisabled();
 
-    await userEvent.type(getInput(), 'hello');
+    await userEvent.type(getTextarea(), 'hello');
 
     expect(handleChange).not.toHaveBeenCalled();
   });
 
   it('should be required when isRequired is true', () => {
-    render(<Input {...baseProps} isRequired />);
+    render(<Textarea {...baseProps} isRequired />);
 
-    expect(getInput()).toBeRequired();
+    expect(getTextarea()).toBeRequired();
   });
 
   it('should display a caption', () => {
-    render(<Input {...baseProps} caption="helper" />);
+    render(<Textarea {...baseProps} caption="helper" />);
 
     expect(getRoot()).toHaveTextContent('helper');
   });
 
   it('should display an errorMessage', () => {
-    render(<Input {...baseProps} errorMessage="fail" isInvalid />);
+    render(<Textarea {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
   });
 
   it('should NOT display a caption when isInvalid is true', () => {
     render(
-      <Input
+      <Textarea
         {...baseProps}
         errorMessage="fail"
         caption="description"
@@ -83,91 +83,77 @@ describe('Input', () => {
   });
 
   it('should NOT display an errorMessage when isInvalid is false', () => {
-    render(<Input {...baseProps} errorMessage="fail" />);
+    render(<Textarea {...baseProps} errorMessage="fail" />);
 
     expect(getRoot()).not.toHaveTextContent('fail');
   });
 
   describe('value', () => {
     it(`should set the defaultValue correctly`, () => {
-      render(<Input {...baseProps} defaultValue="value" />);
+      render(<Textarea {...baseProps} defaultValue="value" />);
 
-      expect(getInput()).toHaveValue('value');
+      expect(getTextarea()).toHaveValue('value');
     });
 
     it(`should call the onChange when changing the text field`, async () => {
       const handleChange = vi.fn((obj) => obj);
-      render(<Input {...baseProps} onChange={handleChange} />);
+      render(<Textarea {...baseProps} onChange={handleChange} />);
 
-      await userEvent.type(getInput(), 'hello');
+      await userEvent.type(getTextarea(), 'hello');
 
       expect(handleChange).toHaveBeenCalledTimes(5);
 
       expect(handleChange.mock.results[4]?.value).toStrictEqual('hello');
 
-      expect(getInput()).toHaveValue('hello');
+      expect(getTextarea()).toHaveValue('hello');
     });
 
     it('should NOT call onChange when when isReadOnly is true', async () => {
       const handleChange = vi.fn();
-      render(<Input {...baseProps} onChange={handleChange} isReadOnly />);
+      render(<Textarea {...baseProps} onChange={handleChange} isReadOnly />);
 
-      const input = getInput();
+      const textarea = getTextarea();
 
-      await userEvent.type(input, 'hello');
+      await userEvent.type(textarea, 'hello');
 
       expect(handleChange).not.toHaveBeenCalled();
-      expect(input).toHaveValue('');
-    });
-  });
-
-  describe('addons', () => {
-    it(`should render the startAddon`, () => {
-      render(<Input {...baseProps} startAddon="addon" />);
-
-      expect(getRoot()).toHaveTextContent('addon');
-    });
-
-    it(`should render the endAddon`, () => {
-      render(<Input {...baseProps} endAddon="addon" />);
-
-      expect(getRoot()).toHaveTextContent('addon');
+      expect(textarea).toHaveValue('');
     });
   });
 
   describe('check data-attributes', () => {
     it('check the variant prop', () => {
-      render(<Input {...baseProps} variant="transparent" />);
+      render(<Textarea {...baseProps} variant="transparent" />);
 
       expect(getRoot()).toHaveAttribute('data-variant', 'transparent');
     });
 
     it('check the fullWidth prop', () => {
-      render(<Input {...baseProps} fullWidth />);
+      render(<Textarea {...baseProps} fullWidth />);
 
       expect(getRoot()).toHaveAttribute('data-fullwidth', 'true');
     });
 
     it('check the isDisabled prop', () => {
-      render(<Input {...baseProps} isDisabled />);
+      render(<Textarea {...baseProps} isDisabled />);
 
       expect(getRoot()).toHaveAttribute('data-disabled', 'true');
     });
 
     it('check the isRequired prop', () => {
-      render(<Input {...baseProps} isRequired />);
+      render(<Textarea {...baseProps} isRequired />);
 
       expect(getRoot()).toHaveAttribute('data-required', 'true');
     });
 
     it('check the isInvalid prop', () => {
-      render(<Input {...baseProps} isInvalid />);
+      render(<Textarea {...baseProps} isInvalid />);
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
     });
 
     it('check the isReadOnly prop', () => {
-      render(<Input {...baseProps} isReadOnly />);
+      render(<Textarea {...baseProps} isReadOnly />);
 
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });

@@ -10,22 +10,22 @@ export type NumberFieldRenderProps = {
    * Whether the text field is disabled.
    * @selector [data-disabled]
    */
-  disabled: boolean;
+  isDisabled: boolean;
   /**
    * Whether the value is invalid.
    * @selector [data-error]
    */
-  error: boolean;
+  isInvalid: boolean;
   /**
    * Whether the text field is read only.
    * @selector [data-readonly]
    */
-  readonly: boolean;
+  isReadonly: boolean;
   /**
    * Whether the text field is required.
    * @selector [data-required]
    */
-  required: boolean;
+  isRequired: boolean;
 };
 
 type NumberFieldBaseProps = RenderProps<NumberFieldRenderProps>;

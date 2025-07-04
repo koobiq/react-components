@@ -3,10 +3,10 @@ import { type MutableRefObject, useEffect } from 'react';
 export function useTextareaAutosize(
   ref: MutableRefObject<HTMLTextAreaElement | null>,
   value: string | readonly string[] | number | undefined,
-  active?: boolean
+  isActive?: boolean
 ) {
   useEffect(() => {
-    if (!active) return;
+    if (!isActive) return;
 
     if (ref.current) {
       const textareaEl = ref.current;

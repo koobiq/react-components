@@ -27,7 +27,7 @@ import { Input } from '@koobiq/react-components';
 
 ## Addons
 
-You can add an extra content using the `startAddon` and `endAddon` prop.
+You can add an extra content using the `startAddon` and `endAddon` props.
 
 <Story of={Stories.Addons} />
 
@@ -37,29 +37,29 @@ To change the visual state of the input, use the `variant` prop.
 
 <Story of={Stories.Variant} />
 
-## Error
+## Invalid
 
-The `error` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
 
-<Story of={Stories.Error} />
+<Story of={Stories.Invalid} />
 
 ## Disabled
 
-An input can be disabled by passing the `disabled` prop.
+An input can be disabled by passing the `isDisabled` prop.
 
 <Story of={Stories.Disabled} />
 
 ## Required
 
-To make a field required, add the `required` prop.
+To make a field required, add the `isRequired` prop.
 If the field has a label, a required indicator will appear next to it.
 
 <Story of={Stories.Required} />
 
 ## Read only
 
-The `readonly` boolean prop makes the Input's text content immutable.
-Unlike `disabled`, the Input remains focusable and the contents can still be copied.
+The `isReadOnly` boolean prop makes the Input's text content immutable.
+Unlike `isDisabled`, the Input remains focusable and the contents can still be copied.
 See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.
 
 <Story of={Stories.ReadOnly} />

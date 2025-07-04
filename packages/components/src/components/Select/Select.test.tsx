@@ -39,17 +39,16 @@ describe('Select', () => {
     expect(screen.getAllByText('label')[0]).toBeInTheDocument();
   });
 
-  it('should be blocked when disabled={true} is set', async () => {
-    const handleChange = vi.fn();
-    render(<Select {...baseProps} onSelectionChange={handleChange} />);
+  it('should be disabled when isDisabled is true', async () => {
+    render(<Select {...baseProps} isDisabled />);
 
-    await userEvent.click(getControl());
+    await userEvent.tab();
 
-    expect(handleChange).not.toHaveBeenCalled();
+    expect(getControl()).not.toHaveFocus();
   });
 
-  it('should be required when set to required', () => {
-    render(<Select {...baseProps} required />);
+  it('should be required when isRequired is true', () => {
+    render(<Select {...baseProps} isRequired />);
 
     expect(screen.getByText('*')).toBeInTheDocument();
   });
@@ -60,10 +59,24 @@ describe('Select', () => {
     expect(getRoot()).toHaveTextContent('helper');
   });
 
-  it('should display a errorMessage', () => {
-    render(<Select {...baseProps} errorMessage="fail" error />);
+  it('should display an errorMessage', () => {
+    render(<Select {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
+  });
+
+  it('should NOT display a caption when isInvalid is true', () => {
+    render(
+      <Select
+        {...baseProps}
+        errorMessage="fail"
+        caption="description"
+        isInvalid
+      />
+    );
+
+    expect(getRoot()).toHaveTextContent('fail');
+    expect(getRoot()).not.toHaveTextContent('description');
   });
 
   describe('value', () => {
@@ -127,22 +140,22 @@ describe('Select', () => {
       expect(getRoot()).toHaveAttribute('data-fullwidth', 'true');
     });
 
-    it('check the disabled prop', () => {
-      render(<Select {...baseProps} disabled />);
+    it('check the isDisabled prop', () => {
+      render(<Select {...baseProps} isDisabled />);
 
       expect(getRoot()).toHaveAttribute('data-disabled', 'true');
     });
 
-    it('check the required prop', () => {
-      render(<Select {...baseProps} required />);
+    it('check the isRequired prop', () => {
+      render(<Select {...baseProps} isRequired />);
 
       expect(getRoot()).toHaveAttribute('data-required', 'true');
     });
 
-    it('check the error prop', () => {
-      render(<Select {...baseProps} error />);
+    it('check the isInvalid  prop', () => {
+      render(<Select {...baseProps} isInvalid />);
 
-      expect(getRoot()).toHaveAttribute('data-error', 'true');
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
     });
   });
 });

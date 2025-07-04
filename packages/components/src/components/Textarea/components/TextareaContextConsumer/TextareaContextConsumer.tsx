@@ -5,18 +5,22 @@ import { useTextareaContext } from '@koobiq/react-primitives';
 
 import {
   FieldCaption,
+  type FieldCaptionProps,
   FieldError,
+  type FieldErrorProps,
   FieldInput,
+  type FieldInputProps,
   FieldLabel,
+  type FieldLabelProps,
 } from '../../../FieldComponents';
 import s from '../../Textarea.module.css';
 import type { TextareaProps } from '../../types';
 import { useTextareaAutosize } from '../../utils';
 
 type TextareaContextConsumerProps = {
-  required?: boolean;
-  error?: boolean;
-  disabled?: boolean;
+  isRequired?: boolean;
+  isInvalid?: boolean;
+  isDisabled?: boolean;
 } & Pick<
   TextareaProps,
   | 'slotProps'
@@ -26,7 +30,7 @@ type TextareaContextConsumerProps = {
   | 'cols'
   | 'variant'
   | 'expand'
-  | 'hiddenLabel'
+  | 'isLabelHidden'
   | 'errorMessage'
 >;
 
@@ -38,14 +42,14 @@ export const TextareaContextConsumer = forwardRef<
     rows,
     cols,
     label,
-    error,
+    isInvalid,
     expand,
     caption,
     variant,
-    disabled,
-    required,
+    isDisabled,
+    isRequired,
     slotProps,
-    hiddenLabel,
+    isLabelHidden,
     errorMessage,
   } = props;
 
@@ -55,26 +59,34 @@ export const TextareaContextConsumer = forwardRef<
 
   useTextareaAutosize(domRef, value, expand === 'auto-size');
 
-  const textareaProps = mergeProps(
+  const textareaProps = mergeProps<
+    [FieldInputProps<'textarea'>, FieldInputProps<'textarea'> | undefined]
+  >(
     {
-      error,
+      isInvalid,
       rows,
       cols,
       variant,
       value,
-      disabled,
+      isDisabled,
       ...(expand && { className: s[expand] }),
       ref: domRef,
     },
     slotProps?.textarea
   );
 
-  const captionProps = slotProps?.caption;
+  const captionProps: FieldCaptionProps | undefined = mergeProps(
+    { isInvalid },
+    slotProps?.caption
+  );
 
-  const errorProps = mergeProps({ error }, slotProps?.errorMessage);
+  const errorProps = mergeProps<[FieldErrorProps, FieldErrorProps | undefined]>(
+    { isInvalid },
+    slotProps?.errorMessage
+  );
 
-  const labelProps = mergeProps(
-    { hidden: hiddenLabel, required },
+  const labelProps = mergeProps<[FieldLabelProps, FieldLabelProps | undefined]>(
+    { isHidden: isLabelHidden, isRequired },
     slotProps?.label
   );
 

@@ -9,23 +9,26 @@ import s from './FieldLabel.module.css';
 
 export type FieldLabelProps = ExtendableComponentPropsWithRef<
   {
-    hidden?: boolean;
+    isHidden?: boolean;
     className?: string;
-    required?: boolean;
+    isRequired?: boolean;
     children?: ReactNode;
   },
   'label'
 >;
 
 export const FieldLabel = forwardRef<ComponentRef<'label'>, FieldLabelProps>(
-  ({ children, className, hidden = false, required = false, ...other }, ref) =>
+  (
+    { children, className, isHidden = false, isRequired = false, ...other },
+    ref
+  ) =>
     isNotNil(children) ? (
       <Label
-        className={clsx(s.base, hidden && s.hidden, className)}
+        className={clsx(s.base, isHidden && s.hidden, className)}
         {...other}
         ref={ref}
       >
-        {children}&nbsp;{required && <sup className={s.sup}>*</sup>}
+        {children}&nbsp;{isRequired && <sup className={s.sup}>*</sup>}
       </Label>
     ) : null
 );

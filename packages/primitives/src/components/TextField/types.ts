@@ -1,8 +1,8 @@
-import type { ComponentRef } from 'react';
+import type { ComponentRef, ReactElement } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
+import type { AriaTextFieldProps } from '@react-aria/textfield';
 
-import type { UseTextFieldProps } from '../../behaviors';
 import type { RenderProps } from '../../utils';
 
 export type TextFieldRenderProps = {
@@ -10,29 +10,35 @@ export type TextFieldRenderProps = {
    * Whether the text field is disabled.
    * @selector [data-disabled]
    */
-  disabled: boolean;
+  isDisabled: boolean;
   /**
    * Whether the value is invalid.
    * @selector [data-error]
    */
-  error: boolean;
+  isInvalid: boolean;
   /**
    * Whether the text field is read only.
    * @selector [data-readonly]
    */
-  readonly: boolean;
+  isReadOnly: boolean;
   /**
    * Whether the text field is required.
    * @selector [data-required]
    */
-  required: boolean;
+  isRequired: boolean;
 };
 
-type TextFieldBaseProps = RenderProps<TextFieldRenderProps>;
+type TextFieldBaseProps = RenderProps<TextFieldRenderProps> & {
+  inputElementType?: 'input' | 'textarea';
+};
 
-export type TextFieldProps = ExtendableProps<
+export type TextFieldProps<T = HTMLInputElement> = ExtendableProps<
   TextFieldBaseProps,
-  UseTextFieldProps
+  AriaTextFieldProps<T>
 >;
+
+export type TextFieldComponentProps = <T = HTMLInputElement>(
+  props: TextFieldProps<T>
+) => ReactElement | null;
 
 export type TextFieldRef = ComponentRef<'div'>;

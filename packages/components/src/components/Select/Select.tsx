@@ -1,5 +1,6 @@
 import { forwardRef, type Ref } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import {
   clsx,
   mergeProps,
@@ -12,6 +13,7 @@ import {
   useSelect,
   useSelectState,
   HiddenSelect,
+  removeDataAttributes,
 } from '@koobiq/react-primitives';
 import type { Node } from '@koobiq/react-primitives';
 
@@ -23,6 +25,11 @@ import {
   FieldCaption,
   FieldInputGroup,
   FieldControl,
+  type FieldLabelProps,
+  type FieldInputGroupProps,
+  type FieldCaptionProps,
+  type FieldErrorProps,
+  type FieldSelectProps,
 } from '../FieldComponents';
 import { ListItemText, ListInner } from '../List';
 import { PopoverInner } from '../Popover';
@@ -36,49 +43,75 @@ function SelectRender<T extends object>(
 ) {
   const {
     fullWidth = false,
-    hiddenLabel = false,
     'data-testid': testId,
+    className,
+    style,
     open,
-    onOpenChange,
-    defaultOpen,
-    items,
-    error,
-    caption,
-    endAddon,
-    required,
+    isOpen: isOpenProp,
+    hiddenLabel,
+    isLabelHidden: isLabelHiddenProp,
     disabled,
-    children,
+    isDisabled: isDisabledProp,
+    error,
+    isInvalid: isInvalidProp,
+    required,
+    isRequired: isRequiredProp,
+    caption,
+    placeholder,
+    endAddon,
     slotProps,
     startAddon,
-    selectedKey,
-    placeholder,
+    label,
+    name,
     errorMessage,
-    disabledKeys,
-    onSelectionChange,
-    defaultSelectedKey,
     renderValue: renderValueProp,
-    ...other
   } = props;
 
-  const state = useSelectState({
-    ...other,
-    items,
-    defaultOpen,
-    onOpenChange,
-    isOpen: open,
-    placeholder,
-    selectedKey,
-    disabledKeys,
-    errorMessage,
-    isInvalid: error,
-    onSelectionChange,
-    defaultSelectedKey,
-    isRequired: required,
-    isDisabled: disabled,
-    children,
-  });
+  const isOpen = isOpenProp ?? open;
+  const isInvalid = isInvalidProp ?? error ?? false;
+  const isDisabled = isDisabledProp ?? disabled ?? false;
+  const isRequired = isRequiredProp ?? required ?? false;
+  const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
+
+  if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
+    deprecate(
+      'Select: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'required' in props) {
+    deprecate(
+      'Select: the "required" prop is deprecated. Use "isRequired" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'error' in props) {
+    deprecate(
+      'Select: the "error" prop is deprecated. Use "isInvalid" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'open' in props) {
+    deprecate(
+      'Select: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
+    );
+  }
+
+  if (process.env.NODE_ENV !== 'production' && 'hiddenLabel' in props) {
+    deprecate(
+      'Select: the "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.'
+    );
+  }
 
   const domRef = useDOMRef<HTMLButtonElement>(ref);
+
+  const state = useSelectState({
+    ...removeDataAttributes(props),
+    isOpen,
+    isInvalid,
+    isDisabled,
+    isRequired,
+  });
 
   const [opened, { on, off }] = useBoolean(state.isOpen);
 
@@ -86,36 +119,33 @@ function SelectRender<T extends object>(
     menuProps,
     valueProps,
     triggerProps,
-    labelProps: labelPropsCommon,
+    labelProps: labelPropsAria,
+    descriptionProps,
+    errorMessageProps,
   } = useSelect(
     {
-      ...other,
-
-      placeholder,
-      errorMessage,
-      disabledKeys,
-      isInvalid: error,
-      isRequired: required,
-      isDisabled: disabled,
+      ...removeDataAttributes(props),
+      isOpen,
+      isInvalid,
+      isDisabled,
+      isRequired,
     },
     { ...state, isOpen: state.isOpen || opened },
     domRef
   );
 
-  const rootProps = mergeProps(
-    {
-      'data-testid': testId,
-      'data-fullwidth': fullWidth,
-      'data-disabled': disabled,
-      'data-required': required,
-      'data-error': error,
-      className: clsx(s.base, fullWidth && s.fullWidth),
-    },
-    other
-  );
-
   // Match the Popover width to the control element's width.
   const { ref: containerRef, width } = useElementSize();
+
+  const rootProps = mergeProps({
+    'data-testid': testId,
+    'data-invalid': isInvalid,
+    'data-fullwidth': fullWidth,
+    'data-disabled': isDisabled,
+    'data-required': isRequired,
+    className: clsx(s.base, fullWidth && s.fullWidth, className),
+    style,
+  });
 
   const listProps = mergeProps(
     { className: s.list, state },
@@ -123,13 +153,13 @@ function SelectRender<T extends object>(
     menuProps
   );
 
-  const labelProps = mergeProps(
-    { hidden: hiddenLabel, required },
-    slotProps?.label,
-    labelPropsCommon
-  );
+  const labelProps = mergeProps<
+    [FieldLabelProps, FieldLabelProps | undefined, FieldLabelProps]
+  >({ isHidden: isLabelHidden, isRequired }, slotProps?.label, labelPropsAria);
 
-  const groupProps = mergeProps(
+  const groupProps = mergeProps<
+    [FieldInputGroupProps, FieldInputGroupProps | undefined]
+  >(
     {
       slotProps: {
         end: { className: s.addon },
@@ -142,16 +172,23 @@ function SelectRender<T extends object>(
           <IconChevronDownS16 />
         </>
       ),
-      error,
+      isInvalid,
       ref: containerRef,
     },
     slotProps?.group
   );
 
-  const controlProps = mergeProps(
+  const controlProps = mergeProps<
+    [
+      FieldSelectProps,
+      FieldSelectProps | undefined,
+      FieldSelectProps,
+      FieldSelectProps,
+    ]
+  >(
     {
-      error,
-      disabled,
+      isInvalid,
+      isDisabled,
       ref: domRef,
       placeholder,
     },
@@ -160,9 +197,13 @@ function SelectRender<T extends object>(
     triggerProps
   );
 
-  const captionProps = slotProps?.caption;
+  const captionProps = mergeProps<
+    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
+  >({ isInvalid }, slotProps?.caption, descriptionProps);
 
-  const errorProps = mergeProps({ error }, slotProps?.errorMessage);
+  const errorProps = mergeProps<
+    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
+  >({ isInvalid }, slotProps?.errorMessage, errorMessageProps);
 
   const popoverProps = mergeProps(
     {
@@ -192,13 +233,13 @@ function SelectRender<T extends object>(
   return (
     <>
       <FieldControl {...rootProps}>
-        <FieldLabel {...labelProps}>{props.label}</FieldLabel>
+        <FieldLabel {...labelProps}>{label}</FieldLabel>
         <HiddenSelect
+          name={name}
+          label={label}
           state={state}
-          isDisabled={disabled}
           triggerRef={domRef}
-          label={props.label}
-          name={props.name}
+          isDisabled={isDisabled}
         />
         <FieldInputGroup {...groupProps}>
           <FieldSelect {...controlProps}>

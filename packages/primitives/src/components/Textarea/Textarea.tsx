@@ -2,7 +2,7 @@
 
 import { forwardRef } from 'react';
 
-import { mergeProps } from '@koobiq/react-core';
+import { mergeProps, useMultiRef } from '@koobiq/react-core';
 
 import {
   type TextareaProps,
@@ -16,8 +16,13 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
   const defaultProps = useTextareaContext();
   const commonProps = mergeProps(defaultProps, other);
 
+  const innerRef = useMultiRef([
+    ref,
+    ...(defaultProps.ref ? [defaultProps.ref] : []),
+  ]);
+
   return (
-    <textarea {...commonProps} ref={ref}>
+    <textarea {...commonProps} ref={innerRef}>
       {children}
     </textarea>
   );
