@@ -107,6 +107,18 @@ describe('Textarea', () => {
 
       expect(getTextarea()).toHaveValue('hello');
     });
+
+    it('should NOT call onChange when when isReadOnly is true', async () => {
+      const handleChange = vi.fn();
+      render(<Textarea {...baseProps} onChange={handleChange} isReadOnly />);
+
+      const textarea = getTextarea();
+
+      await userEvent.type(textarea, 'hello');
+
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(textarea).toHaveValue('');
+    });
   });
 
   describe('check data-attributes', () => {

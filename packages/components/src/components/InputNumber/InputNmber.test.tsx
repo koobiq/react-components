@@ -111,18 +111,30 @@ describe('InputNumber', () => {
       expect(input).toHaveValue('250');
     });
 
-    describe('addons', () => {
-      it(`should render the startAddon`, () => {
-        render(<InputNumber {...baseProps} startAddon="addon" />);
+    it('should NOT call onChange when when isReadOnly is true', async () => {
+      const handleChange = vi.fn();
+      render(<InputNumber {...baseProps} onChange={handleChange} isReadOnly />);
 
-        expect(getRoot()).toHaveTextContent('addon');
-      });
+      const input = getInputNumber();
 
-      it(`should render the endAddon`, () => {
-        render(<InputNumber {...baseProps} endAddon="addon" />);
+      await userEvent.type(input, '250');
 
-        expect(getRoot()).toHaveTextContent('addon');
-      });
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(input).toHaveValue('');
+    });
+  });
+
+  describe('addons', () => {
+    it(`should render the startAddon`, () => {
+      render(<InputNumber {...baseProps} startAddon="addon" />);
+
+      expect(getRoot()).toHaveTextContent('addon');
+    });
+
+    it(`should render the endAddon`, () => {
+      render(<InputNumber {...baseProps} endAddon="addon" />);
+
+      expect(getRoot()).toHaveTextContent('addon');
     });
   });
 
