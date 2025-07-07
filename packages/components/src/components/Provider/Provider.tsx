@@ -1,6 +1,10 @@
 'use client';
 
-import { I18nProvider, useLocale } from '@koobiq/react-primitives';
+import {
+  useLocale,
+  I18nProvider,
+  RouterProvider,
+} from '@koobiq/react-primitives';
 
 import { BreakpointsProvider } from './BreakpointsProvider';
 import { ProviderContext } from './ProviderContext';
@@ -21,6 +25,7 @@ export const Provider = ({
   breakpoints = defaultBreakpoints,
   breakpointsFallback,
   children,
+  router,
   locale,
 }: ProviderProps) => (
   <ProviderContext.Provider value={{ breakpoints, locale }}>
@@ -29,7 +34,10 @@ export const Provider = ({
         breakpoints={breakpoints}
         defaultMatches={breakpointsFallback}
       >
-        {children}
+        {router?.navigate && (
+          <RouterProvider {...router}>{children}</RouterProvider>
+        )}
+        {!router?.navigate && children}
       </BreakpointsProvider>
     </I18nProvider>
   </ProviderContext.Provider>
