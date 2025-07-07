@@ -50,14 +50,14 @@ export const Base: Story = {
           <Table.Cell>Social Engineering</Table.Cell>
           <Table.Cell>Manipulation of individuals to gain access</Table.Cell>
           <Table.Cell>
-            <Badge label="Medium" variant="fade-warning" />
+            <Badge variant="fade-warning">Medium</Badge>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Zero-Day Exploits</Table.Cell>
           <Table.Cell>Unknown vulnerabilities exploited immediately</Table.Cell>
           <Table.Cell>
-            <Badge label="High" variant="fade-error" />
+            <Badge variant="fade-error">High</Badge>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -66,7 +66,7 @@ export const Base: Story = {
             Malicious or careless actions by internal users
           </Table.Cell>
           <Table.Cell>
-            <Badge label="Medium–High" variant="fade-error" />
+            <Badge variant="fade-error">Medium–High</Badge>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -75,14 +75,14 @@ export const Base: Story = {
             Compromise of third-party software or services
           </Table.Cell>
           <Table.Cell>
-            <Badge label="High" variant="fade-error" />
+            <Badge variant="fade-error">High</Badge>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Denial of Service</Table.Cell>
           <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
           <Table.Cell>
-            <Badge label="Low-Medium" variant="fade-contrast" />
+            <Badge variant="fade-contrast">Low-Medium</Badge>
           </Table.Cell>
         </Table.Row>
       </Table.Body>

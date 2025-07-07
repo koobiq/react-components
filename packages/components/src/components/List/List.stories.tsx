@@ -158,14 +158,14 @@ export const DisabledItems = {
 export const Links = {
   render: () => (
     <List aria-label="Links">
-      <List.Item href="https://apple.com/" target="_blank">
-        Apple
+      <List.Item href="https://react.dev/" target="_blank">
+        React
       </List.Item>
-      <List.Item href="https://google.com/" target="_blank">
-        Google
+      <List.Item href="https://www.typescriptlang.org/" target="_blank">
+        Typescript
       </List.Item>
-      <List.Item href="https://microsoft.com/" target="_blank">
-        Microsoft
+      <List.Item href="https://storybook.js.org/" target="_blank">
+        Storybook
       </List.Item>
     </List>
   ),

@@ -46,11 +46,11 @@ The selected key corresponds to the `key` prop of an item.
 
 <Story of={Stories.Selection} />
 
-## Error
+## Invalid
 
-The `error` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
 
-<Story of={Stories.Error} />
+<Story of={Stories.Invalid} />
 
 ## Disabled
 
@@ -67,7 +67,7 @@ Each key in this list corresponds with the `key` prop passed to the `Select.Item
 
 ## Required
 
-To make a select required, add the `required` prop.
+To make a select required, add the `isRequired` prop.
 If the field has a label, a required indicator will appear next to it.
 
 <Story of={Stories.Required} />
@@ -86,7 +86,7 @@ Select isn't opened by default. The `defaultOpen` prop can be used to set the de
 
 ### Controlled open
 
-The `open` prop can be used to make the opened state controlled. The `onOpenChange` event is fired when the select's open state changes.
+The `isOpen` prop can be used to make the opened state controlled. The `onOpenChange` event is fired when the select's open state changes.
 
 <Story of={Stories.Open} />
 

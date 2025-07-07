@@ -163,14 +163,14 @@ export const Links = {
       aria-label="Links"
       control={(props) => <Button {...props}>Actions</Button>}
     >
-      <Menu.Item href="https://apple.com/" target="_blank">
-        Apple
+      <Menu.Item href="https://react.dev/" target="_blank">
+        React
       </Menu.Item>
-      <Menu.Item href="https://google.com/" target="_blank">
-        Google
+      <Menu.Item href="https://www.typescriptlang.org/" target="_blank">
+        Typescript
       </Menu.Item>
-      <Menu.Item href="https://microsoft.com/" target="_blank">
-        Microsoft
+      <Menu.Item href="https://storybook.js.org/" target="_blank">
+        Storybook
       </Menu.Item>
     </Menu>
   ),

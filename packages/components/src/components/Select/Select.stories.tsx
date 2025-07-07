@@ -139,7 +139,7 @@ export const Selection: Story = {
   },
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   render: function Render() {
     return (
       <Select
