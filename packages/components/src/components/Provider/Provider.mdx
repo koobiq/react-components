@@ -59,3 +59,17 @@ const { locale } = useLocale();
 ```
 
 <Story of={Stories.Localization} />
+
+## Client side routing
+
+The Provider component accepts an optional `router` prop.
+This enables Koobiq React components that render links to perform client side navigation using your application
+or framework's client side router. See the client side routing guide for details on how to set this up.
+
+```tsx
+let navigate = useNavigateFromYourRouter();
+
+<Provider router={{ navigate }}>
+  <YourApp />
+</Provider>;
+```
