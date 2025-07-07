@@ -96,3 +96,43 @@ Table rows may also be links to another page or website.
 This can be achieved by passing the `href` prop to the `Table.Row` component.
 
 <Story of={Stories.Links} />
+
+## Client side routing
+
+The `Table` component works with frameworks and client side routers like **Next.js** and **React Router**.
+As with other React Aria components that support links, this works via the `RouterProvider` component at the root of your app.
+
+```tsx
+import { useRouter } from 'next/navigation';
+
+import { RouterProvider } from '@koobiq/react-components';
+
+export default function App() {
+  const router = useRouter();
+
+  return (
+    <RouterProvider navigate={router.push}>
+      <Table aria-label="products">
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Type</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row href="/products/ultraphone-x">
+            <Table.Cell>UltraPhone X</Table.Cell>
+            <Table.Cell>Smartphone with OLED display</Table.Cell>
+          </Table.Row>
+          <Table.Row href="/products/ecobottle-pro">
+            <Table.Cell>EcoBottle Pro</Table.Cell>
+            <Table.Cell>Reusable thermal water bottle</Table.Cell>
+          </Table.Row>
+          <Table.Row href="/products/speedyvac-3000">
+            <Table.Cell>SpeedyVac 3000</Table.Cell>
+            <Table.Cell>High-power cordless vacuum</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </RouterProvider>
+  );
+}
+```

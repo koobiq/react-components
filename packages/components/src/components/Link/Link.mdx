@@ -75,6 +75,27 @@ See an example showing the use of the component in [Typography](?path=/docs/comp
 
 <Story of={Stories.Composition} />
 
+## Client side routing
+
+The `Link` component works with frameworks and client side routers like **Next.js** and **React Router**.
+As with other React Aria components that support links, this works via the `RouterProvider` component at the root of your app.
+
+```tsx
+import { useRouter } from 'next/navigation';
+
+import { RouterProvider } from '@koobiq/react-components';
+
+export default function App() {
+  const router = useRouter();
+
+  return (
+    <RouterProvider navigate={router.push}>
+      <Link href="/some_page">Some page</Link>
+    </RouterProvider>
+  );
+}
+```
+
 ## Integration
 
 ### Next.js

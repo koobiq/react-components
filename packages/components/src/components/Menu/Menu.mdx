@@ -70,6 +70,31 @@ Link items in a menu are not selectable.
 
 <Story of={Stories.Links} />
 
+## Client side routing
+
+The `Menu` component works with frameworks and client side routers like **Next.js** and **React Router**.
+As with other React Aria components that support links, this works via the `RouterProvider` component at the root of your app.
+
+```tsx
+import { useRouter } from 'next/navigation';
+
+import { RouterProvider } from '@koobiq/react-components';
+
+export default function App() {
+  const router = useRouter();
+
+  return (
+    <RouterProvider navigate={router.push}>
+      <Menu aria-label="pages">
+        <Menu.Item href="/page1">Page 1</Menu.Item>
+        <Menu.Item href="/page2">Page 2</Menu.Item>
+        <Menu.Item href="/page3">Page 3</Menu.Item>
+      </Menu>
+    </RouterProvider>
+  );
+}
+```
+
 ## Sections
 
 Menu supports sections with headings in order to group options.

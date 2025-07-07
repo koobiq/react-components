@@ -92,6 +92,31 @@ by passing the `href` prop to the `List.Item` component.
 
 <Story of={Stories.Links} />
 
+## Client side routing
+
+The `List` component works with frameworks and client side routers like **Next.js** and **React Router**.
+As with other React Aria components that support links, this works via the `RouterProvider` component at the root of your app.
+
+```tsx
+import { useRouter } from 'next/navigation';
+
+import { RouterProvider } from '@koobiq/react-components';
+
+export default function App() {
+  const router = useRouter();
+
+  return (
+    <RouterProvider navigate={router.push}>
+      <List aria-label="pages">
+        <List.Item href="/page1">Page 1</List.Item>
+        <List.Item href="/page2">Page 2</List.Item>
+        <List.Item href="/page3">Page 3</List.Item>
+      </List>
+    </RouterProvider>
+  );
+}
+```
+
 ## Sections
 
 List supports sections with headings in order to group options.
