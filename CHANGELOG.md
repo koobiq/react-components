@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.1-beta.31](https://github.com/koobiq/react-components/compare/0.0.1-beta.30...0.0.1-beta.31) (2025-07-07)
+
+### 🚀 Features
+
+- **components/Provider:** add `router` prop to support client-side routing ([1d861f4](https://github.com/koobiq/react-components/commit/1d861f460c62bf7e1bba4530b871a5253ab43c2b))
+- **Input/InputNumber/Select/Textarea:** support logical props for React Aria integration ([01c1617](https://github.com/koobiq/react-components/commit/01c161792dc30c2f8347aad076d9259e339572ef))
+
 ## [0.0.1-beta.30](https://github.com/koobiq/react-components/compare/0.0.1-beta.29...0.0.1-beta.30) (2025-07-02)
 
 ### 🚀 Features
