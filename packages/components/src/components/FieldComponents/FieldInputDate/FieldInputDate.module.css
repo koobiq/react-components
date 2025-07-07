@@ -23,6 +23,7 @@
     var(--field-input-padding-block-end);
   padding-inline: var(--field-input-padding-inline-start)
     var(--field-input-padding-inline-end);
+
   @mixin typography text-normal;
   transition:
     color var(--kbq-transition-default),
@@ -34,6 +35,7 @@
     outline-color: var(--field-input-outline-color);
   }
 }
+
 .transparent {
   --field-input-color: var(--kbq-foreground-contrast);
   --field-input-border-color: transparent;

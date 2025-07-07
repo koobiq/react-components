@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, type ReactNode, type Ref } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
@@ -13,6 +13,7 @@ export type FieldInputDateProps = {
   className?: string;
   children?: ReactNode;
   'data-testid'?: string;
+  ref?: Ref<HTMLDivElement>;
 };
 
 export const FieldInputDate = forwardRef<HTMLDivElement, FieldInputDateProps>(
