@@ -88,7 +88,7 @@ export type InputProps = ExtendableProps<
      */
     isInvalid?: boolean;
     /** Message for the error state */
-    errorMessage?: string | number;
+    errorMessage?: ReactNode;
     /**
      * If true, the input will take up the full width of its container.
      * @default false
@@ -110,7 +110,7 @@ export type InputProps = ExtendableProps<
      */
     isLabelHidden?: boolean;
     /** The helper text content. */
-    caption?: string | number;
+    caption?: ReactNode;
     /**
      * If `true`, the label is displayed as required and the input element is required.
      * @default false
