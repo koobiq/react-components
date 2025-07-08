@@ -1,7 +1,10 @@
-import { today, getLocalTimeZone } from '@internationalized/date';
+import { useState } from 'react';
+
+import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import { IconCalendarO16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
 
 import { DateInput, type DateInputProps } from './index.js';
@@ -58,4 +61,26 @@ export const States: Story = {
       />
     </Grid>
   ),
+};
+
+export const Value: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<ReturnType<typeof parseDate> | null>(
+      parseDate('2025-02-03')
+    );
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <DateInput
+          label="Date (uncontrolled)"
+          defaultValue={parseDate('2025-02-03')}
+        />
+        <DateInput
+          label="Date (controlled)"
+          value={value}
+          onChange={setValue}
+        />
+      </FlexBox>
+    );
+  },
 };
