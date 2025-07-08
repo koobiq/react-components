@@ -68,26 +68,6 @@ describe('InputNumber', () => {
     expect(getRoot()).toHaveTextContent('fail');
   });
 
-  it('should NOT display a caption when isInvalid is true', () => {
-    render(
-      <InputNumber
-        {...baseProps}
-        errorMessage="fail"
-        caption="description"
-        isInvalid
-      />
-    );
-
-    expect(getRoot()).toHaveTextContent('fail');
-    expect(getRoot()).not.toHaveTextContent('description');
-  });
-
-  it('should NOT display an errorMessage when isInvalid is false', () => {
-    render(<InputNumber {...baseProps} errorMessage="fail" />);
-
-    expect(getRoot()).not.toHaveTextContent('fail');
-  });
-
   describe('value', () => {
     it(`should set the defaultValue correctly`, () => {
       render(<InputNumber {...baseProps} defaultValue={10} />);

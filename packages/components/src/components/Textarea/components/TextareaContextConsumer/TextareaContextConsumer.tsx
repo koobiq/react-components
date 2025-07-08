@@ -75,31 +75,26 @@ export const TextareaContextConsumer = forwardRef<
     slotProps?.textarea
   );
 
-  const captionProps: FieldCaptionProps | undefined = mergeProps(
-    { isInvalid },
-    slotProps?.caption
-  );
+  const captionProps = mergeProps<
+    [FieldCaptionProps, FieldCaptionProps | undefined]
+  >({ children: caption }, slotProps?.caption);
 
   const errorProps = mergeProps<[FieldErrorProps, FieldErrorProps | undefined]>(
-    { isInvalid },
+    { isInvalid, children: errorMessage },
     slotProps?.errorMessage
   );
 
   const labelProps = mergeProps<[FieldLabelProps, FieldLabelProps | undefined]>(
-    { isHidden: isLabelHidden, isRequired },
+    { isHidden: isLabelHidden, children: label, isRequired },
     slotProps?.label
   );
 
   return (
     <>
-      <FieldLabel {...labelProps}>{labelProps.children || label}</FieldLabel>
+      <FieldLabel {...labelProps} />
       <FieldInput as="textarea" {...textareaProps} />
-      <FieldCaption {...captionProps}>
-        {captionProps?.children || caption}
-      </FieldCaption>
-      <FieldError {...errorProps}>
-        {errorProps.children || errorMessage}
-      </FieldError>
+      <FieldCaption {...captionProps} />
+      <FieldError {...errorProps} />
     </>
   );
 });

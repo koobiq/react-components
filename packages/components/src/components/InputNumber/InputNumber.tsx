@@ -112,7 +112,10 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
         {({ isInvalid, isRequired, isDisabled }) => {
           const labelProps = mergeProps<
             [FieldLabelProps, FieldLabelProps | undefined]
-          >({ isHidden: isLabelHidden, isRequired }, slotProps?.label);
+          >(
+            { isHidden: isLabelHidden, children: label, isRequired },
+            slotProps?.label
+          );
 
           const inputProps = mergeProps<
             [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
@@ -126,14 +129,13 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
             slotProps?.input
           );
 
-          const captionProps: FieldCaptionProps | undefined = mergeProps(
-            { isInvalid },
-            slotProps?.caption
-          );
+          const captionProps: FieldCaptionProps | undefined = mergeProps<
+            [FieldCaptionProps, FieldCaptionProps | undefined]
+          >({ children: caption }, slotProps?.caption);
 
           const errorProps = mergeProps<
             [FieldErrorProps, FieldErrorProps | undefined]
-          >({ isInvalid }, slotProps?.errorMessage);
+          >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
 
           const groupProps = mergeProps<
             [FieldInputGroupProps, FieldInputGroupProps | undefined]
@@ -154,18 +156,12 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
           return (
             <>
-              <FieldLabel {...labelProps}>
-                {labelProps?.children || label}
-              </FieldLabel>
+              <FieldLabel {...labelProps} />
               <FieldInputGroup {...groupProps}>
                 <FieldInput {...inputProps} />
               </FieldInputGroup>
-              <FieldCaption {...captionProps}>
-                {captionProps?.children || caption}
-              </FieldCaption>
-              <FieldError {...errorProps}>
-                {errorProps.children || errorMessage}
-              </FieldError>
+              <FieldCaption {...captionProps} />
+              <FieldError {...errorProps} />
             </>
           );
         }}

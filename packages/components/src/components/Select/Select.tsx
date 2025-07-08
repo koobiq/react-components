@@ -155,7 +155,11 @@ function SelectRender<T extends object>(
 
   const labelProps = mergeProps<
     [FieldLabelProps, FieldLabelProps | undefined, FieldLabelProps]
-  >({ isHidden: isLabelHidden, isRequired }, slotProps?.label, labelPropsAria);
+  >(
+    { isHidden: isLabelHidden, children: label, isRequired },
+    slotProps?.label,
+    labelPropsAria
+  );
 
   const groupProps = mergeProps<
     [FieldInputGroupProps, FieldInputGroupProps | undefined]
@@ -199,11 +203,15 @@ function SelectRender<T extends object>(
 
   const captionProps = mergeProps<
     [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
-  >({ isInvalid }, slotProps?.caption, descriptionProps);
+  >({ children: caption }, slotProps?.caption, descriptionProps);
 
   const errorProps = mergeProps<
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
-  >({ isInvalid }, slotProps?.errorMessage, errorMessageProps);
+  >(
+    { isInvalid, children: errorMessage },
+    slotProps?.errorMessage,
+    errorMessageProps
+  );
 
   const popoverProps = mergeProps(
     {
@@ -233,7 +241,7 @@ function SelectRender<T extends object>(
   return (
     <>
       <FieldControl {...rootProps}>
-        <FieldLabel {...labelProps}>{label}</FieldLabel>
+        <FieldLabel {...labelProps} />
         <HiddenSelect
           name={name}
           label={label}
@@ -246,12 +254,8 @@ function SelectRender<T extends object>(
             {renderValue(state?.selectedItem)}
           </FieldSelect>
         </FieldInputGroup>
-        <FieldCaption {...captionProps}>
-          {captionProps?.children || caption}
-        </FieldCaption>
-        <FieldError {...errorProps}>
-          {errorProps.children || errorMessage}
-        </FieldError>
+        <FieldCaption {...captionProps} />
+        <FieldError {...errorProps} />
       </FieldControl>
       <PopoverInner {...popoverProps}>
         <ListInner {...listProps} />
