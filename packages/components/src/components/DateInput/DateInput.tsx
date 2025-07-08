@@ -2,26 +2,30 @@ import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
 import { createCalendar } from '@internationalized/date';
-import { mergeProps, useDOMRef } from '@koobiq/react-core';
+import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
 import {
   useLocale,
   useDateField,
   useDateFieldState,
+  removeDataAttributes,
 } from '@koobiq/react-primitives';
 import type { DateValue } from '@koobiq/react-primitives';
 
 import {
   FieldCaption,
-  type FieldCaptionProps,
   FieldControl,
   FieldError,
-  type FieldErrorProps,
   FieldInputDate,
-  type FieldInputDateProps,
   FieldInputGroup,
-  type FieldInputGroupProps,
   FieldLabel,
-  type FieldLabelProps,
+} from '../FieldComponents';
+import type {
+  FieldCaptionProps,
+  FieldControlProps,
+  FieldErrorProps,
+  FieldInputDateProps,
+  FieldInputGroupProps,
+  FieldLabelProps,
 } from '../FieldComponents';
 
 import { DateInputSegment } from './components';
@@ -33,17 +37,29 @@ import type {
 } from './types';
 
 export function DateInputRender<T extends DateValue>(
-  props: DateInputProps<T>,
+  props: Omit<DateInputProps<T>, 'ref'>,
   ref: Ref<DateInputRef>
 ) {
   const { errorMessage } = props;
   const { locale } = useLocale();
 
-  const { slotProps, caption, startAddon, endAddon, isLabelHidden, label } =
-    props;
+  const {
+    variant = 'filled',
+    slotProps,
+    caption,
+    startAddon,
+    endAddon,
+    isLabelHidden,
+    label,
+    className,
+    style,
+    fullWidth,
+    isReadOnly,
+    'data-testid': testId,
+  } = props;
 
   const state = useDateFieldState({
-    ...props,
+    ...removeDataAttributes(props),
     locale,
     createCalendar,
   });
@@ -55,9 +71,27 @@ export function DateInputRender<T extends DateValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
-  } = useDateField(props, state, domRef);
+  } = useDateField({ ...removeDataAttributes(props) }, state, domRef);
 
   const { isInvalid, isRequired, isDisabled } = state;
+
+  const rootProps = mergeProps<
+    [FieldControlProps, FieldControlProps | undefined]
+  >(
+    {
+      style,
+      fullWidth,
+      'data-testid': testId,
+      className: clsx(s.base, className),
+      'data-fullwidth': fullWidth,
+      'data-variant': variant,
+      'data-invalid': isInvalid,
+      'data-disabled': isDisabled,
+      'data-required': isRequired,
+      'data-readonly': isReadOnly,
+    },
+    slotProps?.root
+  );
 
   const labelProps = mergeProps<
     [FieldLabelProps, FieldLabelProps, FieldLabelProps | undefined]
@@ -94,6 +128,7 @@ export function DateInputRender<T extends DateValue>(
     [FieldInputDateProps, FieldInputDateProps | undefined, FieldInputDateProps]
   >(
     {
+      variant,
       isInvalid,
       isDisabled,
       ref: domRef,
@@ -103,18 +138,12 @@ export function DateInputRender<T extends DateValue>(
   );
 
   return (
-    <FieldControl className={s.base}>
+    <FieldControl {...rootProps}>
       <FieldLabel {...labelProps} />
       <FieldInputGroup {...groupProps}>
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (
-            <DateInputSegment
-              key={i}
-              segment={segment}
-              state={state}
-              isInvalid={isInvalid}
-              isDisabled={isDisabled}
-            />
+            <DateInputSegment key={i} segment={segment} state={state} />
           ))}
         </FieldInputDate>
       </FieldInputGroup>

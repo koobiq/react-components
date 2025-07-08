@@ -19,40 +19,40 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: DateInputProps) => <DateInput {...args} />,
+  render: (args: DateInputProps) => <DateInput data-testid="kamil" {...args} />,
 };
 
 export const States: Story = {
   render: () => (
     <Grid gap="m" cols={{ xs: 1, s: 2, m: 3, l: 4 }}>
-      <DateInput label="Date" caption="Caption" />
+      <DateInput label="Date" caption="Default" />
       <DateInput label="Date" errorMessage="Error" isInvalid />
       <DateInput
         label="Date"
-        caption="Disabled"
+        caption="isDisabled"
         defaultValue={today(getLocalTimeZone())}
         isDisabled
       />
-      <DateInput label="Date" caption="Required" isRequired />
+      <DateInput label="Date" caption="isRequired" isRequired />
       <DateInput
         label="Date"
-        caption="Read only"
+        caption="isReadOnly"
         defaultValue={today(getLocalTimeZone())}
         isReadOnly
       />
       <DateInput
         label="Date"
-        caption="Caption"
+        caption="startAddon"
         startAddon={<IconCalendarO16 />}
       />
       <DateInput
         label="Date"
-        caption="Caption"
+        caption="endAddon"
         endAddon={<IconCalendarO16 />}
       />
       <DateInput
         label="Date"
-        caption="Caption"
+        caption="isInvalid + endAddon"
         endAddon={<IconCalendarO16 />}
         isInvalid
       />
