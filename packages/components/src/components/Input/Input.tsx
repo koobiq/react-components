@@ -110,7 +110,10 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       {({ isInvalid, isRequired, isDisabled }) => {
         const labelProps = mergeProps<
           [FieldLabelProps, FieldLabelProps | undefined]
-        >({ isHidden: isLabelHidden, isRequired }, slotProps?.label);
+        >(
+          { isHidden: isLabelHidden, isRequired, children: label },
+          slotProps?.label
+        );
 
         const inputProps = mergeProps<
           [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
@@ -135,29 +138,22 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           slotProps?.group
         );
 
-        const captionProps: FieldCaptionProps | undefined = mergeProps(
-          { isInvalid },
-          slotProps?.caption
-        );
+        const captionProps = mergeProps<
+          [FieldCaptionProps, FieldCaptionProps | undefined]
+        >({ children: caption }, slotProps?.caption);
 
         const errorProps = mergeProps<
           [FieldErrorProps, FieldErrorProps | undefined]
-        >({ isInvalid }, slotProps?.errorMessage);
+        >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
 
         return (
           <>
-            <FieldLabel {...labelProps}>
-              {labelProps?.children || label}
-            </FieldLabel>
+            <FieldLabel {...labelProps} />
             <FieldInputGroup {...groupProps}>
               <FieldInput {...inputProps} />
             </FieldInputGroup>
-            <FieldCaption {...captionProps}>
-              {captionProps?.children || caption}
-            </FieldCaption>
-            <FieldError {...errorProps}>
-              {errorProps.children || errorMessage}
-            </FieldError>
+            <FieldCaption {...captionProps} />
+            <FieldError {...errorProps} />
           </>
         );
       }}

@@ -5,12 +5,13 @@ import { Text, type TextProps, type TextRef } from '@koobiq/react-primitives';
 
 import s from './FieldCaption.module.css';
 
-export type FieldCaptionProps = TextProps & { isInvalid?: boolean };
+export type FieldCaptionProps = TextProps;
+
 export type FieldCaptionRef = TextRef;
 
 export const FieldCaption = forwardRef<FieldCaptionRef, FieldCaptionProps>(
-  ({ children, className, isInvalid, ...other }, ref) =>
-    isNotNil(children) && !isInvalid ? (
+  ({ children, className, ...other }, ref) =>
+    isNotNil(children) ? (
       <Text
         className={clsx(s.base, className)}
         slot="description"

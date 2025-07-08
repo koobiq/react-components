@@ -68,26 +68,6 @@ describe('Textarea', () => {
     expect(getRoot()).toHaveTextContent('fail');
   });
 
-  it('should NOT display a caption when isInvalid is true', () => {
-    render(
-      <Textarea
-        {...baseProps}
-        errorMessage="fail"
-        caption="description"
-        isInvalid
-      />
-    );
-
-    expect(getRoot()).toHaveTextContent('fail');
-    expect(getRoot()).not.toHaveTextContent('description');
-  });
-
-  it('should NOT display an errorMessage when isInvalid is false', () => {
-    render(<Textarea {...baseProps} errorMessage="fail" />);
-
-    expect(getRoot()).not.toHaveTextContent('fail');
-  });
-
   describe('value', () => {
     it(`should set the defaultValue correctly`, () => {
       render(<Textarea {...baseProps} defaultValue="value" />);

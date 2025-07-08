@@ -92,7 +92,6 @@ export const Invalid: Story = {
             placeholder={`variant = ${variant}`}
             startAddon={<IconMagnifyingGlass16 />}
             errorMessage="This field is required"
-            caption="Description"
             isInvalid
             {...args}
           />

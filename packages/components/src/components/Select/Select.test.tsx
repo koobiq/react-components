@@ -65,20 +65,6 @@ describe('Select', () => {
     expect(getRoot()).toHaveTextContent('fail');
   });
 
-  it('should NOT display a caption when isInvalid is true', () => {
-    render(
-      <Select
-        {...baseProps}
-        errorMessage="fail"
-        caption="description"
-        isInvalid
-      />
-    );
-
-    expect(getRoot()).toHaveTextContent('fail');
-    expect(getRoot()).not.toHaveTextContent('description');
-  });
-
   describe('value', () => {
     it(`should set the defaultSelectedKey correctly`, () => {
       render(
