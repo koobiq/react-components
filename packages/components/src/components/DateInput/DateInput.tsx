@@ -38,7 +38,9 @@ export function DateInputRender<T extends DateValue>(
 ) {
   const { errorMessage } = props;
   const { locale } = useLocale();
-  const { slotProps, caption, startAddon, endAddon, isLabelHidden } = props;
+
+  const { slotProps, caption, startAddon, endAddon, isLabelHidden, label } =
+    props;
 
   const state = useDateFieldState({
     ...props,
@@ -60,7 +62,7 @@ export function DateInputRender<T extends DateValue>(
   const labelProps = mergeProps<
     [FieldLabelProps, FieldLabelProps, FieldLabelProps | undefined]
   >(
-    { isHidden: isLabelHidden, isRequired },
+    { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
     slotProps?.label
   );
@@ -78,11 +80,15 @@ export function DateInputRender<T extends DateValue>(
 
   const captionProps = mergeProps<
     [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
-  >({ isInvalid }, slotProps?.caption, descriptionProps);
+  >({ children: caption }, slotProps?.caption, descriptionProps);
 
   const errorProps = mergeProps<
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
-  >({ isInvalid }, slotProps?.errorMessage, errorMessageProps);
+  >(
+    { isInvalid, children: errorMessage },
+    slotProps?.errorMessage,
+    errorMessageProps
+  );
 
   const controlProps = mergeProps<
     [FieldInputDateProps, FieldInputDateProps | undefined, FieldInputDateProps]
@@ -98,20 +104,22 @@ export function DateInputRender<T extends DateValue>(
 
   return (
     <FieldControl className={s.base}>
-      <FieldLabel {...labelProps}>{props.label}</FieldLabel>
+      <FieldLabel {...labelProps} />
       <FieldInputGroup {...groupProps}>
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (
-            <DateInputSegment key={i} segment={segment} state={state} />
+            <DateInputSegment
+              key={i}
+              segment={segment}
+              state={state}
+              isInvalid={isInvalid}
+              isDisabled={isDisabled}
+            />
           ))}
         </FieldInputDate>
       </FieldInputGroup>
-      <FieldCaption {...captionProps}>
-        {captionProps?.children || caption}
-      </FieldCaption>
-      <FieldError {...errorProps}>
-        {errorProps.children || errorMessage}
-      </FieldError>
+      <FieldCaption {...captionProps} />
+      <FieldError {...errorProps} />
     </FieldControl>
   );
 }

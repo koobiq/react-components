@@ -1,3 +1,4 @@
+import { today, getLocalTimeZone } from '@internationalized/date';
 import { IconCalendarO16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -26,9 +27,19 @@ export const States: Story = {
     <Grid gap="m" cols={{ xs: 1, s: 2, m: 3, l: 4 }}>
       <DateInput label="Date" caption="Caption" />
       <DateInput label="Date" errorMessage="Error" isInvalid />
-      <DateInput label="Date" caption="Disabled" isDisabled />
+      <DateInput
+        label="Date"
+        caption="Disabled"
+        defaultValue={today(getLocalTimeZone())}
+        isDisabled
+      />
       <DateInput label="Date" caption="Required" isRequired />
-      <DateInput label="Date" caption="Read only" isReadOnly />
+      <DateInput
+        label="Date"
+        caption="Read only"
+        defaultValue={today(getLocalTimeZone())}
+        isReadOnly
+      />
       <DateInput
         label="Date"
         caption="Caption"
@@ -38,6 +49,12 @@ export const States: Story = {
         label="Date"
         caption="Caption"
         endAddon={<IconCalendarO16 />}
+      />
+      <DateInput
+        label="Date"
+        caption="Caption"
+        endAddon={<IconCalendarO16 />}
+        isInvalid
       />
     </Grid>
   ),

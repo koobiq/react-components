@@ -1,4 +1,8 @@
 .base {
+  --date-input-segment-color: var(--field-input-color);
+
+  color: var(--date-input-segment-color);
+
   &:focus {
     outline: none;
     color: HighlightText;
@@ -7,5 +11,9 @@
 }
 
 .placeholder {
-  color: var(--kbq-foreground-contrast-tertiary);
+  color: var(--field-input-placeholder-color);
+}
+
+.literal:not(.hasValue) {
+  color: var(--field-input-placeholder-color);
 }

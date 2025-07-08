@@ -9,19 +9,33 @@ import s from './DateInputSegment.module.css';
 type DateInputSegmentProps = {
   segment: DateSegment;
   state: DateFieldState;
+  isInvalid?: boolean;
+  isDisabled?: boolean;
 };
 
-export function DateInputSegment({ segment, state }: DateInputSegmentProps) {
+export function DateInputSegment({
+  segment,
+  state,
+  isDisabled,
+  isInvalid,
+}: DateInputSegmentProps) {
   const ref = useRef(null);
   const { segmentProps } = useDateSegment(segment, state, ref);
 
-  const { text, isPlaceholder } = segment;
+  const { text, isPlaceholder, type } = segment;
 
   return (
     <span
       {...segmentProps}
       ref={ref}
-      className={clsx(s.base, isPlaceholder && s.placeholder)}
+      className={clsx(
+        s.base,
+        s[type],
+        isInvalid && s.invalid,
+        isDisabled && s.disabled,
+        state.value !== null && s.hasValue,
+        isPlaceholder && s.placeholder
+      )}
     >
       {text}
     </span>
