@@ -33,27 +33,27 @@ To change the visual state of the textarea, use the `variant` prop.
 
 ## Error
 
-The `error` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
 
-<Story of={Stories.Error} />
+<Story of={Stories.Invalid} />
 
 ## Disabled
 
-A textarea can be disabled by passing the `disabled` prop.
+A textarea can be disabled by passing the `isDisabled` prop.
 
 <Story of={Stories.Disabled} />
 
 ## Required
 
-To make a field required, add the `required` prop.
+To make a field required, add the `isRequired` prop.
 If the field has a label, a required indicator will appear next to it.
 
 <Story of={Stories.Required} />
 
 ## Read only
 
-The `readonly` boolean prop makes the Textarea's text content immutable.
-Unlike `disabled`, the Textarea remains focusable and the contents can still be copied.
+The `isReadonly` boolean prop makes the Textarea's text content immutable.
+Unlike `isDisabled`, the Textarea remains focusable and the contents can still be copied.
 See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.
 
 <Story of={Stories.ReadOnly} />

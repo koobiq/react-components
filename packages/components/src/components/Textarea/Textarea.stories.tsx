@@ -50,7 +50,7 @@ export const Variant: Story = {
   },
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   render: function Render(args: TextareaProps) {
     return (
       <Textarea
