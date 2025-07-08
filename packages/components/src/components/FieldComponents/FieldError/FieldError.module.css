@@ -5,6 +5,7 @@
 
   @mixin typography text-compact;
   color: var(--kbq-foreground-error);
+  margin: 0;
   margin-block-start: var(--kbq-size-xxs);
   transition: color var(--kbq-transition-default);
 }
