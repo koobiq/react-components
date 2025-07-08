@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.0.1-beta.32](https://github.com/koobiq/react-components/compare/0.0.1-beta.31...0.0.1-beta.32) (2025-07-08)
+
+### 🚀 Features
+
+- **components:** allow `errorMessage` and `caption` to accept ReactNode in Input, Textarea, Select, InputNumber ([394c662](https://github.com/koobiq/react-components/commit/394c66210ca297eec341eacd5ada66b9f0f1f01f))
+
+### 🐞 Bug Fixes
+
+- **components:** fix margins for caption and errorMessage blocks in Input, Textarea, Select, InputNumber ([4b971f7](https://github.com/koobiq/react-components/commit/4b971f781251b086933408c92e7a56ff01f76a8e))
+- **components:** keep caption visible when `isValid` is true in Input, Textarea, Select, InputNumber ([232e17b](https://github.com/koobiq/react-components/commit/232e17b02a35e6707c30bcefc5615fe08dce4f39))
+
 ## [0.0.1-beta.31](https://github.com/koobiq/react-components/compare/0.0.1-beta.30...0.0.1-beta.31) (2025-07-07)
 
 ### 🚀 Features
