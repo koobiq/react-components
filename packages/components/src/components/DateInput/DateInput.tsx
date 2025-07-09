@@ -71,6 +71,7 @@ export function DateInputRender<T extends DateValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
+    ...validation
   } = useDateField({ ...removeDataAttributes(props) }, state, domRef);
 
   const { isInvalid, isRequired, isDisabled } = state;
@@ -82,13 +83,13 @@ export function DateInputRender<T extends DateValue>(
       style,
       fullWidth,
       'data-testid': testId,
-      className: clsx(s.base, className),
-      'data-fullwidth': fullWidth,
       'data-variant': variant,
       'data-invalid': isInvalid,
       'data-disabled': isDisabled,
+      'data-fullwidth': fullWidth,
       'data-required': isRequired,
       'data-readonly': isReadOnly,
+      className: clsx(s.base, className),
     },
     slotProps?.root
   );
@@ -119,7 +120,13 @@ export function DateInputRender<T extends DateValue>(
   const errorProps = mergeProps<
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
   >(
-    { isInvalid, children: errorMessage },
+    {
+      isInvalid,
+      children:
+        typeof errorMessage === 'function'
+          ? errorMessage({ ...validation })
+          : errorMessage,
+    },
     slotProps?.errorMessage,
     errorMessageProps
   );
