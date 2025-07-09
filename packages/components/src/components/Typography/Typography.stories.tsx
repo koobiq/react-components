@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { flex, spacing } from '../layout';
+import { FlexBox } from '../FlexBox';
+import { spacing } from '../layout';
 
 import car from './__stories__/red_car.jpeg';
 import { typographyPropVariant, Typography } from './index.js';
@@ -23,13 +24,13 @@ export const Base: Story = {
 
 export const Variant: Story = {
   render: () => (
-    <div className={flex({ direction: 'column', gap: 'm' })}>
+    <FlexBox direction="column" gap="m">
       {typographyPropVariant.map((variant) => (
         <Typography key={variant} variant={variant}>
           {variant}
         </Typography>
       ))}
-    </div>
+    </FlexBox>
   ),
 };
 
@@ -52,7 +53,7 @@ export const RootTag: Story = {
 
 export const Align: Story = {
   render: () => (
-    <div className={flex({})} style={{ inlineSize: '100%' }}>
+    <FlexBox style={{ inlineSize: '100%' }}>
       <Typography align="start" style={{ flexGrow: 1 }}>
         align = start
       </Typography>
@@ -62,25 +63,25 @@ export const Align: Story = {
       <Typography align="end" style={{ flexGrow: 1 }}>
         align = end
       </Typography>
-    </div>
+    </FlexBox>
   ),
 };
 
 export const Color: Story = {
   render: () => (
-    <div className={flex({ gap: 'm' })}>
+    <FlexBox gap="m">
       <Typography color="success">Text</Typography>
       <Typography color="warning">Text</Typography>
       <Typography color="theme">Text</Typography>
       <Typography color="error">Text</Typography>
       <Typography color="inherit">Text</Typography>
-    </div>
+    </FlexBox>
   ),
 };
 
 export const Ellipsis: Story = {
   render: () => (
-    <div className={flex({})} style={{ inlineSize: '50%' }}>
+    <FlexBox style={{ inlineSize: '50%' }}>
       <Typography align="start" ellipsis>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla quo
         recusandae reprehenderit sapiente tenetur? Adipisci aspernatur aut
@@ -89,6 +90,6 @@ export const Ellipsis: Story = {
         Accusamus aliquam aspernatur ipsa iusto nam nobis nulla obcaecati quam,
         recusandae repellat sunt tempora?
       </Typography>
-    </div>
+    </FlexBox>
   ),
 };
