@@ -1,8 +1,7 @@
 import { createRef } from 'react';
 
 import { screen, render } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import { DateInput, type DateInputProps } from './index';
 
@@ -18,7 +17,7 @@ describe('DateInput', () => {
   };
 
   const getRoot = () => screen.getByTestId('root');
-  const getDateInput = () => screen.getByTestId('input');
+  // const getDateInput = () => screen.getByTestId('input');
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -70,27 +69,6 @@ describe('DateInput', () => {
     render(<DateInput {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
-  });
-
-  describe('value', () => {
-    it.skip(`should set the defaultValue correctly`, () => {
-      render(<DateInput {...baseProps} defaultValue="value" />);
-
-      expect(getDateInput()).toHaveValue('value');
-    });
-
-    it.skip(`should call the onChange when changing the text field`, async () => {
-      const handleChange = vi.fn((obj) => obj);
-      render(<DateInput {...baseProps} onChange={handleChange} />);
-
-      await userEvent.type(getDateInput(), 'hello');
-
-      expect(handleChange).toHaveBeenCalledTimes(5);
-
-      expect(handleChange.mock.results[4]?.value).toStrictEqual('hello');
-
-      expect(getDateInput()).toHaveValue('hello');
-    });
   });
 
   describe('addons', () => {
