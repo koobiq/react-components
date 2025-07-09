@@ -67,9 +67,7 @@ export const States: Story = {
 
 export const Value: Story = {
   render: function Render() {
-    const [value, setValue] = useState<ReturnType<typeof parseDate> | null>(
-      parseDate('2025-02-03')
-    );
+    const [value, setValue] = useState(parseDate('2025-02-03'));
 
     return (
       <FlexBox gap="m" direction="column">
@@ -80,7 +78,7 @@ export const Value: Story = {
         <DateInput
           label="Date (controlled)"
           value={value}
-          onChange={setValue}
+          onChange={(newValue) => setValue(newValue!)}
         />
       </FlexBox>
     );
