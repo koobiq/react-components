@@ -131,6 +131,7 @@ export type TextareaProps = ExtendableProps<
       TextFieldProps<HTMLTextAreaElement>,
       | 'description'
       | 'validationBehavior'
+      | 'validationState'
       | 'validate'
       | 'children'
       | 'style'
