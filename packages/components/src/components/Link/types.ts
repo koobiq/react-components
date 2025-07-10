@@ -67,5 +67,5 @@ export type LinkBaseProps = ExtendableProps<
     /** Inline styles */
     style?: CSSProperties;
   } & LinkDeprecatedProps,
-  UseLinkProps
+  Omit<UseLinkProps, 'elementType'>
 >;
