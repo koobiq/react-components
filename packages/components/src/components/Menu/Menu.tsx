@@ -8,8 +8,8 @@ import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 
 import { Divider, Item, Section, Header } from '../Collections';
 import { ListItemText } from '../List';
-import { PopoverInner } from '../Popover';
 import type { PopoverInnerProps } from '../Popover';
+import { PopoverInner } from '../Popover/PopoverInner';
 
 import { MenuInner } from './components';
 import type { MenuProps, MenuComponentProps, MenuRef } from './index';

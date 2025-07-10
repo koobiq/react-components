@@ -32,7 +32,7 @@ import {
   type FieldSelectProps,
 } from '../FieldComponents';
 import { ListItemText, ListInner } from '../List';
-import { PopoverInner } from '../Popover';
+import { PopoverInner } from '../Popover/PopoverInner';
 
 import type { SelectRef, SelectProps, SelectComponentProp } from './index';
 import s from './Select.module.css';
