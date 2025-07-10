@@ -120,7 +120,14 @@ export type InputNumberProps = ExtendableProps<
       errorMessage?: FieldErrorProps;
     };
   } & InputNumberDeprecatedProps,
-  Omit<UseNumberFieldProps, 'inputElementType'>
+  Omit<
+    UseNumberFieldProps,
+    | 'description'
+    | 'validationBehavior'
+    | 'validate'
+    | 'children'
+    | 'inputElementType'
+  >
 >;
 
 export type InputNumberRef = ComponentRef<'input'>;
