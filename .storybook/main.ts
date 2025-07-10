@@ -72,6 +72,22 @@ const config: StorybookConfig = {
   },
   typescript: {
     reactDocgen: 'react-docgen-typescript',
+    reactDocgenTypescriptOptions: {
+      // Filter out third-party props from node_modules.
+      propFilter: (prop) => {
+        if (!prop.parent) return true;
+
+        const file = prop.parent.fileName;
+
+        return (
+          file.includes('/src/') ||
+          file.includes('react-aria') ||
+          file.includes('@react-aria') ||
+          file.includes('@react-stately') ||
+          file.includes('@internationalized')
+        );
+      },
+    },
   },
 };
 
