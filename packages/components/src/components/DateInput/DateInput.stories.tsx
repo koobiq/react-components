@@ -10,6 +10,7 @@ import {
 import { IconCalendarO16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Typography, useDateFormatter } from '../../index';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
@@ -116,16 +117,20 @@ export const Uncontrolled: Story = {
 export const Controlled: Story = {
   render: function Render() {
     const [value, setValue] = useState(parseDate('2025-02-03'));
+    const formatter = useDateFormatter({ dateStyle: 'full' });
 
     return (
-      <>
+      <FlexBox gap="m" direction="column" alignItems="center">
         <DateInput
           label="Date (controlled)"
           value={value}
           onChange={(newValue) => setValue(newValue!)}
         />
-        <p>{value.toDate(getLocalTimeZone()).toLocaleDateString()}</p>
-      </>
+        <Typography>
+          Selected date:{' '}
+          {value ? formatter.format(value.toDate(getLocalTimeZone())) : '--'}
+        </Typography>
+      </FlexBox>
     );
   },
 };
