@@ -49,7 +49,10 @@ export type RadioGroupBaseProps = ExtendableProps<
     /** Handler that is called when the value changes. */
     onChange?: UseRadioGroupProps['onChange'];
   },
-  UseRadioGroupProps
+  Omit<
+    UseRadioGroupProps,
+    'validationBehavior' | 'validate' | 'validationState'
+  >
 >;
 
 export type RadioGroupProps = ExtendableComponentPropsWithRef<
