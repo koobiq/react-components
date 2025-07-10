@@ -14,6 +14,10 @@
   color: var(--field-input-placeholder-color);
 }
 
+.literal {
+  white-space: pre;
+}
+
 .literal:not(.hasValue) {
   color: var(--field-input-placeholder-color);
 }
