@@ -7,7 +7,7 @@ import { useDatePicker, useDatePickerState } from '@koobiq/react-primitives';
 import { Calendar } from '../Calendar';
 import { DateInput } from '../DateInput';
 import { IconButton } from '../IconButton';
-import { PopoverInner } from '../Popover';
+import { PopoverInner } from '../Popover/PopoverInner';
 
 export type DatePickerProps<T extends DateValue> = AriaDatePickerProps<T>;
 
