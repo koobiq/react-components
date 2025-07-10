@@ -35,11 +35,38 @@ Date values are provided using objects in the [@internationalized/date](https://
 This library handles correct international date manipulation across calendars,
 time zones, and other localization concerns.
 
-<Story of={Stories.Value} />
+### Uncontrolled
+
+<Story of={Stories.Uncontrolled} />
+
+### Controlled
+
+<Story of={Stories.Controlled} />
 
 ## States
 
+Use `isDisabled`, `isInvalid`, `isRequired`, and `isReadOnly` to show the component in different states.
+You can also add a `caption` to provide extra context about the date input.
+
 <Story of={Stories.States} />
+
+## Variant
+
+To change the visual state of the date input, use the `variant` prop.
+
+<Story of={Stories.Variant} />
+
+## Full width
+
+The `fullWidth` prop will make an input fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Addons
+
+You can add an extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
 
 ## Locale
 
@@ -48,3 +75,9 @@ To set a custom locale, wrap your component with [Provider](?path=/docs/componen
 and pass the `locale` prop.
 
 <Story of={Stories.Locale} />
+
+## Date Time
+
+You can also use the date field to select both date and time.
+
+<Story of={Stories.DateTime} />

@@ -26,6 +26,7 @@ import {
   useLocale,
   I18nProvider,
   useDateFormatter,
+  type DateFormatterOptions,
   useLocalizedStringFormatter,
   type I18nProviderProps,
 } from '@react-aria/i18n';
@@ -217,6 +218,7 @@ export {
   type AriaTagProps,
   type ListState,
   type PressEvent,
+  type DateFormatterOptions,
   type HoverEvent,
   type CalendarState,
   type AriaCalendarProps,
