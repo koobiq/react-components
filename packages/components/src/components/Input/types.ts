@@ -136,8 +136,6 @@ export type InputProps = ExtendableProps<
     | 'validationBehavior'
     | 'validate'
     | 'children'
-    | 'style'
-    | 'className'
     | 'inputElementType'
   >
 >;
