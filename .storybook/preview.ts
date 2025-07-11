@@ -8,6 +8,26 @@ import { DocContainer } from './components';
 import { withThemeProvider } from './decorators';
 import { light, dark } from './themes';
 
+const rawStories = import.meta.glob(
+  '../packages/**/*.stories.@(js|jsx|ts|tsx)',
+  {
+    eager: true,
+    import: 'default',
+    query: '?raw',
+  }
+);
+
+export function extractStory(raw: string, storyName: string) {
+  const re = new RegExp(
+    `export\\s+const\\s+${storyName}\\b[\\s\\S]*?^\\};`,
+    'm'
+  );
+
+  const match = raw.match(re);
+
+  return match?.[0] ?? '';
+}
+
 const preview: Preview = {
   parameters: {
     viewport: {
@@ -57,6 +77,32 @@ const preview: Preview = {
     docs: {
       container: DocContainer,
       autodoc: true,
+      source: {
+        type: 'dynamic',
+        transform: (code, context) => {
+          const file = context.parameters.fileName;
+          if (!file) return code;
+
+          // make "packages/…" relative key
+          const rel = file.slice(file.indexOf('/packages/') + 1);
+
+          // pull the raw text out
+          const key = Object.keys(rawStories).find((k) => k.endsWith(rel));
+          if (!key) return code;
+
+          const raw = rawStories[key] as string;
+
+          // compute exportName from context.id …
+          const storyId = context.id.split('--').pop()!;
+
+          const exportName = storyId
+            .split('-')
+            .map((w) => w[0].toUpperCase() + w.slice(1))
+            .join('');
+
+          return extractStory(raw, exportName) || code;
+        },
+      },
       toc: {
         title: 'On this page',
         headingSelector: 'h2, h3',
