@@ -16,11 +16,7 @@ import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
 import { Provider, useBreakpoints } from '../Provider';
 
-import {
-  DateInput,
-  type DateInputProps,
-  dateInputPropVariant,
-} from './index.js';
+import { DateInput, dateInputPropVariant } from './index.js';
 
 const meta = {
   title: 'Components/DateInput',
@@ -35,7 +31,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: DateInputProps) => <DateInput {...args} />,
+  render: (args) => <DateInput {...args} />,
 };
 
 export const States: Story = {

@@ -21,7 +21,7 @@ export const dateInputPropVariant = ['filled', 'transparent'] as const;
 
 export type DateInputPropVariant = (typeof dateInputPropVariant)[number];
 
-export type DateInputProps<T extends DateValue = DateValue> = {
+export type DateInputProps<T extends DateValue> = {
   /** Inline styles. */
   style?: CSSProperties;
   /** Additional CSS-classes. */
@@ -60,7 +60,10 @@ export type DateInputProps<T extends DateValue = DateValue> = {
   startAddon?: ReactNode;
   /** Addon placed after the children. */
   endAddon?: ReactNode;
-} & Omit<AriaDateFieldProps<T>, 'description'>;
+} & Omit<
+  AriaDateFieldProps<T>,
+  'description' | 'validationBehavior' | 'validate' | 'validationState'
+>;
 
 export type DateInputComponentProp = <T extends DateValue>(
   props: DateInputProps<T>

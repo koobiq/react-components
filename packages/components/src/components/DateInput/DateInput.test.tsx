@@ -1,12 +1,13 @@
 import { createRef } from 'react';
 
+import type { CalendarDate } from '@internationalized/date';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
 import { DateInput, type DateInputProps } from './index';
 
 describe('DateInput', () => {
-  const baseProps: DateInputProps = {
+  const baseProps: DateInputProps<CalendarDate> = {
     'data-testid': 'root',
     label: 'label',
     slotProps: {
