@@ -15,5 +15,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: () => <DatePicker label="Birthday" />,
+  render: () => <DatePicker label="Birth day" />,
 };
