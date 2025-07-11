@@ -1,8 +1,12 @@
-import { Controls as Props, Markdown } from '@storybook/blocks';
+import {
+  Controls as Props,
+  Markdown,
+  Source,
+} from '@storybook/addon-docs/blocks';
 
-export { Meta } from '@storybook/blocks';
+export { Meta } from '@storybook/addon-docs/blocks';
 
-export { Props, Markdown };
+export { Props, Markdown, Source };
 
 export * from './Story';
 export * from './DocContainer';

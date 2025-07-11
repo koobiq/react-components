@@ -15,7 +15,7 @@
   /* story content */
   .sbdocs.sbdocs-wrapper {
     padding: 4rem;
-    justify-content: flex-start;
+    justify-content: start;
   }
 
   /* storybook preparing */
@@ -75,12 +75,16 @@
   }
 
   /* toc-doc */
-  .toc-list .toc-list-item.toc-list-item.is-active-li > a {
-    color: var(--kbq-tree-default-text-color);
+  .sbdocs-toc--custom.sbdocs-toc--custom {
+    width: 20rem;
   }
 
-  .sbdocs.sbdocs-content + div,  .sbdocs.sbdocs-content + div > div {
-    width: 20rem;
+  .sbdocs-toc--custom.sbdocs-toc--custom nav {
+    width: inherit;
+  }
+
+  .toc-list .toc-list-item.toc-list-item.is-active-li > a {
+    color: var(--kbq-tree-default-text-color);
   }
 
   /* story block */

@@ -34,12 +34,9 @@ const config: StorybookConfig = {
       },
     },
     getAbsolutePath('@storybook/addon-a11y'),
-    getAbsolutePath('@storybook/addon-storysource'),
-    getAbsolutePath('@storybook/addon-controls'),
     getAbsolutePath('@storybook/addon-links'),
-    getAbsolutePath('@storybook/addon-viewport'),
     getAbsolutePath('@chromatic-com/storybook'),
-    getAbsolutePath('storybook-dark-mode'),
+    getAbsolutePath('@vueless/storybook-dark-mode'),
   ],
   async viteFinal(config: UserConfig) {
     return mergeConfig(config, {

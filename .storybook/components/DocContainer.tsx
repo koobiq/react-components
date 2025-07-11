@@ -2,9 +2,9 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { Provider } from '@koobiq/react-components';
 import { isNotNil } from '@koobiq/react-core';
-import { DocsContainer as BaseContainer } from '@storybook/blocks';
-import { addons } from '@storybook/preview-api';
-import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
+import { DocsContainer as BaseContainer } from '@storybook/addon-docs/blocks';
+import { DARK_MODE_EVENT_NAME } from '@vueless/storybook-dark-mode';
+import { addons } from 'storybook/preview-api';
 
 import { light, dark } from '../themes';
 
