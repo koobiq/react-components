@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.1-beta.33](https://github.com/koobiq/react-components/compare/0.0.1-beta.32...0.0.1-beta.33) (2025-07-11)
+
+### 🚀 Features
+
+- **components:** add DateInput ([cd2c2d4](https://github.com/koobiq/react-components/commit/cd2c2d46956b84dd7bc51b67c52baf265ebc3146))
+
+### 🐞 Bug Fixes
+
+- **components/InputNumber:** fix types ([be4a628](https://github.com/koobiq/react-components/commit/be4a628ea4d07954f107137cd895f5a9e6b9081a))
+- **components/Link:** fix types ([6a913a3](https://github.com/koobiq/react-components/commit/6a913a38c308069cae24e466f37d004c78727597))
+- **components/RadioGroup:** fix types ([3c4872b](https://github.com/koobiq/react-components/commit/3c4872bd7394dadd55161ecb96248c0376bcd82a))
+- **components/Textarea:** fix types ([431f617](https://github.com/koobiq/react-components/commit/431f617a20092da75465affce829ee3243f13e6e))
+
 ## [0.0.1-beta.32](https://github.com/koobiq/react-components/compare/0.0.1-beta.31...0.0.1-beta.32) (2025-07-08)
 
 ### 🚀 Features
