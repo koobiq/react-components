@@ -31,7 +31,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args) => <DateInput {...args} />,
+  render: (args) => <DateInput label="Date" isLabelHidden {...args} />,
 };
 
 export const States: Story = {
