@@ -16,6 +16,7 @@
     "resolveJsonModule": true,
     "strict": true,
     "target": "es2019",
+    "skipLibCheck": true,
     "types": ["node", "@testing-library/jest-dom"]
   },
   "exclude": ["node_modules", "dist"],
