@@ -31,6 +31,11 @@ export * from './ButtonToggleGroup';
 export * from './TagGroup';
 export * from './Table';
 export * from './Calendar';
+export * from './DateInput';
 export * from './layout';
-export { useListData } from '@koobiq/react-primitives';
+export {
+  useListData,
+  useDateFormatter,
+  type DateFormatterOptions,
+} from '@koobiq/react-primitives';
 export { useRouter, RouterProvider } from '@koobiq/react-primitives';

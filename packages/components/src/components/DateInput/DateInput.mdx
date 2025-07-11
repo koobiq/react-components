@@ -1,0 +1,83 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './DateInput.stories';
+
+<Meta of={Stories} />
+
+# DateInput
+
+<Status variant="experimental" />
+
+The DateInput component lets users select a date with the keyboard.
+
+```tsx
+import { DateInput } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Value
+
+A DateInput displays a placeholder by default. An initial, uncontrolled value can be provided
+to the DateField using the `defaultValue` prop. Alternatively, a controlled value can be provided
+using the `value` prop.
+
+Date values are provided using objects in the [@internationalized/date](https://github.com/adobe/react-spectrum/tree/main/packages/@internationalized/date) package.
+This library handles correct international date manipulation across calendars,
+time zones, and other localization concerns.
+
+### Uncontrolled
+
+<Story of={Stories.Uncontrolled} />
+
+### Controlled
+
+<Story of={Stories.Controlled} />
+
+## States
+
+Use `isDisabled`, `isInvalid`, `isRequired`, and `isReadOnly` to show the component in different states.
+You can also add a `caption` to provide extra context about the date input.
+
+<Story of={Stories.States} />
+
+## Variant
+
+To change the visual state of the date input, use the `variant` prop.
+
+<Story of={Stories.Variant} />
+
+## Full width
+
+The `fullWidth` prop will make an input fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Addons
+
+You can add an extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+## Locale
+
+By default, the DateInput uses the user's system locale.
+To set a custom locale, wrap your component with [Provider](?path=/docs/components-provider--docs)
+and pass the `locale` prop.
+
+<Story of={Stories.Locale} />
+
+## Date Time
+
+You can also use the date field to select both date and time.
+
+<Story of={Stories.DateTime} />

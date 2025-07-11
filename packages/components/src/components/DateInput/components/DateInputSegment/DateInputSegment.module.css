@@ -1,0 +1,23 @@
+.base {
+  --date-input-segment-color: var(--field-input-color);
+
+  color: var(--date-input-segment-color);
+
+  &:focus {
+    outline: none;
+    color: var(--date-input-segment-color);
+    background-color: Highlight;
+  }
+}
+
+.placeholder {
+  color: var(--field-input-placeholder-color);
+}
+
+.literal {
+  white-space: pre;
+}
+
+.literal:not(.hasValue) {
+  color: var(--field-input-placeholder-color);
+}
