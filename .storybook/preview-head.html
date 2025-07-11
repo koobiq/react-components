@@ -208,6 +208,11 @@
     font-feature-settings: var(--kbq-md-typography-md-body-font-feature-settings);
   }
 
+  /* strong text */
+  .sbdocs.sbdocs-content :is(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p)) > strong {
+    font-weight: 600;
+  }
+
   /* ul, li */
   .sbdocs.sbdocs-content :is(ul:not(.sb-anchor, .sb-unstyled, .sb-unstyled ul)) {
     margin-block: var(--kbq-size-xxl) var(--kbq-size-xxl);
