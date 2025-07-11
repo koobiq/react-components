@@ -147,7 +147,7 @@ export const FullWidth: Story = {
 
 export const RootTag: Story = {
   render: () => (
-    <Button as="a" href="#" endIcon={<IconArrowUpRightFromSquare16 />}>
+    <Button as="a" href="/" endIcon={<IconArrowUpRightFromSquare16 />}>
       Link
     </Button>
   ),

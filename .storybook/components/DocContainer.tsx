@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { Provider } from '@koobiq/react-components';
 import { isNotNil } from '@koobiq/react-core';
 import { DocsContainer as BaseContainer } from '@storybook/addon-docs/blocks';
+import { linkTo } from '@storybook/addon-links';
 import { DARK_MODE_EVENT_NAME } from '@vueless/storybook-dark-mode';
 import { addons } from 'storybook/preview-api';
 
@@ -34,7 +35,13 @@ export const DocContainer: typeof BaseContainer = (params) => {
   return (
     <BaseContainer context={context} theme={isDark ? dark : light}>
       <ThemeProviderContext.Provider value={{ isDark }}>
-        <Provider>
+        <Provider
+          router={{
+            navigate: (href) => {
+              linkTo(href)();
+            },
+          }}
+        >
           <div className="kbq-docs-decorator">{children}</div>
         </Provider>
       </ThemeProviderContext.Provider>

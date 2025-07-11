@@ -1,6 +1,5 @@
 .base {
   --date-input-segment-color: var(--field-input-color);
-
   color: var(--date-input-segment-color);
 
   &:focus {
