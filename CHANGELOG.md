@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.34](https://github.com/koobiq/react-components/compare/0.0.1-beta.33...0.0.1-beta.34) (2025-07-11)
+
+### 🐞 Bug Fixes
+
+- **components/DateInput:** add 'use client' directive for client-side rendering ([d852bba](https://github.com/koobiq/react-components/commit/d852bbac0a65889ccabc826086868000b020f138))
+
 ## [0.0.1-beta.33](https://github.com/koobiq/react-components/compare/0.0.1-beta.32...0.0.1-beta.33) (2025-07-11)
 
 ### 🚀 Features
