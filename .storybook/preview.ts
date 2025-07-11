@@ -78,6 +78,7 @@ const preview: Preview = {
       container: DocContainer,
       autodoc: true,
       source: {
+        language: 'tsx',
         type: 'dynamic',
         transform: (code, context) => {
           const file = context.parameters.fileName;
