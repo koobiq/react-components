@@ -1,5 +1,6 @@
 import { Typography, useBreakpoints } from '@koobiq/react-components';
 import { clsx } from '@koobiq/react-core';
+import { Link } from '@koobiq/react-primitives';
 
 import { useThemeProvider } from '../DocContainer';
 
@@ -31,9 +32,9 @@ export const FrameworkGuide = () => {
         <Typography variant="text-big" as="span">
           A template for Next.js with Koobiq React
         </Typography>
-        <a
+        <Link
           className={classes.link}
-          href="/?path=/docs/templates-next-js--docs"
+          href="/Templates/Next.js"
           aria-label="next-js"
         />
       </div>
@@ -47,8 +48,9 @@ export const FrameworkGuide = () => {
         <Typography variant="text-big" as="span">
           A template for Vite with Koobiq React
         </Typography>
-        <a
+        <Link
           className={classes.link}
+          target="_blank"
           href="https://github.com/koobiq/react-components/tree/main/templates/vite/template"
           aria-label="vite-js"
         />
