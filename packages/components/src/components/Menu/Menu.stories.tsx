@@ -272,13 +272,13 @@ export const Open: Story = {
       { id: 'paste', name: 'Paste' },
     ];
 
-    const [open, { toggle, set }] = useBoolean(false);
+    const [isOpen, { toggle, set }] = useBoolean(false);
     const anchorRef = useRef<HTMLButtonElement>(null);
 
     return (
       <FlexBox gap="m">
         <Menu
-          open={open}
+          isOpen={isOpen}
           items={options}
           onOpenChange={set}
           anchorRef={anchorRef}
@@ -286,7 +286,7 @@ export const Open: Story = {
           {(item) => <Menu.Item>{item.name}</Menu.Item>}
         </Menu>
         <Button onPress={toggle} ref={anchorRef}>
-          {open ? 'Close' : 'Open'}
+          {isOpen ? 'Close' : 'Open'}
         </Button>
       </FlexBox>
     );
