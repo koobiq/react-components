@@ -3,6 +3,7 @@
 import type { ComponentRef } from 'react';
 import { forwardRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { useOverlayTriggerState } from '@koobiq/react-primitives';
 
 import { Dialog } from '../Dialog';
@@ -12,10 +13,24 @@ import type { PopoverProps } from './types';
 
 const PopoverComponent = forwardRef<ComponentRef<'div'>, PopoverProps>(
   (props, ref) => {
-    const { open, onOpenChange, defaultOpen, ...other } = props;
+    const {
+      open,
+      isOpen: isOpenProp,
+      onOpenChange,
+      defaultOpen,
+      ...other
+    } = props;
+
+    const isOpen = isOpenProp ?? open;
+
+    if (process.env.NODE_ENV !== 'production' && 'open' in props) {
+      deprecate(
+        'Popover: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
+      );
+    }
 
     const state = useOverlayTriggerState({
-      isOpen: open,
+      isOpen,
       onOpenChange,
       defaultOpen,
       ...other,
