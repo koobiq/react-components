@@ -257,25 +257,25 @@ export const Settings: Story = {
             <SidePanel.Body>
               <FlexBox gap="l" direction="column">
                 <Toggle
-                  checked={hideBackdrop}
+                  isSelected={hideBackdrop}
                   onChange={setHideBackdrop.toggle}
                 >
                   Hide the backdrop
                 </Toggle>
                 <Toggle
-                  checked={hideCloseButton}
+                  isSelected={hideCloseButton}
                   onChange={setHideCloseButton.toggle}
                 >
                   Hide the close button
                 </Toggle>
                 <Toggle
-                  checked={disableExitOnClickOutside}
+                  isSelected={disableExitOnClickOutside}
                   onChange={setDisableExitOnClickOutside.toggle}
                 >
                   Disable the exit by clicking from the outside
                 </Toggle>
                 <Toggle
-                  checked={disableExitOnEscapeKeyDown}
+                  isSelected={disableExitOnEscapeKeyDown}
                   onChange={setDisableExitOnEscapeKeyDown.toggle}
                 >
                   Disable the exit by pressing ESC key
