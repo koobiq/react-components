@@ -22,7 +22,7 @@ describe('Popover', () => {
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
 
-    render(<Popover {...baseProps} ref={ref} open />);
+    render(<Popover {...baseProps} ref={ref} isOpen />);
 
     expect(ref.current).toBe(getRoot());
   });
@@ -30,7 +30,7 @@ describe('Popover', () => {
   it('should merge a custom class name with the default ones', () => {
     const className = 'foo';
 
-    render(<Popover {...baseProps} className={className} open />);
+    render(<Popover {...baseProps} className={className} isOpen />);
 
     const root = getRoot();
     expect(root?.className).toContain(className);
@@ -38,18 +38,18 @@ describe('Popover', () => {
 
   describe('check the size prop', () => {
     it.each(popoverPropSize)('should apply the size as a "%s"', (size) => {
-      render(<Popover {...baseProps} size={size} open />);
+      render(<Popover {...baseProps} size={size} isOpen />);
 
       expect(getRoot()).toHaveAttribute('data-size', size);
     });
   });
 
   test('check the hideArrow prop', () => {
-    const { rerender } = render(<Popover {...baseProps} open />);
+    const { rerender } = render(<Popover {...baseProps} isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'true');
 
-    rerender(<Popover {...baseProps} hideArrow open />);
+    rerender(<Popover {...baseProps} hideArrow isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'false');
   });
@@ -71,14 +71,14 @@ describe('Popover', () => {
   });
 
   it('should call the {onOpenChange} callback when the click outside is completed', async () => {
-    const { rerender } = render(<Popover {...baseProps} open={false} />);
+    const { rerender } = render(<Popover {...baseProps} isOpen={false} />);
 
     await userEvent.click(document.body);
 
     rerender(
       <>
         <button data-testid="button" />
-        <Popover {...baseProps} open />
+        <Popover {...baseProps} isOpen />
       </>
     );
 

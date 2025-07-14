@@ -56,9 +56,19 @@ export const popoverPropType = [
 
 export type PopoverPropType = (typeof popoverPropType)[number];
 
+type PopoverDeprecatedProps = {
+  /**
+   * If `true`, the component is shown.
+   *
+   * @deprecated
+   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
+   */
+  open?: boolean;
+};
+
 export type PopoverBaseProps = {
   /** If `true`, the component is shown. */
-  open?: boolean;
+  isOpen?: boolean;
   /** The default open state. Use when the component is not controlled. */
   defaultOpen?: boolean;
   /** The content of the component. */
@@ -160,7 +170,7 @@ export type PopoverBaseProps = {
     backdrop?: ComponentPropsWithRef<'div'>;
     transition?: Partial<TransitionProps<HTMLElement>>;
   };
-};
+} & PopoverDeprecatedProps;
 
 export type PopoverInnerProps = {
   state: OverlayTriggerState;

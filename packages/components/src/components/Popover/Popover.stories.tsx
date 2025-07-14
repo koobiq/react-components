@@ -146,7 +146,7 @@ export const Size: Story = {
 
 export const Placement: Story = {
   render: function Render(args: PopoverProps) {
-    const [open, { toggle, set }] = useBoolean();
+    const [isOpen, { toggle, set }] = useBoolean();
     const [placement, setPlacement] = useState<PopoverPropPlacement>();
     const anchorRef = useRef<HTMLElement | null>(null);
 
@@ -268,7 +268,7 @@ export const Placement: Story = {
           </Button>
         </GridItem>
         <Popover
-          open={open}
+          isOpen={isOpen}
           size="auto"
           onOpenChange={set}
           placement={placement}
@@ -287,7 +287,7 @@ export const ControlledOpen: Story = {
   name: 'Controlled open',
   render: function Render(args: PopoverProps) {
     const anchorRef = useRef<HTMLParagraphElement | null>(null);
-    const [open, { on, set }] = useBoolean(false);
+    const [isOpen, { on, set }] = useBoolean(false);
 
     return (
       <>
@@ -304,7 +304,7 @@ export const ControlledOpen: Story = {
         </FlexBox>
         <Popover
           size="auto"
-          open={open}
+          isOpen={isOpen}
           onOpenChange={set}
           anchorRef={anchorRef}
           hideCloseButton
@@ -321,7 +321,7 @@ export const Hover: Story = {
   name: 'Mouse hover interaction',
   render: function Render(args: PopoverProps) {
     const anchorRef = useRef<HTMLButtonElement | null>(null);
-    const [open, { on, off, set }] = useBoolean(false);
+    const [isOpen, { on, off, set }] = useBoolean(false);
 
     return (
       <>
@@ -330,7 +330,7 @@ export const Hover: Story = {
         </Button>
         <Popover
           size="auto"
-          open={open}
+          isOpen={isOpen}
           hideCloseButton
           onOpenChange={set}
           anchorRef={anchorRef}
@@ -348,16 +348,16 @@ export const ShouldCloseOnInteractOutside: Story = {
   name: 'Click outside exceptions',
   render: function Render(args: PopoverProps) {
     const anchorRef = useRef<HTMLButtonElement | null>(null);
-    const [open, { toggle, set }] = useBoolean(false);
+    const [isOpen, { toggle, set }] = useBoolean(false);
 
     return (
       <>
         <Button onPress={toggle} ref={anchorRef}>
-          {open ? 'Close' : 'Open'}
+          {isOpen ? 'Close' : 'Open'}
         </Button>
         <Popover
           size="auto"
-          open={open}
+          isOpen={isOpen}
           onOpenChange={set}
           anchorRef={anchorRef}
           slotProps={{ backdrop: { hidden: true } }}
