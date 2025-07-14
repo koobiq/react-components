@@ -3,10 +3,10 @@ import { IconUserSecret16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
-import { flex } from '../layout';
+import { FlexBox } from '../FlexBox';
 import { Link } from '../Link';
 
-import { type AlertBaseProps, alertPropStatus } from './index.js';
+import { type AlertBaseProps } from './index.js';
 import { Alert } from './index.js';
 
 const text =
@@ -33,44 +33,58 @@ export const Base: Story = {
 
 export const Status: Story = {
   render: (args: AlertBaseProps) => (
-    <div className={flex({ gap: 'l', alignItems: 'center', wrap: 'wrap' })}>
-      {alertPropStatus.map((status) => (
-        <Alert title="Title" key={status} status={status} {...args}>
-          This is a {status} Alert.
-        </Alert>
-      ))}
-    </div>
+    <FlexBox gap="l" alignItems="center" wrap="wrap">
+      <Alert title="Title" status="info" {...args}>
+        This is an info Alert.
+      </Alert>
+      <Alert title="Title" status="success" {...args}>
+        This is a success Alert.
+      </Alert>
+      <Alert title="Title" status="warning" {...args}>
+        This is a warning Alert.
+      </Alert>
+      <Alert title="Title" status="error" {...args}>
+        This is an error Alert.
+      </Alert>
+    </FlexBox>
   ),
 };
 
 export const Colored: Story = {
   render: (args: AlertBaseProps) => (
-    <div className={flex({ gap: 'l', alignItems: 'center', wrap: 'wrap' })}>
-      {alertPropStatus.map((status) => (
-        <Alert title="Title" key={status} status={status} isColored {...args}>
-          This is a {status} Alert.
-        </Alert>
-      ))}
-    </div>
+    <FlexBox gap="l" alignItems="center" wrap="wrap">
+      <Alert title="Title" status="info" isColored {...args}>
+        This is a colored info Alert.
+      </Alert>
+      <Alert title="Title" status="success" isColored {...args}>
+        This is a colored success Alert.
+      </Alert>
+      <Alert title="Title" status="warning" isColored {...args}>
+        This is a colored warning Alert.
+      </Alert>
+      <Alert title="Title" status="error" isColored {...args}>
+        This is a colored error Alert.
+      </Alert>
+    </FlexBox>
   ),
 };
 
 export const Compact: Story = {
   render: (args: AlertBaseProps) => (
-    <div className={flex({ gap: 'l', alignItems: 'center', wrap: 'wrap' })}>
-      {alertPropStatus.map((status) => (
-        <Alert
-          title="Title"
-          key={status}
-          status={status}
-          isCompact
-          isColored
-          {...args}
-        >
-          This is a {status} Alert.
-        </Alert>
-      ))}
-    </div>
+    <FlexBox gap="l" alignItems="center" wrap="wrap">
+      <Alert title="Title" status="info" isCompact {...args}>
+        This is a compact info Alert.
+      </Alert>
+      <Alert title="Title" status="success" isCompact {...args}>
+        This is a compact success Alert.
+      </Alert>
+      <Alert title="Title" status="warning" isCompact {...args}>
+        This is a compact warning Alert.
+      </Alert>
+      <Alert title="Title" status="error" isCompact {...args}>
+        This is a compact error Alert.
+      </Alert>
+    </FlexBox>
   ),
 };
 
@@ -117,7 +131,7 @@ export const CustomIcon: Story = {
       icon={<IconUserSecret16 />}
       title="Important information about incognito mode"
       action={
-        <Link href="#" isPseudo>
+        <Link href="/" isPseudo>
           See details
         </Link>
       }
