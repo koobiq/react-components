@@ -95,12 +95,12 @@ export const Size: Story = {
 export const ControlledOpen: Story = {
   name: 'Controlled open',
   render: function Render(args: ModalProps) {
-    const [open, { on, off, set }] = useBoolean(false);
+    const [isOpen, { on, off, set }] = useBoolean(false);
 
     return (
       <>
         <Button onPress={on}>Open</Button>
-        <Modal open={open} size="small" onOpenChange={set} {...args}>
+        <Modal isOpen={isOpen} size="small" onOpenChange={set} {...args}>
           <Modal.Header>Create access group</Modal.Header>
           <Modal.Body>
             <Input
