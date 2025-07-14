@@ -36,6 +36,16 @@ export type MenuPropDisabledKeys<T extends object> =
 
 export type MenuPropPlacement = PopoverPropPlacement;
 
+type MenuDeprecatedProps = {
+  /**
+   * If `true`, the component is shown.
+   *
+   * @deprecated
+   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
+   */
+  open?: boolean;
+};
+
 export type MenuProps<T extends object> = {
   /** Additional CSS-classes. */
   className?: string;
@@ -48,7 +58,7 @@ export type MenuProps<T extends object> = {
   /** The render function of the control for displaying the modal window. */
   control?: MenuPropControl;
   /** Whether the overlay is open by default (controlled). */
-  open?: boolean;
+  isOpen?: boolean;
   /** Whether the overlay is open by default (uncontrolled). */
   defaultOpen?: boolean;
   /** Handler that is called when the overlay's open state changes. */
@@ -81,7 +91,7 @@ export type MenuProps<T extends object> = {
     popover?: PopoverBaseProps;
     list?: ComponentPropsWithRef<'ul'>;
   };
-};
+} & MenuDeprecatedProps;
 
 export type MenuComponentProps = <T extends object>(
   props: MenuProps<T>

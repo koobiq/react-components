@@ -24,7 +24,7 @@ describe('Menu', () => {
     const ref = createRef<HTMLDivElement>();
 
     render(
-      <Menu {...baseProps} ref={ref} open>
+      <Menu {...baseProps} ref={ref} isOpen>
         <Menu.Item>item</Menu.Item>
       </Menu>
     );
@@ -36,7 +36,7 @@ describe('Menu', () => {
     const className = 'foo';
 
     render(
-      <Menu {...baseProps} className={className} open>
+      <Menu {...baseProps} className={className} isOpen>
         <Menu.Item>item</Menu.Item>
       </Menu>
     );
@@ -50,7 +50,7 @@ describe('Menu', () => {
 
     it('should merge a custom class name with the default ones', () => {
       render(
-        <Menu open>
+        <Menu isOpen>
           <Menu.Header className={className} data-testid="header">
             item
           </Menu.Header>

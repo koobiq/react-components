@@ -3,6 +3,7 @@
 import type { Ref } from 'react';
 import { forwardRef, useRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { useDOMRef, Pressable, mergeProps, clsx } from '@koobiq/react-core';
 import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 
@@ -25,13 +26,22 @@ function MenuRender<T extends object>(
     control,
     style,
     open,
+    isOpen: isOpenProp,
     anchorRef,
     className,
     slotProps,
     ...other
   } = props;
 
-  const state = useMenuTriggerState({ ...props, isOpen: open });
+  const isOpen = isOpenProp ?? open;
+
+  if (process.env.NODE_ENV !== 'production' && 'open' in props) {
+    deprecate(
+      'Menu: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
+    );
+  }
+
+  const state = useMenuTriggerState({ ...props, isOpen });
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
