@@ -20,6 +20,16 @@ export type ModalPropContent =
 
 export type ModalPropControl = (props: ButtonOptions) => ReactElement;
 
+type ModalDeprecatedProps = {
+  /**
+   * If `true`, the component is shown.
+   *
+   * @deprecated
+   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
+   */
+  open?: boolean;
+};
+
 export type ModalProps = {
   /**
    * Component width size.
@@ -27,7 +37,7 @@ export type ModalProps = {
    */
   size?: ModalPropSize;
   /** If `true`, the component is shown. */
-  open?: boolean;
+  isOpen?: boolean;
   /** The default open state. Use when the component is not controlled. */
   defaultOpen?: boolean;
   /** The content of the component. */
@@ -83,6 +93,6 @@ export type ModalProps = {
     backdrop?: BackdropProps;
     modal?: ComponentPropsWithRef<'div'>;
   };
-};
+} & ModalDeprecatedProps;
 
 export type ModalRef = ComponentRef<'div'>;

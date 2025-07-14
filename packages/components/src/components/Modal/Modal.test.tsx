@@ -41,7 +41,7 @@ describe('Modal', () => {
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
 
-    render(<Modal {...baseProps} ref={ref} open />);
+    render(<Modal {...baseProps} ref={ref} isOpen />);
 
     expect(ref.current).toBe(getModal());
   });
@@ -49,7 +49,7 @@ describe('Modal', () => {
   it('should merge a custom class name with the default ones', () => {
     const className = 'foo';
 
-    render(<Modal {...baseProps} className={className} open />);
+    render(<Modal {...baseProps} className={className} isOpen />);
 
     const root = getModal();
     expect(root?.className).toContain(className);
@@ -57,7 +57,7 @@ describe('Modal', () => {
 
   describe('check the size prop', () => {
     it.each(modalPropSize)('should apply the size as a "%s"', (size) => {
-      render(<Modal {...baseProps} size={size} open />);
+      render(<Modal {...baseProps} size={size} isOpen />);
 
       expect(getModal()).toHaveAttribute('data-size', size);
     });
@@ -112,18 +112,18 @@ describe('Modal', () => {
 
   describe('close button', () => {
     test('check the hideCloseButton prop', () => {
-      const { rerender } = render(<Modal {...baseProps} open />);
+      const { rerender } = render(<Modal {...baseProps} isOpen />);
 
       expect(getDialog()).toHaveAttribute('data-close-button', 'true');
 
-      rerender(<Modal {...baseProps} hideCloseButton open />);
+      rerender(<Modal {...baseProps} hideCloseButton isOpen />);
 
       expect(getDialog()).toHaveAttribute('data-close-button', 'false');
     });
 
     test('should call the onOpenChange handler when clicked', async () => {
       const onOpenChange = vi.fn();
-      const onClick = vi.fn();
+      const onPress = vi.fn();
 
       render(
         <Modal
@@ -133,7 +133,7 @@ describe('Modal', () => {
               slotProps: {
                 'close-button': {
                   'data-testid': 'close-button',
-                  onClick,
+                  onPress,
                 },
               },
             },
@@ -148,7 +148,7 @@ describe('Modal', () => {
       await userEvent.click(closeButton);
 
       expect(onOpenChange).toHaveBeenCalledTimes(1);
-      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(onPress).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -186,14 +186,14 @@ describe('Modal', () => {
   });
 
   it('should call the {onOpenChange} callback when the click outside is completed', async () => {
-    const { rerender } = render(<Modal {...baseProps} open={false} />);
+    const { rerender } = render(<Modal {...baseProps} isOpen={false} />);
 
     await userEvent.click(document.body);
 
     rerender(
       <>
         <button data-testid="button" />
-        <Modal {...baseProps} open />
+        <Modal {...baseProps} isOpen />
       </>
     );
 
@@ -206,7 +206,7 @@ describe('Modal', () => {
     render(
       <>
         <button data-testid="button" />
-        <Modal {...baseProps} open disableExitOnClickOutside />
+        <Modal {...baseProps} isOpen disableExitOnClickOutside />
       </>
     );
 
@@ -216,13 +216,13 @@ describe('Modal', () => {
   });
 
   it('should call the {onOpenChange} callback when the {ESC} is pressed', async () => {
-    const { rerender } = render(<Modal {...baseProps} open />);
+    const { rerender } = render(<Modal {...baseProps} isOpen />);
 
     await userEvent.keyboard('{Escape}');
 
     expect(onOpenChange).toHaveBeenCalledTimes(1);
 
-    rerender(<Modal {...baseProps} open={false} />);
+    rerender(<Modal {...baseProps} isOpen={false} />);
 
     await userEvent.keyboard('{Escape}');
 
@@ -230,7 +230,7 @@ describe('Modal', () => {
   });
 
   it('should call the {onOpenChange} callback when the {ESC} is pressed and the {disableExitOnEscapeKeyDown} is set', async () => {
-    render(<Modal {...baseProps} open disableExitOnEscapeKeyDown />);
+    render(<Modal {...baseProps} isOpen disableExitOnEscapeKeyDown />);
 
     await userEvent.keyboard('{Escape}');
 
