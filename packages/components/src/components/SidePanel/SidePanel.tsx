@@ -2,6 +2,7 @@
 
 import { cloneElement, forwardRef, isValidElement } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
 import {
   Overlay,
@@ -29,7 +30,8 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       defaultOpen,
       onOpenChange,
       hideBackdrop,
-      open: openProp,
+      open,
+      isOpen: isOpenProp,
       portalContainer,
       disableFocusManagement,
       disableExitOnClickOutside,
@@ -38,23 +40,31 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       ...other
     } = props;
 
+    const isOpen = isOpenProp ?? open;
+
+    if (process.env.NODE_ENV !== 'production' && 'open' in props) {
+      deprecate(
+        'SidePanel: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
+      );
+    }
+
     const state = useOverlayTriggerState({
-      isOpen: openProp,
+      isOpen,
       onOpenChange,
       defaultOpen,
       ...other,
     });
 
-    const { isOpen: openState, close } = state;
+    const { isOpen: isOpenState, close } = state;
 
-    const [opened, { on, off }] = useBoolean(openState);
+    const [isOpened, { on, off }] = useBoolean(isOpenState);
 
     const modalRef = useDOMRef(null);
     const containerRef = useDOMRef(ref);
 
     const { triggerProps, overlayProps } = useOverlayTrigger(
       { type: 'dialog' },
-      { ...state, isOpen: openState }
+      { ...state, isOpen: isOpenState }
     );
 
     const { modalProps: modalCommonProps, underlayProps } = useModalOverlay(
@@ -64,7 +74,7 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
         isDismissable: !disableExitOnClickOutside,
         isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
       },
-      { ...state, isOpen: opened },
+      { ...state, isOpen: isOpened },
       modalRef
     );
 
@@ -90,7 +100,7 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
     const backdropProps = mergeProps<
       [BackdropProps, BackdropProps, BackdropProps | undefined]
     >(
-      { isOpen: openState && !hideBackdrop },
+      { isOpen: isOpenState && !hideBackdrop },
       underlayProps,
       slotProps?.backdrop
     );
@@ -121,7 +131,7 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
           onEnter={on}
           timeout={300}
           onExited={off}
-          in={openState}
+          in={isOpenState}
           nodeRef={containerRef}
           unmountOnExit
           appear

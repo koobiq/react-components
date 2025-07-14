@@ -42,7 +42,7 @@ describe('SidePanel', () => {
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
 
-    render(<SidePanel {...baseProps} ref={ref} open />);
+    render(<SidePanel {...baseProps} ref={ref} isOpen />);
 
     expect(ref.current).toBe(getRoot());
   });
@@ -50,7 +50,7 @@ describe('SidePanel', () => {
   it('should merge a custom class name with the default ones', () => {
     const className = 'foo';
 
-    render(<SidePanel {...baseProps} className={className} open />);
+    render(<SidePanel {...baseProps} className={className} isOpen />);
 
     const root = getRoot();
     expect(root?.className).toContain(className);
@@ -58,7 +58,7 @@ describe('SidePanel', () => {
 
   describe('check the size prop', () => {
     it.each(sidePanelPropSize)('should apply the size as a "%s"', (size) => {
-      render(<SidePanel {...baseProps} size={size} open />);
+      render(<SidePanel {...baseProps} size={size} isOpen />);
 
       expect(getRoot()).toHaveAttribute('data-size', size);
     });
@@ -68,7 +68,7 @@ describe('SidePanel', () => {
     it.each(sidePanelPropPosition)(
       'should apply the position as a "%s"',
       (position) => {
-        render(<SidePanel {...baseProps} position={position} open />);
+        render(<SidePanel {...baseProps} position={position} isOpen />);
 
         expect(getRoot()).toHaveAttribute('data-position', position);
       }
@@ -124,11 +124,11 @@ describe('SidePanel', () => {
 
   describe('close button', () => {
     test('check the hideCloseButton prop', () => {
-      const { rerender } = render(<SidePanel {...baseProps} open />);
+      const { rerender } = render(<SidePanel {...baseProps} isOpen />);
 
       expect(getDialog()).toHaveAttribute('data-close-button', 'true');
 
-      rerender(<SidePanel {...baseProps} hideCloseButton open />);
+      rerender(<SidePanel {...baseProps} hideCloseButton isOpen />);
 
       expect(getDialog()).toHaveAttribute('data-close-button', 'false');
     });
@@ -198,14 +198,14 @@ describe('SidePanel', () => {
   });
 
   it('should call the {onOpenChange} callback when the click outside is completed', async () => {
-    const { rerender } = render(<SidePanel {...baseProps} open={false} />);
+    const { rerender } = render(<SidePanel {...baseProps} isOpen={false} />);
 
     await userEvent.click(document.body);
 
     rerender(
       <>
         <button data-testid="button" />
-        <SidePanel {...baseProps} open />
+        <SidePanel {...baseProps} isOpen />
       </>
     );
 
@@ -218,7 +218,7 @@ describe('SidePanel', () => {
     render(
       <>
         <button data-testid="button" />
-        <SidePanel {...baseProps} open disableExitOnClickOutside />
+        <SidePanel {...baseProps} isOpen disableExitOnClickOutside />
       </>
     );
 
@@ -228,13 +228,13 @@ describe('SidePanel', () => {
   });
 
   it('should call the {onOpenChange} callback when the {ESC} is pressed', async () => {
-    const { rerender } = render(<SidePanel {...baseProps} open />);
+    const { rerender } = render(<SidePanel {...baseProps} isOpen />);
 
     await userEvent.keyboard('{Escape}');
 
     expect(onOpenChange).toHaveBeenCalledTimes(1);
 
-    rerender(<SidePanel {...baseProps} open={false} />);
+    rerender(<SidePanel {...baseProps} isOpen={false} />);
 
     await userEvent.keyboard('{Escape}');
 
@@ -242,7 +242,7 @@ describe('SidePanel', () => {
   });
 
   it('should call the {onOpenChange} callback when the {ESC} is pressed and the {disableExitOnEscapeKeyDown} is set', async () => {
-    render(<SidePanel {...baseProps} open disableExitOnEscapeKeyDown />);
+    render(<SidePanel {...baseProps} isOpen disableExitOnEscapeKeyDown />);
 
     await userEvent.keyboard('{Escape}');
 

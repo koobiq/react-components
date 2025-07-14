@@ -24,6 +24,16 @@ export type SidePanelPropContent =
 
 export type SidePanelPropControl = (props: ButtonOptions) => ReactElement;
 
+type SidePanelDeprecatedProps = {
+  /**
+   * If `true`, the component is shown.
+   *
+   * @deprecated
+   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
+   */
+  open?: boolean;
+};
+
 export type SidePanelProps = {
   /**
    * Component width size.
@@ -36,7 +46,7 @@ export type SidePanelProps = {
    */
   position?: SidePanelPropPosition;
   /** If `true`, the component is shown. */
-  open?: boolean;
+  isOpen?: boolean;
   /** The default open state. Use when the component is not controlled. */
   defaultOpen?: boolean;
   /** The content of the component. */
@@ -92,6 +102,6 @@ export type SidePanelProps = {
     backdrop?: BackdropProps;
     panel?: ComponentPropsWithRef<'div'>;
   };
-};
+} & SidePanelDeprecatedProps;
 
 export type SidePanelRef = ComponentRef<'div'>;
