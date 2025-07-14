@@ -1,4 +1,3 @@
-import { Checkbox } from '@koobiq/react-components';
 import type { Meta } from '@storybook/react';
 
 import { useBoolean } from './useBoolean.js';
@@ -10,19 +9,12 @@ const meta = {
 export default meta;
 
 export const Example = () => {
-  /*
-   * Before
-   *
-   * const [checked, setChecked] = useState(true);
-   * const openChange = () => setChecked(checked);
-   */
-
-  // After
-  const [checked, { toggle }] = useBoolean(true);
+  const [isChecked, { toggle }] = useBoolean(true);
 
   return (
-    <Checkbox checked={checked} onChange={toggle}>
-      {checked ? 'Checked' : 'Unchecked'}
-    </Checkbox>
+    <label>
+      <input type="checkbox" checked={isChecked} onChange={toggle} />
+      {isChecked ? 'Checked' : 'Unchecked'}
+    </label>
   );
 };
