@@ -163,12 +163,12 @@ export const Position: Story = {
 export const ControlledOpen: Story = {
   name: 'Controlled open',
   render: function Render(args: SidePanelProps) {
-    const [open, { on, off, set }] = useBoolean(false);
+    const [isOpen, { on, off, set }] = useBoolean(false);
 
     return (
       <>
         <Button onPress={on}>Open</Button>
-        <SidePanel open={open} size="small" onOpenChange={set} {...args}>
+        <SidePanel isOpen={isOpen} size="small" onOpenChange={set} {...args}>
           <SidePanel.Header>
             Web Security: Safeguarding the Digital World
           </SidePanel.Header>
