@@ -16,7 +16,7 @@ import {
 import { useTag } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
-import { IconButton } from '../../../IconButton';
+import { IconButton, type IconButtonProps } from '../../../IconButton';
 import type { TagGroupPropVariant, TagProps } from '../../index';
 import intlMessages from '../../intl.json';
 
@@ -82,11 +82,13 @@ export function TagInner<T>(props: TagInnerProps<T>) {
     slotProps?.root
   );
 
-  const removeButtonProps = mergeProps(
+  const removeButtonProps = mergeProps<
+    [IconButtonProps, IconButtonProps, IconButtonProps | undefined]
+  >(
     {
       tabIndex: -1,
-      compact: true,
-      disabled: isDisabled,
+      isCompact: true,
+      isDisabled,
       className: s.cancelIcon,
       variant: matchVariantToCloseButton[variant],
       'aria-label': stringFormatter.format('close'),
