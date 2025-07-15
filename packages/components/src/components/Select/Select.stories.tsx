@@ -209,7 +209,7 @@ export const Required: Story = {
           label="Attack type"
           style={{ inlineSize: 200 }}
           placeholder="Select an option"
-          caption="required, without indicator"
+          caption="required, without an indicator"
           slotProps={{ label: { isRequired: false } }}
           isRequired
         >

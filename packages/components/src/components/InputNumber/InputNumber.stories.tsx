@@ -140,7 +140,7 @@ export const Required: Story = {
         />
         <InputNumber
           label="Number"
-          caption="required, without indicator"
+          caption="required, without an indicator"
           placeholder="Enter a number"
           slotProps={{ label: { isRequired: false } }}
           isRequired

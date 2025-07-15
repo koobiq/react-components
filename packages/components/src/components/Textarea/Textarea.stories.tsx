@@ -150,7 +150,7 @@ export const Required: Story = {
         />
         <Textarea
           label="Tell us your story"
-          caption="required, without indicator"
+          caption="required, without an indicator"
           placeholder="Placeholder"
           slotProps={{ label: { isRequired: false } }}
           isRequired
