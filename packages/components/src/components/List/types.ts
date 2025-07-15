@@ -80,6 +80,6 @@ export type ListProps<T extends object> = ListBaseProps<T>;
 
 export type ListRef = ComponentRef<'ul'>;
 
-export type ListComponentProps = <T extends object>(
+export type ListComponent = <T extends object>(
   props: ListProps<T>
 ) => ReactElement | null;

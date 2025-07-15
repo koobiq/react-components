@@ -16,12 +16,7 @@ import { Typography } from '../Typography';
 
 import { ListItemText, ListOption, ListSection } from './components';
 import s from './List.module.css';
-import type {
-  ListComponentProps,
-  ListProps,
-  ListRef,
-  ListBaseProps,
-} from './types';
+import type { ListComponent, ListProps, ListRef, ListBaseProps } from './types';
 
 const { list } = utilClasses;
 
@@ -78,7 +73,7 @@ function ListRender<T extends object>(props: ListProps<T>, ref: Ref<ListRef>) {
   return <ListInner listRef={ref} {...props} state={state} />;
 }
 
-const ListComponent = forwardRef(ListRender) as ListComponentProps;
+const ListComponent = forwardRef(ListRender) as ListComponent;
 
 type CompoundedComponent = typeof ListComponent & {
   Item: typeof Item;
