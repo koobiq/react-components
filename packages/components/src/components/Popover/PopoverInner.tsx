@@ -154,6 +154,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
               {...mergeProps(popoverProps, other)}
               style={
                 {
+                  ...props.style,
                   ...popoverProps.style,
                   '--popover-inline-size': normalizeInlineSize(size),
                 } as CSSProperties
