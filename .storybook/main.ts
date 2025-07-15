@@ -84,6 +84,8 @@ const config: StorybookConfig = {
           file.includes('@internationalized')
         );
       },
+      shouldExtractLiteralValuesFromEnum: true,
+      shouldRemoveUndefinedFromOptional: true,
     },
   },
 };
