@@ -93,7 +93,7 @@ export type MenuProps<T extends object> = {
   };
 } & MenuDeprecatedProps;
 
-export type MenuComponentProps = <T extends object>(
+export type MenuComponent = <T extends object>(
   props: MenuProps<T>
 ) => ReactElement | null;
 

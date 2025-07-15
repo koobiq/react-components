@@ -13,7 +13,7 @@ import type { PopoverInnerProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
 import { MenuInner } from './components';
-import type { MenuProps, MenuComponentProps, MenuRef } from './index';
+import type { MenuProps, MenuComponent, MenuRef } from './index';
 import s from './Menu.module.css';
 
 function MenuRender<T extends object>(
@@ -83,7 +83,7 @@ function MenuRender<T extends object>(
   );
 }
 
-const MenuComponent = forwardRef(MenuRender) as MenuComponentProps;
+const MenuComponent = forwardRef(MenuRender) as MenuComponent;
 
 type CompoundedComponent = typeof MenuComponent & {
   Item: typeof Item;

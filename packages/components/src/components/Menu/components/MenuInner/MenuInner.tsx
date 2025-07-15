@@ -19,7 +19,7 @@ export type MenuInnerProps<T> = AriaMenuOptions<T>;
 
 const { list } = utilClasses;
 
-export type MenuInnerComponentProp = <T extends object>(
+export type MenuInnerComponent = <T extends object>(
   props: MenuInnerProps<T>
 ) => ReactElement | null;
 
@@ -71,4 +71,4 @@ function MenuInnerRender<T extends object>(
   );
 }
 
-export const MenuInner = forwardRef(MenuInnerRender) as MenuInnerComponentProp;
+export const MenuInner = forwardRef(MenuInnerRender) as MenuInnerComponent;
