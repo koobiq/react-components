@@ -5,12 +5,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Toggle } from '../Toggle';
 
-import {
-  SidePanel,
-  sidePanelPropPosition,
-  type SidePanelProps,
-  sidePanelPropSize,
-} from './index.js';
+import { SidePanel, type SidePanelProps, sidePanelPropSize } from './index.js';
 
 const meta = {
   title: 'Components/SidePanel',
@@ -129,32 +124,40 @@ export const Size: Story = {
   },
 };
 
-export const Position: Story = {
+export const Placement: Story = {
   render: function Render(args: SidePanelProps) {
     return (
       <FlexBox gap="l">
-        {sidePanelPropPosition.map((position) => (
-          <SidePanel
-            key={position}
-            position={position}
-            control={(props) => (
-              <Button {...props}>position = {position}</Button>
-            )}
-            {...args}
-          >
-            {({ close }) => (
-              <>
-                <SidePanel.Header>
-                  I have a {position} position
-                </SidePanel.Header>
-                <SidePanel.Body>But there&#39;s nothing to say…</SidePanel.Body>
-                <SidePanel.Footer>
-                  <Button onPress={close}>Ok</Button>
-                </SidePanel.Footer>
-              </>
-            )}
-          </SidePanel>
-        ))}
+        <SidePanel
+          placement="start"
+          control={(props) => <Button {...props}>placement = start</Button>}
+          {...args}
+        >
+          {({ close }) => (
+            <>
+              <SidePanel.Header>I have a start placement</SidePanel.Header>
+              <SidePanel.Body>But there&#39;s nothing to say…</SidePanel.Body>
+              <SidePanel.Footer>
+                <Button onPress={close}>Ok</Button>
+              </SidePanel.Footer>
+            </>
+          )}
+        </SidePanel>
+        <SidePanel
+          placement="end"
+          control={(props) => <Button {...props}>placement = end</Button>}
+          {...args}
+        >
+          {({ close }) => (
+            <>
+              <SidePanel.Header>I have an end placement</SidePanel.Header>
+              <SidePanel.Body>But there&#39;s nothing to say…</SidePanel.Body>
+              <SidePanel.Footer>
+                <Button onPress={close}>Ok</Button>
+              </SidePanel.Footer>
+            </>
+          )}
+        </SidePanel>
       </FlexBox>
     );
   },
