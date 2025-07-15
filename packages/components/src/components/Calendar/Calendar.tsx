@@ -16,11 +16,7 @@ import { utilClasses } from '../../styles/utility';
 
 import s from './Calendar.module.css';
 import { CalendarGrid, CalendarHeader } from './components';
-import type {
-  CalendarComponentProp,
-  CalendarProps,
-  CalendarRef,
-} from './types';
+import type { CalendarComponent, CalendarProps, CalendarRef } from './types';
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -58,4 +54,4 @@ function CalendarRender<T extends DateValue>(
   );
 }
 
-export const Calendar = forwardRef(CalendarRender) as CalendarComponentProp;
+export const Calendar = forwardRef(CalendarRender) as CalendarComponent;

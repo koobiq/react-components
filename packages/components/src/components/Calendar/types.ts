@@ -68,7 +68,7 @@ export type CalendarProps<T extends DateValue> = {
   onFocusChange?: CalendarPropOnFocusChange<T>;
 };
 
-export type CalendarComponentProp = <T extends DateValue>(
+export type CalendarComponent = <T extends DateValue>(
   props: CalendarProps<T>
 ) => ReactElement | null;
 
