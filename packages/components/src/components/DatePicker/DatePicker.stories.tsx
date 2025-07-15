@@ -3,7 +3,14 @@ import { useState } from 'react';
 import { getLocalTimeZone, parseDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { FlexBox, Typography, useDateFormatter } from '../../index';
+import {
+  ButtonToggle,
+  ButtonToggleGroup,
+  FlexBox,
+  Provider,
+  Typography,
+  useDateFormatter,
+} from '../../index';
 
 import { DatePicker } from './DatePicker';
 
@@ -50,6 +57,27 @@ export const Controlled: Story = {
           Selected date:{' '}
           {value ? formatter.format(value.toDate(getLocalTimeZone())) : '--'}
         </Typography>
+      </FlexBox>
+    );
+  },
+};
+
+export const Locale: Story = {
+  render: function Render() {
+    const [selected, setSelected] = useState<string | number>('system');
+
+    return (
+      <FlexBox direction="column" gap="l">
+        <ButtonToggleGroup
+          selectedKey={selected}
+          onSelectionChange={setSelected}
+        >
+          <ButtonToggle id="system">System</ButtonToggle>
+          <ButtonToggle id="english">English</ButtonToggle>
+        </ButtonToggleGroup>
+        <Provider locale={selected === 'system' ? undefined : 'en-US'}>
+          <DatePicker aria-label="Event date" />
+        </Provider>
       </FlexBox>
     );
   },
