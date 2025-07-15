@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { flex } from '../layout';
+import { FlexBox } from '../FlexBox';
 import { useBreakpoints } from '../Provider';
 import { Typography } from '../Typography';
 
@@ -32,10 +32,8 @@ export const Base: Story = {
 
 export const Variant: Story = {
   render: function Render(args) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {textareaPropVariant.map((variant) => (
           <Textarea
             key={variant}
@@ -45,7 +43,7 @@ export const Variant: Story = {
             {...args}
           />
         ))}
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -110,10 +108,8 @@ export const RowsCols: Story = {
 
 export const Expand: Story = {
   render: function Render(args: TextareaProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Textarea
           expand="vertical-resize"
           label="expand = vertical-resize"
@@ -130,17 +126,15 @@ export const Expand: Story = {
           fullWidth
           {...args}
         />
-      </div>
+      </FlexBox>
     );
   },
 };
 
 export const Required: Story = {
   render: function Render(args: TextareaProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div className={flex({ gap: 'm', direction: l ? 'row' : 'column' })}>
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Textarea
           label="Tell us your story"
           caption="required"
@@ -156,7 +150,7 @@ export const Required: Story = {
           isRequired
           {...args}
         />
-      </div>
+      </FlexBox>
     );
   },
 };
@@ -194,13 +188,7 @@ export const ControlledValue: Story = {
     const [value, setState] = useState('It was a dark and stormy night...');
 
     return (
-      <div
-        className={flex({
-          gap: 'm',
-          direction: 'column',
-          alignItems: 'stretch',
-        })}
-      >
+      <FlexBox gap="m" direction="column" alignItems="stretch">
         <Textarea
           value={value}
           onChange={setState}
@@ -210,7 +198,7 @@ export const ControlledValue: Story = {
           {...args}
         />
         <Typography ellipsis>Current value: {value}</Typography>
-      </div>
+      </FlexBox>
     );
   },
 };
