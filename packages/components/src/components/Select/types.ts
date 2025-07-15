@@ -147,7 +147,7 @@ export type SelectProps<T extends object> = {
   };
 } & SelectDeprecatedProps;
 
-export type SelectComponentProp = <T extends object>(
+export type SelectComponent = <T extends object>(
   props: SelectProps<T>
 ) => ReactElement | null;
 

@@ -34,7 +34,7 @@ import {
 import { ListItemText, ListInner } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 
-import type { SelectRef, SelectProps, SelectComponentProp } from './index';
+import type { SelectRef, SelectProps, SelectComponent } from './index';
 import s from './Select.module.css';
 
 function SelectRender<T extends object>(
@@ -264,7 +264,7 @@ function SelectRender<T extends object>(
   );
 }
 
-const SelectComponent = forwardRef(SelectRender) as SelectComponentProp;
+const SelectComponent = forwardRef(SelectRender) as SelectComponent;
 
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof Item;
