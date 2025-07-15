@@ -99,6 +99,8 @@ export type PopoverBaseProps = {
   disableExitOnEscapeKeyDown?: boolean;
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
   /**

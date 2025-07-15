@@ -36,6 +36,16 @@ describe('Popover', () => {
     expect(root?.className).toContain(className);
   });
 
+  it('should set custom style', () => {
+    const style = { padding: 20 };
+
+    render(<Popover {...baseProps} style={style} isOpen />);
+
+    const root = getRoot();
+
+    expect(root).toHaveStyle('padding: 20px');
+  });
+
   describe('check the size prop', () => {
     it.each(popoverPropSize)('should apply the size as a "%s"', (size) => {
       render(<Popover {...baseProps} size={size} isOpen />);
