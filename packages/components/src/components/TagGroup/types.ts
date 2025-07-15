@@ -56,7 +56,7 @@ export type TagGroupProps<T extends object> = {
   };
 };
 
-export type TagGroupComponentProp = <T extends object>(
+export type TagGroupComponent = <T extends object>(
   props: TagGroupProps<T>
 ) => ReactElement | null;
 

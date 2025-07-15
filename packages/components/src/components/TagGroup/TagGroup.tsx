@@ -7,11 +7,7 @@ import { useTagGroup, useListState } from '@koobiq/react-primitives';
 
 import { TagInner } from './components';
 import s from './TagGroup.module.css';
-import type {
-  TagGroupComponentProp,
-  TagGroupProps,
-  TagGroupRef,
-} from './types';
+import type { TagGroupComponent, TagGroupProps, TagGroupRef } from './types';
 
 function TagGroupRender<T extends object>(
   props: Omit<TagGroupProps<T>, 'ref'>,
@@ -39,4 +35,4 @@ function TagGroupRender<T extends object>(
   );
 }
 
-export const TagGroup = forwardRef(TagGroupRender) as TagGroupComponentProp;
+export const TagGroup = forwardRef(TagGroupRender) as TagGroupComponent;
