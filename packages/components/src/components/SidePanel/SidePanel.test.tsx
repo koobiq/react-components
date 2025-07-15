@@ -168,7 +168,7 @@ describe('SidePanel', () => {
     render(
       <>
         <button />
-        <SidePanel defaultOpen>
+        <SidePanel defaultOpen hideCloseButton>
           <input data-testid="input" />
         </SidePanel>
       </>
