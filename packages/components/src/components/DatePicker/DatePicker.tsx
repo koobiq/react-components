@@ -13,7 +13,7 @@ import { IconButton } from '../IconButton';
 import { PopoverInner } from '../Popover/PopoverInner';
 
 import type {
-  DatePickerComponentProps,
+  DatePickerComponent,
   DatePickerProps,
   DatePickerRef,
 } from './types';
@@ -74,6 +74,4 @@ export function DatePickerRender<T extends DateValue>(
   );
 }
 
-export const DatePicker = forwardRef(
-  DatePickerRender
-) as DatePickerComponentProps;
+export const DatePicker = forwardRef(DatePickerRender) as DatePickerComponent;
