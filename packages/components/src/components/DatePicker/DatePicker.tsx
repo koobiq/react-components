@@ -1,7 +1,10 @@
+'use client';
+
 import { useRef } from 'react';
 
+import { clsx } from '@koobiq/react-core';
 import { IconCalendarO16 } from '@koobiq/react-icons';
-import type { AriaDatePickerProps, DateValue } from '@koobiq/react-primitives';
+import type { DateValue } from '@koobiq/react-primitives';
 import { useDatePicker, useDatePickerState } from '@koobiq/react-primitives';
 
 import { Calendar } from '../Calendar';
@@ -9,11 +12,14 @@ import { DateInput } from '../DateInput';
 import { IconButton } from '../IconButton';
 import { PopoverInner } from '../Popover/PopoverInner';
 
-export type DatePickerProps<T extends DateValue> = AriaDatePickerProps<T>;
+import s from './DatePicker.module.css';
+import type { DatePickerProps } from './types';
 
 export function DatePicker<T extends DateValue>(props: DatePickerProps<T>) {
   const state = useDatePickerState(props);
   const ref = useRef(null);
+
+  const { label } = props;
 
   const {
     groupProps,
@@ -25,11 +31,11 @@ export function DatePicker<T extends DateValue>(props: DatePickerProps<T>) {
   } = useDatePicker(props, state, ref);
 
   return (
-    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+    <div className={clsx(s.base)}>
       <div {...labelProps}></div>
-      <div {...groupProps} ref={ref} style={{ display: 'flex' }}>
+      <div {...groupProps} ref={ref} className={s.group}>
         <DateInput
-          label={props.label}
+          label={label}
           slotProps={{
             label: labelProps,
             group: {
