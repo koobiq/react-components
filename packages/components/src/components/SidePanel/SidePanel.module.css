@@ -29,6 +29,16 @@
   justify-content: flex-end;
 }
 
+.start {
+  --side-panel-start-position: -100%;
+  justify-content: flex-start;
+}
+
+.end {
+  --side-panel-start-position: 100%;
+  justify-content: flex-end;
+}
+
 /* animation */
 .base[data-transition='entering'] .panel {
   transform: translate(0, 0);

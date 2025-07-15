@@ -8,7 +8,7 @@ import { Button } from '../Button';
 
 import { SidePanel } from './SidePanel';
 import {
-  sidePanelPropPosition,
+  sidePanelPropPlacement,
   type SidePanelProps,
   sidePanelPropSize,
 } from './types';
@@ -64,13 +64,13 @@ describe('SidePanel', () => {
     });
   });
 
-  describe('check the position prop', () => {
-    it.each(sidePanelPropPosition)(
-      'should apply the position as a "%s"',
-      (position) => {
-        render(<SidePanel {...baseProps} position={position} isOpen />);
+  describe('check the placement prop', () => {
+    it.each(sidePanelPropPlacement)(
+      'should apply the placement as a "%s"',
+      (placement) => {
+        render(<SidePanel {...baseProps} placement={placement} isOpen />);
 
-        expect(getRoot()).toHaveAttribute('data-position', position);
+        expect(getRoot()).toHaveAttribute('data-placement', placement);
       }
     );
   });

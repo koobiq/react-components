@@ -23,6 +23,7 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
     const {
       size = 'medium',
       position = 'left',
+      placement = 'start',
       hideCloseButton = false,
       control,
       children,
@@ -45,6 +46,12 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
     if (process.env.NODE_ENV !== 'production' && 'open' in props) {
       deprecate(
         'SidePanel: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production' && 'position' in props) {
+      deprecate(
+        'SidePanel: the "position" prop is deprecated. Use "placement" prop to replace it.'
       );
     }
 
@@ -91,8 +98,8 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       {
         ref: containerRef,
         'data-size': size,
-        'data-position': position,
-        className: clsx(s.base, s[size], s[position]),
+        'data-placement': placement,
+        className: clsx(s.base, s[size], s[position], s[placement]),
       },
       other
     );

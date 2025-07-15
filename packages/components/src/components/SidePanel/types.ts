@@ -18,6 +18,10 @@ export const sidePanelPropPosition = ['left', 'right'] as const;
 
 export type SidePanelPropPosition = (typeof sidePanelPropPosition)[number];
 
+export const sidePanelPropPlacement = ['start', 'end'] as const;
+
+export type SidePanelPropPlacement = (typeof sidePanelPropPlacement)[number];
+
 export type SidePanelPropContent =
   | ReactNode
   | ((props: { close(): void }) => ReactElement);
@@ -32,6 +36,14 @@ type SidePanelDeprecatedProps = {
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    */
   open?: boolean;
+  /**
+   * Side from which the side panel will appear.
+   * @default left
+   *
+   * @deprecated
+   * The "position" prop is deprecated. Use "placement" prop to replace it.
+   */
+  position?: SidePanelPropPosition;
 };
 
 export type SidePanelProps = {
@@ -42,9 +54,9 @@ export type SidePanelProps = {
   size?: SidePanelPropSize;
   /**
    * Side from which the side panel will appear.
-   * @default left
+   * @default start
    */
-  position?: SidePanelPropPosition;
+  placement?: SidePanelPropPlacement;
   /** If `true`, the component is shown. */
   isOpen?: boolean;
   /** The default open state. Use when the component is not controlled. */
