@@ -156,7 +156,7 @@ describe('Modal', () => {
     render(
       <>
         <button />
-        <Modal defaultOpen>
+        <Modal defaultOpen hideCloseButton>
           <input data-testid="input" />
         </Modal>
       </>
