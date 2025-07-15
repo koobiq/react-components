@@ -24,3 +24,21 @@ import { DatePicker } from '@koobiq/react-components';
 ## Props
 
 <Props />
+
+## Value
+
+A DatePicker displays a placeholder by default. An initial, uncontrolled value can be provided
+to the DatePicker using the `defaultValue` prop. Alternatively, a controlled value can be provided
+using the `value` prop.
+
+Date values are provided using objects in the [@internationalized/date](https://github.com/adobe/react-spectrum/tree/main/packages/@internationalized/date) package.
+This library handles correct international date manipulation across calendars,
+time zones, and other localization concerns.
+
+### Uncontrolled
+
+<Story of={Stories.Uncontrolled} />
+
+### Controlled
+
+<Story of={Stories.Controlled} />
