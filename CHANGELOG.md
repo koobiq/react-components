@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.1-beta.35](https://github.com/koobiq/react-components/compare/0.0.1-beta.34...0.0.1-beta.35) (2025-07-15)
+
+### 🚀 Features
+
+- **components/Menu:** add `isOpen`, deprecate `open` (DS-3979) ([031d750](https://github.com/koobiq/react-components/commit/031d750a11cdfe53d166b0e5a37dee0dad0f373f))
+- **components/Modal:** add `isOpen`, deprecate `open` (DS-3977) ([2141746](https://github.com/koobiq/react-components/commit/2141746e34141e1245eadf78d6071a926ee7d4a3))
+- **components/Popover:** add `isOpen`, deprecate `open` ([70c46ce](https://github.com/koobiq/react-components/commit/70c46cead17e4679564155e8e082fa06765f2391))
+- **components/SidePanel:** add `isOpen`, deprecate `open` (DS-3978) ([e6b124d](https://github.com/koobiq/react-components/commit/e6b124dc4ef35f47852352b7e5cda70136baf888))
+- **components/SidePanel:** add `placement`, deprecate `position` (DS-3981) ([f0381ff](https://github.com/koobiq/react-components/commit/f0381ff05e2c729687614303b28010887371302d))
+
+### 🐞 Bug Fixes
+
+- **components/Popover:** add `style` prop (DS-3986) ([398101c](https://github.com/koobiq/react-components/commit/398101c807b42f37eff98d26c8a8a31ff07272f5))
+- **components:** restore focus trap in modal windows (DS-3987) ([e4e1c3e](https://github.com/koobiq/react-components/commit/e4e1c3ea8d074ab195c6e88780cc38d4436d56e4))
+
 ## [0.0.1-beta.34](https://github.com/koobiq/react-components/compare/0.0.1-beta.33...0.0.1-beta.34) (2025-07-11)
 
 ### 🐞 Bug Fixes
