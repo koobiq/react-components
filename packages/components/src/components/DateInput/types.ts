@@ -65,7 +65,7 @@ export type DateInputProps<T extends DateValue> = {
   'description' | 'validationBehavior' | 'validate' | 'validationState'
 >;
 
-export type DateInputComponentProp = <T extends DateValue>(
+export type DateInputComponent = <T extends DateValue>(
   props: DateInputProps<T>
 ) => ReactElement | null;
 

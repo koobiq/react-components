@@ -32,11 +32,7 @@ import type {
 
 import { DateInputSegment } from './components';
 import s from './DateInput.module.css';
-import type {
-  DateInputRef,
-  DateInputProps,
-  DateInputComponentProp,
-} from './types';
+import type { DateInputRef, DateInputProps, DateInputComponent } from './types';
 
 export function DateInputRender<T extends DateValue>(
   props: Omit<DateInputProps<T>, 'ref'>,
@@ -162,4 +158,4 @@ export function DateInputRender<T extends DateValue>(
   );
 }
 
-export const DateInput = forwardRef(DateInputRender) as DateInputComponentProp;
+export const DateInput = forwardRef(DateInputRender) as DateInputComponent;
