@@ -25,7 +25,7 @@ import {
   TableCheckboxCell,
 } from './components';
 import s from './Table.module.css';
-import type { TableComponentProp, TableProps, TableRef } from './types';
+import type { TableComponent, TableProps, TableRef } from './types';
 import { normalizeBlockSize } from './utils';
 
 const textNormal = utilClasses.typography['text-normal'];
@@ -127,7 +127,7 @@ function TableRender<T extends object>(
   );
 }
 
-const TableComponent = forwardRef(TableRender) as TableComponentProp;
+const TableComponent = forwardRef(TableRender) as TableComponent;
 
 type CompoundedComponent = typeof TableComponent & {
   Header: typeof TableHeader;

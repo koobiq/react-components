@@ -96,7 +96,7 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
   'div'
 >;
 
-export type TableComponentProp = <T extends object>(
+export type TableComponent = <T extends object>(
   props: TableProps<T>
 ) => ReactElement | null;
 
