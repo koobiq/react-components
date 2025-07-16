@@ -24,7 +24,7 @@ export function DatePickerRender<T extends DateValue>(
 ) {
   const anchorRef = useRef(null);
 
-  const { label, fullWidth, caption, errorMessage } = props;
+  const { label, fullWidth, caption, errorMessage, isInvalid } = props;
 
   const state = useDatePickerState({ ...props, description: caption });
 
@@ -50,7 +50,7 @@ export function DatePickerRender<T extends DateValue>(
           group: {
             endAddon: (
               <IconButton
-                variant="fade-contrast"
+                variant={isInvalid ? 'error' : 'fade-contrast'}
                 style={{ marginInlineEnd: '-4px' }}
                 {...buttonProps}
               >
