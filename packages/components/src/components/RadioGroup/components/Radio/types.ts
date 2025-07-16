@@ -11,8 +11,6 @@ export const radioPropLabelPlacement = ['start', 'end'] as const;
 export type RadioPropLabelPlacement = (typeof radioPropLabelPlacement)[number];
 
 export type RadioProps = UseRadioProps & {
-  /** The helper text content. */
-  caption?: string;
   /**
    * Size.
    * @default normal
