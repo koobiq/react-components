@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.1-beta.37](https://github.com/koobiq/react-components/compare/0.0.1-beta.36...0.0.1-beta.37) (2025-07-16)
+
+### 🚀 Features
+
+- **components/DateInput:** allow `caption` to accept ReactNode (DS-3993) ([64256f1](https://github.com/koobiq/react-components/commit/64256f1239257418fe3dfb6b23b17a2f88baf964))
+- **InputNumber:** improve increment and decrement buttons behavior (DS-3996) ([5df62cb](https://github.com/koobiq/react-components/commit/5df62cb1d92030ac9185ee62561179c6d3fa56e2))
+
+### 🐞 Bug Fixes
+
+- **components/Radio:** exclude `caption` prop from `RadioProps` type (DS-3992) ([b0fcef9](https://github.com/koobiq/react-components/commit/b0fcef9e19453275013cc66c8ccb742c1271b800))
+- **Input/DateInput/InputNumber/Select:** apply disabled state for addons (DS-3994) ([4c3876a](https://github.com/koobiq/react-components/commit/4c3876a9057d57642345d068861ccf4f4d37999d))
+
 ## [0.0.1-beta.36](https://github.com/koobiq/react-components/compare/0.0.1-beta.35...0.0.1-beta.36) (2025-07-16)
 
 ### 🐞 Bug Fixes
