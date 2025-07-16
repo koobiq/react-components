@@ -1,5 +1,5 @@
 import { clsx } from '@koobiq/react-core';
-import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
+import { IconChevronDownS16, IconChevronUpS16 } from '@koobiq/react-icons';
 
 import { useFieldInputGroup } from '../../FieldComponents';
 import { IconButton } from '../../IconButton';
@@ -7,29 +7,29 @@ import { IconButton } from '../../IconButton';
 import s from './InputNumberCounterControls.module.css';
 
 export const InputNumberCounterControls = () => {
-  const { isHovered, hasValue, isFocusWithin } = useFieldInputGroup();
+  const { isInvalid } = useFieldInputGroup();
 
-  const visible = (isHovered || isFocusWithin) && hasValue;
+  const variant = isInvalid ? 'error' : 'fade-contrast';
 
   return (
-    <div className={clsx(s.base, visible && s.visible)}>
+    <div className={s.base}>
       <IconButton
-        className={s.counter}
+        className={clsx(s.counter, s.increment)}
         slot="increment"
-        variant="fade-contrast"
+        variant={variant}
         size="l"
         isCompact
       >
-        <IconChevronUp16 />
+        <IconChevronUpS16 />
       </IconButton>
       <IconButton
-        className={s.counter}
+        className={clsx(s.counter, s.decrement)}
         slot="decrement"
-        variant="fade-contrast"
+        variant={variant}
         size="l"
         isCompact
       >
-        <IconChevronDown16 />
+        <IconChevronDownS16 />
       </IconButton>
     </div>
   );

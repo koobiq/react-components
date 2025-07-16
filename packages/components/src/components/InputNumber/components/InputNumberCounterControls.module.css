@@ -1,17 +1,17 @@
 .base {
-  opacity: 0;
   display: flex;
   flex-direction: column;
-  margin-inline-end: -8px;
-  visibility: hidden;
-  transition: opacity var(--kbq-transition-default);
-}
-
-.visible {
-  visibility: visible;
-  opacity: 1;
+  margin-inline-end: calc(-1 * var(--kbq-size-s));
 }
 
 .counter {
   inline-size: var(--kbq-size-3xl);
+}
+
+.increment > svg {
+  margin-block-end: calc(-1 * var(--kbq-size-3xs));
+}
+
+.decrement > svg {
+  margin-block-start: calc(-1 * var(--kbq-size-3xs));
 }
