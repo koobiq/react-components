@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.1-beta.36](https://github.com/koobiq/react-components/compare/0.0.1-beta.35...0.0.1-beta.36) (2025-07-16)
+
+### 🐞 Bug Fixes
+
+- **components:** correct `fullWidth` behavior for Input, Select, InputNumber, Textarea and DateInput (DS-3990) ([3ecb90e](https://github.com/koobiq/react-components/commit/3ecb90e2eb7cf92d1d8bb3adc272e5bf94fbc028))
+
 ## [0.0.1-beta.35](https://github.com/koobiq/react-components/compare/0.0.1-beta.34...0.0.1-beta.35) (2025-07-15)
 
 ### 🚀 Features
