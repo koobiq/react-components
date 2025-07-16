@@ -32,12 +32,12 @@ export const Base: Story = {
     return (
       <Modal
         size="small"
-        control={(props) => <Button {...props}>Create access group</Button>}
+        control={(props) => <Button {...props}>Create an access group</Button>}
         {...args}
       >
         {({ close }) => (
           <>
-            <Modal.Header>Create access group</Modal.Header>
+            <Modal.Header>Create an access group</Modal.Header>
             <Modal.Body>
               <Input
                 label="Name"
@@ -103,7 +103,7 @@ export const ControlledOpen: Story = {
       <>
         <Button onPress={on}>Open</Button>
         <Modal isOpen={isOpen} size="small" onOpenChange={set} {...args}>
-          <Modal.Header>Create access group</Modal.Header>
+          <Modal.Header>Create an access group</Modal.Header>
           <Modal.Body>
             <Input
               label="Name"
