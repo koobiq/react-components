@@ -43,6 +43,7 @@ export const Base: Story = {
                 label="Name"
                 placeholder="Enter a name"
                 className={spacing({ mbe: 'm' })}
+                fullWidth
                 autoFocus
                 isRequired
               />
@@ -50,6 +51,7 @@ export const Base: Story = {
                 placeholder="Enter a description"
                 label="Description"
                 rows={3}
+                fullWidth
               />
             </Modal.Body>
             <Modal.Footer>
@@ -107,6 +109,7 @@ export const ControlledOpen: Story = {
               label="Name"
               placeholder="Enter a name"
               className={spacing({ mbe: 'm' })}
+              fullWidth
               autoFocus
               isRequired
             />
@@ -114,6 +117,7 @@ export const ControlledOpen: Story = {
               placeholder="Enter a description"
               label="Description"
               rows={3}
+              fullWidth
             />
           </Modal.Body>
           <Modal.Footer>
