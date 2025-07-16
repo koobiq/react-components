@@ -177,6 +177,7 @@ function SelectRender<T extends object>(
         </>
       ),
       isInvalid,
+      isDisabled,
       ref: containerRef,
     },
     slotProps?.group

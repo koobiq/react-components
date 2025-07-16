@@ -5,6 +5,7 @@ export type FieldInputGroupContextProps = {
   hasValue?: boolean;
   isHovered?: boolean;
   isFocusWithin?: boolean;
+  isInvalid?: boolean;
 };
 
 export const FieldInputGroupContext =

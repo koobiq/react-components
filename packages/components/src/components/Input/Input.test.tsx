@@ -102,16 +102,47 @@ describe('Input', () => {
   });
 
   describe('addons', () => {
-    it(`should render the startAddon`, () => {
+    const getStartAddon = () => screen.getByTestId('field-addon-start');
+    const getEndAddon = () => screen.getByTestId('field-addon-end');
+
+    it(`should render a startAddon`, () => {
       render(<Input {...baseProps} startAddon="addon" />);
 
       expect(getRoot()).toHaveTextContent('addon');
     });
 
-    it(`should render the endAddon`, () => {
+    it(`should render an endAddon`, () => {
       render(<Input {...baseProps} endAddon="addon" />);
 
       expect(getRoot()).toHaveTextContent('addon');
+    });
+
+    it(`should render addons in an error state`, () => {
+      render(
+        <Input
+          {...baseProps}
+          startAddon="start-addon"
+          endAddon="end-addon"
+          isInvalid
+        />
+      );
+
+      expect(getStartAddon()).toHaveAttribute('data-invalid', 'true');
+      expect(getEndAddon()).toHaveAttribute('data-invalid', 'true');
+    });
+
+    it(`should render addons in a disabled state`, () => {
+      render(
+        <Input
+          {...baseProps}
+          startAddon="start-addon"
+          endAddon="end-addon"
+          isDisabled
+        />
+      );
+
+      expect(getStartAddon()).toHaveAttribute('data-disabled', 'true');
+      expect(getEndAddon()).toHaveAttribute('data-disabled', 'true');
     });
   });
 
