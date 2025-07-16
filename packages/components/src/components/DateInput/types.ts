@@ -29,7 +29,7 @@ export type DateInputProps<T extends DateValue> = {
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
   /** The helper text content. */
-  caption?: string | number;
+  caption?: ReactNode;
   /**
    * The variant to use.
    * @default filled
