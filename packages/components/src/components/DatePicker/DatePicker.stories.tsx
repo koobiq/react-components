@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
-import { getLocalTimeZone, parseDate } from '@internationalized/date';
+import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   ButtonToggle,
   ButtonToggleGroup,
   FlexBox,
+  Grid,
   Provider,
   Typography,
   useDateFormatter,
@@ -60,6 +61,27 @@ export const Controlled: Story = {
       </FlexBox>
     );
   },
+};
+
+export const States: Story = {
+  render: () => (
+    <Grid gap="m" cols={{ xs: 1, s: 2, m: 2, l: 2 }}>
+      <DatePicker label="Date" errorMessage="isInvalid" isInvalid />
+      <DatePicker
+        label="Date"
+        caption="isDisabled"
+        defaultValue={today(getLocalTimeZone())}
+        isDisabled
+      />
+      <DatePicker label="Date" caption="isRequired" isRequired />
+      <DatePicker
+        label="Date"
+        caption="isReadOnly"
+        defaultValue={today(getLocalTimeZone())}
+        isReadOnly
+      />
+    </Grid>
+  ),
 };
 
 export const FullWidth: Story = {

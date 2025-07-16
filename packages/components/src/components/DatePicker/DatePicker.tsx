@@ -22,10 +22,11 @@ export function DatePickerRender<T extends DateValue>(
   props: DatePickerProps<T>,
   ref: Ref<DatePickerRef>
 ) {
-  const state = useDatePickerState(props);
   const anchorRef = useRef(null);
 
-  const { label, fullWidth } = props;
+  const { label, fullWidth, caption, errorMessage } = props;
+
+  const state = useDatePickerState({ ...props, description: caption });
 
   const {
     groupProps,
@@ -34,14 +35,16 @@ export function DatePickerRender<T extends DateValue>(
     buttonProps,
     // dialogProps,
     calendarProps,
-  } = useDatePicker(props, state, anchorRef);
+  } = useDatePicker({ ...props, description: caption }, state, anchorRef);
 
   return (
     <>
       <DateInput
         ref={ref}
         label={label}
+        caption={caption}
         fullWidth={fullWidth}
+        errorMessage={errorMessage}
         slotProps={{
           label: labelProps,
           group: {
