@@ -24,7 +24,7 @@ export function DatePickerRender<T extends DateValue>(
 ) {
   const anchorRef = useRef(null);
 
-  const { label, fullWidth, caption, errorMessage, isInvalid } = props;
+  const { label, fullWidth, caption, errorMessage } = props;
 
   const state = useDatePickerState({ ...props, description: caption });
 
@@ -35,6 +35,7 @@ export function DatePickerRender<T extends DateValue>(
     buttonProps,
     dialogProps,
     calendarProps,
+    isInvalid,
   } = useDatePicker({ ...props, description: caption }, state, anchorRef);
 
   return (
