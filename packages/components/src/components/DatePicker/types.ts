@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
 import type { AriaDatePickerProps, DateValue } from '@koobiq/react-primitives';
 
@@ -12,6 +12,10 @@ export type DatePickerProps<T extends DateValue> = {
   fullWidth?: boolean;
   /** The helper text content. */
   caption?: ReactNode;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
 } & Omit<AriaDatePickerProps<T>, 'description'>;
 
 export type DatePickerComponent = <T extends DateValue>(

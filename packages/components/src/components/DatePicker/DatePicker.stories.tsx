@@ -122,10 +122,12 @@ export const MinMaxValues: Story = {
     return (
       <DatePicker
         value={value}
+        style={{ width: 150 }}
         aria-label="Event date"
         minValue={today(getLocalTimeZone())}
         onChange={(value) => setValue(value!)}
         maxValue={today(getLocalTimeZone()).add({ months: 8 })}
+        errorMessage={({ validationErrors }) => validationErrors.join('/\n\n')}
       />
     );
   },
