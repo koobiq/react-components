@@ -3,7 +3,6 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
-import { useBreakpoints } from '../Provider';
 import { Typography } from '../Typography';
 
 import { Textarea, type TextareaProps, textareaPropVariant } from './index';
@@ -63,18 +62,17 @@ export const Invalid: Story = {
 };
 
 export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render(args: TextareaProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div style={{ inlineSize: l ? 320 : 260 }}>
-        <Textarea
-          aria-label="fullWidth"
-          placeholder="fullWidth"
-          fullWidth
-          {...args}
-        />
-      </div>
+      <Textarea
+        aria-label="fullWidth"
+        placeholder="fullWidth"
+        fullWidth
+        {...args}
+      />
     );
   },
 };

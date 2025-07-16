@@ -12,7 +12,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
-import { useBreakpoints } from '../Provider';
 import { Typography } from '../Typography';
 
 import type { SelectKey, SelectProps } from './index.js';
@@ -221,20 +220,19 @@ export const Required: Story = {
 };
 
 export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render() {
-    const { l } = useBreakpoints();
-
     return (
-      <div style={{ inlineSize: l ? 320 : 260 }}>
-        <Select
-          items={options}
-          label="Attack type"
-          placeholder="Select an option"
-          fullWidth
-        >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
-        </Select>
-      </div>
+      <Select
+        items={options}
+        label="Attack type"
+        placeholder="Select an option"
+        fullWidth
+      >
+        {(item) => <Select.Item>{item.name}</Select.Item>}
+      </Select>
     );
   },
 };

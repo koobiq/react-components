@@ -13,7 +13,6 @@ import { AnimatedIcon } from '../AnimatedIcon';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
-import { useBreakpoints } from '../Provider';
 import { Typography } from '../Typography';
 
 import { Input, type InputProps, inputPropVariant } from './index';
@@ -102,18 +101,17 @@ export const Invalid: Story = {
 };
 
 export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render(args: InputProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div style={{ inlineSize: l ? 320 : 260 }}>
-        <Input
-          aria-label="fullWidth"
-          placeholder="fullWidth"
-          fullWidth
-          {...args}
-        />
-      </div>
+      <Input
+        aria-label="fullWidth"
+        placeholder="fullWidth"
+        fullWidth
+        {...args}
+      />
     );
   },
 };
