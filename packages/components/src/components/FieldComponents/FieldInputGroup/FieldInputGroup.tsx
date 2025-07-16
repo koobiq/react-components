@@ -32,59 +32,54 @@ export type FieldInputGroupProps = ExtendableComponentPropsWithRef<
 export const FieldInputGroup = forwardRef<
   ComponentRef<'div'>,
   FieldInputGroupProps
->(
-  (
-    {
-      children,
-      className,
-      startAddon,
-      endAddon,
-      isInvalid,
-      slotProps,
-      ...other
-    },
-    ref
-  ) => {
-    const { value } = useInputContext();
-    const hasStartAddon = !!startAddon;
-    const hasEndAddon = !!endAddon;
-    const hasValue = isNotNil(value);
+>(({ children, className, startAddon, endAddon, slotProps, ...other }, ref) => {
+  const { value } = useInputContext();
+  const hasStartAddon = !!startAddon;
+  const hasEndAddon = !!endAddon;
+  const hasValue = isNotNil(value);
 
-    return (
-      <Group
-        className={clsx(
-          s.base,
-          hasStartAddon && s.hasStartAddon,
-          hasEndAddon && s.hasEndAddon,
-          className
-        )}
-        {...other}
-        ref={ref}
-      >
-        {({ isHovered, isFocusWithin, isDisabled }) => (
-          <FieldInputGroupContext.Provider
-            value={{ isDisabled, isHovered, hasValue, isFocusWithin }}
+  return (
+    <Group
+      className={clsx(
+        s.base,
+        hasStartAddon && s.hasStartAddon,
+        hasEndAddon && s.hasEndAddon,
+        className
+      )}
+      {...other}
+      ref={ref}
+    >
+      {({ isHovered, isFocusWithin, isDisabled, isInvalid }) => (
+        <FieldInputGroupContext.Provider
+          value={{
+            isDisabled,
+            isHovered,
+            hasValue,
+            isFocusWithin,
+            isInvalid,
+          }}
+        >
+          <FieldAddon
+            placement="start"
+            isInvalid={isInvalid}
+            isDisabled={isDisabled}
+            {...slotProps?.start}
           >
-            <FieldAddon
-              placement="start"
-              isInvalid={isInvalid}
-              {...slotProps?.start}
-            >
-              {startAddon}
-            </FieldAddon>
-            {children}
-            <FieldAddon
-              placement="end"
-              isInvalid={isInvalid}
-              {...slotProps?.end}
-            >
-              {endAddon}
-            </FieldAddon>
-          </FieldInputGroupContext.Provider>
-        )}
-      </Group>
-    );
-  }
-);
+            {startAddon}
+          </FieldAddon>
+          {children}
+          <FieldAddon
+            placement="end"
+            isInvalid={isInvalid}
+            isDisabled={isDisabled}
+            {...slotProps?.end}
+          >
+            {endAddon}
+          </FieldAddon>
+        </FieldInputGroupContext.Provider>
+      )}
+    </Group>
+  );
+});
 
 FieldInputGroup.displayName = 'FieldInputGroup';

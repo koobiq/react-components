@@ -1,11 +1,12 @@
 .base {
+  --field-addon-color: var(--kbq-icon-contrast-fade);
   z-index: 1;
   display: flex;
   position: absolute;
   block-size: 100%;
   align-items: center;
   justify-content: center;
-  color: var(--kbq-icon-contrast-fade);
+  color: var(--field-addon-color);
   transition: color var(--kbq-transition-default);
 }
 
@@ -19,5 +20,9 @@
 }
 
 .invalid {
-  color: var(--kbq-icon-error);
+  --field-addon-color: var(--kbq-icon-error);
+}
+
+.disabled {
+  --field-addon-color: var(--kbq-states-icon-disabled);
 }

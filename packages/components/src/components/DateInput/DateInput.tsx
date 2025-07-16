@@ -106,6 +106,7 @@ export function DateInputRender<T extends DateValue>(
     {
       endAddon,
       isInvalid,
+      isDisabled,
       startAddon,
     },
     slotProps?.group

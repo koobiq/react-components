@@ -133,6 +133,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           {
             endAddon,
             isInvalid,
+            isDisabled,
             startAddon,
           },
           slotProps?.group
