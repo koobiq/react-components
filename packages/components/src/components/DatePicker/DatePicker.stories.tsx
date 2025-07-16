@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
+import { isWeekend } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import {
@@ -12,6 +13,7 @@ import {
   useDateFormatter,
   ButtonToggleGroup,
 } from '../../index';
+import { useLocale } from '../Provider';
 
 import { DatePicker } from './DatePicker';
 
@@ -127,7 +129,22 @@ export const MinMaxValues: Story = {
         minValue={today(getLocalTimeZone())}
         onChange={(value) => setValue(value!)}
         maxValue={today(getLocalTimeZone()).add({ months: 8 })}
-        errorMessage={({ validationErrors }) => validationErrors.join('/\n\n')}
+        errorMessage={({ validationErrors }) => validationErrors.join('/\n/\n')}
+      />
+    );
+  },
+};
+
+export const UnavailableDates: Story = {
+  name: 'Unavailable dates',
+  render: function Render() {
+    const { locale } = useLocale();
+
+    return (
+      <DatePicker
+        aria-label="Appointment date"
+        isDateUnavailable={(date) => isWeekend(date, locale)}
+        errorMessage={({ validationErrors }) => validationErrors.join('/\n/\n')}
       />
     );
   },
