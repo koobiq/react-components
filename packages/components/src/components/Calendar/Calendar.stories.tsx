@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import type { DateValue } from '@koobiq/react-primitives';
 import {
   today,
   isWeekend,
@@ -15,7 +14,7 @@ import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 import { Provider, useLocale } from '../Provider';
 
-import { Calendar, type CalendarProps } from './index.js';
+import { Calendar } from './index.js';
 
 const meta = {
   title: 'Components/Calendar',
@@ -35,7 +34,7 @@ const containerStyle = {
 };
 
 export const Base: Story = {
-  render: function Render(args: CalendarProps<DateValue>) {
+  render: function Render(args) {
     return (
       <div style={containerStyle}>
         <Calendar aria-label="Event date" {...args} />
@@ -65,7 +64,7 @@ export const Value: Story = {
 };
 
 export const Locale: Story = {
-  render: function Render(args: CalendarProps<DateValue>) {
+  render: function Render(args) {
     const [selected, setSelected] = useState<string | number>('system');
 
     return (
@@ -92,7 +91,7 @@ export const Locale: Story = {
 };
 
 export const Disabled: Story = {
-  render: function Render(args: CalendarProps<DateValue>) {
+  render: function Render(args) {
     return (
       <div style={containerStyle}>
         <Calendar aria-label="Event date" isDisabled {...args} />
@@ -103,18 +102,17 @@ export const Disabled: Story = {
 
 export const MinMaxValues: Story = {
   name: 'MinValue and MaxValue',
-  render: function Render(args: CalendarProps<DateValue>) {
-    const [value, setValue] = useState<DateValue>(parseDate('2025-05-01'));
+  render: function Render() {
+    const [value, setValue] = useState(parseDate('2025-05-01'));
 
     return (
       <div style={containerStyle}>
         <Calendar
+          value={value}
           aria-label="Event date"
           minValue={today(getLocalTimeZone())}
+          onChange={(value) => setValue(value!)}
           maxValue={today(getLocalTimeZone()).add({ months: 8 })}
-          value={value}
-          onChange={setValue}
-          {...args}
         />
       </div>
     );
@@ -126,12 +124,10 @@ export const UnavailableDates: Story = {
   render: function Render() {
     const { locale } = useLocale();
 
-    const isDateUnavailable = (date: DateValue) => isWeekend(date, locale);
-
     return (
       <Calendar
         aria-label="Appointment date"
-        isDateUnavailable={isDateUnavailable}
+        isDateUnavailable={(date) => isWeekend(date, locale)}
       />
     );
   },
