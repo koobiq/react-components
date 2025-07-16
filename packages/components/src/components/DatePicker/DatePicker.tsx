@@ -25,7 +25,7 @@ export function DatePickerRender<T extends DateValue>(
   const state = useDatePickerState(props);
   const anchorRef = useRef(null);
 
-  const { label } = props;
+  const { label, fullWidth } = props;
 
   const {
     groupProps,
@@ -41,6 +41,7 @@ export function DatePickerRender<T extends DateValue>(
       <DateInput
         ref={ref}
         label={label}
+        fullWidth={fullWidth}
         slotProps={{
           label: labelProps,
           group: {

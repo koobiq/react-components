@@ -62,6 +62,15 @@ export const Controlled: Story = {
   },
 };
 
+export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render(args) {
+    return <DatePicker aria-label="fullWidth" fullWidth {...args} />;
+  },
+};
+
 export const Locale: Story = {
   render: function Render() {
     const [selected, setSelected] = useState<string | number>('system');
