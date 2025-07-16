@@ -15,15 +15,15 @@ import {
 const meta = {
   title: 'Components/Toggle',
   component: Toggle,
+  parameters: {
+    layout: 'centered',
+  },
 } satisfies Meta<typeof Toggle>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args: ToggleProps) => (
     <Toggle defaultSelected {...args}>
       Wi-Fi
@@ -32,9 +32,6 @@ export const Base: Story = {
 };
 
 export const LabelPlacement = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args: ToggleProps) => (
     <FlexBox gap="l" direction="column">
       {togglePropLabelPlacement.map((placement) => (
@@ -52,9 +49,6 @@ export const LabelPlacement = {
 };
 
 export const Size = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args: ToggleProps) => (
     <FlexBox gap="l" direction="column">
       {togglePropSize.map((size) => (
@@ -67,9 +61,6 @@ export const Size = {
 };
 
 export const Disabled: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args: ToggleProps) => (
     <FlexBox gap="l">
       <Toggle {...args} isDisabled>
@@ -83,9 +74,6 @@ export const Disabled: Story = {
 };
 
 export const DefaultValue: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: function Render(args: ToggleProps) {
     return (
       <Toggle defaultSelected {...args}>
@@ -96,9 +84,6 @@ export const DefaultValue: Story = {
 };
 
 export const ControlledValue: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: function Render(args: ToggleProps) {
     const [isSelected, { toggle }] = useBoolean(true);
 
@@ -116,9 +101,6 @@ export const ControlledValue: Story = {
 };
 
 export const Invalid: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args: ToggleProps) => (
     <Toggle {...args} isInvalid defaultSelected>
       Label
@@ -127,9 +109,6 @@ export const Invalid: Story = {
 };
 
 export const Description: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args: ToggleProps) => (
     <Toggle
       {...args}
@@ -147,6 +126,9 @@ export const Description: Story = {
 };
 
 export const Example: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render(args: ToggleProps) {
     const [isLoading, { on: startLoading, off: stopLoading }] =
       useBoolean(false);

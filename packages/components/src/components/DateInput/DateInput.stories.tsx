@@ -14,7 +14,7 @@ import { Typography, useDateFormatter } from '../../index';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
-import { Provider, useBreakpoints } from '../Provider';
+import { Provider } from '../Provider';
 
 import { DateInput, dateInputPropVariant } from './index.js';
 
@@ -88,14 +88,11 @@ export const Addons: Story = {
 };
 
 export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render(args) {
-    const { l } = useBreakpoints();
-
-    return (
-      <div style={{ inlineSize: l ? 320 : 260 }}>
-        <DateInput aria-label="fullWidth" fullWidth {...args} />
-      </div>
-    );
+    return <DateInput aria-label="fullWidth" fullWidth {...args} />;
   },
 };
 

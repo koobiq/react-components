@@ -6,7 +6,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
-import { useBreakpoints } from '../Provider';
 import { Typography } from '../Typography';
 
 import {
@@ -91,18 +90,17 @@ export const Invalid: Story = {
 };
 
 export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render(args: InputNumberProps) {
-    const { l } = useBreakpoints();
-
     return (
-      <div style={{ inlineSize: l ? 320 : 260 }}>
-        <InputNumber
-          aria-label="fullWidth"
-          placeholder="fullWidth"
-          fullWidth
-          {...args}
-        />
-      </div>
+      <InputNumber
+        aria-label="fullWidth"
+        placeholder="fullWidth"
+        fullWidth
+        {...args}
+      />
     );
   },
 };
