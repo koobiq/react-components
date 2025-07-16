@@ -4,13 +4,13 @@ import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import {
-  ButtonToggle,
-  ButtonToggleGroup,
   FlexBox,
   Grid,
   Provider,
   Typography,
+  ButtonToggle,
   useDateFormatter,
+  ButtonToggleGroup,
 } from '../../index';
 
 import { DatePicker } from './DatePicker';
@@ -28,7 +28,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: () => <DatePicker label="Birth day" />,
+  render: (args) => <DatePicker label="Birth day" {...args} />,
 };
 
 export const Uncontrolled: Story = {
@@ -110,6 +110,23 @@ export const Locale: Story = {
           <DatePicker aria-label="Event date" />
         </Provider>
       </FlexBox>
+    );
+  },
+};
+
+export const MinMaxValues: Story = {
+  name: 'MinValue and MaxValue',
+  render: function Render() {
+    const [value, setValue] = useState(parseDate('2025-05-01'));
+
+    return (
+      <DatePicker
+        value={value}
+        aria-label="Event date"
+        minValue={today(getLocalTimeZone())}
+        onChange={(value) => setValue(value!)}
+        maxValue={today(getLocalTimeZone()).add({ months: 8 })}
+      />
     );
   },
 };
