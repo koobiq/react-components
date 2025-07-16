@@ -33,7 +33,7 @@ export function DatePickerRender<T extends DateValue>(
     labelProps,
     fieldProps,
     buttonProps,
-    // dialogProps,
+    dialogProps,
     calendarProps,
   } = useDatePicker({ ...props, description: caption }, state, anchorRef);
 
@@ -69,6 +69,9 @@ export function DatePickerRender<T extends DateValue>(
         state={state}
         anchorRef={anchorRef}
         placement="bottom start"
+        slotProps={{
+          dialog: dialogProps,
+        }}
         hideCloseButton
         hideArrow
       >
