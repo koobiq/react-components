@@ -22,4 +22,14 @@ describe('Calendar', () => {
 
     expect(getRoot()).toHaveClass('foo');
   });
+
+  it('should set custom style', () => {
+    const style = { padding: 20 };
+
+    const { container } = render(<Calendar style={style} />);
+
+    const firstElement = container.firstChild;
+
+    expect(firstElement).toHaveStyle('padding: 20px');
+  });
 });
