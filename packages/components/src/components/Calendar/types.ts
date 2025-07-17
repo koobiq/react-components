@@ -1,4 +1,4 @@
-import type { ComponentRef, ReactElement, Ref } from 'react';
+import type { ComponentRef, CSSProperties, ReactElement, Ref } from 'react';
 
 import type { AriaCalendarProps, DateValue } from '@koobiq/react-primitives';
 
@@ -39,6 +39,8 @@ export type CalendarProps<T extends DateValue> = {
   ref?: Ref<HTMLDivElement>;
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /** The minimum allowed date that a user may select. */
   minValue?: CalendarPropMinValue<T>;
   /** The maximum allowed date that a user may select. */

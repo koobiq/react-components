@@ -24,6 +24,7 @@ function CalendarRender<T extends DateValue>(
   props: CalendarProps<T>,
   ref: Ref<CalendarRef>
 ) {
+  const { style, className } = props;
   const { locale } = useLocale();
 
   const state = useCalendarState({
@@ -38,7 +39,7 @@ function CalendarRender<T extends DateValue>(
   );
 
   const rootProps = mergeProps(
-    { className: clsx(s.base, textNormal, props.className), ref },
+    { className: clsx(s.base, textNormal, className), style, ref },
     calendarProps
   );
 
