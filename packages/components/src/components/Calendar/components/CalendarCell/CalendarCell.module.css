@@ -46,3 +46,8 @@
   color: var(--kbq-states-foreground-disabled);
   cursor: not-allowed;
 }
+
+.invalid {
+  background-color: var(--kbq-background-error);
+  color: var(--kbq-foreground-on-contrast);
+}

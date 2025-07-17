@@ -29,6 +29,7 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
     cellProps,
     isSelected,
     isDisabled,
+    isInvalid,
     isPressed,
     buttonProps,
     isUnavailable,
@@ -54,6 +55,7 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
           isHovered && s.hovered,
           isDisabled && s.disabled,
           isSelected && s.selected,
+          isInvalid && s.invalid,
           isUnavailable && s.unavailable,
           isSelected && textNormalMedium,
           isFocusVisible && s.focusVisible
