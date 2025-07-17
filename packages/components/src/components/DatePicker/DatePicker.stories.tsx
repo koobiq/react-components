@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
+import { useBoolean } from '@koobiq/react-core';
 import { isWeekend } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -12,6 +13,7 @@ import {
   ButtonToggle,
   useDateFormatter,
   ButtonToggleGroup,
+  Button,
 } from '../../index';
 import { useLocale } from '../Provider';
 
@@ -146,6 +148,23 @@ export const UnavailableDates: Story = {
         isDateUnavailable={(date) => isWeekend(date, locale)}
         errorMessage={({ validationErrors }) => validationErrors.join('/\n/\n')}
       />
+    );
+  },
+};
+
+export const Open: Story = {
+  render: function Render() {
+    const [isOpen, { toggle, set }] = useBoolean(false);
+
+    return (
+      <FlexBox gap="m">
+        <DatePicker
+          aria-label="Event date"
+          isOpen={isOpen}
+          onOpenChange={set}
+        />
+        <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
+      </FlexBox>
     );
   },
 };
