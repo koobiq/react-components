@@ -34,6 +34,7 @@
   border-radius: var(--toggle-track-border-radius);
   outline: 2px solid var(--toggle-track-outline-color);
   transition:
+    border-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),
     outline-color var(--kbq-transition-default);
 
@@ -113,14 +114,14 @@
 }
 
 .invalid {
-  --toggle-track-bg-color: var(--kbq-states-background-error-less);
+  --toggle-track-bg-color: var(--kbq-background-error-less);
   --toggle-track-border-color: var(--kbq-line-error);
   --toggle-thumb-bg-color: var(--kbq-icon-error);
 }
 
 .invalid:where(.selected) {
   --toggle-track-bg-color: var(--kbq-background-error);
-  --toggle-track-border-color: var(--kbq-line-error);
+  --toggle-track-border-color: transparent;
   --toggle-thumb-bg-color: var(--kbq-icon-white);
 }
 
@@ -132,7 +133,7 @@
 
 .invalid:where(.hovered.selected) {
   --toggle-track-bg-color: var(--kbq-states-background-error-hover);
-  --toggle-track-border-color: var(--kbq-line-error);
+  --toggle-track-border-color: transparent;
   --toggle-thumb-bg-color: var(--kbq-icon-white);
 }
 
@@ -146,10 +147,17 @@
 }
 
 .disabled {
+  cursor: not-allowed;
+}
+
+.disabled:not(.selected) {
   --toggle-track-border-color: var(--kbq-states-line-disabled);
   --toggle-track-bg-color: var(--kbq-states-background-disabled);
   --toggle-thumb-bg-color: var(--kbq-states-icon-disabled);
-  --toggle-thumb-border-color: var(--kbq-states-icon-disabled);
   --toggle-color: var(--kbq-states-foreground-disabled);
-  cursor: not-allowed;
+}
+
+.disabled:where(.selected) {
+  opacity: var(--kbq-opacity-disabled);
+  display: flex;
 }
