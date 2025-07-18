@@ -43,7 +43,7 @@
     "@figma-export/transform-svg-with-svgo": "^6.2.0",
     "@figma-export/types": "^6.2.0",
     "@figma-export/utils": "^6.1.0",
-    "@koobiq/design-tokens": "^3.13.2",
+    "@koobiq/design-tokens": "^3.14.0",
     "@storybook/addon-a11y": "^9.0.16",
     "@storybook/addon-docs": "^9.0.16",
     "@storybook/addon-links": "^9.0.16",
