@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.1-beta.38](https://github.com/koobiq/react-components/compare/0.0.1-beta.37...0.0.1-beta.38) (2025-07-18)
+
+### 🚀 Features
+
+- **Calendar:** highlight invalid date (DS-3998) ([34810a1](https://github.com/koobiq/react-components/commit/34810a1326a0e9dd448a0fdd699d42438c369448))
+- **components:** add DatePicker component (DS-3855) ([d3c4e13](https://github.com/koobiq/react-components/commit/d3c4e13e54bf84fbb58a1f159d74059c8fce3dea))
+- **components:** bump `@koobiq/design-tokens` from 3.11.2 to 3.14.0 (DS-4001) ([660479f](https://github.com/koobiq/react-components/commit/660479f26b029e7f0b7a8da24475d75d23ddf0b6))
+- **Toggle:** improve styling of the component (DS-4002) ([9140ddd](https://github.com/koobiq/react-components/commit/9140dddc51dee5a244663569f9b91092ffc7c213))
+
+### 🐞 Bug Fixes
+
+- **Calendar:** support style prop (DS-3999) ([bd5bf73](https://github.com/koobiq/react-components/commit/bd5bf733e22f2f71328601c34871ae5d0bcc6dbd))
+
 ## [0.0.1-beta.37](https://github.com/koobiq/react-components/compare/0.0.1-beta.36...0.0.1-beta.37) (2025-07-16)
 
 ### 🚀 Features
