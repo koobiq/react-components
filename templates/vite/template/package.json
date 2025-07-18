@@ -11,8 +11,8 @@
     "format": "prettier --write \"{,!(.next)/**/}*.{ts, tsx}\""
   },
   "dependencies": {
-    "@koobiq/react-components": "0.0.1-beta.27",
-    "@koobiq/react-core": "0.0.1-beta.27",
+    "@koobiq/react-components": "0.0.1-beta.38",
+    "@koobiq/react-core": "0.0.1-beta.38",
     "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
