@@ -14,6 +14,10 @@ export type DatePickerProps<T extends DateValue> = {
   fullWidth?: boolean;
   /** The helper text content. */
   caption?: ReactNode;
+  /** Addon placed before the children. */
+  startAddon?: ReactNode;
+  /** Addon placed after the children. */
+  endAddon?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

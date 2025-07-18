@@ -13,6 +13,7 @@ import { DateInput } from '../DateInput';
 import { IconButton } from '../IconButton';
 import { PopoverInner } from '../Popover/PopoverInner';
 
+import s from './DatePicker.module.css';
 import type {
   DatePickerComponent,
   DatePickerProps,
@@ -33,6 +34,8 @@ export function DatePickerRender<T extends DateValue>(
     slotProps,
     fullWidth,
     errorMessage,
+    startAddon,
+    endAddon,
     'data-testid': testId,
   } = props;
 
@@ -60,21 +63,25 @@ export function DatePickerRender<T extends DateValue>(
       style,
       label,
       caption,
-      className,
       fullWidth,
+      className,
+      startAddon,
       errorMessage,
       'data-testid': testId,
       slotProps: {
         label: labelProps,
         group: {
           endAddon: (
-            <IconButton
-              variant={isInvalid ? 'error' : 'fade-contrast'}
-              style={{ marginInlineEnd: '-4px' }}
-              {...buttonProps}
-            >
-              <IconCalendarO16 />
-            </IconButton>
+            <>
+              {endAddon}
+              <IconButton
+                variant={isInvalid ? 'error' : 'fade-contrast'}
+                className={s.calendar}
+                {...buttonProps}
+              >
+                <IconCalendarO16 />
+              </IconButton>
+            </>
           ),
           ...groupProps,
           ref: anchorRef,
