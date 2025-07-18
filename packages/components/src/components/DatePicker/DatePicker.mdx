@@ -1,0 +1,95 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './DatePicker.stories';
+
+<Meta of={Stories} />
+
+# DatePicker
+
+<Status variant="experimental" />
+
+A date picker combines a DateInput and a Calendar popover to allow users to enter or select a date and time value.
+
+```tsx
+import { DatePicker } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Value
+
+A DatePicker displays a placeholder by default. An initial, uncontrolled value can be provided
+to the DatePicker using the `defaultValue` prop. Alternatively, a controlled value can be provided
+using the `value` prop.
+
+Date values are provided using objects in the [@internationalized/date](https://github.com/adobe/react-spectrum/tree/main/packages/@internationalized/date) package.
+This library handles correct international date manipulation across calendars,
+time zones, and other localization concerns.
+
+### Uncontrolled
+
+<Story of={Stories.Uncontrolled} />
+
+### Controlled
+
+<Story of={Stories.Controlled} />
+
+## States
+
+Use `isDisabled`, `isInvalid`, `isRequired`, and `isReadOnly` to show the component in different states.
+You can also add a `caption` to provide extra context about the date picker.
+
+<Story of={Stories.States} />
+
+## Full width
+
+The `fullWidth` prop will make an input fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Open
+
+### Default open
+
+DatePicker isn't opened by default. The `defaultOpen` prop can be used to set the default state.
+
+### Controlled open
+
+The `isOpen` prop can be used to make the opened state controlled. The `onOpenChange` event is fired when the date picker's open state changes.
+
+<Story of={Stories.Open} />
+
+## Locale
+
+By default, the DatePicker uses the user's system locale.
+To set a custom locale, wrap your component with [Provider](?path=/docs/components-provider--docs)
+and pass the `locale` prop.
+
+<Story of={Stories.Locale} />
+
+## Min and Max values
+
+By default, DatePicker allows selecting any date. The `minValue` and `maxValue` props can also be used to prevent
+the user from selecting dates outside a certain range.
+
+<Story of={Stories.MinMaxValues} />
+
+## Unavailable dates
+
+DatePicker supports marking certain dates as unavailable.
+These dates remain focusable with the keyboard so that navigation is consistent,
+but cannot be selected by the user.
+
+The `isDateUnavailable` prop accepts a callback that is called to evaluate
+whether each visible date is unavailable.
+
+<Story of={Stories.UnavailableDates} />
