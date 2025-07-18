@@ -34,6 +34,7 @@ const meta = {
       },
     },
   },
+  tags: ['status:updated'],
 } satisfies Meta<typeof InputNumber>;
 
 export default meta;

@@ -26,6 +26,7 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
+  tags: ['status:new'],
 } satisfies Meta<typeof DatePicker>;
 
 export default meta;
