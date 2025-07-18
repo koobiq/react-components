@@ -36,8 +36,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0
       '@koobiq/design-tokens':
-        specifier: ^3.13.2
-        version: 3.13.2
+        specifier: ^3.14.0
+        version: 3.14.0
       '@storybook/addon-a11y':
         specifier: ^9.0.16
         version: 9.0.16(storybook@9.0.16(@testing-library/dom@10.4.0)(prettier@3.5.3))
@@ -231,8 +231,8 @@ importers:
   packages/components:
     dependencies:
       '@koobiq/design-tokens':
-        specifier: ^3.12.1
-        version: 3.12.1
+        specifier: ^3.14.0
+        version: 3.14.0
       '@koobiq/logger':
         specifier: workspace:*
         version: link:../logger
@@ -1473,12 +1473,6 @@ packages:
 
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
-
-  '@koobiq/design-tokens@3.12.1':
-    resolution: {integrity: sha512-mROGt9r61y7LbP314bCWRxdyzya6H2K/14VLadQodeztazfygJiB52uHVOQsJcotyCDPEq2kiOYgaykQU/9GBA==}
-
-  '@koobiq/design-tokens@3.13.2':
-    resolution: {integrity: sha512-hIKw0CnsbclqjtTqGCQu9KigwHweQLn8sUZy2X+PJiv1IZarDPjFnK6zMLheygwMKqD2psiNVkYt2y9CLcNmWg==}
 
   '@koobiq/design-tokens@3.14.0':
     resolution: {integrity: sha512-FLtcCI5hm79SJcVBOhsiQRaYlC6IsFeAzX+CYLDrEDNcsX87bUUsGfRI61pqt0sSZFhL/EuGp5mh9LBHGKzhjg==}
@@ -9312,10 +9306,6 @@ snapshots:
   '@keyv/serialize@1.0.3':
     dependencies:
       buffer: 6.0.3
-
-  '@koobiq/design-tokens@3.12.1': {}
-
-  '@koobiq/design-tokens@3.13.2': {}
 
   '@koobiq/design-tokens@3.14.0': {}
 
