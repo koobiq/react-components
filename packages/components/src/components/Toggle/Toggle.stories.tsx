@@ -69,6 +69,9 @@ export const Disabled: Story = {
       <Toggle {...args} isDisabled defaultSelected>
         Label
       </Toggle>
+      <Toggle {...args} isDisabled isInvalid defaultSelected>
+        Label
+      </Toggle>
     </FlexBox>
   ),
 };
