@@ -14,7 +14,7 @@ export type RadioProps = UseRadioProps & {
   /**
    * Size.
    * @default 'normal'
-   * */
+   */
   size?: RadioPropSize;
   /**
    * The position of the label.
