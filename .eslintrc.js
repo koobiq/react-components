@@ -1,5 +1,12 @@
 module.exports = {
-  plugins: ['prettier', 'react', 'react-hooks', 'jsx-a11y', '@stylistic/js'],
+  plugins: [
+    'prettier',
+    'react',
+    'react-hooks',
+    'jsx-a11y',
+    '@stylistic/js',
+    'jsdoc',
+  ],
   env: {
     browser: true,
     es6: true,
@@ -13,6 +20,7 @@ module.exports = {
     'prettier',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:jsdoc/recommended-typescript',
   ],
   rules: {
     'no-alert': 'off',
@@ -89,6 +97,15 @@ module.exports = {
     'no-restricted-syntax': 0,
     'no-bitwise': 0,
     '@typescript-eslint/consistent-type-imports': 'error',
+    'jsdoc/require-param': 0,
+    'jsdoc/require-returns': 0,
+    'jsdoc/require-jsdoc': 0,
+    'jsdoc/check-tag-names': [
+      'error',
+      {
+        definedTags: ['selector'],
+      },
+    ],
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
