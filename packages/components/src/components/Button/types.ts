@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
-import type { HoverEvent, UseButtonProps } from '@koobiq/react-primitives';
+import type { ButtonBaseProps as ButtonBasePrimitiveProps } from '@koobiq/react-primitives';
 
 export const buttonPropVariant = [
   'contrast-filled',
@@ -57,6 +57,8 @@ export type ButtonBaseProps = ExtendableProps<
     onlyIcon?: boolean;
     /** Additional CSS-classes. */
     className?: string;
+    /** Inline styles. */
+    style?: CSSProperties;
     /**
      * If `true`, the button will take up the full width of its container.
      * @default false
@@ -68,10 +70,6 @@ export type ButtonBaseProps = ExtendableProps<
     endIcon?: ReactNode;
     /** Unique identifier for testing purposes. */
     'data-testid'?: string | number;
-    /** Handler that is called when a hover interaction starts. */
-    onHoverStart?: (e: HoverEvent) => void;
-    /** Handler that is called when a hover interaction ends. */
-    onHoverEnd?: (e: HoverEvent) => void;
   } & ButtonDeprecatedProps,
-  UseButtonProps
+  Omit<ButtonBasePrimitiveProps, 'slot'>
 >;

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentPropsWithRef, ComponentRef, ElementType } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import { polymorphicForwardRef, useDOMRef } from '@koobiq/react-core';
 
@@ -32,7 +32,7 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
       formTarget,
     } = commonProps;
 
-    const domRef = useDOMRef<ComponentRef<'button'>>(ref);
+    const domRef = useDOMRef(ref);
 
     const { isHovered, isPressed, isFocused, isFocusVisible, buttonProps } =
       useButton(

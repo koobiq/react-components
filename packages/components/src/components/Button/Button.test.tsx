@@ -41,6 +41,14 @@ describe('Button', () => {
     expect(getButton()).toHaveClass('foo');
   });
 
+  it('should set a custom style', () => {
+    const style = { padding: 20 };
+
+    render(<Button {...baseProps} style={style} />);
+
+    expect(getButton()).toHaveStyle('padding: 20px');
+  });
+
   it('should accept a name', () => {
     render(<Button {...baseProps} name="foo" />);
 
@@ -50,7 +58,7 @@ describe('Button', () => {
   it('should call the onClick handler when clicked', async () => {
     const props = {
       ...baseProps,
-      onClick: vi.fn(),
+      onPress: vi.fn(),
     };
 
     render(<Button {...props} />);
@@ -59,7 +67,7 @@ describe('Button', () => {
 
     await userEvent.click(button);
 
-    expect(props.onClick).toHaveBeenCalledTimes(1);
+    expect(props.onPress).toHaveBeenCalledTimes(1);
   });
 
   describe('button', () => {

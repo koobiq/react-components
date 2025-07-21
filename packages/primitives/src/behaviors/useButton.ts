@@ -1,16 +1,23 @@
 'use client';
 
-import type { RefObject } from 'react';
+import type { ElementType, RefObject } from 'react';
 
-import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
-import { useButton as useButtonReactAria } from '@react-aria/button';
+import {
+  useHover,
+  mergeProps,
+  useFocusRing,
+  type HoverEvents,
+} from '@koobiq/react-core';
+import {
+  type AriaButtonOptions,
+  useButton as useButtonReactAria,
+} from '@react-aria/button';
 
-import type { ButtonOptions } from '../types';
+export type UseButtonProps<E extends ElementType> = AriaButtonOptions<E> &
+  HoverEvents;
 
-export type UseButtonProps = ButtonOptions;
-
-export function useButton(
-  props: UseButtonProps,
+export function useButton<E extends ElementType>(
+  props: UseButtonProps<E>,
   ref: RefObject<Element | null>
 ) {
   const { isDisabled } = props;
@@ -21,12 +28,12 @@ export function useButton(
 
   const { hoverProps, isHovered } = useHover(props);
 
-  const { buttonProps: commonButtonProps, isPressed } = useButtonReactAria(
+  const { buttonProps: buttonPropsReactAria, isPressed } = useButtonReactAria(
     props,
     ref
   );
 
-  const buttonProps = mergeProps(commonButtonProps, focusProps, hoverProps);
+  const buttonProps = mergeProps(buttonPropsReactAria, focusProps, hoverProps);
 
   return {
     isPressed,
@@ -38,4 +45,6 @@ export function useButton(
   };
 }
 
-export type UseButtonReturn = ReturnType<typeof useButton>;
+export type UseButtonReturn<E extends ElementType> = ReturnType<
+  typeof useButton<E>
+>;

@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
-import type { HoverEvent, UseButtonProps } from '@koobiq/react-primitives';
+import type { ButtonBaseProps as ButtonBasePrimitiveProps } from '@koobiq/react-primitives';
 
 export const iconButtonPropVariant = [
   'theme',
@@ -61,10 +61,8 @@ export type IconButtonBaseProps = ExtendableProps<
     isCompact?: boolean;
     /** Additional CSS-classes. */
     className?: string;
-    /** Handler that is called when a hover interaction starts. */
-    onHoverStart?: (e: HoverEvent) => void;
-    /** Handler that is called when a hover interaction ends. */
-    onHoverEnd?: (e: HoverEvent) => void;
+    /** Inline styles. */
+    style?: CSSProperties;
   } & IconButtonBaseDeprecatedProps,
-  UseButtonProps
+  Omit<ButtonBasePrimitiveProps, 'slot'>
 >;
