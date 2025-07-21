@@ -19,30 +19,25 @@ export function MenuSection<T>({ section, state }: MenuSectionProps<T>) {
     'aria-label': section['aria-label'],
   });
 
-  // If the section is not the first, add a separator element.
-  // The heading is rendered inside an <li> element, which contains
-  // a <ul> with the child items.
   return (
-    <>
-      <li {...itemProps}>
-        {section.rendered && (
-          <Typography
-            as="span"
-            display="block"
-            variant="caps-compact-strong"
-            color="contrast-secondary"
-            className={s.heading}
-            {...headingProps}
-          >
-            {section.rendered}
-          </Typography>
-        )}
-        <ul {...groupProps} className={s.base}>
-          {[...section.childNodes].map((node) => (
-            <MenuItem key={node.key} item={node} state={state} />
-          ))}
-        </ul>
-      </li>
-    </>
+    <li {...itemProps}>
+      {section.rendered && (
+        <Typography
+          as="span"
+          display="block"
+          variant="caps-compact-strong"
+          color="contrast-secondary"
+          className={s.heading}
+          {...headingProps}
+        >
+          {section.rendered}
+        </Typography>
+      )}
+      <ul {...groupProps} className={s.base}>
+        {[...section.childNodes].map((node) => (
+          <MenuItem key={node.key} item={node} state={state} />
+        ))}
+      </ul>
+    </li>
   );
 }
