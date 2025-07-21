@@ -25,6 +25,8 @@ export type RadioProps = UseRadioProps & {
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
+  /** Unique identifier for testing purposes. */
+  'data-testid'?: string | number;
   /** The props used for each slot inside. */
   slotProps?: {
     circle?: ComponentPropsWithRef<'span'>;
