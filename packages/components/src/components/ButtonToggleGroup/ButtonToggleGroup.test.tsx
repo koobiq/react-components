@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
 import {
@@ -29,7 +30,7 @@ const renderComponent = ({
 );
 
 describe('ButtonToggleGroup', () => {
-  it('should onChange get correct id', () => {
+  it('should onChange get correct id', async () => {
     const onSelectionChange = vi.fn();
 
     render(
@@ -39,12 +40,12 @@ describe('ButtonToggleGroup', () => {
       })
     );
 
-    fireEvent.click(screen.getByTestId(BUTTON_TOGGLE__TEST_ID));
+    await userEvent.click(screen.getByTestId(BUTTON_TOGGLE__TEST_ID));
 
     expect(onSelectionChange).toBeCalledWith(2);
   });
 
-  it('should set dataTestId', () => {
+  it('should set a dataTestId', () => {
     const dataTestId = 'data-test-id';
 
     const { getByTestId } = render(
@@ -58,7 +59,7 @@ describe('ButtonToggleGroup', () => {
     expect(getByTestId(dataTestId)).toBeInTheDocument();
   });
 
-  it('should set className', () => {
+  it('should set a className', () => {
     const className = 'foo';
 
     const { container } = render(
@@ -72,7 +73,7 @@ describe('ButtonToggleGroup', () => {
     expect(container.firstElementChild).toHaveClass(className);
   });
 
-  it('should set custom style', () => {
+  it('should set a custom style', () => {
     const style = { padding: 20 };
 
     const { container } = render(
