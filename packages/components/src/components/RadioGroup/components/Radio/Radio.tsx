@@ -32,10 +32,10 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
           s.base,
           s[size],
           error && s.error,
+          s[labelPlacement],
           checked && s.checked,
           hovered && s.hovered,
           disabled && s.disabled,
-          s[labelPlacement],
           focusVisible && s.focusVisible,
           className
         ),
@@ -46,7 +46,12 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
     const labelProps = slotProps?.label;
 
     return (
-      <RadioPrimitive {...commonProps} ref={ref}>
+      <RadioPrimitive
+        {...commonProps}
+        data-size={size}
+        data-label-placement={labelPlacement}
+        ref={ref}
+      >
         <span {...circleProps}>
           <IconCircleXs16 className={s.icon} />
         </span>
