@@ -27,7 +27,6 @@ export type BadgePropVariant = (typeof badgePropVariant)[number];
 type BadgeDeprecatedProps = {
   /**
    * The label of the component.
-   *
    * @deprecated
    * The "label" prop is deprecated. Use "children" prop to replace it.
    */

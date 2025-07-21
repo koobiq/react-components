@@ -19,7 +19,7 @@ export type FormControlLabelProps = ExtendableComponentPropsWithRef<
     /**
      * If `true`, the component is disabled.
      * @default false
-     * */
+     */
     disabled?: boolean;
     /** The helper text content. */
     caption?: ReactNode;
@@ -28,12 +28,12 @@ export type FormControlLabelProps = ExtendableComponentPropsWithRef<
     /**
      * Size.
      * @default 'normal'
-     * */
+     */
     size?: FormControlLabelPropSize;
     /**
      * The position of the label.
      * @default 'end'
-     * */
+     */
     labelPlacement?: FormControlLabelPropLabelPlacement;
     slotProps?: {
       content?: ComponentPropsWithRef<'div'>;

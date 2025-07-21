@@ -22,7 +22,6 @@ type IconButtonBaseDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
    * @default false
-   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
@@ -30,7 +29,6 @@ type IconButtonBaseDeprecatedProps = {
   /**
    * If `true`, reduce the size of the component canvas.
    * @default false
-   *
    * @deprecated
    * The "compact" prop is deprecated. Use "isCompact" prop to replace it.
    */

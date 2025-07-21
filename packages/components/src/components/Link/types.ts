@@ -14,7 +14,6 @@ type LinkDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
    * @default false
-   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
@@ -22,7 +21,6 @@ type LinkDeprecatedProps = {
   /**
    * If `true`, displays :visited CSS-state.
    * @default false
-   *
    * @deprecated
    * The "visitable" prop is deprecated. Use "isVisitable" prop to replace it.
    */
@@ -30,7 +28,6 @@ type LinkDeprecatedProps = {
   /**
    * If `true`, displays the link as a pseudo-link.
    * @default false
-   *
    * @deprecated
    * The "pseudo" prop is deprecated. Use "isPseudo" prop to replace it.
    */

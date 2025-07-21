@@ -13,7 +13,7 @@ export type UseDebounceCallbackPropOptions = {
   /**
    * If `true`, the first call runs without delay.
    * @default false
-   * */
+   */
   firstCallWithoutDelay: boolean;
 };
 

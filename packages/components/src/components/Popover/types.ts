@@ -59,7 +59,6 @@ export type PopoverPropType = (typeof popoverPropType)[number];
 type PopoverDeprecatedProps = {
   /**
    * If `true`, the component is shown.
-   *
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    */

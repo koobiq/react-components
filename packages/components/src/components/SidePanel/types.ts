@@ -31,7 +31,6 @@ export type SidePanelPropControl = (props: ButtonOptions) => ReactElement;
 type SidePanelDeprecatedProps = {
   /**
    * If `true`, the component is shown.
-   *
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    */
@@ -39,7 +38,6 @@ type SidePanelDeprecatedProps = {
   /**
    * Side from which the side panel will appear.
    * @default 'left'
-   *
    * @deprecated
    * The "position" prop is deprecated. Use "placement" prop to replace it.
    */

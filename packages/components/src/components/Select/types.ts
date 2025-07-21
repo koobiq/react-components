@@ -30,7 +30,6 @@ type SelectDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
    * @default false
-   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
@@ -38,7 +37,6 @@ type SelectDeprecatedProps = {
   /**
    * If `true`, the input will indicate an error.
    * @default false
-   *
    * @deprecated
    * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
    */
@@ -46,14 +44,12 @@ type SelectDeprecatedProps = {
   /**
    * If `true`, the label is displayed as required and the input element is required.
    * @default false
-   *
    * @deprecated
    * The "required" prop is deprecated. Use "isRequired" prop to replace it.
    */
   required?: boolean;
   /**
    * Sets the open state of the menu.
-   *
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    */
@@ -61,7 +57,6 @@ type SelectDeprecatedProps = {
   /**
    * If `true`, the label is hidden. Be sure to add aria-label to the input element.
    * @default false
-   *
    * @deprecated
    * The "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.
    */

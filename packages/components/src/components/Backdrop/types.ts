@@ -3,7 +3,6 @@ import type { CSSProperties, ReactNode } from 'react';
 type BackdropDeprecatedProps = {
   /**
    * If `true`, the component is shown.
-   *
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    */

@@ -22,7 +22,8 @@ export type DividerBaseProps = {
    * @default false
    */
   flexItem?: boolean;
-  /** If `true`, it disables the default paddings.
+  /**
+   * If `true`, it disables the default paddings.
    * @default false
    */
   disablePaddings?: boolean;

@@ -52,7 +52,6 @@ type TooltipDeprecatedProps = {
   open?: boolean;
   /**
    * If `true`, the component is disabled.
-   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */

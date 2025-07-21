@@ -30,7 +30,6 @@ type ContainerDeprecatedProps = {
   /**
    * If `true`, doesn't set the max-inline-size of the container.
    * @default false
-   *
    * @deprecated
    * The "fixed" prop is deprecated. Use "isFixed" prop to replace it.
    */

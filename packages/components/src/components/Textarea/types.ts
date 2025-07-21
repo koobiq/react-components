@@ -21,7 +21,6 @@ type TextareaDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
    * @default false
-   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
@@ -29,7 +28,6 @@ type TextareaDeprecatedProps = {
   /**
    * If `true`, the input will indicate an error.
    * @default false
-   *
    * @deprecated
    * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
    */
@@ -37,7 +35,6 @@ type TextareaDeprecatedProps = {
   /**
    * If `true`, the label is displayed as required and the input element is required.
    * @default false
-   *
    * @deprecated
    * The "required" prop is deprecated. Use "isRequired" prop to replace it.
    */
@@ -45,7 +42,6 @@ type TextareaDeprecatedProps = {
   /**
    * If `true`, the label is hidden. Be sure to add aria-label to the input element.
    * @default false
-   *
    * @deprecated
    * The "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.
    */
@@ -53,7 +49,6 @@ type TextareaDeprecatedProps = {
   /**
    * If `true`, the input can be selected but not changed by the user.
    * @default false
-   *
    * @deprecated
    * The "readonly" prop is deprecated. Use "isReadOnly" prop to replace it.
    */

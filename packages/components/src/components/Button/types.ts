@@ -18,7 +18,6 @@ type ButtonDeprecatedProps = {
   /**
    * If `true`, the progress indicator is shown and the button becomes disabled.
    * @default false
-   *
    * @deprecated
    * The "progress" prop is deprecated. Use "isLoading" prop to replace it.
    */
@@ -26,7 +25,6 @@ type ButtonDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
    * @default false
-   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */

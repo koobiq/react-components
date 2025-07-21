@@ -7,21 +7,22 @@ export type UseRadioGroupStateProps = ExtendableProps<
     /**
      * If `true`, the component is disabled.
      * @default false
-     * */
+     */
     disabled?: boolean;
-    /** It prevents the user from changing the value of the checkbox.
+    /**
+     * It prevents the user from changing the value of the checkbox.
      * @default false
      */
     readonly?: boolean;
     /**
      * If `true`, the input element is required.
      * @default false
-     * */
+     */
     required?: boolean;
     /**
      * If `true`, the component will indicate an error.
      * @default false
-     * */
+     */
     error?: boolean;
   },
   Omit<

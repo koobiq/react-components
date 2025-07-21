@@ -9,14 +9,12 @@ export type AlertPropStatus = (typeof alertPropStatus)[number];
 type AlertDeprecatedProps = {
   /**
    * If `true`, compact mode will be enabled in the alert.
-   *
    * @deprecated
    * The "compact" prop is deprecated. Use "isCompact" prop to replace it.
    */
   compact?: boolean;
   /**
    * If `true`, background color will be enabled in the alert.
-   *
    * @deprecated
    * The "colored" prop is deprecated. Use "isColored" prop to replace it.
    */

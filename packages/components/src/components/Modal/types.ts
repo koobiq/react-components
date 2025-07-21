@@ -23,7 +23,6 @@ export type ModalPropControl = (props: ButtonOptions) => ReactElement;
 type ModalDeprecatedProps = {
   /**
    * If `true`, the component is shown.
-   *
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    */

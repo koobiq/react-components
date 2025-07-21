@@ -15,7 +15,6 @@ type ToggleDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
    * @default false
-   *
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
@@ -23,14 +22,12 @@ type ToggleDeprecatedProps = {
   /**
    * If `true`, the component will indicate an error.
    * @default false
-   *
    * @deprecated
    * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
    */
   error?: boolean;
   /**
    * If `true`, the component is checked.
-   *
    * @deprecated
    * The "checked" prop is deprecated. Use "isSelected" prop to replace it.
    */
@@ -38,14 +35,12 @@ type ToggleDeprecatedProps = {
   /**
    * It prevents the user from changing the value of the checkbox.
    * @default false
-   *
    * @deprecated
    * The "readonly" prop is deprecated. Use "isReadonly" prop to replace it.
    */
   readonly?: boolean;
   /**
    * The default checked state. Use when the component is not controlled.
-   *
    * @deprecated
    * The "defaultChecked" prop is deprecated. Use "defaultSelected" prop to replace it.
    */
