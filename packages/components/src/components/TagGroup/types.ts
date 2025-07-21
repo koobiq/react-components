@@ -37,7 +37,7 @@ export type TagGroupProps<T extends object> = {
   onRemove?: TagGroupPropOnRemove<T>;
   /**
    * The variant to use.
-   * @default theme-fade
+   * @default 'theme-fade'
    */
   variant?: TagGroupPropVariant;
   /** The item keys that are disabled. These items cannot be selected, focused, or otherwise interacted with. */

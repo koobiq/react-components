@@ -77,13 +77,13 @@ export type CheckboxProps = {
   style?: CSSProperties;
   /**
    * Size.
-   * @default normal
+   * @default 'normal'
    */
   size?: CheckboxPropSize;
   /**
    * The position of the label.
-   * @default end
-   * */
+   * @default 'end'
+   */
   labelPlacement?: CheckboxPropLabelPlacement;
   /**
    * If `true`, the component will indicate an error.

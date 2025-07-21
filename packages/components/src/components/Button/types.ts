@@ -39,7 +39,7 @@ export type ButtonBaseProps = ExtendableProps<
     children?: ReactNode;
     /**
      * The variant to use.
-     * @default contrast-filled
+     * @default 'contrast-filled'
      */
     variant?: ButtonPropVariant;
     /**

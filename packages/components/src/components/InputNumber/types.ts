@@ -74,7 +74,7 @@ export type InputNumberProps = ExtendableProps<
     endAddon?: ReactNode;
     /**
      * The variant to use.
-     * @default filled
+     * @default 'filled'
      */
     variant?: InputNumberPropVariant;
     /**

@@ -28,10 +28,10 @@ export type RadioGroupBaseProps = ExtendableProps<
     children?: ReactNode;
     /**
      * Size.
-     * @default normal
+     * @default 'normal'
      */
     size?: RadioGroupPropSize;
-    /** Slots. */
+    /** The props used for each slot inside. */
     slotProps?: {
       root?: ComponentPropsWithRef<'div'>;
       description?: RadioGroupDescriptionProps;

@@ -40,7 +40,7 @@ type ContainerDeprecatedProps = {
 export type ContainerBaseProps = {
   /**
    * Container position.
-   * @default center
+   * @default 'center'
    */
   position?: ContainerPositionProp | ResponsiveValue<ContainerPositionProp>;
   /** Determine the max-inline-size of the container. */

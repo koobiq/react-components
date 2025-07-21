@@ -79,7 +79,7 @@ export type InputProps = ExtendableProps<
     endAddon?: ReactNode;
     /**
      * The variant to use.
-     * @default filled
+     * @default 'filled'
      */
     variant?: InputPropVariant;
     /**

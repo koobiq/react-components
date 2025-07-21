@@ -98,7 +98,7 @@ export type TypographyPropColor = (typeof typographyPropColor)[number];
 export type TypographyBaseProps = {
   /**
    * The variant to use.
-   * @default text-normal
+   * @default 'text-normal'
    */
   variant?: TypographyPropVariant;
   /** Set the display for the component. */
@@ -113,7 +113,7 @@ export type TypographyBaseProps = {
   className?: string;
   /**
    * Text color.
-   * @default contrast
+   * @default 'contrast'
    */
   color?: TypographyPropColor;
 };

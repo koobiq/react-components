@@ -27,12 +27,12 @@ export type FormControlLabelProps = ExtendableComponentPropsWithRef<
     children?: ReactNode;
     /**
      * Size.
-     * @default normal
+     * @default 'normal'
      * */
     size?: FormControlLabelPropSize;
     /**
      * The position of the label.
-     * @default end
+     * @default 'end'
      * */
     labelPlacement?: FormControlLabelPropLabelPlacement;
     slotProps?: {

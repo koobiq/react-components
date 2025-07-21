@@ -66,7 +66,7 @@ export type TableProps<T> = ExtendableComponentPropsWithRef<
     className?: string;
     /**
      * Type of separators in the table.
-     * @default none
+     * @default 'none'
      */
     divider?: TablePropDivider;
     /**

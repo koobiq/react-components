@@ -27,7 +27,7 @@ export type ProgressBarBaseProps = {
   className?: string;
   /**
    * The variant to use. Use indeterminate or query when there is no progress value.
-   * @default determinate
+   * @default 'determinate'
    */
   variant?: ProgressBarPropVariant;
   /** The props used for each slot inside. */

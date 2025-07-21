@@ -13,12 +13,12 @@ export type RadioPropLabelPlacement = (typeof radioPropLabelPlacement)[number];
 export type RadioProps = UseRadioProps & {
   /**
    * Size.
-   * @default normal
+   * @default 'normal'
    * */
   size?: RadioPropSize;
   /**
    * The position of the label.
-   * @default end
+   * @default 'end'
    */
   labelPlacement?: RadioPropLabelPlacement;
   /** Additional CSS-classes. */

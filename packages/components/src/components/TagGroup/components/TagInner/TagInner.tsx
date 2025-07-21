@@ -27,8 +27,8 @@ export type TagInnerProps<T> = AriaTagProps<T> & {
   state: ListState<T>;
   /**
    * The variant to use.
-   * @default theme-fade
-   * */
+   * @default 'theme-fade'
+   */
   variant?: TagGroupPropVariant;
 };
 

@@ -68,7 +68,7 @@ export type TextareaProps = ExtendableProps<
     className?: string;
     /**
      * The variant to use.
-     * @default filled
+     * @default 'filled'
      */
     variant?: TextareaPropVariant;
     /**

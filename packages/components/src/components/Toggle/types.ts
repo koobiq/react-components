@@ -59,12 +59,12 @@ export type ToggleProps = UseToggleProps & {
   style?: CSSProperties;
   /**
    * Size.
-   * @default normal
+   * @default 'normal'
    */
   size?: TogglePropSize;
   /**
    * The position of the label.
-   * @default end
+   * @default 'end'
    */
   labelPlacement?: TogglePropLabelPlacement;
   /** The props used for each slot inside. */

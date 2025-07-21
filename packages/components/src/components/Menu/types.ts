@@ -81,7 +81,7 @@ export type MenuProps<T extends object> = {
   anchorRef?: RefObject<HTMLElement | null>;
   /**
    * The placement of the element with respect to its anchor element.
-   * @default bottom start
+   * @default 'bottom start'
    */
   placement?: MenuPropPlacement;
   /** Ref to the popover */

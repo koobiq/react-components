@@ -26,7 +26,7 @@ type AlertDeprecatedProps = {
 export type AlertBaseProps = {
   /**
    * The status of the component.
-   * @default info
+   * @default 'info'
    */
   status?: AlertPropStatus;
   /**

@@ -38,7 +38,7 @@ type SidePanelDeprecatedProps = {
   open?: boolean;
   /**
    * Side from which the side panel will appear.
-   * @default left
+   * @default 'left'
    *
    * @deprecated
    * The "position" prop is deprecated. Use "placement" prop to replace it.
@@ -49,12 +49,12 @@ type SidePanelDeprecatedProps = {
 export type SidePanelProps = {
   /**
    * Component width size.
-   * @default medium
+   * @default 'medium'
    */
   size?: SidePanelPropSize;
   /**
    * Side from which the side panel will appear.
-   * @default start
+   * @default 'start'
    */
   placement?: SidePanelPropPlacement;
   /** If `true`, the component is shown. */

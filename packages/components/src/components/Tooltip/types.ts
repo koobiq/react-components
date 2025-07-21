@@ -62,7 +62,7 @@ type TooltipDeprecatedProps = {
 export type TooltipProps = {
   /**
    * The variant to use.
-   * @default contrast
+   * @default 'contrast'
    */
   variant?: TooltipPropVariant;
   /** If `true`, the component is shown. */
@@ -82,7 +82,7 @@ export type TooltipProps = {
   control?: TooltipPropControl;
   /**
    * The placement of the element with respect to its anchor element.
-   * @default top
+   * @default 'top'
    */
   placement?: TooltipPropPlacement;
   /** The ref for the element which the popover positions itself with respect to. */

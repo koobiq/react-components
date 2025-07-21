@@ -77,7 +77,7 @@ export type PopoverBaseProps = {
   control?: PopoverPropControl;
   /**
    * Component width size.
-   * @default medium
+   * @default 'medium'
    */
   size?: PopoverPropSize;
   /**
@@ -110,7 +110,7 @@ export type PopoverBaseProps = {
   disableFocusManagement?: boolean;
   /**
    * The placement of the element with respect to its anchor element.
-   * @default top
+   * @default 'top'
    */
   placement?: PopoverPropPlacement;
   /** The ref for the element which the popover positions itself with respect to. */

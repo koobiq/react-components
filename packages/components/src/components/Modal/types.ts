@@ -33,7 +33,7 @@ type ModalDeprecatedProps = {
 export type ModalProps = {
   /**
    * Component width size.
-   * @default medium
+   * @default 'medium'
    */
   size?: ModalPropSize;
   /** If `true`, the component is shown. */

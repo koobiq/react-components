@@ -43,7 +43,7 @@ export type IconButtonBaseProps = ExtendableProps<
     children?: ReactNode;
     /**
      * The variant to use.
-     * @default theme
+     * @default 'theme'
      */
     variant?: IconButtonPropVariant;
     /**
@@ -53,7 +53,7 @@ export type IconButtonBaseProps = ExtendableProps<
     isDisabled?: boolean;
     /**
      * Size of the component
-     * @default xl
+     * @default 'xl'
      */
     size?: IconButtonPropSize;
     /**

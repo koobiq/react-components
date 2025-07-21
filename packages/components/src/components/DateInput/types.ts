@@ -32,7 +32,7 @@ export type DateInputProps<T extends DateValue> = {
   caption?: ReactNode;
   /**
    * The variant to use.
-   * @default filled
+   * @default 'filled'
    */
   variant?: DateInputPropVariant;
   /**
