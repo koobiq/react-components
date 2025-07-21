@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef, CSSProperties } from 'react';
 
 import type { UseRadioProps } from '@koobiq/react-primitives';
 
@@ -23,6 +23,8 @@ export type RadioProps = UseRadioProps & {
   labelPlacement?: RadioPropLabelPlacement;
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /** The props used for each slot inside. */
   slotProps?: {
     circle?: ComponentPropsWithRef<'span'>;
