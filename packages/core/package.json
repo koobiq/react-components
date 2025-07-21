@@ -1,6 +1,7 @@
 {
   "name": "@koobiq/react-core",
   "version": "0.0.1-beta.38",
+  "license": "MIT",
   "scripts": {
     "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",
     "lint:js": "eslint --ext .ts,.tsx src --fix",
