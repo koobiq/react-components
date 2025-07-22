@@ -70,20 +70,20 @@ describe('RadioGroup', () => {
     expect(screen.getByText('qux')).toBeInTheDocument();
   });
 
-  it('should be invalid when error prop sets true', async () => {
-    const { rerender } = render(renderComponent({ error: true }));
+  it('should be invalid when isInvalid prop sets true', async () => {
+    const { rerender } = render(renderComponent({ isInvalid: true }));
 
     expect(getRoot()).toHaveAttribute('aria-invalid', 'true');
 
-    rerender(renderComponent({ error: false }));
+    rerender(renderComponent({ isInvalid: false }));
 
     expect(getRoot()).not.toHaveAttribute('aria-invalid', 'true');
   });
 
-  it('should be disabled when disabled prop sets true', async () => {
+  it('should be disabled when isDisabled prop sets true', async () => {
     const onChange = vi.fn();
 
-    render(renderComponent({ disabled: true, onChange, value: '1' }));
+    render(renderComponent({ isDisabled: true, onChange, value: '1' }));
 
     expect(getRoot()).toHaveAttribute('aria-disabled', 'true');
 

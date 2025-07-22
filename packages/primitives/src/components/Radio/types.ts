@@ -1,30 +1,28 @@
 import type { RefObject } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
+import type { AriaRadioGroupProps } from '@react-aria/radio';
+import type { RadioGroupState } from '@react-stately/radio';
 
-import type {
-  RadioGroupState,
-  UseRadioGroupProps,
-  UseRadioProps,
-} from '../../behaviors';
+import type { UseRadioProps } from '../../behaviors';
 import type { RenderProps } from '../../utils';
 
 export type RadioRenderProps = {
-  error?: boolean;
-  focused?: boolean;
-  hovered?: boolean;
-  pressed?: boolean;
-  checked?: boolean;
-  disabled?: boolean;
-  focusVisible?: boolean;
-  indeterminate?: boolean;
+  isInvalid?: boolean;
+  isFocused?: boolean;
+  isHovered?: boolean;
+  isPressed?: boolean;
+  isSelected?: boolean;
+  isDisabled?: boolean;
+  isFocusVisible?: boolean;
+  isIndeterminate?: boolean;
 };
 
 export type RadioGroupRenderProps = {
-  error: boolean;
-  disabled: boolean;
-  readonly: boolean;
-  required: boolean;
+  isInvalid: boolean;
+  isDisabled: boolean;
+  isReadOnly: boolean;
+  isRequired: boolean;
   state: RadioGroupState;
   orientation: 'horizontal' | 'vertical';
 };
@@ -39,5 +37,5 @@ type RadioGroupBaseProps = RenderProps<RadioGroupRenderProps>;
 
 export type RadioGroupProps = ExtendableProps<
   RadioGroupBaseProps,
-  UseRadioGroupProps
+  AriaRadioGroupProps
 >;

@@ -1,6 +1,7 @@
 import { type ComponentRef } from 'react';
 import { forwardRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
 import { IconCircleXs16 } from '@koobiq/react-icons';
 import { Radio as RadioPrimitive } from '@koobiq/react-primitives';
@@ -16,27 +17,44 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
     const {
       labelPlacement = 'end',
       size: sizeProp,
+      isDisabled: isDisabledProp,
+      disabled,
       children,
       slotProps,
       className,
       ...other
     } = props;
 
+    const isDisabled = isDisabledProp ?? disabled ?? false;
+
+    if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
+      deprecate(
+        'Radio: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      );
+    }
+
     const { size: sizeState } = useRadioGroupState();
 
     const size = sizeProp || sizeState || 'normal';
 
     const commonProps: RadioPropsPrimitive = {
-      className: ({ error, checked, hovered, disabled, focusVisible }) =>
+      isDisabled,
+      className: ({
+        isInvalid,
+        isSelected,
+        isHovered,
+        isDisabled,
+        isFocusVisible,
+      }) =>
         clsx(
           s.base,
           s[size],
-          error && s.error,
           s[labelPlacement],
-          checked && s.checked,
-          hovered && s.hovered,
-          disabled && s.disabled,
-          focusVisible && s.focusVisible,
+          isInvalid && s.invalid,
+          isHovered && s.hovered,
+          isDisabled && s.disabled,
+          isSelected && s.selected,
+          isFocusVisible && s.focusVisible,
           className
         ),
       ...other,

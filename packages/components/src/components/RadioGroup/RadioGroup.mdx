@@ -27,20 +27,20 @@ import { RadioGroup, Radio } from '@koobiq/react-components';
 
 ## Size
 
-For `normal` or `big` radios, use the `size` prop.
+For `normal` or `big` radios, use the `size` props.
 
 <Story of={Stories.Size} />
 
-## Error
+## Invalid
 
-The `error` property toggles the error state.
+The `isInvalid` prop toggles the error state.
 
-<Story of={Stories.Error} />
+<Story of={Stories.Invalid} />
 
 ## Disabled
 
-A radio group can be disabled by passing the `disabled` property.
-To disable an individual radio, pass `disabled` to the Radio instead.
+A radio group can be disabled by passing the `isDisabled` prop.
+To disable an individual radio, pass `isDisabled` prop to the Radio instead.
 
 <Story of={Stories.Disabled} />
 
@@ -48,15 +48,16 @@ To disable an individual radio, pass `disabled` to the Radio instead.
 
 ### Default value
 
-An initial, uncontrolled value can be provided to the `RadioGroup` using the `defaultValue` property,
+An initial, uncontrolled value can be provided to the `RadioGroup` using the `defaultValue` prop,
 which accepts a value corresponding with the `value` property of each `Radio`.
 
 <Story of={Stories.DefaultValue} />
 
 ### Controlled value
 
-A controlled value can be provided using the `value` property,
-which accepts a value corresponding with the `value` property of each `Radio`. The `onChange` event is fired when the user selects a radio.
+A controlled value can be provided using the `value` prop,
+which accepts a value corresponding with the `value` prop of each `Radio`.
+The `onChange` event is fired when the user selects a radio.
 
 <Story of={Stories.ControlledValue} />
 
@@ -68,6 +69,6 @@ The `description` can be used to associate additional help text with a radio gro
 
 ## Orientation
 
-RadioGroups are vertically oriented by default. The `orientation` can be used to change the orientation to horizontal.
+RadioGroups are vertically oriented by default. The `orientation` can be used to change the orientation to `horizontal`.
 
 <Story of={Stories.Orientation} />

@@ -3,58 +3,19 @@
 import type { RefObject } from 'react';
 
 import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
-import type { ExtendableProps } from '@koobiq/react-core';
 import { useRadio as useRadioReactAria } from '@react-aria/radio';
 import type { AriaRadioProps } from '@react-aria/radio';
 import type { RadioGroupState } from '@react-stately/radio';
 
-export type UseRadioProps = ExtendableProps<
-  {
-    /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    disabled?: boolean;
-  },
-  Omit<AriaRadioProps, 'isDisabled'>
->;
+export type UseRadioProps = AriaRadioProps;
 
-export type UseRadioState = ExtendableProps<
-  {
-    /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    disabled?: boolean;
-    /**
-     * It prevents the user from changing the value of the checkbox.
-     * @default false
-     */
-    readonly?: boolean;
-    /**
-     * If `true`, the input element is required.
-     * @default false
-     */
-    required?: boolean;
-    /**
-     * If `true`, the component will indicate an error.
-     * @default false
-     */
-    error?: boolean;
-  },
-  Omit<
-    RadioGroupState,
-    'isDisabled' | 'isReadOnly' | 'isRequired' | 'isInvalid'
-  >
->;
+export type UseRadioState = RadioGroupState;
 
 export function useRadio(
   props: UseRadioProps,
   state: UseRadioState,
   ref: RefObject<HTMLInputElement | null>
 ) {
-  const { disabled } = props;
-
   const {
     inputProps: commonInputProps,
     labelProps: commonLabelProps,
@@ -62,24 +23,22 @@ export function useRadio(
     isSelected,
     isPressed,
   } = useRadioReactAria(
-    {
-      ...props,
-      isDisabled: disabled,
-    },
+    props,
     Object.assign(state, {
-      isInvalid: state.error || false,
-      isReadOnly: state.readonly || false,
-      isDisabled: state.disabled || false,
-      isRequired: state.required || false,
+      isInvalid: state.isInvalid || false,
+      isReadOnly: state.isReadOnly || false,
+      isDisabled: state.isDisabled || false,
+      isRequired: state.isRequired || false,
     }),
     ref
   );
 
   const { hoverProps, isHovered } = useHover({
-    isDisabled: disabled,
+    isDisabled,
   });
 
   const labelProps = mergeProps(hoverProps, commonLabelProps);
+
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
 
   const inputProps = mergeProps(focusProps, commonInputProps, {
@@ -89,12 +48,12 @@ export function useRadio(
   return {
     labelProps,
     inputProps,
-    pressed: isPressed,
-    hovered: isHovered,
-    focused: isFocused,
-    checked: isSelected,
-    disabled: isDisabled,
-    focusVisible: isFocusVisible,
+    isPressed,
+    isHovered,
+    isFocused,
+    isSelected,
+    isDisabled,
+    isFocusVisible,
   };
 }
 

@@ -24,10 +24,10 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       ...props,
       values: {
         orientation: props.orientation || 'vertical',
-        disabled: state.disabled,
-        readonly: state.readonly,
-        required: state.required,
-        error: state.error,
+        isDisabled: state.isDisabled,
+        isReadOnly: state.isReadOnly,
+        isRequired: state.isRequired,
+        isInvalid: state.isInvalid,
         state,
       },
     });
