@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.1](https://github.com/koobiq/react-components/compare/0.0.1-beta.38...0.0.1) (2025-07-22)
+
+### 🚀 Features
+
+- **components:** export `ListData`, `ListOptions`, `Locale` types ([9b24de4](https://github.com/koobiq/react-components/commit/9b24de462de21b62ced227b75b61cf9c3984d301))
+- **core, primitives:** clean up structure and simplify deps (DS-4012) ([03bc43f](https://github.com/koobiq/react-components/commit/03bc43f3b6c8afe11550a4e6f83baa24cd686d8d))
+- **RadioGroup, Radio:** add `isInvalid`, `isDisabled`, `isRequired` and `isReadOnly` (DS-4010) ([155f095](https://github.com/koobiq/react-components/commit/155f0957460d765f27900ad1b94ad068060ec126))
+
+### 🐞 Bug Fixes
+
+- **Button/IconButton:** correct prop types for Button and IconButton ([5e457b7](https://github.com/koobiq/react-components/commit/5e457b751dbe8f6bbec3feb37eaf090de6ce85b7))
+- **Radio:** add `data-size` and `data-label-placement` attributes ([86b9ddf](https://github.com/koobiq/react-components/commit/86b9ddf9ea1e7e4b38c37f0c8dbf813a28eb2d1b))
+- **Radio:** add `data-testid` prop type declaration ([981858b](https://github.com/koobiq/react-components/commit/981858b2742a50c0c6d1a7a50957ffdbf3d7ef3f))
+- **Radio:** add `style` prop type declaration ([34abcc1](https://github.com/koobiq/react-components/commit/34abcc1cfdcf6bfdca4a6de01713b54d88be63e2))
+
 ## [0.0.1-beta.38](https://github.com/koobiq/react-components/compare/0.0.1-beta.37...0.0.1-beta.38) (2025-07-18)
 
 ### 🚀 Features
