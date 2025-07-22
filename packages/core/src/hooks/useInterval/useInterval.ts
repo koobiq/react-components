@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 import { useMutableRef } from '../useMutableRef';
 
 export function useInterval(
-  /** A callback function that will be triggered at a given interval */
+  /** A callback function that will be triggered at a given interval. */
   callback: () => void,
-  /** Time interval in milliseconds */
+  /** Time interval in milliseconds. */
   interval: number | null
 ): void {
   const savedCallback = useMutableRef(callback);
