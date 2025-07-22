@@ -66,6 +66,7 @@ export const IconGallery = () => {
               </IconButton>
             ),
           })}
+          fullWidth
         />
       </div>
       {filteredIcons.length <= 0 ? (
