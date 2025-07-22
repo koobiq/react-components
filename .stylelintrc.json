@@ -11,7 +11,6 @@
     "number-max-precision": null,
     "no-descending-specificity": null,
     "media-query-no-invalid": null,
-    "media-feature-range-notation": "prefix",
     "property-no-unknown": [
       true,
       {
