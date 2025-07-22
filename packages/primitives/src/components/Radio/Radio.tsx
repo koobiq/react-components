@@ -13,25 +13,30 @@ import { RadioContext } from './index';
 
 export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
   (props, ref) => {
-    const { children, inputRef, disabled: disabledProp } = props;
+    const { children, inputRef } = props;
 
     const state = useContext(RadioContext);
-    const { error, selectedValue, disabled: disabledState } = state;
-
-    const checked = selectedValue === props.value;
-    const disabled = disabledProp || disabledState;
+    const { error } = state;
 
     const domRef = useDOMRef<ComponentRef<'input'>>(inputRef);
 
-    const { hovered, focused, pressed, focusVisible, labelProps, inputProps } =
-      useRadio(
-        {
-          ...removeDataAttributes(props),
-          children: typeof children === 'function' ? true : children,
-        },
-        state,
-        domRef
-      );
+    const {
+      hovered,
+      focused,
+      pressed,
+      focusVisible,
+      labelProps,
+      inputProps,
+      disabled,
+      checked,
+    } = useRadio(
+      {
+        ...removeDataAttributes(props),
+        children: typeof children === 'function' ? true : children,
+      },
+      state,
+      domRef
+    );
 
     const renderValues = {
       error,
