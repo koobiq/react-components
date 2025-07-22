@@ -68,12 +68,12 @@ describe('Radio', () => {
     expect(screen.getByText(RADIO__CHILDREN)).toBeInTheDocument();
   });
 
-  it('should be disabled when disabled prop sets true', async () => {
+  it('should be disabled when isDisabled prop sets true', async () => {
     const onChange = vi.fn();
 
     const { container } = render(
       <RadioGroup aria-label="root" onChange={onChange}>
-        <Radio {...baseProps} disabled />
+        <Radio {...baseProps} isDisabled />
       </RadioGroup>
     );
 

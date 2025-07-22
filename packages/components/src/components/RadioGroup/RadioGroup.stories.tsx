@@ -59,7 +59,12 @@ export const Size = {
 export const Disabled: Story = {
   render: (args: RadioGroupBaseProps) => (
     <FlexBox gap="3xl">
-      <RadioGroup label="Disabled group" defaultValue="one" disabled {...args}>
+      <RadioGroup
+        label="Disabled group"
+        defaultValue="one"
+        isDisabled
+        {...args}
+      >
         <Radio value="one">One</Radio>
         <Radio value="two">Two</Radio>
         <Radio value="three">Three</Radio>
@@ -68,7 +73,7 @@ export const Disabled: Story = {
       <RadioGroup label="Disabled third radio" defaultValue="one" {...args}>
         <Radio value="one">One</Radio>
         <Radio value="two">Two</Radio>
-        <Radio value="three" disabled>
+        <Radio value="three" isDisabled>
           Three
         </Radio>
       </RadioGroup>
@@ -76,9 +81,9 @@ export const Disabled: Story = {
   ),
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   render: (args: RadioGroupBaseProps) => (
-    <RadioGroup label="Label" defaultValue="one" error {...args}>
+    <RadioGroup label="Label" defaultValue="one" isInvalid {...args}>
       <Radio value="one">One</Radio>
       <Radio value="two">Two</Radio>
       <Radio value="three">Three</Radio>
@@ -105,9 +110,9 @@ export const ControlledValue: Story = {
     return (
       <FlexBox gap="m" direction="column">
         <RadioGroup
+          value={value}
           label="Сontrolled"
           onChange={setValue}
-          value={value}
           {...args}
         >
           <Radio value="one">One</Radio>

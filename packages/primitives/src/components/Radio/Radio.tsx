@@ -16,19 +16,19 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
     const { children, inputRef } = props;
 
     const state = useContext(RadioContext);
-    const { error } = state;
+    const { isInvalid } = state;
 
     const domRef = useDOMRef<ComponentRef<'input'>>(inputRef);
 
     const {
-      hovered,
-      focused,
-      pressed,
-      focusVisible,
+      isHovered,
+      isFocused,
+      isPressed,
+      isDisabled,
+      isSelected,
       labelProps,
       inputProps,
-      disabled,
-      checked,
+      isFocusVisible,
     } = useRadio(
       {
         ...removeDataAttributes(props),
@@ -39,13 +39,13 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
     );
 
     const renderValues = {
-      error,
-      hovered,
-      checked,
-      focused,
-      pressed,
-      disabled,
-      focusVisible,
+      isInvalid,
+      isHovered,
+      isSelected,
+      isFocused,
+      isPressed,
+      isDisabled,
+      isFocusVisible,
     };
 
     const renderProps = useRenderProps({

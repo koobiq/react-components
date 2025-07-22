@@ -71,7 +71,7 @@
   --radio-border-color: var(--kbq-line-contrast-fade);
 }
 
-.checked {
+.selected {
   --radio-icon-color: var(--kbq-white-default);
   --radio-border-color: var(--kbq-background-theme);
   --radio-bg-color: var(--kbq-background-theme);
@@ -83,28 +83,28 @@
   }
 }
 
-.checked:where(.hovered) {
+.selected:where(.hovered) {
   --radio-icon-color: var(--kbq-white-default);
   --radio-bg-color: var(--kbq-states-background-theme-hover);
   --radio-border-color: var(--kbq-states-background-theme-hover);
 }
 
-.error {
+.invalid {
   --radio-border-color: var(--kbq-line-error);
 }
 
-.error:where(.hovered) {
+.invalid:where(.hovered) {
   --radio-border-color: var(--kbq-line-error);
   --radio-bg-color: var(--kbq-states-background-error-fade-hover);
 }
 
-.error:where(.checked) {
+.invalid:where(.selected) {
   --radio-icon-color: var(--kbq-white-default);
   --radio-border-color: var(--kbq-background-error);
   --radio-bg-color: var(--kbq-background-error);
 }
 
-.error:where(.checked.hovered) {
+.invalid:where(.selected.hovered) {
   --radio-icon-color: var(--kbq-white-default);
   --radio-border-color: var(--kbq-states-background-error-hover);
   --radio-bg-color: var(--kbq-states-background-error-hover);
@@ -115,7 +115,7 @@
   --radio-outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.focusVisible:where(.error) {
+.focusVisible:where(.invalid) {
   --radio-border-color: transparent;
   --radio-outline-color: var(--kbq-states-line-focus-error);
 }
@@ -127,7 +127,7 @@
   cursor: not-allowed;
 }
 
-.checked:where(.disabled) {
+.selected:where(.disabled) {
   --radio-icon-color: var(--kbq-states-icon-disabled);
 }
 
