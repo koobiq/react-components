@@ -6,13 +6,10 @@ import {
   mergeProps,
   useHover,
   isNotNil,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
-import {
-  type AriaTagProps,
-  type ListState,
-  useLocalizedStringFormatter,
-} from '@koobiq/react-primitives';
+import type { AriaTagProps, ListState } from '@koobiq/react-primitives';
 import { useTag } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';

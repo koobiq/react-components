@@ -4,9 +4,8 @@ import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
 import { createCalendar } from '@internationalized/date';
-import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
+import { clsx, mergeProps, useDOMRef, useLocale } from '@koobiq/react-core';
 import {
-  useLocale,
   useDateField,
   useDateFieldState,
   removeDataAttributes,

@@ -1,6 +1,6 @@
 import type { ComponentPropsWithRef, CSSProperties } from 'react';
 
-import type { UseToggleProps } from '@koobiq/react-primitives';
+import type { UseSwitchProps } from '@koobiq/react-primitives';
 
 export const togglePropSize = ['normal', 'big'] as const;
 
@@ -47,7 +47,7 @@ type ToggleDeprecatedProps = {
   defaultChecked?: boolean;
 };
 
-export type ToggleProps = UseToggleProps & {
+export type ToggleProps = UseSwitchProps & {
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

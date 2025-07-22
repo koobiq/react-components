@@ -3,8 +3,8 @@
 import { forwardRef } from 'react';
 import type { ComponentRef } from 'react';
 
+import { useLocalizedStringFormatter } from '@koobiq/react-core';
 import { IconXmark16 } from '@koobiq/react-icons';
-import { useLocalizedStringFormatter } from '@koobiq/react-primitives';
 
 import { Button, type ButtonProps } from '../../Button';
 import s from '../Dialog.module.css';

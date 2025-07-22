@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
-import { useBoolean } from '@koobiq/react-core';
-import { isWeekend } from '@koobiq/react-primitives';
+import { useBoolean, isWeekend } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import {

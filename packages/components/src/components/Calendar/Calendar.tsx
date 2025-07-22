@@ -3,14 +3,17 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
-import { clsx, mergeProps } from '@koobiq/react-core';
 import {
+  clsx,
+  mergeProps,
   useLocale,
-  useCalendar,
   createCalendar,
+} from '@koobiq/react-core';
+import {
+  useCalendar,
   useCalendarState,
+  type DateValue,
 } from '@koobiq/react-primitives';
-import type { DateValue } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 

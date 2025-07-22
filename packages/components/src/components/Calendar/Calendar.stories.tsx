@@ -6,7 +6,7 @@ import {
   parseDate,
   CalendarDate,
   getLocalTimeZone,
-} from '@koobiq/react-primitives';
+} from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';

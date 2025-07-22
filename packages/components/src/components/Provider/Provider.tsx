@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  useLocale,
-  I18nProvider,
-  RouterProvider,
-} from '@koobiq/react-primitives';
+import { useLocale, I18nProvider, RouterProvider } from '@koobiq/react-core';
 
 import { BreakpointsProvider } from './BreakpointsProvider';
 import { ProviderContext } from './ProviderContext';

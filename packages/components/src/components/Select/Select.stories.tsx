@@ -128,7 +128,7 @@ export const Selection: Story = {
           selectedKey={attack}
           style={{ inlineSize: 200 }}
           placeholder="Select an option"
-          onSelectionChange={(selected) => setAttack(selected)}
+          onSelectionChange={(selected) => setAttack(selected!)}
         >
           {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
         </Select>
@@ -278,7 +278,7 @@ export const WithIcons: Story = {
         selectedKey={selected}
         items={options}
         label="Options"
-        onSelectionChange={setSelected}
+        onSelectionChange={(key) => setSelected(key!)}
         placeholder="Select an option"
         style={{ inlineSize: 200 }}
       >
@@ -311,7 +311,7 @@ export const WithItemDetails: Story = {
         selectedKey={selected}
         items={options}
         label="Options"
-        onSelectionChange={setSelected}
+        onSelectionChange={(key) => setSelected(key!)}
         placeholder="Select an option"
         style={{ inlineSize: 200 }}
       >

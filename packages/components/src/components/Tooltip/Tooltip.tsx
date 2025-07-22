@@ -10,6 +10,7 @@ import {
   useBoolean,
   FocusableProvider,
   useMultiRef,
+  type FocusableElement,
 } from '@koobiq/react-core';
 import {
   Overlay,
@@ -17,7 +18,6 @@ import {
   useTooltipTrigger,
   useOverlayPosition,
   useTooltipTriggerState,
-  type FocusableElement,
 } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 

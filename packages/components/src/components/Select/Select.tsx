@@ -8,6 +8,7 @@ import {
   useDOMRef,
   useElementSize,
 } from '@koobiq/react-core';
+import type { Node } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   useSelect,
@@ -15,7 +16,6 @@ import {
   HiddenSelect,
   removeDataAttributes,
 } from '@koobiq/react-primitives';
-import type { Node } from '@koobiq/react-primitives';
 
 import { Item, Section } from '../Collections';
 import {

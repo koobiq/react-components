@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type {
-  I18nProviderProps,
-  RouterProvider,
-} from '@koobiq/react-primitives';
+import type { I18nProviderProps, RouterProvider } from '@koobiq/react-core';
 
 export type Breakpoints = {
   xs?: number;

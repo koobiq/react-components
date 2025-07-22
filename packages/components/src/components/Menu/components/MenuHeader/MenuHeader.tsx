@@ -1,6 +1,6 @@
 'use client';
 
-import type { Node } from '@koobiq/react-primitives';
+import type { Node } from '@koobiq/react-core';
 
 export type MenuHeaderProps<T> = {
   item: Node<T>;

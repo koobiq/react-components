@@ -3,8 +3,9 @@
 import { type ElementType, useRef } from 'react';
 
 import { clsx, mergeProps, useHover, usePress } from '@koobiq/react-core';
+import type { Node } from '@koobiq/react-core';
 import { useOption } from '@koobiq/react-primitives';
-import type { ListState, Node } from '@koobiq/react-primitives';
+import type { ListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 

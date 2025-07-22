@@ -6,8 +6,7 @@ import type {
   DOMAttributes,
 } from 'react';
 
-import type { DataAttributeProps } from '@koobiq/react-core';
-import type { FocusableElement } from '@koobiq/react-primitives';
+import type { DataAttributeProps, FocusableElement } from '@koobiq/react-core';
 
 export type TooltipPropControl = (
   props: DOMAttributes<FocusableElement | null> & {

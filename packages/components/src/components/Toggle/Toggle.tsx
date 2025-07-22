@@ -4,10 +4,7 @@ import { type ComponentRef, forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
-import {
-  Toggle as TogglePrimitive,
-  type ToggleProps as TogglePropsPrimitive,
-} from '@koobiq/react-primitives';
+import { Switch, type SwitchProps } from '@koobiq/react-primitives';
 
 import type { ToggleProps } from './index';
 import s from './Toggle.module.css';
@@ -69,7 +66,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
       );
     }
 
-    const commonProps: TogglePropsPrimitive = {
+    const commonProps: SwitchProps = {
       isDisabled,
       isSelected,
       isInvalid,
@@ -100,7 +97,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
     const labelProps = slotProps?.label;
 
     return (
-      <TogglePrimitive
+      <Switch
         data-size={size}
         data-label-placement={labelPlacement}
         {...commonProps}
@@ -108,7 +105,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
       >
         <span {...trackProps} />
         {isNotNil(children) && <span {...labelProps}>{children}</span>}
-      </TogglePrimitive>
+      </Switch>
     );
   }
 );
