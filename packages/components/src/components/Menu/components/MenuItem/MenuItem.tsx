@@ -4,7 +4,8 @@ import type { ElementType } from 'react';
 import { useRef } from 'react';
 
 import { clsx, mergeProps, useHover, usePress } from '@koobiq/react-core';
-import type { Node, TreeState } from '@koobiq/react-primitives';
+import type { Node } from '@koobiq/react-core';
+import type { TreeState } from '@koobiq/react-primitives';
 import { useMenuItem } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';

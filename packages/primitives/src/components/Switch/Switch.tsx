@@ -6,12 +6,12 @@ import { forwardRef } from 'react';
 import { useDOMRef, mergeProps, filterDOMProps } from '@koobiq/react-core';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 
-import { useToggle } from '../../behaviors';
+import { useSwitch } from '../../behaviors';
 import { removeDataAttributes, useRenderProps } from '../../utils';
 
-import type { ToggleProps } from './index';
+import type { SwitchProps } from './index';
 
-export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
+export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
   (props, ref) => {
     const { children, inputRef } = props;
 
@@ -26,7 +26,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
       isFocusVisible,
       labelProps,
       inputProps,
-    } = useToggle(
+    } = useSwitch(
       {
         ...removeDataAttributes(props),
         children: typeof children === 'function' ? true : children,
@@ -63,4 +63,4 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
   }
 );
 
-Toggle.displayName = 'Toggle';
+Switch.displayName = 'Switch';

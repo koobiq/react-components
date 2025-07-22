@@ -7,10 +7,10 @@ import { useSwitch as useSwitchReactAria } from '@react-aria/switch';
 import type { AriaSwitchProps } from '@react-aria/switch';
 import { useToggleState } from '@react-stately/toggle';
 
-export type UseToggleProps = AriaSwitchProps & { isInvalid?: boolean };
+export type UseSwitchProps = AriaSwitchProps & { isInvalid?: boolean };
 
-export function useToggle(
-  props: UseToggleProps,
+export function useSwitch(
+  props: UseSwitchProps,
   ref: RefObject<HTMLInputElement | null>
 ) {
   const { isInvalid, isDisabled } = props;
@@ -46,4 +46,4 @@ export function useToggle(
   };
 }
 
-export type UseToggleReturn = ReturnType<typeof useToggle>;
+export type UseSwitchReturn = ReturnType<typeof useSwitch>;

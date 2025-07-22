@@ -6,7 +6,8 @@ import type {
   Ref,
 } from 'react';
 
-import type { Node } from '@koobiq/react-primitives';
+import type { Node } from '@koobiq/react-core';
+import type { AriaSelectProps } from '@koobiq/react-primitives';
 
 import type {
   FieldErrorProps,
@@ -24,7 +25,8 @@ import type { PopoverProps } from '../Popover';
 
 export type SelectKey = string | number;
 
-export type SelectPropOnSelectionChange = (selected: SelectKey) => void;
+export type SelectPropOnSelectionChange<T> =
+  AriaSelectProps<T>['onSelectionChange'];
 
 type SelectDeprecatedProps = {
   /**
@@ -120,7 +122,7 @@ export type SelectProps<T extends object> = {
   /** The currently selected key in the collection (controlled). */
   selectedKey?: SelectKey | null;
   /** Handler that is called when the selection changes. */
-  onSelectionChange?: SelectPropOnSelectionChange;
+  onSelectionChange?: SelectPropOnSelectionChange<T>;
   /** Sets the open state of the menu. */
   isOpen?: boolean;
   /** Sets the default open state of the menu. */

@@ -29,9 +29,12 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@internationalized/date": "^3.8.2",
     "@react-aria/focus": "^3.20.5",
+    "@react-aria/i18n": "^3.12.10",
     "@react-aria/interactions": "^3.25.3",
-    "@react-aria/utils": "^3.29.1"
+    "@react-aria/utils": "^3.29.1",
+    "@react-types/shared": "^3.30.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

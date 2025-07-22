@@ -1,20 +1,21 @@
 import { useState } from 'react';
 
 import {
-  today,
-  getLocalTimeZone,
-  parseDate,
-  parseZonedDateTime,
   now,
+  today,
+  parseDate,
+  getLocalTimeZone,
+  parseZonedDateTime,
 } from '@internationalized/date';
 import { IconCalendarO16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Typography, useDateFormatter } from '../../index';
+import { useDateFormatter } from '../../index';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
 import { Provider } from '../Provider';
+import { Typography } from '../Typography';
 
 import { DateInput, dateInputPropVariant } from './index.js';
 

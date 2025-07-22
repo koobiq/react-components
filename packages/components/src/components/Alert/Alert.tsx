@@ -8,9 +8,9 @@ import {
   isNotNil,
   mergeProps,
   polymorphicForwardRef,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconXmark16 } from '@koobiq/react-icons';
-import { useLocalizedStringFormatter } from '@koobiq/react-primitives';
 
 import { IconButton } from '../IconButton';
 

@@ -2,9 +2,9 @@
 
 import { useRef, useEffect } from 'react';
 
-import { clsx, useBoolean } from '@koobiq/react-core';
+import { clsx, useBoolean, useDateFormatter } from '@koobiq/react-core';
 import { IconChevronDown16 } from '@koobiq/react-icons';
-import { type CalendarState, useDateFormatter } from '@koobiq/react-primitives';
+import { type CalendarState } from '@koobiq/react-primitives';
 
 import { capitalizeFirstLetter } from '../../../../utils';
 import { Button } from '../../../Button';

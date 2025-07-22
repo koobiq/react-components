@@ -8,8 +8,8 @@ import type {
 } from 'react';
 
 import type {
-  ButtonOptions,
   OverlayTriggerState,
+  ButtonOptions,
 } from '@koobiq/react-primitives';
 import type { TransitionProps } from 'react-transition-group/Transition';
 

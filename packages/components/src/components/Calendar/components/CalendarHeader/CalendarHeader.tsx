@@ -1,16 +1,12 @@
 'use client';
 
+import { today, useLocalizedStringFormatter } from '@koobiq/react-core';
 import {
   IconChevronLeft16,
   IconChevronRight16,
   IconCircleXs16,
 } from '@koobiq/react-icons';
-import {
-  type CalendarState,
-  type CalendarAria,
-  today,
-  useLocalizedStringFormatter,
-} from '@koobiq/react-primitives';
+import type { CalendarState, CalendarAria } from '@koobiq/react-primitives';
 
 import { Button } from '../../../Button';
 import intlMessages from '../../intl.json';

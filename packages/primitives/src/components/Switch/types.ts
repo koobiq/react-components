@@ -2,10 +2,10 @@ import type { RefObject } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
 
-import type { UseToggleProps } from '../../behaviors';
+import type { UseSwitchProps } from '../../behaviors';
 import type { RenderProps } from '../../utils';
 
-export type ToggleRenderProps = {
+export type SwitchRenderProps = {
   isInvalid?: boolean;
   isPressed?: boolean;
   isSelected?: boolean;
@@ -15,8 +15,8 @@ export type ToggleRenderProps = {
   isFocusVisible?: boolean;
 };
 
-type ToggleBaseProps = RenderProps<ToggleRenderProps> & {
+type SwitchBaseProps = RenderProps<SwitchRenderProps> & {
   inputRef?: RefObject<HTMLInputElement | null>;
 };
 
-export type ToggleProps = ExtendableProps<ToggleBaseProps, UseToggleProps>;
+export type SwitchProps = ExtendableProps<SwitchBaseProps, UseSwitchProps>;

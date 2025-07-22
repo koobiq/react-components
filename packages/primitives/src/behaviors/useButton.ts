@@ -16,6 +16,8 @@ import {
 export type UseButtonProps<E extends ElementType> = AriaButtonOptions<E> &
   HoverEvents;
 
+export type ButtonOptions = AriaButtonOptions<ElementType>;
+
 export function useButton<E extends ElementType>(
   props: UseButtonProps<E>,
   ref: RefObject<Element | null>

@@ -7,8 +7,8 @@ import type {
   ReactNode,
 } from 'react';
 
+import type { ItemProps as AriaItemProps } from '@koobiq/react-core';
 import { Item as AriaItem } from '@koobiq/react-primitives';
-import type { ItemProps as AriaItemProps } from '@koobiq/react-primitives';
 
 import type { IconButtonProps } from '../IconButton';
 

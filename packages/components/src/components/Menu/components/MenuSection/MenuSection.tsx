@@ -1,6 +1,7 @@
 'use client';
 
-import type { Node, TreeState } from '@koobiq/react-primitives';
+import type { Node } from '@koobiq/react-core';
+import type { TreeState } from '@koobiq/react-primitives';
 import { useMenuSection } from '@koobiq/react-primitives';
 
 import { Typography } from '../../../Typography';

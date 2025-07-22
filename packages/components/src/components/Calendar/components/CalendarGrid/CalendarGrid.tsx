@@ -1,13 +1,11 @@
 'use client';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useLocale, getWeeksInMonth } from '@koobiq/react-core';
 import {
-  type AriaCalendarGridProps,
+  useCalendarGrid,
   type CalendarState,
-  useLocale,
-  getWeeksInMonth,
+  type AriaCalendarGridProps,
 } from '@koobiq/react-primitives';
-import { useCalendarGrid } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { CalendarCell } from '../CalendarCell';

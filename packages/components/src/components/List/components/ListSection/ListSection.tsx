@@ -1,7 +1,8 @@
 'use client';
 
+import type { Node } from '@koobiq/react-core';
 import { useListBoxSection } from '@koobiq/react-primitives';
-import type { ListState, Node } from '@koobiq/react-primitives';
+import type { ListState } from '@koobiq/react-primitives';
 
 import { Typography } from '../../../Typography';
 import { ListOption } from '../ListOption';

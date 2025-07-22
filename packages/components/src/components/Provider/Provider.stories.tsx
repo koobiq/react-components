@@ -1,4 +1,4 @@
-import { useLocale } from '@koobiq/react-primitives';
+import { useLocale } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Typography } from '../Typography';

@@ -2,7 +2,7 @@
 
 import type { ReactNode, FC } from 'react';
 
-import type { SectionProps as AriaSectionProps } from '@koobiq/react-primitives';
+import type { SectionProps as AriaSectionProps } from '@koobiq/react-core';
 import { Section as AriaSection } from '@koobiq/react-primitives';
 
 type SectionComponent<T> = FC<AriaSectionProps<T>> & {
