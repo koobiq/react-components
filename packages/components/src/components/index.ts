@@ -34,9 +34,15 @@ export * from './Calendar';
 export * from './DateInput';
 export * from './DatePicker';
 export * from './layout';
-export { useListData } from '@koobiq/react-primitives';
+export {
+  useListData,
+  type ListData,
+  type ListOptions,
+} from '@koobiq/react-primitives';
 export {
   useRouter,
+  useLocale,
+  type Locale,
   RouterProvider,
   useDateFormatter,
 } from '@koobiq/react-core';

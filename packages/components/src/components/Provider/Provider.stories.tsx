@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Typography } from '../Typography';
 
-import { Provider, useMatchedBreakpoints } from './index';
+import { Provider, type ProviderProps, useMatchedBreakpoints } from './index';
 
 const meta = {
   title: 'Components/Provider',
@@ -17,8 +17,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Base: Story = {
+  render: (args: ProviderProps) => (
+    <Provider {...args}>My application</Provider>
+  ),
+};
+
 export const Breakpoints: Story = {
-  render: function Render() {
+  render: function Render(args) {
     const App = () => {
       const breakpoints = useMatchedBreakpoints();
 
@@ -30,7 +36,7 @@ export const Breakpoints: Story = {
     };
 
     return (
-      <Provider>
+      <Provider {...args}>
         <App />
       </Provider>
     );

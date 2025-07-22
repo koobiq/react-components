@@ -12,7 +12,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
-import { Provider, useLocale } from '../Provider';
+import { useLocale } from '../index';
+import { Provider } from '../Provider';
 
 import { Calendar } from './index.js';
 

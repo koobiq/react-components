@@ -14,7 +14,7 @@ import {
   ButtonToggleGroup,
   Button,
 } from '../../index';
-import { useLocale } from '../Provider';
+import { useLocale } from '../index';
 
 import { DatePicker } from './DatePicker';
 
