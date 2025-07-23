@@ -75,3 +75,10 @@ To set a custom locale, wrap your component with [Provider](?path=/docs/componen
 and pass the `locale` prop.
 
 <Story of={Stories.Locale} />
+
+## Minimum and maximum values
+
+The `minValue` and `maxValue` props can also be used to ensure the value is within a specific range.
+This example only accepts times between 9 AM and 5 PM.
+
+<Story of={Stories.MinMaxValues} />

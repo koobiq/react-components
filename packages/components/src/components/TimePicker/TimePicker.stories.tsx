@@ -86,8 +86,9 @@ export const Addons: Story = {
   render: function Render(args) {
     return (
       <TimePicker
-        label="startAddon"
+        label="Addon"
         endAddon={<IconInfoCircle16 />}
+        isLabelHidden
         {...args}
       />
     );
@@ -160,6 +161,19 @@ export const Locale: Story = {
           <TimePicker aria-label="Event date" />
         </Provider>
       </FlexBox>
+    );
+  },
+};
+
+export const MinMaxValues: Story = {
+  render: function Render() {
+    return (
+      <TimePicker
+        label="Meeting time"
+        minValue={new Time(9)}
+        maxValue={new Time(17)}
+        defaultValue={new Time(8)}
+      />
     );
   },
 };

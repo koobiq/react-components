@@ -43,14 +43,10 @@ export function TimePickerRender<T extends TimeValue>(
     isLabelHidden,
     caption,
     label,
-    isRequired,
     slotProps,
     style,
     fullWidth,
     variant,
-    isInvalid,
-    isDisabled,
-    isReadOnly,
     className,
     endAddon,
     startAddon,
@@ -70,6 +66,8 @@ export function TimePickerRender<T extends TimeValue>(
     errorMessageProps,
     ...validation
   } = useTimeField(props, state, domRef);
+
+  const { isInvalid, isDisabled, isRequired, isReadOnly } = state;
 
   const rootProps = mergeProps<
     [FieldControlProps, FieldControlProps | undefined]
