@@ -54,6 +54,7 @@ export const Base: Story = {
     <Input
       label="Name"
       placeholder="Sophia"
+      maxLength={100}
       caption="Maximum 100 characters"
       {...args}
     />
@@ -260,9 +261,11 @@ export const Password: Story = {
         endAddon={
           <IconButton
             onPress={toggle}
+            tabIndex={-1}
             variant="fade-contrast"
             style={{ marginInlineEnd: '-8px' }}
             aria-label={hiddenPassword ? 'show password' : 'hide password'}
+            preventFocusOnPress
           >
             <AnimatedIcon
               activeIndex={+hiddenPassword}
