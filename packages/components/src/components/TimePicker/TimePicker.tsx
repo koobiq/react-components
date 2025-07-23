@@ -148,7 +148,10 @@ export function TimePickerRender<T extends TimeValue>(
   return (
     <FieldControl {...rootProps}>
       <FieldLabel {...labelProps} />
-      <FieldInputGroup {...groupProps}>
+      <FieldInputGroup
+        {...groupProps}
+        slotProps={{ start: { style: { pointerEvents: 'none' } } }}
+      >
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (
             <DateSegment key={i} segment={segment} state={state} />
