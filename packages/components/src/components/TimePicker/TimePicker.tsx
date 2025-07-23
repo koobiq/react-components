@@ -2,27 +2,29 @@ import { forwardRef, type Ref } from 'react';
 
 import { clsx, mergeProps, useDOMRef, useLocale } from '@koobiq/react-core';
 import { IconClock16 } from '@koobiq/react-icons';
+import type { TimeValue } from '@koobiq/react-primitives';
 import {
   useTimeFieldState,
   useTimeField,
-  type TimeValue,
   removeDataAttributes,
 } from '@koobiq/react-primitives';
 
 import { DateSegment } from '../DateSegment';
 import {
   FieldCaption,
-  type FieldCaptionProps,
   FieldControl,
-  type FieldControlProps,
   FieldError,
-  type FieldErrorProps,
   FieldInputDate,
-  type FieldInputDateProps,
   FieldInputGroup,
-  type FieldInputGroupProps,
   FieldLabel,
-  type FieldLabelProps,
+} from '../FieldComponents';
+import type {
+  FieldCaptionProps,
+  FieldControlProps,
+  FieldErrorProps,
+  FieldInputDateProps,
+  FieldInputGroupProps,
+  FieldLabelProps,
 } from '../FieldComponents';
 
 import s from './TimePicker.module.css';
@@ -149,7 +151,7 @@ export function TimePickerRender<T extends TimeValue>(
       <FieldLabel {...labelProps} />
       <FieldInputGroup
         {...groupProps}
-        slotProps={{ start: { style: { pointerEvents: 'none' } } }}
+        slotProps={{ start: { className: s.startAddon } }}
       >
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (

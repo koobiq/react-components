@@ -1,3 +1,7 @@
 .base {
   min-inline-size: 150px;
 }
+
+.startAddon {
+  pointer-events: none;
+}
