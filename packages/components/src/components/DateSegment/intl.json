@@ -1,0 +1,4 @@
+{
+  "ru-RU": { "hour": "чч", "minute": "мм", "second": "сс" },
+  "en-US": { "hour": "hh", "minute": "mm", "second": "ss" }
+}
