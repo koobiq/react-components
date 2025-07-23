@@ -12,6 +12,7 @@ import {
 } from '@koobiq/react-primitives';
 import type { DateValue } from '@koobiq/react-primitives';
 
+import { DateSegment } from '../DateSegment';
 import {
   FieldCaption,
   FieldControl,
@@ -29,7 +30,6 @@ import type {
   FieldLabelProps,
 } from '../FieldComponents';
 
-import { DateInputSegment } from './components';
 import s from './DateInput.module.css';
 import type { DateInputRef, DateInputProps, DateInputComponent } from './types';
 
@@ -148,7 +148,7 @@ export function DateInputRender<T extends DateValue>(
       <FieldInputGroup {...groupProps}>
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (
-            <DateInputSegment key={i} segment={segment} state={state} />
+            <DateSegment key={i} segment={segment} state={state} />
           ))}
         </FieldInputDate>
       </FieldInputGroup>

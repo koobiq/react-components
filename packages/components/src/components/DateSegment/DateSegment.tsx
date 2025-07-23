@@ -4,14 +4,14 @@ import { clsx } from '@koobiq/react-core';
 import { useDateSegment } from '@koobiq/react-primitives';
 import type { DateSegment, DateFieldState } from '@koobiq/react-primitives';
 
-import s from './DateInputSegment.module.css';
+import s from './DateSegment.module.css';
 
-type DateInputSegmentProps = {
+type DateSegmentProps = {
   segment: DateSegment;
   state: DateFieldState;
 };
 
-export function DateInputSegment({ segment, state }: DateInputSegmentProps) {
+export function DateSegment({ segment, state }: DateSegmentProps) {
   const ref = useRef(null);
   const { segmentProps } = useDateSegment(segment, state, ref);
 
