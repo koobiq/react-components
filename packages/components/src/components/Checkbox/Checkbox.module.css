@@ -76,6 +76,7 @@
 
 .invalid {
   --checkbox-border-color: var(--kbq-line-error);
+  --checkbox-bg-color: var(--kbq-background-error-less);
 }
 
 .invalid:where(.hovered) {
