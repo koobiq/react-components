@@ -8,11 +8,14 @@ import {
   type TimeValue,
 } from '@koobiq/react-primitives';
 
-import { DateInputSegment } from '../DateInput/components';
-import s from '../DateInput/DateInput.module.css';
+import { DateSegment } from '../DateSegment';
 import {
+  FieldCaption,
+  type FieldCaptionProps,
   FieldControl,
   type FieldControlProps,
+  FieldError,
+  type FieldErrorProps,
   FieldInputDate,
   type FieldInputDateProps,
   FieldInputGroup,
@@ -21,6 +24,7 @@ import {
   type FieldLabelProps,
 } from '../FieldComponents';
 
+import s from './TimePicker.module.css';
 import type {
   TimePickerComponent,
   TimePickerProps,
@@ -37,6 +41,7 @@ export function TimePickerRender<T extends TimeValue>(
 
   const {
     isLabelHidden,
+    caption,
     label,
     isRequired,
     slotProps,
@@ -49,6 +54,7 @@ export function TimePickerRender<T extends TimeValue>(
     className,
     endAddon,
     startAddon,
+    errorMessage,
     'data-testid': testId,
   } = props;
 
@@ -57,11 +63,13 @@ export function TimePickerRender<T extends TimeValue>(
     locale,
   });
 
-  const { labelProps: labelPropReactAria, fieldProps } = useTimeField(
-    props,
-    state,
-    domRef
-  );
+  const {
+    labelProps: labelPropReactAria,
+    fieldProps,
+    descriptionProps,
+    errorMessageProps,
+    ...validation
+  } = useTimeField(props, state, domRef);
 
   const rootProps = mergeProps<
     [FieldControlProps, FieldControlProps | undefined]
@@ -119,16 +127,36 @@ export function TimePickerRender<T extends TimeValue>(
     slotProps?.label
   );
 
+  const captionProps = mergeProps<
+    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
+  >({ children: caption }, slotProps?.caption, descriptionProps);
+
+  const errorProps = mergeProps<
+    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
+  >(
+    {
+      isInvalid,
+      children:
+        typeof errorMessage === 'function'
+          ? errorMessage({ ...validation })
+          : errorMessage,
+    },
+    slotProps?.errorMessage,
+    errorMessageProps
+  );
+
   return (
     <FieldControl {...rootProps}>
       <FieldLabel {...labelProps} />
       <FieldInputGroup {...groupProps}>
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (
-            <DateInputSegment key={i} segment={segment} state={state} />
+            <DateSegment key={i} segment={segment} state={state} />
           ))}
         </FieldInputDate>
       </FieldInputGroup>
+      <FieldCaption {...captionProps} />
+      <FieldError {...errorProps} />
     </FieldControl>
   );
 }
