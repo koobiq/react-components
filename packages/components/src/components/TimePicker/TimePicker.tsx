@@ -6,6 +6,7 @@ import {
   useTimeFieldState,
   useTimeField,
   type TimeValue,
+  removeDataAttributes,
 } from '@koobiq/react-primitives';
 
 import { DateSegment } from '../DateSegment';
@@ -55,7 +56,7 @@ export function TimePickerRender<T extends TimeValue>(
   } = props;
 
   const state = useTimeFieldState({
-    ...props,
+    ...removeDataAttributes(props),
     locale,
   });
 
@@ -65,7 +66,7 @@ export function TimePickerRender<T extends TimeValue>(
     descriptionProps,
     errorMessageProps,
     ...validation
-  } = useTimeField(props, state, domRef);
+  } = useTimeField(removeDataAttributes(props), state, domRef);
 
   const { isInvalid, isDisabled, isRequired, isReadOnly } = state;
 
