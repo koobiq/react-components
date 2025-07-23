@@ -1,10 +1,14 @@
 import { useRef } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useLocalizedStringFormatter } from '@koobiq/react-core';
 import { useDateSegment } from '@koobiq/react-primitives';
 import type { DateSegment, DateFieldState } from '@koobiq/react-primitives';
 
+import { useLocale } from '../../index';
+
 import s from './DateSegment.module.css';
+import intlMessages from './intl.json';
+import { isTime } from './utils';
 
 type DateSegmentProps = {
   segment: DateSegment;
@@ -13,9 +17,19 @@ type DateSegmentProps = {
 
 export function DateSegment({ segment, state }: DateSegmentProps) {
   const ref = useRef(null);
+  const { locale } = useLocale();
   const { segmentProps } = useDateSegment(segment, state, ref);
 
-  const { text, isPlaceholder, type } = segment;
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  const { text, type, isPlaceholder } = segment;
+
+  const hasValue = state.value !== null;
+
+  const content =
+    isTime(type) && isPlaceholder && locale in intlMessages
+      ? stringFormatter.format(type)
+      : text;
 
   return (
     <span
@@ -24,11 +38,11 @@ export function DateSegment({ segment, state }: DateSegmentProps) {
       className={clsx(
         s.base,
         s[type],
-        state.value !== null && s.hasValue,
+        hasValue && s.hasValue,
         isPlaceholder && s.placeholder
       )}
     >
-      {text}
+      {content}
     </span>
   );
 }
