@@ -33,6 +33,7 @@ export * from './Table';
 export * from './Calendar';
 export * from './DateInput';
 export * from './DatePicker';
+export * from './TimePicker';
 export * from './layout';
 export {
   useListData,
