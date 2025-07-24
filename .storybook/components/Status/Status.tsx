@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 
-import { Badge, spacing } from '@koobiq/react-components';
-import { clsx } from '@koobiq/react-core';
+import { Badge } from '@koobiq/react-components';
 import { Link } from '@koobiq/react-primitives';
 
 import type { StatusProps } from './types';
@@ -11,7 +10,7 @@ export const Status: FC<StatusProps> = ({ variant = 'stable', ...other }) => {
   const mappingProps = variantMap[variant];
 
   return (
-    <div className={clsx(spacing({ mbe: 'l' }), 'sb-unstyled')}>
+    <div className={'sb-unstyled'}>
       <Badge
         {...mappingProps}
         {...other}
