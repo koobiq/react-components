@@ -1,0 +1,84 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TimePicker.stories';
+
+<Meta of={Stories} />
+
+# TimePicker
+
+<Status variant="experimental" />
+
+A time picker allows users to enter and edit time values using a keyboard.
+
+```tsx
+import { TimePicker } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Value
+
+A TimePicker displays a placeholder by default. An initial, uncontrolled value can be provided
+to the TimePicker using the `defaultValue` prop. Alternatively, a controlled value can be provided
+using the `value` prop.
+
+Date values are provided using objects in the [@internationalized/date](https://github.com/adobe/react-spectrum/tree/main/packages/@internationalized/date) package.
+This library handles correct international date manipulation across calendars,
+time zones, and other localization concerns.
+
+### Uncontrolled
+
+<Story of={Stories.Uncontrolled} />
+
+### Controlled
+
+<Story of={Stories.Controlled} />
+
+## States
+
+Use `isDisabled`, `isInvalid`, `isRequired`, and `isReadOnly` to show the component in different states.
+You can also add a `caption` to provide extra context about the time picker.
+
+<Story of={Stories.States} />
+
+## Variant
+
+To change the visual state of the time picker, use the `variant` prop.
+
+<Story of={Stories.Variant} />
+
+## Full width
+
+The `fullWidth` prop will make an input fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Addons
+
+You can add an extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+## Locale
+
+By default, the TimePicker uses the user's system locale.
+To set a custom locale, wrap your component with [Provider](?path=/docs/components-provider--docs)
+and pass the `locale` prop.
+
+<Story of={Stories.Locale} />
+
+## Minimum and maximum values
+
+The `minValue` and `maxValue` props can also be used to ensure the value is within a specific range.
+This example only accepts times between 9 AM and 5 PM.
+
+<Story of={Stories.MinMaxValues} />
