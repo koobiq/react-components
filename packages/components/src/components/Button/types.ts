@@ -41,16 +41,6 @@ export type ButtonBaseProps = ExtendableProps<
      */
     variant?: ButtonPropVariant;
     /**
-     * If `true`, the progress indicator is shown and the button becomes disabled.
-     * @default false
-     */
-    isLoading?: boolean;
-    /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    isDisabled?: boolean;
-    /**
      * If `true`, only the icon is shown, and the button has same sides.
      * @default false
      */

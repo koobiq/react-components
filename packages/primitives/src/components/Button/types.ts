@@ -35,5 +35,9 @@ export type ButtonBaseProps = RenderProps<ButtonRenderProps> & {
   formTarget?: string;
   tabIndex?: number;
   slot?: string;
+  /**
+   * Whether this button is loading.
+   * @default false
+   */
   isLoading?: boolean;
 } & Omit<UseButtonProps<never>, 'elementType' | 'href'>;
