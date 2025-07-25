@@ -45,11 +45,6 @@ export type IconButtonBaseProps = ExtendableProps<
      */
     variant?: IconButtonPropVariant;
     /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    isDisabled?: boolean;
-    /**
      * Size of the component
      * @default 'xl'
      */
@@ -64,5 +59,5 @@ export type IconButtonBaseProps = ExtendableProps<
     /** Inline styles. */
     style?: CSSProperties;
   } & IconButtonBaseDeprecatedProps,
-  Omit<ButtonBasePrimitiveProps, 'slot'>
+  Omit<ButtonBasePrimitiveProps, 'slot' | 'isLoading'>
 >;
