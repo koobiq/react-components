@@ -25,15 +25,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: ToggleProps) => (
+  render: (args) => (
     <Toggle defaultSelected {...args}>
       Wi-Fi
     </Toggle>
   ),
 };
 
-export const LabelPlacement = {
-  render: (args: ToggleProps) => (
+export const LabelPlacement: Story = {
+  render: (args) => (
     <FlexBox gap="l" direction="column">
       {togglePropLabelPlacement.map((placement) => (
         <Toggle
@@ -49,8 +49,8 @@ export const LabelPlacement = {
   ),
 };
 
-export const Size = {
-  render: (args: ToggleProps) => (
+export const Size: Story = {
+  render: (args) => (
     <FlexBox gap="l" direction="column">
       {togglePropSize.map((size) => (
         <Toggle key={size} size={size} defaultSelected {...args}>
@@ -62,7 +62,7 @@ export const Size = {
 };
 
 export const Disabled: Story = {
-  render: (args: ToggleProps) => (
+  render: (args) => (
     <FlexBox gap="l">
       <Toggle {...args} isDisabled>
         Label
@@ -78,7 +78,7 @@ export const Disabled: Story = {
 };
 
 export const DefaultValue: Story = {
-  render: function Render(args: ToggleProps) {
+  render: function Render(args) {
     return (
       <Toggle defaultSelected {...args}>
         Uncontrolled
@@ -88,7 +88,7 @@ export const DefaultValue: Story = {
 };
 
 export const ControlledValue: Story = {
-  render: function Render(args: ToggleProps) {
+  render: function Render(args) {
     const [isSelected, { toggle }] = useBoolean(true);
 
     return (
@@ -105,7 +105,7 @@ export const ControlledValue: Story = {
 };
 
 export const Invalid: Story = {
-  render: (args: ToggleProps) => (
+  render: (args) => (
     <Toggle {...args} isInvalid defaultSelected>
       Label
     </Toggle>
@@ -113,7 +113,7 @@ export const Invalid: Story = {
 };
 
 export const Description: Story = {
-  render: (args: ToggleProps) => (
+  render: (args) => (
     <Toggle
       {...args}
       slotProps={{
@@ -133,7 +133,7 @@ export const Example: Story = {
   parameters: {
     layout: 'padded',
   },
-  render: function Render(args: ToggleProps) {
+  render: function Render(args) {
     const [isLoading, { on: startLoading, off: stopLoading }] =
       useBoolean(false);
 

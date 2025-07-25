@@ -8,11 +8,7 @@ import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
 import { Typography } from '../Typography';
 
-import {
-  InputNumber,
-  type InputNumberProps,
-  inputNumberPropVariant,
-} from './index';
+import { InputNumber, inputNumberPropVariant } from './index';
 
 const mappingIcons = Object.entries(Icons).reduce((acc, [key, Icon]) => ({
   ...acc,
@@ -41,7 +37,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: InputNumberProps) => (
+  render: (args) => (
     <InputNumber
       label="Age"
       placeholder="Enter your age"
@@ -71,7 +67,7 @@ export const Variant: Story = {
 };
 
 export const Invalid: Story = {
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputNumberPropVariant.map((variant) => (
@@ -94,7 +90,7 @@ export const FullWidth: Story = {
   parameters: {
     layout: 'padded',
   },
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <InputNumber
         aria-label="fullWidth"
@@ -107,7 +103,7 @@ export const FullWidth: Story = {
 };
 
 export const Disabled: Story = {
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputNumberPropVariant.map((variant) => (
@@ -127,7 +123,7 @@ export const Disabled: Story = {
 };
 
 export const Required: Story = {
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <InputNumber
@@ -151,7 +147,7 @@ export const Required: Story = {
 };
 
 export const ReadOnly: Story = {
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <InputNumber
         label="Number"
@@ -166,7 +162,7 @@ export const ReadOnly: Story = {
 };
 
 export const Addons: Story = {
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <InputNumber
         label="addon"
@@ -185,7 +181,7 @@ export const Addons: Story = {
 };
 
 export const DefaultValue: Story = {
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <InputNumber
         label="Number"
@@ -198,7 +194,7 @@ export const DefaultValue: Story = {
 };
 
 export const ControlledValue: Story = {
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     const [value, setState] = useState(100);
 
     return (
@@ -218,7 +214,7 @@ export const ControlledValue: Story = {
 
 export const NumberFormatting: Story = {
   name: 'Number formatting',
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <Grid cols={{ xs: 1, s: 2, m: 3 }} gap="xl">
         <GridItem>
@@ -306,13 +302,13 @@ export const NumberFormatting: Story = {
 
 export const MinimumMaximumValues: Story = {
   name: 'Minimum and maximum',
-  render: function Render(args: InputNumberProps) {
+  render: function Render(args) {
     return (
       <InputNumber
         label="Age"
         defaultValue={1}
         minValue={0}
-        placeholder="Enter a your agr"
+        placeholder="Enter a your age"
         {...args}
       />
     );

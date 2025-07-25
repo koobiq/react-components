@@ -1,5 +1,5 @@
 import { useBoolean } from '@koobiq/react-core';
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -8,7 +8,7 @@ import { spacing } from '../layout';
 import { Textarea } from '../Textarea';
 import { Toggle } from '../Toggle';
 
-import { Modal, type ModalProps } from './index';
+import { Modal } from './index';
 import { modalPropSize } from './index.js';
 
 const meta = {
@@ -22,13 +22,13 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-};
+} satisfies Meta<typeof Modal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: function Render(args: ModalProps) {
+  render: function Render(args) {
     return (
       <Modal
         size="small"
@@ -68,7 +68,7 @@ export const Base: Story = {
 };
 
 export const Size: Story = {
-  render: function Render(args: ModalProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="l">
         {modalPropSize.map((size) => (
@@ -96,7 +96,7 @@ export const Size: Story = {
 
 export const ControlledOpen: Story = {
   name: 'Controlled open',
-  render: function Render(args: ModalProps) {
+  render: function Render(args) {
     const [isOpen, { on, off, set }] = useBoolean(false);
 
     return (

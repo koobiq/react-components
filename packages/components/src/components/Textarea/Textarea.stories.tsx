@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import { Textarea, type TextareaProps, textareaPropVariant } from './index';
+import { Textarea, textareaPropVariant } from './index';
 
 const meta = {
   title: 'Components/Textarea',
@@ -19,7 +19,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: TextareaProps) => (
+  render: (args) => (
     <Textarea
       label="Tell us your story"
       placeholder="Your story"
@@ -48,7 +48,7 @@ export const Variant: Story = {
 };
 
 export const Invalid: Story = {
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     return (
       <Textarea
         aria-label="error"
@@ -65,7 +65,7 @@ export const FullWidth: Story = {
   parameters: {
     layout: 'padded',
   },
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     return (
       <Textarea
         aria-label="fullWidth"
@@ -78,7 +78,7 @@ export const FullWidth: Story = {
 };
 
 export const Disabled: Story = {
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     return (
       <Textarea
         caption="disabled"
@@ -92,7 +92,7 @@ export const Disabled: Story = {
 };
 
 export const RowsCols: Story = {
-  render: (args: TextareaProps) => (
+  render: (args) => (
     <Textarea
       rows={5}
       cols={30}
@@ -105,7 +105,7 @@ export const RowsCols: Story = {
 };
 
 export const Expand: Story = {
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Textarea
@@ -130,7 +130,7 @@ export const Expand: Story = {
 };
 
 export const Required: Story = {
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Textarea
@@ -154,7 +154,7 @@ export const Required: Story = {
 };
 
 export const ReadOnly: Story = {
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     return (
       <Textarea
         label="Tell us your story"
@@ -169,7 +169,7 @@ export const ReadOnly: Story = {
 };
 
 export const DefaultValue: Story = {
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     return (
       <Textarea
         label="Tell us your story"
@@ -182,7 +182,7 @@ export const DefaultValue: Story = {
 };
 
 export const ControlledValue: Story = {
-  render: function Render(args: TextareaProps) {
+  render: function Render(args) {
     const [value, setState] = useState('It was a dark and stormy night...');
 
     return (

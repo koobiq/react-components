@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 
 import { capitalizeFirstLetter, useBoolean } from '@koobiq/react-core';
 import { IconSparkles16 } from '@koobiq/react-icons';
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import type { PressEvent } from '../../types';
 import { Button } from '../Button';
@@ -14,7 +14,6 @@ import { Typography } from '../Typography';
 
 import image from './__stories__/img.webp';
 import { Popover, type PopoverPropPlacement, popoverPropSize } from './index';
-import type { PopoverProps } from './index.js';
 
 const meta = {
   title: 'Components/Popover',
@@ -27,13 +26,13 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-};
+} satisfies Meta<typeof Popover>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: PopoverProps) => (
+  render: (args) => (
     <Popover
       size="auto"
       control={(props) => <Button {...props}>Open</Button>}
@@ -46,7 +45,7 @@ export const Base: Story = {
 };
 
 export const Arrow: Story = {
-  render: (args: PopoverProps) => (
+  render: (args) => (
     <Popover
       size="auto"
       control={(props) => <Button {...props}>Open</Button>}
@@ -60,7 +59,7 @@ export const Arrow: Story = {
 };
 
 export const Offsets: Story = {
-  render: function Render(args: PopoverProps) {
+  render: function Render(args) {
     const [offset, setOffset] = useState<number>(50);
     const [crossOffset, setCrossOffset] = useState<number>(0);
 
@@ -96,7 +95,7 @@ export const Offsets: Story = {
 };
 
 export const Size: Story = {
-  render: function Render(args: PopoverProps) {
+  render: function Render(args) {
     const text =
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos ea eveniet ipsam, mollitia nemo perferendis, quisquam recusandae totam ullam unde velit vitae voluptatem, voluptates? At commodi incidunt quibusdam saepe? Ad dolorum ducimus exercitationem ipsa nisi numquam possimus quas sapiente, similique, totam, vero voluptatibus. Adipisci aspernatur eligendi explicabo id magni recusandae voluptate voluptatum! Alias aliquam amet aut, cum delectus distinctio doloribus eius eveniet excepturi fugiat fugit magni minima molestias nam necessitatibus nihil odit officia pariatur perferendis perspiciatis porro quaerat quam quidem quis quisquam recusandae reiciendis repellat repellendus repudiandae sequi suscipit tempore unde ut vel veritatis vitae voluptate? Fugit quia repellendus tempora!';
 
@@ -145,7 +144,7 @@ export const Size: Story = {
 };
 
 export const Placement: Story = {
-  render: function Render(args: PopoverProps) {
+  render: function Render(args) {
     const [isOpen, { toggle, set }] = useBoolean();
     const [placement, setPlacement] = useState<PopoverPropPlacement>();
     const anchorRef = useRef<HTMLElement | null>(null);
@@ -285,7 +284,7 @@ export const Placement: Story = {
 
 export const ControlledOpen: Story = {
   name: 'Controlled open',
-  render: function Render(args: PopoverProps) {
+  render: function Render(args) {
     const anchorRef = useRef<HTMLParagraphElement | null>(null);
     const [isOpen, { on, set }] = useBoolean(false);
 
@@ -319,7 +318,7 @@ export const ControlledOpen: Story = {
 
 export const Hover: Story = {
   name: 'Mouse hover interaction',
-  render: function Render(args: PopoverProps) {
+  render: function Render(args) {
     const anchorRef = useRef<HTMLButtonElement | null>(null);
     const [isOpen, { on, off, set }] = useBoolean(false);
 
@@ -346,7 +345,7 @@ export const Hover: Story = {
 
 export const ShouldCloseOnInteractOutside: Story = {
   name: 'Click outside exceptions',
-  render: function Render(args: PopoverProps) {
+  render: function Render(args) {
     const anchorRef = useRef<HTMLButtonElement | null>(null);
     const [isOpen, { toggle, set }] = useBoolean(false);
 
@@ -373,7 +372,7 @@ export const ShouldCloseOnInteractOutside: Story = {
 };
 
 export const Customization: Story = {
-  render: (args: PopoverProps) => (
+  render: (args) => (
     <Popover
       offset={8}
       control={(props) => (

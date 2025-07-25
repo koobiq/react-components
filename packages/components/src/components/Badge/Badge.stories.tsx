@@ -4,8 +4,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 
-import type { BadgeBaseProps } from './index.js';
-import { Badge, badgePropSize, badgePropVariant } from './index.js';
+import {
+  Badge,
+  type BadgeProps,
+  badgePropSize,
+  badgePropVariant,
+} from './index.js';
 
 const mappingIcons = Object.entries(Icons).reduce((acc, [key, Icon]) => ({
   ...acc,
@@ -37,14 +41,14 @@ const meta = {
 } satisfies Meta<typeof Badge>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<BadgeProps>;
 
 export const Base: Story = {
-  render: (args: BadgeBaseProps) => <Badge {...args}>Badge</Badge>,
+  render: (args) => <Badge {...args}>Badge</Badge>,
 };
 
 export const Size: Story = {
-  render: (args: BadgeBaseProps) => (
+  render: (args) => (
     <FlexBox gap="l" direction="column" alignItems="center">
       {badgePropSize.map((size) => (
         <Badge key={size} size={size} {...args}>
@@ -56,7 +60,7 @@ export const Size: Story = {
 };
 
 export const Variant: Story = {
-  render: (args: BadgeBaseProps) => (
+  render: (args) => (
     <FlexBox gap="l" alignItems="center" wrap="wrap">
       {badgePropVariant.map((variant) => (
         <Badge key={variant} variant={variant} {...args}>
@@ -68,7 +72,7 @@ export const Variant: Story = {
 };
 
 export const WithIcons: Story = {
-  render: (args: BadgeBaseProps) => (
+  render: (args) => (
     <Badge startIcon="0.8" endIcon={<IconCloudO16 />} {...args}>
       Badge
     </Badge>
@@ -76,7 +80,7 @@ export const WithIcons: Story = {
 };
 
 export const LongLabel: Story = {
-  render: (args: BadgeBaseProps) => (
+  render: (args) => (
     <div style={{ display: 'flex', width: 180, overflow: 'hidden' }}>
       <Badge startIcon={<IconStar16 />} {...args}>
         A very-very-very long text

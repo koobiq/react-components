@@ -1,6 +1,6 @@
 import type { StoryObj } from '@storybook/react';
 
-import { Container, type ContainerBaseProps } from './index';
+import { Container, type ContainerProps } from './index';
 
 const meta = {
   title: 'Components/Container',
@@ -8,7 +8,7 @@ const meta = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ContainerProps>;
 
 const containerStyle = {
   blockSize: 300,
@@ -21,7 +21,7 @@ const boxStyle = {
 };
 
 export const Base: Story = {
-  render: (args: ContainerBaseProps) => (
+  render: (args) => (
     <Container style={containerStyle} maxInlineSize={400} margins="m" {...args}>
       <div style={boxStyle} />
     </Container>
@@ -30,7 +30,7 @@ export const Base: Story = {
 
 export const MaxInlineSize: Story = {
   name: 'MaxInlineSize',
-  render: (args: ContainerBaseProps) => (
+  render: (args) => (
     <Container style={containerStyle} maxInlineSize={400} {...args}>
       <div style={boxStyle} />
     </Container>
@@ -38,7 +38,7 @@ export const MaxInlineSize: Story = {
 };
 
 export const Margins: Story = {
-  render: (args: ContainerBaseProps) => (
+  render: (args) => (
     <Container
       style={containerStyle}
       maxInlineSize={400}
@@ -51,7 +51,7 @@ export const Margins: Story = {
 };
 
 export const Position: Story = {
-  render: (args: ContainerBaseProps) => (
+  render: (args) => (
     <Container
       style={containerStyle}
       maxInlineSize={400}
@@ -65,7 +65,7 @@ export const Position: Story = {
 
 export const Fixed: Story = {
   name: 'Responsive values',
-  render: (args: ContainerBaseProps) => (
+  render: (args) => (
     <Container style={{ ...containerStyle, width: 600 }} isFixed {...args}>
       <div style={boxStyle} />
     </Container>
@@ -74,7 +74,7 @@ export const Fixed: Story = {
 
 export const ResponsiveValues: Story = {
   name: 'Responsive values',
-  render: (args: ContainerBaseProps) => (
+  render: (args) => (
     <Container
       style={containerStyle}
       maxInlineSize={{ xs: '100%', l: 960 }}

@@ -4,8 +4,11 @@ import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
 
 import car from './__stories__/red_car.jpeg';
-import { typographyPropVariant, Typography } from './index.js';
-import type { TypographyBaseProps } from './index.js';
+import {
+  typographyPropVariant,
+  Typography,
+  type TypographyProps,
+} from './index.js';
 
 const meta = {
   title: 'Components/Typography',
@@ -14,12 +17,10 @@ const meta = {
 } satisfies Meta<typeof Typography>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<TypographyProps>;
 
 export const Base: Story = {
-  render: (args: TypographyBaseProps) => (
-    <Typography {...args}>Design-system</Typography>
-  ),
+  render: (args) => <Typography {...args}>Design-system</Typography>,
 };
 
 export const Variant: Story = {

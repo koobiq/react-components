@@ -14,7 +14,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import type { SelectKey, SelectProps } from './index.js';
+import type { SelectKey } from './index.js';
 import { Select } from './index.js';
 
 const meta = {
@@ -49,7 +49,7 @@ const options = [
 ];
 
 export const Base: Story = {
-  render: (args: SelectProps<object>) => (
+  render: (args) => (
     <Select
       label="Attack type"
       style={{ inlineSize: 200 }}

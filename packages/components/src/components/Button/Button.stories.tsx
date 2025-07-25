@@ -10,8 +10,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
 
-import { type ButtonBaseProps, buttonPropVariant } from './index.js';
-import { Button } from './index.js';
+import { buttonPropVariant, Button, type ButtonProps } from './index.js';
 
 const mappingIcons = Object.entries(Icons).reduce((acc, [key, Icon]) => ({
   ...acc,
@@ -43,10 +42,10 @@ const meta = {
 } satisfies Meta<typeof Button>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ButtonProps>;
 
 export const Base: Story = {
-  render: (args: ButtonBaseProps) => (
+  render: (args) => (
     // eslint-disable-next-line no-alert
     <Button onPress={() => alert('Press')} {...args}>
       Button
@@ -55,7 +54,7 @@ export const Base: Story = {
 };
 
 export const WithIcons: Story = {
-  render: (args: ButtonBaseProps) => (
+  render: (args) => (
     <Button
       startIcon={<IconPlus16 />}
       endIcon={<IconChevronDown16 />}
@@ -67,7 +66,7 @@ export const WithIcons: Story = {
 };
 
 export const OnlyIcon: Story = {
-  render: (args: ButtonBaseProps) => (
+  render: (args) => (
     <FlexBox gap="l">
       {buttonPropVariant.map((variant) => (
         <Button
@@ -84,7 +83,7 @@ export const OnlyIcon: Story = {
 };
 
 export const Loading: Story = {
-  render: (args: ButtonBaseProps) => (
+  render: (args) => (
     <Button isLoading {...args}>
       Button
     </Button>
@@ -92,7 +91,7 @@ export const Loading: Story = {
 };
 
 export const Variant: Story = {
-  render: (args: ButtonBaseProps) => (
+  render: (args) => (
     <FlexBox gap="l" direction="column" alignItems="stretch">
       {buttonPropVariant.map((variant) => (
         <Button
@@ -109,7 +108,7 @@ export const Variant: Story = {
 };
 
 export const Disabled: Story = {
-  render: function Render(args: ButtonBaseProps) {
+  render: function Render(args) {
     const [isLoading, { set }] = useBoolean(false);
 
     return (
@@ -126,7 +125,7 @@ export const Disabled: Story = {
 };
 
 export const LongLabel: Story = {
-  render: (args: ButtonBaseProps) => (
+  render: (args) => (
     <FlexBox style={{ inlineSize: 240 }}>
       <Button startIcon={<IconPlus16 />} {...args}>
         A very, very, very long label inside the button
@@ -136,7 +135,7 @@ export const LongLabel: Story = {
 };
 
 export const FullWidth: Story = {
-  render: (args: ButtonBaseProps) => (
+  render: (args) => (
     <FlexBox style={{ inlineSize: 240 }}>
       <Button startIcon={<IconPlus16 />} fullWidth {...args}>
         Button

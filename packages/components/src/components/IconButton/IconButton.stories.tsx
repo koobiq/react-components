@@ -10,11 +10,11 @@ import { flex } from '../layout';
 import { Typography } from '../Typography';
 
 import {
-  type IconButtonBaseProps,
   iconButtonPropSize,
   iconButtonPropVariant,
+  IconButton,
+  type IconButtonProps,
 } from './index.js';
-import { IconButton } from './index.js';
 
 const mappingIcons = Object.entries(Icons).reduce((acc, [key, Icon]) => ({
   ...acc,
@@ -39,10 +39,10 @@ const meta = {
 } satisfies Meta<typeof IconButton>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<IconButtonProps>;
 
 export const Base: Story = {
-  render: (args: IconButtonBaseProps) => (
+  render: (args) => (
     // eslint-disable-next-line no-alert
     <IconButton onPress={() => alert('Click')} {...args}>
       {args.children || <IconMagnifyingGlass24 />}
@@ -51,7 +51,7 @@ export const Base: Story = {
 };
 
 export const Size: Story = {
-  render: (args: IconButtonBaseProps) => (
+  render: (args) => (
     <div className={flex({ gap: 'l' })}>
       {iconButtonPropSize.map((size) => (
         <IconButton key={size} size={size} {...args}>
@@ -63,7 +63,7 @@ export const Size: Story = {
 };
 
 export const Variant: Story = {
-  render: (args: IconButtonBaseProps) => (
+  render: (args) => (
     <div
       style={{
         rowGap: '1em',
@@ -85,7 +85,7 @@ export const Variant: Story = {
 };
 
 export const Disabled: Story = {
-  render: (args: IconButtonBaseProps) => (
+  render: (args) => (
     <IconButton isDisabled {...args}>
       <IconMagnifyingGlass24 />
     </IconButton>
@@ -93,7 +93,7 @@ export const Disabled: Story = {
 };
 
 export const Compact: Story = {
-  render: (args: IconButtonBaseProps) => (
+  render: (args) => (
     <IconButton size="l" isCompact {...args}>
       <IconMagnifyingGlass16 />
     </IconButton>

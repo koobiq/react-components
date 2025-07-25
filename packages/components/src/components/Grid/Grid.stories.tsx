@@ -1,18 +1,17 @@
 import type { CSSProperties } from 'react';
 
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Grid } from './index';
-import type { GridBaseProps } from './index';
+import { Grid, type GridProps } from './index';
 
 const meta = {
   title: 'Components/Grid',
   component: Grid,
   subcomponents: { 'Grid.Item': Grid.Item },
-};
+} satisfies Meta<typeof Grid>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<GridProps>;
 
 const itemStyle = {
   textAlign: 'center',
@@ -23,7 +22,7 @@ const itemStyle = {
 } as CSSProperties;
 
 export const Base: Story = {
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid cols={3} gap="m" {...args}>
       <Grid.Item style={itemStyle}>01</Grid.Item>
       <Grid.Item style={itemStyle} col={2}>
@@ -41,7 +40,7 @@ export const Base: Story = {
 };
 
 export const Cols: Story = {
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" cols={4} {...args}>
       <Grid.Item style={itemStyle}>01</Grid.Item>
       <Grid.Item style={itemStyle}>02</Grid.Item>
@@ -52,7 +51,7 @@ export const Cols: Story = {
 };
 
 export const Gap: Story = {
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" rowGap="xxl" cols={2} {...args}>
       <Grid.Item style={itemStyle}>01</Grid.Item>
       <Grid.Item style={itemStyle}>02</Grid.Item>
@@ -64,7 +63,7 @@ export const Gap: Story = {
 
 export const AlignmentItems: Story = {
   name: 'Alignment items',
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" justifyItems="center" cols={2} {...args}>
       <Grid.Item style={itemStyle}>01</Grid.Item>
       <Grid.Item style={itemStyle}>02</Grid.Item>
@@ -75,7 +74,7 @@ export const AlignmentItems: Story = {
 };
 
 export const Col: Story = {
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" cols={4} {...args}>
       <Grid.Item style={itemStyle} col={3}>
         01
@@ -95,7 +94,7 @@ export const Col: Story = {
 
 export const ColStart: Story = {
   name: 'ColStart',
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" cols={4} {...args}>
       <Grid.Item style={itemStyle} col={2} colStart={2}>
         01
@@ -111,7 +110,7 @@ export const ColStart: Story = {
 };
 
 export const Row: Story = {
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" cols={4} {...args}>
       <Grid.Item style={itemStyle} col={2} row={2}>
         01
@@ -131,7 +130,7 @@ export const Row: Story = {
 
 export const RowStart: Story = {
   name: 'RowStart',
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="xl" cols={4} {...args}>
       <Grid.Item style={itemStyle} col={2}>
         01
@@ -151,7 +150,7 @@ export const RowStart: Story = {
 
 export const SelfAlignment: Story = {
   name: 'Self-alignment',
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" cols={2} {...args}>
       <Grid.Item style={itemStyle} alignSelf="center" justifySelf="center">
         01
@@ -164,7 +163,7 @@ export const SelfAlignment: Story = {
 };
 
 export const Nested: Story = {
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="xl" cols={3} {...args}>
       <Grid.Item style={itemStyle}>01</Grid.Item>
       <Grid.Item style={itemStyle}>02</Grid.Item>
@@ -180,7 +179,7 @@ export const Nested: Story = {
 
 export const ResponsiveValues: Story = {
   name: 'Responsive values',
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap={{ xs: 'xl', l: '6xl' }} cols={{ m: 4, xs: 1 }} {...args}>
       <Grid.Item style={itemStyle}>01</Grid.Item>
       <Grid.Item style={itemStyle}>02</Grid.Item>
@@ -192,7 +191,7 @@ export const ResponsiveValues: Story = {
 
 export const ResponsiveValuesItems: Story = {
   name: 'Responsive values for items',
-  render: (args: GridBaseProps) => (
+  render: (args) => (
     <Grid gap="m" cols={2} {...args}>
       <Grid.Item style={itemStyle} col={{ xs: 2, m: 1 }}>
         01

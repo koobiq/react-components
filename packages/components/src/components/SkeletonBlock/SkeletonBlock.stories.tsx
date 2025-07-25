@@ -6,8 +6,7 @@ import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
 import { Toggle } from '../Toggle';
 
-import type { SkeletonBlockBaseProps } from './index';
-import { SkeletonBlock } from './index';
+import { SkeletonBlock, type SkeletonBlockProps } from './index';
 
 const meta = {
   title: 'Components/SkeletonBlock',
@@ -19,17 +18,17 @@ const meta = {
 } satisfies Meta<typeof SkeletonBlock>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<SkeletonBlockProps>;
 
 export const Base: Story = {
-  render: (args: SkeletonBlockBaseProps) => (
+  render: (args) => (
     <SkeletonBlock inlineSize={100} blockSize={100} {...args} />
   ),
 };
 
 export const Example1: Story = {
   name: 'Example 1',
-  render: function Render(args: SkeletonBlockBaseProps) {
+  render: function Render(args) {
     const [isShown, { toggle }] = useBoolean(false);
 
     return (

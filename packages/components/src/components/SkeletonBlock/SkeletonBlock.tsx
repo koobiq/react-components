@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, ElementType } from 'react';
 
 import { clsx, isNotNil, polymorphicForwardRef } from '@koobiq/react-core';
 
@@ -41,3 +41,6 @@ export const SkeletonBlock = polymorphicForwardRef<
     </Tag>
   );
 });
+
+export type SkeletonBlockProps<As extends ElementType = 'span'> =
+  ComponentPropsWithRef<typeof SkeletonBlock<As>>;

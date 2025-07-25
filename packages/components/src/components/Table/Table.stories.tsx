@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../types';
 import { Badge } from '../Badge';
@@ -20,7 +20,7 @@ const meta = {
     'Table.Row': Table.Row,
     'Table.Cell': Table.Cell,
   },
-};
+} satisfies Meta<typeof Table>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -34,7 +34,7 @@ export const Base: Story = {
   parameters: {
     layout: 'centered',
   },
-  render: (args: TableProps<object>) => (
+  render: (args) => (
     <Table
       aria-label="Example static collection table"
       maxBlockSize={400}
@@ -94,7 +94,7 @@ export const Links: Story = {
   parameters: {
     layout: 'centered',
   },
-  render: (args: TableProps<object>) => (
+  render: (args) => (
     <Table aria-label="Libraries" {...args}>
       <Table.Header>
         <Table.Column>Name</Table.Column>
@@ -382,7 +382,7 @@ export const Alignment: Story = {
   parameters: {
     layout: 'centered',
   },
-  render: (args: TableProps<object>) => (
+  render: (args) => (
     <Table aria-label="Alignment" {...args}>
       <Table.Header>
         <Table.Column align="center">Name</Table.Column>
@@ -488,7 +488,7 @@ export const SingleSelection: Story = {
   parameters: {
     layout: 'centered',
   },
-  render: (args: TableProps<object>) => (
+  render: (args) => (
     <LanguageTable
       aria-label="Table with selection"
       defaultSelectedKeys={[2]}
@@ -502,7 +502,7 @@ export const MultiSelection: Story = {
   parameters: {
     layout: 'centered',
   },
-  render: (args: TableProps<object>) => (
+  render: (args) => (
     <LanguageTable
       aria-label="Table with selection"
       selectionMode="multiple"

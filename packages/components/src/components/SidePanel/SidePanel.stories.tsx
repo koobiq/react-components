@@ -1,11 +1,11 @@
 import { useBoolean } from '@koobiq/react-core';
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Toggle } from '../Toggle';
 
-import { SidePanel, type SidePanelProps, sidePanelPropSize } from './index.js';
+import { SidePanel, sidePanelPropSize } from './index.js';
 
 const meta = {
   title: 'Components/SidePanel',
@@ -18,13 +18,13 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-};
+} satisfies Meta<typeof SidePanel>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: function Render(args: SidePanelProps) {
+  render: function Render(args) {
     return (
       <SidePanel
         size="small"
@@ -98,7 +98,7 @@ export const Base: Story = {
 };
 
 export const Size: Story = {
-  render: function Render(args: SidePanelProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="l">
         {sidePanelPropSize.map((size) => (
@@ -125,7 +125,7 @@ export const Size: Story = {
 };
 
 export const Placement: Story = {
-  render: function Render(args: SidePanelProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="l">
         <SidePanel
@@ -165,7 +165,7 @@ export const Placement: Story = {
 
 export const ControlledOpen: Story = {
   name: 'Controlled open',
-  render: function Render(args: SidePanelProps) {
+  render: function Render(args) {
     const [isOpen, { on, off, set }] = useBoolean(false);
 
     return (
