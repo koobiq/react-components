@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
-import type { UseLinkProps } from '@koobiq/react-primitives';
+import type { LinkBaseProps as LinkBasePrimitiveProps } from '@koobiq/react-primitives';
 
 import type { TypographyPropVariant } from '../Typography';
 
@@ -45,11 +45,6 @@ export type LinkBaseProps = ExtendableProps<
     /** Icon placed after the children. */
     endIcon?: ReactNode;
     /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    isDisabled?: boolean;
-    /**
      * If `true`, displays :visited CSS-state.
      * @default false
      */
@@ -64,5 +59,5 @@ export type LinkBaseProps = ExtendableProps<
     /** Inline styles */
     style?: CSSProperties;
   } & LinkDeprecatedProps,
-  Omit<UseLinkProps, 'elementType'>
+  Omit<LinkBasePrimitiveProps, 'elementType'>
 >;
