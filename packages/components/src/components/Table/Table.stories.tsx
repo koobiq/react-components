@@ -415,7 +415,7 @@ export const Alignment: Story = {
   ),
 };
 
-const LanguageTable = (props: TableProps<object>) => {
+const LanguageTable = (props: TableProps<unknown>) => {
   const columns = [
     { name: 'ID', uid: 'id' },
     { name: 'Language', uid: 'language' },
