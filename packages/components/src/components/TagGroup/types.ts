@@ -18,7 +18,7 @@ export const tagGroupPropVariant = [
 
 export type TagGroupPropVariant = (typeof tagGroupPropVariant)[number];
 
-export type TagGroupProps<T extends object> = ExtendableProps<
+export type TagGroupProps<T> = ExtendableProps<
   {
     /**
      * The variant to use.
@@ -38,10 +38,22 @@ export type TagGroupProps<T extends object> = ExtendableProps<
       root?: ComponentPropsWithRef<'div'>;
     };
   },
-  AriaTagGroupProps<T>
+  Omit<
+    AriaTagGroupProps<T>,
+    | 'label'
+    | 'errorMessage'
+    | 'description'
+    | 'onSelectionChange'
+    | 'selectedKeys'
+    | 'selectionMode'
+    | 'selectionBehavior'
+    | 'shouldSelectOnPressUp'
+    | 'disallowEmptySelection'
+    | 'defaultSelectedKeys'
+  >
 >;
 
-export type TagGroupComponent = <T extends object>(
+export type TagGroupComponent = <T>(
   props: TagGroupProps<T>
 ) => ReactElement | null;
 
