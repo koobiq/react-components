@@ -1,13 +1,16 @@
 import type { ComponentPropsWithRef, CSSProperties } from 'react';
 
-import type { ExtendableProps } from '@koobiq/react-core';
+import type {
+  ExtendableComponentPropsWithRef,
+  ExtendableProps,
+} from '@koobiq/react-core';
 import type { ProgressBarBaseProps as ProgressBarBasePrimitiveProps } from '@koobiq/react-primitives';
 
 export const progressBarPropVariant = ['indeterminate', 'determinate'] as const;
 
 export type ProgressBarPropVariant = (typeof progressBarPropVariant)[number];
 
-export type ProgressBarProps = ExtendableProps<
+export type ProgressBarBaseProps = ExtendableComponentPropsWithRef<
   {
     children?: never;
     /** Additional CSS-classes. */
@@ -24,6 +27,11 @@ export type ProgressBarProps = ExtendableProps<
       fill?: ComponentPropsWithRef<'span'>;
     };
   },
+  'div'
+>;
+
+export type ProgressBarProps = ExtendableProps<
+  ProgressBarBaseProps,
   Omit<
     ProgressBarBasePrimitiveProps,
     'children' | 'isIndeterminate' | 'label' | 'formatOptions' | 'valueLabel'
