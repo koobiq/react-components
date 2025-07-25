@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.0](https://github.com/koobiq/react-components/compare/0.0.1...0.1.0) (2025-07-25)
+
+### 🚀 Features
+
+- **components:** add TimePicker component (DS-3911) ([3401b68](https://github.com/koobiq/react-components/commit/3401b687c46f507b93038d551a6f4ab3baa8189a))
+- **components:** extend library component types based on React Aria (DS-4033) ([89b81aa](https://github.com/koobiq/react-components/commit/89b81aa3d5ae78edec6fd20f7b2abf8ede51d1d5))
+- **DateInput:** add time mask (DS-4015) ([2e16977](https://github.com/koobiq/react-components/commit/2e16977cbcc5b3f2227c9d4287ced64c6878bb49))
+
+### 🐞 Bug Fixes
+
+- **Checkbox:** apply correct background for `invalid` state (DS-4016) ([d1ac84e](https://github.com/koobiq/react-components/commit/d1ac84e9000eb0a0af1c33224b4c720b11657530))
+
 ## [0.0.1](https://github.com/koobiq/react-components/compare/0.0.1-beta.38...0.0.1) (2025-07-22)
 
 ### 🚀 Features
