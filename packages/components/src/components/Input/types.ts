@@ -56,18 +56,8 @@ type InputDeprecatedProps = {
 
 export type InputProps = ExtendableProps<
   {
-    /** The content to display as the label. */
-    label?: ReactNode;
     /** Additional CSS-classes. */
     className?: string;
-    /** Temporary text that occupies the text input when it is empty. */
-    placeholder?: TextFieldProps['placeholder'];
-    /** The current value (controlled). */
-    value?: TextFieldProps['value'];
-    /** The default value (uncontrolled). */
-    defaultValue?: TextFieldProps['defaultValue'];
-    /** Handler that is called when the value changes. */
-    onChange?: TextFieldProps['onChange'];
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */
@@ -77,12 +67,7 @@ export type InputProps = ExtendableProps<
      * @default 'filled'
      */
     variant?: InputPropVariant;
-    /**
-     * If `true`, the input will indicate an error.
-     * @default false
-     */
-    isInvalid?: boolean;
-    /** Message for the error state */
+    /** Message for the invalid state. */
     errorMessage?: ReactNode;
     /**
      * If true, the input will take up the full width of its container.
@@ -90,27 +75,12 @@ export type InputProps = ExtendableProps<
      */
     fullWidth?: boolean;
     /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    isDisabled?: boolean;
-    /**
-     * If `true`, the input can be selected but not changed by the user.
-     * @default false
-     */
-    isReadOnly?: boolean;
-    /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
      * @default false
      */
     isLabelHidden?: boolean;
     /** The helper text content. */
     caption?: ReactNode;
-    /**
-     * If `true`, the label is displayed as required and the input element is required.
-     * @default false
-     */
-    isRequired?: boolean;
     /** Inline styles. */
     style?: CSSProperties;
     /** Unique identifier for testing purposes. */
