@@ -25,7 +25,7 @@ export const ProgressSpinner = forwardRef<
     ...other
   } = props;
 
-  const indeterminate = variant === 'indeterminate' || !isNotNil(value);
+  const isIndeterminate = variant === 'indeterminate' || !isNotNil(value);
 
   const [sizeOfPixels, strokeWidth, radius, strokeDasharray] = useMemo(
     () => getSvgParamsBySize(size),
@@ -38,14 +38,14 @@ export const ProgressSpinner = forwardRef<
       data-size={size}
       minValue={minValue}
       maxValue={maxValue}
-      indeterminate={indeterminate}
-      data-variant={indeterminate ? 'indeterminate' : 'determinate'}
-      className={clsx(s.base, indeterminate && s.indeterminate, className)}
+      isIndeterminate={isIndeterminate}
+      data-variant={isIndeterminate ? 'indeterminate' : 'determinate'}
+      className={clsx(s.base, isIndeterminate && s.indeterminate, className)}
       {...other}
       ref={ref}
     >
       {({ percentage = 0 }) => {
-        const progress = indeterminate ? 75 : percentage;
+        const progress = isIndeterminate ? 75 : percentage;
 
         return (
           <svg
