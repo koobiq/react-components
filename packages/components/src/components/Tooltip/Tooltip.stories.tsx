@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import { IconQuestionCircle24 } from '@koobiq/react-icons';
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button, type ButtonProps } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -13,25 +13,23 @@ import { Typography } from '../Typography';
 
 import {
   Tooltip,
-  type TooltipPropPlacement,
-  type TooltipProps,
   tooltipPropVariant,
+  type TooltipPropPlacement,
 } from './index';
 
 const meta = {
   title: 'Components/Tooltip',
   component: Tooltip,
-
   parameters: {
     layout: 'centered',
   },
-};
+} satisfies Meta<typeof Tooltip>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: TooltipProps) => (
+  render: (args) => (
     <Tooltip
       control={() => (
         <IconButton>
@@ -46,7 +44,7 @@ export const Base: Story = {
 };
 
 export const Trigger: Story = {
-  render: (args: TooltipProps) => (
+  render: (args) => (
     <FlexBox gap="l">
       <Tooltip
         {...args}
@@ -66,7 +64,7 @@ export const Trigger: Story = {
 };
 
 export const Variant: Story = {
-  render: (args: TooltipProps) => (
+  render: (args) => (
     <FlexBox gap="l">
       {tooltipPropVariant.map((variant) => (
         <Tooltip
@@ -85,7 +83,7 @@ export const Variant: Story = {
 };
 
 export const Disabled: Story = {
-  render: (args: TooltipProps) => (
+  render: (args) => (
     <Tooltip
       control={() => <Button variant="fade-contrast-filled">Disabled</Button>}
       isDisabled
@@ -97,7 +95,7 @@ export const Disabled: Story = {
 };
 
 export const Arrow: Story = {
-  render: (args: TooltipProps) => (
+  render: (args) => (
     <Tooltip
       control={() => <Button variant="fade-contrast-filled">Hover me</Button>}
       hideArrow
@@ -114,7 +112,7 @@ export const Arrow: Story = {
 };
 
 export const Delays: Story = {
-  render: function Render(args: TooltipProps) {
+  render: function Render(args) {
     const [delay, setDelay] = useState<number>(600);
     const [closeDelay, setCloseDelay] = useState<number>(1200);
 
@@ -151,7 +149,7 @@ export const Delays: Story = {
 
 export const ControlledOpen: Story = {
   name: 'Controlled open',
-  render: function Render(args: TooltipProps) {
+  render: function Render(args) {
     const anchorRef = useRef<HTMLParagraphElement | null>(null);
     const [isOpen, { on, off, set }] = useBoolean(false);
 
@@ -188,7 +186,7 @@ export const ControlledOpen: Story = {
 };
 
 export const Placement: Story = {
-  render: function Render(args: TooltipProps) {
+  render: function Render(args) {
     const [isOpen, { on, off, set }] = useBoolean();
     const [placement, setPlacement] = useState<TooltipPropPlacement>();
     const anchorRef = useRef<HTMLElement | null>(null);
@@ -342,7 +340,7 @@ export const Placement: Story = {
 };
 
 export const Offsets: Story = {
-  render: function Render(args: TooltipProps) {
+  render: function Render(args) {
     const [offset, setOffset] = useState<number>(50);
     const [crossOffset, setCrossOffset] = useState<number>(0);
 
@@ -379,7 +377,7 @@ export const Offsets: Story = {
 
 export const PortalContainer: Story = {
   name: 'Portal container',
-  render: function Render(args: TooltipProps) {
+  render: function Render(args) {
     const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
     return (

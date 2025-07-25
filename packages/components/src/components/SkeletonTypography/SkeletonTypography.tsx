@@ -1,3 +1,5 @@
+import type { ComponentPropsWithRef, ElementType } from 'react';
+
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { utilClasses } from '../../styles/utility';
@@ -48,3 +50,6 @@ export const SkeletonTypography = polymorphicForwardRef<
     </Tag>
   );
 });
+
+export type SkeletonTypographyProps<As extends ElementType = 'span'> =
+  ComponentPropsWithRef<typeof SkeletonTypography<As>>;

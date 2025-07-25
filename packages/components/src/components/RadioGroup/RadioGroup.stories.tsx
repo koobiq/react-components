@@ -1,16 +1,11 @@
 import { useState } from 'react';
 
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import {
-  RadioGroup,
-  Radio,
-  radioGroupPropSize,
-  type RadioGroupBaseProps,
-} from './index';
+import { RadioGroup, Radio, radioGroupPropSize } from './index';
 
 const meta = {
   title: 'Components/RadioGroup',
@@ -20,13 +15,13 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
-};
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: RadioGroupBaseProps) => (
+  render: (args) => (
     <RadioGroup label="Which OS do you use?" defaultValue="windows" {...args}>
       <Radio value="windows">Windows</Radio>
       <Radio value="macos">macOS</Radio>
@@ -36,8 +31,8 @@ export const Base: Story = {
   ),
 };
 
-export const Size = {
-  render: (args: RadioGroupBaseProps) => (
+export const Size: Story = {
+  render: (args) => (
     <FlexBox gap="3xl">
       {radioGroupPropSize.map((size) => (
         <RadioGroup
@@ -57,7 +52,7 @@ export const Size = {
 };
 
 export const Disabled: Story = {
-  render: (args: RadioGroupBaseProps) => (
+  render: (args) => (
     <FlexBox gap="3xl">
       <RadioGroup
         label="Disabled group"
@@ -82,7 +77,7 @@ export const Disabled: Story = {
 };
 
 export const Invalid: Story = {
-  render: (args: RadioGroupBaseProps) => (
+  render: (args) => (
     <RadioGroup label="Label" defaultValue="one" isInvalid {...args}>
       <Radio value="one">One</Radio>
       <Radio value="two">Two</Radio>
@@ -92,7 +87,7 @@ export const Invalid: Story = {
 };
 
 export const DefaultValue: Story = {
-  render: function Render(args: RadioGroupBaseProps) {
+  render: function Render(args) {
     return (
       <RadioGroup label="Uncontrolled" defaultValue="one" {...args}>
         <Radio value="one">One</Radio>
@@ -104,7 +99,7 @@ export const DefaultValue: Story = {
 };
 
 export const ControlledValue: Story = {
-  render: function Render(args: RadioGroupBaseProps) {
+  render: function Render(args) {
     const [value, setValue] = useState('one');
 
     return (
@@ -126,7 +121,7 @@ export const ControlledValue: Story = {
 };
 
 export const Description: Story = {
-  render: (args: RadioGroupBaseProps) => (
+  render: (args) => (
     <RadioGroup
       label="Favorite fruit:"
       description="Please select a fruit."
@@ -140,7 +135,7 @@ export const Description: Story = {
 };
 
 export const Orientation: Story = {
-  render: (args: RadioGroupBaseProps) => (
+  render: (args) => (
     <RadioGroup label="Favorite fruit:" orientation="horizontal" {...args}>
       <Radio value="banana">Banana</Radio>
       <Radio value="apple">Apple</Radio>

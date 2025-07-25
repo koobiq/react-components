@@ -1,6 +1,10 @@
-import type { ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef, CSSProperties } from 'react';
 
-import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import type {
+  ExtendableComponentPropsWithRef,
+  ExtendableProps,
+} from '@koobiq/react-core';
+import type { ProgressBarBaseProps as ProgressBarBasePrimitiveProps } from '@koobiq/react-primitives';
 
 export const progressSpinnerPropSize = ['compact', 'big'] as const;
 
@@ -14,42 +18,35 @@ export const progressSpinnerPropVariant = [
 export type ProgressSpinnerPropVariant =
   (typeof progressSpinnerPropVariant)[number];
 
-export type ProgressSpinnerBaseProps = {
-  children?: never;
-  /**
-   * The current value (controlled).
-   * @default 0
-   */
-  value?: number;
-  /**
-   * Size.
-   * @default 'compact'
-   */
-  size?: ProgressSpinnerPropSize;
-  /**
-   * The smallest value allowed for the input.
-   * @default 0
-   */
-  minValue?: number;
-  /**
-   * The largest value allowed for the input.
-   * @default 100
-   */
-  maxValue?: number;
-  /** Additional CSS-classes. */
-  className?: string;
-  /**
-   * The variant to use. Use indeterminate or query when there is no progress value.
-   * @default 'determinate'
-   */
-  variant?: ProgressSpinnerPropVariant;
-  /** The props used for each slot inside. */
-  slotProps?: {
-    spin?: ComponentPropsWithRef<'svg'>;
-  };
-};
-
-export type ProgressSpinnerProps = ExtendableComponentPropsWithRef<
-  ProgressSpinnerBaseProps,
+export type ProgressSpinnerBaseProps = ExtendableComponentPropsWithRef<
+  {
+    children?: never;
+    /**
+     * Size.
+     * @default 'compact'
+     */
+    size?: ProgressSpinnerPropSize;
+    /** Additional CSS-classes. */
+    className?: string;
+    /** Inline styles. */
+    style?: CSSProperties;
+    /**
+     * The variant to use. Use indeterminate or query when there is no progress value.
+     * @default 'determinate'
+     */
+    variant?: ProgressSpinnerPropVariant;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      spin?: ComponentPropsWithRef<'svg'>;
+    };
+  },
   'div'
+>;
+
+export type ProgressSpinnerProps = ExtendableProps<
+  ProgressSpinnerBaseProps,
+  Omit<
+    ProgressBarBasePrimitiveProps,
+    'children' | 'isIndeterminate' | 'label' | 'formatOptions' | 'valueLabel'
+  >
 >;

@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import { Divider, type DividerBaseProps } from './index';
+import { Divider, type DividerProps } from './index';
 
 const meta = {
   title: 'Components/Divider',
@@ -20,10 +20,10 @@ const meta = {
 } satisfies Meta<typeof Divider>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<DividerProps>;
 
 export const Base: Story = {
-  render: (args: DividerBaseProps) => (
+  render: (args) => (
     <FlexBox direction="column">
       <Typography>Content above</Typography>
       <Divider {...args} />
@@ -33,7 +33,7 @@ export const Base: Story = {
 };
 
 export const Orientation: Story = {
-  render: (args: DividerBaseProps) => (
+  render: (args) => (
     <div
       style={{
         height: 20,
@@ -50,7 +50,7 @@ export const Orientation: Story = {
 };
 
 export const FlexItem: Story = {
-  render: (args: DividerBaseProps) => (
+  render: (args) => (
     <FlexBox gap="m">
       <IconTextBold16 />
       <Divider orientation="vertical" flexItem disablePaddings {...args} />
@@ -74,7 +74,7 @@ export const RootTag: Story = {
 };
 
 export const DividerText: Story = {
-  render: (args: DividerBaseProps) => (
+  render: (args) => (
     <FlexBox alignItems="center" gap="m" style={{ width: 240 }}>
       <Divider
         as="span"

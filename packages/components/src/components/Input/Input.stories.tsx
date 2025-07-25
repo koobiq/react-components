@@ -15,7 +15,7 @@ import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
 import { Typography } from '../Typography';
 
-import { Input, type InputProps, inputPropVariant } from './index';
+import { Input, inputPropVariant } from './index';
 
 const mappingIcons = Object.entries(Icons).reduce((acc, [key, Icon]) => ({
   ...acc,
@@ -50,7 +50,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: InputProps) => (
+  render: (args) => (
     <Input
       label="Name"
       placeholder="Sophia"
@@ -81,7 +81,7 @@ export const Variant: Story = {
 };
 
 export const Invalid: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputPropVariant.map((variant) => (
@@ -105,7 +105,7 @@ export const FullWidth: Story = {
   parameters: {
     layout: 'padded',
   },
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     return (
       <Input
         aria-label="fullWidth"
@@ -118,7 +118,7 @@ export const FullWidth: Story = {
 };
 
 export const Disabled: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         {inputPropVariant.map((variant) => (
@@ -139,7 +139,7 @@ export const Disabled: Story = {
 };
 
 export const Required: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Input
@@ -163,7 +163,7 @@ export const Required: Story = {
 };
 
 export const ReadOnly: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     return (
       <Input
         label="Name"
@@ -178,7 +178,7 @@ export const ReadOnly: Story = {
 };
 
 export const Autofill: Story = {
-  render: (args: InputProps) => (
+  render: (args) => (
     <FlexBox gap="m" direction="column" style={{ inlineSize: 220 }}>
       <Typography>
         Click on the text box and choose any option suggested by your browser.
@@ -196,7 +196,7 @@ export const Autofill: Story = {
 };
 
 export const Addons: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Input
@@ -217,7 +217,7 @@ export const Addons: Story = {
 };
 
 export const DefaultValue: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     return (
       <Input
         label="Name"
@@ -230,7 +230,7 @@ export const DefaultValue: Story = {
 };
 
 export const ControlledValue: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     const [value, setState] = useState('Sophia');
 
     return (
@@ -249,7 +249,7 @@ export const ControlledValue: Story = {
 };
 
 export const Password: Story = {
-  render: function Render(args: InputProps) {
+  render: function Render(args) {
     const [hiddenPassword, { toggle }] = useBoolean(true);
 
     return (
@@ -283,7 +283,7 @@ export const Password: Story = {
 };
 
 export const Composition: Story = {
-  render: (args: InputProps) => (
+  render: (args) => (
     <FlexBox gap="m">
       <Input aria-label="input" placeholder="Placeholder" {...args} />
       <Button>Button</Button>

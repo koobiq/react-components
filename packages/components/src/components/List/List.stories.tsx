@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
 import { isString } from '@koobiq/react-core';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { utilClasses } from '../../styles/utility';
 import type { Selection } from '../../types';
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
 
-import type { ListProps } from './index';
-import { List } from './index';
+import { List, type ListProps } from './index';
 
-export default {
+const meta = {
   title: 'Components/List',
   component: List,
   subcomponents: {
@@ -19,10 +19,14 @@ export default {
     'List.ItemText': List.ItemText,
   },
   argTypes: {},
-};
+} satisfies Meta<typeof List>;
 
-export const Base = {
-  render: (args: ListProps<object>) => (
+export default meta;
+
+type Story = StoryObj<ListProps<unknown>>;
+
+export const Base: Story = {
+  render: (args) => (
     <List
       aria-label="Numbers"
       selectionMode="single"
@@ -49,7 +53,7 @@ export const Base = {
   ),
 };
 
-export const DynamicCollections = {
+export const DynamicCollections: Story = {
   render: () => {
     const options = [
       { id: 1, name: 'Bruteforce' },
@@ -73,7 +77,7 @@ export const DynamicCollections = {
   },
 };
 
-export const SelectionStory = {
+export const SelectionStory: Story = {
   name: 'Selection',
   render: function Render() {
     const sectionStyle = {
@@ -125,7 +129,7 @@ export const SelectionStory = {
   },
 };
 
-export const DisabledItems = {
+export const DisabledItems: Story = {
   name: 'Disabled items',
   render: () => {
     const options = [
@@ -155,7 +159,7 @@ export const DisabledItems = {
   },
 };
 
-export const Links = {
+export const Links: Story = {
   render: () => (
     <List aria-label="Links">
       <List.Item href="https://react.dev/" target="_blank">
@@ -171,7 +175,7 @@ export const Links = {
   ),
 };
 
-export const Sections = {
+export const Sections: Story = {
   render: function Render() {
     const options = [
       {
@@ -230,7 +234,7 @@ export const Sections = {
   },
 };
 
-export const OtherExamples = {
+export const OtherExamples: Story = {
   name: 'Other examples',
   render: function Render() {
     const [selected, setSelected] = useState<Selection>(new Set([1, 2]));

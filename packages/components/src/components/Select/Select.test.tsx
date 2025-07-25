@@ -10,6 +10,7 @@ describe('Select', () => {
   const baseProps: SelectProps<object> = {
     'data-testid': 'root',
     label: 'label',
+    children: null,
     slotProps: {
       control: {
         'data-testid': 'control',

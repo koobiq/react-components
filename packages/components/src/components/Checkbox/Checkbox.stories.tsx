@@ -23,11 +23,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: CheckboxProps) => <Checkbox {...args}>Label</Checkbox>,
+  render: (args) => <Checkbox {...args}>Label</Checkbox>,
 };
 
-export const Size = {
-  render: (args: CheckboxProps) => (
+export const Size: Story = {
+  render: (args) => (
     <FlexBox gap="l" direction="column">
       {checkboxPropSize.map((size) => (
         <Checkbox key={size} {...args} size={size} defaultSelected>
@@ -39,7 +39,7 @@ export const Size = {
 };
 
 export const Disabled: Story = {
-  render: (args: CheckboxProps) => (
+  render: (args) => (
     <FlexBox gap="l">
       <Checkbox {...args} isDisabled>
         Label
@@ -52,7 +52,7 @@ export const Disabled: Story = {
 };
 
 export const DefaultValue: Story = {
-  render: function Render(args: CheckboxProps) {
+  render: function Render(args) {
     return (
       <Checkbox {...args} defaultSelected>
         Uncontrolled
@@ -62,7 +62,7 @@ export const DefaultValue: Story = {
 };
 
 export const ControlledValue: Story = {
-  render: function Render(args: CheckboxProps) {
+  render: function Render(args) {
     const [isSelected, { toggle }] = useBoolean(true);
 
     return (
@@ -79,7 +79,7 @@ export const ControlledValue: Story = {
 };
 
 export const Invalid: Story = {
-  render: (args: CheckboxProps) => (
+  render: (args) => (
     <Checkbox {...args} isInvalid defaultSelected>
       Label
     </Checkbox>
@@ -87,7 +87,7 @@ export const Invalid: Story = {
 };
 
 export const Indeterminate: Story = {
-  render: function Render(args: CheckboxProps) {
+  render: function Render(args) {
     const [selectedGroup, setSelectedGroup] = useState([true, false]);
 
     const handleChange1: CheckboxProps['onChange'] = (value) => {
@@ -130,7 +130,7 @@ export const Indeterminate: Story = {
 };
 
 export const Description: Story = {
-  render: (args: CheckboxProps) => (
+  render: (args) => (
     <Checkbox
       {...args}
       slotProps={{
@@ -147,7 +147,7 @@ export const Description: Story = {
 };
 
 export const WithoutLabel: Story = {
-  render: (args: CheckboxProps) => (
+  render: (args) => (
     <Checkbox {...args} aria-label="Checkbox" defaultSelected />
   ),
 };

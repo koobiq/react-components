@@ -6,7 +6,6 @@ import { useListData } from '../index';
 
 import { Tag, tagGroupPropVariant } from './index';
 import { TagGroup } from './TagGroup';
-import { type TagGroupProps } from './types';
 
 const meta = {
   title: 'Components/TagGroup',
@@ -18,10 +17,10 @@ const meta = {
 } satisfies Meta<typeof TagGroup>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof TagGroup>;
 
 export const Base: Story = {
-  render: (args: TagGroupProps<object>) => (
+  render: (args) => (
     <TagGroup aria-label="Libraries" {...args}>
       <Tag key="react">React</Tag>
       <Tag key="typescript">Typescript</Tag>
@@ -32,7 +31,7 @@ export const Base: Story = {
 };
 
 export const Variant: Story = {
-  render: (args: TagGroupProps<object>) => (
+  render: (args) => (
     <FlexBox direction="column" gap="m">
       {tagGroupPropVariant.map((variant) => (
         <TagGroup
@@ -76,7 +75,7 @@ export const RemoveTags: Story = {
 };
 
 export const DisabledTags: Story = {
-  render: (args: TagGroupProps<object>) => (
+  render: (args) => (
     <TagGroup aria-label="Methods" disabledKeys={['delete']} {...args}>
       <Tag key="get">GET</Tag>
       <Tag key="post">POST</Tag>
@@ -88,7 +87,7 @@ export const DisabledTags: Story = {
 };
 
 export const Icon: Story = {
-  render: (args: TagGroupProps<object>) => (
+  render: (args) => (
     <TagGroup aria-label="Methods" {...args}>
       <Tag key="get" icon={<IconGlobe16 />}>
         GET
@@ -110,7 +109,7 @@ export const Icon: Story = {
 };
 
 export const Links: Story = {
-  render: (args: TagGroupProps<object>) => (
+  render: (args) => (
     <TagGroup aria-label="Libraries" {...args}>
       <Tag href="https://react.dev/" target="_blank">
         React

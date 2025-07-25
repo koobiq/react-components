@@ -65,7 +65,7 @@ type PopoverDeprecatedProps = {
   open?: boolean;
 };
 
-export type PopoverBaseProps = {
+export type PopoverProps = {
   /** If `true`, the component is shown. */
   isOpen?: boolean;
   /** The default open state. Use when the component is not controlled. */
@@ -176,6 +176,4 @@ export type PopoverBaseProps = {
 export type PopoverInnerProps = {
   state: OverlayTriggerState;
   popoverRef?: Ref<HTMLDivElement>;
-} & Omit<PopoverBaseProps, 'ref'>;
-
-export type PopoverProps = PopoverBaseProps;
+} & Omit<PopoverProps, 'ref'>;

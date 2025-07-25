@@ -8,10 +8,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
-import { RouterProvider } from '../index';
+import { type LinkProps, RouterProvider } from '../index';
 import { Typography } from '../Typography';
 
-import type { LinkBaseProps } from './index.js';
 import { Link } from './Link';
 
 const mappingIcons = Object.entries(Icons).reduce((acc, [key, Icon]) => ({
@@ -44,10 +43,10 @@ const meta = {
 } satisfies Meta<typeof Link>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<LinkProps>;
 
 export const Base: Story = {
-  render: (args: LinkBaseProps) => (
+  render: (args) => (
     <Link href="https://react.koobiq.io" target="_blank" {...args}>
       Link
     </Link>

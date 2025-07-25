@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 import { ProgressSpinner } from '../ProgressSpinner';
 
-import { Backdrop, type BackdropBaseProps } from './index';
+import { Backdrop, type BackdropProps } from './index';
 
 const meta = {
   title: 'Components/Backdrop',
@@ -17,10 +17,10 @@ const meta = {
 } satisfies Meta<typeof Backdrop>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<BackdropProps>;
 
 export const Base: Story = {
-  render: function Render(args: BackdropBaseProps) {
+  render: function Render(args) {
     const [isOpen, { on, off }] = useBoolean(true);
 
     const containerStyle = {

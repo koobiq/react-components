@@ -6,8 +6,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Link } from '../Link';
 
-import { type AlertBaseProps } from './index.js';
-import { Alert } from './index.js';
+import { Alert, type AlertProps } from './index.js';
 
 const text =
   'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, amet assumenda cum est eum harum odio omnis qui quisquam temporibus';
@@ -21,10 +20,10 @@ const meta = {
 } satisfies Meta<typeof Alert>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<AlertProps>;
 
 export const Base: Story = {
-  render: (args: AlertBaseProps) => (
+  render: (args) => (
     <Alert title="Title" {...args}>
       {text}
     </Alert>
@@ -32,7 +31,7 @@ export const Base: Story = {
 };
 
 export const Status: Story = {
-  render: (args: AlertBaseProps) => (
+  render: (args) => (
     <FlexBox gap="l" alignItems="center" wrap="wrap">
       <Alert title="Title" status="info" {...args}>
         This is an info Alert.
@@ -51,7 +50,7 @@ export const Status: Story = {
 };
 
 export const Colored: Story = {
-  render: (args: AlertBaseProps) => (
+  render: (args) => (
     <FlexBox gap="l" alignItems="center" wrap="wrap">
       <Alert title="Title" status="info" isColored {...args}>
         This is a colored info Alert.
@@ -70,7 +69,7 @@ export const Colored: Story = {
 };
 
 export const Compact: Story = {
-  render: (args: AlertBaseProps) => (
+  render: (args) => (
     <FlexBox gap="l" alignItems="center" wrap="wrap">
       <Alert title="Title" status="info" isCompact {...args}>
         This is a compact info Alert.
@@ -89,7 +88,7 @@ export const Compact: Story = {
 };
 
 export const Action: Story = {
-  render: (args: AlertBaseProps) => (
+  render: (args) => (
     <Alert
       title="Title"
       action={
@@ -118,7 +117,7 @@ export const Action: Story = {
 };
 
 export const HiddenIcon: Story = {
-  render: (args: AlertBaseProps) => (
+  render: (args) => (
     <Alert title="Title" hideIcon {...args}>
       {text}
     </Alert>
@@ -126,7 +125,7 @@ export const HiddenIcon: Story = {
 };
 
 export const CustomIcon: Story = {
-  render: (args: AlertBaseProps) => (
+  render: (args) => (
     <Alert
       icon={<IconUserSecret16 />}
       title="Important information about incognito mode"
@@ -149,7 +148,7 @@ export const CustomIcon: Story = {
 };
 
 export const CloseButton: Story = {
-  render: function Render(args: AlertBaseProps) {
+  render: function Render(args) {
     const [isOpen, { on, off }] = useBoolean(true);
 
     return isOpen ? (

@@ -10,8 +10,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { IconButton } from '../IconButton';
 import { ProgressSpinner } from '../ProgressSpinner';
 
-import { type AnimatedIconBaseProps } from './index.js';
-import { AnimatedIcon } from './index.js';
+import { AnimatedIcon, type AnimatedIconProps } from './index.js';
 
 const meta = {
   title: 'Components/AnimatedIcon',
@@ -22,10 +21,10 @@ const meta = {
 } satisfies Meta<typeof AnimatedIcon>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<AnimatedIconProps>;
 
 export const Base: Story = {
-  render: function Render(args: AnimatedIconBaseProps) {
+  render: function Render(args) {
     const [state, { toggle }] = useBoolean(false);
 
     return (
@@ -48,7 +47,7 @@ export const Base: Story = {
 };
 
 export const Icons: Story = {
-  render: function Render(args: AnimatedIconBaseProps) {
+  render: function Render(args) {
     const [state, { toggle }] = useBoolean(false);
 
     return (
@@ -64,7 +63,7 @@ export const Icons: Story = {
 };
 
 export const Directions: Story = {
-  render: function Render(args: AnimatedIconBaseProps) {
+  render: function Render(args) {
     const [state, { toggle }] = useBoolean(false);
 
     return (

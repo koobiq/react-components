@@ -16,14 +16,14 @@ import { Typography } from '../Typography';
 
 import { ListItemText, ListOption, ListSection } from './components';
 import s from './List.module.css';
-import type { ListComponent, ListProps, ListRef, ListBaseProps } from './types';
+import type { ListComponent, ListProps, ListRef } from './types';
 
 const { list } = utilClasses;
 
 export type ListInnerProps<T extends object> = {
   state: ListState<T>;
   listRef?: Ref<HTMLUListElement>;
-} & Omit<ListBaseProps<T>, 'ref'>;
+} & Omit<ListProps<T>, 'ref'>;
 
 export function ListInner<T extends object>(props: ListInnerProps<T>) {
   const { label, className, style, slotProps, state, listRef } = props;

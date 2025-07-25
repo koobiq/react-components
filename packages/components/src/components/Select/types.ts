@@ -6,7 +6,7 @@ import type {
   Ref,
 } from 'react';
 
-import type { Node } from '@koobiq/react-core';
+import type { ExtendableProps, Node } from '@koobiq/react-core';
 import type { AriaSelectProps } from '@koobiq/react-primitives';
 
 import type {
@@ -16,17 +16,10 @@ import type {
   FieldCaptionProps,
   FieldInputGroupProps,
 } from '../FieldComponents';
-import type {
-  ListPropItems,
-  ListPropChildren,
-  ListPropDisabledKeys,
-} from '../List';
+import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
 export type SelectKey = string | number;
-
-export type SelectPropOnSelectionChange<T> =
-  AriaSelectProps<T>['onSelectionChange'];
 
 type SelectDeprecatedProps = {
   /**
@@ -65,87 +58,50 @@ type SelectDeprecatedProps = {
   hiddenLabel?: boolean;
 };
 
-export type SelectProps<T extends object> = {
-  /** Additional CSS-classes. */
-  className?: string;
-  /** The content to display as the label. */
-  label?: ReactNode;
-  /** The contents of the collection. */
-  children?: ListPropChildren<T>;
-  /** Item objects in the collection. */
-  items?: ListPropItems<T>;
-  /** Addon placed before the children. */
-  startAddon?: ReactNode;
-  /** Addon placed after the children. */
-  endAddon?: ReactNode;
-  /** Inline styles. */
-  style?: CSSProperties;
-  /** The text appears in a control until the user puts focus on the field. */
-  placeholder?: string;
-  /**
-   * If `true`, the input will indicate an error.
-   * @default false
-   */
-  isInvalid?: boolean;
-  /** Message for the error state */
-  errorMessage?: ReactNode;
-  /**
-   * If `true`, the label is hidden. Be sure to add aria-label to the input element.
-   * @default false
-   */
-  isLabelHidden?: boolean;
-  /** The helper text content. */
-  caption?: ReactNode;
-  /**
-   * If true, the input will take up the full width of its container.
-   * @default false
-   */
-  fullWidth?: boolean;
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  isDisabled?: boolean;
-  /**
-   * If `true`, the label is displayed as required and the input element is required.
-   * @default false
-   */
-  isRequired?: boolean;
-  /** Unique identifier for testing purposes. */
-  'data-testid'?: string | number;
-  /** Ref to the control */
-  ref?: Ref<HTMLButtonElement>;
-  /** The item keys that are disabled. These items cannot be selected, focused, or otherwise interacted with. */
-  disabledKeys?: ListPropDisabledKeys<T>;
-  /** The initial selected key in the collection (uncontrolled). */
-  defaultSelectedKey?: SelectKey;
-  /** The currently selected key in the collection (controlled). */
-  selectedKey?: SelectKey | null;
-  /** Handler that is called when the selection changes. */
-  onSelectionChange?: SelectPropOnSelectionChange<T>;
-  /** Sets the open state of the menu. */
-  isOpen?: boolean;
-  /** Sets the default open state of the menu. */
-  defaultOpen?: boolean;
-  /** Method that is called when the open state of the menu changes. */
-  onOpenChange?: (isOpen: boolean) => void;
-  /** A render function for displaying the selected value. */
-  renderValue?: (props: Node<T> | null) => ReactElement;
-  name?: string;
-  /** The props used for each slot inside. */
-  slotProps?: {
-    popover?: PopoverProps;
-    label?: FieldLabelProps;
-    list?: ListPropChildren<T>;
-    control?: FieldSelectProps;
-    caption?: FieldCaptionProps;
-    group?: FieldInputGroupProps;
-    errorMessage?: FieldErrorProps;
-  };
-} & SelectDeprecatedProps;
+export type SelectProps<T> = ExtendableProps<
+  {
+    /** Additional CSS-classes. */
+    className?: string;
+    /** Addon placed before the children. */
+    startAddon?: ReactNode;
+    /** Addon placed after the children. */
+    endAddon?: ReactNode;
+    /** Inline styles. */
+    style?: CSSProperties;
+    /** An error message for the field. */
+    errorMessage?: ReactNode;
+    /**
+     * If `true`, the label is hidden. Be sure to add aria-label to the input element.
+     * @default false
+     */
+    isLabelHidden?: boolean;
+    /** The helper text content. */
+    caption?: ReactNode;
+    /**
+     * If true, the input will take up the full width of its container.
+     * @default false
+     */
+    fullWidth?: boolean;
+    /** Unique identifier for testing purposes. */
+    'data-testid'?: string | number;
+    /** Ref to the control */
+    ref?: Ref<HTMLButtonElement>;
+    /** A render function for displaying the selected value. */
+    renderValue?: (props: Node<T> | null) => ReactElement;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      popover?: PopoverProps;
+      label?: FieldLabelProps;
+      list?: ListProps<T>;
+      control?: FieldSelectProps;
+      caption?: FieldCaptionProps;
+      group?: FieldInputGroupProps;
+      errorMessage?: FieldErrorProps;
+    };
+  } & SelectDeprecatedProps,
+  Omit<AriaSelectProps<T>, 'description' | 'validationState'>
+>;
 
-export type SelectComponent = <T extends object>(
-  props: SelectProps<T>
-) => ReactElement | null;
+export type SelectComponent = <T>(props: SelectProps<T>) => ReactElement | null;
 
 export type SelectRef = ComponentRef<'button'>;

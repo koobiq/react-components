@@ -2,7 +2,7 @@ import type { StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 
-import { Dialog, type DialogBaseProps } from './index.js';
+import { Dialog } from './index.js';
 
 const meta = {
   title: 'Components/Dialog',
@@ -21,7 +21,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: DialogBaseProps) => (
+  render: (args) => (
     <Dialog {...args}>
       <Dialog.Header>Title</Dialog.Header>
       <Dialog.Body>

@@ -57,8 +57,6 @@ type TextareaDeprecatedProps = {
 
 export type TextareaProps = ExtendableProps<
   {
-    /** The content to display as the label. */
-    label?: ReactNode;
     /** Additional CSS-classes. */
     className?: string;
     /**
@@ -66,17 +64,7 @@ export type TextareaProps = ExtendableProps<
      * @default 'filled'
      */
     variant?: TextareaPropVariant;
-    /**
-     * If `true`, the input will indicate an error.
-     * @default false
-     */
-    isInvalid?: boolean;
-    /**
-     * If `true`, the input can be selected but not changed by the user.
-     * @default false
-     */
-    isReadOnly?: boolean;
-    /** Message for the error state */
+    /** An error message for the field. */
     errorMessage?: ReactNode;
     /**
      * If true, the input will take up the full width of its container.
@@ -84,22 +72,12 @@ export type TextareaProps = ExtendableProps<
      */
     fullWidth?: boolean;
     /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    isDisabled?: boolean;
-    /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
      * @default false
      */
     isLabelHidden?: boolean;
     /** The helper text content. */
     caption?: ReactNode;
-    /**
-     * If `true`, the label is displayed as required and the input element is required.
-     * @default false
-     */
-    isRequired?: boolean;
     /** The rows property specifies the visible height of a text area, in lines. */
     rows?: number;
     /** The cols property specifies the visible width of a text area. */

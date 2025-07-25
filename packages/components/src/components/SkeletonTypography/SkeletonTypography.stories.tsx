@@ -9,8 +9,7 @@ import { SidePanel } from '../SidePanel';
 import { SkeletonBlock } from '../SkeletonBlock';
 import { Typography } from '../Typography';
 
-import type { SkeletonTypographyBaseProps } from './index';
-import { SkeletonTypography } from './index';
+import { SkeletonTypography, type SkeletonTypographyProps } from './index';
 
 const meta = {
   title: 'Components/SkeletonTypography',
@@ -22,10 +21,10 @@ const meta = {
 } satisfies Meta<typeof SkeletonTypography>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<SkeletonTypographyProps>;
 
 export const Base: Story = {
-  render: (args: SkeletonTypographyBaseProps) => (
+  render: (args) => (
     <SkeletonTypography
       rows={4}
       inlineSize={300}

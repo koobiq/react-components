@@ -9,7 +9,7 @@ import {
   IconMessage16,
   IconPlus16,
 } from '@koobiq/react-icons';
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../types';
 import { Button } from '../Button';
@@ -35,13 +35,13 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-};
+} satisfies Meta<typeof Menu>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<MenuProps<unknown>>;
 
 export const Base: Story = {
-  render: (args: MenuProps<object>) => (
+  render: (args) => (
     <Menu
       control={(props) => <Button {...props}>Actions</Button>}
       onAction={(key) => alert(key)}
