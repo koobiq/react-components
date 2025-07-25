@@ -16,11 +16,7 @@ import type {
   FieldCaptionProps,
   FieldInputGroupProps,
 } from '../FieldComponents';
-import type {
-  ListPropItems,
-  ListPropChildren,
-  ListPropDisabledKeys,
-} from '../List';
+import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
 export type SelectKey = string | number;
@@ -71,9 +67,9 @@ export type SelectProps<T extends object> = {
   /** The content to display as the label. */
   label?: ReactNode;
   /** The contents of the collection. */
-  children?: ListPropChildren<T>;
+  children?: ListProps<T>['children'];
   /** Item objects in the collection. */
-  items?: ListPropItems<T>;
+  items?: ListProps<T>['items'];
   /** Addon placed before the children. */
   startAddon?: ReactNode;
   /** Addon placed after the children. */
@@ -116,7 +112,7 @@ export type SelectProps<T extends object> = {
   /** Ref to the control */
   ref?: Ref<HTMLButtonElement>;
   /** The item keys that are disabled. These items cannot be selected, focused, or otherwise interacted with. */
-  disabledKeys?: ListPropDisabledKeys<T>;
+  disabledKeys?: ListProps<T>['disabledKeys'];
   /** The initial selected key in the collection (uncontrolled). */
   defaultSelectedKey?: SelectKey;
   /** The currently selected key in the collection (controlled). */
@@ -136,7 +132,7 @@ export type SelectProps<T extends object> = {
   slotProps?: {
     popover?: PopoverProps;
     label?: FieldLabelProps;
-    list?: ListPropChildren<T>;
+    list?: ListProps<T>;
     control?: FieldSelectProps;
     caption?: FieldCaptionProps;
     group?: FieldInputGroupProps;
