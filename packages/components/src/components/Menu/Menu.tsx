@@ -16,10 +16,7 @@ import { MenuInner } from './components';
 import type { MenuProps, MenuComponent, MenuRef } from './index';
 import s from './Menu.module.css';
 
-function MenuRender<T extends object>(
-  props: Omit<MenuProps<T>, 'ref'>,
-  ref: Ref<MenuRef>
-) {
+function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
   const {
     placement = 'bottom start',
     'data-testid': testId,

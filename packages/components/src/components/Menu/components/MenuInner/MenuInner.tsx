@@ -19,20 +19,18 @@ export type MenuInnerProps<T> = AriaMenuOptions<T>;
 
 const { list } = utilClasses;
 
-export type MenuInnerComponent = <T extends object>(
+export type MenuInnerComponent = <T>(
   props: MenuInnerProps<T>
 ) => ReactElement | null;
 
 export type MenuInnerRef = ComponentRef<'ul'>;
 
-function MenuInnerRender<T extends object>(
+function MenuInnerRender<T extends object = object>(
   props: MenuInnerProps<T>,
   ref: Ref<MenuInnerRef>
 ) {
   // Create menu state based on the incoming props
   const state = useTreeState(props);
-
-  // Get props for the menu element
 
   const domRef = useDOMRef(ref);
   const { menuProps } = useMenu(props, state, domRef);
