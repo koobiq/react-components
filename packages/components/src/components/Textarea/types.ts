@@ -64,7 +64,7 @@ export type TextareaProps = ExtendableProps<
      * @default 'filled'
      */
     variant?: TextareaPropVariant;
-    /** Message for the error state. */
+    /** An error message for the field. */
     errorMessage?: ReactNode;
     /**
      * If true, the input will take up the full width of its container.

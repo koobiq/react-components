@@ -58,7 +58,7 @@ export type InputNumberProps = ExtendableProps<
   {
     /** Additional CSS-classes. */
     className?: string;
-    /** Message for the invalid state. */
+    /** An error message for the field. */
     errorMessage?: ReactNode;
     /** Addon placed before the children. */
     startAddon?: ReactNode;

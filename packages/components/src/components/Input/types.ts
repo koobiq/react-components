@@ -67,7 +67,7 @@ export type InputProps = ExtendableProps<
      * @default 'filled'
      */
     variant?: InputPropVariant;
-    /** Message for the invalid state. */
+    /** An error message for the field. */
     errorMessage?: ReactNode;
     /**
      * If true, the input will take up the full width of its container.

@@ -68,7 +68,7 @@ export type SelectProps<T> = ExtendableProps<
     endAddon?: ReactNode;
     /** Inline styles. */
     style?: CSSProperties;
-    /** Message for the error state */
+    /** An error message for the field. */
     errorMessage?: ReactNode;
     /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
