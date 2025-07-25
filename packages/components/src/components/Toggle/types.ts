@@ -1,6 +1,7 @@
-import type { ComponentPropsWithRef, CSSProperties } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 
-import type { UseSwitchProps } from '@koobiq/react-primitives';
+import type { ExtendableProps } from '@koobiq/react-core';
+import type { SwitchProps } from '@koobiq/react-primitives';
 
 export const togglePropSize = ['normal', 'big'] as const;
 
@@ -47,43 +48,29 @@ type ToggleDeprecatedProps = {
   defaultChecked?: boolean;
 };
 
-export type ToggleProps = UseSwitchProps & {
-  /** Additional CSS-classes. */
-  className?: string;
-  /** Inline styles. */
-  style?: CSSProperties;
-  /**
-   * Size.
-   * @default 'normal'
-   */
-  size?: TogglePropSize;
-  /**
-   * The position of the label.
-   * @default 'end'
-   */
-  labelPlacement?: TogglePropLabelPlacement;
-  /** The props used for each slot inside. */
-  slotProps?: {
-    track?: ComponentPropsWithRef<'span'>;
-    label?: ComponentPropsWithRef<'span'>;
-  };
-  /**
-   * If `true`, the component will indicate an error.
-   * @default false
-   */
-  isInvalid?: boolean;
-  /** If `true`, the component is checked. */
-  isSelected?: boolean;
-  /**
-   * It prevents the user from changing the value of the checkbox.
-   * @default false
-   */
-  isReadOnly?: boolean;
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  isDisabled?: boolean;
-  /** The default checked state. Use when the component is not controlled. */
-  defaultSelected?: boolean;
-} & ToggleDeprecatedProps;
+export type ToggleProps = ExtendableProps<
+  {
+    /** The content of the component. */
+    children?: ReactNode;
+    /** Additional CSS-classes. */
+    className?: string;
+    /** Inline styles. */
+    style?: CSSProperties;
+    /**
+     * Size.
+     * @default 'normal'
+     */
+    size?: TogglePropSize;
+    /**
+     * The position of the label.
+     * @default 'end'
+     */
+    labelPlacement?: TogglePropLabelPlacement;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      track?: ComponentPropsWithRef<'span'>;
+      label?: ComponentPropsWithRef<'span'>;
+    };
+  } & ToggleDeprecatedProps,
+  Omit<SwitchProps, 'inputRef'>
+>;
