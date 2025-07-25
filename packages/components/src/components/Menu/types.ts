@@ -10,7 +10,7 @@ import type {
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { ButtonOptions, AriaMenuProps } from '@koobiq/react-primitives';
 
-import type { PopoverBaseProps, PopoverPropPlacement } from '../Popover';
+import type { PopoverProps, PopoverPropPlacement } from '../Popover';
 
 export type MenuPropControl = (
   props: ButtonOptions & { ref?: Ref<HTMLButtonElement> }
@@ -54,7 +54,7 @@ export type MenuProps<T> = ExtendableProps<
     ref?: Ref<HTMLDivElement>;
     /** The props used for each slot inside. */
     slotProps?: {
-      popover?: PopoverBaseProps;
+      popover?: PopoverProps;
       list?: ComponentPropsWithRef<'ul'>;
     };
   } & MenuDeprecatedProps,
