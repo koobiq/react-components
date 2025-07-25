@@ -1,10 +1,7 @@
 import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
-import type {
-  NumberField,
-  UseNumberFieldProps,
-} from '@koobiq/react-primitives';
+import type { NumberField, NumberFieldProps } from '@koobiq/react-primitives';
 
 import type {
   FieldCaptionProps,
@@ -59,10 +56,10 @@ type InputNumberDeprecatedProps = {
 
 export type InputNumberProps = ExtendableProps<
   {
-    /** The content to display as the label. */
-    label?: ReactNode;
     /** Additional CSS-classes. */
     className?: string;
+    /** Message for the invalid state. */
+    errorMessage?: ReactNode;
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */
@@ -73,22 +70,10 @@ export type InputNumberProps = ExtendableProps<
      */
     variant?: InputNumberPropVariant;
     /**
-     * If `true`, the input will indicate an error.
-     * @default false
-     */
-    isInvalid?: boolean;
-    /** Message for the error state. */
-    errorMessage?: ReactNode;
-    /**
      * If true, the input will take up the full width of its container.
      * @default false
      */
     fullWidth?: boolean;
-    /**
-     * If `true`, the component is disabled.
-     * @default false
-     */
-    isDisabled?: boolean;
     /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
      * @default false
@@ -96,11 +81,6 @@ export type InputNumberProps = ExtendableProps<
     isLabelHidden?: boolean;
     /** The helper text content. */
     caption?: ReactNode;
-    /**
-     * If `true`, the label is displayed as required and the input element is required.
-     * @default false
-     */
-    isRequired?: boolean;
     /** Inline styles. */
     style?: CSSProperties;
     /** Unique identifier for testing purposes. */
@@ -116,12 +96,8 @@ export type InputNumberProps = ExtendableProps<
     };
   } & InputNumberDeprecatedProps,
   Omit<
-    UseNumberFieldProps,
-    | 'description'
-    | 'validationBehavior'
-    | 'validate'
-    | 'children'
-    | 'inputElementType'
+    NumberFieldProps,
+    'description' | 'children' | 'inputElementType' | 'validationState'
   >
 >;
 
