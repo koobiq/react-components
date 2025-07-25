@@ -1,8 +1,8 @@
 'use client';
 
 import { mergeProps, polymorphicForwardRef } from '@koobiq/react-core';
+import { useProgressBar } from '@react-aria/progress';
 
-import { useProgressBar } from '../../behaviors';
 import { Provider, useRenderProps } from '../../utils';
 import { LabelContext } from '../Label';
 
@@ -15,18 +15,18 @@ export const ProgressBar = polymorphicForwardRef<'div', ProgressBarBaseProps>(
       minValue = 0,
       maxValue = 100,
       as: Tag = 'div',
-      indeterminate = false,
+      isIndeterminate = false,
       ...other
     } = props;
 
     const { progressBarProps, labelProps } = useProgressBar(props);
 
-    const percentage = indeterminate
+    const percentage = isIndeterminate
       ? undefined
       : ((value - minValue) / (maxValue - minValue)) * 100;
 
     const renderValues = {
-      indeterminate,
+      isIndeterminate,
       percentage,
     };
 

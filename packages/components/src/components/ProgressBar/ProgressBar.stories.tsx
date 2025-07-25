@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useInterval } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ProgressBar, type ProgressBarBaseProps } from './index.js';
+import { ProgressBar } from './index.js';
 
 const meta = {
   title: 'Components/ProgressBar',
@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args: ProgressBarBaseProps) => (
+  render: (args) => (
     <ProgressBar
       aria-label="Loading data…"
       style={{ inlineSize: 260 }}
@@ -28,7 +28,7 @@ export const Base: Story = {
 };
 
 export const Value: Story = {
-  render: (args: ProgressBarBaseProps) => (
+  render: (args) => (
     <ProgressBar
       aria-label="Loading…"
       value={25}
@@ -40,7 +40,7 @@ export const Value: Story = {
 
 export const MinMaxValues: Story = {
   name: 'MinValue and MaxValue',
-  render: (args: ProgressBarBaseProps) => (
+  render: (args) => (
     <ProgressBar
       style={{ inlineSize: 260 }}
       aria-label="Loading…"
@@ -53,7 +53,7 @@ export const MinMaxValues: Story = {
 };
 
 export const Indeterminate: Story = {
-  render: (args: ProgressBarBaseProps) => (
+  render: (args) => (
     <ProgressBar
       aria-label="System scan…"
       style={{ inlineSize: 260 }}
@@ -65,7 +65,7 @@ export const Indeterminate: Story = {
 
 export const LoadingEmulation: Story = {
   name: 'Loading emulation',
-  render: function Render(args: ProgressBarBaseProps) {
+  render: function Render(args) {
     const [progress, setProgress] = useState(0);
 
     useInterval(() => {

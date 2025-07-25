@@ -22,10 +22,10 @@ export const ProgressBar = forwardRef<ComponentRef<'div'>, ProgressBarProps>(
       ...other
     } = props;
 
-    const indeterminate = variant === 'indeterminate' || !isNotNil(value);
+    const isIndeterminate = variant === 'indeterminate' || !isNotNil(value);
 
     const setProgressTrackStyles = () => {
-      if (indeterminate) return undefined;
+      if (isIndeterminate) return undefined;
 
       const translateX = Math.max(
         -maxValue,
@@ -42,10 +42,10 @@ export const ProgressBar = forwardRef<ComponentRef<'div'>, ProgressBarProps>(
         value={value}
         minValue={minValue}
         maxValue={maxValue}
-        indeterminate={indeterminate}
-        data-variant={indeterminate ? 'indeterminate' : 'determinate'}
+        isIndeterminate={isIndeterminate}
+        data-variant={isIndeterminate ? 'indeterminate' : 'determinate'}
         style={{ ...style, ...setProgressTrackStyles() }}
-        className={clsx(s.base, indeterminate && s.indeterminate, className)}
+        className={clsx(s.base, isIndeterminate && s.indeterminate, className)}
         {...other}
         ref={ref}
       >

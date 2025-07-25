@@ -5,5 +5,4 @@ export * from './useSwitch';
 export * from './useRadio';
 export * from './useRadioGroup';
 export * from './useRadioGroupState';
-export * from './useProgressBar';
 export * from './useNumberField';
