@@ -248,7 +248,11 @@ export const rows: Rows = [
     stage: '🔵 experimental ',
     planned: 'Q3 2025',
   },
-  { component: 'Select (multiple)', status: '🚧 Planned', planned: 'Q3 2025' },
+  {
+    component: 'Select (multiple)',
+    status: '🛠️ In Progress',
+    planned: 'Q3 2025',
+  },
   { component: 'Tabs', status: '🚧 Planned', planned: 'Q3 2025' },
   { component: 'Breadcrumbs', status: '🚧 Planned', planned: 'Q3 2025' },
   { component: 'Collapse', status: '🚧 Planned', planned: 'Q3 2025' },

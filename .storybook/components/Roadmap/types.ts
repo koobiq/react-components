@@ -1,6 +1,6 @@
 export type Row = {
   component: string;
-  status: '✅ Done' | '🚧 Planned';
+  status: '✅ Done' | '🚧 Planned' | '🛠️ In Progress';
   stage?: '🔵 experimental ' | '🟢 stable' | '🟠 draft' | '🔴 deprecated';
   planned: string;
 };
