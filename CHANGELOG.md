@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1](https://github.com/koobiq/react-components/compare/0.1.0...0.1.1) (2025-07-29)
+
+### 🐞 Bug Fixes
+
+- **components:** fix bouncing scrolling in pop-up windows (DS-4048) ([8888c8e](https://github.com/koobiq/react-components/commit/8888c8e502c9bc8d0e1ed9f0adb22cd4f8260c8a))
+
 ## [0.1.0](https://github.com/koobiq/react-components/compare/0.0.1...0.1.0) (2025-07-25)
 
 ### 🚀 Features
