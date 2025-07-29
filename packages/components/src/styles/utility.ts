@@ -76,4 +76,5 @@ export const utilClasses = {
   typography,
   list: s.list,
   listItem: s['list-item'],
+  scrollable: s.scrollable,
 };

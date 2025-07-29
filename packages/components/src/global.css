@@ -16,38 +16,3 @@
 .kbq-dark {
   color-scheme: dark;
 }
-
-* {
-  --scroll-bar-size: 16px;
-
-  &::-webkit-scrollbar {
-    inline-size: var(--scroll-bar-size);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border: calc(var(--scroll-bar-size) / 4) solid transparent;
-    border-image: initial;
-    background-clip: padding-box;
-    min-block-size: calc(var(--scroll-bar-size) * 2);
-    background-color: var(--kbq-icon-contrast-fade);
-    border-radius: calc(var(--scroll-bar-size) / 2);
-
-    &:hover,
-    &:active {
-      border: calc(var(--scroll-bar-size) / 4) solid transparent;
-      background-clip: padding-box;
-    }
-
-    &:hover {
-      background-color: var(--kbq-states-icon-contrast-fade-hover);
-    }
-
-    &:active {
-      background-color: var(--kbq-states-icon-contrast-fade-active);
-    }
-  }
-
-  &::-webkit-scrollbar-corner {
-    background: transparent;
-  }
-}
