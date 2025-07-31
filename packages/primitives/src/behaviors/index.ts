@@ -6,3 +6,6 @@ export * from './useRadio';
 export * from './useRadioGroup';
 export * from './useRadioGroupState';
 export * from './useNumberField';
+export * from './useMultiSelect';
+export * from './useMultiSelectState';
+export * from './useMultiSelectListState';
