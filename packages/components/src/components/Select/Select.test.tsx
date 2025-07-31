@@ -40,6 +40,12 @@ describe('Select', () => {
     expect(screen.getAllByText('label')[0]).toBeInTheDocument();
   });
 
+  it('should display a placeholder', () => {
+    render(<Select {...baseProps} placeholder="baz" />);
+
+    expect(screen.getByText('baz')).toBeInTheDocument();
+  });
+
   it('should be disabled when isDisabled is true', async () => {
     render(<Select {...baseProps} isDisabled />);
 
