@@ -1,0 +1,210 @@
+import { forwardRef, type Ref } from 'react';
+
+import {
+  clsx,
+  mergeProps,
+  type Node,
+  useDOMRef,
+  useElementSize,
+} from '@koobiq/react-core';
+import { IconChevronDownS16 } from '@koobiq/react-icons';
+import {
+  removeDataAttributes,
+  useMultiSelect,
+  useMultiSelectState,
+} from '@koobiq/react-primitives';
+
+import { Item, Section } from '../Collections';
+import {
+  FieldLabel,
+  FieldError,
+  FieldSelect,
+  FieldCaption,
+  FieldInputGroup,
+  FieldControl,
+  type FieldLabelProps,
+  type FieldInputGroupProps,
+  type FieldCaptionProps,
+  type FieldErrorProps,
+  type FieldSelectProps,
+} from '../FieldComponents';
+import { ListItemText, ListInner } from '../List';
+import { PopoverInner } from '../Popover/PopoverInner';
+
+import type { SelectRef, SelectProps, SelectComponent } from './index';
+import s from './Select.module.css';
+
+function SelectRender<T extends object>(
+  props: Omit<SelectProps<T>, 'ref'>,
+  ref: Ref<SelectRef>
+) {
+  const {
+    fullWidth = false,
+    'data-testid': testId,
+    isRequired,
+    isDisabled,
+    caption,
+    errorMessage,
+    isInvalid,
+    className,
+    style,
+    isLabelHidden: isLabelHiddenProp,
+    placeholder,
+    endAddon,
+    slotProps,
+    startAddon,
+    label,
+    renderValue: renderValueProp,
+  } = props;
+
+  const isLabelHidden = isLabelHiddenProp;
+
+  const domRef = useDOMRef<HTMLButtonElement>(ref);
+
+  const state = useMultiSelectState(removeDataAttributes(props));
+
+  const {
+    menuProps,
+    valueProps,
+    triggerProps,
+    labelProps: labelPropsAria,
+    descriptionProps,
+    errorMessageProps,
+  } = useMultiSelect(removeDataAttributes(props), state, domRef);
+
+  // Match the Popover width to the control element's width.
+  const { ref: containerRef, width } = useElementSize();
+
+  const rootProps = mergeProps({
+    'data-testid': testId,
+    'data-fullwidth': fullWidth,
+    'data-invalid': props.isInvalid,
+    'data-disabled': props.isDisabled,
+    'data-required': props.isRequired,
+    className: clsx(s.base, fullWidth && s.fullWidth, className),
+    style,
+  });
+
+  const listProps = mergeProps(
+    { className: s.list, state },
+    slotProps?.list,
+    menuProps
+  );
+
+  const labelProps = mergeProps<
+    [FieldLabelProps, FieldLabelProps | undefined, FieldLabelProps]
+  >(
+    { isHidden: isLabelHidden, children: label, isRequired },
+    slotProps?.label,
+    labelPropsAria
+  );
+
+  const groupProps = mergeProps<
+    [FieldInputGroupProps, FieldInputGroupProps | undefined]
+  >(
+    {
+      slotProps: {
+        end: { className: s.addon },
+        start: { className: s.addon },
+      },
+      startAddon,
+      endAddon: (
+        <>
+          {endAddon}
+          <IconChevronDownS16 />
+        </>
+      ),
+      isInvalid,
+      isDisabled,
+      ref: containerRef,
+    },
+    slotProps?.group
+  );
+
+  const controlProps = mergeProps<
+    [
+      FieldSelectProps,
+      FieldSelectProps | undefined,
+      FieldSelectProps,
+      FieldSelectProps,
+    ]
+  >(
+    {
+      ref: domRef,
+      placeholder,
+      isInvalid,
+      isDisabled,
+    },
+    slotProps?.control,
+    valueProps,
+    triggerProps
+  );
+
+  const popoverProps = mergeProps(
+    {
+      state,
+      offset: 4,
+      size: width,
+      hideArrow: true,
+      anchorRef: domRef,
+      className: s.popover,
+      placement: 'bottom start',
+      type: 'listbox',
+    },
+    slotProps?.popover
+  );
+
+  const captionProps = mergeProps<
+    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
+  >({ children: caption }, slotProps?.caption, descriptionProps);
+
+  const errorProps = mergeProps<
+    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
+  >(
+    { isInvalid, children: errorMessage },
+    slotProps?.errorMessage,
+    errorMessageProps
+  );
+
+  const renderDefaultValue = (selectedItem: Node<T>[] | null) => {
+    if (!selectedItem) return null;
+
+    if (selectedItem?.length > 1) return `${selectedItem.length} selected`;
+
+    return selectedItem[0].rendered;
+  };
+
+  const renderValue = renderValueProp || renderDefaultValue;
+
+  return (
+    <>
+      <FieldControl {...rootProps}>
+        <FieldLabel {...labelProps} />
+        <FieldInputGroup {...groupProps}>
+          <FieldSelect {...controlProps}>
+            {renderValue(state?.selectedItems)}
+          </FieldSelect>
+        </FieldInputGroup>
+        <FieldCaption {...captionProps} />
+        <FieldError {...errorProps} />
+      </FieldControl>
+      <PopoverInner {...popoverProps}>
+        <ListInner {...listProps} />
+      </PopoverInner>
+    </>
+  );
+}
+
+const SelectComponent = forwardRef(SelectRender) as SelectComponent;
+
+type CompoundedComponent = typeof SelectComponent & {
+  Item: typeof Item;
+  Section: typeof Section;
+  ItemText: typeof ListItemText;
+};
+
+export const Select = SelectComponent as CompoundedComponent;
+
+Select.Item = Item;
+Select.Section = Section;
+Select.ItemText = ListItemText;
