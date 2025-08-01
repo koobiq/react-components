@@ -30,6 +30,7 @@ const meta = {
     'Select.ItemText': Select.ItemText,
   },
   argTypes: {},
+  tags: ['status:new'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
