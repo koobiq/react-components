@@ -56,7 +56,6 @@ export const Base: Story = {
       style={{ inlineSize: 200 }}
       placeholder="Select an option"
       {...args}
-      selectionMode="single"
     >
       <Select.Item key="bruteforce">Bruteforce</Select.Item>
       <Select.Item key="complex-attack">Complex Attack</Select.Item>
@@ -93,7 +92,6 @@ export const Content: Story = {
       <Select
         items={options}
         label="Attack type"
-        selectionMode="single"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
         caption="Dynamic collections"
@@ -104,7 +102,7 @@ export const Content: Story = {
   },
 };
 
-export const SelectionSingle: Story = {
+export const SingleSelection: Story = {
   render: function Render() {
     const options = [
       { name: 'Bruteforce' },
@@ -127,7 +125,6 @@ export const SelectionSingle: Story = {
         <Select
           items={options}
           label="Attack type"
-          selectionMode="single"
           selectedKeys={attack}
           style={{ inlineSize: 200 }}
           placeholder="Select an option"
@@ -141,12 +138,48 @@ export const SelectionSingle: Story = {
   },
 };
 
+export const MultipleSelection: Story = {
+  render: function Render() {
+    const options = [
+      { name: 'Bruteforce' },
+      { name: 'Complex Attack' },
+      { name: 'DDoS' },
+      { name: 'DoS' },
+      { name: 'HIPS Alert' },
+      { name: 'IDS/IPS Alert' },
+      { name: 'Identity Theft' },
+      { name: 'Miscellaneous' },
+      { name: 'Network Attack' },
+      { name: 'Post Compromise' },
+      { name: 'Potential Attack' },
+    ];
+
+    const [attack, setAttack] = useState<Selection>(new Set(['Bruteforce']));
+
+    return (
+      <FlexBox direction="column" gap="s" style={{ inlineSize: 200 }}>
+        <Select
+          items={options}
+          label="Attack type"
+          selectionMode="multiple"
+          selectedKeys={attack}
+          style={{ inlineSize: 'inherit' }}
+          placeholder="Select an option"
+          onSelectionChange={(selected) => setAttack(selected!)}
+        >
+          {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
+        </Select>
+        <Typography>Selected: {Array.from(attack).join(', ')}</Typography>
+      </FlexBox>
+    );
+  },
+};
+
 export const Invalid: Story = {
   render: function Render() {
     return (
       <Select
         items={options}
-        selectionMode="single"
         label="Attack type"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
@@ -164,7 +197,6 @@ export const Disabled: Story = {
     return (
       <Select
         items={options}
-        selectionMode="single"
         caption="disabled"
         label="Attack type"
         style={{ inlineSize: 200 }}
@@ -182,7 +214,6 @@ export const DisabledOptions: Story = {
     return (
       <Select
         items={options}
-        selectionMode="single"
         caption="disabled"
         label="Attack type"
         disabledKeys={[4, 5]}
@@ -200,7 +231,6 @@ export const Required: Story = {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Select
-          selectionMode="single"
           items={options}
           caption="required"
           label="Attack type"
@@ -211,7 +241,6 @@ export const Required: Story = {
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
         <Select
-          selectionMode="single"
           items={options}
           label="Attack type"
           style={{ inlineSize: 200 }}
@@ -234,7 +263,6 @@ export const FullWidth: Story = {
   render: function Render() {
     return (
       <Select
-        selectionMode="single"
         items={options}
         label="Attack type"
         placeholder="Select an option"
@@ -253,7 +281,6 @@ export const Open: Story = {
     return (
       <FlexBox gap="m">
         <Select
-          selectionMode="single"
           isOpen={isOpen}
           items={options}
           onOpenChange={set}
@@ -285,7 +312,6 @@ export const WithIcons: Story = {
 
     return (
       <Select
-        selectionMode="single"
         selectedKeys={selected}
         items={options}
         label="Options"
@@ -319,7 +345,6 @@ export const WithItemDetails: Story = {
 
     return (
       <Select
-        selectionMode="single"
         selectedKeys={selected}
         items={options}
         label="Options"
@@ -362,7 +387,6 @@ export const Section: Story = {
       <Select
         items={options}
         label="Options"
-        selectionMode="single"
         placeholder="Select an option"
         style={{ inlineSize: 200 }}
       >
