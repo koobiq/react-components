@@ -1,3 +1,7 @@
-.base p {
-  margin: 0;
+.base {
+  margin-block: var(--kbq-size-xxl);
+
+  p {
+    margin: 0;
+  }
 }
