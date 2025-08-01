@@ -22,16 +22,15 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
 
   const ref = useRef(null);
 
-  const {
-    optionProps,
-    isSelected: selected,
-    isDisabled: disabled,
-    isFocusVisible: focusVisible,
-  } = useOption({ key: item.key }, state, ref);
+  const { optionProps, isSelected, isDisabled, isFocusVisible } = useOption(
+    { key: item.key },
+    state,
+    ref
+  );
 
-  const { hoverProps, isHovered: hovered } = useHover({ isDisabled: disabled });
+  const { hoverProps, isHovered } = useHover({ isDisabled });
 
-  const { isPressed: pressed, pressProps } = usePress({ isDisabled: disabled });
+  const { isPressed, pressProps } = usePress({ isDisabled });
 
   const Tag: ElementType = href ? 'a' : 'li';
 
@@ -41,11 +40,11 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
       className={clsx(listItem, textVariant['text-normal'], className)}
       style={style}
       ref={ref}
-      data-hovered={hovered}
-      data-pressed={pressed}
-      data-disabled={disabled}
-      data-selected={selected}
-      data-focus-visible={focusVisible}
+      data-hovered={isHovered}
+      data-pressed={isPressed}
+      data-disabled={isDisabled}
+      data-selected={isSelected}
+      data-focus-visible={isFocusVisible}
     >
       {item.rendered}
     </Tag>
