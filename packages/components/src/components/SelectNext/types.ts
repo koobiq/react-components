@@ -38,8 +38,11 @@ export type SelectProps<T> = ExtendableProps<
     >['0']['onSelectionChange'];
     /** The currently selected keys in the collection (controlled). */
     selectedKeys?: Parameters<typeof useMultiSelectState>['0']['selectedKeys'];
-    /** The type of selection that is allowed in the collection. */
-    selectionMode: 'single' | 'multiple';
+    /**
+     * The type of selection that is allowed in the collection.
+     * @default 'single'
+     */
+    selectionMode?: 'single' | 'multiple';
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */
