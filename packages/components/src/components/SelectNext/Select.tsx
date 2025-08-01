@@ -28,9 +28,10 @@ import {
   type FieldErrorProps,
   type FieldSelectProps,
 } from '../FieldComponents';
-import { ListItemText, ListInner } from '../List';
+import { ListItemText } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 
+import { SelectList } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
 import s from './Select.module.css';
 
@@ -196,7 +197,7 @@ function SelectRender<T extends object>(
         <FieldError {...errorProps} />
       </FieldControl>
       <PopoverInner {...popoverProps}>
-        <ListInner {...listProps} />
+        <SelectList {...listProps} />
       </PopoverInner>
     </>
   );
