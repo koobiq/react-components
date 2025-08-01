@@ -41,6 +41,7 @@ function SelectRender<T extends object>(
   const {
     fullWidth = false,
     'data-testid': testId,
+    selectionMode = 'single',
     isRequired,
     isDisabled,
     caption,
@@ -61,7 +62,9 @@ function SelectRender<T extends object>(
 
   const domRef = useDOMRef<HTMLButtonElement>(ref);
 
-  const state = useMultiSelectState(removeDataAttributes(props));
+  const state = useMultiSelectState(
+    removeDataAttributes({ ...props, selectionMode })
+  );
 
   const {
     menuProps,
@@ -70,7 +73,11 @@ function SelectRender<T extends object>(
     labelProps: labelPropsAria,
     descriptionProps,
     errorMessageProps,
-  } = useMultiSelect(removeDataAttributes(props), state, domRef);
+  } = useMultiSelect(
+    removeDataAttributes({ ...props, selectionMode }),
+    state,
+    domRef
+  );
 
   // Match the Popover width to the control element's width.
   const { ref: containerRef, width } = useElementSize();
