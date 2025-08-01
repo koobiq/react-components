@@ -3,7 +3,10 @@ import {
   Story,
   Props,
   Status,
+  Alert,
 } from '../../../../../.storybook/components';
+
+import { Link } from '../Link';
 
 import * as Stories from './Select.stories';
 
@@ -11,7 +14,11 @@ import * as Stories from './Select.stories';
 
 # Select
 
-<Status variant="experimental" />
+<Status variant="deprecated" />
+
+<Alert title="This component has been deprecated" status="error" isColored>
+  Please use <Link href="/Components/SelectNext">SelectNext</Link> instead.
+</Alert>
 
 A select displays a collapsible list of options and allows a user to select one of them.
 
