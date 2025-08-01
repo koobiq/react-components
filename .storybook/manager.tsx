@@ -24,6 +24,10 @@ const badges = {
     label: 'New',
     variant: 'outline-fade-success',
   },
+  'status:deprecated': {
+    label: 'Deprecated',
+    variant: 'outline-fade-error',
+  },
 } satisfies Record<string, BadgeConfig>;
 
 addons.setConfig({
