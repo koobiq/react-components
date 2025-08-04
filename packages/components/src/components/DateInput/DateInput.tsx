@@ -18,7 +18,7 @@ import {
   FieldControl,
   FieldError,
   FieldInputDate,
-  FieldInputGroup,
+  FieldContentGroup,
   FieldLabel,
 } from '../FieldComponents';
 import type {
@@ -107,6 +107,7 @@ export function DateInputRender<T extends DateValue>(
       isInvalid,
       isDisabled,
       startAddon,
+      variant,
     },
     slotProps?.group
   );
@@ -145,13 +146,13 @@ export function DateInputRender<T extends DateValue>(
   return (
     <FieldControl {...rootProps}>
       <FieldLabel {...labelProps} />
-      <FieldInputGroup {...groupProps}>
+      <FieldContentGroup {...groupProps}>
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (
             <DateSegment key={i} segment={segment} state={state} />
           ))}
         </FieldInputDate>
-      </FieldInputGroup>
+      </FieldContentGroup>
       <FieldCaption {...captionProps} />
       <FieldError {...errorProps} />
     </FieldControl>

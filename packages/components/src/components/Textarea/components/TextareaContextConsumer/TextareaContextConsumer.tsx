@@ -6,9 +6,11 @@ import { useTextareaContext } from '@koobiq/react-primitives';
 import {
   FieldCaption,
   type FieldCaptionProps,
+  FieldContentGroup,
   FieldError,
   type FieldErrorProps,
   FieldInput,
+  type FieldInputGroupProps,
   type FieldInputProps,
   FieldLabel,
   type FieldLabelProps,
@@ -84,6 +86,12 @@ export const TextareaContextConsumer = forwardRef<
     slotProps?.errorMessage
   );
 
+  const groupProps: FieldInputGroupProps = {
+    variant,
+    isInvalid,
+    isDisabled,
+  };
+
   const labelProps = mergeProps<[FieldLabelProps, FieldLabelProps | undefined]>(
     { isHidden: isLabelHidden, children: label, isRequired },
     slotProps?.label
@@ -92,7 +100,9 @@ export const TextareaContextConsumer = forwardRef<
   return (
     <>
       <FieldLabel {...labelProps} />
-      <FieldInput as="textarea" {...textareaProps} />
+      <FieldContentGroup {...groupProps}>
+        <FieldInput as="textarea" {...textareaProps} />
+      </FieldContentGroup>
       <FieldCaption {...captionProps} />
       <FieldError {...errorProps} />
     </>

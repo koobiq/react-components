@@ -15,7 +15,7 @@ import {
   FieldControl,
   FieldError,
   FieldInputDate,
-  FieldInputGroup,
+  FieldContentGroup,
   FieldLabel,
 } from '../FieldComponents';
 import type {
@@ -100,6 +100,7 @@ export function TimePickerRender<T extends TimeValue>(
           <IconClock16 />
         </>
       ),
+      variant,
       isInvalid,
       isDisabled,
       endAddon,
@@ -149,16 +150,16 @@ export function TimePickerRender<T extends TimeValue>(
   return (
     <FieldControl {...rootProps}>
       <FieldLabel {...labelProps} />
-      <FieldInputGroup
+      <FieldContentGroup
         {...groupProps}
-        slotProps={{ start: { className: s.startAddon } }}
+        slotProps={{ startAddon: { className: s.startAddon } }}
       >
         <FieldInputDate {...controlProps}>
           {state.segments.map((segment, i) => (
             <DateSegment key={i} segment={segment} state={state} />
           ))}
         </FieldInputDate>
-      </FieldInputGroup>
+      </FieldContentGroup>
       <FieldCaption {...captionProps} />
       <FieldError {...errorProps} />
     </FieldControl>
