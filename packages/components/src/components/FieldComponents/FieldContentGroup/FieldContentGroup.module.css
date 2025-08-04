@@ -21,10 +21,6 @@
   position: relative;
   border-radius: var(--field-content-border-radius);
 
-  & > * {
-    @mixin typography text-normal;
-  }
-
   /* border */
   &::before {
     inset: 0;

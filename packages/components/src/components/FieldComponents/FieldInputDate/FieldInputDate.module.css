@@ -17,10 +17,11 @@
     var(--field-input-padding-block-end);
   padding-inline: var(--field-input-padding-inline-start)
     var(--field-input-padding-inline-end);
-
   transition:
     color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
+
+  @mixin typography text-normal;
 }
 
 .transparent {

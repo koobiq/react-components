@@ -16,8 +16,8 @@ export const FieldContentGroup = forwardRef<
   (
     {
       variant = 'filled',
-      isInvalid,
-      isDisabled,
+      isInvalid = false,
+      isDisabled = false,
       children,
       className,
       startAddon,
@@ -51,11 +51,11 @@ export const FieldContentGroup = forwardRef<
         {({ isHovered, isFocusWithin, isDisabled, isInvalid }) => (
           <FieldContentGroupContext.Provider
             value={{
-              isDisabled,
-              isHovered,
               hasValue,
-              isFocusWithin,
+              isHovered,
               isInvalid,
+              isDisabled,
+              isFocusWithin,
             }}
           >
             <FieldAddon

@@ -21,6 +21,8 @@
   transition:
     color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
+
+  @mixin typography text-normal;
 }
 
 .content {
