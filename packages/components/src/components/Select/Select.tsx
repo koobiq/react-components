@@ -23,7 +23,7 @@ import {
   FieldError,
   FieldSelect,
   FieldCaption,
-  FieldInputGroup,
+  FieldContentGroup,
   FieldControl,
   type FieldLabelProps,
   type FieldInputGroupProps,
@@ -166,8 +166,8 @@ function SelectRender<T extends object>(
   >(
     {
       slotProps: {
-        end: { className: s.addon },
-        start: { className: s.addon },
+        endAddon: { className: s.addon },
+        startAddon: { className: s.addon },
       },
       startAddon,
       endAddon: (
@@ -250,11 +250,11 @@ function SelectRender<T extends object>(
           triggerRef={domRef}
           isDisabled={isDisabled}
         />
-        <FieldInputGroup {...groupProps}>
+        <FieldContentGroup {...groupProps}>
           <FieldSelect {...controlProps}>
             {renderValue(state?.selectedItem)}
           </FieldSelect>
-        </FieldInputGroup>
+        </FieldContentGroup>
         <FieldCaption {...captionProps} />
         <FieldError {...errorProps} />
       </FieldControl>

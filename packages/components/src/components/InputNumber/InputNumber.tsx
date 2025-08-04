@@ -11,7 +11,7 @@ import {
   FieldLabel,
   FieldError,
   FieldCaption,
-  FieldInputGroup,
+  FieldContentGroup,
   FieldControl,
   type FieldControlProps,
   type FieldLabelProps,
@@ -148,6 +148,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
                 </>
               ),
               isInvalid,
+              variant,
               startAddon,
               isDisabled,
             },
@@ -157,9 +158,9 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
           return (
             <>
               <FieldLabel {...labelProps} />
-              <FieldInputGroup {...groupProps}>
+              <FieldContentGroup {...groupProps}>
                 <FieldInput {...inputProps} />
-              </FieldInputGroup>
+              </FieldContentGroup>
               <FieldCaption {...captionProps} />
               <FieldError {...errorProps} />
             </>

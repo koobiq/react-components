@@ -1,31 +1,21 @@
-@import url('../../../styles/mixins.css');
-
 .base {
   --field-input-color: ;
   --field-input-bg-color: ;
-  --field-input-border-color: ;
-  --field-input-outline-color: ;
   --field-input-placeholder-color: ;
-  --field-input-outline-width: var(--kbq-size-3xs);
-
-  @mixin typography text-normal;
+  border: none;
+  outline: none;
   inline-size: 100%;
   box-sizing: border-box;
-  border-radius: var(--kbq-size-s);
-  background: var(--field-input-bg-color);
+  border-radius: inherit;
   color: var(--field-input-color);
-  outline: var(--field-input-outline-width) solid transparent;
-  outline-offset: -1px;
+  background: var(--field-input-bg-color);
   padding-block: var(--field-input-padding-block-start)
     var(--field-input-padding-block-end);
   padding-inline: var(--field-input-padding-inline-start)
     var(--field-input-padding-inline-end);
-  border: 1px solid var(--field-input-border-color);
   transition:
     color var(--kbq-transition-default),
-    outline-color var(--kbq-transition-default),
-    background-color var(--kbq-transition-default),
-    border-color var(--kbq-transition-default);
+    background-color var(--kbq-transition-default);
 
   &:-webkit-autofill {
     box-shadow: 0 0 0 1000px var(--kbq-background-theme-fade) inset !important;
@@ -34,10 +24,6 @@
 
   &::placeholder {
     color: var(--field-input-placeholder-color);
-  }
-
-  &:focus {
-    outline-color: var(--field-input-outline-color);
   }
 }
 
@@ -52,32 +38,24 @@
 
 .transparent {
   --field-input-color: var(--kbq-foreground-contrast);
-  --field-input-border-color: transparent;
-  --field-input-outline-color: transparent;
   --field-input-bg-color: transparent;
   --field-input-placeholder-color: var(--kbq-foreground-contrast-tertiary);
 }
 
 .filled {
   --field-input-color: var(--kbq-foreground-contrast);
-  --field-input-border-color: var(--kbq-line-contrast-fade);
-  --field-input-outline-color: var(--kbq-states-line-focus-theme);
   --field-input-bg-color: var(--kbq-background-bg);
   --field-input-placeholder-color: var(--kbq-foreground-contrast-tertiary);
 }
 
 .filled:where(.invalid) {
   --field-input-color: var(--kbq-foreground-error);
-  --field-input-border-color: var(--kbq-line-error);
-  --field-input-outline-color: var(--kbq-states-line-focus-error);
   --field-input-bg-color: var(--kbq-states-background-error-less);
   --field-input-placeholder-color: var(--kbq-foreground-error-tertiary);
 }
 
 .transparent:where(.invalid) {
   --field-input-color: var(--kbq-foreground-error);
-  --field-input-border-color: transparent;
-  --field-input-outline-color: transparent;
   --field-input-bg-color: transparent;
   --field-input-placeholder-color: var(--kbq-foreground-error-tertiary);
 }
@@ -88,7 +66,6 @@
 
 .filled:where(.disabled) {
   --field-input-color: var(--kbq-states-foreground-disabled);
-  --field-input-border-color: var(--kbq-states-line-disabled);
   --field-input-bg-color: var(--kbq-states-background-disabled);
 }
 
