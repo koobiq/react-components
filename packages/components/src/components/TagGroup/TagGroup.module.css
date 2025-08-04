@@ -1,6 +1,6 @@
 .base {
   flex-wrap: wrap;
-  gap: var(--kbq-size-s);
+  gap: var(--kbq-size-xxs);
   display: flex;
 }
 
