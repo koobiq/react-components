@@ -21,6 +21,7 @@
   padding-inline: var(--kbq-size-xxs);
   min-inline-size: var(--kbq-size-xxl);
   background-color: var(--tag-bg-color);
+  outline-offset: calc(-1 * var(--tag-outline-width) / 2);
   outline: var(--tag-outline-width) solid var(--tag-outline-color);
   transition:
     outline-color var(--kbq-transition-default),
