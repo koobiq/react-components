@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.2](https://github.com/koobiq/react-components/compare/0.1.1...0.1.2) (2025-08-04)
+
+### 🚀 Features
+
+- **storybook:** add "status:deprecated" tag ([c7c351c](https://github.com/koobiq/react-components/commit/c7c351c6bc977edd27433d4fbe72cb1e405e9b07))
+
+### 🐞 Bug Fixes
+
+- **components/fields:** remove extra border/spacing offset (DS-4061) ([cc7cb2d](https://github.com/koobiq/react-components/commit/cc7cb2d3dab5ca0ff0bb5cd3a022ee8b43e39237))
+- **TagGroup:** correct spacing between tags ([2a76a33](https://github.com/koobiq/react-components/commit/2a76a33e0bb2a76550c2dc5a30da62db3b016aad))
+
 ## [0.1.1](https://github.com/koobiq/react-components/compare/0.1.0...0.1.1) (2025-07-29)
 
 ### 🐞 Bug Fixes
