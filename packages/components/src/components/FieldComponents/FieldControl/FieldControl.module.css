@@ -1,4 +1,5 @@
 .base {
+  --field-control-size-height: 32px;
   --field-input-padding-inline-start: var(--kbq-size-m);
   --field-input-padding-inline-end: var(--kbq-size-m);
   --field-input-padding-block-start: var(--kbq-size-xs);

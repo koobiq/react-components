@@ -32,11 +32,11 @@
 }
 
 .base:where(input) {
-  block-size: var(--kbq-size-3xl);
+  block-size: var(--field-control-size-height);
 }
 
 .base:where(textarea) {
-  min-block-size: var(--kbq-size-3xl);
+  min-block-size: var(--field-control-size-height);
   resize: none;
 }
 

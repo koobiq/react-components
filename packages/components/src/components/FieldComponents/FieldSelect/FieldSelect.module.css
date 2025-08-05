@@ -5,17 +5,18 @@
   --field-input-bg-color: var(--kbq-background-bg);
   --field-input-placeholder-color: var(--kbq-foreground-contrast-tertiary);
   display: flex;
+  gap: var(--kbq-size-s);
   cursor: pointer;
   border: none;
   outline: none;
-  min-block-size: 32px;
+  padding-block: 0;
   inline-size: 100%;
   align-items: center;
   box-sizing: border-box;
   border-radius: inherit;
   color: var(--field-input-color);
   background: var(--field-input-bg-color);
-  padding-block: 0;
+  min-block-size: var(--field-control-size-height);
   padding-inline: var(--field-input-padding-inline-start)
     var(--field-input-padding-inline-end);
   transition:
@@ -26,11 +27,9 @@
 }
 
 .content {
-  display: flex;
   overflow: hidden;
-  align-items: center;
+  text-align: start;
   white-space: nowrap;
-  gap: var(--kbq-size-s);
   text-overflow: ellipsis;
 }
 
