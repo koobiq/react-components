@@ -19,17 +19,17 @@
   pointer-events: none;
 }
 
+/* list */
+.list {
+  inline-size: 100%;
+  padding: var(--kbq-size-xxs);
+}
+
 /* popover */
 .popover {
   border-radius: var(--kbq-size-s);
   opacity: 0;
   transform: translateY(-8px);
-}
-
-/* list */
-.list {
-  inline-size: 100%;
-  padding: var(--kbq-size-xxs);
 }
 
 .popover[data-transition='entering'] {
@@ -50,4 +50,10 @@
 .popover[data-transition='exited'] {
   opacity: 0;
   transform: translateY(-8px);
+}
+
+/* tag-group */
+.tagGroup {
+  padding-block: var(--kbq-size-xxs);
+  margin-left: calc(-1 * var(--kbq-size-s));
 }
