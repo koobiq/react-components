@@ -75,7 +75,11 @@ function SelectRender<T extends object>(
     descriptionProps,
     errorMessageProps,
   } = useMultiSelect(
-    removeDataAttributes({ ...props, selectionMode }),
+    removeDataAttributes({
+      ...props,
+      selectionMode,
+      disallowEmptySelection: true,
+    }),
     state,
     domRef
   );
