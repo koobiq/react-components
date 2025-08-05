@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0](https://github.com/koobiq/react-components/compare/0.1.2...0.2.0) (2025-08-05)
+
+### 🚀 Features
+
+- **core:** add `isDefined` type guard util ([5f9ce9e](https://github.com/koobiq/react-components/commit/5f9ce9e25d0f0537652a84ff86857dd5bc67f5d4))
+
+### 🐞 Bug Fixes
+
+- **Select:** improve control markup for multiline state (DS-4063) ([1d350e2](https://github.com/koobiq/react-components/commit/1d350e27be7b39deb4dbe61aad7723d9864bc279))
+- **Tag:** fix outline offset for focused state ([475edd8](https://github.com/koobiq/react-components/commit/475edd83204ac54a721f942909987972119f449c))
+
 ## [0.1.2](https://github.com/koobiq/react-components/compare/0.1.1...0.1.2) (2025-08-04)
 
 ### 🚀 Features

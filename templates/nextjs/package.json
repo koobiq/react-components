@@ -1,6 +1,6 @@
 {
   "name": "cna-template",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Create a Next.js application with Koobiq React",
   "private": true,
   "repository": {
