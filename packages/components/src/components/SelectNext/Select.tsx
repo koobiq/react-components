@@ -3,7 +3,6 @@ import { forwardRef, type Ref } from 'react';
 import {
   clsx,
   mergeProps,
-  type Node,
   useDOMRef,
   useElementSize,
 } from '@koobiq/react-core';
@@ -30,6 +29,7 @@ import {
 } from '../FieldComponents';
 import { ListItemText } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
+import { Tag, TagGroup } from '../TagGroup';
 
 import { SelectList } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
@@ -174,12 +174,32 @@ function SelectRender<T extends object>(
     errorMessageProps
   );
 
-  const renderDefaultValue = (selectedItem: Node<T>[] | null) => {
-    if (!selectedItem) return null;
+  const renderDefaultValue: typeof renderValueProp = (
+    selectedItems,
+    selectionMode
+  ) => {
+    if (!selectedItems) return null;
 
-    if (selectedItem?.length > 1) return `${selectedItem.length} selected`;
+    if (selectionMode === 'multiple')
+      return (
+        <TagGroup
+          onRemove={(keys) => {
+            keys.forEach((key) => {
+              if (state.selectionManager.isSelected(key)) {
+                state.selectionManager.toggleSelection(key);
+              }
+            });
+          }}
+          className={s.tagGroup}
+          variant="contrast-fade"
+        >
+          {selectedItems.map((item) => (
+            <Tag key={item.key}>{item.textValue}</Tag>
+          ))}
+        </TagGroup>
+      );
 
-    return selectedItem[0].rendered;
+    return selectedItems[0].rendered;
   };
 
   const renderValue = renderValueProp || renderDefaultValue;
@@ -190,7 +210,7 @@ function SelectRender<T extends object>(
         <FieldLabel {...labelProps} />
         <FieldContentGroup {...groupProps}>
           <FieldSelect {...controlProps}>
-            {renderValue(state?.selectedItems)}
+            {renderValue(state?.selectedItems, selectionMode)}
           </FieldSelect>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
