@@ -3,7 +3,7 @@ import type { ComponentPropsWithRef } from 'react';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Input, Textarea } from '@koobiq/react-primitives';
 
-import type { InputPropVariant } from '../../Input';
+import type { FieldInputGroupPropVariant } from '../FieldContentGroup';
 
 import s from './FieldInput.module.css';
 
@@ -13,7 +13,7 @@ export type FieldInputBaseProps = {
   className?: string;
   'data-testid'?: string;
   as?: 'input' | 'textarea';
-  variant?: InputPropVariant;
+  variant?: FieldInputGroupPropVariant;
 };
 
 export const FieldInput = polymorphicForwardRef<

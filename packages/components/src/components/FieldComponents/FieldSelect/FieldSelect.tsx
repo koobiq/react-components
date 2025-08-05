@@ -3,7 +3,7 @@ import { forwardRef, type ReactNode, type Ref } from 'react';
 import { clsx, isNotNil, isString, isNumber } from '@koobiq/react-core';
 import { Button } from '@koobiq/react-primitives';
 
-import type { InputPropVariant } from '../../Input';
+import type { FieldInputGroupPropVariant } from '../FieldContentGroup';
 
 import s from './FieldSelect.module.css';
 
@@ -13,9 +13,9 @@ export type FieldSelectProps = {
   className?: string;
   children?: ReactNode;
   'data-testid'?: string;
-  variant?: InputPropVariant;
-  placeholder?: string | number;
   ref?: Ref<HTMLButtonElement>;
+  placeholder?: string | number;
+  variant?: FieldInputGroupPropVariant;
 };
 
 export const FieldSelect = forwardRef<HTMLButtonElement, FieldSelectProps>(
