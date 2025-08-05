@@ -68,7 +68,10 @@ export type SelectProps<T> = ExtendableProps<
     /** Ref to the control */
     ref?: Ref<HTMLButtonElement>;
     /** A render function for displaying the selected value. */
-    renderValue?: (props: Node<T>[] | null) => ReactElement;
+    renderValue?: (
+      selectedItems: Node<T>[] | null,
+      selectionMode: 'single' | 'multiple'
+    ) => ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;
