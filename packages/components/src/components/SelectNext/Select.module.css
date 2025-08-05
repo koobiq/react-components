@@ -55,5 +55,5 @@
 /* tag-group */
 .tagGroup {
   padding-block: var(--kbq-size-xxs);
-  margin-left: calc(-1 * var(--kbq-size-s));
+  margin-inline-start: calc(-1 * var(--kbq-size-s));
 }
