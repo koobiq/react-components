@@ -61,7 +61,7 @@ function SelectRender<T extends object>(
 
   const isLabelHidden = isLabelHiddenProp;
 
-  const domRef = useDOMRef<HTMLButtonElement>(ref);
+  const domRef = useDOMRef<HTMLDivElement>(ref);
 
   const state = useMultiSelectState(
     removeDataAttributes({ ...props, selectionMode })
@@ -135,13 +135,14 @@ function SelectRender<T extends object>(
 
   const controlProps = mergeProps<
     [
-      FieldSelectProps,
-      FieldSelectProps | undefined,
-      FieldSelectProps,
-      FieldSelectProps,
+      FieldSelectProps<'div'>,
+      FieldSelectProps<'div'> | undefined,
+      FieldSelectProps<'div'>,
+      FieldSelectProps<'div'>,
     ]
   >(
     {
+      as: 'div',
       ref: domRef,
       placeholder,
       isInvalid,
