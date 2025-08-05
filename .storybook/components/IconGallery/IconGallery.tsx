@@ -59,7 +59,7 @@ export const IconGallery = () => {
               <IconButton
                 aria-label="clear"
                 variant="fade-contrast"
-                onClick={handleClear}
+                onPress={handleClear}
                 style={{ marginInlineEnd: '-8px ' }}
               >
                 <IconXmarkCircle16 />
