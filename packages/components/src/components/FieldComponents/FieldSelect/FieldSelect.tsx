@@ -1,26 +1,24 @@
-import { forwardRef, type ReactNode, type Ref } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import { clsx, isNotNil, isString, isNumber } from '@koobiq/react-core';
+import {
+  clsx,
+  isNotNil,
+  isString,
+  isNumber,
+  polymorphicForwardRef,
+} from '@koobiq/react-core';
 import { Button } from '@koobiq/react-primitives';
 
-import type { FieldInputGroupPropVariant } from '../FieldContentGroup';
-
 import s from './FieldSelect.module.css';
+import type { FieldSelectBaseProps } from './index';
 
-export type FieldSelectProps = {
-  isInvalid?: boolean;
-  isDisabled?: boolean;
-  className?: string;
-  children?: ReactNode;
-  'data-testid'?: string;
-  ref?: Ref<HTMLButtonElement>;
-  placeholder?: string | number;
-  variant?: FieldInputGroupPropVariant;
-};
-
-export const FieldSelect = forwardRef<HTMLButtonElement, FieldSelectProps>(
+export const FieldSelect = polymorphicForwardRef<
+  'button',
+  FieldSelectBaseProps
+>(
   (
     {
+      as = 'button',
       isInvalid = false,
       isDisabled = false,
       variant = 'filled',
@@ -33,6 +31,7 @@ export const FieldSelect = forwardRef<HTMLButtonElement, FieldSelectProps>(
   ) => (
     <Button
       {...other}
+      as={as}
       isDisabled={isDisabled}
       data-slot="select-value"
       className={clsx(
@@ -56,3 +55,6 @@ export const FieldSelect = forwardRef<HTMLButtonElement, FieldSelectProps>(
 );
 
 FieldSelect.displayName = 'FieldSelect';
+
+export type FieldSelectProps<As extends ElementType = 'button'> =
+  ComponentPropsWithRef<typeof FieldSelect<As>>;
