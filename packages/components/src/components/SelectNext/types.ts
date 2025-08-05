@@ -66,7 +66,7 @@ export type SelectProps<T> = ExtendableProps<
     /** Unique identifier for testing purposes. */
     'data-testid'?: string | number;
     /** Ref to the control */
-    ref?: Ref<HTMLButtonElement>;
+    ref?: Ref<HTMLDivElement>;
     /** A render function for displaying the selected value. */
     renderValue?: (
       selectedItems: Node<T>[] | null,
@@ -77,7 +77,7 @@ export type SelectProps<T> = ExtendableProps<
       popover?: PopoverProps;
       label?: FieldLabelProps;
       list?: ListProps<T>;
-      control?: FieldSelectProps;
+      control?: FieldSelectProps<'div'>;
       caption?: FieldCaptionProps;
       group?: FieldInputGroupProps;
       errorMessage?: FieldErrorProps;
@@ -97,4 +97,4 @@ export type SelectProps<T> = ExtendableProps<
 
 export type SelectComponent = <T>(props: SelectProps<T>) => ReactElement | null;
 
-export type SelectRef = ComponentRef<'button'>;
+export type SelectRef = ComponentRef<'div'>;
