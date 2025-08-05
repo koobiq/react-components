@@ -310,6 +310,7 @@ export const OtherExamples: Story = {
             <List.Item>
               <Checkbox
                 isSelected={!isString(selected) && selected.has(item.id)}
+                isReadOnly
               />
               {item.name}
             </List.Item>
