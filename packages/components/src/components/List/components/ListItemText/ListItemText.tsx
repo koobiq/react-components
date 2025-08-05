@@ -34,12 +34,13 @@ export type ListItemTextProps = ExtendableComponentPropsWithRef<
 export const ListItemText = forwardRef<ListItemTextRef, ListItemTextProps>(
   ({ className, children, caption, slotProps, ...other }, ref) => (
     <div className={clsx(s.base, className)} {...other} ref={ref}>
-      <Typography as="span" {...slotProps?.text}>
+      <Typography as="span" align="start" ellipsis {...slotProps?.text}>
         {children}
       </Typography>
       {isNotNil(caption) && (
         <Typography
           as="span"
+          align="start"
           color="contrast-secondary"
           className={s.caption}
           variant="text-compact"

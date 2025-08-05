@@ -264,8 +264,7 @@ export const OtherExamples: Story = {
           <List.Item key="6">
             <List.ItemText
               slotProps={{
-                text: { ellipsis: true },
-                caption: { ellipsis: true },
+                text: { ellipsis: false },
               }}
               caption={
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad atque distinctio praesentium quos veniam! Doloribus eum laudantium magnam placeat tempore?'

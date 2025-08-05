@@ -1,6 +1,6 @@
 import { forwardRef, type ReactNode, type Ref } from 'react';
 
-import { clsx, isNotNil } from '@koobiq/react-core';
+import { clsx, isNotNil, isString, isNumber } from '@koobiq/react-core';
 import { Button } from '@koobiq/react-primitives';
 
 import type { InputPropVariant } from '../../Input';
@@ -45,7 +45,12 @@ export const FieldSelect = forwardRef<HTMLButtonElement, FieldSelectProps>(
       )}
       ref={ref}
     >
-      <span className={s.content}>{children ?? placeholder}</span>
+      {isString(children) || isNumber(children) ? (
+        <span className={s.content}>{children}</span>
+      ) : (
+        children
+      )}
+      {!isNotNil(children) && <span className={s.content}>{placeholder}</span>}
     </Button>
   )
 );
