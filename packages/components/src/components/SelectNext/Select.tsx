@@ -5,6 +5,7 @@ import {
   mergeProps,
   useDOMRef,
   useElementSize,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
@@ -33,6 +34,7 @@ import { Tag, TagGroup } from '../TagGroup';
 
 import { SelectList } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
+import intlMessages from './intl.json';
 import s from './Select.module.css';
 
 function SelectRender<T extends object>(
@@ -50,7 +52,7 @@ function SelectRender<T extends object>(
     isInvalid,
     className,
     style,
-    isLabelHidden: isLabelHiddenProp,
+    isLabelHidden,
     placeholder,
     endAddon,
     slotProps,
@@ -59,7 +61,7 @@ function SelectRender<T extends object>(
     renderValue: renderValueProp,
   } = props;
 
-  const isLabelHidden = isLabelHiddenProp;
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
@@ -188,6 +190,7 @@ function SelectRender<T extends object>(
     if (selectionMode === 'multiple')
       return (
         <TagGroup
+          aria-label={stringFormatter.format('selected options')}
           onRemove={(keys) => {
             keys.forEach((key) => {
               if (state.selectionManager.isSelected(key)) {
