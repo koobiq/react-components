@@ -14,13 +14,16 @@ import { useTag } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { IconButton, type IconButtonProps } from '../../../IconButton';
-import type { TagGroupPropVariant, TagProps } from '../../index';
+import type {
+  TagGroupPropVariant,
+  TagProps as RootTagProps,
+} from '../../index';
 import intlMessages from '../../intl.json';
 
-import s from './TagInner.module.css';
+import s from './Tag.module.css';
 import { matchVariantToCloseButton } from './utils';
 
-export type TagInnerProps<T> = AriaTagProps<T> & {
+type TagProps<T> = AriaTagProps<T> & {
   state: ListState<T>;
   /**
    * The variant to use.
@@ -31,9 +34,9 @@ export type TagInnerProps<T> = AriaTagProps<T> & {
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
-export function TagInner<T>(props: TagInnerProps<T>) {
+export function Tag<T>(props: TagProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
-  const { slotProps, icon, className, style } = item.props as TagProps<T>;
+  const { slotProps, icon, className, style } = item.props as RootTagProps<T>;
   const ref = useRef(null);
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);

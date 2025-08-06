@@ -5,7 +5,7 @@ import { forwardRef, type Ref } from 'react';
 import { useDOMRef, mergeProps, clsx } from '@koobiq/react-core';
 import { useTagGroup, useListState } from '@koobiq/react-primitives';
 
-import { TagInner } from './components';
+import { Tag } from './components';
 import s from './TagGroup.module.css';
 import type { TagGroupComponent, TagGroupProps, TagGroupRef } from './types';
 
@@ -29,7 +29,7 @@ function TagGroupRender<T extends object>(
   return (
     <div {...rootProps}>
       {[...state.collection].map((item) => (
-        <TagInner key={item.key} item={item} variant={variant} state={state} />
+        <Tag key={item.key} item={item} variant={variant} state={state} />
       ))}
     </div>
   );
