@@ -7,7 +7,7 @@ import {
   useElementSize,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { IconChevronDownS16 } from '@koobiq/react-icons';
+import { IconChevronDownS16, IconXmarkCircle16 } from '@koobiq/react-icons';
 import {
   removeDataAttributes,
   useMultiSelect,
@@ -28,11 +28,11 @@ import {
   type FieldErrorProps,
   type FieldSelectProps,
 } from '../FieldComponents';
+import { IconButton } from '../IconButton';
 import { ListItemText } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
-import { Tag, TagGroup } from '../TagGroup';
 
-import { SelectList } from './components';
+import { Tag, SelectList } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
 import intlMessages from './intl.json';
 import s from './Select.module.css';
@@ -43,6 +43,7 @@ function SelectRender<T extends object>(
 ) {
   const {
     fullWidth = false,
+    isClearable = false,
     'data-testid': testId,
     selectionMode = 'single',
     isRequired,
@@ -68,6 +69,9 @@ function SelectRender<T extends object>(
   const state = useMultiSelectState(
     removeDataAttributes({ ...props, selectionMode })
   );
+
+  const hasClearButton = isClearable && !isDisabled && state.selectedItems;
+  const handleClear = () => state.selectionManager.clearSelection();
 
   const {
     menuProps,
@@ -121,11 +125,22 @@ function SelectRender<T extends object>(
         endAddon: { className: s.addon },
         startAddon: { className: s.addon },
       },
+      className: clsx(isClearable && s.clearable),
       startAddon,
       endAddon: (
         <>
           {endAddon}
-          <IconChevronDownS16 />
+          {hasClearButton && (
+            <IconButton
+              aria-label="clear"
+              variant="fade-contrast"
+              preventFocusOnPress
+              onPress={handleClear}
+            >
+              <IconXmarkCircle16 />
+            </IconButton>
+          )}
+          <IconChevronDownS16 className={s.chevron} />
         </>
       ),
       isInvalid,
@@ -187,30 +202,28 @@ function SelectRender<T extends object>(
   ) => {
     if (!selectedItems) return null;
 
-    const allKeys = isDisabled
-      ? selectedItems?.map((item) => item.key)
-      : undefined;
-
     if (selectionMode === 'multiple')
       return (
-        <TagGroup
-          aria-hidden
-          disabledKeys={allKeys}
-          aria-label={stringFormatter.format('selected items')}
-          onRemove={(keys) => {
-            keys.forEach((key) => {
-              if (state.selectionManager.isSelected(key)) {
-                state.selectionManager.toggleSelection(key);
-              }
-            });
-          }}
+        <div
           className={s.tagGroup}
-          variant="contrast-fade"
+          aria-hidden={true}
+          aria-label={stringFormatter.format('selected items')}
         >
           {selectedItems.map((item) => (
-            <Tag key={item.key}>{item.textValue}</Tag>
+            <Tag
+              variant="contrast-fade"
+              key={item.key}
+              isDisabled={isDisabled}
+              onRemove={() => {
+                if (state.selectionManager.isSelected(item.key)) {
+                  state.selectionManager.toggleSelection(item.key);
+                }
+              }}
+            >
+              {item.textValue}
+            </Tag>
           ))}
-        </TagGroup>
+        </div>
       );
 
     return selectedItems[0].rendered;
