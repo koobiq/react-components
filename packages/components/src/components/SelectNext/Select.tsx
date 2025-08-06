@@ -187,10 +187,16 @@ function SelectRender<T extends object>(
   ) => {
     if (!selectedItems) return null;
 
+    const allKeys = isDisabled
+      ? selectedItems?.map((item) => item.key)
+      : undefined;
+
     if (selectionMode === 'multiple')
       return (
         <TagGroup
-          aria-label={stringFormatter.format('selected options')}
+          aria-hidden
+          disabledKeys={allKeys}
+          aria-label={stringFormatter.format('selected items')}
           onRemove={(keys) => {
             keys.forEach((key) => {
               if (state.selectionManager.isSelected(key)) {
