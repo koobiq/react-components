@@ -57,6 +57,7 @@ export const Base: Story = {
       style={{ inlineSize: 400 }}
       placeholder="Select an option"
       selectionMode="multiple"
+      isClearable
       {...args}
     >
       <Select.Item key="bruteforce">Bruteforce</Select.Item>

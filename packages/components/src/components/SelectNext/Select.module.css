@@ -17,6 +17,10 @@
 /* addons */
 .addon {
   pointer-events: none;
+
+  & > :not(.chevron) {
+    pointer-events: all;
+  }
 }
 
 /* list */
@@ -54,6 +58,15 @@
 
 /* tag-group */
 .tagGroup {
+  flex-wrap: wrap;
+  gap: var(--kbq-size-xxs);
+  display: flex;
   padding-block: var(--kbq-size-xxs);
   margin-inline-start: calc(-1 * var(--kbq-size-s));
+}
+
+.clearable {
+  --field-input-padding-inline-end: calc(
+    var(--field-control-end-addon-inline-size) + 24px
+  );
 }
