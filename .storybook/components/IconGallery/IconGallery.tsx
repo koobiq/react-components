@@ -60,6 +60,7 @@ export const IconGallery = () => {
                 aria-label="clear"
                 variant="fade-contrast"
                 onPress={handleClear}
+                preventFocusOnPress
                 style={{ marginInlineEnd: '-8px ' }}
               >
                 <IconXmarkCircle16 />
