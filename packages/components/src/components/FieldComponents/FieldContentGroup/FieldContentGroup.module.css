@@ -34,7 +34,7 @@
       var(--field-content-border-color, transparent);
   }
 
-  /* focus-visible */
+  /* focus */
   &::after {
     inset: 0;
     content: '';
@@ -63,18 +63,18 @@
 
 .filled {
   --field-content-border-color: var(--kbq-line-contrast-fade);
+}
 
-  &:focus-within {
-    --field-content-outline-color: var(--kbq-states-line-focus-theme);
-  }
+.filled:where(.focused) {
+  --field-content-outline-color: var(--kbq-states-line-focus-theme);
 }
 
 .filled:where(.invalid) {
   --field-content-border-color: var(--kbq-line-error);
+}
 
-  &:focus-within {
-    --field-content-outline-color: var(--field-content-border-color);
-  }
+.filled:where(.invalid.focused) {
+  --field-content-outline-color: var(--field-content-border-color);
 }
 
 .transparent:where(.invalid) {

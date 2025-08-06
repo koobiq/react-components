@@ -1,6 +1,7 @@
-import { type ComponentRef, forwardRef } from 'react';
+import type { ReactNode, ComponentRef } from 'react';
+import { forwardRef, Children, isValidElement, cloneElement } from 'react';
 
-import { clsx, isNotNil } from '@koobiq/react-core';
+import { clsx, isNotNil, useFocusRing, mergeProps } from '@koobiq/react-core';
 import { Group, useInputContext } from '@koobiq/react-primitives';
 
 import { FieldAddon } from '../FieldAddon';
@@ -12,74 +13,82 @@ import type { FieldInputGroupProps } from './index';
 export const FieldContentGroup = forwardRef<
   ComponentRef<'div'>,
   FieldInputGroupProps
->(
-  (
-    {
-      variant = 'filled',
-      isInvalid = false,
-      isDisabled = false,
-      children,
-      className,
-      startAddon,
-      endAddon,
-      slotProps,
-      ...other
-    },
-    ref
-  ) => {
-    const { value } = useInputContext();
-    const hasStartAddon = !!startAddon;
-    const hasEndAddon = !!endAddon;
-    const hasValue = isNotNil(value);
+>(function FieldContentGroup(
+  {
+    variant = 'filled',
+    isInvalid = false,
+    isDisabled = false,
+    children,
+    className,
+    startAddon,
+    endAddon,
+    slotProps,
+    ...other
+  },
+  ref
+) {
+  const { value } = useInputContext();
+  const hasStartAddon = !!startAddon;
+  const hasEndAddon = !!endAddon;
+  const hasValue = isNotNil(value);
+  const { focusProps, isFocused } = useFocusRing({ within: true });
 
-    return (
-      <Group
-        className={clsx(
-          s.base,
-          s[variant],
-          isInvalid && s.invalid,
-          isDisabled && s.disabled,
-          hasStartAddon && s.hasStartAddon,
-          hasEndAddon && s.hasEndAddon,
-          className
-        )}
-        isInvalid={isInvalid}
-        isDisabled={isDisabled}
-        {...other}
-        ref={ref}
-      >
-        {({ isHovered, isFocusWithin, isDisabled, isInvalid }) => (
-          <FieldContentGroupContext.Provider
-            value={{
-              hasValue,
-              isHovered,
-              isInvalid,
-              isDisabled,
-              isFocusWithin,
-            }}
+  const focusManagedChildren = Children.map(children, (child: ReactNode) => {
+    if (!isValidElement(child)) return child;
+
+    const merged = mergeProps(focusProps, child.props);
+
+    return cloneElement(child, merged);
+  });
+
+  return (
+    <Group
+      className={clsx(
+        s.base,
+        s[variant],
+        isInvalid && s.invalid,
+        isDisabled && s.disabled,
+        isFocused && s.focused,
+        hasStartAddon && s.hasStartAddon,
+        hasEndAddon && s.hasEndAddon,
+        className
+      )}
+      isInvalid={isInvalid}
+      isDisabled={isDisabled}
+      {...other}
+      ref={ref}
+    >
+      {({ isHovered, isFocusWithin }) => (
+        <FieldContentGroupContext.Provider
+          value={{
+            hasValue,
+            isHovered,
+            isInvalid,
+            isDisabled,
+            isFocusWithin,
+          }}
+        >
+          <FieldAddon
+            placement="start"
+            isInvalid={isInvalid}
+            isDisabled={isDisabled}
+            {...slotProps?.startAddon}
           >
-            <FieldAddon
-              placement="start"
-              isInvalid={isInvalid}
-              isDisabled={isDisabled}
-              {...slotProps?.startAddon}
-            >
-              {startAddon}
-            </FieldAddon>
-            {children}
-            <FieldAddon
-              placement="end"
-              isInvalid={isInvalid}
-              isDisabled={isDisabled}
-              {...slotProps?.endAddon}
-            >
-              {endAddon}
-            </FieldAddon>
-          </FieldContentGroupContext.Provider>
-        )}
-      </Group>
-    );
-  }
-);
+            {startAddon}
+          </FieldAddon>
+          {focusManagedChildren}
+          <FieldAddon
+            placement="end"
+            isInvalid={isInvalid}
+            isDisabled={isDisabled}
+            {...slotProps?.endAddon}
+          >
+            {endAddon}
+          </FieldAddon>
+        </FieldContentGroupContext.Provider>
+      )}
+    </Group>
+  );
+});
 
 FieldContentGroup.displayName = 'FieldContentGroup';
