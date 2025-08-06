@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1](https://github.com/koobiq/react-components/compare/0.2.0...0.2.1) (2025-08-06)
+
+### 🐞 Bug Fixes
+
+- **components:** prevent double visual focus in fields ([e9629ae](https://github.com/koobiq/react-components/commit/e9629aecdd88642a67fd46528ca07cb0b1de70e6))
+
 ## [0.2.0](https://github.com/koobiq/react-components/compare/0.1.2...0.2.0) (2025-08-05)
 
 ### 🚀 Features
