@@ -6,9 +6,10 @@ import type {
   Ref,
 } from 'react';
 
-import type { ExtendableProps, Node } from '@koobiq/react-core';
+import type { ExtendableProps } from '@koobiq/react-core';
 import type {
   AriaSelectProps,
+  MultiSelectState,
   useMultiSelectState,
 } from '@koobiq/react-primitives';
 
@@ -69,8 +70,12 @@ export type SelectProps<T> = ExtendableProps<
     ref?: Ref<HTMLDivElement>;
     /** A render function for displaying the selected value. */
     renderValue?: (
-      selectedItems: Node<T>[] | null,
-      selectionMode: 'single' | 'multiple'
+      state: MultiSelectState<T>,
+      states: {
+        isInvalid?: boolean;
+        isDisabled?: boolean;
+        isRequired?: boolean;
+      }
     ) => ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
