@@ -50,7 +50,6 @@ function SelectRender<T extends object>(
     isDisabled,
     caption,
     errorMessage,
-    isInvalid,
     className,
     style,
     isLabelHidden,
@@ -74,6 +73,7 @@ function SelectRender<T extends object>(
   const handleClear = () => state.selectionManager.clearSelection();
 
   const {
+    isInvalid,
     menuProps,
     valueProps,
     triggerProps,
@@ -96,7 +96,7 @@ function SelectRender<T extends object>(
   const rootProps = mergeProps({
     'data-testid': testId,
     'data-fullwidth': fullWidth,
-    'data-invalid': props.isInvalid,
+    'data-invalid': isInvalid,
     'data-disabled': props.isDisabled,
     'data-required': props.isRequired,
     className: clsx(s.base, fullWidth && s.fullWidth, className),
@@ -133,9 +133,9 @@ function SelectRender<T extends object>(
           {hasClearButton && (
             <IconButton
               aria-label="clear"
-              variant="fade-contrast"
-              preventFocusOnPress
               onPress={handleClear}
+              variant={isInvalid ? 'error' : 'fade-contrast'}
+              preventFocusOnPress
             >
               <IconXmarkCircle16 />
             </IconButton>
@@ -197,10 +197,10 @@ function SelectRender<T extends object>(
   );
 
   const renderDefaultValue: typeof renderValueProp = (
-    selectedItems,
-    selectionMode
+    state,
+    { isDisabled, isInvalid }
   ) => {
-    if (!selectedItems) return null;
+    if (!state.selectedItems) return null;
 
     if (selectionMode === 'multiple')
       return (
@@ -209,9 +209,9 @@ function SelectRender<T extends object>(
           aria-hidden={true}
           aria-label={stringFormatter.format('selected items')}
         >
-          {selectedItems.map((item) => (
+          {state.selectedItems.map((item) => (
             <Tag
-              variant="contrast-fade"
+              variant={isInvalid ? 'error-fade' : 'contrast-fade'}
               key={item.key}
               isDisabled={isDisabled}
               onRemove={() => {
@@ -226,7 +226,7 @@ function SelectRender<T extends object>(
         </div>
       );
 
-    return selectedItems[0].rendered;
+    return state.selectedItems[0].rendered;
   };
 
   const renderValue = renderValueProp || renderDefaultValue;
@@ -237,7 +237,11 @@ function SelectRender<T extends object>(
         <FieldLabel {...labelProps} />
         <FieldContentGroup {...groupProps}>
           <FieldSelect {...controlProps}>
-            {renderValue(state?.selectedItems, selectionMode)}
+            {renderValue(state, {
+              isInvalid,
+              isDisabled: props.isDisabled,
+              isRequired: props.isRequired,
+            })}
           </FieldSelect>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
