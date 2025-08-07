@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/koobiq/react-components/compare/0.2.1...0.2.2) (2025-08-07)
+
+### 🐞 Bug Fixes
+
+- **Input, Textarea, Select, DatePicker, TimePicker:** set correct background in invalid state ([7364627](https://github.com/koobiq/react-components/commit/73646275c077faf6829c2ebc4977c892a6dc6539))
+- **TagGroup:** remove internal prefix from tag class names ([8f8c392](https://github.com/koobiq/react-components/commit/8f8c3922fafef9abc0c1f9f7c7bf75043905d1e8))
+- **TimePicker:** remove `pointer-events: none` restriction on start addons ([7c6fcc7](https://github.com/koobiq/react-components/commit/7c6fcc7c6dd2d6cd1ed128692ee6fd83b8832362))
+
 ## [0.2.1](https://github.com/koobiq/react-components/compare/0.2.0...0.2.1) (2025-08-06)
 
 ### 🐞 Bug Fixes
