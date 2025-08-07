@@ -97,7 +97,7 @@ export function TimePickerRender<T extends TimeValue>(
       startAddon: (
         <>
           {startAddon}
-          <IconClock16 />
+          <IconClock16 className={s.clock} />
         </>
       ),
       variant,
