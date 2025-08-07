@@ -38,7 +38,7 @@
 
 .filled:where(.invalid) {
   --field-input-color: var(--kbq-foreground-error);
-  --field-input-bg-color: var(--kbq-states-background-error-less);
+  --field-input-bg-color: var(--kbq-background-error-less);
   --field-input-placeholder-color: var(--kbq-foreground-error-tertiary);
 }
 
