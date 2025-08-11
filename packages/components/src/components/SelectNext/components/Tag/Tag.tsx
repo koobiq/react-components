@@ -1,6 +1,11 @@
 import { useRef, type CSSProperties, type ReactNode } from 'react';
 
-import { clsx, mergeProps, isNotNil } from '@koobiq/react-core';
+import {
+  clsx,
+  mergeProps,
+  isNotNil,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
 
 import { utilClasses } from '../../../../styles/utility';
@@ -8,6 +13,7 @@ import { IconButton } from '../../../IconButton';
 import type { TagGroupPropVariant } from '../../../TagGroup';
 import s from '../../../TagGroup/components/Tag/Tag.module.css';
 
+import intlMessages from './intl.json';
 import { matchVariantToCloseButton } from './utils';
 
 type TagProps = {
@@ -39,6 +45,8 @@ export function Tag(props: TagProps) {
 
   const ref = useRef(null);
 
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
   const rootProps = mergeProps({
     className: clsx(
       s.base,
@@ -55,7 +63,7 @@ export function Tag(props: TagProps) {
     isDisabled,
     className: s.cancelIcon,
     variant: matchVariantToCloseButton[variant],
-    'aria-label': 'remove',
+    'aria-label': stringFormatter.format('remove'),
   };
 
   const contentProps = mergeProps({

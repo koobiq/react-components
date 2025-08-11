@@ -1,8 +1,10 @@
 {
   "ru-RU": {
-    "selected items": "Выбранные элементы"
+    "selected items": "Выбранные элементы",
+    "clear": "Очистить"
   },
   "en-US": {
-    "selected items": "Selected items"
+    "selected items": "Selected items",
+    "clear": "Clear"
   }
 }

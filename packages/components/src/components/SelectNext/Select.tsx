@@ -2,8 +2,8 @@ import { forwardRef, type Ref } from 'react';
 
 import {
   clsx,
-  mergeProps,
   useDOMRef,
+  mergeProps,
   useElementSize,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
@@ -32,7 +32,7 @@ import { IconButton } from '../IconButton';
 import { ListItemText } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 
-import { Tag, SelectList } from './components';
+import { SelectList, TagGroup } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
 import intlMessages from './intl.json';
 import s from './Select.module.css';
@@ -132,7 +132,7 @@ function SelectRender<T extends object>(
           {endAddon}
           {hasClearButton && (
             <IconButton
-              aria-label="clear"
+              aria-label={stringFormatter.format('clear')}
               onPress={handleClear}
               variant={isInvalid ? 'error' : 'fade-contrast'}
               preventFocusOnPress
@@ -196,35 +196,11 @@ function SelectRender<T extends object>(
     errorMessageProps
   );
 
-  const renderDefaultValue: typeof renderValueProp = (
-    state,
-    { isDisabled, isInvalid }
-  ) => {
+  const renderDefaultValue: typeof renderValueProp = (state, states) => {
     if (!state.selectedItems) return null;
 
     if (selectionMode === 'multiple')
-      return (
-        <div
-          className={s.tagGroup}
-          aria-hidden={true}
-          aria-label={stringFormatter.format('selected items')}
-        >
-          {state.selectedItems.map((item) => (
-            <Tag
-              variant={isInvalid ? 'error-fade' : 'contrast-fade'}
-              key={item.key}
-              isDisabled={isDisabled}
-              onRemove={() => {
-                if (state.selectionManager.isSelected(item.key)) {
-                  state.selectionManager.toggleSelection(item.key);
-                }
-              }}
-            >
-              {item.textValue}
-            </Tag>
-          ))}
-        </div>
-      );
+      return <TagGroup state={state} states={states} />;
 
     return state.selectedItems[0].rendered;
   };
