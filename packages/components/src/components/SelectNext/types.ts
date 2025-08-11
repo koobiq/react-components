@@ -23,8 +23,13 @@ import type {
 import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
+export const selectPropLimitTags = ['multiline', 'responsive'] as const;
+
+export type SelectPropLimitTags = (typeof selectPropLimitTags)[number];
+
 export type SelectProps<T> = ExtendableProps<
   {
+    limitTags?: SelectPropLimitTags;
     /** Sets the CSS [`className`](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. */
     className?: string;
     /** The initial selected keys in the collection (uncontrolled). */

@@ -46,6 +46,7 @@ function SelectRender<T extends object>(
     isClearable = false,
     'data-testid': testId,
     selectionMode = 'single',
+    limitTags = 'multiline',
     isRequired,
     isDisabled,
     caption,
@@ -200,7 +201,7 @@ function SelectRender<T extends object>(
     if (!state.selectedItems) return null;
 
     if (selectionMode === 'multiple')
-      return <TagGroup state={state} states={states} />;
+      return <TagGroup state={state} states={states} limitTags={limitTags} />;
 
     return state.selectedItems[0].rendered;
   };
