@@ -273,6 +273,10 @@ type CompoundedComponent = typeof SelectComponent & {
   ItemText: typeof ListItemText;
 };
 
+/**
+ * @deprecated
+ * This component has been deprecated, please use SelectNext instead.
+ */
 export const Select = SelectComponent as CompoundedComponent;
 
 Select.Item = Item;
