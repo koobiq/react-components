@@ -1,0 +1,9 @@
+.base {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  gap: var(--kbq-size-xxs);
+  padding-block: var(--kbq-size-xxs);
+  inline-size: calc(100% + var(--kbq-size-s));
+  margin-inline-start: calc(-1 * var(--kbq-size-s));
+}
