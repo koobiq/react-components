@@ -6,7 +6,6 @@ import {
   mergeProps,
   useHover,
   isNotNil,
-  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
 import type { AriaTagProps, ListState } from '@koobiq/react-primitives';
@@ -18,7 +17,6 @@ import type {
   TagGroupPropVariant,
   TagProps as RootTagProps,
 } from '../../index';
-import intlMessages from '../../intl.json';
 
 import s from './Tag.module.css';
 import { matchVariantToCloseButton } from './utils';
@@ -38,8 +36,6 @@ export function Tag<T>(props: TagProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
   const { slotProps, icon, className, style } = item.props as RootTagProps<T>;
   const ref = useRef(null);
-
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
     within: false,
@@ -86,12 +82,11 @@ export function Tag<T>(props: TagProps<T>) {
     [IconButtonProps, IconButtonProps, IconButtonProps | undefined]
   >(
     {
+      isDisabled,
       tabIndex: -1,
       isCompact: true,
-      isDisabled,
       className: s.cancelIcon,
       variant: matchVariantToCloseButton[variant],
-      'aria-label': stringFormatter.format('close'),
     },
     removeButtonPropsAria,
     slotProps?.removeIcon
