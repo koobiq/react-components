@@ -173,7 +173,7 @@ function SelectRender<T extends object>(
       endAddon: (
         <>
           {endAddon}
-          <IconChevronDownS16 />
+          <IconChevronDownS16 className={s.chevron} />
         </>
       ),
       isInvalid,
