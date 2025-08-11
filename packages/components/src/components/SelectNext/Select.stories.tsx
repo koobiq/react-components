@@ -54,7 +54,7 @@ export const Base: Story = {
   render: (args) => (
     <Select
       label="Attack type"
-      style={{ inlineSize: 400 }}
+      style={{ inlineSize: 200 }}
       placeholder="Select an option"
       selectionMode="multiple"
       isClearable
@@ -173,6 +173,37 @@ export const MultipleSelection: Story = {
           {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
         </Select>
         <Typography>Selected: {Array.from(attack).join(', ')}</Typography>
+      </FlexBox>
+    );
+  },
+};
+
+export const LimitTags: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m" direction="column">
+        <Select
+          items={options}
+          label="Attack type"
+          placeholder="Select an option"
+          selectionMode="multiple"
+          caption="limitTags = multiline (defualt)"
+          style={{ inlineSize: 240 }}
+          limitTags="multiline"
+        >
+          {(item) => <Select.Item>{item.name}</Select.Item>}
+        </Select>
+        <Select
+          items={options}
+          label="Attack type"
+          placeholder="Select an option"
+          selectionMode="multiple"
+          caption="limitTags = responsive"
+          style={{ inlineSize: 240 }}
+          limitTags="responsive"
+        >
+          {(item) => <Select.Item>{item.name}</Select.Item>}
+        </Select>
       </FlexBox>
     );
   },
@@ -403,6 +434,43 @@ export const Section: Story = {
           </Select.Section>
         )}
       </Select>
+    );
+  },
+};
+
+export const Playground: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    const options = [
+      { id: 1, name: 'Option 1' },
+      { id: 2, name: 'Option 2' },
+      { id: 3, name: 'Option 3' },
+    ];
+
+    const ExampleSelect = (
+      props: Omit<SelectProps<{ name: string }>, 'children'>
+    ) => (
+      <Select items={options} label="Exmaple" {...props}>
+        {(item) => (
+          <Select.Item textValue={item.name}>
+            <Select.ItemText>{item.name}</Select.ItemText>
+          </Select.Item>
+        )}
+      </Select>
+    );
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <ExampleSelect />
+        <ExampleSelect placeholder="Select an option" />
+        <ExampleSelect selectionMode="multiple" />
+        <ExampleSelect
+          placeholder="Select an option"
+          selectionMode="multiple"
+        />
+      </FlexBox>
     );
   },
 };
