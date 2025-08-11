@@ -17,6 +17,10 @@
 /* addons */
 .addon {
   pointer-events: none;
+
+  & > :not(.chevron) {
+    pointer-events: all;
+  }
 }
 
 /* popover */
