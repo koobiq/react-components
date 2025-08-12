@@ -85,7 +85,7 @@ export type SelectProps<T> = ExtendableProps<
     /** Unique identifier for testing purposes. */
     'data-testid'?: string | number;
     /** Ref to the control */
-    ref?: Ref<HTMLButtonElement>;
+    ref?: Ref<HTMLDivElement>;
     /** A render function for displaying the selected value. */
     renderValue?: (props: Node<T> | null) => ReactElement;
     /** The props used for each slot inside. */
@@ -104,4 +104,4 @@ export type SelectProps<T> = ExtendableProps<
 
 export type SelectComponent = <T>(props: SelectProps<T>) => ReactElement | null;
 
-export type SelectRef = ComponentRef<'button'>;
+export type SelectRef = ComponentRef<'div'>;

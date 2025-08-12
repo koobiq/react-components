@@ -103,7 +103,7 @@ function SelectRender<T extends object>(
     );
   }
 
-  const domRef = useDOMRef<HTMLButtonElement>(ref);
+  const domRef = useDOMRef<HTMLDivElement>(ref);
 
   const state = useSelectState({
     ...removeDataAttributes(props),
