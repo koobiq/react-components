@@ -153,14 +153,13 @@ function SelectRender<T extends object>(
 
   const controlProps = mergeProps<
     [
-      FieldSelectProps<'div'>,
-      FieldSelectProps<'div'> | undefined,
-      FieldSelectProps<'div'>,
-      FieldSelectProps<'div'>,
+      FieldSelectProps,
+      FieldSelectProps | undefined,
+      FieldSelectProps,
+      FieldSelectProps,
     ]
   >(
     {
-      as: 'div',
       ref: domRef,
       placeholder,
       isInvalid,
