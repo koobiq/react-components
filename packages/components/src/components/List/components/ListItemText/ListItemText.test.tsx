@@ -3,7 +3,7 @@ import { createRef } from 'react';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { ListItemText, type ListItemTextProps } from './ListItemText';
+import { ListItemText, type ListItemTextProps } from './index';
 
 describe('ListItemText', () => {
   const baseProps: ListItemTextProps = {
