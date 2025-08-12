@@ -12,13 +12,10 @@ import { Button } from '@koobiq/react-primitives';
 import s from './FieldSelect.module.css';
 import type { FieldSelectBaseProps } from './index';
 
-export const FieldSelect = polymorphicForwardRef<
-  'button',
-  FieldSelectBaseProps
->(
+export const FieldSelect = polymorphicForwardRef<'div', FieldSelectBaseProps>(
   (
     {
-      as = 'button',
+      as = 'div',
       isInvalid = false,
       isDisabled = false,
       variant = 'filled',
@@ -45,16 +42,16 @@ export const FieldSelect = polymorphicForwardRef<
       ref={ref}
     >
       {isString(children) || isNumber(children) ? (
-        <span className={s.content}>{children}</span>
+        <div className={s.content}>{children}</div>
       ) : (
         children
       )}
-      {!isNotNil(children) && <span className={s.content}>{placeholder}</span>}
+      {!isNotNil(children) && <div className={s.content}>{placeholder}</div>}
     </Button>
   )
 );
 
 FieldSelect.displayName = 'FieldSelect';
 
-export type FieldSelectProps<As extends ElementType = 'button'> =
+export type FieldSelectProps<As extends ElementType = 'div'> =
   ComponentPropsWithRef<typeof FieldSelect<As>>;

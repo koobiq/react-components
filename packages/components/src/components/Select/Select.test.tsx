@@ -22,10 +22,9 @@ describe('Select', () => {
   const getControl = () => screen.getByTestId('control');
 
   it('should accept a ref', () => {
-    const ref = createRef<HTMLButtonElement>();
-    const { container } = render(<Select {...baseProps} ref={ref} />);
-    const field = container.querySelector(`button`);
-    expect(ref.current).toBe(field);
+    const ref = createRef<HTMLDivElement>();
+    render(<Select {...baseProps} ref={ref} />);
+    expect(ref.current).toBe(getControl());
   });
 
   it('should merge a custom class name with the default ones', () => {
