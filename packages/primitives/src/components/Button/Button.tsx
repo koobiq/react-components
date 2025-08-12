@@ -87,7 +87,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         data-focused={isFocused}
         data-disabled={isDisabled}
         data-focus-visible={isFocusVisible}
-        tabIndex={tabIndex || buttonProps.tabIndex}
+        tabIndex={buttonProps.tabIndex}
+        {...('tabIndex' in props && { tabIndex })}
         aria-disabled={isLoading ? 'true' : buttonProps['aria-disabled']}
         aria-busy={isLoading}
         ref={domRef}
