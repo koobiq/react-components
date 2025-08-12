@@ -332,31 +332,31 @@ export const Dividers: Story = {
           </FlexBox>
         </Menu.Header>
         <Menu.Divider />
-        <Menu.Item>
+        <Menu.Item textValue="Dashboard">
           <IconDashboard16 />
-          Dashboard
+          <Menu.ItemText>Dashboard</Menu.ItemText>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item textValue="Notifications">
           <IconBell16 />
           <Menu.ItemText>Notifications</Menu.ItemText>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item textValue="Create team">
           <IconPlus16 />
-          Create team
+          <Menu.ItemText>Create team</Menu.ItemText>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item textValue="Settings">
           <IconGear16 />
-          Settings
+          <Menu.ItemText>Settings</Menu.ItemText>
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item>
+        <Menu.Item textValue="Contact Support">
           <IconMessage16 />
-          Contact Support
+          <Menu.ItemText>Contact Support</Menu.ItemText>
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item>
+        <Menu.Item textValue="Log out">
           <IconArrowRightToBracket16 />
-          Log out
+          <Menu.ItemText>Log out</Menu.ItemText>
         </Menu.Item>
       </Menu>
     );
