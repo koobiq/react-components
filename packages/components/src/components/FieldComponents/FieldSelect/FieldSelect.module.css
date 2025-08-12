@@ -4,16 +4,14 @@
   --field-input-color: var(--kbq-foreground-contrast);
   --field-input-bg-color: var(--kbq-background-bg);
   --field-input-placeholder-color: var(--kbq-foreground-contrast-tertiary);
-  display: flex;
-  gap: var(--kbq-size-s);
   cursor: pointer;
   border: none;
   outline: none;
-  padding-block: 0;
+  display: flex;
   inline-size: 100%;
-  align-items: center;
   box-sizing: border-box;
   border-radius: inherit;
+  flex-direction: column;
   color: var(--field-input-color);
   background: var(--field-input-bg-color);
   min-block-size: var(--field-control-size-height);
@@ -26,11 +24,17 @@
   @mixin typography text-normal;
 }
 
+.container {
+  display: flex;
+  block-size: 100%;
+  align-items: center;
+  gap: var(--kbq-size-xs);
+}
+
 .content {
-  overflow: hidden;
-  text-align: start;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  padding-block: var(--kbq-size-xs);
+
+  @mixin ellipsis;
 }
 
 .invalid {
@@ -47,4 +51,12 @@
 
 .hasPlaceholder {
   --field-input-color: var(--field-input-placeholder-color);
+}
+
+.hiddenPlaceholder {
+  block-size: 0;
+  text-align: start;
+  visibility: hidden;
+
+  @mixin ellipsis;
 }

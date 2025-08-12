@@ -1,16 +1,11 @@
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import {
-  clsx,
-  isNotNil,
-  isString,
-  isNumber,
-  polymorphicForwardRef,
-} from '@koobiq/react-core';
+import { clsx, isNotNil, polymorphicForwardRef } from '@koobiq/react-core';
 import { Button } from '@koobiq/react-primitives';
 
 import s from './FieldSelect.module.css';
 import type { FieldSelectBaseProps } from './index';
+import { isPrimitiveNode } from './utils';
 
 export const FieldSelect = polymorphicForwardRef<'div', FieldSelectBaseProps>(
   (
@@ -25,30 +20,38 @@ export const FieldSelect = polymorphicForwardRef<'div', FieldSelectBaseProps>(
       ...other
     },
     ref
-  ) => (
-    <Button
-      {...other}
-      as={as}
-      isDisabled={isDisabled}
-      data-slot="select-value"
-      className={clsx(
-        s.base,
-        s[variant],
-        isInvalid && s.invalid,
-        isDisabled && s.disabled,
-        !isNotNil(children) && s.hasPlaceholder,
-        className
-      )}
-      ref={ref}
-    >
-      {isString(children) || isNumber(children) ? (
-        <div className={s.content}>{children}</div>
-      ) : (
-        children
-      )}
-      {!isNotNil(children) && <div className={s.content}>{placeholder}</div>}
-    </Button>
-  )
+  ) => {
+    const content = children ?? placeholder;
+
+    return (
+      <Button
+        {...other}
+        as={as}
+        isDisabled={isDisabled}
+        data-slot="select-value"
+        className={clsx(
+          s.base,
+          s[variant],
+          isInvalid && s.invalid,
+          isDisabled && s.disabled,
+          !isNotNil(children) && s.hasPlaceholder,
+          className
+        )}
+        ref={ref}
+      >
+        <span className={s.hiddenPlaceholder} aria-hidden>
+          {placeholder}
+        </span>
+        <div className={s.container}>
+          {isPrimitiveNode(content) ? (
+            <span className={s.content}>{content}</span>
+          ) : (
+            children
+          )}
+        </div>
+      </Button>
+    );
+  }
 );
 
 FieldSelect.displayName = 'FieldSelect';

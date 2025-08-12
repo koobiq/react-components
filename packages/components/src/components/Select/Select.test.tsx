@@ -42,7 +42,7 @@ describe('Select', () => {
   it('should display a placeholder', () => {
     render(<Select {...baseProps} placeholder="baz" />);
 
-    expect(screen.getByText('baz')).toBeInTheDocument();
+    expect(screen.getAllByText('baz')[1]).toBeInTheDocument();
   });
 
   it('should be disabled when isDisabled is true', async () => {
