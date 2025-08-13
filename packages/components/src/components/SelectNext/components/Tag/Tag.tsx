@@ -1,4 +1,9 @@
-import { useRef, type CSSProperties, type ReactNode } from 'react';
+import {
+  type CSSProperties,
+  type ReactNode,
+  forwardRef,
+  type ComponentRef,
+} from 'react';
 
 import {
   clsx,
@@ -32,7 +37,7 @@ type TagProps = {
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
-export function Tag(props: TagProps) {
+export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
   const {
     variant = 'theme-fade',
     icon,
@@ -42,8 +47,6 @@ export function Tag(props: TagProps) {
     children,
     onRemove,
   } = props;
-
-  const ref = useRef(null);
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -89,4 +92,6 @@ export function Tag(props: TagProps) {
       </IconButton>
     </div>
   );
-}
+});
+
+Tag.displayName = 'SelectTag';
