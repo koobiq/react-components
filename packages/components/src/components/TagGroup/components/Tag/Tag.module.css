@@ -7,11 +7,11 @@
   --tag-outline-color: transparent;
   --tag-outline-width: var(--kbq-size-3xs);
   border: none;
+  max-width: 100%;
   cursor: default;
   align-items: center;
   vertical-align: top;
   display: inline-flex;
-  white-space: nowrap;
   text-decoration: none;
   box-sizing: border-box;
   color: var(--tag-color);
@@ -19,7 +19,6 @@
   block-size: var(--kbq-size-xxl);
   border-radius: var(--kbq-size-xxs);
   padding-inline: var(--kbq-size-xxs);
-  min-inline-size: var(--kbq-size-xxl);
   background-color: var(--tag-bg-color);
   outline-offset: calc(-1 * var(--tag-outline-width) / 2);
   outline: var(--tag-outline-width) solid var(--tag-outline-color);
@@ -31,12 +30,13 @@
 
 .content {
   @mixin ellipsis;
+  max-width: 100%;
   margin-inline: var(--kbq-size-3xs);
 }
 
 .icon {
   display: flex;
-  flex-shrink: 0;
+  flex: none;
   align-items: center;
   justify-content: center;
   color: var(--tag-icon-color);
