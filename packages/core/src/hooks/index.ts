@@ -13,3 +13,4 @@ export * from './useResizeObserver';
 export * from './useElementSize';
 export * from './useRefs';
 export * from './useDebounceCallback';
+export * from './useResizeObserverRefs';
