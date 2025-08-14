@@ -40,8 +40,8 @@ export type UseHideOverflowItemsProps = {
 };
 
 export function useHideOverflowItems<
-  ELEMENT extends HTMLElement = HTMLDivElement,
-  PARENT extends HTMLElement = HTMLDivElement,
+  Item extends HTMLElement = HTMLDivElement,
+  Parent extends HTMLElement = HTMLDivElement,
 >({
   length,
   moreIndex = length - 1,
