@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://github.com/koobiq/react-components/compare/0.2.2...0.3.0) (2025-08-14)
+
+### 🚀 Features
+
+- **core:** add `useHideOverflowItems` hook (DS-4047) ([c740d6c](https://github.com/koobiq/react-components/commit/c740d6cb06eacdc25d654274252f2e067d4a43ca))
+
+### 🐞 Bug Fixes
+
+- **core:** fix overriding tabIndex for `Button` ([47478e5](https://github.com/koobiq/react-components/commit/47478e5c5173fee56ca59537f23b02ed781fcc2c))
+- **ListItemText:** change root element from div to span ([da8abad](https://github.com/koobiq/react-components/commit/da8abade8f0235491c7c3cb0064d1c6e208ab606))
+- **Select:** block chevron interactivity while keeping custom addons interactive (DS-4086) ([2a538b7](https://github.com/koobiq/react-components/commit/2a538b74b53ca5987dfb9c5c80e8b28b13c66fa4))
+- **Select:** prevent layout shift when placeholder switches to value ([fc427d6](https://github.com/koobiq/react-components/commit/fc427d6261b3e2eac96c235de20bf6bc6c609d50))
+- **Select:** switch root from button to div[role="button"] ([7995065](https://github.com/koobiq/react-components/commit/7995065bf2c814449e4599e2943e8a16052285de))
+- **Tag:** change remove button aria-label from "Close" to "Remove" ([3ccadd5](https://github.com/koobiq/react-components/commit/3ccadd5c6d2f85a813cd4053b8f03956499f601a))
+
 ## [0.2.2](https://github.com/koobiq/react-components/compare/0.2.1...0.2.2) (2025-08-07)
 
 ### 🐞 Bug Fixes

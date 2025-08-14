@@ -7,7 +7,7 @@
   --tag-outline-color: transparent;
   --tag-outline-width: var(--kbq-size-3xs);
   border: none;
-  max-width: 100%;
+  max-inline-size: 100%;
   cursor: default;
   align-items: center;
   vertical-align: top;
@@ -30,7 +30,7 @@
 
 .content {
   @mixin ellipsis;
-  max-width: 100%;
+  max-inline-size: 100%;
   margin-inline: var(--kbq-size-3xs);
 }
 
