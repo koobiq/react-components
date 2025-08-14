@@ -187,10 +187,9 @@ export const LimitTags: Story = {
           label="Attack type"
           placeholder="Select an option"
           selectionMode="multiple"
-          caption="limitTags = multiline (default)"
+          caption="limitTags = responsive (default)"
           style={{ inlineSize: 220 }}
           isClearable
-          limitTags="multiline"
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
@@ -199,10 +198,10 @@ export const LimitTags: Story = {
           label="Attack type"
           placeholder="Select an option"
           selectionMode="multiple"
-          caption="limitTags = responsive"
+          caption="limitTags = multiline"
           style={{ inlineSize: 220 }}
+          limitTags="multiline"
           isClearable
-          limitTags="responsive"
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>

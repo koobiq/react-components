@@ -34,7 +34,7 @@ import { PopoverInner } from '../Popover/PopoverInner';
 
 import { SelectList, TagGroup } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
-import intlMessages from './intl.json';
+import intlMessages from './intl';
 import s from './Select.module.css';
 
 function SelectRender<T extends object>(
@@ -46,7 +46,7 @@ function SelectRender<T extends object>(
     isClearable = false,
     'data-testid': testId,
     selectionMode = 'single',
-    limitTags = 'multiline',
+    limitTags = 'responsive',
     isRequired,
     isDisabled,
     caption,
