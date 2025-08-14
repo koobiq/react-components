@@ -5,7 +5,7 @@
 }
 
 .base {
-  width: 100%;
+  inline-size: 100%;
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
@@ -23,7 +23,7 @@
 }
 
 .more {
-  text-align: right;
+  text-align: end;
   align-self: center;
   white-space: nowrap;
   box-sizing: border-box;
@@ -32,7 +32,7 @@
 }
 
 .hidden {
-  left: -300vw;
+  inset-inline-start: -300vw;
   visibility: hidden;
   position: absolute;
 }
