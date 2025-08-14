@@ -1,0 +1,76 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './useHideOverflowItems.stories';
+
+<Meta of={Stories} />
+
+# useHideOverflowItems
+
+<Status variant="experimental" />
+
+A React hook that hides items that overflow the width of their parent container.
+
+```tsx
+import { useHideOverflowItems } from '@koobiq/react-core';
+```
+
+## Definition
+
+```ts
+export type UseHideOverflowItemsProps = {
+  /** Total number of items in the line (including the "more" item). */
+  length: number;
+  /**
+   * Index of the "more" item (defaults to the last one).
+   * @default (length - 1)
+   */
+  moreIndex?: number;
+  /**
+   * Reserved space in pixels to exclude.
+   * @default 0
+   */
+  busy?: number;
+  /**
+   * Dependencies that trigger recalculation when changed.
+   * @default []
+   */
+  deps?: unknown[];
+  /** Index that should always remain visible. */
+  pinnedIndex?: number;
+};
+
+export function useHideOverflowItems<
+  ELEMENT extends HTMLElement = HTMLDivElement,
+  PARENT extends HTMLElement = HTMLDivElement,
+>({
+  length,
+  moreIndex = length - 1,
+  busy = 0,
+  deps = [],
+  pinnedIndex,
+}: UseHideOverflowItemsProps);
+```
+
+## Start
+
+Example: hides overflow items from the start.
+
+<Story of={Stories.Start} />
+
+## End
+
+Example: hides overflow items from the end.
+
+<Story of={Stories.End} />
+
+## Center
+
+Example: hides overflow items from the center.
+
+<Story of={Stories.Center} />
+
+## Pinned
+
+Example: hides overflow items from the end and keeping the first visible.
+
+<Story of={Stories.Pinned} />
