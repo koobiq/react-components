@@ -308,7 +308,7 @@ export const MinimumMaximumValues: Story = {
         label="Age"
         defaultValue={1}
         minValue={0}
-        placeholder="Enter a your age"
+        placeholder="Enter your age"
         {...args}
       />
     );
