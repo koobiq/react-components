@@ -1,7 +1,10 @@
+import type { CSSProperties } from 'react';
+
 import { useBoolean } from '@koobiq/react-core';
 import {
   IconArrowUpRightFromSquare16,
   IconChevronDown16,
+  IconExclamationTriangle16,
   IconPlus16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
@@ -150,4 +153,24 @@ export const RootTag: Story = {
       Link
     </Button>
   ),
+};
+
+export const Custom: Story = {
+  render: () => {
+    const destructiveFilledBtnStyle = {
+      '--button-bg-color': 'var(--kbq-background-error)',
+      '--button-bg-color-hover': 'var(--kbq-states-background-error-hover)',
+      '--button-bg-color-active': 'var(--kbq-states-background-error-active)',
+    } as CSSProperties;
+
+    return (
+      <Button
+        variant="contrast-filled"
+        style={destructiveFilledBtnStyle}
+        startIcon={<IconExclamationTriangle16 />}
+      >
+        Destructive button
+      </Button>
+    );
+  },
 };
