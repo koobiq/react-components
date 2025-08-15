@@ -1,18 +1,12 @@
 import type { FC } from 'react';
 
-import {
-  clsx,
-  useHideOverflowItems,
-  useLocalizedStringFormatter,
-} from '@koobiq/react-core';
+import { logger } from '@koobiq/logger';
 import type { MultiSelectState } from '@koobiq/react-primitives';
 
-import intlMessages from '../../intl';
 import type { SelectPropLimitTags } from '../../types';
-import { Tag } from '../Tag';
 
-import s from './TagGroup.module.css';
-import { getHiddenCount } from './utils';
+import { TagGroupMultiline } from './TagGroupMultiline';
+import { TagGroupResponsive } from './TagGroupResponsive';
 
 export type TagGroupProps<T> = {
   state: MultiSelectState<T>;
@@ -24,65 +18,22 @@ export type TagGroupProps<T> = {
   limitTags?: SelectPropLimitTags;
 };
 
+function assertNever(x: never) {
+  logger.error(`Unhandled limitTags variant: ${x as string}`);
+
+  return null;
+}
+
 export const TagGroup: FC<TagGroupProps<unknown>> = ({
-  state,
-  states,
-  limitTags,
+  limitTags = 'responsive',
+  ...rest
 }) => {
-  const { isDisabled, isInvalid } = states;
-
-  const hasResponsiveTags = limitTags === 'responsive';
-
-  const length = state?.selectedItems?.length || 0;
-
-  const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems({
-    length: length + 1,
-    pinnedIndex: 0,
-  });
-
-  const hiddenCount = getHiddenCount(visibleMap);
-
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
-
-  return (
-    <div
-      className={s.container}
-      {...(hasResponsiveTags && { ref: parentRef })}
-      aria-hidden
-    >
-      <div
-        className={s.base}
-        data-limit-tags={limitTags}
-        aria-label={stringFormatter.format('selected items')}
-      >
-        {state.selectedItems?.map((item, i) => (
-          <Tag
-            key={item.key}
-            className={clsx(
-              s.tag,
-              hasResponsiveTags && !visibleMap[i] && s.hidden
-            )}
-            ref={itemsRefs[i]}
-            isDisabled={isDisabled}
-            variant={isInvalid ? 'error-fade' : 'contrast-fade'}
-            onRemove={() => {
-              if (state.selectionManager.isSelected(item.key)) {
-                state.selectionManager.toggleSelection(item.key);
-              }
-            }}
-          >
-            {item.textValue}
-          </Tag>
-        ))}
-      </div>
-      {hasResponsiveTags && (
-        <div
-          ref={itemsRefs[itemsRefs.length - 1]}
-          className={clsx(s.more, !visibleMap[length] && s.hidden)}
-        >
-          {stringFormatter.format('more', { count: hiddenCount })}
-        </div>
-      )}
-    </div>
-  );
+  switch (limitTags) {
+    case 'responsive':
+      return <TagGroupResponsive {...rest} />;
+    case 'multiline':
+      return <TagGroupMultiline {...rest} />;
+    default:
+      return assertNever(limitTags as never);
+  }
 };
