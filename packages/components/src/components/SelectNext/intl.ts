@@ -2,7 +2,7 @@ export default {
   'ru-RU': {
     'selected items': 'Выбранные элементы',
     clear: 'Очистить',
-    more: ({ count }: { count: number }) => `ещё ${count}`,
+    more: ({ count }: { count: number }) => `еще ${count}`,
   },
   'en-US': {
     'selected items': 'Selected items',
