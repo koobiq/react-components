@@ -71,6 +71,10 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         isLoading={isLoading}
         isDisabled={isDisabled}
         className={classNameFn}
+        data-variant={variant}
+        data-loading={isLoading}
+        data-fullwidth={fullWidth}
+        data-onlyicon={iconOnly}
         {...other}
         ref={ref}
       >
