@@ -250,7 +250,8 @@ export const rows: Rows = [
   },
   {
     component: 'Select (multiple)',
-    status: '🛠️ In Progress',
+    status: '✅ Done',
+    stage: '🔵 experimental ',
     planned: 'Q3 2025',
   },
   { component: 'Tabs', status: '🚧 Planned', planned: 'Q3 2025' },
