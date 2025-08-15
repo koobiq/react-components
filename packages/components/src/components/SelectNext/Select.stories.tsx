@@ -189,7 +189,6 @@ export const LimitTags: Story = {
           selectionMode="multiple"
           caption="limitTags = responsive (default)"
           style={{ inlineSize: 220 }}
-          isClearable
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
@@ -201,7 +200,6 @@ export const LimitTags: Story = {
           caption="limitTags = multiline"
           style={{ inlineSize: 220 }}
           limitTags="multiline"
-          isClearable
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
@@ -302,6 +300,22 @@ export const FullWidth: Story = {
         label="Attack type"
         placeholder="Select an option"
         fullWidth
+      >
+        {(item) => <Select.Item>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const ClearButton: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        placeholder="Select an option"
+        defaultSelectedKeys={[1]}
+        isClearable
       >
         {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>
