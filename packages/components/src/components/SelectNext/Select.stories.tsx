@@ -4,6 +4,7 @@ import { useBoolean } from '@koobiq/react-core';
 import {
   IconAnomaly16,
   IconBug16,
+  IconCrosshairs16,
   IconDesktop16,
   IconServer16,
   IconSwords16,
@@ -316,6 +317,23 @@ export const ClearButton: Story = {
         placeholder="Select an option"
         defaultSelectedKeys={[1]}
         isClearable
+      >
+        {(item) => <Select.Item>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const Addons: Story = {
+  render: function Render() {
+    return (
+      <Select
+        startAddon={<IconCrosshairs16 />}
+        items={options}
+        label="Attack type"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        defaultSelectedKeys={[1]}
       >
         {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>

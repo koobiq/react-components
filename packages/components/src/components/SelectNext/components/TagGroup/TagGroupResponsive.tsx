@@ -6,6 +6,7 @@ import {
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 
+import { useFieldInputGroup } from '../../../FieldComponents';
 import intlMessages from '../../intl';
 import { Tag } from '../Tag';
 
@@ -28,8 +29,14 @@ export const TagGroupResponsive: FC<TagGroupProps<unknown>> = ({
   const hiddenCount = getHiddenCount(visibleMap);
   const t = useLocalizedStringFormatter(intlMessages);
 
+  const { hasStartAddon } = useFieldInputGroup();
+
   return (
-    <div className={s.container} ref={parentRef} aria-hidden>
+    <div
+      className={clsx(s.container, hasStartAddon && s.hasStartAddon)}
+      ref={parentRef}
+      aria-hidden
+    >
       <div
         className={s.base}
         data-limit-tags="responsive"

@@ -1,7 +1,8 @@
 import type { FC } from 'react';
 
-import { useLocalizedStringFormatter } from '@koobiq/react-core';
+import { clsx, useLocalizedStringFormatter } from '@koobiq/react-core';
 
+import { useFieldInputGroup } from '../../../FieldComponents';
 import intlMessages from '../../intl';
 import { Tag } from '../Tag';
 
@@ -15,8 +16,13 @@ export const TagGroupMultiline: FC<TagGroupProps<unknown>> = ({
   const { isDisabled, isInvalid } = states;
   const t = useLocalizedStringFormatter(intlMessages);
 
+  const { hasStartAddon } = useFieldInputGroup();
+
   return (
-    <div className={s.container} aria-hidden>
+    <div
+      className={clsx(s.container, hasStartAddon && s.hasStartAddon)}
+      aria-hidden
+    >
       <div
         className={s.base}
         data-limit-tags="multiline"
