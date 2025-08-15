@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1](https://github.com/koobiq/react-components/compare/0.3.0...0.3.1) (2025-08-15)
+
+### 🐞 Bug Fixes
+
+- **Button, IconButton:** add data attributes to customize buttons (DS-4107) ([104b67a](https://github.com/koobiq/react-components/commit/104b67a4337c05ab7466514d2435e33c32ca69fd))
+
 ## [0.3.0](https://github.com/koobiq/react-components/compare/0.2.2...0.3.0) (2025-08-14)
 
 ### 🚀 Features
