@@ -4,6 +4,11 @@
   margin-inline-start: calc(-1 * var(--kbq-size-s));
 }
 
+.hasStartAddon {
+  inline-size: 100%;
+  margin-inline-start: unset;
+}
+
 .base {
   inline-size: 100%;
   display: flex;
