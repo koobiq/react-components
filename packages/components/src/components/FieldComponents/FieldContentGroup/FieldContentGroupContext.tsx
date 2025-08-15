@@ -2,7 +2,8 @@ import { createContext, useContext } from 'react';
 
 export type FieldContentGroupContextProps = {
   isDisabled?: boolean;
-  hasValue?: boolean;
+  hasStartAddon?: boolean;
+  hasEndAddon?: boolean;
   isHovered?: boolean;
   isFocusWithin?: boolean;
   isInvalid?: boolean;
