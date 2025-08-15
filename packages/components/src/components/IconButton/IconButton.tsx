@@ -65,6 +65,9 @@ export const IconButton = polymorphicForwardRef<'button', IconButtonBaseProps>(
         as={Tag}
         isDisabled={isDisabled}
         className={classNameFn}
+        data-compact={isCompact}
+        data-variant={variant}
+        data-size={size}
         {...other}
         ref={ref}
       >
