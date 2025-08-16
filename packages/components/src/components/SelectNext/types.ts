@@ -31,7 +31,7 @@ export const selectPropSelectedTagsOverflow = [
 export type SelectPropSelectedTagsOverflow =
   (typeof selectPropSelectedTagsOverflow)[number];
 
-export type SelectProps<T> = ExtendableProps<
+export type SelectNextProps<T> = ExtendableProps<
   {
     /**
      * Defines how selected tags are displayed when they exceed the available space.
@@ -116,6 +116,8 @@ export type SelectProps<T> = ExtendableProps<
   >
 >;
 
-export type SelectComponent = <T>(props: SelectProps<T>) => ReactElement | null;
+export type SelectNextComponent = <T>(
+  props: SelectNextProps<T>
+) => ReactElement | null;
 
-export type SelectRef = ComponentRef<'div'>;
+export type SelectNextRef = ComponentRef<'div'>;

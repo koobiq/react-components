@@ -4,7 +4,10 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { Select, type SelectProps } from './index';
+import {
+  SelectNext as Select,
+  type SelectNextProps as SelectProps,
+} from './index';
 
 describe('SelectNext', () => {
   const baseProps: SelectProps<object> = {

@@ -33,13 +33,17 @@ import { ListItemText } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 
 import { SelectList, TagGroup } from './components';
-import type { SelectRef, SelectProps, SelectComponent } from './index';
+import type {
+  SelectNextRef,
+  SelectNextProps,
+  SelectNextComponent,
+} from './index';
 import intlMessages from './intl';
 import s from './Select.module.css';
 
 function SelectRender<T extends object>(
-  props: Omit<SelectProps<T>, 'ref'>,
-  ref: Ref<SelectRef>
+  props: Omit<SelectNextProps<T>, 'ref'>,
+  ref: Ref<SelectNextRef>
 ) {
   const {
     fullWidth = false,
@@ -236,7 +240,7 @@ function SelectRender<T extends object>(
   );
 }
 
-const SelectComponent = forwardRef(SelectRender) as SelectComponent;
+const SelectComponent = forwardRef(SelectRender) as SelectNextComponent;
 
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof Item;
@@ -244,8 +248,8 @@ type CompoundedComponent = typeof SelectComponent & {
   ItemText: typeof ListItemText;
 };
 
-export const Select = SelectComponent as CompoundedComponent;
+export const SelectNext = SelectComponent as CompoundedComponent;
 
-Select.Item = Item;
-Select.Section = Section;
-Select.ItemText = ListItemText;
+SelectNext.Item = Item;
+SelectNext.Section = Section;
+SelectNext.ItemText = ListItemText;
