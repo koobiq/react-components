@@ -52,9 +52,16 @@ You can use the `selectionMode="multiple"` prop to allow multiple selection.
 
 <Story of={Stories.MultipleSelection} />
 
-### Limit tags
+### Selected value tags
 
-<Story of={Stories.LimitTags} />
+In `selectionMode="multiple"`, selected values are displayed as tags by default.
+
+To control how tags are displayed, use the `selectedTagsOverflow` prop. It supports the following values:
+
+- `responsive` (default) — tags collapse into a summary (e.g., "3 more") to fit the available width without increasing the component block size.
+- `multiline` — tags wrap to multiple lines, increasing the component height as needed.
+
+<Story of={Stories.SelectedTagsOverflow} />
 
 ## Invalid
 

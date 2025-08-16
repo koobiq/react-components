@@ -23,13 +23,24 @@ import type {
 import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
-export const selectPropLimitTags = ['multiline', 'responsive'] as const;
+export const selectPropSelectedTagsOverflow = [
+  'multiline',
+  'responsive',
+] as const;
 
-export type SelectPropLimitTags = (typeof selectPropLimitTags)[number];
+export type SelectPropSelectedTagsOverflow =
+  (typeof selectPropSelectedTagsOverflow)[number];
 
 export type SelectProps<T> = ExtendableProps<
   {
-    limitTags?: SelectPropLimitTags;
+    /**
+     * Defines how selected tags are displayed when they exceed the available space.
+     *
+     *- `"multiline"` — tags wrap to multiple lines.
+     *- `"responsive"` — tags collapse into a summary (e.g., "3 more").
+     * @default "responsive"
+     */
+    selectedTagsOverflow?: SelectPropSelectedTagsOverflow;
     /** Sets the CSS [`className`](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. */
     className?: string;
     /** The initial selected keys in the collection (uncontrolled). */

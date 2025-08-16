@@ -179,7 +179,7 @@ export const MultipleSelection: Story = {
   },
 };
 
-export const LimitTags: Story = {
+export const SelectedTagsOverflow: Story = {
   render: function Render() {
     return (
       <FlexBox gap="m" direction="column">
@@ -188,7 +188,7 @@ export const LimitTags: Story = {
           label="Attack type"
           placeholder="Select an option"
           selectionMode="multiple"
-          caption="limitTags = responsive (default)"
+          caption="selectedTagsOverflow = responsive (default)"
           style={{ inlineSize: 220 }}
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
@@ -198,9 +198,9 @@ export const LimitTags: Story = {
           label="Attack type"
           placeholder="Select an option"
           selectionMode="multiple"
-          caption="limitTags = multiline"
+          caption="selectedTagsOverflow = multiline"
           style={{ inlineSize: 220 }}
-          limitTags="multiline"
+          selectedTagsOverflow="multiline"
         >
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
