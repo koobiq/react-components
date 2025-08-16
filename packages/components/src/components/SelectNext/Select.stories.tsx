@@ -16,8 +16,8 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import type { SelectProps } from './index.js';
-import { Select } from './index.js';
+import type { SelectNextProps as SelectProps } from './index.js';
+import { SelectNext as Select } from './index.js';
 
 const meta = {
   title: 'Components/SelectNext',
