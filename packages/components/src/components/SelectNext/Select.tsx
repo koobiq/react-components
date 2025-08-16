@@ -46,7 +46,7 @@ function SelectRender<T extends object>(
     isClearable = false,
     'data-testid': testId,
     selectionMode = 'single',
-    limitTags = 'responsive',
+    selectedTagsOverflow = 'responsive',
     isRequired,
     isDisabled,
     caption,
@@ -200,7 +200,13 @@ function SelectRender<T extends object>(
     if (!state.selectedItems) return null;
 
     if (selectionMode === 'multiple')
-      return <TagGroup state={state} states={states} limitTags={limitTags} />;
+      return (
+        <TagGroup
+          state={state}
+          states={states}
+          selectedTagsOverflow={selectedTagsOverflow}
+        />
+      );
 
     return state.selectedItems[0].rendered;
   };
