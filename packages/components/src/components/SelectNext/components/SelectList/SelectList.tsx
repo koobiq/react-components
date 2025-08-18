@@ -4,6 +4,7 @@ import { clsx, isNotNil, mergeProps, useDOMRef } from '@koobiq/react-core';
 import { type MultiSelectState, useListBox } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
+import { Divider as SelectDivider } from '../../../Divider';
 import type { ListProps } from '../../../List';
 import { ListSection } from '../../../List/components';
 import { Typography } from '../../../Typography';
@@ -44,18 +45,27 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     listBoxProps
   );
 
+  const renderItems = (treeState: typeof state) =>
+    [...treeState.collection].map((item) => {
+      switch (item.type) {
+        case 'divider':
+          return <SelectDivider key={item.key} className={s.divider} />;
+
+        case 'item':
+          return <SelectOption key={item.key} item={item} state={state} />;
+
+        case 'section':
+          return <ListSection key={item.key} section={item} state={state} />;
+
+        default:
+          return null;
+      }
+    });
+
   return (
     <>
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
-      <ul {...listProps}>
-        {[...state.collection].map((item) =>
-          item.type === 'section' ? (
-            <ListSection key={item.key} section={item} state={state} />
-          ) : (
-            <SelectOption key={item.key} item={item} state={state} />
-          )
-        )}
-      </ul>
+      <ul {...listProps}>{renderItems(state)}</ul>
     </>
   );
 }

@@ -11,6 +11,7 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { useListData } from '../../index';
 import type { Selection } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -28,6 +29,7 @@ const meta = {
   subcomponents: {
     'Select.Item': Select.Item,
     'Select.Section': Select.Section,
+    'Select.Divider': Select.Divider,
     'Select.ItemText': Select.ItemText,
   },
   argTypes: {},
@@ -467,6 +469,153 @@ export const Section: Story = {
           </Select.Section>
         )}
       </Select>
+    );
+  },
+};
+
+export const Helper: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    const users = [
+      {
+        id: 1,
+        firstName: 'Emily',
+        lastName: 'Carter',
+        email: 'emily.carter@example.com',
+        role: 'Admin',
+      },
+      {
+        id: 2,
+        firstName: 'Michael',
+        lastName: 'Thompson',
+        email: 'michael.thompson@mail.com',
+        role: 'Editor',
+      },
+      {
+        id: 3,
+        firstName: 'Sophia',
+        lastName: 'Bellmont',
+        email: 'sophia.bellmont@example.org',
+        role: 'Subscriber',
+      },
+      {
+        id: 4,
+        firstName: 'Daniel',
+        lastName: 'Nguyen',
+        email: 'daniel.nguyen@mail.com',
+        role: 'User',
+      },
+      {
+        id: 5,
+        firstName: 'Olivia',
+        lastName: 'Brooks',
+        email: 'olivia.brooks@example.com',
+        role: 'Moderator',
+      },
+      {
+        id: 6,
+        firstName: 'James',
+        lastName: 'Harris',
+        email: 'james.harris@mail.org',
+        role: 'User',
+      },
+      {
+        id: 7,
+        firstName: 'Isabella',
+        lastName: 'Murphy',
+        email: 'isabella.murphy@mail.com',
+        role: 'Subscriber',
+      },
+      {
+        id: 8,
+        firstName: 'Benjamin',
+        lastName: 'Lee',
+        email: 'benjamin.lee@example.com',
+        role: 'Editor',
+      },
+      {
+        id: 9,
+        firstName: 'Ava',
+        lastName: 'Garcia',
+        email: 'ava.garcia@mail.com',
+        role: 'User',
+      },
+      {
+        id: 10,
+        firstName: 'William',
+        lastName: 'Martinez',
+        email: 'william.martinez@ex.org',
+        role: 'Admin',
+      },
+      {
+        id: 11,
+        firstName: 'Mia',
+        lastName: 'Robinson',
+        email: 'mia.robinson@mail.org',
+        role: 'Subscriber',
+      },
+      {
+        id: 12,
+        firstName: 'Alexander',
+        lastName: 'Walker',
+        email: 'alex.walker@example.com',
+        role: 'User',
+      },
+      {
+        id: 13,
+        firstName: 'Charlotte',
+        lastName: 'Scott',
+        email: 'charlotte.scott@mail.com',
+        role: 'Moderator',
+      },
+      {
+        id: 14,
+        firstName: 'Henry',
+        lastName: 'Adams',
+        email: 'henry.adams@example.org',
+        role: 'User',
+      },
+      {
+        id: 15,
+        firstName: 'Harper',
+        lastName: 'Bell',
+        email: 'harper.bell@mail.org',
+        role: 'Subscriber',
+      },
+    ];
+
+    const list = useListData({
+      initialItems: users,
+      getKey: (item) => item.id,
+      initialSelectedKeys: [3, 6, 11],
+    });
+
+    return (
+      <FlexBox direction="column" gap="m">
+        <Select
+          label="Assigned to"
+          selectionMode="multiple"
+          placeholder="Select a user"
+          style={{ minInlineSize: 200, maxInlineSize: 400, inlineSize: '100%' }}
+          items={list.items}
+          selectedKeys={list.selectedKeys}
+          onSelectionChange={(key) => list.setSelectedKeys(key)}
+        >
+          {(item) => (
+            <Select.Item textValue={item.firstName}>
+              {item.firstName} {item.lastName}
+            </Select.Item>
+          )}
+        </Select>
+        <Typography>
+          Selected emails:{' '}
+          {Array.from(list.selectedKeys)
+            .map((id) => list.getItem(id)?.email)
+            .join(', ')}
+        </Typography>
+      </FlexBox>
     );
   },
 };

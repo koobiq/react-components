@@ -14,7 +14,7 @@ import {
   useMultiSelectState,
 } from '@koobiq/react-primitives';
 
-import { Item, Section } from '../Collections';
+import { Item, Section, Divider } from '../Collections';
 import {
   FieldLabel,
   FieldError,
@@ -29,7 +29,8 @@ import {
   type FieldSelectProps,
 } from '../FieldComponents';
 import { IconButton } from '../IconButton';
-import { ListItemText } from '../List';
+import type { ListItemText } from '../List';
+import { List } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 
 import { SelectList, TagGroup } from './components';
@@ -245,6 +246,7 @@ const SelectComponent = forwardRef(SelectRender) as SelectNextComponent;
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof Item;
   Section: typeof Section;
+  Divider: typeof Divider;
   ItemText: typeof ListItemText;
 };
 
@@ -252,4 +254,5 @@ export const SelectNext = SelectComponent as CompoundedComponent;
 
 SelectNext.Item = Item;
 SelectNext.Section = Section;
-SelectNext.ItemText = ListItemText;
+SelectNext.Divider = Divider;
+SelectNext.ItemText = List.ItemText;
