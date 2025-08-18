@@ -46,3 +46,17 @@
   outline-offset: -2px;
   outline: 2px solid var(--kbq-states-line-focus-theme);
 }
+
+[aria-multiselectable='true'] {
+  .selected {
+    background-color: var(--kbq-background-contrast-less);
+  }
+
+  .selected:where(.hovered) {
+    background-color: var(--kbq-states-background-contrast-less-hover);
+  }
+
+  .selected:where(.pressed) {
+    background-color: var(--kbq-states-background-contrast-less-active);
+  }
+}
