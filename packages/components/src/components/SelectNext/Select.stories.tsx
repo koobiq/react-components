@@ -473,7 +473,7 @@ export const Section: Story = {
   },
 };
 
-export const Helper: Story = {
+export const StateHelper: Story = {
   parameters: {
     layout: 'padded',
   },
@@ -615,43 +615,6 @@ export const Helper: Story = {
             .map((id) => list.getItem(id)?.email)
             .join(', ')}
         </Typography>
-      </FlexBox>
-    );
-  },
-};
-
-export const Playground: Story = {
-  parameters: {
-    layout: 'padded',
-  },
-  render: function Render() {
-    const options = [
-      { id: 1, name: 'Option 1' },
-      { id: 2, name: 'Option 2' },
-      { id: 3, name: 'Option 3' },
-    ];
-
-    const ExampleSelect = (
-      props: Omit<SelectProps<{ name: string }>, 'children'>
-    ) => (
-      <Select items={options} label="Exmaple" {...props}>
-        {(item) => (
-          <Select.Item textValue={item.name}>
-            <Select.ItemText>{item.name}</Select.ItemText>
-          </Select.Item>
-        )}
-      </Select>
-    );
-
-    return (
-      <FlexBox gap="m" direction="column">
-        <ExampleSelect />
-        <ExampleSelect placeholder="Select an option" />
-        <ExampleSelect selectionMode="multiple" />
-        <ExampleSelect
-          placeholder="Select an option"
-          selectionMode="multiple"
-        />
       </FlexBox>
     );
   },
