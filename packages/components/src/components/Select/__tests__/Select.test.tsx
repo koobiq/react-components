@@ -6,7 +6,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { Select, type SelectProps } from '../index';
 
-describe('SelectNext', () => {
+describe('Select', () => {
   const baseProps: SelectProps<object> = {
     'data-testid': 'root',
     label: 'label',
@@ -195,7 +195,7 @@ describe('SelectNext', () => {
   describe('clear button', () => {
     it('should render clear button only when a value is selected', () => {
       const { rerender } = render(
-        <Select {...baseProps} isClearable>
+        <Select {...baseProps} selectedKeys={[]} isClearable>
           <Select.Item key="1">1</Select.Item>
           <Select.Item key="2">2</Select.Item>
           <Select.Item key="3">3</Select.Item>
@@ -263,6 +263,28 @@ describe('SelectNext', () => {
       if (clearButton) await userEvent.click(clearButton);
 
       expect(onClear).toHaveBeenCalledTimes(1);
+    });
+
+    it('should NOT render clear button when Select is disabled', async () => {
+      const onClear = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          selectedKeys={['1']}
+          onClear={onClear}
+          isDisabled
+          isClearable
+        >
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      const clearButton = getClearButton();
+
+      expect(clearButton).not.toBeInTheDocument();
     });
   });
 });
