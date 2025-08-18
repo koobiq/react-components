@@ -11,7 +11,8 @@ import {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
-import { Item, Section } from '../Collections';
+import { Item, Section, Divider } from '../Collections';
+import { Divider as ListDivider } from '../Divider';
 import { Typography } from '../Typography';
 
 import { ListItemText, ListOption, ListSection } from './components';
@@ -51,18 +52,27 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
     listBoxProps
   );
 
+  const renderItems = (listState: typeof state) =>
+    [...listState.collection].map((item) => {
+      switch (item.type) {
+        case 'divider':
+          return <ListDivider key={item.key} className={s.divider} />;
+
+        case 'item':
+          return <ListOption key={item.key} item={item} state={state} />;
+
+        case 'section':
+          return <ListSection key={item.key} section={item} state={state} />;
+
+        default:
+          return null;
+      }
+    });
+
   return (
     <>
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
-      <ul {...listProps}>
-        {[...state.collection].map((item) =>
-          item.type === 'section' ? (
-            <ListSection key={item.key} section={item} state={state} />
-          ) : (
-            <ListOption key={item.key} item={item} state={state} />
-          )
-        )}
-      </ul>
+      <ul {...listProps}>{renderItems(state)}</ul>
     </>
   );
 }
@@ -78,6 +88,7 @@ const ListComponent = forwardRef(ListRender) as ListComponent;
 type CompoundedComponent = typeof ListComponent & {
   Item: typeof Item;
   Section: typeof Section;
+  Divider: typeof Divider;
   ItemText: typeof ListItemText;
 };
 
@@ -85,4 +96,5 @@ export const List = ListComponent as CompoundedComponent;
 
 List.Item = Item;
 List.Section = Section;
+List.Divider = Divider;
 List.ItemText = ListItemText;

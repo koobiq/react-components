@@ -16,6 +16,7 @@ const meta = {
   subcomponents: {
     'List.Item': List.Item,
     'List.Section': List.Section,
+    'List.Divider': List.Divider,
     'List.ItemText': List.ItemText,
   },
   argTypes: {},
@@ -261,6 +262,7 @@ export const OtherExamples: Story = {
           <List.Item key="5">
             <List.ItemText>Fifth</List.ItemText>
           </List.Item>
+          <List.Divider />
           <List.Item key="6">
             <List.ItemText
               slotProps={{

@@ -1,3 +1,8 @@
 .label {
   padding: var(--kbq-size-xs) var(--kbq-size-m);
 }
+
+.divider {
+  margin-inline: calc(var(--kbq-size-xxs) * -1);
+  inline-size: initial;
+}
