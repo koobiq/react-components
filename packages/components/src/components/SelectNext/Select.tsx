@@ -132,6 +132,7 @@ function SelectRender<T extends object>(
     {
       'aria-labe': t.format('clear'),
       onPress: handleClear,
+      className: s.clearButton,
       variant: isInvalid ? 'error' : 'fade-contrast',
       preventFocusOnPress: true,
     },
@@ -156,7 +157,9 @@ function SelectRender<T extends object>(
               <IconXmarkCircle16 />
             </IconButton>
           )}
-          <IconChevronDownS16 className={s.chevron} />
+          <span className={s.chevron}>
+            <IconChevronDownS16 />
+          </span>
         </>
       ),
       isInvalid,

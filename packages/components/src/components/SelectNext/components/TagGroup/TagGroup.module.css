@@ -32,8 +32,9 @@
   align-self: center;
   white-space: nowrap;
   box-sizing: border-box;
-  flex: 0 0 calc(70px - var(--kbq-size-xxs));
-  padding: var(--kbq-size-3xs) var(--kbq-size-xs) var(--kbq-size-3xs) 0;
+  flex: 0 0 60px;
+  padding: var(--kbq-size-3xs) calc(var(--kbq-size-xs) + var(--kbq-size-xxs))
+    var(--kbq-size-3xs) 0;
 }
 
 .hidden {
