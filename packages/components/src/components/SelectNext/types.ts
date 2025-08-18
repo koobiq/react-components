@@ -20,6 +20,7 @@ import type {
   FieldCaptionProps,
   FieldInputGroupProps,
 } from '../FieldComponents';
+import type { IconButtonProps } from '../IconButton';
 import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
@@ -41,6 +42,8 @@ export type SelectNextProps<T> = ExtendableProps<
      * @default "responsive"
      */
     selectedTagsOverflow?: SelectPropSelectedTagsOverflow;
+    /** Handler that is called when the clear button is clicked. */
+    onClear?: () => void;
     /** Sets the CSS [`className`](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. */
     className?: string;
     /** The initial selected keys in the collection (uncontrolled). */
@@ -102,6 +105,7 @@ export type SelectNextProps<T> = ExtendableProps<
       caption?: FieldCaptionProps;
       group?: FieldInputGroupProps;
       errorMessage?: FieldErrorProps;
+      clearButton?: IconButtonProps;
     };
   },
   Omit<

@@ -1,4 +1,4 @@
-import { forwardRef, type Ref } from 'react';
+import { forwardRef, type Ref, useCallback } from 'react';
 
 import {
   clsx,
@@ -63,11 +63,12 @@ function SelectRender<T extends object>(
     endAddon,
     slotProps,
     startAddon,
+    onClear,
     label,
     renderValue: renderValueProp,
   } = props;
 
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const t = useLocalizedStringFormatter(intlMessages);
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
@@ -76,7 +77,11 @@ function SelectRender<T extends object>(
   );
 
   const hasClearButton = isClearable && !isDisabled && state.selectedItems;
-  const handleClear = () => state.selectionManager.clearSelection();
+
+  const handleClear = useCallback(() => {
+    state.selectionManager.clearSelection();
+    onClear?.();
+  }, [onClear, state]);
 
   const {
     isInvalid,
@@ -123,6 +128,16 @@ function SelectRender<T extends object>(
     labelPropsAria
   );
 
+  const clearButtonProps = mergeProps(
+    {
+      'aria-labe': t.format('clear'),
+      onPress: handleClear,
+      variant: isInvalid ? 'error' : 'fade-contrast',
+      preventFocusOnPress: true,
+    },
+    slotProps?.clearButton
+  );
+
   const groupProps = mergeProps<
     [FieldInputGroupProps, FieldInputGroupProps | undefined]
   >(
@@ -137,12 +152,7 @@ function SelectRender<T extends object>(
         <>
           {endAddon}
           {hasClearButton && (
-            <IconButton
-              aria-label={stringFormatter.format('clear')}
-              onPress={handleClear}
-              variant={isInvalid ? 'error' : 'fade-contrast'}
-              preventFocusOnPress
-            >
+            <IconButton {...clearButtonProps}>
               <IconXmarkCircle16 />
             </IconButton>
           )}
