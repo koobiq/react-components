@@ -59,8 +59,6 @@ export const Base: Story = {
       label="Attack type"
       style={{ inlineSize: 200 }}
       placeholder="Select an option"
-      selectionMode="multiple"
-      isClearable
       {...args}
     >
       <Select.Item key="bruteforce">Bruteforce</Select.Item>
@@ -316,6 +314,7 @@ export const ClearButton: Story = {
       <Select
         items={options}
         label="Attack type"
+        style={{ inlineSize: 200 }}
         placeholder="Select an option"
         defaultSelectedKeys={[1]}
         isClearable
