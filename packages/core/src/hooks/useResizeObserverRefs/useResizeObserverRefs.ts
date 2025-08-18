@@ -1,3 +1,5 @@
+'use client';
+
 import type { RefObject } from 'react';
 import { useLayoutEffect, useState } from 'react';
 

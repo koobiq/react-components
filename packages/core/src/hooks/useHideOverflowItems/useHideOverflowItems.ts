@@ -1,3 +1,5 @@
+'use client';
+
 import { useElementSize } from '../useElementSize';
 import { useRefs } from '../useRefs';
 import { useResizeObserverRefs } from '../useResizeObserverRefs';
