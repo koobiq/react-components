@@ -603,9 +603,7 @@ export const StateHelper: Story = {
           onSelectionChange={(key) => list.setSelectedKeys(key)}
         >
           {(item) => (
-            <Select.Item textValue={item.firstName}>
-              {item.firstName} {item.lastName}
-            </Select.Item>
+            <Select.Item>{`${item.firstName} ${item.lastName}`}</Select.Item>
           )}
         </Select>
         <Typography>

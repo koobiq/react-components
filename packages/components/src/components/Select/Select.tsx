@@ -222,7 +222,7 @@ function SelectRender<T extends object>(
         />
       );
 
-    return state.selectedItems[0].rendered;
+    return state.selectedItems[0].textValue;
   };
 
   const renderValue = renderValueProp || renderDefaultValue;
