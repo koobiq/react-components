@@ -6,8 +6,12 @@ import type {
   Ref,
 } from 'react';
 
-import type { ExtendableProps, Node } from '@koobiq/react-core';
-import type { AriaSelectProps } from '@koobiq/react-primitives';
+import type { ExtendableProps } from '@koobiq/react-core';
+import type {
+  AriaSelectProps,
+  MultiSelectState,
+  useMultiSelectState,
+} from '@koobiq/react-primitives';
 
 import type {
   FieldErrorProps,
@@ -16,52 +20,49 @@ import type {
   FieldCaptionProps,
   FieldInputGroupProps,
 } from '../FieldComponents';
+import type { IconButtonProps } from '../IconButton';
 import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
-export type SelectKey = string | number;
+export const selectPropSelectedTagsOverflow = [
+  'multiline',
+  'responsive',
+] as const;
 
-type SelectDeprecatedProps = {
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   * @deprecated
-   * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
-   */
-  disabled?: boolean;
-  /**
-   * If `true`, the input will indicate an error.
-   * @default false
-   * @deprecated
-   * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
-   */
-  error?: boolean;
-  /**
-   * If `true`, the label is displayed as required and the input element is required.
-   * @default false
-   * @deprecated
-   * The "required" prop is deprecated. Use "isRequired" prop to replace it.
-   */
-  required?: boolean;
-  /**
-   * Sets the open state of the menu.
-   * @deprecated
-   * The "open" prop is deprecated. Use "isOpen" prop to replace it.
-   */
-  open?: boolean;
-  /**
-   * If `true`, the label is hidden. Be sure to add aria-label to the input element.
-   * @default false
-   * @deprecated
-   * The "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.
-   */
-  hiddenLabel?: boolean;
-};
+export type SelectPropSelectedTagsOverflow =
+  (typeof selectPropSelectedTagsOverflow)[number];
 
 export type SelectProps<T> = ExtendableProps<
   {
-    /** Additional CSS-classes. */
+    /**
+     * Defines how selected tags are displayed when they exceed the available space.
+     *
+     *- `"multiline"` — tags wrap to multiple lines.
+     *- `"responsive"` — tags collapse into a summary (e.g., "3 more").
+     * @default "responsive"
+     */
+    selectedTagsOverflow?: SelectPropSelectedTagsOverflow;
+    /** Handler that is called when the clear button is clicked. */
+    onClear?: () => void;
+    /** Sets the CSS [`className`](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. */
     className?: string;
+    /** The initial selected keys in the collection (uncontrolled). */
+    defaultSelectedKeys?: Parameters<
+      typeof useMultiSelectState
+    >['0']['defaultSelectedKeys'];
+    /** Whether the field can be emptied. */
+    isClearable?: boolean;
+    /** Handler that is called when the selection changes. */
+    onSelectionChange?: Parameters<
+      typeof useMultiSelectState
+    >['0']['onSelectionChange'];
+    /** The currently selected keys in the collection (controlled). */
+    selectedKeys?: Parameters<typeof useMultiSelectState>['0']['selectedKeys'];
+    /**
+     * The type of selection that is allowed in the collection.
+     * @default 'single'
+     */
+    selectionMode?: 'single' | 'multiple';
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */
@@ -87,19 +88,36 @@ export type SelectProps<T> = ExtendableProps<
     /** Ref to the control */
     ref?: Ref<HTMLDivElement>;
     /** A render function for displaying the selected value. */
-    renderValue?: (props: Node<T> | null) => ReactElement;
+    renderValue?: (
+      state: MultiSelectState<T>,
+      states: {
+        isInvalid?: boolean;
+        isDisabled?: boolean;
+        isRequired?: boolean;
+      }
+    ) => ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;
       label?: FieldLabelProps;
       list?: ListProps<T>;
-      control?: FieldSelectProps;
+      control?: FieldSelectProps<'div'>;
       caption?: FieldCaptionProps;
       group?: FieldInputGroupProps;
       errorMessage?: FieldErrorProps;
+      clearButton?: IconButtonProps;
     };
-  } & SelectDeprecatedProps,
-  Omit<AriaSelectProps<T>, 'description' | 'validationState'>
+  },
+  Omit<
+    AriaSelectProps<T>,
+    | 'description'
+    | 'validate'
+    | 'validationBehavior'
+    | 'validationState'
+    | 'selectedKey'
+    | 'onSelectionChange'
+    | 'defaultSelectedKey'
+  >
 >;
 
 export type SelectComponent = <T>(props: SelectProps<T>) => ReactElement | null;

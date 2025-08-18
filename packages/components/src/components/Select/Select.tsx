@@ -1,23 +1,20 @@
-import { forwardRef, type Ref } from 'react';
+import { forwardRef, type Ref, useCallback } from 'react';
 
-import { deprecate } from '@koobiq/logger';
 import {
   clsx,
-  mergeProps,
-  useBoolean,
   useDOMRef,
+  mergeProps,
   useElementSize,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import type { Node } from '@koobiq/react-core';
-import { IconChevronDownS16 } from '@koobiq/react-icons';
+import { IconChevronDownS16, IconXmarkCircle16 } from '@koobiq/react-icons';
 import {
-  useSelect,
-  useSelectState,
-  HiddenSelect,
   removeDataAttributes,
+  useMultiSelect,
+  useMultiSelectState,
 } from '@koobiq/react-primitives';
 
-import { Item, Section } from '../Collections';
+import { Item, Section, Divider } from '../Collections';
 import {
   FieldLabel,
   FieldError,
@@ -31,10 +28,14 @@ import {
   type FieldErrorProps,
   type FieldSelectProps,
 } from '../FieldComponents';
-import { ListItemText, ListInner } from '../List';
+import { IconButton } from '../IconButton';
+import type { ListItemText } from '../List';
+import { List } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 
+import { SelectList, TagGroup } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
+import intlMessages from './intl';
 import s from './Select.module.css';
 
 function SelectRender<T extends object>(
@@ -43,94 +44,56 @@ function SelectRender<T extends object>(
 ) {
   const {
     fullWidth = false,
+    isClearable = false,
     'data-testid': testId,
+    selectionMode = 'single',
+    selectedTagsOverflow = 'responsive',
+    isRequired,
+    isDisabled,
+    caption,
+    errorMessage,
     className,
     style,
-    open,
-    isOpen: isOpenProp,
-    hiddenLabel,
-    isLabelHidden: isLabelHiddenProp,
-    disabled,
-    isDisabled: isDisabledProp,
-    error,
-    isInvalid: isInvalidProp,
-    required,
-    isRequired: isRequiredProp,
-    caption,
+    isLabelHidden,
     placeholder,
     endAddon,
     slotProps,
     startAddon,
+    onClear,
     label,
-    name,
-    errorMessage,
     renderValue: renderValueProp,
   } = props;
 
-  const isOpen = isOpenProp ?? open;
-  const isInvalid = isInvalidProp ?? error ?? false;
-  const isDisabled = isDisabledProp ?? disabled ?? false;
-  const isRequired = isRequiredProp ?? required ?? false;
-  const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
-
-  if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
-    deprecate(
-      'Select: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
-    );
-  }
-
-  if (process.env.NODE_ENV !== 'production' && 'required' in props) {
-    deprecate(
-      'Select: the "required" prop is deprecated. Use "isRequired" prop to replace it.'
-    );
-  }
-
-  if (process.env.NODE_ENV !== 'production' && 'error' in props) {
-    deprecate(
-      'Select: the "error" prop is deprecated. Use "isInvalid" prop to replace it.'
-    );
-  }
-
-  if (process.env.NODE_ENV !== 'production' && 'open' in props) {
-    deprecate(
-      'Select: the "open" prop is deprecated. Use "isOpen" prop to replace it.'
-    );
-  }
-
-  if (process.env.NODE_ENV !== 'production' && 'hiddenLabel' in props) {
-    deprecate(
-      'Select: the "hiddenLabel" prop is deprecated. Use "isLabelHidden" prop to replace it.'
-    );
-  }
+  const t = useLocalizedStringFormatter(intlMessages);
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
-  const state = useSelectState({
-    ...removeDataAttributes(props),
-    isOpen,
-    isInvalid,
-    isDisabled,
-    isRequired,
-  });
+  const state = useMultiSelectState(
+    removeDataAttributes({ ...props, selectionMode })
+  );
 
-  const [opened, { on, off }] = useBoolean(state.isOpen);
+  const hasClearButton = isClearable && !isDisabled && state.selectedItems;
+
+  const handleClear = useCallback(() => {
+    state.selectionManager.clearSelection();
+    onClear?.();
+  }, [onClear, state]);
 
   const {
+    isInvalid,
     menuProps,
     valueProps,
     triggerProps,
     labelProps: labelPropsAria,
     descriptionProps,
     errorMessageProps,
-  } = useSelect(
-    {
-      ...removeDataAttributes(props),
-      isOpen,
-      isInvalid,
-      isDisabled,
-      isRequired,
-    },
-    { ...state, isOpen: state.isOpen || opened },
+  } = useMultiSelect(
+    removeDataAttributes({
+      ...props,
+      selectionMode,
+      disallowEmptySelection: true,
+    }),
+    state,
     domRef
   );
 
@@ -139,10 +102,10 @@ function SelectRender<T extends object>(
 
   const rootProps = mergeProps({
     'data-testid': testId,
-    'data-invalid': isInvalid,
     'data-fullwidth': fullWidth,
-    'data-disabled': isDisabled,
-    'data-required': isRequired,
+    'data-invalid': isInvalid,
+    'data-disabled': props.isDisabled,
+    'data-required': props.isRequired,
     className: clsx(s.base, fullWidth && s.fullWidth, className),
     style,
   });
@@ -161,6 +124,17 @@ function SelectRender<T extends object>(
     labelPropsAria
   );
 
+  const clearButtonProps = mergeProps(
+    {
+      'aria-labe': t.format('clear'),
+      onPress: handleClear,
+      className: s.clearButton,
+      variant: isInvalid ? 'error' : 'fade-contrast',
+      preventFocusOnPress: true,
+    },
+    slotProps?.clearButton
+  );
+
   const groupProps = mergeProps<
     [FieldInputGroupProps, FieldInputGroupProps | undefined]
   >(
@@ -169,11 +143,19 @@ function SelectRender<T extends object>(
         endAddon: { className: s.addon },
         startAddon: { className: s.addon },
       },
+      className: clsx(isClearable && s.clearable),
       startAddon,
       endAddon: (
         <>
           {endAddon}
-          <IconChevronDownS16 className={s.chevron} />
+          {hasClearButton && (
+            <IconButton {...clearButtonProps}>
+              <IconXmarkCircle16 />
+            </IconButton>
+          )}
+          <span className={s.chevron}>
+            <IconChevronDownS16 />
+          </span>
         </>
       ),
       isInvalid,
@@ -192,14 +174,28 @@ function SelectRender<T extends object>(
     ]
   >(
     {
-      isInvalid,
-      isDisabled,
       ref: domRef,
       placeholder,
+      isInvalid,
+      isDisabled,
     },
     slotProps?.control,
     valueProps,
     triggerProps
+  );
+
+  const popoverProps = mergeProps(
+    {
+      state,
+      offset: 4,
+      size: width,
+      hideArrow: true,
+      anchorRef: domRef,
+      className: s.popover,
+      placement: 'bottom start',
+      type: 'listbox',
+    },
+    slotProps?.popover
   );
 
   const captionProps = mergeProps<
@@ -214,28 +210,20 @@ function SelectRender<T extends object>(
     errorMessageProps
   );
 
-  const popoverProps = mergeProps(
-    {
-      state,
-      offset: 4,
-      size: width,
-      hideArrow: true,
-      anchorRef: domRef,
-      className: s.popover,
-      placement: 'bottom start',
-      type: 'listbox',
-      slotProps: {
-        transition: {
-          onEnter: on,
-          onExited: off,
-        },
-      },
-    },
-    slotProps?.popover
-  );
+  const renderDefaultValue: typeof renderValueProp = (state, states) => {
+    if (!state.selectedItems) return null;
 
-  const renderDefaultValue = (selectedItem: Node<T> | null) =>
-    selectedItem?.rendered;
+    if (selectionMode === 'multiple')
+      return (
+        <TagGroup
+          state={state}
+          states={states}
+          selectedTagsOverflow={selectedTagsOverflow}
+        />
+      );
+
+    return state.selectedItems[0].rendered;
+  };
 
   const renderValue = renderValueProp || renderDefaultValue;
 
@@ -243,23 +231,20 @@ function SelectRender<T extends object>(
     <>
       <FieldControl {...rootProps}>
         <FieldLabel {...labelProps} />
-        <HiddenSelect
-          name={name}
-          label={label}
-          state={state}
-          triggerRef={domRef}
-          isDisabled={isDisabled}
-        />
         <FieldContentGroup {...groupProps}>
           <FieldSelect {...controlProps}>
-            {renderValue(state?.selectedItem)}
+            {renderValue(state, {
+              isInvalid,
+              isDisabled: props.isDisabled,
+              isRequired: props.isRequired,
+            })}
           </FieldSelect>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
         <FieldError {...errorProps} />
       </FieldControl>
       <PopoverInner {...popoverProps}>
-        <ListInner {...listProps} />
+        <SelectList {...listProps} />
       </PopoverInner>
     </>
   );
@@ -270,15 +255,13 @@ const SelectComponent = forwardRef(SelectRender) as SelectComponent;
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof Item;
   Section: typeof Section;
+  Divider: typeof Divider;
   ItemText: typeof ListItemText;
 };
 
-/**
- * @deprecated
- * This component has been deprecated, please use SelectNext instead.
- */
 export const Select = SelectComponent as CompoundedComponent;
 
 Select.Item = Item;
 Select.Section = Section;
-Select.ItemText = ListItemText;
+Select.Divider = Divider;
+Select.ItemText = List.ItemText;

@@ -25,7 +25,6 @@ export * from './Tooltip';
 export * from './List';
 export * from './AnimatedIcon';
 export * from './Select';
-export * from './SelectNext';
 export * from './Divider';
 export * from './Menu';
 export * from './ButtonToggleGroup';
