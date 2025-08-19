@@ -1,9 +1,8 @@
 import { Fragment, useState } from 'react';
 
-import { Typography, Input, IconButton } from '@koobiq/react-components';
+import { Typography, SearchInput } from '@koobiq/react-components';
 import { clsx } from '@koobiq/react-core';
 import * as icons from '@koobiq/react-icons';
-import { IconMagnifyingGlass16, IconXmarkCircle16 } from '@koobiq/react-icons';
 
 import iconsManifest from '../../../packages/icons/manifest.json';
 import { slugify } from '../../utils';
@@ -37,10 +36,6 @@ export const IconGallery = () => {
     setSearch(value);
   };
 
-  const handleClear = () => {
-    setSearch('');
-  };
-
   const filteredIcons = iconsManifest.icons.filter(({ componentName }) =>
     componentName.toLowerCase().includes(search.toLowerCase())
   );
@@ -48,25 +43,11 @@ export const IconGallery = () => {
   return (
     <>
       <div className={clsx(s.search, 'sb-unstyled')}>
-        <Input
+        <SearchInput
+          value={search}
           label="Search an icon by name"
           placeholder="Search…"
-          value={search}
           onChange={handleSearch}
-          startAddon={<IconMagnifyingGlass16 />}
-          {...(search !== '' && {
-            endAddon: (
-              <IconButton
-                aria-label="clear"
-                variant="fade-contrast"
-                onPress={handleClear}
-                preventFocusOnPress
-                style={{ marginInlineEnd: '-8px ' }}
-              >
-                <IconXmarkCircle16 />
-              </IconButton>
-            ),
-          })}
           fullWidth
         />
       </div>
