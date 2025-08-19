@@ -126,7 +126,7 @@ function SelectRender<T extends object>(
 
   const clearButtonProps = mergeProps(
     {
-      'aria-labe': t.format('clear'),
+      'aria-label': t.format('clear'),
       onPress: handleClear,
       className: s.clearButton,
       variant: isInvalid ? 'error' : 'fade-contrast',
