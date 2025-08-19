@@ -1,9 +1,21 @@
 .base {
   input::-webkit-search-cancel-button {
-    -webkit-appearance: none;
+    appearance: none;
   }
 
   input::-webkit-search-decoration {
-    -webkit-appearance: none;
+    appearance: none;
   }
+}
+
+.startAddon {
+  pointer-events: none;
+
+  & > :not(.searchIcon) {
+    pointer-events: all;
+  }
+}
+
+.clearButton {
+  margin-inline-end: calc(-1 * var(--kbq-size-xxs));
 }

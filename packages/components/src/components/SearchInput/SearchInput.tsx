@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
-import { IconXmarkCircle16 } from '@koobiq/react-icons';
+import { IconMagnifyingGlass16, IconXmarkCircle16 } from '@koobiq/react-icons';
 import { useSearchField, useSearchFieldState } from '@koobiq/react-primitives';
 
 import {
@@ -31,6 +31,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       caption,
       errorMessage,
       isRequired,
+      isReadOnly,
       label,
       startAddon,
       endAddon,
@@ -41,6 +42,8 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
 
     const state = useSearchFieldState(props);
     const domRef = useDOMRef(ref);
+
+    const hasClearButton = state.value !== '' && !isDisabled && !isReadOnly;
 
     const {
       labelProps: labelPropsAria,
@@ -75,11 +78,18 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       [FieldInputGroupProps, FieldInputGroupProps | undefined]
     >(
       {
-        startAddon,
+        slotProps: { startAddon: { className: s.startAddon } },
+        startAddon: (
+          <>
+            <IconMagnifyingGlass16 className={s.searchIcon} />
+            {startAddon}
+          </>
+        ),
         endAddon: (
           <>
-            {state.value !== '' && (
+            {hasClearButton && (
               <IconButton
+                className={s.clearButton}
                 {...clearButtonProps}
                 variant={isInvalid ? 'error' : 'fade-contrast'}
               >

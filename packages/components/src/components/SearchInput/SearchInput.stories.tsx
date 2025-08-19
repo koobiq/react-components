@@ -45,7 +45,6 @@ export const Variant: Story = {
             variant={variant}
             aria-label="variant"
             placeholder={`variant = ${variant}`}
-            startAddon={<IconMagnifyingGlass16 />}
             {...args}
           />
         ))}
@@ -102,7 +101,6 @@ export const Disabled: Story = {
             caption="disabled"
             aria-label="disabled"
             placeholder={`variant = ${variant}`}
-            startAddon={<IconMagnifyingGlass16 />}
             isDisabled
             {...args}
           />
@@ -174,7 +172,6 @@ export const Addons: Story = {
 
 export const Debounce: Story = {
   render: function Render(args) {
-    const [inputValue, setInputValue] = useState('');
     const [debouncedValue, setDebouncedValue] = useState('');
 
     const [handleChangeDebounced] = useDebounceCallback({
@@ -186,16 +183,10 @@ export const Debounce: Story = {
         <SearchInput
           label="Search"
           placeholder="Type a word..."
-          value={inputValue}
-          onChange={(val) => {
-            setInputValue(val);
-            handleChangeDebounced(val);
-          }}
-          startAddon={<IconMagnifyingGlass16 />}
+          onChange={handleChangeDebounced}
           {...args}
         />
 
-        <Typography>Query result: {inputValue}</Typography>
         <Typography>Debounced result: {debouncedValue}</Typography>
       </FlexBox>
     );
