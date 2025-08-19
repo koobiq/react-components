@@ -1,11 +1,8 @@
-.base {
-  input::-webkit-search-cancel-button {
-    appearance: none;
-  }
-
-  input::-webkit-search-decoration {
-    appearance: none;
-  }
+.input::-webkit-search-decoration,
+.input::-webkit-search-cancel-button,
+.input::-webkit-search-results-button,
+.input::-webkit-search-results-decoration {
+  appearance: none;
 }
 
 .startAddon {

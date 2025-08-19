@@ -69,6 +69,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
         isInvalid,
         isDisabled,
         ref: domRef,
+        className: s.input,
       },
       slotProps?.input,
       inputPropsAria
