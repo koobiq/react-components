@@ -1,6 +1,7 @@
 export {
   useToggleButtonGroup,
   useToggleButtonGroupItem,
+  type AriaButtonProps,
   type AriaToggleButtonGroupProps,
   type AriaToggleButtonGroupItemProps,
 } from '@react-aria/button';
@@ -22,6 +23,8 @@ export {
 } from '@react-stately/overlays';
 
 export * from '@react-aria/dialog';
+
+export * from '@react-aria/label';
 
 export * from '@react-aria/listbox';
 export * from '@react-stately/list';
@@ -63,6 +66,10 @@ export {
   useCalendarGrid,
 } from '@react-aria/calendar';
 export * from '@react-stately/calendar';
+
+export * from '@react-stately/form';
+
+export * from '@react-aria/selection';
 
 export * from './behaviors';
 export * from './components';

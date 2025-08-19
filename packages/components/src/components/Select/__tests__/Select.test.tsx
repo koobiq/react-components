@@ -4,22 +4,27 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { Select, type SelectProps } from './index';
+import { Select, type SelectProps } from '../index';
 
 describe('Select', () => {
   const baseProps: SelectProps<object> = {
     'data-testid': 'root',
     label: 'label',
+    selectionMode: 'single',
     children: null,
     slotProps: {
       control: {
         'data-testid': 'control',
+      },
+      clearButton: {
+        'aria-label': 'clear-button',
       },
     },
   };
 
   const getRoot = () => screen.getByTestId('root');
   const getControl = () => screen.getByTestId('control');
+  const getClearButton = () => screen?.queryByLabelText('clear-button');
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -33,7 +38,7 @@ describe('Select', () => {
     expect(getRoot()).toHaveClass('foo');
   });
 
-  it('should display the label', () => {
+  it('should display a label', () => {
     render(<Select {...baseProps} />);
 
     expect(screen.getAllByText('label')[0]).toBeInTheDocument();
@@ -74,7 +79,7 @@ describe('Select', () => {
   describe('value', () => {
     it(`should set the defaultSelectedKey correctly`, () => {
       render(
-        <Select {...baseProps} defaultSelectedKey="1">
+        <Select {...baseProps} defaultSelectedKeys={['1']}>
           <Select.Item key="1">1</Select.Item>
           <Select.Item key="2">2</Select.Item>
           <Select.Item key="3">3</Select.Item>
@@ -93,19 +98,24 @@ describe('Select', () => {
           onSelectionChange={onSelectionChange}
           defaultOpen
         >
-          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="1" data-testid="option-1">
+            1
+          </Select.Item>
           <Select.Item key="2">2</Select.Item>
           <Select.Item key="3">3</Select.Item>
         </Select>
       );
 
-      const [, firstItem] = screen.getAllByText('1');
+      const option = screen.getByTestId('option-1');
 
-      await userEvent.click(firstItem);
+      await userEvent.click(option);
 
       expect(onSelectionChange).toHaveBeenCalledTimes(1);
 
-      expect(onSelectionChange.mock.results[0]?.value).toStrictEqual('1');
+      const result = onSelectionChange.mock.results[0]?.value;
+      expect(result).toBeInstanceOf(Set);
+      expect(result.has('1')).toBe(true);
+      expect(result.size).toBe(1);
 
       expect(getControl()).toHaveTextContent('1');
     });
@@ -175,10 +185,106 @@ describe('Select', () => {
       expect(getRoot()).toHaveAttribute('data-required', 'true');
     });
 
-    it('check the isInvalid  prop', () => {
+    it('check the isInvalid prop', () => {
       render(<Select {...baseProps} isInvalid />);
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+    });
+  });
+
+  describe('clear button', () => {
+    it('should render clear button only when a value is selected', () => {
+      const { rerender } = render(
+        <Select {...baseProps} selectedKeys={[]} isClearable>
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      expect(getClearButton()).not.toBeInTheDocument();
+
+      rerender(
+        <Select {...baseProps} selectedKeys={['1']} isClearable>
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      expect(getClearButton()).toBeInTheDocument();
+    });
+
+    it('should call onSelectionChange with empty value when cleared', async () => {
+      const onSelectionChange = vi.fn((val) => val);
+
+      render(
+        <Select
+          {...baseProps}
+          selectedKeys={['1']}
+          onSelectionChange={onSelectionChange}
+          isClearable
+        >
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      const clearButton = getClearButton();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onSelectionChange).toHaveBeenCalledTimes(1);
+
+      const [selection] = onSelectionChange.mock.calls[0];
+
+      expect([...selection]).toEqual([]);
+    });
+
+    it('should call onClear when clear button is clicked', async () => {
+      const onClear = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          selectedKeys={['1']}
+          onClear={onClear}
+          isClearable
+        >
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      const clearButton = getClearButton();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onClear).toHaveBeenCalledTimes(1);
+    });
+
+    it('should NOT render clear button when Select is disabled', async () => {
+      const onClear = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          selectedKeys={['1']}
+          onClear={onClear}
+          isDisabled
+          isClearable
+        >
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      const clearButton = getClearButton();
+
+      expect(clearButton).not.toBeInTheDocument();
     });
   });
 });

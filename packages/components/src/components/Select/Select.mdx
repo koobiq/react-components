@@ -13,7 +13,7 @@ import * as Stories from './Select.stories';
 
 <Status variant="experimental" />
 
-A select displays a collapsible list of options and allows a user to select one of them.
+A select displays a collapsible list of options and allows a user to select one or more of them.
 
 ```tsx
 import { Select } from '@koobiq/react-components';
@@ -39,12 +39,29 @@ in the example below, then this is used automatically and an `key` prop is not r
 
 <Story of={Stories.Content} />
 
-## Selection
+## Single Selection
 
 Setting a selected option can be done by using the `defaultSelectedKey` or `selectedKey` prop.
 The selected key corresponds to the `key` prop of an item.
 
-<Story of={Stories.Selection} />
+<Story of={Stories.SingleSelection} />
+
+## Multiple Selection
+
+You can use the `selectionMode="multiple"` prop to allow multiple selection.
+
+<Story of={Stories.MultipleSelection} />
+
+### Selected value tags
+
+In `selectionMode="multiple"`, selected values are displayed as tags by default.
+
+To control how tags are displayed, use the `selectedTagsOverflow` prop. It supports the following values:
+
+- `responsive` (default) — tags collapse into a summary (e.g., "3 more") to fit the available width without increasing the component block size.
+- `multiline` — tags wrap to multiple lines, increasing the component height as needed.
+
+<Story of={Stories.SelectedTagsOverflow} />
 
 ## Invalid
 
@@ -78,6 +95,19 @@ The `fullWidth` prop will make a select fit to its parent width.
 
 <Story of={Stories.FullWidth} />
 
+## Clear Button
+
+If you pass the `isClearable` prop to the select, it will have a clear
+button which will be visible only when a value is selected.
+
+<Story of={Stories.ClearButton} />
+
+## Addons
+
+You can add an extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
 ## Open
 
 ### Default open
@@ -107,3 +137,15 @@ See the example below how to use [icons](?path=/docs/icons--docs) in items of th
 See the example below for using details in items of the component.
 
 <Story of={Stories.WithItemDetails} />
+
+## State Helper
+
+Use the `useListData` hook to manage items with convenient methods for adding,
+updating, and removing entries. Pass an initial set of items and a function to extract
+a unique key for each item. The returned state can then be used to render component options.
+
+```ts
+import { useListData } from '@koobiq/react-componenets';
+```
+
+<Story of={Stories.StateHelper} />

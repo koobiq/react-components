@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  inline-size: calc(100% + var(--kbq-size-s));
+  margin-inline-start: calc(-1 * var(--kbq-size-s));
+}
+
+.hasStartAddon {
+  inline-size: 100%;
+  margin-inline-start: unset;
+}
+
+.base {
+  inline-size: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  gap: var(--kbq-size-xxs);
+  padding-block: var(--kbq-size-xxs);
+}
+
+.base[data-limit-tags='responsive'] {
+  gap: unset;
+  flex-wrap: nowrap;
+
+  .tag {
+    margin-inline-end: var(--kbq-size-xxs);
+  }
+}
+
+.more {
+  text-align: end;
+  align-self: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+  flex: 0 0 60px;
+  padding: var(--kbq-size-3xs) calc(var(--kbq-size-xs) + var(--kbq-size-xxs))
+    var(--kbq-size-3xs) var(--kbq-size-xxs);
+}
+
+.hidden {
+  inset-inline-start: -300vw;
+  visibility: hidden;
+  position: absolute;
+}
