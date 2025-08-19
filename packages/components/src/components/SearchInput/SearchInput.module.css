@@ -1,0 +1,9 @@
+.base {
+  input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+
+  input::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+}
