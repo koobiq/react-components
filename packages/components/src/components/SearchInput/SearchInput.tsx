@@ -25,6 +25,7 @@ import type { SearchInputProps, SearchInputRef } from './types';
 export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
   (props, ref) => {
     const {
+      startAddon = <IconMagnifyingGlass16 className={s.searchIcon} />,
       variant = 'filled',
       fullWidth = false,
       isLabelHidden = false,
@@ -33,7 +34,6 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       isRequired,
       isReadOnly,
       label,
-      startAddon,
       endAddon,
       isInvalid,
       isDisabled,
@@ -80,12 +80,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     >(
       {
         slotProps: { startAddon: { className: s.startAddon } },
-        startAddon: (
-          <>
-            <IconMagnifyingGlass16 className={s.searchIcon} />
-            {startAddon}
-          </>
-        ),
+        startAddon,
         endAddon: (
           <>
             {hasClearButton && (

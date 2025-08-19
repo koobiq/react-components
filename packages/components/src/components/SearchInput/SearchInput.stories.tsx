@@ -149,28 +149,30 @@ export const ReadOnly: Story = {
   },
 };
 
-export const Addons: Story = {
+export const Events: Story = {
   render: function Render(args) {
+    const [currentText, setCurrentText] = useState('');
+    const [submittedText, setSubmittedText] = useState('');
+
     return (
-      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
+      <FlexBox gap="m" direction="column">
         <SearchInput
-          label="startAddon"
-          startAddon={<IconMagnifyingGlass16 />}
+          label="Search"
           placeholder="Type a word..."
+          onClear={() => setCurrentText('')}
+          onChange={setCurrentText}
+          onSubmit={setSubmittedText}
+          value={currentText}
           {...args}
         />
-        <SearchInput
-          label="endAddon"
-          endAddon={<IconMagnifyingGlass16 />}
-          placeholder="Type a word..."
-          {...args}
-        />
+        <Typography>Mirrored text: {currentText}</Typography>
+        <Typography>Submitted text: {submittedText}</Typography>
       </FlexBox>
     );
   },
 };
 
-export const Debounce: Story = {
+export const DebounceSearch: Story = {
   render: function Render(args) {
     const [debouncedValue, setDebouncedValue] = useState('');
 

@@ -49,5 +49,5 @@ export type SearchInputProps = ExtendableProps<
      */
     fullWidth?: boolean;
   },
-  Omit<AriaSearchFieldProps, 'description' | 'errorMessage'>
+  Omit<AriaSearchFieldProps, 'description' | 'errorMessage' | 'validationState'>
 >;
