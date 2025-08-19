@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://github.com/koobiq/react-components/compare/0.3.1...0.4.0) (2025-08-19)
+
+### ⚠ BREAKING CHANGES
+
+- **Select:** the Select API has been updated to support multiple selection. This affects several props (`defaultSelectedKey`, `selectedKey`, `renderValue`, `onSelectionChange`) and may require changes in existing code.
+
+### 🚀 Features
+
+- **List:** add `List.Divider` component (DS-4117) ([1619b11](https://github.com/koobiq/react-components/commit/1619b11d8974385de0d4d71c54c3e068e4ac9214))
+- **Select:** add multi-select support and update API ([f6bd7f0](https://github.com/koobiq/react-components/commit/f6bd7f011860ab526d59c0753d38d430c1b53249))
+
+### 🐞 Bug Fixes
+
+- **List:** correct background color for List.Item in multi-select state (DS-4120) ([1cd6d23](https://github.com/koobiq/react-components/commit/1cd6d234767ea8e5cf5d3a0bbd00d956657efdbd))
+- **Table:** correct background color for Table.Row in multi-select state (DS-4121) ([46ec62b](https://github.com/koobiq/react-components/commit/46ec62b616bc5f9a41f35f98337835fa3b29be52))
+- **useHideOverflowItems:** include 'use client' directive ([570658d](https://github.com/koobiq/react-components/commit/570658dfc7049ee78c1308430f201fa9bfa216c6))
+
 ## [0.3.1](https://github.com/koobiq/react-components/compare/0.3.0...0.3.1) (2025-08-15)
 
 ### 🐞 Bug Fixes
