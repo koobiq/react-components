@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useDebounceCallback } from '@koobiq/react-core';
-import { IconMagnifyingGlass16 } from '@koobiq/react-icons';
+import { IconMagnifyingGlass16, IconUser16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
@@ -36,6 +36,19 @@ export const Base: Story = {
       {...args}
     />
   ),
+};
+
+export const Addons: Story = {
+  render: function Render(args) {
+    return (
+      <SearchInput
+        startAddon={<IconUser16 />}
+        label="Search for users"
+        placeholder="Enter a name or email"
+        {...args}
+      />
+    );
+  },
 };
 
 export const Variant: Story = {
