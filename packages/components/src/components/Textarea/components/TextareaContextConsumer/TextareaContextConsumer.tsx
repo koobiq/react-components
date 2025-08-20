@@ -10,7 +10,7 @@ import {
   FieldError,
   type FieldErrorProps,
   FieldInput,
-  type FieldInputGroupProps,
+  type FieldContentGroupProps,
   type FieldInputProps,
   FieldLabel,
   type FieldLabelProps,
@@ -86,7 +86,7 @@ export const TextareaContextConsumer = forwardRef<
     slotProps?.errorMessage
   );
 
-  const groupProps: FieldInputGroupProps = {
+  const groupProps: FieldContentGroupProps = {
     variant,
     isInvalid,
     isDisabled,

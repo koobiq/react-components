@@ -18,7 +18,7 @@ import type {
   FieldLabelProps,
   FieldSelectProps,
   FieldCaptionProps,
-  FieldInputGroupProps,
+  FieldContentGroupProps,
 } from '../FieldComponents';
 import type { IconButtonProps } from '../IconButton';
 import type { ListProps } from '../List';
@@ -101,9 +101,9 @@ export type SelectProps<T> = ExtendableProps<
       popover?: PopoverProps;
       label?: FieldLabelProps;
       list?: ListProps<T>;
-      control?: FieldSelectProps<'div'>;
+      control?: FieldSelectProps;
       caption?: FieldCaptionProps;
-      group?: FieldInputGroupProps;
+      group?: FieldContentGroupProps;
       errorMessage?: FieldErrorProps;
       clearButton?: IconButtonProps;
     };

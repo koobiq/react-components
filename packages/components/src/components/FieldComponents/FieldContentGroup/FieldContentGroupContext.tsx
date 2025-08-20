@@ -12,4 +12,4 @@ export type FieldContentGroupContextProps = {
 export const FieldContentGroupContext =
   createContext<FieldContentGroupContextProps>({});
 
-export const useFieldInputGroup = () => useContext(FieldContentGroupContext);
+export const useFieldContentGroup = () => useContext(FieldContentGroupContext);

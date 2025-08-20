@@ -14,7 +14,7 @@ import type {
   FieldControlProps,
   FieldErrorProps,
   FieldInputDateProps,
-  FieldInputGroupProps,
+  FieldContentGroupProps,
   FieldLabelProps,
 } from '../FieldComponents';
 
@@ -41,7 +41,7 @@ export type TimePickerProps<T extends TimeValue> = {
   slotProps?: {
     root?: FieldControlProps;
     label?: FieldLabelProps;
-    group?: FieldInputGroupProps;
+    group?: FieldContentGroupProps;
     caption?: FieldCaptionProps;
     inputDate?: FieldInputDateProps;
     errorMessage?: FieldErrorProps;

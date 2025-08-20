@@ -14,7 +14,7 @@ import {
   FieldCaption,
   FieldContentGroup,
   type FieldLabelProps,
-  type FieldInputGroupProps,
+  type FieldContentGroupProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldInputProps,
@@ -116,7 +116,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
         );
 
         const inputProps = mergeProps<
-          [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
+          [FieldInputProps, FieldInputProps | undefined]
         >(
           {
             variant,
@@ -128,7 +128,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
         );
 
         const groupProps = mergeProps<
-          [FieldInputGroupProps, FieldInputGroupProps | undefined]
+          [FieldContentGroupProps, FieldContentGroupProps | undefined]
         >(
           {
             endAddon,

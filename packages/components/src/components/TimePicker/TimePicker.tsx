@@ -23,7 +23,7 @@ import type {
   FieldControlProps,
   FieldErrorProps,
   FieldInputDateProps,
-  FieldInputGroupProps,
+  FieldContentGroupProps,
   FieldLabelProps,
 } from '../FieldComponents';
 
@@ -91,7 +91,7 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   const groupProps = mergeProps<
-    [FieldInputGroupProps, FieldInputGroupProps | undefined]
+    [FieldContentGroupProps, FieldContentGroupProps | undefined]
   >(
     {
       startAddon: (

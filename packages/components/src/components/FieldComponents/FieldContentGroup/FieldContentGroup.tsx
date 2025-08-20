@@ -8,11 +8,11 @@ import { FieldAddon } from '../FieldAddon';
 
 import s from './FieldContentGroup.module.css';
 import { FieldContentGroupContext } from './FieldContentGroupContext';
-import type { FieldInputGroupProps } from './index';
+import type { FieldContentGroupProps } from './index';
 
 export const FieldContentGroup = forwardRef<
   ComponentRef<'div'>,
-  FieldInputGroupProps
+  FieldContentGroupProps
 >(function FieldContentGroup(
   {
     variant = 'filled',

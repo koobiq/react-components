@@ -3,18 +3,20 @@ import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { NumberField, NumberFieldProps } from '@koobiq/react-primitives';
 
-import type {
-  FieldCaptionProps,
-  FieldControlProps,
-  FieldErrorProps,
-  FieldInputGroupProps,
-  FieldInputProps,
-  FieldLabelProps,
+import {
+  type FieldCaptionProps,
+  type FieldControlProps,
+  type FieldErrorProps,
+  type FieldContentGroupProps,
+  type FieldInputProps,
+  type FieldLabelProps,
+  fieldContentGroupPropVariant,
+  type FieldContentGroupPropVariant,
 } from '../FieldComponents';
 
-export const inputNumberPropVariant = ['filled', 'transparent'] as const;
+export const inputNumberPropVariant = fieldContentGroupPropVariant;
 
-export type InputNumberPropVariant = (typeof inputNumberPropVariant)[number];
+export type InputNumberPropVariant = FieldContentGroupPropVariant;
 
 type InputNumberDeprecatedProps = {
   /**
@@ -91,7 +93,7 @@ export type InputNumberProps = ExtendableProps<
       label?: FieldLabelProps;
       input?: FieldInputProps;
       caption?: FieldCaptionProps;
-      group?: FieldInputGroupProps;
+      group?: FieldContentGroupProps;
       errorMessage?: FieldErrorProps;
     };
   } & InputNumberDeprecatedProps,

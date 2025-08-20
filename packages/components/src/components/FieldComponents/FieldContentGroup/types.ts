@@ -4,12 +4,12 @@ import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 
 import type { FieldAddonProps } from '../FieldAddon';
 
-export const fieldInputGroupPropVariant = ['filled', 'transparent'] as const;
+export const fieldContentGroupPropVariant = ['filled', 'transparent'] as const;
 
-export type FieldInputGroupPropVariant =
-  (typeof fieldInputGroupPropVariant)[number];
+export type FieldContentGroupPropVariant =
+  (typeof fieldContentGroupPropVariant)[number];
 
-export type FieldInputGroupProps = ExtendableComponentPropsWithRef<
+export type FieldContentGroupProps = ExtendableComponentPropsWithRef<
   {
     /** The content of the component. */
     children?: ReactNode;
@@ -21,7 +21,7 @@ export type FieldInputGroupProps = ExtendableComponentPropsWithRef<
      * The variant to use.
      * @default 'filled'
      */
-    variant?: FieldInputGroupPropVariant;
+    variant?: FieldContentGroupPropVariant;
     /** Whether the input is disabled. */
     isDisabled?: boolean;
     /** Additional CSS-classes. */

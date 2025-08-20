@@ -3,16 +3,18 @@ import type { ComponentRef, ReactNode } from 'react';
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { TextFieldProps } from '@koobiq/react-primitives';
 
-import type {
-  FieldCaptionProps,
-  FieldErrorProps,
-  FieldInputProps,
-  FieldLabelProps,
+import {
+  type FieldCaptionProps,
+  type FieldContentGroupPropVariant,
+  fieldContentGroupPropVariant,
+  type FieldErrorProps,
+  type FieldInputProps,
+  type FieldLabelProps,
 } from '../FieldComponents';
 
-export const textareaPropVariant = ['filled', 'transparent'] as const;
+export const textareaPropVariant = fieldContentGroupPropVariant;
 
-export type TextareaPropVariant = (typeof textareaPropVariant)[number];
+export type TextareaPropVariant = FieldContentGroupPropVariant;
 
 export const textareaPropExpand = ['auto-size', 'vertical-resize'] as const;
 export type TextareaPropExpand = (typeof textareaPropExpand)[number];
