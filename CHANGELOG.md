@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.0](https://github.com/koobiq/react-components/compare/0.4.0...0.5.0) (2025-08-20)
+
+### 🚀 Features
+
+- **components:** add `SearchInput` component (DS-4046) ([8a930e3](https://github.com/koobiq/react-components/commit/8a930e3673e0f323bc4f856162ce12dcc35fedbc))
+
 ## [0.4.0](https://github.com/koobiq/react-components/compare/0.3.1...0.4.0) (2025-08-19)
 
 ### ⚠ BREAKING CHANGES
