@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef } from 'react';
 
 import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
