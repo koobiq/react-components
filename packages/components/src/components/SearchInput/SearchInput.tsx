@@ -8,11 +8,11 @@ import {
   FieldCaption,
   type FieldCaptionProps,
   FieldContentGroup,
+  type FieldContentGroupProps,
   FieldControl,
   FieldError,
   type FieldErrorProps,
   FieldInput,
-  type FieldInputGroupProps,
   type FieldInputProps,
   FieldLabel,
   type FieldLabelProps,
@@ -76,7 +76,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     );
 
     const groupProps = mergeProps<
-      [FieldInputGroupProps, FieldInputGroupProps | undefined]
+      [FieldContentGroupProps, FieldContentGroupProps | undefined]
     >(
       {
         slotProps: { startAddon: { className: s.startAddon } },
@@ -115,7 +115,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     );
 
     return (
-      <FieldControl className={s.base} fullWidth={fullWidth}>
+      <FieldControl fullWidth={fullWidth}>
         <FieldLabel {...labelProps}>{label}</FieldLabel>
         <FieldContentGroup {...groupProps}>
           <FieldInput {...inputProps} />

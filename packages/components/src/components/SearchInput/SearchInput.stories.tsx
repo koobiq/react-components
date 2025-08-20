@@ -4,11 +4,14 @@ import { useDebounceCallback } from '@koobiq/react-core';
 import { IconMagnifyingGlass16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { fieldInputGroupPropVariant } from '../FieldComponents';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import { SearchInput, type SearchInputProps } from './index';
+import {
+  SearchInput,
+  type SearchInputProps,
+  searchInputPropVariant,
+} from './index';
 
 const meta = {
   title: 'Components/SearchInput',
@@ -39,7 +42,7 @@ export const Variant: Story = {
   render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
-        {fieldInputGroupPropVariant.map((variant) => (
+        {searchInputPropVariant.map((variant) => (
           <SearchInput
             key={variant}
             variant={variant}
@@ -57,7 +60,7 @@ export const Invalid: Story = {
   render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
-        {fieldInputGroupPropVariant.map((variant) => (
+        {searchInputPropVariant.map((variant) => (
           <SearchInput
             key={variant}
             variant={variant}
@@ -94,7 +97,7 @@ export const Disabled: Story = {
   render: function Render(args) {
     return (
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
-        {fieldInputGroupPropVariant.map((variant) => (
+        {searchInputPropVariant.map((variant) => (
           <SearchInput
             key={variant}
             variant={variant}

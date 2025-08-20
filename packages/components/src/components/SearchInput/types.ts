@@ -6,15 +6,16 @@ import type { AriaSearchFieldProps } from '@koobiq/react-primitives';
 import type {
   FieldCaptionProps,
   FieldErrorProps,
-  FieldInputGroupProps,
-  FieldInputGroupPropVariant,
   FieldInputProps,
   FieldLabelProps,
+  FieldContentGroupProps,
+  FieldContentGroupPropVariant,
 } from '../FieldComponents';
+import { fieldContentGroupPropVariant } from '../FieldComponents';
 
-export type SearchInputPropVariant = FieldInputGroupPropVariant;
+export const searchInputPropVariant = fieldContentGroupPropVariant;
+export type SearchInputPropVariant = FieldContentGroupPropVariant;
 
-export type SearchInputRef = ComponentRef<'input'>;
 export type SearchInputProps = ExtendableProps<
   {
     /**
@@ -29,7 +30,7 @@ export type SearchInputProps = ExtendableProps<
     /** The props used for each slot inside. */
     slotProps?: {
       label?: FieldLabelProps;
-      group?: FieldInputGroupProps;
+      group?: FieldContentGroupProps;
       input?: FieldInputProps;
       caption?: FieldCaptionProps;
       errorMessage?: FieldErrorProps;
@@ -51,3 +52,5 @@ export type SearchInputProps = ExtendableProps<
   },
   Omit<AriaSearchFieldProps, 'description' | 'errorMessage' | 'validationState'>
 >;
+
+export type SearchInputRef = ComponentRef<'input'>;
