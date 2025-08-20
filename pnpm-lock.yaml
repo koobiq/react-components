@@ -343,6 +343,9 @@ importers:
       '@react-aria/radio':
         specifier: ^3.10.9
         version: 3.10.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/searchfield':
+        specifier: ^3.8.7
+        version: 3.8.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-aria/select':
         specifier: ^3.15.7
         version: 3.15.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -403,6 +406,9 @@ importers:
       '@react-stately/radio':
         specifier: ^3.10.8
         version: 3.10.9(react@18.3.1)
+      '@react-stately/searchfield':
+        specifier: ^3.5.14
+        version: 3.5.14(react@18.3.1)
       '@react-stately/select':
         specifier: 3.7.0
         version: 3.7.0(react@18.3.1)
@@ -1915,6 +1921,12 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
+  '@react-aria/searchfield@3.8.7':
+    resolution: {integrity: sha512-15jfALRyz5EAA5tvIELVfUlqTFdk8oG442OiS3Xq/jJij8uKRzwUdnL57EVTFYyg+VMLp/t5wX+obXYcRG+kdQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
   '@react-aria/select@3.15.7':
     resolution: {integrity: sha512-b1PpanLblnXgrvIeYPkL9ELdeE3GQXwoRJLNv9DSKSAyBVx+pm6+4BtzngOBdBidRCcOGEBEYxuUW8hMXjFB8w==}
     peerDependencies:
@@ -2225,6 +2237,11 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
+  '@react-stately/searchfield@3.5.14':
+    resolution: {integrity: sha512-OAycTULyF/UWy7Odyzw5lZV2yWH+Cy7fWsZxDUedeUs4Aiwbb6D4ph9pGb0RvhD4S3+B490a2ijGgfsaDeorMA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
   '@react-stately/select@3.7.0':
     resolution: {integrity: sha512-OWLOCKBEj8/XI+vzBSSHQAJu0Hf9Xl/flMhYh47f2b45bO++DRLcVsi8nycPNisudvK6xMQ8a/h4FwjePrCXfg==}
     peerDependencies:
@@ -2492,6 +2509,11 @@ packages:
 
   '@react-types/radio@3.9.0':
     resolution: {integrity: sha512-phndlgqMF6/9bOOhO3le00eozNfDU1E7OHWV2cWWhGSMRFuRdf7/d+NjVtavCX75+GJ50MxvXk+KB0fjTuvKyg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-types/searchfield@3.6.4':
+    resolution: {integrity: sha512-gRVWnRHf7pqU0lBVlkU6XsLxvaWTPnn0EomddIBCVh0msVIyvEea8CXJppu7EpvRh+grNpiMEYeijQ+u8hixlQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
@@ -10259,6 +10281,19 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@react-aria/searchfield@3.8.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-aria/i18n': 3.12.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/textfield': 3.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/utils': 3.30.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-stately/searchfield': 3.5.14(react@18.3.1)
+      '@react-types/button': 3.13.0(react@18.3.1)
+      '@react-types/searchfield': 3.6.4(react@18.3.1)
+      '@react-types/shared': 3.31.0(react@18.3.1)
+      '@swc/helpers': 0.5.17
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@react-aria/select@3.15.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-aria/form': 3.0.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10836,6 +10871,13 @@ snapshots:
       '@swc/helpers': 0.5.17
       react: 18.3.1
 
+  '@react-stately/searchfield@3.5.14(react@18.3.1)':
+    dependencies:
+      '@react-stately/utils': 3.10.8(react@18.3.1)
+      '@react-types/searchfield': 3.6.4(react@18.3.1)
+      '@swc/helpers': 0.5.17
+      react: 18.3.1
+
   '@react-stately/select@3.7.0(react@18.3.1)':
     dependencies:
       '@react-stately/form': 3.2.0(react@18.3.1)
@@ -11176,6 +11218,12 @@ snapshots:
   '@react-types/radio@3.9.0(react@18.3.1)':
     dependencies:
       '@react-types/shared': 3.31.0(react@18.3.1)
+      react: 18.3.1
+
+  '@react-types/searchfield@3.6.4(react@18.3.1)':
+    dependencies:
+      '@react-types/shared': 3.31.0(react@18.3.1)
+      '@react-types/textfield': 3.12.4(react@18.3.1)
       react: 18.3.1
 
   '@react-types/select@3.10.0(react@18.3.1)':

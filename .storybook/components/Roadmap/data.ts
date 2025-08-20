@@ -255,7 +255,7 @@ export const rows: Rows = [
     planned: 'Q3 2025',
   },
 
-  { component: 'SearchInput', status: '🛠️ In Progress', planned: 'Q3 2025' },
+  { component: 'SearchInput', status: '✅ Done', planned: 'Q3 2025' },
   { component: 'Tabs', status: '🚧 Planned', planned: 'Q3 2025' },
   { component: 'Breadcrumbs', status: '🚧 Planned', planned: 'Q3 2025' },
   { component: 'Collapse', status: '🚧 Planned', planned: 'Q3 2025' },

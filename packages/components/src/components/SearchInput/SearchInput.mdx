@@ -1,0 +1,91 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './SearchInput.stories';
+
+<Meta of={Stories} />
+
+# SearchInput
+
+<Status variant="experimental" />
+
+A search input allows a user to enter and clear a search query.
+
+```tsx
+import { SearchInput } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Addons
+
+You can add an extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+## Variant
+
+To change the visual state of the search input, use the `variant` prop.
+
+<Story of={Stories.Variant} />
+
+## Invalid
+
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+
+<Story of={Stories.Invalid} />
+
+## Disabled
+
+A search input can be disabled by passing the `isDisabled` prop.
+
+<Story of={Stories.Disabled} />
+
+## Required
+
+To make a field required, add the `isRequired` prop.
+If the field has a label, a required indicator will appear next to it.
+
+<Story of={Stories.Required} />
+
+## Read only
+
+The `isReadOnly` boolean prop makes the component text content immutable.
+Unlike `isDisabled`, the component remains focusable and the contents can still be copied.
+See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.
+
+<Story of={Stories.ReadOnly} />
+
+## Full width
+
+The `fullWidth` prop will make a search input fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Events
+
+The most commonly used handlers for events in `SearchInput` are the:
+
+- `onChange` prop which is triggered whenever the value is edited by the user.
+- `onSubmit` prop which is triggered whenever the value is submitted by the user (e.g. by pressing <kbd>Enter</kbd>).
+- `onClear` prop which is triggered whenever the value is cleared by the user (e.g. by pressing clear button or <kbd>Escape</kbd> key).
+
+The example below uses `onChange`, `onSubmit`, and `onClear` to update two separate elements with the text entered into the SearchInput.
+
+<Story of={Stories.Events} />
+
+## Debounce Search
+
+Use the [useDebounceCallback](?path=/docs/hooks-usedebouncecallback--docs) hook to add a delay to input changes.
+
+This helps avoid calling the handler on every keystroke.
+
+<Story of={Stories.DebounceSearch} />

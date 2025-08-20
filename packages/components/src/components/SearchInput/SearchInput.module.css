@@ -1,0 +1,18 @@
+.input::-webkit-search-decoration,
+.input::-webkit-search-cancel-button,
+.input::-webkit-search-results-button,
+.input::-webkit-search-results-decoration {
+  appearance: none;
+}
+
+.startAddon {
+  pointer-events: none;
+
+  & > :not(.searchIcon) {
+    pointer-events: all;
+  }
+}
+
+.clearButton {
+  margin-inline-end: calc(-1 * var(--kbq-size-xxs));
+}
