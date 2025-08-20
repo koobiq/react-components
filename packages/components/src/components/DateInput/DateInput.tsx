@@ -26,7 +26,7 @@ import type {
   FieldControlProps,
   FieldErrorProps,
   FieldInputDateProps,
-  FieldInputGroupProps,
+  FieldContentGroupProps,
   FieldLabelProps,
 } from '../FieldComponents';
 
@@ -100,7 +100,7 @@ export function DateInputRender<T extends DateValue>(
   );
 
   const groupProps = mergeProps<
-    [FieldInputGroupProps, FieldInputGroupProps | undefined]
+    [FieldContentGroupProps, FieldContentGroupProps | undefined]
   >(
     {
       endAddon,

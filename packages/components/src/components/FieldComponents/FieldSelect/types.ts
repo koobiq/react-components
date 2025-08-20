@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { FieldInputGroupPropVariant } from '../FieldContentGroup';
+import type { FieldContentGroupPropVariant } from '../FieldContentGroup';
 
 export type FieldSelectBaseProps = {
   isInvalid?: boolean;
@@ -9,5 +9,5 @@ export type FieldSelectBaseProps = {
   children?: ReactNode;
   'data-testid'?: string;
   placeholder?: string | number;
-  variant?: FieldInputGroupPropVariant;
+  variant?: FieldContentGroupPropVariant;
 };

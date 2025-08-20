@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import { clsx, useLocalizedStringFormatter } from '@koobiq/react-core';
 
-import { useFieldInputGroup } from '../../../FieldComponents';
+import { useFieldContentGroup } from '../../../FieldComponents';
 import intlMessages from '../../intl';
 import { Tag } from '../Tag';
 
@@ -16,7 +16,7 @@ export const TagGroupMultiline: FC<TagGroupProps<unknown>> = ({
   const { isDisabled, isInvalid } = states;
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const { hasStartAddon } = useFieldInputGroup();
+  const { hasStartAddon } = useFieldContentGroup();
 
   return (
     <div

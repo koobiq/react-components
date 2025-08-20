@@ -8,18 +8,20 @@ import type {
 
 import type { AriaDateFieldProps, DateValue } from '@koobiq/react-primitives';
 
-import type {
-  FieldCaptionProps,
-  FieldControlProps,
-  FieldErrorProps,
-  FieldInputDateProps,
-  FieldInputGroupProps,
-  FieldLabelProps,
+import {
+  type FieldCaptionProps,
+  type FieldControlProps,
+  type FieldErrorProps,
+  type FieldInputDateProps,
+  type FieldContentGroupProps,
+  type FieldLabelProps,
+  fieldContentGroupPropVariant,
+  type FieldContentGroupPropVariant,
 } from '../FieldComponents';
 
-export const dateInputPropVariant = ['filled', 'transparent'] as const;
+export const dateInputPropVariant = fieldContentGroupPropVariant;
 
-export type DateInputPropVariant = (typeof dateInputPropVariant)[number];
+export type DateInputPropVariant = FieldContentGroupPropVariant;
 
 export type DateInputProps<T extends DateValue> = {
   /** Inline styles. */
@@ -44,7 +46,7 @@ export type DateInputProps<T extends DateValue> = {
   slotProps?: {
     root?: FieldControlProps;
     label?: FieldLabelProps;
-    group?: FieldInputGroupProps;
+    group?: FieldContentGroupProps;
     caption?: FieldCaptionProps;
     inputDate?: FieldInputDateProps;
     errorMessage?: FieldErrorProps;

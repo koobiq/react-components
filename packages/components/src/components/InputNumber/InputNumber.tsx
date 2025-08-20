@@ -17,7 +17,7 @@ import {
   type FieldLabelProps,
   type FieldCaptionProps,
   type FieldErrorProps,
-  type FieldInputGroupProps,
+  type FieldContentGroupProps,
   type FieldInputProps,
 } from '../FieldComponents';
 
@@ -138,7 +138,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
           >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
 
           const groupProps = mergeProps<
-            [FieldInputGroupProps, FieldInputGroupProps | undefined]
+            [FieldContentGroupProps, FieldContentGroupProps | undefined]
           >(
             {
               endAddon: (

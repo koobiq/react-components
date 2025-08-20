@@ -23,7 +23,7 @@ import {
   FieldContentGroup,
   FieldControl,
   type FieldLabelProps,
-  type FieldInputGroupProps,
+  type FieldContentGroupProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldSelectProps,
@@ -136,7 +136,7 @@ function SelectRender<T extends object>(
   );
 
   const groupProps = mergeProps<
-    [FieldInputGroupProps, FieldInputGroupProps | undefined]
+    [FieldContentGroupProps, FieldContentGroupProps | undefined]
   >(
     {
       slotProps: {

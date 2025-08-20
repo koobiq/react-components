@@ -2,7 +2,7 @@ import { forwardRef, type ReactNode, type Ref } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
-import type { FieldInputGroupPropVariant } from '../FieldContentGroup';
+import type { FieldContentGroupPropVariant } from '../FieldContentGroup';
 
 import s from './FieldInputDate.module.css';
 
@@ -13,7 +13,7 @@ export type FieldInputDateProps = {
   children?: ReactNode;
   'data-testid'?: string;
   ref?: Ref<HTMLDivElement>;
-  variant?: FieldInputGroupPropVariant;
+  variant?: FieldContentGroupPropVariant;
 };
 
 export const FieldInputDate = forwardRef<HTMLDivElement, FieldInputDateProps>(

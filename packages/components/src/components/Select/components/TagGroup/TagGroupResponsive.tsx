@@ -6,7 +6,7 @@ import {
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 
-import { useFieldInputGroup } from '../../../FieldComponents';
+import { useFieldContentGroup } from '../../../FieldComponents';
 import intlMessages from '../../intl';
 import { Tag } from '../Tag';
 
@@ -29,7 +29,7 @@ export const TagGroupResponsive: FC<TagGroupProps<unknown>> = ({
   const hiddenCount = getHiddenCount(visibleMap);
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const { hasStartAddon } = useFieldInputGroup();
+  const { hasStartAddon } = useFieldContentGroup();
 
   return (
     <div
