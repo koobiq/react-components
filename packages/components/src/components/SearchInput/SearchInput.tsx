@@ -1,8 +1,12 @@
 import { forwardRef } from 'react';
 
-import { mergeProps, useDOMRef } from '@koobiq/react-core';
+import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
 import { IconMagnifyingGlass16, IconXmarkCircle16 } from '@koobiq/react-icons';
-import { useSearchField, useSearchFieldState } from '@koobiq/react-primitives';
+import {
+  removeDataAttributes,
+  useSearchField,
+  useSearchFieldState,
+} from '@koobiq/react-primitives';
 
 import {
   FieldCaption,
@@ -10,6 +14,7 @@ import {
   FieldContentGroup,
   type FieldContentGroupProps,
   FieldControl,
+  type FieldControlProps,
   FieldError,
   type FieldErrorProps,
   FieldInput,
@@ -29,6 +34,9 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       variant = 'filled',
       fullWidth = false,
       isLabelHidden = false,
+      'data-testid': testId,
+      style,
+      className,
       caption,
       errorMessage,
       isRequired,
@@ -40,7 +48,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       slotProps,
     } = props;
 
-    const state = useSearchFieldState(props);
+    const state = useSearchFieldState(removeDataAttributes(props));
     const domRef = useDOMRef(ref);
 
     const hasClearButton = state.value !== '' && !isDisabled && !isReadOnly;
@@ -50,8 +58,26 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       inputProps: inputPropsAria,
       descriptionProps: descriptionPropsAria,
       errorMessageProps: errorMessagePropsAria,
-      clearButtonProps,
-    } = useSearchField(props, state, domRef);
+      clearButtonProps: clearButtonPropsAria,
+    } = useSearchField(removeDataAttributes(props), state, domRef);
+
+    const rootProps = mergeProps<
+      [FieldControlProps, FieldControlProps | undefined]
+    >(
+      {
+        style,
+        fullWidth,
+        'data-testid': testId,
+        'data-variant': variant,
+        'data-invalid': isInvalid,
+        'data-disabled': isDisabled,
+        'data-fullwidth': fullWidth,
+        'data-required': isRequired,
+        'data-readonly': isReadOnly,
+        className: clsx(s.base, className),
+      },
+      slotProps?.root
+    );
 
     const labelProps = mergeProps<
       [FieldLabelProps, FieldLabelProps | undefined, FieldLabelProps]
@@ -85,9 +111,13 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
           <>
             {hasClearButton && (
               <IconButton
-                className={s.clearButton}
-                {...clearButtonProps}
+                {...clearButtonPropsAria}
                 variant={isInvalid ? 'error' : 'fade-contrast'}
+                {...slotProps?.clearButton}
+                className={clsx(
+                  s.clearButton,
+                  slotProps?.clearButton?.className
+                )}
               >
                 <IconXmarkCircle16 />
               </IconButton>
@@ -115,7 +145,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     );
 
     return (
-      <FieldControl fullWidth={fullWidth}>
+      <FieldControl {...rootProps}>
         <FieldLabel {...labelProps}>{label}</FieldLabel>
         <FieldContentGroup {...groupProps}>
           <FieldInput {...inputProps} />
