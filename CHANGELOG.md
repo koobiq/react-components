@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.1](https://github.com/koobiq/react-components/compare/0.5.0...0.5.1) (2025-08-21)
+
+### 🐞 Bug Fixes
+
+- **components:** adjust spacing for label, caption, and error in fields (DS-4108) ([381a2bf](https://github.com/koobiq/react-components/commit/381a2bf067b7f03daefbe21f9087cbf734ccc6d2))
+
 ## [0.5.0](https://github.com/koobiq/react-components/compare/0.4.0...0.5.0) (2025-08-20)
 
 ### 🚀 Features
