@@ -49,6 +49,16 @@
   }
 }
 
+.base + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.base + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}
+
 .hasStartAddon {
   --field-control-start-addon-inline-size: 36px;
 }
