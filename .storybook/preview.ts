@@ -29,6 +29,23 @@ export function extractStory(raw: string, storyName: string) {
 }
 
 const preview: Preview = {
+  globalTypes: {
+    locale: {
+      description: 'Internationalization locale',
+      toolbar: {
+        title: 'Interface language',
+        icon: 'globe',
+        items: [
+          { value: '', title: 'System' },
+          { value: 'en-US', title: 'English' },
+          { value: 'ru-RU', title: 'Русский' },
+        ],
+      },
+    },
+  },
+  initialGlobals: {
+    locale: 'en-US',
+  },
   parameters: {
     viewport: {
       viewports: {
