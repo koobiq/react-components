@@ -14,7 +14,7 @@ export const light = create({
   ...brand,
   base: 'light',
   textColor: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-foreground-contrast)
-  colorSecondary: 'hsla(229, 15%, 50%, 16%)', // var(--kbq-states-background-transparent-active)
+  colorSecondary: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-states-background-transparent-active)
   barBg: 'hsla(0, 0%, 100%, 100%)', // var(--kbq-background-bg)
   barHoverColor: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
   barTextColor: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
@@ -33,7 +33,7 @@ export const dark = create({
   ...brand,
   base: 'dark',
   textColor: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-foreground-contrast)
-  colorSecondary: 'hsla(229, 100%, 85%, 15%)', // var(--kbq-states-background-transparent-active)
+  colorSecondary: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-states-background-transparent-active)
   barBg: 'hsla(229, 15%, 12%, 100%)', // var(--kbq-background-bg)
   barHoverColor: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
   barTextColor: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
