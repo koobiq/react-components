@@ -15,12 +15,6 @@ export type TablePropDivider = (typeof tablePropDivider)[number];
 
 export type TablePropChildren<T> = TableStateProps<T>['children'];
 
-export type TablePropBlockSize = CSSProperties['blockSize'];
-
-export type TablePropMinBlockSize = CSSProperties['minBlockSize'];
-
-export type TablePropMaxBlockSize = CSSProperties['maxInlineSize'];
-
 export type TableProps<T> = Pick<
   TableStateProps<T>,
   | 'selectionBehavior'
@@ -45,6 +39,11 @@ export type TableProps<T> = Pick<
    */
   divider?: TablePropDivider;
   /**
+   * If `true`, the button will take up the full width of its container.
+   * @default false
+   */
+  fullWidth?: boolean;
+  /**
    * Flag indicating a fixed table header.
    * @default false
    */
@@ -55,17 +54,10 @@ export type TableProps<T> = Pick<
    */
   children?: TablePropChildren<T>;
   /** Ref to the control. */
-  ref?: Ref<HTMLDivElement>;
-  /** Height of the table container. */
-  blockSize?: TablePropBlockSize;
-  /** Minimum height of the table container. */
-  minBlockSize?: TablePropMinBlockSize;
-  /** Maximum height of the table container. */
-  maxBlockSize?: TablePropMaxBlockSize;
+  ref?: Ref<HTMLTableElement>;
   /** The props used for each slot inside. */
   slotProps?: {
-    container?: ComponentPropsWithRef<'div'>;
-    table?: ComponentPropsWithRef<'table'>;
+    root?: ComponentPropsWithRef<'table'>;
   };
 };
 

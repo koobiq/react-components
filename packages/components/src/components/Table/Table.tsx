@@ -1,15 +1,9 @@
 'use client';
 
-import type { ComponentPropsWithRef, CSSProperties, Ref } from 'react';
-import { forwardRef, useRef } from 'react';
+import type { Ref } from 'react';
+import { forwardRef } from 'react';
 
-import {
-  clsx,
-  useDOMRef,
-  mergeProps,
-  useElementSize,
-} from '@koobiq/react-core';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
 import { useTable, useTableState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
@@ -23,10 +17,11 @@ import {
   TableColumnHeader,
   TableSelectAllCell,
   TableCheckboxCell,
+  TableContainer,
+  useTableContainerContext,
 } from './components';
 import s from './Table.module.css';
 import type { TableComponent, TableProps, TableRef } from './types';
-import { normalizeBlockSize } from './utils';
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -36,16 +31,16 @@ function TableRender<T extends object>(
 ) {
   const {
     stickyHeader = false,
+    fullWidth = false,
     divider = 'none',
     slotProps,
     selectionMode,
     selectionBehavior,
     className,
-    blockSize,
-    maxBlockSize,
-    minBlockSize,
-    style: styleProp,
+    style,
   } = props;
+
+  const { theadRef } = useTableContainerContext();
 
   const state = useTableState({
     ...props,
@@ -54,76 +49,60 @@ function TableRender<T extends object>(
   });
 
   const domRef = useDOMRef<HTMLTableElement>(ref);
-  const tableRef = useRef<HTMLTableElement>(null);
 
   const { collection } = state;
-  const { gridProps } = useTable(props, state, tableRef);
+  const { gridProps } = useTable(props, state, domRef);
 
   const tableProps = mergeProps(
-    { ref: tableRef, className: s.base },
+    {
+      className: clsx(s.base, fullWidth && s.fullWidth, textNormal, className),
+      'data-sticky-header': stickyHeader,
+      'data-divider': divider,
+      'data-fullwidth': fullWidth,
+      ref: domRef,
+      style,
+    },
     gridProps,
-    slotProps?.table
+    slotProps?.root
   );
 
-  const { ref: theadRef, height } = useElementSize();
-
-  const containerProps: ComponentPropsWithRef<'div'> & DataAttributeProps =
-    mergeProps(
-      {
-        className: clsx(s.container, textNormal, className),
-        'data-divider': divider,
-        'data-sticky-header': stickyHeader,
-        style: {
-          ...styleProp,
-          '--table-container-block-size': normalizeBlockSize(blockSize),
-          '--table-container-min-block-size': normalizeBlockSize(minBlockSize),
-          '--table-container-max-block-size': normalizeBlockSize(maxBlockSize),
-          '--table-container-scroll-padding-top': `${height}px`,
-        } as CSSProperties,
-        ref: domRef,
-      },
-      slotProps?.container
-    );
-
   return (
-    <div {...containerProps}>
-      <table {...tableProps}>
-        <TableRowGroup type="thead" ref={theadRef}>
-          {collection.headerRows.map((headerRow) => (
-            <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-              {[...headerRow.childNodes].map((column) =>
-                column.props.isSelectionCell ? (
-                  <TableSelectAllCell
-                    key={column.key}
-                    column={column}
-                    state={state}
-                  />
-                ) : (
-                  <TableColumnHeader
-                    key={column.key}
-                    column={column}
-                    state={state}
-                  />
-                )
-              )}
-            </TableHeaderRow>
-          ))}
-        </TableRowGroup>
-        <TableRowGroup type="tbody">
-          {[...collection.body.childNodes].map((row) => (
-            <TableRow key={row.key} item={row} state={state}>
-              {[...row.childNodes].map((cell) =>
-                cell.props.isSelectionCell ? (
-                  <TableCheckboxCell key={cell.key} cell={cell} state={state} />
-                ) : (
-                  <TableCell key={cell.key} cell={cell} state={state} />
-                )
-              )}
-            </TableRow>
-          ))}
-        </TableRowGroup>
-      </table>
-    </div>
+    <table {...tableProps}>
+      <TableRowGroup type="thead" ref={theadRef}>
+        {collection.headerRows.map((headerRow) => (
+          <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
+            {[...headerRow.childNodes].map((column) =>
+              column.props.isSelectionCell ? (
+                <TableSelectAllCell
+                  key={column.key}
+                  column={column}
+                  state={state}
+                />
+              ) : (
+                <TableColumnHeader
+                  key={column.key}
+                  column={column}
+                  state={state}
+                />
+              )
+            )}
+          </TableHeaderRow>
+        ))}
+      </TableRowGroup>
+      <TableRowGroup type="tbody">
+        {[...collection.body.childNodes].map((row) => (
+          <TableRow key={row.key} item={row} state={state}>
+            {[...row.childNodes].map((cell) =>
+              cell.props.isSelectionCell ? (
+                <TableCheckboxCell key={cell.key} cell={cell} state={state} />
+              ) : (
+                <TableCell key={cell.key} cell={cell} state={state} />
+              )
+            )}
+          </TableRow>
+        ))}
+      </TableRowGroup>
+    </table>
   );
 }
 
@@ -138,6 +117,8 @@ type CompoundedComponent = typeof TableComponent & {
 };
 
 export const Table = TableComponent as CompoundedComponent;
+
+export { TableContainer };
 
 Table.Header = TableHeader;
 Table.Body = TableBody;

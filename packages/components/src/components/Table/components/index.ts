@@ -5,3 +5,4 @@ export * from './TableRow';
 export * from './TableCell';
 export * from './TableSelectAllCell';
 export * from './TableCheckboxCell';
+export * from './TableContainer';

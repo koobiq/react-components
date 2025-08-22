@@ -7,19 +7,24 @@ import { Badge } from '../Badge';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 
-import { Table } from './index';
+import { Table, TableContainer } from './index';
 import type { TablePropDivider, TableProps } from './types';
 
 const meta = {
   title: 'Components/Table',
   component: Table,
   subcomponents: {
+    TableContainer,
     'Table.Header': Table.Header,
     'Table.Body': Table.Body,
     'Table.Column': Table.Column,
     'Table.Row': Table.Row,
     'Table.Cell': Table.Cell,
   },
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['status:updated'],
 } satisfies Meta<typeof Table>;
 
 export default meta;
@@ -31,69 +36,63 @@ const formatDate = (dateString: string): string =>
   );
 
 export const Base: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args) => (
-    <Table
-      aria-label="Example static collection table"
-      maxBlockSize={400}
-      {...args}
-    >
-      <Table.Header>
-        <Table.Column>Threat Category</Table.Column>
-        <Table.Column>Description</Table.Column>
-        <Table.Column>Risk Level</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Social Engineering</Table.Cell>
-          <Table.Cell>Manipulation of individuals to gain access</Table.Cell>
-          <Table.Cell>
-            <Badge variant="fade-warning">Medium</Badge>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Zero-Day Exploits</Table.Cell>
-          <Table.Cell>Unknown vulnerabilities exploited immediately</Table.Cell>
-          <Table.Cell>
-            <Badge variant="fade-error">High</Badge>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Insider Threats</Table.Cell>
-          <Table.Cell>
-            Malicious or careless actions by internal users
-          </Table.Cell>
-          <Table.Cell>
-            <Badge variant="fade-error">Medium–High</Badge>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Supply Chain Attack</Table.Cell>
-          <Table.Cell>
-            Compromise of third-party software or services
-          </Table.Cell>
-          <Table.Cell>
-            <Badge variant="fade-error">High</Badge>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Denial of Service</Table.Cell>
-          <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
-          <Table.Cell>
-            <Badge variant="fade-contrast">Low-Medium</Badge>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <TableContainer maxBlockSize={400}>
+      <Table aria-label="Example static collection table" {...args}>
+        <Table.Header>
+          <Table.Column>Threat Category</Table.Column>
+          <Table.Column>Description</Table.Column>
+          <Table.Column>Risk Level</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Social Engineering</Table.Cell>
+            <Table.Cell>Manipulation of individuals to gain access</Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-warning">Medium</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Zero-Day Exploits</Table.Cell>
+            <Table.Cell>
+              Unknown vulnerabilities exploited immediately
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-error">High</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Insider Threats</Table.Cell>
+            <Table.Cell>
+              Malicious or careless actions by internal users
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-error">Medium–High</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Supply Chain Attack</Table.Cell>
+            <Table.Cell>
+              Compromise of third-party software or services
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-error">High</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Denial of Service</Table.Cell>
+            <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-contrast">Low-Medium</Badge>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </TableContainer>
   ),
 };
 
 export const Links: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args) => (
     <Table aria-label="Libraries" {...args}>
       <Table.Header>
@@ -119,9 +118,6 @@ export const Links: Story = {
 };
 
 export const Divider: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: function Render() {
     const [divider, setDivider] = useState<TablePropDivider>('row');
 
@@ -136,12 +132,7 @@ export const Divider: Story = {
           <ButtonToggle id="none">None</ButtonToggle>
           <ButtonToggle id="row">Row</ButtonToggle>
         </ButtonToggleGroup>
-        <Table
-          divider={divider}
-          aria-label="Example static collection table"
-          blockSize={210}
-          maxBlockSize={410}
-        >
+        <Table divider={divider} aria-label="Example static collection table">
           <Table.Header>
             <Table.Column>Name</Table.Column>
             <Table.Column>Type</Table.Column>
@@ -176,9 +167,6 @@ export const Divider: Story = {
 };
 
 export const DynamicCollection: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: function Render() {
     type Row = {
       id: number;
@@ -240,6 +228,9 @@ export const DynamicCollection: Story = {
 };
 
 export const StickyHeader: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render() {
     const columns = [
       { name: 'User ID', key: 'id' },
@@ -358,32 +349,68 @@ export const StickyHeader: Story = {
     ];
 
     return (
-      <Table aria-label="The table with users" blockSize={300} stickyHeader>
-        <Table.Header columns={columns}>
-          {(column) => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={users}>
-          {(item) => (
-            <Table.Row>
-              {(columnKey) => (
-                <Table.Cell>
-                  {item[columnKey as keyof (typeof users)[0]]}
-                </Table.Cell>
-              )}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
+      <TableContainer blockSize={300}>
+        <Table aria-label="The table with users" stickyHeader>
+          <Table.Header columns={columns}>
+            {(column) => <Table.Column>{column.name}</Table.Column>}
+          </Table.Header>
+          <Table.Body items={users}>
+            {(item) => (
+              <Table.Row>
+                {(columnKey) => (
+                  <Table.Cell>
+                    {item[columnKey as keyof (typeof users)[0]]}
+                  </Table.Cell>
+                )}
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      </TableContainer>
     );
   },
 };
 
 export const Alignment: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: (args) => (
     <Table aria-label="Alignment" {...args}>
+      <Table.Header>
+        <Table.Column align="center">Name</Table.Column>
+        <Table.Column align="center">Type</Table.Column>
+        <Table.Column align="center">Date Modified</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell align="center">home</Table.Cell>
+          <Table.Cell align="center">File folder</Table.Cell>
+          <Table.Cell align="center">{formatDate('2024-06-07')}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell align="center">etc</Table.Cell>
+          <Table.Cell align="center">File folder</Table.Cell>
+          <Table.Cell align="center">{formatDate('2023-04-07')}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell align="center">vmlinuz</Table.Cell>
+          <Table.Cell align="center">System file</Table.Cell>
+          <Table.Cell align="center">{formatDate('2015-11-20')}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell align="center">log.txt</Table.Cell>
+          <Table.Cell align="center">Text file</Table.Cell>
+          <Table.Cell align="center">{formatDate('2019-01-18')}</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+};
+
+export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: (args) => (
+    <Table aria-label="Alignment" fullWidth {...args}>
       <Table.Header>
         <Table.Column align="center">Name</Table.Column>
         <Table.Column align="center">Type</Table.Column>
@@ -527,9 +554,6 @@ export const SelectionBehavior: Story = {
 };
 
 export const ControlledSelection: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: function Render() {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([2]));
 
@@ -545,9 +569,6 @@ export const ControlledSelection: Story = {
 };
 
 export const DisabledRows: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: function Render() {
     return (
       <LanguageTable
@@ -562,9 +583,6 @@ export const DisabledRows: Story = {
 };
 
 export const RowActions: Story = {
-  parameters: {
-    layout: 'centered',
-  },
   render: function Render() {
     return (
       <LanguageTable
