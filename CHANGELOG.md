@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.0](https://github.com/koobiq/react-components/compare/0.5.1...0.6.0) (2025-08-22)
+
+### ⚠ BREAKING CHANGES
+
+- **Table:** extracted the table container into a new `TableContainer` component.
+
+### 🚀 Features
+
+- **Table:** add `TableContainer` component (DS-4133) ([c2cb730](https://github.com/koobiq/react-components/commit/c2cb73091155c239e90b43e9588d0dfaf39d503f))
+
 ## [0.5.1](https://github.com/koobiq/react-components/compare/0.5.0...0.5.1) (2025-08-21)
 
 ### 🐞 Bug Fixes
