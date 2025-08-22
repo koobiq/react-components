@@ -17,7 +17,7 @@ A table displays data in rows and columns and enables a user to navigate its con
 via directional navigation keys, and optionally supports row selection.
 
 ```tsx
-import { Table } from '@koobiq/react-components';
+import { Table, TableContainer } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -41,6 +41,12 @@ In the example below, both the columns and the rows are provided to the table vi
 You can also make the columns static and only the rows dynamic.
 
 <Story of={Stories.DynamicCollection} />
+
+## Full width
+
+The `fullWidth` prop will make a table fit to its parent width.
+
+<Story of={Stories.FullWidth} />
 
 ## Sticky Header
 

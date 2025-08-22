@@ -90,7 +90,7 @@ describe('Table', () => {
   });
 
   it('should accept a ref', () => {
-    const ref = createRef<HTMLDivElement>();
+    const ref = createRef<HTMLTableElement>();
 
     const { container } = render(
       renderComponent({
@@ -98,8 +98,8 @@ describe('Table', () => {
       })
     );
 
-    const tagGroup = container.querySelector(`div`);
-    expect(ref.current).toBe(tagGroup);
+    const table = container.querySelector(`table`);
+    expect(ref.current).toBe(table);
   });
 
   describe('check a single selection mode', () => {
