@@ -38,7 +38,7 @@ const preview: Preview = {
         items: [
           { value: '', title: 'System' },
           { value: 'en-US', title: 'English' },
-          { value: 'ru-RU', title: 'Russian' },
+          { value: 'ru-RU', title: 'Русский' },
         ],
       },
     },
