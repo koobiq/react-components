@@ -100,6 +100,7 @@ export function DatePickerRender<T extends DateValue>(
       size: 'auto',
       hideArrow: true,
       hideCloseButton: true,
+      className: s.popover,
       placement: 'bottom start',
       slotProps: {
         dialog: dialogProps,

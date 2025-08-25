@@ -1,3 +1,30 @@
 .calendar {
   margin-inline-end: calc(-1 * var(--kbq-size-xxs));
 }
+
+/* popover */
+.popover {
+  border-radius: var(--kbq-size-s);
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.popover[data-transition='entering'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popover[data-transition='entered'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popover[data-transition='exiting'] {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.popover[data-transition='exited'] {
+  opacity: 0;
+  transform: translateY(-8px);
+}

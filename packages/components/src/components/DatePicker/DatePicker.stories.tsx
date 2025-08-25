@@ -32,7 +32,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args) => <DatePicker label="Birth day" {...args} />,
+  render: (args) => <DatePicker label="Birthday" {...args} />,
 };
 
 export const Uncontrolled: Story = {
