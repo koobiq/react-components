@@ -14,6 +14,7 @@ import { utilClasses } from '../../../../styles/utility';
 import { CalendarCell } from '../CalendarCell';
 
 import s from './CalendarGrid.module.css';
+import { monthIndex } from './utils';
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -22,10 +23,6 @@ type Dir = 'next' | 'prev' | 'jump';
 type CalendarGridProps = {
   state: CalendarState;
 } & AriaCalendarGridProps;
-
-function monthIndex(d: { year: number; month: number }) {
-  return d.year * 12 + d.month; // month: 1..12
-}
 
 export function CalendarGrid({ state, ...props }: CalendarGridProps) {
   const { locale } = useLocale();
@@ -89,7 +86,6 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
             <th colSpan={7} className={s.divider} />
           </tr>
         </thead>
-
         <TransitionGroup component={null}>
           <CSSTransition
             key={k}
