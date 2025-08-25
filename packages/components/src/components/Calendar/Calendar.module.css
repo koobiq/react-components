@@ -8,6 +8,7 @@
   box-sizing: border-box;
   gap: var(--kbq-size-3xs);
   padding-block: var(--kbq-size-m);
+  overflow-x: hidden;
 }
 
 /* button */
