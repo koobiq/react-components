@@ -39,7 +39,10 @@
     ],
     "plugin/use-logical-properties-and-values": [
       true,
-      { "severity": "warning" }
+      {
+        "severity": "warning",
+        "ignore": ["overflow-x", "overflow-y"]
+      }
     ],
     "plugin/use-logical-units": [
       true,
