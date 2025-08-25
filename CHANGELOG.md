@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.0](https://github.com/koobiq/react-components/compare/0.6.0...0.7.0) (2025-08-25)
+
+### 🚀 Features
+
+- **Calendar:** add days view animation ([95ad99d](https://github.com/koobiq/react-components/commit/95ad99d4b2b3729220abc6217f9ce4e8c78a275a))
+
+### 🐞 Bug Fixes
+
+- **DatePicker:** refine popover styling and animation ([b332daa](https://github.com/koobiq/react-components/commit/b332daad3e699dc7ccec0880d45ff9f7c8b55d82))
+
 ## [0.6.0](https://github.com/koobiq/react-components/compare/0.5.1...0.6.0) (2025-08-22)
 
 ### ⚠ BREAKING CHANGES
