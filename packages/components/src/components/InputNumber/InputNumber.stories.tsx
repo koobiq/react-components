@@ -180,6 +180,19 @@ export const Addons: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <InputNumber
+      label="Age"
+      placeholder="Enter your age"
+      labelPlacement="side"
+      labelAlign="end"
+      {...args}
+    />
+  ),
+};
+
 export const DefaultValue: Story = {
   render: function Render(args) {
     return (

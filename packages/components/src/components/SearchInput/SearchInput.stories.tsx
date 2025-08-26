@@ -165,6 +165,19 @@ export const ReadOnly: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <SearchInput
+      label="Search"
+      placeholder="Type a word..."
+      labelPlacement="side"
+      labelAlign="end"
+      {...args}
+    />
+  ),
+};
+
 export const Events: Story = {
   render: function Render(args) {
     const [currentText, setCurrentText] = useState('');

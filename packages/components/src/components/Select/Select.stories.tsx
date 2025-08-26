@@ -308,6 +308,21 @@ export const FullWidth: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: () => (
+    <Select
+      items={options}
+      label={`Attack\u00A0type`}
+      placeholder="Select an option"
+      labelPlacement="side"
+      labelAlign="end"
+    >
+      {(item) => <Select.Item>{item.name}</Select.Item>}
+    </Select>
+  ),
+};
+
 export const ClearButton: Story = {
   render: function Render() {
     return (

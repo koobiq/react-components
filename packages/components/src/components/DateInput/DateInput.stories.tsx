@@ -97,6 +97,13 @@ export const FullWidth: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <DateInput label="Date" labelPlacement="side" labelAlign="end" {...args} />
+  ),
+};
+
 export const Uncontrolled: Story = {
   render: function Render() {
     return (

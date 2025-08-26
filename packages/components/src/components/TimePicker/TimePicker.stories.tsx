@@ -104,6 +104,13 @@ export const FullWidth: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <TimePicker label="Time" labelPlacement="side" labelAlign="end" {...args} />
+  ),
+};
+
 export const Uncontrolled: Story = {
   render: function Render() {
     return (
