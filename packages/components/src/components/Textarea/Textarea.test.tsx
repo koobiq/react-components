@@ -39,6 +39,14 @@ describe('Textarea', () => {
     expect(screen.getByText('label')).toBeInTheDocument();
   });
 
+  it('should set a custom style', () => {
+    const style = { padding: 20 };
+
+    render(<Textarea {...baseProps} style={style} />);
+
+    expect(getRoot()).toHaveStyle('padding: 20px');
+  });
+
   it('should be disabled when isDisabled is true', async () => {
     const handleChange = vi.fn();
     render(<Textarea {...baseProps} onChange={handleChange} isDisabled />);
