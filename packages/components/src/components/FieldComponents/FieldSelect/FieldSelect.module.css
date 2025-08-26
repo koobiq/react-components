@@ -14,7 +14,7 @@
   flex-direction: column;
   color: var(--field-input-color);
   background: var(--field-input-bg-color);
-  min-block-size: var(--field-control-size-height);
+  min-block-size: var(--field-size-height);
   padding-inline: var(--field-input-padding-inline-start)
     var(--field-input-padding-inline-end);
   transition:
