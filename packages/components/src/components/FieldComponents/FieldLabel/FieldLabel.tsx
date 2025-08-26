@@ -28,7 +28,12 @@ export const FieldLabel = forwardRef<ComponentRef<'label'>, FieldLabelProps>(
         {...other}
         ref={ref}
       >
-        {children}&nbsp;{isRequired && <sup className={s.sup}>*</sup>}
+        {children}
+        {isRequired && (
+          <>
+            &nbsp;<sup className={s.sup}>*</sup>
+          </>
+        )}
       </Label>
     ) : null
 );
