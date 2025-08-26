@@ -1,18 +1,3 @@
-.base {
-  --field-input-padding-inline-start: var(--kbq-size-m);
-  --field-input-padding-inline-end: var(--kbq-size-m);
-  --field-input-padding-block-start: var(--kbq-size-xs);
-  --field-input-padding-block-end: var(--kbq-size-xs);
-  position: relative;
-  display: inline-flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.fullWidth {
-  inline-size: 100%;
-}
-
 /* addons */
 .addon {
   pointer-events: none;

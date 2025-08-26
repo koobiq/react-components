@@ -108,9 +108,10 @@ function SelectRender<T extends object>(
     'data-invalid': isInvalid,
     'data-disabled': props.isDisabled,
     'data-required': props.isRequired,
+    className,
+    fullWidth,
     labelPlacement,
     labelAlign,
-    className: clsx(s.base, fullWidth && s.fullWidth, className),
     style,
   });
 
