@@ -1,4 +1,4 @@
-@import url('../../../styles/mixins.css');
+@import url('../../styles/mixins.css');
 
 .base {
   @mixin typography text-normal;

@@ -11,16 +11,18 @@ import type { AriaTimeFieldProps, TimeValue } from '@koobiq/react-primitives';
 import type { DateInputPropVariant } from '../DateInput';
 import {
   type FieldCaptionProps,
-  type FormControlProps,
   type FieldErrorProps,
   type FieldInputDateProps,
   type FieldContentGroupProps,
-  type FormControlLabelProps,
-  formControlPropLabelPlacement,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelAlign,
-  type FormControlPropLabelAlign,
 } from '../FieldComponents';
+import {
+  type FormControlProps,
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 
 export const timePickerPropLabelPlacement = formControlPropLabelPlacement;
 export type TimePickerPropLabelPlacement = FormControlPropLabelPlacement;

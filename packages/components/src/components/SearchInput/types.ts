@@ -7,18 +7,19 @@ import {
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldInputProps,
-  type FormControlLabelProps,
   type FieldContentGroupProps,
   type FieldContentGroupPropVariant,
-  type FormControlProps,
-  formControlPropLabelPlacement,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelAlign,
-  type FormControlPropLabelAlign,
 } from '../FieldComponents';
 import { fieldContentGroupPropVariant } from '../FieldComponents';
+import {
+  type FormControlProps,
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 import type { IconButtonProps } from '../IconButton';
-import type { InputPropLabelAlign, InputPropLabelPlacement } from '../Input';
 
 export const searchInputPropVariant = fieldContentGroupPropVariant;
 export type SearchInputPropVariant = FieldContentGroupPropVariant;
@@ -43,12 +44,12 @@ export type SearchInputProps = ExtendableProps<
      * The label's overall position relative to the element it is labeling.
      * @default 'top'
      */
-    labelPlacement?: InputPropLabelPlacement;
+    labelPlacement?: SearchInputPropLabelPlacement;
     /**
      * The label's horizontal alignment relative to the element it is labeling.
      * @default 'start'
      */
-    labelAlign?: InputPropLabelAlign;
+    labelAlign?: SearchInputPropLabelAlign;
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */

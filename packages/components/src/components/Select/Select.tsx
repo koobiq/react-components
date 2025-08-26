@@ -16,19 +16,21 @@ import {
 
 import { Item, Section, Divider } from '../Collections';
 import {
-  FormControlLabel,
   FieldError,
   FieldSelect,
   FieldCaption,
   FieldContentGroup,
-  FormControl,
-  type FormControlLabelProps,
   type FieldContentGroupProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldSelectProps,
   Field,
 } from '../FieldComponents';
+import { FormControl } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 import { IconButton } from '../IconButton';
 import type { ListItemText } from '../List';
 import { List } from '../List';

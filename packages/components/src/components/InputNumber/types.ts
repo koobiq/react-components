@@ -5,18 +5,20 @@ import type { NumberField, NumberFieldProps } from '@koobiq/react-primitives';
 
 import {
   type FieldCaptionProps,
-  type FormControlProps,
   type FieldErrorProps,
   type FieldContentGroupProps,
   type FieldInputProps,
-  type FormControlLabelProps,
   fieldContentGroupPropVariant,
   type FieldContentGroupPropVariant,
-  formControlPropLabelPlacement,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelAlign,
-  type FormControlPropLabelAlign,
 } from '../FieldComponents';
+import {
+  type FormControlProps,
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 
 export const inputNumberPropVariant = fieldContentGroupPropVariant;
 

@@ -7,16 +7,18 @@ import {
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldInputProps,
-  type FormControlLabelProps,
   type FieldContentGroupProps,
-  type FormControlProps,
   type FieldContentGroupPropVariant,
   fieldContentGroupPropVariant,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
+} from '../FieldComponents';
+import {
+  type FormControlProps,
   type FormControlPropLabelAlign,
   formControlPropLabelAlign,
-} from '../FieldComponents';
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 
 export const inputPropVariant = fieldContentGroupPropVariant;
 export const inputPropLabelPlacement = formControlPropLabelPlacement;

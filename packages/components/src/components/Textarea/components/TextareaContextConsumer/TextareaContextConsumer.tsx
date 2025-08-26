@@ -12,10 +12,12 @@ import {
   FieldInput,
   type FieldContentGroupProps,
   type FieldInputProps,
-  FormControlLabel,
-  type FormControlLabelProps,
   Field,
 } from '../../../FieldComponents';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../../../FormControlLabel';
 import s from '../../Textarea.module.css';
 import type { TextareaProps } from '../../types';
 import { useTextareaAutosize } from '../../utils';

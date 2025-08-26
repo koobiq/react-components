@@ -6,7 +6,7 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps } from '@koobiq/react-core';
 import { TextField } from '@koobiq/react-primitives';
 
-import { FormControl, type FormControlProps } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
 
 import { TextareaContextConsumer } from './components';
 import type { TextareaProps, TextareaRef } from './index';

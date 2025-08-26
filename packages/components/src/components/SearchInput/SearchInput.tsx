@@ -15,16 +15,17 @@ import {
   type FieldCaptionProps,
   FieldContentGroup,
   type FieldContentGroupProps,
-  FormControl,
-  type FormControlProps,
   FieldError,
   type FieldErrorProps,
   FieldInput,
   type FieldInputProps,
-  FormControlLabel,
-  type FormControlLabelProps,
   Field,
 } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 import { IconButton } from '../IconButton';
 
 import s from './SearchInput.module.css';

@@ -15,15 +15,17 @@ import type {
 
 import {
   type FieldErrorProps,
-  type FormControlLabelProps,
   type FieldSelectProps,
   type FieldCaptionProps,
   type FieldContentGroupProps,
-  formControlPropLabelPlacement,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelAlign,
-  type FormControlPropLabelAlign,
 } from '../FieldComponents';
+import {
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 import type { IconButtonProps } from '../IconButton';
 import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';

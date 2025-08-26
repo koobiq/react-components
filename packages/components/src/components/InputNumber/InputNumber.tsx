@@ -8,19 +8,20 @@ import { NumberField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
-  FormControlLabel,
   FieldError,
   FieldCaption,
   FieldContentGroup,
-  FormControl,
-  type FormControlProps,
-  type FormControlLabelProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldContentGroupProps,
   type FieldInputProps,
   Field,
 } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 
 import { InputNumberCounterControls } from './components';
 import type { InputNumberProps, InputNumberRef } from './index';

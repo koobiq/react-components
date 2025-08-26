@@ -8,19 +8,20 @@ import { TextField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
-  FormControlLabel,
-  FormControl,
   FieldError,
   FieldCaption,
   FieldContentGroup,
-  type FormControlLabelProps,
   type FieldContentGroupProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldInputProps,
-  type FormControlProps,
   Field,
 } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 
 import type { InputProps, InputRef } from './index';
 

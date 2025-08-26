@@ -9,7 +9,7 @@ import type {
   DateInputProps,
   DateInputRef,
 } from '../DateInput';
-import type { FormControlLabelProps } from '../FieldComponents';
+import type { FormControlLabelProps } from '../FormControlLabel';
 import type { PopoverProps } from '../Popover';
 
 export type DatePickerProps<T extends DateValue> = {

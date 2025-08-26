@@ -15,21 +15,22 @@ import type { DateValue } from '@koobiq/react-primitives';
 import { DateSegment } from '../DateSegment';
 import {
   FieldCaption,
-  FormControl,
   FieldError,
   FieldInputDate,
   FieldContentGroup,
-  FormControlLabel,
   Field,
 } from '../FieldComponents';
 import type {
   FieldCaptionProps,
-  FormControlProps,
   FieldErrorProps,
   FieldInputDateProps,
   FieldContentGroupProps,
-  FormControlLabelProps,
 } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 
 import s from './DateInput.module.css';
 import type { DateInputRef, DateInputProps, DateInputComponent } from './types';

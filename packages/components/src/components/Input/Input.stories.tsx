@@ -11,8 +11,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
 import { DatePicker } from '../DatePicker';
-import type { FormControlProps } from '../FieldComponents';
 import { FlexBox } from '../FlexBox';
+import type { FormControlProps } from '../FormControl';
 import { IconButton } from '../IconButton';
 import { InputNumber } from '../InputNumber';
 import { SearchInput } from '../SearchInput';
