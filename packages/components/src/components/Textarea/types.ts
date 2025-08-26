@@ -1,4 +1,4 @@
-import type { ComponentRef, ReactNode } from 'react';
+import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { TextFieldProps } from '@koobiq/react-primitives';
@@ -61,6 +61,8 @@ export type TextareaProps = ExtendableProps<
   {
     /** Additional CSS-classes. */
     className?: string;
+    /** Inline styles. */
+    style?: CSSProperties;
     /**
      * The variant to use.
      * @default 'filled'
