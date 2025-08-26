@@ -11,8 +11,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
 import { Button } from '../Button';
+import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
+import { InputNumber } from '../InputNumber';
+import { SearchInput } from '../SearchInput';
+import { Select } from '../Select';
+import { Textarea } from '../Textarea';
+import { TimePicker } from '../TimePicker';
 import { Typography } from '../Typography';
 
 import { Input, inputPropVariant } from './index';
@@ -214,6 +220,155 @@ export const Addons: Story = {
       </FlexBox>
     );
   },
+};
+
+export const LabelPlacement: Story = {
+  render: (args) => (
+    <FlexBox gap="l" direction="column" style={{ width: 400 }}>
+      <Input
+        label="Name"
+        placeholder="Sophia"
+        maxLength={100}
+        caption="Maximum 100 characters"
+        fullWidth
+        {...args}
+      />
+      <Input
+        label="Name"
+        placeholder="Sophia"
+        maxLength={100}
+        caption="Maximum 100 characters"
+        labelPlacement="side"
+        fullWidth
+        {...args}
+      />
+      <Select
+        labelPlacement="side"
+        label="Attack type"
+        placeholder="Select an option"
+        fullWidth
+      >
+        <Select.Item key="bruteforce">Bruteforce</Select.Item>
+        <Select.Item key="complex-attack">Complex Attack</Select.Item>
+        <Select.Item key="ddos">DDoS</Select.Item>
+        <Select.Item key="dos">DoS</Select.Item>
+        <Select.Item key="hips-alert">HIPS Alert</Select.Item>
+        <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
+        <Select.Item key="identity-theft">Identity Theft</Select.Item>
+        <Select.Item key="miscellaneous">Miscellaneous</Select.Item>
+        <Select.Item key="network-attack">Network Attack</Select.Item>
+        <Select.Item key="post-compromise">Post Compromise</Select.Item>
+        <Select.Item key="potential-attack">Potential Attack</Select.Item>
+      </Select>
+      <div
+        style={{
+          display: 'table',
+          borderSpacing: '0 var(--kbq-size-m)',
+          width: 400,
+        }}
+      >
+        <Select
+          labelPlacement="side"
+          style={{ display: 'table-row' }}
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          label="Attack type"
+          labelAlign="end"
+          placeholder="Select an option"
+          fullWidth
+        >
+          <Select.Item key="bruteforce">Bruteforce</Select.Item>
+          <Select.Item key="complex-attack">Complex Attack</Select.Item>
+          <Select.Item key="ddos">DDoS</Select.Item>
+          <Select.Item key="dos">DoS</Select.Item>
+          <Select.Item key="hips-alert">HIPS Alert</Select.Item>
+          <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
+          <Select.Item key="identity-theft">Identity Theft</Select.Item>
+          <Select.Item key="miscellaneous">Miscellaneous</Select.Item>
+          <Select.Item key="network-attack">Network Attack</Select.Item>
+          <Select.Item key="post-compromise">Post Compromise</Select.Item>
+          <Select.Item key="potential-attack">Potential Attack</Select.Item>
+        </Select>
+        <Input
+          label="Name"
+          placeholder="Sophia"
+          maxLength={100}
+          labelPlacement="side"
+          style={{ display: 'table-row' }}
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          fullWidth
+          {...args}
+        />
+        <Input
+          label="Long name for a test"
+          placeholder="Sophia"
+          maxLength={100}
+          caption="Maximum 100 characters"
+          labelPlacement="side"
+          style={{ display: 'table-row' }}
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          fullWidth
+          {...args}
+        />
+        <Textarea
+          label="Tell us your story"
+          placeholder="Your story"
+          labelPlacement="side"
+          defaultValue="It was a dark and stormy night..."
+          style={{ display: 'table-row' }}
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          fullWidth
+        />
+        <InputNumber
+          label="Age"
+          placeholder="Enter your age"
+          minValue={0}
+          defaultValue={25}
+          labelPlacement="side"
+          style={{ display: 'table-row' }}
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          fullWidth
+        />
+        <SearchInput
+          label="Search"
+          placeholder="Type a word..."
+          style={{ display: 'table-row' }}
+          labelPlacement="side"
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          fullWidth
+        />
+        <TimePicker
+          label="Time"
+          style={{ display: 'table-row' }}
+          labelPlacement="side"
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          fullWidth
+        />
+        <DatePicker
+          style={{ display: 'table-row' }}
+          slotProps={{
+            label: { style: { display: 'table-cell' } },
+          }}
+          labelPlacement="side"
+          label="Date (uncontrolled)"
+          fullWidth
+        />
+      </div>
+    </FlexBox>
+  ),
 };
 
 export const DefaultValue: Story = {

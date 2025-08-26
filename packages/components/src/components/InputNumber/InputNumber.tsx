@@ -8,17 +8,18 @@ import { NumberField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
-  FieldLabel,
+  FormControlLabel,
   FieldError,
   FieldCaption,
   FieldContentGroup,
-  FieldControl,
-  type FieldControlProps,
-  type FieldLabelProps,
+  FormControl,
+  type FormControlProps,
+  type FormControlLabelProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldContentGroupProps,
   type FieldInputProps,
+  Field,
 } from '../FieldComponents';
 
 import { InputNumberCounterControls } from './components';
@@ -40,6 +41,8 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
       readonly,
       isReadOnly: isReadOnlyProp,
       label,
+      labelAlign,
+      labelPlacement,
       startAddon,
       endAddon,
       errorMessage,
@@ -88,12 +91,14 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
     const rootProps = mergeProps<
       [
-        FieldControlProps<typeof NumberField>,
-        FieldControlProps<typeof NumberField> | undefined,
+        FormControlProps<typeof NumberField>,
+        FormControlProps<typeof NumberField> | undefined,
       ]
     >(
       {
         label,
+        labelAlign,
+        labelPlacement,
         fullWidth,
         isDisabled,
         isRequired,
@@ -101,17 +106,16 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
         isInvalid,
         errorMessage,
         'data-variant': variant,
-        'data-fullwidth': fullWidth,
         ...other,
       },
       slotProps?.root
     );
 
     return (
-      <FieldControl as={NumberField} {...rootProps}>
+      <FormControl as={NumberField} {...rootProps}>
         {({ isInvalid, isRequired, isDisabled }) => {
           const labelProps = mergeProps<
-            [FieldLabelProps, FieldLabelProps | undefined]
+            [FormControlLabelProps, FormControlLabelProps | undefined]
           >(
             { isHidden: isLabelHidden, children: label, isRequired },
             slotProps?.label
@@ -157,16 +161,18 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
           return (
             <>
-              <FieldLabel {...labelProps} />
-              <FieldContentGroup {...groupProps}>
-                <FieldInput {...inputProps} />
-              </FieldContentGroup>
-              <FieldCaption {...captionProps} />
-              <FieldError {...errorProps} />
+              <FormControlLabel {...labelProps} />
+              <Field>
+                <FieldContentGroup {...groupProps}>
+                  <FieldInput {...inputProps} />
+                </FieldContentGroup>
+                <FieldCaption {...captionProps} />
+                <FieldError {...errorProps} />
+              </Field>
             </>
           );
         }}
-      </FieldControl>
+      </FormControl>
     );
   }
 );

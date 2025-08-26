@@ -4,8 +4,8 @@
   --field-input-padding-inline-end: var(--kbq-size-m);
   --field-input-padding-block-start: var(--kbq-size-xs);
   --field-input-padding-block-end: var(--kbq-size-xs);
-  display: inline-flex;
   position: relative;
+  display: inline-flex;
   justify-content: center;
   flex-direction: column;
   align-items: flex-start;
@@ -13,4 +13,13 @@
 
 .fullWidth {
   inline-size: 100%;
+}
+
+/* label-placement */
+.top {
+  flex-direction: column;
+}
+
+.side {
+  flex-direction: row;
 }

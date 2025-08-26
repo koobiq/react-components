@@ -7,9 +7,13 @@ import {
   type FieldCaptionProps,
   type FieldContentGroupPropVariant,
   fieldContentGroupPropVariant,
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
   type FieldErrorProps,
   type FieldInputProps,
-  type FieldLabelProps,
+  type FormControlLabelProps,
 } from '../FieldComponents';
 
 export const textareaPropVariant = fieldContentGroupPropVariant;
@@ -18,6 +22,12 @@ export type TextareaPropVariant = FieldContentGroupPropVariant;
 
 export const textareaPropExpand = ['auto-size', 'vertical-resize'] as const;
 export type TextareaPropExpand = (typeof textareaPropExpand)[number];
+
+export const textareaPropLabelPlacement = formControlPropLabelPlacement;
+export type TextareaPropLabelPlacement = FormControlPropLabelPlacement;
+
+export const textareaPropLabelAlign = formControlPropLabelAlign;
+export type TextareaPropLabelAlign = FormControlPropLabelAlign;
 
 type TextareaDeprecatedProps = {
   /**
@@ -80,6 +90,16 @@ export type TextareaProps = ExtendableProps<
      * @default false
      */
     isLabelHidden?: boolean;
+    /**
+     * The label's overall position relative to the element it is labeling.
+     * @default 'top'
+     */
+    labelPlacement?: TextareaPropLabelPlacement;
+    /**
+     * The label's horizontal alignment relative to the element it is labeling.
+     * @default 'start'
+     */
+    labelAlign?: TextareaPropLabelAlign;
     /** The helper text content. */
     caption?: ReactNode;
     /** The rows property specifies the visible height of a text area, in lines. */
@@ -97,7 +117,7 @@ export type TextareaProps = ExtendableProps<
     'data-testid'?: string | number;
     /** The props used for each slot inside. */
     slotProps?: {
-      label?: FieldLabelProps;
+      label?: FormControlLabelProps;
       caption?: FieldCaptionProps;
       textarea?: FieldInputProps<'textarea'>;
       errorMessage?: FieldErrorProps;

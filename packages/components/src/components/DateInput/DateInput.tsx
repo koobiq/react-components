@@ -15,19 +15,20 @@ import type { DateValue } from '@koobiq/react-primitives';
 import { DateSegment } from '../DateSegment';
 import {
   FieldCaption,
-  FieldControl,
+  FormControl,
   FieldError,
   FieldInputDate,
   FieldContentGroup,
-  FieldLabel,
+  FormControlLabel,
+  Field,
 } from '../FieldComponents';
 import type {
   FieldCaptionProps,
-  FieldControlProps,
+  FormControlProps,
   FieldErrorProps,
   FieldInputDateProps,
   FieldContentGroupProps,
-  FieldLabelProps,
+  FormControlLabelProps,
 } from '../FieldComponents';
 
 import s from './DateInput.module.css';
@@ -47,6 +48,8 @@ export function DateInputRender<T extends DateValue>(
     startAddon,
     endAddon,
     isLabelHidden,
+    labelPlacement,
+    labelAlign,
     label,
     className,
     style,
@@ -74,16 +77,17 @@ export function DateInputRender<T extends DateValue>(
   const { isInvalid, isRequired, isDisabled } = state;
 
   const rootProps = mergeProps<
-    [FieldControlProps, FieldControlProps | undefined]
+    [FormControlProps, FormControlProps | undefined]
   >(
     {
       style,
       fullWidth,
+      labelPlacement,
+      labelAlign,
       'data-testid': testId,
       'data-variant': variant,
       'data-invalid': isInvalid,
       'data-disabled': isDisabled,
-      'data-fullwidth': fullWidth,
       'data-required': isRequired,
       'data-readonly': isReadOnly,
       className: clsx(s.base, className),
@@ -92,7 +96,11 @@ export function DateInputRender<T extends DateValue>(
   );
 
   const labelProps = mergeProps<
-    [FieldLabelProps, FieldLabelProps, FieldLabelProps | undefined]
+    [
+      FormControlLabelProps,
+      FormControlLabelProps,
+      FormControlLabelProps | undefined,
+    ]
   >(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
@@ -144,18 +152,20 @@ export function DateInputRender<T extends DateValue>(
   );
 
   return (
-    <FieldControl {...rootProps}>
-      <FieldLabel {...labelProps} />
-      <FieldContentGroup {...groupProps}>
-        <FieldInputDate {...controlProps}>
-          {state.segments.map((segment, i) => (
-            <DateSegment key={i} segment={segment} state={state} />
-          ))}
-        </FieldInputDate>
-      </FieldContentGroup>
-      <FieldCaption {...captionProps} />
-      <FieldError {...errorProps} />
-    </FieldControl>
+    <FormControl {...rootProps}>
+      <FormControlLabel {...labelProps} />
+      <Field>
+        <FieldContentGroup {...groupProps}>
+          <FieldInputDate {...controlProps}>
+            {state.segments.map((segment, i) => (
+              <DateSegment key={i} segment={segment} state={state} />
+            ))}
+          </FieldInputDate>
+        </FieldContentGroup>
+        <FieldCaption {...captionProps} />
+        <FieldError {...errorProps} />
+      </Field>
+    </FormControl>
   );
 }
 

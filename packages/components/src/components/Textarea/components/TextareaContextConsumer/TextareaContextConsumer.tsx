@@ -12,8 +12,9 @@ import {
   FieldInput,
   type FieldContentGroupProps,
   type FieldInputProps,
-  FieldLabel,
-  type FieldLabelProps,
+  FormControlLabel,
+  type FormControlLabelProps,
+  Field,
 } from '../../../FieldComponents';
 import s from '../../Textarea.module.css';
 import type { TextareaProps } from '../../types';
@@ -34,6 +35,7 @@ type TextareaContextConsumerProps = {
   | 'expand'
   | 'isLabelHidden'
   | 'errorMessage'
+  | 'labelPlacement'
 >;
 
 export const TextareaContextConsumer = forwardRef<
@@ -92,19 +94,20 @@ export const TextareaContextConsumer = forwardRef<
     isDisabled,
   };
 
-  const labelProps = mergeProps<[FieldLabelProps, FieldLabelProps | undefined]>(
-    { isHidden: isLabelHidden, children: label, isRequired },
-    slotProps?.label
-  );
+  const labelProps = mergeProps<
+    [FormControlLabelProps, FormControlLabelProps | undefined]
+  >({ isHidden: isLabelHidden, children: label, isRequired }, slotProps?.label);
 
   return (
     <>
-      <FieldLabel {...labelProps} />
-      <FieldContentGroup {...groupProps}>
-        <FieldInput as="textarea" {...textareaProps} />
-      </FieldContentGroup>
-      <FieldCaption {...captionProps} />
-      <FieldError {...errorProps} />
+      <FormControlLabel {...labelProps} />
+      <Field>
+        <FieldContentGroup {...groupProps}>
+          <FieldInput as="textarea" {...textareaProps} />
+        </FieldContentGroup>
+        <FieldCaption {...captionProps} />
+        <FieldError {...errorProps} />
+      </Field>
     </>
   );
 });

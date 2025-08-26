@@ -5,18 +5,27 @@ import type { NumberField, NumberFieldProps } from '@koobiq/react-primitives';
 
 import {
   type FieldCaptionProps,
-  type FieldControlProps,
+  type FormControlProps,
   type FieldErrorProps,
   type FieldContentGroupProps,
   type FieldInputProps,
-  type FieldLabelProps,
+  type FormControlLabelProps,
   fieldContentGroupPropVariant,
   type FieldContentGroupPropVariant,
+  formControlPropLabelPlacement,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelAlign,
+  type FormControlPropLabelAlign,
 } from '../FieldComponents';
 
 export const inputNumberPropVariant = fieldContentGroupPropVariant;
 
 export type InputNumberPropVariant = FieldContentGroupPropVariant;
+
+export const inputNumberPropLabelPlacement = formControlPropLabelPlacement;
+export type InputNumberPropLabelPlacement = FormControlPropLabelPlacement;
+export const inputNumberPropLabelAlign = formControlPropLabelAlign;
+export type InputNumberPropLabelAlign = FormControlPropLabelAlign;
 
 type InputNumberDeprecatedProps = {
   /**
@@ -81,6 +90,16 @@ export type InputNumberProps = ExtendableProps<
      * @default false
      */
     isLabelHidden?: boolean;
+    /**
+     * The label's overall position relative to the element it is labeling.
+     * @default 'top'
+     */
+    labelPlacement?: InputNumberPropLabelPlacement;
+    /**
+     * The label's horizontal alignment relative to the element it is labeling.
+     * @default 'start'
+     */
+    labelAlign?: InputNumberPropLabelAlign;
     /** The helper text content. */
     caption?: ReactNode;
     /** Inline styles. */
@@ -89,8 +108,8 @@ export type InputNumberProps = ExtendableProps<
     'data-testid'?: string | number;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FieldControlProps<typeof NumberField>;
-      label?: FieldLabelProps;
+      root?: FormControlProps<typeof NumberField>;
+      label?: FormControlLabelProps;
       input?: FieldInputProps;
       caption?: FieldCaptionProps;
       group?: FieldContentGroupProps;

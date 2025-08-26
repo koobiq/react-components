@@ -3,20 +3,30 @@ import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 import type { DataAttributeProps, ExtendableProps } from '@koobiq/react-core';
 import type { AriaSearchFieldProps } from '@koobiq/react-primitives';
 
-import type {
-  FieldCaptionProps,
-  FieldErrorProps,
-  FieldInputProps,
-  FieldLabelProps,
-  FieldContentGroupProps,
-  FieldContentGroupPropVariant,
-  FieldControlProps,
+import {
+  type FieldCaptionProps,
+  type FieldErrorProps,
+  type FieldInputProps,
+  type FormControlLabelProps,
+  type FieldContentGroupProps,
+  type FieldContentGroupPropVariant,
+  type FormControlProps,
+  formControlPropLabelPlacement,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelAlign,
+  type FormControlPropLabelAlign,
 } from '../FieldComponents';
 import { fieldContentGroupPropVariant } from '../FieldComponents';
 import type { IconButtonProps } from '../IconButton';
+import type { InputPropLabelAlign, InputPropLabelPlacement } from '../Input';
 
 export const searchInputPropVariant = fieldContentGroupPropVariant;
 export type SearchInputPropVariant = FieldContentGroupPropVariant;
+
+export const searchInputPropLabelPlacement = formControlPropLabelPlacement;
+export type SearchInputPropLabelPlacement = FormControlPropLabelPlacement;
+export const searchInputPropLabelAlign = formControlPropLabelAlign;
+export type SearchInputPropLabelAlign = FormControlPropLabelAlign;
 
 export type SearchInputProps = ExtendableProps<
   {
@@ -29,14 +39,24 @@ export type SearchInputProps = ExtendableProps<
      * @default false
      */
     isLabelHidden?: boolean;
+    /**
+     * The label's overall position relative to the element it is labeling.
+     * @default 'top'
+     */
+    labelPlacement?: InputPropLabelPlacement;
+    /**
+     * The label's horizontal alignment relative to the element it is labeling.
+     * @default 'start'
+     */
+    labelAlign?: InputPropLabelAlign;
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */
     endAddon?: ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FieldControlProps;
-      label?: FieldLabelProps;
+      root?: FormControlProps;
+      label?: FormControlLabelProps;
       group?: FieldContentGroupProps;
       input?: FieldInputProps;
       caption?: FieldCaptionProps;

@@ -10,18 +10,27 @@ import type { AriaDateFieldProps, DateValue } from '@koobiq/react-primitives';
 
 import {
   type FieldCaptionProps,
-  type FieldControlProps,
+  type FormControlProps,
   type FieldErrorProps,
   type FieldInputDateProps,
   type FieldContentGroupProps,
-  type FieldLabelProps,
+  type FormControlLabelProps,
   fieldContentGroupPropVariant,
   type FieldContentGroupPropVariant,
+  formControlPropLabelPlacement,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelAlign,
+  type FormControlPropLabelAlign,
 } from '../FieldComponents';
 
 export const dateInputPropVariant = fieldContentGroupPropVariant;
 
 export type DateInputPropVariant = FieldContentGroupPropVariant;
+
+export const dateInputPropLabelPlacement = formControlPropLabelPlacement;
+export type DateInputPropLabelPlacement = FormControlPropLabelPlacement;
+export const dateInputPropLabelAlign = formControlPropLabelAlign;
+export type DateInputPropLabelAlign = FormControlPropLabelAlign;
 
 export type DateInputProps<T extends DateValue> = {
   /** Inline styles. */
@@ -44,8 +53,8 @@ export type DateInputProps<T extends DateValue> = {
   fullWidth?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
-    root?: FieldControlProps;
-    label?: FieldLabelProps;
+    root?: FormControlProps;
+    label?: FormControlLabelProps;
     group?: FieldContentGroupProps;
     caption?: FieldCaptionProps;
     inputDate?: FieldInputDateProps;
@@ -58,6 +67,16 @@ export type DateInputProps<T extends DateValue> = {
    * @default false
    */
   isLabelHidden?: boolean;
+  /**
+   * The label's overall position relative to the element it is labeling.
+   * @default 'top'
+   */
+  labelPlacement?: DateInputPropLabelPlacement;
+  /**
+   * The label's horizontal alignment relative to the element it is labeling.
+   * @default 'start'
+   */
+  labelAlign?: DateInputPropLabelAlign;
   /** Addon placed before the children. */
   startAddon?: ReactNode;
   /** Addon placed after the children. */

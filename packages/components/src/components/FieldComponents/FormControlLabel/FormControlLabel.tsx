@@ -5,9 +5,9 @@ import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import { clsx, isNotNil } from '@koobiq/react-core';
 import { Label } from '@koobiq/react-primitives';
 
-import s from './FieldLabel.module.css';
+import s from './FormControlLabel.module.css';
 
-export type FieldLabelProps = ExtendableComponentPropsWithRef<
+export type FormControlLabelProps = ExtendableComponentPropsWithRef<
   {
     isHidden?: boolean;
     className?: string;
@@ -17,7 +17,10 @@ export type FieldLabelProps = ExtendableComponentPropsWithRef<
   'label'
 >;
 
-export const FieldLabel = forwardRef<ComponentRef<'label'>, FieldLabelProps>(
+export const FormControlLabel = forwardRef<
+  ComponentRef<'label'>,
+  FormControlLabelProps
+>(
   (
     { children, className, isHidden = false, isRequired = false, ...other },
     ref
@@ -38,4 +41,4 @@ export const FieldLabel = forwardRef<ComponentRef<'label'>, FieldLabelProps>(
     ) : null
 );
 
-FieldLabel.displayName = 'FieldLabel';
+FormControlLabel.displayName = 'FormControlLabel';

@@ -6,7 +6,7 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps } from '@koobiq/react-core';
 import { TextField } from '@koobiq/react-primitives';
 
-import { FieldControl, type FieldControlProps } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FieldComponents';
 
 import { TextareaContextConsumer } from './components';
 import type { TextareaProps, TextareaRef } from './index';
@@ -25,6 +25,8 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
     isRequired: isRequiredProp,
     readonly,
     isReadOnly: isReadOnlyProp,
+    labelPlacement,
+    labelAlign,
     rows,
     cols,
     expand,
@@ -73,8 +75,8 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
 
   const rootProps = mergeProps<
     [
-      FieldControlProps<typeof TextField<HTMLTextAreaElement>>,
-      FieldControlProps<typeof TextField<HTMLTextAreaElement>> | undefined,
+      FormControlProps<typeof TextField<HTMLTextAreaElement>>,
+      FormControlProps<typeof TextField<HTMLTextAreaElement>> | undefined,
     ]
   >(
     {
@@ -85,14 +87,15 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
       isReadOnly,
       isInvalid,
       errorMessage,
+      labelPlacement,
+      labelAlign,
       'data-variant': variant,
-      'data-fullwidth': fullWidth,
     },
     other
   );
 
   return (
-    <FieldControl as={TextField} inputElementType="textarea" {...rootProps}>
+    <FormControl as={TextField} inputElementType="textarea" {...rootProps}>
       {(values) => (
         <TextareaContextConsumer
           {...values}
@@ -108,7 +111,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
           ref={ref}
         />
       )}
-    </FieldControl>
+    </FormControl>
   );
 });
 
