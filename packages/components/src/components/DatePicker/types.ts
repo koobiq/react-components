@@ -9,6 +9,7 @@ import type {
   DateInputProps,
   DateInputRef,
 } from '../DateInput';
+import type { FormControlLabelProps } from '../FieldComponents';
 import type { PopoverProps } from '../Popover';
 
 export type DatePickerProps<T extends DateValue> = {
@@ -44,6 +45,7 @@ export type DatePickerProps<T extends DateValue> = {
   /** The props used for each slot inside. */
   slotProps?: {
     root?: DateInputProps<T>;
+    label?: FormControlLabelProps;
     popover?: PopoverProps;
     calendar?: CalendarProps<T>;
   };

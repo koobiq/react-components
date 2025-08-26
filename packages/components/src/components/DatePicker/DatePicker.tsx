@@ -73,7 +73,7 @@ export function DatePickerRender<T extends DateValue>(
       errorMessage,
       'data-testid': testId,
       slotProps: {
-        label: labelProps,
+        label: mergeProps(labelProps, slotProps?.label),
         group: {
           endAddon: (
             <>
