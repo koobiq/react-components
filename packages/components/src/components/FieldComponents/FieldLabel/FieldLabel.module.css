@@ -4,7 +4,7 @@
   inline-size: 100%;
 
   @mixin typography text-normal;
-  color: var(--kbq-foreground-contrast-secondary);
+  color: var(--kbq-foreground-contrast);
   margin-block-end: var(--kbq-size-xs);
 }
 
