@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/koobiq/react-components/compare/0.7.0...0.7.1) (2025-08-26)
+
+### 🐞 Bug Fixes
+
+- **components:** correct label color for field ([7963b67](https://github.com/koobiq/react-components/commit/7963b675dbffbc53800ed072463157cb5b11b659))
+- **components:** skip &nbsp; in label when field is not required ([0865a66](https://github.com/koobiq/react-components/commit/0865a661ced1d47b615abc9b0406e89461fe105f))
+- **Textarea:** add `style` prop type declaration ([2247500](https://github.com/koobiq/react-components/commit/2247500e519326111fb321b92515e6e9d6cb8b8d))
+
 ## [0.7.0](https://github.com/koobiq/react-components/compare/0.6.0...0.7.0) (2025-08-25)
 
 ### 🚀 Features
