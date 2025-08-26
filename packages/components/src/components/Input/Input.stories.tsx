@@ -11,6 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
 import { DatePicker } from '../DatePicker';
+import type { FormControlProps } from '../FieldComponents';
 import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
 import { InputNumber } from '../InputNumber';
@@ -303,113 +304,62 @@ export const Password: Story = {
 };
 
 export const Composition: Story = {
-  render: (args) => (
-    <div
-      style={{
-        display: 'table',
-        borderSpacing: '0 var(--kbq-size-m)',
-        width: 400,
-      }}
-    >
-      <Select
-        labelPlacement="side"
-        style={{ display: 'table-row' }}
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        label="Attack type"
-        labelAlign="end"
-        placeholder="Select an option"
-        fullWidth
-      >
-        <Select.Item key="bruteforce">Bruteforce</Select.Item>
-        <Select.Item key="complex-attack">Complex Attack</Select.Item>
-        <Select.Item key="ddos">DDoS</Select.Item>
-        <Select.Item key="dos">DoS</Select.Item>
-        <Select.Item key="hips-alert">HIPS Alert</Select.Item>
-        <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
-        <Select.Item key="identity-theft">Identity Theft</Select.Item>
-        <Select.Item key="miscellaneous">Miscellaneous</Select.Item>
-        <Select.Item key="network-attack">Network Attack</Select.Item>
-        <Select.Item key="post-compromise">Post Compromise</Select.Item>
-        <Select.Item key="potential-attack">Potential Attack</Select.Item>
-      </Select>
-      <Input
-        label="Name"
-        placeholder="Sophia"
-        maxLength={100}
-        labelPlacement="side"
-        style={{ display: 'table-row' }}
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        fullWidth
-        {...args}
-      />
-      <Input
-        label="Long name for a test"
-        placeholder="Sophia"
-        maxLength={100}
-        caption="Maximum 100 characters"
-        labelPlacement="side"
-        style={{ display: 'table-row' }}
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        fullWidth
-        {...args}
-      />
-      <Textarea
-        label="Tell us your story"
-        placeholder="Your story"
-        labelPlacement="side"
-        defaultValue="It was a dark and stormy night..."
-        style={{ display: 'table-row' }}
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        fullWidth
-      />
-      <InputNumber
-        label="Age"
-        placeholder="Enter your age"
-        minValue={0}
-        defaultValue={25}
-        labelPlacement="side"
-        style={{ display: 'table-row' }}
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        fullWidth
-      />
-      <SearchInput
-        label="Search"
-        placeholder="Type a word..."
-        style={{ display: 'table-row' }}
-        labelPlacement="side"
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        fullWidth
-      />
-      <TimePicker
-        label="Time"
-        style={{ display: 'table-row' }}
-        labelPlacement="side"
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        fullWidth
-      />
-      <DatePicker
-        style={{ display: 'table-row' }}
-        slotProps={{
-          label: { style: { display: 'table-cell' } },
-        }}
-        labelPlacement="side"
-        label="Date (uncontrolled)"
-        fullWidth
-      />
-    </div>
-  ),
+  render: () => {
+    const containerStyle = {
+      display: 'table',
+      borderSpacing: '0 var(--kbq-size-m)',
+      width: 400,
+    };
+
+    const labelProps: Pick<FormControlProps, 'labelPlacement' | 'labelAlign'> =
+      {
+        labelPlacement: 'side',
+        labelAlign: 'end',
+      };
+
+    const formControlProps = {
+      style: { display: 'table-row' },
+      slotProps: {
+        label: { style: { display: 'table-cell' } },
+      },
+      ...labelProps,
+      fullWidth: true,
+    };
+
+    return (
+      <form style={containerStyle}>
+        <Select
+          label="Select"
+          placeholder="Select an option"
+          {...formControlProps}
+        >
+          <Select.Item key="1">Option 1</Select.Item>
+          <Select.Item key="2">Option 2</Select.Item>
+          <Select.Item key="3">Option 3</Select.Item>
+        </Select>
+        <Input
+          label="Input"
+          placeholder="Type a word..."
+          {...formControlProps}
+        />
+        <Textarea
+          label="Textarea"
+          placeholder="Type a word..."
+          {...formControlProps}
+        />
+        <InputNumber
+          label="InputNumber"
+          placeholder="Type a number..."
+          {...formControlProps}
+        />
+        <SearchInput
+          label="SearchInput"
+          placeholder="Type a word..."
+          {...formControlProps}
+        />
+        <TimePicker label="TimePicker" {...formControlProps} />
+        <DatePicker label="DatePicker" {...formControlProps} />
+      </form>
+    );
+  },
 };
