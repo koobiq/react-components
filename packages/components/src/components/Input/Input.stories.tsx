@@ -17,6 +17,7 @@ import { FormControl } from '../FormControl';
 import { FormControlLabel } from '../FormControlLabel';
 import { IconButton } from '../IconButton';
 import { InputNumber } from '../InputNumber';
+import { Radio, RadioGroup } from '../RadioGroup';
 import { SearchInput } from '../SearchInput';
 import { Select } from '../Select';
 import { Textarea } from '../Textarea';
@@ -379,6 +380,16 @@ export const Form: Story = {
           />
           <TimePicker label="TimePicker" labelPlacement="side" />
           <DatePicker label="DatePicker" labelPlacement="side" />
+          <RadioGroup
+            label="RadioGroup"
+            defaultValue="windows"
+            labelPlacement="side"
+          >
+            <Radio value="windows">Windows</Radio>
+            <Radio value="macos">macOS</Radio>
+            <Radio value="linux">Linux</Radio>
+            <Radio value="other">Other</Radio>
+          </RadioGroup>
           <FormControl labelPlacement="side">
             <FormControlLabel>Inputs</FormControlLabel>
             <FlexBox gap="m">

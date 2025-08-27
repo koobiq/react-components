@@ -15,10 +15,8 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
   (props, ref) => {
     const state = useRadioGroupState(props);
 
-    const { radioGroupProps, labelProps, descriptionProps } = useRadioGroup(
-      props,
-      state
-    );
+    const { radioGroupProps, labelProps, descriptionProps, errorMessageProps } =
+      useRadioGroup(props, state);
 
     const renderProps = useRenderProps({
       ...props,
@@ -43,6 +41,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
               {
                 slots: {
                   description: descriptionProps,
+                  errorMessage: errorMessageProps,
                 },
               },
             ],

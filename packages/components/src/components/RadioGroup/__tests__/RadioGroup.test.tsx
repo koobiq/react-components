@@ -64,8 +64,8 @@ describe('RadioGroup', () => {
     expect(screen.getByText('bar')).toBeInTheDocument();
   });
 
-  it('should display a description', () => {
-    render(renderComponent({ description: 'qux' }));
+  it('should display a caption', () => {
+    render(renderComponent({ caption: 'qux' }));
 
     expect(screen.getByText('qux')).toBeInTheDocument();
   });
