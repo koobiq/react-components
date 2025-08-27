@@ -6,3 +6,13 @@
   --field-input-padding-block-end: var(--kbq-size-xs);
   inline-size: 100%;
 }
+
+.base > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.base > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}
