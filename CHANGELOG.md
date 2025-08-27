@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/koobiq/react-components/compare/0.7.1...0.8.0) (2025-08-27)
+
+### 🚀 Features
+
+- **components:** support `labelPlacement` and `labelAlign` in fields (Input, Select, Textarea, etc.) (DS-4140) ([bf86f32](https://github.com/koobiq/react-components/commit/bf86f32c003c451bb75bf1adb4983799137b43a9))
+- **FormControlLabel:** make component polymorphic ([bcdb005](https://github.com/koobiq/react-components/commit/bcdb00579fafc7e42d4e406f0ccc886d819173ce))
+- **RadioGroup:** support `labelPlacement`/`labelAlign` and other field props (DS-4141) ([d12778e](https://github.com/koobiq/react-components/commit/d12778e04c6a7c83a356c478e05d8afbbd5e2d05))
+
 ## [0.7.1](https://github.com/koobiq/react-components/compare/0.7.0...0.7.1) (2025-08-26)
 
 ### 🐞 Bug Fixes
