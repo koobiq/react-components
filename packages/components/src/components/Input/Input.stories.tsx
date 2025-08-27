@@ -311,6 +311,7 @@ export const Form: Story = {
   parameters: {
     layout: 'padded',
   },
+  name: 'Create a form',
   render: function Render() {
     const presets = [
       { key: 'max-content', template: undefined },
