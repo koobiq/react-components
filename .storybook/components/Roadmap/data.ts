@@ -254,9 +254,20 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q3 2025',
   },
-
   {
     component: 'SearchInput',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2025',
+  },
+  {
+    component: 'FormControl',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2025',
+  },
+  {
+    component: 'FormControlLabel',
     status: '✅ Done',
     stage: '🔵 experimental',
     planned: 'Q3 2025',

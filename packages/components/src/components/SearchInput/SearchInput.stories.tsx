@@ -20,7 +20,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new'],
+  tags: ['status:updated'],
 } satisfies Meta<typeof SearchInput>;
 
 export default meta;

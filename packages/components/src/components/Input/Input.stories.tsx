@@ -55,6 +55,7 @@ const meta = {
       },
     },
   },
+  tags: ['status:updated'],
 } satisfies Meta<typeof Input>;
 
 export default meta;

@@ -18,7 +18,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:updated'],
 } satisfies Meta<typeof Toggle>;
 
 export default meta;
