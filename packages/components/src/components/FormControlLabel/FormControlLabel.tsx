@@ -1,32 +1,29 @@
-import { forwardRef } from 'react';
-import type { ComponentRef, ReactNode } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
-import { clsx, isNotNil } from '@koobiq/react-core';
+import { polymorphicForwardRef, clsx, isNotNil } from '@koobiq/react-core';
 import { Label } from '@koobiq/react-primitives';
 
 import s from './FormControlLabel.module.css';
+import type { FormControlLabelBaseProps } from './types';
 
-export type FormControlLabelProps = ExtendableComponentPropsWithRef<
-  {
-    isHidden?: boolean;
-    className?: string;
-    isRequired?: boolean;
-    children?: ReactNode;
-  },
-  'label'
->;
-
-export const FormControlLabel = forwardRef<
-  ComponentRef<'label'>,
-  FormControlLabelProps
+export const FormControlLabel = polymorphicForwardRef<
+  'label',
+  FormControlLabelBaseProps
 >(
   (
-    { children, className, isHidden = false, isRequired = false, ...other },
+    {
+      children,
+      className,
+      isHidden = false,
+      isRequired = false,
+      as = 'label',
+      ...other
+    },
     ref
   ) =>
     isNotNil(children) ? (
       <Label
+        as={as}
         className={clsx(s.base, isHidden && s.hidden, className)}
         {...other}
         ref={ref}
@@ -40,5 +37,8 @@ export const FormControlLabel = forwardRef<
       </Label>
     ) : null
 );
+
+export type FormControlLabelProps<As extends ElementType = 'label'> =
+  ComponentPropsWithRef<typeof FormControlLabel<As>>;
 
 FormControlLabel.displayName = 'FormControlLabel';
