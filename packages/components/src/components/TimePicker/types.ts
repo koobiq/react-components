@@ -9,14 +9,25 @@ import type {
 import type { AriaTimeFieldProps, TimeValue } from '@koobiq/react-primitives';
 
 import type { DateInputPropVariant } from '../DateInput';
-import type {
-  FieldCaptionProps,
-  FieldControlProps,
-  FieldErrorProps,
-  FieldInputDateProps,
-  FieldContentGroupProps,
-  FieldLabelProps,
+import {
+  type FieldCaptionProps,
+  type FieldErrorProps,
+  type FieldInputDateProps,
+  type FieldContentGroupProps,
 } from '../FieldComponents';
+import {
+  type FormControlProps,
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
+
+export const timePickerPropLabelPlacement = formControlPropLabelPlacement;
+export type TimePickerPropLabelPlacement = FormControlPropLabelPlacement;
+export const timePickerPropLabelAlign = formControlPropLabelAlign;
+export type TimePickerPropLabelAlign = FormControlPropLabelAlign;
 
 export type TimePickerProps<T extends TimeValue> = {
   /** Inline styles. */
@@ -39,8 +50,8 @@ export type TimePickerProps<T extends TimeValue> = {
   fullWidth?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
-    root?: FieldControlProps;
-    label?: FieldLabelProps;
+    root?: FormControlProps;
+    label?: FormControlLabelProps;
     group?: FieldContentGroupProps;
     caption?: FieldCaptionProps;
     inputDate?: FieldInputDateProps;
@@ -53,6 +64,16 @@ export type TimePickerProps<T extends TimeValue> = {
    * @default false
    */
   isLabelHidden?: boolean;
+  /**
+   * The label's overall position relative to the element it is labeling.
+   * @default 'top'
+   */
+  labelPlacement?: TimePickerPropLabelPlacement;
+  /**
+   * The label's horizontal alignment relative to the element it is labeling.
+   * @default 'start'
+   */
+  labelAlign?: TimePickerPropLabelAlign;
   /** Addon placed before the children. */
   startAddon?: ReactNode;
   /** Addon placed after the children. */

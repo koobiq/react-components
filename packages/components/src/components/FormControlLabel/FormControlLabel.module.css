@@ -1,63 +1,48 @@
 @import url('../../styles/mixins.css');
 
 .base {
-  --form-control-label-color: var(--kbq-foreground-contrast);
-  --form-control-label-caption-color: var(--kbq-foreground-contrast-secondary);
-  cursor: pointer;
+  @mixin typography text-normal;
+  color: var(--kbq-foreground-contrast);
   vertical-align: top;
-  display: inline-flex;
-  gap: var(--kbq-size-s);
-  align-items: flex-start;
+  box-sizing: border-box;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-
-  &:empty {
-    display: none;
-  }
+.hidden {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  block-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  inline-size: 1px;
+  white-space: nowrap;
 }
 
-.label {
-  color: var(--form-control-label-color);
+.sup {
+  color: var(--kbq-foreground-error);
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+
+  @mixin typography text-normal;
 }
 
-.caption {
-  color: var(--form-control-label-caption-color);
+[data-label-placement='top'] .base {
+  padding-block-end: var(--kbq-size-xs);
 }
 
-.normal {
-  :where(.label) {
-    @mixin typography text-normal;
-  }
-
-  :where(.caption) {
-    @mixin typography text-compact;
-  }
+[data-label-placement='side'] .base {
+  padding-block-start: var(--kbq-size-xs);
+  padding-inline-end: var(--kbq-size-l);
 }
 
-.big {
-  :where(.label) {
-    @mixin typography text-big;
-  }
-
-  :where(.caption) {
-    @mixin typography text-normal;
-  }
+[data-label-align='start'] .base {
+  text-align: start;
 }
 
-/* labelPlacement */
-.start {
-  flex-direction: row-reverse;
-}
-
-.end {
-  flex-direction: row;
-}
-
-.disabled {
-  --form-control-label-color: var(--kbq-states-foreground-disabled);
-  --form-control-label-caption-color: var(--kbq-states-foreground-disabled);
-  cursor: not-allowed;
+[data-label-align='end'] .base {
+  text-align: end;
+  justify-content: flex-end;
 }

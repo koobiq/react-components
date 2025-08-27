@@ -15,15 +15,17 @@ import {
   type FieldCaptionProps,
   FieldContentGroup,
   type FieldContentGroupProps,
-  FieldControl,
-  type FieldControlProps,
   FieldError,
   type FieldErrorProps,
   FieldInput,
   type FieldInputProps,
-  FieldLabel,
-  type FieldLabelProps,
+  Field,
 } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 import { IconButton } from '../IconButton';
 
 import s from './SearchInput.module.css';
@@ -36,6 +38,8 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       variant = 'filled',
       fullWidth = false,
       isLabelHidden = false,
+      labelPlacement,
+      labelAlign,
       'data-testid': testId,
       style,
       className,
@@ -64,16 +68,17 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     } = useSearchField(removeDataAttributes(props), state, domRef);
 
     const rootProps = mergeProps<
-      [FieldControlProps, FieldControlProps | undefined]
+      [FormControlProps, FormControlProps | undefined]
     >(
       {
         style,
+        labelPlacement,
+        labelAlign,
         fullWidth,
         'data-testid': testId,
         'data-variant': variant,
         'data-invalid': isInvalid,
         'data-disabled': isDisabled,
-        'data-fullwidth': fullWidth,
         'data-required': isRequired,
         'data-readonly': isReadOnly,
         className: clsx(s.base, className),
@@ -82,7 +87,11 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     );
 
     const labelProps = mergeProps<
-      [FieldLabelProps, FieldLabelProps | undefined, FieldLabelProps]
+      [
+        FormControlLabelProps,
+        FormControlLabelProps | undefined,
+        FormControlLabelProps,
+      ]
     >(
       { isHidden: isLabelHidden, isRequired, children: label },
       slotProps?.label,
@@ -147,14 +156,16 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     );
 
     return (
-      <FieldControl {...rootProps}>
-        <FieldLabel {...labelProps}>{label}</FieldLabel>
-        <FieldContentGroup {...groupProps}>
-          <FieldInput {...inputProps} />
-        </FieldContentGroup>
-        <FieldCaption {...captionProps} />
-        <FieldError {...errorProps} />
-      </FieldControl>
+      <FormControl {...rootProps}>
+        <FormControlLabel {...labelProps}>{label}</FormControlLabel>
+        <Field>
+          <FieldContentGroup {...groupProps}>
+            <FieldInput {...inputProps} />
+          </FieldContentGroup>
+          <FieldCaption {...captionProps} />
+          <FieldError {...errorProps} />
+        </Field>
+      </FormControl>
     );
   }
 );

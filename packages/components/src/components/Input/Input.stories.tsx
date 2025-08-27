@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -10,10 +10,20 @@ import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
-import { Button } from '../Button';
+import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
+import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
+import { FormControl } from '../FormControl';
+import { FormControlLabel } from '../FormControlLabel';
 import { IconButton } from '../IconButton';
+import { InputNumber } from '../InputNumber';
+import { SearchInput } from '../SearchInput';
+import { Select } from '../Select';
+import { Textarea } from '../Textarea';
+import { TimePicker } from '../TimePicker';
 import { Typography } from '../Typography';
+
+import './__stories__/style.css';
 
 import { Input, inputPropVariant } from './index';
 
@@ -216,6 +226,22 @@ export const Addons: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <Input
+      label="Name"
+      placeholder="Sophia"
+      maxLength={100}
+      caption="Maximum 100 characters"
+      labelPlacement="side"
+      labelAlign="end"
+      fullWidth
+      {...args}
+    />
+  ),
+};
+
 export const DefaultValue: Story = {
   render: function Render(args) {
     return (
@@ -281,11 +307,86 @@ export const Password: Story = {
   },
 };
 
-export const Composition: Story = {
-  render: (args) => (
-    <FlexBox gap="m">
-      <Input aria-label="input" placeholder="Placeholder" {...args} />
-      <Button>Button</Button>
-    </FlexBox>
-  ),
+export const Form: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    const presets = [
+      { key: 'max-content', template: undefined },
+      { key: '1/4', template: '1fr 3fr' },
+      { key: '2/5', template: '2fr 3fr' },
+      { key: '1/2', template: '1fr 1fr' },
+      { key: 'fixed 128', template: '128px 1fr' },
+      { key: 'fixed 160', template: '160px 1fr' },
+    ] as const;
+
+    type PresetKey = (typeof presets)[number]['key'];
+    const [selected, setSelected] = useState<PresetKey>('max-content');
+
+    const current = presets.find((p) => p.key === selected)!;
+
+    const formStyle: CSSProperties | undefined = current.template
+      ? ({ '--template-columns': current.template } as CSSProperties)
+      : undefined;
+
+    return (
+      <FlexBox direction="column" gap="xl">
+        <FormControl labelPlacement="top">
+          <FormControlLabel>Label size:</FormControlLabel>
+          <ButtonToggleGroup
+            selectedKey={selected}
+            onSelectionChange={(key) => setSelected(key as PresetKey)}
+          >
+            {presets.map((p) => (
+              <ButtonToggle key={p.key} id={p.key}>
+                {p.key}
+              </ButtonToggle>
+            ))}
+          </ButtonToggleGroup>
+        </FormControl>
+
+        <form className="form" style={formStyle}>
+          <Select
+            label="Select"
+            placeholder="Select an option"
+            labelPlacement="side"
+          >
+            <Select.Item key="1">Option 1</Select.Item>
+            <Select.Item key="2">Option 2</Select.Item>
+            <Select.Item key="3">Option 3</Select.Item>
+          </Select>
+          <Input
+            label="Input"
+            placeholder="Type a word..."
+            labelPlacement="side"
+          />
+          <Textarea
+            label="Textarea"
+            placeholder="Type a word..."
+            labelPlacement="side"
+          />
+          <InputNumber
+            label="InputNumber"
+            placeholder="Type a number..."
+            labelPlacement="side"
+          />
+          <SearchInput
+            label="SearchInput"
+            placeholder="Type a word..."
+            labelPlacement="side"
+          />
+          <TimePicker label="TimePicker" labelPlacement="side" />
+          <DatePicker label="DatePicker" labelPlacement="side" />
+          <FormControl labelPlacement="side">
+            <FormControlLabel>Inputs</FormControlLabel>
+            <FlexBox gap="m">
+              <Input aria-label="first" placeholder="Input 1" />
+              <Input aria-label="second" placeholder="Input 2" />
+            </FlexBox>
+          </FormControl>
+        </form>
+      </FlexBox>
+    );
+  },
 };

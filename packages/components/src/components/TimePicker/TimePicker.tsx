@@ -12,20 +12,22 @@ import {
 import { DateSegment } from '../DateSegment';
 import {
   FieldCaption,
-  FieldControl,
   FieldError,
   FieldInputDate,
   FieldContentGroup,
-  FieldLabel,
+  Field,
 } from '../FieldComponents';
 import type {
   FieldCaptionProps,
-  FieldControlProps,
   FieldErrorProps,
   FieldInputDateProps,
   FieldContentGroupProps,
-  FieldLabelProps,
 } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 
 import s from './TimePicker.module.css';
 import type {
@@ -44,6 +46,8 @@ export function TimePickerRender<T extends TimeValue>(
 
   const {
     isLabelHidden,
+    labelPlacement,
+    labelAlign,
     caption,
     label,
     slotProps,
@@ -73,16 +77,17 @@ export function TimePickerRender<T extends TimeValue>(
   const { isInvalid, isDisabled, isRequired, isReadOnly } = state;
 
   const rootProps = mergeProps<
-    [FieldControlProps, FieldControlProps | undefined]
+    [FormControlProps, FormControlProps | undefined]
   >(
     {
       style,
       fullWidth,
+      labelPlacement,
+      labelAlign,
       'data-testid': testId,
       'data-variant': variant,
       'data-invalid': isInvalid,
       'data-disabled': isDisabled,
-      'data-fullwidth': fullWidth,
       'data-required': isRequired,
       'data-readonly': isReadOnly,
       className: clsx(s.base, className),
@@ -122,7 +127,11 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   const labelProps = mergeProps<
-    [FieldLabelProps, FieldLabelProps, FieldLabelProps | undefined]
+    [
+      FormControlLabelProps,
+      FormControlLabelProps,
+      FormControlLabelProps | undefined,
+    ]
   >(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
@@ -148,21 +157,23 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   return (
-    <FieldControl {...rootProps}>
-      <FieldLabel {...labelProps} />
-      <FieldContentGroup
-        {...groupProps}
-        slotProps={{ startAddon: { className: s.startAddon } }}
-      >
-        <FieldInputDate {...controlProps}>
-          {state.segments.map((segment, i) => (
-            <DateSegment key={i} segment={segment} state={state} />
-          ))}
-        </FieldInputDate>
-      </FieldContentGroup>
-      <FieldCaption {...captionProps} />
-      <FieldError {...errorProps} />
-    </FieldControl>
+    <FormControl {...rootProps}>
+      <FormControlLabel {...labelProps} />
+      <Field>
+        <FieldContentGroup
+          {...groupProps}
+          slotProps={{ startAddon: { className: s.startAddon } }}
+        >
+          <FieldInputDate {...controlProps}>
+            {state.segments.map((segment, i) => (
+              <DateSegment key={i} segment={segment} state={state} />
+            ))}
+          </FieldInputDate>
+        </FieldContentGroup>
+        <FieldCaption {...captionProps} />
+        <FieldError {...errorProps} />
+      </Field>
+    </FormControl>
   );
 }
 

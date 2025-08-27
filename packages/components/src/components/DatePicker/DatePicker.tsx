@@ -34,6 +34,8 @@ export function DatePickerRender<T extends DateValue>(
     slotProps,
     fullWidth,
     errorMessage,
+    labelPlacement,
+    labelAlign,
     startAddon,
     endAddon,
     'data-testid': testId,
@@ -66,10 +68,12 @@ export function DatePickerRender<T extends DateValue>(
       fullWidth,
       className,
       startAddon,
+      labelPlacement,
+      labelAlign,
       errorMessage,
       'data-testid': testId,
       slotProps: {
-        label: labelProps,
+        label: mergeProps(labelProps, slotProps?.label),
         group: {
           endAddon: (
             <>

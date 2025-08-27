@@ -16,18 +16,21 @@ import {
 
 import { Item, Section, Divider } from '../Collections';
 import {
-  FieldLabel,
   FieldError,
   FieldSelect,
   FieldCaption,
   FieldContentGroup,
-  FieldControl,
-  type FieldLabelProps,
   type FieldContentGroupProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldSelectProps,
+  Field,
 } from '../FieldComponents';
+import { FormControl } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 import { IconButton } from '../IconButton';
 import type { ListItemText } from '../List';
 import { List } from '../List';
@@ -48,6 +51,8 @@ function SelectRender<T extends object>(
     'data-testid': testId,
     selectionMode = 'single',
     selectedTagsOverflow = 'responsive',
+    labelPlacement,
+    labelAlign,
     isRequired,
     isDisabled,
     caption,
@@ -102,11 +107,13 @@ function SelectRender<T extends object>(
 
   const rootProps = mergeProps({
     'data-testid': testId,
-    'data-fullwidth': fullWidth,
     'data-invalid': isInvalid,
     'data-disabled': props.isDisabled,
     'data-required': props.isRequired,
-    className: clsx(s.base, fullWidth && s.fullWidth, className),
+    className,
+    fullWidth,
+    labelPlacement,
+    labelAlign,
     style,
   });
 
@@ -117,7 +124,11 @@ function SelectRender<T extends object>(
   );
 
   const labelProps = mergeProps<
-    [FieldLabelProps, FieldLabelProps | undefined, FieldLabelProps]
+    [
+      FormControlLabelProps,
+      FormControlLabelProps | undefined,
+      FormControlLabelProps,
+    ]
   >(
     { isHidden: isLabelHidden, children: label, isRequired },
     slotProps?.label,
@@ -229,20 +240,22 @@ function SelectRender<T extends object>(
 
   return (
     <>
-      <FieldControl {...rootProps}>
-        <FieldLabel {...labelProps} />
-        <FieldContentGroup {...groupProps}>
-          <FieldSelect {...controlProps}>
-            {renderValue(state, {
-              isInvalid,
-              isDisabled: props.isDisabled,
-              isRequired: props.isRequired,
-            })}
-          </FieldSelect>
-        </FieldContentGroup>
-        <FieldCaption {...captionProps} />
-        <FieldError {...errorProps} />
-      </FieldControl>
+      <FormControl {...rootProps}>
+        <FormControlLabel {...labelProps} />
+        <Field>
+          <FieldContentGroup {...groupProps}>
+            <FieldSelect {...controlProps}>
+              {renderValue(state, {
+                isInvalid,
+                isDisabled: props.isDisabled,
+                isRequired: props.isRequired,
+              })}
+            </FieldSelect>
+          </FieldContentGroup>
+          <FieldCaption {...captionProps} />
+          <FieldError {...errorProps} />
+        </Field>
+      </FormControl>
       <PopoverInner {...popoverProps}>
         <SelectList {...listProps} />
       </PopoverInner>

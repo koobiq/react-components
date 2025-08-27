@@ -8,18 +8,20 @@ import { TextField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
-  FieldLabel,
-  FieldControl,
   FieldError,
   FieldCaption,
   FieldContentGroup,
-  type FieldLabelProps,
   type FieldContentGroupProps,
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldInputProps,
-  type FieldControlProps,
+  Field,
 } from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 
 import type { InputProps, InputRef } from './index';
 
@@ -37,6 +39,8 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     isRequired: isRequiredProp,
     readonly,
     isReadOnly: isReadOnlyProp,
+    labelPlacement,
+    labelAlign,
     label,
     startAddon,
     endAddon,
@@ -86,8 +90,8 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
   const rootProps = mergeProps<
     [
-      FieldControlProps<typeof TextField<HTMLInputElement>>,
-      FieldControlProps<typeof TextField<HTMLInputElement>> | undefined,
+      FormControlProps<typeof TextField<HTMLInputElement>>,
+      FormControlProps<typeof TextField<HTMLInputElement>> | undefined,
     ]
   >(
     {
@@ -98,18 +102,19 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       isReadOnly,
       isInvalid,
       errorMessage,
+      labelPlacement,
+      labelAlign,
       'data-variant': variant,
-      'data-fullwidth': fullWidth,
       ...other,
     },
     slotProps?.root
   );
 
   return (
-    <FieldControl as={TextField} inputElementType="input" {...rootProps}>
+    <FormControl as={TextField} inputElementType="input" {...rootProps}>
       {({ isInvalid, isRequired, isDisabled }) => {
         const labelProps = mergeProps<
-          [FieldLabelProps, FieldLabelProps | undefined]
+          [FormControlLabelProps, FormControlLabelProps | undefined]
         >(
           { isHidden: isLabelHidden, isRequired, children: label },
           slotProps?.label
@@ -150,16 +155,18 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
         return (
           <>
-            <FieldLabel {...labelProps} />
-            <FieldContentGroup {...groupProps}>
-              <FieldInput {...inputProps} />
-            </FieldContentGroup>
-            <FieldCaption {...captionProps} />
-            <FieldError {...errorProps} />
+            <FormControlLabel {...labelProps} />
+            <Field>
+              <FieldContentGroup {...groupProps}>
+                <FieldInput {...inputProps} />
+              </FieldContentGroup>
+              <FieldCaption {...captionProps} />
+              <FieldError {...errorProps} />
+            </Field>
           </>
         );
       }}
-    </FieldControl>
+    </FormControl>
   );
 });
 

@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   color: var(--field-addon-color);
-  block-size: var(--field-control-size-height);
+  block-size: var(--field-size-height);
   transition: color var(--kbq-transition-default);
 }
 

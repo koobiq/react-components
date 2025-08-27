@@ -13,13 +13,19 @@ import type {
   useMultiSelectState,
 } from '@koobiq/react-primitives';
 
-import type {
-  FieldErrorProps,
-  FieldLabelProps,
-  FieldSelectProps,
-  FieldCaptionProps,
-  FieldContentGroupProps,
+import {
+  type FieldErrorProps,
+  type FieldSelectProps,
+  type FieldCaptionProps,
+  type FieldContentGroupProps,
 } from '../FieldComponents';
+import {
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 import type { IconButtonProps } from '../IconButton';
 import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
@@ -31,6 +37,12 @@ export const selectPropSelectedTagsOverflow = [
 
 export type SelectPropSelectedTagsOverflow =
   (typeof selectPropSelectedTagsOverflow)[number];
+
+export const selectPropLabelPlacement = formControlPropLabelPlacement;
+export type SelectPropLabelPlacement = FormControlPropLabelPlacement;
+
+export const selectPropLabelAlign = formControlPropLabelAlign;
+export type SelectPropLabelAlign = FormControlPropLabelAlign;
 
 export type SelectProps<T> = ExtendableProps<
   {
@@ -76,6 +88,16 @@ export type SelectProps<T> = ExtendableProps<
      * @default false
      */
     isLabelHidden?: boolean;
+    /**
+     * The label's overall position relative to the element it is labeling.
+     * @default 'top'
+     */
+    labelPlacement?: SelectPropLabelPlacement;
+    /**
+     * The label's horizontal alignment relative to the element it is labeling.
+     * @default 'start'
+     */
+    labelAlign?: SelectPropLabelAlign;
     /** The helper text content. */
     caption?: ReactNode;
     /**
@@ -99,7 +121,7 @@ export type SelectProps<T> = ExtendableProps<
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;
-      label?: FieldLabelProps;
+      label?: FormControlLabelProps;
       list?: ListProps<T>;
       control?: FieldSelectProps;
       caption?: FieldCaptionProps;

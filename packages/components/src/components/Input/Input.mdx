@@ -3,7 +3,10 @@ import {
   Story,
   Props,
   Status,
+  Source,
+  Alert,
 } from '../../../../../.storybook/components';
+import formCss from './__stories__/style.css?raw';
 
 import * as Stories from './Input.stories';
 
@@ -70,6 +73,14 @@ The `fullWidth` prop will make an input fit to its parent width.
 
 <Story of={Stories.FullWidth} />
 
+## Label placement and alignment
+
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
+
+See [Create a form](#create-a-form) story for a two column form with a shared label column.
+
+<Story of={Stories.LabelPlacementAlignment} />
+
 ## Value
 
 ### Default value
@@ -97,8 +108,20 @@ See the example of how to present the component with a password input.
 
 <Story of={Stories.Password} />
 
-## Composition
+## Create a form
 
-See the example showing the use of the component with others.
+See example of a two column CSS Grid form. The label is on the side
+at the start of the text direction and the control is in the next column.
+All rows share one label column with fixed or fractional width.
 
-<Story of={Stories.Composition} />
+<Alert>
+  Many library components are already form controls (Input, Select, Textarea,
+  etc.). You can also build custom controls with the same layout and label
+  behavior using **FormControl** and **FormControlLabel**.
+</Alert>
+
+<Story of={Stories.Form} />
+
+**style.css**
+
+<Source language="css" code={formCss} />

@@ -3,7 +3,13 @@ import type { CSSProperties, ReactElement, ReactNode, Ref } from 'react';
 import type { AriaDatePickerProps, DateValue } from '@koobiq/react-primitives';
 
 import type { CalendarProps } from '../Calendar';
-import type { DateInputProps, DateInputRef } from '../DateInput';
+import type {
+  DateInputPropLabelAlign,
+  DateInputPropLabelPlacement,
+  DateInputProps,
+  DateInputRef,
+} from '../DateInput';
+import type { FormControlLabelProps } from '../FormControlLabel';
 import type { PopoverProps } from '../Popover';
 
 export type DatePickerProps<T extends DateValue> = {
@@ -24,11 +30,22 @@ export type DatePickerProps<T extends DateValue> = {
   style?: CSSProperties;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
+  /**
+   * The label's overall position relative to the element it is labeling.
+   * @default 'top'
+   */
+  labelPlacement?: DateInputPropLabelPlacement;
+  /**
+   * The label's horizontal alignment relative to the element it is labeling.
+   * @default 'start'
+   */
+  labelAlign?: DateInputPropLabelAlign;
   /** Ref to the DateInput. */
   ref?: Ref<DateInputRef>;
   /** The props used for each slot inside. */
   slotProps?: {
     root?: DateInputProps<T>;
+    label?: FormControlLabelProps;
     popover?: PopoverProps;
     calendar?: CalendarProps<T>;
   };

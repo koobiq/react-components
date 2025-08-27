@@ -9,7 +9,7 @@
   inline-size: 100%;
   align-items: center;
   box-sizing: border-box;
-  block-size: var(--field-control-size-height);
+  block-size: var(--field-size-height);
   border-radius: inherit;
   color: var(--field-input-color);
   background: var(--field-input-bg-color);

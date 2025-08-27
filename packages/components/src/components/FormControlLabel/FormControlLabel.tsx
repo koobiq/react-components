@@ -1,52 +1,44 @@
-import { type ComponentRef, forwardRef } from 'react';
+import { forwardRef } from 'react';
+import type { ComponentRef, ReactNode } from 'react';
 
-import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
+import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import { clsx, isNotNil } from '@koobiq/react-core';
+import { Label } from '@koobiq/react-primitives';
 
 import s from './FormControlLabel.module.css';
-import type { FormControlLabelProps } from './index';
+
+export type FormControlLabelProps = ExtendableComponentPropsWithRef<
+  {
+    isHidden?: boolean;
+    className?: string;
+    isRequired?: boolean;
+    children?: ReactNode;
+  },
+  'label'
+>;
 
 export const FormControlLabel = forwardRef<
   ComponentRef<'label'>,
   FormControlLabelProps
 >(
   (
-    {
-      size = 'normal',
-      disabled = false,
-      labelPlacement = 'end',
-      className,
-      children,
-      slotProps,
-      label,
-      caption,
-      ...other
-    },
+    { children, className, isHidden = false, isRequired = false, ...other },
     ref
-  ) => {
-    const contentProps = mergeProps(slotProps?.content, {
-      className: s.content,
-    });
-
-    return (
-      <label
-        className={clsx(
-          s.base,
-          s[size],
-          s[labelPlacement],
-          disabled && s.disabled,
-          className
-        )}
-        ref={ref}
+  ) =>
+    isNotNil(children) ? (
+      <Label
+        className={clsx(s.base, isHidden && s.hidden, className)}
         {...other}
+        ref={ref}
       >
         {children}
-        <div {...contentProps}>
-          {isNotNil(label) && <span className={s.label}>{label}</span>}
-          {isNotNil(caption) && <span className={s.caption}>{caption}</span>}
-        </div>
-      </label>
-    );
-  }
+        {isRequired && (
+          <>
+            &nbsp;<sup className={s.sup}>*</sup>
+          </>
+        )}
+      </Label>
+    ) : null
 );
 
 FormControlLabel.displayName = 'FormControlLabel';

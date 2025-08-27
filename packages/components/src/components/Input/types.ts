@@ -7,15 +7,25 @@ import {
   type FieldCaptionProps,
   type FieldErrorProps,
   type FieldInputProps,
-  type FieldLabelProps,
   type FieldContentGroupProps,
-  type FieldControlProps,
   type FieldContentGroupPropVariant,
   fieldContentGroupPropVariant,
 } from '../FieldComponents';
+import {
+  type FormControlProps,
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 
 export const inputPropVariant = fieldContentGroupPropVariant;
+export const inputPropLabelPlacement = formControlPropLabelPlacement;
 export type InputPropVariant = FieldContentGroupPropVariant;
+export type InputPropLabelPlacement = FormControlPropLabelPlacement;
+export const inputPropLabelAlign = formControlPropLabelAlign;
+export type InputPropLabelAlign = FormControlPropLabelAlign;
 
 type InputDeprecatedProps = {
   /**
@@ -80,6 +90,16 @@ export type InputProps = ExtendableProps<
      * @default false
      */
     isLabelHidden?: boolean;
+    /**
+     * The label's overall position relative to the element it is labeling.
+     * @default 'top'
+     */
+    labelPlacement?: InputPropLabelPlacement;
+    /**
+     * The label's horizontal alignment relative to the element it is labeling.
+     * @default 'start'
+     */
+    labelAlign?: InputPropLabelAlign;
     /** The helper text content. */
     caption?: ReactNode;
     /** Inline styles. */
@@ -88,8 +108,8 @@ export type InputProps = ExtendableProps<
     'data-testid'?: string | number;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FieldControlProps<typeof TextField<HTMLInputElement>>;
-      label?: FieldLabelProps;
+      root?: FormControlProps<typeof TextField<HTMLInputElement>>;
+      label?: FormControlLabelProps;
       caption?: FieldCaptionProps;
       group?: FieldContentGroupProps;
       errorMessage?: FieldErrorProps;

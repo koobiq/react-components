@@ -168,6 +168,20 @@ export const ReadOnly: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <Textarea
+      label="Tell us your story"
+      placeholder="Your story"
+      defaultValue="It was a dark and stormy night..."
+      labelPlacement="side"
+      labelAlign="end"
+      {...args}
+    />
+  ),
+};
+
 export const DefaultValue: Story = {
   render: function Render(args) {
     return (
