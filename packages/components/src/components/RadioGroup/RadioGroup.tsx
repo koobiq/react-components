@@ -3,17 +3,26 @@
 import { forwardRef, type ComponentRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
-import { clsx, mergeProps } from '@koobiq/react-core';
+import { mergeProps } from '@koobiq/react-core';
 import { RadioGroup as RadioGroupPrimitive } from '@koobiq/react-primitives';
 
+import {
+  Field,
+  FieldCaption,
+  type FieldCaptionProps,
+  FieldError,
+  type FieldErrorProps,
+} from '../FieldComponents';
+import { FormControl, type FormControlProps } from '../FormControl';
+import {
+  FormControlLabel,
+  type FormControlLabelProps,
+} from '../FormControlLabel';
 import { flex } from '../layout';
 
-import {
-  RadioGroupLabel,
-  RadioGroupContext,
-  RadioGroupDescription,
-} from './index';
+import { RadioGroupContext } from './index';
 import type { RadioGroupProps } from './index';
+import s from './RadioGroup.module.css';
 
 export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
   (props, ref) => {
@@ -22,22 +31,37 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       label,
       children,
       slotProps,
+      style,
+      className,
       description,
+      caption: captionProp,
       orientation,
       isInvalid: isInvalidProp,
       isDisabled: isDisabledProp,
       isRequired: isRequiredProp,
       isReadOnly: isReadOnlyProp,
+      'data-testid': testId,
+      errorMessage,
+      labelAlign,
+      labelPlacement,
+      isLabelHidden,
       disabled,
       error,
       readonly,
       required,
     } = props;
 
+    const caption = captionProp ?? description;
     const isDisabled = isDisabledProp ?? disabled ?? false;
     const isInvalid = isInvalidProp ?? error ?? false;
     const isReadOnly = isReadOnlyProp ?? readonly ?? false;
     const isRequired = isRequiredProp ?? required ?? false;
+
+    if (process.env.NODE_ENV !== 'production' && 'description' in props) {
+      deprecate(
+        'RadioGroup: the "description" prop is deprecated. Use "caption" prop to replace it.'
+      );
+    }
 
     if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
       deprecate(
@@ -63,30 +87,85 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       );
     }
 
-    const commonRootProps = mergeProps(
-      { ...props, isDisabled, isInvalid, isReadOnly, isRequired },
+    const rootProps = mergeProps<
+      [
+        FormControlProps<typeof RadioGroupPrimitive>,
+        FormControlProps<typeof RadioGroupPrimitive> | undefined,
+      ]
+    >(
       {
-        className: clsx(
-          flex({
-            direction: orientation === 'horizontal' ? 'row' : 'column',
-            alignItems: orientation === 'horizontal' ? 'center' : 'flex-start',
-            gap: 'm',
-          })
-        ),
+        style,
+        labelPlacement,
+        className,
+        labelAlign,
+        isDisabled,
+        isInvalid,
+        isReadOnly,
+        isRequired,
+        ...props,
+        ref,
+        'data-size': size,
+        'data-testid': testId,
+        'data-invalid': isInvalid,
+        'data-disabled': isDisabled,
+        'data-required': isRequired,
+        'data-readonly': isReadOnly,
       },
       slotProps?.root
     );
 
+    const radioGroupProps = mergeProps(
+      {
+        className: flex({
+          direction: orientation === 'horizontal' ? 'row' : 'column',
+          alignItems: orientation === 'horizontal' ? 'center' : 'flex-start',
+          gap: 's',
+        }),
+      },
+      slotProps?.radioGroup
+    );
+
     return (
-      <RadioGroupPrimitive {...commonRootProps} ref={ref}>
-        <RadioGroupLabel {...slotProps?.label}>{label}</RadioGroupLabel>
-        <RadioGroupContext.Provider value={{ size }}>
-          {children}
-        </RadioGroupContext.Provider>
-        <RadioGroupDescription {...slotProps?.description}>
-          {description}
-        </RadioGroupDescription>
-      </RadioGroupPrimitive>
+      <RadioGroupContext.Provider value={{ size }}>
+        <FormControl as={RadioGroupPrimitive} {...rootProps}>
+          {({ isInvalid, isRequired }) => {
+            const labelProps = mergeProps<
+              [
+                FormControlLabelProps<'span'>,
+                FormControlLabelProps<'span'> | undefined,
+              ]
+            >(
+              {
+                as: 'span',
+                isRequired,
+                children: label,
+                className: s.label,
+                isHidden: isLabelHidden,
+              },
+              slotProps?.label
+            );
+
+            const errorProps = mergeProps<
+              [FieldErrorProps, FieldErrorProps | undefined]
+            >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
+
+            const captionProps = mergeProps<
+              [FieldCaptionProps, FieldCaptionProps | undefined]
+            >({ children: caption }, slotProps?.caption);
+
+            return (
+              <>
+                <FormControlLabel {...labelProps} />
+                <Field>
+                  <div {...radioGroupProps}>{children}</div>
+                  <FieldCaption {...captionProps} />
+                  <FieldError {...errorProps} />
+                </Field>
+              </>
+            );
+          }}
+        </FormControl>
+      </RadioGroupContext.Provider>
     );
   }
 );

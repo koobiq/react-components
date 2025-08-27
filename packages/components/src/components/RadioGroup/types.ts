@@ -4,12 +4,20 @@ import type {
   ExtendableComponentPropsWithRef,
   ExtendableProps,
 } from '@koobiq/react-core';
-import type { RadioGroupProps as RadioGroupPrimitiveProps } from '@koobiq/react-primitives';
-
 import type {
-  RadioGroupDescriptionProps,
-  RadioGroupLabelProps,
-} from './components';
+  RadioGroup as RadioGroupPrimitive,
+  RadioGroupProps as RadioGroupPrimitiveProps,
+} from '@koobiq/react-primitives';
+
+import type { FieldCaptionProps, FieldErrorProps } from '../FieldComponents';
+import {
+  type FormControlPropLabelAlign,
+  formControlPropLabelAlign,
+  type FormControlPropLabelPlacement,
+  formControlPropLabelPlacement,
+  type FormControlProps,
+} from '../FormControl';
+import type { FormControlLabelProps } from '../FormControlLabel';
 
 export const radioGroupPropSize = ['normal', 'big'] as const;
 
@@ -19,6 +27,11 @@ export const radioGroupPropOrientation = ['horizontal', 'vertical'] as const;
 
 export type RadioGroupPropOrientation =
   (typeof radioGroupPropOrientation)[number];
+
+export const radioGroupPropLabelPlacement = formControlPropLabelPlacement;
+export type RadioGroupPropLabelPlacement = FormControlPropLabelPlacement;
+export const radioGroupPropLabelAlign = formControlPropLabelAlign;
+export type RadioGroupPropLabelAlign = FormControlPropLabelAlign;
 
 type RadioGroupDeprecatedProps = {
   /**
@@ -49,12 +62,22 @@ type RadioGroupDeprecatedProps = {
    * The "required" prop is deprecated. Use "isRequired" prop to replace it.
    */
   required?: boolean;
+  /**
+   * The helper text content.
+   * @deprecated
+   * The "description" prop is deprecated. Use "caption" prop to replace it.
+   */
+  description?: ReactNode;
 };
 
 export type RadioGroupBaseProps = ExtendableProps<
   {
     /** Additional CSS-classes. */
     className?: string;
+    /** Unique identifier for testing purposes. */
+    'data-testid'?: string | number;
+    /** The helper text content. */
+    caption?: ReactNode;
     /** Inline styles. */
     style?: CSSProperties;
     /** The content of the component. */
@@ -69,11 +92,30 @@ export type RadioGroupBaseProps = ExtendableProps<
      * @default 'vertical'
      */
     orientation?: RadioGroupPropOrientation;
+    /**
+     * If `true`, the label is hidden. Be sure to add aria-label to the input element.
+     * @default false
+     */
+    isLabelHidden?: boolean;
+    /** An error message for the field. */
+    errorMessage?: ReactNode;
+    /**
+     * The label's overall position relative to the element it is labeling.
+     * @default 'top'
+     */
+    labelPlacement?: RadioGroupPropLabelPlacement;
+    /**
+     * The label's horizontal alignment relative to the element it is labeling.
+     * @default 'start'
+     */
+    labelAlign?: RadioGroupPropLabelAlign;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: ComponentPropsWithRef<'div'>;
-      description?: RadioGroupDescriptionProps;
-      label?: RadioGroupLabelProps;
+      root?: FormControlProps<typeof RadioGroupPrimitive>;
+      caption?: FieldCaptionProps;
+      errorMessage?: FieldErrorProps;
+      label?: FormControlLabelProps<'span'>;
+      radioGroup?: ComponentPropsWithRef<'div'>;
     };
   } & RadioGroupDeprecatedProps,
   Omit<

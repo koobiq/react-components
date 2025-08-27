@@ -15,6 +15,7 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
+  tags: ['status:updated'],
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;
@@ -78,10 +79,35 @@ export const Disabled: Story = {
 
 export const Invalid: Story = {
   render: (args) => (
-    <RadioGroup label="Label" defaultValue="one" isInvalid {...args}>
+    <RadioGroup
+      label="Label"
+      defaultValue="one"
+      errorMessage="This field is required"
+      isInvalid
+      {...args}
+    >
       <Radio value="one">One</Radio>
       <Radio value="two">Two</Radio>
       <Radio value="three">Three</Radio>
+    </RadioGroup>
+  ),
+};
+
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <RadioGroup
+      label="Which OS do you use?"
+      defaultValue="windows"
+      labelPlacement="side"
+      orientation="horizontal"
+      labelAlign="end"
+      {...args}
+    >
+      <Radio value="windows">Windows</Radio>
+      <Radio value="macos">macOS</Radio>
+      <Radio value="linux">Linux</Radio>
+      <Radio value="other">Other</Radio>
     </RadioGroup>
   ),
 };
@@ -120,11 +146,11 @@ export const ControlledValue: Story = {
   },
 };
 
-export const Description: Story = {
+export const Caption: Story = {
   render: (args) => (
     <RadioGroup
       label="Favorite fruit:"
-      description="Please select a fruit."
+      caption="Please select a fruit."
       {...args}
     >
       <Radio value="banana">Banana</Radio>
