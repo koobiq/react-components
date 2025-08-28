@@ -260,18 +260,6 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q3 2025',
   },
-  {
-    component: 'FormControl',
-    status: '✅ Done',
-    stage: '🔵 experimental',
-    planned: 'Q3 2025',
-  },
-  {
-    component: 'FormControlLabel',
-    status: '✅ Done',
-    stage: '🔵 experimental',
-    planned: 'Q3 2025',
-  },
   { component: 'Tabs', status: '🚧 Planned', planned: 'Q3 2025' },
   { component: 'Autocomplete', status: '🚧 Planned', planned: 'Q3 2025' },
   { component: 'Breadcrumbs', status: '🚧 Planned', planned: 'Q4 2025' },
