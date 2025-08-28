@@ -329,14 +329,14 @@ export const Form: Story = {
 
     const current = presets.find((p) => p.key === selected)!;
 
-    const formStyle: CSSProperties | undefined = current.template
+    const formStyle = current.template
       ? ({ '--template-columns': current.template } as CSSProperties)
       : undefined;
 
     return (
       <FlexBox direction="column" gap="xl">
         <FormControl labelPlacement="top">
-          <FormControlLabel>Label size:</FormControlLabel>
+          <FormControlLabel as="span">Label size:</FormControlLabel>
           <ButtonToggleGroup
             selectedKey={selected}
             onSelectionChange={(key) => setSelected(key as PresetKey)}
@@ -392,7 +392,7 @@ export const Form: Story = {
             <Radio value="other">Other</Radio>
           </RadioGroup>
           <FormControl labelPlacement="side">
-            <FormControlLabel>Inputs</FormControlLabel>
+            <FormControlLabel as="span">Inputs</FormControlLabel>
             <FlexBox gap="m">
               <Input aria-label="first" placeholder="Input 1" />
               <Input aria-label="second" placeholder="Input 2" />
