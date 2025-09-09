@@ -4,6 +4,7 @@ import { IconRuler16 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
 import { Typography } from '../Typography';
@@ -344,4 +345,19 @@ export const StepValues: Story = {
       </FlexBox>
     );
   },
+};
+
+export const Validation: Story = {
+  render: (args) => (
+    <FlexBox as="form" direction="column" gap="m">
+      <InputNumber
+        label="Width"
+        name="width-name"
+        isRequired
+        validationBehavior="native"
+        {...args}
+      />
+      <Button type="submit">Submit</Button>
+    </FlexBox>
+  ),
 };

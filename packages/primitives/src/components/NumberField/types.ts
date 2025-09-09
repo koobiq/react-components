@@ -1,8 +1,8 @@
 import type { ComponentRef } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
+import type { AriaNumberFieldProps } from '@react-aria/numberfield';
 
-import type { UseNumberFieldProps } from '../../behaviors';
 import type { RenderProps } from '../../utils';
 
 export type NumberFieldRenderProps = {
@@ -32,7 +32,7 @@ type NumberFieldBaseProps = RenderProps<NumberFieldRenderProps>;
 
 export type NumberFieldProps = ExtendableProps<
   NumberFieldBaseProps,
-  UseNumberFieldProps
+  AriaNumberFieldProps
 >;
 
 export type NumberFieldRef = ComponentRef<'div'>;

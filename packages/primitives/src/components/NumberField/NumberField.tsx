@@ -7,6 +7,7 @@ import { filterDOMProps } from '@koobiq/react-core';
 import { useNumberField } from '../../behaviors';
 import { Provider, removeDataAttributes, useRenderProps } from '../../utils';
 import { ButtonContext } from '../Button';
+import { FieldErrorContext } from '../FieldError';
 import { GroupContext } from '../Group';
 import { InputContext } from '../Input';
 import { LabelContext } from '../Label';
@@ -16,7 +17,7 @@ import type { NumberFieldProps, NumberFieldRef } from './index';
 
 export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
   (props, ref) => {
-    const { isDisabled, isReadOnly, isRequired, isInvalid } = props;
+    const { isDisabled, isReadOnly, isRequired } = props;
 
     const inputRef = useRef(null);
 
@@ -28,6 +29,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
       errorMessageProps,
       incrementButtonProps,
       decrementButtonProps,
+      ...validation
     } = useNumberField({ ...removeDataAttributes(props) }, inputRef);
 
     const DOMProps = filterDOMProps(props);
@@ -36,7 +38,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
     const renderProps = useRenderProps({
       ...props,
       values: {
-        isInvalid: isInvalid || false,
+        isInvalid: validation.isInvalid || false,
         isDisabled: isDisabled || false,
         isReadonly: isReadOnly || false,
         isRequired: isRequired || false,
@@ -47,7 +49,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
       <div
         {...DOMProps}
         {...renderProps}
-        data-invalid={isInvalid || undefined}
+        data-invalid={validation.isInvalid || undefined}
         data-readonly={isReadOnly || undefined}
         data-required={isRequired || undefined}
         data-disabled={isDisabled || undefined}
@@ -82,6 +84,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
                 },
               },
             ],
+            [FieldErrorContext, validation],
           ]}
         >
           {renderProps.children}

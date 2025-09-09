@@ -4,15 +4,17 @@ import { type ComponentRef, forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
-import { NumberField } from '@koobiq/react-primitives';
+import {
+  NumberField,
+  FieldError,
+  type FieldErrorProps,
+} from '@koobiq/react-primitives';
 
 import {
   FieldInput,
-  FieldError,
   FieldCaption,
   FieldContentGroup,
   type FieldCaptionProps,
-  type FieldErrorProps,
   type FieldContentGroupProps,
   type FieldInputProps,
   Field,
@@ -25,6 +27,7 @@ import {
 
 import { InputNumberCounterControls } from './components';
 import type { InputNumberProps, InputNumberRef } from './index';
+import s from './InputNumber.module.css';
 
 export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
   (props, ref) => {
@@ -140,7 +143,10 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
           const errorProps = mergeProps<
             [FieldErrorProps, FieldErrorProps | undefined]
-          >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
+          >(
+            { children: errorMessage, className: s.error },
+            slotProps?.errorMessage
+          );
 
           const groupProps = mergeProps<
             [FieldContentGroupProps, FieldContentGroupProps | undefined]
