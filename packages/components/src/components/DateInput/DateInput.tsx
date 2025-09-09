@@ -39,7 +39,6 @@ export function DateInputRender<T extends DateValue>(
   props: Omit<DateInputProps<T>, 'ref'>,
   ref: Ref<DateInputRef>
 ) {
-  const { errorMessage } = props;
   const { locale } = useLocale();
 
   const {
@@ -72,10 +71,17 @@ export function DateInputRender<T extends DateValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
-    ...validation
+    isInvalid,
+    validationErrors,
+    validationDetails,
   } = useDateField({ ...removeDataAttributes(props) }, state, domRef);
 
-  const { isInvalid, isRequired, isDisabled } = state;
+  const { isRequired, isDisabled } = state;
+
+  const errorMessage =
+    typeof props.errorMessage === 'function'
+      ? props.errorMessage({ isInvalid, validationErrors, validationDetails })
+      : props.errorMessage || validationErrors?.join(' ');
 
   const rootProps = mergeProps<
     [FormControlProps, FormControlProps | undefined]
@@ -130,10 +136,7 @@ export function DateInputRender<T extends DateValue>(
   >(
     {
       isInvalid,
-      children:
-        typeof errorMessage === 'function'
-          ? errorMessage({ ...validation })
-          : errorMessage,
+      children: errorMessage,
     },
     slotProps?.errorMessage,
     errorMessageProps

@@ -131,7 +131,6 @@ export const MinMaxValues: Story = {
         minValue={today(getLocalTimeZone())}
         onChange={(value) => setValue(value!)}
         maxValue={today(getLocalTimeZone()).add({ months: 8 })}
-        errorMessage={({ validationErrors }) => validationErrors.join('/\n/\n')}
       />
     );
   },
@@ -146,7 +145,6 @@ export const UnavailableDates: Story = {
       <DatePicker
         aria-label="Appointment date"
         isDateUnavailable={(date) => isWeekend(date, locale)}
-        errorMessage={({ validationErrors }) => validationErrors.join('/\n/\n')}
       />
     );
   },

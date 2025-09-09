@@ -133,8 +133,6 @@ export type SelectProps<T> = ExtendableProps<
   Omit<
     AriaSelectProps<T>,
     | 'description'
-    | 'validate'
-    | 'validationBehavior'
     | 'validationState'
     | 'selectedKey'
     | 'onSelectionChange'

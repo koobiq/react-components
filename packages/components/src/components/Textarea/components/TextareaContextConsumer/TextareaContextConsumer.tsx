@@ -1,14 +1,16 @@
 import { type ComponentRef, forwardRef } from 'react';
 
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
-import { useTextareaContext } from '@koobiq/react-primitives';
+import {
+  useTextareaContext,
+  FieldError,
+  type FieldErrorProps,
+} from '@koobiq/react-primitives';
 
 import {
   FieldCaption,
   type FieldCaptionProps,
   FieldContentGroup,
-  FieldError,
-  type FieldErrorProps,
   FieldInput,
   type FieldContentGroupProps,
   type FieldInputProps,
@@ -86,7 +88,7 @@ export const TextareaContextConsumer = forwardRef<
   >({ children: caption }, slotProps?.caption);
 
   const errorProps = mergeProps<[FieldErrorProps, FieldErrorProps | undefined]>(
-    { isInvalid, children: errorMessage },
+    { children: errorMessage, className: s.error },
     slotProps?.errorMessage
   );
 

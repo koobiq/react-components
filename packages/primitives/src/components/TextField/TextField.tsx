@@ -6,6 +6,7 @@ import { filterDOMProps } from '@koobiq/react-core';
 import { useTextField } from '@react-aria/textfield';
 
 import { Provider, removeDataAttributes, useRenderProps } from '../../utils';
+import { FieldErrorContext } from '../FieldError';
 import { InputContext } from '../Input';
 import { LabelContext } from '../Label';
 import { TextContext } from '../Text';
@@ -26,13 +27,15 @@ function TextFieldRender(
   const inputRef = useRef(null);
 
   const {
-    isInvalid,
     labelProps,
     inputProps,
     descriptionProps,
     errorMessageProps,
+    ...validation
   } = useTextField<'input' | 'textarea'>(
-    { ...removeDataAttributes(props) },
+    {
+      ...removeDataAttributes(props),
+    },
     inputRef
   );
 
@@ -42,7 +45,7 @@ function TextFieldRender(
   const renderProps = useRenderProps({
     ...props,
     values: {
-      isInvalid: isInvalid || false,
+      isInvalid: validation.isInvalid || false,
       isDisabled: isDisabled || false,
       isReadOnly: isReadOnly || false,
       isRequired: isRequired || false,
@@ -53,7 +56,7 @@ function TextFieldRender(
     <div
       {...DOMProps}
       {...renderProps}
-      data-invalid={isInvalid || undefined}
+      data-invalid={validation.isInvalid || undefined}
       data-readonly={isReadOnly || undefined}
       data-required={isRequired || undefined}
       data-disabled={isDisabled || undefined}
@@ -73,6 +76,7 @@ function TextFieldRender(
               },
             },
           ],
+          [FieldErrorContext, validation],
         ]}
       >
         {renderProps.children}

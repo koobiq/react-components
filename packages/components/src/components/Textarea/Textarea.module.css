@@ -1,3 +1,5 @@
+@import url('../../styles/mixins.css');
+
 .auto-size {
   resize: none;
 }
@@ -5,4 +7,12 @@
 .vertical-resize {
   resize: block;
   overflow: auto;
+}
+
+.error {
+  inline-size: 100%;
+
+  @mixin typography text-compact;
+  color: var(--kbq-foreground-error);
+  transition: color var(--kbq-transition-default);
 }

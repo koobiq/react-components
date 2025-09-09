@@ -44,12 +44,10 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       style,
       className,
       caption,
-      errorMessage,
       isRequired,
       isReadOnly,
       label,
       endAddon,
-      isInvalid,
       isDisabled,
       slotProps,
     } = props;
@@ -65,7 +63,15 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       descriptionProps: descriptionPropsAria,
       errorMessageProps: errorMessagePropsAria,
       clearButtonProps: clearButtonPropsAria,
+      isInvalid,
+      validationDetails,
+      validationErrors,
     } = useSearchField(removeDataAttributes(props), state, domRef);
+
+    const errorMessage =
+      typeof props.errorMessage === 'function'
+        ? props.errorMessage({ isInvalid, validationErrors, validationDetails })
+        : props.errorMessage || validationErrors?.join(' ');
 
     const rootProps = mergeProps<
       [FormControlProps, FormControlProps | undefined]

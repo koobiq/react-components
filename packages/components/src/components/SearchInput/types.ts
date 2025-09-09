@@ -64,8 +64,6 @@ export type SearchInputProps = ExtendableProps<
       errorMessage?: FieldErrorProps;
       clearButton?: IconButtonProps;
     };
-    /** An error message for the field. */
-    errorMessage?: ReactNode;
     /** The helper text content. */
     caption?: ReactNode;
     /**
@@ -79,7 +77,7 @@ export type SearchInputProps = ExtendableProps<
      */
     fullWidth?: boolean;
   } & DataAttributeProps,
-  Omit<AriaSearchFieldProps, 'description' | 'errorMessage' | 'validationState'>
+  Omit<AriaSearchFieldProps, 'description' | 'validationState'>
 >;
 
 export type SearchInputRef = ComponentRef<'input'>;

@@ -78,8 +78,6 @@ export type InputProps = ExtendableProps<
      * @default 'filled'
      */
     variant?: InputPropVariant;
-    /** An error message for the field. */
-    errorMessage?: ReactNode;
     /**
      * If true, the input will take up the full width of its container.
      * @default false
@@ -118,11 +116,7 @@ export type InputProps = ExtendableProps<
   } & InputDeprecatedProps,
   Omit<
     TextFieldProps<HTMLInputElement>,
-    | 'description'
-    | 'validationBehavior'
-    | 'validate'
-    | 'children'
-    | 'inputElementType'
+    'description' | 'children' | 'inputElementType'
   >
 >;
 

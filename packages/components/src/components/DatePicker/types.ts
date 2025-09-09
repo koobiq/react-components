@@ -49,10 +49,7 @@ export type DatePickerProps<T extends DateValue> = {
     popover?: PopoverProps;
     calendar?: CalendarProps<T>;
   };
-} & Omit<
-  AriaDatePickerProps<T>,
-  'description' | 'validate' | 'validationBehavior' | 'validationState'
->;
+} & Omit<AriaDatePickerProps<T>, 'description' | 'validationState'>;
 
 export type DatePickerComponent = <T extends DateValue>(
   props: DatePickerProps<T>

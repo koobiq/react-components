@@ -10,6 +10,7 @@ import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
+import { Button } from '../Button';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
@@ -68,6 +69,16 @@ export const Base: Story = {
       placeholder="Sophia"
       maxLength={100}
       caption="Maximum 100 characters"
+      validationBehavior="aria"
+      validate={(value) => {
+        console.log(value);
+
+        if (value.length < 3) {
+          return 'Username must be at least 3 characters long';
+        }
+
+        return value === 'admin' ? 'Nice try!' : null;
+      }}
       {...args}
     />
   ),
@@ -307,6 +318,22 @@ export const Password: Story = {
       />
     );
   },
+};
+
+export const Validation: Story = {
+  render: (args) => (
+    <FlexBox as="form" direction="column" gap="m">
+      <Input
+        label="Email"
+        name="email"
+        type="email"
+        isRequired
+        validationBehavior="native"
+        {...args}
+      />
+      <Button type="submit">Submit</Button>
+    </FlexBox>
+  ),
 };
 
 export const Form: Story = {

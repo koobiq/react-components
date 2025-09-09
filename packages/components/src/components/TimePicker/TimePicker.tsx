@@ -57,7 +57,6 @@ export function TimePickerRender<T extends TimeValue>(
     className,
     endAddon,
     startAddon,
-    errorMessage,
     'data-testid': testId,
   } = props;
 
@@ -71,10 +70,17 @@ export function TimePickerRender<T extends TimeValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
-    ...validation
+    isInvalid,
+    validationErrors,
+    validationDetails,
   } = useTimeField(removeDataAttributes(props), state, domRef);
 
-  const { isInvalid, isDisabled, isRequired, isReadOnly } = state;
+  const { isDisabled, isRequired, isReadOnly } = state;
+
+  const errorMessage =
+    typeof props.errorMessage === 'function'
+      ? props.errorMessage({ isInvalid, validationErrors, validationDetails })
+      : props.errorMessage || validationErrors?.join(' ');
 
   const rootProps = mergeProps<
     [FormControlProps, FormControlProps | undefined]
@@ -147,10 +153,7 @@ export function TimePickerRender<T extends TimeValue>(
   >(
     {
       isInvalid,
-      children:
-        typeof errorMessage === 'function'
-          ? errorMessage({ ...validation })
-          : errorMessage,
+      children: errorMessage,
     },
     slotProps?.errorMessage,
     errorMessageProps
