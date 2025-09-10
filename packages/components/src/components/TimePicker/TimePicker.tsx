@@ -70,6 +70,7 @@ export function TimePickerRender<T extends TimeValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
+    inputProps,
     isInvalid,
     validationErrors,
     validationDetails,
@@ -171,6 +172,7 @@ export function TimePickerRender<T extends TimeValue>(
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
+            <input {...inputProps} />
           </FieldInputDate>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />

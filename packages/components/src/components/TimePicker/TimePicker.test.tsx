@@ -153,4 +153,18 @@ describe('TimePicker', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      const { container } = render(
+        <TimePicker name="time" aria-label="time" />
+      );
+
+      const hidden = container.querySelector(
+        'input[type="hidden"][name="time"]'
+      );
+
+      expect(hidden).toBeInTheDocument();
+    });
+  });
 });
