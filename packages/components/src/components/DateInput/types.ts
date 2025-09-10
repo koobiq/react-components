@@ -83,10 +83,7 @@ export type DateInputProps<T extends DateValue> = {
   startAddon?: ReactNode;
   /** Addon placed after the children. */
   endAddon?: ReactNode;
-} & Omit<
-  AriaDateFieldProps<T>,
-  'description' | 'validationBehavior' | 'validate' | 'validationState'
->;
+} & Omit<AriaDateFieldProps<T>, 'description' | 'validationState'>;
 
 export type DateInputComponent = <T extends DateValue>(
   props: DateInputProps<T>

@@ -154,4 +154,16 @@ describe('DateInput', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      const { container } = render(<DateInput name="date" aria-label="date" />);
+
+      const hidden = container.querySelector(
+        'input[type="hidden"][name="date"]'
+      );
+
+      expect(hidden).toBeInTheDocument();
+    });
+  });
 });

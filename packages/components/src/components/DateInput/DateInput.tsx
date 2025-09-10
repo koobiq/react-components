@@ -71,6 +71,7 @@ export function DateInputRender<T extends DateValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
+    inputProps,
     isInvalid,
     validationErrors,
     validationDetails,
@@ -164,6 +165,7 @@ export function DateInputRender<T extends DateValue>(
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
+            <input {...inputProps} />
           </FieldInputDate>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
