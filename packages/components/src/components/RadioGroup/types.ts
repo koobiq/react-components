@@ -97,8 +97,6 @@ export type RadioGroupBaseProps = ExtendableProps<
      * @default false
      */
     isLabelHidden?: boolean;
-    /** An error message for the field. */
-    errorMessage?: ReactNode;
     /**
      * The label's overall position relative to the element it is labeling.
      * @default 'top'
@@ -118,10 +116,7 @@ export type RadioGroupBaseProps = ExtendableProps<
       radioGroup?: ComponentPropsWithRef<'div'>;
     };
   } & RadioGroupDeprecatedProps,
-  Omit<
-    RadioGroupPrimitiveProps,
-    'validate' | 'validationBehavior' | 'validationState' | 'errorMessage'
-  >
+  Omit<RadioGroupPrimitiveProps, 'validationState'>
 >;
 
 export type RadioGroupProps = ExtendableComponentPropsWithRef<
