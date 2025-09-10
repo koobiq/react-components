@@ -106,11 +106,6 @@ export type InputNumberProps = ExtendableProps<
     caption?: ReactNode;
     /** Inline styles. */
     style?: CSSProperties;
-    /**
-     * The name of the input element, used when submitting an HTML form.
-     * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
-     */
-    name?: string;
     /** Unique identifier for testing purposes. */
     'data-testid'?: string | number;
     /** The props used for each slot inside. */

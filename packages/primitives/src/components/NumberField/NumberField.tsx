@@ -3,8 +3,10 @@
 import { forwardRef, useRef } from 'react';
 
 import { filterDOMProps } from '@koobiq/react-core';
+import { useLocale } from '@react-aria/i18n';
+import { useNumberField } from '@react-aria/numberfield';
+import { useNumberFieldState } from '@react-stately/numberfield';
 
-import { useNumberField } from '../../behaviors';
 import { Provider, removeDataAttributes, useRenderProps } from '../../utils';
 import { ButtonContext } from '../Button';
 import { FieldErrorContext } from '../FieldError';
@@ -21,6 +23,10 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
 
     const inputRef = useRef(null);
 
+    const { locale } = useLocale();
+
+    const state = useNumberFieldState({ ...props, locale });
+
     const {
       labelProps,
       inputProps,
@@ -30,7 +36,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
       incrementButtonProps,
       decrementButtonProps,
       ...validation
-    } = useNumberField({ ...removeDataAttributes(props) }, inputRef);
+    } = useNumberField(removeDataAttributes(props), state, inputRef);
 
     const DOMProps = filterDOMProps(props);
     delete DOMProps.id;
@@ -46,50 +52,57 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
     });
 
     return (
-      <div
-        {...DOMProps}
-        {...renderProps}
-        data-invalid={validation.isInvalid || undefined}
-        data-readonly={isReadOnly || undefined}
-        data-required={isRequired || undefined}
-        data-disabled={isDisabled || undefined}
-        ref={ref}
+      <Provider
+        values={[
+          [LabelContext, labelProps],
+          [InputContext, { ...inputProps, ref: inputRef }],
+          [GroupContext, groupProps],
+          [
+            ButtonContext,
+            {
+              slots: {
+                increment: {
+                  ...incrementButtonProps,
+                  disabled: incrementButtonProps.isDisabled,
+                },
+                decrement: {
+                  ...decrementButtonProps,
+                  disabled: decrementButtonProps.isDisabled,
+                },
+              },
+            },
+          ],
+          [
+            TextContext,
+            {
+              slots: {
+                description: descriptionProps,
+                errorMessage: errorMessageProps,
+              },
+            },
+          ],
+          [FieldErrorContext, validation],
+        ]}
       >
-        <Provider
-          values={[
-            [LabelContext, labelProps],
-            [InputContext, { ...inputProps, ref: inputRef }],
-            [GroupContext, groupProps],
-            [
-              ButtonContext,
-              {
-                slots: {
-                  increment: {
-                    ...incrementButtonProps,
-                    disabled: incrementButtonProps.isDisabled,
-                  },
-                  decrement: {
-                    ...decrementButtonProps,
-                    disabled: decrementButtonProps.isDisabled,
-                  },
-                },
-              },
-            ],
-            [
-              TextContext,
-              {
-                slots: {
-                  description: descriptionProps,
-                  errorMessage: errorMessageProps,
-                },
-              },
-            ],
-            [FieldErrorContext, validation],
-          ]}
-        >
-          {renderProps.children}
-        </Provider>
-      </div>
+        <div
+          {...DOMProps}
+          {...renderProps}
+          data-invalid={validation.isInvalid || undefined}
+          data-readonly={isReadOnly || undefined}
+          data-required={isRequired || undefined}
+          data-disabled={isDisabled || undefined}
+          ref={ref}
+        />
+        {props.name && (
+          <input
+            type="hidden"
+            name={props.name}
+            form={props.form}
+            value={Number.isNaN(state.numberValue) ? '' : state.numberValue}
+            disabled={props.isDisabled || undefined}
+          />
+        )}
+      </Provider>
     );
   }
 );

@@ -186,4 +186,18 @@ describe('InputNumber', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      const { container } = render(
+        <InputNumber name="number" aria-label="number" />
+      );
+
+      const hidden = container.querySelector(
+        'input[type="hidden"][name="number"]'
+      );
+
+      expect(hidden).toBeInTheDocument();
+    });
+  });
 });

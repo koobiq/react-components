@@ -1,4 +1,4 @@
-import type { ComponentRef } from 'react';
+import type { ComponentPropsWithoutRef, ComponentRef } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { AriaNumberFieldProps } from '@react-aria/numberfield';
@@ -32,7 +32,8 @@ type NumberFieldBaseProps = RenderProps<NumberFieldRenderProps>;
 
 export type NumberFieldProps = ExtendableProps<
   NumberFieldBaseProps,
-  AriaNumberFieldProps
+  AriaNumberFieldProps &
+    Pick<ComponentPropsWithoutRef<'input'>, 'name' | 'form' | 'disabled'>
 >;
 
 export type NumberFieldRef = ComponentRef<'div'>;

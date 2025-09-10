@@ -352,7 +352,7 @@ export const Validation: Story = {
     <FlexBox as="form" direction="column" gap="m">
       <InputNumber
         label="Width"
-        name="width-name"
+        name="width"
         isRequired
         validationBehavior="native"
         {...args}
