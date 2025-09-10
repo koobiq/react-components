@@ -9,6 +9,7 @@ import {
 } from '@koobiq/react-core';
 import { IconChevronDownS16, IconXmarkCircle16 } from '@koobiq/react-icons';
 import {
+  FieldErrorContext,
   removeDataAttributes,
   useMultiSelect,
   useMultiSelectState,
@@ -85,13 +86,13 @@ function SelectRender<T extends object>(
   }, [onClear, state]);
 
   const {
-    isInvalid,
     menuProps,
     valueProps,
     triggerProps,
     labelProps: labelPropsAria,
     descriptionProps,
     errorMessageProps,
+    ...validation
   } = useMultiSelect(
     removeDataAttributes({
       ...props,
@@ -101,6 +102,8 @@ function SelectRender<T extends object>(
     state,
     domRef
   );
+
+  const { isInvalid } = validation;
 
   // Match the Popover width to the control element's width.
   const { ref: containerRef, width } = useElementSize();
@@ -215,11 +218,7 @@ function SelectRender<T extends object>(
 
   const errorProps = mergeProps<
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
-  >(
-    { isInvalid, children: errorMessage },
-    slotProps?.errorMessage,
-    errorMessageProps
-  );
+  >({ children: errorMessage }, slotProps?.errorMessage, errorMessageProps);
 
   const renderDefaultValue: typeof renderValueProp = (state, states) => {
     if (!state.selectedItems) return null;
@@ -253,7 +252,9 @@ function SelectRender<T extends object>(
             </FieldSelect>
           </FieldContentGroup>
           <FieldCaption {...captionProps} />
-          <FieldError {...errorProps} />
+          <FieldErrorContext.Provider value={validation}>
+            <FieldError {...errorProps} />
+          </FieldErrorContext.Provider>
         </Field>
       </FormControl>
       <PopoverInner {...popoverProps}>

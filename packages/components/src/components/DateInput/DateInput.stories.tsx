@@ -180,7 +180,7 @@ export const Validation: Story = {
     <FlexBox as="form" direction="column" gap="m">
       <DateInput
         name="date"
-        label="date"
+        label="Date"
         validationBehavior="native"
         isRequired
         {...args}

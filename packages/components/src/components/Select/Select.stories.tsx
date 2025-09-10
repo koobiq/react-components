@@ -639,22 +639,17 @@ export const Validation: Story = {
         label="Email"
         name="email"
         type="email"
-        isRequired
         validationBehavior="native"
-      />
-      <Input
-        label="Email"
-        name="email2"
-        type="email2"
         isRequired
-        validationBehavior="native"
+        fullWidth
       />
       <Select
-        isRequired
         label="Country"
         name="country"
         placeholder="Select country"
         validationBehavior="native"
+        isRequired
+        fullWidth
       >
         <Select.Item key="ar">Argentina</Select.Item>
         <Select.Item key="us">United States</Select.Item>

@@ -1,11 +1,7 @@
 import { type ComponentRef, forwardRef } from 'react';
 
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
-import {
-  useTextareaContext,
-  FieldError,
-  type FieldErrorProps,
-} from '@koobiq/react-primitives';
+import { useTextareaContext } from '@koobiq/react-primitives';
 
 import {
   FieldCaption,
@@ -15,6 +11,8 @@ import {
   type FieldContentGroupProps,
   type FieldInputProps,
   Field,
+  FieldError,
+  type FieldErrorProps,
 } from '../../../FieldComponents';
 import {
   FormControlLabel,

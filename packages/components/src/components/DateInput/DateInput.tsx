@@ -9,6 +9,7 @@ import {
   useDateField,
   useDateFieldState,
   removeDataAttributes,
+  FieldErrorContext,
 } from '@koobiq/react-primitives';
 import type { DateValue } from '@koobiq/react-primitives';
 
@@ -46,6 +47,7 @@ export function DateInputRender<T extends DateValue>(
     slotProps,
     caption,
     startAddon,
+    errorMessage,
     endAddon,
     isLabelHidden,
     labelPlacement,
@@ -72,17 +74,12 @@ export function DateInputRender<T extends DateValue>(
     descriptionProps,
     errorMessageProps,
     inputProps,
-    isInvalid,
-    validationErrors,
-    validationDetails,
+    ...validation
   } = useDateField({ ...removeDataAttributes(props) }, state, domRef);
 
   const { isRequired, isDisabled } = state;
 
-  const errorMessage =
-    typeof props.errorMessage === 'function'
-      ? props.errorMessage({ isInvalid, validationErrors, validationDetails })
-      : props.errorMessage || validationErrors?.join(' ');
+  const { isInvalid } = validation;
 
   const rootProps = mergeProps<
     [FormControlProps, FormControlProps | undefined]
@@ -136,7 +133,6 @@ export function DateInputRender<T extends DateValue>(
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
   >(
     {
-      isInvalid,
       children: errorMessage,
     },
     slotProps?.errorMessage,
@@ -169,7 +165,9 @@ export function DateInputRender<T extends DateValue>(
           </FieldInputDate>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
-        <FieldError {...errorProps} />
+        <FieldErrorContext.Provider value={validation}>
+          <FieldError {...errorProps} />
+        </FieldErrorContext.Provider>
       </Field>
     </FormControl>
   );

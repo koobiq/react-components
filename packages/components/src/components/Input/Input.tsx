@@ -4,11 +4,7 @@ import { type ComponentRef, forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
-import {
-  TextField,
-  FieldError,
-  type FieldErrorProps,
-} from '@koobiq/react-primitives';
+import { TextField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
@@ -18,6 +14,8 @@ import {
   type FieldCaptionProps,
   type FieldInputProps,
   Field,
+  FieldError,
+  type FieldErrorProps,
 } from '../FieldComponents';
 import { FormControl, type FormControlProps } from '../FormControl';
 import {

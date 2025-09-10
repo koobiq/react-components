@@ -2,7 +2,7 @@ import { forwardRef, type Ref } from 'react';
 
 import { clsx, mergeProps, useDOMRef, useLocale } from '@koobiq/react-core';
 import { IconClock16 } from '@koobiq/react-icons';
-import type { TimeValue } from '@koobiq/react-primitives';
+import { FieldErrorContext, type TimeValue } from '@koobiq/react-primitives';
 import {
   useTimeFieldState,
   useTimeField,
@@ -47,6 +47,7 @@ export function TimePickerRender<T extends TimeValue>(
   const {
     isLabelHidden,
     labelPlacement,
+    errorMessage,
     labelAlign,
     caption,
     label,
@@ -71,17 +72,12 @@ export function TimePickerRender<T extends TimeValue>(
     descriptionProps,
     errorMessageProps,
     inputProps,
-    isInvalid,
-    validationErrors,
-    validationDetails,
+    ...validation
   } = useTimeField(removeDataAttributes(props), state, domRef);
 
   const { isDisabled, isRequired, isReadOnly } = state;
 
-  const errorMessage =
-    typeof props.errorMessage === 'function'
-      ? props.errorMessage({ isInvalid, validationErrors, validationDetails })
-      : props.errorMessage || validationErrors?.join(' ');
+  const { isInvalid } = validation;
 
   const rootProps = mergeProps<
     [FormControlProps, FormControlProps | undefined]
@@ -153,7 +149,6 @@ export function TimePickerRender<T extends TimeValue>(
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
   >(
     {
-      isInvalid,
       children: errorMessage,
     },
     slotProps?.errorMessage,
@@ -176,7 +171,9 @@ export function TimePickerRender<T extends TimeValue>(
           </FieldInputDate>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
-        <FieldError {...errorProps} />
+        <FieldErrorContext.Provider value={validation}>
+          <FieldError {...errorProps} />
+        </FieldErrorContext.Provider>
       </Field>
     </FormControl>
   );
