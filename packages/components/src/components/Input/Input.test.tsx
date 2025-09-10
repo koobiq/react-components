@@ -183,4 +183,12 @@ describe('Input', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      render(<Input name="email" aria-label="email" />);
+      const input = screen.getByRole('textbox');
+      expect(input).toHaveAttribute('name', 'email');
+    });
+  });
 });

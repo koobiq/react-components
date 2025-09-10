@@ -146,4 +146,12 @@ describe('Textarea', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to textarea', () => {
+      render(<Textarea name="info" aria-label="info" />);
+      const textarea = screen.getByRole('textbox');
+      expect(textarea).toHaveAttribute('name', 'info');
+    });
+  });
 });

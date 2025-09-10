@@ -228,4 +228,12 @@ describe('SearchInput', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      render(<SearchInput name="query" aria-label="query" />);
+      const input = screen.getByRole('searchbox');
+      expect(input).toHaveAttribute('name', 'query');
+    });
+  });
 });
