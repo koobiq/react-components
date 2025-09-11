@@ -27,7 +27,7 @@ import s from './RadioGroup.module.css';
 export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
   (props, ref) => {
     const {
-      size,
+      size = 'normal',
       label,
       children,
       slotProps,
@@ -106,10 +106,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         ref,
         'data-size': size,
         'data-testid': testId,
-        'data-invalid': isInvalid,
-        'data-disabled': isDisabled,
-        'data-required': isRequired,
-        'data-readonly': isReadOnly,
+        'data-orientation': orientation,
       },
       slotProps?.root
     );
