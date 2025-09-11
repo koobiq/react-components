@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 
-import type { CalendarDate } from '@internationalized/date';
+import { type CalendarDate, parseDate } from '@internationalized/date';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
@@ -159,11 +159,27 @@ describe('DateInput', () => {
     it('should pass name to input', () => {
       const { container } = render(<DateInput name="date" aria-label="date" />);
 
-      const hidden = container.querySelector(
+      const input = container.querySelector(
         'input[type="hidden"][name="date"]'
       );
 
-      expect(hidden).toBeInTheDocument();
+      expect(input).toBeInTheDocument();
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        <DateInput
+          {...baseProps}
+          name="date"
+          aria-label="date"
+          validationBehavior="aria"
+          defaultValue={parseDate('2023-10-28')}
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
     });
   });
 });
