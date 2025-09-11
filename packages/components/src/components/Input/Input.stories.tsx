@@ -69,16 +69,6 @@ export const Base: Story = {
       placeholder="Sophia"
       maxLength={100}
       caption="Maximum 100 characters"
-      validationBehavior="aria"
-      validate={(value) => {
-        console.log(value);
-
-        if (value.length < 3) {
-          return 'Username must be at least 3 characters long';
-        }
-
-        return value === 'admin' ? 'Nice try!' : null;
-      }}
       {...args}
     />
   ),

@@ -186,9 +186,23 @@ describe('Input', () => {
 
   describe('form', () => {
     it('should pass name to input', () => {
-      render(<Input name="email" aria-label="email" />);
-      const input = screen.getByRole('textbox');
-      expect(input).toHaveAttribute('name', 'email');
+      render(<Input {...baseProps} name="email" aria-label="email" />);
+      expect(getInput()).toHaveAttribute('name', 'email');
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        <Input
+          {...baseProps}
+          name="email"
+          aria-label="email"
+          validationBehavior="aria"
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
     });
   });
 });
