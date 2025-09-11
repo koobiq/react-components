@@ -5,7 +5,6 @@ import { IconInfoCircle16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import {
-  Button,
   ButtonToggle,
   ButtonToggleGroup,
   Provider,
@@ -184,19 +183,4 @@ export const MinMaxValues: Story = {
       />
     );
   },
-};
-
-export const Validation: Story = {
-  render: (args) => (
-    <FlexBox as="form" direction="column" gap="m">
-      <TimePicker
-        name="time"
-        label="Meeting time"
-        validationBehavior="native"
-        isRequired
-        {...args}
-      />
-      <Button type="submit">Submit</Button>
-    </FlexBox>
-  ),
 };

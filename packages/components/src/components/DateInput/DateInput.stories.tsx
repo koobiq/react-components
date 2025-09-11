@@ -10,7 +10,7 @@ import {
 import { IconCalendarO16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button, useDateFormatter } from '../../index';
+import { useDateFormatter } from '../../index';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
@@ -173,19 +173,4 @@ export const DateTime: Story = {
       />
     );
   },
-};
-
-export const Validation: Story = {
-  render: (args) => (
-    <FlexBox as="form" direction="column" gap="m">
-      <DateInput
-        name="date"
-        label="Date"
-        validationBehavior="native"
-        isRequired
-        {...args}
-      />
-      <Button type="submit">Submit</Button>
-    </FlexBox>
-  ),
 };
