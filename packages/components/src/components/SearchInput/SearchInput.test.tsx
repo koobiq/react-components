@@ -235,5 +235,19 @@ describe('SearchInput', () => {
       const input = screen.getByRole('searchbox');
       expect(input).toHaveAttribute('name', 'query');
     });
+
+    it('should handle aria validation', () => {
+      render(
+        <SearchInput
+          {...baseProps}
+          aria-label="query"
+          validationBehavior="aria"
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
+    });
   });
 });
