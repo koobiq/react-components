@@ -287,4 +287,23 @@ describe('Select', () => {
       expect(clearButton).not.toBeInTheDocument();
     });
   });
+
+  describe('form', () => {
+    it('should handle aria validation', () => {
+      render(
+        <Select
+          {...baseProps}
+          validationBehavior="aria"
+          validate={() => 'validation error'}
+        >
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
+    });
+  });
 });

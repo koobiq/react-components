@@ -11,7 +11,7 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Input, useListData } from '../../index';
+import { useListData } from '../../index';
 import type { Selection } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -630,34 +630,4 @@ export const StateHelper: Story = {
       </FlexBox>
     );
   },
-};
-
-export const Validation: Story = {
-  render: () => (
-    <FlexBox as="form" direction="column" gap="m">
-      <Input
-        label="Email"
-        name="email"
-        type="email"
-        validationBehavior="native"
-        isRequired
-        fullWidth
-      />
-      <Select
-        label="Country"
-        name="country"
-        placeholder="Select country"
-        validationBehavior="native"
-        isRequired
-        fullWidth
-      >
-        <Select.Item key="ar">Argentina</Select.Item>
-        <Select.Item key="us">United States</Select.Item>
-        <Select.Item key="ca">Canada</Select.Item>
-        <Select.Item key="uk">United Kingdom</Select.Item>
-        <Select.Item key="au">Australia</Select.Item>
-      </Select>
-      <Button type="submit">Submit</Button>
-    </FlexBox>
-  ),
 };
