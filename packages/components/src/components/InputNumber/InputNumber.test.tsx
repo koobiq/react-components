@@ -193,11 +193,25 @@ describe('InputNumber', () => {
         <InputNumber name="number" aria-label="number" />
       );
 
-      const hidden = container.querySelector(
+      const input = container.querySelector(
         'input[type="hidden"][name="number"]'
       );
 
-      expect(hidden).toBeInTheDocument();
+      expect(input).toBeInTheDocument();
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        <InputNumber
+          {...baseProps}
+          aria-label="number"
+          validationBehavior="aria"
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
     });
   });
 });
