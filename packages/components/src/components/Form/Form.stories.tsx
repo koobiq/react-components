@@ -2,6 +2,7 @@ import { type FormEvent, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Alert } from '../Alert';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Input } from '../Input';
@@ -21,14 +22,75 @@ const meta = {
 export default meta;
 type Story = StoryObj<FormProps>;
 
-// Fake server used in this example.
-function callServer() {
-  return {
-    errors: {
-      username: 'Sorry, this username is taken.',
-    },
-  };
-}
+export const Base: Story = {
+  render: function Render() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // Fake server used in this example.
+    const callServer = () =>
+      new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          reject(
+            new Error(
+              'Failed to sign in. Please check your login and password.'
+            )
+          );
+        }, 400);
+      });
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        await callServer();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Something went wrong');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    return (
+      <Form style={{ width: 280 }} onSubmit={handleSubmit}>
+        <FlexBox direction="column" gap="m">
+          <Input
+            label="Login"
+            name="login"
+            placeholder="Enter your login"
+            type="text"
+            isRequired
+            fullWidth
+            isDisabled={isLoading}
+            errorMessage="Login is required"
+          />
+
+          <Input
+            label="Password"
+            name="password"
+            placeholder="Enter your password"
+            type="password"
+            isRequired
+            fullWidth
+            isDisabled={isLoading}
+            errorMessage="Password is required"
+          />
+
+          <Button type="submit" isLoading={isLoading} fullWidth>
+            Submit
+          </Button>
+          {error && (
+            <Alert status="error" isCompact isColored>
+              {error}
+            </Alert>
+          )}
+        </FlexBox>
+      </Form>
+    );
+  },
+};
 
 export const Events: Story = {
   render: function Render() {
@@ -55,7 +117,6 @@ export const Events: Story = {
             isRequired
             fullWidth
           />
-
           <Input
             errorMessage="Please enter a valid email"
             label="Email"
@@ -82,6 +143,15 @@ export const Events: Story = {
 
 export const Validation: Story = {
   render: function Render() {
+    // Fake server used in this example.
+    function callServer() {
+      return {
+        errors: {
+          username: 'Sorry, this username is taken.',
+        },
+      };
+    }
+
     const [errors, setErrors] = useState({});
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
