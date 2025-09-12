@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 
-import type { Time } from '@internationalized/date';
+import { Time } from '@internationalized/date';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
@@ -151,6 +151,35 @@ describe('TimePicker', () => {
       render(<TimePicker {...baseProps} isReadOnly />);
 
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+    });
+  });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      const { container } = render(
+        <TimePicker name="time" aria-label="time" />
+      );
+
+      const hidden = container.querySelector(
+        'input[type="hidden"][name="time"]'
+      );
+
+      expect(hidden).toBeInTheDocument();
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        <TimePicker
+          {...baseProps}
+          aria-label="time"
+          validationBehavior="aria"
+          defaultValue={new Time(8)}
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
     });
   });
 });

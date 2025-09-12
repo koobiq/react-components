@@ -183,4 +183,26 @@ describe('Input', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      render(<Input {...baseProps} name="email" aria-label="email" />);
+      expect(getInput()).toHaveAttribute('name', 'email');
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        <Input
+          {...baseProps}
+          name="email"
+          aria-label="email"
+          validationBehavior="aria"
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
+    });
+  });
 });

@@ -3,8 +3,11 @@
 import { forwardRef } from 'react';
 import type { ComponentRef } from 'react';
 
+import { filterDOMProps } from '@koobiq/react-core';
+
 import { useRadioGroup, useRadioGroupState } from '../../behaviors';
-import { useRenderProps, Provider } from '../../utils';
+import { useRenderProps, Provider, removeDataAttributes } from '../../utils';
+import { FieldErrorContext } from '../FieldError';
 import { LabelContext } from '../Label';
 import { TextContext } from '../Text';
 
@@ -15,8 +18,13 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
   (props, ref) => {
     const state = useRadioGroupState(props);
 
-    const { radioGroupProps, labelProps, descriptionProps, errorMessageProps } =
-      useRadioGroup(props, state);
+    const {
+      radioGroupProps,
+      labelProps,
+      descriptionProps,
+      errorMessageProps,
+      ...validation
+    } = useRadioGroup(removeDataAttributes(props), state);
 
     const renderProps = useRenderProps({
       ...props,
@@ -30,8 +38,20 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       },
     });
 
+    const DOMProps = filterDOMProps(props);
+    delete DOMProps.id;
+
     return (
-      <div {...radioGroupProps} {...renderProps} ref={ref}>
+      <div
+        {...DOMProps}
+        data-invalid={validation.isInvalid || undefined}
+        data-readonly={state.isInvalid || undefined}
+        data-required={state.isRequired || undefined}
+        data-disabled={state.isDisabled || undefined}
+        {...radioGroupProps}
+        {...renderProps}
+        ref={ref}
+      >
         <Provider
           values={[
             [RadioContext, state],
@@ -45,6 +65,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
                 },
               },
             ],
+            [FieldErrorContext, validation],
           ]}
         >
           {renderProps.children}

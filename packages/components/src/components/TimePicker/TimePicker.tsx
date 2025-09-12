@@ -2,7 +2,7 @@ import { forwardRef, type Ref } from 'react';
 
 import { clsx, mergeProps, useDOMRef, useLocale } from '@koobiq/react-core';
 import { IconClock16 } from '@koobiq/react-icons';
-import type { TimeValue } from '@koobiq/react-primitives';
+import { FieldErrorContext, type TimeValue } from '@koobiq/react-primitives';
 import {
   useTimeFieldState,
   useTimeField,
@@ -47,6 +47,7 @@ export function TimePickerRender<T extends TimeValue>(
   const {
     isLabelHidden,
     labelPlacement,
+    errorMessage,
     labelAlign,
     caption,
     label,
@@ -57,7 +58,6 @@ export function TimePickerRender<T extends TimeValue>(
     className,
     endAddon,
     startAddon,
-    errorMessage,
     'data-testid': testId,
   } = props;
 
@@ -71,10 +71,13 @@ export function TimePickerRender<T extends TimeValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
+    inputProps,
     ...validation
   } = useTimeField(removeDataAttributes(props), state, domRef);
 
-  const { isInvalid, isDisabled, isRequired, isReadOnly } = state;
+  const { isDisabled, isRequired, isReadOnly } = state;
+
+  const { isInvalid } = validation;
 
   const rootProps = mergeProps<
     [FormControlProps, FormControlProps | undefined]
@@ -146,11 +149,7 @@ export function TimePickerRender<T extends TimeValue>(
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
   >(
     {
-      isInvalid,
-      children:
-        typeof errorMessage === 'function'
-          ? errorMessage({ ...validation })
-          : errorMessage,
+      children: errorMessage,
     },
     slotProps?.errorMessage,
     errorMessageProps
@@ -168,10 +167,13 @@ export function TimePickerRender<T extends TimeValue>(
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
+            <input {...inputProps} />
           </FieldInputDate>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
-        <FieldError {...errorProps} />
+        <FieldErrorContext.Provider value={validation}>
+          <FieldError {...errorProps} />
+        </FieldErrorContext.Provider>
       </Field>
     </FormControl>
   );

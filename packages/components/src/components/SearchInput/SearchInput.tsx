@@ -8,6 +8,7 @@ import {
   removeDataAttributes,
   useSearchField,
   useSearchFieldState,
+  FieldErrorContext,
 } from '@koobiq/react-primitives';
 
 import {
@@ -15,10 +16,10 @@ import {
   type FieldCaptionProps,
   FieldContentGroup,
   type FieldContentGroupProps,
-  FieldError,
-  type FieldErrorProps,
   FieldInput,
   type FieldInputProps,
+  type FieldErrorProps,
+  FieldError,
   Field,
 } from '../FieldComponents';
 import { FormControl, type FormControlProps } from '../FormControl';
@@ -39,17 +40,16 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       fullWidth = false,
       isLabelHidden = false,
       labelPlacement,
+      errorMessage,
       labelAlign,
       'data-testid': testId,
       style,
       className,
       caption,
-      errorMessage,
       isRequired,
       isReadOnly,
       label,
       endAddon,
-      isInvalid,
       isDisabled,
       slotProps,
     } = props;
@@ -65,7 +65,10 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       descriptionProps: descriptionPropsAria,
       errorMessageProps: errorMessagePropsAria,
       clearButtonProps: clearButtonPropsAria,
+      ...validation
     } = useSearchField(removeDataAttributes(props), state, domRef);
+
+    const { isInvalid } = validation;
 
     const rootProps = mergeProps<
       [FormControlProps, FormControlProps | undefined]
@@ -78,9 +81,9 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
         'data-testid': testId,
         'data-variant': variant,
         'data-invalid': isInvalid,
+        'data-readonly': isReadOnly,
         'data-disabled': isDisabled,
         'data-required': isRequired,
-        'data-readonly': isReadOnly,
         className: clsx(s.base, className),
       },
       slotProps?.root
@@ -150,7 +153,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     const errorProps = mergeProps<
       [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
     >(
-      { isInvalid, children: errorMessage },
+      { children: errorMessage },
       slotProps?.errorMessage,
       errorMessagePropsAria
     );
@@ -163,7 +166,9 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
             <FieldInput {...inputProps} />
           </FieldContentGroup>
           <FieldCaption {...captionProps} />
-          <FieldError {...errorProps} />
+          <FieldErrorContext.Provider value={validation}>
+            <FieldError {...errorProps} />
+          </FieldErrorContext.Provider>
         </Field>
       </FormControl>
     );

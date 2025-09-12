@@ -9,6 +9,7 @@ import {
   useDateField,
   useDateFieldState,
   removeDataAttributes,
+  FieldErrorContext,
 } from '@koobiq/react-primitives';
 import type { DateValue } from '@koobiq/react-primitives';
 
@@ -39,7 +40,6 @@ export function DateInputRender<T extends DateValue>(
   props: Omit<DateInputProps<T>, 'ref'>,
   ref: Ref<DateInputRef>
 ) {
-  const { errorMessage } = props;
   const { locale } = useLocale();
 
   const {
@@ -47,6 +47,7 @@ export function DateInputRender<T extends DateValue>(
     slotProps,
     caption,
     startAddon,
+    errorMessage,
     endAddon,
     isLabelHidden,
     labelPlacement,
@@ -72,10 +73,13 @@ export function DateInputRender<T extends DateValue>(
     fieldProps,
     descriptionProps,
     errorMessageProps,
+    inputProps,
     ...validation
   } = useDateField({ ...removeDataAttributes(props) }, state, domRef);
 
-  const { isInvalid, isRequired, isDisabled } = state;
+  const { isRequired, isDisabled } = state;
+
+  const { isInvalid } = validation;
 
   const rootProps = mergeProps<
     [FormControlProps, FormControlProps | undefined]
@@ -129,11 +133,7 @@ export function DateInputRender<T extends DateValue>(
     [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
   >(
     {
-      isInvalid,
-      children:
-        typeof errorMessage === 'function'
-          ? errorMessage({ ...validation })
-          : errorMessage,
+      children: errorMessage,
     },
     slotProps?.errorMessage,
     errorMessageProps
@@ -161,10 +161,13 @@ export function DateInputRender<T extends DateValue>(
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
+            <input {...inputProps} />
           </FieldInputDate>
         </FieldContentGroup>
         <FieldCaption {...captionProps} />
-        <FieldError {...errorProps} />
+        <FieldErrorContext.Provider value={validation}>
+          <FieldError {...errorProps} />
+        </FieldErrorContext.Provider>
       </Field>
     </FormControl>
   );

@@ -8,13 +8,13 @@ import { NumberField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
-  FieldError,
   FieldCaption,
   FieldContentGroup,
   type FieldCaptionProps,
-  type FieldErrorProps,
   type FieldContentGroupProps,
   type FieldInputProps,
+  FieldError,
+  type FieldErrorProps,
   Field,
 } from '../FieldComponents';
 import { FormControl, type FormControlProps } from '../FormControl';
@@ -54,10 +54,10 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
     const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
-    const isDisabled = isDisabledProp ?? disabled ?? false;
-    const isRequired = isRequiredProp ?? required ?? false;
-    const isReadOnly = isReadOnlyProp ?? readonly ?? false;
-    const isInvalid = isInvalidProp ?? error ?? false;
+    const isDisabled = isDisabledProp ?? disabled;
+    const isRequired = isRequiredProp ?? required;
+    const isReadOnly = isReadOnlyProp ?? readonly;
+    const isInvalid = isInvalidProp ?? error;
     const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
 
     if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
@@ -140,7 +140,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
           const errorProps = mergeProps<
             [FieldErrorProps, FieldErrorProps | undefined]
-          >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
+          >({ children: errorMessage }, slotProps?.errorMessage);
 
           const groupProps = mergeProps<
             [FieldContentGroupProps, FieldContentGroupProps | undefined]

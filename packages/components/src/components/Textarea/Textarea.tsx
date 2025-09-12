@@ -37,10 +37,10 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
     ...other
   } = props;
 
-  const isDisabled = isDisabledProp ?? disabled ?? false;
-  const isRequired = isRequiredProp ?? required ?? false;
-  const isReadOnly = isReadOnlyProp ?? readonly ?? false;
-  const isInvalid = isInvalidProp ?? error ?? false;
+  const isDisabled = isDisabledProp ?? disabled;
+  const isRequired = isRequiredProp ?? required;
+  const isReadOnly = isReadOnlyProp ?? readonly;
+  const isInvalid = isInvalidProp ?? error;
   const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
 
   if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {

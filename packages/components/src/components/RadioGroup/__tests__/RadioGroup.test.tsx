@@ -120,6 +120,33 @@ describe('RadioGroup', () => {
   it('should apply an orientation to a group', () => {
     render(renderComponent({ orientation: 'horizontal' }));
 
-    expect(getRoot()).toHaveAttribute('aria-orientation', 'horizontal');
+    expect(getRoot()).toHaveAttribute('data-orientation', 'horizontal');
+  });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      const { container } = render(
+        renderComponent({
+          name: 'numbers',
+        })
+      );
+
+      const input = container.querySelectorAll('input[name="numbers"]')[0];
+
+      expect(input).toBeInTheDocument();
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        renderComponent({
+          defaultValue: '1',
+          validationBehavior: 'aria',
+          validate: () => 'validation error',
+        })
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
+    });
   });
 });

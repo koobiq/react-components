@@ -11,3 +11,4 @@ export * from './Textarea';
 export * from './ProgressBar';
 export * from './TextField';
 export * from './NumberField';
+export * from './FieldError';

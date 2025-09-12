@@ -70,6 +70,10 @@ export type SelectProps<T> = ExtendableProps<
     >['0']['onSelectionChange'];
     /** The currently selected keys in the collection (controlled). */
     selectedKeys?: Parameters<typeof useMultiSelectState>['0']['selectedKeys'];
+    validate?: Parameters<typeof useMultiSelectState>['0']['validate'];
+    validationBehavior?: Parameters<
+      typeof useMultiSelectState
+    >['0']['validationBehavior'];
     /**
      * The type of selection that is allowed in the collection.
      * @default 'single'
@@ -81,8 +85,6 @@ export type SelectProps<T> = ExtendableProps<
     endAddon?: ReactNode;
     /** Inline styles. */
     style?: CSSProperties;
-    /** An error message for the field. */
-    errorMessage?: ReactNode;
     /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
      * @default false
@@ -133,8 +135,8 @@ export type SelectProps<T> = ExtendableProps<
   Omit<
     AriaSelectProps<T>,
     | 'description'
-    | 'validate'
     | 'validationBehavior'
+    | 'validate'
     | 'validationState'
     | 'selectedKey'
     | 'onSelectionChange'

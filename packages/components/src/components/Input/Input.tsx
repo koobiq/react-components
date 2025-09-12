@@ -8,14 +8,14 @@ import { TextField } from '@koobiq/react-primitives';
 
 import {
   FieldInput,
-  FieldError,
   FieldCaption,
   FieldContentGroup,
   type FieldContentGroupProps,
   type FieldCaptionProps,
-  type FieldErrorProps,
   type FieldInputProps,
   Field,
+  FieldError,
+  type FieldErrorProps,
 } from '../FieldComponents';
 import { FormControl, type FormControlProps } from '../FormControl';
 import {
@@ -24,6 +24,7 @@ import {
 } from '../FormControlLabel';
 
 import type { InputProps, InputRef } from './index';
+import s from './Input.module.css';
 
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
@@ -50,10 +51,10 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     ...other
   } = props;
 
-  const isDisabled = isDisabledProp ?? disabled ?? false;
-  const isRequired = isRequiredProp ?? required ?? false;
-  const isReadOnly = isReadOnlyProp ?? readonly ?? false;
-  const isInvalid = isInvalidProp ?? error ?? false;
+  const isDisabled = isDisabledProp ?? disabled;
+  const isRequired = isRequiredProp ?? required;
+  const isReadOnly = isReadOnlyProp ?? readonly;
+  const isInvalid = isInvalidProp ?? error;
   const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
 
   if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
@@ -151,7 +152,10 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
         const errorProps = mergeProps<
           [FieldErrorProps, FieldErrorProps | undefined]
-        >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
+        >(
+          { children: errorMessage, className: s.error },
+          slotProps?.errorMessage
+        );
 
         return (
           <>

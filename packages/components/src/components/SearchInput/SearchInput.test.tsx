@@ -228,4 +228,26 @@ describe('SearchInput', () => {
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
   });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      render(<SearchInput name="query" aria-label="query" />);
+      const input = screen.getByRole('searchbox');
+      expect(input).toHaveAttribute('name', 'query');
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        <SearchInput
+          {...baseProps}
+          aria-label="query"
+          validationBehavior="aria"
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
+    });
+  });
 });

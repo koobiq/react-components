@@ -7,12 +7,12 @@ import {
   FieldCaption,
   type FieldCaptionProps,
   FieldContentGroup,
-  FieldError,
-  type FieldErrorProps,
   FieldInput,
   type FieldContentGroupProps,
   type FieldInputProps,
   Field,
+  FieldError,
+  type FieldErrorProps,
 } from '../../../FieldComponents';
 import {
   FormControlLabel,
@@ -86,7 +86,7 @@ export const TextareaContextConsumer = forwardRef<
   >({ children: caption }, slotProps?.caption);
 
   const errorProps = mergeProps<[FieldErrorProps, FieldErrorProps | undefined]>(
-    { isInvalid, children: errorMessage },
+    { children: errorMessage, className: s.error },
     slotProps?.errorMessage
   );
 

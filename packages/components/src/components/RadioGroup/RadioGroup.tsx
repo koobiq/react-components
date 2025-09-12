@@ -27,7 +27,7 @@ import s from './RadioGroup.module.css';
 export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
   (props, ref) => {
     const {
-      size,
+      size = 'normal',
       label,
       children,
       slotProps,
@@ -52,10 +52,10 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
     } = props;
 
     const caption = captionProp ?? description;
-    const isDisabled = isDisabledProp ?? disabled ?? false;
-    const isInvalid = isInvalidProp ?? error ?? false;
-    const isReadOnly = isReadOnlyProp ?? readonly ?? false;
-    const isRequired = isRequiredProp ?? required ?? false;
+    const isDisabled = isDisabledProp ?? disabled;
+    const isInvalid = isInvalidProp ?? error;
+    const isReadOnly = isReadOnlyProp ?? readonly;
+    const isRequired = isRequiredProp ?? required;
 
     if (process.env.NODE_ENV !== 'production' && 'description' in props) {
       deprecate(
@@ -106,10 +106,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         ref,
         'data-size': size,
         'data-testid': testId,
-        'data-invalid': isInvalid,
-        'data-disabled': isDisabled,
-        'data-required': isRequired,
-        'data-readonly': isReadOnly,
+        'data-orientation': orientation,
       },
       slotProps?.root
     );
@@ -128,7 +125,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
     return (
       <RadioGroupContext.Provider value={{ size }}>
         <FormControl as={RadioGroupPrimitive} {...rootProps}>
-          {({ isInvalid, isRequired }) => {
+          {({ isRequired }) => {
             const labelProps = mergeProps<
               [
                 FormControlLabelProps<'span'>,
@@ -147,7 +144,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
 
             const errorProps = mergeProps<
               [FieldErrorProps, FieldErrorProps | undefined]
-            >({ isInvalid, children: errorMessage }, slotProps?.errorMessage);
+            >({ children: errorMessage }, slotProps?.errorMessage);
 
             const captionProps = mergeProps<
               [FieldCaptionProps, FieldCaptionProps | undefined]
