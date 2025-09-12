@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.9.0](https://github.com/koobiq/react-components/compare/0.8.0...0.9.0) (2025-09-12)
+
+### 🚀 Features
+
+- **components:** support `validationBehavior` and `validate` props in form controls (DS-4170) ([3d11061](https://github.com/koobiq/react-components/commit/3d11061c1406692410777224b2f9733f9f5e4124))
+
+### 🐞 Bug Fixes
+
+- **components:** omit data-\* boolean attributes when value is false (DS-4185) ([b9df77d](https://github.com/koobiq/react-components/commit/b9df77d1d19da0e439584825d3dab9ace76c2266))
+
 ## [0.8.0](https://github.com/koobiq/react-components/compare/0.7.1...0.8.0) (2025-08-27)
 
 ### 🚀 Features
