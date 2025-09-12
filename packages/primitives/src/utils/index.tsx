@@ -1,10 +1,49 @@
-import type { JSX, CSSProperties, ReactNode, Context } from 'react';
-import { useMemo } from 'react';
+import type {
+  JSX,
+  CSSProperties,
+  ReactNode,
+  Context,
+  ForwardedRef,
+} from 'react';
+import { useMemo, useContext } from 'react';
 
 import type {
   AriaLabelingProps,
   DOMProps as SharedDOMProps,
-} from '@react-types/shared';
+  RefObject,
+} from '@koobiq/react-core';
+import { mergeProps, mergeRefs, useObjectRef } from '@koobiq/react-core';
+
+export const DEFAULT_SLOT = Symbol('default');
+
+interface SlottedValue<T> {
+  slots?: Record<string | symbol, T>;
+}
+
+export interface SlotProps {
+  /**
+   * A slot name for the component. Slots allow the component to receive props from a parent component.
+   * An explicit `null` value indicates that the local props completely override all props received from a parent.
+   */
+  slot?: string | null;
+}
+
+export type WithRef<T, E> = T & { ref?: ForwardedRef<E> };
+
+export type SlottedContextValue<T> = SlottedValue<T> | T | null | undefined;
+export type ContextValue<T, E> = SlottedContextValue<WithRef<T, E>>;
+
+export interface StyleProps {
+  /** The CSS [className](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. */
+  className?: string;
+  /** The inline [style](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style) for the element. */
+  style?: CSSProperties;
+}
+
+export interface DOMProps extends StyleProps, SharedDOMProps {
+  /** The children of the component. */
+  children?: ReactNode;
+}
 
 export interface StyleRenderProps<T> {
   /** The CSS [className](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. A function may be provided to compute the class based on component state. */
@@ -132,4 +171,92 @@ export function removeDataAttributes<T>(props: T): T {
   }
 
   return filteredProps;
+}
+
+export function useSlottedContext<T>(
+  context: Context<SlottedContextValue<T>>,
+  slot?: string | null
+): T | null | undefined {
+  const ctx = useContext(context);
+
+  if (slot === null) {
+    // An explicit `null` slot means don't use context.
+    return null;
+  }
+
+  if (ctx && typeof ctx === 'object' && 'slots' in ctx && ctx.slots) {
+    const slotKey = slot || DEFAULT_SLOT;
+
+    if (!ctx.slots[slotKey]) {
+      const availableSlots = new Intl.ListFormat().format(
+        Object.keys(ctx.slots).map((p) => `"${p}"`)
+      );
+
+      const errorMessage = slot
+        ? `Invalid slot "${slot}".`
+        : 'A slot prop is required.';
+
+      throw new Error(
+        `${errorMessage} Valid slot names are ${availableSlots}.`
+      );
+    }
+
+    return ctx.slots[slotKey];
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  return ctx;
+}
+
+export function useContextProps<T, U extends SlotProps, E extends Element>(
+  props: T & SlotProps,
+  ref: ForwardedRef<E> | undefined,
+  context: Context<ContextValue<U, E>>
+): [T, RefObject<E | null>] {
+  const ctx = useSlottedContext(context, props.slot) || {};
+  const { ref: contextRef, ...contextProps } = ctx as any;
+
+  const mergedRef = useObjectRef(
+    useMemo(() => mergeRefs(ref, contextRef), [ref, contextRef])
+  );
+
+  const mergedProps = mergeProps(contextProps, props) as unknown as T;
+
+  // mergeProps does not merge `style`. Adding this there might be a breaking change.
+  if (
+    'style' in contextProps &&
+    contextProps.style &&
+    'style' in props &&
+    props.style
+  ) {
+    if (
+      typeof contextProps.style === 'function' ||
+      typeof props.style === 'function'
+    ) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      mergedProps.style = (renderProps) => {
+        const contextStyle =
+          typeof contextProps.style === 'function'
+            ? contextProps.style(renderProps)
+            : contextProps.style;
+
+        const defaultStyle = { ...renderProps.defaultStyle, ...contextStyle };
+
+        const style =
+          typeof props.style === 'function'
+            ? props.style({ ...renderProps, defaultStyle })
+            : props.style;
+
+        return { ...defaultStyle, ...style };
+      };
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      mergedProps.style = { ...contextProps.style, ...props.style };
+    }
+  }
+
+  return [mergedProps, mergedRef];
 }

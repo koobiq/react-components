@@ -7,9 +7,15 @@ import { useLocale } from '@react-aria/i18n';
 import { useNumberField } from '@react-aria/numberfield';
 import { useNumberFieldState } from '@react-stately/numberfield';
 
-import { Provider, removeDataAttributes, useRenderProps } from '../../utils';
+import {
+  Provider,
+  removeDataAttributes,
+  useRenderProps,
+  useSlottedContext,
+} from '../../utils';
 import { ButtonContext } from '../Button';
 import { FieldErrorContext } from '../FieldError';
+import { FormContext } from '../Form';
 import { GroupContext } from '../Group';
 import { InputContext } from '../Input';
 import { LabelContext } from '../Label';
@@ -25,6 +31,12 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
 
     const { locale } = useLocale();
 
+    const { validationBehavior: formValidationBehavior } =
+      useSlottedContext(FormContext) || {};
+
+    const validationBehavior =
+      props.validationBehavior ?? formValidationBehavior ?? 'native';
+
     const state = useNumberFieldState({ ...props, locale });
 
     const {
@@ -36,7 +48,11 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
       incrementButtonProps,
       decrementButtonProps,
       ...validation
-    } = useNumberField(removeDataAttributes(props), state, inputRef);
+    } = useNumberField(
+      { ...removeDataAttributes(props), validationBehavior },
+      state,
+      inputRef
+    );
 
     const DOMProps = filterDOMProps(props);
     delete DOMProps.id;

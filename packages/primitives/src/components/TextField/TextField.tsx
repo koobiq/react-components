@@ -5,8 +5,14 @@ import { forwardRef, type Ref, useRef } from 'react';
 import { filterDOMProps } from '@koobiq/react-core';
 import { useTextField } from '@react-aria/textfield';
 
-import { Provider, removeDataAttributes, useRenderProps } from '../../utils';
+import {
+  Provider,
+  removeDataAttributes,
+  useRenderProps,
+  useSlottedContext,
+} from '../../utils';
 import { FieldErrorContext } from '../FieldError';
+import { FormContext } from '../Form';
 import { InputContext } from '../Input';
 import { LabelContext } from '../Label';
 import { TextContext } from '../Text';
@@ -24,6 +30,12 @@ function TextFieldRender(
 ) {
   const { isDisabled, isReadOnly, isRequired } = props;
 
+  const { validationBehavior: formValidationBehavior } =
+    useSlottedContext(FormContext) || {};
+
+  const validationBehavior =
+    props.validationBehavior ?? formValidationBehavior ?? 'native';
+
   const inputRef = useRef(null);
 
   const {
@@ -35,6 +47,7 @@ function TextFieldRender(
   } = useTextField<'input' | 'textarea'>(
     {
       ...removeDataAttributes(props),
+      validationBehavior,
     },
     inputRef
   );

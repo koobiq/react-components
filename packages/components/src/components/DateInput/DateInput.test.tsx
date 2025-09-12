@@ -159,9 +159,7 @@ describe('DateInput', () => {
     it('should pass name to input', () => {
       const { container } = render(<DateInput name="date" aria-label="date" />);
 
-      const input = container.querySelector(
-        'input[type="hidden"][name="date"]'
-      );
+      const input = container.querySelector('input[name="date"]');
 
       expect(input).toBeInTheDocument();
     });

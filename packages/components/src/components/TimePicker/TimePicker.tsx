@@ -2,7 +2,12 @@ import { forwardRef, type Ref } from 'react';
 
 import { clsx, mergeProps, useDOMRef, useLocale } from '@koobiq/react-core';
 import { IconClock16 } from '@koobiq/react-icons';
-import { FieldErrorContext, type TimeValue } from '@koobiq/react-primitives';
+import {
+  FieldErrorContext,
+  FormContext,
+  type TimeValue,
+  useSlottedContext,
+} from '@koobiq/react-primitives';
 import {
   useTimeFieldState,
   useTimeField,
@@ -61,8 +66,15 @@ export function TimePickerRender<T extends TimeValue>(
     'data-testid': testId,
   } = props;
 
+  const { validationBehavior: formValidationBehavior } =
+    useSlottedContext(FormContext) || {};
+
+  const validationBehavior =
+    props.validationBehavior ?? formValidationBehavior ?? 'native';
+
   const state = useTimeFieldState({
     ...removeDataAttributes(props),
+    validationBehavior,
     locale,
   });
 
