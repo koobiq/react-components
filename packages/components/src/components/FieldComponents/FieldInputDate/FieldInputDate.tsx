@@ -19,9 +19,9 @@ export type FieldInputDateProps = {
 export const FieldInputDate = forwardRef<HTMLDivElement, FieldInputDateProps>(
   (
     {
-      isInvalid = false,
-      isDisabled = false,
       variant = 'filled',
+      isInvalid,
+      isDisabled,
       children,
       className,
       ...other

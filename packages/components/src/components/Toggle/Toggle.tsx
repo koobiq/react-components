@@ -30,11 +30,11 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
       ...other
     } = props;
 
-    const isDisabled = isDisabledProp ?? disabled ?? false;
+    const isDisabled = isDisabledProp ?? disabled;
     const isSelected = isSelectedProp ?? checked;
-    const isInvalid = isInvalidProp ?? error ?? false;
+    const isInvalid = isInvalidProp ?? error;
     const defaultSelected = defaultSelectedProp ?? defaultChecked;
-    const isReadOnly = isReadOnlyProp ?? readonly ?? false;
+    const isReadOnly = isReadOnlyProp ?? readonly;
 
     if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
       deprecate(

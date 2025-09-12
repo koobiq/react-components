@@ -45,7 +45,7 @@ export type ModalProps = {
   control?: ModalPropControl;
   /**
    * If `true`, the close button isn't shown.
-   * @default false
+   * @default
    */
   hideCloseButton?: boolean;
   /** Handler that is called when the modal's open state changes. */
@@ -57,17 +57,14 @@ export type ModalProps = {
   portalContainer?: Element;
   /**
    * If `true`, the modal window won't close when clicked outside of it.
-   * @default false
    */
   disableExitOnClickOutside?: boolean;
   /**
    * If `true`, the modal window won't close when the ESC key is pressed.
-   * @default false
    */
   disableExitOnEscapeKeyDown?: boolean;
   /**
    * If `true`, the underlay (backdrop) under the modal window isn't shown.
-   * @default false
    */
   hideBackdrop?: boolean;
   /** Additional CSS-classes. */
@@ -76,7 +73,6 @@ export type ModalProps = {
   'data-testid'?: string | number;
   /**
    * If `true`, the focus trap in modal window is disabled.
-   * @default false
    */
   disableFocusManagement?: boolean;
   /**

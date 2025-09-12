@@ -17,14 +17,12 @@ export type ButtonPropVariant = (typeof buttonPropVariant)[number];
 type ButtonDeprecatedProps = {
   /**
    * If `true`, the progress indicator is shown and the button becomes disabled.
-   * @default false
    * @deprecated
    * The "progress" prop is deprecated. Use "isLoading" prop to replace it.
    */
   progress?: boolean;
   /**
    * If `true`, the component is disabled.
-   * @default false
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
@@ -42,7 +40,6 @@ export type ButtonBaseProps = ExtendableProps<
     variant?: ButtonPropVariant;
     /**
      * If `true`, only the icon is shown, and the button has same sides.
-     * @default false
      */
     onlyIcon?: boolean;
     /** Additional CSS-classes. */
@@ -51,7 +48,6 @@ export type ButtonBaseProps = ExtendableProps<
     style?: CSSProperties;
     /**
      * If `true`, the button will take up the full width of its container.
-     * @default false
      */
     fullWidth?: boolean;
     /** Icon placed before the children. */

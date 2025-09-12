@@ -21,14 +21,12 @@ export type IconButtonPropSize = (typeof iconButtonPropSize)[number];
 type IconButtonBaseDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
-   * @default false
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
   disabled?: boolean;
   /**
    * If `true`, reduce the size of the component canvas.
-   * @default false
    * @deprecated
    * The "compact" prop is deprecated. Use "isCompact" prop to replace it.
    */
@@ -51,7 +49,6 @@ export type IconButtonBaseProps = ExtendableProps<
     size?: IconButtonPropSize;
     /**
      * If `true`, reduce the size of the component canvas.
-     * @default false
      */
     isCompact?: boolean;
     /** Additional CSS-classes. */

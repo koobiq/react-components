@@ -29,7 +29,7 @@ import s from './Input.module.css';
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     variant = 'filled',
-    fullWidth = false,
+    fullWidth,
     hiddenLabel,
     isLabelHidden: isLabelHiddenProp,
     disabled,
@@ -55,7 +55,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const isRequired = isRequiredProp ?? required;
   const isReadOnly = isReadOnlyProp ?? readonly;
   const isInvalid = isInvalidProp ?? error;
-  const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
+  const isLabelHidden = isLabelHiddenProp ?? hiddenLabel;
 
   if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
     deprecate(

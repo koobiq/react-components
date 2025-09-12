@@ -81,7 +81,6 @@ export type PopoverProps = {
   size?: PopoverPropSize;
   /**
    * If `true`, the close button isn't shown.
-   * @default false
    */
   hideCloseButton?: boolean;
   /** Handler that is called when the modal's open state changes. */
@@ -93,7 +92,6 @@ export type PopoverProps = {
   portalContainer?: Element;
   /**
    * If `true`, the modal window won't close when the ESC key is pressed.
-   * @default false
    */
   disableExitOnEscapeKeyDown?: boolean;
   /** Additional CSS-classes. */
@@ -104,7 +102,6 @@ export type PopoverProps = {
   'data-testid'?: string | number;
   /**
    * If `true`, the focus trap in modal window is disabled.
-   * @default false
    */
   disableFocusManagement?: boolean;
   /**
@@ -116,7 +113,6 @@ export type PopoverProps = {
   anchorRef?: RefObject<HTMLElement | null>;
   /**
    * If `true`, the arrow isn't shown.
-   * @default false
    */
   hideArrow?: boolean;
   /**

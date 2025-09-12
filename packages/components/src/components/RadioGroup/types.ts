@@ -36,28 +36,24 @@ export type RadioGroupPropLabelAlign = FormControlPropLabelAlign;
 type RadioGroupDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
-   * @default false
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
   disabled?: boolean;
   /**
    * If `true`, the component will indicate an error.
-   * @default false
    * @deprecated
    * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
    */
   error?: boolean;
   /**
    * It prevents the user from changing the value of the checkbox.
-   * @default false
    * @deprecated
    * The "readonly" prop is deprecated. Use "isReadonly" prop to replace it.
    */
   readonly?: boolean;
   /**
    * If `true`, the input element is required.
-   * @default false
    * @deprecated
    * The "required" prop is deprecated. Use "isRequired" prop to replace it.
    */
@@ -94,7 +90,6 @@ export type RadioGroupBaseProps = ExtendableProps<
     orientation?: RadioGroupPropOrientation;
     /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
-     * @default false
      */
     isLabelHidden?: boolean;
     /**

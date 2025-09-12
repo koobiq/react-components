@@ -30,9 +30,9 @@ function TableRender<T extends object>(
   ref?: Ref<TableRef>
 ) {
   const {
-    stickyHeader = false,
-    fullWidth = false,
     divider = 'none',
+    stickyHeader,
+    fullWidth,
     slotProps,
     selectionMode,
     selectionBehavior,
@@ -56,9 +56,9 @@ function TableRender<T extends object>(
   const tableProps = mergeProps(
     {
       className: clsx(s.base, fullWidth && s.fullWidth, textNormal, className),
-      'data-sticky-header': stickyHeader,
+      'data-sticky-header': stickyHeader || undefined,
       'data-divider': divider,
-      'data-fullwidth': fullWidth,
+      'data-fullwidth': fullWidth || undefined,
       ref: domRef,
       style,
     },

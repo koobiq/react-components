@@ -37,7 +37,6 @@ export type SearchInputProps = ExtendableProps<
     style?: CSSProperties;
     /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
-     * @default false
      */
     isLabelHidden?: boolean;
     /**
@@ -73,7 +72,6 @@ export type SearchInputProps = ExtendableProps<
     variant?: SearchInputPropVariant;
     /**
      * If `true`, the input will take up the full width of its container.
-     * @default false
      */
     fullWidth?: boolean;
   } & DataAttributeProps,

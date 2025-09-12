@@ -82,11 +82,11 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         }}
         {...buttonProps}
         {...renderProps}
-        data-hovered={isHovered}
-        data-pressed={isPressed}
-        data-focused={isFocused}
-        data-disabled={isDisabled}
-        data-focus-visible={isFocusVisible}
+        data-hovered={isHovered || undefined}
+        data-pressed={isPressed || undefined}
+        data-focused={isFocused || undefined}
+        data-disabled={isDisabled || undefined}
+        data-focus-visible={isFocusVisible || undefined}
         tabIndex={buttonProps.tabIndex}
         {...('tabIndex' in props && { tabIndex })}
         aria-disabled={isLoading ? 'true' : buttonProps['aria-disabled']}

@@ -40,13 +40,13 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
       ...other
     } = props;
 
-    const isDisabled = isDisabledProp ?? disabled ?? false;
-    const isInvalid = isInvalidProp ?? error ?? false;
+    const isDisabled = isDisabledProp ?? disabled;
+    const isInvalid = isInvalidProp ?? error;
     const isSelected = isSelectedProp ?? checked;
     const defaultSelected = defaultSelectedProp ?? defaultChecked;
-    const isReadOnly = isReadOnlyProp ?? readonly ?? false;
-    const isRequired = isRequiredProp ?? required ?? false;
-    const isIndeterminate = isIndeterminateProp ?? indeterminate ?? false;
+    const isReadOnly = isReadOnlyProp ?? readonly;
+    const isRequired = isRequiredProp ?? required;
+    const isIndeterminate = isIndeterminateProp ?? indeterminate;
 
     const commonProps: CheckboxPropsPrimitive = {
       isIndeterminate,
@@ -127,7 +127,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     return (
       <CheckboxPrimitive
         data-size={size}
-        data-indeterminate={isIndeterminate}
+        data-indeterminate={isIndeterminate || undefined}
         data-label-placement={labelPlacement}
         {...commonProps}
         ref={ref}

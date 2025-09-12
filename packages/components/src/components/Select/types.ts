@@ -51,7 +51,7 @@ export type SelectProps<T> = ExtendableProps<
      *
      *- `"multiline"` — tags wrap to multiple lines.
      *- `"responsive"` — tags collapse into a summary (e.g., "3 more").
-     * @default "responsive"
+     * @default 'responsive'
      */
     selectedTagsOverflow?: SelectPropSelectedTagsOverflow;
     /** Handler that is called when the clear button is clicked. */
@@ -87,7 +87,6 @@ export type SelectProps<T> = ExtendableProps<
     style?: CSSProperties;
     /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
-     * @default false
      */
     isLabelHidden?: boolean;
     /**
@@ -104,7 +103,6 @@ export type SelectProps<T> = ExtendableProps<
     caption?: ReactNode;
     /**
      * If true, the input will take up the full width of its container.
-     * @default false
      */
     fullWidth?: boolean;
     /** Unique identifier for testing purposes. */

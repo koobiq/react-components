@@ -49,14 +49,12 @@ export type TooltipPropPlacement = (typeof tooltipPropPlacement)[number];
 type TooltipDeprecatedProps = {
   /**
    * If `true`, the component is shown.
-   * @default false
    * @deprecated
    * The "open" prop is deprecated. Use "isOpen" prop to replace it.
    */
   open?: boolean;
   /**
    * If `true`, the component is disabled.
-   * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
   disabled?: boolean;
@@ -99,7 +97,6 @@ export type TooltipProps = ExtendableProps<
     crossOffset?: number;
     /**
      * If `true`, the arrow isn't shown.
-     * @default false
      */
     hideArrow?: boolean;
     /**

@@ -26,9 +26,9 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     ...other
   } = props;
 
-  const allowVisited = allowVisitedProp ?? visitable ?? false;
-  const isDisabled = isDisabledProp ?? disabled ?? false;
-  const isPseudo = isPseudoProp ?? pseudo ?? false;
+  const allowVisited = allowVisitedProp ?? visitable;
+  const isDisabled = isDisabledProp ?? disabled;
+  const isPseudo = isPseudoProp ?? pseudo;
 
   const hasIcon = Boolean(startIcon || endIcon);
 

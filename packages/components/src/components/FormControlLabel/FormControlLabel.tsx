@@ -11,14 +11,7 @@ export const FormControlLabel = polymorphicForwardRef<
   FormControlLabelBaseProps
 >(
   (
-    {
-      children,
-      className,
-      isHidden = false,
-      isRequired = false,
-      as = 'label',
-      ...other
-    },
+    { children, className, isHidden, isRequired, as = 'label', ...other },
     ref
   ) =>
     isNotNil(children) ? (

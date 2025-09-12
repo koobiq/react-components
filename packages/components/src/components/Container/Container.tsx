@@ -31,7 +31,7 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
       ...other
     } = props;
 
-    const isFixed = isFixedProp ?? fixed ?? false;
+    const isFixed = isFixedProp ?? fixed;
 
     if (process.env.NODE_ENV !== 'production' && 'fixed' in props) {
       deprecate(
@@ -56,7 +56,7 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
 
     return (
       <Tag
-        data-fixed={isFixed}
+        data-fixed={isFixed || undefined}
         data-margins={margins}
         data-position={position}
         className={clsx(s.base, className)}

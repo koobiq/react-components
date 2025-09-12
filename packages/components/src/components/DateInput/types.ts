@@ -50,7 +50,6 @@ export type DateInputProps<T extends DateValue> = {
   variant?: DateInputPropVariant;
   /**
    * If true, the input will take up the full width of its container.
-   * @default false
    */
   fullWidth?: boolean;
   /** The props used for each slot inside. */
@@ -66,7 +65,6 @@ export type DateInputProps<T extends DateValue> = {
   ref?: Ref<HTMLDivElement>;
   /**
    * If `true`, the label is hidden. Be sure to add aria-label to the input element.
-   * @default false
    */
   isLabelHidden?: boolean;
   /**

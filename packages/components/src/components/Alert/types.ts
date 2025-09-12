@@ -29,19 +29,16 @@ export type AlertBaseProps = {
   status?: AlertPropStatus;
   /**
    * If `true`, compact mode will be enabled in the alert.
-   * @default false
    */
   isCompact?: boolean;
   /**
    * If `true`, background color will be enabled in the alert.
-   * @default false
    */
   isColored?: boolean;
   /** Additional CSS-classes. */
   className?: string;
   /**
    * If `true`, the status icon will be hidden in the component.
-   * @default false
    */
   hideIcon?: boolean;
   /** Title content. */

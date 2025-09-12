@@ -24,7 +24,7 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       size = 'medium',
       position = 'left',
       placement = 'start',
-      hideCloseButton = false,
+      hideCloseButton,
       control,
       children,
       slotProps,

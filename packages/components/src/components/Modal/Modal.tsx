@@ -21,7 +21,7 @@ import type { ModalProps, ModalRef } from './types';
 const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
   const {
     size = 'medium',
-    hideCloseButton = false,
+    hideCloseButton,
     control,
     children,
     slotProps,

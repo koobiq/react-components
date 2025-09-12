@@ -47,8 +47,8 @@ function SelectRender<T extends object>(
   ref: Ref<SelectRef>
 ) {
   const {
-    fullWidth = false,
-    isClearable = false,
+    fullWidth,
+    isClearable,
     'data-testid': testId,
     selectionMode = 'single',
     selectedTagsOverflow = 'responsive',
@@ -110,9 +110,9 @@ function SelectRender<T extends object>(
 
   const rootProps = mergeProps({
     'data-testid': testId,
-    'data-invalid': isInvalid,
-    'data-disabled': props.isDisabled,
-    'data-required': props.isRequired,
+    'data-invalid': isInvalid || undefined,
+    'data-disabled': props.isDisabled || undefined,
+    'data-required': props.isRequired || undefined,
     className,
     fullWidth,
     labelPlacement,

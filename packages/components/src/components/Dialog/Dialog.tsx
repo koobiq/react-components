@@ -37,7 +37,7 @@ const DialogComponent = forwardRef<DialogRef, DialogProps>(
     const rootProps = mergeProps(
       {
         className: clsx(s.base, utilClasses.typography['text-normal']),
-        'data-close-button': showCloseButton,
+        'data-close-button': showCloseButton || undefined,
         'data-top-overflow': topOverflow,
         'data-bottom-overflow': bottomOverflow,
       },

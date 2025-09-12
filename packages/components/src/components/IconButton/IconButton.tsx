@@ -25,8 +25,8 @@ export const IconButton = polymorphicForwardRef<'button', IconButtonBaseProps>(
       ...other
     } = props;
 
-    const isCompact = isCompactProp ?? compact ?? false;
-    const isDisabled = isDisabledProp ?? disabled ?? false;
+    const isCompact = isCompactProp ?? compact;
+    const isDisabled = isDisabledProp ?? disabled;
 
     if (process.env.NODE_ENV !== 'production' && 'compact' in props) {
       deprecate(
@@ -65,9 +65,9 @@ export const IconButton = polymorphicForwardRef<'button', IconButtonBaseProps>(
         as={Tag}
         isDisabled={isDisabled}
         className={classNameFn}
-        data-compact={isCompact}
-        data-variant={variant}
         data-size={size}
+        data-variant={variant}
+        data-compact={isCompact || undefined}
         {...other}
         ref={ref}
       >

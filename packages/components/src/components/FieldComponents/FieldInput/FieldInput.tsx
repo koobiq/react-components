@@ -23,10 +23,10 @@ export const FieldInput = polymorphicForwardRef<
 >(
   (
     {
-      isInvalid = false,
-      as = 'input',
-      isDisabled = false,
       variant = 'filled',
+      as = 'input',
+      isInvalid,
+      isDisabled,
       className,
       ...other
     },

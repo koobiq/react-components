@@ -29,7 +29,6 @@ export type ContainerPositionProp = (typeof containerPositionProp)[number];
 type ContainerDeprecatedProps = {
   /**
    * If `true`, doesn't set the max-inline-size of the container.
-   * @default false
    * @deprecated
    * The "fixed" prop is deprecated. Use "isFixed" prop to replace it.
    */
@@ -53,7 +52,6 @@ export type ContainerBaseProps = {
   margins?: ContainerMarginsProp | ResponsiveValue<ContainerMarginsProp>;
   /**
    * If `true`, doesn't set the max-inline-size of the container.
-   * @default false
    */
   isFixed?: boolean;
   /** The content of the component. */

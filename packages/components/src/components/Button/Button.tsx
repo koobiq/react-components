@@ -15,8 +15,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
     const {
       as: Tag = 'button',
       variant = 'contrast-filled',
-      onlyIcon = false,
-      fullWidth = false,
+      onlyIcon,
+      fullWidth,
       isLoading: isLoadingProp,
       isDisabled: isDisabledProp,
       progress,
@@ -28,8 +28,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
       ...other
     } = props;
 
-    const isLoading = isLoadingProp ?? progress ?? false;
-    const isDisabled = isDisabledProp ?? disabled ?? false;
+    const isLoading = isLoadingProp ?? progress;
+    const isDisabled = isDisabledProp ?? disabled;
 
     if (process.env.NODE_ENV !== 'production' && 'progress' in props) {
       deprecate(
@@ -72,9 +72,9 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         isDisabled={isDisabled}
         className={classNameFn}
         data-variant={variant}
-        data-loading={isLoading}
-        data-fullwidth={fullWidth}
-        data-onlyicon={iconOnly}
+        data-loading={isLoading || undefined}
+        data-fullwidth={fullWidth || undefined}
+        data-onlyicon={iconOnly || undefined}
         {...other}
         ref={ref}
       >
