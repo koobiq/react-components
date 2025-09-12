@@ -30,7 +30,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
   (props, ref) => {
     const {
       variant = 'filled',
-      fullWidth = false,
+      fullWidth,
       hiddenLabel,
       isLabelHidden: isLabelHiddenProp,
       disabled,
@@ -58,7 +58,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
     const isRequired = isRequiredProp ?? required;
     const isReadOnly = isReadOnlyProp ?? readonly;
     const isInvalid = isInvalidProp ?? error;
-    const isLabelHidden = isLabelHiddenProp ?? hiddenLabel ?? false;
+    const isLabelHidden = isLabelHiddenProp ?? hiddenLabel;
 
     if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
       deprecate(

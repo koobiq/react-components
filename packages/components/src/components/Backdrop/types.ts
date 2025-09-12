@@ -18,7 +18,10 @@ export type BackdropBaseProps = {
   children?: ReactNode;
   /** Inline styles. */
   style?: CSSProperties;
-  /** The duration of the transition, in milliseconds. */
+  /**
+   * The duration of the transition, in milliseconds.
+   * @default 300
+   */
   duration?: number;
   /** z-index. */
   zIndex?: CSSProperties['zIndex'];

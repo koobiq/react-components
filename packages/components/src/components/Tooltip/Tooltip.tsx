@@ -28,15 +28,15 @@ import type { TooltipProps, TooltipRef } from './types';
 
 export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const {
-    delay = 120,
-    disabled,
-    open,
-    isDisabled: isDisabledProp,
-    isOpen: isOpenProp,
-    closeDelay = 120,
-    hideArrow = false,
     variant = 'contrast',
     placement: placementProp = 'top',
+    closeDelay = 120,
+    delay = 120,
+    isDisabled: isDisabledProp,
+    isOpen: isOpenProp,
+    disabled,
+    open,
+    hideArrow,
     control,
     children,
     anchorRef,
@@ -50,7 +50,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   } = props;
 
   const isOpen = isOpenProp ?? open;
-  const isDisabled = isDisabledProp ?? disabled ?? false;
+  const isDisabled = isDisabledProp ?? disabled;
 
   if (process.env.NODE_ENV !== 'production' && 'open' in props) {
     deprecate(
@@ -149,9 +149,9 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
           <Overlay portalContainer={portalContainer}>
             <div
               {...tooltipProps}
-              data-arrow={showArrow}
+              data-arrow={showArrow || undefined}
               data-variant={variant}
-              data-placement={placement}
+              data-placement={placement || undefined}
               data-transition={transition}
             >
               {showArrow && (

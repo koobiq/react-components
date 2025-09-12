@@ -14,7 +14,6 @@ export type RadioPropLabelPlacement = (typeof radioPropLabelPlacement)[number];
 type RadioDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
-   * @default false
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */

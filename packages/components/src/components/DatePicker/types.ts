@@ -15,7 +15,6 @@ import type { PopoverProps } from '../Popover';
 export type DatePickerProps<T extends DateValue> = {
   /**
    * If true, the input will take up the full width of its container.
-   * @default false
    */
   fullWidth?: boolean;
   /** The helper text content. */

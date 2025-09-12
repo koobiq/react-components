@@ -40,12 +40,10 @@ export type TableProps<T> = Pick<
   divider?: TablePropDivider;
   /**
    * If `true`, the button will take up the full width of its container.
-   * @default false
    */
   fullWidth?: boolean;
   /**
    * Flag indicating a fixed table header.
-   * @default false
    */
   stickyHeader?: boolean;
   /**

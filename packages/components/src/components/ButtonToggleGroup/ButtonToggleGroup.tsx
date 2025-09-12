@@ -23,9 +23,9 @@ export const ButtonToggleGroup = forwardRef<
   ButtonToggleGroupProps
 >((props, ref) => {
   const {
-    fullWidth = false,
-    isDisabled = false,
-    hasEqualItemSize = false,
+    fullWidth,
+    isDisabled,
+    hasEqualItemSize,
     style,
     className,
     slotProps,
@@ -111,9 +111,9 @@ export const ButtonToggleGroup = forwardRef<
         hasEqualItemSize && s.hasEqualItemSize,
         className
       ),
-      'data-fullwidth': fullWidth,
-      'data-animated': isAnimated,
-      'data-equal-item-size': hasEqualItemSize,
+      'data-fullwidth': fullWidth || undefined,
+      'data-animated': isAnimated || undefined,
+      'data-equal-item-size': hasEqualItemSize || undefined,
       ref: domRef,
       style,
     },

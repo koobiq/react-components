@@ -58,14 +58,14 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
 
     return (
       <label
-        data-hovered={isHovered}
-        data-pressed={isPressed}
-        data-focused={isFocused}
-        data-invalid={isInvalid}
-        data-selected={isSelected}
-        data-disabled={isDisabled}
-        data-read-only={isReadOnly}
-        data-focus-visible={isFocusVisible}
+        data-hovered={isHovered || undefined}
+        data-pressed={isPressed || undefined}
+        data-focused={isFocused || undefined}
+        data-invalid={isInvalid || undefined}
+        data-selected={isSelected || undefined}
+        data-disabled={isDisabled || undefined}
+        data-read-only={isReadOnly || undefined}
+        data-focus-visible={isFocusVisible || undefined}
         {...mergeProps(DOMProps, labelProps, renderProps)}
         ref={ref}
       >

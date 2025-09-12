@@ -10,8 +10,8 @@ export const FormControl = polymorphicForwardRef<'div', FormControlBaseProps>(
     {
       labelPlacement = 'top',
       labelAlign = 'start',
-      fullWidth = false,
       as: Tag = 'div',
+      fullWidth,
       className,
       ...other
     },
@@ -25,9 +25,9 @@ export const FormControl = polymorphicForwardRef<'div', FormControlBaseProps>(
         s[labelPlacement],
         fullWidth && s.fullWidth
       )}
-      data-fullwidth={fullWidth}
       data-label-align={labelAlign}
       data-label-placement={labelPlacement}
+      data-fullwidth={fullWidth || undefined}
       {...other}
       ref={ref}
     />

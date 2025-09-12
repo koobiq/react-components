@@ -130,7 +130,7 @@ describe('SidePanel', () => {
 
       rerender(<SidePanel {...baseProps} hideCloseButton isOpen />);
 
-      expect(getDialog()).toHaveAttribute('data-close-button', 'false');
+      expect(getDialog()).not.toHaveAttribute('data-close-button');
     });
 
     test('should call the onOpenChange handler when clicked', async () => {

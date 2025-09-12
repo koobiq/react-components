@@ -24,8 +24,8 @@ export const FieldAddon = forwardRef<ComponentRef<'div'>, FieldAddonProps>(
   (
     {
       placement = 'start',
-      isInvalid = false,
-      isDisabled = false,
+      isInvalid,
+      isDisabled,
       className,
       children,
       ...other
@@ -42,8 +42,8 @@ export const FieldAddon = forwardRef<ComponentRef<'div'>, FieldAddonProps>(
           className
         )}
         data-placement={placement}
-        data-invalid={isInvalid}
-        data-disabled={isDisabled}
+        data-invalid={isInvalid || undefined}
+        data-disabled={isDisabled || undefined}
         data-testid={`field-addon-${placement}`}
         {...other}
         ref={ref}

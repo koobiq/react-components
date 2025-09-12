@@ -26,7 +26,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
   (props, ref) => {
     const {
-      isDisabled: isDisabledProp = false,
+      isDisabled: isDisabledProp,
       children,
       id,
       icon,
@@ -82,11 +82,11 @@ export const ButtonToggle = forwardRef<ButtonToggleRef, ButtonToggleProps>(
                 isFocusVisible && s.focusVisible,
                 className
               ),
-              'data-hovered': isHovered,
-              'data-pressed': isPressed,
-              'data-selected': isSelected,
-              'data-disabled': isDisabled,
-              'data-focus-visible': isFocusVisible,
+              'data-hovered': isHovered || undefined,
+              'data-pressed': isPressed || undefined,
+              'data-selected': isSelected || undefined,
+              'data-disabled': isDisabled || undefined,
+              'data-focus-visible': isFocusVisible || undefined,
               ref: rootRef,
             },
             controlProps,

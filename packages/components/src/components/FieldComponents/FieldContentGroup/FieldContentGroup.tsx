@@ -16,8 +16,8 @@ export const FieldContentGroup = forwardRef<
 >(function FieldContentGroup(
   {
     variant = 'filled',
-    isInvalid = false,
-    isDisabled = false,
+    isInvalid,
+    isDisabled,
     children,
     className,
     startAddon,

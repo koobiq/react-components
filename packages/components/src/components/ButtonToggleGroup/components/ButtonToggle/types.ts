@@ -17,7 +17,6 @@ export type ButtonToggleProps = ExtendableComponentPropsWithRef<
     icon?: ReactNode;
     /**
      * If `true`, the component is disabled.
-     * @default false
      */
     isDisabled?: boolean;
     /** Additional CSS-classes. */

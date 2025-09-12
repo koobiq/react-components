@@ -65,7 +65,6 @@ export type SidePanelProps = {
   control?: SidePanelPropControl;
   /**
    * If `true`, the close button isn't shown.
-   * @default false
    */
   hideCloseButton?: boolean;
   /** Handler that is called when the modal's open state changes. */
@@ -77,17 +76,14 @@ export type SidePanelProps = {
   portalContainer?: Element;
   /**
    * If `true`, the modal window won't close when clicked outside of it.
-   * @default false
    */
   disableExitOnClickOutside?: boolean;
   /**
    * If `true`, the modal window won't close when the ESC key is pressed.
-   * @default false
    */
   disableExitOnEscapeKeyDown?: boolean;
   /**
    * If `true`, the underlay (backdrop) under the modal window isn't shown.
-   * @default false
    */
   hideBackdrop?: boolean;
   /** Additional CSS-classes. */
@@ -96,7 +92,6 @@ export type SidePanelProps = {
   'data-testid'?: string | number;
   /**
    * If `true`, the focus trap in modal window is disabled.
-   * @default false
    */
   disableFocusManagement?: boolean;
   /**

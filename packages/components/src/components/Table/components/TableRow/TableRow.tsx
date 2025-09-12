@@ -42,11 +42,11 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
         isFocusVisible && s.focusVisible,
         className
       )}
-      data-hovered={isHovered}
-      data-disabled={isDisabled}
-      data-selected={isSelected}
-      data-pressed={isPressed}
-      data-focus-visible={isFocusVisible}
+      data-hovered={isHovered || undefined}
+      data-disabled={isDisabled || undefined}
+      data-selected={isSelected || undefined}
+      data-pressed={isPressed || undefined}
+      data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(rowProps, hoverProps, focusProps)}
       style={style}
       ref={ref}

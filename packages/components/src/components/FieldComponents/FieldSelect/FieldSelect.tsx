@@ -10,10 +10,10 @@ import { isPrimitiveNode } from './utils';
 export const FieldSelect = polymorphicForwardRef<'div', FieldSelectBaseProps>(
   (
     {
-      as = 'div',
-      isInvalid = false,
-      isDisabled = false,
       variant = 'filled',
+      as = 'div',
+      isInvalid,
+      isDisabled,
       placeholder,
       children,
       className,

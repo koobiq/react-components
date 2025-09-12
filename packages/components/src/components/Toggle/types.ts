@@ -15,14 +15,12 @@ export type TogglePropLabelPlacement =
 type ToggleDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
-   * @default false
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
   disabled?: boolean;
   /**
    * If `true`, the component will indicate an error.
-   * @default false
    * @deprecated
    * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
    */
@@ -35,7 +33,6 @@ type ToggleDeprecatedProps = {
   checked?: boolean;
   /**
    * It prevents the user from changing the value of the checkbox.
-   * @default false
    * @deprecated
    * The "readonly" prop is deprecated. Use "isReadonly" prop to replace it.
    */

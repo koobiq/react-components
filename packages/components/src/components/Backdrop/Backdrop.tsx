@@ -28,7 +28,7 @@ export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
       ...other
     } = props;
 
-    const isOpen = isOpenProp ?? open ?? false;
+    const isOpen = isOpenProp ?? open;
 
     const domRef = useDOMRef<ComponentRef<'div'>>(ref);
 

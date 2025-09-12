@@ -24,7 +24,7 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
     const {
       status = 'info',
       as: Tag = 'div',
-      hideIcon = false,
+      hideIcon,
       colored,
       compact,
       isColored: isColoredProp,
@@ -39,8 +39,8 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
       ...other
     } = props;
 
-    const isColored = isColoredProp ?? colored ?? false;
-    const isCompact = isCompactProp ?? compact ?? false;
+    const isColored = isColoredProp ?? colored;
+    const isCompact = isCompactProp ?? compact;
 
     if (process.env.NODE_ENV !== 'production' && 'colored' in props) {
       deprecate(
@@ -85,6 +85,8 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
     return (
       <Tag
         role="alert"
+        data-colored={isColored || undefined}
+        data-compact={isCompact || undefined}
         {...other}
         ref={ref}
         className={clsx(

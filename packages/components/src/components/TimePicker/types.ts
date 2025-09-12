@@ -45,7 +45,6 @@ export type TimePickerProps<T extends TimeValue> = {
   variant?: DateInputPropVariant;
   /**
    * If true, the input will take up the full width of its container.
-   * @default false
    */
   fullWidth?: boolean;
   /** The props used for each slot inside. */
@@ -61,7 +60,6 @@ export type TimePickerProps<T extends TimeValue> = {
   ref?: Ref<HTMLDivElement>;
   /**
    * If `true`, the label is hidden. Be sure to add aria-label to the input element.
-   * @default false
    */
   isLabelHidden?: boolean;
   /**

@@ -27,12 +27,12 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     offset = 0,
     size = 'medium',
     crossOffset = 0,
-    hideArrow = false,
     containerPadding = 12,
     arrowBoundaryOffset = 20,
     placement: placementProp = 'top',
     maxBlockSize = 480,
     type = 'dialog',
+    hideArrow,
     state,
     control,
     children,
@@ -147,7 +147,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
             <div
               ref={domRef}
               data-size={size}
-              data-arrow={showArrow}
+              data-arrow={showArrow || undefined}
               data-placement={placement}
               data-transition={transition}
               className={clsx(s.base, s[size], className)}

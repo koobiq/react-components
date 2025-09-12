@@ -17,14 +17,12 @@ export type CheckboxPropOnChange = (selected: boolean) => void;
 type CheckboxDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
-   * @default false
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
   disabled?: boolean;
   /**
    * If `true`, the component will indicate an error.
-   * @default false
    * @deprecated
    * The "error" prop is deprecated. Use "isInvalid" prop to replace it.
    */
@@ -37,21 +35,18 @@ type CheckboxDeprecatedProps = {
   checked?: boolean;
   /**
    * It prevents the user from changing the value of the checkbox.
-   * @default false
    * @deprecated
    * The "readonly" prop is deprecated. Use "isReadonly" prop to replace it.
    */
   readonly?: boolean;
   /**
    * If `true`, the input element is required.
-   * @default false
    * @deprecated
    * The "required" prop is deprecated. Use "isRequired" prop to replace it.
    */
   required?: boolean;
   /**
    * If `true`, the component appears indeterminate.
-   * @default false
    * @deprecated
    * The "indeterminate" prop is deprecated. Use "isIndeterminate" prop to replace it.
    */

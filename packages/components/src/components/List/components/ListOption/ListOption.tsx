@@ -40,11 +40,11 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
       className={clsx(listItem, textVariant['text-normal'], className)}
       style={style}
       ref={ref}
-      data-hovered={isHovered}
-      data-pressed={isPressed}
-      data-disabled={isDisabled}
-      data-selected={isSelected}
-      data-focus-visible={isFocusVisible}
+      data-hovered={isHovered || undefined}
+      data-pressed={isPressed || undefined}
+      data-disabled={isDisabled || undefined}
+      data-selected={isSelected || undefined}
+      data-focus-visible={isFocusVisible || undefined}
     >
       {item.rendered}
     </Tag>

@@ -13,21 +13,18 @@ export type LinkPropVariant = Extract<
 type LinkDeprecatedProps = {
   /**
    * If `true`, the component is disabled.
-   * @default false
    * @deprecated
    * The "disabled" prop is deprecated. Use "isDisabled" prop to replace it.
    */
   disabled?: boolean;
   /**
    * If `true`, displays :visited CSS-state.
-   * @default false
    * @deprecated
    * The "visitable" prop is deprecated. Use "isVisitable" prop to replace it.
    */
   visitable?: boolean;
   /**
    * If `true`, displays the link as a pseudo-link.
-   * @default false
    * @deprecated
    * The "pseudo" prop is deprecated. Use "isPseudo" prop to replace it.
    */
@@ -46,12 +43,10 @@ export type LinkBaseProps = ExtendableProps<
     endIcon?: ReactNode;
     /**
      * If `true`, displays :visited CSS-state.
-     * @default false
      */
     allowVisited?: boolean;
     /**
      * If `true`, displays the link as a pseudo-link.
-     * @default false
      */
     isPseudo?: boolean;
     /** Additional CSS-classes. */
