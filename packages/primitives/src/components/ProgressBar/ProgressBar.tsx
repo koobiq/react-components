@@ -15,7 +15,7 @@ export const ProgressBar = polymorphicForwardRef<'div', ProgressBarBaseProps>(
       minValue = 0,
       maxValue = 100,
       as: Tag = 'div',
-      isIndeterminate = false,
+      isIndeterminate,
       ...other
     } = props;
 
