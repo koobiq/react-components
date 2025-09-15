@@ -20,7 +20,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2020",
+    "target": "es2019",
     "paths": {
       "@koobiq/react-icons": ["../icons/src/"],
       "@koobiq/react-core": ["../core/src/"],
