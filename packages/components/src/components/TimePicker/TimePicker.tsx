@@ -70,7 +70,7 @@ export function TimePickerRender<T extends TimeValue>(
     useSlottedContext(FormContext) || {};
 
   const validationBehavior =
-    props.validationBehavior ?? formValidationBehavior ?? 'native';
+    props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
   const state = useTimeFieldState({
     ...removeDataAttributes(props),

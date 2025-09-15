@@ -74,7 +74,7 @@ export function DateInputRender<T extends DateValue>(
     useSlottedContext(FormContext) || {};
 
   const validationBehavior =
-    props.validationBehavior ?? formValidationBehavior ?? 'native';
+    props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
   const {
     labelProps: labelPropReactAria,

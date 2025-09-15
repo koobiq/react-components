@@ -35,7 +35,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
       useSlottedContext(FormContext) || {};
 
     const validationBehavior =
-      props.validationBehavior ?? formValidationBehavior ?? 'native';
+      props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
     const state = useNumberFieldState({ ...props, locale });
 

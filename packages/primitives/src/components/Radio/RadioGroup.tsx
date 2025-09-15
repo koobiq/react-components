@@ -28,7 +28,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       useSlottedContext(FormContext) || {};
 
     const validationBehavior =
-      props.validationBehavior ?? formValidationBehavior ?? 'native';
+      props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
     const {
       radioGroupProps,

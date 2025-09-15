@@ -81,7 +81,7 @@ function SelectRender<T extends object>(
     useSlottedContext(FormContext) || {};
 
   const validationBehavior =
-    props.validationBehavior ?? formValidationBehavior ?? 'native';
+    props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
   const state = useMultiSelectState(
     removeDataAttributes({ ...props, selectionMode })

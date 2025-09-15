@@ -63,7 +63,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       useSlottedContext(FormContext) || {};
 
     const validationBehavior =
-      props.validationBehavior ?? formValidationBehavior ?? 'native';
+      props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
     const hasClearButton = state.value !== '' && !isDisabled && !isReadOnly;
 
