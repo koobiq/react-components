@@ -1,0 +1,57 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    ignore:
+      # Ignores any major updates
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+    groups:
+      eslint:
+        patterns:
+          - 'eslint*'
+          - '@typescript-eslint/*'
+          - '@stylistic/*'
+      prettier:
+        patterns:
+          - 'prettier*'
+      stylelint:
+        patterns:
+          - 'stylelint*'
+      storybook:
+        patterns:
+          - 'storybook*'
+          - '@storybook/*'
+          - '@chromatic-com/storybook*'
+          - '@vueless/storybook-*'
+      testing:
+        patterns:
+          - 'vitest*'
+          - '@vitest/*'
+          - '@testing-library/*'
+          - 'jsdom'
+      vite:
+        patterns:
+          - 'vite*'
+          - '@vitejs/*'
+      react:
+        patterns:
+          - 'react*'
+          - '@types/react*'
+      commitlint:
+        patterns:
+          - '@commitlint/*'
+      svgr:
+        patterns:
+          - '@svgr/*'
+      figma:
+        patterns:
+          - '@figma-export/*'
+      postcss:
+        patterns:
+          - 'postcss*'
+      koobiq:
+        patterns:
+          - '@koobiq/*'
