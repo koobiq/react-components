@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { getRowWidth } from '../utils';
 
 describe('getRowWidth', () => {

@@ -237,7 +237,7 @@ describe('Select', () => {
 
       expect(onSelectionChange).toHaveBeenCalledTimes(1);
 
-      const [selection] = onSelectionChange.mock.calls[0];
+      const selection = onSelectionChange.mock.calls?.[0]?.[0];
 
       expect([...selection]).toEqual([]);
     });

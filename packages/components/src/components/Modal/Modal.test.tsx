@@ -2,7 +2,7 @@ import { createRef } from 'react';
 
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { Button } from '../Button';
 
@@ -111,7 +111,7 @@ describe('Modal', () => {
   });
 
   describe('close button', () => {
-    test('check the hideCloseButton prop', () => {
+    it('check the hideCloseButton prop', () => {
       const { rerender } = render(<Modal {...baseProps} isOpen />);
 
       expect(getDialog()).toHaveAttribute('data-close-button', 'true');
@@ -121,7 +121,7 @@ describe('Modal', () => {
       expect(getDialog()).not.toHaveAttribute('data-close-button');
     });
 
-    test('should call the onOpenChange handler when clicked', async () => {
+    it('should call the onOpenChange handler when clicked', async () => {
       const onOpenChange = vi.fn();
       const onPress = vi.fn();
 

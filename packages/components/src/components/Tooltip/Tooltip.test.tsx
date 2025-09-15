@@ -2,7 +2,7 @@ import { createRef } from 'react';
 
 import { act, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { IconButton } from '../IconButton';
 
@@ -51,7 +51,7 @@ describe('Tooltip', () => {
     );
   });
 
-  test('check the hideArrow prop', () => {
+  it('check the hideArrow prop', () => {
     const { rerender } = render(<Tooltip {...baseProps} isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'true');

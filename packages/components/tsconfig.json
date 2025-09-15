@@ -21,14 +21,14 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2019",
-    "types": ["node", "@testing-library/jest-dom"],
     "paths": {
       "@koobiq/react-icons": ["../icons/src/"],
       "@koobiq/react-core": ["../core/src/"],
       "@koobiq/react-primitives": ["../primitives/src/"],
       "@koobiq/logger": ["../logger/src/"]
-    }
+    },
+    "types": ["vite/client", "@testing-library/jest-dom/vitest"]
   },
-  "exclude": ["node_modules", "dist"],
-  "include": ["../../global.d.ts", "src"]
+  "include": ["../../global.d.ts", "src"],
+  "exclude": ["node_modules", "dist"]
 }
