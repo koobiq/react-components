@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "esnext"],
+    "lib": ["DOM", "DOM.Iterable", "esnext"],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
