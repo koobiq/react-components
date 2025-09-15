@@ -2,7 +2,7 @@ import { createRef } from 'react';
 
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { Button } from '../Button';
 
@@ -54,7 +54,7 @@ describe('Popover', () => {
     });
   });
 
-  test('check the hideArrow prop', () => {
+  it('check the hideArrow prop', () => {
     const { rerender } = render(<Popover {...baseProps} isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'true');

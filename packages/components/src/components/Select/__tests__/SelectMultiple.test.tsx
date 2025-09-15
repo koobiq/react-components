@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeAll, afterAll } from 'vitest';
 
 import { Select } from '../Select';
 import type { SelectProps } from '../types';
@@ -59,7 +59,9 @@ describe('Select_multiple', () => {
 
     if (second) await userEvent.click(second);
 
-    expect([...onSelectionChange.mock.calls[0][0]]).toEqual([1, 3, 2]);
+    const selection = onSelectionChange.mock.calls?.[0]?.[0];
+
+    expect([...selection]).toEqual([1, 3, 2]);
   });
 
   it('should not trigger onSelectionChange when clicking a disabled item', async () => {

@@ -121,7 +121,9 @@ describe('Table', () => {
 
       if (second) await userEvent.click(second);
 
-      expect([...onSelectionChange.mock.calls[0][0]]).toEqual([2]);
+      const selection = onSelectionChange.mock.calls?.[0]?.[0];
+
+      expect([...selection]).toEqual([2]);
     });
   });
 
@@ -146,7 +148,9 @@ describe('Table', () => {
 
       if (second) await userEvent.click(second);
 
-      expect([...onSelectionChange.mock.calls[0][0]]).toEqual([1, 3, 2]);
+      const selection = onSelectionChange.mock.calls?.[0]?.[0];
+
+      expect([...selection]).toEqual([1, 3, 2]);
     });
   });
 

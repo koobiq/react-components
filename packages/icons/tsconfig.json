@@ -10,6 +10,7 @@
     "isolatedModules": true,
     "module": "esnext",
     "jsx": "react-jsx",
+    "skipLibCheck": true,
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
@@ -17,7 +18,7 @@
     "resolveJsonModule": true,
     "strict": true,
     "target": "es2019",
-    "types": ["node", "@testing-library/jest-dom"]
+    "types": ["vite/client", "@testing-library/jest-dom/vitest"]
   },
   "exclude": ["node_modules", "dist"],
   "include": ["../../global.d.ts", "src"]
