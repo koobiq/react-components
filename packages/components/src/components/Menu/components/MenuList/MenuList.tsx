@@ -13,21 +13,21 @@ import { MenuHeader } from '../MenuHeader';
 import { MenuItem } from '../MenuItem';
 import { MenuSection } from '../MenuSection';
 
-import s from './MenuInner.module.css';
+import s from './MenuList.module.css';
 
-export type MenuInnerProps<T> = AriaMenuOptions<T>;
+export type MenuListProps<T> = AriaMenuOptions<T>;
 
 const { list } = utilClasses;
 
-export type MenuInnerComponent = <T>(
-  props: MenuInnerProps<T>
+export type MenuListComponent = <T>(
+  props: MenuListProps<T>
 ) => ReactElement | null;
 
-export type MenuInnerRef = ComponentRef<'ul'>;
+export type MenuListRef = ComponentRef<'ul'>;
 
-function MenuInnerRender<T extends object = object>(
-  props: MenuInnerProps<T>,
-  ref: Ref<MenuInnerRef>
+function MenuListRender<T extends object = object>(
+  props: MenuListProps<T>,
+  ref: Ref<MenuListRef>
 ) {
   // Create menu state based on the incoming props
   const state = useTreeState(props);
@@ -70,4 +70,4 @@ function MenuInnerRender<T extends object = object>(
   );
 }
 
-export const MenuInner = forwardRef(MenuInnerRender) as MenuInnerComponent;
+export const MenuList = forwardRef(MenuListRender) as MenuListComponent;
