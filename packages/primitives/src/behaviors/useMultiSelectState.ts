@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-import type {
-  AsyncLoadable,
-  CollectionBase,
-  FocusableProps,
-  InputBase,
-  LabelableProps,
-  MultipleSelection,
-  TextInputBase,
-  Validation,
+import {
+  type AsyncLoadable,
+  type CollectionBase,
+  type FocusableProps,
+  type InputBase,
+  type LabelableProps,
+  type MultipleSelection,
+  type TextInputBase,
+  type Validation,
 } from '@koobiq/react-core';
 import type { FormValidationState } from '@react-stately/form';
 import { useFormValidationState } from '@react-stately/form';
@@ -97,15 +97,10 @@ export function useMultiSelectState<T extends object>({
       triggerState.close();
     },
     open() {
-      // Don't open if the collection is empty.
-      if (listState.collection.size !== 0) {
-        triggerState.open();
-      }
+      triggerState.open();
     },
     toggle(focusStrategy) {
-      if (listState.collection.size !== 0) {
-        triggerState.toggle(focusStrategy);
-      }
+      triggerState.toggle(focusStrategy);
     },
     isFocused,
     setFocused,

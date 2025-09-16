@@ -1,28 +1,50 @@
-import type { Ref } from 'react';
+import type { ReactNode, Ref } from 'react';
 
-import { clsx, isNotNil, mergeProps, useDOMRef } from '@koobiq/react-core';
+import {
+  clsx,
+  isNotNil,
+  mergeProps,
+  useDOMRef,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import { type MultiSelectState, useListBox } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
+import { isPrimitiveNode } from '../../../../utils';
 import { Divider as SelectDivider } from '../../../Divider';
 import type { ListProps } from '../../../List';
 import { ListSection } from '../../../List/components';
 import { Typography } from '../../../Typography';
+import intlMessages from '../../intl';
 import { SelectOption } from '../SelectOption';
 
 import s from './SelectList.module.css';
 
-const { list } = utilClasses;
+const { list, typography } = utilClasses;
 
 export type SelectListProps<T extends object> = {
   state: MultiSelectState<T>;
   listRef?: Ref<HTMLUListElement>;
-} & Omit<ListProps<T>, 'ref'>;
+  /** Content to display when no options are available. */
+  noItemsText?: ReactNode;
+} & Omit<ListProps<T>, 'ref' | 'children'>;
 
 export function SelectList<T extends object>(props: SelectListProps<T>) {
-  const { label, className, style, slotProps, state, listRef } = props;
+  const {
+    label,
+    className,
+    style,
+    slotProps,
+    state,
+    listRef,
+    noItemsText: noItemsTextProp,
+  } = props;
+
+  const t = useLocalizedStringFormatter(intlMessages);
 
   const domRef = useDOMRef(listRef);
+
+  const isEmpty = state.collection.size === 0;
 
   const { listBoxProps, labelProps } = useListBox(props, state, domRef);
 
@@ -46,6 +68,21 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     listBoxProps
   );
 
+  const noItemsText = noItemsTextProp ?? t.format('empty items');
+
+  const emptyState = isEmpty ? (
+    <div
+      // eslint-disable-next-line
+      role="option"
+      className={clsx(s.empty, typography['text-normal'])}
+      {...(!isPrimitiveNode(noItemsText) && {
+        style: { display: 'contents' },
+      })}
+    >
+      {noItemsText}
+    </div>
+  ) : null;
+
   const renderItems = (treeState: typeof state) =>
     [...treeState.collection].map((item) => {
       switch (item.type) {
@@ -66,7 +103,10 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
   return (
     <>
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
-      <ul {...listProps}>{renderItems(state)}</ul>
+      <ul {...listProps}>
+        {renderItems(state)}
+        {emptyState}
+      </ul>
     </>
   );
 }
