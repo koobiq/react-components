@@ -96,6 +96,36 @@ describe('Select', () => {
     });
   });
 
+  describe('items', () => {
+    it('should NOT fail when options change with a selected item', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {}); // не выводим в консоль
+
+      const { rerender } = render(
+        <Select {...baseProps} defaultSelectedKeys={['first']}>
+          <Select.Item key="first">first</Select.Item>
+        </Select>
+      );
+
+      expect(() =>
+        rerender(
+          <Select {...baseProps} defaultSelectedKeys={['first']}>
+            <Select.Item key="second">second</Select.Item>
+          </Select>
+        )
+      ).not.toThrow();
+
+      expect(
+        warnSpy.mock.calls.some(([msg]) =>
+          String(msg).includes(
+            'Select: Keys "first" passed to "selectedKeys" are not present in the collection.'
+          )
+        )
+      ).toBe(true);
+
+      warnSpy.mockRestore();
+    });
+  });
+
   describe('value', () => {
     it(`should set the defaultSelectedKey correctly`, () => {
       render(
