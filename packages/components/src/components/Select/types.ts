@@ -119,7 +119,7 @@ export type SelectProps<T> = ExtendableProps<
         isRequired?: boolean;
       }
     ) => ReactNode;
-    /** Content to display when no options are available. */
+    /** Content to display when no items are available. */
     noItemsText?: ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
