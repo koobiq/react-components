@@ -51,6 +51,7 @@ function SelectRender<T extends object>(
     isClearable,
     'data-testid': testId,
     selectionMode = 'single',
+    noItemsText,
     selectedTagsOverflow = 'responsive',
     labelPlacement,
     labelAlign,
@@ -121,21 +122,21 @@ function SelectRender<T extends object>(
   });
 
   const listProps = mergeProps(
-    { className: s.list, state },
-    slotProps?.list,
-    menuProps
+    { className: s.list, state, noItemsText },
+    menuProps,
+    slotProps?.list
   );
 
   const labelProps = mergeProps<
     [
       FormControlLabelProps,
-      FormControlLabelProps | undefined,
       FormControlLabelProps,
+      FormControlLabelProps | undefined,
     ]
   >(
     { isHidden: isLabelHidden, children: label, isRequired },
-    slotProps?.label,
-    labelPropsAria
+    labelPropsAria,
+    slotProps?.label
   );
 
   const clearButtonProps = mergeProps(

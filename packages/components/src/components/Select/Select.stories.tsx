@@ -6,12 +6,13 @@ import {
   IconBug16,
   IconCrosshairs16,
   IconDesktop16,
+  IconPlus16,
   IconServer16,
   IconSwords16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { useListData } from '../../index';
+import { Divider, List, spacing, useListData } from '../../index';
 import type { Selection } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -375,6 +376,61 @@ export const Open: Story = {
           {(item) => <Select.Item>{item.name}</Select.Item>}
         </Select>
         <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
+      </FlexBox>
+    );
+  },
+};
+
+export const NoItems: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m" direction="column">
+        <Select<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Select an option"
+          caption="No options available"
+          style={{ inlineSize: 200 }}
+        >
+          {(item) => <Select.Item>{item.name}</Select.Item>}
+        </Select>
+        <Select<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Select an option"
+          noItemsText="No results found"
+          caption="No results found"
+          style={{ inlineSize: 200 }}
+        >
+          {(item) => <Select.Item>{item.name}</Select.Item>}
+        </Select>
+        <Select<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Select an option"
+          slotProps={{ list: { autoFocus: false } }}
+          noItemsText={
+            <>
+              <Typography
+                color="inherit"
+                className={spacing({ pi: 'l', pb: 'xs' })}
+              >
+                No results found
+              </Typography>
+              <Divider />
+              <List autoFocus="first">
+                <List.Item key="add" textValue="add">
+                  <IconPlus16 />
+                  Add an option
+                </List.Item>
+              </List>
+            </>
+          }
+          caption="No results found — add a new option below"
+          style={{ inlineSize: 200 }}
+        >
+          {(item) => <Select.Item>{item.name}</Select.Item>}
+        </Select>
       </FlexBox>
     );
   },

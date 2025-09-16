@@ -27,8 +27,9 @@ import {
 } from '../FormControl';
 import type { FormControlLabelProps } from '../FormControlLabel';
 import type { IconButtonProps } from '../IconButton';
-import type { ListProps } from '../List';
 import type { PopoverProps } from '../Popover';
+
+import type { SelectListProps } from './components';
 
 export const selectPropSelectedTagsOverflow = [
   'multiline',
@@ -118,11 +119,13 @@ export type SelectProps<T> = ExtendableProps<
         isRequired?: boolean;
       }
     ) => ReactNode;
+    /** Content to display when no items are available. */
+    noItemsText?: ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;
       label?: FormControlLabelProps;
-      list?: ListProps<T>;
+      list?: Omit<SelectListProps<object>, 'state'>;
       control?: FieldSelectProps;
       caption?: FieldCaptionProps;
       group?: FieldContentGroupProps;

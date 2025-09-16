@@ -3,9 +3,10 @@ import type { ComponentPropsWithRef, ElementType } from 'react';
 import { clsx, isNotNil, polymorphicForwardRef } from '@koobiq/react-core';
 import { Button } from '@koobiq/react-primitives';
 
+import { isPrimitiveNode } from '../../../utils';
+
 import s from './FieldSelect.module.css';
 import type { FieldSelectBaseProps } from './index';
-import { isPrimitiveNode } from './utils';
 
 export const FieldSelect = polymorphicForwardRef<'div', FieldSelectBaseProps>(
   (

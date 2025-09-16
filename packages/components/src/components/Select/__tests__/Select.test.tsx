@@ -13,6 +13,9 @@ describe('Select', () => {
     selectionMode: 'single',
     children: null,
     slotProps: {
+      popover: {
+        'data-testid': 'popover',
+      },
       control: {
         'data-testid': 'control',
       },
@@ -24,6 +27,7 @@ describe('Select', () => {
 
   const getRoot = () => screen.getByTestId('root');
   const getControl = () => screen.getByTestId('control');
+  const getPopover = () => screen.getByTestId('popover');
   const getClearButton = () => screen?.queryByLabelText('clear-button');
 
   it('should accept a ref', () => {
@@ -74,6 +78,22 @@ describe('Select', () => {
     render(<Select {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
+  });
+
+  describe('noItemsText', () => {
+    it('should display noItemsText for static items', () => {
+      render(<Select {...baseProps} defaultOpen noItemsText="empty"></Select>);
+
+      expect(getPopover()).toHaveTextContent('empty');
+    });
+
+    it('should display noItemsText for dynamic items', () => {
+      render(
+        <Select {...baseProps} defaultOpen items={[]} noItemsText="empty" />
+      );
+
+      expect(getPopover()).toHaveTextContent('empty');
+    });
   });
 
   describe('value', () => {
