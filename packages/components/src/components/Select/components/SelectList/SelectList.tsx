@@ -25,7 +25,7 @@ const { list, typography } = utilClasses;
 export type SelectListProps<T extends object> = {
   state: MultiSelectState<T>;
   listRef?: Ref<HTMLUListElement>;
-  /** Content to display when no options are available. */
+  /** Content to display when no items are available. */
   noItemsText?: ReactNode;
 } & Omit<ListProps<T>, 'ref' | 'children'>;
 
