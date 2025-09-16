@@ -48,7 +48,7 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
       style,
       ref: domRef,
       className: clsx(list, className),
-      'data-padded': isPadded,
+      'data-padded': isPadded || undefined,
     },
     slotProps?.list,
     listBoxProps
