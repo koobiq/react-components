@@ -12,7 +12,7 @@ import { ListItemText } from '../List';
 import type { PopoverInnerProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
-import { MenuInner } from './components';
+import { MenuList } from './components';
 import type { MenuProps, MenuComponent, MenuRef } from './index';
 import s from './Menu.module.css';
 
@@ -74,7 +74,7 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
         ...menuTriggerProps,
       })}
       <PopoverInner type="menu" placement={placement} {...popoverProps}>
-        <MenuInner {...listProps} />
+        <MenuList {...listProps} />
       </PopoverInner>
     </>
   );
