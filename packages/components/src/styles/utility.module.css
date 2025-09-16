@@ -271,7 +271,9 @@
   text-underline-offset: inherit;
 }
 
-.list {
+/* list */
+.list,
+.list ul {
   margin: 0;
   padding: 0;
   outline: none;
@@ -279,10 +281,28 @@
   list-style: none;
 }
 
+.list[data-padded] {
+  padding-block: var(--kbq-size-xxs);
+
+  .list-item,
+  .list-heading {
+    border-inline: var(--kbq-size-xxs) solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+.list-heading {
+  user-select: none;
+  box-sizing: border-box;
+  padding: var(--kbq-size-s) var(--kbq-size-m);
+}
+
 .list-item {
   --list-item-bg-color: ;
   --list-item-outline-color: transparent;
   --list-item-outline-width: var(--kbq-size-3xs);
+  position: relative;
+  outline: none;
   flex-shrink: 0;
   display: flex;
   cursor: pointer;
@@ -290,17 +310,30 @@
   box-sizing: border-box;
   gap: var(--kbq-size-s);
   align-items: center;
-  border-radius: var(--kbq-size-s);
   color: var(--kbq-foreground-contrast);
-  background-color: var(--list-item-bg-color);
   padding: var(--kbq-size-xs) var(--kbq-size-m);
-  outline-offset: calc(-1 * var(--list-item-outline-width));
-  outline: var(--list-item-outline-width) solid var(--list-item-outline-color);
+  z-index: var(--kbq-layer-absolute);
   transition:
     border-color var(--kbq-transition-default),
     border-radius var(--kbq-transition-default),
-    background-color var(--kbq-transition-default),
     color var(--kbq-transition-default);
+
+  & > * {
+    z-index: var(--kbq-layer-absolute);
+  }
+
+  &::before {
+    content: '';
+    outline-offset: calc(-1 * var(--list-item-outline-width));
+    outline: var(--list-item-outline-width) solid var(--list-item-outline-color);
+    transition: background-color var(--kbq-transition-default);
+    background-color: var(--list-item-bg-color);
+    position: absolute;
+    border-radius: var(--kbq-size-s);
+    pointer-events: none;
+    z-index: -1;
+    inset: 0;
+  }
 }
 
 .list-item:where([data-hovered='true']) {
@@ -357,17 +390,22 @@
   .list-item:is([data-selected='true'], [data-focus-visible='true']):has(
     + :is([data-selected='true'], [data-focus-visible='true'])
   ) {
-  border-end-end-radius: 0;
-  border-end-start-radius: 0;
+  &::before {
+    border-end-end-radius: 0;
+    border-end-start-radius: 0;
+  }
 }
 
 .list[aria-multiselectable='true']
   .list-item:is([data-selected='true'], [data-focus-visible='true'])
   + :is([data-selected='true'], [data-focus-visible='true']) {
-  border-start-end-radius: 0;
-  border-start-start-radius: 0;
+  &::before {
+    border-start-end-radius: 0;
+    border-start-start-radius: 0;
+  }
 }
 
+/* scroll */
 .scrollable {
   --scroll-bar-size: 16px;
 

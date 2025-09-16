@@ -40,6 +40,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
       style,
       ref: domRef,
       className: clsx(list, className),
+      'data-padded': true,
     },
     slotProps?.list,
     listBoxProps
@@ -49,7 +50,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     [...treeState.collection].map((item) => {
       switch (item.type) {
         case 'divider':
-          return <SelectDivider key={item.key} className={s.divider} />;
+          return <SelectDivider key={item.key} />;
 
         case 'item':
           return <SelectOption key={item.key} item={item} state={state} />;

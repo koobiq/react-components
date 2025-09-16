@@ -4,10 +4,11 @@ import type { Node } from '@koobiq/react-core';
 import { useListBoxSection } from '@koobiq/react-primitives';
 import type { ListState } from '@koobiq/react-primitives';
 
+import { utilClasses } from '../../../../styles/utility';
 import { Typography } from '../../../Typography';
 import { ListOption } from '../ListOption';
 
-import s from './ListSection.module.css';
+const { listHeading } = utilClasses;
 
 export type ListSectionProps<T> = {
   section: Node<T>;
@@ -29,13 +30,13 @@ export function ListSection<T>({ section, state }: ListSectionProps<T>) {
             display="block"
             variant="caps-compact-strong"
             color="contrast-secondary"
-            className={s.heading}
+            className={listHeading}
             {...headingProps}
           >
             {section.rendered}
           </Typography>
         )}
-        <ul {...groupProps} className={s.base}>
+        <ul {...groupProps}>
           {[...section.childNodes].map((node) => (
             <ListOption key={node.key} item={node} state={state} />
           ))}
