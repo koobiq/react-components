@@ -4,10 +4,11 @@ import type { Node } from '@koobiq/react-core';
 import type { TreeState } from '@koobiq/react-primitives';
 import { useMenuSection } from '@koobiq/react-primitives';
 
+import { utilClasses } from '../../../../styles/utility';
 import { Typography } from '../../../Typography';
 import { MenuItem } from '../MenuItem';
 
-import s from './MenuSection.module.css';
+const { listHeading } = utilClasses;
 
 export type MenuSectionProps<T> = {
   section: Node<T>;
@@ -28,13 +29,13 @@ export function MenuSection<T>({ section, state }: MenuSectionProps<T>) {
           display="block"
           variant="caps-compact-strong"
           color="contrast-secondary"
-          className={s.heading}
+          className={listHeading}
           {...headingProps}
         >
           {section.rendered}
         </Typography>
       )}
-      <ul {...groupProps} className={s.base}>
+      <ul {...groupProps}>
         {[...section.childNodes].map((node) => (
           <MenuItem key={node.key} item={node} state={state} />
         ))}

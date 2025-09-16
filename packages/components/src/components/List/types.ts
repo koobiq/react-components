@@ -24,6 +24,7 @@ export type ListProps<T> = ExtendableProps<
       label?: TypographyProps;
       list?: ComponentPropsWithRef<'div'>;
     };
+    isPadded?: boolean;
   },
   AriaListBoxProps<T>
 >;

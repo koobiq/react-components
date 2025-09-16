@@ -22,7 +22,6 @@
 /* list */
 .list {
   inline-size: 100%;
-  padding: var(--kbq-size-xxs);
 }
 
 /* popover */

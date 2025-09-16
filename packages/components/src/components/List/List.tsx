@@ -27,7 +27,8 @@ export type ListInnerProps<T extends object> = {
 } & Omit<ListProps<T>, 'ref'>;
 
 export function ListInner<T extends object>(props: ListInnerProps<T>) {
-  const { label, className, style, slotProps, state, listRef } = props;
+  const { label, className, style, slotProps, state, listRef, isPadded } =
+    props;
 
   const domRef = useDOMRef(listRef);
 
@@ -47,6 +48,7 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
       style,
       ref: domRef,
       className: clsx(list, className),
+      'data-padded': isPadded,
     },
     slotProps?.list,
     listBoxProps
@@ -56,7 +58,7 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
     [...listState.collection].map((item) => {
       switch (item.type) {
         case 'divider':
-          return <ListDivider key={item.key} className={s.divider} />;
+          return <ListDivider key={item.key} />;
 
         case 'item':
           return <ListOption key={item.key} item={item} state={state} />;

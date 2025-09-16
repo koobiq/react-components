@@ -44,7 +44,7 @@ function MenuInnerRender<T extends object = object>(
           return <MenuHeader key={item.key} item={item} />;
 
         case 'divider':
-          return <Divider key={item.key} className={s.divider} />;
+          return <Divider key={item.key} />;
 
         case 'item':
           return <MenuItem key={item.key} item={item} state={state} />;
@@ -60,6 +60,7 @@ function MenuInnerRender<T extends object = object>(
   return (
     <ul
       {...menuProps}
+      data-padded={true}
       className={clsx(s.base, list)}
       {...(multiple && { 'aria-multiselectable': true })}
       ref={domRef}
