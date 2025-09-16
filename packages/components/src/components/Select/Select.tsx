@@ -222,7 +222,7 @@ function SelectRender<T extends object>(
   >({ children: errorMessage }, slotProps?.errorMessage, errorMessageProps);
 
   const renderDefaultValue: typeof renderValueProp = (state, states) => {
-    if (!state.selectedItems) return null;
+    if (!state.selectedItems?.length) return null;
 
     if (selectionMode === 'multiple')
       return (
