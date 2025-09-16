@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.10.0](https://github.com/koobiq/react-components/compare/0.9.0...0.10.0) (2025-09-16)
+
+### 🚀 Features
+
+- **Menu, Select:** expand item clickable area on sides (DS-4197) ([aef4af0](https://github.com/koobiq/react-components/commit/aef4af0e5b655366f65ac8137c4049bc61f2891b))
+- **Select:** add `noItemsText` prop to display content when no options are available (DS-4172) ([101e207](https://github.com/koobiq/react-components/commit/101e207306983a49f3b06f88f1455810e7c3d108))
+
+### 🐞 Bug Fixes
+
+- **Select:** do not fail when items change with a selected item (DS-4176) ([bb673b5](https://github.com/koobiq/react-components/commit/bb673b56adee36bd78155b73100f9fb674b7aaf3))
+
 ## [0.9.0](https://github.com/koobiq/react-components/compare/0.8.0...0.9.0) (2025-09-12)
 
 ### 🚀 Features
