@@ -11,24 +11,24 @@
   grid-template-columns: var(--template-columns);
 }
 
-.horizontal > [data-slot='form-control'] {
-  display: grid;
-  align-items: center;
-  grid-template-columns: subgrid;
-}
-
 .horizontal > * {
   grid-column: 1 / -1;
 }
 
-.horizontal > [data-slot='form-control'] > *:first-child {
-  grid-column: 1;
-  align-self: start;
-}
+.horizontal [data-slot='form-control'] {
+  display: grid;
+  align-items: center;
+  grid-template-columns: subgrid;
 
-.horizontal > [data-slot='form-control'] > *:last-child {
-  grid-column: 2;
-  justify-self: start;
+  & > *:first-child {
+    grid-column: 1;
+    align-self: start;
+  }
+
+  & > *:last-child {
+    grid-column: 2;
+    justify-self: start;
+  }
 }
 
 .vertical {
