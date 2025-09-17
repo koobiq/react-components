@@ -4,7 +4,7 @@
   --field-input-padding-inline-end: var(--kbq-size-m);
   --field-input-padding-block-start: var(--kbq-size-xs);
   --field-input-padding-block-end: var(--kbq-size-xs);
-  inline-size: 100%;
+  inline-size: inherit;
 }
 
 .base > :first-child + * {

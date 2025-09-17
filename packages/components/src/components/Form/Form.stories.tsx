@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Alert } from '../Alert';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { FormControl } from '../FormControl';
 import { Input } from '../Input';
 import { Typography } from '../Typography';
 
@@ -54,39 +55,43 @@ export const Base: Story = {
     };
 
     return (
-      <Form style={{ width: 280 }} onSubmit={handleSubmit}>
-        <FlexBox direction="column" gap="m">
-          <Input
-            label="Login"
-            name="login"
-            placeholder="Enter your login"
-            type="text"
-            isRequired
-            fullWidth
-            isDisabled={isLoading}
-            errorMessage="Login is required"
-          />
-
-          <Input
-            label="Password"
-            name="password"
-            placeholder="Enter your password"
-            type="password"
-            isRequired
-            fullWidth
-            isDisabled={isLoading}
-            errorMessage="Password is required"
-          />
-
-          <Button type="submit" isLoading={isLoading} fullWidth>
+      <Form
+        labelPlacement={{ xs: 'top', m: 'side' }}
+        style={{ width: 280 }}
+        onSubmit={handleSubmit}
+      >
+        {error && (
+          <Alert status="error" isCompact isColored>
+            {error}
+          </Alert>
+        )}
+        <Input
+          type="text"
+          name="login"
+          label="Login"
+          slotProps={{ label: { isRequired: false } }}
+          isDisabled={isLoading}
+          errorMessage="Login is required"
+          fullWidth
+          isRequired
+          autoFocus
+        />
+        <Input
+          name="password"
+          type="password"
+          label="Password"
+          isDisabled={isLoading}
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          errorMessage="Password is required"
+          isRequired
+        />
+        <FormControl>
+          <span />
+          <Button type="submit" isLoading={isLoading}>
             Submit
           </Button>
-          {error && (
-            <Alert status="error" isCompact isColored>
-              {error}
-            </Alert>
-          )}
-        </FlexBox>
+        </FormControl>
       </Form>
     );
   },

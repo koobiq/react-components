@@ -1,0 +1,15 @@
+export const templatePresets = {
+  'max-content': undefined,
+  '1/4': '1fr 3fr',
+  '2/5': '2fr 3fr',
+  '1/2': '1fr 1fr',
+  '80': '80px 1fr',
+  '128': '128px 1fr',
+  '160': '160px 1fr',
+  '200': '200px 1fr',
+  '240': '240px 1fr',
+  '280': '280px 1fr',
+  '320': '320px 1fr',
+  '360': '360px 1fr',
+  '400': '400px 1fr',
+};

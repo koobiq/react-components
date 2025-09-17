@@ -1,6 +1,14 @@
 import { createContext, useContext } from 'react';
 
-export type FormContextProps = object;
+import type {
+  FormControlPropLabelAlign,
+  FormControlPropLabelPlacement,
+} from '../FormControl';
+
+export type FormContextProps = {
+  labelPlacement?: FormControlPropLabelPlacement;
+  labelAlign?: FormControlPropLabelAlign;
+};
 
 export const FormContext = createContext<FormContextProps>({});
 

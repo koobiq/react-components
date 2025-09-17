@@ -1,0 +1,36 @@
+.base {
+  --gap-x: 0;
+  --gap-y: var(--kbq-size-xl);
+  display: grid;
+  row-gap: var(--gap-y);
+}
+
+/* orientation */
+.horizontal {
+  --template-columns: max-content 1fr;
+  grid-template-columns: var(--template-columns);
+}
+
+.horizontal > [data-slot='form-control'] {
+  display: grid;
+  align-items: center;
+  grid-template-columns: subgrid;
+}
+
+.horizontal > * {
+  grid-column: 1 / -1;
+}
+
+.horizontal > [data-slot='form-control'] > *:first-child {
+  grid-column: 1;
+  align-self: start;
+}
+
+.horizontal > [data-slot='form-control'] > *:last-child {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.vertical {
+  --template-columns: 1fr;
+}
