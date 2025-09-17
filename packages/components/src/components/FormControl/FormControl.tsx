@@ -2,7 +2,7 @@ import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
-import { useForm } from '../Form/FormContext';
+import { useForm } from '../Form';
 
 import s from './FormControl.module.css';
 import type { FormControlBaseProps } from './types';
