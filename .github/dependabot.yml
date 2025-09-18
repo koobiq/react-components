@@ -34,7 +34,8 @@ updates:
           - 'jsdom'
       vite:
         patterns:
-          - 'vite*'
+          - 'vite'
+          - 'vite-*'
           - '@vitejs/*'
       react:
         patterns:
