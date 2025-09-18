@@ -336,25 +336,17 @@ export const CreateForm: Story = {
         labelInlineSize="2/5"
         style={{ maxWidth: 400 }}
       >
-        <Select label="Select" placeholder="Select an option" fullWidth>
+        <Select label="Select" placeholder="Select an option">
           <Select.Item key="1">Option 1</Select.Item>
           <Select.Item key="2">Option 2</Select.Item>
           <Select.Item key="3">Option 3</Select.Item>
         </Select>
-        <Input label="Input" placeholder="Type a word..." fullWidth />
-        <Textarea label="Textarea" placeholder="Type a word..." fullWidth />
-        <InputNumber
-          label="InputNumber"
-          placeholder="Type a number..."
-          fullWidth
-        />
-        <SearchInput
-          label="SearchInput"
-          placeholder="Type a word..."
-          fullWidth
-        />
-        <TimePicker label="TimePicker" fullWidth />
-        <DatePicker label="DatePicker" fullWidth />
+        <Input label="Input" placeholder="Type a word..." />
+        <Textarea label="Textarea" placeholder="Type a word..." />
+        <InputNumber label="InputNumber" placeholder="Type a number..." />
+        <SearchInput label="SearchInput" placeholder="Type a word..." />
+        <TimePicker label="TimePicker" />
+        <DatePicker label="DatePicker" />
         <RadioGroup label="RadioGroup" defaultValue="windows">
           <Radio value="windows">Windows</Radio>
           <Radio value="macos">macOS</Radio>

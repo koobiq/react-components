@@ -17,7 +17,7 @@
   --field-input-padding-block-start: var(--kbq-size-xs);
   --field-input-padding-block-end: var(--kbq-size-xs);
   display: flex;
-  inline-size: inherit;
+  inline-size: 100%;
   position: relative;
   border-radius: var(--field-content-border-radius);
 

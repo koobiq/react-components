@@ -5,8 +5,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Alert } from '../Alert';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
-import { FormControl } from '../FormControl';
 import { Input } from '../Input';
+import { spacing } from '../layout';
+import { Textarea } from '../Textarea';
 import { Typography } from '../Typography';
 
 import { Form, type FormProps } from './index';
@@ -61,7 +62,12 @@ export const Base: Story = {
         onSubmit={handleSubmit}
       >
         {error && (
-          <Alert status="error" isCompact isColored>
+          <Alert
+            status="error"
+            className={spacing({ mbe: 'xl' })}
+            isCompact
+            isColored
+          >
             {error}
           </Alert>
         )}
@@ -72,7 +78,6 @@ export const Base: Story = {
           slotProps={{ label: { isRequired: false } }}
           isDisabled={isLoading}
           errorMessage="Login is required"
-          fullWidth
           isRequired
           autoFocus
         />
@@ -82,16 +87,14 @@ export const Base: Story = {
           label="Password"
           isDisabled={isLoading}
           slotProps={{ label: { isRequired: false } }}
-          fullWidth
           errorMessage="Password is required"
           isRequired
         />
-        <FormControl>
-          <span />
+        <div data-slot="form-control">
           <Button type="submit" isLoading={isLoading}>
             Submit
           </Button>
-        </FormControl>
+        </div>
       </Form>
     );
   },
@@ -112,35 +115,33 @@ export const Events: Story = {
           setAction(`submit ${JSON.stringify(data)}`);
         }}
       >
-        <FlexBox direction="column" gap="m">
-          <Input
-            errorMessage="Please enter a valid username"
-            label="Username"
-            name="username"
-            placeholder="Enter your username"
-            type="text"
-            isRequired
-            fullWidth
-          />
-          <Input
-            errorMessage="Please enter a valid email"
-            label="Email"
-            name="email"
-            placeholder="Enter your email"
-            type="email"
-            isRequired
-            fullWidth
-          />
-          <FlexBox gap="m">
-            <Button type="submit">Submit</Button>
-            <Button type="reset">Reset</Button>
-          </FlexBox>
-          {action && (
-            <Typography>
-              Action: <code>{action}</code>
-            </Typography>
-          )}
+        <Input
+          errorMessage="Please enter a valid username"
+          slotProps={{ label: { isRequired: false } }}
+          label="Username"
+          name="username"
+          type="text"
+          isRequired
+          fullWidth
+        />
+        <Input
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
+          label="Email"
+          name="email"
+          type="email"
+          isRequired
+          fullWidth
+        />
+        <FlexBox gap="m">
+          <Button type="submit">Submit</Button>
+          <Button type="reset">Reset</Button>
         </FlexBox>
+        {action && (
+          <Typography>
+            Action: <code>{action}</code>
+          </Typography>
+        )}
       </Form>
     );
   },
@@ -181,15 +182,8 @@ export const Validation: Story = {
         onSubmit={onSubmit}
         style={{ width: 240 }}
       >
-        <FlexBox direction="column" gap="m">
-          <Input
-            label="Username"
-            name="username"
-            placeholder="Enter your username"
-            fullWidth
-          />
-          <Button type="submit">Submit</Button>
-        </FlexBox>
+        <Input label="Username" name="username" fullWidth />
+        <Button type="submit">Submit</Button>
       </Form>
     );
   },
@@ -207,23 +201,43 @@ export const ValidationBehavior: Story = {
         onSubmit={onSubmit}
         style={{ width: 240 }}
       >
-        <FlexBox direction="column" gap="m">
-          <Input
-            isRequired
-            label="Username"
-            name="username"
-            placeholder="Enter your username"
-            type="text"
-            validate={(value) => {
-              if (value.length < 3) {
-                return 'Username must be at least 3 characters long';
-              }
+        <Input
+          label="Username"
+          name="username"
+          type="text"
+          slotProps={{ label: { isRequired: false } }}
+          validate={(value) => {
+            if (value.length < 3) {
+              return 'Username must be at least 3 characters long';
+            }
 
-              return value === 'admin' ? 'Nice try!' : null;
-            }}
+            return value === 'admin' ? 'Nice try!' : null;
+          }}
+          isRequired
+        />
+        <Button type="submit">Submit</Button>
+      </Form>
+    );
+  },
+};
+
+export const Fieldset: Story = {
+  render: function Render() {
+    return (
+      <Form style={{ width: 240 }}>
+        <Form.Fieldset>
+          <Form.Legend>Shipping details</Form.Legend>
+          <Input
+            label="Street adress"
+            name="street adress"
+            fullWidth
+            isRequired
           />
-          <Button type="submit">Submit</Button>
-        </FlexBox>
+          <Textarea label="Delivery notes" name="delivery notes" fullWidth />
+        </Form.Fieldset>
+        <Button type="submit" className={spacing({ mbs: 'l' })}>
+          Submit
+        </Button>
       </Form>
     );
   },

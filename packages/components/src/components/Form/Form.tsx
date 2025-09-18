@@ -1,17 +1,18 @@
 import { type CSSProperties, forwardRef } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Form as FormPrimitive } from '@koobiq/react-primitives';
 
 import { getResponsiveValue } from '../../utils';
 import { useMatchedBreakpoints } from '../Provider';
+import { Typography, type TypographyProps } from '../Typography';
 
 import s from './Form.module.css';
 import { FormContext } from './FormContext';
 import type { FormRef, FormProps } from './types';
 import { templatePresets } from './utils';
 
-export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
+export const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
   const {
     labelPlacement: labelPlacementProp,
     labelAlign: labelAlignProp,
@@ -48,4 +49,32 @@ export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
   );
 });
 
-Form.displayName = 'Form';
+export const Fieldset = polymorphicForwardRef<'div', { className?: string }>(
+  ({ className, as: Tag = 'fieldset', ...other }, ref) => (
+    <Tag className={clsx(s.fieldset, className)} {...other} ref={ref} />
+  )
+);
+
+export const Legend = polymorphicForwardRef<'p', TypographyProps>(
+  ({ className, as = 'p', ...other }, ref) => (
+    <Typography
+      as={as}
+      variant="text-big"
+      className={clsx(s.legend, className)}
+      {...other}
+      ref={ref}
+    />
+  )
+);
+
+FormComponent.displayName = 'Form';
+
+type CompoundedComponent = typeof FormComponent & {
+  Fieldset: typeof Fieldset;
+  Legend: typeof Legend;
+};
+
+export const Form = FormComponent as CompoundedComponent;
+
+Form.Fieldset = Fieldset;
+Form.Legend = Legend;
