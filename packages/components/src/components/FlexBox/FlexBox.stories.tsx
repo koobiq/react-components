@@ -130,7 +130,6 @@ export const ResponsiveValues: Story = {
 };
 
 export const Example: Story = {
-  name: 'Responsive values',
   render: (args) => {
     const styleContainer = {
       padding: 16,
