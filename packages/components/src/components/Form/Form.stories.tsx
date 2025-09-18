@@ -19,6 +19,7 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
+  tags: ['status:new'],
 } satisfies Meta<typeof Form>;
 
 export default meta;
