@@ -77,6 +77,30 @@ const App = () => (
 );
 ```
 
+## Responsive Components
+
+Many components like [Grid](?path=/docs/components-form--docs), [FlexBox](?path=/docs/components-flexbox--docs),
+and [Form](?path=/docs/components-form--docs) support responsive props.
+They can take a single value, or an object where each breakpoint key has its own value.
+
+This way your layout works well on any device.
+
+Example:
+
+```tsx
+// Single value: works the same on all screen sizes
+<FlexBox
+  gap="xs"
+  direction="column"
+/>
+
+// Object with breakpoints: values change depending on screen size
+<FlexBox
+  gap={{ xs: 'xl', l: '6xl' }}
+  direction={{ xs: 'column', l: 'row' }}
+/>
+```
+
 ## useMediaQuery
 
 The [useMediaQuery](?path=/docs/hooks-usemediaquery--docs) hook is a CSS media query hook for React. It listens for matches to a CSS media query,
