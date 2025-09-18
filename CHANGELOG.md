@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.11.0](https://github.com/koobiq/react-components/compare/0.10.0...0.11.0) (2025-09-18)
+
+### 🚀 Features
+
+- **components:** add `Form` component (DS-4142) ([e943bbc](https://github.com/koobiq/react-components/commit/e943bbc60cc857f6837b8adc405b7f311b90c7c1))
+
+### 🐞 Bug Fixes
+
+- **DateInput, TimePicker:** use system HighlightText for segment selection color ([39e9d56](https://github.com/koobiq/react-components/commit/39e9d567c605679b6f4ddac3b613db3a2da93ed5))
+
 ## [0.10.0](https://github.com/koobiq/react-components/compare/0.9.0...0.10.0) (2025-09-16)
 
 ### 🚀 Features
