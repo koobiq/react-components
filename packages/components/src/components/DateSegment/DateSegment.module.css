@@ -4,7 +4,7 @@
 
   &:focus {
     outline: none;
-    color: var(--date-input-segment-color);
+    color: HighlightText;
     background-color: Highlight;
   }
 }
