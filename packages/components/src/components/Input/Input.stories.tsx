@@ -1,4 +1,4 @@
-import { type CSSProperties, useState } from 'react';
+import { useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -11,9 +11,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
 import { Button } from '../Button';
-import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
 import { FormControl } from '../FormControl';
 import { FormControlLabel } from '../FormControlLabel';
 import { IconButton } from '../IconButton';
@@ -24,8 +24,6 @@ import { Select } from '../Select';
 import { Textarea } from '../Textarea';
 import { TimePicker } from '../TimePicker';
 import { Typography } from '../Typography';
-
-import './__stories__/style.css';
 
 import { Input, inputPropVariant } from './index';
 
@@ -326,97 +324,43 @@ export const Validation: Story = {
   ),
 };
 
-export const Form: Story = {
+export const CreateForm: Story = {
   parameters: {
     layout: 'padded',
   },
   name: 'Create a form',
   render: function Render() {
-    const presets = [
-      { key: 'max-content', template: undefined },
-      { key: '1/4', template: '1fr 3fr' },
-      { key: '2/5', template: '2fr 3fr' },
-      { key: '1/2', template: '1fr 1fr' },
-      { key: 'fixed 128', template: '128px 1fr' },
-      { key: 'fixed 160', template: '160px 1fr' },
-    ] as const;
-
-    type PresetKey = (typeof presets)[number]['key'];
-    const [selected, setSelected] = useState<PresetKey>('max-content');
-
-    const current = presets.find((p) => p.key === selected)!;
-
-    const formStyle = current.template
-      ? ({ '--template-columns': current.template } as CSSProperties)
-      : undefined;
-
     return (
-      <FlexBox direction="column" gap="xl">
-        <FormControl labelPlacement="top">
-          <FormControlLabel as="span">Label size:</FormControlLabel>
-          <ButtonToggleGroup
-            selectedKey={selected}
-            onSelectionChange={(key) => setSelected(key as PresetKey)}
-          >
-            {presets.map((p) => (
-              <ButtonToggle key={p.key} id={p.key}>
-                {p.key}
-              </ButtonToggle>
-            ))}
-          </ButtonToggleGroup>
+      <Form
+        labelPlacement={{ xs: 'top', m: 'side' }}
+        labelInlineSize="2/5"
+        style={{ maxWidth: 400 }}
+      >
+        <Select label="Select" placeholder="Select an option">
+          <Select.Item key="1">Option 1</Select.Item>
+          <Select.Item key="2">Option 2</Select.Item>
+          <Select.Item key="3">Option 3</Select.Item>
+        </Select>
+        <Input label="Input" placeholder="Type a word..." />
+        <Textarea label="Textarea" placeholder="Type a word..." />
+        <InputNumber label="InputNumber" placeholder="Type a number..." />
+        <SearchInput label="SearchInput" placeholder="Type a word..." />
+        <TimePicker label="TimePicker" />
+        <DatePicker label="DatePicker" />
+        <RadioGroup label="RadioGroup" defaultValue="windows">
+          <Radio value="windows">Windows</Radio>
+          <Radio value="macos">macOS</Radio>
+          <Radio value="linux">Linux</Radio>
+          <Radio value="other">Other</Radio>
+        </RadioGroup>
+        <FormControl>
+          <FormControlLabel as="span">Inputs</FormControlLabel>
+          <FlexBox gap="m" style={{ inlineSize: '100%' }}>
+            <Input aria-label="first" placeholder="Input 1" />
+            <Input aria-label="second" placeholder="Input 2" />
+          </FlexBox>
         </FormControl>
-
-        <form className="form" style={formStyle}>
-          <Select
-            label="Select"
-            placeholder="Select an option"
-            labelPlacement="side"
-          >
-            <Select.Item key="1">Option 1</Select.Item>
-            <Select.Item key="2">Option 2</Select.Item>
-            <Select.Item key="3">Option 3</Select.Item>
-          </Select>
-          <Input
-            label="Input"
-            placeholder="Type a word..."
-            labelPlacement="side"
-          />
-          <Textarea
-            label="Textarea"
-            placeholder="Type a word..."
-            labelPlacement="side"
-          />
-          <InputNumber
-            label="InputNumber"
-            placeholder="Type a number..."
-            labelPlacement="side"
-          />
-          <SearchInput
-            label="SearchInput"
-            placeholder="Type a word..."
-            labelPlacement="side"
-          />
-          <TimePicker label="TimePicker" labelPlacement="side" />
-          <DatePicker label="DatePicker" labelPlacement="side" />
-          <RadioGroup
-            label="RadioGroup"
-            defaultValue="windows"
-            labelPlacement="side"
-          >
-            <Radio value="windows">Windows</Radio>
-            <Radio value="macos">macOS</Radio>
-            <Radio value="linux">Linux</Radio>
-            <Radio value="other">Other</Radio>
-          </RadioGroup>
-          <FormControl labelPlacement="side">
-            <FormControlLabel as="span">Inputs</FormControlLabel>
-            <FlexBox gap="m">
-              <Input aria-label="first" placeholder="Input 1" />
-              <Input aria-label="second" placeholder="Input 2" />
-            </FlexBox>
-          </FormControl>
-        </form>
-      </FlexBox>
+      </Form>
     );
   },
 };

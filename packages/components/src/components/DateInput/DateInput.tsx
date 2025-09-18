@@ -10,6 +10,8 @@ import {
   useDateFieldState,
   removeDataAttributes,
   FieldErrorContext,
+  useSlottedContext,
+  FormContext,
 } from '@koobiq/react-primitives';
 import type { DateValue } from '@koobiq/react-primitives';
 
@@ -68,6 +70,12 @@ export function DateInputRender<T extends DateValue>(
 
   const domRef = useDOMRef(ref);
 
+  const { validationBehavior: formValidationBehavior } =
+    useSlottedContext(FormContext) || {};
+
+  const validationBehavior =
+    props.validationBehavior ?? formValidationBehavior ?? 'aria';
+
   const {
     labelProps: labelPropReactAria,
     fieldProps,
@@ -75,7 +83,11 @@ export function DateInputRender<T extends DateValue>(
     errorMessageProps,
     inputProps,
     ...validation
-  } = useDateField({ ...removeDataAttributes(props) }, state, domRef);
+  } = useDateField(
+    { ...removeDataAttributes(props), validationBehavior },
+    state,
+    domRef
+  );
 
   const { isRequired, isDisabled } = state;
 

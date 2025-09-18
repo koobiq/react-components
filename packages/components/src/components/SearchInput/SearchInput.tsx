@@ -9,6 +9,8 @@ import {
   useSearchField,
   useSearchFieldState,
   FieldErrorContext,
+  useSlottedContext,
+  FormContext,
 } from '@koobiq/react-primitives';
 
 import {
@@ -57,6 +59,12 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     const state = useSearchFieldState(removeDataAttributes(props));
     const domRef = useDOMRef(ref);
 
+    const { validationBehavior: formValidationBehavior } =
+      useSlottedContext(FormContext) || {};
+
+    const validationBehavior =
+      props.validationBehavior ?? formValidationBehavior ?? 'aria';
+
     const hasClearButton = state.value !== '' && !isDisabled && !isReadOnly;
 
     const {
@@ -66,7 +74,11 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       errorMessageProps: errorMessagePropsAria,
       clearButtonProps: clearButtonPropsAria,
       ...validation
-    } = useSearchField(removeDataAttributes(props), state, domRef);
+    } = useSearchField(
+      { ...removeDataAttributes(props), validationBehavior },
+      state,
+      domRef
+    );
 
     const { isInvalid } = validation;
 

@@ -10,9 +10,11 @@ import {
 import { IconChevronDownS16, IconXmarkCircle16 } from '@koobiq/react-icons';
 import {
   FieldErrorContext,
+  FormContext,
   removeDataAttributes,
   useMultiSelect,
   useMultiSelectState,
+  useSlottedContext,
 } from '@koobiq/react-primitives';
 
 import { Item, Section, Divider } from '../Collections';
@@ -75,6 +77,12 @@ function SelectRender<T extends object>(
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
+  const { validationBehavior: formValidationBehavior } =
+    useSlottedContext(FormContext) || {};
+
+  const validationBehavior =
+    props.validationBehavior ?? formValidationBehavior ?? 'aria';
+
   const state = useMultiSelectState(
     removeDataAttributes({ ...props, selectionMode })
   );
@@ -99,6 +107,7 @@ function SelectRender<T extends object>(
       ...props,
       selectionMode,
       disallowEmptySelection: true,
+      validationBehavior,
     }),
     state,
     domRef

@@ -1,0 +1,50 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Form.stories';
+
+<Meta of={Stories} />
+
+# Form
+
+<Status variant="experimental" />
+
+Forms allow users to enter data that can be submitted while providing alignment and styling for form controls.
+
+```tsx
+import { Form } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Events
+
+The `onSubmit` event will be triggered when a user submits the form with the <kbd>Enter</kbd> key
+or by pressing a submit button. The `onReset` event will be triggered when a user presses a reset button.
+
+<Story of={Stories.Events} />
+
+## Validation
+
+Form supports native HTML constraint validation with customizable UI, custom validation functions,
+and server-side validation. Server-side validation errors can be provided via the
+`validationErrors` prop as an object mapping field names to error messages,
+which are cleared when the user modifies the field.
+
+<Story of={Stories.Validation} />
+
+## Validation Behavior
+
+Form validation uses native validation behavior by default, but can be switched to ARIA validation
+by setting `validationBehavior="aria"`. ARIA validation shows realtime errors without blocking submission.
+This can be set at the form or field level.
+
+<Story of={Stories.ValidationBehavior} />

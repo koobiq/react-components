@@ -115,34 +115,4 @@ See example of a two column CSS Grid form. The label is on the side
 at the start of the text direction and the control is in the next column.
 All rows share one label column with fixed or fractional width.
 
-<Story of={Stories.Form} />
-
-**style.css**
-
-```css
-.form {
-  --template-columns: max-content 1fr;
-  --gap-x: 0;
-  --gap-y: var(--kbq-size-xl);
-  display: grid;
-  grid-template-columns: var(--template-columns);
-  row-gap: var(--gap-y);
-  inline-size: 480px;
-}
-
-.form > * {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-  align-items: center;
-}
-
-.form > * > *:first-child {
-  grid-column: 1;
-  align-self: start;
-}
-
-.form > * > *:last-child {
-  grid-column: 2;
-}
-```
+<Story of={Stories.CreateForm} />
