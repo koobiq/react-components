@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2019",
-    "lib": ["dom", "esnext"],
+    "lib": ["DOM", "DOM.Iterable", "esnext"],
     "baseUrl": "./",
     "module": "esnext",
     "noImplicitReturns": true,
