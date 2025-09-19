@@ -418,7 +418,7 @@ export const NoItems: Story = {
                 No results found
               </Typography>
               <Divider />
-              <List autoFocus="first">
+              <List autoFocus="first" aria-label="extra actions">
                 <List.Item key="add" textValue="add">
                   <IconPlus16 />
                   Add an option
