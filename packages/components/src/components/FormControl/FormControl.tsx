@@ -9,14 +9,21 @@ import type { FormControlBaseProps } from './types';
 
 export const FormControl = polymorphicForwardRef<'div', FormControlBaseProps>(
   (props, ref) => {
-    const { as: Tag = 'div', fullWidth, className, ...other } = props;
+    const {
+      as: Tag = 'div',
+      fullWidth,
+      className,
+      labelAlign: labelAlignProp,
+      labelPlacement: labelPlacementProp,
+      ...other
+    } = props;
 
     const { labelPlacement: formLabelPlacement, labelAlign: formLabelAlign } =
       useForm();
 
-    const labelPlacement = props.labelPlacement ?? formLabelPlacement ?? 'top';
+    const labelPlacement = labelPlacementProp ?? formLabelPlacement ?? 'top';
 
-    const labelAlign = props.labelAlign ?? formLabelAlign ?? 'start';
+    const labelAlign = labelAlignProp ?? formLabelAlign ?? 'start';
 
     return (
       <Tag
