@@ -32,7 +32,10 @@ export function useMultiSelectListState<T extends object>(
     disabledKeys,
     selectionManager,
     selectionManager: { setSelectedKeys, selectedKeys, selectionMode },
-  } = useListState(props);
+  } = useListState({
+    disallowEmptySelection: props.selectionMode !== 'multiple',
+    ...props,
+  });
 
   const missingKeys: Key[] = useMemo(() => {
     if (selectedKeys.size !== 0) {
