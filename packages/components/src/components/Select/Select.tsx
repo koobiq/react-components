@@ -90,7 +90,7 @@ function SelectRender<T extends object>(
   const hasClearButton = isClearable && !isDisabled && state.selectedItems;
 
   const handleClear = useCallback(() => {
-    state.selectionManager.clearSelection();
+    state.selectionManager.setSelectedKeys(new Set());
     onClear?.();
   }, [onClear, state]);
 
