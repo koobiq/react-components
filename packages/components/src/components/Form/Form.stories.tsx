@@ -134,7 +134,7 @@ export const Events: Story = {
           isRequired
           fullWidth
         />
-        <FlexBox gap="m">
+        <FlexBox gap="m" className={spacing({ mbe: 'm' })}>
           <Button type="submit">Submit</Button>
           <Button type="reset">Reset</Button>
         </FlexBox>
