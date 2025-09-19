@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/koobiq/react-components/compare/0.11.0...0.11.1) (2025-09-19)
+
+### 🐞 Bug Fixes
+
+- **FormControl:** do not pass `labelAlign/labelPlacement` to DOM ([acefbbd](https://github.com/koobiq/react-components/commit/acefbbde16d6c369f674e8cc570259f3988ee2d2))
+- **Select:** prevent deselecting value in single mode (DS-4177) ([6baf0a6](https://github.com/koobiq/react-components/commit/6baf0a6e9bdd30da1ff5958c560c3fcc98a5b1b3))
+
 ## [0.11.0](https://github.com/koobiq/react-components/compare/0.10.0...0.11.0) (2025-09-18)
 
 ### 🚀 Features
