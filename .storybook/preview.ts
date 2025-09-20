@@ -8,14 +8,11 @@ import { DocContainer } from './components';
 import { withThemeProvider } from './decorators';
 import { light, dark } from './themes';
 
-const rawStories = import.meta.glob(
-  '../packages/**/*.stories.@(js|jsx|ts|tsx)',
-  {
-    eager: true,
-    import: 'default',
-    query: '?raw',
-  }
-);
+const rawStories = import.meta.glob('../**/*.stories.@(js|jsx|ts|tsx)', {
+  eager: true,
+  import: 'default',
+  query: '?raw',
+});
 
 export function extractStory(raw: string, storyName: string) {
   const re = new RegExp(
