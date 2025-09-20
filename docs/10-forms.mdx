@@ -85,3 +85,11 @@ setting `isInvalid` and `errorMessage`.
 
 By default, the `isInvalid={true}` prop does not block forms from being submitted.
 To block form submission, use the `validationBehavior="native"` prop on the [Form](?path=/docs/components-form--docs) component.
+
+### Server validation
+
+Client-side checks are helpful, but data must also be validated on the server for security and business rules.
+You can show server errors in the library by passing a `validationErrors` object to the [Form](?path=/docs/components-form--docs), mapping field names to error messages.
+These are displayed to the user as soon as the `validationError`s prop is set, and cleared after the user modifies each field's value.
+
+<Story of={Stories.ServerValidation} />

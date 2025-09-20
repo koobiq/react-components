@@ -169,3 +169,41 @@ export const RealtimeValidation: Story = {
     );
   },
 };
+
+export const ServerValidation: Story = {
+  render: function Render() {
+    // Fake server used in this example.
+    function callServer<T>(data: { [k: string]: T }) {
+      console.log(data);
+
+      return {
+        errors: {
+          username: 'Sorry, this username is taken.',
+        },
+      };
+    }
+
+    const [errors, setErrors] = useState({});
+
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const data = Object.fromEntries(new FormData(e.currentTarget));
+      const result = await callServer(data);
+      setErrors(result.errors);
+    };
+
+    return (
+      <Form
+        validationBehavior="native"
+        onSubmit={onSubmit}
+        validationErrors={errors}
+        style={formStyle}
+      >
+        <Input label="Username" name="username" isRequired />
+        <Input label="Password" name="password" type="password" isRequired />
+        <Button type="submit">Submit</Button>
+      </Form>
+    );
+  },
+};
