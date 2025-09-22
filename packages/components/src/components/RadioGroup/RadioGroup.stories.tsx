@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
 import { Typography } from '../Typography';
 
 import { RadioGroup, Radio, radioGroupPropSize } from './index';
@@ -173,7 +174,7 @@ export const Orientation: Story = {
 
 export const Validation: Story = {
   render: (args) => (
-    <FlexBox as="form" direction="column" gap="m">
+    <Form>
       <RadioGroup
         label="Numbers"
         name="numbers"
@@ -186,6 +187,6 @@ export const Validation: Story = {
         <Radio value="three">Three</Radio>
       </RadioGroup>
       <Button type="submit">Submit</Button>
-    </FlexBox>
+    </Form>
   ),
 };

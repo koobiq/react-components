@@ -310,7 +310,7 @@ export const Password: Story = {
 
 export const Validation: Story = {
   render: (args) => (
-    <FlexBox as="form" direction="column" gap="m">
+    <Form>
       <Input
         label="Email"
         name="email"
@@ -320,7 +320,7 @@ export const Validation: Story = {
         {...args}
       />
       <Button type="submit">Submit</Button>
-    </FlexBox>
+    </Form>
   ),
 };
 
