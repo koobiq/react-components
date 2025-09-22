@@ -93,3 +93,20 @@ You can show server errors in the library by passing a `validationErrors` object
 These are displayed to the user as soon as the `validationError`s prop is set, and cleared after the user modifies each field's value.
 
 <Story of={Stories.ServerValidation} />
+
+## Form libraries
+
+In most cases, uncontrolled forms with the builtin validation features are enough.
+However, if you are building a truly complex form, or integrating Koobiq React components into an existing form,
+a separate form library such as [React Hook Form](https://react-hook-form.com/) or [Formik](https://formik.org/) may be helpful.
+
+### React Hook Form
+
+[React Hook Form](https://react-hook-form.com/) is a popular library for managing forms in React.
+It works with plain HTML inputs, but also supports custom components like those in Koobiq React.
+
+To integrate Koobiq React with React Hook Form, use the [Controller](https://react-hook-form.com/docs/usecontroller/controller) component.
+Pass the props for the `field` render prop through to the library component you're using,
+and use the `fieldState` to get validation errors to display.
+
+<Story of={Stories.ReactHookForm} />

@@ -90,6 +90,7 @@
     "prettier": "^3.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.63.0",
     "remark-gfm": "^4.0.1",
     "rimraf": "^6.0.1",
     "rollup-preserve-directives": "^1.1.3",

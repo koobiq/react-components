@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@koobiq/react-components';
 import type { StoryObj } from '@storybook/react';
+import { Controller, useForm } from 'react-hook-form';
 
 const meta = {
   title: 'Forms',
@@ -202,6 +203,51 @@ export const ServerValidation: Story = {
       >
         <Input label="Username" name="username" isRequired />
         <Input label="Password" name="password" type="password" isRequired />
+        <Button type="submit">Submit</Button>
+      </Form>
+    );
+  },
+};
+
+export const ReactHookForm: Story = {
+  render: function Render() {
+    const { handleSubmit, control } = useForm({
+      defaultValues: { name: '' },
+    });
+
+    const onSubmit = (data) => {
+      console.log(data);
+      // Call your API here...
+    };
+
+    return (
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          control={control}
+          name="name"
+          rules={{ required: 'Name is required.' }}
+          render={({
+            field: { name, value, onChange, onBlur, ref },
+            fieldState: { invalid, error },
+          }) => (
+            <Input
+              name={name}
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              isRequired
+              // Let React Hook Form handle validation instead of the browser.
+              validationBehavior="aria"
+              isInvalid={invalid}
+              label="Name"
+              errorMessage={error?.message}
+              slotProps={{
+                // Assign React Hook Form ref to Input so it can focus the Input after validation.
+                input: { ref },
+              }}
+            />
+          )}
+        />
         <Button type="submit">Submit</Button>
       </Form>
     );
