@@ -1,0 +1,95 @@
+import * as Stories from './forms.stories';
+import { Meta, Story } from '../.storybook/components';
+
+<Meta title="Forms" />
+
+# Forms
+
+Forms allow users to enter and submit data, and provide them with feedback along the way.
+Koobiq includes many components that integrate with HTML forms, with support for custom validation and styling.
+
+## Labels and help text
+
+Each field should have a clear label. Use the label prop, and add help text for captions or errors.
+Screen readers announce both when the field is focused.
+
+<Story of={Stories.LabelsHelperText} />
+
+Most fields need a visible label. If that's not possible, use `aria-label` or `aria-labelledby` so screen readers can identify the field.
+
+## Form submission
+
+By default, forms reload the page. Use `preventDefault` in `onSubmit` or a framework API to handle data yourself.
+
+### Uncontrolled forms
+
+Use the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) in `onSubmit`. Each field needs a `name`.
+
+<Story of={Stories.UncontrolledForms} />
+
+### Controlled forms
+
+Use `useState` and pass value and `onChange` to manage fields in real time.
+
+<Story of={Stories.ControlledForms} />
+
+## Validation
+
+Form validation checks that user input is correct and meets requirements.
+Koobiq React supports HTML validation, custom rules, realtime checks, and server-side errors.
+
+### Built-in validation
+
+All Koobiq React form components support native HTML [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Constraint_validation).
+
+Add `validationBehavior="native"` to the [Form](?path=/docs/components-form--docs) to check things like required fields or
+emails when a field loses focus or the form is submitted.
+
+<Story of={Stories.BuiltInValidation} />
+
+Supported constraints include:
+
+- `isRequired` indicates that a field must have a value before the form can be submitted.
+- `minValue` and `maxValue` specify the minimum and maximum value in a date picker or number field.
+- `minLength` and `maxLength` specify the minimum and length of text input.
+- `pattern` provides a custom [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) that a text input must conform to.
+- `type="email"` and `type="url"` provide builtin validation for email addresses and URLs.
+
+See each component's documentation for more details on the supported validation props.
+
+### Customizing error messages
+
+By default, Koobiq React shows the browser's error message in the user's language.
+You can override it with the `errorMessage` prop, which gives you the error reasons and a
+[ValidityState](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) object to return your own message.
+
+<Story of={Stories.ErrorMessages} />
+
+**Note**: The default error messages are localized by the browser using the browser/operating system language setting.
+Koobiq React [Provider](?path=/docs/components-provider--docs#localization) has no effect on validation errors.
+
+### Custom validation
+
+You can add your own rules with the `validate` prop. The function gets the field value and returns one or more error messages.
+They are shown after the value is committed (e.g. on blur).
+
+<Story of={Stories.CustomValidation} />
+
+### Realtime validation
+
+Normally errors show after blur or submit, so users aren't interrupted while typing.
+For cases like password rules, you can validate on each change by controlling the field and
+setting `isInvalid` and `errorMessage`.
+
+<Story of={Stories.RealtimeValidation} />
+
+By default, the `isInvalid={true}` prop does not block forms from being submitted.
+To block form submission, use the `validationBehavior="native"` prop on the [Form](?path=/docs/components-form--docs) component.
+
+### Server validation
+
+Client-side checks are helpful, but data must also be validated on the server for security and business rules.
+You can show server errors in the library by passing a `validationErrors` object to the [Form](?path=/docs/components-form--docs), mapping field names to error messages.
+These are displayed to the user as soon as the `validationError`s prop is set, and cleared after the user modifies each field's value.
+
+<Story of={Stories.ServerValidation} />
