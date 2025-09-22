@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
 import { Typography } from '../Typography';
 
 import { Textarea, textareaPropVariant } from './index';
@@ -219,7 +220,7 @@ export const ControlledValue: Story = {
 
 export const Validation: Story = {
   render: (args) => (
-    <FlexBox as="form" direction="column" gap="m">
+    <Form>
       <Textarea
         minLength={10}
         name="your story"
@@ -229,6 +230,6 @@ export const Validation: Story = {
         {...args}
       />
       <Button type="submit">Submit</Button>
-    </FlexBox>
+    </Form>
   ),
 };

@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
 import { Grid, GridItem } from '../Grid';
 import { Typography } from '../Typography';
 
@@ -314,6 +315,21 @@ export const NumberFormatting: Story = {
   },
 };
 
+export const Validation: Story = {
+  render: (args) => (
+    <Form>
+      <InputNumber
+        label="Width"
+        name="width"
+        isRequired
+        validationBehavior="native"
+        {...args}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  ),
+};
+
 export const MinimumMaximumValues: Story = {
   name: 'Minimum and maximum',
   render: function Render(args) {
@@ -345,19 +361,4 @@ export const StepValues: Story = {
       </FlexBox>
     );
   },
-};
-
-export const Validation: Story = {
-  render: (args) => (
-    <FlexBox as="form" direction="column" gap="m">
-      <InputNumber
-        label="Width"
-        name="width"
-        isRequired
-        validationBehavior="native"
-        {...args}
-      />
-      <Button type="submit">Submit</Button>
-    </FlexBox>
-  ),
 };

@@ -4,7 +4,9 @@ import { useDebounceCallback } from '@koobiq/react-core';
 import { IconMagnifyingGlass16, IconUser16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
 import { Typography } from '../Typography';
 
 import {
@@ -222,4 +224,19 @@ export const DebounceSearch: Story = {
       </FlexBox>
     );
   },
+};
+
+export const Validation: Story = {
+  render: (args) => (
+    <Form>
+      <SearchInput
+        label="Search"
+        name="search"
+        isRequired
+        validationBehavior="native"
+        {...args}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  ),
 };

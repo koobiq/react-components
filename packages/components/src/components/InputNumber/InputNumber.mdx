@@ -104,18 +104,23 @@ notation may be supported in the future.
 
 <Story of={Stories.NumberFormatting} />
 
-## Minimum and maximum values
+## Validation
 
-The `minValue` and `maxValue` props can be used to limit the entered value to a specific range.
+InputNumber supports HTML validation attributes, custom validation logic, server errors,
+and can be integrated with external form libraries. See the [Forms](?path=/docs/forms--docs) guide for details.
+
+<Story of={Stories.Validation} />
+
+### Minimum and maximum values
+
+Use `minValue` and `maxValue` to set a range for InputNumber.
+The value is clamped on blur, and the step buttons disable when the limit is reached.
 
 <Story of={Stories.MinimumMaximumValues} />
 
-## Step values
+### Step values
 
-The `step` prop can be used to snap the value to certain increments.
+The `step` prop defines the increments for `NumberField`. Values snap to the nearest step on blur or when using the buttons,
+starting from `minValue` (or 0 if none is set).
 
 <Story of={Stories.StepValues} />
-
-## Validation
-
-<Story of={Stories.Validation} />
