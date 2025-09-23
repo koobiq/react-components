@@ -1,0 +1,114 @@
+@import url('../../../styles/mixins.css');
+
+.base {
+  --form-field-control-color: ;
+  --form-field-control-bg-color: ;
+  --form-field-control-size-height: 32px;
+  --form-field-control-placeholder-color: ;
+  --form-field-control-group-border-color: ;
+  --form-field-control-group-outline-width: 2px;
+  --form-field-control-group-outline-color: transparent;
+  --form-field-control-group-border-radius: var(--kbq-size-s);
+  --form-field-control-group-border-width: var(--kbq-size-border-width);
+  --form-field-control-padding-inline-start: var(--kbq-size-m);
+  --form-field-control-padding-inline-end: var(--kbq-size-m);
+  --form-field-control-padding-block-start: var(--kbq-size-xs);
+  --form-field-control-padding-block-end: var(--kbq-size-xs);
+  display: flex;
+  inline-size: 100%;
+  position: relative;
+  border-radius: var(--form-field-control-group-border-radius);
+
+  /* border */
+  &::before {
+    inset: 0;
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: var(--kbq-layer-absolute);
+    transition: border-color var(--kbq-transition-default);
+    border: var(--form-field-control-group-border-width) solid
+      var(--form-field-control-group-border-color, transparent);
+  }
+
+  /* focus */
+  &::after {
+    inset: 0;
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: var(--kbq-layer-absolute);
+    transition: outline-color var(--kbq-transition-default);
+    outline-offset: calc(
+      -1 * var(--form-field-control-group-outline-width) / 2
+    );
+    outline: var(--form-field-control-group-outline-width) solid
+      var(--form-field-control-group-outline-color);
+  }
+}
+
+.hasStartAddon {
+  --form-field-control-padding-inline-start: 36px;
+}
+
+.hasEndAddon {
+  --form-field-control-padding-inline-end: 36px;
+}
+
+.transparent {
+  --form-field-control-color: var(--kbq-foreground-contrast);
+  --form-field-control-bg-color: transparent;
+  --form-field-control-placeholder-color: var(
+    --kbq-foreground-contrast-tertiary
+  );
+  --form-field-control-group-border-color: transparent;
+}
+
+.filled {
+  --form-field-control-color: var(--kbq-foreground-contrast);
+  --form-field-control-bg-color: var(--kbq-background-bg);
+  --form-field-control-placeholder-color: var(
+    --kbq-foreground-contrast-tertiary
+  );
+  --form-field-control-group-border-color: var(--kbq-line-contrast-fade);
+}
+
+.filled:where(.focused) {
+  --form-field-control-group-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.filled:where(.invalid) {
+  --form-field-control-color: var(--kbq-foreground-error);
+  --form-field-control-bg-color: var(--kbq-background-error-less);
+  --form-field-control-placeholder-color: var(--kbq-foreground-error-tertiary);
+  --form-field-control-group-border-color: var(--kbq-line-error);
+}
+
+.filled:where(.invalid.focused) {
+  --form-field-control-group-outline-color: var(
+    --form-field-control-group-border-color
+  );
+}
+
+.transparent:where(.invalid) {
+  --form-field-control-color: var(--kbq-foreground-error);
+  --form-field-control-bg-color: transparent;
+  --form-field-control-placeholder-color: var(--kbq-foreground-error-tertiary);
+  --form-field-control-group-border-color: transparent;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+.filled:where(.disabled) {
+  --form-field-control-color: var(--kbq-states-foreground-disabled);
+  --form-field-control-bg-color: var(--kbq-states-background-disabled);
+  --form-field-control-group-border-color: var(--kbq-states-line-disabled);
+}
+
+.transparent:where(.disabled) {
+  --form-field-control-color: var(--kbq-states-foreground-disabled);
+}

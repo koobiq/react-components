@@ -6,18 +6,13 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps } from '@koobiq/react-core';
 import { RadioGroup as RadioGroupPrimitive } from '@koobiq/react-primitives';
 
-import {
-  Field,
-  FieldCaption,
-  type FieldCaptionProps,
-  FieldError,
-  type FieldErrorProps,
-} from '../FieldComponents';
-import { FormControl, type FormControlProps } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 import { flex } from '../layout';
 
 import { RadioGroupContext } from './index';
@@ -89,8 +84,8 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
 
     const rootProps = mergeProps<
       [
-        FormControlProps<typeof RadioGroupPrimitive>,
-        FormControlProps<typeof RadioGroupPrimitive> | undefined,
+        FormFieldProps<typeof RadioGroupPrimitive>,
+        FormFieldProps<typeof RadioGroupPrimitive> | undefined,
       ]
     >(
       {
@@ -124,12 +119,12 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
 
     return (
       <RadioGroupContext.Provider value={{ size }}>
-        <FormControl as={RadioGroupPrimitive} {...rootProps}>
+        <FormField as={RadioGroupPrimitive} {...rootProps}>
           {({ isRequired }) => {
             const labelProps = mergeProps<
               [
-                FormControlLabelProps<'span'>,
-                FormControlLabelProps<'span'> | undefined,
+                FormFieldLabelProps<'span'>,
+                FormFieldLabelProps<'span'> | undefined,
               ]
             >(
               {
@@ -143,25 +138,25 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
             );
 
             const errorProps = mergeProps<
-              [FieldErrorProps, FieldErrorProps | undefined]
+              [FormFieldErrorProps, FormFieldErrorProps | undefined]
             >({ children: errorMessage }, slotProps?.errorMessage);
 
             const captionProps = mergeProps<
-              [FieldCaptionProps, FieldCaptionProps | undefined]
+              [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
             >({ children: caption }, slotProps?.caption);
 
             return (
               <>
-                <FormControlLabel {...labelProps} />
-                <Field>
+                <FormField.Label {...labelProps} />
+                <div className={s.body}>
                   <div {...radioGroupProps}>{children}</div>
-                  <FieldCaption {...captionProps} />
-                  <FieldError {...errorProps} />
-                </Field>
+                  <FormField.Caption {...captionProps} />
+                  <FormField.Error {...errorProps} />
+                </div>
               </>
             );
           }}
-        </FormControl>
+        </FormField>
       </RadioGroupContext.Provider>
     );
   }

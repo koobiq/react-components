@@ -6,7 +6,7 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps } from '@koobiq/react-core';
 import { TextField } from '@koobiq/react-primitives';
 
-import { FormControl, type FormControlProps } from '../FormControl';
+import { FormField, type FormFieldProps } from '../FormField';
 
 import { TextareaContextConsumer } from './components';
 import type { TextareaProps, TextareaRef } from './index';
@@ -75,8 +75,8 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
 
   const rootProps = mergeProps<
     [
-      FormControlProps<typeof TextField<HTMLTextAreaElement>>,
-      FormControlProps<typeof TextField<HTMLTextAreaElement>> | undefined,
+      FormFieldProps<typeof TextField<HTMLTextAreaElement>>,
+      FormFieldProps<typeof TextField<HTMLTextAreaElement>> | undefined,
     ]
   >(
     {
@@ -95,7 +95,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
   );
 
   return (
-    <FormControl as={TextField} inputElementType="textarea" {...rootProps}>
+    <FormField as={TextField} inputElementType="textarea" {...rootProps}>
       {(values) => (
         <TextareaContextConsumer
           {...values}
@@ -111,7 +111,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
           ref={ref}
         />
       )}
-    </FormControl>
+    </FormField>
   );
 });
 

@@ -10,24 +10,22 @@ import type { AriaTimeFieldProps, TimeValue } from '@koobiq/react-primitives';
 
 import type { DateInputPropVariant } from '../DateInput';
 import {
-  type FieldCaptionProps,
-  type FieldErrorProps,
-  type FieldInputDateProps,
-  type FieldContentGroupProps,
-} from '../FieldComponents';
-import {
-  type FormControlProps,
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  type FormFieldLabelProps,
+  type FormFieldCaptionProps,
+  type FormFieldErrorProps,
+  type FormFieldInputDateProps,
+  type FormFieldControlGroupProps,
+  type FormFieldProps,
+  type FormFieldPropLabelAlign,
+  formFieldPropLabelAlign,
+  type FormFieldPropLabelPlacement,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 
-export const timePickerPropLabelPlacement = formControlPropLabelPlacement;
-export type TimePickerPropLabelPlacement = FormControlPropLabelPlacement;
-export const timePickerPropLabelAlign = formControlPropLabelAlign;
-export type TimePickerPropLabelAlign = FormControlPropLabelAlign;
+export const timePickerPropLabelPlacement = formFieldPropLabelPlacement;
+export type TimePickerPropLabelPlacement = FormFieldPropLabelPlacement;
+export const timePickerPropLabelAlign = formFieldPropLabelAlign;
+export type TimePickerPropLabelAlign = FormFieldPropLabelAlign;
 
 export type TimePickerProps<T extends TimeValue> = {
   /** Inline styles. */
@@ -49,12 +47,12 @@ export type TimePickerProps<T extends TimeValue> = {
   fullWidth?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
-    root?: FormControlProps;
-    label?: FormControlLabelProps;
-    group?: FieldContentGroupProps;
-    caption?: FieldCaptionProps;
-    inputDate?: FieldInputDateProps;
-    errorMessage?: FieldErrorProps;
+    root?: FormFieldProps;
+    label?: FormFieldLabelProps;
+    group?: FormFieldControlGroupProps;
+    caption?: FormFieldCaptionProps;
+    inputDate?: FormFieldInputDateProps;
+    errorMessage?: FormFieldErrorProps;
   };
   /** Ref to the control */
   ref?: Ref<HTMLDivElement>;

@@ -16,23 +16,21 @@ import {
 
 import { DateSegment } from '../DateSegment';
 import {
-  FieldCaption,
-  FieldError,
-  FieldInputDate,
-  FieldContentGroup,
-  Field,
-} from '../FieldComponents';
-import type {
-  FieldCaptionProps,
-  FieldErrorProps,
-  FieldInputDateProps,
-  FieldContentGroupProps,
-} from '../FieldComponents';
-import { FormControl, type FormControlProps } from '../FormControl';
+  type FormFieldCaptionProps,
+  type FormFieldErrorProps,
+  type FormFieldInputDateProps,
+  type FormFieldControlGroupProps,
+  FormField,
+  type FormFieldProps,
+  FormFieldLabel,
+  type FormFieldLabelProps,
+} from '../FormField';
 import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+  FormFieldCaption,
+  FormFieldError,
+  FormFieldInputDate,
+  FormFieldControlGroup,
+} from '../FormField';
 
 import s from './TimePicker.module.css';
 import type {
@@ -91,9 +89,7 @@ export function TimePickerRender<T extends TimeValue>(
 
   const { isInvalid } = validation;
 
-  const rootProps = mergeProps<
-    [FormControlProps, FormControlProps | undefined]
-  >(
+  const rootProps = mergeProps<[FormFieldProps, FormFieldProps | undefined]>(
     {
       style,
       fullWidth,
@@ -111,7 +107,7 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   const groupProps = mergeProps<
-    [FieldContentGroupProps, FieldContentGroupProps | undefined]
+    [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
   >(
     {
       startAddon: (
@@ -129,7 +125,11 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   const controlProps = mergeProps<
-    [FieldInputDateProps, FieldInputDateProps | undefined, FieldInputDateProps]
+    [
+      FormFieldInputDateProps,
+      FormFieldInputDateProps | undefined,
+      FormFieldInputDateProps,
+    ]
   >(
     {
       variant,
@@ -142,11 +142,7 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   const labelProps = mergeProps<
-    [
-      FormControlLabelProps,
-      FormControlLabelProps,
-      FormControlLabelProps | undefined,
-    ]
+    [FormFieldLabelProps, FormFieldLabelProps, FormFieldLabelProps | undefined]
   >(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
@@ -154,11 +150,15 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   const captionProps = mergeProps<
-    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
+    [
+      FormFieldCaptionProps,
+      FormFieldCaptionProps | undefined,
+      FormFieldCaptionProps,
+    ]
   >({ children: caption }, slotProps?.caption, descriptionProps);
 
   const errorProps = mergeProps<
-    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
+    [FormFieldErrorProps, FormFieldErrorProps | undefined, FormFieldErrorProps]
   >(
     {
       children: errorMessage,
@@ -168,26 +168,26 @@ export function TimePickerRender<T extends TimeValue>(
   );
 
   return (
-    <FormControl {...rootProps}>
-      <FormControlLabel {...labelProps} />
-      <Field>
-        <FieldContentGroup
+    <FormField {...rootProps}>
+      <FormFieldLabel {...labelProps} />
+      <div className={s.body}>
+        <FormFieldControlGroup
           {...groupProps}
           slotProps={{ startAddon: { className: s.startAddon } }}
         >
-          <FieldInputDate {...controlProps}>
+          <FormFieldInputDate {...controlProps}>
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
             <input {...inputProps} />
-          </FieldInputDate>
-        </FieldContentGroup>
-        <FieldCaption {...captionProps} />
+          </FormFieldInputDate>
+        </FormFieldControlGroup>
+        <FormFieldCaption {...captionProps} />
         <FieldErrorContext.Provider value={validation}>
-          <FieldError {...errorProps} />
+          <FormFieldError {...errorProps} />
         </FieldErrorContext.Provider>
-      </Field>
-    </FormControl>
+      </div>
+    </FormField>
   );
 }
 

@@ -6,24 +6,18 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
 import { TextField } from '@koobiq/react-primitives';
 
-import {
-  FieldInput,
-  FieldCaption,
-  FieldContentGroup,
-  type FieldContentGroupProps,
-  type FieldCaptionProps,
-  type FieldInputProps,
-  Field,
-  FieldError,
-  type FieldErrorProps,
-} from '../FieldComponents';
-import { FormControl, type FormControlProps } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 
 import type { InputProps, InputRef } from './index';
+import s from './Input.module.css';
 
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
@@ -90,8 +84,8 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
   const rootProps = mergeProps<
     [
-      FormControlProps<typeof TextField<HTMLInputElement>>,
-      FormControlProps<typeof TextField<HTMLInputElement>> | undefined,
+      FormFieldProps<typeof TextField<HTMLInputElement>>,
+      FormFieldProps<typeof TextField<HTMLInputElement>> | undefined,
     ]
   >(
     {
@@ -111,17 +105,17 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   );
 
   return (
-    <FormControl as={TextField} inputElementType="input" {...rootProps}>
+    <FormField as={TextField} inputElementType="input" {...rootProps}>
       {({ isInvalid, isRequired, isDisabled }) => {
         const labelProps = mergeProps<
-          [FormControlLabelProps, FormControlLabelProps | undefined]
+          [FormFieldLabelProps, FormFieldLabelProps | undefined]
         >(
           { isHidden: isLabelHidden, isRequired, children: label },
           slotProps?.label
         );
 
         const inputProps = mergeProps<
-          [FieldInputProps, FieldInputProps | undefined]
+          [FormFieldInputProps, FormFieldInputProps | undefined]
         >(
           {
             variant,
@@ -133,7 +127,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
         );
 
         const groupProps = mergeProps<
-          [FieldContentGroupProps, FieldContentGroupProps | undefined]
+          [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
         >(
           {
             endAddon,
@@ -146,27 +140,27 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
         );
 
         const captionProps = mergeProps<
-          [FieldCaptionProps, FieldCaptionProps | undefined]
+          [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
         >({ children: caption }, slotProps?.caption);
 
         const errorProps = mergeProps<
-          [FieldErrorProps, FieldErrorProps | undefined]
+          [FormFieldErrorProps, FormFieldErrorProps | undefined]
         >({ children: errorMessage }, slotProps?.errorMessage);
 
         return (
           <>
-            <FormControlLabel {...labelProps} />
-            <Field>
-              <FieldContentGroup {...groupProps}>
-                <FieldInput {...inputProps} />
-              </FieldContentGroup>
-              <FieldCaption {...captionProps} />
-              <FieldError {...errorProps} />
-            </Field>
+            <FormField.Label {...labelProps} />
+            <div className={s.body}>
+              <FormField.ControlGroup {...groupProps}>
+                <FormField.Input {...inputProps} />
+              </FormField.ControlGroup>
+              <FormField.Caption {...captionProps} />
+              <FormField.Error {...errorProps} />
+            </div>
           </>
         );
       }}
-    </FormControl>
+    </FormField>
   );
 });
 

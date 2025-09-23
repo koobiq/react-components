@@ -6,25 +6,19 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
 import { NumberField } from '@koobiq/react-primitives';
 
-import {
-  FieldInput,
-  FieldCaption,
-  FieldContentGroup,
-  type FieldCaptionProps,
-  type FieldContentGroupProps,
-  type FieldInputProps,
-  FieldError,
-  type FieldErrorProps,
-  Field,
-} from '../FieldComponents';
-import { FormControl, type FormControlProps } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 
 import { InputNumberCounterControls } from './components';
 import type { InputNumberProps, InputNumberRef } from './index';
+import s from './InputNumber.module.css';
 
 export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
   (props, ref) => {
@@ -92,8 +86,8 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
     const rootProps = mergeProps<
       [
-        FormControlProps<typeof NumberField>,
-        FormControlProps<typeof NumberField> | undefined,
+        FormFieldProps<typeof NumberField>,
+        FormFieldProps<typeof NumberField> | undefined,
       ]
     >(
       {
@@ -113,17 +107,20 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
     );
 
     return (
-      <FormControl as={NumberField} {...rootProps}>
+      <FormField as={NumberField} {...rootProps}>
         {({ isInvalid, isRequired, isDisabled }) => {
           const labelProps = mergeProps<
-            [FormControlLabelProps, FormControlLabelProps | undefined]
+            [FormFieldLabelProps, FormFieldLabelProps | undefined]
           >(
             { isHidden: isLabelHidden, children: label, isRequired },
             slotProps?.label
           );
 
           const inputProps = mergeProps<
-            [FieldInputProps<'input'>, FieldInputProps<'input'> | undefined]
+            [
+              FormFieldInputProps<'input'>,
+              FormFieldInputProps<'input'> | undefined,
+            ]
           >(
             {
               variant,
@@ -134,16 +131,16 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
             slotProps?.input
           );
 
-          const captionProps: FieldCaptionProps | undefined = mergeProps<
-            [FieldCaptionProps, FieldCaptionProps | undefined]
+          const captionProps: FormFieldCaptionProps | undefined = mergeProps<
+            [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
           >({ children: caption }, slotProps?.caption);
 
           const errorProps = mergeProps<
-            [FieldErrorProps, FieldErrorProps | undefined]
+            [FormFieldErrorProps, FormFieldErrorProps | undefined]
           >({ children: errorMessage }, slotProps?.errorMessage);
 
           const groupProps = mergeProps<
-            [FieldContentGroupProps, FieldContentGroupProps | undefined]
+            [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
           >(
             {
               endAddon: (
@@ -162,18 +159,18 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
 
           return (
             <>
-              <FormControlLabel {...labelProps} />
-              <Field>
-                <FieldContentGroup {...groupProps}>
-                  <FieldInput {...inputProps} />
-                </FieldContentGroup>
-                <FieldCaption {...captionProps} />
-                <FieldError {...errorProps} />
-              </Field>
+              <FormField.Label {...labelProps} />
+              <div className={s.body}>
+                <FormField.ControlGroup {...groupProps}>
+                  <FormField.Input {...inputProps} />
+                </FormField.ControlGroup>
+                <FormField.Caption {...captionProps} />
+                <FormField.Error {...errorProps} />
+              </div>
             </>
           );
         }}
-      </FormControl>
+      </FormField>
     );
   }
 );

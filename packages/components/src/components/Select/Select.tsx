@@ -18,22 +18,14 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Item, Section, Divider } from '../Collections';
-import {
-  FieldError,
-  FieldSelect,
-  FieldCaption,
-  FieldContentGroup,
-  type FieldContentGroupProps,
-  type FieldCaptionProps,
-  type FieldErrorProps,
-  type FieldSelectProps,
-  Field,
-} from '../FieldComponents';
-import { FormControl } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+import type {
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldSelectProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 import { IconButton } from '../IconButton';
 import type { ListItemText } from '../List';
 import { List } from '../List';
@@ -137,11 +129,7 @@ function SelectRender<T extends object>(
   );
 
   const labelProps = mergeProps<
-    [
-      FormControlLabelProps,
-      FormControlLabelProps,
-      FormControlLabelProps | undefined,
-    ]
+    [FormFieldLabelProps, FormFieldLabelProps, FormFieldLabelProps | undefined]
   >(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropsAria,
@@ -160,7 +148,7 @@ function SelectRender<T extends object>(
   );
 
   const groupProps = mergeProps<
-    [FieldContentGroupProps, FieldContentGroupProps | undefined]
+    [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
   >(
     {
       slotProps: {
@@ -191,10 +179,10 @@ function SelectRender<T extends object>(
 
   const controlProps = mergeProps<
     [
-      FieldSelectProps,
-      FieldSelectProps | undefined,
-      FieldSelectProps,
-      FieldSelectProps,
+      FormFieldSelectProps,
+      FormFieldSelectProps | undefined,
+      FormFieldSelectProps,
+      FormFieldSelectProps,
     ]
   >(
     {
@@ -223,11 +211,15 @@ function SelectRender<T extends object>(
   );
 
   const captionProps = mergeProps<
-    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
+    [
+      FormFieldCaptionProps,
+      FormFieldCaptionProps | undefined,
+      FormFieldCaptionProps,
+    ]
   >({ children: caption }, slotProps?.caption, descriptionProps);
 
   const errorProps = mergeProps<
-    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
+    [FormFieldErrorProps, FormFieldErrorProps | undefined, FormFieldErrorProps]
   >({ children: errorMessage }, slotProps?.errorMessage, errorMessageProps);
 
   const renderDefaultValue: typeof renderValueProp = (state, states) => {
@@ -249,24 +241,24 @@ function SelectRender<T extends object>(
 
   return (
     <>
-      <FormControl {...rootProps}>
-        <FormControlLabel {...labelProps} />
-        <Field>
-          <FieldContentGroup {...groupProps}>
-            <FieldSelect {...controlProps}>
+      <FormField {...rootProps}>
+        <FormField.Label {...labelProps} />
+        <div className={s.body}>
+          <FormField.ControlGroup {...groupProps}>
+            <FormField.Select {...controlProps}>
               {renderValue(state, {
                 isInvalid,
                 isDisabled: props.isDisabled,
                 isRequired: props.isRequired,
               })}
-            </FieldSelect>
-          </FieldContentGroup>
-          <FieldCaption {...captionProps} />
+            </FormField.Select>
+          </FormField.ControlGroup>
+          <FormField.Caption {...captionProps} />
           <FieldErrorContext.Provider value={validation}>
-            <FieldError {...errorProps} />
+            <FormField.Error {...errorProps} />
           </FieldErrorContext.Provider>
-        </Field>
-      </FormControl>
+        </div>
+      </FormField>
       <PopoverInner {...popoverProps}>
         <SelectList {...listProps} />
       </PopoverInner>

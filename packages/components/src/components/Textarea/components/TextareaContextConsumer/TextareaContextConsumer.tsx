@@ -3,21 +3,14 @@ import { type ComponentRef, forwardRef } from 'react';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
 import { useTextareaContext } from '@koobiq/react-primitives';
 
-import {
-  FieldCaption,
-  type FieldCaptionProps,
-  FieldContentGroup,
-  FieldInput,
-  type FieldContentGroupProps,
-  type FieldInputProps,
-  Field,
-  FieldError,
-  type FieldErrorProps,
-} from '../../../FieldComponents';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../../../FormControlLabel';
+import type {
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+} from '../../../FormField';
+import { FormField } from '../../../FormField';
 import s from '../../Textarea.module.css';
 import type { TextareaProps } from '../../types';
 import { useTextareaAutosize } from '../../utils';
@@ -66,7 +59,10 @@ export const TextareaContextConsumer = forwardRef<
   useTextareaAutosize(domRef, value, expand === 'auto-size');
 
   const textareaProps = mergeProps<
-    [FieldInputProps<'textarea'>, FieldInputProps<'textarea'> | undefined]
+    [
+      FormFieldInputProps<'textarea'>,
+      FormFieldInputProps<'textarea'> | undefined,
+    ]
   >(
     {
       isInvalid,
@@ -82,34 +78,33 @@ export const TextareaContextConsumer = forwardRef<
   );
 
   const captionProps = mergeProps<
-    [FieldCaptionProps, FieldCaptionProps | undefined]
+    [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
   >({ children: caption }, slotProps?.caption);
 
-  const errorProps = mergeProps<[FieldErrorProps, FieldErrorProps | undefined]>(
-    { children: errorMessage },
-    slotProps?.errorMessage
-  );
+  const errorProps = mergeProps<
+    [FormFieldErrorProps, FormFieldErrorProps | undefined]
+  >({ children: errorMessage }, slotProps?.errorMessage);
 
-  const groupProps: FieldContentGroupProps = {
+  const groupProps: FormFieldControlGroupProps = {
     variant,
     isInvalid,
     isDisabled,
   };
 
   const labelProps = mergeProps<
-    [FormControlLabelProps, FormControlLabelProps | undefined]
+    [FormFieldLabelProps, FormFieldLabelProps | undefined]
   >({ isHidden: isLabelHidden, children: label, isRequired }, slotProps?.label);
 
   return (
     <>
-      <FormControlLabel {...labelProps} />
-      <Field>
-        <FieldContentGroup {...groupProps}>
-          <FieldInput as="textarea" {...textareaProps} />
-        </FieldContentGroup>
-        <FieldCaption {...captionProps} />
-        <FieldError {...errorProps} />
-      </Field>
+      <FormField.Label {...labelProps} />
+      <div className={s.body}>
+        <FormField.ControlGroup {...groupProps}>
+          <FormField.Input as="textarea" {...textareaProps} />
+        </FormField.ControlGroup>
+        <FormField.Caption {...captionProps} />
+        <FormField.Error {...errorProps} />
+      </div>
     </>
   );
 });

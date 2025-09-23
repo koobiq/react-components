@@ -5,7 +5,7 @@
   display: grid;
 
   & > [data-slot='form-control'] {
-    width: 100%;
+    inline-size: 100%;
   }
 
   & > [data-slot='form-control']:not(:last-child) {

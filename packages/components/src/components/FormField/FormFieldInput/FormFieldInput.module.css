@@ -1,0 +1,42 @@
+@import url('../../../styles/mixins.css');
+
+.base {
+  border: none;
+  outline: none;
+  inline-size: 100%;
+  box-sizing: border-box;
+  border-radius: inherit;
+  color: var(--form-field-control-color);
+  background: var(--form-field-control-bg-color);
+  padding-block: var(--form-field-control-padding-block-start)
+    var(--form-field-control-padding-block-end);
+  padding-inline: var(--form-field-control-padding-inline-start)
+    var(--form-field-control-padding-inline-end);
+  transition:
+    color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default);
+
+  @mixin typography text-normal;
+
+  &:-webkit-autofill {
+    box-shadow: 0 0 0 1000px var(--kbq-background-theme-fade) inset !important;
+    background-color: transparent !important;
+  }
+
+  &::placeholder {
+    color: var(--form-field-control-placeholder-color);
+  }
+}
+
+.base:where(input) {
+  block-size: var(--form-field-control-size-height);
+}
+
+.base:where(textarea) {
+  min-block-size: var(--form-field-control-size-height);
+  resize: none;
+}
+
+.disabled {
+  cursor: not-allowed;
+}

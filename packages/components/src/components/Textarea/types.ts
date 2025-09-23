@@ -3,33 +3,33 @@ import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { TextFieldProps } from '@koobiq/react-primitives';
 
+import type {
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldPropLabelPlacement,
+  FormFieldControlGroupPropVariant,
+} from '../FormField';
 import {
-  type FieldCaptionProps,
-  type FieldContentGroupPropVariant,
-  fieldContentGroupPropVariant,
-  type FieldErrorProps,
-  type FieldInputProps,
-} from '../FieldComponents';
-import {
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  formFieldControlGroupPropVariant,
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 
-export const textareaPropVariant = fieldContentGroupPropVariant;
+export const textareaPropVariant = formFieldControlGroupPropVariant;
 
-export type TextareaPropVariant = FieldContentGroupPropVariant;
+export type TextareaPropVariant = FormFieldControlGroupPropVariant;
 
 export const textareaPropExpand = ['auto-size', 'vertical-resize'] as const;
 export type TextareaPropExpand = (typeof textareaPropExpand)[number];
 
-export const textareaPropLabelPlacement = formControlPropLabelPlacement;
-export type TextareaPropLabelPlacement = FormControlPropLabelPlacement;
+export const textareaPropLabelPlacement = formFieldPropLabelPlacement;
+export type TextareaPropLabelPlacement = FormFieldPropLabelPlacement;
 
-export const textareaPropLabelAlign = formControlPropLabelAlign;
-export type TextareaPropLabelAlign = FormControlPropLabelAlign;
+export const textareaPropLabelAlign = formFieldPropLabelAlign;
+export type TextareaPropLabelAlign = FormFieldPropLabelAlign;
 
 type TextareaDeprecatedProps = {
   /**
@@ -110,10 +110,10 @@ export type TextareaProps = ExtendableProps<
     'data-testid'?: string | number;
     /** The props used for each slot inside. */
     slotProps?: {
-      label?: FormControlLabelProps;
-      caption?: FieldCaptionProps;
-      textarea?: FieldInputProps<'textarea'>;
-      errorMessage?: FieldErrorProps;
+      label?: FormFieldLabelProps;
+      caption?: FormFieldCaptionProps;
+      textarea?: FormFieldInputProps<'textarea'>;
+      errorMessage?: FormFieldErrorProps;
     };
   },
   TextareaDeprecatedProps &

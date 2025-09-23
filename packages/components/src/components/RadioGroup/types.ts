@@ -9,15 +9,18 @@ import type {
   RadioGroupProps as RadioGroupPrimitiveProps,
 } from '@koobiq/react-primitives';
 
-import type { FieldCaptionProps, FieldErrorProps } from '../FieldComponents';
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldPropLabelPlacement,
+} from '../FormField';
 import {
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-  type FormControlProps,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 
 export const radioGroupPropSize = ['normal', 'big'] as const;
 
@@ -28,10 +31,10 @@ export const radioGroupPropOrientation = ['horizontal', 'vertical'] as const;
 export type RadioGroupPropOrientation =
   (typeof radioGroupPropOrientation)[number];
 
-export const radioGroupPropLabelPlacement = formControlPropLabelPlacement;
-export type RadioGroupPropLabelPlacement = FormControlPropLabelPlacement;
-export const radioGroupPropLabelAlign = formControlPropLabelAlign;
-export type RadioGroupPropLabelAlign = FormControlPropLabelAlign;
+export const radioGroupPropLabelPlacement = formFieldPropLabelPlacement;
+export type RadioGroupPropLabelPlacement = FormFieldPropLabelPlacement;
+export const radioGroupPropLabelAlign = formFieldPropLabelAlign;
+export type RadioGroupPropLabelAlign = FormFieldPropLabelAlign;
 
 type RadioGroupDeprecatedProps = {
   /**
@@ -104,10 +107,10 @@ export type RadioGroupBaseProps = ExtendableProps<
     labelAlign?: RadioGroupPropLabelAlign;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FormControlProps<typeof RadioGroupPrimitive>;
-      caption?: FieldCaptionProps;
-      errorMessage?: FieldErrorProps;
-      label?: FormControlLabelProps<'span'>;
+      root?: FormFieldProps<typeof RadioGroupPrimitive>;
+      caption?: FormFieldCaptionProps;
+      errorMessage?: FormFieldErrorProps;
+      label?: FormFieldLabelProps<'span'>;
       radioGroup?: ComponentPropsWithRef<'div'>;
     };
   } & RadioGroupDeprecatedProps,

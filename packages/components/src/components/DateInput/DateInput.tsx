@@ -16,24 +16,15 @@ import {
 import type { DateValue } from '@koobiq/react-primitives';
 
 import { DateSegment } from '../DateSegment';
-import {
-  FieldCaption,
-  FieldError,
-  FieldInputDate,
-  FieldContentGroup,
-  Field,
-} from '../FieldComponents';
 import type {
-  FieldCaptionProps,
-  FieldErrorProps,
-  FieldInputDateProps,
-  FieldContentGroupProps,
-} from '../FieldComponents';
-import { FormControl, type FormControlProps } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldInputDateProps,
+  FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 
 import s from './DateInput.module.css';
 import type { DateInputRef, DateInputProps, DateInputComponent } from './types';
@@ -93,9 +84,7 @@ export function DateInputRender<T extends DateValue>(
 
   const { isInvalid } = validation;
 
-  const rootProps = mergeProps<
-    [FormControlProps, FormControlProps | undefined]
-  >(
+  const rootProps = mergeProps<[FormFieldProps, FormFieldProps | undefined]>(
     {
       style,
       fullWidth,
@@ -113,11 +102,7 @@ export function DateInputRender<T extends DateValue>(
   );
 
   const labelProps = mergeProps<
-    [
-      FormControlLabelProps,
-      FormControlLabelProps,
-      FormControlLabelProps | undefined,
-    ]
+    [FormFieldLabelProps, FormFieldLabelProps, FormFieldLabelProps | undefined]
   >(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
@@ -125,7 +110,7 @@ export function DateInputRender<T extends DateValue>(
   );
 
   const groupProps = mergeProps<
-    [FieldContentGroupProps, FieldContentGroupProps | undefined]
+    [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
   >(
     {
       endAddon,
@@ -138,11 +123,15 @@ export function DateInputRender<T extends DateValue>(
   );
 
   const captionProps = mergeProps<
-    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
+    [
+      FormFieldCaptionProps,
+      FormFieldCaptionProps | undefined,
+      FormFieldCaptionProps,
+    ]
   >({ children: caption }, slotProps?.caption, descriptionProps);
 
   const errorProps = mergeProps<
-    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
+    [FormFieldErrorProps, FormFieldErrorProps | undefined, FormFieldErrorProps]
   >(
     {
       children: errorMessage,
@@ -152,7 +141,11 @@ export function DateInputRender<T extends DateValue>(
   );
 
   const controlProps = mergeProps<
-    [FieldInputDateProps, FieldInputDateProps | undefined, FieldInputDateProps]
+    [
+      FormFieldInputDateProps,
+      FormFieldInputDateProps | undefined,
+      FormFieldInputDateProps,
+    ]
   >(
     {
       variant,
@@ -165,23 +158,23 @@ export function DateInputRender<T extends DateValue>(
   );
 
   return (
-    <FormControl {...rootProps}>
-      <FormControlLabel {...labelProps} />
-      <Field>
-        <FieldContentGroup {...groupProps}>
-          <FieldInputDate {...controlProps}>
+    <FormField {...rootProps}>
+      <FormField.Label {...labelProps} />
+      <div className={s.body}>
+        <FormField.ControlGroup {...groupProps}>
+          <FormField.InputDate {...controlProps}>
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
             <input {...inputProps} />
-          </FieldInputDate>
-        </FieldContentGroup>
-        <FieldCaption {...captionProps} />
+          </FormField.InputDate>
+        </FormField.ControlGroup>
+        <FormField.Caption {...captionProps} />
         <FieldErrorContext.Provider value={validation}>
-          <FieldError {...errorProps} />
+          <FormField.Error {...errorProps} />
         </FieldErrorContext.Provider>
-      </Field>
-    </FormControl>
+      </div>
+    </FormField>
   );
 }
 

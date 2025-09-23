@@ -4,9 +4,9 @@ import type { FormProps as FormPropsPrimitive } from '@koobiq/react-primitives';
 
 import type { ResponsiveValue } from '../../utils';
 import type {
-  FormControlPropLabelAlign,
-  FormControlPropLabelPlacement,
-} from '../FormControl';
+  FormFieldPropLabelAlign,
+  FormFieldPropLabelPlacement,
+} from '../FormField';
 
 export const formPropLabelInlineSize = [
   '80',
@@ -33,16 +33,16 @@ export type FormProps = {
    * @default 'top'
    */
   labelPlacement?:
-    | FormControlPropLabelPlacement
-    | ResponsiveValue<FormControlPropLabelPlacement>;
+    | FormFieldPropLabelPlacement
+    | ResponsiveValue<FormFieldPropLabelPlacement>;
   /**
    * The label's horizontal alignment relative to the element it is labeling.
    * Responsive values allowed.
    * @default 'start'
    */
   labelAlign?:
-    | FormControlPropLabelAlign
-    | ResponsiveValue<FormControlPropLabelAlign>;
+    | FormFieldPropLabelAlign
+    | ResponsiveValue<FormFieldPropLabelAlign>;
   /**
    * Size of the label column when `labelPlacement="side"`.
    * Ignored for `"top"`.

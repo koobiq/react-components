@@ -3,31 +3,31 @@ import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { NumberField, NumberFieldProps } from '@koobiq/react-primitives';
 
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldControlGroupProps,
+  FormFieldPropLabelPlacement,
+  FormFieldControlGroupPropVariant,
+} from '../FormField';
 import {
-  type FieldCaptionProps,
-  type FieldErrorProps,
-  type FieldContentGroupProps,
-  type FieldInputProps,
-  fieldContentGroupPropVariant,
-  type FieldContentGroupPropVariant,
-} from '../FieldComponents';
-import {
-  type FormControlProps,
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  formFieldControlGroupPropVariant,
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 
-export const inputNumberPropVariant = fieldContentGroupPropVariant;
+export const inputNumberPropVariant = formFieldControlGroupPropVariant;
 
-export type InputNumberPropVariant = FieldContentGroupPropVariant;
+export type InputNumberPropVariant = FormFieldControlGroupPropVariant;
 
-export const inputNumberPropLabelPlacement = formControlPropLabelPlacement;
-export type InputNumberPropLabelPlacement = FormControlPropLabelPlacement;
-export const inputNumberPropLabelAlign = formControlPropLabelAlign;
-export type InputNumberPropLabelAlign = FormControlPropLabelAlign;
+export const inputNumberPropLabelPlacement = formFieldPropLabelPlacement;
+export type InputNumberPropLabelPlacement = FormFieldPropLabelPlacement;
+export const inputNumberPropLabelAlign = formFieldPropLabelAlign;
+export type InputNumberPropLabelAlign = FormFieldPropLabelAlign;
 
 type InputNumberDeprecatedProps = {
   /**
@@ -101,12 +101,12 @@ export type InputNumberProps = ExtendableProps<
     'data-testid'?: string | number;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FormControlProps<typeof NumberField>;
-      label?: FormControlLabelProps;
-      input?: FieldInputProps;
-      caption?: FieldCaptionProps;
-      group?: FieldContentGroupProps;
-      errorMessage?: FieldErrorProps;
+      root?: FormFieldProps<typeof NumberField>;
+      label?: FormFieldLabelProps;
+      input?: FormFieldInputProps;
+      caption?: FormFieldCaptionProps;
+      group?: FormFieldControlGroupProps;
+      errorMessage?: FormFieldErrorProps;
     };
   } & InputNumberDeprecatedProps,
   Omit<
