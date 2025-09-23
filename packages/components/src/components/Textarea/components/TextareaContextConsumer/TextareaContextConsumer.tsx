@@ -86,7 +86,7 @@ export const TextareaContextConsumer = forwardRef<
   >({ children: caption }, slotProps?.caption);
 
   const errorProps = mergeProps<[FieldErrorProps, FieldErrorProps | undefined]>(
-    { children: errorMessage, className: s.error },
+    { children: errorMessage },
     slotProps?.errorMessage
   );
 
