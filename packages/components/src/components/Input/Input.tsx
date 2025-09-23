@@ -24,7 +24,6 @@ import {
 } from '../FormControlLabel';
 
 import type { InputProps, InputRef } from './index';
-import s from './Input.module.css';
 
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
@@ -152,10 +151,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
         const errorProps = mergeProps<
           [FieldErrorProps, FieldErrorProps | undefined]
-        >(
-          { children: errorMessage, className: s.error },
-          slotProps?.errorMessage
-        );
+        >({ children: errorMessage }, slotProps?.errorMessage);
 
         return (
           <>
