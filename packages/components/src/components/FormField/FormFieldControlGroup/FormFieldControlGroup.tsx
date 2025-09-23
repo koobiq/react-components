@@ -47,11 +47,11 @@ export const FormFieldControlGroup = forwardRef<
       className={clsx(
         s.base,
         s[variant],
+        isFocused && s.focused,
         isInvalid && s.invalid,
         isDisabled && s.disabled,
-        isFocused && s.focused,
-        hasStartAddon && s.hasStartAddon,
         hasEndAddon && s.hasEndAddon,
+        hasStartAddon && s.hasStartAddon,
         className
       )}
       isInvalid={isInvalid}
@@ -70,21 +70,11 @@ export const FormFieldControlGroup = forwardRef<
             isFocusWithin,
           }}
         >
-          <FormFieldAddon
-            placement="start"
-            isInvalid={isInvalid}
-            isDisabled={isDisabled}
-            {...slotProps?.startAddon}
-          >
+          <FormFieldAddon placement="start" {...slotProps?.startAddon}>
             {startAddon}
           </FormFieldAddon>
           {focusManagedChildren}
-          <FormFieldAddon
-            placement="end"
-            isInvalid={isInvalid}
-            isDisabled={isDisabled}
-            {...slotProps?.endAddon}
-          >
+          <FormFieldAddon placement="end" {...slotProps?.endAddon}>
             {endAddon}
           </FormFieldAddon>
         </FormFieldControlGroupContext.Provider>
