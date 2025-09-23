@@ -148,9 +148,6 @@ export function DateInputRender<T extends DateValue>(
     ]
   >(
     {
-      variant,
-      isInvalid,
-      isDisabled,
       ref: domRef,
     },
     slotProps?.inputDate,

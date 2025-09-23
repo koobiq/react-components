@@ -65,12 +65,9 @@ export const TextareaContextConsumer = forwardRef<
     ]
   >(
     {
-      isInvalid,
       rows,
       cols,
-      variant,
       value,
-      isDisabled,
       ...(expand && { className: s[expand] }),
       ref: domRef,
     },

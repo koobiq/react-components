@@ -71,7 +71,5 @@
 
 /* clear-button */
 .clearable {
-  --form-field-control-padding-inline-end: calc(
-    var(--field-control-end-addon-inline-size) + 28px
-  );
+  --form-field-control-padding-inline-end: calc(12px + 28px);
 }

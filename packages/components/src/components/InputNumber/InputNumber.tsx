@@ -123,9 +123,6 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
             ]
           >(
             {
-              variant,
-              isInvalid,
-              isDisabled,
               ref: inputRef,
             },
             slotProps?.input

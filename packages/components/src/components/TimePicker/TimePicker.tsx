@@ -132,9 +132,6 @@ export function TimePickerRender<T extends TimeValue>(
     ]
   >(
     {
-      variant,
-      isInvalid,
-      isDisabled,
       ref: domRef,
     },
     slotProps?.inputDate,

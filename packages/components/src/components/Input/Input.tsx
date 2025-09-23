@@ -118,9 +118,6 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           [FormFieldInputProps, FormFieldInputProps | undefined]
         >(
           {
-            variant,
-            isInvalid,
-            isDisabled,
             ref: inputRef,
           },
           slotProps?.input

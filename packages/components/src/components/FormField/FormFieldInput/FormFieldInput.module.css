@@ -37,6 +37,6 @@
   resize: none;
 }
 
-.disabled {
+.base:disabled {
   cursor: not-allowed;
 }

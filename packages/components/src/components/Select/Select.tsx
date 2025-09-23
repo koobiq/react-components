@@ -188,8 +188,6 @@ function SelectRender<T extends object>(
     {
       ref: domRef,
       placeholder,
-      isInvalid,
-      isDisabled,
     },
     slotProps?.control,
     valueProps,

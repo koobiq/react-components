@@ -21,6 +21,6 @@
   @mixin typography text-normal;
 }
 
-.disabled {
+.base[aria-disabled='true'] {
   cursor: not-allowed;
 }

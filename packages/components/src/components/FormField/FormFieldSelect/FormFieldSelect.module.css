@@ -34,7 +34,7 @@
   @mixin ellipsis;
 }
 
-.disabled {
+.base[aria-disabled='true'] {
   cursor: not-allowed;
 }
 
