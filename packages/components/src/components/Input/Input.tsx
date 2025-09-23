@@ -83,10 +83,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
   const rootProps = mergeProps<
-    [
-      FormFieldProps<typeof TextField<HTMLInputElement>>,
-      FormFieldProps<typeof TextField<HTMLInputElement>> | undefined,
-    ]
+    (FormFieldProps<typeof TextField<HTMLInputElement>> | undefined)[]
   >(
     {
       label,
@@ -107,24 +104,18 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   return (
     <FormField as={TextField} inputElementType="input" {...rootProps}>
       {({ isInvalid, isRequired, isDisabled }) => {
-        const labelProps = mergeProps<
-          [FormFieldLabelProps, FormFieldLabelProps | undefined]
-        >(
+        const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
           { isHidden: isLabelHidden, isRequired, children: label },
           slotProps?.label
         );
 
-        const inputProps = mergeProps<
-          [FormFieldInputProps, FormFieldInputProps | undefined]
-        >(
-          {
-            ref: inputRef,
-          },
+        const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
+          { ref: inputRef },
           slotProps?.input
         );
 
         const groupProps = mergeProps<
-          [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
+          (FormFieldControlGroupProps | undefined)[]
         >(
           {
             endAddon,
@@ -136,13 +127,15 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           slotProps?.group
         );
 
-        const captionProps = mergeProps<
-          [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
-        >({ children: caption }, slotProps?.caption);
+        const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+          { children: caption },
+          slotProps?.caption
+        );
 
-        const errorProps = mergeProps<
-          [FormFieldErrorProps, FormFieldErrorProps | undefined]
-        >({ children: errorMessage }, slotProps?.errorMessage);
+        const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+          { children: errorMessage },
+          slotProps?.errorMessage
+        );
 
         return (
           <>

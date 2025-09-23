@@ -83,10 +83,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
     }
 
     const rootProps = mergeProps<
-      [
-        FormFieldProps<typeof RadioGroupPrimitive>,
-        FormFieldProps<typeof RadioGroupPrimitive> | undefined,
-      ]
+      (FormFieldProps<typeof RadioGroupPrimitive> | undefined)[]
     >(
       {
         style,
@@ -122,10 +119,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         <FormField as={RadioGroupPrimitive} {...rootProps}>
           {({ isRequired }) => {
             const labelProps = mergeProps<
-              [
-                FormFieldLabelProps<'span'>,
-                FormFieldLabelProps<'span'> | undefined,
-              ]
+              (FormFieldLabelProps<'span'> | undefined)[]
             >(
               {
                 as: 'span',
@@ -137,12 +131,13 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
               slotProps?.label
             );
 
-            const errorProps = mergeProps<
-              [FormFieldErrorProps, FormFieldErrorProps | undefined]
-            >({ children: errorMessage }, slotProps?.errorMessage);
+            const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+              { children: errorMessage },
+              slotProps?.errorMessage
+            );
 
             const captionProps = mergeProps<
-              [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
+              (FormFieldCaptionProps | undefined)[]
             >({ children: caption }, slotProps?.caption);
 
             return (

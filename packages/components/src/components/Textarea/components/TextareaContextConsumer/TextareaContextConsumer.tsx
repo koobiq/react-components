@@ -59,10 +59,7 @@ export const TextareaContextConsumer = forwardRef<
   useTextareaAutosize(domRef, value, expand === 'auto-size');
 
   const textareaProps = mergeProps<
-    [
-      FormFieldInputProps<'textarea'>,
-      FormFieldInputProps<'textarea'> | undefined,
-    ]
+    (FormFieldInputProps<'textarea'> | undefined)[]
   >(
     {
       rows,
@@ -74,13 +71,15 @@ export const TextareaContextConsumer = forwardRef<
     slotProps?.textarea
   );
 
-  const captionProps = mergeProps<
-    [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
-  >({ children: caption }, slotProps?.caption);
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    slotProps?.caption
+  );
 
-  const errorProps = mergeProps<
-    [FormFieldErrorProps, FormFieldErrorProps | undefined]
-  >({ children: errorMessage }, slotProps?.errorMessage);
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    slotProps?.errorMessage
+  );
 
   const groupProps: FormFieldControlGroupProps = {
     variant,
@@ -88,9 +87,10 @@ export const TextareaContextConsumer = forwardRef<
     isDisabled,
   };
 
-  const labelProps = mergeProps<
-    [FormFieldLabelProps, FormFieldLabelProps | undefined]
-  >({ isHidden: isLabelHidden, children: label, isRequired }, slotProps?.label);
+  const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
+    { isHidden: isLabelHidden, children: label, isRequired },
+    slotProps?.label
+  );
 
   return (
     <>

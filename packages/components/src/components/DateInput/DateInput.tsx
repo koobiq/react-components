@@ -81,10 +81,9 @@ export function DateInputRender<T extends DateValue>(
   );
 
   const { isRequired, isDisabled } = state;
-
   const { isInvalid } = validation;
 
-  const rootProps = mergeProps<[FormFieldProps, FormFieldProps | undefined]>(
+  const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
     {
       style,
       fullWidth,
@@ -101,17 +100,13 @@ export function DateInputRender<T extends DateValue>(
     slotProps?.root
   );
 
-  const labelProps = mergeProps<
-    [FormFieldLabelProps, FormFieldLabelProps, FormFieldLabelProps | undefined]
-  >(
+  const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
     slotProps?.label
   );
 
-  const groupProps = mergeProps<
-    [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
-  >(
+  const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       endAddon,
       isInvalid,
@@ -122,36 +117,22 @@ export function DateInputRender<T extends DateValue>(
     slotProps?.group
   );
 
-  const captionProps = mergeProps<
-    [
-      FormFieldCaptionProps,
-      FormFieldCaptionProps | undefined,
-      FormFieldCaptionProps,
-    ]
-  >({ children: caption }, slotProps?.caption, descriptionProps);
-
-  const errorProps = mergeProps<
-    [FormFieldErrorProps, FormFieldErrorProps | undefined, FormFieldErrorProps]
-  >(
-    {
-      children: errorMessage,
-    },
-    slotProps?.errorMessage,
-    errorMessageProps
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    descriptionProps,
+    slotProps?.caption
   );
 
-  const controlProps = mergeProps<
-    [
-      FormFieldInputDateProps,
-      FormFieldInputDateProps | undefined,
-      FormFieldInputDateProps,
-    ]
-  >(
-    {
-      ref: domRef,
-    },
-    slotProps?.inputDate,
-    fieldProps
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    errorMessageProps,
+    slotProps?.errorMessage
+  );
+
+  const controlProps = mergeProps<(FormFieldInputDateProps | undefined)[]>(
+    { ref: domRef },
+    fieldProps,
+    slotProps?.inputDate
   );
 
   return (

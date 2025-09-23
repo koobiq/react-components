@@ -75,7 +75,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
 
     const { isInvalid } = validation;
 
-    const rootProps = mergeProps<[FormFieldProps, FormFieldProps | undefined]>(
+    const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
       {
         style,
         labelPlacement,
@@ -92,36 +92,22 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       slotProps?.root
     );
 
-    const labelProps = mergeProps<
-      [
-        FormFieldLabelProps,
-        FormFieldLabelProps | undefined,
-        FormFieldLabelProps,
-      ]
-    >(
+    const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
       { isHidden: isLabelHidden, isRequired, children: label },
-      slotProps?.label,
-      labelPropsAria
+      labelPropsAria,
+      slotProps?.label
     );
 
-    const inputProps = mergeProps<
-      [
-        FormFieldInputProps,
-        FormFieldInputProps | undefined,
-        FormFieldInputProps,
-      ]
-    >(
+    const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
       {
         ref: domRef,
         className: s.input,
       },
-      slotProps?.input,
-      inputPropsAria
+      inputPropsAria,
+      slotProps?.input
     );
 
-    const groupProps = mergeProps<
-      [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
-    >(
+    const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
       {
         slotProps: { startAddon: { className: s.startAddon } },
         startAddon,
@@ -150,24 +136,16 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       slotProps?.group
     );
 
-    const captionProps = mergeProps<
-      [
-        FormFieldCaptionProps,
-        FormFieldCaptionProps | undefined,
-        FormFieldCaptionProps,
-      ]
-    >({ children: caption }, slotProps?.caption, descriptionPropsAria);
+    const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+      { children: caption },
+      descriptionPropsAria,
+      slotProps?.caption
+    );
 
-    const errorProps = mergeProps<
-      [
-        FormFieldErrorProps,
-        FormFieldErrorProps | undefined,
-        FormFieldErrorProps,
-      ]
-    >(
+    const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
       { children: errorMessage },
-      slotProps?.errorMessage,
-      errorMessagePropsAria
+      errorMessagePropsAria,
+      slotProps?.errorMessage
     );
 
     return (

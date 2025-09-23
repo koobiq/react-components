@@ -128,9 +128,7 @@ function SelectRender<T extends object>(
     slotProps?.list
   );
 
-  const labelProps = mergeProps<
-    [FormFieldLabelProps, FormFieldLabelProps, FormFieldLabelProps | undefined]
-  >(
+  const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropsAria,
     slotProps?.label
@@ -147,9 +145,7 @@ function SelectRender<T extends object>(
     slotProps?.clearButton
   );
 
-  const groupProps = mergeProps<
-    [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
-  >(
+  const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       slotProps: {
         endAddon: { className: s.addon },
@@ -177,21 +173,14 @@ function SelectRender<T extends object>(
     slotProps?.group
   );
 
-  const controlProps = mergeProps<
-    [
-      FormFieldSelectProps,
-      FormFieldSelectProps | undefined,
-      FormFieldSelectProps,
-      FormFieldSelectProps,
-    ]
-  >(
+  const controlProps = mergeProps<(FormFieldSelectProps | undefined)[]>(
     {
       ref: domRef,
       placeholder,
     },
-    slotProps?.control,
     valueProps,
-    triggerProps
+    triggerProps,
+    slotProps?.control
   );
 
   const popoverProps = mergeProps(
@@ -208,17 +197,17 @@ function SelectRender<T extends object>(
     slotProps?.popover
   );
 
-  const captionProps = mergeProps<
-    [
-      FormFieldCaptionProps,
-      FormFieldCaptionProps | undefined,
-      FormFieldCaptionProps,
-    ]
-  >({ children: caption }, slotProps?.caption, descriptionProps);
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    descriptionProps,
+    slotProps?.caption
+  );
 
-  const errorProps = mergeProps<
-    [FormFieldErrorProps, FormFieldErrorProps | undefined, FormFieldErrorProps]
-  >({ children: errorMessage }, slotProps?.errorMessage, errorMessageProps);
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    errorMessageProps,
+    slotProps?.errorMessage
+  );
 
   const renderDefaultValue: typeof renderValueProp = (state, states) => {
     if (!state.selectedItems?.length) return null;

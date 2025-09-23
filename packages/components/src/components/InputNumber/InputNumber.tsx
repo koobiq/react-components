@@ -85,10 +85,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
     }
 
     const rootProps = mergeProps<
-      [
-        FormFieldProps<typeof NumberField>,
-        FormFieldProps<typeof NumberField> | undefined,
-      ]
+      (FormFieldProps<typeof NumberField> | undefined)[]
     >(
       {
         label,
@@ -109,35 +106,27 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
     return (
       <FormField as={NumberField} {...rootProps}>
         {({ isInvalid, isRequired, isDisabled }) => {
-          const labelProps = mergeProps<
-            [FormFieldLabelProps, FormFieldLabelProps | undefined]
-          >(
+          const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
             { isHidden: isLabelHidden, children: label, isRequired },
             slotProps?.label
           );
 
-          const inputProps = mergeProps<
-            [
-              FormFieldInputProps<'input'>,
-              FormFieldInputProps<'input'> | undefined,
-            ]
-          >(
-            {
-              ref: inputRef,
-            },
+          const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
+            { ref: inputRef },
             slotProps?.input
           );
 
           const captionProps: FormFieldCaptionProps | undefined = mergeProps<
-            [FormFieldCaptionProps, FormFieldCaptionProps | undefined]
+            (FormFieldCaptionProps | undefined)[]
           >({ children: caption }, slotProps?.caption);
 
-          const errorProps = mergeProps<
-            [FormFieldErrorProps, FormFieldErrorProps | undefined]
-          >({ children: errorMessage }, slotProps?.errorMessage);
+          const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+            { children: errorMessage },
+            slotProps?.errorMessage
+          );
 
           const groupProps = mergeProps<
-            [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
+            (FormFieldControlGroupProps | undefined)[]
           >(
             {
               endAddon: (

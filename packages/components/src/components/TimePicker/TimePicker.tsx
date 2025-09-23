@@ -9,28 +9,21 @@ import {
   useSlottedContext,
 } from '@koobiq/react-primitives';
 import {
-  useTimeFieldState,
   useTimeField,
+  useTimeFieldState,
   removeDataAttributes,
 } from '@koobiq/react-primitives';
 
 import { DateSegment } from '../DateSegment';
 import {
-  type FormFieldCaptionProps,
+  type FormFieldProps,
   type FormFieldErrorProps,
+  type FormFieldLabelProps,
+  type FormFieldCaptionProps,
   type FormFieldInputDateProps,
   type FormFieldControlGroupProps,
-  FormField,
-  type FormFieldProps,
-  FormFieldLabel,
-  type FormFieldLabelProps,
 } from '../FormField';
-import {
-  FormFieldCaption,
-  FormFieldError,
-  FormFieldInputDate,
-  FormFieldControlGroup,
-} from '../FormField';
+import { FormField } from '../FormField';
 
 import s from './TimePicker.module.css';
 import type {
@@ -89,7 +82,7 @@ export function TimePickerRender<T extends TimeValue>(
 
   const { isInvalid } = validation;
 
-  const rootProps = mergeProps<[FormFieldProps, FormFieldProps | undefined]>(
+  const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
     {
       style,
       fullWidth,
@@ -106,9 +99,7 @@ export function TimePickerRender<T extends TimeValue>(
     slotProps?.root
   );
 
-  const groupProps = mergeProps<
-    [FormFieldControlGroupProps, FormFieldControlGroupProps | undefined]
-  >(
+  const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       startAddon: (
         <>
@@ -124,64 +115,48 @@ export function TimePickerRender<T extends TimeValue>(
     slotProps?.group
   );
 
-  const controlProps = mergeProps<
-    [
-      FormFieldInputDateProps,
-      FormFieldInputDateProps | undefined,
-      FormFieldInputDateProps,
-    ]
-  >(
-    {
-      ref: domRef,
-    },
-    slotProps?.inputDate,
-    fieldProps
+  const controlProps = mergeProps<(FormFieldInputDateProps | undefined)[]>(
+    { ref: domRef },
+    fieldProps,
+    slotProps?.inputDate
   );
 
-  const labelProps = mergeProps<
-    [FormFieldLabelProps, FormFieldLabelProps, FormFieldLabelProps | undefined]
-  >(
+  const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
     slotProps?.label
   );
 
-  const captionProps = mergeProps<
-    [
-      FormFieldCaptionProps,
-      FormFieldCaptionProps | undefined,
-      FormFieldCaptionProps,
-    ]
-  >({ children: caption }, slotProps?.caption, descriptionProps);
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    descriptionProps,
+    slotProps?.caption
+  );
 
-  const errorProps = mergeProps<
-    [FormFieldErrorProps, FormFieldErrorProps | undefined, FormFieldErrorProps]
-  >(
-    {
-      children: errorMessage,
-    },
-    slotProps?.errorMessage,
-    errorMessageProps
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    errorMessageProps,
+    slotProps?.errorMessage
   );
 
   return (
     <FormField {...rootProps}>
-      <FormFieldLabel {...labelProps} />
+      <FormField.Label {...labelProps} />
       <div className={s.body}>
-        <FormFieldControlGroup
+        <FormField.ControlGroup
           {...groupProps}
           slotProps={{ startAddon: { className: s.startAddon } }}
         >
-          <FormFieldInputDate {...controlProps}>
+          <FormField.InputDate {...controlProps}>
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
             <input {...inputProps} />
-          </FormFieldInputDate>
-        </FormFieldControlGroup>
-        <FormFieldCaption {...captionProps} />
+          </FormField.InputDate>
+        </FormField.ControlGroup>
+        <FormField.Caption {...captionProps} />
         <FieldErrorContext.Provider value={validation}>
-          <FormFieldError {...errorProps} />
+          <FormField.Error {...errorProps} />
         </FieldErrorContext.Provider>
       </div>
     </FormField>

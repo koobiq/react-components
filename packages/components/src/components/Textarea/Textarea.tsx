@@ -74,10 +74,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
   }
 
   const rootProps = mergeProps<
-    [
-      FormFieldProps<typeof TextField<HTMLTextAreaElement>>,
-      FormFieldProps<typeof TextField<HTMLTextAreaElement>> | undefined,
-    ]
+    (FormFieldProps<typeof TextField<HTMLTextAreaElement>> | undefined)[]
   >(
     {
       label,
