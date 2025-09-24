@@ -17,6 +17,7 @@
   display: flex;
   inline-size: 100%;
   position: relative;
+  @mixin typography text-normal;
   border-radius: var(--form-field-control-group-border-radius);
 
   /* border */
