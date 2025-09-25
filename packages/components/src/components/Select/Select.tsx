@@ -1,7 +1,6 @@
 import { forwardRef, type Ref, useCallback } from 'react';
 
 import {
-  clsx,
   useDOMRef,
   mergeProps,
   useElementSize,
@@ -151,8 +150,13 @@ function SelectRender<T extends object>(
         endAddon: { className: s.addon },
         startAddon: { className: s.addon },
       },
-      className: clsx(isClearable && s.clearable),
       startAddon,
+      onMouseDown: (e) => {
+        if (e.currentTarget !== e.target) return;
+        e.preventDefault();
+        domRef?.current?.focus();
+        state.open();
+      },
       endAddon: (
         <>
           {endAddon}
@@ -189,7 +193,7 @@ function SelectRender<T extends object>(
       offset: 4,
       size: width,
       hideArrow: true,
-      anchorRef: domRef,
+      anchorRef: containerRef,
       className: s.popover,
       placement: 'bottom start',
       type: 'listbox',

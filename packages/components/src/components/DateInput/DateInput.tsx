@@ -113,6 +113,11 @@ export function DateInputRender<T extends DateValue>(
       isDisabled,
       startAddon,
       variant,
+      onMouseDown: (e) => {
+        if (e.currentTarget !== e.target) return;
+        e.preventDefault();
+        labelPropReactAria?.onClick?.(e);
+      },
     },
     slotProps?.group
   );

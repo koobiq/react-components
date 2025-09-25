@@ -7,11 +7,10 @@
   box-sizing: border-box;
   border-radius: inherit;
   color: var(--form-field-control-color);
-  background: var(--form-field-control-bg-color);
+  background-color: transparent;
   padding-block: var(--form-field-control-padding-block-start)
     var(--form-field-control-padding-block-end);
-  padding-inline: var(--form-field-control-padding-inline-start)
-    var(--form-field-control-padding-inline-end);
+  padding-inline: 0;
   transition:
     color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
@@ -34,6 +33,8 @@
 
 .base:where(textarea) {
   min-block-size: var(--form-field-control-size-height);
+  padding-inline: var(--form-field-control-padding-inline-start)
+    var(--form-field-control-padding-inline-end);
   resize: none;
 }
 

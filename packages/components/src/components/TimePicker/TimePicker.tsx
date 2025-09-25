@@ -107,6 +107,11 @@ export function TimePickerRender<T extends TimeValue>(
           <IconClock16 className={s.clock} />
         </>
       ),
+      onMouseDown: (e) => {
+        if (e.currentTarget !== e.target) return;
+        e.preventDefault();
+        labelPropReactAria?.onClick?.(e);
+      },
       variant,
       isInvalid,
       isDisabled,

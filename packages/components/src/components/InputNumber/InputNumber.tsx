@@ -135,6 +135,11 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
                   <InputNumberCounterControls />
                 </>
               ),
+              onMouseDown: (e) => {
+                if (e.currentTarget !== e.target) return;
+                e.preventDefault();
+                inputRef?.current?.focus();
+              },
               isInvalid,
               variant,
               startAddon,

@@ -50,7 +50,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     } = props;
 
     const state = useSearchFieldState(removeDataAttributes(props));
-    const domRef = useDOMRef(ref);
+    const inputRef = useDOMRef(ref);
 
     const { validationBehavior: formValidationBehavior } =
       useSlottedContext(FormContext) || {};
@@ -70,7 +70,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     } = useSearchField(
       { ...removeDataAttributes(props), validationBehavior },
       state,
-      domRef
+      inputRef
     );
 
     const { isInvalid } = validation;
@@ -100,7 +100,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
 
     const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
       {
-        ref: domRef,
+        ref: inputRef,
         className: s.input,
       },
       inputPropsAria,
@@ -129,6 +129,11 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
             {endAddon}
           </>
         ),
+        onMouseDown: (e) => {
+          if (e.currentTarget !== e.target) return;
+          e.preventDefault();
+          inputRef?.current?.focus();
+        },
         variant,
         isInvalid,
         isDisabled,
