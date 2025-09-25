@@ -102,14 +102,13 @@
 
 .disabled {
   cursor: not-allowed;
+  --form-field-control-placeholder-color: var(
+    --kbq-foreground-contrast-tertiary
+  );
+  --form-field-control-color: var(--kbq-states-foreground-disabled);
 }
 
 .filled:where(.disabled) {
-  --form-field-control-color: var(--kbq-states-foreground-disabled);
   --form-field-control-bg-color: var(--kbq-states-background-disabled);
   --form-field-control-group-border-color: var(--kbq-states-line-disabled);
-}
-
-.transparent:where(.disabled) {
-  --form-field-control-color: var(--kbq-states-foreground-disabled);
 }
