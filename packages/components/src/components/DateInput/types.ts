@@ -8,31 +8,31 @@ import type {
 
 import type { AriaDateFieldProps, DateValue } from '@koobiq/react-primitives';
 
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldInputDateProps,
+  FormFieldControlGroupProps,
+  FormFieldPropLabelPlacement,
+  FormFieldControlGroupPropVariant,
+} from '../FormField';
 import {
-  type FieldCaptionProps,
-  type FieldErrorProps,
-  type FieldInputDateProps,
-  type FieldContentGroupProps,
-  fieldContentGroupPropVariant,
-  type FieldContentGroupPropVariant,
-} from '../FieldComponents';
-import {
-  type FormControlProps,
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  formFieldControlGroupPropVariant,
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 
-export const dateInputPropVariant = fieldContentGroupPropVariant;
+export const dateInputPropVariant = formFieldControlGroupPropVariant;
 
-export type DateInputPropVariant = FieldContentGroupPropVariant;
+export type DateInputPropVariant = FormFieldControlGroupPropVariant;
 
-export const dateInputPropLabelPlacement = formControlPropLabelPlacement;
-export type DateInputPropLabelPlacement = FormControlPropLabelPlacement;
-export const dateInputPropLabelAlign = formControlPropLabelAlign;
-export type DateInputPropLabelAlign = FormControlPropLabelAlign;
+export const dateInputPropLabelPlacement = formFieldPropLabelPlacement;
+export type DateInputPropLabelPlacement = FormFieldPropLabelPlacement;
+export const dateInputPropLabelAlign = formFieldPropLabelAlign;
+export type DateInputPropLabelAlign = FormFieldPropLabelAlign;
 
 export type DateInputProps<T extends DateValue> = {
   /** Inline styles. */
@@ -54,12 +54,12 @@ export type DateInputProps<T extends DateValue> = {
   fullWidth?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
-    root?: FormControlProps;
-    label?: FormControlLabelProps;
-    group?: FieldContentGroupProps;
-    caption?: FieldCaptionProps;
-    inputDate?: FieldInputDateProps;
-    errorMessage?: FieldErrorProps;
+    root?: FormFieldProps;
+    label?: FormFieldLabelProps;
+    group?: FormFieldControlGroupProps;
+    caption?: FormFieldCaptionProps;
+    inputDate?: FormFieldInputDateProps;
+    errorMessage?: FormFieldErrorProps;
   };
   /** Ref to the control */
   ref?: Ref<HTMLDivElement>;

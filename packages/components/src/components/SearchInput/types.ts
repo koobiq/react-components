@@ -3,31 +3,31 @@ import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 import type { DataAttributeProps, ExtendableProps } from '@koobiq/react-core';
 import type { AriaSearchFieldProps } from '@koobiq/react-primitives';
 
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldControlGroupProps,
+  FormFieldPropLabelPlacement,
+  FormFieldControlGroupPropVariant,
+} from '../FormField';
 import {
-  type FieldCaptionProps,
-  type FieldErrorProps,
-  type FieldInputProps,
-  type FieldContentGroupProps,
-  type FieldContentGroupPropVariant,
-} from '../FieldComponents';
-import { fieldContentGroupPropVariant } from '../FieldComponents';
-import {
-  type FormControlProps,
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  formFieldControlGroupPropVariant,
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 import type { IconButtonProps } from '../IconButton';
 
-export const searchInputPropVariant = fieldContentGroupPropVariant;
-export type SearchInputPropVariant = FieldContentGroupPropVariant;
+export const searchInputPropVariant = formFieldControlGroupPropVariant;
+export type SearchInputPropVariant = FormFieldControlGroupPropVariant;
 
-export const searchInputPropLabelPlacement = formControlPropLabelPlacement;
-export type SearchInputPropLabelPlacement = FormControlPropLabelPlacement;
-export const searchInputPropLabelAlign = formControlPropLabelAlign;
-export type SearchInputPropLabelAlign = FormControlPropLabelAlign;
+export const searchInputPropLabelPlacement = formFieldPropLabelPlacement;
+export type SearchInputPropLabelPlacement = FormFieldPropLabelPlacement;
+export const searchInputPropLabelAlign = formFieldPropLabelAlign;
+export type SearchInputPropLabelAlign = FormFieldPropLabelAlign;
 
 export type SearchInputProps = ExtendableProps<
   {
@@ -55,12 +55,12 @@ export type SearchInputProps = ExtendableProps<
     endAddon?: ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FormControlProps;
-      label?: FormControlLabelProps;
-      group?: FieldContentGroupProps;
-      input?: FieldInputProps;
-      caption?: FieldCaptionProps;
-      errorMessage?: FieldErrorProps;
+      root?: FormFieldProps;
+      label?: FormFieldLabelProps;
+      group?: FormFieldControlGroupProps;
+      input?: FormFieldInputProps;
+      caption?: FormFieldCaptionProps;
+      errorMessage?: FormFieldErrorProps;
       clearButton?: IconButtonProps;
     };
     /** The helper text content. */

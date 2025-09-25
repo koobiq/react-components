@@ -19,6 +19,20 @@
   }
 }
 
+.body {
+  inline-size: 100%;
+}
+
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}
+
 /* list */
 .list {
   inline-size: 100%;
@@ -57,7 +71,5 @@
 
 /* clear-button */
 .clearable {
-  --field-input-padding-inline-end: calc(
-    var(--field-control-end-addon-inline-size) + 28px
-  );
+  --form-field-control-padding-inline-end: calc(12px + 28px);
 }

@@ -9,30 +9,21 @@ import {
   useSlottedContext,
 } from '@koobiq/react-primitives';
 import {
-  useTimeFieldState,
   useTimeField,
+  useTimeFieldState,
   removeDataAttributes,
 } from '@koobiq/react-primitives';
 
 import { DateSegment } from '../DateSegment';
 import {
-  FieldCaption,
-  FieldError,
-  FieldInputDate,
-  FieldContentGroup,
-  Field,
-} from '../FieldComponents';
-import type {
-  FieldCaptionProps,
-  FieldErrorProps,
-  FieldInputDateProps,
-  FieldContentGroupProps,
-} from '../FieldComponents';
-import { FormControl, type FormControlProps } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+  type FormFieldProps,
+  type FormFieldErrorProps,
+  type FormFieldLabelProps,
+  type FormFieldCaptionProps,
+  type FormFieldInputDateProps,
+  type FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 
 import s from './TimePicker.module.css';
 import type {
@@ -91,9 +82,7 @@ export function TimePickerRender<T extends TimeValue>(
 
   const { isInvalid } = validation;
 
-  const rootProps = mergeProps<
-    [FormControlProps, FormControlProps | undefined]
-  >(
+  const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
     {
       style,
       fullWidth,
@@ -110,9 +99,7 @@ export function TimePickerRender<T extends TimeValue>(
     slotProps?.root
   );
 
-  const groupProps = mergeProps<
-    [FieldContentGroupProps, FieldContentGroupProps | undefined]
-  >(
+  const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       startAddon: (
         <>
@@ -128,66 +115,51 @@ export function TimePickerRender<T extends TimeValue>(
     slotProps?.group
   );
 
-  const controlProps = mergeProps<
-    [FieldInputDateProps, FieldInputDateProps | undefined, FieldInputDateProps]
-  >(
-    {
-      variant,
-      isInvalid,
-      isDisabled,
-      ref: domRef,
-    },
-    slotProps?.inputDate,
-    fieldProps
+  const controlProps = mergeProps<(FormFieldInputDateProps | undefined)[]>(
+    { ref: domRef },
+    fieldProps,
+    slotProps?.inputDate
   );
 
-  const labelProps = mergeProps<
-    [
-      FormControlLabelProps,
-      FormControlLabelProps,
-      FormControlLabelProps | undefined,
-    ]
-  >(
+  const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropReactAria,
     slotProps?.label
   );
 
-  const captionProps = mergeProps<
-    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
-  >({ children: caption }, slotProps?.caption, descriptionProps);
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    descriptionProps,
+    slotProps?.caption
+  );
 
-  const errorProps = mergeProps<
-    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
-  >(
-    {
-      children: errorMessage,
-    },
-    slotProps?.errorMessage,
-    errorMessageProps
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    errorMessageProps,
+    slotProps?.errorMessage
   );
 
   return (
-    <FormControl {...rootProps}>
-      <FormControlLabel {...labelProps} />
-      <Field>
-        <FieldContentGroup
+    <FormField {...rootProps}>
+      <FormField.Label {...labelProps} />
+      <div className={s.body}>
+        <FormField.ControlGroup
           {...groupProps}
           slotProps={{ startAddon: { className: s.startAddon } }}
         >
-          <FieldInputDate {...controlProps}>
+          <FormField.InputDate {...controlProps}>
             {state.segments.map((segment, i) => (
               <DateSegment key={i} segment={segment} state={state} />
             ))}
             <input {...inputProps} />
-          </FieldInputDate>
-        </FieldContentGroup>
-        <FieldCaption {...captionProps} />
+          </FormField.InputDate>
+        </FormField.ControlGroup>
+        <FormField.Caption {...captionProps} />
         <FieldErrorContext.Provider value={validation}>
-          <FieldError {...errorProps} />
+          <FormField.Error {...errorProps} />
         </FieldErrorContext.Provider>
-      </Field>
-    </FormControl>
+      </div>
+    </FormField>
   );
 }
 

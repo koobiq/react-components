@@ -1,13 +1,13 @@
 import { clsx } from '@koobiq/react-core';
 import { IconChevronDownS16, IconChevronUpS16 } from '@koobiq/react-icons';
 
-import { useFieldContentGroup } from '../../FieldComponents';
+import { useFormFieldControlGroup } from '../../FormField';
 import { IconButton } from '../../IconButton';
 
 import s from './InputNumberCounterControls.module.css';
 
 export const InputNumberCounterControls = () => {
-  const { isInvalid } = useFieldContentGroup();
+  const { isInvalid } = useFormFieldControlGroup();
 
   const variant = isInvalid ? 'error' : 'fade-contrast';
 

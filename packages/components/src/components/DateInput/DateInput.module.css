@@ -1,3 +1,17 @@
 .base {
   min-inline-size: 150px;
 }
+
+.body {
+  inline-size: 100%;
+}
+
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}

@@ -13,22 +13,15 @@ import {
   FormContext,
 } from '@koobiq/react-primitives';
 
-import {
-  FieldCaption,
-  type FieldCaptionProps,
-  FieldContentGroup,
-  type FieldContentGroupProps,
-  FieldInput,
-  type FieldInputProps,
-  type FieldErrorProps,
-  FieldError,
-  Field,
-} from '../FieldComponents';
-import { FormControl, type FormControlProps } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 import { IconButton } from '../IconButton';
 
 import s from './SearchInput.module.css';
@@ -82,9 +75,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
 
     const { isInvalid } = validation;
 
-    const rootProps = mergeProps<
-      [FormControlProps, FormControlProps | undefined]
-    >(
+    const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
       {
         style,
         labelPlacement,
@@ -101,35 +92,22 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       slotProps?.root
     );
 
-    const labelProps = mergeProps<
-      [
-        FormControlLabelProps,
-        FormControlLabelProps | undefined,
-        FormControlLabelProps,
-      ]
-    >(
+    const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
       { isHidden: isLabelHidden, isRequired, children: label },
-      slotProps?.label,
-      labelPropsAria
+      labelPropsAria,
+      slotProps?.label
     );
 
-    const inputProps = mergeProps<
-      [FieldInputProps, FieldInputProps | undefined, FieldInputProps]
-    >(
+    const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
       {
-        variant,
-        isInvalid,
-        isDisabled,
         ref: domRef,
         className: s.input,
       },
-      slotProps?.input,
-      inputPropsAria
+      inputPropsAria,
+      slotProps?.input
     );
 
-    const groupProps = mergeProps<
-      [FieldContentGroupProps, FieldContentGroupProps | undefined]
-    >(
+    const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
       {
         slotProps: { startAddon: { className: s.startAddon } },
         startAddon,
@@ -158,31 +136,31 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       slotProps?.group
     );
 
-    const captionProps = mergeProps<
-      [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
-    >({ children: caption }, slotProps?.caption, descriptionPropsAria);
+    const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+      { children: caption },
+      descriptionPropsAria,
+      slotProps?.caption
+    );
 
-    const errorProps = mergeProps<
-      [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
-    >(
+    const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
       { children: errorMessage },
-      slotProps?.errorMessage,
-      errorMessagePropsAria
+      errorMessagePropsAria,
+      slotProps?.errorMessage
     );
 
     return (
-      <FormControl {...rootProps}>
-        <FormControlLabel {...labelProps}>{label}</FormControlLabel>
-        <Field>
-          <FieldContentGroup {...groupProps}>
-            <FieldInput {...inputProps} />
-          </FieldContentGroup>
-          <FieldCaption {...captionProps} />
+      <FormField {...rootProps}>
+        <FormField.Label {...labelProps}>{label}</FormField.Label>
+        <div className={s.body}>
+          <FormField.ControlGroup {...groupProps}>
+            <FormField.Input {...inputProps} />
+          </FormField.ControlGroup>
+          <FormField.Caption {...captionProps} />
           <FieldErrorContext.Provider value={validation}>
-            <FieldError {...errorProps} />
+            <FormField.Error {...errorProps} />
           </FieldErrorContext.Provider>
-        </Field>
-      </FormControl>
+        </div>
+      </FormField>
     );
   }
 );

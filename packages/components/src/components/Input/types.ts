@@ -3,29 +3,29 @@ import type { ComponentRef, CSSProperties, ReactNode } from 'react';
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { TextField, TextFieldProps } from '@koobiq/react-primitives';
 
+import type {
+  FormFieldProps,
+  FormFieldLabelProps,
+  FormFieldInputProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldControlGroupProps,
+  FormFieldPropLabelPlacement,
+  FormFieldControlGroupPropVariant,
+} from '../FormField';
 import {
-  type FieldCaptionProps,
-  type FieldErrorProps,
-  type FieldInputProps,
-  type FieldContentGroupProps,
-  type FieldContentGroupPropVariant,
-  fieldContentGroupPropVariant,
-} from '../FieldComponents';
-import {
-  type FormControlProps,
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  formFieldControlGroupPropVariant,
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 
-export const inputPropVariant = fieldContentGroupPropVariant;
-export const inputPropLabelPlacement = formControlPropLabelPlacement;
-export type InputPropVariant = FieldContentGroupPropVariant;
-export type InputPropLabelPlacement = FormControlPropLabelPlacement;
-export const inputPropLabelAlign = formControlPropLabelAlign;
-export type InputPropLabelAlign = FormControlPropLabelAlign;
+export const inputPropVariant = formFieldControlGroupPropVariant;
+export const inputPropLabelPlacement = formFieldPropLabelPlacement;
+export type InputPropVariant = FormFieldControlGroupPropVariant;
+export type InputPropLabelPlacement = FormFieldPropLabelPlacement;
+export const inputPropLabelAlign = formFieldPropLabelAlign;
+export type InputPropLabelAlign = FormFieldPropLabelAlign;
 
 type InputDeprecatedProps = {
   /**
@@ -99,12 +99,12 @@ export type InputProps = ExtendableProps<
     'data-testid'?: string | number;
     /** The props used for each slot inside. */
     slotProps?: {
-      root?: FormControlProps<typeof TextField<HTMLInputElement>>;
-      label?: FormControlLabelProps;
-      caption?: FieldCaptionProps;
-      group?: FieldContentGroupProps;
-      errorMessage?: FieldErrorProps;
-      input?: FieldInputProps;
+      root?: FormFieldProps<typeof TextField<HTMLInputElement>>;
+      label?: FormFieldLabelProps;
+      caption?: FormFieldCaptionProps;
+      group?: FormFieldControlGroupProps;
+      errorMessage?: FormFieldErrorProps;
+      input?: FormFieldInputProps;
     };
   } & InputDeprecatedProps,
   Omit<

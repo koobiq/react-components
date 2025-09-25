@@ -14,8 +14,7 @@ import { Button } from '../Button';
 import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
-import { FormControl } from '../FormControl';
-import { FormControlLabel } from '../FormControlLabel';
+import { FormField } from '../FormField';
 import { IconButton } from '../IconButton';
 import { InputNumber } from '../InputNumber';
 import { Radio, RadioGroup } from '../RadioGroup';
@@ -353,13 +352,13 @@ export const CreateForm: Story = {
           <Radio value="linux">Linux</Radio>
           <Radio value="other">Other</Radio>
         </RadioGroup>
-        <FormControl>
-          <FormControlLabel as="span">Inputs</FormControlLabel>
+        <FormField>
+          <FormField.Label as="span">Inputs</FormField.Label>
           <FlexBox gap="m" style={{ inlineSize: '100%' }}>
             <Input aria-label="first" placeholder="Input 1" />
             <Input aria-label="second" placeholder="Input 2" />
           </FlexBox>
-        </FormControl>
+        </FormField>
       </Form>
     );
   },

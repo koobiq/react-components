@@ -18,22 +18,14 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Item, Section, Divider } from '../Collections';
-import {
-  FieldError,
-  FieldSelect,
-  FieldCaption,
-  FieldContentGroup,
-  type FieldContentGroupProps,
-  type FieldCaptionProps,
-  type FieldErrorProps,
-  type FieldSelectProps,
-  Field,
-} from '../FieldComponents';
-import { FormControl } from '../FormControl';
-import {
-  FormControlLabel,
-  type FormControlLabelProps,
-} from '../FormControlLabel';
+import type {
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldSelectProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 import { IconButton } from '../IconButton';
 import type { ListItemText } from '../List';
 import { List } from '../List';
@@ -136,13 +128,7 @@ function SelectRender<T extends object>(
     slotProps?.list
   );
 
-  const labelProps = mergeProps<
-    [
-      FormControlLabelProps,
-      FormControlLabelProps,
-      FormControlLabelProps | undefined,
-    ]
-  >(
+  const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
     { isHidden: isLabelHidden, children: label, isRequired },
     labelPropsAria,
     slotProps?.label
@@ -159,9 +145,7 @@ function SelectRender<T extends object>(
     slotProps?.clearButton
   );
 
-  const groupProps = mergeProps<
-    [FieldContentGroupProps, FieldContentGroupProps | undefined]
-  >(
+  const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       slotProps: {
         endAddon: { className: s.addon },
@@ -189,23 +173,14 @@ function SelectRender<T extends object>(
     slotProps?.group
   );
 
-  const controlProps = mergeProps<
-    [
-      FieldSelectProps,
-      FieldSelectProps | undefined,
-      FieldSelectProps,
-      FieldSelectProps,
-    ]
-  >(
+  const controlProps = mergeProps<(FormFieldSelectProps | undefined)[]>(
     {
       ref: domRef,
       placeholder,
-      isInvalid,
-      isDisabled,
     },
-    slotProps?.control,
     valueProps,
-    triggerProps
+    triggerProps,
+    slotProps?.control
   );
 
   const popoverProps = mergeProps(
@@ -222,13 +197,17 @@ function SelectRender<T extends object>(
     slotProps?.popover
   );
 
-  const captionProps = mergeProps<
-    [FieldCaptionProps, FieldCaptionProps | undefined, FieldCaptionProps]
-  >({ children: caption }, slotProps?.caption, descriptionProps);
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    descriptionProps,
+    slotProps?.caption
+  );
 
-  const errorProps = mergeProps<
-    [FieldErrorProps, FieldErrorProps | undefined, FieldErrorProps]
-  >({ children: errorMessage }, slotProps?.errorMessage, errorMessageProps);
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    errorMessageProps,
+    slotProps?.errorMessage
+  );
 
   const renderDefaultValue: typeof renderValueProp = (state, states) => {
     if (!state.selectedItems?.length) return null;
@@ -249,24 +228,24 @@ function SelectRender<T extends object>(
 
   return (
     <>
-      <FormControl {...rootProps}>
-        <FormControlLabel {...labelProps} />
-        <Field>
-          <FieldContentGroup {...groupProps}>
-            <FieldSelect {...controlProps}>
+      <FormField {...rootProps}>
+        <FormField.Label {...labelProps} />
+        <div className={s.body}>
+          <FormField.ControlGroup {...groupProps}>
+            <FormField.Select {...controlProps}>
               {renderValue(state, {
                 isInvalid,
                 isDisabled: props.isDisabled,
                 isRequired: props.isRequired,
               })}
-            </FieldSelect>
-          </FieldContentGroup>
-          <FieldCaption {...captionProps} />
+            </FormField.Select>
+          </FormField.ControlGroup>
+          <FormField.Caption {...captionProps} />
           <FieldErrorContext.Provider value={validation}>
-            <FieldError {...errorProps} />
+            <FormField.Error {...errorProps} />
           </FieldErrorContext.Provider>
-        </Field>
-      </FormControl>
+        </div>
+      </FormField>
       <PopoverInner {...popoverProps}>
         <SelectList {...listProps} />
       </PopoverInner>

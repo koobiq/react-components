@@ -13,19 +13,19 @@ import type {
   useMultiSelectState,
 } from '@koobiq/react-primitives';
 
+import type {
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldSelectProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldControlGroupProps,
+  FormFieldPropLabelPlacement,
+} from '../FormField';
 import {
-  type FieldErrorProps,
-  type FieldSelectProps,
-  type FieldCaptionProps,
-  type FieldContentGroupProps,
-} from '../FieldComponents';
-import {
-  type FormControlPropLabelAlign,
-  formControlPropLabelAlign,
-  type FormControlPropLabelPlacement,
-  formControlPropLabelPlacement,
-} from '../FormControl';
-import type { FormControlLabelProps } from '../FormControlLabel';
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
 
@@ -39,11 +39,11 @@ export const selectPropSelectedTagsOverflow = [
 export type SelectPropSelectedTagsOverflow =
   (typeof selectPropSelectedTagsOverflow)[number];
 
-export const selectPropLabelPlacement = formControlPropLabelPlacement;
-export type SelectPropLabelPlacement = FormControlPropLabelPlacement;
+export const selectPropLabelPlacement = formFieldPropLabelPlacement;
+export type SelectPropLabelPlacement = FormFieldPropLabelPlacement;
 
-export const selectPropLabelAlign = formControlPropLabelAlign;
-export type SelectPropLabelAlign = FormControlPropLabelAlign;
+export const selectPropLabelAlign = formFieldPropLabelAlign;
+export type SelectPropLabelAlign = FormFieldPropLabelAlign;
 
 export type SelectProps<T> = ExtendableProps<
   {
@@ -124,12 +124,12 @@ export type SelectProps<T> = ExtendableProps<
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;
-      label?: FormControlLabelProps;
+      label?: FormFieldLabelProps;
       list?: Omit<SelectListProps<object>, 'state'>;
-      control?: FieldSelectProps;
-      caption?: FieldCaptionProps;
-      group?: FieldContentGroupProps;
-      errorMessage?: FieldErrorProps;
+      control?: FormFieldSelectProps;
+      caption?: FormFieldCaptionProps;
+      group?: FormFieldControlGroupProps;
+      errorMessage?: FormFieldErrorProps;
       clearButton?: IconButtonProps;
     };
   },
