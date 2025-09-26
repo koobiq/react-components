@@ -1,6 +1,6 @@
 'use client';
 
-import type { RefObject } from 'react';
+import { type RefObject, useMemo } from 'react';
 import { useLayoutEffect, useState } from 'react';
 
 import { useMutableRef } from '../useMutableRef';
@@ -20,21 +20,27 @@ export const useResizeObserverRefs = <
     calculateDimensionsRef.current
   );
 
+  const resizeObserver = useMemo(
+    () =>
+      typeof window !== 'undefined' && typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(() => {
+            setDimensions(calculateDimensionsRef.current);
+          })
+        : null,
+    []
+  );
+
   useLayoutEffect(() => {
     setDimensions(calculateDimensionsRef.current);
   }, [refs]);
 
   useLayoutEffect(() => {
-    const resizeObserver = new ResizeObserver(() => {
-      setDimensions(calculateDimensionsRef.current);
-    });
-
     for (const ref of refs) {
-      if (ref.current) resizeObserver.observe(ref.current);
+      if (ref.current) resizeObserver?.observe(ref.current);
     }
 
     return () => {
-      resizeObserver.disconnect();
+      resizeObserver?.disconnect();
     };
   }, [refs]);
 
