@@ -7,7 +7,6 @@
   align-items: center;
   box-sizing: border-box;
   block-size: var(--form-field-control-size-height);
-  border-radius: inherit;
   color: var(--form-field-control-color);
   background: transparent;
   padding-block: var(--form-field-control-padding-block-start)

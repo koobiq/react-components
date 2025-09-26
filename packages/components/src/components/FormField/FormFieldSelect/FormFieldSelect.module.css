@@ -7,7 +7,6 @@
   display: flex;
   inline-size: 100%;
   box-sizing: border-box;
-  border-radius: inherit;
   flex-direction: column;
   color: var(--form-field-control-color);
   background: transparent;
