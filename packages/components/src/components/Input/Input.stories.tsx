@@ -210,14 +210,15 @@ export const Addons: Story = {
   render: function Render(args) {
     return (
       <Input
-        label="startAddon + endAddon"
-        startAddon={<span>https://</span>}
+        aria-label="addons"
+        caption="startAddon + endAddon"
+        startAddon={<Typography>https://</Typography>}
         endAddon={<IconGlobe16 />}
         slotProps={{
           group: {
             slotProps: {
               startAddon: {
-                style: { marginInlineEnd: 4, pointerEvents: 'none' },
+                style: { marginInlineEnd: 0, pointerEvents: 'none' },
               },
             },
           },
