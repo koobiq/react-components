@@ -62,8 +62,8 @@ const DialogComponent = forwardRef<DialogRef, DialogProps>(
     const { ref: bodyRef, height } = useElementSize();
 
     useEffect(() => {
-      if (bodyRef.current) updateOverflow(bodyRef.current);
-    }, [bodyRef.current, height]);
+      updateOverflow(bodyRef.current);
+    }, [height]);
 
     useEventListener({
       element: bodyRef,
