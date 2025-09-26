@@ -18,11 +18,11 @@ type BadgeConfig = {
 const badges = {
   'status:updated': {
     label: 'Updated',
-    variant: 'outline-fade-theme',
+    variant: 'outline-fade-success',
   },
   'status:new': {
     label: 'New',
-    variant: 'outline-fade-success',
+    variant: 'outline-fade-theme',
   },
   'status:deprecated': {
     label: 'Deprecated',
