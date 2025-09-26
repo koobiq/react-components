@@ -224,7 +224,6 @@ export const Addons: Story = {
           },
         }}
         placeholder="yourwebsite.com"
-        fullWidth
         {...args}
       />
     );
