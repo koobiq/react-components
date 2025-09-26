@@ -91,7 +91,7 @@ export const Base: Story = {
           errorMessage="Password is required"
           isRequired
         />
-        <div data-slot="form-control">
+        <div data-slot="form-field">
           <Button type="submit" isLoading={isLoading}>
             Submit
           </Button>

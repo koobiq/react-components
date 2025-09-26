@@ -43,7 +43,7 @@ export const FormFieldComponent = polymorphicForwardRef<
         s[labelPlacement],
         fullWidth && s.fullWidth
       )}
-      data-slot="form-control"
+      data-slot="form-field"
       data-label-align={labelAlign}
       data-label-placement={labelPlacement}
       data-fullwidth={fullWidth || undefined}

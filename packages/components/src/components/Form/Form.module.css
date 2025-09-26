@@ -4,11 +4,11 @@
   --template-columns: max-content 1fr;
   display: grid;
 
-  & > [data-slot='form-control'] {
+  & > [data-slot='form-field'] {
     inline-size: 100%;
   }
 
-  & > [data-slot='form-control']:not(:last-child) {
+  & > [data-slot='form-field']:not(:last-child) {
     margin-block-end: var(--gap-y);
   }
 
@@ -33,7 +33,7 @@
 .horizontal .fieldset {
   grid-template-columns: var(--template-columns);
 
-  & > [data-slot='form-control'] {
+  & > [data-slot='form-field'] {
     display: grid;
     align-items: center;
     grid-template-columns: subgrid;
