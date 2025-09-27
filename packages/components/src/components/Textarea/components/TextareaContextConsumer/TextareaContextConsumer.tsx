@@ -54,9 +54,9 @@ export const TextareaContextConsumer = forwardRef<
 
   const { value } = useTextareaContext();
 
-  const domRef = useDOMRef<ComponentRef<'textarea'>>(ref);
+  const textareaRef = useDOMRef<ComponentRef<'textarea'>>(ref);
 
-  useTextareaAutosize(domRef, value, expand === 'auto-size');
+  useTextareaAutosize(textareaRef, value, expand === 'auto-size');
 
   const textareaProps = mergeProps<
     (FormFieldInputProps<'textarea'> | undefined)[]
@@ -66,7 +66,7 @@ export const TextareaContextConsumer = forwardRef<
       cols,
       value,
       ...(expand && { className: s[expand] }),
-      ref: domRef,
+      ref: textareaRef,
     },
     slotProps?.textarea
   );
@@ -84,6 +84,12 @@ export const TextareaContextConsumer = forwardRef<
   const groupProps: FormFieldControlGroupProps = {
     variant,
     isInvalid,
+    className: s.group,
+    onClick: (e) => {
+      if (textareaRef.current && e.currentTarget === e.target) {
+        textareaRef.current.focus();
+      }
+    },
     isDisabled,
   };
 

@@ -20,3 +20,7 @@
   margin: 0;
   margin-block-start: var(--kbq-size-xxs);
 }
+
+.group {
+  padding-inline: 0;
+}

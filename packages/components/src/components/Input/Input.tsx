@@ -120,6 +120,11 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           {
             endAddon,
             variant,
+            onMouseDown: (e) => {
+              if (e.currentTarget !== e.target) return;
+              e.preventDefault();
+              inputRef?.current?.focus();
+            },
             isInvalid,
             isDisabled,
             startAddon,

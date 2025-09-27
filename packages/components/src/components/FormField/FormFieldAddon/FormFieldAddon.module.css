@@ -1,22 +1,11 @@
 .base {
   --form-field-addon-color: var(--kbq-icon-contrast-fade);
-  z-index: 1;
   display: flex;
-  position: absolute;
   align-items: center;
   justify-content: center;
   color: var(--form-field-addon-color);
   block-size: var(--form-field-control-size-height);
   transition: color var(--kbq-transition-default);
-}
-
-.start {
-  padding-inline: var(--kbq-size-m) var(--kbq-size-s);
-}
-
-.end {
-  inset-inline-end: 0;
-  padding-inline: var(--kbq-size-s) var(--kbq-size-m);
 }
 
 .invalid {
@@ -25,4 +14,12 @@
 
 .disabled {
   --form-field-addon-color: var(--kbq-states-icon-disabled);
+}
+
+.start {
+  margin-inline-end: var(--kbq-size-xs);
+}
+
+.end {
+  margin-inline-start: var(--kbq-size-xxs);
 }

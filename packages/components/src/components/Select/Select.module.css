@@ -68,8 +68,3 @@
 .clearButton {
   margin-inline-end: var(--kbq-size-xxs);
 }
-
-/* clear-button */
-.clearable {
-  --form-field-control-padding-inline-end: calc(12px + 28px);
-}

@@ -4,6 +4,7 @@ import { useBoolean } from '@koobiq/react-core';
 import {
   IconEye16,
   IconEyeSlash16,
+  IconGlobe16,
   IconMagnifyingGlass16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
@@ -208,20 +209,23 @@ export const Autofill: Story = {
 export const Addons: Story = {
   render: function Render(args) {
     return (
-      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
-        <Input
-          label="startAddon"
-          startAddon={<IconMagnifyingGlass16 />}
-          placeholder="Seacrh"
-          {...args}
-        />
-        <Input
-          label="endAddon"
-          endAddon={<IconMagnifyingGlass16 />}
-          placeholder="Seacrh"
-          {...args}
-        />
-      </FlexBox>
+      <Input
+        aria-label="addons"
+        caption="startAddon + endAddon"
+        startAddon={<Typography>https://</Typography>}
+        endAddon={<IconGlobe16 />}
+        slotProps={{
+          group: {
+            slotProps: {
+              startAddon: {
+                style: { marginInlineEnd: 0, pointerEvents: 'none' },
+              },
+            },
+          },
+        }}
+        placeholder="yourwebsite.com"
+        {...args}
+      />
     );
   },
 };
