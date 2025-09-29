@@ -8,6 +8,8 @@ import type {
 export type FormContextProps = {
   labelPlacement?: FormFieldPropLabelPlacement;
   labelAlign?: FormFieldPropLabelAlign;
+  isDisabled?: boolean;
+  isReadOnly?: boolean;
 };
 
 export const FormContext = createContext<FormContextProps>({});

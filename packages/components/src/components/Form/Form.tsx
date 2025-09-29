@@ -17,6 +17,8 @@ export const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
     labelPlacement: labelPlacementProp,
     labelAlign: labelAlignProp,
     labelInlineSize: labelInlineSizeProp,
+    isReadOnly,
+    isDisabled,
     className,
     style,
     ...other
@@ -37,7 +39,9 @@ export const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
     : undefined;
 
   return (
-    <FormContext.Provider value={{ labelPlacement, labelAlign }}>
+    <FormContext.Provider
+      value={{ labelPlacement, labelAlign, isDisabled, isReadOnly }}
+    >
       <FormPrimitive
         data-orientation={orientation}
         className={clsx(s.base, s[orientation], className)}

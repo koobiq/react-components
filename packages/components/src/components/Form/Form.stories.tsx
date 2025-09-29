@@ -58,9 +58,10 @@ export const Base: Story = {
 
     return (
       <Form
-        labelPlacement={{ xs: 'top', m: 'side' }}
+        isDisabled={isLoading}
         style={{ width: 280 }}
         onSubmit={handleSubmit}
+        labelPlacement={{ xs: 'top', m: 'side' }}
       >
         {error && (
           <Alert
@@ -76,9 +77,8 @@ export const Base: Story = {
           type="text"
           name="login"
           label="Login"
-          slotProps={{ label: { isRequired: false } }}
-          isDisabled={isLoading}
           errorMessage="Login is required"
+          slotProps={{ label: { isRequired: false } }}
           isRequired
           autoFocus
         />
@@ -86,9 +86,8 @@ export const Base: Story = {
           name="password"
           type="password"
           label="Password"
-          isDisabled={isLoading}
-          slotProps={{ label: { isRequired: false } }}
           errorMessage="Password is required"
+          slotProps={{ label: { isRequired: false } }}
           isRequired
         />
         <div data-slot="form-field">
@@ -117,20 +116,20 @@ export const Events: Story = {
         }}
       >
         <Input
+          type="text"
+          name="username"
+          label="Username"
           errorMessage="Please enter a valid username"
           slotProps={{ label: { isRequired: false } }}
-          label="Username"
-          name="username"
-          type="text"
           isRequired
           fullWidth
         />
         <Input
-          errorMessage="Please enter a valid email"
-          slotProps={{ label: { isRequired: false } }}
-          label="Email"
           name="email"
           type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
           isRequired
           fullWidth
         />
@@ -179,9 +178,9 @@ export const Validation: Story = {
 
     return (
       <Form
-        validationErrors={errors}
         onSubmit={onSubmit}
         style={{ width: 240 }}
+        validationErrors={errors}
       >
         <Input label="Username" name="username" fullWidth />
         <Button type="submit">Submit</Button>
@@ -198,14 +197,14 @@ export const ValidationBehavior: Story = {
 
     return (
       <Form
-        validationBehavior="aria"
         onSubmit={onSubmit}
         style={{ width: 240 }}
+        validationBehavior="aria"
       >
         <Input
-          label="Username"
-          name="username"
           type="text"
+          name="username"
+          label="Username"
           slotProps={{ label: { isRequired: false } }}
           validate={(value) => {
             if (value.length < 3) {
@@ -222,6 +221,86 @@ export const ValidationBehavior: Story = {
   },
 };
 
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: () => (
+    <Form labelPlacement="side" style={{ width: 240 }}>
+      <Input
+        type="text"
+        name="username"
+        label="Username"
+        errorMessage="Please enter a valid username"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+      <Input
+        name="email"
+        type="email"
+        label="Email"
+        errorMessage="Please enter a valid email"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+    </Form>
+  ),
+};
+
+export const ReadOnly: Story = {
+  render: function Render() {
+    return (
+      <Form isReadOnly style={{ width: 240 }}>
+        <Input
+          type="text"
+          name="username"
+          label="Username"
+          errorMessage="Please enter a valid username"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+        <Input
+          name="email"
+          type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+      </Form>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  render: function Render() {
+    return (
+      <Form isDisabled style={{ width: 240 }}>
+        <Input
+          type="text"
+          name="username"
+          label="Username"
+          errorMessage="Please enter a valid username"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+        <Input
+          name="email"
+          type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+      </Form>
+    );
+  },
+};
+
 export const Fieldset: Story = {
   render: function Render() {
     return (
@@ -229,16 +308,14 @@ export const Fieldset: Story = {
         <Form.Fieldset>
           <Form.Legend>Shipping details</Form.Legend>
           <Input
-            label="Street adress"
             name="street adress"
+            label="Street adress"
             fullWidth
             isRequired
           />
           <Textarea label="Delivery notes" name="delivery notes" fullWidth />
         </Form.Fieldset>
-        <Button type="submit" className={spacing({ mbs: 'l' })}>
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </Form>
     );
   },

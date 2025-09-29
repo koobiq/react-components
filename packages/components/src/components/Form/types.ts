@@ -27,6 +27,10 @@ export const formPropLabelInlineSize = [
 export type FormPropLabelInlineSize = (typeof formPropLabelInlineSize)[number];
 
 export type FormProps = {
+  /** Whether the Form elements are disabled. */
+  isDisabled?: boolean;
+  /** Whether the Form elements can be selected but not changed by the user. */
+  isReadOnly?: boolean;
   /**
    * The label's overall position relative to the element it is labeling.
    * Responsive values allowed.
