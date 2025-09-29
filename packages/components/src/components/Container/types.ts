@@ -23,8 +23,17 @@ export type ContainerMarginsProp = (typeof containerMarginsProp)[number];
 
 export type ContainerMaxInlineSizeProp = CSSProperties['maxInlineSize'];
 
-export const containerPositionProp = ['start', 'center', 'end'] as const;
-export type ContainerPositionProp = (typeof containerPositionProp)[number];
+export const containerPlacementProp = ['start', 'center', 'end'] as const;
+export type ContainerPlacementProp = (typeof containerPlacementProp)[number];
+
+/**
+ * @deprecated
+ */
+export const containerPositionProp = containerPlacementProp;
+/**
+ * @deprecated
+ */
+export type ContainerPositionProp = ContainerPlacementProp;
 
 type ContainerDeprecatedProps = {
   /**
@@ -33,14 +42,21 @@ type ContainerDeprecatedProps = {
    * The "fixed" prop is deprecated. Use "isFixed" prop to replace it.
    */
   fixed?: boolean;
+  /**
+   * Container position.
+   * @default 'center'
+   * @deprecated
+   * The "position" prop is deprecated. Use "placement" prop to replace it.
+   */
+  position?: ContainerPositionProp | ResponsiveValue<ContainerPositionProp>;
 };
 
 export type ContainerBaseProps = {
   /**
-   * Container position.
+   * Container placement.
    * @default 'center'
    */
-  position?: ContainerPositionProp | ResponsiveValue<ContainerPositionProp>;
+  placement?: ContainerPlacementProp | ResponsiveValue<ContainerPlacementProp>;
   /** Determine the max-inline-size of the container. */
   maxInlineSize?:
     | ContainerMaxInlineSizeProp
