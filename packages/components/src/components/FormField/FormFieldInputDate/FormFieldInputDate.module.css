@@ -7,18 +7,18 @@
   align-items: center;
   box-sizing: border-box;
   block-size: var(--form-field-control-size-height);
-  border-radius: inherit;
   color: var(--form-field-control-color);
-  background: var(--form-field-control-bg-color);
+  background: transparent;
   padding-block: var(--form-field-control-padding-block-start)
     var(--form-field-control-padding-block-end);
-  padding-inline: var(--form-field-control-padding-inline-start)
-    var(--form-field-control-padding-inline-end);
+  padding-inline: 0;
   transition:
     color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
 
   @mixin typography text-normal;
+  scrollbar-width: none;
+  overflow-x: auto;
 }
 
 .base[aria-disabled='true'] {

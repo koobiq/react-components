@@ -17,8 +17,13 @@
   display: flex;
   inline-size: 100%;
   position: relative;
+
   @mixin typography text-normal;
+  box-sizing: border-box;
   border-radius: var(--form-field-control-group-border-radius);
+  background: var(--form-field-control-bg-color);
+  padding-inline: var(--form-field-control-padding-inline-start)
+    var(--form-field-control-padding-inline-end);
 
   /* border */
   &::before {
@@ -50,12 +55,12 @@
   }
 }
 
-.hasStartAddon {
-  --form-field-control-padding-inline-start: 36px;
+.base:not(.disabled):has(> button, [role='button']) {
+  cursor: pointer;
 }
 
-.hasEndAddon {
-  --form-field-control-padding-inline-end: 36px;
+.base:has(input:-webkit-autofill) {
+  background-color: var(--kbq-background-theme-fade);
 }
 
 .transparent {
@@ -101,11 +106,11 @@
 }
 
 .disabled {
-  cursor: not-allowed;
   --form-field-control-placeholder-color: var(
     --kbq-foreground-contrast-tertiary
   );
   --form-field-control-color: var(--kbq-states-foreground-disabled);
+  cursor: not-allowed;
 }
 
 .filled:where(.disabled) {

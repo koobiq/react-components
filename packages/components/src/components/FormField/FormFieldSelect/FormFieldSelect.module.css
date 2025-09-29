@@ -7,13 +7,12 @@
   display: flex;
   inline-size: 100%;
   box-sizing: border-box;
-  border-radius: inherit;
   flex-direction: column;
   color: var(--form-field-control-color);
-  background: var(--form-field-control-bg-color);
+  background: transparent;
+  min-inline-size: 0;
   min-block-size: var(--form-field-control-size-height);
-  padding-inline: var(--form-field-control-padding-inline-start)
-    var(--form-field-control-padding-inline-end);
+  padding-inline: 0;
   transition:
     color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
