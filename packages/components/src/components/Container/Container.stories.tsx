@@ -50,12 +50,12 @@ export const Margins: Story = {
   ),
 };
 
-export const Position: Story = {
+export const Placement: Story = {
   render: (args) => (
     <Container
       style={containerStyle}
       maxInlineSize={400}
-      position="start"
+      placement="start"
       {...args}
     >
       <div style={boxStyle} />

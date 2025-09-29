@@ -21,7 +21,8 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
     const {
       as: Tag = 'div',
       margins: marginsProp = 0,
-      position: positionProp = 'center',
+      position: positionProp,
+      placement: placementProp,
       fixed,
       isFixed: isFixedProp,
       children,
@@ -39,10 +40,21 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
       );
     }
 
+    if (process.env.NODE_ENV !== 'production' && 'position' in props) {
+      deprecate(
+        'Container: the "position" prop is deprecated. Use "placement" prop to replace it.'
+      );
+    }
+
     const breakpoints = useMatchedBreakpoints();
 
     const maxInlineSize = getResponsiveValue(maxInlineSizeProp, breakpoints);
-    const position = getResponsiveValue(positionProp, breakpoints);
+
+    const placement = getResponsiveValue(
+      placementProp ?? positionProp ?? 'center',
+      breakpoints
+    );
+
     const margins = getResponsiveValue(marginsProp, breakpoints);
 
     const style = {
@@ -50,7 +62,7 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
       '--container-max-inline-size': isFixed
         ? undefined
         : normalizeMaxInlineSize(maxInlineSize),
-      '--container-position': normalizePosition(position),
+      '--container-placement': normalizePosition(placement),
       '--container-margins': normalizeMargins(margins),
     } as CSSProperties;
 
@@ -58,7 +70,7 @@ export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
       <Tag
         data-fixed={isFixed || undefined}
         data-margins={margins}
-        data-position={position}
+        data-placement={placement}
         className={clsx(s.base, className)}
         style={style}
         {...other}
