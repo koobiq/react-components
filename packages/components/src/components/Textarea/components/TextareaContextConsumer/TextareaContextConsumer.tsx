@@ -85,10 +85,10 @@ export const TextareaContextConsumer = forwardRef<
     variant,
     isInvalid,
     className: s.group,
-    onClick: (e) => {
-      if (textareaRef.current && e.currentTarget === e.target) {
-        textareaRef.current.focus();
-      }
+    onMouseDown: (e) => {
+      if (e.currentTarget !== e.target) return;
+      e.preventDefault();
+      textareaRef.current?.focus();
     },
     isDisabled,
   };
