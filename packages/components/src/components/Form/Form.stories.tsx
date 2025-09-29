@@ -247,6 +247,32 @@ export const LabelPlacementAlignment: Story = {
   ),
 };
 
+export const LabelInlineSize: Story = {
+  name: 'Label inline size',
+  render: () => (
+    <Form labelInlineSize="1/2" labelPlacement="side" style={{ width: 240 }}>
+      <Input
+        type="text"
+        name="username"
+        label="Username"
+        errorMessage="Please enter a valid username"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+      <Input
+        name="email"
+        type="email"
+        label="Email"
+        errorMessage="Please enter a valid email"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+    </Form>
+  ),
+};
+
 export const ReadOnly: Story = {
   render: function Render() {
     return (

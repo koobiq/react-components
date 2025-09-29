@@ -6,6 +6,7 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
 import { NumberField } from '@koobiq/react-primitives';
 
+import { useForm } from '../Form';
 import type {
   FormFieldProps,
   FormFieldLabelProps,
@@ -46,11 +47,14 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
       ...other
     } = props;
 
+    const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } =
+      useForm();
+
     const inputRef = useDOMRef<ComponentRef<'input'>>(ref);
 
-    const isDisabled = isDisabledProp ?? disabled;
+    const isDisabled = isDisabledProp ?? disabled ?? formIsDisabled;
+    const isReadOnly = isReadOnlyProp ?? readonly ?? formIsReadOnly;
     const isRequired = isRequiredProp ?? required;
-    const isReadOnly = isReadOnlyProp ?? readonly;
     const isInvalid = isInvalidProp ?? error;
     const isLabelHidden = isLabelHiddenProp ?? hiddenLabel;
 
