@@ -55,6 +55,10 @@
   }
 }
 
+.base:not(.disabled):has(> button, [role='button']) {
+  cursor: pointer;
+}
+
 .base:has(input:-webkit-autofill) {
   background-color: var(--kbq-background-theme-fade);
 }

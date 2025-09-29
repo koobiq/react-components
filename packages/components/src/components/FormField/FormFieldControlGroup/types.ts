@@ -1,6 +1,9 @@
 import type { ComponentRef, ReactNode } from 'react';
 
-import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import type {
+  DataAttributeProps,
+  ExtendableComponentPropsWithRef,
+} from '@koobiq/react-core';
 
 import type { FormFieldAddonProps } from '../FormFieldAddon';
 
@@ -36,7 +39,7 @@ export type FormFieldControlGroupProps = ExtendableComponentPropsWithRef<
       startAddon?: FormFieldAddonProps;
       endAddon?: FormFieldAddonProps;
     };
-  },
+  } & DataAttributeProps,
   'div'
 >;
 

@@ -152,7 +152,7 @@ function SelectRender<T extends object>(
       },
       startAddon,
       onMouseDown: (e) => {
-        if (e.currentTarget !== e.target) return;
+        if (e.currentTarget !== e.target || isDisabled) return;
         e.preventDefault();
         domRef?.current?.focus();
         state.open();

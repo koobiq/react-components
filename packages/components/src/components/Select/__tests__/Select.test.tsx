@@ -19,6 +19,9 @@ describe('Select', () => {
       control: {
         'data-testid': 'control',
       },
+      group: {
+        'data-testid': 'group',
+      },
       clearButton: {
         'aria-label': 'clear-button',
       },
@@ -29,6 +32,7 @@ describe('Select', () => {
   const getControl = () => screen.getByTestId('control');
   const getPopover = () => screen.getByTestId('popover');
   const getClearButton = () => screen?.queryByLabelText('clear-button');
+  const getGroup = () => screen.getByTestId('group');
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -55,11 +59,15 @@ describe('Select', () => {
   });
 
   it('should be disabled when isDisabled is true', async () => {
-    render(<Select {...baseProps} isDisabled />);
+    const onOpenChange = vi.fn((val) => val);
+
+    render(<Select {...baseProps} onOpenChange={onOpenChange} isDisabled />);
 
     await userEvent.tab();
+    await userEvent.click(getGroup());
 
     expect(getControl()).not.toHaveFocus();
+    expect(onOpenChange).toBeCalledTimes(0);
   });
 
   it('should be required when isRequired is true', () => {
