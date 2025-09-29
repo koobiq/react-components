@@ -56,16 +56,29 @@ This can be set at the form or field level.
 
 ### Label position and alignment
 
+Form elements such as Input, Textarea, Select, and others support configuration
+of label placement and alignment. You can also define the `labelPosition` and `labelAlignment`
+props on the `Form` component to apply them consistently across all fields.
+
+Using the Form component makes it easier to build forms with a shared label column,
+so all labels line up neatly in one place.
+
 <Story of={Stories.LabelPlacementAlignment} />
 
 ### Label inline size
+
+When `labelPosition="side"` is used, you can set the width of the label column with the `labelInlineSize` prop.
 
 <Story of={Stories.LabelInlineSize} />
 
 ### Disabled
 
+All form fields can be disabled at once by setting the `isDisabled` prop on the `Form` component.
+
 <Story of={Stories.Disabled} />
 
 ### Read only
+
+All form fields can be read only at once by setting the `isReadOnly` prop on the `Form` component.
 
 <Story of={Stories.ReadOnly} />
