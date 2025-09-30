@@ -327,6 +327,36 @@ export const Disabled: Story = {
   },
 };
 
+export const ResponsiveValues: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    return (
+      <Form labelPlacement={{ xs: 'top', l: 'side' }} style={{ maxWidth: 360 }}>
+        <Input
+          type="text"
+          name="username"
+          label="Username"
+          errorMessage="Please enter a valid username"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+        <Input
+          name="email"
+          type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+      </Form>
+    );
+  },
+};
+
 export const Fieldset: Story = {
   render: function Render() {
     return (
