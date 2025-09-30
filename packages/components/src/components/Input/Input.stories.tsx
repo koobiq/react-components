@@ -12,17 +12,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
 import { Button } from '../Button';
-import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
-import { FormField } from '../FormField';
 import { IconButton } from '../IconButton';
-import { InputNumber } from '../InputNumber';
-import { Radio, RadioGroup } from '../RadioGroup';
-import { SearchInput } from '../SearchInput';
-import { Select } from '../Select';
-import { Textarea } from '../Textarea';
-import { TimePicker } from '../TimePicker';
 import { Typography } from '../Typography';
 
 import { Input, inputPropVariant } from './index';
@@ -325,45 +317,4 @@ export const Validation: Story = {
       <Button type="submit">Submit</Button>
     </Form>
   ),
-};
-
-export const CreateForm: Story = {
-  parameters: {
-    layout: 'padded',
-  },
-  name: 'Create a form',
-  render: function Render() {
-    return (
-      <Form
-        labelPlacement={{ xs: 'top', m: 'side' }}
-        labelInlineSize="2/5"
-        style={{ maxWidth: 400 }}
-      >
-        <Select label="Select" placeholder="Select an option">
-          <Select.Item key="1">Option 1</Select.Item>
-          <Select.Item key="2">Option 2</Select.Item>
-          <Select.Item key="3">Option 3</Select.Item>
-        </Select>
-        <Input label="Input" placeholder="Type a word..." />
-        <Textarea label="Textarea" placeholder="Type a word..." />
-        <InputNumber label="InputNumber" placeholder="Type a number..." />
-        <SearchInput label="SearchInput" placeholder="Type a word..." />
-        <TimePicker label="TimePicker" />
-        <DatePicker label="DatePicker" />
-        <RadioGroup label="RadioGroup" defaultValue="windows">
-          <Radio value="windows">Windows</Radio>
-          <Radio value="macos">macOS</Radio>
-          <Radio value="linux">Linux</Radio>
-          <Radio value="other">Other</Radio>
-        </RadioGroup>
-        <FormField>
-          <FormField.Label as="span">Inputs</FormField.Label>
-          <FlexBox gap="m" style={{ inlineSize: '100%' }}>
-            <Input aria-label="first" placeholder="Input 1" />
-            <Input aria-label="second" placeholder="Input 2" />
-          </FlexBox>
-        </FormField>
-      </Form>
-    );
-  },
 };
