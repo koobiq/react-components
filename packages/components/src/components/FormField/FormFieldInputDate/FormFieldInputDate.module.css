@@ -2,7 +2,6 @@
 
 .base {
   display: flex;
-  cursor: pointer;
   inline-size: 100%;
   align-items: center;
   box-sizing: border-box;
