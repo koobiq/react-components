@@ -45,7 +45,7 @@ const preview: Preview = {
   },
   parameters: {
     viewport: {
-      viewports: {
+      options: {
         xs: {
           name: 'xs',
           styles: { width: '320px', height: '568px' },
