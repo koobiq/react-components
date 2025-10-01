@@ -42,7 +42,11 @@ export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
       value={{ labelPlacement, labelAlign, isDisabled, isReadOnly }}
     >
       <FormPrimitive
+        data-label-align={labelAlign}
         data-orientation={orientation}
+        data-label-placement={labelPlacement}
+        data-readonly={isReadOnly || undefined}
+        data-disabled={isDisabled || undefined}
         className={clsx(s.base, s[orientation], className)}
         style={{ ...style, ...formStyle }}
         {...other}
