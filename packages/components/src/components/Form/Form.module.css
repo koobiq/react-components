@@ -1,36 +1,25 @@
-.base,
-.fieldset {
+.base {
   --gap-y: var(--kbq-size-xl);
   --template-columns: max-content 1fr;
+
   display: grid;
 
   & > [data-slot='form-field'] {
     inline-size: 100%;
   }
 
-  & > [data-slot='form-field']:not(:last-child) {
-    margin-block-end: var(--gap-y);
-  }
-
   & > * {
     grid-column: 1 / -1;
     justify-self: start;
   }
-}
 
-.fieldset {
-  padding: 0;
-  border: 0;
-  margin: 0;
-
-  .legend {
-    margin-block-end: var(--kbq-size-l);
+  & > *:not(:last-child) {
+    margin-block-end: var(--gap-y);
   }
 }
 
 /* orientation */
-.horizontal,
-.horizontal .fieldset {
+.horizontal {
   grid-template-columns: var(--template-columns);
 
   & > [data-slot='form-field'] {

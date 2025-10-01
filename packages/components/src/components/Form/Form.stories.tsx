@@ -404,23 +404,3 @@ export const FormFields: Story = {
     );
   },
 };
-
-export const Fieldset: Story = {
-  render: function Render() {
-    return (
-      <Form style={{ width: 240 }}>
-        <Form.Fieldset>
-          <Form.Legend>Shipping details</Form.Legend>
-          <Input
-            name="street adress"
-            label="Street adress"
-            fullWidth
-            isRequired
-          />
-          <Textarea label="Delivery notes" name="delivery notes" fullWidth />
-        </Form.Fieldset>
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
-};
