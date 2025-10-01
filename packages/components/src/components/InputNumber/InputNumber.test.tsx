@@ -4,6 +4,8 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { Form } from '../Form';
+
 import { InputNumber, type InputNumberProps } from './index';
 
 describe('InputNumber', () => {
@@ -212,6 +214,50 @@ describe('InputNumber', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isDisabled>
+          <InputNumber {...baseProps} aria-label="input-number" />
+        </Form>
+      );
+
+      expect(getInputNumber()).toBeDisabled();
+
+      rerender(
+        <Form isDisabled>
+          <InputNumber
+            {...baseProps}
+            isDisabled={false}
+            aria-label="input-number"
+          />
+        </Form>
+      );
+
+      expect(getInputNumber()).not.toBeDisabled();
+    });
+
+    it('should propagate Form isReadOnly to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isReadOnly>
+          <InputNumber {...baseProps} aria-label="input-number" />
+        </Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(
+        <Form isReadOnly>
+          <InputNumber
+            {...baseProps}
+            isReadOnly={false}
+            aria-label="input-number"
+          />
+        </Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
     });
   });
 });

@@ -4,6 +4,7 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+import { Form } from '../../Form';
 import { Radio, RadioGroup, type RadioGroupProps } from '../index';
 
 const RADIO__TEST_ID = 'RADIO';
@@ -147,6 +148,34 @@ describe('RadioGroup', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isDisabled>{renderComponent({})}</Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('aria-disabled', 'true');
+
+      rerender(
+        <Form isDisabled>{renderComponent({ isDisabled: false })}</Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('aria-disabled', 'true');
+    });
+
+    it('should propagate Form isReadOnly to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isReadOnly>{renderComponent({})}</Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(
+        <Form isReadOnly>{renderComponent({ isReadOnly: false })}</Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
     });
   });
 });

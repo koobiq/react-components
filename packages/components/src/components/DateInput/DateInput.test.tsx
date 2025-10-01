@@ -4,6 +4,8 @@ import { type CalendarDate, parseDate } from '@internationalized/date';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
+import { Form } from '../Form';
+
 import { DateInput, type DateInputProps } from './index';
 
 describe('DateInput', () => {
@@ -18,7 +20,6 @@ describe('DateInput', () => {
   };
 
   const getRoot = () => screen.getByTestId('root');
-  // const getDateInput = () => screen.getByTestId('input');
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -178,6 +179,54 @@ describe('DateInput', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { container, rerender } = render(
+        <Form isDisabled>
+          <DateInput {...baseProps} aria-label="date-input" />
+        </Form>
+      );
+
+      expect(
+        container.querySelectorAll('[contenteditable="false"]')
+      ).toHaveLength(3);
+
+      rerender(
+        <Form isDisabled>
+          <DateInput
+            {...baseProps}
+            isDisabled={false}
+            aria-label="date-input"
+          />
+        </Form>
+      );
+
+      expect(
+        container.querySelectorAll('[contenteditable="false"]')
+      ).toHaveLength(0);
+    });
+
+    it('should propagate Form isReadOnly to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isReadOnly>
+          <DateInput {...baseProps} aria-label="date-input" />
+        </Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(
+        <Form isReadOnly>
+          <DateInput
+            {...baseProps}
+            isReadOnly={false}
+            aria-label="date-input"
+          />
+        </Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
     });
   });
 });

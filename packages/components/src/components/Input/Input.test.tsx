@@ -4,6 +4,8 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { Form } from '../Form';
+
 import { Input, type InputProps } from './index';
 
 describe('Input', () => {
@@ -203,6 +205,42 @@ describe('Input', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isDisabled>
+          <Input {...baseProps} aria-label="input" />
+        </Form>
+      );
+
+      expect(getInput()).toBeDisabled();
+
+      rerender(
+        <Form isDisabled>
+          <Input {...baseProps} isDisabled={false} aria-label="input" />
+        </Form>
+      );
+
+      expect(getInput()).not.toBeDisabled();
+    });
+
+    it('should propagate Form isReadOnly to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isReadOnly>
+          <Input {...baseProps} aria-label="input" />
+        </Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(
+        <Form isReadOnly>
+          <Input {...baseProps} isReadOnly={false} aria-label="input" />
+        </Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
     });
   });
 });
