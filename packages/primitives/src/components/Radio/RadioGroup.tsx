@@ -60,7 +60,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       <div
         {...DOMProps}
         data-invalid={validation.isInvalid || undefined}
-        data-readonly={state.isInvalid || undefined}
+        data-readonly={state.isReadOnly || undefined}
         data-required={state.isRequired || undefined}
         data-disabled={state.isDisabled || undefined}
         {...radioGroupProps}
