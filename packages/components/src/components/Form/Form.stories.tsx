@@ -26,6 +26,11 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
+  subcomponents: {
+    'Form.Group': Form.Group,
+    'Form.Caption': Form.Caption,
+    'Form.Actions': Form.Actions,
+  },
   tags: ['status:new'],
 } satisfies Meta<typeof Form>;
 
@@ -66,19 +71,16 @@ export const Base: Story = {
     return (
       <Form
         isDisabled={isLoading}
-        style={{ width: 280 }}
+        style={{ width: 240 }}
         onSubmit={handleSubmit}
         labelPlacement={{ xs: 'top', m: 'side' }}
       >
         {error && (
-          <Alert
-            status="error"
-            className={spacing({ mbe: 'xl' })}
-            isCompact
-            isColored
-          >
-            {error}
-          </Alert>
+          <Form.Caption>
+            <Alert status="error" isCompact isColored>
+              {error}
+            </Alert>
+          </Form.Caption>
         )}
         <Input
           type="text"
@@ -97,11 +99,11 @@ export const Base: Story = {
           slotProps={{ label: { isRequired: false } }}
           isRequired
         />
-        <div data-slot="form-field">
+        <Form.Actions>
           <Button type="submit" isLoading={isLoading}>
             Submit
           </Button>
-        </div>
+        </Form.Actions>
       </Form>
     );
   },
@@ -401,6 +403,57 @@ export const FormFields: Story = {
           </FlexBox>
         </FormField>
       </Form>
+    );
+  },
+};
+
+export const Subcomponents: Story = {
+  render: function Render() {
+    return (
+      <div style={{ maxWidth: 400 }}>
+        <Typography variant="title" as="h1">
+          My form
+        </Typography>
+        <Form className={spacing({ mbs: 'l' })}>
+          <Form.Caption>
+            <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Distinctio, odio?
+            </Typography>
+          </Form.Caption>
+          <Input
+            type="text"
+            name="name"
+            label="Name"
+            errorMessage="Please enter a valid username"
+            fullWidth
+            isRequired
+          />
+          <Input
+            name="email"
+            type="email"
+            label="Email"
+            errorMessage="Please enter a valid email"
+            fullWidth
+            isRequired
+          />
+          <Form.Group>
+            <Typography variant="text-normal-strong">
+              Shipping details:
+            </Typography>
+            <Input
+              name="street adress"
+              label="Street adress"
+              fullWidth
+              isRequired
+            />
+            <Textarea label="Delivery notes" name="delivery notes" fullWidth />
+          </Form.Group>
+          <Form.Actions>
+            <Button type="submit">Submit</Button>
+          </Form.Actions>
+        </Form>
+      </div>
     );
   },
 };

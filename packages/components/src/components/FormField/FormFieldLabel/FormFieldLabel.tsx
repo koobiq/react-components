@@ -17,6 +17,7 @@ export const FormFieldLabel = polymorphicForwardRef<
     isNotNil(children) ? (
       <Label
         as={as}
+        data-slot="form-field-label"
         className={clsx(s.base, isHidden && s.hidden, className)}
         {...other}
         ref={ref}

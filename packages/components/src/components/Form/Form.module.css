@@ -1,40 +1,68 @@
 .base {
   --gap-y: var(--kbq-size-xl);
-  --template-columns: max-content 1fr;
+  --label-inline-size: ;
 
-  display: grid;
-
-  & > [data-slot='form-field'] {
+  & > [data-slot='form-field'],
+  & > .group > [data-slot='form-field'] {
     inline-size: 100%;
   }
+}
 
-  & > * {
-    grid-column: 1 / -1;
-    justify-self: start;
+/* caption */
+.caption {
+  display: table-caption;
+
+  .top {
+    caption-side: top;
   }
 
-  & > *:not(:last-child) {
-    margin-block-end: var(--gap-y);
+  .bottom {
+    caption-side: bottom;
   }
 }
 
 /* orientation */
+.vertical {
+  display: flex;
+  gap: var(--gap-y);
+  flex-direction: column;
+
+  .group {
+    gap: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .horizontal {
-  grid-template-columns: var(--template-columns);
+  display: table;
+  border-collapse: separate;
+  border-spacing: 0 var(--gap-y);
+  margin-block: calc(-1 * var(--gap-y));
 
-  & > [data-slot='form-field'] {
-    display: grid;
-    align-items: center;
-    grid-template-columns: subgrid;
+  & > [data-slot='form-field'],
+  & > .group > [data-slot='form-field'] {
+    inline-size: 100%;
+    display: table-row;
 
-    & > *:first-child {
-      grid-column: 1;
-      align-self: start;
+    [data-slot='form-field-label'] {
+      display: table-cell;
+      inline-size: var(--label-inline-size);
     }
+  }
 
-    & > *:last-child {
-      grid-column: 2;
-      justify-self: start;
+  .group {
+    display: table-row-group;
+  }
+
+  .actions {
+    inline-size: 100%;
+    display: table-row;
+
+    &::before {
+      content: '';
+      display: table-cell;
+      inline-size: var(--label-inline-size);
     }
   }
 }

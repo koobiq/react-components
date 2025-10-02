@@ -6,12 +6,13 @@ import { Form as FormPrimitive } from '@koobiq/react-primitives';
 import { getResponsiveValue } from '../../utils';
 import { useMatchedBreakpoints } from '../Provider';
 
+import { FormGroup, FormCaption, FormActions } from './components';
 import s from './Form.module.css';
 import { FormContext } from './FormContext';
 import type { FormRef, FormProps } from './types';
 import { templatePresets } from './utils';
 
-export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
+const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
   const {
     labelPlacement: labelPlacementProp,
     labelAlign: labelAlignProp,
@@ -33,7 +34,7 @@ export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
 
   const formStyle = labelInlineSize
     ? ({
-        '--template-columns': templatePresets[labelInlineSize],
+        '--label-inline-size': templatePresets[labelInlineSize],
       } as CSSProperties)
     : undefined;
 
@@ -56,4 +57,16 @@ export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
   );
 });
 
-Form.displayName = 'Form';
+FormComponent.displayName = 'Form';
+
+type CompoundedComponent = typeof FormComponent & {
+  Group: typeof FormGroup;
+  Caption: typeof FormCaption;
+  Actions: typeof FormActions;
+};
+
+export const Form = FormComponent as CompoundedComponent;
+
+Form.Group = FormGroup;
+Form.Caption = FormCaption;
+Form.Actions = FormActions;
