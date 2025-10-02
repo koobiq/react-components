@@ -4,6 +4,8 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { Form } from '../Form';
+
 import { SearchInput, type SearchInputProps } from './index';
 
 describe('SearchInput', () => {
@@ -248,6 +250,42 @@ describe('SearchInput', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isDisabled>
+          <SearchInput {...baseProps} />
+        </Form>
+      );
+
+      expect(getInput()).toBeDisabled();
+
+      rerender(
+        <Form isDisabled>
+          <SearchInput {...baseProps} isDisabled={false} />
+        </Form>
+      );
+
+      expect(getInput()).not.toBeDisabled();
+    });
+
+    it('should propagate Form isReadOnly to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isReadOnly>
+          <SearchInput {...baseProps} />
+        </Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(
+        <Form isReadOnly>
+          <SearchInput {...baseProps} isReadOnly={false} />
+        </Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
     });
   });
 });

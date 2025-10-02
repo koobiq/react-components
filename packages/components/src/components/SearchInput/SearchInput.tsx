@@ -13,6 +13,7 @@ import {
   FormContext,
 } from '@koobiq/react-primitives';
 
+import { useForm } from '../Form';
 import type {
   FormFieldProps,
   FormFieldLabelProps,
@@ -42,14 +43,23 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       className,
       caption,
       isRequired,
-      isReadOnly,
+      isReadOnly: isReadOnlyProp,
       label,
       endAddon,
-      isDisabled,
+      isDisabled: isDisabledProp,
       slotProps,
     } = props;
 
-    const state = useSearchFieldState(removeDataAttributes(props));
+    const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } =
+      useForm();
+
+    const isDisabled = isDisabledProp ?? formIsDisabled;
+    const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
+
+    const state = useSearchFieldState(
+      removeDataAttributes({ ...props, isDisabled, isReadOnly })
+    );
+
     const inputRef = useDOMRef(ref);
 
     const { validationBehavior: formValidationBehavior } =
@@ -68,7 +78,10 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       clearButtonProps: clearButtonPropsAria,
       ...validation
     } = useSearchField(
-      { ...removeDataAttributes(props), validationBehavior },
+      {
+        ...removeDataAttributes({ ...props, isDisabled, isReadOnly }),
+        validationBehavior,
+      },
       state,
       inputRef
     );

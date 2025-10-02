@@ -17,6 +17,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Item, Section, Divider } from '../Collections';
+import { useForm } from '../Form';
 import type {
   FormFieldLabelProps,
   FormFieldErrorProps,
@@ -49,7 +50,7 @@ function SelectRender<T extends object>(
     labelPlacement,
     labelAlign,
     isRequired,
-    isDisabled,
+    isDisabled: isDisabledProp,
     caption,
     errorMessage,
     className,
@@ -64,6 +65,10 @@ function SelectRender<T extends object>(
     renderValue: renderValueProp,
   } = props;
 
+  const { isDisabled: formIsDisabled } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+
   const t = useLocalizedStringFormatter(intlMessages);
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
@@ -75,7 +80,7 @@ function SelectRender<T extends object>(
     props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
   const state = useMultiSelectState(
-    removeDataAttributes({ ...props, selectionMode })
+    removeDataAttributes({ ...props, isDisabled, selectionMode })
   );
 
   const hasClearButton = isClearable && !isDisabled && state.selectedItems;
@@ -97,6 +102,7 @@ function SelectRender<T extends object>(
     removeDataAttributes({
       ...props,
       selectionMode,
+      isDisabled,
       disallowEmptySelection: true,
       validationBehavior,
     }),
@@ -112,8 +118,8 @@ function SelectRender<T extends object>(
   const rootProps = mergeProps({
     'data-testid': testId,
     'data-invalid': isInvalid || undefined,
-    'data-disabled': props.isDisabled || undefined,
-    'data-required': props.isRequired || undefined,
+    'data-disabled': isDisabled || undefined,
+    'data-required': isRequired || undefined,
     className,
     fullWidth,
     labelPlacement,

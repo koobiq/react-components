@@ -4,10 +4,17 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Alert } from '../Alert';
 import { Button } from '../Button';
+import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
+import { FormField } from '../FormField';
 import { Input } from '../Input';
+import { InputNumber } from '../InputNumber';
 import { spacing } from '../layout';
+import { Radio, RadioGroup } from '../RadioGroup';
+import { SearchInput } from '../SearchInput';
+import { Select } from '../Select';
 import { Textarea } from '../Textarea';
+import { TimePicker } from '../TimePicker';
 import { Typography } from '../Typography';
 
 import { Form, type FormProps } from './index';
@@ -19,6 +26,11 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
+  subcomponents: {
+    'Form.Group': Form.Group,
+    'Form.Caption': Form.Caption,
+    'Form.Actions': Form.Actions,
+  },
   tags: ['status:new'],
 } satisfies Meta<typeof Form>;
 
@@ -58,27 +70,24 @@ export const Base: Story = {
 
     return (
       <Form
-        labelPlacement={{ xs: 'top', m: 'side' }}
-        style={{ width: 280 }}
+        isDisabled={isLoading}
+        style={{ width: 240 }}
         onSubmit={handleSubmit}
+        labelPlacement={{ xs: 'top', m: 'side' }}
       >
         {error && (
-          <Alert
-            status="error"
-            className={spacing({ mbe: 'xl' })}
-            isCompact
-            isColored
-          >
-            {error}
-          </Alert>
+          <Form.Caption>
+            <Alert status="error" isCompact isColored>
+              {error}
+            </Alert>
+          </Form.Caption>
         )}
         <Input
           type="text"
           name="login"
           label="Login"
-          slotProps={{ label: { isRequired: false } }}
-          isDisabled={isLoading}
           errorMessage="Login is required"
+          slotProps={{ label: { isRequired: false } }}
           isRequired
           autoFocus
         />
@@ -86,16 +95,15 @@ export const Base: Story = {
           name="password"
           type="password"
           label="Password"
-          isDisabled={isLoading}
-          slotProps={{ label: { isRequired: false } }}
           errorMessage="Password is required"
+          slotProps={{ label: { isRequired: false } }}
           isRequired
         />
-        <div data-slot="form-field">
+        <Form.Actions>
           <Button type="submit" isLoading={isLoading}>
             Submit
           </Button>
-        </div>
+        </Form.Actions>
       </Form>
     );
   },
@@ -117,20 +125,20 @@ export const Events: Story = {
         }}
       >
         <Input
+          type="text"
+          name="username"
+          label="Username"
           errorMessage="Please enter a valid username"
           slotProps={{ label: { isRequired: false } }}
-          label="Username"
-          name="username"
-          type="text"
           isRequired
           fullWidth
         />
         <Input
-          errorMessage="Please enter a valid email"
-          slotProps={{ label: { isRequired: false } }}
-          label="Email"
           name="email"
           type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
           isRequired
           fullWidth
         />
@@ -179,9 +187,9 @@ export const Validation: Story = {
 
     return (
       <Form
-        validationErrors={errors}
         onSubmit={onSubmit}
         style={{ width: 240 }}
+        validationErrors={errors}
       >
         <Input label="Username" name="username" fullWidth />
         <Button type="submit">Submit</Button>
@@ -198,14 +206,14 @@ export const ValidationBehavior: Story = {
 
     return (
       <Form
-        validationBehavior="aria"
         onSubmit={onSubmit}
         style={{ width: 240 }}
+        validationBehavior="aria"
       >
         <Input
-          label="Username"
-          name="username"
           type="text"
+          name="username"
+          label="Username"
           slotProps={{ label: { isRequired: false } }}
           validate={(value) => {
             if (value.length < 3) {
@@ -222,23 +230,229 @@ export const ValidationBehavior: Story = {
   },
 };
 
-export const Fieldset: Story = {
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: () => (
+    <Form labelPlacement="side" style={{ width: 240 }}>
+      <Input
+        type="text"
+        name="username"
+        label="Username"
+        errorMessage="Please enter a valid username"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+      <Input
+        name="email"
+        type="email"
+        label="Email"
+        errorMessage="Please enter a valid email"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+    </Form>
+  ),
+};
+
+export const LabelInlineSize: Story = {
+  name: 'Label inline size',
+  render: () => (
+    <Form labelInlineSize="1/2" labelPlacement="side" style={{ width: 240 }}>
+      <Input
+        type="text"
+        name="username"
+        label="Username"
+        errorMessage="Please enter a valid username"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+      <Input
+        name="email"
+        type="email"
+        label="Email"
+        errorMessage="Please enter a valid email"
+        slotProps={{ label: { isRequired: false } }}
+        fullWidth
+        isRequired
+      />
+    </Form>
+  ),
+};
+
+export const ReadOnly: Story = {
   render: function Render() {
     return (
-      <Form style={{ width: 240 }}>
-        <Form.Fieldset>
-          <Form.Legend>Shipping details</Form.Legend>
+      <Form isReadOnly style={{ width: 240 }}>
+        <Input
+          type="text"
+          name="username"
+          label="Username"
+          errorMessage="Please enter a valid username"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+        <Input
+          name="email"
+          type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+      </Form>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  render: function Render() {
+    return (
+      <Form isDisabled style={{ width: 240 }}>
+        <Input
+          type="text"
+          name="username"
+          label="Username"
+          errorMessage="Please enter a valid username"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+        <Input
+          name="email"
+          type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+      </Form>
+    );
+  },
+};
+
+export const ResponsiveValues: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    return (
+      <Form labelPlacement={{ xs: 'top', l: 'side' }} style={{ maxWidth: 360 }}>
+        <Input
+          type="text"
+          name="username"
+          label="Username"
+          errorMessage="Please enter a valid username"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+        <Input
+          name="email"
+          type="email"
+          label="Email"
+          errorMessage="Please enter a valid email"
+          slotProps={{ label: { isRequired: false } }}
+          fullWidth
+          isRequired
+        />
+      </Form>
+    );
+  },
+};
+
+export const Subcomponents: Story = {
+  render: function Render() {
+    return (
+      <div style={{ maxWidth: 400 }}>
+        <Typography variant="title" as="h1">
+          My form
+        </Typography>
+        <Form className={spacing({ mbs: 'l' })}>
+          <Form.Caption>
+            <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Distinctio, odio?
+            </Typography>
+          </Form.Caption>
           <Input
-            label="Street adress"
-            name="street adress"
+            type="text"
+            name="name"
+            label="Name"
+            errorMessage="Please enter a valid username"
             fullWidth
             isRequired
           />
-          <Textarea label="Delivery notes" name="delivery notes" fullWidth />
-        </Form.Fieldset>
-        <Button type="submit" className={spacing({ mbs: 'l' })}>
-          Submit
-        </Button>
+          <Input
+            name="email"
+            type="email"
+            label="Email"
+            errorMessage="Please enter a valid email"
+            fullWidth
+            isRequired
+          />
+          <Form.Group>
+            <Typography variant="text-normal-strong">
+              Shipping details:
+            </Typography>
+            <Input
+              name="street adress"
+              label="Street adress"
+              fullWidth
+              isRequired
+            />
+            <Textarea label="Delivery notes" name="delivery notes" fullWidth />
+          </Form.Group>
+          <Form.Actions>
+            <Button type="submit">Submit</Button>
+          </Form.Actions>
+        </Form>
+      </div>
+    );
+  },
+};
+
+export const FormFields: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  name: 'All form fields',
+  render: function Render() {
+    return (
+      <Form
+        labelPlacement={{ xs: 'top', m: 'side' }}
+        labelInlineSize="2/5"
+        style={{ maxWidth: 400 }}
+      >
+        <Select label="Select" placeholder="Select an option">
+          <Select.Item key="1">Option 1</Select.Item>
+          <Select.Item key="2">Option 2</Select.Item>
+          <Select.Item key="3">Option 3</Select.Item>
+        </Select>
+        <Input label="Input" placeholder="Type a word..." />
+        <Textarea label="Textarea" placeholder="Type a word..." />
+        <InputNumber label="InputNumber" placeholder="Type a number..." />
+        <SearchInput label="SearchInput" placeholder="Type a word..." />
+        <TimePicker label="TimePicker" />
+        <DatePicker label="DatePicker" />
+        <RadioGroup label="RadioGroup" defaultValue="windows">
+          <Radio value="windows">Windows</Radio>
+          <Radio value="macos">macOS</Radio>
+          <Radio value="linux">Linux</Radio>
+          <Radio value="other">Other</Radio>
+        </RadioGroup>
+        <FormField>
+          <FormField.Label as="span">Inputs</FormField.Label>
+          <FlexBox gap="m" style={{ inlineSize: '100%' }}>
+            <Input aria-label="first" placeholder="Input 1" />
+            <Input aria-label="second" placeholder="Input 2" />
+          </FlexBox>
+        </FormField>
       </Form>
     );
   },

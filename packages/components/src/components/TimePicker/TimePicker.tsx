@@ -15,6 +15,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { DateSegment } from '../DateSegment';
+import { useForm } from '../Form';
 import {
   type FormFieldProps,
   type FormFieldErrorProps,
@@ -48,6 +49,9 @@ export function TimePickerRender<T extends TimeValue>(
     caption,
     label,
     slotProps,
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
+    isRequired,
     style,
     fullWidth,
     variant,
@@ -57,6 +61,11 @@ export function TimePickerRender<T extends TimeValue>(
     'data-testid': testId,
   } = props;
 
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
+
   const { validationBehavior: formValidationBehavior } =
     useSlottedContext(FormContext) || {};
 
@@ -64,7 +73,7 @@ export function TimePickerRender<T extends TimeValue>(
     props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
   const state = useTimeFieldState({
-    ...removeDataAttributes(props),
+    ...removeDataAttributes({ ...props, isDisabled, isReadOnly }),
     validationBehavior,
     locale,
   });
@@ -76,9 +85,11 @@ export function TimePickerRender<T extends TimeValue>(
     errorMessageProps,
     inputProps,
     ...validation
-  } = useTimeField(removeDataAttributes(props), state, domRef);
-
-  const { isDisabled, isRequired, isReadOnly } = state;
+  } = useTimeField(
+    removeDataAttributes({ ...props, isDisabled, isReadOnly }),
+    state,
+    domRef
+  );
 
   const { isInvalid } = validation;
 

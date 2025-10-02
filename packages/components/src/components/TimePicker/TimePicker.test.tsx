@@ -4,6 +4,8 @@ import { Time } from '@internationalized/date';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
+import { Form } from '../Form';
+
 import { TimePicker, type TimePickerProps } from './index';
 
 describe('TimePicker', () => {
@@ -180,6 +182,54 @@ describe('TimePicker', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { container, rerender } = render(
+        <Form isDisabled>
+          <TimePicker {...baseProps} aria-label="date-input" />
+        </Form>
+      );
+
+      expect(
+        container.querySelectorAll('[contenteditable="false"]')
+      ).toHaveLength(3);
+
+      rerender(
+        <Form isDisabled>
+          <TimePicker
+            {...baseProps}
+            isDisabled={false}
+            aria-label="date-input"
+          />
+        </Form>
+      );
+
+      expect(
+        container.querySelectorAll('[contenteditable="false"]')
+      ).toHaveLength(0);
+    });
+
+    it('should propagate Form isReadOnly to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isReadOnly>
+          <TimePicker {...baseProps} aria-label="date-input" />
+        </Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(
+        <Form isReadOnly>
+          <TimePicker
+            {...baseProps}
+            isReadOnly={false}
+            aria-label="date-input"
+          />
+        </Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
     });
   });
 });

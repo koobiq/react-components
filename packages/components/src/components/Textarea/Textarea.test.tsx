@@ -4,6 +4,8 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { Form } from '../Form';
+
 import { Textarea, type TextareaProps } from './index';
 
 describe('Textarea', () => {
@@ -166,6 +168,42 @@ describe('Textarea', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isDisabled>
+          <Textarea {...baseProps} />
+        </Form>
+      );
+
+      expect(getTextarea()).toBeDisabled();
+
+      rerender(
+        <Form isDisabled>
+          <Textarea {...baseProps} isDisabled={false} />
+        </Form>
+      );
+
+      expect(getTextarea()).not.toBeDisabled();
+    });
+
+    it('should propagate Form isReadOnly to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isReadOnly>
+          <Textarea {...baseProps} />
+        </Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(
+        <Form isReadOnly>
+          <Textarea {...baseProps} isReadOnly={false} />
+        </Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
     });
   });
 });

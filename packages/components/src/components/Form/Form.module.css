@@ -1,51 +1,63 @@
-.base,
-.fieldset {
+.base {
   --gap-y: var(--kbq-size-xl);
-  --template-columns: max-content 1fr;
-  display: grid;
+  --label-inline-size: ;
 
-  & > [data-slot='form-field'] {
+  & > [data-slot='form-field'],
+  & > .group > [data-slot='form-field'] {
     inline-size: 100%;
-  }
-
-  & > [data-slot='form-field']:not(:last-child) {
-    margin-block-end: var(--gap-y);
-  }
-
-  & > * {
-    grid-column: 1 / -1;
-    justify-self: start;
   }
 }
 
-.fieldset {
-  padding: 0;
-  border: 0;
-  margin: 0;
+/* caption */
+.caption {
+  display: table-caption;
 
-  .legend {
-    margin-block-end: var(--kbq-size-l);
+  .top {
+    caption-side: top;
+  }
+
+  .bottom {
+    caption-side: bottom;
   }
 }
 
 /* orientation */
-.horizontal,
-.horizontal .fieldset {
-  grid-template-columns: var(--template-columns);
+.vertical,
+.vertical .group {
+  display: flex;
+  gap: var(--gap-y);
+  flex-direction: column;
+}
 
-  & > [data-slot='form-field'] {
-    display: grid;
-    align-items: center;
-    grid-template-columns: subgrid;
+.horizontal {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 0 var(--gap-y);
+  margin-block: calc(-1 * var(--gap-y));
 
-    & > *:first-child {
-      grid-column: 1;
-      align-self: start;
+  & > [data-slot='form-field'],
+  & > .group > [data-slot='form-field'] {
+    inline-size: 100%;
+    display: table-row;
+
+    [data-slot='form-field-label'] {
+      display: table-cell;
+      inline-size: var(--label-inline-size);
     }
+  }
 
-    & > *:last-child {
-      grid-column: 2;
-      justify-self: start;
+  .group {
+    display: table-row-group;
+  }
+
+  .actions {
+    inline-size: 100%;
+    display: table-row;
+
+    &::before {
+      content: '';
+      display: table-cell;
+      inline-size: var(--label-inline-size);
     }
   }
 }

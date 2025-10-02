@@ -44,10 +44,68 @@ which are cleared when the user modifies the field.
 See the [Forms](?path=/docs/forms--docs) guide to learn more about form validation,
 including client-side validation, and integration with other frameworks and libraries.
 
-## Validation Behavior
+### Validation Behavior
 
 Form validation uses native validation behavior by default, but can be switched to ARIA validation
 by setting `validationBehavior="aria"`. ARIA validation shows realtime errors without blocking submission.
 This can be set at the form or field level.
 
 <Story of={Stories.ValidationBehavior} />
+
+## Visual options
+
+### Label position and alignment
+
+Form elements such as Input, Textarea, Select, and others support configuration
+of label placement and alignment. You can also define the `labelPosition` and `labelAlignment`
+props on the `Form` component to apply them consistently across all fields.
+
+Using the Form component makes it easier to build forms with a shared label column,
+so all labels line up neatly in one place.
+
+<Story of={Stories.LabelPlacementAlignment} />
+
+### Label inline size
+
+When `labelPosition="side"` is used, you can set the width of the label column with the `labelInlineSize` prop.
+
+<Story of={Stories.LabelInlineSize} />
+
+### Disabled
+
+All form fields can be disabled at once by setting the `isDisabled` prop on the `Form` component.
+
+<Story of={Stories.Disabled} />
+
+### Read only
+
+All form fields can be read only at once by setting the `isReadOnly` prop on the `Form` component.
+
+<Story of={Stories.ReadOnly} />
+
+### Responsive values
+
+You can switch the props' value based on the active breakpoint for each item.
+
+<Story of={Stories.ResponsiveValues} />
+
+Responsive values is supported by:
+
+- `labelPosition`
+- `labelAlignment`
+- `labelInlineSize`
+
+## Subcomponents
+
+This story shows how to build complex forms with small helper parts. They keep one shared label column,
+even spacing, and consistent alignment at any depth.
+
+- `Form.Group` — groups related fields into one section.
+- `Form.Caption` — shows extra help text for the form.
+- `Form.Actions` — holds action buttons (e.g., submit/reset).
+
+<Story of={Stories.Subcomponents} />
+
+## All form fields
+
+<Story of={Stories.FormFields} />

@@ -10,6 +10,7 @@ import { useDatePicker, useDatePickerState } from '@koobiq/react-primitives';
 
 import { Calendar } from '../Calendar';
 import { DateInput } from '../DateInput';
+import { useForm } from '../Form';
 import { IconButton } from '../IconButton';
 import { PopoverInner } from '../Popover/PopoverInner';
 
@@ -35,14 +36,26 @@ export function DatePickerRender<T extends DateValue>(
     fullWidth,
     errorMessage,
     labelPlacement,
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
     labelAlign,
     startAddon,
     endAddon,
     'data-testid': testId,
   } = props;
 
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
+
   const state = useDatePickerState(
-    removeDataAttributes({ ...props, description: caption })
+    removeDataAttributes({
+      ...props,
+      isDisabled,
+      isReadOnly,
+      description: caption,
+    })
   );
 
   const {
@@ -54,7 +67,12 @@ export function DatePickerRender<T extends DateValue>(
     dialogProps,
     calendarProps: calendarPropsAria,
   } = useDatePicker(
-    removeDataAttributes({ ...props, description: caption }),
+    removeDataAttributes({
+      ...props,
+      isDisabled,
+      isReadOnly,
+      description: caption,
+    }),
     state,
     anchorRef
   );

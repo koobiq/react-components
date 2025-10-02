@@ -6,6 +6,7 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps } from '@koobiq/react-core';
 import { RadioGroup as RadioGroupPrimitive } from '@koobiq/react-primitives';
 
+import { useForm } from '../Form';
 import type {
   FormFieldProps,
   FormFieldLabelProps,
@@ -46,10 +47,13 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       required,
     } = props;
 
+    const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } =
+      useForm();
+
     const caption = captionProp ?? description;
-    const isDisabled = isDisabledProp ?? disabled;
+    const isDisabled = isDisabledProp ?? disabled ?? formIsDisabled;
     const isInvalid = isInvalidProp ?? error;
-    const isReadOnly = isReadOnlyProp ?? readonly;
+    const isReadOnly = isReadOnlyProp ?? readonly ?? formIsReadOnly;
     const isRequired = isRequiredProp ?? required;
 
     if (process.env.NODE_ENV !== 'production' && 'description' in props) {

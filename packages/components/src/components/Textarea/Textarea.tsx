@@ -6,6 +6,7 @@ import { deprecate } from '@koobiq/logger';
 import { mergeProps } from '@koobiq/react-core';
 import { TextField } from '@koobiq/react-primitives';
 
+import { useForm } from '../Form';
 import { FormField, type FormFieldProps } from '../FormField';
 
 import { TextareaContextConsumer } from './components';
@@ -37,9 +38,11 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
     ...other
   } = props;
 
-  const isDisabled = isDisabledProp ?? disabled;
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? disabled ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? readonly ?? formIsReadOnly;
   const isRequired = isRequiredProp ?? required;
-  const isReadOnly = isReadOnlyProp ?? readonly;
   const isInvalid = isInvalidProp ?? error;
   const isLabelHidden = isLabelHiddenProp ?? hiddenLabel;
 

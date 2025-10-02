@@ -16,6 +16,7 @@ import {
 import type { DateValue } from '@koobiq/react-primitives';
 
 import { DateSegment } from '../DateSegment';
+import { useForm } from '../Form';
 import type {
   FormFieldProps,
   FormFieldLabelProps,
@@ -49,12 +50,19 @@ export function DateInputRender<T extends DateValue>(
     className,
     style,
     fullWidth,
-    isReadOnly,
+    isRequired,
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
     'data-testid': testId,
   } = props;
 
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
+
   const state = useDateFieldState({
-    ...removeDataAttributes(props),
+    ...removeDataAttributes({ ...props, isDisabled, isReadOnly }),
     locale,
     createCalendar,
   });
@@ -75,12 +83,14 @@ export function DateInputRender<T extends DateValue>(
     inputProps,
     ...validation
   } = useDateField(
-    { ...removeDataAttributes(props), validationBehavior },
+    {
+      ...removeDataAttributes({ ...props, isDisabled, isReadOnly }),
+      validationBehavior,
+    },
     state,
     domRef
   );
 
-  const { isRequired, isDisabled } = state;
   const { isInvalid } = validation;
 
   const rootProps = mergeProps<(FormFieldProps | undefined)[]>(

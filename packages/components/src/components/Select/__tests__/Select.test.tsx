@@ -4,6 +4,7 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { Form } from '../../Form';
 import { Select, type SelectProps } from '../index';
 
 describe('Select', () => {
@@ -362,6 +363,32 @@ describe('Select', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
       expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isDisabled>
+          <Select {...baseProps}>
+            <Select.Item key="1">1</Select.Item>
+            <Select.Item key="2">2</Select.Item>
+            <Select.Item key="3">3</Select.Item>
+          </Select>
+        </Form>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-disabled', 'true');
+
+      rerender(
+        <Form isDisabled>
+          <Select {...baseProps} isDisabled={false}>
+            <Select.Item key="1">1</Select.Item>
+            <Select.Item key="2">2</Select.Item>
+            <Select.Item key="3">3</Select.Item>
+          </Select>
+        </Form>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-disabled', 'true');
     });
   });
 });
