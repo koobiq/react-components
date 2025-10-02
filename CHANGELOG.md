@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.12.0](https://github.com/koobiq/react-components/compare/0.11.1...0.12.0) (2025-10-02)
+
+### 🚀 Features
+
+- **Container:** add `placement`, deprecate `position` ([d71360f](https://github.com/koobiq/react-components/commit/d71360f1788f018f4a560be67c4287a53170de68))
+- **Form:** add visual layout options and subcomponents (DS-4213) ([f5f3e87](https://github.com/koobiq/react-components/commit/f5f3e87634a81d0eaae100064e321488eae4d5e9))
+- **FormField:** remove manual padding calc for addons in Input, Textarea, Select, etc. (DS-4215) ([7abd63d](https://github.com/koobiq/react-components/commit/7abd63d3900ac86970d34872b671dbf33925d110))
+
+### 🐞 Bug Fixes
+
+- **Button:** prevent [object Object] in `data-onlyicon` attribute ([b617237](https://github.com/koobiq/react-components/commit/b617237820344964d9c323afdcd0bb37658f03a4))
+- **core/useResizeObserver:** calculate width/height using borderBoxSize (includes padding and border) ([5f07c0a](https://github.com/koobiq/react-components/commit/5f07c0ad8c338baea9f8a71959ad07be11c18858))
+- **core/useResizeObserverRefs:** add environment guard for ResizeObserver ([8b64277](https://github.com/koobiq/react-components/commit/8b6427736841a860d53eea46e35925f9b6544b19))
+- **FormField:** set correct `data-slot` value ([cf137e6](https://github.com/koobiq/react-components/commit/cf137e63dd30968f27b77b8e85f4c9605b91bf77))
+- **primitives/RadioGroup:** correct `data-readonly` attribute handling ([eccf3fd](https://github.com/koobiq/react-components/commit/eccf3fd787ffb055e6345b42319767256e1e7e16))
+- **TimePicker,DateInput,DatePicker:** use text cursor for value input fields ([b7df733](https://github.com/koobiq/react-components/commit/b7df7331dd40c9214b7b324fb3772c46985c939b))
+
 ## [0.11.1](https://github.com/koobiq/react-components/compare/0.11.0...0.11.1) (2025-09-19)
 
 ### 🐞 Bug Fixes
