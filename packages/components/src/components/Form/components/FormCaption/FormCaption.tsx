@@ -9,13 +9,25 @@ export const formCaptionPropSide = ['top', 'bottom'] as const;
 export type FormCaptionPropSide = (typeof formCaptionPropSide)[number];
 
 export type FormCaptionBaseProps = {
+  /** Additional CSS-classes. */
   className?: string;
+  /**
+   * Placement of the caption relative to the form.
+   * - `top` — renders the caption above the form.
+   * - `bottom` — renders the caption below the form.
+   * @default 'top'
+   */
   side?: FormCaptionPropSide;
 };
 
 export const FormCaption = polymorphicForwardRef<'div', FormCaptionBaseProps>(
   ({ className, as: Tag = 'div', side = 'top', ...other }, ref) => (
-    <Tag className={clsx(s.caption, s[side], className)} {...other} ref={ref} />
+    <Tag
+      className={clsx(s.caption, s[side], className)}
+      data-side={side}
+      {...other}
+      ref={ref}
+    />
   )
 );
 

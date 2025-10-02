@@ -5,6 +5,7 @@ import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import s from '../../Form.module.css';
 
 export type FormActionsBaseProps = {
+  /** Additional CSS-classes. */
   className?: string;
 };
 
