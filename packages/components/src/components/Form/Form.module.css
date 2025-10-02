@@ -22,16 +22,11 @@
 }
 
 /* orientation */
-.vertical {
+.vertical,
+.vertical .group {
   display: flex;
   gap: var(--gap-y);
   flex-direction: column;
-
-  .group {
-    gap: inherit;
-    display: flex;
-    flex-direction: column;
-  }
 }
 
 .horizontal {
