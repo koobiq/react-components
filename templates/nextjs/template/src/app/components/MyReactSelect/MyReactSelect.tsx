@@ -1,20 +1,32 @@
 import React, { useMemo, useRef } from 'react';
 import ReactSelect, { components } from 'react-select';
 import type { MenuProps, Props, GroupBase, ControlProps } from 'react-select';
-import { Popover } from '@koobiq/react-components';
+import { Popover, type PopoverPropPlacement } from '@koobiq/react-components';
 import { useMultiRef, useBoolean, useElementSize } from '@koobiq/react-core';
 
 export type MyReactSelectProps<
   O,
   M extends boolean = false,
   G extends GroupBase<O> = GroupBase<O>,
-> = Props<O, M, G>;
+> = Omit<Props<O, M, G>, 'menuPlacement'> & {
+  menuPlacement?: PopoverPropPlacement;
+};
 
 export function MyReactSelect<
   O,
   M extends boolean = false,
   G extends GroupBase<O> = GroupBase<O>,
 >(props: MyReactSelectProps<O, M, G>) {
+  const {
+    menuPlacement: menuPlacementProp = 'bottom start',
+    styles: stylesProp,
+    onMenuOpen: onMenuOpenProp,
+    menuIsOpen: menuIsOpenProp,
+    components: componentsProp,
+    onMenuClose: onMenuCloseProp,
+    menuPortalTarget: menuPortalTargetProp,
+    ...other
+  } = props;
   const { ref, width } = useElementSize();
   const controlRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,7 +53,7 @@ export function MyReactSelect<
         size={width}
         isOpen={open}
         anchorRef={controlRef}
-        placement="bottom start"
+        placement={menuPlacementProp}
         hideCloseButton
         isNonModal
         hideArrow
@@ -53,21 +65,24 @@ export function MyReactSelect<
 
   return (
     <ReactSelect<O, M, G>
-      {...props}
+      {...other}
       onMenuOpen={(...a) => {
         on();
-        props.onMenuOpen?.(...a);
+        onMenuOpenProp?.(...a);
       }}
       onMenuClose={(...a) => {
         off();
-        props.onMenuClose?.(...a);
+        onMenuCloseProp?.(...a);
       }}
-      menuIsOpen={open}
-      menuPortalTarget={null}
-      components={{ Control, Menu }}
+      menuIsOpen={menuIsOpenProp ?? open}
+      menuPortalTarget={menuPortalTargetProp ?? null}
+      components={{ Control, Menu, ...componentsProp }}
       styles={{
+        ...stylesProp,
         menu: (base) => ({
           ...base,
+          ...stylesProp?.menu,
+          boxShadow: 'none',
           position: 'static',
           backgroundColor: 'transparent',
         }),

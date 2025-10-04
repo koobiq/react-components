@@ -65,7 +65,7 @@ export default function Home() {
           <div>
             <Modal.Header>Modal</Modal.Header>
             <Modal.Body>
-              <MyReactSelect options={options} isClearable />
+              <MyReactSelect options={options} isClearable isMulti />
             </Modal.Body>
           </div>
         </Modal>
