@@ -17,9 +17,7 @@ import { IconChevronCircleRight16 } from '@koobiq/react-icons';
 import logo from '../../public/koobiq.svg';
 
 import s from './page.module.css';
-import { AnimatedBackground } from '@/app/components';
-
-import Select from 'react-select';
+import { AnimatedBackground, MyReactSelect } from '@/app/components';
 
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -27,7 +25,6 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' },
 ];
 
-// https://github.com/adobe/react-spectrum/commit/7639e566bf112a9d35b58f70337b5ef0a5cc30c6#diff-1f298aac6f125fa840689cf698417ff1ac709c74711145610b0b16993415a5cc
 export default function Home() {
   return (
     <Provider>
@@ -63,30 +60,14 @@ export default function Home() {
         </Button>
         <Modal
           size="small"
-          control={(props) => (
-            <Button {...props}>Create an access group</Button>
-          )}
+          control={(props) => <Button {...props}>Open</Button>}
         >
-          {({ close }) => (
-            <>
-              <Modal.Header>Create an access group</Modal.Header>
-              <Modal.Body>
-                <Select
-                  options={options}
-                  menuPortalTarget={document.body}
-                  styles={{
-                    menuPortal: (base) => ({ ...base, zIndex: 9999 }), // Optional: Adjust z-index for layering
-                  }}
-                />
-              </Modal.Body>
-              <Modal.Footer>
-                <Button onPress={close}>Ok</Button>
-                <Button onPress={close} variant="fade-contrast-filled">
-                  Cancel
-                </Button>
-              </Modal.Footer>
-            </>
-          )}
+          <div>
+            <Modal.Header>Modal</Modal.Header>
+            <Modal.Body>
+              <MyReactSelect options={options} isClearable />
+            </Modal.Body>
+          </div>
         </Modal>
       </div>
       <div className={s.footer}>
