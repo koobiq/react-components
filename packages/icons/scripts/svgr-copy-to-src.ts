@@ -5,12 +5,8 @@ import fs from 'fs-extra';
 
 import { config } from '../config.js';
 
-const getIconSizeFromFilePath = (filePath: string) => {
-  const arrFilePath = filePath.split('/');
-  const rootPathIdx = arrFilePath.indexOf(config.figmaFile.page);
-
-  return arrFilePath[rootPathIdx + 1];
-};
+const getIconSizeFromFilePath = (filePath: string) =>
+  filePath.split('/').at(-2);
 
 // TODO: export the type from the library
 type ManifestJSON = {
@@ -77,10 +73,7 @@ const copyIcons = async (destPath: string, svgrDir: string) => {
 const main = async () => {
   const destDir = join(dirName, '../src/');
 
-  const svgrDir = join(
-    dirName,
-    `../${config.output.tempSvg}/${config.figmaFile.page}`
-  );
+  const svgrDir = join(dirName, `../${config.output.tempSvg}`);
 
   try {
     // Remove and create the destination directory
