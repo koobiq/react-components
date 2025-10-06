@@ -25,7 +25,11 @@ const componentOptions = {
   token: process.env.FIGMA_TOKEN,
   fileId: config.figmaFile.id,
   concurrency: 5,
-  onlyFromPages: [config.figmaFile.page],
+  onlyFromPages: config.figmaFile.pages,
+  filterComponent: (component) => {
+    const name = (component.name || '').trim();
+    return !/^[._]/.test(name);
+  },
   transformers: [
     transformSvgWithSvgo({
       plugins: [
