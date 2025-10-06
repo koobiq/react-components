@@ -1,0 +1,21 @@
+import { forwardRef } from 'react';
+import type { SVGProps, Ref } from 'react';
+
+export const IconTextFont24 = forwardRef(
+  (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+    <svg
+      width={24}
+      height={24}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      ref={ref}
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M13.328 2.25a.3.3 0 0 1 .28.193l7.236 18.9a.3.3 0 0 1-.28.407h-2.935a.3.3 0 0 1-.283-.2l-1.529-4.367H8.166L6.64 21.549a.3.3 0 0 1-.283.201H3.436a.3.3 0 0 1-.28-.407l7.21-18.9a.3.3 0 0 1 .28-.193zM9.097 14.518h5.787l-2.897-8.273z"
+      />
+    </svg>
+  )
+);
+IconTextFont24.displayName = 'IconTextFont24';

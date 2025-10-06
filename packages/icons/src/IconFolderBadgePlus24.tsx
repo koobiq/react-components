@@ -1,0 +1,21 @@
+import { forwardRef } from 'react';
+import type { SVGProps, Ref } from 'react';
+
+export const IconFolderBadgePlus24 = forwardRef(
+  (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+    <svg
+      width={24}
+      height={24}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      ref={ref}
+      {...props}
+    >
+      <g fill="currentColor">
+        <path d="M1.5 4.8A1.8 1.8 0 0 1 3.3 3h4.2l2.7 2.7H1.5zM1.5 7.5h19.2a1.8 1.8 0 0 1 1.8 1.8v6.75h-1.05V12a.3.3 0 0 0-.3-.3h-4.8a.3.3 0 0 0-.3.3v4.05H12a.3.3 0 0 0-.3.3V21H3.3a1.8 1.8 0 0 1-1.8-1.8z" />
+        <path d="M24 19.35a.3.3 0 0 1-.3.3h-4.05v4.05a.3.3 0 0 1-.3.3h-1.2a.3.3 0 0 1-.3-.3v-4.05H13.8a.3.3 0 0 1-.3-.3v-1.2a.3.3 0 0 1 .3-.3h4.05V13.8a.3.3 0 0 1 .3-.3h1.2a.3.3 0 0 1 .3.3v4.05h4.05a.3.3 0 0 1 .3.3z" />
+      </g>
+    </svg>
+  )
+);
+IconFolderBadgePlus24.displayName = 'IconFolderBadgePlus24';
