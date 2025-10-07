@@ -1,0 +1,22 @@
+import { forwardRef } from 'react';
+import type { SVGProps, Ref } from 'react';
+
+export const IconFilterDot24 = forwardRef(
+  (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+    <svg
+      width={24}
+      height={24}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      ref={ref}
+      {...props}
+    >
+      <path fill="currentColor" d="M24 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+      <path
+        fill="currentColor"
+        d="M16.2 3H3.3a.3.3 0 0 0-.3.3v1.8c0 .567.267 1.1.72 1.44L9 10.5v7.888a1.8 1.8 0 0 0 .995 1.61l4.57 2.285a.3.3 0 0 0 .435-.268V10.5l4.113-3.085A4.8 4.8 0 0 1 16.2 3"
+      />
+    </svg>
+  )
+);
+IconFilterDot24.displayName = 'IconFilterDot24';

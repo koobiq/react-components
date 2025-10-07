@@ -1,0 +1,21 @@
+import { forwardRef } from 'react';
+import type { SVGProps, Ref } from 'react';
+
+export const IconRectangleVerticalThin24 = forwardRef(
+  (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+    <svg
+      width={24}
+      height={24}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      ref={ref}
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M6 1.8A1.8 1.8 0 0 1 7.8 0h8.4A1.8 1.8 0 0 1 18 1.8v20.4a1.8 1.8 0 0 1-1.8 1.8H7.8A1.8 1.8 0 0 1 6 22.2z"
+      />
+    </svg>
+  )
+);
+IconRectangleVerticalThin24.displayName = 'IconRectangleVerticalThin24';

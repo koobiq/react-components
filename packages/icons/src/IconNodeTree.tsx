@@ -4,16 +4,16 @@ import type { SVGProps, Ref } from 'react';
 export const IconNodeTree = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg
-      width={16}
-      height={16}
+      width={24}
+      height={24}
       fill="currentColor"
-      viewBox="0 0 16 16"
+      viewBox="0 0 24 24"
       ref={ref}
       {...props}
     >
       <path
         fill="currentColor"
-        d="M6.004.2a.2.2 0 0 0-.2-.2H1.2a.2.2 0 0 0-.2.2v4.6c0 .11.09.2.2.2h1.5v9.1c0 .11.09.2.2.2H10v1.5c0 .11.09.2.2.2h4.604a.2.2 0 0 0 .2-.2v-4.599a.2.2 0 0 0-.2-.2H10.2a.2.2 0 0 0-.2.2V12.7H4.3V8.06H10v1.4c0 .11.089.2.2.2h4.604a.2.2 0 0 0 .2-.2v-4.6a.2.2 0 0 0-.2-.2h-4.605a.2.2 0 0 0-.2.2v1.6H4.3V5h1.504a.2.2 0 0 0 .2-.2z"
+        d="M9.007.3a.3.3 0 0 0-.3-.3H1.8a.3.3 0 0 0-.3.3v6.9a.3.3 0 0 0 .3.3h2.25v13.65a.3.3 0 0 0 .3.3H15v2.25a.3.3 0 0 0 .3.3h6.905a.3.3 0 0 0 .3-.3V16.8a.3.3 0 0 0-.3-.3H15.3a.3.3 0 0 0-.3.3v2.249H6.45v-6.96h8.549v2.1a.3.3 0 0 0 .3.3h6.906a.3.3 0 0 0 .3-.3v-6.9a.3.3 0 0 0-.3-.3H15.3a.3.3 0 0 0-.3.3v2.4H6.45V7.5h2.257a.3.3 0 0 0 .3-.3z"
       />
     </svg>
   )

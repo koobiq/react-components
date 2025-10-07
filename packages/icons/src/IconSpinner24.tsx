@@ -1,0 +1,21 @@
+import { forwardRef } from 'react';
+import type { SVGProps, Ref } from 'react';
+
+export const IconSpinner24 = forwardRef(
+  (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+    <svg
+      width={24}
+      height={24}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      ref={ref}
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M8.9 19.483a8.1 8.1 0 1 0 3.3-15.58.204.204 0 0 1-.2-.203v-2c0-.11.09-.2.2-.198A10.5 10.5 0 1 1 1.502 12.2.197.197 0 0 1 1.7 12h2c.11 0 .2.09.202.2A8.1 8.1 0 0 0 8.9 19.483"
+      />
+    </svg>
+  )
+);
+IconSpinner24.displayName = 'IconSpinner24';

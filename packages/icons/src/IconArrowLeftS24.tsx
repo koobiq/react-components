@@ -1,0 +1,21 @@
+import { forwardRef } from 'react';
+import type { SVGProps, Ref } from 'react';
+
+export const IconArrowLeftS24 = forwardRef(
+  (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+    <svg
+      width={24}
+      height={24}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      ref={ref}
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="m7.42 13.18 3.742 3.784a.3.3 0 0 1 0 .426L9.903 18.66a.31.31 0 0 1-.438 0l-6.377-6.446a.3.3 0 0 1 0-.426L9.465 5.34a.31.31 0 0 1 .438 0l1.259 1.269a.3.3 0 0 1 0 .427L7.47 10.77h13.228a.3.3 0 0 1 .302.3v1.809a.3.3 0 0 1-.302.3z"
+      />
+    </svg>
+  )
+);
+IconArrowLeftS24.displayName = 'IconArrowLeftS24';

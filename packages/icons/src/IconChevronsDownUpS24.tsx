@@ -1,0 +1,20 @@
+import { forwardRef } from 'react';
+import type { SVGProps, Ref } from 'react';
+
+export const IconChevronsDownUpS24 = forwardRef(
+  (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+    <svg
+      width={24}
+      height={24}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      ref={ref}
+      {...props}
+    >
+      <g fill="currentColor">
+        <path d="M17.714 1.587 12 7.17 6.287 1.587a.305.305 0 0 0-.427 0L4.59 2.833a.304.304 0 0 0 0 .433l7.196 7.04a.305.305 0 0 0 .426 0l7.196-7.04a.304.304 0 0 0 0-.433L18.14 1.587a.305.305 0 0 0-.427 0M6.287 22.41 12 16.827l5.714 5.583a.305.305 0 0 0 .426 0l1.269-1.246a.304.304 0 0 0 0-.433l-7.196-7.039a.305.305 0 0 0-.426 0L4.59 20.731a.304.304 0 0 0 0 .433L5.86 22.41a.305.305 0 0 0 .426 0" />
+      </g>
+    </svg>
+  )
+);
+IconChevronsDownUpS24.displayName = 'IconChevronsDownUpS24';
