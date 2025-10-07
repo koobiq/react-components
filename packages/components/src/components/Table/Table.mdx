@@ -105,6 +105,14 @@ This can be achieved by passing the `href` prop to the `Table.Row` component.
 
 ## Sorting Rows
 
+Table supports sorting its data when a column header is pressed.
+To designate that a `Table.Column` should support sorting, provide it with the `allowsSorting` prop.
+
+Table accepts a `sortDescriptor` prop that defines the current column
+key to sort by and the sort direction (ascending/descending).
+When the user presses a sortable column header, the column's key and sort
+direction is passed into the `onSortChange` callback, allowing you to update the `sortDescriptor` appropriately.
+
 <Story of={Stories.SortingRows} />
 
 ### Sort Icon
