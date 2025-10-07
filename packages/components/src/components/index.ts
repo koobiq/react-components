@@ -49,6 +49,7 @@ export {
   useRouter,
   useLocale,
   type Locale,
+  type Selection,
   RouterProvider,
   useDateFormatter,
 } from '@koobiq/react-core';

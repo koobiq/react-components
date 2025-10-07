@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { Selection } from '../../types';
+import type { Selection } from '../../index';
 import { Badge } from '../Badge';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';

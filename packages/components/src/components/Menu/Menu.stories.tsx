@@ -11,7 +11,7 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { Selection } from '../../types';
+import type { Selection } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';

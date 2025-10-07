@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { isString } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import type { Selection } from '../../index';
 import { utilClasses } from '../../styles/utility';
-import type { Selection } from '../../types';
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
 

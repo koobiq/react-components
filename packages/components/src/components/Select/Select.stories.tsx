@@ -13,7 +13,7 @@ import {
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Divider, List, spacing, useListData } from '../../index';
-import type { Selection } from '../../types';
+import type { Selection } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
