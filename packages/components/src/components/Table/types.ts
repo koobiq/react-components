@@ -24,6 +24,8 @@ export type TableProps<T> = Pick<
   | 'onSelectionChange'
   | 'disabledKeys'
   | 'disabledBehavior'
+  | 'sortDescriptor'
+  | 'onSortChange'
 > & {
   /** Handler that is called when a user performs an action on the row. */
   onRowAction?: (key: Key) => void;

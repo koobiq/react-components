@@ -54,6 +54,7 @@ export {
   useRouter,
   useLocale,
   type Locale,
+  type SortDescriptor,
   type Selection,
   RouterProvider,
   useDateFormatter,

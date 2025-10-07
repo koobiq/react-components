@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { Selection } from '../../index';
+import type {
+  Selection,
+  SortDescriptor as BaseSortDescriptor,
+} from '../../index';
 import { Badge } from '../Badge';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
@@ -34,6 +37,75 @@ const formatDate = (dateString: string): string =>
   new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(
     new Date(dateString)
   );
+
+const LanguageTable = (props: TableProps<unknown>) => {
+  const columns = [
+    { name: 'ID', uid: 'id' },
+    { name: 'Language', uid: 'language' },
+    { name: 'Paradigm', uid: 'paradigm' },
+    { name: 'First Appeared', uid: 'firstAppeared' },
+  ];
+
+  const rows = [
+    {
+      id: 1,
+      language: 'Python',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '1991',
+    },
+    {
+      id: 2,
+      language: 'JavaScript',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '1995',
+    },
+    {
+      id: 3,
+      language: 'Rust',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '2010',
+    },
+    {
+      id: 4,
+      language: 'Go',
+      paradigm: 'Concurrent, Imperative',
+      firstAppeared: '2009',
+    },
+    {
+      id: 5,
+      language: 'TypeScript',
+      paradigm: 'Multi-paradigm',
+      firstAppeared: '2012',
+    },
+    {
+      id: 6,
+      language: 'Kotlin',
+      paradigm: 'Object-oriented, Functional',
+      firstAppeared: '2011',
+    },
+  ];
+
+  return (
+    <Table {...props}>
+      <Table.Header columns={columns}>
+        {(column) => (
+          <Table.Column key={column.uid}>{column.name}</Table.Column>
+        )}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {(item) => (
+          <Table.Row>
+            {(columnKey) => (
+              <Table.Cell>
+                {item[columnKey as keyof (typeof rows)[0]]}
+              </Table.Cell>
+            )}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  );
+};
 
 export const Base: Story = {
   render: (args) => (
@@ -442,75 +514,6 @@ export const FullWidth: Story = {
   ),
 };
 
-const LanguageTable = (props: TableProps<unknown>) => {
-  const columns = [
-    { name: 'ID', uid: 'id' },
-    { name: 'Language', uid: 'language' },
-    { name: 'Paradigm', uid: 'paradigm' },
-    { name: 'First Appeared', uid: 'firstAppeared' },
-  ];
-
-  const rows = [
-    {
-      id: 1,
-      language: 'Python',
-      paradigm: 'Multi-paradigm',
-      firstAppeared: '1991',
-    },
-    {
-      id: 2,
-      language: 'JavaScript',
-      paradigm: 'Multi-paradigm',
-      firstAppeared: '1995',
-    },
-    {
-      id: 3,
-      language: 'Rust',
-      paradigm: 'Multi-paradigm',
-      firstAppeared: '2010',
-    },
-    {
-      id: 4,
-      language: 'Go',
-      paradigm: 'Concurrent, Imperative',
-      firstAppeared: '2009',
-    },
-    {
-      id: 5,
-      language: 'TypeScript',
-      paradigm: 'Multi-paradigm',
-      firstAppeared: '2012',
-    },
-    {
-      id: 6,
-      language: 'Kotlin',
-      paradigm: 'Object-oriented, Functional',
-      firstAppeared: '2011',
-    },
-  ];
-
-  return (
-    <Table {...props}>
-      <Table.Header columns={columns}>
-        {(column) => (
-          <Table.Column key={column.uid}>{column.name}</Table.Column>
-        )}
-      </Table.Header>
-      <Table.Body items={rows}>
-        {(item) => (
-          <Table.Row>
-            {(columnKey) => (
-              <Table.Cell>
-                {item[columnKey as keyof (typeof rows)[0]]}
-              </Table.Cell>
-            )}
-          </Table.Row>
-        )}
-      </Table.Body>
-    </Table>
-  );
-};
-
 export const SingleSelection: Story = {
   parameters: {
     layout: 'centered',
@@ -536,21 +539,6 @@ export const MultiSelection: Story = {
       {...args}
     />
   ),
-};
-
-export const SelectionBehavior: Story = {
-  parameters: {
-    layout: 'centered',
-  },
-  render: function Render() {
-    return (
-      <LanguageTable
-        aria-label="Table with selection"
-        selectionMode="multiple"
-        selectionBehavior="replace"
-      />
-    );
-  },
 };
 
 export const ControlledSelection: Story = {
@@ -582,6 +570,94 @@ export const DisabledRows: Story = {
   },
 };
 
+export const SortingRows: Story = {
+  render: function Render() {
+    type Animal = {
+      name: string;
+      mass: number;
+      topSpeed: number;
+    };
+
+    const columns = [
+      { name: 'Animal', id: 'name' },
+      { name: 'Mass (kg)', id: 'mass' },
+      { name: 'Top speed (km/h)', id: 'topSpeed' },
+    ];
+
+    const animals: Animal[] = [
+      {
+        name: 'Peregrine falcon',
+        topSpeed: 389,
+        mass: 1,
+      },
+      { name: 'Cheetah', topSpeed: 120, mass: 72 },
+      { name: 'Sailfish', topSpeed: 110, mass: 90 },
+      { name: 'Pronghorn', topSpeed: 98, mass: 60 },
+      { name: 'Horse', topSpeed: 88, mass: 500 },
+      { name: 'Lion', topSpeed: 80, mass: 190 },
+      { name: 'Greyhound', topSpeed: 72, mass: 32 },
+    ];
+
+    type SortDescriptor = {
+      column: Exclude<keyof Animal, 'name'>;
+      direction: BaseSortDescriptor['direction'];
+    };
+
+    const [sortDescriptor, onSortChange] = useState<SortDescriptor | null>({
+      column: 'mass',
+      direction: 'ascending',
+    });
+
+    const sorted = useMemo(() => {
+      if (!sortDescriptor) return animals;
+      const { column, direction } = sortDescriptor;
+
+      return [...animals].sort((a, b) => {
+        const first = a[column];
+        const second = b[column];
+
+        const res = first - second;
+
+        return direction === 'ascending' ? res : -res;
+      });
+    }, [animals, sortDescriptor]);
+
+    const handleSortChange = (next: BaseSortDescriptor) => {
+      const keyMap: Record<string, Exclude<keyof Animal, 'name'>> = {
+        mass: 'mass',
+        topSpeed: 'topSpeed',
+      };
+
+      const col = keyMap[String(next.column)];
+      if (!col) return;
+      onSortChange({ column: col, direction: next.direction });
+    };
+
+    return (
+      <Table
+        aria-label="Fast animals"
+        {...(sortDescriptor && { sortDescriptor })}
+        onSortChange={handleSortChange}
+      >
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column key={column.id} allowsSorting={column.id !== 'name'}>
+              {column.name}
+            </Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={sorted}>
+          {(item: Animal) => (
+            <Table.Row key={item.name}>
+              {(key) => <Table.Cell>{item[key as keyof Animal]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+  },
+};
+
 export const RowActions: Story = {
   render: function Render() {
     return (
@@ -589,6 +665,21 @@ export const RowActions: Story = {
         aria-label="Table with row actions"
         selectionMode="multiple"
         onRowAction={(key) => alert(`Opening item ${key}...`)}
+      />
+    );
+  },
+};
+
+export const SelectionBehavior: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: function Render() {
+    return (
+      <LanguageTable
+        aria-label="Table with selection"
+        selectionMode="multiple"
+        selectionBehavior="replace"
       />
     );
   },

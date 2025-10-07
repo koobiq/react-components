@@ -26,12 +26,7 @@ export type ColumnPropVerticalAlign = (typeof columnPropVerticalAlign)[number];
 
 export type ColumnProps<T> = Omit<
   AriaColumnProps<T>,
-  | 'allowsResizing'
-  | 'allowsSorting'
-  | 'width'
-  | 'defaultWidth'
-  | 'minWidth'
-  | 'maxWidth'
+  'allowsResizing' | 'width' | 'defaultWidth' | 'minWidth' | 'maxWidth'
 > & {
   /** Additional CSS-classes. */
   className?: string;

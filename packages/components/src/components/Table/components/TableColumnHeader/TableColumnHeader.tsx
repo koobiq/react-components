@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 
 import { useFocusRing, mergeProps, clsx } from '@koobiq/react-core';
+import { IconChevronUpS16, IconChevronDownS16 } from '@koobiq/react-icons';
 import { useTableColumnHeader } from '@koobiq/react-primitives';
 import type {
   TableState,
@@ -42,6 +43,13 @@ export function TableColumnHeader<T>({
 
   const { isFocusVisible, focusProps } = useFocusRing();
 
+  const arrowIcon =
+    state.sortDescriptor?.direction === 'ascending' ? (
+      <IconChevronUpS16 />
+    ) : (
+      <IconChevronDownS16 />
+    );
+
   return (
     <th
       align={align}
@@ -49,6 +57,7 @@ export function TableColumnHeader<T>({
         s.base,
         valign && s[valign],
         isFocusVisible && s.focusVisible,
+        column.props.allowsSorting && s.sortable,
         textNormal,
         className
       )}
@@ -56,7 +65,23 @@ export function TableColumnHeader<T>({
       {...mergeProps(columnHeaderProps, focusProps)}
       ref={ref}
     >
-      {column.rendered}
+      <div className={s.content}>
+        <span>{column.rendered}</span>
+        {column.props.allowsSorting && (
+          <span
+            aria-hidden="true"
+            className={s.sortIcon}
+            style={{
+              visibility:
+                state.sortDescriptor?.column === column.key
+                  ? 'visible'
+                  : 'hidden',
+            }}
+          >
+            {arrowIcon}
+          </span>
+        )}
+      </div>
     </th>
   );
 }
