@@ -45,11 +45,17 @@
   gap: var(--kbq-size-s);
 }
 
+/* sort-icon */
 .sortIcon {
   block-size: 20px;
   display: flex;
+  visibility: hidden;
 
   & > * {
     margin: auto;
   }
+}
+
+.active {
+  visibility: visible;
 }

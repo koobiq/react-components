@@ -12,12 +12,14 @@ import type {
 
 import { utilClasses } from '../../../../styles/utility';
 import type { ColumnProps } from '../../../Collections';
+import type { TableProps } from '../../types';
 
 import s from './TableColumnHeader.module.css';
 
 type TableColumnHeaderProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
   state: TableState<T>;
+  renderSortIcon: TableProps<T>['renderSortIcon'];
 };
 
 const textNormal = utilClasses.typography['text-normal'];
@@ -25,6 +27,7 @@ const textNormal = utilClasses.typography['text-normal'];
 export function TableColumnHeader<T>({
   column,
   state,
+  renderSortIcon,
 }: TableColumnHeaderProps<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
 
@@ -43,12 +46,14 @@ export function TableColumnHeader<T>({
 
   const { isFocusVisible, focusProps } = useFocusRing();
 
-  const arrowIcon =
-    state.sortDescriptor?.direction === 'ascending' ? (
-      <IconChevronUpS16 />
-    ) : (
-      <IconChevronDownS16 />
-    );
+  const isActive = state.sortDescriptor?.column === column.key;
+
+  const direction = isActive ? state.sortDescriptor?.direction : undefined;
+
+  const defaultIcon =
+    direction === 'ascending' ? <IconChevronUpS16 /> : <IconChevronDownS16 />;
+
+  const iconToRender = renderSortIcon?.({ direction, isActive }) ?? defaultIcon;
 
   return (
     <th
@@ -70,15 +75,9 @@ export function TableColumnHeader<T>({
         {column.props.allowsSorting && (
           <span
             aria-hidden="true"
-            className={s.sortIcon}
-            style={{
-              visibility:
-                state.sortDescriptor?.column === column.key
-                  ? 'visible'
-                  : 'hidden',
-            }}
+            className={clsx(s.sortIcon, isActive && s.active)}
           >
-            {arrowIcon}
+            {iconToRender}
           </span>
         )}
       </div>

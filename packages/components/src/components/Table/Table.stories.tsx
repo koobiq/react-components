@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 
+import { IconArrowDownS16, IconArrowUpS16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import type {
@@ -571,7 +572,7 @@ export const DisabledRows: Story = {
 };
 
 export const SortingRows: Story = {
-  render: function Render() {
+  render: function Render(args) {
     type Animal = {
       name: string;
       mass: number;
@@ -638,6 +639,99 @@ export const SortingRows: Story = {
         aria-label="Fast animals"
         {...(sortDescriptor && { sortDescriptor })}
         onSortChange={handleSortChange}
+        {...args}
+      >
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column key={column.id} allowsSorting={column.id !== 'name'}>
+              {column.name}
+            </Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={sorted}>
+          {(item: Animal) => (
+            <Table.Row key={item.name}>
+              {(key) => <Table.Cell>{item[key as keyof Animal]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+  },
+};
+
+export const RenderSortIcon: Story = {
+  render: function Render(args) {
+    type Animal = {
+      name: string;
+      mass: number;
+      topSpeed: number;
+    };
+
+    const columns = [
+      { name: 'Animal', id: 'name' },
+      { name: 'Mass (kg)', id: 'mass' },
+      { name: 'Top speed (km/h)', id: 'topSpeed' },
+    ];
+
+    const animals: Animal[] = [
+      {
+        name: 'Peregrine falcon',
+        topSpeed: 389,
+        mass: 1,
+      },
+      { name: 'Cheetah', topSpeed: 120, mass: 72 },
+      { name: 'Sailfish', topSpeed: 110, mass: 90 },
+      { name: 'Pronghorn', topSpeed: 98, mass: 60 },
+      { name: 'Horse', topSpeed: 88, mass: 500 },
+      { name: 'Lion', topSpeed: 80, mass: 190 },
+      { name: 'Greyhound', topSpeed: 72, mass: 32 },
+    ];
+
+    type SortDescriptor = {
+      column: Exclude<keyof Animal, 'name'>;
+      direction: BaseSortDescriptor['direction'];
+    };
+
+    const [sortDescriptor, onSortChange] = useState<SortDescriptor | null>({
+      column: 'mass',
+      direction: 'ascending',
+    });
+
+    const sorted = useMemo(() => {
+      if (!sortDescriptor) return animals;
+      const { column, direction } = sortDescriptor;
+
+      return [...animals].sort((a, b) => {
+        const first = a[column];
+        const second = b[column];
+
+        const res = first - second;
+
+        return direction === 'ascending' ? res : -res;
+      });
+    }, [animals, sortDescriptor]);
+
+    const handleSortChange = (next: BaseSortDescriptor) => {
+      const keyMap: Record<string, Exclude<keyof Animal, 'name'>> = {
+        mass: 'mass',
+        topSpeed: 'topSpeed',
+      };
+
+      const col = keyMap[String(next.column)];
+      if (!col) return;
+      onSortChange({ column: col, direction: next.direction });
+    };
+
+    return (
+      <Table
+        aria-label="Fast animals"
+        {...(sortDescriptor && { sortDescriptor })}
+        onSortChange={handleSortChange}
+        renderSortIcon={({ direction }) =>
+          direction === 'ascending' ? <IconArrowUpS16 /> : <IconArrowDownS16 />
+        }
+        {...args}
       >
         <Table.Header columns={columns}>
           {(column) => (

@@ -36,6 +36,7 @@ function TableRender<T extends object>(
     slotProps,
     selectionMode,
     selectionBehavior,
+    renderSortIcon,
     className,
     style,
   } = props;
@@ -83,6 +84,7 @@ function TableRender<T extends object>(
                   key={column.key}
                   column={column}
                   state={state}
+                  renderSortIcon={renderSortIcon}
                 />
               )
             )}
