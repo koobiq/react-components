@@ -3,6 +3,7 @@ import type {
   ComponentRef,
   CSSProperties,
   ReactElement,
+  ReactNode,
   Ref,
 } from 'react';
 
@@ -15,6 +16,11 @@ export type TablePropDivider = (typeof tablePropDivider)[number];
 
 export type TablePropChildren<T> = TableStateProps<T>['children'];
 
+type TablePropSortIconRender = (args: {
+  direction: 'ascending' | 'descending' | undefined;
+  isActive: boolean;
+}) => ReactNode;
+
 export type TableProps<T> = Pick<
   TableStateProps<T>,
   | 'selectionBehavior'
@@ -24,6 +30,8 @@ export type TableProps<T> = Pick<
   | 'onSelectionChange'
   | 'disabledKeys'
   | 'disabledBehavior'
+  | 'sortDescriptor'
+  | 'onSortChange'
 > & {
   /** Handler that is called when a user performs an action on the row. */
   onRowAction?: (key: Key) => void;
@@ -50,6 +58,8 @@ export type TableProps<T> = Pick<
    * The elements that make up the table.
    * Includes the Table.Header, Table.Body, Table.Column, and Table.Row.
    */
+  /** Render function for a custom sort icon for the column */
+  renderSortIcon?: TablePropSortIconRender;
   children?: TablePropChildren<T>;
   /** Ref to the control. */
   ref?: Ref<HTMLTableElement>;

@@ -31,6 +31,7 @@ export type {
   AriaLabelingProps,
   DOMProps,
   RefObject,
+  SortDescriptor,
   Selection,
 } from '@react-types/shared';
 

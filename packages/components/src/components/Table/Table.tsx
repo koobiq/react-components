@@ -36,6 +36,7 @@ function TableRender<T extends object>(
     slotProps,
     selectionMode,
     selectionBehavior,
+    renderSortIcon,
     className,
     style,
   } = props;
@@ -74,15 +75,16 @@ function TableRender<T extends object>(
             {[...headerRow.childNodes].map((column) =>
               column.props.isSelectionCell ? (
                 <TableSelectAllCell
-                  key={column.key}
-                  column={column}
                   state={state}
+                  column={column}
+                  key={column.key}
                 />
               ) : (
                 <TableColumnHeader
-                  key={column.key}
-                  column={column}
                   state={state}
+                  column={column}
+                  key={column.key}
+                  renderSortIcon={renderSortIcon}
                 />
               )
             )}

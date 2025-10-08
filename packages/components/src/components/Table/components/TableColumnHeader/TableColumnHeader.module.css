@@ -35,3 +35,32 @@
   outline-offset: -2px;
   outline: 2px solid var(--kbq-states-line-focus-theme);
 }
+
+.sortable {
+  cursor: pointer;
+}
+
+/* content */
+.content {
+  display: flex;
+  gap: var(--kbq-size-s);
+}
+
+/* sort-icon */
+.sortIcon {
+  display: flex;
+  visibility: hidden;
+
+  &::after {
+    font-size: 0;
+    content: '\00a0';
+  }
+
+  & > * {
+    margin: auto;
+  }
+}
+
+.active {
+  visibility: visible;
+}

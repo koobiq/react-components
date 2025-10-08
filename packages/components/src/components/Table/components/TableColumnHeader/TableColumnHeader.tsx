@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 
 import { useFocusRing, mergeProps, clsx } from '@koobiq/react-core';
+import { IconChevronUpS16, IconChevronDownS16 } from '@koobiq/react-icons';
 import { useTableColumnHeader } from '@koobiq/react-primitives';
 import type {
   TableState,
@@ -11,12 +12,14 @@ import type {
 
 import { utilClasses } from '../../../../styles/utility';
 import type { ColumnProps } from '../../../Collections';
+import type { TableProps } from '../../types';
 
 import s from './TableColumnHeader.module.css';
 
 type TableColumnHeaderProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
   state: TableState<T>;
+  renderSortIcon?: TableProps<T>['renderSortIcon'];
 };
 
 const textNormal = utilClasses.typography['text-normal'];
@@ -24,6 +27,7 @@ const textNormal = utilClasses.typography['text-normal'];
 export function TableColumnHeader<T>({
   column,
   state,
+  renderSortIcon,
 }: TableColumnHeaderProps<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
 
@@ -42,6 +46,16 @@ export function TableColumnHeader<T>({
 
   const { isFocusVisible, focusProps } = useFocusRing();
 
+  const isActive = state.sortDescriptor?.column === column.key;
+  const { allowsSorting } = column.props;
+
+  const direction = isActive ? state.sortDescriptor?.direction : undefined;
+
+  const defaultIcon =
+    direction === 'ascending' ? <IconChevronUpS16 /> : <IconChevronDownS16 />;
+
+  const iconToRender = renderSortIcon?.({ direction, isActive }) ?? defaultIcon;
+
   return (
     <th
       align={align}
@@ -49,6 +63,7 @@ export function TableColumnHeader<T>({
         s.base,
         valign && s[valign],
         isFocusVisible && s.focusVisible,
+        allowsSorting && s.sortable,
         textNormal,
         className
       )}
@@ -56,7 +71,17 @@ export function TableColumnHeader<T>({
       {...mergeProps(columnHeaderProps, focusProps)}
       ref={ref}
     >
-      {column.rendered}
+      <div className={s.content}>
+        <span>{column.rendered}</span>
+        {allowsSorting && (
+          <span
+            aria-hidden="true"
+            className={clsx(s.sortIcon, isActive && s.active)}
+          >
+            {iconToRender}
+          </span>
+        )}
+      </div>
     </th>
   );
 }

@@ -103,6 +103,40 @@ This can be achieved by passing the `href` prop to the `Table.Row` component.
 
 <Story of={Stories.Links} />
 
+## Sorting Rows
+
+Table supports sorting its data when a column header is pressed.
+To designate that a `Table.Column` should support sorting, provide it with the `allowsSorting` prop.
+
+Table accepts a `sortDescriptor` prop that defines the current column
+key to sort by and the sort direction (ascending/descending).
+When the user presses a sortable column header, the column's key and sort
+direction is passed into the `onSortChange` callback, allowing you to update the `sortDescriptor` appropriately.
+
+<Story of={Stories.SortingRows} />
+
+### Sort Icon
+
+You can override the default sort icon by specifying `renderSortIcon`.
+This prop is only applied when `allowsSorting` is true.
+
+<Story of={Stories.RenderSortIcon} />
+
+### State helper
+
+Sorting can be managed with `useAsyncList`, which is available
+directly from our library as a re-export of `@react-stately/data`:
+
+```ts
+// re-export of @react-stately/data
+import { useAsyncList } from '@koobiq/react-components';
+```
+
+The `useAsyncList` keeps items synchronized with the current sorting state (column, direction)
+and supports asynchronous updates — making it ideal for remote data sources and dynamic tables.
+
+For detailed API reference, see the [React Aria — useAsyncList](https://react-spectrum.adobe.com/react-stately/useAsyncList.html#useasynclist).
+
 ## Client side routing
 
 The `Table` component works with frameworks and client side routers like **Next.js** and **React Router**.
