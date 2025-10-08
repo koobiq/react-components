@@ -122,6 +122,21 @@ This prop is only applied when `allowsSorting` is true.
 
 <Story of={Stories.RenderSortIcon} />
 
+### State helper
+
+Sorting can be managed with `useAsyncList`, which is available
+directly from our library as a re-export of `@react-stately/data`:
+
+```ts
+// re-export of @react-stately/data
+import { useAsyncList } from '@koobiq/react-components';
+```
+
+The `useAsyncList` keeps items synchronized with the current sorting state (column, direction)
+and supports asynchronous updates — making it ideal for remote data sources and dynamic tables.
+
+For detailed API reference, see the [React Aria — useAsyncList](https://react-spectrum.adobe.com/react-stately/useAsyncList.html#useasynclist).
+
 ## Client side routing
 
 The `Table` component works with frameworks and client side routers like **Next.js** and **React Router**.
