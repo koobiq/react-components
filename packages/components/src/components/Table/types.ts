@@ -56,6 +56,8 @@ export type TableProps<T> = Pick<
   /** The props used for each slot inside. */
   slotProps?: {
     root?: ComponentPropsWithRef<'table'>;
+    header?: ComponentPropsWithRef<'thead'>;
+    body?: ComponentPropsWithRef<'tbody'>;
   };
 };
 
