@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.13.0](https://github.com/koobiq/react-components/compare/0.12.0...0.13.0) (2025-10-08)
+
+### 🚀 Features
+
+- **components:** export `useAsyncList` hook from library ([de16cdd](https://github.com/koobiq/react-components/commit/de16cdd46f2eef1a1a420ec47592e0c5aac42c3a))
+- **icons:** update icon set ([4fda3df](https://github.com/koobiq/react-components/commit/4fda3dff549d64ccdfbd3785daf9d80b88d34486))
+- **Table:** add row sorting support (DS-4228) ([9bf69d6](https://github.com/koobiq/react-components/commit/9bf69d61f8655388a193b0784be578c226ae9422))
+- **Table:** enable slotProps on `Table.Header` and `Table.Body` (DS-4252) ([353e76e](https://github.com/koobiq/react-components/commit/353e76e7011c5f53413a4400ec76f239e852141f))
+
 ## [0.12.0](https://github.com/koobiq/react-components/compare/0.11.1...0.12.0) (2025-10-02)
 
 ### 🚀 Features
