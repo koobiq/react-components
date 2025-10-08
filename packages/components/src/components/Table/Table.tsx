@@ -68,7 +68,7 @@ function TableRender<T extends object>(
 
   return (
     <table {...tableProps}>
-      <TableRowGroup type="thead" ref={theadRef}>
+      <TableRowGroup type="thead" ref={theadRef} theadProps={slotProps?.header}>
         {collection.headerRows.map((headerRow) => (
           <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
             {[...headerRow.childNodes].map((column) =>
@@ -89,7 +89,7 @@ function TableRender<T extends object>(
           </TableHeaderRow>
         ))}
       </TableRowGroup>
-      <TableRowGroup type="tbody">
+      <TableRowGroup type="tbody" tbodyProps={slotProps?.body}>
         {[...collection.body.childNodes].map((row) => (
           <TableRow key={row.key} item={row} state={state}>
             {[...row.childNodes].map((cell) =>
