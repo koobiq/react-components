@@ -19,7 +19,7 @@ import s from './TableColumnHeader.module.css';
 type TableColumnHeaderProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
   state: TableState<T>;
-  renderSortIcon: TableProps<T>['renderSortIcon'];
+  renderSortIcon?: TableProps<T>['renderSortIcon'];
 };
 
 const textNormal = utilClasses.typography['text-normal'];
@@ -47,6 +47,7 @@ export function TableColumnHeader<T>({
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const isActive = state.sortDescriptor?.column === column.key;
+  const { allowsSorting } = column.props;
 
   const direction = isActive ? state.sortDescriptor?.direction : undefined;
 
@@ -62,7 +63,7 @@ export function TableColumnHeader<T>({
         s.base,
         valign && s[valign],
         isFocusVisible && s.focusVisible,
-        column.props.allowsSorting && s.sortable,
+        allowsSorting && s.sortable,
         textNormal,
         className
       )}
@@ -72,7 +73,7 @@ export function TableColumnHeader<T>({
     >
       <div className={s.content}>
         <span>{column.rendered}</span>
-        {column.props.allowsSorting && (
+        {allowsSorting && (
           <span
             aria-hidden="true"
             className={clsx(s.sortIcon, isActive && s.active)}

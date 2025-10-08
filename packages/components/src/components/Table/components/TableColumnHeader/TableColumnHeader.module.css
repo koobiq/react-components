@@ -40,6 +40,7 @@
   cursor: pointer;
 }
 
+/* content */
 .content {
   display: flex;
   gap: var(--kbq-size-s);
@@ -47,9 +48,13 @@
 
 /* sort-icon */
 .sortIcon {
-  block-size: 20px;
   display: flex;
   visibility: hidden;
+
+  &::after {
+    font-size: 0;
+    content: '\00a0';
+  }
 
   & > * {
     margin: auto;
