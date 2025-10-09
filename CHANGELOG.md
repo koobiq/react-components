@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.13.1](https://github.com/koobiq/react-components/compare/0.13.0...0.13.1) (2025-10-09)
+
+### 🐞 Bug Fixes
+
+- **Table:** fix broken horizontal align prop for `Table.Cell` (DS-4256) ([815cca4](https://github.com/koobiq/react-components/commit/815cca40a338c1b3c63390f9a170a8f32b2d908e))
+
 ## [0.13.0](https://github.com/koobiq/react-components/compare/0.12.0...0.13.0) (2025-10-08)
 
 ### 🚀 Features
