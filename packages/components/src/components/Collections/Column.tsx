@@ -11,7 +11,13 @@ type ColumnComponent<T> = FC<AriaColumnProps<T>> & {
 
 const ColumnInner = AriaColumn as ColumnComponent<unknown>;
 
-export const columnPropAlign = ['left', 'right', 'center'] as const;
+export const columnPropAlign = [
+  'start',
+  'end',
+  'center',
+  'left',
+  'right',
+] as const;
 export const columnPropVerticalAlign = [
   'baseline',
   'top',
@@ -36,12 +42,12 @@ export type ColumnProps<T> = Omit<
   'data-testid'?: string | number;
   /**
    * Horizontal alignment of the cell content.
-   * @default left
+   * @default 'start'
    */
   align?: ColumnPropAlign;
   /**
    * Vertical alignment of the cell content.
-   * @default middle
+   * @default 'middle'
    */
   valign?: ColumnPropVerticalAlign;
 };

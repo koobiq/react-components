@@ -40,7 +40,7 @@ export function TableColumnHeader<T>({
   const {
     style,
     className,
-    align = 'left',
+    align = 'start',
     valign = 'middle',
   }: ColumnProps<T> = column.props;
 
@@ -58,21 +58,24 @@ export function TableColumnHeader<T>({
 
   return (
     <th
-      align={align}
       className={clsx(
         s.base,
+        align && s[align],
         valign && s[valign],
         isFocusVisible && s.focusVisible,
         allowsSorting && s.sortable,
         textNormal,
         className
       )}
+      data-align={align || undefined}
+      data-valign={valign || undefined}
+      data-allows-sorting={allowsSorting || undefined}
       style={style}
       {...mergeProps(columnHeaderProps, focusProps)}
       ref={ref}
     >
-      <div className={s.content}>
-        <span>{column.rendered}</span>
+      <span className={s.content}>
+        {column.rendered}
         {allowsSorting && (
           <span
             aria-hidden="true"
@@ -81,7 +84,7 @@ export function TableColumnHeader<T>({
             {iconToRender}
           </span>
         )}
-      </div>
+      </span>
     </th>
   );
 }

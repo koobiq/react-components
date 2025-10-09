@@ -26,21 +26,23 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
   const {
     style,
     className,
-    align = 'left',
+    align = 'start',
     valign = 'middle',
   }: CellProps = cell.props;
 
   return (
     <td
-      align={align}
       {...mergeProps(gridCellProps, focusProps)}
       className={clsx(
         s.base,
         textNormal,
+        align && s[align],
         valign && s[valign],
         isFocusVisible && s.focusVisible,
         className
       )}
+      data-align={align || undefined}
+      data-valign={valign || undefined}
       style={style}
       ref={ref}
     >

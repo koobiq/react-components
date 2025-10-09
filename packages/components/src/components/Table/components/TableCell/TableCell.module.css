@@ -6,6 +6,20 @@
   transition: border-radius var(--kbq-transition-default);
 }
 
+.start,
+.left {
+  text-align: start;
+}
+
+.center {
+  text-align: center;
+}
+
+.end,
+.right {
+  text-align: end;
+}
+
 .top {
   vertical-align: top;
 }
