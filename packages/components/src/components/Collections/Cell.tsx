@@ -11,7 +11,13 @@ type CellComponent = FC<AriaCellProps> & {
 
 const CellInner = AriaCell as CellComponent;
 
-export const cellPropAlign = ['left', 'right', 'center'] as const;
+export const cellPropAlign = [
+  'start',
+  'end',
+  'center',
+  'left',
+  'right',
+] as const;
 export const cellPropVerticalAlign = [
   'baseline',
   'top',
@@ -33,12 +39,12 @@ export type CellProps = AriaCellProps & {
   'data-testid'?: string | number;
   /**
    * Horizontal alignment of the cell content.
-   * @default left
+   * @default 'start'
    */
   align?: CellPropAlign;
   /**
    * Vertical alignment of the cell content.
-   * @default middle
+   * @default 'middle'
    */
   valign?: CellPropVerticalAlign;
 };
