@@ -661,6 +661,9 @@ export const SortingRows: Story = {
 };
 
 export const RenderSortIcon: Story = {
+  parameters: {
+    layout: 'padded',
+  },
   render: function Render(args) {
     type Animal = {
       name: string;
@@ -771,7 +774,7 @@ export const ResizableColumns: Story = {
   render: (args) => (
     <TableContainer blockSize={400}>
       <Table
-        selectionMode="single"
+        selectionMode="multiple"
         aria-label="Example static collection table"
         stickyHeader
         fullWidth
@@ -780,8 +783,12 @@ export const ResizableColumns: Story = {
       >
         <Table.Header>
           <Table.Column allowsResizing>Threat Category</Table.Column>
-          <Table.Column allowsResizing>Description</Table.Column>
-          <Table.Column>Risk Level</Table.Column>
+          <Table.Column allowsResizing defaultWidth={400}>
+            Description
+          </Table.Column>
+          <Table.Column allowsResizing minWidth={100}>
+            Risk Level
+          </Table.Column>
         </Table.Header>
         <Table.Body>
           <Table.Row>

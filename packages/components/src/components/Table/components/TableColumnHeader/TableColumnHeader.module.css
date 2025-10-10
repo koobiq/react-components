@@ -7,6 +7,7 @@
   color: var(--table-header-cell-color);
   border-block-end: var(--table-border);
   padding-inline: var(--table-header-cell-padding-inline);
+  text-align: start;
 }
 
 /* align */

@@ -25,7 +25,7 @@
 }
 
 .resizing {
-  --resizer-color: red;
+  --resizer-color: var(--kbq-states-background-theme-active);
 }
 
 .resizer {

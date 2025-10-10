@@ -3,7 +3,7 @@
 import { type Ref, useCallback } from 'react';
 import { forwardRef } from 'react';
 
-import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
+import { clsx, useDOMRef, mergeProps, type Node } from '@koobiq/react-core';
 import {
   useTable,
   useTableState,
@@ -59,7 +59,17 @@ function TableRender<T extends object>(
   const { collection } = state;
   const { gridProps } = useTable(props, state, domRef);
 
-  const getDefaultMinWidth = useCallback(() => 100, []);
+  const getDefaultMinWidth = useCallback((column: Node<T>) => {
+    if (column.props.isSelectionCell) return 40;
+
+    return undefined;
+  }, []);
+
+  const getDefaultWidth = useCallback((column: Node<T>) => {
+    if (column.props.isSelectionCell) return 40;
+
+    return undefined;
+  }, []);
 
   const layoutState = allowsResize
     ? // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -68,6 +78,7 @@ function TableRender<T extends object>(
           // Matches the width of the table itself
           tableWidth: tableInlineSize ?? 300,
           getDefaultMinWidth,
+          getDefaultWidth,
         },
         state
       )
@@ -104,6 +115,7 @@ function TableRender<T extends object>(
                   state={state}
                   column={column}
                   key={column.key}
+                  layoutState={layoutState}
                 />
               ) : (
                 <TableColumnHeader
