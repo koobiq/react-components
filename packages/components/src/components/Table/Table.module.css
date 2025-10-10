@@ -1,7 +1,8 @@
 .base {
   --table-cell-padding: 10px var(--kbq-size-s);
   --table-cell-color: var(--kbq-foreground-contrast);
-  --table-header-cell-padding: 10px var(--kbq-size-s);
+  --table-header-cell-padding-block: 10px;
+  --table-header-cell-padding-inline: var(--kbq-size-s);
   --table-border: 1px solid var(--kbq-line-contrast-less);
   --table-header-cell-color: var(--kbq-foreground-contrast-secondary);
   border-spacing: 0;

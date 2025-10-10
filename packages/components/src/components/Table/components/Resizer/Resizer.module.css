@@ -6,22 +6,26 @@
   touch-action: none;
   box-sizing: border-box;
   background-clip: content-box;
-  border: 5px #0000;
-  border-style: none solid;
+  align-items: center;
   display: flex;
-  inline-size: 15px;
   block-size: 100%;
   position: absolute;
-  inset-inline-end: -5px;
+  inset-inline-end: 0;
+  padding-inline: 2px;
   inset-block-start: 0;
+  z-index: 1;
 }
 
-.base:hover,
+.hovered,
 .focusVisible,
 .resizing {
   --resizer-color: var(--kbq-background-theme);
   --resizer-size-width: 2px;
   --resizer-size-height: 20px;
+}
+
+.resizing {
+  --resizer-color: red;
 }
 
 .resizer {

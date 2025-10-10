@@ -724,30 +724,42 @@ export const RenderSortIcon: Story = {
     };
 
     return (
-      <Table
-        aria-label="Fast animals"
-        {...(sortDescriptor && { sortDescriptor })}
-        onSortChange={handleSortChange}
-        renderSortIcon={({ direction }) =>
-          direction === 'ascending' ? <IconArrowUpS16 /> : <IconArrowDownS16 />
-        }
-        {...args}
-      >
-        <Table.Header columns={columns}>
-          {(column) => (
-            <Table.Column key={column.id} allowsSorting={column.id !== 'name'}>
-              {column.name}
-            </Table.Column>
-          )}
-        </Table.Header>
-        <Table.Body items={sorted}>
-          {(item: Animal) => (
-            <Table.Row key={item.name}>
-              {(key) => <Table.Cell>{item[key as keyof Animal]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
+      <TableContainer>
+        <Table
+          aria-label="Fast animals"
+          {...(sortDescriptor && { sortDescriptor })}
+          onSortChange={handleSortChange}
+          renderSortIcon={({ direction }) =>
+            direction === 'ascending' ? (
+              <IconArrowUpS16 />
+            ) : (
+              <IconArrowDownS16 />
+            )
+          }
+          allowsResize
+          selectionMode="multiple"
+          {...args}
+        >
+          <Table.Header columns={columns}>
+            {(column) => (
+              <Table.Column
+                key={column.id}
+                allowsSorting={column.id !== 'name'}
+                allowsResizing
+              >
+                {column.name}
+              </Table.Column>
+            )}
+          </Table.Header>
+          <Table.Body items={sorted}>
+            {(item: Animal) => (
+              <Table.Row key={item.name}>
+                {(key) => <Table.Cell>{item[key as keyof Animal]}</Table.Cell>}
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      </TableContainer>
     );
   },
 };

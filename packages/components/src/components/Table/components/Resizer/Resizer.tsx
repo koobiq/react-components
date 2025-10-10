@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { useFocusRing, mergeProps, clsx } from '@koobiq/react-core';
+import { useFocusRing, useHover, mergeProps, clsx } from '@koobiq/react-core';
 import {
   useTableColumnResize,
   type AriaTableColumnResizeProps,
@@ -33,6 +33,7 @@ export function Resizer<T>(props: ResizerProps<T>) {
   );
 
   const { focusProps, isFocusVisible } = useFocusRing();
+  const { hoverProps, isHovered } = useHover({});
 
   return (
     <div
@@ -40,9 +41,10 @@ export function Resizer<T>(props: ResizerProps<T>) {
       className={clsx(
         s.base,
         isResizing && s.resizing,
+        isHovered && s.hovered,
         isFocusVisible && s.focusVisible
       )}
-      {...resizerProps}
+      {...mergeProps(resizerProps, hoverProps)}
     >
       <div className={s.resizer} />
       <input ref={ref} {...mergeProps(inputProps, focusProps)} />

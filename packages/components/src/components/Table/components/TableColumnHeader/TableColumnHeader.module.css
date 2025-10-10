@@ -1,11 +1,12 @@
 .base {
   outline: none;
   cursor: default;
+  padding-block: 0;
+  position: relative;
   box-sizing: border-box;
   color: var(--table-header-cell-color);
   border-block-end: var(--table-border);
-  padding: var(--table-header-cell-padding);
-  position: relative;
+  padding-inline: var(--table-header-cell-padding-inline);
 }
 
 /* align */
@@ -57,21 +58,35 @@
   outline: 2px solid var(--kbq-states-line-focus-theme);
 }
 
+/* sortable */
 .sortable {
   cursor: pointer;
 }
 
-/* content */
+/* container */
 .container {
   display: flex;
-  justify-content: var(--table-column-align);
   gap: var(--kbq-size-s);
+  padding-block: var(--table-header-cell-padding-block);
+  justify-content: var(--table-column-align);
+}
 
-  .content {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+.container:has(.content) {
+  margin-left: -8px;
+}
+
+.container:has(.content:focus-visible) {
+  outline-offset: -2px;
+  outline: 2px solid var(--kbq-states-line-focus-theme);
+}
+
+/* content */
+.content {
+  all: unset;
+  overflow: hidden;
+  padding-left: 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* sort-icon */

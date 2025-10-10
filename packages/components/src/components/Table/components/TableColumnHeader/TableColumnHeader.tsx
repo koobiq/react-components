@@ -64,11 +64,11 @@ export function TableColumnHeader<T>({
     <th
       className={clsx(
         s.base,
+        textNormal,
         align && s[align],
         valign && s[valign],
-        isFocusVisible && s.focusVisible,
         allowsSorting && s.sortable,
-        textNormal,
+        isFocusVisible && s.focusVisible,
         className
       )}
       data-align={align || undefined}
@@ -77,23 +77,38 @@ export function TableColumnHeader<T>({
       {...mergeProps(columnHeaderProps, focusProps)}
       style={{
         ...styleProp,
-        width: layoutState?.getColumnWidth(column.key),
+        inlineSize: layoutState?.getColumnWidth(column.key),
       }}
       ref={ref}
     >
-      <span className={s.container}>
-        <span className={s.content}>{column.rendered}</span>
-        {allowsSorting && (
-          <span
-            aria-hidden="true"
-            className={clsx(s.sortIcon, isActive && s.active)}
-          >
-            {iconToRender}
-          </span>
-        )}
-      </span>
       {allowsResizing && layoutState && (
-        <Resizer column={column} layoutState={layoutState} />
+        <>
+          <div className={s.container}>
+            <button className={s.content}>{column.rendered}</button>
+            {allowsSorting && (
+              <span
+                aria-hidden="true"
+                className={clsx(s.sortIcon, isActive && s.active)}
+              >
+                {iconToRender}
+              </span>
+            )}
+          </div>
+          <Resizer column={column} layoutState={layoutState} />
+        </>
+      )}
+      {!allowsResizing && (
+        <span className={s.container}>
+          {column.rendered}
+          {allowsSorting && (
+            <span
+              aria-hidden="true"
+              className={clsx(s.sortIcon, isActive && s.active)}
+            >
+              {iconToRender}
+            </span>
+          )}
+        </span>
       )}
     </th>
   );
