@@ -1,0 +1,37 @@
+.base {
+  --resizer-color: var(--kbq-line-contrast-fade);
+  --resizer-size-width: 1px;
+  --resizer-size-height: 16px;
+  cursor: ew-resize;
+  touch-action: none;
+  box-sizing: border-box;
+  background-clip: content-box;
+  border: 5px #0000;
+  border-style: none solid;
+  display: flex;
+  inline-size: 15px;
+  block-size: 100%;
+  position: absolute;
+  inset-inline-end: -5px;
+  inset-block-start: 0;
+}
+
+.base:hover,
+.focusVisible,
+.resizing {
+  --resizer-color: var(--kbq-background-theme);
+  --resizer-size-width: 2px;
+  --resizer-size-height: 20px;
+}
+
+.resizer {
+  inline-size: var(--resizer-size-width);
+  block-size: var(--resizer-size-height);
+  margin: auto;
+  border-radius: 1px;
+  background-color: var(--resizer-color);
+  transition:
+    background-color var(--kbq-transition-default),
+    inline-size var(--kbq-transition-default),
+    block-size var(--kbq-transition-default);
+}

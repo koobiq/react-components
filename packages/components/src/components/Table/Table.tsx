@@ -1,10 +1,14 @@
 'use client';
 
-import type { Ref } from 'react';
+import { type Ref, useCallback } from 'react';
 import { forwardRef } from 'react';
 
 import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
-import { useTable, useTableState } from '@koobiq/react-primitives';
+import {
+  useTable,
+  useTableState,
+  useTableColumnResizeState,
+} from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 import { Cell, Row, Column, TableBody, TableHeader } from '../Collections';
@@ -36,12 +40,13 @@ function TableRender<T extends object>(
     slotProps,
     selectionMode,
     selectionBehavior,
+    allowsResize,
     renderSortIcon,
     className,
     style,
   } = props;
 
-  const { theadRef } = useTableContainerContext();
+  const { theadRef, tableInlineSize } = useTableContainerContext();
 
   const state = useTableState({
     ...props,
@@ -54,11 +59,32 @@ function TableRender<T extends object>(
   const { collection } = state;
   const { gridProps } = useTable(props, state, domRef);
 
+  const getDefaultMinWidth = useCallback(() => 100, []);
+
+  const layoutState = allowsResize
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useTableColumnResizeState(
+        {
+          // Matches the width of the table itself
+          tableWidth: tableInlineSize ?? 300,
+          getDefaultMinWidth,
+        },
+        state
+      )
+    : undefined;
+
   const tableProps = mergeProps(
     {
-      className: clsx(s.base, fullWidth && s.fullWidth, textNormal, className),
-      'data-sticky-header': stickyHeader || undefined,
+      className: clsx(
+        s.base,
+        fullWidth && s.fullWidth,
+        allowsResize && s.allowsResize,
+        textNormal,
+        className
+      ),
       'data-divider': divider,
+      'data-allows-resize': allowsResize || undefined,
+      'data-sticky-header': stickyHeader || undefined,
       'data-fullwidth': fullWidth || undefined,
       ref: domRef,
       style,
@@ -84,7 +110,11 @@ function TableRender<T extends object>(
                   state={state}
                   column={column}
                   key={column.key}
+                  layoutState={layoutState}
                   renderSortIcon={renderSortIcon}
+                  // onResizeStart={props?.onResizeStart}
+                  // onResize={props?.onResize}
+                  // onResizeEnd={props?.onResizeEnd}
                 />
               )
             )}

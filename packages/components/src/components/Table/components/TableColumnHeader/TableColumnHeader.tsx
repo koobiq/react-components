@@ -4,15 +4,17 @@ import { useRef } from 'react';
 
 import { useFocusRing, mergeProps, clsx } from '@koobiq/react-core';
 import { IconChevronUpS16, IconChevronDownS16 } from '@koobiq/react-icons';
-import { useTableColumnHeader } from '@koobiq/react-primitives';
 import type {
   TableState,
   AriaTableColumnHeaderProps,
+  TableColumnResizeState,
 } from '@koobiq/react-primitives';
+import { useTableColumnHeader } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import type { ColumnProps } from '../../../Collections';
 import type { TableProps } from '../../types';
+import { Resizer } from '../Resizer';
 
 import s from './TableColumnHeader.module.css';
 
@@ -20,6 +22,7 @@ type TableColumnHeaderProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
   state: TableState<T>;
   renderSortIcon?: TableProps<T>['renderSortIcon'];
+  layoutState?: TableColumnResizeState<T>;
 };
 
 const textNormal = utilClasses.typography['text-normal'];
@@ -28,6 +31,7 @@ export function TableColumnHeader<T>({
   column,
   state,
   renderSortIcon,
+  layoutState,
 }: TableColumnHeaderProps<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
 
@@ -38,7 +42,7 @@ export function TableColumnHeader<T>({
   );
 
   const {
-    style,
+    style: styleProp,
     className,
     align = 'start',
     valign = 'middle',
@@ -47,7 +51,7 @@ export function TableColumnHeader<T>({
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const isActive = state.sortDescriptor?.column === column.key;
-  const { allowsSorting } = column.props;
+  const { allowsSorting, allowsResizing } = column.props;
 
   const direction = isActive ? state.sortDescriptor?.direction : undefined;
 
@@ -70,12 +74,15 @@ export function TableColumnHeader<T>({
       data-align={align || undefined}
       data-valign={valign || undefined}
       data-allows-sorting={allowsSorting || undefined}
-      style={style}
       {...mergeProps(columnHeaderProps, focusProps)}
+      style={{
+        ...styleProp,
+        width: layoutState?.getColumnWidth(column.key),
+      }}
       ref={ref}
     >
-      <span className={s.content}>
-        {column.rendered}
+      <span className={s.container}>
+        <span className={s.content}>{column.rendered}</span>
         {allowsSorting && (
           <span
             aria-hidden="true"
@@ -85,6 +92,9 @@ export function TableColumnHeader<T>({
           </span>
         )}
       </span>
+      {allowsResizing && layoutState && (
+        <Resizer column={column} layoutState={layoutState} />
+      )}
     </th>
   );
 }

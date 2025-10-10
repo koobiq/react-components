@@ -11,6 +11,11 @@
   inline-size: 100%;
 }
 
+.allowsResize {
+  table-layout: fixed;
+  inline-size: fit-content;
+}
+
 [data-divider='none'] {
   tbody td {
     &:first-child {

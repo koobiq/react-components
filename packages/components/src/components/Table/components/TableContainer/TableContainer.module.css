@@ -9,7 +9,7 @@
   max-block-size: var(--table-container-max-block-size);
   scroll-padding-block-start: var(--table-container-scroll-padding-top);
 
-  table {
+  table:not([data-allows-resize='true']) {
     inline-size: 100%;
   }
 }

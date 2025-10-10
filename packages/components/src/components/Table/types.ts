@@ -63,6 +63,7 @@ export type TableProps<T> = Pick<
   children?: TablePropChildren<T>;
   /** Ref to the control. */
   ref?: Ref<HTMLTableElement>;
+  allowsResize?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
     root?: ComponentPropsWithRef<'table'>;
