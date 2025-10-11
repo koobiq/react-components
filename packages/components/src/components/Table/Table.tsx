@@ -1,9 +1,15 @@
 'use client';
 
-import { type Ref, useCallback } from 'react';
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
+import { forwardRef, useCallback } from 'react';
 
-import { clsx, useDOMRef, mergeProps, type Node } from '@koobiq/react-core';
+import {
+  clsx,
+  mergeProps,
+  useElementSize,
+  useMultiRef,
+} from '@koobiq/react-core';
+import type { Node } from '@koobiq/react-core';
 import {
   useTable,
   useTableState,
@@ -17,11 +23,11 @@ import {
   TableRow,
   TableCell,
   TableRowGroup,
+  TableContainer,
   TableHeaderRow,
   TableColumnHeader,
   TableSelectAllCell,
   TableCheckboxCell,
-  TableContainer,
   useTableContainerContext,
 } from './components';
 import s from './Table.module.css';
@@ -43,10 +49,16 @@ function TableRender<T extends object>(
     allowsResize,
     renderSortIcon,
     className,
+    onResizeStart,
+    onResize,
+    onResizeEnd,
     style,
   } = props;
 
   const { theadRef, tableInlineSize } = useTableContainerContext();
+  const { ref: domRef, width } = useElementSize();
+
+  const tableRef = useMultiRef([ref, domRef]);
 
   const state = useTableState({
     ...props,
@@ -54,29 +66,25 @@ function TableRender<T extends object>(
       selectionMode === 'multiple' && selectionBehavior !== 'replace',
   });
 
-  const domRef = useDOMRef<HTMLTableElement>(ref);
-
   const { collection } = state;
   const { gridProps } = useTable(props, state, domRef);
 
-  const getDefaultMinWidth = useCallback((column: Node<T>) => {
-    if (column.props.isSelectionCell) return 40;
+  const getDefaultMinWidth = useCallback(
+    (column: Node<T>) => (column.props.isSelectionCell ? 40 : undefined),
+    []
+  );
 
-    return undefined;
-  }, []);
-
-  const getDefaultWidth = useCallback((column: Node<T>) => {
-    if (column.props.isSelectionCell) return 40;
-
-    return undefined;
-  }, []);
+  const getDefaultWidth = useCallback(
+    (column: Node<T>) => (column.props.isSelectionCell ? 40 : undefined),
+    []
+  );
 
   const layoutState = allowsResize
     ? // eslint-disable-next-line react-hooks/rules-of-hooks
       useTableColumnResizeState(
         {
           // Matches the width of the table itself
-          tableWidth: tableInlineSize ?? 300,
+          tableWidth: tableInlineSize ?? width,
           getDefaultMinWidth,
           getDefaultWidth,
         },
@@ -97,7 +105,7 @@ function TableRender<T extends object>(
       'data-allows-resize': allowsResize || undefined,
       'data-sticky-header': stickyHeader || undefined,
       'data-fullwidth': fullWidth || undefined,
-      ref: domRef,
+      ref: tableRef,
       style,
     },
     gridProps,
@@ -124,9 +132,9 @@ function TableRender<T extends object>(
                   key={column.key}
                   layoutState={layoutState}
                   renderSortIcon={renderSortIcon}
-                  // onResizeStart={props?.onResizeStart}
-                  // onResize={props?.onResize}
-                  // onResizeEnd={props?.onResizeEnd}
+                  onResize={onResize}
+                  onResizeEnd={onResizeEnd}
+                  onResizeStart={onResizeStart}
                 />
               )
             )}

@@ -73,7 +73,7 @@
 }
 
 .container:has(.content) {
-  margin-left: -8px;
+  margin-inline-start: -8px;
 }
 
 .container:has(.content:focus-visible) {
@@ -85,7 +85,7 @@
 .content {
   all: unset;
   overflow: hidden;
-  padding-left: 8px;
+  padding-inline-start: 8px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }

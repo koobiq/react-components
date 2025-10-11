@@ -8,6 +8,7 @@ import type {
   TableState,
   AriaTableColumnHeaderProps,
   TableColumnResizeState,
+  AriaTableColumnResizeProps,
 } from '@koobiq/react-primitives';
 import { useTableColumnHeader } from '@koobiq/react-primitives';
 
@@ -23,7 +24,10 @@ type TableColumnHeaderProps<T> = {
   state: TableState<T>;
   renderSortIcon?: TableProps<T>['renderSortIcon'];
   layoutState?: TableColumnResizeState<T>;
-};
+} & Pick<
+  AriaTableColumnResizeProps<T>,
+  'onResizeStart' | 'onResize' | 'onResizeEnd'
+>;
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -32,6 +36,9 @@ export function TableColumnHeader<T>({
   state,
   renderSortIcon,
   layoutState,
+  onResizeStart,
+  onResize,
+  onResizeEnd,
 }: TableColumnHeaderProps<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
 
@@ -42,16 +49,17 @@ export function TableColumnHeader<T>({
   );
 
   const {
-    style: styleProp,
-    className,
     align = 'start',
     valign = 'middle',
+    style: styleProp,
+    className,
+    allowsSorting,
+    allowsResizing,
   }: ColumnProps<T> = column.props;
 
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const isActive = state.sortDescriptor?.column === column.key;
-  const { allowsSorting, allowsResizing } = column.props;
 
   const direction = isActive ? state.sortDescriptor?.direction : undefined;
 
@@ -59,6 +67,12 @@ export function TableColumnHeader<T>({
     direction === 'ascending' ? <IconChevronUpS16 /> : <IconChevronDownS16 />;
 
   const iconToRender = renderSortIcon?.({ direction, isActive }) ?? defaultIcon;
+
+  const columnSortIcon = allowsSorting && (
+    <span aria-hidden="true" className={clsx(s.sortIcon, isActive && s.active)}>
+      {iconToRender}
+    </span>
+  );
 
   return (
     <th
@@ -85,29 +99,21 @@ export function TableColumnHeader<T>({
         <>
           <div className={s.container}>
             <button className={s.content}>{column.rendered}</button>
-            {allowsSorting && (
-              <span
-                aria-hidden="true"
-                className={clsx(s.sortIcon, isActive && s.active)}
-              >
-                {iconToRender}
-              </span>
-            )}
+            {columnSortIcon}
           </div>
-          <Resizer column={column} layoutState={layoutState} />
+          <Resizer
+            column={column}
+            layoutState={layoutState}
+            onResize={onResize}
+            onResizeEnd={onResizeEnd}
+            onResizeStart={onResizeStart}
+          />
         </>
       )}
       {!allowsResizing && (
         <span className={s.container}>
           {column.rendered}
-          {allowsSorting && (
-            <span
-              aria-hidden="true"
-              className={clsx(s.sortIcon, isActive && s.active)}
-            >
-              {iconToRender}
-            </span>
-          )}
+          {columnSortIcon}
         </span>
       )}
     </th>

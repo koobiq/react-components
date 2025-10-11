@@ -8,13 +8,13 @@
   border-spacing: 0;
 }
 
-.fullWidth {
-  inline-size: 100%;
-}
-
 .allowsResize {
   table-layout: fixed;
   inline-size: fit-content;
+}
+
+.fullWidth {
+  inline-size: 100%;
 }
 
 [data-divider='none'] {

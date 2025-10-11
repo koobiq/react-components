@@ -23,8 +23,11 @@ export const TableContainer = polymorphicForwardRef<
     children,
     className,
     blockSize,
+    inlineSize,
     maxBlockSize,
     minBlockSize,
+    minInlineSize,
+    maxInlineSize,
     style: styleProp,
   } = props;
 
@@ -38,6 +41,9 @@ export const TableContainer = polymorphicForwardRef<
     '--table-container-block-size': normalizeBlockSize(blockSize),
     '--table-container-min-block-size': normalizeBlockSize(minBlockSize),
     '--table-container-max-block-size': normalizeBlockSize(maxBlockSize),
+    '--table-container-inline-size': normalizeBlockSize(inlineSize),
+    '--table-container-min-inline-size': normalizeBlockSize(minInlineSize),
+    '--table-container-max-inline-size': normalizeBlockSize(maxInlineSize),
     '--table-container-scroll-padding-top': `${height}px`,
   } as CSSProperties;
 
