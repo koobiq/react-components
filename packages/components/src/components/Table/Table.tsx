@@ -3,13 +3,8 @@
 import type { ComponentRef, Ref } from 'react';
 import { forwardRef, useCallback } from 'react';
 
-import {
-  clsx,
-  mergeProps,
-  useDOMRef,
-  useElementSize,
-  useMultiRef,
-} from '@koobiq/react-core';
+import { once } from '@koobiq/logger';
+import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
 import type { Node } from '@koobiq/react-core';
 import {
   useTable,
@@ -144,9 +139,16 @@ function TableBase<T extends object>(props: TableBaseProps<T>) {
 function ResizableTable<T extends object>(props: ResizableTableProps<T>) {
   const { state, tableRef } = props;
 
-  const { ref: domRef, width: tableWidth } = useElementSize();
+  const { tableContainerWidth } = useTableContainerContext();
 
-  const ref = useMultiRef([tableRef, domRef]);
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    tableContainerWidth === undefined
+  ) {
+    once.warn(
+      'Table: if the "Table" supports column resizing, then it should also be wrapped in the "TableContainer" that defines the overall table width.'
+    );
+  }
 
   const getDefaultMinWidth = useCallback(
     (column: Node<T>) => (column.props.isSelectionCell ? 40 : undefined),
@@ -161,14 +163,14 @@ function ResizableTable<T extends object>(props: ResizableTableProps<T>) {
   const layoutState = useTableColumnResizeState(
     {
       // Matches the width of the table itself
-      tableWidth: tableWidth || 300,
+      tableWidth: tableContainerWidth ?? 300,
       getDefaultMinWidth,
       getDefaultWidth,
     },
     state
   );
 
-  return <TableBase {...props} tableRef={ref} layoutState={layoutState} />;
+  return <TableBase {...props} tableRef={tableRef} layoutState={layoutState} />;
 }
 
 function TableRender<T extends object>(

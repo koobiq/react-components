@@ -15,7 +15,7 @@
   max-inline-size: var(--table-container-max-inline-size);
   scroll-padding-block-start: var(--table-container-scroll-padding-top);
 
-  table {
+  table:not([data-resizable='true']) {
     inline-size: 100%;
   }
 }

@@ -1,5 +1,6 @@
 import {
   Meta,
+  Alert,
   Story,
   Props,
   Status,
@@ -139,8 +140,16 @@ For detailed API reference, see the [React Aria — useAsyncList](https://react-
 
 ## Resizable Columns
 
-Tables can be made resizable. To enable resizing, set the `isResizable` prop to `true`.
-And to make a column resizable, set the `allowsResizing` prop to `true` on the column.
+Tables can be made resizable by setting the `isResizable` prop to `true`, and to make a column resizable,
+set the `allowsResizing` prop to true on the column.
+
+<Alert status="info">
+  If the `Table` supports column resizing, then it should also be wrapped in the
+  `TableContainer` that defines the overall table width.
+</Alert>
+
+The `Table.Column` component supports four different width props that allow you
+to control column sizing behavior: `defaultWidth`, `width`, `minWidth`, and `maxWidth`.
 
 <Story of={Stories.ResizableColumns} />
 

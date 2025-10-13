@@ -6,6 +6,7 @@ import {
   clsx,
   useElementSize,
   polymorphicForwardRef,
+  useMultiRef,
 } from '@koobiq/react-core';
 
 import s from './TableContainer.module.css';
@@ -28,8 +29,9 @@ export const TableContainer = polymorphicForwardRef<
   } = props;
 
   const { ref: theadRef, height } = useElementSize();
+  const { ref: tableSizeRef, width: tableContainerWidth } = useElementSize();
 
-  const tableRef = ref;
+  const tableRef = useMultiRef([tableSizeRef, ref]);
 
   const style = {
     ...styleProp,
@@ -40,7 +42,7 @@ export const TableContainer = polymorphicForwardRef<
   } as CSSProperties;
 
   return (
-    <TableContainerContext.Provider value={{ theadRef }}>
+    <TableContainerContext.Provider value={{ theadRef, tableContainerWidth }}>
       <Tag className={clsx(s.base, className)} style={style} ref={tableRef}>
         {children}
       </Tag>

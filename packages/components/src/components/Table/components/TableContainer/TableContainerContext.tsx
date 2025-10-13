@@ -4,6 +4,7 @@ import { createContext, type Ref, useContext } from 'react';
 
 export type TableContainerContextProps = {
   theadRef: Ref<HTMLElement>;
+  tableContainerWidth?: number;
 };
 
 export const TableContainerContext = createContext<TableContainerContextProps>(
