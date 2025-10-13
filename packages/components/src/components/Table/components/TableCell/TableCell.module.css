@@ -51,7 +51,7 @@
   outline: 2px solid var(--kbq-states-line-focus-theme);
 }
 
-[data-allows-resize='true'] .base {
+[data-resizable='true'] .base {
   text-overflow: ellipsis;
   overflow: hidden;
 }
