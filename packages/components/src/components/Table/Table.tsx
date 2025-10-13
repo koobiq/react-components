@@ -55,8 +55,8 @@ function TableRender<T extends object>(
     style,
   } = props;
 
-  const { theadRef, tableInlineSize } = useTableContainerContext();
-  const { ref: domRef, width } = useElementSize();
+  const { theadRef } = useTableContainerContext();
+  const { ref: domRef, width: tableWidth } = useElementSize();
 
   const tableRef = useMultiRef([ref, domRef]);
 
@@ -84,7 +84,7 @@ function TableRender<T extends object>(
       useTableColumnResizeState(
         {
           // Matches the width of the table itself
-          tableWidth: tableInlineSize ?? width,
+          tableWidth: tableWidth || 300,
           getDefaultMinWidth,
           getDefaultWidth,
         },
