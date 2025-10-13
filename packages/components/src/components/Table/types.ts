@@ -53,20 +53,16 @@ export type TableProps<T> = Pick<
      * @default 'none'
      */
     divider?: TablePropDivider;
-    /**
-     * If `true`, the button will take up the full width of its container.
-     */
+    /** If `true`, the button will take up the full width of its container. */
     fullWidth?: boolean;
-    /**
-     * Flag indicating a fixed table header.
-     */
+    /** Flag indicating a fixed table header. */
     stickyHeader?: boolean;
+    /** Render function for a custom sort icon for the column */
+    renderSortIcon?: TablePropSortIconRender;
     /**
      * The elements that make up the table.
      * Includes the Table.Header, Table.Body, Table.Column, and Table.Row.
      */
-    /** Render function for a custom sort icon for the column */
-    renderSortIcon?: TablePropSortIconRender;
     children?: TablePropChildren<T>;
     /** Ref to the control. */
     ref?: Ref<HTMLTableElement>;
