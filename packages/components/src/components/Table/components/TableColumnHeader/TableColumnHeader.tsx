@@ -74,6 +74,8 @@ export function TableColumnHeader<T>({
     </span>
   );
 
+  const isResizable = allowsResizing && layoutState;
+
   return (
     <th
       className={clsx(
@@ -88,6 +90,7 @@ export function TableColumnHeader<T>({
       data-align={align || undefined}
       data-valign={valign || undefined}
       data-allows-sorting={allowsSorting || undefined}
+      data-allows-resizing={isResizable || undefined}
       {...mergeProps(columnHeaderProps, focusProps)}
       style={{
         ...styleProp,
@@ -95,7 +98,7 @@ export function TableColumnHeader<T>({
       }}
       ref={ref}
     >
-      {allowsResizing && layoutState && (
+      {isResizable ? (
         <>
           <div className={s.container}>
             <button className={s.content}>{column.rendered}</button>
@@ -109,8 +112,7 @@ export function TableColumnHeader<T>({
             onResizeStart={onResizeStart}
           />
         </>
-      )}
-      {!allowsResizing && (
+      ) : (
         <span className={s.container}>
           {column.rendered}
           {columnSortIcon}

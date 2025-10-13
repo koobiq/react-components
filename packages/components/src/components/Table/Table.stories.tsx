@@ -739,7 +739,7 @@ export const RenderSortIcon: Story = {
               <IconArrowDownS16 />
             )
           }
-          allowsResize
+          isResizable
           selectionMode="multiple"
           {...args}
         >
@@ -777,7 +777,7 @@ export const ResizableColumns: Story = {
       aria-label="Example static collection table"
       stickyHeader
       fullWidth
-      allowsResize
+      isResizable
       {...args}
     >
       <Table.Header>

@@ -1,11 +1,12 @@
 'use client';
 
-import type { Ref } from 'react';
+import type { ComponentRef, Ref } from 'react';
 import { forwardRef, useCallback } from 'react';
 
 import {
   clsx,
   mergeProps,
+  useDOMRef,
   useElementSize,
   useMultiRef,
 } from '@koobiq/react-core';
@@ -14,6 +15,10 @@ import {
   useTable,
   useTableState,
   useTableColumnResizeState,
+} from '@koobiq/react-primitives';
+import type {
+  TableState,
+  TableColumnResizeState,
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
@@ -35,77 +40,55 @@ import type { TableComponent, TableProps, TableRef } from './types';
 
 const textNormal = utilClasses.typography['text-normal'];
 
-function TableRender<T extends object>(
-  props: TableProps<T>,
-  ref?: Ref<TableRef>
-) {
+type TableBaseProps<T> = TableProps<T> & {
+  state: TableState<T>;
+  tableRef?: Ref<HTMLTableElement>;
+  layoutState?: TableColumnResizeState<T>;
+};
+type ResizableTableProps<T> = TableProps<T> & {
+  state: TableState<T>;
+  tableRef?: Ref<HTMLTableElement>;
+};
+
+function TableBase<T extends object>(props: TableBaseProps<T>) {
   const {
     divider = 'none',
     stickyHeader,
     fullWidth,
     slotProps,
-    selectionMode,
-    selectionBehavior,
-    allowsResize,
+    isResizable,
     renderSortIcon,
     className,
+    tableRef,
+    state,
     onResizeStart,
     onResize,
     onResizeEnd,
+    layoutState,
     style,
   } = props;
 
   const { theadRef } = useTableContainerContext();
-  const { ref: domRef, width: tableWidth } = useElementSize();
 
-  const tableRef = useMultiRef([ref, domRef]);
-
-  const state = useTableState({
-    ...props,
-    showSelectionCheckboxes:
-      selectionMode === 'multiple' && selectionBehavior !== 'replace',
-  });
+  const domRef = useDOMRef<ComponentRef<'table'>>(tableRef);
 
   const { collection } = state;
   const { gridProps } = useTable(props, state, domRef);
-
-  const getDefaultMinWidth = useCallback(
-    (column: Node<T>) => (column.props.isSelectionCell ? 40 : undefined),
-    []
-  );
-
-  const getDefaultWidth = useCallback(
-    (column: Node<T>) => (column.props.isSelectionCell ? 40 : undefined),
-    []
-  );
-
-  const layoutState = allowsResize
-    ? // eslint-disable-next-line react-hooks/rules-of-hooks
-      useTableColumnResizeState(
-        {
-          // Matches the width of the table itself
-          tableWidth: tableWidth || 300,
-          getDefaultMinWidth,
-          getDefaultWidth,
-        },
-        state
-      )
-    : undefined;
 
   const tableProps = mergeProps(
     {
       className: clsx(
         s.base,
         fullWidth && s.fullWidth,
-        allowsResize && s.allowsResize,
+        isResizable && s.resizable,
         textNormal,
         className
       ),
       'data-divider': divider,
-      'data-allows-resize': allowsResize || undefined,
+      'data-resizable': isResizable || undefined,
       'data-sticky-header': stickyHeader || undefined,
       'data-fullwidth': fullWidth || undefined,
-      ref: tableRef,
+      ref: domRef,
       style,
     },
     gridProps,
@@ -155,6 +138,55 @@ function TableRender<T extends object>(
         ))}
       </TableRowGroup>
     </table>
+  );
+}
+
+function ResizableTable<T extends object>(props: ResizableTableProps<T>) {
+  const { state, tableRef } = props;
+
+  const { ref: domRef, width: tableWidth } = useElementSize();
+
+  const ref = useMultiRef([tableRef, domRef]);
+
+  const getDefaultMinWidth = useCallback(
+    (column: Node<T>) => (column.props.isSelectionCell ? 40 : undefined),
+    []
+  );
+
+  const getDefaultWidth = useCallback(
+    (column: Node<T>) => (column.props.isSelectionCell ? 40 : undefined),
+    []
+  );
+
+  const layoutState = useTableColumnResizeState(
+    {
+      // Matches the width of the table itself
+      tableWidth: tableWidth || 300,
+      getDefaultMinWidth,
+      getDefaultWidth,
+    },
+    state
+  );
+
+  return <TableBase {...props} tableRef={ref} layoutState={layoutState} />;
+}
+
+function TableRender<T extends object>(
+  props: TableProps<T>,
+  ref?: Ref<TableRef>
+) {
+  const { selectionMode, selectionBehavior, isResizable } = props;
+
+  const state = useTableState({
+    ...props,
+    showSelectionCheckboxes:
+      selectionMode === 'multiple' && selectionBehavior !== 'replace',
+  });
+
+  return isResizable ? (
+    <ResizableTable {...props} state={state} tableRef={ref} />
+  ) : (
+    <TableBase {...props} state={state} tableRef={ref} />
   );
 }
 

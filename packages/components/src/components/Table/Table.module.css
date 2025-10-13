@@ -8,7 +8,7 @@
   border-spacing: 0;
 }
 
-.allowsResize {
+.resizable {
   table-layout: fixed;
   inline-size: fit-content;
 }
