@@ -2,14 +2,20 @@
   --table-container-block-size: ;
   --table-container-min-block-size: unset;
   --table-container-max-block-size: unset;
+  --table-container-inline-size: ;
+  --table-container-min-inline-size: unset;
+  --table-container-max-inline-size: unset;
   --table-container-scroll-padding-top: 0;
   overflow: auto;
   block-size: var(--table-container-block-size);
   min-block-size: var(--table-container-min-block-size);
   max-block-size: var(--table-container-max-block-size);
+  inline-size: var(--table-container-inline-size);
+  min-inline-size: var(--table-container-min-inline-size);
+  max-inline-size: var(--table-container-max-inline-size);
   scroll-padding-block-start: var(--table-container-scroll-padding-top);
 
-  table {
+  table:not([data-resizable='true']) {
     inline-size: 100%;
   }
 }

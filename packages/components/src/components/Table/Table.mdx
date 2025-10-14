@@ -1,5 +1,6 @@
 import {
   Meta,
+  Alert,
   Story,
   Props,
   Status,
@@ -136,6 +137,21 @@ The `useAsyncList` keeps items synchronized with the current sorting state (colu
 and supports asynchronous updates — making it ideal for remote data sources and dynamic tables.
 
 For detailed API reference, see the [React Aria — useAsyncList](https://react-spectrum.adobe.com/react-stately/useAsyncList.html#useasynclist).
+
+## Resizable Columns
+
+Tables can be made resizable by setting the `isResizable` prop to `true`, and to make a column resizable,
+set the `allowsResizing` prop to `true` on the `Table.Column`.
+
+<Alert status="info">
+  If the Table supports column resizing, then it should also be wrapped in the
+  `TableContainer` that defines the overall table width.
+</Alert>
+
+The `Table.Column` component supports four different width props that allow you
+to control column sizing behavior: `defaultWidth`, `width`, `minWidth`, and `maxWidth`.
+
+<Story of={Stories.ResizableColumns} />
 
 ## Client side routing
 

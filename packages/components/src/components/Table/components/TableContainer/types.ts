@@ -4,7 +4,7 @@ export type TableContainerPropBlockSize = CSSProperties['blockSize'];
 
 export type TableContainerPropMinBlockSize = CSSProperties['minBlockSize'];
 
-export type TableContainerPropMaxBlockSize = CSSProperties['maxInlineSize'];
+export type TableContainerPropMaxBlockSize = CSSProperties['maxBlockSize'];
 
 export type TableContainerBaseProps = {
   /** Height of the table container. */

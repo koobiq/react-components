@@ -7,7 +7,10 @@ import type {
   Ref,
 } from 'react';
 
-import type { TableStateProps } from '@koobiq/react-primitives';
+import type {
+  AriaTableColumnResizeProps,
+  TableStateProps,
+} from '@koobiq/react-primitives';
 import type { Key } from '@react-types/shared';
 
 export const tablePropDivider = ['none', 'row'] as const;
@@ -32,44 +35,46 @@ export type TableProps<T> = Pick<
   | 'disabledBehavior'
   | 'sortDescriptor'
   | 'onSortChange'
-> & {
-  /** Handler that is called when a user performs an action on the row. */
-  onRowAction?: (key: Key) => void;
-  /** Handler that is called when a user performs an action on the cell. */
-  onCellAction?: (key: Key) => void;
-  /** Inline styles. */
-  style?: CSSProperties;
-  /** Additional CSS-classes. */
-  className?: string;
-  /**
-   * Type of separators in the table.
-   * @default 'none'
-   */
-  divider?: TablePropDivider;
-  /**
-   * If `true`, the button will take up the full width of its container.
-   */
-  fullWidth?: boolean;
-  /**
-   * Flag indicating a fixed table header.
-   */
-  stickyHeader?: boolean;
-  /**
-   * The elements that make up the table.
-   * Includes the Table.Header, Table.Body, Table.Column, and Table.Row.
-   */
-  /** Render function for a custom sort icon for the column */
-  renderSortIcon?: TablePropSortIconRender;
-  children?: TablePropChildren<T>;
-  /** Ref to the control. */
-  ref?: Ref<HTMLTableElement>;
-  /** The props used for each slot inside. */
-  slotProps?: {
-    root?: ComponentPropsWithRef<'table'>;
-    header?: ComponentPropsWithRef<'thead'>;
-    body?: ComponentPropsWithRef<'tbody'>;
+> &
+  Pick<
+    AriaTableColumnResizeProps<T>,
+    'onResizeStart' | 'onResize' | 'onResizeEnd'
+  > & {
+    /** Handler that is called when a user performs an action on the row. */
+    onRowAction?: (key: Key) => void;
+    /** Handler that is called when a user performs an action on the cell. */
+    onCellAction?: (key: Key) => void;
+    /** Inline styles. */
+    style?: CSSProperties;
+    /** Additional CSS-classes. */
+    className?: string;
+    /**
+     * Type of separators in the table.
+     * @default 'none'
+     */
+    divider?: TablePropDivider;
+    /** If `true`, the button will take up the full width of its container. */
+    fullWidth?: boolean;
+    /** Flag indicating a fixed table header. */
+    stickyHeader?: boolean;
+    /** Render function for a custom sort icon for the column */
+    renderSortIcon?: TablePropSortIconRender;
+    /**
+     * The elements that make up the table.
+     * Includes the Table.Header, Table.Body, Table.Column, and Table.Row.
+     */
+    children?: TablePropChildren<T>;
+    /** Ref to the control. */
+    ref?: Ref<HTMLTableElement>;
+    /** Enables resizable width for columns that have `allowsSorting` enabled. */
+    isResizable?: boolean;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      root?: ComponentPropsWithRef<'table'>;
+      header?: ComponentPropsWithRef<'thead'>;
+      body?: ComponentPropsWithRef<'tbody'>;
+    };
   };
-};
 
 export type TableComponent = <T>(props: TableProps<T>) => ReactElement | null;
 

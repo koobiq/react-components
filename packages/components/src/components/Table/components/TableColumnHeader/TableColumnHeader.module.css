@@ -1,26 +1,34 @@
 .base {
   outline: none;
   cursor: default;
+  padding-block: 0;
+  position: relative;
   box-sizing: border-box;
   color: var(--table-header-cell-color);
   border-block-end: var(--table-border);
-  padding: var(--table-header-cell-padding);
+  padding-inline: var(--table-header-cell-padding-inline);
+  text-align: start;
 }
 
+/* align */
 .start,
 .left {
+  --table-column-align: start;
   text-align: start;
 }
 
 .center {
+  --table-column-align: center;
   text-align: center;
 }
 
 .end,
 .right {
+  --table-column-align: end;
   text-align: end;
 }
 
+/* valign */
 .top {
   vertical-align: top;
 }
@@ -45,25 +53,51 @@
   vertical-align: text-top;
 }
 
+/* focus-visible */
 .focusVisible {
   outline-offset: -2px;
   outline: 2px solid var(--kbq-states-line-focus-theme);
 }
 
+/* sortable */
 .sortable {
   cursor: pointer;
 }
 
+/* container */
+.container {
+  display: flex;
+  gap: var(--kbq-size-s);
+  padding-block: var(--table-header-cell-padding-block);
+  justify-content: var(--table-column-align);
+}
+
+.container:has(.content) {
+  margin-inline-start: -8px;
+}
+
+.container:has(.content:focus-visible) {
+  outline-offset: -2px;
+  outline: 2px solid var(--kbq-states-line-focus-theme);
+}
+
 /* content */
 .content {
-  display: inline-flex;
-  gap: var(--kbq-size-s);
+  all: unset;
+  overflow: hidden;
+  padding-inline-start: 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* sort-icon */
 .sortIcon {
   display: flex;
   visibility: hidden;
+
+  &.active {
+    visibility: visible;
+  }
 
   &::after {
     font-size: 0;
@@ -73,8 +107,4 @@
   & > * {
     margin: auto;
   }
-}
-
-.active {
-  visibility: visible;
 }

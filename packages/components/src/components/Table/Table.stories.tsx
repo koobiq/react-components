@@ -731,11 +731,16 @@ export const RenderSortIcon: Story = {
         renderSortIcon={({ direction }) =>
           direction === 'ascending' ? <IconArrowUpS16 /> : <IconArrowDownS16 />
         }
+        selectionMode="multiple"
         {...args}
       >
         <Table.Header columns={columns}>
           {(column) => (
-            <Table.Column key={column.id} allowsSorting={column.id !== 'name'}>
+            <Table.Column
+              key={column.id}
+              allowsSorting={column.id !== 'name'}
+              allowsResizing
+            >
               {column.name}
             </Table.Column>
           )}
@@ -750,6 +755,98 @@ export const RenderSortIcon: Story = {
       </Table>
     );
   },
+};
+
+export const ResizableColumns: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: (args) => (
+    <TableContainer>
+      <Table
+        selectionMode="multiple"
+        aria-label="Example static collection table"
+        stickyHeader
+        fullWidth
+        isResizable
+        {...args}
+      >
+        <Table.Header>
+          <Table.Column allowsResizing>Threat Category</Table.Column>
+          <Table.Column allowsResizing defaultWidth={300}>
+            Description
+          </Table.Column>
+          <Table.Column allowsResizing minWidth={100}>
+            Risk Level
+          </Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Social Engineering</Table.Cell>
+            <Table.Cell>Manipulation of individuals to gain access</Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-warning">Medium</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Zero-Day Exploits</Table.Cell>
+            <Table.Cell>
+              Unknown vulnerabilities exploited immediately
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-error">High</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Insider Threats</Table.Cell>
+            <Table.Cell>
+              Malicious or careless actions by internal users
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-error">Medium–High</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Supply Chain Attack</Table.Cell>
+            <Table.Cell>
+              Compromise of third-party software or services
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-error">High</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Denial of Service</Table.Cell>
+            <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-contrast">Low-Medium</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Denial of Service</Table.Cell>
+            <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-contrast">Low-Medium</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Denial of Service</Table.Cell>
+            <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-contrast">Low-Medium</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Denial of Service</Table.Cell>
+            <Table.Cell>Flooding resources to disrupt availability</Table.Cell>
+            <Table.Cell>
+              <Badge variant="fade-contrast">Low-Medium</Badge>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </TableContainer>
+  ),
 };
 
 export const RowActions: Story = {
