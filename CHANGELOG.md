@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.14.0](https://github.com/koobiq/react-components/compare/0.13.1...0.14.0) (2025-10-14)
+
+### 🚀 Features
+
+- **Table:** support resizable columns (DS-4229) ([360471e](https://github.com/koobiq/react-components/commit/360471e99f9cbaa92e5ba8190db299afa4c77fd7))
+
+### 🐞 Bug Fixes
+
+- **List.Item:** forward `data-testid` prop to root element ([b884cd2](https://github.com/koobiq/react-components/commit/b884cd227f6c2915d4ab5cbb0d34fe393ad62a98))
+- **Table,List:** fix client-side routing via Provider ([f5a38cb](https://github.com/koobiq/react-components/commit/f5a38cbfcc3be2ee11fc2c86ffd7d63cbe538cc4))
+- **Table.Cell:** forward `data-testid` prop to root element ([63c89fa](https://github.com/koobiq/react-components/commit/63c89faee7d684d0148710c48d4bf64577e57183))
+- **Table.Row:** forward `data-testid` prop to root element ([c34f03e](https://github.com/koobiq/react-components/commit/c34f03e9c3746f29398ae42023806fac7efa646b))
+
 ## [0.13.1](https://github.com/koobiq/react-components/compare/0.13.0...0.13.1) (2025-10-09)
 
 ### 🐞 Bug Fixes
