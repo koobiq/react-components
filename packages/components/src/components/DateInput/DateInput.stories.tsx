@@ -26,7 +26,6 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
-  tags: ['status:updated'],
 } satisfies Meta<typeof DateInput>;
 
 export default meta;

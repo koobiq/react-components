@@ -24,7 +24,6 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
-  tags: ['status:updated'],
 } satisfies Meta<typeof TimePicker>;
 
 export default meta;

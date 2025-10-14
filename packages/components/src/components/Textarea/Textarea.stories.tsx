@@ -15,7 +15,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:updated'],
 } satisfies Meta<typeof Textarea>;
 
 export default meta;

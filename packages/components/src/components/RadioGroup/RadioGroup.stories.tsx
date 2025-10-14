@@ -17,7 +17,6 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
-  tags: ['status:updated'],
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;
