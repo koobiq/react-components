@@ -4,6 +4,8 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { Provider } from '../Provider';
+
 import { Link } from './Link';
 
 describe('Link', () => {
@@ -92,5 +94,27 @@ describe('Link', () => {
       expect(props.onPress).toHaveBeenCalledTimes(0);
       expect(linkAsButton).toHaveAttribute('aria-disabled', 'true');
     });
+  });
+
+  it('check a client side routing', async () => {
+    const onNavigate = vi.fn();
+
+    render(
+      <Provider
+        router={{
+          navigate: () => {
+            onNavigate();
+          },
+        }}
+      >
+        <Link href="/" {...baseProps}>
+          Link
+        </Link>
+      </Provider>
+    );
+
+    await userEvent.click(getRoot());
+
+    expect(onNavigate).toBeCalled();
   });
 });

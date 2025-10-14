@@ -1,8 +1,10 @@
 import { createRef } from 'react';
 
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
+
+import { Provider } from '../Provider';
 
 import { Table } from './index';
 import type { TableProps } from './types';
@@ -171,5 +173,34 @@ describe('Table', () => {
     if (first) await userEvent.click(first);
 
     expect(onSelectionChange).toBeCalledTimes(0);
+  });
+
+  it('check a client side routing', async () => {
+    const onNavigate = vi.fn();
+
+    render(
+      <Provider
+        router={{
+          navigate: () => {
+            onNavigate();
+          },
+        }}
+      >
+        <Table aria-label="Libraries">
+          <Table.Header>
+            <Table.Column>Name</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row href="/test" data-testid="link">
+              <Table.Cell>Foo</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </Provider>
+    );
+
+    await userEvent.click(screen.getByTestId('link'));
+
+    expect(onNavigate).toBeCalled();
   });
 });

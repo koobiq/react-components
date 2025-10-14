@@ -1,7 +1,10 @@
 import { createRef } from 'react';
 
 import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
+
+import { Provider } from '../Provider';
 
 import { List } from './index';
 
@@ -61,5 +64,29 @@ describe('List', () => {
       const root = getItem();
       expect(root?.className).toContain(className);
     });
+  });
+
+  it('check a client side routing', async () => {
+    const onNavigate = vi.fn();
+
+    render(
+      <Provider
+        router={{
+          navigate: () => {
+            onNavigate();
+          },
+        }}
+      >
+        <List aria-label="Links">
+          <List.Item href="/" data-testid="link">
+            link
+          </List.Item>
+        </List>
+      </Provider>
+    );
+
+    await userEvent.click(screen.getByTestId('link'));
+
+    expect(onNavigate).toBeCalled();
   });
 });
