@@ -6,6 +6,8 @@ import { useFocusRing, mergeProps, useHover, clsx } from '@koobiq/react-core';
 import { useTableRow } from '@koobiq/react-primitives';
 import type { TableState, GridRowProps } from '@koobiq/react-primitives';
 
+import type { RowProps } from '../../../Collections';
+
 import s from './TableRow.module.css';
 
 type TableRowProps<T> = {
@@ -26,7 +28,11 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
     ref
   );
 
-  const { style, className } = item.props;
+  const {
+    style,
+    className,
+    'data-testid': dataTestId,
+  }: RowProps<T> = item.props;
 
   const { isFocusVisible, focusProps } = useFocusRing();
   const { isHovered, hoverProps } = useHover({ isDisabled });
@@ -48,6 +54,7 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
       data-pressed={isPressed || undefined}
       data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(rowProps, hoverProps, focusProps)}
+      data-testid={dataTestId}
       style={style}
       ref={ref}
     >
