@@ -28,6 +28,7 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
     className,
     align = 'start',
     valign = 'middle',
+    'data-testid': dataTestId,
   }: CellProps = cell.props;
 
   return (
@@ -43,6 +44,7 @@ export function TableCell<T>({ cell, state }: TableCellProps<T>) {
       )}
       data-align={align || undefined}
       data-valign={valign || undefined}
+      data-testid={dataTestId}
       style={style}
       ref={ref}
     >
