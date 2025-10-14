@@ -46,6 +46,9 @@ export * from '@react-stately/tooltip';
 export * from '@react-aria/datepicker';
 export * from '@react-stately/datepicker';
 
+export * from '@react-aria/tabs';
+export * from '@react-stately/tabs';
+
 export * from '@react-aria/table';
 export * from '@react-stately/table';
 
