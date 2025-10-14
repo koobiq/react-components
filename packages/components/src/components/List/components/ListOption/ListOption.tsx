@@ -8,6 +8,7 @@ import { useOption } from '@koobiq/react-primitives';
 import type { ListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
+import type { ItemProps } from '../../../Collections';
 
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
@@ -18,7 +19,12 @@ export type ListOptionProps<T> = {
 };
 
 export function ListOption<T>({ item, state }: ListOptionProps<T>) {
-  const { href, className, style } = item.props;
+  const {
+    href,
+    style,
+    className,
+    'data-testid': dataTestId,
+  }: ItemProps<T> = item.props;
 
   const ref = useRef(null);
 
@@ -45,6 +51,7 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       data-focus-visible={isFocusVisible || undefined}
+      data-testid={dataTestId}
     >
       {item.rendered}
     </Tag>
