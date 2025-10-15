@@ -9,7 +9,7 @@
   --button-padding-block: var(--kbq-size-xs);
   --button-padding-inline: var(--kbq-size-m);
   --button-outline-width: var(--kbq-size-3xs);
-  --button-boder-width: var(--kbq-size-border-width);
+  --button-border-width: var(--kbq-size-border-width);
   border: none;
   outline: none;
   cursor: pointer;
@@ -42,7 +42,7 @@
     border-radius: inherit;
     z-index: var(--kbq-layer-absolute);
     transition: border-color var(--kbq-transition-default);
-    border: var(--button-boder-width) solid
+    border: var(--button-border-width) solid
       var(--button-border-color, transparent);
   }
 
