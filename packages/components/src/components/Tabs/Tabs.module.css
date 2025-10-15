@@ -32,6 +32,7 @@
 
 .disabled {
   --tab-color: var(--kbq-states-foreground-disabled);
+  cursor: not-allowed;
 }
 
 .selected {
