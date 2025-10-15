@@ -20,7 +20,10 @@ export function Tabs<T extends object>(props: TabProps<T>) {
   const { tabListProps } = useTabList(props, state, ref);
 
   return (
-    <div className={clsx(orientation && s[orientation])}>
+    <div
+      data-orientation={orientation}
+      className={clsx(s.container, orientation && s[orientation])}
+    >
       <div
         {...tabListProps}
         className={clsx(s.base, textNormalMedium)}
@@ -30,7 +33,9 @@ export function Tabs<T extends object>(props: TabProps<T>) {
           <TabItem key={item.key} item={item} state={state} />
         ))}
       </div>
-      <TabPanel key={state.selectedItem?.key} state={state} />
+      {state.selectedItem?.hasChildNodes && (
+        <TabPanel key={state.selectedItem?.key} state={state} />
+      )}
     </div>
   );
 }
