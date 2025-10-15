@@ -6,6 +6,7 @@
 .tab {
   --tab-outline-color: transparent;
   --tab-outline-width: var(--kbq-size-3xs);
+  --tab-color: var(--kbq-foreground-contrast);
 
   border-radius: var(--kbq-size-s);
   padding-inline: var(--kbq-size-m);
@@ -15,6 +16,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  color: var(--tab-color);
   outline-offset: calc(-1 * var(--button-outline-width));
   outline: var(--tab-outline-width) solid var(--tab-outline-color);
 
@@ -26,6 +28,10 @@
   &:focus-visible {
     --tab-outline-color: var(--kbq-states-line-focus-theme);
   }
+}
+
+.disabled {
+  --tab-color: var(--kbq-states-foreground-disabled);
 }
 
 .selected {

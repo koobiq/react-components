@@ -13,11 +13,17 @@ export type TabProps<T> = {
 export function Tab<T>({ item, state }: TabProps<T>) {
   const { key, rendered } = item;
   const ref = useRef(null);
-  const { tabProps, isSelected } = useTab({ key }, state, ref);
+  const { tabProps, isSelected, isDisabled } = useTab({ key }, state, ref);
 
   return (
     <div
-      className={clsx(s.tab, isSelected && s.selected)}
+      className={clsx(
+        s.tab,
+        isSelected && s.selected,
+        isDisabled && s.disabled
+      )}
+      data-disabled={isDisabled || undefined}
+      data-selected={isSelected || undefined}
       {...tabProps}
       ref={ref}
     >
