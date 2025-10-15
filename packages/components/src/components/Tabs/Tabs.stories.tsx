@@ -213,7 +213,7 @@ export const Controlled: Story = {
 export const Links: Story = {
   render: function Render(args) {
     return (
-      <Tabs aria-label="Tabs" {...args}>
+      <Tabs aria-label="Tabs" keyboardActivation="manual" {...args}>
         <Tab key="/" href="/" title="Home" />
         <Tab key="/photos" href="/photos" title="Photos" />
         <Tab key="/music" href="/music" title="Music" />
