@@ -6,14 +6,14 @@ import { useTabList, useTabListState } from '@koobiq/react-primitives';
 import { utilClasses } from '../../styles/utility';
 import { Item } from '../Collections';
 
-import { Tab } from './Tab';
+import { Tab as TabItem } from './Tab';
 import { TabPanel } from './TabPanel';
 import s from './Tabs.module.css';
 import type { TabProps } from './types';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
-export function TabsComponent<T extends object>(props: TabProps<T>) {
+export function Tabs<T extends object>(props: TabProps<T>) {
   const state = useTabListState<T>(props);
   const ref = useRef(null);
   const { orientation } = props;
@@ -27,7 +27,7 @@ export function TabsComponent<T extends object>(props: TabProps<T>) {
         ref={ref}
       >
         {[...state.collection].map((item) => (
-          <Tab key={item.key} item={item} state={state} />
+          <TabItem key={item.key} item={item} state={state} />
         ))}
       </div>
       <TabPanel key={state.selectedItem?.key} state={state} />
@@ -35,14 +35,6 @@ export function TabsComponent<T extends object>(props: TabProps<T>) {
   );
 }
 
-TabsComponent.displayName = 'Tabs';
+Tabs.displayName = 'Tabs';
 
-type CompoundedComponent = typeof TabsComponent & {
-  Tab: typeof Item;
-  Panel: typeof TabPanel;
-};
-
-export const Tabs = TabsComponent as CompoundedComponent;
-
-Tabs.Tab = Item;
-Tabs.Panel = TabPanel;
+export const Tab = Item;
