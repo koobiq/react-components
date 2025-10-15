@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
+import type { Ref, CSSProperties } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useDOMRef } from '@koobiq/react-core';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
@@ -9,15 +10,27 @@ import { Item } from '../Collections';
 import { Tab as TabItem } from './Tab';
 import { TabPanel } from './TabPanel';
 import s from './Tabs.module.css';
-import type { TabProps } from './types';
+import type { TabProps, TabsComponent, TabsRef } from './types';
+import { getActiveTab, getThumbCssVars } from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
-export function Tabs<T extends object>(props: TabProps<T>) {
-  const state = useTabListState<T>(props);
-  const ref = useRef(null);
+export function TabsRender<T extends object>(
+  props: Omit<TabProps<T>, 'ref'>,
+  ref: Ref<TabsRef>
+) {
   const { orientation } = props;
-  const { tabListProps } = useTabList(props, state, ref);
+  const state = useTabListState<T>(props);
+  const { selectedKey, selectedItem } = state;
+  const domRef = useDOMRef(ref);
+  const { tabListProps } = useTabList(props, state, domRef);
+  const [thumbStyle, setThumbStyle] = useState<CSSProperties>();
+
+  useEffect(() => {
+    const activeTab = getActiveTab(domRef.current);
+
+    if (activeTab) setThumbStyle(getThumbCssVars(activeTab, orientation));
+  }, [selectedKey]);
 
   return (
     <div
@@ -27,19 +40,20 @@ export function Tabs<T extends object>(props: TabProps<T>) {
       <div
         {...tabListProps}
         className={clsx(s.base, textNormalMedium)}
-        ref={ref}
+        ref={domRef}
       >
+        <span className={s.thumb} style={thumbStyle} />
         {[...state.collection].map((item) => (
           <TabItem key={item.key} item={item} state={state} />
         ))}
       </div>
-      {state.selectedItem?.hasChildNodes && (
-        <TabPanel key={state.selectedItem?.key} state={state} />
+      {selectedItem?.hasChildNodes && (
+        <TabPanel key={selectedItem?.key} state={state} />
       )}
     </div>
   );
 }
 
-Tabs.displayName = 'Tabs';
+export const Tabs = forwardRef(TabsRender) as TabsComponent;
 
 export const Tab = Item;
