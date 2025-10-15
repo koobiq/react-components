@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { type ElementType, useRef } from 'react';
 
 import { clsx, type Node } from '@koobiq/react-core';
 import { type TabListState, useTab } from '@koobiq/react-primitives';
@@ -15,8 +15,12 @@ export function Tab<T>({ item, state }: TabProps<T>) {
   const ref = useRef(null);
   const { tabProps, isSelected, isDisabled } = useTab({ key }, state, ref);
 
+  const { href } = item.props;
+
+  const Tag: ElementType = href ? 'a' : 'div';
+
   return (
-    <div
+    <Tag
       className={clsx(
         s.tab,
         isSelected && s.selected,
@@ -28,6 +32,6 @@ export function Tab<T>({ item, state }: TabProps<T>) {
       ref={ref}
     >
       {rendered}
-    </div>
+    </Tag>
   );
 }

@@ -1,22 +1,43 @@
-.base {
-  display: flex;
-  align-items: center;
+/* container */
+.container {
+  --tabs-direction: ;
+  --tabs-gap: ;
 }
 
+.vertical {
+  --tabs-direction: column;
+  --tabs-gap: var(--kbq-size-s);
+  display: flex;
+}
+
+/* tabs */
+.base {
+  display: inline-flex;
+  flex-direction: var(--tabs-direction);
+  gap: var(--tabs-gap);
+}
+
+/* panel */
+.panel {
+  padding: var(--kbq-size-m);
+}
+
+/* tab */
 .tab {
   --tab-outline-color: transparent;
   --tab-outline-width: var(--kbq-size-3xs);
   --tab-color: var(--kbq-foreground-contrast);
-
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  white-space: nowrap;
+  text-decoration: none;
+  box-sizing: border-box;
+  justify-content: center;
+  color: var(--tab-color);
   border-radius: var(--kbq-size-s);
   padding-inline: var(--kbq-size-m);
-  box-sizing: border-box;
-  min-block-size: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  color: var(--tab-color);
+  min-block-size: var(--kbq-size-3xl);
   outline-offset: calc(-1 * var(--button-outline-width));
   outline: var(--tab-outline-width) solid var(--tab-outline-color);
 
