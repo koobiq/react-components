@@ -14,6 +14,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  tags: ['status:new'],
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
