@@ -4,6 +4,9 @@
 }
 
 .tab {
+  --tab-outline-color: transparent;
+  --tab-outline-width: var(--kbq-size-3xs);
+
   border-radius: var(--kbq-size-s);
   padding-inline: var(--kbq-size-m);
   box-sizing: border-box;
@@ -12,6 +15,17 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  outline-offset: calc(-1 * var(--button-outline-width));
+  outline: var(--tab-outline-width) solid var(--tab-outline-color);
+
+  transition:
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+
+  &:focus-visible {
+    --tab-outline-color: var(--kbq-states-line-focus-theme);
+  }
 }
 
 .selected {
