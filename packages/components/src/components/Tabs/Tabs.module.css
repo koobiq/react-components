@@ -12,9 +12,15 @@
 
 /* tabs */
 .base {
+  --tab-outline-color: transparent;
+  --tab-outline-width: var(--kbq-size-3xs);
+  --tab-color: var(--kbq-foreground-contrast);
+  --tab-border-radius: var(--kbq-size-s);
+  --tab-bg-color: ;
   display: inline-flex;
   flex-direction: var(--tabs-direction);
   gap: var(--tabs-gap);
+  position: relative;
 }
 
 /* panel */
@@ -22,12 +28,25 @@
   padding: var(--kbq-size-m);
 }
 
+.thumb {
+  --thumb-inline-size: ;
+  --thumb-block-size: ;
+  --thumb-transform: ;
+  position: absolute;
+  will-change: transform, width, height;
+  transform: var(--thumb-transform);
+  inline-size: var(--thumb-inline-size);
+  block-size: var(--thumb-block-size);
+  border-radius: var(--tab-border-radius);
+  background-color: var(--kbq-states-background-transparent-active);
+  transition:
+    inline-size 200ms ease-in,
+    block-size 200ms ease-in,
+    transform 200ms ease-in;
+}
+
 /* tab */
 .tab {
-  --tab-outline-color: transparent;
-  --tab-outline-width: var(--kbq-size-3xs);
-  --tab-color: var(--kbq-foreground-contrast);
-  --tab-bg-color: ;
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -36,19 +55,18 @@
   box-sizing: border-box;
   justify-content: center;
   color: var(--tab-color);
-  border-radius: var(--kbq-size-s);
   padding-inline: var(--kbq-size-m);
   min-block-size: var(--kbq-size-3xl);
   background-color: var(--tab-bg-color);
+  border-radius: var(--tab-border-radius);
   outline-offset: calc(-1 * var(--tab-outline-width));
   outline: var(--tab-outline-width) solid var(--tab-outline-color);
 
   transition:
     outline-color var(--kbq-transition-default),
-    background-color var(--kbq-transition-default),
     color var(--kbq-transition-default);
 
-  &:hover:not(.selected) {
+  &:hover:not(.selected, .disabled) {
     --tab-bg-color: var(--kbq-states-background-transparent-hover);
   }
 
@@ -60,9 +78,4 @@
 .disabled {
   --tab-color: var(--kbq-states-foreground-disabled);
   cursor: not-allowed;
-}
-
-.selected {
-  cursor: default;
-  --tab-bg-color: var(--kbq-states-background-transparent-active);
 }
