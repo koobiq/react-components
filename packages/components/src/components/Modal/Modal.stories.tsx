@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
 import { Input } from '../Input';
-import { spacing } from '../layout';
 import { Textarea } from '../Textarea';
 import { Toggle } from '../Toggle';
 
@@ -39,23 +39,32 @@ export const Base: Story = {
           <>
             <Modal.Header>Create an access group</Modal.Header>
             <Modal.Body>
-              <Input
-                label="Name"
-                placeholder="Enter a name"
-                className={spacing({ mbe: 'm' })}
-                fullWidth
-                autoFocus
-                isRequired
-              />
-              <Textarea
-                placeholder="Enter a description"
-                label="Description"
-                rows={3}
-                fullWidth
-              />
+              <Form
+                id="user-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  alert('Submitted!');
+                }}
+              >
+                <Input
+                  label="Name"
+                  placeholder="Enter a name"
+                  fullWidth
+                  autoFocus
+                  isRequired
+                />
+                <Textarea
+                  placeholder="Enter a description"
+                  label="Description"
+                  rows={3}
+                  fullWidth
+                />
+              </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onPress={close}>Ok</Button>
+              <Button type="submit" form="user-form">
+                Ok
+              </Button>
               <Button onPress={close} variant="fade-contrast-filled">
                 Cancel
               </Button>
@@ -105,23 +114,32 @@ export const ControlledOpen: Story = {
         <Modal isOpen={isOpen} size="small" onOpenChange={set} {...args}>
           <Modal.Header>Create an access group</Modal.Header>
           <Modal.Body>
-            <Input
-              label="Name"
-              placeholder="Enter a name"
-              className={spacing({ mbe: 'm' })}
-              fullWidth
-              autoFocus
-              isRequired
-            />
-            <Textarea
-              placeholder="Enter a description"
-              label="Description"
-              rows={3}
-              fullWidth
-            />
+            <Form
+              id="user-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert('Submitted!');
+              }}
+            >
+              <Input
+                label="Name"
+                placeholder="Enter a name"
+                fullWidth
+                autoFocus
+                isRequired
+              />
+              <Textarea
+                placeholder="Enter a description"
+                label="Description"
+                rows={3}
+                fullWidth
+              />
+            </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onPress={off}>Ok</Button>
+            <Button type="submit" form="user-form">
+              Ok
+            </Button>
             <Button variant="fade-contrast-filled" onPress={off}>
               Cancel
             </Button>
