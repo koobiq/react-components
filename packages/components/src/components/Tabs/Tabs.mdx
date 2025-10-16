@@ -30,19 +30,36 @@ import { Tabs, Tab } from '@koobiq/react-components';
 - `Tabs`: The main component to display a tab list.
 - `Tab`: The component to display a tab item. The children of this component will be displayed as the content of the tab.
 
+## Dynamic
+
+You can render tabs dynamically by using `items` prop.
+
+<Story of={Stories.Dynamic} />
+
 ## With icons
 
 <Story of={Stories.WithIcons} />
 
+## Custom tab design
+
+<Story of={Stories.CustomTabDesign} />
+
 ## Disabled
+
+All tabs within a `Tabs` can be disabled using the `isDisabled` prop.
 
 <Story of={Stories.Disabled} />
 
 ## Disabled Item
 
+Tabs supports marking items as disabled using the `disabledKeys` prop.
+Each key in this list corresponds with the `key` prop passed to the `Tab` component.
+
 <Story of={Stories.DisabledItem} />
 
 ## Vertical
+
+Set the tabs to vertical by passing `orientation="vertical"` to `Tabs`.
 
 <Story of={Stories.Vertical} />
 

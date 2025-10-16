@@ -1,13 +1,22 @@
 import { useState } from 'react';
 
-import { IconBug16 } from '@koobiq/react-icons';
+import { useBoolean } from '@koobiq/react-core';
+import {
+  IconApple24,
+  IconBsd24,
+  IconBug16,
+  IconUbuntu24,
+  IconWindows24,
+} from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { Input } from '../Input';
+import { spacing } from '../layout';
 import { Link } from '../Link';
+import { Toggle } from '../Toggle';
 import { Typography } from '../Typography';
 
 import { Tabs, Tab } from './index.js';
@@ -50,6 +59,41 @@ export const Base: Story = {
           a victim, exhausting bandwidth, CPU, or connection limits and causing
           outages.
         </Tab>
+      </Tabs>
+    );
+  },
+};
+
+export const Dynamic: Story = {
+  render: function Render() {
+    const tabs = [
+      {
+        id: 'brute-force',
+        label: 'BruteForce',
+        content:
+          'A brute-force attack systematically guesses passwords or cryptographic keys, often using automated tools to try vast combinations until access is gained. It doesn’t rely on clever tricks—just exhaustive search.',
+      },
+      {
+        id: 'complex-attack',
+        label: 'Complex Attack',
+        content:
+          'A denial-of-service attack floods a server or exploits resource-heavy operations to exhaust CPU, memory, bandwidth, or connection limits causing slowdowns or outages without breaching the system.',
+      },
+      {
+        id: 'ddos',
+        label: 'DDoS',
+        content:
+          'Distributed Denial of Service (DDoS) uses a botnet of infected devices to send massive, coordinated traffic or resource-intensive requests to a victim, exhausting bandwidth, CPU, or connection limits and causing outages.',
+      },
+    ];
+
+    return (
+      <Tabs aria-label="Types of cyberattacks" items={tabs}>
+        {(item) => (
+          <Tab key={item.id} title={item.label}>
+            {item.content}
+          </Tab>
+        )}
       </Tabs>
     );
   },
@@ -100,6 +144,63 @@ export const WithIcons: Story = {
           a victim, exhausting bandwidth, CPU, or connection limits and causing
           outages.
         </Tab>
+      </Tabs>
+    );
+  },
+};
+
+export const CustomTabDesign: Story = {
+  render: function Render(args) {
+    return (
+      <Tabs aria-label="Operation systems" {...args}>
+        <Tab
+          key="mac-os"
+          title={
+            <FlexBox direction="column" alignItems="center">
+              <IconApple24 className={spacing({ mb: 'xxs' })} />
+              <Typography variant="text-normal-medium">macOS</Typography>
+              <Typography variant="text-compact" color="contrast-secondary">
+                14.5+
+              </Typography>
+            </FlexBox>
+          }
+        />
+        <Tab
+          key="windows"
+          title={
+            <FlexBox direction="column" alignItems="center">
+              <IconWindows24 className={spacing({ mb: 'xxs' })} />
+              <Typography variant="text-normal-medium">Windows</Typography>
+              <Typography variant="text-compact" color="contrast-secondary">
+                XP+
+              </Typography>
+            </FlexBox>
+          }
+        />
+        <Tab
+          key="linux"
+          title={
+            <FlexBox direction="column" alignItems="center">
+              <IconUbuntu24 className={spacing({ mb: 'xxs' })} />
+              <Typography variant="text-normal-medium">Linux</Typography>
+              <Typography variant="text-compact" color="contrast-secondary">
+                Ubuntu 10+
+              </Typography>
+            </FlexBox>
+          }
+        />
+        <Tab
+          key="free-bsd"
+          title={
+            <FlexBox direction="column" alignItems="center">
+              <IconBsd24 className={spacing({ mb: 'xxs' })} />
+              <Typography variant="text-normal-medium">FreeBSD</Typography>
+              <Typography variant="text-compact" color="contrast-secondary">
+                14.1+
+              </Typography>
+            </FlexBox>
+          }
+        />
       </Tabs>
     );
   },
@@ -163,26 +264,38 @@ export const DisabledItem: Story = {
 
 export const Vertical: Story = {
   render: function Render(args) {
+    const [isVertical, { set }] = useBoolean(true);
+
     return (
-      <Tabs aria-label="Types of cyberattacks" orientation="vertical" {...args}>
-        <Tab key="brute-force" title="BruteForce">
-          A brute-force attack systematically guesses passwords or cryptographic
-          keys, often using automated tools to try vast combinations until
-          access is gained. It doesn’t rely on clever tricks—just exhaustive
-          search.
-        </Tab>
-        <Tab key="complex-attack" title="Complex Attack">
-          A denial-of-service attack floods a server or exploits resource-heavy
-          operations to exhaust CPU, memory, bandwidth, or connection limits,
-          causing slowdowns or outages without breaching the system.
-        </Tab>
-        <Tab key="ddos" title="DDoS">
-          Distributed Denial of Service (DDoS) uses a botnet of infected devices
-          to send massive, coordinated traffic or resource-intensive requests to
-          a victim, exhausting bandwidth, CPU, or connection limits and causing
-          outages.
-        </Tab>
-      </Tabs>
+      <FlexBox direction="column" gap="l">
+        <Toggle isSelected={isVertical} onChange={set}>
+          Vertical
+        </Toggle>
+        <Tabs
+          aria-label="Types of cyberattacks"
+          orientation={isVertical ? 'vertical' : 'horizontal'}
+          {...args}
+        >
+          <Tab key="brute-force" title="BruteForce">
+            A brute-force attack systematically guesses passwords or
+            cryptographic keys, often using automated tools to try vast
+            combinations until access is gained. It doesn’t rely on clever
+            tricks—just exhaustive search.
+          </Tab>
+          <Tab key="complex-attack" title="Complex Attack">
+            A denial-of-service attack floods a server or exploits
+            resource-heavy operations to exhaust CPU, memory, bandwidth, or
+            connection limits, causing slowdowns or outages without breaching
+            the system.
+          </Tab>
+          <Tab key="ddos" title="DDoS">
+            Distributed Denial of Service (DDoS) uses a botnet of infected
+            devices to send massive, coordinated traffic or resource-intensive
+            requests to a victim, exhausting bandwidth, CPU, or connection
+            limits and causing outages.
+          </Tab>
+        </Tabs>
+      </FlexBox>
     );
   },
 };
