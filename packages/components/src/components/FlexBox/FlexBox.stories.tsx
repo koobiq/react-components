@@ -4,6 +4,7 @@ import { IconRadarO32 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { Divider } from '../Divider';
 import { spacing } from '../layout';
 import { Typography } from '../Typography';
 
@@ -137,19 +138,11 @@ export const Example: Story = {
       boxShadow: 'var(--kbq-shadow-overlay)',
     } as CSSProperties;
 
-    const styleDivider = {
-      margin: 0,
-      blockSize: 'auto',
-      alignSelf: 'stretch',
-      borderWidth: '0 1px 0 0',
-      borderColor: 'var(--kbq-line-contrast-fade)',
-    } as CSSProperties;
-
     return (
       <FlexBox {...args} alignItems="center" style={styleContainer}>
         <FlexBox alignItems="center" gap="m">
           <IconRadarO32 />
-          <hr style={styleDivider} />
+          <Divider orientation="vertical" flexItem />
           <Typography variant="text-big-strong">Antivirus</Typography>
         </FlexBox>
         <Button className={spacing({ mis: 'auto' })}>Enable</Button>
