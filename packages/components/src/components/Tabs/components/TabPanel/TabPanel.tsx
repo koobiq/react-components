@@ -4,9 +4,8 @@ import { clsx } from '@koobiq/react-core';
 import type { AriaTabPanelProps, TabListState } from '@koobiq/react-primitives';
 import { useTabPanel } from '@koobiq/react-primitives';
 
-import { utilClasses } from '../../styles/utility';
-
-import s from './Tabs.module.css';
+import { utilClasses } from '../../../../styles/utility';
+import s from '../../Tabs.module.css';
 
 const textNormal = utilClasses.typography['text-normal'];
 

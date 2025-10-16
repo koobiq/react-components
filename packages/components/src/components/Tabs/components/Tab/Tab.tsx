@@ -3,7 +3,7 @@ import { type ElementType, useRef } from 'react';
 import { clsx, type Node } from '@koobiq/react-core';
 import { type TabListState, useTab } from '@koobiq/react-primitives';
 
-import s from './Tabs.module.css';
+import s from '../../Tabs.module.css';
 
 export type TabProps<T> = {
   item: Node<T>;

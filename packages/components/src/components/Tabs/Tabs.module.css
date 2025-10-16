@@ -64,6 +64,7 @@
 
   transition:
     outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
     color var(--kbq-transition-default);
 
   &:hover:not(.selected, .disabled) {
