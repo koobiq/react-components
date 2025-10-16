@@ -1,19 +1,22 @@
-import { type ElementType, useRef } from 'react';
+import type { ElementType, Ref } from 'react';
 
-import { clsx, type Node } from '@koobiq/react-core';
-import { type TabListState, useTab } from '@koobiq/react-primitives';
+import type { Node } from '@koobiq/react-core';
+import { clsx, useDOMRef } from '@koobiq/react-core';
+import type { TabListState } from '@koobiq/react-primitives';
+import { useTab } from '@koobiq/react-primitives';
 
 import s from '../../Tabs.module.css';
 
 export type TabProps<T> = {
   item: Node<T>;
   state: TabListState<T>;
+  innerRef: Ref<HTMLElement>;
 };
 
-export function Tab<T>({ item, state }: TabProps<T>) {
+export function Tab<T>({ item, state, innerRef }: TabProps<T>) {
   const { key, rendered } = item;
-  const ref = useRef(null);
-  const { tabProps, isSelected, isDisabled } = useTab({ key }, state, ref);
+  const domRef = useDOMRef<HTMLElement>(innerRef);
+  const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
 
   const { href } = item.props;
 
@@ -29,7 +32,7 @@ export function Tab<T>({ item, state }: TabProps<T>) {
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       {...tabProps}
-      ref={ref}
+      ref={domRef as any}
     >
       {rendered}
     </Tag>

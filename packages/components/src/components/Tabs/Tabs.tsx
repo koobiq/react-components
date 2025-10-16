@@ -1,7 +1,13 @@
 import { forwardRef, useEffect, useState } from 'react';
 import type { Ref, CSSProperties } from 'react';
 
-import { clsx, useDOMRef } from '@koobiq/react-core';
+import {
+  clsx,
+  useRefs,
+  useDOMRef,
+  mergeProps,
+  useResizeObserverRefs,
+} from '@koobiq/react-core';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
@@ -18,36 +24,62 @@ export function TabsRender<T extends object>(
   props: Omit<TabProps<T>, 'ref'>,
   ref: Ref<TabsRef>
 ) {
-  const { orientation } = props;
+  const { orientation, style, className, fullWidth, slotProps } = props;
   const state = useTabListState<T>(props);
   const { selectedKey, selectedItem } = state;
   const domRef = useDOMRef(ref);
   const { tabListProps } = useTabList(props, state, domRef);
   const [thumbStyle, setThumbStyle] = useState<CSSProperties>();
 
-  useEffect(() => {
+  const itemsRefs = useRefs<HTMLElement>(state.collection.size);
+
+  const updateThumbSize = () => {
     const activeTab = getActiveTab(domRef.current);
 
     if (activeTab) setThumbStyle(getThumbCssVars(activeTab, orientation));
-  }, [selectedKey]);
+  };
+
+  useResizeObserverRefs(itemsRefs, updateThumbSize);
+
+  useEffect(updateThumbSize, [selectedKey]);
+
+  const tabsProps = mergeProps(
+    tabListProps,
+    {
+      className: clsx(s.tabList, textNormalMedium),
+      ref: domRef,
+    },
+    slotProps?.tabList
+  );
 
   return (
     <div
+      style={style}
       data-orientation={orientation}
-      className={clsx(s.container, orientation && s[orientation])}
+      className={clsx(
+        s.base,
+        fullWidth && s.fullWidth,
+        orientation && s[orientation],
+        className
+      )}
     >
-      <div
-        {...tabListProps}
-        className={clsx(s.base, textNormalMedium)}
-        ref={domRef}
-      >
+      <div {...tabsProps}>
         <span className={s.thumb} style={thumbStyle} />
-        {[...state.collection].map((item) => (
-          <TabItem key={item.key} item={item} state={state} />
+        {[...state.collection].map((item, i) => (
+          <TabItem
+            item={item}
+            state={state}
+            key={item.key}
+            innerRef={itemsRefs[i]}
+          />
         ))}
       </div>
       {selectedItem?.hasChildNodes && (
-        <TabPanel key={selectedItem?.key} state={state} />
+        <TabPanel
+          key={selectedItem?.key}
+          {...slotProps?.tabPanel}
+          state={state}
+        />
       )}
     </div>
   );
