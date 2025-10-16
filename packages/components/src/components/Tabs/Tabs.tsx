@@ -7,8 +7,7 @@ import { useTabList, useTabListState } from '@koobiq/react-primitives';
 import { utilClasses } from '../../styles/utility';
 import { Item } from '../Collections';
 
-import { Tab as TabItem } from './Tab';
-import { TabPanel } from './TabPanel';
+import { TabPanel, Tab as TabItem } from './components';
 import s from './Tabs.module.css';
 import type { TabProps, TabsComponent, TabsRef } from './types';
 import { getActiveTab, getThumbCssVars } from './utils';
