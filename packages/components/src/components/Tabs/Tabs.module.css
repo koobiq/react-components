@@ -1,7 +1,14 @@
 /* container */
-.container {
+.base {
   --tabs-direction: ;
   --tabs-gap: ;
+}
+
+.fullWidth {
+  .tabList,
+  .tab {
+    inline-size: 100%;
+  }
 }
 
 .vertical {
@@ -11,7 +18,7 @@
 }
 
 /* tabs */
-.base {
+.tabList {
   --tab-outline-color: transparent;
   --tab-outline-width: var(--kbq-size-3xs);
   --tab-color: var(--kbq-foreground-contrast);
@@ -24,7 +31,7 @@
 }
 
 /* panel */
-.panel {
+.tabPanel {
   padding: var(--kbq-size-m);
 }
 

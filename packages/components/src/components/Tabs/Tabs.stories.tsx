@@ -3,7 +3,12 @@ import { useState } from 'react';
 import { IconBug16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
+import { Input } from '../Input';
+import { Link } from '../Link';
+import { Typography } from '../Typography';
 
 import { Tabs, Tab } from './index.js';
 
@@ -23,7 +28,11 @@ type Story = StoryObj<typeof Tabs>;
 export const Base: Story = {
   render: function Render(args) {
     return (
-      <Tabs aria-label="Types of cyberattacks" {...args}>
+      <Tabs
+        aria-label="Types of cyberattacks"
+        style={{ maxInlineSize: 400 }}
+        {...args}
+      >
         <Tab key="brute-force" title="BruteForce">
           A brute-force attack systematically guesses passwords or cryptographic
           keys, often using automated tools to try vast combinations until
@@ -220,6 +229,87 @@ export const Links: Story = {
         <Tab key="/music" href="/music" title="Music" />
         <Tab key="/videos" href="/videos" title="Videos" />
       </Tabs>
+    );
+  },
+};
+
+export const WithForm: Story = {
+  render: function Render() {
+    const [selected, setSelected] = useState<string | number>('login');
+
+    const cardStyle = {
+      borderRadius: 'var(--kbq-size-m)',
+      boxShadow: 'var(--kbq-shadow-overlay)',
+      padding: '1.5em',
+    };
+
+    return (
+      <FlexBox>
+        <div style={cardStyle}>
+          <Tabs
+            fullWidth
+            aria-label="Tabs form"
+            selectedKey={selected}
+            onSelectionChange={setSelected}
+            slotProps={{
+              tabPanel: { style: { paddingInline: 0, paddingBlockEnd: 0 } },
+            }}
+          >
+            <Tab key="login" title="Login">
+              <Form style={{ inlineSize: 300 }}>
+                <Input
+                  isRequired
+                  label="Email"
+                  placeholder="Enter your email"
+                  type="email"
+                />
+                <Input
+                  isRequired
+                  label="Password"
+                  placeholder="Enter your password"
+                  type="password"
+                />
+                <Typography>
+                  Need to create an account?{' '}
+                  <Link onPress={() => setSelected('sign-up')}>Sign up</Link>
+                </Typography>
+                <Form.Actions>
+                  <Button fullWidth>Login</Button>
+                </Form.Actions>
+              </Form>
+            </Tab>
+            <Tab key="sign-up" title="Sign up">
+              <Form style={{ inlineSize: 300 }}>
+                <Input
+                  isRequired
+                  label="Name"
+                  placeholder="Enter your name"
+                  type="password"
+                />
+                <Input
+                  isRequired
+                  label="Email"
+                  placeholder="Enter your email"
+                  type="email"
+                />
+                <Input
+                  isRequired
+                  label="Password"
+                  placeholder="Enter your password"
+                  type="password"
+                />
+                <Typography>
+                  Already have an account?{' '}
+                  <Link onPress={() => setSelected('login')}>Login</Link>
+                </Typography>
+                <Form.Actions>
+                  <Button fullWidth>Sign up</Button>
+                </Form.Actions>
+              </Form>
+            </Tab>
+          </Tabs>
+        </div>
+      </FlexBox>
     );
   },
 };
