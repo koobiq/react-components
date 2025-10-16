@@ -63,6 +63,7 @@
   justify-content: center;
   color: var(--tab-color);
   padding-inline: var(--kbq-size-m);
+  padding-block: var(--kbq-size-xs);
   min-block-size: var(--kbq-size-3xl);
   background-color: var(--tab-bg-color);
   border-radius: var(--tab-border-radius);
