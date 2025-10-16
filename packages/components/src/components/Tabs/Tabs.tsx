@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import type { Ref, CSSProperties } from 'react';
 
 import {
@@ -31,17 +31,28 @@ export function TabsRender<T extends object>(
   const { tabListProps } = useTabList(props, state, domRef);
   const [thumbStyle, setThumbStyle] = useState<CSSProperties>();
 
+  // Track previous active tab
+  const previous = useRef<HTMLElement | null>(null);
+
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
 
   const updateThumbSize = () => {
     const activeTab = getActiveTab(domRef.current);
 
-    if (activeTab) setThumbStyle(getThumbCssVars(activeTab, orientation));
+    if (activeTab)
+      setThumbStyle({
+        ...getThumbCssVars(activeTab, orientation),
+        ...(!previous.current && { transition: 'none' }),
+      });
+
+    return activeTab;
   };
 
   useResizeObserverRefs(itemsRefs, updateThumbSize);
 
-  useEffect(updateThumbSize, [selectedKey]);
+  useEffect(() => {
+    previous.current = updateThumbSize();
+  }, [selectedKey]);
 
   const tabsProps = mergeProps(
     tabListProps,
