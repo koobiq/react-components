@@ -29,6 +29,7 @@ import { FormField } from '../FormField';
 import { IconButton } from '../IconButton';
 import type { ListItemText } from '../List';
 import { List } from '../List';
+import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
 import { SelectList, TagGroup } from './components';
@@ -193,16 +194,19 @@ function SelectRender<T extends object>(
     slotProps?.control
   );
 
-  const popoverProps = mergeProps(
+  const popoverProps = mergeProps<
+    [PopoverInnerProps, PopoverProps | undefined]
+  >(
     {
       state,
       offset: 4,
-      size: width,
       hideArrow: true,
-      anchorRef: containerRef,
-      className: s.popover,
-      placement: 'bottom start',
       type: 'listbox',
+      maxBlockSize: 256,
+      className: s.popover,
+      anchorRef: containerRef,
+      placement: 'bottom start',
+      size: Math.max(width, 200),
     },
     slotProps?.popover
   );
