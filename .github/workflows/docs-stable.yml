@@ -2,7 +2,7 @@ name: Deploy Stable Docs
 
 on:
   push:
-    branches:
+    tags:
       - '[0-9]+.[0-9]+.[0-9]+*'
   workflow_dispatch:
 
