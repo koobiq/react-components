@@ -1,3 +1,5 @@
+'use client';
+
 import type { ElementType, Ref } from 'react';
 
 import type { Node } from '@koobiq/react-core';
