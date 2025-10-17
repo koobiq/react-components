@@ -4,7 +4,7 @@
   --tabs-gap: ;
 }
 
-.fullWidth {
+.fullWidth:not(.vertical) {
   .tabList,
   .tab {
     inline-size: 100%;
