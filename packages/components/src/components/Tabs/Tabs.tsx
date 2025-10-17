@@ -26,7 +26,7 @@ export function TabsRender<T extends object>(
   ref: Ref<TabsRef>
 ) {
   const {
-    orientation,
+    orientation = 'horizontal',
     style,
     className,
     fullWidth,
@@ -78,6 +78,7 @@ export function TabsRender<T extends object>(
       style={style}
       data-testid={dataTestId}
       data-orientation={orientation}
+      data-fullwidth={fullWidth || undefined}
       className={clsx(
         s.base,
         fullWidth && s.fullWidth,

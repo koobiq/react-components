@@ -5,7 +5,6 @@
 }
 
 .fullWidth:not(.vertical) {
-  .tabList,
   .tab {
     inline-size: 100%;
   }
@@ -24,10 +23,21 @@
   --tab-color: var(--kbq-foreground-contrast);
   --tab-border-radius: var(--kbq-size-s);
   --tab-bg-color: ;
-  display: inline-flex;
+  overflow: hidden;
+  scrollbar-width: none;
+  display: flex;
   flex-direction: var(--tabs-direction);
   gap: var(--tabs-gap);
   position: relative;
+  flex-shrink: 0;
+
+  &[aria-orientation='horizontal'] {
+    overflow-x: scroll;
+  }
+
+  &[aria-orientation='vertical'] {
+    overflow-y: scroll;
+  }
 }
 
 /* panel */
@@ -87,4 +97,10 @@
 .disabled {
   --tab-color: var(--kbq-states-foreground-disabled);
   cursor: not-allowed;
+}
+
+.tabContent {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
