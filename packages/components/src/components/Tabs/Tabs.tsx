@@ -4,7 +4,6 @@ import type { Ref, CSSProperties } from 'react';
 import {
   clsx,
   useRefs,
-  useDOMRef,
   mergeProps,
   useResizeObserverRefs,
 } from '@koobiq/react-core';
@@ -15,20 +14,28 @@ import { Item } from '../Collections';
 
 import { TabPanel, Tab as TabItem } from './components';
 import s from './Tabs.module.css';
-import type { TabProps, TabsComponent, TabsRef } from './types';
+import type { TabsProps, TabsComponent, TabsRef } from './types';
 import { getActiveTab, getThumbCssVars } from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TabsRender<T extends object>(
-  props: Omit<TabProps<T>, 'ref'>,
+  props: Omit<TabsProps<T>, 'ref'>,
   ref: Ref<TabsRef>
 ) {
-  const { orientation, style, className, fullWidth, slotProps } = props;
+  const {
+    orientation,
+    style,
+    className,
+    fullWidth,
+    slotProps,
+    'data-testid': dataTestId,
+  } = props;
+
   const state = useTabListState<T>(props);
   const { selectedKey, selectedItem } = state;
-  const domRef = useDOMRef(ref);
-  const { tabListProps } = useTabList(props, state, domRef);
+  const tabListRef = useRef(null);
+  const { tabListProps } = useTabList(props, state, tabListRef);
   const [thumbStyle, setThumbStyle] = useState<CSSProperties>();
 
   // Track previous active tab
@@ -37,7 +44,7 @@ export function TabsRender<T extends object>(
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
 
   const updateThumbSize = () => {
-    const activeTab = getActiveTab(domRef.current);
+    const activeTab = getActiveTab(tabListRef.current);
 
     if (activeTab)
       setThumbStyle({
@@ -58,14 +65,16 @@ export function TabsRender<T extends object>(
     tabListProps,
     {
       className: clsx(s.tabList, textNormalMedium),
-      ref: domRef,
+      ref: tabListRef,
     },
     slotProps?.tabList
   );
 
   return (
     <div
+      ref={ref}
       style={style}
+      data-testid={dataTestId}
       data-orientation={orientation}
       className={clsx(
         s.base,

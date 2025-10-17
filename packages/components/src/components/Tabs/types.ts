@@ -8,7 +8,7 @@ import type {
 
 import type { AriaTabListProps } from '@koobiq/react-primitives';
 
-export type TabProps<T> = AriaTabListProps<T> & {
+export type TabsProps<T> = AriaTabListProps<T> & {
   /** Ref to the tabs. */
   ref?: Ref<HTMLDivElement>;
   /** Additional CSS-classes. */
@@ -22,8 +22,10 @@ export type TabProps<T> = AriaTabListProps<T> & {
     tabList?: ComponentProps<'div'>;
     tabPanel?: ComponentProps<'div'>;
   };
+  /** Unique identifier for testing purposes. */
+  'data-testid'?: string | number;
 };
 
-export type TabsComponent = <T>(props: TabProps<T>) => ReactElement | null;
+export type TabsComponent = <T>(props: TabsProps<T>) => ReactElement | null;
 
 export type TabsRef = ComponentRef<'div'>;
