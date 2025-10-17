@@ -149,7 +149,7 @@ export const WithIcons: Story = {
   },
 };
 
-export const CustomTabDesign: Story = {
+export const CustomTabTitle: Story = {
   render: function Render(args) {
     return (
       <Tabs aria-label="Operation systems" {...args}>
