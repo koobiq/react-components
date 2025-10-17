@@ -40,9 +40,9 @@ You can render tabs dynamically by using `items` prop.
 
 <Story of={Stories.WithIcons} />
 
-## Custom tab design
+## Custom tab title
 
-<Story of={Stories.CustomTabDesign} />
+<Story of={Stories.CustomTabTitle} />
 
 ## Disabled
 
@@ -71,7 +71,14 @@ You can use the `onSelectionChange` and `selectedKey` props to control the selec
 
 ## Links
 
-<Story of={Stories.Links} />
+Tabs items can be rendered as links by passing the `href` prop to the `Tab` component.
+By default, links perform native browser navigation.
+
+However, you'll usually want to synchronize the selected tab with the current
+URL from your client side router. You can do this by doing the following:
+
+- Set up your router at the root of your app.
+- Use the `selectedKey` prop to set the selected tab based on the current URL.
 
 ## With Form
 
