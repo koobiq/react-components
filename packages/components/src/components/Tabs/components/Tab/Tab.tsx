@@ -36,7 +36,7 @@ export function Tab<T>({ item, state, innerRef }: TabProps<T>) {
       {...tabProps}
       ref={domRef as any}
     >
-      {rendered}
+      <span className={s.tabContent}>{rendered}</span>
     </Tag>
   );
 }
