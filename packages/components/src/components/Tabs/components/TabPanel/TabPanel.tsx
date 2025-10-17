@@ -1,3 +1,5 @@
+'use client';
+
 import { type CSSProperties, useRef } from 'react';
 
 import { clsx } from '@koobiq/react-core';
