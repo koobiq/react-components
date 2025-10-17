@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/koobiq/react-components/compare/0.14.0...0.14.1) (2025-10-17)
+
+### 🐞 Bug Fixes
+
+- **Button:** correct `--button-boder-width` to `--button-border-width` ([554aaf2](https://github.com/koobiq/react-components/commit/554aaf246e9b605777405ff36bc81b10cfa54389))
+- **Select:** limit dropdown height and set minimum width ([77236bc](https://github.com/koobiq/react-components/commit/77236bc11bfcdae94d35974c3a2fcdf131ae6d88))
+
 ## [0.14.0](https://github.com/koobiq/react-components/compare/0.13.1...0.14.0) (2025-10-14)
 
 ### 🚀 Features
