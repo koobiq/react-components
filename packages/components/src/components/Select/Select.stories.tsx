@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -12,7 +12,13 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Divider, List, spacing, useListData } from '../../index';
+import {
+  Divider,
+  List,
+  ProgressSpinner,
+  spacing,
+  useListData,
+} from '../../index';
 import type { Selection } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -32,6 +38,7 @@ const meta = {
     'Select.Section': Select.Section,
     'Select.Divider': Select.Divider,
     'Select.ItemText': Select.ItemText,
+    'Select.LoadMoreItem': Select.LoadMoreItem,
   },
   argTypes: {},
   tags: ['status:updated'],
@@ -538,6 +545,57 @@ export const Section: Story = {
             {(item) => <Select.Item>{item.name}</Select.Item>}
           </Select.Section>
         )}
+      </Select>
+    );
+  },
+};
+
+export const AsynchronousLoading: Story = {
+  render: function Render() {
+    type Product = {
+      id: number;
+      title: string;
+      thumbnail: string;
+    };
+
+    const ITEMS_PER_PAGE = 20;
+
+    const [products, setProducts] = useState<Product[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
+
+    const fetchProducts = useCallback(async () => {
+      const response = await fetch(
+        `https://dummyjson.com/products?limit=${ITEMS_PER_PAGE}&skip=${page * ITEMS_PER_PAGE}`
+      );
+
+      const data = await response.json();
+
+      if (data.products.length === 0) {
+        setHasMore(false);
+      } else {
+        setProducts((prevProducts) => [...prevProducts, ...data.products]);
+        setPage((prevPage) => prevPage + 1);
+      }
+    }, [page]);
+
+    return (
+      <Select
+        label="Products"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+      >
+        <>
+          {products.map((item) => (
+            <Select.Item key={item.id}>{item.title}</Select.Item>
+          ))}
+          <Select.LoadMoreItem isLoading={hasMore} onLoadMore={fetchProducts}>
+            <FlexBox gap="m" alignItems="center">
+              <ProgressSpinner aria-label="load items" />
+              <Typography>Load More…</Typography>
+            </FlexBox>
+          </Select.LoadMoreItem>
+        </>
       </Select>
     );
   },

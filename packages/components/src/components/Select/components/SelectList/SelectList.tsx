@@ -18,6 +18,7 @@ import type { ListProps } from '../../../List';
 import { ListSection } from '../../../List/components';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
+import { SelectLoadMoreItem } from '../SelectLoadMoreItem';
 import { SelectOption } from '../SelectOption';
 
 import s from './SelectList.module.css';
@@ -88,6 +89,9 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
   const renderItems = (treeState: typeof state) =>
     [...treeState.collection].map((item) => {
       switch (item.type) {
+        case 'loadMoreItem':
+          return <SelectLoadMoreItem key={item.key} item={item} />;
+
         case 'divider':
           return <SelectDivider key={item.key} />;
 

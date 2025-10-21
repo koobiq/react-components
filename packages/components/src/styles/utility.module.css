@@ -285,7 +285,8 @@
   padding-block: var(--kbq-size-xxs);
 
   .list-item,
-  .list-heading {
+  .list-heading,
+  .list-footer {
     border-inline: var(--kbq-size-xxs) solid transparent;
     background-clip: padding-box;
   }
@@ -293,6 +294,11 @@
 
 .list-heading {
   user-select: none;
+  box-sizing: border-box;
+  padding: var(--kbq-size-s) var(--kbq-size-m);
+}
+
+.list-footer {
   box-sizing: border-box;
   padding: var(--kbq-size-s) var(--kbq-size-m);
 }

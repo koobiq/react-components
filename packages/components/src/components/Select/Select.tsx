@@ -18,7 +18,7 @@ import {
   useSlottedContext,
 } from '@koobiq/react-primitives';
 
-import { Item, Section, Divider } from '../Collections';
+import { Item, Section, Divider, Header, LoadMoreItem } from '../Collections';
 import { useForm } from '../Form';
 import type {
   FormFieldLabelProps,
@@ -274,6 +274,8 @@ const SelectComponent = forwardRef(SelectRender) as SelectComponent;
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof Item;
   Section: typeof Section;
+  Header: typeof Header;
+  LoadMoreItem: typeof LoadMoreItem;
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
 };
@@ -284,3 +286,5 @@ Select.Item = Item;
 Select.Section = Section;
 Select.Divider = Divider;
 Select.ItemText = List.ItemText;
+Select.LoadMoreItem = LoadMoreItem;
+Select.Header = Header;
