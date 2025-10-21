@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, type Ref, useCallback } from 'react';
 
 import {
