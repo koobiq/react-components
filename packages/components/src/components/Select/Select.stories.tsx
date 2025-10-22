@@ -575,16 +575,17 @@ export const AsynchronousLoading: Story = {
     return (
       <Select
         label="Products"
+        items={products}
         isLoading={hasMore}
         onLoadMore={fetchProducts}
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
       >
-        {products.map((item) => (
+        {(item) => (
           <Select.Item key={item.id}>
             <Select.ItemText>{item.title}</Select.ItemText>
           </Select.Item>
-        ))}
+        )}
       </Select>
     );
   },
