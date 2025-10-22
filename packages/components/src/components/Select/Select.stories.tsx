@@ -582,7 +582,7 @@ export const AsynchronousLoading: Story = {
         placeholder="Select an option"
       >
         {(item) => (
-          <Select.Item key={item.id}>
+          <Select.Item key={item.id} textValue={item.title}>
             <Select.ItemText>{item.title}</Select.ItemText>
           </Select.Item>
         )}
