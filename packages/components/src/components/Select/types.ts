@@ -106,6 +106,10 @@ export type SelectProps<T> = ExtendableProps<
      * If true, the input will take up the full width of its container.
      */
     fullWidth?: boolean;
+    /** The load more spinner to render when loading additional items. */
+    isLoading?: boolean;
+    /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
+    onLoadMore?: () => void;
     /** Unique identifier for testing purposes. */
     'data-testid'?: string | number;
     /** Ref to the control */

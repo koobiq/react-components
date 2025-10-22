@@ -12,13 +12,7 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import {
-  Divider,
-  List,
-  ProgressSpinner,
-  spacing,
-  useListData,
-} from '../../index';
+import { Divider, List, spacing, useListData } from '../../index';
 import type { Selection } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -38,7 +32,6 @@ const meta = {
     'Select.Section': Select.Section,
     'Select.Divider': Select.Divider,
     'Select.ItemText': Select.ItemText,
-    'Select.LoadMoreItem': Select.LoadMoreItem,
   },
   argTypes: {},
   tags: ['status:updated'],
@@ -582,22 +575,16 @@ export const AsynchronousLoading: Story = {
     return (
       <Select
         label="Products"
+        isLoading={hasMore}
+        onLoadMore={fetchProducts}
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
       >
-        <>
-          {products.map((item) => (
-            <Select.Item key={item.id}>
-              <Select.ItemText>{item.title}</Select.ItemText>
-            </Select.Item>
-          ))}
-          <Select.LoadMoreItem isLoading={hasMore} onLoadMore={fetchProducts}>
-            <FlexBox gap="m" alignItems="center">
-              <ProgressSpinner aria-label="load items" />
-              <Typography>Load More…</Typography>
-            </FlexBox>
-          </Select.LoadMoreItem>
-        </>
+        {products.map((item) => (
+          <Select.Item key={item.id}>
+            <Select.ItemText>{item.title}</Select.ItemText>
+          </Select.Item>
+        ))}
       </Select>
     );
   },

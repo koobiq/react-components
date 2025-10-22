@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode, Ref } from 'react';
+import type { Ref } from 'react';
 
 import {
   clsx,
@@ -18,7 +18,8 @@ import type { ListProps } from '../../../List';
 import { ListSection } from '../../../List/components';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
-import { SelectLoadMoreItem } from '../SelectLoadMoreItem';
+import type { SelectProps } from '../../types';
+import { SelectLoadMore } from '../SelectLoadMore';
 import { SelectOption } from '../SelectOption';
 
 import s from './SelectList.module.css';
@@ -28,9 +29,8 @@ const { list, typography } = utilClasses;
 export type SelectListProps<T extends object> = {
   state: MultiSelectState<T>;
   listRef?: Ref<HTMLUListElement>;
-  /** Content to display when no items are available. */
-  noItemsText?: ReactNode;
-} & Omit<ListProps<T>, 'ref' | 'children'>;
+} & Omit<ListProps<T>, 'ref' | 'children'> &
+  Pick<SelectProps<T>, 'noItemsText' | 'isLoading' | 'onLoadMore'>;
 
 export function SelectList<T extends object>(props: SelectListProps<T>) {
   const {
@@ -39,6 +39,8 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     style,
     slotProps,
     state,
+    isLoading,
+    onLoadMore,
     listRef,
     noItemsText: noItemsTextProp,
   } = props;
@@ -73,25 +75,23 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
 
   const noItemsText = noItemsTextProp ?? t.format('empty items');
 
-  const emptyState = isEmpty ? (
-    <div
-      // eslint-disable-next-line
-      role="option"
-      className={clsx(s.empty, typography['text-normal'])}
-      {...(!isPrimitiveNode(noItemsText) && {
-        style: { display: 'contents' },
-      })}
-    >
-      {noItemsText}
-    </div>
-  ) : null;
+  const emptyState =
+    isEmpty && !isLoading ? (
+      <div
+        // eslint-disable-next-line
+        role="option"
+        className={clsx(s.empty, typography['text-normal'])}
+        {...(!isPrimitiveNode(noItemsText) && {
+          style: { display: 'contents' },
+        })}
+      >
+        {noItemsText}
+      </div>
+    ) : null;
 
   const renderItems = (treeState: typeof state) =>
     [...treeState.collection].map((item) => {
       switch (item.type) {
-        case 'loadMoreItem':
-          return <SelectLoadMoreItem key={item.key} item={item} />;
-
         case 'divider':
           return <SelectDivider key={item.key} />;
 
@@ -112,6 +112,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
       <ul {...listProps}>
         {renderItems(state)}
         {emptyState}
+        <SelectLoadMore isLoading={isLoading} onLoadMore={onLoadMore} />
       </ul>
     </>
   );
