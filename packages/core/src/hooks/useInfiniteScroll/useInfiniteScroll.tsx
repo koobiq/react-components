@@ -8,12 +8,12 @@ type UseInfiniteScrollOptions = {
   isEnabled?: boolean;
 };
 
-export const useInfiniteScroll = ({
+export function useInfiniteScroll<T extends HTMLElement = any>({
   fetchData,
   hasMore,
   isEnabled = true,
-}: UseInfiniteScrollOptions) => {
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+}: UseInfiniteScrollOptions) {
+  const loadMoreRef = useRef<T>(null);
   const isFetchingRef = useRef(false);
 
   const handleIntersection = useCallback(
@@ -53,4 +53,4 @@ export const useInfiniteScroll = ({
   }, [handleIntersection, isEnabled]);
 
   return { loadMoreRef };
-};
+}
