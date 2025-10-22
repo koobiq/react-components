@@ -19,7 +19,7 @@ import { ListSection } from '../../../List/components';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
 import type { SelectProps } from '../../types';
-import { SelectLoadMore } from '../SelectLoadMore';
+import { SelectLoadMoreItem } from '../SelectLoadMoreItem';
 import { SelectOption } from '../SelectOption';
 
 import s from './SelectList.module.css';
@@ -112,7 +112,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
       <ul {...listProps}>
         {renderItems(state)}
         {emptyState}
-        <SelectLoadMore isLoading={isLoading} onLoadMore={onLoadMore} />
+        <SelectLoadMoreItem isLoading={isLoading} onLoadMore={onLoadMore} />
       </ul>
     </>
   );

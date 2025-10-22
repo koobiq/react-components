@@ -11,18 +11,18 @@ import { ProgressSpinner } from '../../../ProgressSpinner';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
 
-import s from './SelectLoadMore.module.css';
+import s from './SelectLoadMoreItem.module.css';
 
-const { listFooter } = utilClasses;
+const { listItem } = utilClasses;
 
-export type SelectLoadMoreProps = {
+export type SelectLoadMoreItemProps = {
   /** The load more spinner to render when loading additional items. */
   isLoading?: boolean;
   /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
   onLoadMore?: () => void | Promise<void>;
 };
 
-export function SelectLoadMore(props: SelectLoadMoreProps) {
+export function SelectLoadMoreItem(props: SelectLoadMoreItemProps) {
   const { isLoading, onLoadMore } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
@@ -36,9 +36,9 @@ export function SelectLoadMore(props: SelectLoadMoreProps) {
   });
 
   return isLoading ? (
-    <section className={clsx(s.base, listFooter)} ref={loadMoreRef}>
+    <li className={clsx(s.base, listItem)} ref={loadMoreRef}>
       <ProgressSpinner aria-label={loadMoreText} />
       <Typography>{loadMoreText}</Typography>
-    </section>
+    </li>
   ) : null;
 }

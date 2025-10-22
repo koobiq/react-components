@@ -77,6 +77,5 @@ export const utilClasses = {
   list: s.list,
   listItem: s['list-item'],
   listHeading: s['list-heading'],
-  listFooter: s['list-footer'],
   scrollable: s.scrollable,
 };

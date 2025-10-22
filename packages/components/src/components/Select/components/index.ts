@@ -1,4 +1,4 @@
 export * from './SelectList';
 export * from './Tag';
 export * from './TagGroup';
-export * from './SelectLoadMore';
+export * from './SelectLoadMoreItem';
