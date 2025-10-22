@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 
 type UseInfiniteScrollOptions = {
-  fetchData?: () => void;
+  fetchData?: () => void | Promise<void>;
   hasMore?: boolean;
   isEnabled?: boolean;
 };
@@ -12,19 +12,34 @@ export const useInfiniteScroll = ({
   isEnabled = true,
 }: UseInfiniteScrollOptions) => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const isFetchingRef = useRef(false);
 
   const handleIntersection = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const isIntersecting = entries[0]?.isIntersecting;
+    async (entries: IntersectionObserverEntry[]) => {
+      const entry = entries[0];
+      if (!entry?.isIntersecting) return;
+      if (!isEnabled || !hasMore) return;
+      // prevent duplicate calls while a fetch is in progress
+      if (isFetchingRef.current) return;
 
-      if (isEnabled && hasMore && isIntersecting) {
-        fetchData?.();
+      try {
+        isFetchingRef.current = true;
+        await fetchData?.();
+      } finally {
+        isFetchingRef.current = false;
       }
     },
     [fetchData, hasMore, isEnabled]
   );
 
   useEffect(() => {
+    if (
+      typeof window === 'undefined' ||
+      typeof IntersectionObserver === 'undefined'
+    ) {
+      return undefined;
+    }
+
     if (!isEnabled) return undefined;
 
     const observer = new IntersectionObserver(handleIntersection);
