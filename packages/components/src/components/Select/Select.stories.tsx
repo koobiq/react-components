@@ -587,7 +587,9 @@ export const AsynchronousLoading: Story = {
       >
         <>
           {products.map((item) => (
-            <Select.Item key={item.id}>{item.title}</Select.Item>
+            <Select.Item key={item.id}>
+              <Select.ItemText>{item.title}</Select.ItemText>
+            </Select.Item>
           ))}
           <Select.LoadMoreItem isLoading={hasMore} onLoadMore={fetchProducts}>
             <FlexBox gap="m" alignItems="center">
