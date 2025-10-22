@@ -27,11 +27,12 @@ export function SelectLoadMore(props: SelectLoadMoreProps) {
 
   const t = useLocalizedStringFormatter(intlMessages);
   const loadMoreText = t.format('load more');
+  const isEnabled = !!onLoadMore;
 
   const { loadMoreRef } = useInfiniteScroll({
     fetchData: onLoadMore,
     hasMore: isLoading,
-    isEnabled: !!onLoadMore,
+    isEnabled,
   });
 
   return isLoading ? (
