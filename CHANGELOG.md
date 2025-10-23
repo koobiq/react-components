@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.15.0](https://github.com/koobiq/react-components/compare/0.14.1...0.15.0) (2025-10-23)
+
+### 🚀 Features
+
+- **Select:** support async loading with progress indicator and infinite scroll (`isLoading`, `onLoadMore`) (DS-4273) ([d1d5397](https://github.com/koobiq/react-components/commit/d1d5397edd220175db85748762ddf82b0de1811a))
+
+### 🐞 Bug Fixes
+
+- **Select:** include 'use client' directive ([cac96ce](https://github.com/koobiq/react-components/commit/cac96ce6a93c751919c47c14364e9f28a04df3f8))
+
 ## [0.14.1](https://github.com/koobiq/react-components/compare/0.14.0...0.14.1) (2025-10-17)
 
 ### 🐞 Bug Fixes
