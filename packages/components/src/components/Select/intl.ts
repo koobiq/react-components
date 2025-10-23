@@ -1,6 +1,7 @@
 export default {
   'ru-RU': {
     'empty items': 'Нет вариантов выбора',
+    'load more': 'Загрузка',
     'selected items': 'Выбранные элементы',
     clear: 'Очистить',
     more: ({ count }: { count: number }) => `еще ${count}`,
@@ -8,6 +9,7 @@ export default {
   'en-US': {
     'empty items': 'No options available',
     'selected items': 'Selected items',
+    'load more': 'Load More…',
     clear: 'Clear',
     more: ({ count }: { count: number }) => `${count} more`,
   },

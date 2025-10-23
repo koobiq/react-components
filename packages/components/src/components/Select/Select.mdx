@@ -153,6 +153,13 @@ See the example below for using details in items of the component.
 
 <Story of={Stories.WithItemDetails} />
 
+## Asynchronous Loading
+
+Select supports loading data asynchronously, and will display a progress circle when the `isLoading` prop is set.
+It also supports infinite scrolling to load more data on demand as the user scrolls, via the `onLoadMore` prop.
+
+<Story of={Stories.AsynchronousLoading} />
+
 ## State Helper
 
 Use the `useListData` hook to manage items with convenient methods for adding,

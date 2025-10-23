@@ -105,9 +105,37 @@ describe('Select', () => {
     });
   });
 
+  describe('loading', () => {
+    it('should display the loading text when isLoading={true}', async () => {
+      render(
+        <Select {...baseProps} defaultOpen isLoading>
+          <Select.Item key="1">1</Select.Item>
+          <Select.Item key="2">2</Select.Item>
+          <Select.Item key="3">3</Select.Item>
+        </Select>
+      );
+
+      expect(screen.getByText('Load More…')).toBeInTheDocument();
+    });
+
+    it('should NOT display noItemsText when isLoading={true}', () => {
+      render(
+        <Select
+          {...baseProps}
+          noItemsText="empty"
+          items={[]}
+          defaultOpen
+          isLoading
+        />
+      );
+
+      expect(getPopover()).not.toHaveTextContent('empty');
+    });
+  });
+
   describe('items', () => {
     it('should NOT fail when options change with a selected item', () => {
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {}); // не выводим в консоль
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const { rerender } = render(
         <Select {...baseProps} defaultSelectedKeys={['first']}>

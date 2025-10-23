@@ -34,7 +34,7 @@ import { List } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
-import { SelectList, TagGroup } from './components';
+import { SelectList, type SelectListProps, TagGroup } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
 import intlMessages from './intl';
 import s from './Select.module.css';
@@ -65,6 +65,8 @@ function SelectRender<T extends object>(
     startAddon,
     onClear,
     label,
+    isLoading,
+    onLoadMore,
     renderValue: renderValueProp,
   } = props;
 
@@ -130,8 +132,14 @@ function SelectRender<T extends object>(
     style,
   });
 
-  const listProps = mergeProps(
-    { className: s.list, state, noItemsText },
+  const listProps = mergeProps<
+    [
+      SelectListProps<T>,
+      typeof menuProps,
+      Omit<SelectListProps<object>, 'state'> | undefined,
+    ]
+  >(
+    { className: s.list, state, noItemsText, isLoading, onLoadMore },
     menuProps,
     slotProps?.list
   );

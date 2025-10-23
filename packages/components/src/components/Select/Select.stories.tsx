@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -537,6 +537,54 @@ export const Section: Story = {
           >
             {(item) => <Select.Item>{item.name}</Select.Item>}
           </Select.Section>
+        )}
+      </Select>
+    );
+  },
+};
+
+export const AsynchronousLoading: Story = {
+  render: function Render() {
+    type Product = {
+      id: number;
+      title: string;
+      thumbnail: string;
+    };
+
+    const ITEMS_PER_PAGE = 20;
+
+    const [products, setProducts] = useState<Product[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
+
+    const fetchProducts = useCallback(async () => {
+      const response = await fetch(
+        `https://dummyjson.com/products?limit=${ITEMS_PER_PAGE}&skip=${page * ITEMS_PER_PAGE}`
+      );
+
+      const data = await response.json();
+
+      if (data.products.length === 0) {
+        setHasMore(false);
+      } else {
+        setProducts((prevProducts) => [...prevProducts, ...data.products]);
+        setPage((prevPage) => prevPage + 1);
+      }
+    }, [page]);
+
+    return (
+      <Select
+        label="Products"
+        items={products}
+        isLoading={hasMore}
+        onLoadMore={fetchProducts}
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+      >
+        {(item) => (
+          <Select.Item key={item.id} textValue={item.title}>
+            <Select.ItemText>{item.title}</Select.ItemText>
+          </Select.Item>
         )}
       </Select>
     );
