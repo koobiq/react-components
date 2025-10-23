@@ -135,7 +135,7 @@ describe('Select', () => {
 
   describe('items', () => {
     it('should NOT fail when options change with a selected item', () => {
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {}); // не выводим в консоль
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const { rerender } = render(
         <Select {...baseProps} defaultSelectedKeys={['first']}>
