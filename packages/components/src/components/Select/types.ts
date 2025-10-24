@@ -109,7 +109,7 @@ export type SelectProps<T> = ExtendableProps<
     /** The load more spinner to render when loading additional items. */
     isLoading?: boolean;
     /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
-    onLoadMore?: () => void | Promise<void>;
+    onLoadMore?: () => void;
     /** Unique identifier for testing purposes. */
     'data-testid'?: string | number;
     /** Ref to the control */
