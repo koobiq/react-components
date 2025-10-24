@@ -19,7 +19,7 @@ export type SelectLoadMoreItemProps = {
   /** The load more spinner to render when loading additional items. */
   isLoading?: boolean;
   /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
-  onLoadMore?: () => void | Promise<void>;
+  onLoadMore?: () => void;
 };
 
 export function SelectLoadMoreItem(props: SelectLoadMoreItemProps) {
