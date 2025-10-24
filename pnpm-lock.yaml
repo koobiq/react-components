@@ -296,6 +296,10 @@ importers:
       react:
         specifier: 18.x || 19.x
         version: 18.3.1
+    devDependencies:
+      '@koobiq/icons':
+        specifier: ^10.10.0
+        version: 10.10.0
 
   packages/logger: {}
 
@@ -660,8 +664,8 @@ packages:
     resolution: {integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-validator-identifier@7.27.1':
-    resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
+  '@babel/helper-validator-identifier@7.28.5':
+    resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-option@7.25.9':
@@ -1498,6 +1502,9 @@ packages:
 
   '@koobiq/design-tokens@3.14.0':
     resolution: {integrity: sha512-FLtcCI5hm79SJcVBOhsiQRaYlC6IsFeAzX+CYLDrEDNcsX87bUUsGfRI61pqt0sSZFhL/EuGp5mh9LBHGKzhjg==}
+
+  '@koobiq/icons@10.10.0':
+    resolution: {integrity: sha512-Xf1BKmJnekorVdkYcrsQ8joBQGrvOq3asqQNlXDVrg5g05rjOHQ8NT0Ti3dXn0mUlZeEgqVwn12NWdhsn7Cjxw==}
 
   '@koobiq/logger@0.12.0':
     resolution: {integrity: sha512-cTFawElotiNQpI5XS9jNCopSxbaxhSYqC8R+Kl2Kb7t5f6OHsByoF0EEM5D1bex/KFe6cD7BQ1czkVPkdIeCvw==}
@@ -8684,7 +8691,7 @@ snapshots:
 
   '@babel/code-frame@7.27.1':
     dependencies:
-      '@babel/helper-validator-identifier': 7.27.1
+      '@babel/helper-validator-identifier': 7.28.5
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
@@ -8756,7 +8763,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.25.9': {}
 
-  '@babel/helper-validator-identifier@7.27.1': {}
+  '@babel/helper-validator-identifier@7.28.5': {}
 
   '@babel/helper-validator-option@7.25.9': {}
 
@@ -9542,6 +9549,8 @@ snapshots:
       buffer: 6.0.3
 
   '@koobiq/design-tokens@3.14.0': {}
+
+  '@koobiq/icons@10.10.0': {}
 
   '@koobiq/logger@0.12.0': {}
 

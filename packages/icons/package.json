@@ -30,7 +30,13 @@
     "type-check": "tsc --noEmit --pretty",
     "copy:svgr-to-src": "tsx scripts/svgr-copy-to-src.ts",
     "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",
-    "figma:export-icons": "pnpm clean:temp && tsx ../../node_modules/@figma-export/cli/bin/run use-config .figmaexportrc.ts && pnpm copy:svgr-to-src && pnpm lint && rimraf temp"
+    "pull-icons": "tsx scripts/pull-icons.ts",
+    "convert-svg-to-svgr": "tsx scripts/convert-svg-to-svgr.ts",
+    "export-icons": "pnpm update @koobiq/icons@latest && pnpm clean:temp && pnpm pull-icons && pnpm convert-svg-to-svgr && pnpm lint && rimraf temp",
+    "figma:export-icons": "pnpm clean:temp && tsx pull-icons.ts && pnpm copy:svgr-to-src && pnpm lint && rimraf temp"
+  },
+  "devDependencies": {
+    "@koobiq/icons": "^10.10.0"
   },
   "files": ["dist", "manifest.json"],
   "peerDependencies": {
