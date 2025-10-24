@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.15.1](https://github.com/koobiq/react-components/compare/0.15.0...0.15.1) (2025-10-24)
+
+### 🐞 Bug Fixes
+
+- **Select:** avoid observer re-creation on each `onLoadMore` change ([23a712e](https://github.com/koobiq/react-components/commit/23a712ebb521b5abf4911a25c1c76d4790fbd461))
+
 ## [0.15.0](https://github.com/koobiq/react-components/compare/0.14.1...0.15.0) (2025-10-23)
 
 ### 🚀 Features
