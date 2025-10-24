@@ -5,6 +5,14 @@ import transformSvgWithSvgo from '@figma-export/transform-svg-with-svgo';
 import { pascalCase } from '@figma-export/utils';
 import { transform } from '@svgr/core';
 
+// TODO: export the type from the library
+type ManifestJSON = {
+  icons: {
+    componentName: string;
+    size?: string;
+  }[];
+};
+
 // Settings
 const inputDir = path.resolve('temp'); // SVG input
 const outputDir = path.resolve('src'); // TSX output
@@ -75,6 +83,10 @@ const svgoTransform = transformSvgWithSvgo({
 async function run() {
   const files = fs.readdirSync(inputDir).filter((f) => f.endsWith('.svg'));
 
+  // manifest + index buffers
+  const manifest: ManifestJSON = { icons: [] };
+  const entryPoints: string[] = [];
+
   const results = await Promise.allSettled(
     files.map(async (file) => {
       const filePath = path.join(inputDir, file);
@@ -104,6 +116,12 @@ async function run() {
       const outputPath = path.join(outputDir, `${componentName}.tsx`);
       fs.writeFileSync(outputPath, tsxCode);
       console.log(`✅ ${file} → ${componentName}.tsx`);
+
+      // collect manifest + index info
+      const match = file.match(/_(\d+)\.svg$/);
+      const size = match?.[1];
+      manifest.icons.push({ componentName, ...(size && { size }) });
+      entryPoints.push(`export * from './${componentName}';`);
     })
   );
 
@@ -115,6 +133,12 @@ async function run() {
     );
   }
 
+  // write manifest.json
+  fs.writeFileSync('manifest.json', JSON.stringify(manifest, null, 2));
+
+  // write src/index.ts
+  fs.writeFileSync(path.join(outputDir, 'index.ts'), entryPoints.join('\n'));
+
   console.log(
     `🎉 All SVGs from ${inputDir}/ successfully converted to React components!`
   );
@@ -122,6 +146,5 @@ async function run() {
 
 run().catch((err) => {
   console.error(`❌ Error while converting SVG:`, err);
-
   process.exit(1);
 });
