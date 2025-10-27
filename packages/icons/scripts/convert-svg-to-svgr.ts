@@ -1,24 +1,65 @@
-import fs from 'fs';
-import path from 'path';
+import { promises as fsp } from 'fs';
+import { mkdir, rm } from 'node:fs/promises';
+import path from 'node:path';
 
 import transformSvgWithSvgo from '@figma-export/transform-svg-with-svgo';
 import { pascalCase } from '@figma-export/utils';
 import { transform } from '@svgr/core';
 
+import { ICONS_INFO_FILE, OUTPUT_DIR, SIZES, TEMP_DIR } from './constants';
+
 // TODO: export the type from the library
-type ManifestJSON = {
+export type ManifestJSON = {
   icons: {
+    key: string;
     componentName: string;
-    size?: string;
+    size?: '16' | '24' | '32' | '48' | '64';
+    description?: string;
+    tags?: string[];
   }[];
 };
 
-// Settings
-const inputDir = path.resolve('temp'); // SVG input
-const outputDir = path.resolve('src'); // TSX output
+// Manifest builder
+async function buildManifest(): Promise<ManifestJSON> {
+  try {
+    const iconsInfo = JSON.parse(await fsp.readFile(ICONS_INFO_FILE, 'utf8'));
 
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
+    const icons = Object.entries(iconsInfo).map(
+      ([key, data]: [string, any]) => {
+        const [baseName = '', rawSize] = key.split('_');
+        const allowedSizes = SIZES;
+        type IconSize = (typeof allowedSizes)[number];
+
+        const size = allowedSizes.includes(rawSize as IconSize)
+          ? (rawSize as IconSize)
+          : undefined;
+
+        const componentName = `Icon${pascalCase(baseName)}${size || ''}`;
+        const { description, tags } = data ?? {};
+
+        return { key, componentName, size, description, tags };
+      }
+    );
+
+    // Stable order (by size first, then by key)
+    icons.sort((a, b) => {
+      const sa = Number(a.size ?? 0);
+      const sb = Number(b.size ?? 0);
+
+      return sa === sb ? String(a.key).localeCompare(String(b.key)) : sa - sb;
+    });
+
+    console.log(
+      `✅ Manifest built entirely from ${ICONS_INFO_FILE} (${icons.length} entries)`
+    );
+
+    return { icons };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`❌ Failed to load ${ICONS_INFO_FILE}:`, msg);
+
+    return { icons: [] };
+  }
 }
 
 // Template (same as figmaExport)
@@ -46,9 +87,9 @@ const svgoTransform = transformSvgWithSvgo({
         },
       },
     },
-    { name: 'removeComments' },
-    { name: 'removeXMLNS' },
     { name: 'cleanupIds' },
+    { name: 'removeXMLNS' },
+    { name: 'removeComments' },
     { name: 'removeEmptyContainers' },
     {
       name: 'removeAttrs',
@@ -81,24 +122,25 @@ const svgoTransform = transformSvgWithSvgo({
 });
 
 async function run() {
-  const files = fs.readdirSync(inputDir).filter((f) => f.endsWith('.svg'));
+  // Prepare filesystem: create output directory
+  await rm(OUTPUT_DIR, { recursive: true, force: true });
+  await mkdir(OUTPUT_DIR, { recursive: true });
 
-  // manifest + index buffers
-  const manifest: ManifestJSON = { icons: [] };
+  const files = (await fsp.readdir(TEMP_DIR)).filter((f) => f.endsWith('.svg'));
   const entryPoints: string[] = [];
 
   const results = await Promise.allSettled(
     files.map(async (file) => {
-      const filePath = path.join(inputDir, file);
-      const svgCode = fs.readFileSync(filePath, 'utf8');
+      const filePath = path.join(TEMP_DIR, file);
+      const svgCode = await fsp.readFile(filePath, 'utf8');
 
       const baseName = path.basename(file, '.svg');
       const componentName = `Icon${pascalCase(baseName)}`;
 
-      const optimizedSvg = (await svgoTransform(svgCode)) as string;
+      const optimizedSvg = await svgoTransform(svgCode);
 
       const tsxCode = await transform(
-        optimizedSvg,
+        optimizedSvg || '',
         {
           template,
           plugins: [
@@ -106,21 +148,17 @@ async function run() {
             '@svgr/plugin-jsx',
             '@svgr/plugin-prettier',
           ],
+          ref: true,
           svgo: false, // already optimized above
           typescript: true,
-          ref: true,
         },
         { componentName }
       );
 
-      const outputPath = path.join(outputDir, `${componentName}.tsx`);
-      fs.writeFileSync(outputPath, tsxCode);
+      const outputPath = path.join(OUTPUT_DIR, `${componentName}.tsx`);
+      await fsp.writeFile(outputPath, tsxCode);
       console.log(`✅ ${file} → ${componentName}.tsx`);
 
-      // collect manifest + index info
-      const match = file.match(/_(\d+)\.svg$/);
-      const size = match?.[1];
-      manifest.icons.push({ componentName, ...(size && { size }) });
       entryPoints.push(`export * from './${componentName}';`);
     })
   );
@@ -128,23 +166,27 @@ async function run() {
   const failed = results.filter((r) => r.status === 'rejected').length;
 
   if (failed) {
-    console.warn(
-      `Copy completed with errors: ${failed}/${results.length} files`
+    console.error(
+      `❌ Copy completed with errors: ${failed}/${results.length} files`
     );
   }
 
   // write manifest.json
-  fs.writeFileSync('manifest.json', JSON.stringify(manifest, null, 2));
+  const finalManifest = await buildManifest();
+  await fsp.writeFile('manifest.json', JSON.stringify(finalManifest, null, 2));
 
   // write src/index.ts
-  fs.writeFileSync(path.join(outputDir, 'index.ts'), entryPoints.join('\n'));
-
-  console.log(
-    `🎉 All SVGs from ${inputDir}/ successfully converted to React components!`
+  await fsp.writeFile(
+    path.join(OUTPUT_DIR, 'index.ts'),
+    entryPoints.join('\n')
   );
+
+  await rm(TEMP_DIR, { recursive: true, force: true });
+
+  console.log(`🎉 All SVGs successfully converted to React components!`);
 }
 
 run().catch((err) => {
-  console.error(`❌ Error while converting SVG:`, err);
+  console.error('❌ Error while converting SVG:', err);
   process.exit(1);
 });

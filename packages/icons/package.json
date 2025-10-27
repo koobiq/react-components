@@ -32,7 +32,7 @@
     "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",
     "pull-icons": "tsx scripts/pull-icons.ts",
     "convert-svg-to-svgr": "tsx scripts/convert-svg-to-svgr.ts",
-    "export-icons": "pnpm update @koobiq/icons@latest && pnpm clean:temp && pnpm pull-icons && pnpm convert-svg-to-svgr && pnpm lint && rimraf temp",
+    "export-icons": "pnpm update @koobiq/icons@latest && pnpm pull-icons && pnpm convert-svg-to-svgr && pnpm lint",
     "figma:export-icons": "pnpm clean:temp && tsx pull-icons.ts && pnpm copy:svgr-to-src && pnpm lint && rimraf temp"
   },
   "devDependencies": {
