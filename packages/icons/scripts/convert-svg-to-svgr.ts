@@ -6,14 +6,14 @@ import { transform } from '@svgr/core';
 
 import { ICONS_INFO_FILE, OUTPUT_DIR, SIZES, TEMP_DIR } from './constants';
 
-// TODO: export the type from the library
-export type ManifestJSON = {
+type IconSize = (typeof SIZES)[number];
+
+type IconsManifest = {
   icons: {
-    key: string;
-    componentName: string;
-    size?: '16' | '24' | '32' | '48' | '64';
-    description?: string;
+    name: string;
+    size: IconSize;
     tags?: string[];
+    description?: string;
   }[];
 };
 
@@ -30,40 +30,55 @@ function pascalCase(input: string): string {
     .join('');
 }
 
-async function buildManifest(): Promise<ManifestJSON> {
+function buildEntryFile(entry: string, componentNames: string[]) {
+  return `
+    ${entry}
+
+    export type IconName = ${componentNames.join(' | ')};
+
+    export type IconsManifest = {
+      icons: {
+        name: IconName;
+        size: '16' | '24' | '32' | '48' | '64';
+        description?: string;
+        tags?: string[];
+      }[];
+    };
+  `;
+}
+
+async function buildManifest(): Promise<IconsManifest> {
   try {
     const iconsInfo = JSON.parse(await fsp.readFile(ICONS_INFO_FILE, 'utf8'));
 
     const icons = Object.entries(iconsInfo).map(
       ([key, data]: [string, any]) => {
         const [baseName = '', rawSize] = key.split('_');
-        const allowedSizes = SIZES;
-        type IconSize = (typeof allowedSizes)[number];
 
-        const size = allowedSizes.includes(rawSize as IconSize)
+        const size = SIZES.includes(rawSize as IconSize)
           ? (rawSize as IconSize)
           : undefined;
 
-        const componentName = `Icon${pascalCase(baseName)}${size || ''}`;
+        const name = `Icon${pascalCase(baseName)}${size || ''}`;
         const { description, tags } = data ?? {};
 
-        return { key, componentName, size, description, tags };
+        return { name, size, description, tags };
       }
     );
 
-    // Stable order (by size first, then by key)
+    // Stable order (by size first, then by name)
     icons.sort((a, b) => {
       const sa = Number(a.size ?? 0);
       const sb = Number(b.size ?? 0);
 
-      return sa === sb ? String(a.key).localeCompare(String(b.key)) : sa - sb;
+      return sa === sb ? String(a.name).localeCompare(String(b.name)) : sa - sb;
     });
 
     console.log(
       `✅ Manifest built entirely from ${ICONS_INFO_FILE} (${icons.length} entries)`
     );
 
-    return { icons };
+    return { icons } as IconsManifest;
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`❌ Failed to load ${ICONS_INFO_FILE}:`, msg);
@@ -93,6 +108,7 @@ async function run() {
 
   const files = (await fsp.readdir(TEMP_DIR)).filter((f) => f.endsWith('.svg'));
   const entryPoints: string[] = [];
+  const componentNames: string[] = [];
 
   const results = await Promise.allSettled(
     files.map(async (file) => {
@@ -115,24 +131,24 @@ async function run() {
           svgo: true,
           svgoConfig: {
             plugins: [
-              {
-                name: 'preset-default',
-                params: {
-                  overrides: {
-                    removeViewBox: false,
-                  },
-                },
-              },
-              { name: 'cleanupIds' },
-              { name: 'removeXMLNS' },
-              { name: 'removeComments' },
-              { name: 'removeEmptyContainers' },
-              {
-                name: 'removeAttrs',
-                params: {
-                  attrs: 'stroke|transform',
-                },
-              },
+              // {
+              //   name: 'preset-default',
+              //   params: {
+              //     overrides: {
+              //       removeViewBox: false,
+              //     },
+              //   },
+              // },
+              // { name: 'cleanupIds' },
+              // { name: 'removeXMLNS' },
+              // { name: 'removeComments' },
+              // { name: 'removeEmptyContainers' },
+              // {
+              //   name: 'removeAttrs',
+              //   params: {
+              //     attrs: 'stroke|transform',
+              //   },
+              // },
               {
                 name: 'replace-values',
                 fn: () => ({
@@ -166,6 +182,7 @@ async function run() {
       console.log(`✅ ${file} → ${componentName}.tsx`);
 
       entryPoints.push(`export * from './${componentName}';`);
+      componentNames.push(`'${componentName}'`);
     })
   );
 
@@ -179,12 +196,13 @@ async function run() {
 
   // write manifest.json
   const finalManifest = await buildManifest();
+
   await fsp.writeFile('manifest.json', JSON.stringify(finalManifest, null, 2));
 
   // write src/index.ts
   await fsp.writeFile(
     path.join(OUTPUT_DIR, 'index.ts'),
-    entryPoints.join('\n')
+    buildEntryFile(entryPoints.join('\n'), componentNames)
   );
 
   await rm(TEMP_DIR, { recursive: true, force: true });
