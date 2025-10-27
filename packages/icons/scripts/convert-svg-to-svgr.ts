@@ -2,8 +2,6 @@ import { promises as fsp } from 'fs';
 import { mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 
-import transformSvgWithSvgo from '@figma-export/transform-svg-with-svgo';
-import { pascalCase } from '@figma-export/utils';
 import { transform } from '@svgr/core';
 
 import { ICONS_INFO_FILE, OUTPUT_DIR, SIZES, TEMP_DIR } from './constants';
@@ -19,7 +17,19 @@ export type ManifestJSON = {
   }[];
 };
 
-// Manifest builder
+function pascalCase(input: string): string {
+  if (!input) return '';
+
+  const tokens = input
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .split(/[^a-zA-Z0-9]+/g)
+    .filter(Boolean);
+
+  return tokens
+    .map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
+    .join('');
+}
+
 async function buildManifest(): Promise<ManifestJSON> {
   try {
     const iconsInfo = JSON.parse(await fsp.readFile(ICONS_INFO_FILE, 'utf8'));
@@ -62,7 +72,7 @@ async function buildManifest(): Promise<ManifestJSON> {
   }
 }
 
-// Template (same as figmaExport)
+// Template
 function template(variables, { tpl }) {
   return tpl`
     import { forwardRef } from 'react';
@@ -75,51 +85,6 @@ function template(variables, { tpl }) {
     ${variables.componentName}.displayName = '${variables.componentName}';
 `;
 }
-
-// SVGO pipeline (same as figmaExport)
-const svgoTransform = transformSvgWithSvgo({
-  plugins: [
-    {
-      name: 'preset-default',
-      params: {
-        overrides: {
-          removeViewBox: false,
-        },
-      },
-    },
-    { name: 'cleanupIds' },
-    { name: 'removeXMLNS' },
-    { name: 'removeComments' },
-    { name: 'removeEmptyContainers' },
-    {
-      name: 'removeAttrs',
-      params: {
-        attrs: 'stroke|transform',
-      },
-    },
-    {
-      name: 'replace-values',
-      fn: () => ({
-        element: {
-          enter: (node) => {
-            if (node.name === 'svg') {
-              // eslint-disable-next-line no-param-reassign
-              node.attributes.fill = 'currentColor';
-            } else if (node.attributes.fill) {
-              // eslint-disable-next-line no-param-reassign
-              node.attributes.fill = 'currentColor';
-            }
-
-            // eslint-disable-next-line no-param-reassign
-            if (node.attributes.color) delete node.attributes.color;
-            // eslint-disable-next-line no-param-reassign
-            if (node.attributes.class) delete node.attributes.class;
-          },
-        },
-      }),
-    },
-  ],
-});
 
 async function run() {
   // Prepare filesystem: create output directory
@@ -137,10 +102,8 @@ async function run() {
       const baseName = path.basename(file, '.svg');
       const componentName = `Icon${pascalCase(baseName)}`;
 
-      const optimizedSvg = await svgoTransform(svgCode);
-
       const tsxCode = await transform(
-        optimizedSvg || '',
+        svgCode || '',
         {
           template,
           plugins: [
@@ -149,7 +112,50 @@ async function run() {
             '@svgr/plugin-prettier',
           ],
           ref: true,
-          svgo: false, // already optimized above
+          svgo: true,
+          svgoConfig: {
+            plugins: [
+              {
+                name: 'preset-default',
+                params: {
+                  overrides: {
+                    removeViewBox: false,
+                  },
+                },
+              },
+              { name: 'cleanupIds' },
+              { name: 'removeXMLNS' },
+              { name: 'removeComments' },
+              { name: 'removeEmptyContainers' },
+              {
+                name: 'removeAttrs',
+                params: {
+                  attrs: 'stroke|transform',
+                },
+              },
+              {
+                name: 'replace-values',
+                fn: () => ({
+                  element: {
+                    enter: (node) => {
+                      if (node.name === 'svg') {
+                        // eslint-disable-next-line no-param-reassign
+                        node.attributes.fill = 'currentColor';
+                      } else if (node.attributes.fill) {
+                        // eslint-disable-next-line no-param-reassign
+                        node.attributes.fill = 'currentColor';
+                      }
+
+                      // eslint-disable-next-line no-param-reassign
+                      if (node.attributes.color) delete node.attributes.color;
+                      // eslint-disable-next-line no-param-reassign
+                      if (node.attributes.class) delete node.attributes.class;
+                    },
+                  },
+                }),
+              },
+            ],
+          },
           typescript: true,
         },
         { componentName }
