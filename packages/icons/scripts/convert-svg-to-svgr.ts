@@ -12,7 +12,7 @@ type IconsManifest = {
   icons: {
     name: string;
     size: IconSize;
-    tags?: string[];
+    keywords?: string[];
     description?: string;
   }[];
 };
@@ -41,7 +41,7 @@ function buildEntryFile(entry: string, componentNames: string[]) {
         name: IconName;
         size: '16' | '24' | '32' | '48' | '64';
         description?: string;
-        tags?: string[];
+        keywords?: string[];
       }[];
     };
   `;
@@ -62,7 +62,7 @@ async function buildManifest(): Promise<IconsManifest> {
         const name = `Icon${pascalCase(baseName)}${size || ''}`;
         const { description, tags } = data ?? {};
 
-        return { name, size, description, tags };
+        return { name, size, description, keywords: tags };
       }
     );
 
