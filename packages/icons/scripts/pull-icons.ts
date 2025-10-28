@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import fg from 'fast-glob';
 
-import { SVG_ICONS_DIR, TEMP_DIR } from './constants';
+import { SVG_ICONS_DIR, TEMP_DIR } from '../constants';
 
 async function run() {
   const patterns = ['**/*.svg'];

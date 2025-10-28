@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { transform } from '@svgr/core';
 
-import { ICONS_INFO_FILE, OUTPUT_DIR, SIZES, TEMP_DIR } from './constants';
+import { ICONS_INFO_FILE, OUTPUT_DIR, SIZES, TEMP_DIR } from '../constants';
 
 type IconSize = (typeof SIZES)[number];
 
@@ -140,8 +140,10 @@ async function run() {
                         // eslint-disable-next-line no-param-reassign
                         node.attributes.fill = 'currentColor';
                       } else if (node.attributes.fill) {
+                        // Existing fill -> accent layer for duotone icons.
                         // eslint-disable-next-line no-param-reassign
-                        node.attributes.fill = 'currentColor';
+                        node.attributes.fill =
+                          'var(--icon-accent-color, currentColor)';
                       }
                     },
                   },
