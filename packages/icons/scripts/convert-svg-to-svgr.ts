@@ -131,24 +131,6 @@ async function run() {
           svgo: true,
           svgoConfig: {
             plugins: [
-              // {
-              //   name: 'preset-default',
-              //   params: {
-              //     overrides: {
-              //       removeViewBox: false,
-              //     },
-              //   },
-              // },
-              // { name: 'cleanupIds' },
-              // { name: 'removeXMLNS' },
-              // { name: 'removeComments' },
-              // { name: 'removeEmptyContainers' },
-              // {
-              //   name: 'removeAttrs',
-              //   params: {
-              //     attrs: 'stroke|transform',
-              //   },
-              // },
               {
                 name: 'replace-values',
                 fn: () => ({
@@ -161,11 +143,6 @@ async function run() {
                         // eslint-disable-next-line no-param-reassign
                         node.attributes.fill = 'currentColor';
                       }
-
-                      // eslint-disable-next-line no-param-reassign
-                      if (node.attributes.color) delete node.attributes.color;
-                      // eslint-disable-next-line no-param-reassign
-                      if (node.attributes.class) delete node.attributes.class;
                     },
                   },
                 }),
