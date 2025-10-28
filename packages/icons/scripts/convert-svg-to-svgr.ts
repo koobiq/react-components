@@ -87,7 +87,7 @@ async function buildManifest(): Promise<IconsManifest> {
   }
 }
 
-// Template
+// SVGR template
 function template(variables, { tpl }) {
   return tpl`
     import { forwardRef } from 'react';
@@ -101,67 +101,79 @@ function template(variables, { tpl }) {
 `;
 }
 
+// SVGR config
+const transformConfig = {
+  template,
+  plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx', '@svgr/plugin-prettier'],
+  ref: true,
+  svgo: true,
+  svgoConfig: {
+    plugins: [
+      {
+        name: 'replace-values',
+        fn: () => ({
+          element: {
+            enter: (node) => {
+              if (node.name === 'svg') {
+                // eslint-disable-next-line no-param-reassign
+                node.attributes.fill = 'currentColor';
+              } else if (node.attributes.fill) {
+                // Existing fill → accent layer for duotone icons
+                // eslint-disable-next-line no-param-reassign
+                node.attributes.fill = 'var(--icon-accent-color, currentColor)';
+              }
+            },
+          },
+        }),
+      },
+    ],
+  },
+  typescript: true,
+};
+
 async function run() {
   // Prepare filesystem: create output directory
   await rm(OUTPUT_DIR, { recursive: true, force: true });
   await mkdir(OUTPUT_DIR, { recursive: true });
 
-  const files = (await fsp.readdir(TEMP_DIR)).filter((f) => f.endsWith('.svg'));
+  // Read manifest keys
+  const iconsInfo = JSON.parse(await fsp.readFile(ICONS_INFO_FILE, 'utf8'));
+  const keys = Object.keys(iconsInfo);
+
+  // Build list of expected SVGs based on keys, e.g. "server-badge-linux_16" → "server-badge-linux_16.svg"
+  const files = keys.map((key) => `${key}.svg`);
+
   const entryPoints: string[] = [];
-  const componentNames: string[] = [];
+  const names: string[] = [];
 
   const results = await Promise.allSettled(
-    files.map(async (file) => {
-      const filePath = path.join(TEMP_DIR, file);
-      const svgCode = await fsp.readFile(filePath, 'utf8');
+    files.map(async (fileKey) => {
+      const filePath = path.join(TEMP_DIR, fileKey);
 
-      const baseName = path.basename(file, '.svg');
-      const componentName = `Icon${pascalCase(baseName)}`;
+      // read SVG source
+      let svgCode: string;
 
-      const tsxCode = await transform(
-        svgCode || '',
-        {
-          template,
-          plugins: [
-            '@svgr/plugin-svgo',
-            '@svgr/plugin-jsx',
-            '@svgr/plugin-prettier',
-          ],
-          ref: true,
-          svgo: true,
-          svgoConfig: {
-            plugins: [
-              {
-                name: 'replace-values',
-                fn: () => ({
-                  element: {
-                    enter: (node) => {
-                      if (node.name === 'svg') {
-                        // eslint-disable-next-line no-param-reassign
-                        node.attributes.fill = 'currentColor';
-                      } else if (node.attributes.fill) {
-                        // Existing fill -> accent layer for duotone icons.
-                        // eslint-disable-next-line no-param-reassign
-                        node.attributes.fill =
-                          'var(--icon-accent-color, currentColor)';
-                      }
-                    },
-                  },
-                }),
-              },
-            ],
-          },
-          typescript: true,
-        },
-        { componentName }
-      );
+      try {
+        svgCode = await fsp.readFile(filePath, 'utf8');
+      } catch {
+        console.warn(`⚠️ Missing SVG: ${fileKey} (skipped)`);
 
-      const outputPath = path.join(OUTPUT_DIR, `${componentName}.tsx`);
+        return;
+      }
+
+      const baseName = path.basename(fileKey, '.svg');
+      const name = `Icon${pascalCase(baseName)}`;
+
+      const tsxCode = await transform(svgCode || '', transformConfig, {
+        componentName: name,
+      });
+
+      const outputPath = path.join(OUTPUT_DIR, `${name}.tsx`);
       await fsp.writeFile(outputPath, tsxCode);
-      console.log(`✅ ${file} → ${componentName}.tsx`);
+      console.log(`✅ ${fileKey} → ${name}.tsx`);
 
-      entryPoints.push(`export * from './${componentName}';`);
-      componentNames.push(`'${componentName}'`);
+      entryPoints.push(`export * from './${name}';`);
+      names.push(`'${name}'`);
     })
   );
 
@@ -175,17 +187,15 @@ async function run() {
 
   // write manifest.json
   const finalManifest = await buildManifest();
-
   await fsp.writeFile('manifest.json', JSON.stringify(finalManifest, null, 2));
 
   // write src/index.ts
   await fsp.writeFile(
     path.join(OUTPUT_DIR, 'index.ts'),
-    buildEntryFile(entryPoints.join('\n'), componentNames)
+    buildEntryFile(entryPoints.join('\n'), names)
   );
 
   await rm(TEMP_DIR, { recursive: true, force: true });
-
   console.log(`🎉 All SVGs successfully converted to React components!`);
 }
 
