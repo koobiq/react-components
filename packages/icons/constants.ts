@@ -19,11 +19,17 @@ function resolvePackageRoot(pkgName: string) {
 
 export const KOOBIQ_ICONS_DIR = resolvePackageRoot('@koobiq/icons');
 
-export const TEMP_DIR = path.resolve('temp');
+// Metadata
+export const MANIFEST_FILE = path.join(
+  KOOBIQ_ICONS_DIR,
+  'info',
+  'kbq-icons-info.json'
+);
+
+// Directory containing the source SVG files
+export const INPUT_DIR = path.join(KOOBIQ_ICONS_DIR, 'svg');
+// Directory where generated TSX icons will be written
 export const OUTPUT_DIR = path.resolve('src');
 
-export const SVG_ICONS_DIR = path.join(KOOBIQ_ICONS_DIR, 'svg');
-export const ICONS_INFO_DIR = path.join(KOOBIQ_ICONS_DIR, 'info');
-export const ICONS_INFO_FILE = path.join(ICONS_INFO_DIR, 'kbq-icons-info.json');
-
+// Supported icon sizes
 export const SIZES = ['16', '24', '32', '48', '64'] as const;

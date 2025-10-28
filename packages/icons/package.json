@@ -29,9 +29,7 @@
     "lint": "pnpm lint:js",
     "type-check": "tsc --noEmit --pretty",
     "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",
-    "pull-icons": "tsx scripts/pull-icons.ts",
-    "convert-svg-to-svgr": "tsx scripts/convert-svg-to-svgr.ts",
-    "export-icons": "pnpm update @koobiq/icons@latest && pnpm pull-icons && pnpm convert-svg-to-svgr && pnpm lint"
+    "export-icons": "pnpm update @koobiq/icons@latest && tsx scripts/build.ts && pnpm lint"
   },
   "devDependencies": {
     "@koobiq/icons": "^10.10.0"

@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { transform } from '@svgr/core';
 
-import { ICONS_INFO_FILE, OUTPUT_DIR, SIZES, TEMP_DIR } from '../constants';
+import { MANIFEST_FILE, OUTPUT_DIR, SIZES, INPUT_DIR } from '../constants';
 
 type IconSize = (typeof SIZES)[number];
 
@@ -49,7 +49,7 @@ function buildEntryFile(entry: string, componentNames: string[]) {
 
 async function buildManifest(): Promise<IconsManifest> {
   try {
-    const iconsInfo = JSON.parse(await fsp.readFile(ICONS_INFO_FILE, 'utf8'));
+    const iconsInfo = JSON.parse(await fsp.readFile(MANIFEST_FILE, 'utf8'));
 
     const icons = Object.entries(iconsInfo).map(
       ([key, data]: [string, any]) => {
@@ -75,13 +75,13 @@ async function buildManifest(): Promise<IconsManifest> {
     });
 
     console.log(
-      `✅ Manifest built entirely from ${ICONS_INFO_FILE} (${icons.length} entries)`
+      `✅ Manifest built entirely from ${MANIFEST_FILE} (${icons.length} entries)`
     );
 
     return { icons } as IconsManifest;
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    console.error(`❌ Failed to load ${ICONS_INFO_FILE}:`, msg);
+    console.error(`❌ Failed to load ${MANIFEST_FILE}:`, msg);
 
     return { icons: [] };
   }
@@ -137,7 +137,7 @@ async function run() {
   await mkdir(OUTPUT_DIR, { recursive: true });
 
   // Read manifest keys
-  const iconsInfo = JSON.parse(await fsp.readFile(ICONS_INFO_FILE, 'utf8'));
+  const iconsInfo = JSON.parse(await fsp.readFile(MANIFEST_FILE, 'utf8'));
   const keys = Object.keys(iconsInfo);
 
   // Build list of expected SVGs based on keys, e.g. "server-badge-linux_16" → "server-badge-linux_16.svg"
@@ -148,9 +148,9 @@ async function run() {
 
   const results = await Promise.allSettled(
     files.map(async (fileKey) => {
-      const filePath = path.join(TEMP_DIR, fileKey);
+      const filePath = path.join(INPUT_DIR, fileKey);
 
-      // read SVG source
+      // Read SVG source
       let svgCode: string;
 
       try {
@@ -185,17 +185,16 @@ async function run() {
     );
   }
 
-  // write manifest.json
+  // Write manifest.json
   const finalManifest = await buildManifest();
   await fsp.writeFile('manifest.json', JSON.stringify(finalManifest, null, 2));
 
-  // write src/index.ts
+  // Write src/index.ts
   await fsp.writeFile(
     path.join(OUTPUT_DIR, 'index.ts'),
     buildEntryFile(entryPoints.join('\n'), names)
   );
 
-  await rm(TEMP_DIR, { recursive: true, force: true });
   console.log(`🎉 All SVGs successfully converted to React components!`);
 }
 
