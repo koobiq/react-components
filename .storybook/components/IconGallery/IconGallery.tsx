@@ -3,14 +3,18 @@ import { Fragment, useState } from 'react';
 import { Typography, SearchInput } from '@koobiq/react-components';
 import { clsx } from '@koobiq/react-core';
 import * as icons from '@koobiq/react-icons';
-import type { IconsManifest } from '@koobiq/react-icons';
 
 import iconsManifest from '../../../packages/icons/manifest.json';
 import { slugify } from '../../utils';
 
 import s from './IconGallery.module.css';
 
-const manifest = iconsManifest.icons as IconsManifest['icons'];
+export type IconsManifest = {
+  icons: {
+    componentName: string;
+    size: string;
+  }[];
+};
 
 function groupBy(icons: IconsManifest['icons'], key: 'size') {
   return icons.reduce(
@@ -32,8 +36,8 @@ export const IconGallery = () => {
     setSearch(value);
   };
 
-  const filteredIcons = manifest.filter(({ name }) =>
-    name.toLowerCase().includes(search.toLowerCase())
+  const filteredIcons = iconsManifest.icons.filter(({ componentName }) =>
+    componentName.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -56,7 +60,7 @@ export const IconGallery = () => {
           <Fragment key={size}>
             <h2 id={slugify(size)}>Size {size}</h2>
             <div className={clsx(s.grid, 'sb-unstyled')}>
-              {items.map(({ name }) => {
+              {items.map(({ componentName: name }) => {
                 const Icon = icons[name];
 
                 return (
