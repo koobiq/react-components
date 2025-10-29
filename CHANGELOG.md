@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.16.0](https://github.com/koobiq/react-components/compare/0.15.1...0.16.0) (2025-10-29)
+
+### ⚠ BREAKING CHANGES
+
+- **icons:** remove `componentName` in manifest.json. Use `name` instead.
+
+### 🚀 Features
+
+- **icons:** add new icons, extend `manifest.json` (DS-4318) ([665b45d](https://github.com/koobiq/react-components/commit/665b45d845e97e8a809bcbd3713c43efa8d597e2))
+
 ## [0.15.1](https://github.com/koobiq/react-components/compare/0.15.0...0.15.1) (2025-10-24)
 
 ### 🐞 Bug Fixes
