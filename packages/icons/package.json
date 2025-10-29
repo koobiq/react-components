@@ -28,9 +28,11 @@
     "lint:js": "eslint --ext .ts,.tsx src --fix",
     "lint": "pnpm lint:js",
     "type-check": "tsc --noEmit --pretty",
-    "copy:svgr-to-src": "tsx scripts/svgr-copy-to-src.ts",
     "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",
-    "figma:export-icons": "pnpm clean:temp && tsx ../../node_modules/@figma-export/cli/bin/run use-config .figmaexportrc.ts && pnpm copy:svgr-to-src && pnpm lint && rimraf temp"
+    "export-icons": "pnpm update @koobiq/icons@latest && tsx scripts/build.ts && pnpm lint"
+  },
+  "devDependencies": {
+    "@koobiq/icons": "^10.10.0"
   },
   "files": ["dist", "manifest.json"],
   "peerDependencies": {
