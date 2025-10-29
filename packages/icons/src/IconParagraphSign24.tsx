@@ -6,15 +6,12 @@ export const IconParagraphSign24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <path
-        fill="currentColor"
-        d="M5.625 2.25a5.625 5.625 0 0 0 0 11.25H7.5v7.95a.3.3 0 0 0 .3.3h2.683a.3.3 0 0 0 .3-.3V4.887h4.684V21.45a.3.3 0 0 0 .3.3h2.683a.3.3 0 0 0 .3-.3V4.887h4.95a.3.3 0 0 0 .3-.3V2.55a.3.3 0 0 0-.3-.3z"
-      />
+      <path d="M5.625 2.25a5.625 5.625 0 0 0 0 11.25H7.5v7.95a.3.3 0 0 0 .3.3h2.683a.3.3 0 0 0 .3-.3V4.887h4.684V21.45a.3.3 0 0 0 .3.3h2.683a.3.3 0 0 0 .3-.3V4.887h4.95a.3.3 0 0 0 .3-.3V2.55a.3.3 0 0 0-.3-.3z" />
     </svg>
   )
 );

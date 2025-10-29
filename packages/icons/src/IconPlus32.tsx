@@ -6,12 +6,12 @@ export const IconPlus32 = forwardRef(
     <svg
       width={32}
       height={32}
-      fill="currentColor"
       viewBox="0 0 32 32"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <path fill="currentColor" d="M14 4h4v10h10v4H18v10h-4V18H4v-4h10z" />
+      <path d="M14 4h4v10h10v4H18v10h-4V18H4v-4h10z" />
     </svg>
   )
 );

@@ -6,16 +6,13 @@ export const IconCircleDot16 = forwardRef(
     <svg
       width={16}
       height={16}
-      fill="currentColor"
       viewBox="0 0 16 16"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <path
-        fill="currentColor"
-        d="M10.247 1.368a7 7 0 1 0 4.385 4.385 3.2 3.2 0 0 1-4.385-4.385"
-      />
-      <g fill="currentColor">
+      <path d="M10.247 1.368a7 7 0 1 0 4.385 4.385 3.2 3.2 0 0 1-4.385-4.385" />
+      <g fill="var(--icon-accent-color, currentColor)">
         <path d="M15 3a2 2 0 1 1-4 0 2 2 0 0 1 4 0" />
         <path d="M15 3a2 2 0 1 1-4 0 2 2 0 0 1 4 0" />
       </g>

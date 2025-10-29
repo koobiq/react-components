@@ -6,12 +6,12 @@ export const IconAlignLeft24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <g fill="currentColor">
+      <g>
         <path d="M0 20.7a.3.3 0 0 0 .3.3h14.4a.3.3 0 0 0 .3-.3V18.9a.3.3 0 0 0-.3-.3H.3a.3.3 0 0 0-.3.3zM0 10.3a.3.3 0 0 0 .3.3h14.4a.3.3 0 0 0 .3-.3V8.5a.3.3 0 0 0-.3-.3H.3a.3.3 0 0 0-.3.3zM0 15.5a.3.3 0 0 0 .3.3h23.4a.3.3 0 0 0 .3-.3v-1.8a.3.3 0 0 0-.3-.3H.3a.3.3 0 0 0-.3.3zM0 5.099V3.3A.3.3 0 0 1 .3 3h23.4a.3.3 0 0 1 .3.3v1.799a.3.3 0 0 1-.3.3H.3a.3.3 0 0 1-.3-.3" />
       </g>
     </svg>

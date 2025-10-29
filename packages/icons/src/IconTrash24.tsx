@@ -6,12 +6,12 @@ export const IconTrash24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <g fill="currentColor">
+      <g>
         <path
           fillRule="evenodd"
           d="M20.25 20.4c0 1.16-.94 2.1-2.1 2.1H5.85c-1.16 0-2.1-.94-2.1-2.1V7.8h16.5zM9 10.5a.3.3 0 0 0-.3.3v8.4a.3.3 0 0 0 .3.3h1.2a.3.3 0 0 0 .3-.3v-8.4a.3.3 0 0 0-.3-.3zm4.8 0a.3.3 0 0 0-.3.3v8.4a.3.3 0 0 0 .3.3H15a.3.3 0 0 0 .3-.3v-8.4a.3.3 0 0 0-.3-.3z"
