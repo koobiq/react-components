@@ -6,15 +6,12 @@ export const IconUnit24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <path
-        fill="currentColor"
-        d="M17.88 10.8h4.32a.3.3 0 0 1 .3.3v1.8a.3.3 0 0 1-.3.3h-4.32a6.002 6.002 0 0 1-11.76 0H1.8a.3.3 0 0 1-.3-.3v-1.8a.3.3 0 0 1 .3-.3h4.32a6.002 6.002 0 0 1 11.76 0"
-      />
+      <path d="M17.88 10.8h4.32a.3.3 0 0 1 .3.3v1.8a.3.3 0 0 1-.3.3h-4.32a6.002 6.002 0 0 1-11.76 0H1.8a.3.3 0 0 1-.3-.3v-1.8a.3.3 0 0 1 .3-.3h4.32a6.002 6.002 0 0 1 11.76 0" />
     </svg>
   )
 );

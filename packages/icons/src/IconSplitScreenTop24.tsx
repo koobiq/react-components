@@ -6,15 +6,12 @@ export const IconSplitScreenTop24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <path
-        fill="currentColor"
-        d="M22.5 19.2V4.8A1.8 1.8 0 0 0 20.7 3H3.3a1.8 1.8 0 0 0-1.8 1.8v14.4A1.8 1.8 0 0 0 3.3 21h17.4a1.8 1.8 0 0 0 1.8-1.8m-2.7-8.7a.3.3 0 0 1 .3.3v7.5a.3.3 0 0 1-.3.3H4.2a.3.3 0 0 1-.3-.3v-7.5a.3.3 0 0 1 .3-.3z"
-      />
+      <path d="M22.5 19.2V4.8A1.8 1.8 0 0 0 20.7 3H3.3a1.8 1.8 0 0 0-1.8 1.8v14.4A1.8 1.8 0 0 0 3.3 21h17.4a1.8 1.8 0 0 0 1.8-1.8m-2.7-8.7a.3.3 0 0 1 .3.3v7.5a.3.3 0 0 1-.3.3H4.2a.3.3 0 0 1-.3-.3v-7.5a.3.3 0 0 1 .3-.3z" />
     </svg>
   )
 );

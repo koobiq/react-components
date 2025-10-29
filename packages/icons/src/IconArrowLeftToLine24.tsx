@@ -6,12 +6,12 @@ export const IconArrowLeftToLine24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <g fill="currentColor">
+      <g>
         <path d="M15.429 17.362a.3.3 0 0 0 0-.422l-3.693-3.74H22.2a.3.3 0 0 0 .3-.3v-1.8a.3.3 0 0 0-.3-.3H11.736l3.693-3.741a.3.3 0 0 0 0-.422l-1.254-1.27a.3.3 0 0 0-.427 0l-6.34 6.422a.3.3 0 0 0 0 .421l6.34 6.422a.3.3 0 0 0 .427 0zM3.3 1.5a.3.3 0 0 0-.3.3v20.4a.3.3 0 0 0 .3.3h1.8a.3.3 0 0 0 .3-.3V1.8a.3.3 0 0 0-.3-.3z" />
       </g>
     </svg>

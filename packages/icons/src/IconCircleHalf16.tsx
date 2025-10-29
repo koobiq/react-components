@@ -6,15 +6,12 @@ export const IconCircleHalf16 = forwardRef(
     <svg
       width={16}
       height={16}
-      fill="currentColor"
       viewBox="0 0 16 16"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <path
-        fill="currentColor"
-        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0-1.6A5.4 5.4 0 0 0 8 2.6v10.8"
-      />
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0-1.6A5.4 5.4 0 0 0 8 2.6v10.8" />
     </svg>
   )
 );

@@ -6,15 +6,12 @@ export const IconLocationChevronLeft16 = forwardRef(
     <svg
       width={16}
       height={16}
-      fill="currentColor"
       viewBox="0 0 16 16"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <path
-        fill="currentColor"
-        d="M10.99 3.236q.01-.03.008-.06a.204.204 0 0 0-.31-.144L3.095 7.825a.208.208 0 0 0 0 .35l7.591 4.793c.128.08.29 0 .31-.145a.14.14 0 0 0-.006-.06L9.5 8z"
-      />
+      <path d="M10.99 3.236q.01-.03.008-.06a.204.204 0 0 0-.31-.144L3.095 7.825a.208.208 0 0 0 0 .35l7.591 4.793c.128.08.29 0 .31-.145a.14.14 0 0 0-.006-.06L9.5 8z" />
     </svg>
   )
 );

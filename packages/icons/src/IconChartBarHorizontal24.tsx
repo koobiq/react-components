@@ -6,12 +6,12 @@ export const IconChartBarHorizontal24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <g fill="currentColor">
+      <g>
         <path d="M1.8 22.5a.3.3 0 0 1-.3-.3v-2.1h21v2.1a.3.3 0 0 1-.3.3zM1.5 18V6.3a.3.3 0 0 1 .3-.3h3.9a.3.3 0 0 1 .3.3V18zM18 18V1.8a.3.3 0 0 1 .3-.3h3.9a.3.3 0 0 1 .3.3V18zM9.75 10.8a.3.3 0 0 1 .3-.3h3.9a.3.3 0 0 1 .3.3V18h-4.5z" />
       </g>
     </svg>

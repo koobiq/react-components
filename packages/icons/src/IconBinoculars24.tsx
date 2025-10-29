@@ -6,12 +6,12 @@ export const IconBinoculars24 = forwardRef(
     <svg
       width={24}
       height={24}
-      fill="currentColor"
       viewBox="0 0 24 24"
+      fill="currentColor"
       ref={ref}
       {...props}
     >
-      <g fill="currentColor">
+      <g>
         <path d="M15.75 5.1H21V1.8a.3.3 0 0 0-.3-.3h-4.65a.3.3 0 0 0-.3.3zM21.212 6.9H15.75v14.4a1.2 1.2 0 0 0 1.2 1.2h5.617a1.2 1.2 0 0 0 1.18-1.411zM13.95 13.5V6.9h-3.9v6.6zM8.25 6.9H2.788L.252 21.089A1.2 1.2 0 0 0 1.433 22.5H7.05a1.2 1.2 0 0 0 1.2-1.2zM7.95 1.5a.3.3 0 0 1 .3.3v3.3H3V1.8a.3.3 0 0 1 .3-.3z" />
       </g>
     </svg>
