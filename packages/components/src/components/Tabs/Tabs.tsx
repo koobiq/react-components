@@ -27,6 +27,7 @@ export function TabsRender<T extends object>(
 ) {
   const {
     orientation = 'horizontal',
+    isUnderlined,
     style,
     className,
     fullWidth,
@@ -50,7 +51,10 @@ export function TabsRender<T extends object>(
 
     if (activeTab)
       setThumbStyle({
-        ...getThumbCssVars(activeTab, orientation),
+        ...getThumbCssVars(
+          activeTab,
+          isUnderlined ? 'horizontal' : orientation
+        ),
         ...(!previous.current && { transition: 'none' }),
       });
 
@@ -66,7 +70,11 @@ export function TabsRender<T extends object>(
   const tabsProps = mergeProps(
     tabListProps,
     {
-      className: clsx(s.tabList, textNormalMedium),
+      className: clsx(
+        s.tabList,
+        textNormalMedium,
+        isUnderlined && s.underlined
+      ),
       ref: tabListRef,
     },
     slotProps?.tabList
@@ -79,15 +87,23 @@ export function TabsRender<T extends object>(
       data-testid={dataTestId}
       data-orientation={orientation}
       data-fullwidth={fullWidth || undefined}
+      data-underlined={isUnderlined || undefined}
       className={clsx(
         s.base,
         fullWidth && s.fullWidth,
+        isUnderlined && s.underlined,
         orientation && s[orientation],
         className
       )}
     >
       <div {...tabsProps}>
-        <span className={s.thumb} style={thumbStyle} />
+        <span
+          className={clsx(
+            s.selectionIndicator,
+            isUnderlined ? s.underlinedIndicator : s.defaultIndicator
+          )}
+          style={thumbStyle}
+        />
         {[...state.collection].map((item, i) => (
           <TabItem
             item={item}

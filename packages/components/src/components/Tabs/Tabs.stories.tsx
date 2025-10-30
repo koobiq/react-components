@@ -431,23 +431,23 @@ export const Underlined: Story = {
   render: function Render(args) {
     return (
       <Tabs aria-label="Types of cyberattacks" isUnderlined {...args}>
-        <Tab key="1" title="BruteForce">
+        <Tab key="1" title="Tab 1">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
           ratione.
         </Tab>
-        <Tab key="2" title="BruteForce">
+        <Tab key="2" title="Tab 2">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
           ratione.
         </Tab>
-        <Tab key="3" title="BruteForce">
+        <Tab key="3" title="Tab 3">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
           ratione.
         </Tab>
-        <Tab key="4" title="BruteForce">
+        <Tab key="4" title="Tab 4">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
           ratione.
         </Tab>
-        <Tab key="5" title="BruteForce">
+        <Tab key="5" title="Tab 5">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
           ratione.
         </Tab>
