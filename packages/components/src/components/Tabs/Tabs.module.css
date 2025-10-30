@@ -10,7 +10,7 @@
   }
 }
 
-.vertical {
+.vertical:not(.underlined) {
   --tabs-direction: column;
   --tabs-gap: var(--kbq-size-s);
   display: flex;
@@ -40,26 +40,51 @@
   }
 }
 
+.underlined {
+  padding-block: var(--kbq-size-s);
+
+  &::after {
+    content: '';
+    block-size: 1px;
+    inset-inline: 0;
+    inset-block-end: 0;
+    position: absolute;
+    background: var(--kbq-line-contrast-less);
+  }
+}
+
 /* panel */
 .tabPanel {
   padding: var(--kbq-size-m);
 }
 
-.thumb {
+/* indicator */
+.selectionIndicator {
   --thumb-inline-size: ;
   --thumb-block-size: ;
   --thumb-transform: ;
-  position: absolute;
-  will-change: transform, width, height;
   transform: var(--thumb-transform);
   inline-size: var(--thumb-inline-size);
   block-size: var(--thumb-block-size);
-  border-radius: var(--tab-border-radius);
-  background-color: var(--kbq-states-background-transparent-active);
+  position: absolute;
   transition:
     inline-size 200ms ease-in,
     block-size 200ms ease-in,
     transform 200ms ease-in;
+}
+
+.defaultIndicator {
+  will-change: transform, width, height;
+  border-radius: var(--tab-border-radius);
+  background-color: var(--kbq-states-background-transparent-active);
+}
+
+.underlinedIndicator {
+  inset-block-end: 0;
+  block-size: 3px;
+  display: block;
+  border-radius: 2px 2px 0 0;
+  background: var(--kbq-line-contrast);
 }
 
 /* tab */
