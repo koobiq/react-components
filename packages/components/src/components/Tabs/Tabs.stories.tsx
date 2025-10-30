@@ -451,6 +451,10 @@ export const Underlined: Story = {
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
           ratione.
         </Tab>
+        <Tab key="6" title="Extra tab">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+          ratione.
+        </Tab>
       </Tabs>
     );
   },
