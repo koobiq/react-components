@@ -1,9 +1,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- Inter -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+  rel="stylesheet"
+/>
 <!-- JetBrains Mono -->
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>
+<link
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
+  rel="stylesheet"
+/><style>
   :root {
     --storybook-content-max-with: 800px;
   }
@@ -128,7 +134,8 @@
   }
 
   /* h1 */
-  .sbdocs.sbdocs-content :is(h1:not(.sb-anchor, .sb-unstyled, .sb-unstyled h1)) {
+  .sbdocs.sbdocs-content
+    :is(h1:not(.sb-anchor, .sb-unstyled, .sb-unstyled h1)) {
     padding: 0;
     margin-block-end: var(--kbq-size-xxl);
     font-size: var(--kbq-md-typography-md-h1-font-size);
@@ -140,7 +147,8 @@
   }
 
   /* h2 */
-  .sbdocs.sbdocs-content :is(h2:not(.sb-anchor, .sb-unstyled, .sb-unstyled h2)) {
+  .sbdocs.sbdocs-content
+    :is(h2:not(.sb-anchor, .sb-unstyled, .sb-unstyled h2)) {
     padding: 0;
     border: none;
     margin: var(--kbq-size-4xl) 0 var(--kbq-size-xxl) 0;
@@ -154,7 +162,8 @@
   }
 
   /* h3 */
-  .sbdocs.sbdocs-content :is(h3:not(.sb-anchor, .sb-unstyled, .sb-unstyled h3)) {
+  .sbdocs.sbdocs-content
+    :is(h3:not(.sb-anchor, .sb-unstyled, .sb-unstyled h3)) {
     border: none;
     padding: 0;
     margin-block: var(--kbq-size-xxl);
@@ -167,7 +176,9 @@
     font-feature-settings: var(--kbq-md-typography-md-h3-font-feature-settings);
   }
 
-  .sbdocs.sbdocs-content h1 :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
+  .sbdocs.sbdocs-content
+    h1
+    :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
     margin-inline-start: 0;
     font-size: var(--kbq-md-typography-md-h1-font-size);
     line-height: var(--kbq-md-typography-md-h1-line-height);
@@ -178,7 +189,9 @@
     font-feature-settings: var(--kbq-md-typography-md-h1-font-feature-settings);
   }
 
-  .sbdocs.sbdocs-content h2 :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
+  .sbdocs.sbdocs-content
+    h2
+    :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
     margin-inline-start: 0;
     font-size: var(--kbq-md-typography-md-h2-font-size);
     line-height: var(--kbq-md-typography-md-h2-line-height);
@@ -189,7 +202,9 @@
     font-feature-settings: var(--kbq-md-typography-md-h2-font-feature-settings);
   }
 
-  .sbdocs.sbdocs-content h3 :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
+  .sbdocs.sbdocs-content
+    h3
+    :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
     margin-inline-start: 0;
     font-size: var(--kbq-md-typography-md-h3-font-size);
     line-height: var(--kbq-md-typography-md-h3-line-height);
@@ -209,74 +224,90 @@
     font-family: var(--kbq-md-typography-md-body-font-family);
     letter-spacing: var(--kbq-md-typography-md-body-letter-spacing);
     text-transform: var(--kbq-md-typography-md-body-text-transform);
-    font-feature-settings: var(--kbq-md-typography-md-body-font-feature-settings);
+    font-feature-settings: var(
+      --kbq-md-typography-md-body-font-feature-settings
+    );
   }
 
   /* strong text */
-  .sbdocs.sbdocs-content :is(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p)) > strong {
+  .sbdocs.sbdocs-content
+    :is(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p))
+    > strong {
     font-weight: 600;
   }
 
   /* ul, li */
-  .sbdocs.sbdocs-content :is(ul:not(.sb-anchor, .sb-unstyled, .sb-unstyled ul)) {
+  .sbdocs.sbdocs-content
+    :is(ul:not(.sb-anchor, .sb-unstyled, .sb-unstyled ul)) {
     margin-block: var(--kbq-size-xxl) var(--kbq-size-xxl);
   }
 
-  .sbdocs.sbdocs-content :is(li:not(.sb-anchor, .sb-unstyled, .sb-unstyled li)) {
+  .sbdocs.sbdocs-content
+    :is(li:not(.sb-anchor, .sb-unstyled, .sb-unstyled li)) {
     font-size: var(--kbq-md-typography-md-body-font-size);
     line-height: var(--kbq-md-typography-md-body-line-height);
     font-family: var(--kbq-md-typography-md-body-font-family);
     letter-spacing: var(--kbq-md-typography-md-body-letter-spacing);
     text-transform: var(--kbq-md-typography-md-body-text-transform);
-    font-feature-settings: var(--kbq-md-typography-md-body-font-feature-settings);
+    font-feature-settings: var(
+      --kbq-md-typography-md-body-font-feature-settings
+    );
     margin-block: var(--kbq-size-m) var(--kbq-size-m);
     display: list-item;
   }
 
   /* link */
   .sbdocs.sbdocs-content
-  :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
+    :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])) {
     transition: color 0ms;
     border: none;
     text-decoration: underline;
     color: var(--kbq-foreground-theme);
     text-decoration-color: var(--kbq-line-theme-less);
-    text-underline-offset: calc((var(--kbq-md-typography-md-body-line-height) - var(--kbq-md-typography-md-body-font-size)) / 2);
+    text-underline-offset: calc(
+      (
+          var(--kbq-md-typography-md-body-line-height) -
+            var(--kbq-md-typography-md-body-font-size)
+        ) /
+        2
+    );
     font-size: var(--kbq-md-typography-md-body-font-size);
     font-weight: var(--kbq-md-typography-md-body-font-weight);
     line-height: var(--kbq-md-typography-md-body-line-height);
     font-family: var(--kbq-md-typography-md-body-font-family);
     text-transform: var(--kbq-md-typography-md-body-text-transform);
-    font-feature-settings: var(--kbq-md-typography-md-body-font-feature-settings);
+    font-feature-settings: var(
+      --kbq-md-typography-md-body-font-feature-settings
+    );
     letter-spacing: var(--kbq-md-typography-md-body-letter-spacing);
   }
 
   .sbdocs.sbdocs-content
-  :is(
-    a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])
-  ):hover {
+    :is(
+      a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])
+    ):hover {
     color: var(--kbq-states-foreground-theme-hover);
   }
 
   .sbdocs.sbdocs-content
-  :is(
-    a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])
-  ):active {
+    :is(
+      a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a, [aria-hidden='true'])
+    ):active {
     color: var(--kbq-states-foreground-theme-active);
   }
 
   .sbdocs.sbdocs-content
-  :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a)):focus-visible {
+    :is(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a)):focus-visible {
     outline: var(--kbq-size-3xs) solid var(--kbq-states-line-focus-theme);
   }
 
   /* code */
   .sbdocs.sbdocs-content
-  :where(li:not(.sb-anchor, .sb-unstyled, .sb-unstyled li))
-  code,
+    :where(li:not(.sb-anchor, .sb-unstyled, .sb-unstyled li))
+    code,
   .sbdocs.sbdocs-content
-  :where(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p))
-  code {
+    :where(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p))
+    code {
     background: var(--kbq-background-bg-secondary);
     border-radius: var(--kbq-size-xs);
     border-width: var(--kbq-size-border-width);
