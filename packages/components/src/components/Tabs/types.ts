@@ -22,6 +22,7 @@ export type TabsProps<T> = AriaTabListProps<T> & {
     tabList?: ComponentProps<'div'>;
     tabPanel?: ComponentProps<'div'>;
   };
+  isUnderlined?: boolean;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
 };

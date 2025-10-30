@@ -426,3 +426,63 @@ export const WithForm: Story = {
     );
   },
 };
+
+export const Underlined: Story = {
+  render: function Render(args) {
+    return (
+      <Tabs aria-label="Types of cyberattacks" isUnderlined {...args}>
+        <Tab key="1" title="BruteForce">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+          ratione.
+        </Tab>
+        <Tab key="2" title="BruteForce">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+          ratione.
+        </Tab>
+        <Tab key="3" title="BruteForce">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+          ratione.
+        </Tab>
+        <Tab key="4" title="BruteForce">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+          ratione.
+        </Tab>
+        <Tab key="5" title="BruteForce">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+          ratione.
+        </Tab>
+      </Tabs>
+    );
+  },
+};
+
+export const Scroll: Story = {
+  render: function Render(args) {
+    return (
+      <div style={{ maxInlineSize: 300 }}>
+        <Tabs aria-label="Types of cyberattacks" {...args}>
+          <Tab key="1" title="BruteForce">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+            ratione.
+          </Tab>
+          <Tab key="2" title="BruteForce">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+            ratione.
+          </Tab>
+          <Tab key="3" title="BruteForce">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+            ratione.
+          </Tab>
+          <Tab key="4" title="BruteForce">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+            ratione.
+          </Tab>
+          <Tab key="5" title="BruteForce">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+            ratione.
+          </Tab>
+        </Tabs>
+      </div>
+    );
+  },
+};
