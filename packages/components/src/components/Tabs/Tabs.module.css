@@ -40,7 +40,7 @@
   }
 }
 
-.underlined {
+.tabList.underlined {
   padding-block: var(--kbq-size-s);
 
   &::after {
