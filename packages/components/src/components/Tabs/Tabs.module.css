@@ -17,6 +17,19 @@
 }
 
 /* tabs */
+.tabListWrapper {
+  position: relative;
+
+  &.underlined::after {
+    content: '';
+    block-size: 1px;
+    inset-inline: 0;
+    inset-block-end: 0;
+    position: absolute;
+    background: var(--kbq-line-contrast-less);
+  }
+}
+
 .tabList {
   --tab-outline-color: transparent;
   --tab-outline-width: var(--kbq-size-3xs);
@@ -38,18 +51,9 @@
   &[aria-orientation='vertical'] {
     overflow-y: scroll;
   }
-}
 
-.tabList.underlined {
-  padding-block: var(--kbq-size-s);
-
-  &::after {
-    content: '';
-    block-size: 1px;
-    inset-inline: 0;
-    inset-block-end: 0;
-    position: absolute;
-    background: var(--kbq-line-contrast-less);
+  &.underlined {
+    padding-block: var(--kbq-size-s);
   }
 }
 
@@ -67,6 +71,7 @@
   inline-size: var(--thumb-inline-size);
   block-size: var(--thumb-block-size);
   position: absolute;
+  will-change: transform, width, height;
   transition:
     inline-size 200ms ease-in,
     block-size 200ms ease-in,
@@ -74,7 +79,6 @@
 }
 
 .defaultIndicator {
-  will-change: transform, width, height;
   border-radius: var(--tab-border-radius);
   background-color: var(--kbq-states-background-transparent-active);
 }

@@ -96,22 +96,24 @@ export function TabsRender<T extends object>(
         className
       )}
     >
-      <div {...tabsProps}>
-        <span
-          className={clsx(
-            s.selectionIndicator,
-            isUnderlined ? s.underlinedIndicator : s.defaultIndicator
-          )}
-          style={thumbStyle}
-        />
-        {[...state.collection].map((item, i) => (
-          <TabItem
-            item={item}
-            state={state}
-            key={item.key}
-            innerRef={itemsRefs[i]}
+      <div className={clsx(s.tabListWrapper, isUnderlined && s.underlined)}>
+        <div {...tabsProps}>
+          <span
+            className={clsx(
+              s.selectionIndicator,
+              isUnderlined ? s.underlinedIndicator : s.defaultIndicator
+            )}
+            style={thumbStyle}
           />
-        ))}
+          {[...state.collection].map((item, i) => (
+            <TabItem
+              item={item}
+              state={state}
+              key={item.key}
+              innerRef={itemsRefs[i]}
+            />
+          ))}
+        </div>
       </div>
       {selectedItem?.hasChildNodes && (
         <TabPanel
