@@ -17,6 +17,7 @@ export type TabProps<T> = {
 
 export function Tab<T>({ item, state, innerRef }: TabProps<T>) {
   const { key, rendered } = item;
+
   const domRef = useDOMRef<HTMLElement>(innerRef);
   const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
 
