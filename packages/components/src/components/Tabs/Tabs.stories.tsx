@@ -26,7 +26,7 @@ const meta = {
   component: Tabs,
   subcomponents: { Tab },
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
   tags: ['status:new'],
 } satisfies Meta<typeof Tabs>;
@@ -37,11 +37,7 @@ type Story = StoryObj<typeof Tabs>;
 export const Base: Story = {
   render: function Render(args) {
     return (
-      <Tabs
-        aria-label="Types of cyberattacks"
-        style={{ maxInlineSize: 400 }}
-        {...args}
-      >
+      <Tabs aria-label="Types of cyberattacks" {...args}>
         <Tab key="brute-force" title="BruteForce">
           A brute-force attack systematically guesses passwords or cryptographic
           keys, often using automated tools to try vast combinations until
@@ -463,30 +459,16 @@ export const Underlined: Story = {
 export const Scroll: Story = {
   render: function Render(args) {
     return (
-      <div style={{ maxInlineSize: 300 }}>
-        <Tabs aria-label="Types of cyberattacks" {...args}>
-          <Tab key="1" title="BruteForce">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-            ratione.
-          </Tab>
-          <Tab key="2" title="BruteForce">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-            ratione.
-          </Tab>
-          <Tab key="3" title="BruteForce">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-            ratione.
-          </Tab>
-          <Tab key="4" title="BruteForce">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-            ratione.
-          </Tab>
-          <Tab key="5" title="BruteForce">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-            ratione.
-          </Tab>
-        </Tabs>
-      </div>
+      <Tabs aria-label="Types of cyberattacks" {...args}>
+        <>
+          {new Array(20).fill(0).map((_, i) => (
+            <Tab key={i} title={`Tab ${i + 1}`}>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
+              ratione.
+            </Tab>
+          ))}
+        </>
+      </Tabs>
     );
   },
 };

@@ -17,7 +17,7 @@ import { Item } from '../Collections';
 import { TabPanel, Tab as TabItem } from './components';
 import s from './Tabs.module.css';
 import type { TabsProps, TabsComponent, TabsRef } from './types';
-import { getActiveTab, getThumbCssVars } from './utils';
+import { getActiveTab, getIndicatorCssVars } from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
@@ -27,31 +27,31 @@ export function TabsRender<T extends object>(
 ) {
   const {
     orientation = 'horizontal',
+    'data-testid': dataTestId,
     isUnderlined,
     style,
     className,
     fullWidth,
     slotProps,
-    'data-testid': dataTestId,
   } = props;
 
   const state = useTabListState<T>(props);
   const { selectedKey, selectedItem } = state;
   const tabListRef = useRef(null);
   const { tabListProps } = useTabList(props, state, tabListRef);
-  const [thumbStyle, setThumbStyle] = useState<CSSProperties>();
+  const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>();
 
   // Track previous active tab
   const previous = useRef<HTMLElement | null>(null);
 
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
 
-  const updateThumbSize = () => {
+  const updateIndicatorSize = () => {
     const activeTab = getActiveTab(tabListRef.current);
 
     if (activeTab)
-      setThumbStyle({
-        ...getThumbCssVars(
+      setIndicatorStyle({
+        ...getIndicatorCssVars(
           activeTab,
           isUnderlined ? 'horizontal' : orientation
         ),
@@ -61,10 +61,10 @@ export function TabsRender<T extends object>(
     return activeTab;
   };
 
-  useResizeObserverRefs(itemsRefs, updateThumbSize);
+  useResizeObserverRefs(itemsRefs, updateIndicatorSize);
 
   useEffect(() => {
-    previous.current = updateThumbSize();
+    previous.current = updateIndicatorSize();
   }, [selectedKey]);
 
   const tabsProps = mergeProps(
@@ -103,7 +103,7 @@ export function TabsRender<T extends object>(
               s.selectionIndicator,
               isUnderlined ? s.underlinedIndicator : s.defaultIndicator
             )}
-            style={thumbStyle}
+            style={indicatorStyle}
           />
           {[...state.collection].map((item, i) => (
             <TabItem

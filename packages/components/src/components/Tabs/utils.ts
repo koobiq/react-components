@@ -1,15 +1,15 @@
 import type { CSSProperties } from 'react';
 
-export function getThumbCssVars(
+export function getIndicatorCssVars(
   el: HTMLElement,
   orientation: 'horizontal' | 'vertical' = 'horizontal'
 ): CSSProperties {
   const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = el;
 
   return {
-    '--thumb-inline-size': `${offsetWidth}px`,
-    '--thumb-block-size': `${offsetHeight}px`,
-    '--thumb-transform':
+    '--indicator-inline-size': `${offsetWidth}px`,
+    '--indicator-block-size': `${offsetHeight}px`,
+    '--indicator-transform':
       orientation === 'horizontal'
         ? `translateX(${offsetLeft}px)`
         : `translateY(${offsetTop}px)`,
