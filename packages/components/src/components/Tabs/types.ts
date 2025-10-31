@@ -22,6 +22,7 @@ export type TabsProps<T> = AriaTabListProps<T> & {
     tabList?: ComponentProps<'div'>;
     tabPanel?: ComponentProps<'div'>;
   };
+  /** Enables underlined tabs. Note that vertical orientation is not supported for this variant. */
   isUnderlined?: boolean;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
