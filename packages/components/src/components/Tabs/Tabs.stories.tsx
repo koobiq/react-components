@@ -485,8 +485,8 @@ export const Scroll: Story = {
         <>
           {new Array(20).fill(0).map((_, i) => (
             <Tab key={i} title={`Tab ${i + 1}`}>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-              ratione.
+              Tab {i + 1}: Lorem ipsum dolor sit amet, consectetur adipisicing
+              elit. Quaerat, ratione.
             </Tab>
           ))}
         </>
