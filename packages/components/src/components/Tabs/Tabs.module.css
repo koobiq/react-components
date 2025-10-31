@@ -1,13 +1,25 @@
-/* container */
+/* root */
 .base {
-  --tabs-direction: ;
   --tabs-gap: ;
+  --tabs-direction: ;
+
+  --tab-width: ;
+  --tab-bg-color: ;
+  --tab-min-width: 40px;
+  --tab-outline-color: transparent;
+  --tab-outline-width: var(--kbq-size-3xs);
+  --tab-color: var(--kbq-foreground-contrast);
+  --tab-border-radius: var(--kbq-size-s);
+  --tab-padding-inline: var(--kbq-size-m);
+  --tab-padding-block: var(--kbq-size-xs);
+}
+
+.underlined {
+  --tab-min-width: 44px;
 }
 
 .fullWidth:not(.vertical) {
-  .tab {
-    inline-size: 100%;
-  }
+  --tab-width: 100%;
 }
 
 .vertical:not(.underlined) {
@@ -16,7 +28,7 @@
   display: flex;
 }
 
-/* tabs */
+/* tab-list */
 .tabListWrapper {
   position: relative;
 
@@ -31,18 +43,13 @@
 }
 
 .tabList {
-  --tab-outline-color: transparent;
-  --tab-outline-width: var(--kbq-size-3xs);
-  --tab-color: var(--kbq-foreground-contrast);
-  --tab-border-radius: var(--kbq-size-s);
-  --tab-bg-color: ;
-  overflow: hidden;
-  scrollbar-width: none;
   display: flex;
-  flex-direction: var(--tabs-direction);
-  gap: var(--tabs-gap);
-  position: relative;
   flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  gap: var(--tabs-gap);
+  scrollbar-width: none;
+  flex-direction: var(--tabs-direction);
 
   &[aria-orientation='horizontal'] {
     overflow-x: scroll;
@@ -57,19 +64,19 @@
   }
 }
 
-/* panel */
+/* tab-panel */
 .tabPanel {
   padding: var(--kbq-size-m);
 }
 
 /* indicator */
 .selectionIndicator {
-  --thumb-inline-size: ;
-  --thumb-block-size: ;
-  --thumb-transform: ;
-  transform: var(--thumb-transform);
-  inline-size: var(--thumb-inline-size);
-  block-size: var(--thumb-block-size);
+  --indicator-inline-size: ;
+  --indicator-block-size: ;
+  --indicator-transform: ;
+  transform: var(--indicator-transform);
+  inline-size: var(--indicator-inline-size);
+  block-size: var(--indicator-block-size);
   position: absolute;
   will-change: transform, width, height;
   transition:
@@ -95,17 +102,19 @@
 .tab {
   display: flex;
   cursor: pointer;
+  text-align: center;
   align-items: center;
   white-space: nowrap;
   text-decoration: none;
   box-sizing: border-box;
   justify-content: center;
   color: var(--tab-color);
-  padding-inline: var(--kbq-size-m);
-  padding-block: var(--kbq-size-xs);
+  inline-size: var(--tab-width);
   min-block-size: var(--kbq-size-3xl);
   background-color: var(--tab-bg-color);
   border-radius: var(--tab-border-radius);
+  padding-block: var(--tab-padding-block);
+  padding-inline: var(--tab-padding-inline);
   outline-offset: calc(-1 * var(--tab-outline-width));
   outline: var(--tab-outline-width) solid var(--tab-outline-color);
 
@@ -130,6 +139,7 @@
 
 .tabContent {
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  min-inline-size: calc(var(--tab-min-width) - 2 * var(--tab-padding-inline));
 }
