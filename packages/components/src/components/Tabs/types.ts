@@ -15,7 +15,7 @@ export type TabsProps<T> = AriaTabListProps<T> & {
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
-  /** If true, the component will take up the full width of its container. */
+  /** Whether the tabs should take the full width of its parent. */
   fullWidth?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
