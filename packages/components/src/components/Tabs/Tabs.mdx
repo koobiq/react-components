@@ -30,19 +30,23 @@ import { Tabs, Tab } from '@koobiq/react-components';
 - `Tabs`: The main component to display a tab list.
 - `Tab`: The component to display a tab item. The children of this component will be displayed as the content of the tab.
 
-## Scroll
-
-<Story of={Stories.Scroll} />
-
-## Underlined
-
-<Story of={Stories.Underlined} />
-
 ## Dynamic
 
 You can render tabs dynamically by using `items` prop.
 
 <Story of={Stories.Dynamic} />
+
+## Vertical
+
+Set the tabs to vertical by passing `orientation="vertical"` to `Tabs`.
+
+<Story of={Stories.Vertical} />
+
+## Underlined
+
+Enable underlined tabs using the `isUnderlined` prop and note that vertical orientation is not supported for this variant.
+
+<Story of={Stories.Underlined} />
 
 ## With icons
 
@@ -65,12 +69,6 @@ Each key in this list corresponds with the `key` prop passed to the `Tab` compon
 
 <Story of={Stories.DisabledItem} />
 
-## Vertical
-
-Set the tabs to vertical by passing `orientation="vertical"` to `Tabs`.
-
-<Story of={Stories.Vertical} />
-
 ## Controlled
 
 You can use the `onSelectionChange` and `selectedKey` props to control the selected tab.
@@ -91,3 +89,7 @@ URL from your client side router. You can do this by doing the following:
 ## With Form
 
 <Story of={Stories.WithForm} />
+
+## Scroll
+
+<Story of={Stories.Scroll} />
