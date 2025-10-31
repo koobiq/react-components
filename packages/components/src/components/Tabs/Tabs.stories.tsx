@@ -343,6 +343,9 @@ export const Links: Story = {
 };
 
 export const WithForm: Story = {
+  parameters: {
+    layout: 'centered',
+  },
   render: function Render() {
     const [selected, setSelected] = useState<string | number>('login');
 
@@ -427,29 +430,22 @@ export const Underlined: Story = {
   render: function Render(args) {
     return (
       <Tabs aria-label="Types of cyberattacks" isUnderlined {...args}>
-        <Tab key="1" title="Tab 1">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-          ratione.
+        <Tab key="brute-force" title="BruteForce">
+          A brute-force attack systematically guesses passwords or cryptographic
+          keys, often using automated tools to try vast combinations until
+          access is gained. It doesn’t rely on clever tricks—just exhaustive
+          search.
         </Tab>
-        <Tab key="2" title="Tab 2">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-          ratione.
+        <Tab key="complex-attack" title="Complex Attack">
+          A denial-of-service attack floods a server or exploits resource-heavy
+          operations to exhaust CPU, memory, bandwidth, or connection limits,
+          causing slowdowns or outages without breaching the system.
         </Tab>
-        <Tab key="3" title="Tab 3">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-          ratione.
-        </Tab>
-        <Tab key="4" title="Tab 4">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-          ratione.
-        </Tab>
-        <Tab key="5" title="Tab 5">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-          ratione.
-        </Tab>
-        <Tab key="6" title="Extra tab">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat,
-          ratione.
+        <Tab key="ddos" title="DDoS">
+          Distributed Denial of Service (DDoS) uses a botnet of infected devices
+          to send massive, coordinated traffic or resource-intensive requests to
+          a victim, exhausting bandwidth, CPU, or connection limits and causing
+          outages.
         </Tab>
       </Tabs>
     );
