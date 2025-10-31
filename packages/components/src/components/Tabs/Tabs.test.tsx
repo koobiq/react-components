@@ -1,9 +1,10 @@
-import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 
 import { Tabs, Tab, type TabsProps } from './index';
 
-const TAB__TEST_ID = 'BUTTON_TOGGLE';
+const TAB__TEST_ID = 'TAB';
 
 const renderComponent = ({
   selectedKey,
@@ -62,5 +63,20 @@ describe('Tabs', () => {
     const firstElement = container.firstChild;
 
     expect(firstElement).toHaveStyle('padding: 20px');
+  });
+
+  it('should onChange get correct id', async () => {
+    const onSelectionChange = vi.fn();
+
+    render(
+      renderComponent({
+        onSelectionChange,
+        selectedKey: 1,
+      })
+    );
+
+    await userEvent.click(screen.getByTestId(TAB__TEST_ID));
+
+    expect(onSelectionChange).toBeCalledWith('2');
   });
 });
