@@ -12,7 +12,8 @@
     (
         var(--kbq-typography-$(name)-line-height) -
           var(--kbq-typography-$(name)-font-size)
-      ) / 2
+      ) /
+      2
   );
 }
 
