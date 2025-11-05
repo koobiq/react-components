@@ -2,10 +2,10 @@
 .base {
   --tabs-gap: ;
   --tabs-direction: ;
-
   --tab-width: ;
   --tab-bg-color: ;
   --tab-min-width: 40px;
+  --tab-height: var(--kbq-size-3xl);
   --tab-outline-color: transparent;
   --tab-outline-width: var(--kbq-size-3xs);
   --tab-color: var(--kbq-foreground-contrast);
@@ -30,7 +30,9 @@
 
 /* tab-list */
 .tabListWrapper {
+  display: flex;
   position: relative;
+  align-items: center;
 
   &.underlined::after {
     content: '';
@@ -44,7 +46,7 @@
 
 .tabList {
   display: flex;
-  flex-shrink: 0;
+  flex-grow: 1;
   overflow: hidden;
   position: relative;
   gap: var(--tabs-gap);
@@ -142,4 +144,15 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   min-inline-size: calc(var(--tab-min-width) - 2 * var(--tab-padding-inline));
+}
+
+/* buttons */
+.button {
+  flex-shrink: 0;
+  inline-size: var(--tab-height);
+  block-size: var(--tab-height);
+}
+
+.next {
+  order: 1;
 }

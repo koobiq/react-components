@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState, useMemo } from 'react';
 import type { Ref, CSSProperties } from 'react';
 
 import {
@@ -9,10 +9,12 @@ import {
   mergeProps,
   useResizeObserverRefs,
 } from '@koobiq/react-core';
+import { IconChevronLeft16, IconChevronRight16 } from '@koobiq/react-icons';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 import { Item } from '../Collections';
+import { IconButton } from '../IconButton';
 
 import { TabPanel, Tab as TabItem } from './components';
 import s from './Tabs.module.css';
@@ -37,7 +39,7 @@ export function TabsRender<T extends object>(
 
   const state = useTabListState<T>(props);
   const { selectedKey, selectedItem } = state;
-  const tabListRef = useRef(null);
+  const tabListRef = useRef<HTMLDivElement>(null);
   const { tabListProps } = useTabList(props, state, tabListRef);
   const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>();
 
@@ -45,6 +47,15 @@ export function TabsRender<T extends object>(
   const previous = useRef<HTMLElement | null>(null);
 
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
+
+  // Scroll detection
+  const [{ isScrollable, width: containerWidth }] = useResizeObserverRefs(
+    useMemo(() => [tabListRef], [tabListRef, state.collection]),
+    (el) => ({
+      isScrollable: el && el.scrollWidth > el.offsetWidth,
+      width: el?.offsetWidth ?? 0,
+    })
+  );
 
   const updateIndicatorSize = () => {
     const activeTab = getActiveTab(tabListRef.current);
@@ -63,9 +74,16 @@ export function TabsRender<T extends object>(
 
   useResizeObserverRefs(itemsRefs, updateIndicatorSize);
 
+  // debug
+  console.log(isScrollable, containerWidth);
+
   useEffect(() => {
     previous.current = updateIndicatorSize();
   }, [selectedKey]);
+
+  const scrollPrev = () => {};
+
+  const scrollNext = () => {};
 
   const tabsProps = mergeProps(
     tabListProps,
@@ -97,6 +115,25 @@ export function TabsRender<T extends object>(
       )}
     >
       <div className={clsx(s.tabListWrapper, isUnderlined && s.underlined)}>
+        {isScrollable && (
+          <>
+            {(['prev', 'next'] as const).map((buttonTo) => (
+              <IconButton
+                type="button"
+                key={buttonTo}
+                variant="theme-contrast"
+                className={clsx(s.button, s[buttonTo])}
+                onPress={buttonTo === 'prev' ? scrollPrev : scrollNext}
+              >
+                {buttonTo === 'prev' ? (
+                  <IconChevronLeft16 />
+                ) : (
+                  <IconChevronRight16 />
+                )}
+              </IconButton>
+            ))}
+          </>
+        )}
         <div {...tabsProps}>
           <span
             className={clsx(

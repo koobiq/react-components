@@ -483,7 +483,7 @@ export const Scroll: Story = {
     return (
       <Tabs aria-label="Types of cyberattacks" {...args}>
         <>
-          {new Array(20).fill(0).map((_, i) => (
+          {new Array(15).fill(0).map((_, i) => (
             <Tab key={i} title={`Tab ${i + 1}`}>
               Tab {i + 1}: Lorem ipsum dolor sit amet, consectetur adipisicing
               elit. Quaerat, ratione.
