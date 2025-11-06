@@ -19,9 +19,14 @@
     "type-check": "turbo run type-check",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint:css": "stylelint --fix '**/*.css' '.storybook/**/*.css'",
-    "lint:js": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint:css": "stylelint '**/*.css'",
+    "lint:css:fix": "stylelint '**/*.css' --fix",
+    "lint:js": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:js:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "lint": "pnpm lint:js && pnpm lint:css",
+    "lint:fix": "pnpm lint:js:fix && pnpm lint:css:fix",
     "clean": "turbo run clean && rimraf storybook-static && rimraf node_modules",
     "clean:all": "turbo run clean && rimraf storybook-static && rimraf pnpm-lock.yaml && rimraf node_modules",
     "update:deps": "pnpm update --interactive --latest -r",
@@ -153,8 +158,9 @@
   },
   "nano-staged": {
     "**/*.{js,jsx,ts,tsx}": ["eslint --fix", "vitest related --run"],
-    "**/*.{json,md,mdx}": ["prettier --write"],
-    "**/*.svg": ["prettier --write --parser html"]
+    "**/*.{js,jsx,ts,tsx,json,css,md,mdx,svg,html,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "browserslist": [
     "defaults and supports es6-module",

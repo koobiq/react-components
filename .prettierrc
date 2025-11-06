@@ -24,6 +24,12 @@
       "options": {
         "parser": "json"
       }
+    },
+    {
+      "files": "*.yml",
+      "options": {
+        "tabWidth": 2
+      }
     }
   ]
 }

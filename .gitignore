@@ -3,6 +3,7 @@ dist
 .DS_Store
 .idea
 .firebase
+.next
 
 # Dotenv environment variables file
 .env
