@@ -8,6 +8,7 @@ import {
   useRefs,
   mergeProps,
   useResizeObserverRefs,
+  useScrollPosition,
 } from '@koobiq/react-core';
 import { IconChevronLeft16, IconChevronRight16 } from '@koobiq/react-icons';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
@@ -19,7 +20,11 @@ import { IconButton } from '../IconButton';
 import { TabPanel, Tab as TabItem } from './components';
 import s from './Tabs.module.css';
 import type { TabsProps, TabsComponent, TabsRef } from './types';
-import { getActiveTab, getIndicatorCssVars } from './utils';
+import {
+  getActiveTab,
+  getIndicatorCssVars,
+  getVisibleTabsRange,
+} from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
@@ -43,10 +48,14 @@ export function TabsRender<T extends object>(
   const { tabListProps } = useTabList(props, state, tabListRef);
   const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>();
 
+  const isHorizontal = orientation === 'horizontal';
+
   // Track previous active tab
   const previous = useRef<HTMLElement | null>(null);
 
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
+
+  const selectedItemId = state.selectedItem?.index;
 
   // Scroll detection
   const [{ isScrollable, width: containerWidth }] = useResizeObserverRefs(
@@ -56,6 +65,8 @@ export function TabsRender<T extends object>(
       width: el?.offsetWidth ?? 0,
     })
   );
+
+  const [{ x: scrollX }] = useScrollPosition(tabListRef.current);
 
   const updateIndicatorSize = () => {
     const activeTab = getActiveTab(tabListRef.current);
@@ -74,16 +85,51 @@ export function TabsRender<T extends object>(
 
   useResizeObserverRefs(itemsRefs, updateIndicatorSize);
 
-  // debug
-  console.log(isScrollable, containerWidth);
+  const tabsSizes = useResizeObserverRefs(
+    itemsRefs,
+    (el) => el?.offsetWidth ?? 0
+  );
 
+  const [firstVisibleTabId, lastVisibleTabId] = getVisibleTabsRange({
+    tabsSizes,
+    scrollX,
+    containerWidth,
+  });
+
+  const scrollTabIntoView = (id: number) => {
+    const tabIsVisible = id >= firstVisibleTabId && id <= lastVisibleTabId;
+
+    if (!tabIsVisible) {
+      const previousTabsWidth = tabsSizes
+        .slice(0, id)
+        .reduce((acc, n) => acc + n, 0);
+
+      tabListRef.current?.scrollTo({
+        left: previousTabsWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollPrev = () => {
+    scrollTabIntoView(firstVisibleTabId - 1);
+  };
+
+  const scrollNext = () => {
+    scrollTabIntoView(lastVisibleTabId + 1);
+  };
+
+  // Save the previous selected tab
   useEffect(() => {
     previous.current = updateIndicatorSize();
   }, [selectedKey]);
 
-  const scrollPrev = () => {};
-
-  const scrollNext = () => {};
+  // Scroll to the selected tab
+  useEffect(() => {
+    if (isScrollable && selectedItemId) {
+      scrollTabIntoView(selectedItemId);
+    }
+  }, [selectedItemId, isScrollable]);
 
   const tabsProps = mergeProps(
     tabListProps,
@@ -115,7 +161,7 @@ export function TabsRender<T extends object>(
       )}
     >
       <div className={clsx(s.tabListWrapper, isUnderlined && s.underlined)}>
-        {isScrollable && (
+        {isScrollable && isHorizontal && (
           <>
             {(['prev', 'next'] as const).map((buttonTo) => (
               <IconButton
@@ -124,6 +170,11 @@ export function TabsRender<T extends object>(
                 variant="theme-contrast"
                 className={clsx(s.button, s[buttonTo])}
                 onPress={buttonTo === 'prev' ? scrollPrev : scrollNext}
+                isDisabled={
+                  buttonTo === 'prev'
+                    ? firstVisibleTabId === 0
+                    : lastVisibleTabId === state.collection.size - 1
+                }
               >
                 {buttonTo === 'prev' ? (
                   <IconChevronLeft16 />

@@ -481,12 +481,12 @@ export const FullWidth: Story = {
 export const Scroll: Story = {
   render: function Render(args) {
     return (
-      <Tabs aria-label="Types of cyberattacks" {...args}>
+      <Tabs aria-label="Types of cyberattacks" isUnderlined {...args}>
         <>
           {new Array(15).fill(0).map((_, i) => (
-            <Tab key={i} title={`Tab ${i + 1}`}>
-              Tab {i + 1}: Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit. Quaerat, ratione.
+            <Tab key={i} title={`Tab ${i}`}>
+              Tab {i}: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Quaerat, ratione.
             </Tab>
           ))}
         </>
