@@ -66,7 +66,7 @@ export function TabsRender<T extends object>(
     })
   );
 
-  const [{ x: scrollX }] = useScrollPosition(tabListRef.current);
+  const [{ x: scrollX }, setPosition] = useScrollPosition(tabListRef.current);
 
   const updateIndicatorSize = () => {
     const activeTab = getActiveTab(tabListRef.current);
@@ -104,10 +104,7 @@ export function TabsRender<T extends object>(
         .slice(0, id)
         .reduce((acc, n) => acc + n, 0);
 
-      tabListRef.current?.scrollTo({
-        left: previousTabsWidth,
-        behavior: 'smooth',
-      });
+      setPosition({ x: previousTabsWidth });
     }
   };
 

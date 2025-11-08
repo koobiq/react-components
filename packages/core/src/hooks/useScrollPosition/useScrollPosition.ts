@@ -1,5 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export type ScrollPosition = {
   x: number;
@@ -13,7 +12,7 @@ const getCurrentPosition = (el: HTMLElement): ScrollPosition => ({
 
 export function useScrollPosition(
   el: HTMLElement | null
-): [ScrollPosition, Dispatch<SetStateAction<ScrollPosition>>] {
+): [ScrollPosition, (params: Partial<ScrollPosition>) => void] {
   const [currentPosition, setCurrentPosition] = useState<ScrollPosition>(
     el
       ? getCurrentPosition(el)
@@ -21,6 +20,20 @@ export function useScrollPosition(
           x: 0,
           y: 0,
         }
+  );
+
+  const setPosition = useCallback(
+    ({ x, y }: Partial<ScrollPosition>) => {
+      if (el) {
+        const scrollOptions: ScrollToOptions = { behavior: 'smooth' };
+
+        if (typeof x === 'number') scrollOptions.left = x;
+        if (typeof y === 'number') scrollOptions.top = y;
+
+        el.scrollTo(scrollOptions);
+      }
+    },
+    [el]
   );
 
   useEffect(() => {
@@ -33,5 +46,5 @@ export function useScrollPosition(
     return () => el.removeEventListener('scroll', handleScroll);
   }, [el]);
 
-  return [currentPosition, setCurrentPosition];
+  return [currentPosition, setPosition];
 }
