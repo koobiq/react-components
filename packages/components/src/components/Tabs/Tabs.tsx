@@ -50,12 +50,11 @@ export function TabsRender<T extends object>(
 
   const isHorizontal = orientation === 'horizontal';
 
+  const selectedItemId = state.selectedItem?.index;
   // Track previous active tab
-  const previous = useRef<HTMLElement | null>(null);
+  const previousActiveTabRef = useRef<HTMLElement | null>(null);
 
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
-
-  const selectedItemId = state.selectedItem?.index;
 
   // Scroll detection
   const [{ isScrollable, width: containerWidth }] = useResizeObserverRefs(
@@ -77,7 +76,7 @@ export function TabsRender<T extends object>(
           activeTab,
           isUnderlined ? 'horizontal' : orientation
         ),
-        ...(!previous.current && { transition: 'none' }),
+        ...(!previousActiveTabRef.current && { transition: 'none' }),
       });
 
     return activeTab;
@@ -118,7 +117,7 @@ export function TabsRender<T extends object>(
 
   // Save the previous selected tab
   useEffect(() => {
-    previous.current = updateIndicatorSize();
+    previousActiveTabRef.current = updateIndicatorSize();
   }, [selectedKey]);
 
   // Scroll to the selected tab
