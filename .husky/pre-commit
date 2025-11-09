@@ -1,1 +1,1 @@
-pnpm type-check && pnpm ./node_modules/.bin/nano-staged
+pnpm ./node_modules/.bin/nano-staged

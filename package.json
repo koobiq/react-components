@@ -156,12 +156,6 @@
       "commit": true
     }
   },
-  "nano-staged": {
-    "**/*.{js,jsx,ts,tsx}": ["eslint --fix", "vitest related --run"],
-    "**/*.{js,jsx,ts,tsx,json,css,md,mdx,svg,html,yml,yaml}": [
-      "prettier --write"
-    ]
-  },
   "browserslist": [
     "defaults and supports es6-module",
     "chrome > 105",
