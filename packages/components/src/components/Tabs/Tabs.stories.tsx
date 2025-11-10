@@ -501,7 +501,7 @@ export const VerticalScrolling: Story = {
       <Tabs
         aria-label="Types of cyberattacks"
         orientation="vertical"
-        slotProps={{ tabList: { style: { maxBlockSize: 120 } } }}
+        slotProps={{ tabList: { style: { maxBlockSize: 112 } } }}
         {...args}
       >
         <>
