@@ -6,6 +6,7 @@
     var(--kbq-size-m);
   --alert-border-radius: var(--kbq-size-m);
   --alert-bg-color: var(--kbq-background-contrast-fade);
+
   display: flex;
   overflow: auto;
   inline-size: 100%;
@@ -26,6 +27,7 @@
 
 .title {
   @mixin typography text-big-strong;
+
   margin-block-end: var(--kbq-size-xxs);
 }
 

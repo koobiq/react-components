@@ -1,6 +1,7 @@
 .base {
   --calendar-cell-inline-size: 40px;
   --calendar-cell-block-size: 32px;
+
   display: flex;
   block-size: 294px;
   align-items: center;

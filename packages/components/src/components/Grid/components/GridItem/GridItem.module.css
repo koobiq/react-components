@@ -5,6 +5,7 @@
   --grid-item-col-start: span;
   --grid-item-row-start: span;
   --grid-justify-self: initial;
+
   place-self: var(--grid-align-self) var(--grid-justify-self);
   grid-row: var(--grid-item-row-start) var(--grid-item-row-end);
   grid-column: var(--grid-item-col-start) var(--grid-item-col-end);

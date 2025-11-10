@@ -2,6 +2,7 @@
   --resizer-color: var(--kbq-line-contrast-fade);
   --resizer-size-width: 1px;
   --resizer-size-height: 16px;
+
   cursor: ew-resize;
   touch-action: none;
   box-sizing: border-box;

@@ -1,6 +1,7 @@
 .base {
   --tooltip-bg-color: ;
   --tooltip-color: ;
+
   display: flex;
   position: absolute;
   box-sizing: border-box;
@@ -55,6 +56,7 @@
 .contrast-fade {
   --tooltip-color: var(--kbq-foreground-contrast);
   --tooltip-bg-color: var(--kbq-background-card);
+
   box-shadow: var(--kbq-shadow-overlay);
 }
 

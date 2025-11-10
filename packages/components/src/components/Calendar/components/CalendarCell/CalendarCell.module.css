@@ -1,6 +1,7 @@
 .base {
   --table-cell-outline-color: transparent;
   --table-cell-outline-width: var(--kbq-size-3xs);
+
   block-size: var(--calendar-cell-block-size);
   inline-size: var(--calendar-cell-inline-size);
   outline-offset: -2px;

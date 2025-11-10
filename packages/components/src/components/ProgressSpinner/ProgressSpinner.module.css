@@ -1,5 +1,6 @@
 .base {
   --progressbar-spin-color: var(--kbq-icon-theme);
+
   display: inline-flex;
 }
 

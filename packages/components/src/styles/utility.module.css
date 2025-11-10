@@ -301,6 +301,7 @@
   --list-item-bg-color: ;
   --list-item-outline-color: transparent;
   --list-item-outline-width: var(--kbq-size-3xs);
+
   position: relative;
   outline: none;
   flex-shrink: 0;
@@ -363,6 +364,7 @@
 .list-item:where([data-disabled='true']),
 .list-item:where([aria-disabled='true']) {
   --list-item-bg-color: ;
+
   cursor: not-allowed;
   opacity: 0.3;
 }

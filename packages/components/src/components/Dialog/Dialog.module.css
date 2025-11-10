@@ -1,5 +1,6 @@
 .base {
   --dialog-padding-inline-size: var(--kbq-size-xxl);
+
   flex-grow: 1;
   outline: none;
   display: flex;

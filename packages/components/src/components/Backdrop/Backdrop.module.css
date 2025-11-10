@@ -1,6 +1,7 @@
 .base {
   --backdrop-z-index: -1;
   --backdrop-duration: ;
+
   inset: 0;
   opacity: 0;
   z-index: var(--backdrop-z-index);

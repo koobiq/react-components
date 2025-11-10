@@ -14,6 +14,7 @@
     (var(--toggle-track-block-size) - var(--toggle-thumb-size)) / 2
   );
   --toggle-color: var(--kbq-foreground-contrast);
+
   color: var(--toggle-color);
   cursor: pointer;
   vertical-align: top;

@@ -18,6 +18,7 @@
   --button-toggle-icon-color: var(--kbq-icon-contrast-fade);
   --button-toggle-bg-color: var(--kbq-background-contrast-fade);
   --button-toggle-outline-color: transparent;
+
   flex: auto;
   border: none;
   outline: none;
@@ -61,6 +62,7 @@
 .disabled {
   --button-toggle-color: var(--kbq-states-foreground-disabled);
   --button-toggle-icon-color: inherit;
+
   cursor: not-allowed;
 }
 

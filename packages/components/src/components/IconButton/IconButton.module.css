@@ -10,6 +10,7 @@
   --icon-button-outline-width: var(--kbq-size-3xs);
   --icon-button-bg-color: var(--kbq-background-transparent);
   --icon-button-color-disabled: var(--kbq-states-icon-disabled);
+
   border: none;
   flex-shrink: 0;
   cursor: pointer;

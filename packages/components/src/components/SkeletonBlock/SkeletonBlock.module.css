@@ -5,6 +5,7 @@
   --skeleton-bg-color: var(--kbq-skeleton-background);
   --skeleton-wave-color: var(--kbq-skeleton-animation-wave-center);
   --skeleton-border-radius: var(--kbq-size-xxs);
+
   display: flex;
   visibility: initial;
   border-radius: var(--skeleton-border-radius);

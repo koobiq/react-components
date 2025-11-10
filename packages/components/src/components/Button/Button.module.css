@@ -10,6 +10,7 @@
   --button-padding-inline: var(--kbq-size-m);
   --button-outline-width: var(--kbq-size-3xs);
   --button-border-width: var(--kbq-size-border-width);
+
   border: none;
   outline: none;
   cursor: pointer;
@@ -62,11 +63,13 @@
 
 .hovered:not(.loading) {
   --button-border-color: var(--button-border-color-hover);
+
   background-color: var(--button-bg-color-hover);
 }
 
 .pressed:not(.loading) {
   --button-border-color: var(--button-border-color-active);
+
   background-color: var(--button-bg-color-active);
 }
 
@@ -81,6 +84,7 @@
 
 .disabled {
   --button-border-color: var(--button-border-color-disabled);
+
   color: var(--button-color-disabled);
   background-color: var(--button-bg-color-disabled);
 }
@@ -91,6 +95,7 @@
 
 .onlyIcon {
   --button-padding-inline: var(--button-padding-block);
+
   inline-size: var(--button-block-size);
 }
 

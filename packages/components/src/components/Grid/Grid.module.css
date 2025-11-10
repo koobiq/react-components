@@ -4,8 +4,8 @@
   --grid-col-gap: 0;
   --grid-align-items: initial;
   --grid-justify-items: initial;
-  display: grid;
 
+  display: grid;
   gap: var(--grid-row-gap) var(--grid-col-gap);
   place-items: var(--grid-align-items) var(--grid-justify-items);
   grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));

@@ -3,6 +3,7 @@
 .base {
   --link-gap: var(--kbq-size-xxs);
   --link-outline-width: var(--kbq-size-3xs);
+
   padding: 0;
   border: none;
   cursor: pointer;

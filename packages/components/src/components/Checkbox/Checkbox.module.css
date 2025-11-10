@@ -7,6 +7,7 @@
   --checkbox-border-color: var(--kbq-line-contrast-fade);
   --checkbox-outline-color: transparent;
   --checkbox-icon-color: transparent;
+
   cursor: pointer;
   vertical-align: top;
   display: inline-flex;
@@ -122,6 +123,7 @@
   --checkbox-bg-color: var(--kbq-states-background-disabled);
   --checkbox-border-color: var(--kbq-states-line-disabled);
   --checkbox-color: var(--kbq-states-foreground-disabled);
+
   cursor: not-allowed;
 }
 

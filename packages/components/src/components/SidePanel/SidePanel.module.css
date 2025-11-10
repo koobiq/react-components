@@ -21,21 +21,25 @@
 
 .left {
   --side-panel-start-position: -100%;
+
   justify-content: flex-start;
 }
 
 .right {
   --side-panel-start-position: 100%;
+
   justify-content: flex-end;
 }
 
 .start {
   --side-panel-start-position: -100%;
+
   justify-content: flex-start;
 }
 
 .end {
   --side-panel-start-position: 100%;
+
   justify-content: flex-end;
 }
 
@@ -59,6 +63,7 @@
 /* panel */
 .panel {
   --dialog-padding-inline-size: var(--kbq-size-3xl);
+
   display: flex;
   block-size: 100%;
   inline-size: 100%;

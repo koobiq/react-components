@@ -14,17 +14,20 @@
 .start,
 .left {
   --table-column-align: start;
+
   text-align: start;
 }
 
 .center {
   --table-column-align: center;
+
   text-align: center;
 }
 
 .end,
 .right {
   --table-column-align: end;
+
   text-align: end;
 }
 

@@ -1,5 +1,6 @@
 .base {
   --modal-window-offset: 48px;
+
   inset: 0;
   display: flex;
   position: fixed;

@@ -2,6 +2,7 @@
   --animated-icon-direction: ;
   --animated-icon-transition-function: cubic-bezier(0.7, 0, 0.5, 1);
   --animated-icon-transition: 300ms;
+
   position: relative;
   align-items: center;
   display: inline-flex;

@@ -1,5 +1,6 @@
 .base {
   --form-field-addon-color: var(--kbq-icon-contrast-fade);
+
   display: flex;
   align-items: center;
   justify-content: center;

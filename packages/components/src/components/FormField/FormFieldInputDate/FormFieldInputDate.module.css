@@ -16,6 +16,7 @@
     background-color var(--kbq-transition-default);
 
   @mixin typography text-normal;
+
   scrollbar-width: none;
   overflow-x: auto;
 }

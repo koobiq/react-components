@@ -6,6 +6,7 @@
   --table-container-min-inline-size: unset;
   --table-container-max-inline-size: unset;
   --table-container-scroll-padding-top: 0;
+
   overflow: auto;
   block-size: var(--table-container-block-size);
   min-block-size: var(--table-container-min-block-size);

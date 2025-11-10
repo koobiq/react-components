@@ -6,6 +6,7 @@
   --tag-icon-color: ;
   --tag-outline-color: transparent;
   --tag-outline-width: var(--kbq-size-3xs);
+
   border: none;
   max-inline-size: 100%;
   cursor: default;
@@ -30,6 +31,7 @@
 
 .content {
   @mixin ellipsis;
+
   max-inline-size: 100%;
   margin-inline: var(--kbq-size-3xs);
 }
@@ -102,5 +104,6 @@
   --tag-bg-color: var(--kbq-states-background-disabled);
   --tag-color: var(--kbq-states-foreground-disabled);
   --tag-outline-color: none;
+
   cursor: not-allowed;
 }

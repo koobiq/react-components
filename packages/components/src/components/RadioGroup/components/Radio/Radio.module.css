@@ -13,6 +13,7 @@
   --radio-color: var(--kbq-foreground-contrast);
   --radio-border-width: var(--kbq-size-border-width);
   --radio-border-color: var(--kbq-line-contrast-fade);
+
   cursor: pointer;
   vertical-align: top;
   display: inline-flex;
@@ -124,6 +125,7 @@
   --radio-bg-color: var(--kbq-states-background-disabled);
   --radio-border-color: var(--kbq-states-line-disabled);
   --radio-color: var(--kbq-states-foreground-disabled);
+
   cursor: not-allowed;
 }
 

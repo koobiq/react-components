@@ -4,6 +4,7 @@
   --alert-icon-color: var(--kbq-icon-on-contrast);
   --alert-icon-margin: calc(var(--kbq-size-l) + var(--kbq-size-3xs)) 0
     var(--kbq-size-l) var(--kbq-size-m);
+
   display: flex;
   flex-shrink: 0;
   border-radius: 50%;
@@ -38,5 +39,6 @@
   --alert-icon-color: var(--alert-icon-bg-color);
   --alert-icon-margin: calc(var(--kbq-size-m) + var(--kbq-size-3xs))
     var(--kbq-size-s) 0 0;
+
   background: none;
 }

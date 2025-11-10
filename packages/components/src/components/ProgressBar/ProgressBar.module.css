@@ -4,6 +4,7 @@
   --progressbar-track-block-size: var(--kbq-size-xxs);
   --progressbar-fill-bg-color: var(--kbq-icon-theme);
   --progressbar-fill-translate-x: translateX(0%);
+
   overflow: hidden;
   position: relative;
   block-size: var(--progressbar-track-block-size);

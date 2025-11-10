@@ -2,6 +2,7 @@
 
 .base {
   @mixin typography text-normal;
+
   color: var(--kbq-foreground-contrast);
   vertical-align: top;
   box-sizing: border-box;
