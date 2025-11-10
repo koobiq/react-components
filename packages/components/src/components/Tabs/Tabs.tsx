@@ -9,6 +9,7 @@ import {
   mergeProps,
   useResizeObserverRefs,
   useScrollPosition,
+  isNotNil,
 } from '@koobiq/react-core';
 import { IconChevronLeft16, IconChevronRight16 } from '@koobiq/react-icons';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
@@ -124,7 +125,7 @@ export function TabsRender<T extends object>(
 
   // Scroll to the selected tab
   useEffect(() => {
-    if (hasScroll && selectedItemId) {
+    if (hasScroll && isNotNil(selectedItemId)) {
       scrollTabIntoView(selectedItemId);
     }
   }, [selectedItemId, hasScroll]);
