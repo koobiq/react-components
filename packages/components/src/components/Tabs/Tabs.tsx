@@ -65,6 +65,8 @@ export function TabsRender<T extends object>(
     })
   );
 
+  const hasScroll = isScrollable && isHorizontal;
+
   const [{ x: scrollX }, setPosition] = useScrollPosition(tabListRef.current);
 
   const updateIndicatorSize = () => {
@@ -122,10 +124,10 @@ export function TabsRender<T extends object>(
 
   // Scroll to the selected tab
   useEffect(() => {
-    if (isScrollable && selectedItemId) {
+    if (hasScroll && selectedItemId) {
       scrollTabIntoView(selectedItemId);
     }
-  }, [selectedItemId, isScrollable]);
+  }, [selectedItemId, hasScroll]);
 
   const tabsProps = mergeProps(
     tabListProps,
@@ -157,7 +159,7 @@ export function TabsRender<T extends object>(
       )}
     >
       <div className={clsx(s.tabListWrapper, isUnderlined && s.underlined)}>
-        {isScrollable && isHorizontal && (
+        {hasScroll && (
           <>
             {(['prev', 'next'] as const).map((buttonTo) => (
               <IconButton
