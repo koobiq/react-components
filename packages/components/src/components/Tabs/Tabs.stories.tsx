@@ -494,3 +494,28 @@ export const Scrolling: Story = {
     );
   },
 };
+
+export const VerticalScrolling: Story = {
+  render: function Render(args) {
+    return (
+      <Tabs
+        aria-label="Types of cyberattacks"
+        orientation="vertical"
+        slotProps={{ tabList: { style: { maxBlockSize: 120 } } }}
+        {...args}
+      >
+        <>
+          {new Array(15).fill(0).map((_, i) => (
+            <Tab key={i} title={`Tab ${i}`}>
+              Tab {i}: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Ad atque ex expedita, hic ipsum perferendis possimus quas tenetur
+              vero voluptatum! Asperiores aspernatur beatae doloremque, eos est,
+              et hic molestias numquam odit perspiciatis quo similique ullam
+              vero! Excepturi fuga nesciunt quod!
+            </Tab>
+          ))}
+        </>
+      </Tabs>
+    );
+  },
+};

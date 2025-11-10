@@ -11,13 +11,6 @@ import * as Stories from './Tabs.stories.tsx';
 
 # Tabs
 
-## Scrolling
-
-When tabs don't fit on one line, they don't wrap and can be scrolled horizontally.
-You can scroll with a trackpad or mouse wheel, or use the previous and next buttons to reveal hidden tabs.
-
-<Story of={Stories.Scrolling} />
-
 <Status variant="experimental" />
 
 Tabs organize content into multiple sections and allow users to navigate between them.
@@ -54,6 +47,19 @@ Set the tabs to vertical by passing `orientation="vertical"` to `Tabs`.
 Enable underlined tabs using the `isUnderlined` prop and note that vertical orientation is not supported for this variant.
 
 <Story of={Stories.Underlined} />
+
+## Scrolling
+
+When tabs don't fit on one line, they don't wrap and can be scrolled horizontally.
+You can scroll with a trackpad or mouse wheel, or use the previous and next buttons to reveal hidden tabs.
+
+<Story of={Stories.Scrolling} />
+
+### Vertical scrolling
+
+When vertical tabs don't fit in height, a scrollbar appears for scrolling without navigation buttons.
+
+<Story of={Stories.VerticalScrolling} />
 
 ## Full width
 
