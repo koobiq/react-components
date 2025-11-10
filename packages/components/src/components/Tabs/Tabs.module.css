@@ -25,6 +25,8 @@
 .vertical:not(.underlined) {
   --tabs-direction: column;
   --tabs-gap: var(--kbq-size-s);
+
+  align-items: flex-start;
   display: flex;
 }
 
@@ -76,6 +78,7 @@
   --indicator-inline-size: ;
   --indicator-block-size: ;
   --indicator-transform: ;
+
   transform: var(--indicator-transform);
   inline-size: var(--indicator-inline-size);
   block-size: var(--indicator-block-size);
@@ -119,7 +122,6 @@
   padding-inline: var(--tab-padding-inline);
   outline-offset: calc(-1 * var(--tab-outline-width));
   outline: var(--tab-outline-width) solid var(--tab-outline-color);
-
   transition:
     outline-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),
@@ -136,6 +138,7 @@
 
 .disabled {
   --tab-color: var(--kbq-states-foreground-disabled);
+
   cursor: not-allowed;
 }
 

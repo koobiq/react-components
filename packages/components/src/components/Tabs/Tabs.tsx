@@ -166,6 +166,7 @@ export function TabsRender<T extends object>(
               <IconButton
                 type="button"
                 key={buttonTo}
+                tabIndex={-1}
                 variant="theme-contrast"
                 className={clsx(s.button, s[buttonTo])}
                 onPress={buttonTo === 'prev' ? scrollPrev : scrollNext}
