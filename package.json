@@ -19,8 +19,8 @@
     "type-check": "turbo run type-check",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "format:check": "prettier --check .",
-    "format:write": "prettier --write .",
+    "format:check": "prettier --check \"**/*.{json,md,mdx,html,yml,yaml,svg}\"",
+    "format:write": "prettier --write \"**/*.{json,md,mdx,html,yml,yaml,svg}\"",
     "lint:css": "stylelint '**/*.css'",
     "lint:css:fix": "stylelint '**/*.css' --fix",
     "lint:js": "eslint . --ext .ts,.tsx,.js,.jsx",
@@ -155,12 +155,6 @@
       "file": true,
       "commit": true
     }
-  },
-  "nano-staged": {
-    "**/*.{js,jsx,ts,tsx}": ["eslint --fix", "vitest related --run"],
-    "**/*.{js,jsx,ts,tsx,json,css,md,mdx,svg,html,yml,yaml}": [
-      "prettier --write"
-    ]
   },
   "browserslist": [
     "defaults and supports es6-module",

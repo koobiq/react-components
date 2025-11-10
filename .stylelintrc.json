@@ -1,30 +1,16 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
-  "plugins": [
-    "stylelint-order",
-    "stylelint-plugin-logical-css",
-    "stylelint-prettier"
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules",
+    "stylelint-prettier/recommended"
   ],
+  "plugins": ["stylelint-order", "stylelint-plugin-logical-css"],
   "rules": {
-    "prettier/prettier": true,
     "selector-class-pattern": null,
     "number-max-precision": null,
     "no-descending-specificity": null,
     "media-query-no-invalid": null,
-    "property-no-unknown": [
-      true,
-      {
-        "ignoreProperties": ["composes"]
-      }
-    ],
-    "rule-empty-line-before": [
-      "always",
-      { "except": ["after-single-line-comment", "first-nested"] }
-    ],
-    "declaration-empty-line-before": [
-      "never",
-      { "ignore": ["after-declaration"] }
-    ],
+    "property-no-unknown": [true, { "ignoreProperties": ["composes"] }],
     "custom-property-pattern": "^([a-z][a-z0-9_]*)(-[a-z0-9_]+)*$",
     "order/order": ["custom-properties", "declarations", "rules"],
     "selector-pseudo-class-no-unknown": [
@@ -33,16 +19,11 @@
     ],
     "at-rule-no-unknown": [
       true,
-      {
-        "ignoreAtRules": ["define-mixin", "mixin"]
-      }
+      { "ignoreAtRules": ["define-mixin", "mixin"] }
     ],
     "plugin/use-logical-properties-and-values": [
       true,
-      {
-        "severity": "warning",
-        "ignore": ["overflow-x", "overflow-y"]
-      }
+      { "severity": "warning", "ignore": ["overflow-x", "overflow-y"] }
     ],
     "plugin/use-logical-units": [
       true,
