@@ -478,7 +478,7 @@ export const FullWidth: Story = {
   },
 };
 
-export const Scroll: Story = {
+export const Scrolling: Story = {
   render: function Render(args) {
     return (
       <Tabs aria-label="Types of cyberattacks" isUnderlined {...args}>
