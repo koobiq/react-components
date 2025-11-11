@@ -206,6 +206,12 @@ export function TabsRender<T extends object>(
     }
   }, [selectedItemIdx, isMounted]);
 
+  /** PROPS */
+  const tabsProps = mergeProps(
+    { className: clsx(s.base, isUnderlined && s.underlined) },
+    slotProps?.tabs
+  );
+
   const tabsListProps = mergeProps(
     tabListProps,
     {
@@ -219,6 +225,26 @@ export function TabsRender<T extends object>(
     slotProps?.tabList
   );
 
+  const scrollBoxProps = mergeProps(
+    {
+      ref: scrollBoxRef,
+      className: s.scrollBox,
+      onScroll: updateScrollButtonsVisibility,
+    },
+    slotProps?.scrollBox
+  );
+
+  const indicatorProps = mergeProps(
+    {
+      className: clsx(
+        s.indicator,
+        isUnderlined ? s.underlinedIndicator : s.defaultIndicator
+      ),
+      style: indicatorStyle,
+    },
+    slotProps?.indicator
+  );
+
   return (
     <div
       ref={ref}
@@ -228,14 +254,14 @@ export function TabsRender<T extends object>(
       data-fullwidth={fullWidth || undefined}
       data-underlined={isUnderlined || undefined}
       className={clsx(
-        s.container,
+        s.root,
         fullWidth && s.fullWidth,
         isUnderlined && s.underlined,
         orientation && s[orientation],
         className
       )}
     >
-      <div className={clsx(s.base, isUnderlined && s.underlined)}>
+      <div {...tabsProps}>
         {isScrollable && (
           <>
             <IconButton
@@ -271,11 +297,7 @@ export function TabsRender<T extends object>(
             </IconButton>
           </>
         )}
-        <div
-          ref={scrollBoxRef}
-          className={s.scrollBox}
-          onScroll={updateScrollButtonsVisibility}
-        >
+        <div {...scrollBoxProps}>
           <div {...tabsListProps}>
             {[...state.collection].map((item, i) => (
               <TabItem
@@ -285,15 +307,7 @@ export function TabsRender<T extends object>(
                 innerRef={itemsRefs[i]}
               />
             ))}
-            {isMounted && (
-              <span
-                className={clsx(
-                  s.indicator,
-                  isUnderlined ? s.underlinedIndicator : s.defaultIndicator
-                )}
-                style={indicatorStyle}
-              />
-            )}
+            {isMounted && <span {...indicatorProps} />}
           </div>
         </div>
       </div>

@@ -19,8 +19,11 @@ export type TabsProps<T> = AriaTabListProps<T> & {
   fullWidth?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
+    tabs?: ComponentProps<'div'>;
     tabList?: ComponentProps<'div'>;
     tabPanel?: ComponentProps<'div'>;
+    scrollBox?: ComponentProps<'div'>;
+    indicator?: ComponentProps<'span'>;
   };
   /** Enables underlined tabs. Note that vertical orientation is not supported for this variant. */
   isUnderlined?: boolean;

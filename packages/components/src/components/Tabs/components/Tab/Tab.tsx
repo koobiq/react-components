@@ -21,7 +21,7 @@ export function Tab<T>({ item, state, innerRef }: TabProps<T>) {
   const domRef = useDOMRef<HTMLElement>(innerRef);
   const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
 
-  const { href } = item.props;
+  const { href, className, style, 'data-testid': dataTestId } = item.props;
 
   const Tag: ElementType = href ? 'a' : 'div';
 
@@ -30,10 +30,13 @@ export function Tab<T>({ item, state, innerRef }: TabProps<T>) {
       className={clsx(
         s.tab,
         isSelected && s.selected,
-        isDisabled && s.disabled
+        isDisabled && s.disabled,
+        className
       )}
+      data-testid={dataTestId}
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
+      style={style}
       {...tabProps}
       ref={domRef as any}
     >
