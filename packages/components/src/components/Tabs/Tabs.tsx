@@ -77,17 +77,24 @@ export function TabsRender<T extends object>(
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
 
   /** Scrolls the container to the specified position. */
-  const scroll = (value: number) => {
-    if (!scrollBoxRef.current) return;
+  const scroll = (
+    value: number,
+    orientation: 'horizontal' | 'vertical' = 'horizontal'
+  ) => {
+    const el = scrollBoxRef.current;
+    if (!el) return;
 
-    scrollBoxRef.current?.scrollTo({
-      left: value,
-      behavior: 'smooth',
-    });
+    if (orientation === 'horizontal') {
+      el.scrollTo({ left: value, behavior: 'smooth' });
+    } else {
+      el.scrollTo({ top: value, behavior: 'smooth' });
+    }
   };
 
   /** Syncs prev/next button visibility with current scroll position. */
   const updateScrollButtonsVisibility = () => {
+    if (!isHorizontal) return;
+
     if (!isNotNil(selectedItemIdx)) return;
 
     if (!itemsRefs[selectedItemIdx]) return;
@@ -116,11 +123,17 @@ export function TabsRender<T extends object>(
     });
   };
 
-  const isScrollable =
+  const hasHScroll =
     isHorizontal &&
     tabListRef.current &&
     scrollBoxRef.current &&
     tabListRef.current?.clientWidth > scrollBoxRef.current?.clientWidth;
+
+  const hasVScroll =
+    !isHorizontal &&
+    tabListRef.current &&
+    scrollBoxRef.current &&
+    tabListRef.current.clientHeight > scrollBoxRef.current.clientHeight;
 
   const updateIndicatorSize = (isAnimated = true) => {
     if (!isNotNil(selectedItemIdx)) return;
@@ -137,32 +150,51 @@ export function TabsRender<T extends object>(
       });
   };
 
-  /** Adjusts the scroll position based on the selected tab's position. */
-  const scrollCorrection = () => {
+  /** Adjusts the scroll position based on the selected tab's position and orientation. */
+  const scrollCorrection = (orientation: 'horizontal' | 'vertical') => {
     if (!isNotNil(selectedItemIdx)) return;
 
-    if (!itemsRefs[selectedItemIdx]) return;
+    const selectedEl = itemsRefs[selectedItemIdx];
+    if (!selectedEl) return;
 
     const { scrollBoxMeta, activeTabMeta } = getTabsMeta(
       tabListRef,
       scrollBoxRef,
-      itemsRefs[selectedItemIdx]
+      selectedEl
     );
-
-    const buttonWidth = scrollButtonRef.current?.clientWidth || 0;
 
     if (!scrollBoxMeta || !activeTabMeta) return;
 
-    if (activeTabMeta.left - buttonWidth < scrollBoxMeta.left) {
-      const nextScrollLeft =
-        scrollBoxMeta.scrollLeft + (activeTabMeta.left - scrollBoxMeta.left);
+    const buttonWidth = scrollButtonRef.current?.clientWidth || 0;
 
-      scroll(nextScrollLeft - buttonWidth);
-    } else if (activeTabMeta.right + buttonWidth > scrollBoxMeta.right) {
-      const nextScrollLeft =
-        scrollBoxMeta.scrollLeft + (activeTabMeta.right - scrollBoxMeta.right);
+    if (orientation === 'horizontal') {
+      if (activeTabMeta.left - buttonWidth < scrollBoxMeta.left) {
+        const nextScrollLeft =
+          scrollBoxMeta.scrollLeft + (activeTabMeta.left - scrollBoxMeta.left);
 
-      scroll(nextScrollLeft + buttonWidth);
+        scroll(nextScrollLeft - buttonWidth, 'horizontal');
+      } else if (activeTabMeta.right + buttonWidth > scrollBoxMeta.right) {
+        const nextScrollLeft =
+          scrollBoxMeta.scrollLeft +
+          (activeTabMeta.right - scrollBoxMeta.right);
+
+        scroll(nextScrollLeft + buttonWidth, 'horizontal');
+      }
+    }
+
+    if (orientation === 'vertical') {
+      if (activeTabMeta.top < scrollBoxMeta.top) {
+        const nextScrollTop =
+          scrollBoxMeta.scrollTop + (activeTabMeta.top - scrollBoxMeta.top);
+
+        scroll(nextScrollTop, 'vertical');
+      } else if (activeTabMeta.bottom > scrollBoxMeta.bottom) {
+        const nextScrollTop =
+          scrollBoxMeta.scrollTop +
+          (activeTabMeta.bottom - scrollBoxMeta.bottom);
+
+        scroll(nextScrollTop, 'vertical');
+      }
     }
   };
 
@@ -209,7 +241,7 @@ export function TabsRender<T extends object>(
 
     if (isMounted) {
       updateIndicatorSize();
-      debouncedScrollCorrection();
+      debouncedScrollCorrection(orientation);
     } else {
       updateScrollButtonsVisibility();
       setIsMounted(true);
@@ -263,7 +295,8 @@ export function TabsRender<T extends object>(
       style={style}
       data-testid={dataTestId}
       data-orientation={orientation}
-      data-scrollable={isScrollable || undefined}
+      data-horizontal-scrollable={hasHScroll || undefined}
+      data-vertical-scrollable={hasVScroll || undefined}
       data-stretched={isStretched || undefined}
       data-underlined={isUnderlined || undefined}
       className={clsx(
@@ -275,7 +308,7 @@ export function TabsRender<T extends object>(
       )}
     >
       <div {...tabsProps}>
-        {isScrollable && (
+        {hasHScroll && (
           <>
             <IconButton
               key="prev"

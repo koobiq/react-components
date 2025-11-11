@@ -515,7 +515,7 @@ export const Scrolling: Story = {
       <Tabs
         aria-label="Threat intelligence"
         isUnderlined
-        defaultSelectedKey="5"
+        defaultSelectedKey="1"
         disabledKeys={['7', '12']}
         {...args}
       >
@@ -569,7 +569,7 @@ export const VerticalScrolling: Story = {
         aria-label="Threat intelligence"
         orientation="vertical"
         disabledKeys={['7', '12']}
-        defaultSelectedKey="5"
+        defaultSelectedKey="1"
         {...args}
       >
         <>

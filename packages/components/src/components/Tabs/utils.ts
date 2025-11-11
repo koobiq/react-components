@@ -20,6 +20,9 @@ export type TabsMeta = {
   tabsListMeta: null | DOMRect;
   scrollBoxMeta: null | {
     scrollLeft: number;
+    scrollTop: number;
+    top: number;
+    bottom: number;
     left: number;
     right: number;
   };
@@ -48,6 +51,9 @@ export const getTabsMeta = (
 
     scrollBoxMeta = {
       scrollLeft: scrollBoxNode.scrollLeft,
+      scrollTop: scrollBoxNode.scrollTop,
+      top: scrollBoxRect.top,
+      bottom: scrollBoxRect.bottom,
       left: scrollBoxRect.left,
       right: scrollBoxRect.right,
     };
