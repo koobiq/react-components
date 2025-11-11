@@ -35,10 +35,10 @@ export function TabsRender<T extends object>(
   const {
     orientation: orientationProp = 'horizontal',
     'data-testid': dataTestId,
-    isUnderlined,
+    isUnderlined = false,
+    isStretched = false,
     style,
     className,
-    fullWidth,
     slotProps,
   } = props;
 
@@ -264,11 +264,11 @@ export function TabsRender<T extends object>(
       data-testid={dataTestId}
       data-orientation={orientation}
       data-scrollable={isScrollable || undefined}
-      data-fullwidth={fullWidth || undefined}
+      data-stretched={isStretched || undefined}
       data-underlined={isUnderlined || undefined}
       className={clsx(
         s.root,
-        fullWidth && s.fullWidth,
+        isStretched && s.stretched,
         isUnderlined && s.underlined,
         orientation && s[orientation],
         className

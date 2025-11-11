@@ -359,13 +359,13 @@ export const WithForm: Story = {
       <FlexBox>
         <div style={cardStyle}>
           <Tabs
-            fullWidth
             aria-label="Tabs form"
             selectedKey={selected}
             onSelectionChange={setSelected}
             slotProps={{
               tabPanel: { style: { paddingInline: 0, paddingBlockEnd: 0 } },
             }}
+            isStretched
           >
             <Tab key="login" title="Login">
               <Form style={{ inlineSize: 300 }}>
@@ -452,10 +452,15 @@ export const Underlined: Story = {
   },
 };
 
-export const FullWidth: Story = {
+export const Stretched: Story = {
   render: function Render(args) {
     return (
-      <Tabs aria-label="Types of cyberattacks" isUnderlined fullWidth {...args}>
+      <Tabs
+        aria-label="Types of cyberattacks"
+        isUnderlined
+        isStretched
+        {...args}
+      >
         <Tab key="brute-force" title="BruteForce">
           A brute-force attack systematically guesses passwords or cryptographic
           keys, often using automated tools to try vast combinations until

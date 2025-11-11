@@ -15,8 +15,11 @@ export type TabsProps<T> = AriaTabListProps<T> & {
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
-  /** Whether the tabs should take the full width of its parent. */
-  fullWidth?: boolean;
+  /**
+   * If true, the tabs will stretch to fill the width of their container.
+   * @default false
+   */
+  isStretched?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
     tabs?: ComponentProps<'div'>;
@@ -25,7 +28,10 @@ export type TabsProps<T> = AriaTabListProps<T> & {
     scrollBox?: ComponentProps<'div'>;
     indicator?: ComponentProps<'span'>;
   };
-  /** Enables underlined tabs. Note that vertical orientation is not supported for this variant. */
+  /**
+   * Enables underlined tabs. Note that vertical orientation is not supported for this variant.
+   * @default false
+   */
   isUnderlined?: boolean;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;

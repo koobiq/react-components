@@ -19,7 +19,7 @@
   --tab-min-width: 44px;
 }
 
-.fullWidth:not(.vertical) {
+.stretched:not(.vertical) {
   --tab-width: 100%;
 }
 
