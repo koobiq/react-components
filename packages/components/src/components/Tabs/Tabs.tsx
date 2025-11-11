@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useRef, useState, useMemo } from 'react';
 import type { Ref, CSSProperties } from 'react';
 
+import { once } from '@koobiq/logger';
 import {
   clsx,
   useRefs,
@@ -32,7 +33,7 @@ export function TabsRender<T extends object>(
   ref: Ref<TabsRef>
 ) {
   const {
-    orientation = 'horizontal',
+    orientation: orientationProp = 'horizontal',
     'data-testid': dataTestId,
     isUnderlined,
     style,
@@ -54,8 +55,19 @@ export function TabsRender<T extends object>(
     next: false,
   });
 
+  const orientation = isUnderlined ? 'horizontal' : orientationProp;
   const isHorizontal = orientation === 'horizontal';
   const selectedItemIdx = selectedItem?.index;
+
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    orientationProp === 'vertical' &&
+    isUnderlined
+  ) {
+    once.warn(
+      `Tabs: the tabs with isUnderlined do not support vertical orientation.`
+    );
+  }
 
   /** To calculate the size of the prev/next buttons. */
   const scrollButtonRef = useRef<HTMLButtonElement>(null);
