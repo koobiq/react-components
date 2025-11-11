@@ -8,16 +8,6 @@ import type {
 
 import type { AriaTabListProps } from '@koobiq/react-primitives';
 
-export type TabsMeta = {
-  tabsListMeta: null | DOMRect;
-  scrollBoxMeta: null | {
-    scrollLeft: number;
-    left: number;
-    right: number;
-  };
-  activeTabMeta: null | DOMRect;
-};
-
 export type TabsProps<T> = AriaTabListProps<T> & {
   /** Ref to the tabs. */
   ref?: Ref<HTMLDivElement>;

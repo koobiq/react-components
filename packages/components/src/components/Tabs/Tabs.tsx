@@ -10,6 +10,7 @@ import {
   mergeProps,
   useDebounceCallback,
   useResizeObserverRefs,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconChevronLeft16, IconChevronRight16 } from '@koobiq/react-icons';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
@@ -19,9 +20,10 @@ import { Item } from '../Collections';
 import { IconButton } from '../IconButton';
 
 import { TabPanel, Tab as TabItem } from './components';
+import intlMessages from './intl.json';
 import s from './Tabs.module.css';
-import type { TabsProps, TabsComponent, TabsRef, TabsMeta } from './types';
-import { getActiveTab, getIndicatorCssVars } from './utils';
+import type { TabsProps, TabsComponent, TabsRef } from './types';
+import { getIndicatorCssVars, getTabsMeta } from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
@@ -39,6 +41,8 @@ export function TabsRender<T extends object>(
     slotProps,
   } = props;
 
+  const t = useLocalizedStringFormatter(intlMessages);
+
   const state = useTabListState<T>(props);
   const { selectedItem } = state;
 
@@ -51,7 +55,7 @@ export function TabsRender<T extends object>(
   });
 
   const isHorizontal = orientation === 'horizontal';
-  const selectedItemId = selectedItem?.index;
+  const selectedItemIdx = selectedItem?.index;
 
   /** To calculate the size of the prev/next buttons. */
   const scrollButtonRef = useRef<HTMLButtonElement>(null);
@@ -59,32 +63,6 @@ export function TabsRender<T extends object>(
   const scrollBoxRef = useRef<HTMLDivElement>(null);
   const { tabListProps } = useTabList(props, state, tabListRef);
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
-
-  const getTabsMeta = (): TabsMeta => {
-    const scrollBoxNode = scrollBoxRef.current;
-    const tabsListNode = tabListRef.current;
-    const activeTabNode = getActiveTab(tabListRef.current);
-
-    let tabsListMeta: TabsMeta['tabsListMeta'] = null;
-    let scrollBoxMeta: TabsMeta['scrollBoxMeta'] = null;
-    let activeTabMeta: TabsMeta['activeTabMeta'] = null;
-
-    if (tabsListNode) tabsListMeta = tabsListNode.getBoundingClientRect();
-
-    if (activeTabNode) activeTabMeta = activeTabNode.getBoundingClientRect();
-
-    if (scrollBoxNode) {
-      const scrollBoxRect = scrollBoxNode.getBoundingClientRect();
-
-      scrollBoxMeta = {
-        scrollLeft: scrollBoxNode.scrollLeft,
-        left: scrollBoxRect.left,
-        right: scrollBoxRect.right,
-      };
-    }
-
-    return { tabsListMeta, activeTabMeta, scrollBoxMeta };
-  };
 
   /** Scrolls the container to the specified position. */
   const scroll = (value: number) => {
@@ -98,7 +76,15 @@ export function TabsRender<T extends object>(
 
   /** Syncs prev/next button visibility with current scroll position. */
   const updateScrollButtonsVisibility = () => {
-    const { scrollBoxMeta, tabsListMeta } = getTabsMeta();
+    if (!isNotNil(selectedItemIdx)) return;
+
+    if (!itemsRefs[selectedItemIdx]) return;
+
+    const { scrollBoxMeta, tabsListMeta } = getTabsMeta(
+      tabListRef,
+      scrollBoxRef,
+      itemsRefs[selectedItemIdx]
+    );
 
     if (!scrollBoxMeta || !tabsListMeta) return;
 
@@ -125,7 +111,9 @@ export function TabsRender<T extends object>(
     tabListRef.current?.clientWidth > scrollBoxRef.current?.clientWidth;
 
   const updateIndicatorSize = (isAnimated = true) => {
-    const activeTab = getActiveTab(tabListRef.current);
+    if (!isNotNil(selectedItemIdx)) return;
+
+    const activeTab = itemsRefs[selectedItemIdx].current;
 
     if (activeTab)
       setIndicatorStyle({
@@ -139,7 +127,16 @@ export function TabsRender<T extends object>(
 
   /** Adjusts the scroll position based on the selected tab's position. */
   const scrollCorrection = () => {
-    const { scrollBoxMeta, activeTabMeta } = getTabsMeta();
+    if (!isNotNil(selectedItemIdx)) return;
+
+    if (!itemsRefs[selectedItemIdx]) return;
+
+    const { scrollBoxMeta, activeTabMeta } = getTabsMeta(
+      tabListRef,
+      scrollBoxRef,
+      itemsRefs[selectedItemIdx]
+    );
+
     const buttonWidth = scrollButtonRef.current?.clientWidth || 0;
 
     if (!scrollBoxMeta || !activeTabMeta) return;
@@ -175,7 +172,7 @@ export function TabsRender<T extends object>(
   useResizeObserverRefs(itemsRefs, () => debouncedUpdateIndicatorSize());
 
   useResizeObserverRefs(
-    useMemo(() => [scrollBoxRef], [scrollBoxRef, state.collection]),
+    useMemo(() => [scrollBoxRef], [scrollBoxRef]),
     () => debouncedUpdateScrollButtonsActivity()
   );
 
@@ -196,21 +193,18 @@ export function TabsRender<T extends object>(
   };
 
   useEffect(() => {
-    if (!isNotNil(selectedItemId)) return;
+    if (!isNotNil(selectedItemIdx)) return;
 
     if (isMounted) {
       updateIndicatorSize();
       debouncedScrollCorrection();
     } else {
+      updateScrollButtonsVisibility();
       setIsMounted(true);
       // Update indicator styles without animation on the initial render.
       updateIndicatorSize(false);
     }
-  }, [selectedItemId, isMounted]);
-
-  useEffect(() => {
-    updateScrollButtonsVisibility();
-  }, []);
+  }, [selectedItemIdx, isMounted]);
 
   const tabsListProps = mergeProps(
     tabListProps,
@@ -248,6 +242,7 @@ export function TabsRender<T extends object>(
               key="prev"
               tabIndex={-1}
               type="button"
+              aria-label={t.format('prev')}
               ref={scrollButtonRef}
               onPress={scrollPrev}
               variant="theme-contrast"
@@ -263,6 +258,7 @@ export function TabsRender<T extends object>(
               key="next"
               type="button"
               tabIndex={-1}
+              aria-label={t.format('next')}
               onPress={scrollNext}
               variant="theme-contrast"
               className={clsx(
