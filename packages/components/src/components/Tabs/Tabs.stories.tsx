@@ -489,13 +489,13 @@ export const Scrolling: Story = {
       { key: '0', title: 'Phishing' },
       {
         key: '1',
-        title: 'Ransomware — very long title to force horizontal scrolling',
+        title: 'Ransomware',
       },
       { key: '2', title: 'DDoS' },
       { key: '3', title: 'Supply-chain attack' },
       { key: '4', title: 'Zero-day (CVE-0)' },
       { key: '5', title: 'Insider threats' },
-      { key: '6', title: 'Credential stuffing (email:password pairs)' },
+      { key: '6', title: 'Credential stuffing' },
       { key: '7', title: 'IoT botnets' },
       { key: '8', title: 'Self-propagating worms' },
       { key: '9', title: 'Social engineering' },
@@ -537,13 +537,13 @@ export const VerticalScrolling: Story = {
       { key: '0', title: 'Phishing' },
       {
         key: '1',
-        title: 'Ransomware — very long title to force vertical scrolling',
+        title: 'Ransomware',
       },
       { key: '2', title: 'DDoS' },
       { key: '3', title: 'Supply-chain attack' },
       { key: '4', title: 'Zero-day (CVE-0)' },
       { key: '5', title: 'Insider threats' },
-      { key: '6', title: 'Credential stuffing (email:password pairs)' },
+      { key: '6', title: 'Credential stuffing' },
       { key: '7', title: 'IoT botnets' },
       { key: '8', title: 'Self-propagating worms' },
       { key: '9', title: 'Social engineering' },
@@ -562,7 +562,10 @@ export const VerticalScrolling: Story = {
     return (
       <Tabs
         style={{ blockSize: 200 }}
-        slotProps={{ tabs: { style: { inlineSize: '40%' } } }}
+        slotProps={{
+          tabs: { style: { inlineSize: '30%' } },
+          tabPanel: { style: { paddingBlock: 0 } },
+        }}
         aria-label="Threat intelligence"
         orientation="vertical"
         disabledKeys={['7', '12']}
