@@ -485,13 +485,44 @@ export const Stretched: Story = {
 
 export const Scrolling: Story = {
   render: function Render(args) {
+    const tabs = [
+      { key: '0', title: 'Phishing' },
+      {
+        key: '1',
+        title: 'Ransomware — very long title to force horizontal scrolling',
+      },
+      { key: '2', title: 'DDoS' },
+      { key: '3', title: 'Supply-chain attack' },
+      { key: '4', title: 'Zero-day (CVE-0)' },
+      { key: '5', title: 'Insider threats' },
+      { key: '6', title: 'Credential stuffing (email:password pairs)' },
+      { key: '7', title: 'IoT botnets' },
+      { key: '8', title: 'Self-propagating worms' },
+      { key: '9', title: 'Social engineering' },
+      { key: '10', title: 'Watering-hole attack' },
+      { key: '11', title: 'Man-in-the-Middle (MitM)' },
+      { key: '12', title: 'SQL/NoSQL injection' },
+      { key: '13', title: 'Cross-Site Scripting (XSS)' },
+      { key: '14', title: 'Kernel-level rootkits' },
+      { key: '15', title: 'Cryptojacking' },
+      { key: '16', title: 'Malvertising' },
+      { key: '17', title: 'Business Email Compromise (BEC)' },
+      { key: '18', title: 'Typosquatting and lookalike domains' },
+      { key: '19', title: 'Brute force and rate limits' },
+    ];
+
     return (
-      <Tabs aria-label="Types of cyberattacks" isUnderlined {...args}>
+      <Tabs
+        aria-label="Threat intelligence"
+        isUnderlined
+        defaultSelectedKey="5"
+        disabledKeys={['7', '12']}
+        {...args}
+      >
         <>
-          {new Array(15).fill(0).map((_, i) => (
-            <Tab key={i} title={`Tab ${i}`}>
-              Tab {i}: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Quaerat, ratione.
+          {tabs.map(({ key, title }) => (
+            <Tab key={key} title={title}>
+              {`${title} — brief overview of the attack scenario and typical indicators of compromise. Vector: network, email, supply chain, user action. Impact: data access, encryption, downtime. Mitigation: MFA, least privilege, segmentation, WAF, training.`}
             </Tab>
           ))}
         </>
@@ -502,21 +533,46 @@ export const Scrolling: Story = {
 
 export const VerticalScrolling: Story = {
   render: function Render(args) {
+    const tabs = [
+      { key: '0', title: 'Phishing' },
+      {
+        key: '1',
+        title: 'Ransomware — very long title to force vertical scrolling',
+      },
+      { key: '2', title: 'DDoS' },
+      { key: '3', title: 'Supply-chain attack' },
+      { key: '4', title: 'Zero-day (CVE-0)' },
+      { key: '5', title: 'Insider threats' },
+      { key: '6', title: 'Credential stuffing (email:password pairs)' },
+      { key: '7', title: 'IoT botnets' },
+      { key: '8', title: 'Self-propagating worms' },
+      { key: '9', title: 'Social engineering' },
+      { key: '10', title: 'Watering-hole attack' },
+      { key: '11', title: 'Man-in-the-Middle (MitM)' },
+      { key: '12', title: 'SQL/NoSQL injection' },
+      { key: '13', title: 'Cross-Site Scripting (XSS)' },
+      { key: '14', title: 'Kernel-level rootkits' },
+      { key: '15', title: 'Cryptojacking' },
+      { key: '16', title: 'Malvertising' },
+      { key: '17', title: 'Business Email Compromise (BEC)' },
+      { key: '18', title: 'Typosquatting and lookalike domains' },
+      { key: '19', title: 'Brute force and rate limits' },
+    ];
+
     return (
       <Tabs
-        aria-label="Types of cyberattacks"
+        style={{ blockSize: 200 }}
+        slotProps={{ tabs: { style: { inlineSize: '40%' } } }}
+        aria-label="Threat intelligence"
         orientation="vertical"
-        slotProps={{ tabList: { style: { maxBlockSize: 112 } } }}
+        disabledKeys={['7', '12']}
+        defaultSelectedKey="5"
         {...args}
       >
         <>
-          {new Array(15).fill(0).map((_, i) => (
-            <Tab key={i} title={`Tab ${i}`}>
-              Tab {i}: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Ad atque ex expedita, hic ipsum perferendis possimus quas tenetur
-              vero voluptatum! Asperiores aspernatur beatae doloremque, eos est,
-              et hic molestias numquam odit perspiciatis quo similique ullam
-              vero! Excepturi fuga nesciunt quod!
+          {tabs.map(({ key, title }) => (
+            <Tab key={key} title={title}>
+              {`${title} — brief overview of the attack scenario and typical indicators of compromise. Vector: network, email, supply chain, user action. Impact: data access, encryption, downtime. Mitigation: MFA, least privilege, segmentation, WAF, training.`}
             </Tab>
           ))}
         </>

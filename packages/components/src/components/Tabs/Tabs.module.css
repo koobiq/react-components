@@ -24,15 +24,24 @@
 }
 
 .horizontal {
+  --tab-justify-content: center;
   --tabs-scrollbar-width: none;
+  --tabs-scrollbar-display: flex;
+  --tabs-scrollbar-overflow-x: auto;
+  --tabs-scrollbar-inline-size: 100%;
+  --tabs-scrollbar-overflow-y: hidden;
 }
 
 .vertical:not(.underlined) {
+  --tab-justify-content: start;
   --tabs-direction: column;
   --tabs-gap: var(--kbq-size-s);
+  --tabs-scrollbar-inline-size: ;
+  --tabs-scrollbar-overflow-y: auto;
+  --tabs-scrollbar-overflow-x: hidden;
+  --tabs-scrollbar-display: inline-block;
 
   display: flex;
-  align-items: flex-start;
 }
 
 /* tab-list */
@@ -51,7 +60,6 @@
 .base {
   display: flex;
   position: relative;
-  align-items: center;
 
   &.underlined::after {
     content: '';
@@ -66,10 +74,11 @@
 
 /* scrollBox */
 .scrollBox {
-  display: flex;
-  inline-size: 100%;
-  overflow-y: scroll;
+  position: relative;
+  display: var(--tabs-scrollbar-display);
+  overflow: var(--tabs-scrollbar-overflow-x) var(--tabs-scrollbar-overflow-y);
   scrollbar-width: var(--tabs-scrollbar-width);
+  inline-size: var(--tabs-scrollbar-inline-size);
 }
 
 /* indicator */
@@ -118,7 +127,6 @@
   white-space: nowrap;
   text-decoration: none;
   box-sizing: border-box;
-  justify-content: center;
   color: var(--tab-color);
   inline-size: var(--tab-width);
   min-block-size: var(--kbq-size-3xl);
@@ -126,6 +134,7 @@
   border-radius: var(--tab-border-radius);
   padding-block: var(--tab-padding-block);
   padding-inline: var(--tab-padding-inline);
+  justify-content: var(--tab-justify-content);
   outline-offset: calc(-1 * var(--tab-outline-width));
   outline: var(--tab-outline-width) solid var(--tab-outline-color);
   transition:
