@@ -276,17 +276,15 @@ export function TabsRender<T extends object>(
           className={s.scrollBox}
           onScroll={updateScrollButtonsVisibility}
         >
-          <div className={s.indicatorBox}>
-            <div {...tabsListProps}>
-              {[...state.collection].map((item, i) => (
-                <TabItem
-                  item={item}
-                  state={state}
-                  key={item.key}
-                  innerRef={itemsRefs[i]}
-                />
-              ))}
-            </div>
+          <div {...tabsListProps}>
+            {[...state.collection].map((item, i) => (
+              <TabItem
+                item={item}
+                state={state}
+                key={item.key}
+                innerRef={itemsRefs[i]}
+              />
+            ))}
             {isMounted && (
               <span
                 className={clsx(

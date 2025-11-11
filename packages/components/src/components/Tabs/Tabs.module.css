@@ -72,12 +72,6 @@
   scrollbar-width: var(--tabs-scrollbar-width);
 }
 
-/* indicatorBox */
-.indicatorBox {
-  position: relative;
-  inline-size: var(--tab-width);
-}
-
 /* indicator */
 .indicator {
   --indicator-inline-size: ;
