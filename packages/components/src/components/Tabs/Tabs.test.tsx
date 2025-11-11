@@ -81,6 +81,28 @@ describe('Tabs', () => {
     expect(onSelectionChange).toBeCalledWith('2');
   });
 
+  it('should fallback orientation to horizontal and warn when isUnderlined + vertical', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const MSG =
+      '[koobiq] Tabs: the tabs with isUnderlined do not support vertical orientation.';
+
+    const { container } = render(
+      renderComponent({
+        isUnderlined: true,
+        orientation: 'vertical',
+      })
+    );
+
+    const root = container.querySelector('div');
+    expect(root).toHaveAttribute('data-orientation', 'horizontal');
+
+    expect(warnSpy).toHaveBeenCalledWith(MSG);
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+
+    warnSpy.mockRestore();
+  });
+
   describe('scrolling', () => {
     const ariaLabelPrevBtn = 'Previous tabs';
     const ariaLabelNextBtn = 'Next tabs';

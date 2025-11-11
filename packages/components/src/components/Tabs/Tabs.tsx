@@ -263,6 +263,7 @@ export function TabsRender<T extends object>(
       style={style}
       data-testid={dataTestId}
       data-orientation={orientation}
+      data-scrollable={isScrollable || undefined}
       data-fullwidth={fullWidth || undefined}
       data-underlined={isUnderlined || undefined}
       className={clsx(
