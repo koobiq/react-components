@@ -23,7 +23,9 @@
     "url": "git+https://github.com/koobiq/react-components.git"
   },
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -34,6 +36,7 @@
     "@react-aria/button": "^3.9.0",
     "@react-aria/calendar": "^3.8.3",
     "@react-aria/checkbox": "^3.14.0",
+    "@react-aria/combobox": "^3.14.0",
     "@react-aria/datepicker": "^3.14.5",
     "@react-aria/dialog": "^3.5.19",
     "@react-aria/label": "^3.7.20",
@@ -58,6 +61,7 @@
     "@react-aria/visually-hidden": "^3.8.0",
     "@react-stately/calendar": "^3.8.2",
     "@react-stately/collections": "^3.12.5",
+    "@react-stately/combobox": "^3.12.0",
     "@react-stately/data": "^3.13.0",
     "@react-stately/datepicker": "^3.14.2",
     "@react-stately/form": "^3.2.0",

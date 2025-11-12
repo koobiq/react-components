@@ -37,7 +37,8 @@ const { list } = utilClasses;
 export type ListInnerProps<T extends object> = {
   state: ListState<T>;
   listRef?: Ref<HTMLUListElement>;
-} & Omit<ListProps<T>, 'ref'>;
+  children?: ListProps<T>['children'];
+} & Omit<ListProps<T>, 'ref' | 'children'>;
 
 export function ListInner<T extends object>(props: ListInnerProps<T>) {
   const {
