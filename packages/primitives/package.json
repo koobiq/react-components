@@ -50,6 +50,7 @@
     "@react-aria/separator": "^3.4.8",
     "@react-aria/switch": "^3.7.5",
     "@react-aria/table": "^3.17.5",
+    "@react-aria/tabs": "^3.10.8",
     "@react-aria/tag": "^3.6.0",
     "@react-aria/textfield": "^3.17.5",
     "@react-aria/toggle": "^3.10.10",
@@ -68,6 +69,7 @@
     "@react-stately/searchfield": "^3.5.14",
     "@react-stately/select": "3.7.0",
     "@react-stately/table": "^3.14.3",
+    "@react-stately/tabs": "^3.8.6",
     "@react-stately/toggle": "^3.7.0",
     "@react-stately/tooltip": "^3.5.5",
     "@react-stately/tree": "^3.8.9"

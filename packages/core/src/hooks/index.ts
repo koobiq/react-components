@@ -16,3 +16,4 @@ export * from './useDebounceCallback';
 export * from './useResizeObserverRefs';
 export * from './useHideOverflowItems';
 export * from './useInfiniteScroll';
+export * from './useScrollPosition';

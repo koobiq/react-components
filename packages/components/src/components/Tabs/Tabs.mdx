@@ -1,0 +1,110 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components/index.ts';
+
+import * as Stories from './Tabs.stories.tsx';
+
+<Meta of={Stories} />
+
+# Tabs
+
+<Status variant="experimental" />
+
+Tabs organize content into multiple sections and allow users to navigate between them.
+
+```tsx
+import { Tabs, Tab } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Subcomponents
+
+- `Tabs`: The main component to display a tab list.
+- `Tab`: The component to display a tab item. The children of this component will be displayed as the content of the tab.
+
+## Dynamic
+
+You can render tabs dynamically by using `items` prop.
+
+<Story of={Stories.Dynamic} />
+
+## Vertical
+
+Set the tabs to vertical by passing `orientation="vertical"` to `Tabs`.
+
+<Story of={Stories.Vertical} />
+
+## Underlined
+
+Enable underlined tabs using the `isUnderlined` prop and note that vertical orientation is not supported for this variant.
+
+<Story of={Stories.Underlined} />
+
+## Scrolling
+
+When tabs don't fit on one line, they don't wrap and can be scrolled horizontally.
+You can scroll with a trackpad or mouse wheel, or use the previous and next buttons to reveal hidden tabs.
+
+<Story of={Stories.Scrolling} />
+
+### Vertical scrolling
+
+When vertical tabs don't fit in height, a scrollbar appears for scrolling without navigation buttons.
+
+<Story of={Stories.VerticalScrolling} />
+
+## Stretched
+
+Set the `isStretched` prop to true to make all tabs expand and share the available space evenly.
+
+<Story of={Stories.Stretched} />
+
+## With icons
+
+<Story of={Stories.WithIcons} />
+
+## Custom tab title
+
+<Story of={Stories.CustomTabTitle} />
+
+## Disabled
+
+All tabs within a `Tabs` can be disabled using the `isDisabled` prop.
+
+<Story of={Stories.Disabled} />
+
+## Disabled Item
+
+Tabs supports marking items as disabled using the `disabledKeys` prop.
+Each key in this list corresponds with the `key` prop passed to the `Tab` component.
+
+<Story of={Stories.DisabledItem} />
+
+## Controlled
+
+You can use the `onSelectionChange` and `selectedKey` props to control the selected tab.
+
+<Story of={Stories.Controlled} />
+
+## Links
+
+Tabs items can be rendered as links by passing the `href` prop to the `Tab` component.
+By default, links perform native browser navigation.
+
+However, you'll usually want to synchronize the selected tab with the current
+URL from your client side router. You can do this by doing the following:
+
+- Set up your router at the root of your app.
+- Use the `selectedKey` prop to set the selected tab based on the current URL.
+
+## With Form
+
+<Story of={Stories.WithForm} />
