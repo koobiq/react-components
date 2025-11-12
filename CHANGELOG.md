@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.17.0](https://github.com/koobiq/react-components/compare/0.16.0...0.17.0) (2025-11-12)
+
+
+### 🚀 Features
+
+* **components:** add `Tabs` component (DS-4241) ([70b2abb](https://github.com/koobiq/react-components/commit/70b2abbd7c079018adf49f8417ca35cb352bc716))
+
+
+### 🐞 Bug Fixes
+
+* add missing LICENSE files to all packages (DS-4339) ([778911f](https://github.com/koobiq/react-components/commit/778911f82be731f1238f0e6a8ec77e474234369c))
+
 ## [0.16.0](https://github.com/koobiq/react-components/compare/0.15.1...0.16.0) (2025-10-29)
 
 ### ⚠ BREAKING CHANGES
