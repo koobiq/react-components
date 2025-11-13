@@ -18,6 +18,9 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  subcomponents: {
+    'Autocomplete.Item': Autocomplete.Item,
+  },
   argTypes: {},
 } satisfies Meta<typeof Autocomplete>;
 
@@ -34,6 +37,28 @@ export const Base: Story = {
       <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
     </Autocomplete>
   ),
+};
+
+export const DynamicItems: Story = {
+  render: function Render() {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    return (
+      <Autocomplete
+        items={items}
+        label="Protocol"
+        placeholder="Select protocol"
+      >
+        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+      </Autocomplete>
+    );
+  },
 };
 
 export const Variant: Story = {
@@ -131,6 +156,29 @@ export const Disabled: Story = {
           </Autocomplete>
         ))}
       </FlexBox>
+    );
+  },
+};
+
+export const DisabledItems: Story = {
+  render: function Render() {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    return (
+      <Autocomplete
+        items={items}
+        label="Protocol"
+        placeholder="Select protocol"
+        disabledKeys={['ssh', 'ipsec']}
+      >
+        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+      </Autocomplete>
     );
   },
 };

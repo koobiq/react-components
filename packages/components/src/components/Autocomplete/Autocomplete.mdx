@@ -25,6 +25,15 @@ import { Autocomplete } from '@koobiq/react-components';
 
 <Props />
 
+## Dynamic items
+
+Autocomplete accepting both static and dynamic collections.
+
+- **Static**: The usage example above shows the static implementation, which can be used when the full list of options is known ahead of time.
+- **Dynamic**: The example below can be used when the options come from an external data source such as an API call, or update over time.
+
+<Story of={Stories.DynamicItems} />
+
 ## Addons
 
 You can add an extra content using the `startAddon` and `endAddon` props.
@@ -48,6 +57,13 @@ The `isInvalid` prop toggles the error state. The `errorMessage` shows a message
 A autocomplete can be disabled by passing the `isDisabled` prop.
 
 <Story of={Stories.Disabled} />
+
+## Disabled items
+
+Autocomplete supports marking items as disabled using the `disabledKeys` prop.
+Each key in this list corresponds with the `key` prop passed to the `Autocomplete.Item` component.
+
+<Story of={Stories.DisabledItems} />
 
 ## Required
 
