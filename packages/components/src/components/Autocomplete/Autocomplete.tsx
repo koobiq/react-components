@@ -46,6 +46,7 @@ export function AutocompleteRender<T extends object>(
   const {
     variant = 'filled',
     disableShowChevron = false,
+    defaultFilter: defaultFilterProp,
     style,
     endAddon,
     caption,
@@ -66,7 +67,11 @@ export function AutocompleteRender<T extends object>(
   } = props;
 
   const { contains } = useFilter({ sensitivity: 'base' });
-  const state = useComboBoxState<T>({ ...props, defaultFilter: contains });
+
+  const state = useComboBoxState<T>({
+    ...props,
+    defaultFilter: defaultFilterProp || contains,
+  });
 
   // Setup refs and get props for child elements.
   const buttonRef = useRef(null);

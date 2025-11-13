@@ -66,6 +66,8 @@ export type AutocompleteProps<T extends object> = {
   fullWidth?: boolean;
   /** If `true`, it hides the chevron that opens and closes the menu list. */
   disableShowChevron?: boolean;
+  /** The filter function used to determine if a option should be included in the Autocomplete list. */
+  defaultFilter?: (textValue: string, inputValue: string) => boolean;
   /** The props used for each slot inside. */
   slotProps?: {
     root?: FormFieldProps;

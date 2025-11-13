@@ -54,11 +54,13 @@ export const DynamicItems: Story = {
 
     return (
       <Autocomplete
-        items={items}
         label="Protocol"
+        defaultItems={items}
         placeholder="Select protocol"
       >
-        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+        {(item) => (
+          <Autocomplete.Item key={item.key}>{item.name}</Autocomplete.Item>
+        )}
       </Autocomplete>
     );
   },
@@ -175,8 +177,8 @@ export const DisabledItems: Story = {
 
     return (
       <Autocomplete
-        items={items}
         label="Protocol"
+        defaultItems={items}
         placeholder="Select protocol"
         disabledKeys={['ssh', 'ipsec']}
       >
@@ -279,7 +281,6 @@ export const LabelPlacementAlignment: Story = {
 };
 
 export const MenuTriggerBehavior: Story = {
-  name: 'Label placement and alignment',
   render: (args) => (
     <Autocomplete
       label="Protocol"
@@ -297,7 +298,6 @@ export const MenuTriggerBehavior: Story = {
 };
 
 export const CustomValue: Story = {
-  name: 'Label placement and alignment',
   render: (args) => (
     <Autocomplete
       label="Protocol"
@@ -346,7 +346,7 @@ export const Events: Story = {
     return (
       <FlexBox gap="m" direction="column">
         <Autocomplete
-          items={items}
+          defaultItems={items}
           label="Protocol"
           inputValue={value}
           selectedKey={selectedKey}
@@ -361,6 +361,47 @@ export const Events: Story = {
         <Typography>Current selected key: {selectedKey}</Typography>
         <Typography>Current input text: {value}</Typography>
       </FlexBox>
+    );
+  },
+};
+
+export const CustomFiltering: Story = {
+  render: function Render(args) {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    const myFilter: AutocompleteProps<object>['defaultFilter'] = (
+      textValue,
+      inputValue
+    ) => {
+      if (inputValue.length === 0) {
+        return true;
+      }
+
+      const textValueLowerCase = textValue.toLocaleLowerCase();
+      const inputValueLowerCase = inputValue.toLocaleLowerCase();
+
+      return (
+        textValueLowerCase.slice(0, inputValue.length) === inputValueLowerCase
+      );
+    };
+
+    return (
+      <Autocomplete
+        defaultItems={items}
+        label="Protocol"
+        defaultFilter={myFilter}
+        placeholder="Select protocol"
+        allowsCustomValue
+        {...args}
+      >
+        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+      </Autocomplete>
     );
   },
 };
