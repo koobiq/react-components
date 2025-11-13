@@ -64,6 +64,8 @@ export type AutocompleteProps<T extends object> = {
   variant?: AutocompleteInputPropVariant;
   /** If `true`, the input will take up the full width of its container. */
   fullWidth?: boolean;
+  /** If `true`, it hides the chevron that opens and closes the menu list. */
+  disableShowChevron?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
     root?: FormFieldProps;

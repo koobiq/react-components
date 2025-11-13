@@ -303,6 +303,7 @@ export const CustomValue: Story = {
       label="Protocol"
       placeholder="Select protocol"
       allowsCustomValue
+      disableShowChevron
       {...args}
     >
       <Autocomplete.Item key="tls">TLS</Autocomplete.Item>

@@ -9,7 +9,7 @@ import {
   useElementSize,
   useFilter,
 } from '@koobiq/react-core';
-import { IconChevronDown16 } from '@koobiq/react-icons';
+import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   FieldErrorContext,
   useComboBox,
@@ -45,6 +45,7 @@ export function AutocompleteRender<T extends object>(
 
   const {
     variant = 'filled',
+    disableShowChevron = false,
     style,
     endAddon,
     caption,
@@ -152,13 +153,15 @@ export function AutocompleteRender<T extends object>(
       endAddon: (
         <>
           {endAddon}
-          <IconButton
-            {...buttonProps}
-            variant={isInvalid ? 'error' : 'fade-contrast'}
-            ref={buttonRef}
-          >
-            <IconChevronDown16 />
-          </IconButton>
+          {!disableShowChevron && (
+            <IconButton
+              {...buttonProps}
+              variant={isInvalid ? 'error' : 'fade-contrast'}
+              ref={buttonRef}
+            >
+              <IconChevronDownS16 className={s.chevron} />
+            </IconButton>
+          )}
         </>
       ),
       variant,
