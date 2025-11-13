@@ -13,6 +13,8 @@ import * as Stories from './Autocomplete.stories';
 
 <Status variant="experimental" />
 
+An autocomplete combines a text input with a listbox, allowing users to filter a list of options to items matching a query.
+
 ```tsx
 import { Autocomplete } from '@koobiq/react-components';
 ```
@@ -22,3 +24,56 @@ import { Autocomplete } from '@koobiq/react-components';
 ## Props
 
 <Props />
+
+## Addons
+
+You can add an extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+## Variant
+
+To change the visual state of the autocomplete, use the `variant` prop.
+
+<Story of={Stories.Variant} />
+
+## Invalid
+
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+
+<Story of={Stories.Invalid} />
+
+## Disabled
+
+A autocomplete can be disabled by passing the `isDisabled` prop.
+
+<Story of={Stories.Disabled} />
+
+## Required
+
+To make a field required, add the `isRequired` prop.
+If the field has a label, a required indicator will appear next to it.
+
+<Story of={Stories.Required} />
+
+## Read only
+
+The `isReadOnly` boolean prop makes the component text content immutable.
+Unlike `isDisabled`, the component remains focusable and the contents can still be copied.
+See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.
+
+<Story of={Stories.ReadOnly} />
+
+## Full width
+
+The `fullWidth` prop will make a autocomplete fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+## Label placement and alignment
+
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
+
+See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
+
+<Story of={Stories.LabelPlacementAlignment} />

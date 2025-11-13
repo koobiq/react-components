@@ -1,27 +1,74 @@
-import { forwardRef, useRef } from 'react';
+'use client';
 
-import { mergeProps, useElementSize, useFilter } from '@koobiq/react-core';
+import { forwardRef, type Ref, useRef } from 'react';
+
+import {
+  clsx,
+  mergeProps,
+  useDOMRef,
+  useElementSize,
+  useFilter,
+} from '@koobiq/react-core';
 import { IconChevronDown16 } from '@koobiq/react-icons';
-import { useComboBox, useComboBoxState } from '@koobiq/react-primitives';
+import {
+  FieldErrorContext,
+  useComboBox,
+  useComboBoxState,
+} from '@koobiq/react-primitives';
 
 import { Item } from '../Collections';
-import { FormField } from '../FormField';
+import {
+  FormField,
+  type FormFieldCaptionProps,
+  type FormFieldControlGroupProps,
+  type FormFieldErrorProps,
+  type FormFieldLabelProps,
+  type FormFieldProps,
+} from '../FormField';
 import { IconButton } from '../IconButton';
 import { ListInner } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
 import s from './Autocomplete.module.css';
-import type { AutocompleteComponent, AutocompleteProps } from './index';
+import type {
+  AutocompleteComponent,
+  AutocompleteProps,
+  AutocompleteRef,
+} from './index';
 
-export function AutocompleteRender<T>(props: AutocompleteProps<T>) {
-  // Setup filter function and state.
+export function AutocompleteRender<T extends object>(
+  props: Omit<AutocompleteProps<T>, 'ref'>,
+  ref: Ref<AutocompleteRef>
+) {
+  const inputRef = useDOMRef<HTMLInputElement>(ref);
+
+  const {
+    variant = 'filled',
+    style,
+    endAddon,
+    caption,
+    slotProps,
+    className,
+    fullWidth,
+    isInvalid,
+    isReadOnly,
+    isRequired,
+    isDisabled,
+    labelAlign,
+    startAddon,
+    errorMessage,
+    labelPlacement,
+    isLabelHidden,
+    label,
+    'data-testid': testId,
+  } = props;
+
   const { contains } = useFilter({ sensitivity: 'base' });
-  const state = useComboBoxState({ ...props, defaultFilter: contains });
+  const state = useComboBoxState<T>({ ...props, defaultFilter: contains });
 
   // Setup refs and get props for child elements.
   const buttonRef = useRef(null);
-  const inputRef = useRef(null);
   const listBoxRef = useRef(null);
   const popoverRef = useRef(null);
 
@@ -29,8 +76,10 @@ export function AutocompleteRender<T>(props: AutocompleteProps<T>) {
     buttonProps,
     inputProps,
     listBoxProps,
-    labelProps,
+    labelProps: labelPropsAria,
+    descriptionProps,
     errorMessageProps,
+    ...validation
   } = useComboBox(
     {
       ...props,
@@ -45,63 +94,115 @@ export function AutocompleteRender<T>(props: AutocompleteProps<T>) {
   // Match the Popover width to the control element's width.
   const { ref: containerRef, width } = useElementSize();
 
+  const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
+    { isHidden: isLabelHidden, isRequired, children: label },
+    labelPropsAria,
+    slotProps?.label
+  );
+
+  const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
+    {
+      style,
+      labelPlacement,
+      labelAlign,
+      fullWidth,
+      'data-testid': testId,
+      'data-variant': variant,
+      'data-invalid': isInvalid || undefined,
+      'data-readonly': isReadOnly || undefined,
+      'data-disabled': isDisabled || undefined,
+      'data-required': isRequired || undefined,
+      className: clsx(s.base, className),
+    },
+    slotProps?.root
+  );
+
   const popoverProps = mergeProps<
     [PopoverInnerProps, PopoverProps | undefined]
   >(
     {
       state,
       offset: 4,
-      hideArrow: true,
+      popoverRef,
       type: 'listbox',
+      hideArrow: true,
+      isNonModal: true,
       maxBlockSize: 256,
       className: s.popover,
-      anchorRef: inputRef,
+      anchorRef: containerRef,
       placement: 'bottom start',
       size: Math.max(width, 200),
       slotProps: { backdrop: { hidden: true } },
-      popoverRef,
-      isNonModal: true,
     },
     undefined
   );
 
-  return (
-    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
-      <div>
-        <FormField>
-          <FormField.Label {...labelProps}>{props.label}</FormField.Label>
-          <div className={s.body}>
-            <FormField.ControlGroup>
-              <input
-                {...inputProps}
-                ref={inputRef}
-                style={{
-                  height: 24,
-                  boxSizing: 'border-box',
-                  marginRight: 0,
-                  fontSize: 16,
-                }}
-              />
-              <IconButton {...buttonProps} ref={buttonRef}>
-                <IconChevronDown16 />
-              </IconButton>
-            </FormField.ControlGroup>
-          </div>
-        </FormField>
+  const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
+    {
+      slotProps: {
+        endAddon: { className: s.addon },
+        startAddon: { className: s.addon },
+      },
+      startAddon,
+      onMouseDown: (e) => {
+        if (e.currentTarget !== e.target || isDisabled) return;
+        e.preventDefault();
+        inputRef?.current?.focus();
+      },
+      endAddon: (
+        <>
+          {endAddon}
+          <IconButton
+            {...buttonProps}
+            variant={isInvalid ? 'error' : 'fade-contrast'}
+            ref={buttonRef}
+          >
+            <IconChevronDown16 />
+          </IconButton>
+        </>
+      ),
+      variant,
+      isInvalid,
+      isDisabled,
+      ref: containerRef,
+    },
+    slotProps?.group
+  );
 
-        {state.isOpen && (
-          <PopoverInner {...popoverProps}>
-            <ListInner
-              {...listBoxProps}
-              isPadded
-              className={s.list}
-              listRef={listBoxRef}
-              state={state}
-            />
-          </PopoverInner>
-        )}
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    descriptionProps,
+    slotProps?.caption
+  );
+
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    errorMessageProps,
+    slotProps?.errorMessage
+  );
+
+  return (
+    <FormField {...rootProps}>
+      <FormField.Label {...labelProps} />
+      <div className={s.body}>
+        <FormField.ControlGroup {...groupProps}>
+          <FormField.Input {...inputProps} ref={inputRef} />
+        </FormField.ControlGroup>
+        <FormField.Caption {...captionProps} />
+        <FieldErrorContext.Provider value={validation}>
+          <FormField.Error {...errorProps} />
+        </FieldErrorContext.Provider>
       </div>
-    </div>
+      <PopoverInner {...popoverProps}>
+        <ListInner
+          {...listBoxProps}
+          isPadded
+          className={s.list}
+          listRef={listBoxRef}
+          state={state}
+        />
+      </PopoverInner>
+    </FormField>
   );
 }
 

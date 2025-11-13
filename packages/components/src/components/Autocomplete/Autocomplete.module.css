@@ -29,3 +29,19 @@
 .list {
   inline-size: 100%;
 }
+
+/* body */
+.body {
+  inline-size: 100%;
+  min-inline-size: fit-content;
+}
+
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}

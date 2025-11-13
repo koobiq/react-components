@@ -1,9 +1,16 @@
+import {
+  IconMagnifyingGlass16,
+  IconNetworkDevice16,
+} from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 
-import { Autocomplete, type AutocompleteProps } from './index.js';
+import {
+  Autocomplete,
+  type AutocompleteProps,
+  autocompletePropVariant,
+} from './index.js';
 
 const meta = {
   title: 'Components/Autocomplete',
@@ -19,16 +26,203 @@ type Story = StoryObj<AutocompleteProps<any>>;
 
 export const Base: Story = {
   render: (args) => (
-    <FlexBox direction="column" gap="l">
-      <Button>Outer button</Button>
-      <Autocomplete label="Favorite Animal" {...args}>
-        <Autocomplete.Item key="red panda">Red Panda</Autocomplete.Item>
-        <Autocomplete.Item key="cat">Cat</Autocomplete.Item>
-        <Autocomplete.Item key="dog">Dog</Autocomplete.Item>
-        <Autocomplete.Item key="aardvark">Aardvark</Autocomplete.Item>
-        <Autocomplete.Item key="kangaroo">Kangaroo</Autocomplete.Item>
-        <Autocomplete.Item key="snake">Snake</Autocomplete.Item>
+    <Autocomplete label="Protocol" placeholder="Select protocol" {...args}>
+      <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+      <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+      <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+      <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+      <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+    </Autocomplete>
+  ),
+};
+
+export const Variant: Story = {
+  render: function Render(args) {
+    return (
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
+        {autocompletePropVariant.map((variant) => (
+          <Autocomplete
+            key={variant}
+            variant={variant}
+            aria-label="variant"
+            placeholder={`variant = ${variant}`}
+            {...args}
+          >
+            <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+            <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+            <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+            <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+            <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+          </Autocomplete>
+        ))}
+      </FlexBox>
+    );
+  },
+};
+
+export const Invalid: Story = {
+  render: function Render(args) {
+    return (
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
+        {autocompletePropVariant.map((variant) => (
+          <Autocomplete
+            key={variant}
+            variant={variant}
+            aria-label="error"
+            placeholder={`variant = ${variant}`}
+            startAddon={<IconMagnifyingGlass16 />}
+            errorMessage="This field is required"
+            isInvalid
+            {...args}
+          >
+            <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+            <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+            <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+            <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+            <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+          </Autocomplete>
+        ))}
+      </FlexBox>
+    );
+  },
+};
+
+export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render(args) {
+    return (
+      <Autocomplete
+        label="Protocol"
+        placeholder="Select protocol"
+        fullWidth
+        {...args}
+      >
+        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
       </Autocomplete>
-    </FlexBox>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  render: function Render(args) {
+    return (
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
+        {autocompletePropVariant.map((variant) => (
+          <Autocomplete
+            key={variant}
+            variant={variant}
+            caption="disabled"
+            aria-label="disabled"
+            placeholder={`variant = ${variant}`}
+            isDisabled
+            {...args}
+          >
+            <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+            <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+            <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+            <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+            <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+          </Autocomplete>
+        ))}
+      </FlexBox>
+    );
+  },
+};
+
+export const Required: Story = {
+  render: function Render(args) {
+    return (
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
+        <Autocomplete
+          label="Protocol"
+          placeholder="Select protocol"
+          caption="required"
+          isRequired
+          {...args}
+        >
+          <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+          <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+          <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+          <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+          <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+        </Autocomplete>
+        <Autocomplete
+          label="Protocol"
+          placeholder="Select protocol"
+          caption="required, without an indicator"
+          slotProps={{ label: { isRequired: false } }}
+          isRequired
+          {...args}
+        >
+          <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+          <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+          <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+          <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+          <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+        </Autocomplete>
+      </FlexBox>
+    );
+  },
+};
+
+export const ReadOnly: Story = {
+  render: function Render(args) {
+    return (
+      <Autocomplete
+        label="Protocol"
+        placeholder="Select protocol"
+        isReadOnly
+        {...args}
+      >
+        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+      </Autocomplete>
+    );
+  },
+};
+
+export const Addons: Story = {
+  render: function Render(args) {
+    return (
+      <Autocomplete
+        startAddon={<IconNetworkDevice16 />}
+        label="Protocol"
+        placeholder="Select protocol"
+        {...args}
+      >
+        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+      </Autocomplete>
+    );
+  },
+};
+
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <Autocomplete
+      label="Protocol"
+      placeholder="Select protocol"
+      labelPlacement="side"
+      {...args}
+    >
+      <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+      <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+      <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+      <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+      <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+    </Autocomplete>
   ),
 };
