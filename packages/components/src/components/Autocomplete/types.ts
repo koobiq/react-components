@@ -76,7 +76,7 @@ export type AutocompleteProps<T extends object> = {
     errorMessage?: FormFieldErrorProps;
   };
 } & DataAttributeProps &
-  Omit<AriaComboBoxProps<T>, 'description'>;
+  Omit<AriaComboBoxProps<T>, 'description' | 'validationState'>;
 
 export type AutocompleteComponent = <T extends object>(
   props: AutocompleteProps<T>

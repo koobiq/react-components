@@ -93,3 +93,23 @@ Use `labelPlacement` and `labelAlign` props to set the position of the label.
 See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
 
 <Story of={Stories.LabelPlacementAlignment} />
+
+## Menu trigger behavior
+
+Autocomplete supports three different `menuTrigger` prop values:
+
+- **input** (default): Autocomplete menu opens when the user edits the input text.
+- **focus**: Autocomplete menu opens when the user focuses the Autocomplete input.
+- **manual**: Autocomplete menu only opens when the user presses the trigger button or uses the arrow keys.
+
+The example below has menuTrigger set to focus.
+
+<Story of={Stories.MenuTriggerBehavior} />
+
+## Custom Value
+
+By default, Autocomplete doesn't allow users to specify a value that doesn't exist in the list of options
+and will revert the input value to the current selected value on blur. By specifying `allowsCustomValue`,
+this behavior is suppressed and the user is free to enter any value within the field.
+
+<Story of={Stories.CustomValue} />

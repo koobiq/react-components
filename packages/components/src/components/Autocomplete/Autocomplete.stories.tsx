@@ -274,3 +274,39 @@ export const LabelPlacementAlignment: Story = {
     </Autocomplete>
   ),
 };
+
+export const MenuTriggerBehavior: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <Autocomplete
+      label="Protocol"
+      placeholder="Select protocol"
+      menuTrigger="focus"
+      {...args}
+    >
+      <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+      <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+      <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+      <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+      <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+    </Autocomplete>
+  ),
+};
+
+export const CustomValue: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <Autocomplete
+      label="Protocol"
+      placeholder="Select protocol"
+      allowsCustomValue
+      {...args}
+    >
+      <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+      <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+      <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+      <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+      <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+    </Autocomplete>
+  ),
+};
