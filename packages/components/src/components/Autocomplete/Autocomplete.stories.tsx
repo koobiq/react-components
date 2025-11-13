@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   IconMagnifyingGlass16,
   IconNetworkDevice16,
@@ -5,6 +7,7 @@ import {
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
+import { Typography } from '../Typography';
 
 import {
   Autocomplete,
@@ -95,8 +98,8 @@ export const Invalid: Story = {
             variant={variant}
             aria-label="error"
             placeholder={`variant = ${variant}`}
-            startAddon={<IconMagnifyingGlass16 />}
             errorMessage="This field is required"
+            startAddon={<IconMagnifyingGlass16 />}
             isInvalid
             {...args}
           >
@@ -189,8 +192,8 @@ export const Required: Story = {
       <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
         <Autocomplete
           label="Protocol"
-          placeholder="Select protocol"
           caption="required"
+          placeholder="Select protocol"
           isRequired
           {...args}
         >
@@ -242,9 +245,9 @@ export const Addons: Story = {
   render: function Render(args) {
     return (
       <Autocomplete
-        startAddon={<IconNetworkDevice16 />}
         label="Protocol"
         placeholder="Select protocol"
+        startAddon={<IconNetworkDevice16 />}
         {...args}
       >
         <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
@@ -262,8 +265,8 @@ export const LabelPlacementAlignment: Story = {
   render: (args) => (
     <Autocomplete
       label="Protocol"
-      placeholder="Select protocol"
       labelPlacement="side"
+      placeholder="Select protocol"
       {...args}
     >
       <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
@@ -280,8 +283,8 @@ export const MenuTriggerBehavior: Story = {
   render: (args) => (
     <Autocomplete
       label="Protocol"
-      placeholder="Select protocol"
       menuTrigger="focus"
+      placeholder="Select protocol"
       {...args}
     >
       <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
@@ -309,4 +312,54 @@ export const CustomValue: Story = {
       <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
     </Autocomplete>
   ),
+};
+
+export const Events: Story = {
+  render: function Render(args) {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    const [value, setValue] = useState('');
+
+    const [selectedKey, setSelectedKey] = useState<string | number | null>(
+      null
+    );
+
+    const onSelectionChange: AutocompleteProps<object>['onSelectionChange'] = (
+      id
+    ) => {
+      setSelectedKey(id);
+    };
+
+    const onInputChange: AutocompleteProps<object>['onInputChange'] = (
+      value
+    ) => {
+      setValue(value);
+    };
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <Autocomplete
+          items={items}
+          label="Protocol"
+          inputValue={value}
+          selectedKey={selectedKey}
+          placeholder="Select protocol"
+          onInputChange={onInputChange}
+          onSelectionChange={onSelectionChange}
+          allowsCustomValue
+          {...args}
+        >
+          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+        </Autocomplete>
+        <Typography>Current selected key: {selectedKey}</Typography>
+        <Typography>Current input text: {value}</Typography>
+      </FlexBox>
+    );
+  },
 };

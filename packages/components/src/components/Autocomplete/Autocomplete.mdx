@@ -113,3 +113,13 @@ and will revert the input value to the current selected value on blur. By specif
 this behavior is suppressed and the user is free to enter any value within the field.
 
 <Story of={Stories.CustomValue} />
+
+## Events
+
+The Autocomplete component supports selection via mouse, keyboard, and touch.
+You can handle all of these via the `onSelectionChange` prop.
+Autocomplete will pass the selected key to the `onSelectionChange` handler.
+Additionally, the component accepts an `onInputChange` prop which is triggered whenever
+the value is edited by the user, whether through typing or option selection.
+
+<Story of={Stories.Events} />
