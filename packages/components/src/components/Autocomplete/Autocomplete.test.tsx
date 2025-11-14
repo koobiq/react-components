@@ -1,0 +1,162 @@
+import { createRef } from 'react';
+
+import { screen, render } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+
+import { Autocomplete, type AutocompleteProps } from '../index';
+
+describe('Autocomplete', () => {
+  const baseProps: AutocompleteProps<object> = {
+    label: 'label',
+    children: null,
+    slotProps: {
+      root: {
+        'data-testid': 'root',
+      },
+      popover: {
+        'data-testid': 'popover',
+      },
+      input: {
+        'data-testid': 'control',
+      },
+      group: {
+        'data-testid': 'group',
+      },
+    },
+  };
+
+  const getRoot = () => screen.getByTestId('root');
+  const getInput = () => screen.getByTestId('control');
+  // const getPopover = () => screen.getByTestId('popover');
+  const getGroup = () => screen.getByTestId('group');
+
+  it('should accept a ref', () => {
+    const ref = createRef<HTMLInputElement>();
+    const { container } = render(<Autocomplete {...baseProps} ref={ref} />);
+    expect(ref.current).toBe(container.querySelector('input'));
+  });
+
+  it('should merge a custom class name with the default ones', () => {
+    render(<Autocomplete {...baseProps} className="foo" />);
+
+    expect(getRoot()).toHaveClass('foo');
+  });
+
+  it('should display a label', () => {
+    render(<Autocomplete {...baseProps} />);
+
+    expect(screen.getAllByText('label')[0]).toBeInTheDocument();
+  });
+
+  it('should display a placeholder', () => {
+    render(<Autocomplete {...baseProps} placeholder="baz" />);
+
+    const input = getInput();
+
+    expect(input).toHaveAttribute('placeholder', 'baz');
+  });
+
+  it('should be disabled when isDisabled is true', async () => {
+    const onOpenChange = vi.fn((val) => val);
+
+    render(
+      <Autocomplete {...baseProps} onOpenChange={onOpenChange} isDisabled />
+    );
+
+    await userEvent.tab();
+    await userEvent.click(getGroup());
+
+    expect(getInput()).not.toHaveFocus();
+    expect(onOpenChange).toBeCalledTimes(0);
+  });
+
+  it('should be required when isRequired is true', () => {
+    render(<Autocomplete {...baseProps} isRequired />);
+
+    expect(screen.getByText('*')).toBeInTheDocument();
+  });
+
+  it('should display a caption', () => {
+    render(<Autocomplete {...baseProps} caption="helper" />);
+
+    expect(getRoot()).toHaveTextContent('helper');
+  });
+
+  it('should display an errorMessage', () => {
+    render(<Autocomplete {...baseProps} errorMessage="fail" isInvalid />);
+
+    expect(getRoot()).toHaveTextContent('fail');
+  });
+
+  describe('addons', () => {
+    const getStartAddon = () => screen.getByTestId('field-addon-start');
+    const getEndAddon = () => screen.getByTestId('field-addon-end');
+
+    it(`should render a startAddon`, () => {
+      render(<Autocomplete {...baseProps} startAddon="addon" />);
+
+      expect(getRoot()).toHaveTextContent('addon');
+    });
+
+    it(`should render an endAddon`, () => {
+      render(<Autocomplete {...baseProps} endAddon="addon" />);
+
+      expect(getRoot()).toHaveTextContent('addon');
+    });
+
+    it(`should render addons in an error state`, () => {
+      render(
+        <Autocomplete
+          {...baseProps}
+          startAddon="start-addon"
+          endAddon="end-addon"
+          isInvalid
+        />
+      );
+
+      expect(getStartAddon()).toHaveAttribute('data-invalid', 'true');
+      expect(getEndAddon()).toHaveAttribute('data-invalid', 'true');
+    });
+
+    it(`should render addons in a disabled state`, () => {
+      render(
+        <Autocomplete
+          {...baseProps}
+          startAddon="start-addon"
+          endAddon="end-addon"
+          isDisabled
+        />
+      );
+
+      expect(getStartAddon()).toHaveAttribute('data-disabled', 'true');
+      expect(getEndAddon()).toHaveAttribute('data-disabled', 'true');
+    });
+  });
+
+  describe('check data-attributes', () => {
+    it('check the fullWidth prop', () => {
+      render(<Autocomplete {...baseProps} fullWidth />);
+
+      expect(getRoot()).toHaveAttribute('data-fullwidth', 'true');
+    });
+
+    it('check the isDisabled prop', () => {
+      render(<Autocomplete {...baseProps} isDisabled />);
+
+      expect(getRoot()).toHaveAttribute('data-disabled', 'true');
+    });
+
+    it('check the isRequired prop', () => {
+      render(<Autocomplete {...baseProps} isRequired />);
+
+      expect(getRoot()).toHaveAttribute('data-required', 'true');
+    });
+
+    it('check the isInvalid prop', () => {
+      render(<Autocomplete {...baseProps} isInvalid />);
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+    });
+  });
+});
