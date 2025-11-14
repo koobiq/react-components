@@ -3,24 +3,27 @@ import type {
   CSSProperties,
   ReactElement,
   ReactNode,
+  Ref,
 } from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { AriaComboBoxProps } from '@koobiq/react-primitives';
 
 import {
-  type FormFieldCaptionProps,
-  type FormFieldControlGroupProps,
-  type FormFieldControlGroupPropVariant,
   formFieldControlGroupPropVariant,
-  type FormFieldErrorProps,
-  type FormFieldLabelProps,
-  type FormFieldPropLabelAlign,
   formFieldPropLabelAlign,
-  type FormFieldPropLabelPlacement,
   formFieldPropLabelPlacement,
-  type FormFieldProps,
-  type FormFieldSelectProps,
+} from '../FormField';
+import type {
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+  FormFieldControlGroupPropVariant,
+  FormFieldErrorProps,
+  FormFieldInputProps,
+  FormFieldLabelProps,
+  FormFieldPropLabelAlign,
+  FormFieldPropLabelPlacement,
+  FormFieldProps,
 } from '../FormField';
 import type { PopoverProps } from '../Popover';
 import type { SelectListProps } from '../Select/components';
@@ -68,13 +71,15 @@ export type AutocompleteProps<T extends object> = {
   disableShowChevron?: boolean;
   /** The filter function used to determine if a option should be included in the Autocomplete list. */
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
+  /** Ref to the input */
+  ref?: Ref<HTMLInputElement>;
   /** The props used for each slot inside. */
   slotProps?: {
     root?: FormFieldProps;
     popover?: PopoverProps;
     label?: FormFieldLabelProps;
     list?: Omit<SelectListProps<object>, 'state'>;
-    control?: FormFieldSelectProps;
+    input?: FormFieldInputProps;
     caption?: FormFieldCaptionProps;
     group?: FormFieldControlGroupProps;
     errorMessage?: FormFieldErrorProps;

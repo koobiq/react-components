@@ -12,6 +12,7 @@ import {
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   FieldErrorContext,
+  removeDataAttributes,
   useComboBox,
   useComboBoxState,
 } from '@koobiq/react-primitives';
@@ -22,6 +23,7 @@ import {
   type FormFieldCaptionProps,
   type FormFieldControlGroupProps,
   type FormFieldErrorProps,
+  type FormFieldInputProps,
   type FormFieldLabelProps,
   type FormFieldProps,
 } from '../FormField';
@@ -68,10 +70,12 @@ export function AutocompleteRender<T extends object>(
 
   const { contains } = useFilter({ sensitivity: 'base' });
 
-  const state = useComboBoxState({
-    ...props,
-    defaultFilter: defaultFilterProp || contains,
-  });
+  const state = useComboBoxState(
+    removeDataAttributes({
+      ...props,
+      defaultFilter: defaultFilterProp || contains,
+    })
+  );
 
   // Setup refs and get props for child elements.
   const buttonRef = useRef(null);
@@ -80,20 +84,20 @@ export function AutocompleteRender<T extends object>(
 
   const {
     buttonProps,
-    inputProps,
     listBoxProps,
+    inputProps: inputPropsAria,
     labelProps: labelPropsAria,
     descriptionProps,
     errorMessageProps,
     ...validation
   } = useComboBox(
-    {
+    removeDataAttributes({
       ...props,
       inputRef,
       buttonRef,
       listBoxRef,
       popoverRef,
-    },
+    }),
     state
   );
 
@@ -189,12 +193,20 @@ export function AutocompleteRender<T extends object>(
     slotProps?.errorMessage
   );
 
+  const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
+    {
+      ...inputPropsAria,
+      ref: inputRef,
+    },
+    slotProps?.input
+  );
+
   return (
     <FormField {...rootProps}>
       <FormField.Label {...labelProps} />
       <div className={s.body}>
         <FormField.ControlGroup {...groupProps}>
-          <FormField.Input {...inputProps} ref={inputRef} />
+          <FormField.Input {...inputProps} />
         </FormField.ControlGroup>
         <FormField.Caption {...captionProps} />
         <FieldErrorContext.Provider value={validation}>
