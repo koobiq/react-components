@@ -68,7 +68,7 @@ export function AutocompleteRender<T extends object>(
 
   const { contains } = useFilter({ sensitivity: 'base' });
 
-  const state = useComboBoxState<T>({
+  const state = useComboBoxState({
     ...props,
     defaultFilter: defaultFilterProp || contains,
   });
@@ -140,7 +140,7 @@ export function AutocompleteRender<T extends object>(
       size: Math.max(width, 200),
       slotProps: { backdrop: { hidden: true } },
     },
-    undefined
+    slotProps?.popover
   );
 
   const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
