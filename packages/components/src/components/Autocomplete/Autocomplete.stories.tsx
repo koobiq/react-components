@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
+import { isString } from '@koobiq/react-core';
 import {
   IconMagnifyingGlass16,
   IconNetworkDevice16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { useFilter } from '../../index';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
@@ -280,6 +282,95 @@ export const LabelPlacementAlignment: Story = {
   ),
 };
 
+export const FullyControlled: Story = {
+  render: function Render() {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    // Store Autocomplete input value, selected option, open state, and items
+    // in a state tracker
+    const [fieldState, setFieldState] = useState({
+      selectedKey: '',
+      inputValue: '',
+      items,
+    });
+
+    // Implement custom filtering logic and control what items are
+    // available to the Autocomplete.
+    const { startsWith } = useFilter({ sensitivity: 'base' });
+
+    // Specify how each of the Autocomplete values should change when an
+    // option is selected from the list box
+    const onSelectionChange: AutocompleteProps<object>['onSelectionChange'] = (
+      key
+    ) => {
+      if (isString(key)) {
+        setFieldState((prevState) => {
+          const selectedItem = prevState.items.find(
+            (option) => option.key === key
+          );
+
+          return {
+            inputValue: selectedItem?.name || '',
+            selectedKey: key,
+            items: items.filter((item) =>
+              startsWith(item.name, selectedItem?.name || '')
+            ),
+          };
+        });
+      }
+    };
+
+    // Specify how each of the Autocomplete values should change when the input
+    // field is altered by the user
+    const onInputChange: AutocompleteProps<object>['onInputChange'] = (
+      value
+    ) => {
+      setFieldState((prevState) => ({
+        inputValue: value,
+        selectedKey: value === '' ? '' : prevState.selectedKey,
+        items: items.filter((item) => startsWith(item.name, value)),
+      }));
+    };
+
+    // Show entire list if user opens the menu manually
+    const onOpenChange: AutocompleteProps<object>['onOpenChange'] = (
+      isOpen,
+      menuTrigger
+    ) => {
+      if (menuTrigger === 'manual' && isOpen) {
+        setFieldState((prevState) => ({
+          inputValue: prevState.inputValue,
+          selectedKey: prevState.selectedKey,
+          items,
+        }));
+      }
+    };
+
+    return (
+      <Autocomplete
+        label="Protocol"
+        items={fieldState.items}
+        onOpenChange={onOpenChange}
+        placeholder="Select protocol"
+        onInputChange={onInputChange}
+        inputValue={fieldState.inputValue}
+        selectedKey={fieldState.selectedKey}
+        onSelectionChange={onSelectionChange}
+      >
+        {(item) => (
+          <Autocomplete.Item key={item.key}>{item.name}</Autocomplete.Item>
+        )}
+      </Autocomplete>
+    );
+  },
+};
+
 export const MenuTriggerBehavior: Story = {
   render: (args) => (
     <Autocomplete
@@ -346,9 +437,9 @@ export const Events: Story = {
     return (
       <FlexBox gap="m" direction="column">
         <Autocomplete
-          defaultItems={items}
           label="Protocol"
           inputValue={value}
+          defaultItems={items}
           selectedKey={selectedKey}
           placeholder="Select protocol"
           onInputChange={onInputChange}
@@ -393,8 +484,8 @@ export const CustomFiltering: Story = {
 
     return (
       <Autocomplete
-        defaultItems={items}
         label="Protocol"
+        defaultItems={items}
         defaultFilter={myFilter}
         placeholder="Select protocol"
         allowsCustomValue
