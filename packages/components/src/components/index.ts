@@ -55,6 +55,7 @@ export {
 export {
   useRouter,
   useLocale,
+  useFilter,
   type Locale,
   type SortDescriptor,
   type Selection,
