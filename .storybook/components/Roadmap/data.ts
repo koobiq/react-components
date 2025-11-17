@@ -279,6 +279,5 @@ export const rows: Rows = [
   { component: 'Collapse', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'Accordion', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'CheckboxGroup', status: '🚧 Planned', planned: 'Q4 2025' },
-  { component: 'ToggleGroup', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'Tree', status: '🚧 Planned', planned: 'Q4 2025' },
 ];
