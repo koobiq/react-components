@@ -3,7 +3,7 @@
 import { forwardRef } from 'react';
 
 import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
-import { IconMagnifyingGlass16, IconXmarkCircle16 } from '@koobiq/react-icons';
+import { IconMagnifyingGlass16, IconCircleXmark16 } from '@koobiq/react-icons';
 import {
   removeDataAttributes,
   useSearchField,
@@ -136,7 +136,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
                   slotProps?.clearButton?.className
                 )}
               >
-                <IconXmarkCircle16 />
+                <IconCircleXmark16 />
               </IconButton>
             )}
             {endAddon}

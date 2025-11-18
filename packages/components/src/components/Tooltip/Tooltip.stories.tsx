@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
-import { IconQuestionCircle24 } from '@koobiq/react-icons';
+import { IconCircleQuestion24 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button, type ButtonProps } from '../Button';
@@ -33,7 +33,7 @@ export const Base: Story = {
     <Tooltip
       control={() => (
         <IconButton>
-          <IconQuestionCircle24 />
+          <IconCircleQuestion24 />
         </IconButton>
       )}
       {...args}

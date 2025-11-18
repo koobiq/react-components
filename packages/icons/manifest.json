@@ -1,10 +1,6 @@
 {
   "icons": [
     {
-      "name": "IconNodeTree",
-      "keywords": ""
-    },
-    {
       "name": "Icon3Columns16",
       "size": "16",
       "description": "Три колонки",
@@ -68,12 +64,6 @@
       ]
     },
     {
-      "name": "IconAnomalySquare16",
-      "size": "16",
-      "description": "",
-      "keywords": ["аномалия"]
-    },
-    {
       "name": "IconApi16",
       "size": "16",
       "description": "",
@@ -92,30 +82,6 @@
       "size": "16",
       "description": "",
       "keywords": ["fruit", "logo", "логотип", "фрукт", "яблоко"]
-    },
-    {
-      "name": "IconArrowCircleDown16",
-      "size": "16",
-      "description": "",
-      "keywords": ["вниз", "круг", "стрелка"]
-    },
-    {
-      "name": "IconArrowCircleLeft16",
-      "size": "16",
-      "description": "",
-      "keywords": ["влево", "круг", "стрелка"]
-    },
-    {
-      "name": "IconArrowCircleRight16",
-      "size": "16",
-      "description": "",
-      "keywords": ["вправо", "круг", "стрелка"]
-    },
-    {
-      "name": "IconArrowCircleUp16",
-      "size": "16",
-      "description": "",
-      "keywords": ["вверх", "круг", "стрелка"]
     },
     {
       "name": "IconArrowDown16",
@@ -211,23 +177,6 @@
       "keywords": ["exchange", "swap", "обмен", "стрелки"]
     },
     {
-      "name": "IconArrowRightCircleDotO16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "file",
-        "outline",
-        "partial",
-        "passed",
-        "контур",
-        "пройден",
-        "стрелка",
-        "точка",
-        "файл",
-        "частично"
-      ]
-    },
-    {
       "name": "IconArrowRightFromArc16",
       "size": "16",
       "description": "",
@@ -313,6 +262,12 @@
     },
     {
       "name": "IconArrowRotateLeftBadgeLinux16",
+      "size": "16",
+      "description": "",
+      "keywords": ""
+    },
+    {
+      "name": "IconArrowRotateLeftBadgeWindows16",
       "size": "16",
       "description": "",
       "keywords": ""
@@ -747,42 +702,6 @@
       "keywords": ["lightning", "power", "болт", "молния", "энергия"]
     },
     {
-      "name": "IconBoltCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["lightning", "power", "круг", "молния", "энергия"]
-    },
-    {
-      "name": "IconBoltRectangleVertical16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "alert",
-        "event",
-        "notification",
-        "предупреждение",
-        "событие",
-        "событие",
-        "уведомление"
-      ]
-    },
-    {
-      "name": "IconBoltRectangleVerticalO16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "alert",
-        "event",
-        "notification",
-        "outline",
-        "контур",
-        "предупреждение",
-        "событие",
-        "событие",
-        "уведомление"
-      ]
-    },
-    {
       "name": "IconBookOpen16",
       "size": "16",
       "description": "",
@@ -1106,12 +1025,6 @@
       "keywords": ["options", "несколько", "опции", "чекбокс"]
     },
     {
-      "name": "IconCheckCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["verify", "верифицировать", "круг", "проверить"]
-    },
-    {
       "name": "IconCheckDouble16",
       "size": "16",
       "description": "",
@@ -1128,30 +1041,6 @@
       "name": "IconCheckS16",
       "size": "16",
       "keywords": ""
-    },
-    {
-      "name": "IconChevronCircleDown16",
-      "size": "16",
-      "description": "",
-      "keywords": ["angle", "вниз", "круг", "угол", "шеврон"]
-    },
-    {
-      "name": "IconChevronCircleLeft16",
-      "size": "16",
-      "description": "",
-      "keywords": ["angle", "влево", "круг", "угол", "шеврон"]
-    },
-    {
-      "name": "IconChevronCircleRight16",
-      "size": "16",
-      "description": "",
-      "keywords": ["angle", "вправо", "круг", "угол", "шеврон"]
-    },
-    {
-      "name": "IconChevronCircleUp16",
-      "size": "16",
-      "description": "",
-      "keywords": ["angle", "вверх", "круг", "угол", "шеврон"]
     },
     {
       "name": "IconChevronDoubleDown16",
@@ -1238,6 +1127,19 @@
       "keywords": ["angle", "small", "вправо", "маленький", "шеврон"]
     },
     {
+      "name": "IconChevronsCompress16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "collapse",
+        "minimize",
+        "коллапс",
+        "минимизировать",
+        "сжать",
+        "уменьшить"
+      ]
+    },
+    {
       "name": "IconChevronsDownUp16",
       "size": "16",
       "description": "",
@@ -1308,6 +1210,83 @@
       "keywords": ["large", "shape", "большой", "круг", "форма"]
     },
     {
+      "name": "IconCircleArrowDown16",
+      "size": "16",
+      "description": "",
+      "keywords": ["вниз", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleArrowLeft16",
+      "size": "16",
+      "description": "",
+      "keywords": ["влево", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleArrowRight16",
+      "size": "16",
+      "description": "",
+      "keywords": ["вправо", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleArrowRightDotO16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "file",
+        "outline",
+        "partial",
+        "passed",
+        "контур",
+        "пройден",
+        "стрелка",
+        "точка",
+        "файл",
+        "частично"
+      ]
+    },
+    {
+      "name": "IconCircleArrowUp16",
+      "size": "16",
+      "description": "",
+      "keywords": ["вверх", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleBolt16",
+      "size": "16",
+      "description": "",
+      "keywords": ["lightning", "power", "круг", "молния", "энергия"]
+    },
+    {
+      "name": "IconCircleCheck16",
+      "size": "16",
+      "description": "",
+      "keywords": ["verify", "верифицировать", "круг", "проверить"]
+    },
+    {
+      "name": "IconCircleChevronDown16",
+      "size": "16",
+      "description": "",
+      "keywords": ["angle", "вниз", "круг", "угол", "шеврон"]
+    },
+    {
+      "name": "IconCircleChevronLeft16",
+      "size": "16",
+      "description": "",
+      "keywords": ["angle", "влево", "круг", "угол", "шеврон"]
+    },
+    {
+      "name": "IconCircleChevronRight16",
+      "size": "16",
+      "description": "",
+      "keywords": ["angle", "вправо", "круг", "угол", "шеврон"]
+    },
+    {
+      "name": "IconCircleChevronUp16",
+      "size": "16",
+      "description": "",
+      "keywords": ["angle", "вверх", "круг", "угол", "шеврон"]
+    },
+    {
       "name": "IconCircleDot16",
       "size": "16",
       "description": "",
@@ -1332,6 +1311,34 @@
       ]
     },
     {
+      "name": "IconCircleEllipsisHorizontalO16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "menu",
+        "outline",
+        "горизонтально",
+        "контур",
+        "круг",
+        "меню",
+        "многоточие"
+      ]
+    },
+    {
+      "name": "IconCircleExclamation16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "alert",
+        "attention",
+        "warning",
+        "внимание",
+        "восклицательный",
+        "круг",
+        "предупреждение"
+      ]
+    },
+    {
       "name": "IconCircleHalf16",
       "size": "16",
       "description": "",
@@ -1344,6 +1351,43 @@
         "круг",
         "половина"
       ]
+    },
+    {
+      "name": "IconCircleInfo16",
+      "size": "16",
+      "description": "",
+      "keywords": ["information", "информация", "круг"]
+    },
+    {
+      "name": "IconCircleLocationArrowO16",
+      "size": "16",
+      "description": "",
+      "keywords": ["geodata", "геоданные", "локация"]
+    },
+    {
+      "name": "IconCircleMinus16",
+      "size": "16",
+      "description": "",
+      "keywords": ["large", "subtract", "большой", "вычесть", "круг", "минус"]
+    },
+    {
+      "name": "IconCircleMinusO16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "ignore",
+        "outline",
+        "игнорировать",
+        "контур",
+        "круг",
+        "минус"
+      ]
+    },
+    {
+      "name": "IconCircleMinusS16",
+      "size": "16",
+      "description": "",
+      "keywords": ["small", "subtract", "вычесть", "круг", "маленький", "минус"]
     },
     {
       "name": "IconCircleO16",
@@ -1359,6 +1403,62 @@
         "круг",
         "пустой",
         "форма"
+      ]
+    },
+    {
+      "name": "IconCirclePause16",
+      "size": "16",
+      "keywords": ["круг", "пауза"]
+    },
+    {
+      "name": "IconCirclePlay16",
+      "size": "16",
+      "description": "",
+      "keywords": ["start", "воспроизвести", "круг", "начать"]
+    },
+    {
+      "name": "IconCirclePlus16",
+      "size": "16",
+      "description": "",
+      "keywords": ["add", "large", "большой", "добавить", "круг", "плюс"]
+    },
+    {
+      "name": "IconCirclePlusS16",
+      "size": "16",
+      "description": "",
+      "keywords": ["add", "small", "добавить", "круг", "маленький", "плюс"]
+    },
+    {
+      "name": "IconCircleQuestion16",
+      "size": "16",
+      "description": "",
+      "keywords": ["help", "вопрос", "круг", "помощь"]
+    },
+    {
+      "name": "IconCircleStop16",
+      "size": "16",
+      "keywords": ["круг", "остановить"]
+    },
+    {
+      "name": "IconCircleTelegram16",
+      "size": "16",
+      "description": "",
+      "keywords": ["message", "в круге", "сообщение", "телеграмм"]
+    },
+    {
+      "name": "IconCircleXmark16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "clear",
+        "close",
+        "cross",
+        "large",
+        "большой",
+        "закрыть",
+        "крестик",
+        "круг",
+        "очистить"
       ]
     },
     {
@@ -1477,19 +1577,6 @@
       "size": "16",
       "description": "",
       "keywords": ["geodata", "геоданные", "компасс"]
-    },
-    {
-      "name": "IconCompress16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "collapse",
-        "minimize",
-        "коллапс",
-        "минимизировать",
-        "сжать",
-        "уменьшить"
-      ]
     },
     {
       "name": "IconConnection16",
@@ -1756,20 +1843,6 @@
       "keywords": ["menu", "горизонтально", "меню", "многоточие"]
     },
     {
-      "name": "IconEllipsisHorizontalCircleO16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "menu",
-        "outline",
-        "горизонтально",
-        "контур",
-        "круг",
-        "меню",
-        "многоточие"
-      ]
-    },
-    {
       "name": "IconEllipsisVertical16",
       "size": "16",
       "description": "",
@@ -1823,34 +1896,6 @@
       "name": "IconException16",
       "size": "16",
       "keywords": ["исключение"]
-    },
-    {
-      "name": "IconExclamationCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "alert",
-        "attention",
-        "warning",
-        "внимание",
-        "восклицательный",
-        "круг",
-        "предупреждение"
-      ]
-    },
-    {
-      "name": "IconExclamationTriangle16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "alert",
-        "error",
-        "warning",
-        "восклицание",
-        "ошибка",
-        "предупреждение",
-        "треугольник"
-      ]
     },
     {
       "name": "IconExists16",
@@ -2512,42 +2557,10 @@
       "keywords": ["endless", "бесконечность", "бесконечный"]
     },
     {
-      "name": "IconInfoCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["information", "информация", "круг"]
-    },
-    {
       "name": "IconIp16",
       "size": "16",
       "description": "",
       "keywords": ["address", "network", "адрес", "сеть"]
-    },
-    {
-      "name": "IconIp4Rectangle16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "attacker",
-        "ip",
-        "ipv4",
-        "адрес",
-        "злоумышленник",
-        "прямоугольник"
-      ]
-    },
-    {
-      "name": "IconIp6Rectangle16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "attacker",
-        "ip",
-        "ipv6",
-        "адрес",
-        "злоумышленник",
-        "прямоугольник"
-      ]
     },
     {
       "name": "IconIpMultiple16",
@@ -2690,12 +2703,6 @@
       "size": "16",
       "description": "",
       "keywords": ["items", "unordered", "неупорядоченный", "список"]
-    },
-    {
-      "name": "IconLocationArrowCircleO16",
-      "size": "16",
-      "description": "",
-      "keywords": ["geodata", "геоданные", "локация"]
     },
     {
       "name": "IconLocationArrowRight16",
@@ -2854,37 +2861,6 @@
       "keywords": ["large", "minus", "subtract", "большой", "вычесть", "минус"]
     },
     {
-      "name": "IconMinusCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["large", "subtract", "большой", "вычесть", "круг", "минус"]
-    },
-    {
-      "name": "IconMinusCircleO16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "ignore",
-        "outline",
-        "игнорировать",
-        "контур",
-        "круг",
-        "минус"
-      ]
-    },
-    {
-      "name": "IconMinusCircleS16",
-      "size": "16",
-      "description": "",
-      "keywords": ["small", "subtract", "вычесть", "круг", "маленький", "минус"]
-    },
-    {
-      "name": "IconMinusOctagon16",
-      "size": "16",
-      "description": "",
-      "keywords": ["violation", "восьмиугольник", "минус", "нарушение"]
-    },
-    {
       "name": "IconMinusS16",
       "size": "16",
       "description": "",
@@ -2896,12 +2872,6 @@
         "маленький",
         "минус"
       ]
-    },
-    {
-      "name": "IconMinusSquare16",
-      "size": "16",
-      "description": "",
-      "keywords": ["subtract", "вычесть", "квадрат", "минус"]
     },
     {
       "name": "IconMobile16",
@@ -2950,6 +2920,12 @@
       "keywords": ["несколько", "сеть", "устройства"]
     },
     {
+      "name": "IconNodeTree16",
+      "size": "16",
+      "description": "Дерево узлов",
+      "keywords": ""
+    },
+    {
       "name": "IconNorthEast16",
       "size": "16",
       "description": "External links",
@@ -2973,6 +2949,12 @@
         "пользователь",
         "человек"
       ]
+    },
+    {
+      "name": "IconOctagonMinus16",
+      "size": "16",
+      "description": "",
+      "keywords": ["violation", "восьмиугольник", "минус", "нарушение"]
     },
     {
       "name": "IconOpensuse16",
@@ -3010,11 +2992,6 @@
       "keywords": ["пауза"]
     },
     {
-      "name": "IconPauseCircle16",
-      "size": "16",
-      "keywords": ["круг", "пауза"]
-    },
-    {
       "name": "IconPencil16",
       "size": "16",
       "description": "",
@@ -3050,12 +3027,6 @@
       "keywords": ["start", "воспроизвести", "начать"]
     },
     {
-      "name": "IconPlayCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["start", "воспроизвести", "круг", "начать"]
-    },
-    {
       "name": "IconPlayRewind16",
       "size": "16",
       "description": "",
@@ -3073,28 +3044,10 @@
       "keywords": ["add", "добавить", "плюс"]
     },
     {
-      "name": "IconPlusCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["add", "large", "большой", "добавить", "круг", "плюс"]
-    },
-    {
-      "name": "IconPlusCircleS16",
-      "size": "16",
-      "description": "",
-      "keywords": ["add", "small", "добавить", "круг", "маленький", "плюс"]
-    },
-    {
       "name": "IconPlusS16",
       "size": "16",
       "description": "",
       "keywords": ["add", "plus", "small", "добавить", "маленький", "плюс"]
-    },
-    {
-      "name": "IconPlusSquare16",
-      "size": "16",
-      "description": "",
-      "keywords": ["add", "добавить", "квадрат", "плюс"]
     },
     {
       "name": "IconPrinter16",
@@ -3124,12 +3077,6 @@
       "size": "16",
       "description": "",
       "keywords": ["help", "вопрос", "помощь"]
-    },
-    {
-      "name": "IconQuestionCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["help", "вопрос", "круг", "помощь"]
     },
     {
       "name": "IconReachability16",
@@ -3162,6 +3109,32 @@
       ]
     },
     {
+      "name": "IconRectangleIp416",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "attacker",
+        "ip",
+        "ipv4",
+        "адрес",
+        "злоумышленник",
+        "прямоугольник"
+      ]
+    },
+    {
+      "name": "IconRectangleIp616",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "attacker",
+        "ip",
+        "ipv6",
+        "адрес",
+        "злоумышленник",
+        "прямоугольник"
+      ]
+    },
+    {
       "name": "IconRectanglesO16",
       "size": "16",
       "keywords": ""
@@ -3177,6 +3150,36 @@
         "безопасность",
         "уровень уязвимости критический",
         "уязвимость"
+      ]
+    },
+    {
+      "name": "IconRectangleVerticalBolt16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "alert",
+        "event",
+        "notification",
+        "предупреждение",
+        "событие",
+        "событие",
+        "уведомление"
+      ]
+    },
+    {
+      "name": "IconRectangleVerticalBoltO16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "alert",
+        "event",
+        "notification",
+        "outline",
+        "контур",
+        "предупреждение",
+        "событие",
+        "событие",
+        "уведомление"
       ]
     },
     {
@@ -3586,9 +3589,21 @@
       "keywords": ["shape", "квадрат", "форма"]
     },
     {
+      "name": "IconSquareA16",
+      "size": "16",
+      "description": "",
+      "keywords": ["аномалия"]
+    },
+    {
       "name": "IconSquareDot16",
       "size": "16",
       "keywords": ["квадрат", "точка"]
+    },
+    {
+      "name": "IconSquareMinus16",
+      "size": "16",
+      "description": "",
+      "keywords": ["subtract", "вычесть", "квадрат", "минус"]
     },
     {
       "name": "IconSquareMultipleO16",
@@ -3602,6 +3617,12 @@
         "квадраты",
         "копировать"
       ]
+    },
+    {
+      "name": "IconSquarePlus16",
+      "size": "16",
+      "description": "",
+      "keywords": ["add", "добавить", "квадрат", "плюс"]
     },
     {
       "name": "IconStar16",
@@ -3625,11 +3646,6 @@
         "уровень уязвимости средний",
         "уязвимость"
       ]
-    },
-    {
-      "name": "IconStopCircle16",
-      "size": "16",
-      "keywords": ["круг", "остановить"]
     },
     {
       "name": "IconSun16",
@@ -3690,12 +3706,6 @@
       "keywords": ["logo", "логотип"]
     },
     {
-      "name": "IconTelegramCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": ["message", "в круге", "сообщение", "телеграмм"]
-    },
-    {
       "name": "IconText16",
       "size": "16",
       "keywords": ["текст"]
@@ -3722,9 +3732,21 @@
       "keywords": ["request", "search", "запросить", "поиск", "текст"]
     },
     {
+      "name": "IconTextOverflow16",
+      "size": "16",
+      "description": "",
+      "keywords": ""
+    },
+    {
       "name": "IconTextUnderline16",
       "size": "16",
       "keywords": ["подчеркивание"]
+    },
+    {
+      "name": "IconTextWrap16",
+      "size": "16",
+      "description": "",
+      "keywords": ["обернуть", "текст"]
     },
     {
       "name": "IconThumbsDown16",
@@ -3785,6 +3807,20 @@
       "keywords": ["delete", "remove", "мусор", "убрать", "удалить"]
     },
     {
+      "name": "IconTriangleExclamation16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "alert",
+        "error",
+        "warning",
+        "восклицание",
+        "ошибка",
+        "предупреждение",
+        "треугольник"
+      ]
+    },
+    {
       "name": "IconTriangleO16",
       "size": "16",
       "description": "",
@@ -3843,20 +3879,6 @@
       ]
     },
     {
-      "name": "IconUserArrowTriangleUp16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "up",
-        "vulner lpe",
-        "вверх",
-        "пользователь",
-        "стрелка",
-        "треугольник",
-        "уязвимость лпе"
-      ]
-    },
-    {
       "name": "IconUserBadgeFileText16",
       "size": "16",
       "description": "",
@@ -3908,6 +3930,20 @@
         "местоположение",
         "пользователь",
         "человек"
+      ]
+    },
+    {
+      "name": "IconUserBadgeTriangleUp16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "up",
+        "vulner lpe",
+        "вверх",
+        "пользователь",
+        "стрелка",
+        "треугольник",
+        "уязвимость лпе"
       ]
     },
     {
@@ -3987,28 +4023,10 @@
       "keywords": ["os", "system", "windows", "операционная", "система"]
     },
     {
-      "name": "IconWindowsArrowRotateLeft16",
-      "size": "16",
-      "description": "",
-      "keywords": ""
-    },
-    {
       "name": "IconWorkflow16",
       "size": "16",
       "description": "",
       "keywords": ["process", "процесс", "рабочий процесс"]
-    },
-    {
-      "name": "IconWrapText16",
-      "size": "16",
-      "description": "",
-      "keywords": ["обернуть", "текст"]
-    },
-    {
-      "name": "IconWrapTextSlash16",
-      "size": "16",
-      "description": "",
-      "keywords": ""
     },
     {
       "name": "IconWrench16",
@@ -4034,22 +4052,6 @@
       "size": "16",
       "description": "",
       "keywords": ["close", "cross", "large", "большой", "закрыть", "крестик"]
-    },
-    {
-      "name": "IconXmarkCircle16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "clear",
-        "close",
-        "cross",
-        "large",
-        "большой",
-        "закрыть",
-        "крестик",
-        "круг",
-        "очистить"
-      ]
     },
     {
       "name": "IconXmarkCircleS16",
@@ -4117,12 +4119,6 @@
       ]
     },
     {
-      "name": "IconAnomalySquare24",
-      "size": "24",
-      "description": "",
-      "keywords": ["аномалия"]
-    },
-    {
       "name": "IconApi24",
       "size": "24",
       "keywords": ""
@@ -4131,30 +4127,6 @@
       "name": "IconApple24",
       "size": "24",
       "keywords": ""
-    },
-    {
-      "name": "IconArrowCircleDown24",
-      "size": "24",
-      "description": "",
-      "keywords": ["вниз", "круг", "стрелка"]
-    },
-    {
-      "name": "IconArrowCircleLeft24",
-      "size": "24",
-      "description": "",
-      "keywords": ["влево", "круг", "стрелка"]
-    },
-    {
-      "name": "IconArrowCircleRight24",
-      "size": "24",
-      "description": "",
-      "keywords": ["вправо", "круг", "стрелка"]
-    },
-    {
-      "name": "IconArrowCircleUp24",
-      "size": "24",
-      "description": "",
-      "keywords": ["вверх", "круг", "стрелка"]
     },
     {
       "name": "IconArrowDown24",
@@ -4276,22 +4248,6 @@
         "стрелки",
         "переключить",
         "обмен"
-      ]
-    },
-    {
-      "name": "IconArrowRightCircleDotO24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "circle",
-        "dot",
-        "outline",
-        "right",
-        "стрелка",
-        "круг",
-        "точка",
-        "контур",
-        "вправо"
       ]
     },
     {
@@ -4783,47 +4739,6 @@
       ]
     },
     {
-      "name": "IconBoltCircle24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "critical",
-        "security",
-        "vulnerability",
-        "безопасность",
-        "уровень уязвимости критический",
-        "уязвимость"
-      ]
-    },
-    {
-      "name": "IconBoltRectangleVertical24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "alert",
-        "event",
-        "notification",
-        "предупреждение",
-        "событие",
-        "событие",
-        "уведомление"
-      ]
-    },
-    {
-      "name": "IconBoltRectangleVerticalO24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "alert",
-        "event",
-        "notification",
-        "предупреждение",
-        "событие",
-        "событие",
-        "уведомление"
-      ]
-    },
-    {
       "name": "IconBookMultiple24",
       "size": "24",
       "keywords": [""]
@@ -5090,11 +5005,6 @@
       "keywords": ["options", "несколько", "опции", "чекбокс"]
     },
     {
-      "name": "IconCheckCircle24",
-      "size": "24",
-      "keywords": ""
-    },
-    {
       "name": "IconCheckDouble24",
       "size": "24",
       "description": "",
@@ -5104,30 +5014,6 @@
       "name": "IconCheckS24",
       "size": "24",
       "keywords": []
-    },
-    {
-      "name": "IconChevronCircleDown24",
-      "size": "24",
-      "description": "",
-      "keywords": ["angle", "вниз", "круг", "угол", "шеврон"]
-    },
-    {
-      "name": "IconChevronCircleLeft24",
-      "size": "24",
-      "description": "",
-      "keywords": ["angle", "влево", "круг", "угол", "шеврон"]
-    },
-    {
-      "name": "IconChevronCircleRight24",
-      "size": "24",
-      "description": "",
-      "keywords": ["angle", "вправо", "круг", "угол", "шеврон"]
-    },
-    {
-      "name": "IconChevronCircleUp24",
-      "size": "24",
-      "description": "",
-      "keywords": ["angle", "вверх", "круг", "угол", "шеврон"]
     },
     {
       "name": "IconChevronDoubleDown24",
@@ -5208,6 +5094,12 @@
       "keywords": ""
     },
     {
+      "name": "IconChevronsCompress24",
+      "size": "24",
+      "description": "",
+      "keywords": ["collapse", "minimize", "свернуть", "уменьшить"]
+    },
+    {
       "name": "IconChevronsDownUp24",
       "size": "24",
       "description": "",
@@ -5274,6 +5166,88 @@
       "keywords": ["shape", "круг", "форма"]
     },
     {
+      "name": "IconCircleArrowDown24",
+      "size": "24",
+      "description": "",
+      "keywords": ["вниз", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleArrowLeft24",
+      "size": "24",
+      "description": "",
+      "keywords": ["влево", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleArrowRight24",
+      "size": "24",
+      "description": "",
+      "keywords": ["вправо", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleArrowRightDotO24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "circle",
+        "dot",
+        "outline",
+        "right",
+        "стрелка",
+        "круг",
+        "точка",
+        "контур",
+        "вправо"
+      ]
+    },
+    {
+      "name": "IconCircleArrowUp24",
+      "size": "24",
+      "description": "",
+      "keywords": ["вверх", "круг", "стрелка"]
+    },
+    {
+      "name": "IconCircleBolt24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "critical",
+        "security",
+        "vulnerability",
+        "безопасность",
+        "уровень уязвимости критический",
+        "уязвимость"
+      ]
+    },
+    {
+      "name": "IconCircleCheck24",
+      "size": "24",
+      "keywords": ""
+    },
+    {
+      "name": "IconCircleChevronDown24",
+      "size": "24",
+      "description": "",
+      "keywords": ["angle", "вниз", "круг", "угол", "шеврон"]
+    },
+    {
+      "name": "IconCircleChevronLeft24",
+      "size": "24",
+      "description": "",
+      "keywords": ["angle", "влево", "круг", "угол", "шеврон"]
+    },
+    {
+      "name": "IconCircleChevronRight24",
+      "size": "24",
+      "description": "",
+      "keywords": ["angle", "вправо", "круг", "угол", "шеврон"]
+    },
+    {
+      "name": "IconCircleChevronUp24",
+      "size": "24",
+      "description": "",
+      "keywords": ["angle", "вверх", "круг", "угол", "шеврон"]
+    },
+    {
       "name": "IconCircleDot24",
       "size": "24",
       "description": "",
@@ -5286,14 +5260,113 @@
       "keywords": ["partial", "shape", "круг", "точка", "форма"]
     },
     {
+      "name": "IconCircleEllipsisHorizontalO24",
+      "size": "24",
+      "description": "",
+      "keywords": ["dots", "more", "точки", "еще"]
+    },
+    {
+      "name": "IconCircleExclamation24",
+      "size": "24",
+      "keywords": ""
+    },
+    {
       "name": "IconCircleHalf24",
       "size": "24",
       "description": "",
       "keywords": ["number", "shape", "six", "круг", "форма", "шесть"]
     },
     {
+      "name": "IconCircleInfo24",
+      "size": "24",
+      "keywords": ""
+    },
+    {
+      "name": "IconCircleLocationArrowO24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "triangle",
+        "вниз",
+        "местонахождение",
+        "расположение",
+        "треугольный",
+        "шеврон"
+      ]
+    },
+    {
+      "name": "IconCircleMinus24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "ignore",
+        "large",
+        "большой",
+        "игнорировать",
+        "круг",
+        "минус"
+      ]
+    },
+    {
+      "name": "IconCircleMinusO24",
+      "size": "24",
+      "keywords": ""
+    },
+    {
+      "name": "IconCircleMinusS24",
+      "size": "24",
+      "description": "",
+      "keywords": ["subtract", "small", "вычесть", "маленький", "круг", "минус"]
+    },
+    {
       "name": "IconCircleO24",
       "size": "24",
+      "keywords": ""
+    },
+    {
+      "name": "IconCirclePause24",
+      "size": "24",
+      "description": "",
+      "keywords": ["pause", "пауза"]
+    },
+    {
+      "name": "IconCirclePlay24",
+      "size": "24",
+      "description": "",
+      "keywords": ["start", "воспроизвести", "начать"]
+    },
+    {
+      "name": "IconCirclePlus24",
+      "size": "24",
+      "description": "",
+      "keywords": ["add", "large", "большой", "добавить", "круг", "плюс"]
+    },
+    {
+      "name": "IconCirclePlusS24",
+      "size": "24",
+      "description": "",
+      "keywords": ["add", "small", "добавить", "круг", "маленький", "плюс"]
+    },
+    {
+      "name": "IconCircleQuestion24",
+      "size": "24",
+      "keywords": ""
+    },
+    {
+      "name": "IconCircleStop24",
+      "size": "24",
+      "keywords": ["круг", "остановить"]
+    },
+    {
+      "name": "IconCircleTelegram24",
+      "size": "24",
+      "description": "",
+      "keywords": ["messenger", "мессенджер"]
+    },
+    {
+      "name": "IconCircleXmark24",
+      "size": "24",
+      "description": "",
       "keywords": ""
     },
     {
@@ -5413,12 +5486,6 @@
       "size": "24",
       "description": "",
       "keywords": ["navigation", "навигация"]
-    },
-    {
-      "name": "IconCompress24",
-      "size": "24",
-      "description": "",
-      "keywords": ["collapse", "minimize", "свернуть", "уменьшить"]
     },
     {
       "name": "IconConnection24",
@@ -5673,12 +5740,6 @@
       "keywords": ["dots", "more", "точки", "еще"]
     },
     {
-      "name": "IconEllipsisHorizontalCircleO24",
-      "size": "24",
-      "description": "",
-      "keywords": ["dots", "more", "точки", "еще"]
-    },
-    {
       "name": "IconEllipsisVertical24",
       "size": "24",
       "keywords": ""
@@ -5722,25 +5783,6 @@
       "size": "24",
       "description": "",
       "keywords": ["исключение"]
-    },
-    {
-      "name": "IconExclamationCircle24",
-      "size": "24",
-      "keywords": ""
-    },
-    {
-      "name": "IconExclamationTriangle24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "alert",
-        "attention",
-        "warning",
-        "внимание",
-        "восклицательный",
-        "треугольник",
-        "предупреждение"
-      ]
     },
     {
       "name": "IconExists24",
@@ -6350,27 +6392,10 @@
       "keywords": ["endless", "бесконечность"]
     },
     {
-      "name": "IconInfoCircle24",
-      "size": "24",
-      "keywords": ""
-    },
-    {
       "name": "IconIp24",
       "size": "24",
       "description": "",
       "keywords": ["address", "ip", "адрес", "айпи"]
-    },
-    {
-      "name": "IconIp4Rectangle24",
-      "size": "24",
-      "description": "",
-      "keywords": ["address", "ip", "ipv4", "адрес", "айпи", "айпи вей"]
-    },
-    {
-      "name": "IconIp6Rectangle24",
-      "size": "24",
-      "description": "",
-      "keywords": ["address", "ip", "ipv6", "адрес", "айпи", "айпи шесть"]
     },
     {
       "name": "IconIpMultiple24",
@@ -6496,19 +6521,6 @@
       "size": "24",
       "description": "",
       "keywords": ["items", "unordered", "неупорядоченный", "список"]
-    },
-    {
-      "name": "IconLocationArrowCircleO24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "triangle",
-        "вниз",
-        "местонахождение",
-        "расположение",
-        "треугольный",
-        "шеврон"
-      ]
     },
     {
       "name": "IconLocationArrowRight24",
@@ -6666,46 +6678,10 @@
       "keywords": ["subtract", "вычесть", "минус"]
     },
     {
-      "name": "IconMinusCircle24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "ignore",
-        "large",
-        "большой",
-        "игнорировать",
-        "круг",
-        "минус"
-      ]
-    },
-    {
-      "name": "IconMinusCircleO24",
-      "size": "24",
-      "keywords": ""
-    },
-    {
-      "name": "IconMinusCircleS24",
-      "size": "24",
-      "description": "",
-      "keywords": ["subtract", "small", "вычесть", "маленький", "круг", "минус"]
-    },
-    {
-      "name": "IconMinusOctagon24",
-      "size": "24",
-      "description": "",
-      "keywords": ["subtract", "вычесть", "восьмиугольник"]
-    },
-    {
       "name": "IconMinusS24",
       "size": "24",
       "description": "",
       "keywords": ["subtract", "small", "вычесть", "маленький", "минус"]
-    },
-    {
-      "name": "IconMinusSquare24",
-      "size": "24",
-      "description": "",
-      "keywords": ["subtract", "вычесть", "квадрат", "минус"]
     },
     {
       "name": "IconMobile24",
@@ -6736,6 +6712,12 @@
       "keywords": ["router", "switch", "роутер", "свитч"]
     },
     {
+      "name": "IconNodeTree24",
+      "size": "24",
+      "description": "Дерево узлов",
+      "keywords": ""
+    },
+    {
       "name": "IconNorthEast24",
       "size": "24",
       "description": "",
@@ -6752,6 +6734,12 @@
       "size": "24",
       "description": "",
       "keywords": ["account", "user", "аккаунт", "пользователь"]
+    },
+    {
+      "name": "IconOctagonMinus24",
+      "size": "24",
+      "description": "",
+      "keywords": ["subtract", "вычесть", "восьмиугольник"]
     },
     {
       "name": "IconOpensuse24",
@@ -6786,12 +6774,6 @@
       "name": "IconPause24",
       "size": "24",
       "keywords": ["пауза"]
-    },
-    {
-      "name": "IconPauseCircle24",
-      "size": "24",
-      "description": "",
-      "keywords": ["pause", "пауза"]
     },
     {
       "name": "IconPencil24",
@@ -6829,12 +6811,6 @@
       "keywords": ["start", "воспроизвести", "начать"]
     },
     {
-      "name": "IconPlayCircle24",
-      "size": "24",
-      "description": "",
-      "keywords": ["start", "воспроизвести", "начать"]
-    },
-    {
       "name": "IconPlayRewind24",
       "size": "24",
       "description": "",
@@ -6852,28 +6828,10 @@
       "keywords": ["add", "добавить", "плюс"]
     },
     {
-      "name": "IconPlusCircle24",
-      "size": "24",
-      "description": "",
-      "keywords": ["add", "large", "большой", "добавить", "круг", "плюс"]
-    },
-    {
-      "name": "IconPlusCircleS24",
-      "size": "24",
-      "description": "",
-      "keywords": ["add", "small", "добавить", "круг", "маленький", "плюс"]
-    },
-    {
       "name": "IconPlusS24",
       "size": "24",
       "description": "",
       "keywords": ["add", "small", "добавить", "маленький", "плюс"]
-    },
-    {
-      "name": "IconPlusSquare24",
-      "size": "24",
-      "description": "",
-      "keywords": ["add", "добавить", "квадрат", "плюс"]
     },
     {
       "name": "IconPrinter24",
@@ -6905,11 +6863,6 @@
       "keywords": ["help", "вопрос", "помощь"]
     },
     {
-      "name": "IconQuestionCircle24",
-      "size": "24",
-      "keywords": ""
-    },
-    {
       "name": "IconReachability24",
       "size": "24",
       "description": "",
@@ -6934,6 +6887,18 @@
       "keywords": ["pattern", "шаблон"]
     },
     {
+      "name": "IconRectangleIp424",
+      "size": "24",
+      "description": "",
+      "keywords": ["address", "ip", "ipv4", "адрес", "айпи", "айпи вей"]
+    },
+    {
+      "name": "IconRectangleIp624",
+      "size": "24",
+      "description": "",
+      "keywords": ["address", "ip", "ipv6", "адрес", "айпи", "айпи шесть"]
+    },
+    {
       "name": "IconRectanglesO24",
       "size": "24",
       "keywords": []
@@ -6949,6 +6914,34 @@
         "безопасность",
         "уровень уязвимости критический",
         "уязвимость"
+      ]
+    },
+    {
+      "name": "IconRectangleVerticalBolt24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "alert",
+        "event",
+        "notification",
+        "предупреждение",
+        "событие",
+        "событие",
+        "уведомление"
+      ]
+    },
+    {
+      "name": "IconRectangleVerticalBoltO24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "alert",
+        "event",
+        "notification",
+        "предупреждение",
+        "событие",
+        "событие",
+        "уведомление"
       ]
     },
     {
@@ -7347,15 +7340,33 @@
       "keywords": ["shape", "квадрат", "форма"]
     },
     {
+      "name": "IconSquareA24",
+      "size": "24",
+      "description": "",
+      "keywords": ["аномалия"]
+    },
+    {
       "name": "IconSquareDot24",
       "size": "24",
       "keywords": ["квадрат", "точка"]
+    },
+    {
+      "name": "IconSquareMinus24",
+      "size": "24",
+      "description": "",
+      "keywords": ["subtract", "вычесть", "квадрат", "минус"]
     },
     {
       "name": "IconSquareMultipleO24",
       "size": "24",
       "description": "",
       "keywords": ["shape", "квадрат", "форма"]
+    },
+    {
+      "name": "IconSquarePlus24",
+      "size": "24",
+      "description": "",
+      "keywords": ["add", "добавить", "квадрат", "плюс"]
     },
     {
       "name": "IconStar24",
@@ -7373,11 +7384,6 @@
       "name": "IconStop24",
       "size": "24",
       "keywords": ["stop", "стоп"]
-    },
-    {
-      "name": "IconStopCircle24",
-      "size": "24",
-      "keywords": ["круг", "остановить"]
     },
     {
       "name": "IconSun24",
@@ -7432,12 +7438,6 @@
       "keywords": ["messenger", "мессенджер"]
     },
     {
-      "name": "IconTelegramCircle24",
-      "size": "24",
-      "description": "",
-      "keywords": ["messenger", "мессенджер"]
-    },
-    {
       "name": "IconText24",
       "size": "24",
       "description": "",
@@ -7465,9 +7465,21 @@
       "keywords": ["search", "find", "поиск", "найти"]
     },
     {
+      "name": "IconTextOverflow24",
+      "size": "24",
+      "description": "",
+      "keywords": ["text", "wrap", "текст", "перенос"]
+    },
+    {
       "name": "IconTextUnderline24",
       "size": "24",
       "keywords": ["подчеркивание"]
+    },
+    {
+      "name": "IconTextWrap24",
+      "size": "24",
+      "description": "",
+      "keywords": ["text", "wrap", "текст", "перенос"]
     },
     {
       "name": "IconThumbsDown24",
@@ -7529,6 +7541,20 @@
       "keywords": ["delete", "удалить"]
     },
     {
+      "name": "IconTriangleExclamation24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "alert",
+        "attention",
+        "warning",
+        "внимание",
+        "восклицательный",
+        "треугольник",
+        "предупреждение"
+      ]
+    },
+    {
       "name": "IconTriangleO24",
       "size": "24",
       "description": "",
@@ -7568,20 +7594,6 @@
       "keywords": ""
     },
     {
-      "name": "IconUserArrowTriangleUp24",
-      "size": "24",
-      "description": "",
-      "keywords": [
-        "up",
-        "vulner lpe",
-        "вверх",
-        "пользователь",
-        "стрелка",
-        "треугольник",
-        "уязвимость лпе"
-      ]
-    },
-    {
       "name": "IconUserBadgeFileText24",
       "size": "24",
       "description": "",
@@ -7604,6 +7616,20 @@
       "size": "24",
       "description": "",
       "keywords": ["account", "user", "аккаунт", "пользователь"]
+    },
+    {
+      "name": "IconUserBadgeTriangleUp24",
+      "size": "24",
+      "description": "",
+      "keywords": [
+        "up",
+        "vulner lpe",
+        "вверх",
+        "пользователь",
+        "стрелка",
+        "треугольник",
+        "уязвимость лпе"
+      ]
     },
     {
       "name": "IconUserMask24",
@@ -7683,18 +7709,6 @@
       "keywords": ["process", "процесс"]
     },
     {
-      "name": "IconWrapText24",
-      "size": "24",
-      "description": "",
-      "keywords": ["text", "wrap", "текст", "перенос"]
-    },
-    {
-      "name": "IconWrapTextSlash24",
-      "size": "24",
-      "description": "",
-      "keywords": ["text", "wrap", "текст", "перенос"]
-    },
-    {
       "name": "IconWrench24",
       "size": "24",
       "description": "",
@@ -7718,12 +7732,6 @@
       "size": "24",
       "description": "",
       "keywords": ["remove", "удалить", "крестик"]
-    },
-    {
-      "name": "IconXmarkCircle24",
-      "size": "24",
-      "description": "",
-      "keywords": ""
     },
     {
       "name": "IconXmarkCircleS24",

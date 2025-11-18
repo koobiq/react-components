@@ -29,10 +29,11 @@
     "lint": "pnpm lint:js",
     "type-check": "tsc --noEmit --pretty",
     "build": "vite build && tsc -p tsconfig.build.json && rm -rf dist/node_modules",
-    "export-icons": "pnpm update @koobiq/icons@latest && tsx scripts/build.ts && pnpm lint"
+    "export-icons": "pnpm update @koobiq/icons@latest && tsx scripts/build.ts && pnpm lint",
+    "rename-icons": "tsx scripts/rename-imports.ts --write"
   },
   "devDependencies": {
-    "@koobiq/icons": "^10.10.0"
+    "@koobiq/icons": "^11.0.0"
   },
   "files": ["dist", "manifest.json"],
   "peerDependencies": {

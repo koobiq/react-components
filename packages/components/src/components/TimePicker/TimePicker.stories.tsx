@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Time, parseAbsoluteToLocal } from '@internationalized/date';
-import { IconInfoCircle16 } from '@koobiq/react-icons';
+import { IconCircleInfo16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import {
@@ -86,7 +86,7 @@ export const Addons: Story = {
     return (
       <TimePicker
         label="Addon"
-        endAddon={<IconInfoCircle16 />}
+        endAddon={<IconCircleInfo16 />}
         isLabelHidden
         {...args}
       />

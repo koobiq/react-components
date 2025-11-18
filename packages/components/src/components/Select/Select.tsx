@@ -8,7 +8,7 @@ import {
   useElementSize,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { IconChevronDownS16, IconXmarkCircle16 } from '@koobiq/react-icons';
+import { IconChevronDownS16, IconCircleXmark16 } from '@koobiq/react-icons';
 import {
   FieldErrorContext,
   FormContext,
@@ -179,7 +179,7 @@ function SelectRender<T extends object>(
           {endAddon}
           {hasClearButton && (
             <IconButton {...clearButtonProps}>
-              <IconXmarkCircle16 />
+              <IconCircleXmark16 />
             </IconButton>
           )}
           <span className={s.chevron}>
