@@ -9,20 +9,20 @@ import {
 import { utilClasses } from '../../../../styles/utility';
 import { ProgressSpinner } from '../../../ProgressSpinner';
 import { Typography } from '../../../Typography';
-import intlMessages from '../../intl';
+import intlMessages from '../../intl.json';
 
-import s from './SelectLoadMoreItem.module.css';
+import s from './ListLoadMoreItem.module.css';
 
 const { listItem } = utilClasses;
 
-export type SelectLoadMoreItemProps = {
+export type ListLoadMoreItemProps = {
   /** The load more spinner to render when loading additional items. */
   isLoading?: boolean;
   /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
   onLoadMore?: () => void;
 };
 
-export function SelectLoadMoreItem(props: SelectLoadMoreItemProps) {
+export function ListLoadMoreItem(props: ListLoadMoreItemProps) {
   const { isLoading, onLoadMore } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);

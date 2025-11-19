@@ -4,6 +4,7 @@ import type {
   ReactElement,
   CSSProperties,
   ComponentPropsWithRef,
+  ReactNode,
 } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
@@ -26,8 +27,16 @@ export type ListProps<T> = ExtendableProps<
     };
     /** Whether the component has outer padding. */
     isPadded?: boolean;
+    /** The load more spinner to render when loading additional items. */
+    isLoading?: boolean;
+    /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
+    onLoadMore?: () => void;
+    /** Content to display when no items are available. */
+    noItemsText?: ReactNode;
+    /** The contents of the collection. */
+    children?: AriaListBoxProps<T>['children'];
   },
-  AriaListBoxProps<T>
+  Omit<AriaListBoxProps<T>, 'children'>
 >;
 
 export type ListRef = ComponentRef<'ul'>;

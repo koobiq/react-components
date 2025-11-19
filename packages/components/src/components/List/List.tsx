@@ -3,7 +3,13 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
-import { isNotNil, useDOMRef, mergeProps, clsx } from '@koobiq/react-core';
+import {
+  isNotNil,
+  useDOMRef,
+  mergeProps,
+  clsx,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import {
   type ListState,
   useListBox,
@@ -15,7 +21,14 @@ import { Item, Section, Divider } from '../Collections';
 import { Divider as ListDivider } from '../Divider';
 import { Typography } from '../Typography';
 
-import { ListItemText, ListOption, ListSection } from './components';
+import {
+  ListEmptyState,
+  ListItemText,
+  ListLoadMoreItem,
+  ListOption,
+  ListSection,
+} from './components';
+import intlMessages from './intl.json';
 import s from './List.module.css';
 import type { ListComponent, ListProps, ListRef } from './types';
 
@@ -27,12 +40,26 @@ export type ListInnerProps<T extends object> = {
 } & Omit<ListProps<T>, 'ref'>;
 
 export function ListInner<T extends object>(props: ListInnerProps<T>) {
-  const { label, className, style, slotProps, state, listRef, isPadded } =
-    props;
+  const {
+    label,
+    className,
+    style,
+    slotProps,
+    state,
+    listRef,
+    isPadded,
+    isLoading,
+    noItemsText: noItemsTextProp,
+    onLoadMore,
+  } = props;
 
   const domRef = useDOMRef(listRef);
 
   const { listBoxProps, labelProps } = useListBox(props, state, domRef);
+
+  const t = useLocalizedStringFormatter(intlMessages);
+
+  const noItemsText = noItemsTextProp ?? t.format('empty items');
 
   const titleProps = mergeProps(
     {
@@ -42,6 +69,8 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
     slotProps?.label,
     labelProps
   );
+
+  const isEmpty = state.collection.size === 0;
 
   const listProps = mergeProps(
     {
@@ -74,7 +103,15 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
   return (
     <>
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
-      <ul {...listProps}>{renderItems(state)}</ul>
+      <ul {...listProps}>
+        {renderItems(state)}
+        <ListEmptyState
+          isEmpty={isEmpty}
+          isLoading={isLoading}
+          noItemsText={noItemsText}
+        />
+        <ListLoadMoreItem isLoading={isLoading} onLoadMore={onLoadMore} />
+      </ul>
     </>
   );
 }

@@ -66,6 +66,40 @@ describe('List', () => {
     });
   });
 
+  describe('noItemsText', () => {
+    it('should display noItemsText for static items', () => {
+      render(<List {...baseProps} noItemsText="empty"></List>);
+
+      expect(getRoot()).toHaveTextContent('empty');
+    });
+
+    it('should display noItemsText for dynamic items', () => {
+      render(<List {...baseProps} items={[]} noItemsText="empty" />);
+
+      expect(getRoot()).toHaveTextContent('empty');
+    });
+  });
+
+  describe('loading', () => {
+    it('should display the loading text when isLoading={true}', async () => {
+      render(
+        <List {...baseProps} isLoading>
+          <List.Item key="1">1</List.Item>
+          <List.Item key="2">2</List.Item>
+          <List.Item key="3">3</List.Item>
+        </List>
+      );
+
+      expect(screen.getByText('Load More…')).toBeInTheDocument();
+    });
+
+    it('should NOT display noItemsText when isLoading={true}', () => {
+      render(<List {...baseProps} noItemsText="empty" items={[]} isLoading />);
+
+      expect(getRoot()).not.toHaveTextContent('empty');
+    });
+  });
+
   it('check a client side routing', async () => {
     const onNavigate = vi.fn();
 

@@ -93,6 +93,20 @@ by passing the `href` prop to the `List.Item` component.
 
 <Story of={Stories.Links} />
 
+## No items
+
+If no items are available, the component shows a message in the list.
+You can customize this message — either as plain text or a component — using the `noItemsText` prop.
+
+<Story of={Stories.NoItems} />
+
+## Asynchronous Loading
+
+List supports loading data asynchronously, and will display a progress circle when the `isLoading` prop is set.
+It also supports infinite scrolling to load more data on demand as the user scrolls, via the `onLoadMore` prop.
+
+<Story of={Stories.AsynchronousLoading} />
+
 ## Client side routing
 
 The `List` component works with frameworks and client side routers like **Next.js** and **React Router**.

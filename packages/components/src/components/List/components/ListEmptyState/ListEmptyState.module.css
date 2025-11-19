@@ -1,0 +1,5 @@
+.empty {
+  color: var(--kbq-foreground-contrast-secondary);
+  padding-block: var(--kbq-size-xs);
+  padding-inline: var(--kbq-size-l);
+}

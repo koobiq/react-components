@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { isString } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { Selection } from '../../index';
+import { Select, type Selection, Typography } from '../../index';
 import { utilClasses } from '../../styles/utility';
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
@@ -319,6 +319,91 @@ export const OtherExamples: Story = {
           )}
         </List>
       </FlexBox>
+    );
+  },
+};
+
+export const NoItems: Story = {
+  render: function Render() {
+    const emptyBlockStyles = {
+      border: '1px solid var(--kbq-line-contrast-fade)',
+      borderRadius: '0.5em',
+      blockSize: 200,
+    };
+
+    return (
+      <List<{ name: string }>
+        items={[]}
+        aria-label="No items"
+        slotProps={{ list: { autoFocus: false } }}
+        noItemsText={
+          <FlexBox
+            style={emptyBlockStyles}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Typography color="inherit">No results found</Typography>
+          </FlexBox>
+        }
+      >
+        {(item) => <Select.Item>{item.name}</Select.Item>}
+      </List>
+    );
+  },
+};
+
+export const AsynchronousLoading: Story = {
+  render: function Render() {
+    const listStyles = {
+      border: '1px solid var(--kbq-line-contrast-fade)',
+      borderRadius: '0.5em',
+      maxInlineSize: 300,
+      blockSize: 400,
+    };
+
+    type Product = {
+      id: number;
+      title: string;
+      thumbnail: string;
+    };
+
+    const ITEMS_PER_PAGE = 20;
+
+    const [products, setProducts] = useState<Product[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
+
+    const fetchProducts = useCallback(async () => {
+      const response = await fetch(
+        `https://dummyjson.com/products?limit=${ITEMS_PER_PAGE}&skip=${page * ITEMS_PER_PAGE}`
+      );
+
+      const data = await response.json();
+
+      if (data.products.length === 0) {
+        setHasMore(false);
+      } else {
+        setProducts((prevProducts) => [...prevProducts, ...data.products]);
+        setPage((prevPage) => prevPage + 1);
+      }
+    }, [page]);
+
+    return (
+      <List
+        label="Products"
+        items={products}
+        isLoading={hasMore}
+        onLoadMore={fetchProducts}
+        style={listStyles}
+        slotProps={{ label: { style: { paddingInlineStart: 0 } } }}
+        isPadded
+      >
+        {(item) => (
+          <Select.Item key={item.id} textValue={item.title}>
+            <Select.ItemText>{item.title}</Select.ItemText>
+          </Select.Item>
+        )}
+      </List>
     );
   },
 };

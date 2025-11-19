@@ -12,19 +12,21 @@ import {
 import { type MultiSelectState, useListBox } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
-import { isPrimitiveNode } from '../../../../utils';
-import { Divider as SelectDivider } from '../../../Divider';
+import { Divider } from '../../../Divider';
 import type { ListProps } from '../../../List';
-import { ListSection } from '../../../List/components';
+import {
+  ListEmptyState,
+  ListLoadMoreItem,
+  ListSection,
+} from '../../../List/components';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
 import type { SelectProps } from '../../types';
-import { SelectLoadMoreItem } from '../SelectLoadMoreItem';
 import { SelectOption } from '../SelectOption';
 
 import s from './SelectList.module.css';
 
-const { list, typography } = utilClasses;
+const { list } = utilClasses;
 
 export type SelectListProps<T extends object> = {
   state: MultiSelectState<T>;
@@ -75,25 +77,11 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
 
   const noItemsText = noItemsTextProp ?? t.format('empty items');
 
-  const emptyState =
-    isEmpty && !isLoading ? (
-      <div
-        // eslint-disable-next-line
-        role="option"
-        className={clsx(s.empty, typography['text-normal'])}
-        {...(!isPrimitiveNode(noItemsText) && {
-          style: { display: 'contents' },
-        })}
-      >
-        {noItemsText}
-      </div>
-    ) : null;
-
   const renderItems = (treeState: typeof state) =>
     [...treeState.collection].map((item) => {
       switch (item.type) {
         case 'divider':
-          return <SelectDivider key={item.key} />;
+          return <Divider key={item.key} />;
 
         case 'item':
           return <SelectOption key={item.key} item={item} state={state} />;
@@ -111,8 +99,12 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
       <ul {...listProps}>
         {renderItems(state)}
-        {emptyState}
-        <SelectLoadMoreItem isLoading={isLoading} onLoadMore={onLoadMore} />
+        <ListEmptyState
+          isEmpty={isEmpty}
+          isLoading={isLoading}
+          noItemsText={noItemsText}
+        />
+        <ListLoadMoreItem isLoading={isLoading} onLoadMore={onLoadMore} />
       </ul>
     </>
   );
