@@ -18,6 +18,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Item } from '../Collections';
+import { useForm } from '../Form';
 import {
   FormField,
   type FormFieldCaptionProps,
@@ -49,30 +50,36 @@ export function AutocompleteRender<T extends object>(
     variant = 'filled',
     disableShowChevron = false,
     defaultFilter: defaultFilterProp,
+    label,
     style,
-    endAddon,
     caption,
+    endAddon,
     slotProps,
     className,
     fullWidth,
-    isInvalid,
-    isReadOnly,
     isRequired,
-    isDisabled,
     labelAlign,
     startAddon,
     errorMessage,
-    labelPlacement,
     isLabelHidden,
-    label,
+    labelPlacement,
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
     'data-testid': testId,
   } = props;
+
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
   const { contains } = useFilter({ sensitivity: 'base' });
 
   const state = useComboBoxState(
     removeDataAttributes({
       ...props,
+      isDisabled,
+      isReadOnly,
       defaultFilter: defaultFilterProp || contains,
     })
   );
@@ -97,9 +104,13 @@ export function AutocompleteRender<T extends object>(
       buttonRef,
       listBoxRef,
       popoverRef,
+      isDisabled,
+      isReadOnly,
     }),
     state
   );
+
+  const { isInvalid } = validation;
 
   // Match the Popover width to the control element's width.
   const { ref: containerRef, width } = useElementSize();

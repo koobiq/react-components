@@ -4,7 +4,7 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { Autocomplete, type AutocompleteProps } from '../index';
+import { Form, Autocomplete, type AutocompleteProps } from '../index';
 
 describe('Autocomplete', () => {
   const baseProps: AutocompleteProps<object> = {
@@ -157,6 +157,46 @@ describe('Autocomplete', () => {
       render(<Autocomplete {...baseProps} isInvalid />);
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+    });
+  });
+
+  describe('form', () => {
+    it('should pass name to input', () => {
+      render(<Autocomplete name="query" aria-label="query" {...baseProps} />);
+      const input = getInput();
+      expect(input).toHaveAttribute('name', 'query');
+    });
+
+    it('should handle aria validation', () => {
+      render(
+        <Autocomplete
+          {...baseProps}
+          aria-label="query"
+          validationBehavior="aria"
+          validate={() => 'validation error'}
+        />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+      expect(getRoot()).toHaveTextContent('validation error');
+    });
+
+    it('should propagate Form isDisabled to fields unless overridden', () => {
+      const { rerender } = render(
+        <Form isDisabled>
+          <Autocomplete {...baseProps} />
+        </Form>
+      );
+
+      expect(getInput()).toBeDisabled();
+
+      rerender(
+        <Form isDisabled>
+          <Autocomplete {...baseProps} isDisabled={false} />
+        </Form>
+      );
+
+      expect(getInput()).not.toBeDisabled();
     });
   });
 });
