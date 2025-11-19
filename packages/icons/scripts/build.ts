@@ -32,19 +32,19 @@ function pascalCase(input: string): string {
 
 function buildEntryFile(entry: string, componentNames: string[]) {
   return `
-    ${entry}
+${entry}
 
-    export type IconName = ${componentNames.join(' | ')};
+export type IconName = ${componentNames.join(' | ')};
 
-    export type IconsManifest = {
-      icons: {
-        name: IconName;
-        size: '16' | '24' | '32' | '48' | '64';
-        description?: string;
-        keywords?: string[];
-      }[];
-    };
-  `;
+export type IconsManifest = {
+  icons: {
+    name: IconName;
+    size: '16' | '24' | '32' | '48' | '64';
+    description?: string;
+    keywords?: string[];
+  }[];
+};
+`;
 }
 
 async function buildManifest(): Promise<IconsManifest> {
@@ -132,8 +132,18 @@ const transformConfig = {
 };
 
 async function run() {
-  // Prepare filesystem: create output directory
-  await rm(OUTPUT_DIR, { recursive: true, force: true });
+  // Clean OUTPUT_DIR, but keep legacy folder
+  const entries = await fsp.readdir(OUTPUT_DIR).catch(() => []);
+
+  await Promise.all(
+    entries.map(async (entry) => {
+      if (entry === 'legacy') return;
+
+      const targetPath = path.join(OUTPUT_DIR, entry);
+      await rm(targetPath, { recursive: true, force: true });
+    })
+  );
+
   await mkdir(OUTPUT_DIR, { recursive: true });
 
   // Read manifest keys
@@ -190,10 +200,19 @@ async function run() {
   await fsp.writeFile('manifest.json', JSON.stringify(finalManifest, null, 2));
 
   // Write src/index.ts
-  await fsp.writeFile(
-    path.join(OUTPUT_DIR, 'index.ts'),
-    buildEntryFile(entryPoints.join('\n'), names)
-  );
+  const indexPath = path.join(OUTPUT_DIR, 'index.ts');
+
+  await fsp.writeFile(indexPath, buildEntryFile(entryPoints.join('\n'), names));
+
+  // Add export * from './legacy';
+  const indexContent = await fsp.readFile(indexPath, 'utf8');
+
+  if (!indexContent.includes(`export * from './legacy'`)) {
+    await fsp.writeFile(
+      indexPath,
+      `${indexContent}\nexport * from './legacy';\n`
+    );
+  }
 
   console.log(`🎉 All SVGs successfully converted to React components!`);
 }
