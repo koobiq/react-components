@@ -37,7 +37,7 @@ export type AutocompletePropLabelAlign = FormFieldPropLabelAlign;
 export const autocompletePropVariant = formFieldControlGroupPropVariant;
 export type AutocompleteInputPropVariant = FormFieldControlGroupPropVariant;
 
-export type AutocompleteProps<T extends object> = {
+export type AutocompleteProps<T extends object = object> = {
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles */
@@ -87,7 +87,7 @@ export type AutocompleteProps<T extends object> = {
 } & DataAttributeProps &
   Omit<AriaComboBoxProps<T>, 'description' | 'validationState'>;
 
-export type AutocompleteComponent = <T extends object>(
+export type AutocompleteComponent = <T extends object = object>(
   props: AutocompleteProps<T>
 ) => ReactElement | null;
 

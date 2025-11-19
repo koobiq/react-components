@@ -40,7 +40,7 @@ import type {
   AutocompleteRef,
 } from './index';
 
-export function AutocompleteRender<T extends object>(
+export function AutocompleteRender<T extends object = object>(
   props: Omit<AutocompleteProps<T>, 'ref'>,
   ref: Ref<AutocompleteRef>
 ) {
