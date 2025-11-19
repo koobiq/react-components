@@ -30,7 +30,7 @@ const meta = {
 } satisfies Meta<typeof Autocomplete>;
 
 export default meta;
-type Story = StoryObj<AutocompleteProps<any>>;
+type Story = StoryObj<AutocompleteProps>;
 
 export const Base: Story = {
   render: (args) => (
@@ -306,9 +306,7 @@ export const FullyControlled: Story = {
 
     // Specify how each of the Autocomplete values should change when an
     // option is selected from the list box
-    const onSelectionChange: AutocompleteProps<object>['onSelectionChange'] = (
-      key
-    ) => {
+    const onSelectionChange: AutocompleteProps['onSelectionChange'] = (key) => {
       if (isString(key)) {
         setFieldState((prevState) => {
           const selectedItem = prevState.items.find(
@@ -328,9 +326,7 @@ export const FullyControlled: Story = {
 
     // Specify how each of the Autocomplete values should change when the input
     // field is altered by the user
-    const onInputChange: AutocompleteProps<object>['onInputChange'] = (
-      value
-    ) => {
+    const onInputChange: AutocompleteProps['onInputChange'] = (value) => {
       setFieldState((prevState) => ({
         inputValue: value,
         selectedKey: value === '' ? '' : prevState.selectedKey,
@@ -339,7 +335,7 @@ export const FullyControlled: Story = {
     };
 
     // Show entire list if user opens the menu manually
-    const onOpenChange: AutocompleteProps<object>['onOpenChange'] = (
+    const onOpenChange: AutocompleteProps['onOpenChange'] = (
       isOpen,
       menuTrigger
     ) => {
@@ -407,7 +403,7 @@ export const CustomValue: Story = {
 };
 
 export const Events: Story = {
-  render: function Render(args) {
+  render: function Render() {
     const items = [
       { key: 'tls', name: 'TLS' },
       { key: 'ssh', name: 'SSH' },
@@ -418,19 +414,13 @@ export const Events: Story = {
 
     const [value, setValue] = useState('');
 
-    const [selectedKey, setSelectedKey] = useState<string | number | null>(
-      null
-    );
+    const [selectedKey, setSelectedKey] = useState<string | number | null>();
 
-    const onSelectionChange: AutocompleteProps<object>['onSelectionChange'] = (
-      id
-    ) => {
+    const onSelectionChange: AutocompleteProps['onSelectionChange'] = (id) => {
       setSelectedKey(id);
     };
 
-    const onInputChange: AutocompleteProps<object>['onInputChange'] = (
-      value
-    ) => {
+    const onInputChange: AutocompleteProps['onInputChange'] = (value) => {
       setValue(value);
     };
 
@@ -438,16 +428,15 @@ export const Events: Story = {
       <FlexBox gap="m" direction="column">
         <Autocomplete
           label="Protocol"
-          inputValue={value}
           defaultItems={items}
-          selectedKey={selectedKey}
           placeholder="Select protocol"
           onInputChange={onInputChange}
           onSelectionChange={onSelectionChange}
           allowsCustomValue
-          {...args}
         >
-          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+          {(item) => (
+            <Autocomplete.Item key={item.key}>{item.name}</Autocomplete.Item>
+          )}
         </Autocomplete>
         <Typography>Current selected key: {selectedKey}</Typography>
         <Typography>Current input text: {value}</Typography>
@@ -457,8 +446,8 @@ export const Events: Story = {
 };
 
 export const CustomFiltering: Story = {
-  render: function Render(args) {
-    const items = [
+  render: function Render() {
+    const items: { key: string; name: string }[] = [
       { key: 'tls', name: 'TLS' },
       { key: 'ssh', name: 'SSH' },
       { key: 'pgp', name: 'PGP' },
@@ -466,7 +455,7 @@ export const CustomFiltering: Story = {
       { key: 'kerberos', name: 'Kerberos' },
     ];
 
-    const myFilter: AutocompleteProps<object>['defaultFilter'] = (
+    const myFilter: AutocompleteProps['defaultFilter'] = (
       textValue,
       inputValue
     ) => {
@@ -489,7 +478,6 @@ export const CustomFiltering: Story = {
         defaultFilter={myFilter}
         placeholder="Select protocol"
         allowsCustomValue
-        {...args}
       >
         {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
       </Autocomplete>
