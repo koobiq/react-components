@@ -4,7 +4,7 @@ import { useBoolean } from '@koobiq/react-core';
 import {
   IconArrowUpRightFromSquare16,
   IconChevronDown16,
-  IconExclamationTriangle16,
+  IconTriangleExclamation16,
   IconPlus16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
@@ -167,7 +167,7 @@ export const Custom: Story = {
       <Button
         variant="contrast-filled"
         style={destructiveFilledBtnStyle}
-        startIcon={<IconExclamationTriangle16 />}
+        startIcon={<IconTriangleExclamation16 />}
       >
         Destructive button
       </Button>
