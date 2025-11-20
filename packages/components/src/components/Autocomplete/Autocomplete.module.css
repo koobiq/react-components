@@ -25,9 +25,17 @@
   transform: translateY(-8px);
 }
 
+.popover:has(.list:only-child:empty) {
+  opacity: 0;
+}
+
 /* list */
 .list {
   inline-size: 100%;
+}
+
+.list:empty {
+  display: none;
 }
 
 /* body */

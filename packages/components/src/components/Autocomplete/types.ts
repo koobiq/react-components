@@ -25,8 +25,8 @@ import type {
   FormFieldPropLabelPlacement,
   FormFieldProps,
 } from '../FormField';
+import type { ListInnerProps } from '../List';
 import type { PopoverProps } from '../Popover';
-import type { SelectListProps } from '../Select/components';
 
 export const autocompletePropLabelPlacement = formFieldPropLabelPlacement;
 export type AutocompletePropLabelPlacement = FormFieldPropLabelPlacement;
@@ -78,14 +78,21 @@ export type AutocompleteProps<T extends object = object> = {
     root?: FormFieldProps;
     popover?: PopoverProps;
     label?: FormFieldLabelProps;
-    list?: Omit<SelectListProps<object>, 'state'>;
     input?: FormFieldInputProps;
     caption?: FormFieldCaptionProps;
     group?: FormFieldControlGroupProps;
     errorMessage?: FormFieldErrorProps;
+    list?: Omit<ListInnerProps<object>, 'state'>;
   };
   /** Sets the open state of the menu. */
   isOpen?: boolean;
+  /**
+   * Whether the autocomplete allows the menu to be open when the collection is empty.
+   * @default true
+   */
+  allowsEmptyCollection?: boolean;
+  /** Content to display when no items are available. */
+  noItemsText?: ReactNode;
 } & DataAttributeProps &
   Omit<AriaComboBoxProps<T>, 'description' | 'validationState'>;
 

@@ -30,7 +30,7 @@ import {
   type FormFieldProps,
 } from '../FormField';
 import { IconButton } from '../IconButton';
-import { ListInner } from '../List';
+import { ListInner, type ListInnerProps } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
@@ -51,6 +51,7 @@ export function AutocompleteRender<T extends object = object>(
     variant = 'filled',
     disableShowChevron = false,
     defaultFilter: defaultFilterProp,
+    allowsEmptyCollection = true,
     label,
     style,
     caption,
@@ -67,6 +68,7 @@ export function AutocompleteRender<T extends object = object>(
     isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
     'data-testid': testId,
+    noItemsText,
     isOpen,
     onOpenChange,
   } = props;
@@ -83,6 +85,7 @@ export function AutocompleteRender<T extends object = object>(
       ...props,
       isDisabled,
       isReadOnly,
+      allowsEmptyCollection,
       defaultFilter: defaultFilterProp || contains,
     })
   );
@@ -172,6 +175,24 @@ export function AutocompleteRender<T extends object = object>(
     slotProps?.popover
   );
 
+  const listProps = mergeProps<
+    [
+      ListInnerProps<object>,
+      typeof listBoxProps,
+      Omit<ListInnerProps<object>, 'state'> | undefined,
+    ]
+  >(
+    {
+      isPadded: true,
+      className: s.list,
+      noItemsText: !allowsEmptyCollection ? null : noItemsText,
+      listRef: listBoxRef,
+      state,
+    },
+    listBoxProps,
+    slotProps?.list
+  );
+
   const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       slotProps: {
@@ -240,13 +261,7 @@ export function AutocompleteRender<T extends object = object>(
       </div>
 
       <PopoverInner {...popoverProps}>
-        <ListInner
-          {...listBoxProps}
-          isPadded
-          className={s.list}
-          listRef={listBoxRef}
-          state={state}
-        />
+        <ListInner {...listProps} />
       </PopoverInner>
     </FormField>
   );

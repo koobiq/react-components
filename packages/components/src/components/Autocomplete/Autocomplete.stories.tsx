@@ -1,15 +1,13 @@
-import { useState } from 'react';
-import type { CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 
 import { isString, useBoolean } from '@koobiq/react-core';
 import {
-  IconChevronDownS16,
   IconMagnifyingGlass16,
   IconNetworkDevice16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button, Menu, useFilter } from '../../index';
+import { Button, useFilter } from '../../index';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
@@ -547,9 +545,9 @@ export const Open: Story = {
       <FlexBox gap="m">
         <Autocomplete
           isOpen={isOpen}
-          items={items}
           onOpenChange={set}
           label="Attack type"
+          defaultItems={items}
           placeholder="Select an option"
           style={{ inlineSize: 200 }}
           isLabelHidden
@@ -570,6 +568,7 @@ export const ServerSearch: Story = {
       price: number;
     };
 
+    const [inputValue, setInputValue] = useState<string>('');
     const [items, setItems] = useState<Product[]>([]);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -588,23 +587,18 @@ export const ServerSearch: Story = {
       return data.products ?? [];
     }
 
-    const onInputChange: AutocompleteProps['onInputChange'] = async (value) => {
-      if (!value) {
-        setItems([]);
-        setIsOpen(false); // ← очистили поле — закрыли popup
-
-        return;
+    useEffect(() => {
+      if (inputValue && items.length) {
+        setIsOpen(true);
       }
+    }, [inputValue, items]);
+
+    const onInputChange: AutocompleteProps['onInputChange'] = async (value) => {
+      setInputValue(value);
 
       try {
         const res = await fetchProducts(value);
         setItems(res);
-
-        if (res.length > 0) {
-          setIsOpen(true);
-        } else {
-          setIsOpen(false);
-        }
       } catch {
         console.warn('ServerSearch: request failed');
         setIsOpen(false);
@@ -613,44 +607,15 @@ export const ServerSearch: Story = {
 
     return (
       <Autocomplete
-        startAddon={
-          <Menu
-            control={(props) => (
-              <Button
-                {...props}
-                variant="fade-contrast-filled"
-                style={
-                  {
-                    '--button-block-size': 'var(--kbq-size-xxl)',
-                    '--button-border-radius': 'var(--kbq-size-xs)',
-                    '--button-padding-inline': 'var(--kbq-size-xs)',
-                    '--button-label-padding-inline': 0,
-                    marginInlineStart: -8,
-                  } as CSSProperties
-                }
-                endIcon={<IconChevronDownS16 />}
-              >
-                Category
-              </Button>
-            )}
-          >
-            <Menu.Item key="new">New</Menu.Item>
-            <Menu.Item key="open">Open</Menu.Item>
-            <Menu.Item key="close">Close</Menu.Item>
-            <Menu.Item key="save">Save</Menu.Item>
-            <Menu.Item key="duplicate">Duplicate</Menu.Item>
-            <Menu.Item key="rename">Rename</Menu.Item>
-            <Menu.Item key="move">Move</Menu.Item>
-          </Menu>
-        }
-        endAddon={<IconMagnifyingGlass16 />}
         items={items}
-        label="Products"
-        placeholder="Search…"
-        menuTrigger="manual"
-        onInputChange={onInputChange}
         isOpen={isOpen}
+        label="Products"
+        menuTrigger="input"
+        placeholder="Search…"
         onOpenChange={setIsOpen}
+        onInputChange={onInputChange}
+        startAddon={<IconMagnifyingGlass16 />}
+        allowsEmptyCollection={false}
         disableShowChevron
         allowsCustomValue
       >
