@@ -19,16 +19,23 @@ export const ListEmptyState: FC<ListEmptyStateProps> = ({
   isEmpty,
   isLoading,
   noItemsText,
-}) =>
-  isEmpty && !isLoading ? (
+}) => {
+  if (noItemsText === null || !isEmpty || isLoading) {
+    return null;
+  }
+
+  const style = isPrimitiveNode(noItemsText)
+    ? undefined
+    : { display: 'contents' };
+
+  return (
     <div
       // eslint-disable-next-line
       role="option"
       className={clsx(s.empty, typography['text-normal'])}
-      {...(!isPrimitiveNode(noItemsText) && {
-        style: { display: 'contents' },
-      })}
+      style={style}
     >
       {noItemsText}
     </div>
-  ) : null;
+  );
+};

@@ -75,7 +75,8 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     listBoxProps
   );
 
-  const noItemsText = noItemsTextProp ?? t.format('empty items');
+  const noItemsText =
+    noItemsTextProp === undefined ? t.format('empty items') : noItemsTextProp;
 
   const renderItems = (treeState: typeof state) =>
     [...treeState.collection].map((item) => {
