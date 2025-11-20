@@ -67,6 +67,8 @@ export function AutocompleteRender<T extends object = object>(
     isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
     'data-testid': testId,
+    isOpen,
+    onOpenChange,
   } = props;
 
   const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
@@ -85,7 +87,17 @@ export function AutocompleteRender<T extends object = object>(
     })
   );
 
-  // Setup refs and get props for child elements.
+  // Controlled open state support
+  if (isOpen !== undefined && isOpen !== state.isOpen) {
+    state.setOpen(isOpen);
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    state.setOpen(open);
+    onOpenChange?.(open);
+  };
+
+  // Setup refs
   const buttonRef = useRef(null);
   const listBoxRef = useRef(null);
   const popoverRef = useRef(null);
@@ -107,6 +119,7 @@ export function AutocompleteRender<T extends object = object>(
       popoverRef,
       isDisabled,
       isReadOnly,
+      onOpenChange: handleOpenChange,
     }),
     state
   );
@@ -225,6 +238,7 @@ export function AutocompleteRender<T extends object = object>(
           <FormField.Error {...errorProps} />
         </FieldErrorContext.Provider>
       </div>
+
       <PopoverInner {...popoverProps}>
         <ListInner
           {...listBoxProps}

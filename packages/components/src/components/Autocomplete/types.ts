@@ -84,6 +84,8 @@ export type AutocompleteProps<T extends object = object> = {
     group?: FormFieldControlGroupProps;
     errorMessage?: FormFieldErrorProps;
   };
+  /** Sets the open state of the menu. */
+  isOpen?: boolean;
 } & DataAttributeProps &
   Omit<AriaComboBoxProps<T>, 'description' | 'validationState'>;
 
