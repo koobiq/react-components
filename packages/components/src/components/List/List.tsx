@@ -59,7 +59,8 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
 
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const noItemsText = noItemsTextProp ?? t.format('empty items');
+  const noItemsText =
+    noItemsTextProp === undefined ? t.format('empty items') : noItemsTextProp;
 
   const titleProps = mergeProps(
     {

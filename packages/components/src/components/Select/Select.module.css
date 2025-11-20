@@ -38,11 +38,19 @@
   inline-size: 100%;
 }
 
+.list:empty {
+  display: none;
+}
+
 /* popover */
 .popover {
   border-radius: var(--kbq-size-s);
   opacity: 0;
   transform: translateY(-8px);
+}
+
+.popover:has(.list:only-child:empty) {
+  opacity: 0;
 }
 
 .popover[data-transition='entering'] {
