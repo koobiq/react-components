@@ -2,9 +2,9 @@ import { createRef } from 'react';
 
 import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 
-import { Form, Autocomplete, type AutocompleteProps } from '../index';
+import { Form, Autocomplete, type AutocompleteProps, Provider } from '../index';
 
 describe('Autocomplete', () => {
   const baseProps: AutocompleteProps<object> = {
@@ -198,5 +198,39 @@ describe('Autocomplete', () => {
 
       expect(getInput()).not.toBeDisabled();
     });
+  });
+
+  it('check a client side routing', async () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    const onNavigate = vi.fn();
+
+    render(
+      <Provider
+        router={{
+          navigate: () => {
+            onNavigate();
+          },
+        }}
+      >
+        <Autocomplete menuTrigger="focus" aria-label="Links" {...baseProps}>
+          <Autocomplete.Item href="/" data-testid="link">
+            link
+          </Autocomplete.Item>
+        </Autocomplete>
+      </Provider>
+    );
+
+    await userEvent.click(getInput());
+
+    await userEvent.click(screen.getByTestId('link'));
+
+    expect(onNavigate).toBeCalled();
   });
 });
