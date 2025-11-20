@@ -272,7 +272,12 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q4 2025',
   },
-  { component: 'Autocomplete', status: '🚧 Planned', planned: 'Q4 2025' },
+  {
+    component: 'Autocomplete',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q4 2025',
+  },
   { component: 'Breadcrumbs', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'Toast', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'ActionPanel', status: '🚧 Planned', planned: 'Q4 2025' },
