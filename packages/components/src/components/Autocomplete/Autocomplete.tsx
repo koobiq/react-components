@@ -1,6 +1,7 @@
 'use client';
 
-import { forwardRef, type Ref, useRef } from 'react';
+import { forwardRef, useRef } from 'react';
+import type { Ref } from 'react';
 
 import {
   clsx,
@@ -17,7 +18,7 @@ import {
   useComboBoxState,
 } from '@koobiq/react-primitives';
 
-import { Item } from '../Collections';
+import { Section, Item } from '../Collections';
 import { useForm } from '../Form';
 import {
   FormField,
@@ -243,8 +244,10 @@ const AutocompleteComponent = forwardRef(
 
 type CompoundedComponent = typeof AutocompleteComponent & {
   Item: typeof Item;
+  Section: typeof Section;
 };
 
 export const Autocomplete = AutocompleteComponent as CompoundedComponent;
 
 Autocomplete.Item = Item;
+Autocomplete.Section = Section;

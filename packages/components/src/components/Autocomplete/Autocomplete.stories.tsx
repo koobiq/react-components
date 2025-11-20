@@ -25,8 +25,10 @@ const meta = {
   },
   subcomponents: {
     'Autocomplete.Item': Autocomplete.Item,
+    'Autocomplete.Section': Autocomplete.Section,
   },
   argTypes: {},
+  tags: ['status:new'],
 } satisfies Meta<typeof Autocomplete>;
 
 export default meta;
@@ -34,7 +36,7 @@ type Story = StoryObj<AutocompleteProps>;
 
 export const Base: Story = {
   render: (args) => (
-    <Autocomplete label="Protocol" placeholder="Select protocol" {...args}>
+    <Autocomplete label="Protocol" placeholder="Search a protocol" {...args}>
       <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
       <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
       <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
@@ -58,7 +60,7 @@ export const DynamicItems: Story = {
       <Autocomplete
         label="Protocol"
         defaultItems={items}
-        placeholder="Select protocol"
+        placeholder="Search a protocol"
       >
         {(item) => (
           <Autocomplete.Item key={item.key}>{item.name}</Autocomplete.Item>
@@ -127,7 +129,7 @@ export const FullWidth: Story = {
     return (
       <Autocomplete
         label="Protocol"
-        placeholder="Select protocol"
+        placeholder="Search a protocol"
         fullWidth
         {...args}
       >
@@ -181,7 +183,7 @@ export const DisabledItems: Story = {
       <Autocomplete
         label="Protocol"
         defaultItems={items}
-        placeholder="Select protocol"
+        placeholder="Search a protocol"
         disabledKeys={['ssh', 'ipsec']}
       >
         {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
@@ -197,7 +199,7 @@ export const Required: Story = {
         <Autocomplete
           label="Protocol"
           caption="required"
-          placeholder="Select protocol"
+          placeholder="Search a protocol"
           isRequired
           {...args}
         >
@@ -209,7 +211,7 @@ export const Required: Story = {
         </Autocomplete>
         <Autocomplete
           label="Protocol"
-          placeholder="Select protocol"
+          placeholder="Search a protocol"
           caption="required, without an indicator"
           slotProps={{ label: { isRequired: false } }}
           isRequired
@@ -231,7 +233,7 @@ export const ReadOnly: Story = {
     return (
       <Autocomplete
         label="Protocol"
-        placeholder="Select protocol"
+        placeholder="Search a protocol"
         isReadOnly
         {...args}
       >
@@ -250,7 +252,7 @@ export const Addons: Story = {
     return (
       <Autocomplete
         label="Protocol"
-        placeholder="Select protocol"
+        placeholder="Search a protocol"
         startAddon={<IconNetworkDevice16 />}
         {...args}
       >
@@ -270,7 +272,7 @@ export const LabelPlacementAlignment: Story = {
     <Autocomplete
       label="Protocol"
       labelPlacement="side"
-      placeholder="Select protocol"
+      placeholder="Search a protocol"
       {...args}
     >
       <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
@@ -280,6 +282,48 @@ export const LabelPlacementAlignment: Story = {
       <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
     </Autocomplete>
   ),
+};
+
+export const Section: Story = {
+  render: function Render() {
+    const options = [
+      {
+        name: 'Group 1',
+        children: [
+          { id: 2, name: 'Item 1' },
+          { id: 3, name: 'Item 2' },
+          { id: 4, name: 'Item 3' },
+        ],
+      },
+      {
+        name: 'Group 2',
+        children: [
+          { id: 6, name: 'Item 4' },
+          { id: 7, name: 'Item 5' },
+          { id: 8, name: 'Item 6' },
+        ],
+      },
+    ];
+
+    return (
+      <Autocomplete
+        label="Options"
+        defaultItems={options}
+        style={{ inlineSize: 200 }}
+        placeholder="Search…"
+      >
+        {(item) => (
+          <Autocomplete.Section
+            key={item.name}
+            items={item.children}
+            title={item.name}
+          >
+            {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+          </Autocomplete.Section>
+        )}
+      </Autocomplete>
+    );
+  },
 };
 
 export const FullyControlled: Story = {
@@ -353,7 +397,7 @@ export const FullyControlled: Story = {
         label="Protocol"
         items={fieldState.items}
         onOpenChange={onOpenChange}
-        placeholder="Select protocol"
+        placeholder="Search a protocol"
         onInputChange={onInputChange}
         inputValue={fieldState.inputValue}
         selectedKey={fieldState.selectedKey}
@@ -372,7 +416,7 @@ export const MenuTriggerBehavior: Story = {
     <Autocomplete
       label="Protocol"
       menuTrigger="focus"
-      placeholder="Select protocol"
+      placeholder="Search a protocol"
       {...args}
     >
       <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
@@ -388,7 +432,7 @@ export const CustomValue: Story = {
   render: (args) => (
     <Autocomplete
       label="Protocol"
-      placeholder="Select protocol"
+      placeholder="Search a protocol"
       allowsCustomValue
       disableShowChevron
       {...args}
@@ -429,7 +473,7 @@ export const Events: Story = {
         <Autocomplete
           label="Protocol"
           defaultItems={items}
-          placeholder="Select protocol"
+          placeholder="Search a protocol"
           onInputChange={onInputChange}
           onSelectionChange={onSelectionChange}
           allowsCustomValue
@@ -476,7 +520,7 @@ export const CustomFiltering: Story = {
         label="Protocol"
         defaultItems={items}
         defaultFilter={myFilter}
-        placeholder="Select protocol"
+        placeholder="Search a protocol"
         allowsCustomValue
       >
         {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
