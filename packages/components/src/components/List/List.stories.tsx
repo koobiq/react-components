@@ -20,6 +20,7 @@ const meta = {
     'List.ItemText': List.ItemText,
   },
   argTypes: {},
+  tags: ['status:updated'],
 } satisfies Meta<typeof List>;
 
 export default meta;
