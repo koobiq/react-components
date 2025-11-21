@@ -55,6 +55,15 @@ describe('Modal', () => {
     expect(root?.className).toContain(className);
   });
 
+  it('should set a custom style', () => {
+    const style = { padding: 20 };
+
+    render(<Modal {...baseProps} style={style} isOpen />);
+
+    const root = getModal();
+    expect(root).toHaveStyle('padding: 20px');
+  });
+
   describe('check the size prop', () => {
     it.each(modalPropSize)('should apply the size as a "%s"', (size) => {
       render(<Modal {...baseProps} size={size} isOpen />);
