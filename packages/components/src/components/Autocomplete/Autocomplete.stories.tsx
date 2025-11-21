@@ -549,15 +549,43 @@ export const Open: Story = {
         <Autocomplete
           isOpen={isOpen}
           onOpenChange={set}
-          label="Attack type"
+          label="Protocol"
           defaultItems={items}
-          placeholder="Select an option"
+          placeholder="Search a protocol"
           style={{ inlineSize: 200 }}
           isLabelHidden
         >
           {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
         </Autocomplete>
         <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
+      </FlexBox>
+    );
+  },
+};
+
+export const NoItems: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m" direction="column">
+        <Autocomplete<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Search a protocol"
+          caption="No options available"
+          style={{ inlineSize: 200 }}
+        >
+          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+        </Autocomplete>
+        <Autocomplete<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Search a protocol"
+          noItemsText="No results found"
+          caption="No results found"
+          style={{ inlineSize: 200 }}
+        >
+          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+        </Autocomplete>
       </FlexBox>
     );
   },
