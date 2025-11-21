@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { type CSSProperties, useEffect, useState } from 'react';
 
-import { isString, useBoolean } from '@koobiq/react-core';
+import { isString, useBoolean, useDebounceCallback } from '@koobiq/react-core';
 import {
   IconMagnifyingGlass16,
   IconNetworkDevice16,
+  IconSlidersDot16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button, useFilter } from '../../index';
 import { FlexBox } from '../FlexBox';
+import { IconButton } from '../IconButton';
+import { ProgressSpinner } from '../ProgressSpinner';
 import { Typography } from '../Typography';
 
 import {
@@ -570,7 +573,13 @@ export const ServerSearch: Story = {
 
     const [inputValue, setInputValue] = useState<string>('');
     const [items, setItems] = useState<Product[]>([]);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useBoolean(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [debounceSetIsLoading] = useDebounceCallback({
+      callback: setIsLoading,
+      delay: 300,
+    });
 
     async function fetchProducts(query: string): Promise<Product[]> {
       if (!query.trim()) return [];
@@ -589,19 +598,22 @@ export const ServerSearch: Story = {
 
     useEffect(() => {
       if (inputValue && items.length) {
-        setIsOpen(true);
+        setIsOpen.on();
       }
     }, [inputValue, items]);
 
     const onInputChange: AutocompleteProps['onInputChange'] = async (value) => {
       setInputValue(value);
+      debounceSetIsLoading(true);
 
       try {
         const res = await fetchProducts(value);
         setItems(res);
       } catch {
-        console.warn('ServerSearch: request failed');
-        setIsOpen(false);
+        console.warn('Request failed!');
+        setIsOpen.off();
+      } finally {
+        debounceSetIsLoading(false);
       }
     };
 
@@ -612,10 +624,25 @@ export const ServerSearch: Story = {
         label="Products"
         menuTrigger="input"
         placeholder="Search…"
-        onOpenChange={setIsOpen}
+        style={{ inlineSize: 240 }}
+        onOpenChange={setIsOpen.set}
+        allowsEmptyCollection={false}
         onInputChange={onInputChange}
         startAddon={<IconMagnifyingGlass16 />}
-        allowsEmptyCollection={false}
+        endAddon={
+          <FlexBox gap="xs" alignItems="center" justifyContent="center">
+            {isLoading && <ProgressSpinner />}
+            <IconButton variant="theme-contrast">
+              <IconSlidersDot16
+                style={
+                  {
+                    '--icon-accent-color': 'var(--kbq-icon-theme)',
+                  } as CSSProperties
+                }
+              />
+            </IconButton>
+          </FlexBox>
+        }
         disableShowChevron
         allowsCustomValue
       >
