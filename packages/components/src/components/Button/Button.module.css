@@ -10,6 +10,7 @@
   --button-padding-inline: var(--kbq-size-m);
   --button-outline-width: var(--kbq-size-3xs);
   --button-border-width: var(--kbq-size-border-width);
+  --button-label-padding: 0 var(--kbq-size-xxs);
 
   border: none;
   outline: none;
@@ -131,7 +132,7 @@
 }
 
 .label {
-  padding-inline: var(--button-gap);
+  padding-inline: var(--button-label-padding);
 
   @mixin ellipsis;
 }
