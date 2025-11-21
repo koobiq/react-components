@@ -16,7 +16,7 @@ import { Divider } from '../../../Divider';
 import type { ListProps } from '../../../List';
 import {
   ListEmptyState,
-  ListLoadMoreItem,
+  ListLoadingState,
   ListSection,
 } from '../../../List/components';
 import { Typography } from '../../../Typography';
@@ -45,6 +45,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     onLoadMore,
     listRef,
     noItemsText: noItemsTextProp,
+    loadingText: loadingTextProp,
   } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
@@ -78,6 +79,8 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
   const noItemsText =
     noItemsTextProp === undefined ? t.format('empty items') : noItemsTextProp;
 
+  const loadingText = loadingTextProp ?? t.format('loading');
+
   const renderItems = (treeState: typeof state) =>
     [...treeState.collection].map((item) => {
       switch (item.type) {
@@ -105,7 +108,11 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
           isLoading={isLoading}
           noItemsText={noItemsText}
         />
-        <ListLoadMoreItem isLoading={isLoading} onLoadMore={onLoadMore} />
+        <ListLoadingState
+          isLoading={isLoading}
+          onLoadMore={onLoadMore}
+          loadingText={loadingText}
+        />
       </ul>
     </>
   );

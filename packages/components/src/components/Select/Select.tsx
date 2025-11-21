@@ -67,6 +67,7 @@ function SelectRender<T extends object>(
     label,
     isLoading,
     onLoadMore,
+    loadingText,
     renderValue: renderValueProp,
   } = props;
 
@@ -139,7 +140,14 @@ function SelectRender<T extends object>(
       Omit<SelectListProps<object>, 'state'> | undefined,
     ]
   >(
-    { className: s.list, state, noItemsText, isLoading, onLoadMore },
+    {
+      className: s.list,
+      state,
+      noItemsText,
+      loadingText,
+      isLoading,
+      onLoadMore,
+    },
     menuProps,
     slotProps?.list
   );

@@ -33,6 +33,8 @@ export type ListProps<T> = ExtendableProps<
     onLoadMore?: () => void;
     /** Content to display when no items are available. */
     noItemsText?: ReactNode;
+    /** Content to display when items are loading. */
+    loadingText?: ReactNode;
     /** The contents of the collection. */
     children?: AriaListBoxProps<T>['children'];
   },

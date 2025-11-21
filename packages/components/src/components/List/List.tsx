@@ -24,7 +24,7 @@ import { Typography } from '../Typography';
 import {
   ListEmptyState,
   ListItemText,
-  ListLoadMoreItem,
+  ListLoadingState,
   ListOption,
   ListSection,
 } from './components';
@@ -50,6 +50,7 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
     isPadded,
     isLoading,
     noItemsText: noItemsTextProp,
+    loadingText: loadingTextProp,
     onLoadMore,
   } = props;
 
@@ -61,6 +62,8 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
 
   const noItemsText =
     noItemsTextProp === undefined ? t.format('empty items') : noItemsTextProp;
+
+  const loadingText = loadingTextProp ?? t.format('loading');
 
   const titleProps = mergeProps(
     {
@@ -111,7 +114,11 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
           isLoading={isLoading}
           noItemsText={noItemsText}
         />
-        <ListLoadMoreItem isLoading={isLoading} onLoadMore={onLoadMore} />
+        <ListLoadingState
+          isLoading={isLoading}
+          onLoadMore={onLoadMore}
+          loadingText={loadingText}
+        />
       </ul>
     </>
   );

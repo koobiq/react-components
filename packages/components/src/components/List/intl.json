@@ -1,10 +1,10 @@
 {
   "ru-RU": {
     "empty items": "Нет доступных опций",
-    "load more": "Загрузка"
+    "loading": "Загрузка…"
   },
   "en-US": {
     "empty items": "No options available",
-    "load more": "Load More…"
+    "loading": "Loading…"
   }
 }
