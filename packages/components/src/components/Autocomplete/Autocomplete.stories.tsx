@@ -329,6 +329,32 @@ export const Section: Story = {
   },
 };
 
+export const ClearButton: Story = {
+  render: function Render() {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    return (
+      <Autocomplete
+        items={items}
+        label="Protocol"
+        defaultSelectedKey="tls"
+        style={{ inlineSize: 200 }}
+        placeholder="Search a protocol"
+        allowsCustomValue
+        isClearable
+      >
+        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+      </Autocomplete>
+    );
+  },
+};
+
 export const FullyControlled: Story = {
   render: function Render() {
     const items = [

@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useRef } from 'react';
+import { forwardRef, useCallback, useRef } from 'react';
 import type { Ref } from 'react';
 
 import {
@@ -9,8 +9,9 @@ import {
   useDOMRef,
   useElementSize,
   useFilter,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { IconChevronDownS16 } from '@koobiq/react-icons';
+import { IconChevronDownS16, IconCircleXmark16 } from '@koobiq/react-icons';
 import {
   FieldErrorContext,
   removeDataAttributes,
@@ -40,6 +41,7 @@ import type {
   AutocompleteProps,
   AutocompleteRef,
 } from './index';
+import intlMessages from './intl.json';
 
 export function AutocompleteRender<T extends object = object>(
   props: Omit<AutocompleteProps<T>, 'ref'>,
@@ -68,6 +70,9 @@ export function AutocompleteRender<T extends object = object>(
     isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
     'data-testid': testId,
+    allowsCustomValue,
+    onClear,
+    isClearable,
     noItemsText,
     isOpen,
     onOpenChange,
@@ -126,6 +131,18 @@ export function AutocompleteRender<T extends object = object>(
     }),
     state
   );
+
+  const t = useLocalizedStringFormatter(intlMessages);
+
+  const hasClearButton =
+    isClearable &&
+    !isDisabled &&
+    (allowsCustomValue ? !!state.inputValue : !!state.selectedItem);
+
+  const handleClear = useCallback(() => {
+    state.selectionManager.setSelectedKeys(new Set());
+    onClear?.();
+  }, [onClear, state]);
 
   const { isInvalid } = validation;
 
@@ -193,6 +210,17 @@ export function AutocompleteRender<T extends object = object>(
     slotProps?.list
   );
 
+  const clearButtonProps = mergeProps(
+    {
+      'aria-label': t.format('clear'),
+      onPress: handleClear,
+      className: s.clearButton,
+      variant: isInvalid ? 'error' : 'fade-contrast',
+      preventFocusOnPress: true,
+    },
+    slotProps?.clearButton
+  );
+
   const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       slotProps: {
@@ -207,6 +235,11 @@ export function AutocompleteRender<T extends object = object>(
       },
       endAddon: (
         <>
+          {hasClearButton && (
+            <IconButton {...clearButtonProps}>
+              <IconCircleXmark16 />
+            </IconButton>
+          )}
           {endAddon}
           {!disableShowChevron && (
             <IconButton

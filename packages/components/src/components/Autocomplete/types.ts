@@ -25,6 +25,7 @@ import type {
   FormFieldPropLabelPlacement,
   FormFieldProps,
 } from '../FormField';
+import type { IconButtonProps } from '../IconButton';
 import type { ListInnerProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
@@ -79,6 +80,7 @@ export type AutocompleteProps<T extends object = object> = {
     popover?: PopoverProps;
     label?: FormFieldLabelProps;
     input?: FormFieldInputProps;
+    clearButton?: IconButtonProps;
     caption?: FormFieldCaptionProps;
     group?: FormFieldControlGroupProps;
     errorMessage?: FormFieldErrorProps;
@@ -93,6 +95,10 @@ export type AutocompleteProps<T extends object = object> = {
   allowsEmptyCollection?: boolean;
   /** Content to display when no items are available. */
   noItemsText?: ReactNode;
+  /** Whether the field can be emptied. */
+  isClearable?: boolean;
+  /** Handler that is called when the clear button is clicked. */
+  onClear?: () => void;
 } & DataAttributeProps &
   Omit<AriaComboBoxProps<T>, 'description' | 'validationState'>;
 
