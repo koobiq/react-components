@@ -1,6 +1,7 @@
 import type {
   ComponentPropsWithRef,
   ComponentRef,
+  CSSProperties,
   ReactElement,
   ReactNode,
 } from 'react';
@@ -69,6 +70,8 @@ export type ModalProps = {
   hideBackdrop?: boolean;
   /** Additional CSS-classes. */
   className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
   /**
