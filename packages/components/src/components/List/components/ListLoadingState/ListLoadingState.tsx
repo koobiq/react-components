@@ -1,32 +1,30 @@
 'use client';
 
-import {
-  clsx,
-  useInfiniteScroll,
-  useLocalizedStringFormatter,
-} from '@koobiq/react-core';
+import type { ReactNode } from 'react';
+
+import { clsx, useInfiniteScroll } from '@koobiq/react-core';
 
 import { utilClasses } from '../../../../styles/utility';
+import { isPrimitiveNode } from '../../../../utils';
 import { ProgressSpinner } from '../../../ProgressSpinner';
 import { Typography } from '../../../Typography';
-import intlMessages from '../../intl.json';
 
-import s from './ListLoadMoreItem.module.css';
+import s from './ListLoadingState.module.css';
 
 const { listItem } = utilClasses;
 
-export type ListLoadMoreItemProps = {
+export type ListLoadingStateProps = {
   /** The load more spinner to render when loading additional items. */
   isLoading?: boolean;
   /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
   onLoadMore?: () => void;
+  /** Content to display when items are loading. */
+  loadingText?: ReactNode;
 };
 
-export function ListLoadMoreItem(props: ListLoadMoreItemProps) {
-  const { isLoading, onLoadMore } = props;
+export function ListLoadingState(props: ListLoadingStateProps) {
+  const { isLoading, onLoadMore, loadingText } = props;
 
-  const t = useLocalizedStringFormatter(intlMessages);
-  const loadMoreText = t.format('load more');
   const isEnabled = !!onLoadMore;
 
   const { loadMoreRef } = useInfiniteScroll({
@@ -35,10 +33,14 @@ export function ListLoadMoreItem(props: ListLoadMoreItemProps) {
     isEnabled,
   });
 
-  return isLoading ? (
+  if (!isLoading) return null;
+
+  return isPrimitiveNode(loadingText) ? (
     <li className={clsx(s.base, listItem)} ref={loadMoreRef}>
-      <ProgressSpinner aria-label={loadMoreText} />
-      <Typography>{loadMoreText}</Typography>
+      <ProgressSpinner aria-label={String(loadingText)} />
+      <Typography>{loadingText}</Typography>
     </li>
-  ) : null;
+  ) : (
+    loadingText
+  );
 }

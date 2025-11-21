@@ -90,13 +90,25 @@ describe('List', () => {
         </List>
       );
 
-      expect(screen.getByText('Load More…')).toBeInTheDocument();
+      expect(screen.getByText('Loading…')).toBeInTheDocument();
     });
 
     it('should NOT display noItemsText when isLoading={true}', () => {
       render(<List {...baseProps} noItemsText="empty" items={[]} isLoading />);
 
       expect(getRoot()).not.toHaveTextContent('empty');
+    });
+
+    it('should display the custom loading text when isLoading={true}', async () => {
+      render(
+        <List {...baseProps} isLoading loadingText="foo">
+          <List.Item key="1">1</List.Item>
+          <List.Item key="2">2</List.Item>
+          <List.Item key="3">3</List.Item>
+        </List>
+      );
+
+      expect(screen.getByText('foo')).toBeInTheDocument();
     });
   });
 

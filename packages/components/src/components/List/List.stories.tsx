@@ -1,9 +1,16 @@
 import { useCallback, useState } from 'react';
 
-import { isString } from '@koobiq/react-core';
+import { isString, useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Select, type Selection, Typography } from '../../index';
+import {
+  Select,
+  type Selection,
+  SkeletonTypography,
+  spacing,
+  Toggle,
+  Typography,
+} from '../../index';
 import { utilClasses } from '../../styles/utility';
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
@@ -353,12 +360,60 @@ export const NoItems: Story = {
   },
 };
 
+export const Loading: Story = {
+  render: function Render() {
+    const listStyles = {
+      border: '1px solid var(--kbq-line-contrast-fade)',
+      borderRadius: '0.5em',
+      inlineSize: 240,
+      blockSize: 200,
+    };
+
+    const [isCustom, { toggle }] = useBoolean(false);
+
+    return (
+      <FlexBox gap="s" direction="column">
+        <Toggle isSelected={isCustom} onChange={toggle}>
+          Custom loading
+        </Toggle>
+        <List<{ id: string; title: string }>
+          items={[]}
+          label="Products"
+          style={listStyles}
+          {...(isCustom && {
+            loadingText: (
+              <>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <li key={index} className={spacing({ pi: 'l', pb: 'xs' })}>
+                    <SkeletonTypography
+                      variant="text-normal"
+                      inlineSize={`${60 + 10 * Math.floor(Math.random() * 5)}%`}
+                    />
+                  </li>
+                ))}
+              </>
+            ),
+          })}
+          isPadded
+          isLoading
+        >
+          {(item) => (
+            <Select.Item key={item.id} textValue={item.title}>
+              <Select.ItemText>{item.title}</Select.ItemText>
+            </Select.Item>
+          )}
+        </List>
+      </FlexBox>
+    );
+  },
+};
+
 export const AsynchronousLoading: Story = {
   render: function Render() {
     const listStyles = {
       border: '1px solid var(--kbq-line-contrast-fade)',
       borderRadius: '0.5em',
-      maxInlineSize: 300,
+      inlineSize: 240,
       blockSize: 400,
     };
 
@@ -393,9 +448,9 @@ export const AsynchronousLoading: Story = {
       <List
         label="Products"
         items={products}
+        style={listStyles}
         isLoading={hasMore}
         onLoadMore={fetchProducts}
-        style={listStyles}
         slotProps={{ label: { style: { paddingInlineStart: 0 } } }}
         isPadded
       >

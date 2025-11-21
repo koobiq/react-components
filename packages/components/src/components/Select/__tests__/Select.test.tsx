@@ -115,7 +115,7 @@ describe('Select', () => {
         </Select>
       );
 
-      expect(screen.getByText('Load More…')).toBeInTheDocument();
+      expect(screen.getByText('Loading…')).toBeInTheDocument();
     });
 
     it('should NOT display noItemsText when isLoading={true}', () => {
@@ -130,6 +130,12 @@ describe('Select', () => {
       );
 
       expect(getPopover()).not.toHaveTextContent('empty');
+    });
+
+    it('should display the custom loading text when isLoading={true}', async () => {
+      render(<Select {...baseProps} loadingText="foo" defaultOpen isLoading />);
+
+      expect(screen.getByText('foo')).toBeInTheDocument();
     });
   });
 

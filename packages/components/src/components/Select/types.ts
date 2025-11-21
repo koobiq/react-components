@@ -125,6 +125,8 @@ export type SelectProps<T> = ExtendableProps<
     ) => ReactNode;
     /** Content to display when no items are available. */
     noItemsText?: ReactNode;
+    /** Content to display when items are loading. */
+    loadingText?: ReactNode;
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;
