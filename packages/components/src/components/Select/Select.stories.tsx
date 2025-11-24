@@ -551,7 +551,7 @@ export const AsynchronousLoading: Story = {
       thumbnail: string;
     };
 
-    const ITEMS_PER_PAGE = 20;
+    const ITEMS_PER_PAGE = 5;
 
     const [products, setProducts] = useState<Product[]>([]);
     const [hasMore, setHasMore] = useState(true);

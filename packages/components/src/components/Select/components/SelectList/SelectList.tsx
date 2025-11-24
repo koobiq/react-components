@@ -109,9 +109,11 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
           noItemsText={noItemsText}
         />
         <ListLoadingState
+          root={domRef.current}
           isLoading={isLoading}
           onLoadMore={onLoadMore}
           loadingText={loadingText}
+          observeDeps={[state.collection]}
         />
       </ul>
     </>

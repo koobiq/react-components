@@ -29,13 +29,8 @@ export const ListEmptyState: FC<ListEmptyStateProps> = ({
     : { display: 'contents' };
 
   return (
-    <div
-      // eslint-disable-next-line
-      role="option"
-      className={clsx(s.empty, typography['text-normal'])}
-      style={style}
-    >
+    <li className={clsx(s.empty, typography['text-normal'])} style={style}>
       {noItemsText}
-    </div>
+    </li>
   );
 };

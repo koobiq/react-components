@@ -118,6 +118,8 @@ export function ListInner<T extends object>(props: ListInnerProps<T>) {
           isLoading={isLoading}
           onLoadMore={onLoadMore}
           loadingText={loadingText}
+          root={domRef.current}
+          observeDeps={[state.collection]}
         />
       </ul>
     </>
