@@ -31,7 +31,12 @@ import {
   type FormFieldProps,
 } from '../FormField';
 import { IconButton } from '../IconButton';
-import { ListInner, type ListInnerProps } from '../List';
+import {
+  List,
+  ListInner,
+  type ListInnerProps,
+  type ListItemText,
+} from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
@@ -74,6 +79,8 @@ export function AutocompleteRender<T extends object = object>(
     onClear,
     isClearable,
     noItemsText,
+    isLoading,
+    onLoadMore,
   } = props;
 
   const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
@@ -192,6 +199,8 @@ export function AutocompleteRender<T extends object = object>(
       className: s.list,
       noItemsText: !allowsEmptyCollection ? null : noItemsText,
       listRef: listBoxRef,
+      isLoading,
+      onLoadMore,
       state,
     },
     listBoxProps,
@@ -280,7 +289,6 @@ export function AutocompleteRender<T extends object = object>(
           <FormField.Error {...errorProps} />
         </FieldErrorContext.Provider>
       </div>
-
       <PopoverInner {...popoverProps}>
         <ListInner {...listProps} />
       </PopoverInner>
@@ -295,9 +303,11 @@ const AutocompleteComponent = forwardRef(
 type CompoundedComponent = typeof AutocompleteComponent & {
   Item: typeof Item;
   Section: typeof Section;
+  ItemText: typeof ListItemText;
 };
 
 export const Autocomplete = AutocompleteComponent as CompoundedComponent;
 
 Autocomplete.Item = Item;
 Autocomplete.Section = Section;
+Autocomplete.ItemText = List.ItemText;
