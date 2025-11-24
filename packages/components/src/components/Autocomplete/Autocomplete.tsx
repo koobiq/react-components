@@ -74,8 +74,6 @@ export function AutocompleteRender<T extends object = object>(
     onClear,
     isClearable,
     noItemsText,
-    isOpen,
-    onOpenChange,
   } = props;
 
   const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
@@ -94,16 +92,6 @@ export function AutocompleteRender<T extends object = object>(
       defaultFilter: defaultFilterProp || contains,
     })
   );
-
-  // Controlled open state support
-  if (isOpen !== undefined && isOpen !== state.isOpen) {
-    state.setOpen(isOpen);
-  }
-
-  const handleOpenChange = (open: boolean) => {
-    state.setOpen(open);
-    onOpenChange?.(open);
-  };
 
   // Setup refs
   const buttonRef = useRef(null);
@@ -127,7 +115,6 @@ export function AutocompleteRender<T extends object = object>(
       popoverRef,
       isDisabled,
       isReadOnly,
-      onOpenChange: handleOpenChange,
     }),
     state
   );
@@ -136,6 +123,7 @@ export function AutocompleteRender<T extends object = object>(
 
   const hasClearButton =
     isClearable &&
+    !isReadOnly &&
     !isDisabled &&
     (allowsCustomValue ? !!state.inputValue : !!state.selectedItem);
 

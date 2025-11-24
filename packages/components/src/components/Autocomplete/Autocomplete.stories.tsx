@@ -1,6 +1,6 @@
-import { type CSSProperties, useEffect, useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 
-import { isString, useBoolean, useDebounceCallback } from '@koobiq/react-core';
+import { isString, useDebounceCallback } from '@koobiq/react-core';
 import {
   IconMagnifyingGlass16,
   IconNetworkDevice16,
@@ -8,7 +8,7 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button, useFilter } from '../../index';
+import { useFilter } from '../../index';
 import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
 import { ProgressSpinner } from '../ProgressSpinner';
@@ -558,37 +558,6 @@ export const CustomFiltering: Story = {
   },
 };
 
-export const Open: Story = {
-  render: function Render() {
-    const items: { key: string; name: string }[] = [
-      { key: 'tls', name: 'TLS' },
-      { key: 'ssh', name: 'SSH' },
-      { key: 'pgp', name: 'PGP' },
-      { key: 'ipsec', name: 'IPSec' },
-      { key: 'kerberos', name: 'Kerberos' },
-    ];
-
-    const [isOpen, { toggle, set }] = useBoolean(false);
-
-    return (
-      <FlexBox gap="m">
-        <Autocomplete
-          isOpen={isOpen}
-          onOpenChange={set}
-          label="Protocol"
-          defaultItems={items}
-          placeholder="Search a protocol"
-          style={{ inlineSize: 200 }}
-          isLabelHidden
-        >
-          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
-        </Autocomplete>
-        <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
-      </FlexBox>
-    );
-  },
-};
-
 export const NoItems: Story = {
   render: function Render() {
     return (
@@ -625,10 +594,10 @@ export const ServerSearch: Story = {
       price: number;
     };
 
-    const [inputValue, setInputValue] = useState<string>('');
+    const [, setInputValue] = useState<string>('');
     const [items, setItems] = useState<Product[]>([]);
-    const [isOpen, setIsOpen] = useBoolean(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string>();
 
     const [debounceSetIsLoading] = useDebounceCallback({
       callback: setIsLoading,
@@ -650,13 +619,8 @@ export const ServerSearch: Story = {
       return data.products ?? [];
     }
 
-    useEffect(() => {
-      if (inputValue && items.length) {
-        setIsOpen.on();
-      }
-    }, [inputValue, items]);
-
     const onInputChange: AutocompleteProps['onInputChange'] = async (value) => {
+      setError('');
       setInputValue(value);
       debounceSetIsLoading(true);
 
@@ -664,8 +628,8 @@ export const ServerSearch: Story = {
         const res = await fetchProducts(value);
         setItems(res);
       } catch {
-        console.warn('Request failed!');
-        setIsOpen.off();
+        setItems([]);
+        setError('Request failed!');
       } finally {
         debounceSetIsLoading(false);
       }
@@ -674,13 +638,13 @@ export const ServerSearch: Story = {
     return (
       <Autocomplete
         items={items}
-        isOpen={isOpen}
         label="Products"
-        menuTrigger="input"
+        menuTrigger="focus"
         placeholder="Search…"
         style={{ inlineSize: 240 }}
-        onOpenChange={setIsOpen.set}
-        allowsEmptyCollection={false}
+        noItemsText={null}
+        isInvalid={!!error}
+        errorMessage={error}
         onInputChange={onInputChange}
         startAddon={<IconMagnifyingGlass16 />}
         endAddon={

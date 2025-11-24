@@ -86,8 +86,6 @@ export type AutocompleteProps<T extends object = object> = {
     errorMessage?: FormFieldErrorProps;
     list?: Omit<ListInnerProps<object>, 'state'>;
   };
-  /** Sets the open state of the menu. */
-  isOpen?: boolean;
   /**
    * Whether the autocomplete allows the menu to be open when the collection is empty.
    * @default true
