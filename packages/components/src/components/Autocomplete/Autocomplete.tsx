@@ -80,7 +80,6 @@ export function AutocompleteRender<T extends object = object>(
     isClearable,
     noItemsText,
     isLoading,
-    onLoadMore,
   } = props;
 
   const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
@@ -200,7 +199,6 @@ export function AutocompleteRender<T extends object = object>(
       noItemsText: !allowsEmptyCollection ? null : noItemsText,
       listRef: listBoxRef,
       isLoading,
-      onLoadMore,
       state,
     },
     listBoxProps,
