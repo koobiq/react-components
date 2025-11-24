@@ -384,12 +384,12 @@ export const Loading: Story = {
             loadingText: (
               <>
                 {Array.from({ length: 5 }, (_, index) => (
-                  <li key={index} className={spacing({ pi: 'l', pb: 'xs' })}>
+                  <div key={index} className={spacing({ pi: 'l', pb: 'xs' })}>
                     <SkeletonTypography
                       variant="text-normal"
                       inlineSize={`${60 + 10 * Math.floor(Math.random() * 5)}%`}
                     />
-                  </li>
+                  </div>
                 ))}
               </>
             ),
@@ -423,7 +423,7 @@ export const AsynchronousLoading: Story = {
       thumbnail: string;
     };
 
-    const ITEMS_PER_PAGE = 20;
+    const ITEMS_PER_PAGE = 5;
 
     const [products, setProducts] = useState<Product[]>([]);
     const [hasMore, setHasMore] = useState(true);

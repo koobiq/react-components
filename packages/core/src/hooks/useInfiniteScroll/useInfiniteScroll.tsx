@@ -15,6 +15,8 @@ type UseInfiniteScrollOptions = {
   rootMargin?: string;
   /** Visibility threshold(s) to trigger intersection. */
   threshold?: number | number[];
+  /** Dependencies that should recreate the observer when changed. */
+  observeDeps?: unknown[];
 };
 
 export function useInfiniteScroll<T extends HTMLElement = any>({
@@ -24,6 +26,7 @@ export function useInfiniteScroll<T extends HTMLElement = any>({
   threshold,
   root,
   isEnabled = true,
+  observeDeps = [],
 }: UseInfiniteScrollOptions) {
   const loadMoreRef = useRef<T>(null);
   const isFetchingRef = useRef(false);
@@ -82,6 +85,7 @@ export function useInfiniteScroll<T extends HTMLElement = any>({
     isEnabled,
     rootMargin,
     JSON.stringify(threshold),
+    ...observeDeps,
     root,
   ]);
 

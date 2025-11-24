@@ -20,27 +20,45 @@ export type ListLoadingStateProps = {
   onLoadMore?: () => void;
   /** Content to display when items are loading. */
   loadingText?: ReactNode;
+  /** Root element for the observer (default: viewport). */
+  root?: Element | Document | null;
+  /** Dependencies that should recreate the observer when changed. */
+  observeDeps?: unknown[];
 };
 
 export function ListLoadingState(props: ListLoadingStateProps) {
-  const { isLoading, onLoadMore, loadingText } = props;
+  const { isLoading, onLoadMore, loadingText, root, observeDeps } = props;
 
   const isEnabled = !!onLoadMore;
 
   const { loadMoreRef } = useInfiniteScroll({
     fetchData: onLoadMore,
     hasMore: isLoading,
+    observeDeps,
     isEnabled,
+    root,
   });
 
   if (!isLoading) return null;
 
-  return isPrimitiveNode(loadingText) ? (
-    <li className={clsx(s.base, listItem)} ref={loadMoreRef}>
-      <ProgressSpinner aria-label={String(loadingText)} />
-      <Typography>{loadingText}</Typography>
-    </li>
-  ) : (
-    loadingText
+  return (
+    <>
+      <li style={{ position: 'relative', width: 0, height: 0 }}>
+        <div
+          ref={loadMoreRef}
+          style={{ position: 'absolute', height: 1, width: 1 }}
+        />
+      </li>
+      <li>
+        {isPrimitiveNode(loadingText) ? (
+          <div className={clsx(s.base, listItem)}>
+            <ProgressSpinner aria-label={String(loadingText)} />
+            <Typography>{loadingText}</Typography>
+          </div>
+        ) : (
+          loadingText
+        )}
+      </li>
+    </>
   );
 }
