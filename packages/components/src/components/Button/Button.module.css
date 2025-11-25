@@ -132,7 +132,7 @@
 }
 
 .label {
-  padding-inline: var(--button-label-padding);
+  padding: var(--button-label-padding);
 
   @mixin ellipsis;
 }
