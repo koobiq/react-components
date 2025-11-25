@@ -13,38 +13,34 @@ import {
 } from '@koobiq/react-core';
 import { IconChevronDownS16, IconCircleXmark16 } from '@koobiq/react-icons';
 import {
-  FieldErrorContext,
-  removeDataAttributes,
   useComboBox,
   useComboBoxState,
+  FieldErrorContext,
+  removeDataAttributes,
 } from '@koobiq/react-primitives';
 
 import { Section, Item } from '../Collections';
 import { useForm } from '../Form';
-import {
-  FormField,
-  type FormFieldCaptionProps,
-  type FormFieldControlGroupProps,
-  type FormFieldErrorProps,
-  type FormFieldInputProps,
-  type FormFieldLabelProps,
-  type FormFieldProps,
+import type {
+  FormFieldProps,
+  FormFieldErrorProps,
+  FormFieldInputProps,
+  FormFieldLabelProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
 } from '../FormField';
+import { FormField } from '../FormField';
 import { IconButton } from '../IconButton';
-import {
-  List,
-  ListInner,
-  type ListInnerProps,
-  type ListItemText,
-} from '../List';
+import { List, ListInner } from '../List';
+import type { ListInnerProps, ListItemText } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
 import s from './Autocomplete.module.css';
 import type {
-  AutocompleteComponent,
-  AutocompleteProps,
   AutocompleteRef,
+  AutocompleteProps,
+  AutocompleteComponent,
 } from './index';
 import intlMessages from './intl.json';
 
@@ -57,31 +53,31 @@ export function AutocompleteRender<T extends object = object>(
   const {
     variant = 'filled',
     disableShowChevron = false,
-    defaultFilter: defaultFilterProp,
     allowsEmptyCollection = true,
     label,
     style,
     caption,
+    onClear,
     endAddon,
     slotProps,
     className,
+    isLoading,
     fullWidth,
     isRequired,
     labelAlign,
     startAddon,
+    onLoadMore,
+    noItemsText,
+    loadingText,
+    isClearable,
     errorMessage,
     isLabelHidden,
     labelPlacement,
+    allowsCustomValue,
+    'data-testid': testId,
     isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
-    'data-testid': testId,
-    allowsCustomValue,
-    onLoadMore,
-    onClear,
-    loadingText,
-    isClearable,
-    noItemsText,
-    isLoading,
+    defaultFilter: defaultFilterProp,
   } = props;
 
   const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
@@ -109,10 +105,10 @@ export function AutocompleteRender<T extends object = object>(
   const {
     buttonProps,
     listBoxProps,
-    inputProps: inputPropsAria,
-    labelProps: labelPropsAria,
     descriptionProps,
     errorMessageProps,
+    inputProps: inputPropsAria,
+    labelProps: labelPropsAria,
     ...validation
   } = useComboBox(
     removeDataAttributes({
@@ -197,14 +193,14 @@ export function AutocompleteRender<T extends object = object>(
     ]
   >(
     {
-      isPadded: true,
-      className: s.list,
-      noItemsText: !allowsEmptyCollection ? null : noItemsText,
-      loadingText,
-      listRef: listBoxRef,
+      state,
       isLoading,
       onLoadMore,
-      state,
+      loadingText,
+      isPadded: true,
+      className: s.list,
+      listRef: listBoxRef,
+      noItemsText: !allowsEmptyCollection ? null : noItemsText,
     },
     listBoxProps,
     slotProps?.list
@@ -212,11 +208,11 @@ export function AutocompleteRender<T extends object = object>(
 
   const clearButtonProps = mergeProps(
     {
-      'aria-label': t.format('clear'),
       onPress: handleClear,
       className: s.clearButton,
-      variant: isInvalid ? 'error' : 'fade-contrast',
       preventFocusOnPress: true,
+      'aria-label': t.format('clear'),
+      variant: isInvalid ? 'error' : 'fade-contrast',
     },
     slotProps?.clearButton
   );
