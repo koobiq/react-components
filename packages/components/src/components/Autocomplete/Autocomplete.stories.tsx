@@ -640,6 +640,8 @@ export const AsynchronousLoading: Story = {
         isLoading={hasMore}
         allowsCustomValue
         disableShowChevron
+        noItemsText={products?.length ? null : 'no options'}
+        menuTrigger="focus"
         placeholder="Search…"
         onLoadMore={onLoadMore}
         style={{ inlineSize: 200 }}
