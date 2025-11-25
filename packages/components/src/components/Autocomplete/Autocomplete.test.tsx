@@ -6,7 +6,32 @@ import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 
 import { Form, Autocomplete, type AutocompleteProps, Provider } from '../index';
 
+declare global {
+  // eslint-disable-next-line no-var,vars-on-top
+  var jest: { [key in string]: unknown };
+}
+
 describe('Autocomplete', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    // HACK: Temporary workaround for a bug in @testing-library/react when
+    // using  @testing-library/user-event with fake timers.
+    // https://github.com/testing-library/react-testing-library/issues/1197
+    const originalJest = globalThis.jest;
+
+    globalThis.jest = {
+      ...globalThis.jest,
+      advanceTimersByTime: vi.advanceTimersByTime.bind(vi),
+    };
+
+    return () => {
+      globalThis.jest = originalJest;
+    };
+  });
+
+  const user = userEvent.setup({ delay: null });
+
   const baseProps: AutocompleteProps<object> = {
     label: 'label',
     children: null,
@@ -313,6 +338,84 @@ describe('Autocomplete', () => {
       if (clearButton) await userEvent.click(clearButton);
 
       expect(clearButton).not.toBeInTheDocument();
+    });
+  });
+
+  describe('check a filter', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should filter items by contains (case insensitive)', async () => {
+      render(
+        <Autocomplete {...baseProps} label="Test" data-testid="autocomplete">
+          <Autocomplete.Item key="1">Apple</Autocomplete.Item>
+          <Autocomplete.Item key="2">Banana</Autocomplete.Item>
+          <Autocomplete.Item key="3">Grapes</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const input = getInput();
+
+      await user.click(input);
+
+      await user.type(getInput(), 'ap');
+
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      expect(screen.getByText('Apple')).toBeInTheDocument();
+      expect(screen.getByText('Grapes')).toBeInTheDocument();
+      expect(screen.queryByText('Banana')).not.toBeInTheDocument();
+    });
+
+    it('should return empty results if nothing matches', async () => {
+      render(
+        <Autocomplete {...baseProps} label="Test" menuTrigger="focus">
+          <Autocomplete.Item key="1">Orange</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const input = getInput();
+
+      await user.click(input);
+      await user.type(input, 'xyz');
+
+      expect(screen.queryByText('Orange')).not.toBeInTheDocument();
+    });
+
+    it('should use custom defaultFilter to filter items manually', async () => {
+      const defaultFilter = vi.fn(
+        (textValue: string, inputValue: string) =>
+          textValue.startsWith(inputValue) // кастомная логика
+      );
+
+      render(
+        <Autocomplete
+          {...baseProps}
+          label="Test"
+          defaultFilter={defaultFilter}
+          menuTrigger="focus"
+        >
+          <Autocomplete.Item key="1">Apple</Autocomplete.Item>
+          <Autocomplete.Item key="2">Banana</Autocomplete.Item>
+          <Autocomplete.Item key="3">Apricot</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const input = getInput();
+
+      await user.click(input);
+      await user.type(input, 'Ap');
+
+      expect(defaultFilter).toHaveBeenCalled();
+
+      // Результаты фильтрации
+      expect(screen.getByText('Apple')).toBeInTheDocument();
+      expect(screen.getByText('Apricot')).toBeInTheDocument();
+      expect(screen.queryByText('Banana')).not.toBeInTheDocument();
     });
   });
 
