@@ -1462,6 +1462,12 @@
       ]
     },
     {
+      "name": "IconCircleXmarkS16",
+      "size": "16",
+      "description": "",
+      "keywords": ""
+    },
+    {
       "name": "IconCircleXs16",
       "size": "16",
       "description": "",
@@ -2264,23 +2270,6 @@
       ]
     },
     {
-      "name": "IconGearBadgeArrowtriangleUpSquare16",
-      "size": "16",
-      "description": "",
-      "keywords": [
-        "compliance",
-        "critical",
-        "level",
-        "regulation",
-        "standard",
-        "критический",
-        "регулирование",
-        "соответствие",
-        "стандарт",
-        "уровень"
-      ]
-    },
-    {
       "name": "IconGearBadgeSquare16",
       "size": "16",
       "description": "",
@@ -2291,6 +2280,23 @@
         "regulation",
         "standard",
         "высокий",
+        "регулирование",
+        "соответствие",
+        "стандарт",
+        "уровень"
+      ]
+    },
+    {
+      "name": "IconGearBadgeSquareArrowtriangleUp16",
+      "size": "16",
+      "description": "",
+      "keywords": [
+        "compliance",
+        "critical",
+        "level",
+        "regulation",
+        "standard",
+        "критический",
         "регулирование",
         "соответствие",
         "стандарт",
@@ -4054,12 +4060,6 @@
       "keywords": ["close", "cross", "large", "большой", "закрыть", "крестик"]
     },
     {
-      "name": "IconXmarkCircleS16",
-      "size": "16",
-      "description": "",
-      "keywords": ""
-    },
-    {
       "name": "IconXmarkS16",
       "size": "16",
       "description": "",
@@ -5370,6 +5370,12 @@
       "keywords": ""
     },
     {
+      "name": "IconCircleXmarkS24",
+      "size": "24",
+      "description": "",
+      "keywords": ["remove", "small", "удалить", "маленький", "круг", "крестик"]
+    },
+    {
       "name": "IconCircleXs24",
       "size": "24",
       "description": "",
@@ -6144,7 +6150,7 @@
       "keywords": ""
     },
     {
-      "name": "IconGearBadgeArrowtriangleUpSquare24",
+      "name": "IconGearBadgeSquare24",
       "size": "24",
       "description": "",
       "keywords": [
@@ -6157,7 +6163,7 @@
       ]
     },
     {
-      "name": "IconGearBadgeSquare24",
+      "name": "IconGearBadgeSquareArrowtriangleUp24",
       "size": "24",
       "description": "",
       "keywords": [
@@ -7734,12 +7740,6 @@
       "keywords": ["remove", "удалить", "крестик"]
     },
     {
-      "name": "IconXmarkCircleS24",
-      "size": "24",
-      "description": "",
-      "keywords": ["remove", "small", "удалить", "маленький", "круг", "крестик"]
-    },
-    {
       "name": "IconXmarkS24",
       "size": "24",
       "description": "",
@@ -7808,6 +7808,12 @@
       "keywords": ""
     },
     {
+      "name": "IconCircleQuestionO32",
+      "size": "32",
+      "description": "",
+      "keywords": ["help", "вопрос", "контур", "помощь"]
+    },
+    {
       "name": "IconCloudArrowDownO32",
       "size": "32",
       "description": "",
@@ -7829,11 +7835,6 @@
       "name": "IconDatabaseO32",
       "size": "32",
       "keywords": [""]
-    },
-    {
-      "name": "IconExclamationTriangle32",
-      "size": "32",
-      "keywords": ""
     },
     {
       "name": "IconFileLinesO32",
@@ -7872,12 +7873,6 @@
       "keywords": ""
     },
     {
-      "name": "IconQuestionCircleO32",
-      "size": "32",
-      "description": "",
-      "keywords": ["help", "вопрос", "контур", "помощь"]
-    },
-    {
       "name": "IconRadarO32",
       "size": "32",
       "keywords": ""
@@ -7893,9 +7888,14 @@
       "keywords": ""
     },
     {
-      "name": "IconTableBadgeArrowDownCircle32",
+      "name": "IconTableBadgeCircleArrowDown32",
       "size": "32",
       "description": "",
+      "keywords": ""
+    },
+    {
+      "name": "IconTriangleExclamation32",
+      "size": "32",
       "keywords": ""
     },
     {

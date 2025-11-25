@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type { SVGProps, Ref } from 'react';
 
-export const IconExclamationTriangle32 = forwardRef(
+export const IconTriangleExclamation32 = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg
       width={32}
@@ -15,4 +15,4 @@ export const IconExclamationTriangle32 = forwardRef(
     </svg>
   )
 );
-IconExclamationTriangle32.displayName = 'IconExclamationTriangle32';
+IconTriangleExclamation32.displayName = 'IconTriangleExclamation32';

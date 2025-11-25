@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type { SVGProps, Ref } from 'react';
 
-export const IconTableBadgeArrowDownCircle32 = forwardRef(
+export const IconTableBadgeCircleArrowDown32 = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg
       width={32}
@@ -18,4 +18,4 @@ export const IconTableBadgeArrowDownCircle32 = forwardRef(
     </svg>
   )
 );
-IconTableBadgeArrowDownCircle32.displayName = 'IconTableBadgeArrowDownCircle32';
+IconTableBadgeCircleArrowDown32.displayName = 'IconTableBadgeCircleArrowDown32';

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type { SVGProps, Ref } from 'react';
 
-export const IconGearBadgeArrowtriangleUpSquare24 = forwardRef(
+export const IconGearBadgeSquareArrowtriangleUp24 = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg
       width={24}
@@ -16,5 +16,5 @@ export const IconGearBadgeArrowtriangleUpSquare24 = forwardRef(
   )
 );
 
-IconGearBadgeArrowtriangleUpSquare24.displayName =
-  'IconGearBadgeArrowtriangleUpSquare24';
+IconGearBadgeSquareArrowtriangleUp24.displayName =
+  'IconGearBadgeSquareArrowtriangleUp24';
