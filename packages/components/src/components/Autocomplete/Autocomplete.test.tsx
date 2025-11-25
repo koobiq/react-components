@@ -23,12 +23,16 @@ describe('Autocomplete', () => {
       group: {
         'data-testid': 'group',
       },
+      clearButton: {
+        'aria-label': 'clear-button',
+      },
     },
   };
 
   const getRoot = () => screen.getByTestId('root');
   const getInput = () => screen.getByTestId('control');
   // const getPopover = () => screen.getByTestId('popover');
+  const getClearButton = () => screen?.queryByLabelText('clear-button');
   const getGroup = () => screen.getByTestId('group');
 
   it('should accept a ref', () => {
@@ -157,6 +161,151 @@ describe('Autocomplete', () => {
       render(<Autocomplete {...baseProps} isInvalid />);
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+    });
+  });
+
+  describe('clear button', () => {
+    it('should render clear button only when a value is selected', () => {
+      const { rerender } = render(
+        <Autocomplete {...baseProps} selectedKey={null} isClearable>
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      expect(getClearButton()).not.toBeInTheDocument();
+
+      rerender(
+        <Autocomplete {...baseProps} selectedKey="1" isClearable>
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      expect(getClearButton()).toBeInTheDocument();
+    });
+
+    it('should call onSelectionChange with empty value when cleared', async () => {
+      const onSelectionChange = vi.fn((val) => val);
+
+      render(
+        <Autocomplete
+          {...baseProps}
+          selectedKey="1"
+          onSelectionChange={onSelectionChange}
+          isClearable
+        >
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const clearButton = getClearButton();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onSelectionChange).toHaveBeenCalledTimes(1);
+
+      const selection = onSelectionChange.mock.calls?.[0]?.[0];
+
+      expect(selection).toEqual(null);
+    });
+
+    it('should call onClear when clear button is clicked', async () => {
+      const onClear = vi.fn();
+
+      render(
+        <Autocomplete
+          {...baseProps}
+          selectedKey="1"
+          onClear={onClear}
+          isClearable
+        >
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const clearButton = getClearButton();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onClear).toHaveBeenCalledTimes(1);
+    });
+
+    it('should NOT render clear button when the component is disabled', async () => {
+      const onClear = vi.fn();
+
+      render(
+        <Autocomplete
+          {...baseProps}
+          selectedKey="1"
+          onClear={onClear}
+          isDisabled
+          isClearable
+        >
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const clearButton = getClearButton();
+
+      expect(clearButton).not.toBeInTheDocument();
+    });
+
+    it('should NOT render clear button when the component is read only', async () => {
+      const onClear = vi.fn();
+
+      render(
+        <Autocomplete
+          {...baseProps}
+          selectedKey="1"
+          onClear={onClear}
+          isReadOnly
+          isClearable
+        >
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const clearButton = getClearButton();
+
+      expect(clearButton).not.toBeInTheDocument();
+    });
+
+    it('should show clear button when any value is entered with allowsCustomValue', async () => {
+      const onClear = vi.fn();
+
+      render(
+        <Autocomplete
+          {...baseProps}
+          allowsCustomValue
+          onClear={onClear}
+          isClearable
+        >
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      await userEvent.type(getInput(), 'foo');
+
+      const clearButton = getClearButton();
+
+      expect(clearButton).toBeInTheDocument();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(clearButton).not.toBeInTheDocument();
     });
   });
 
