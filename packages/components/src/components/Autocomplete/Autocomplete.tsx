@@ -163,6 +163,7 @@ export function AutocompleteRender<T extends object = object>(
       'data-readonly': isReadOnly || undefined,
       'data-disabled': isDisabled || undefined,
       'data-required': isRequired || undefined,
+      'data-show-chevron': !disableShowChevron || undefined,
       className: clsx(s.base, className),
     },
     slotProps?.root

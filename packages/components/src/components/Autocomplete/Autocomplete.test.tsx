@@ -34,6 +34,7 @@ describe('Autocomplete', () => {
   // const getPopover = () => screen.getByTestId('popover');
   const getClearButton = () => screen?.queryByLabelText('clear-button');
   const getGroup = () => screen.getByTestId('group');
+  const getChevron = () => screen.queryByLabelText('Show suggestions');
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLInputElement>();
@@ -162,6 +163,12 @@ describe('Autocomplete', () => {
 
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
     });
+  });
+
+  it('should not render chevron when disableShowChevron is set', () => {
+    render(<Autocomplete {...baseProps} disableShowChevron />);
+
+    expect(getChevron()).not.toBeInTheDocument();
   });
 
   describe('clear button', () => {
