@@ -334,6 +334,7 @@ export const Hover: Story = {
           onOpenChange={set}
           anchorRef={anchorRef}
           slotProps={{ backdrop: { hidden: true } }}
+          isNonModal
           {...args}
         >
           <div style={{ padding: 16 }}>I use Popover</div>
