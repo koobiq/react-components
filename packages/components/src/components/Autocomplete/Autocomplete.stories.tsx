@@ -1,16 +1,14 @@
-import { type CSSProperties, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { isString, useDebounceCallback } from '@koobiq/react-core';
 import {
   IconMagnifyingGlass16,
   IconNetworkDevice16,
-  IconSlidersDot16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useFilter } from '../../index';
 import { FlexBox } from '../FlexBox';
-import { IconButton } from '../IconButton';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Typography } from '../Typography';
 
@@ -28,6 +26,7 @@ const meta = {
   },
   subcomponents: {
     'Autocomplete.Item': Autocomplete.Item,
+    'Autocomplete.ItemText': Autocomplete.ItemText,
     'Autocomplete.Section': Autocomplete.Section,
   },
   argTypes: {},
@@ -586,6 +585,81 @@ export const NoItems: Story = {
   },
 };
 
+export const AsynchronousLoading: Story = {
+  render: function Render() {
+    type Product = {
+      id: number;
+      title: string;
+      thumbnail: string;
+      description: string;
+    };
+
+    const ITEMS_PER_PAGE = 20;
+    const [inputValue, setInputValue] = useState('');
+    const [products, setProducts] = useState<Product[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
+
+    const fetchProducts = useCallback(
+      async (query: string, nextPage: number) => {
+        const url = new URL('https://dummyjson.com/products/search');
+        url.searchParams.set('limit', String(ITEMS_PER_PAGE));
+        url.searchParams.set('skip', String(nextPage * ITEMS_PER_PAGE));
+        url.searchParams.set('q', query);
+
+        const response = await fetch(url.toString());
+        const data = await response.json();
+        const items: Product[] = data.products ?? [];
+
+        // After the first load, check whether more pages are available.
+        setHasMore(items.length === ITEMS_PER_PAGE);
+
+        setProducts((prev) => (nextPage === 0 ? items : [...prev, ...items]));
+
+        setPage(nextPage + 1);
+      },
+      []
+    );
+
+    const onInputChange = (value: string) => {
+      setInputValue(value);
+      setPage(0);
+      setHasMore(false);
+      fetchProducts(value, 0);
+    };
+
+    const onLoadMore = () => {
+      if (!hasMore) return;
+      fetchProducts(inputValue, page);
+    };
+
+    return (
+      <Autocomplete
+        label="Products"
+        items={products}
+        isLoading={hasMore}
+        allowsCustomValue
+        disableShowChevron
+        placeholder="Search…"
+        onLoadMore={onLoadMore}
+        style={{ inlineSize: 200 }}
+        onInputChange={onInputChange}
+      >
+        {(item) => (
+          <Autocomplete.Item key={item.id} textValue={item.title}>
+            <Autocomplete.ItemText
+              caption={item.description}
+              slotProps={{ caption: { ellipsis: true } }}
+            >
+              {item.title}
+            </Autocomplete.ItemText>
+          </Autocomplete.Item>
+        )}
+      </Autocomplete>
+    );
+  },
+};
+
 export const ServerSearch: Story = {
   render: function Render() {
     type Product = {
@@ -594,7 +668,6 @@ export const ServerSearch: Story = {
       price: number;
     };
 
-    const [, setInputValue] = useState<string>('');
     const [items, setItems] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string>();
@@ -621,7 +694,6 @@ export const ServerSearch: Story = {
 
     const onInputChange: AutocompleteProps['onInputChange'] = async (value) => {
       setError('');
-      setInputValue(value);
       debounceSetIsLoading(true);
 
       try {
@@ -641,26 +713,13 @@ export const ServerSearch: Story = {
         label="Products"
         menuTrigger="focus"
         placeholder="Search…"
-        style={{ inlineSize: 240 }}
+        style={{ inlineSize: 200 }}
         noItemsText={null}
         isInvalid={!!error}
         errorMessage={error}
         onInputChange={onInputChange}
         startAddon={<IconMagnifyingGlass16 />}
-        endAddon={
-          <FlexBox gap="xs" alignItems="center" justifyContent="center">
-            {isLoading && <ProgressSpinner />}
-            <IconButton variant="theme-contrast">
-              <IconSlidersDot16
-                style={
-                  {
-                    '--icon-accent-color': 'var(--kbq-icon-theme)',
-                  } as CSSProperties
-                }
-              />
-            </IconButton>
-          </FlexBox>
-        }
+        endAddon={isLoading && <ProgressSpinner />}
         disableShowChevron
         allowsCustomValue
       >

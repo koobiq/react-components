@@ -99,6 +99,10 @@ export type AutocompleteProps<T extends object = object> = {
   onClear?: () => void;
   /** The load more spinner to render when loading additional items. */
   isLoading?: boolean;
+  /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
+  onLoadMore?: () => void;
+  /** Content to display when items are loading. */
+  loadingText?: ReactNode;
 } & DataAttributeProps &
   Omit<AriaComboBoxProps<T>, 'description' | 'validationState'>;
 
