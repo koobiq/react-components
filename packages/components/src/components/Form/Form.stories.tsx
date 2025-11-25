@@ -449,7 +449,7 @@ export const FormFields: Story = {
         </RadioGroup>
         <Autocomplete
           label="Autocomplete"
-          placeholder="Select protocol"
+          placeholder="Select a protocol"
           disableShowChevron
         >
           <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
