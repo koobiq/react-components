@@ -4,7 +4,7 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 
-import { Form, Autocomplete, type AutocompleteProps, Provider } from '../index';
+import { Form, Provider, Autocomplete, type AutocompleteProps } from '../index';
 
 declare global {
   // eslint-disable-next-line no-var,vars-on-top
@@ -56,7 +56,7 @@ describe('Autocomplete', () => {
 
   const getRoot = () => screen.getByTestId('root');
   const getInput = () => screen.getByTestId('control');
-  // const getPopover = () => screen.getByTestId('popover');
+  const getPopover = () => screen.getByTestId('popover');
   const getClearButton = () => screen?.queryByLabelText('clear-button');
   const getGroup = () => screen.getByTestId('group');
   const getChevron = () => screen.queryByLabelText('Show suggestions');
@@ -194,6 +194,108 @@ describe('Autocomplete', () => {
     render(<Autocomplete {...baseProps} disableShowChevron />);
 
     expect(getChevron()).not.toBeInTheDocument();
+  });
+
+  describe('noItemsText', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should display noItemsText for static items', async () => {
+      render(
+        <Autocomplete
+          {...baseProps}
+          menuTrigger="focus"
+          noItemsText="empty"
+        ></Autocomplete>
+      );
+
+      const input = getInput();
+
+      await user.click(input);
+
+      vi.useFakeTimers();
+
+      expect(getPopover()).toHaveTextContent('empty');
+    });
+
+    it('should display noItemsText for dynamic items', async () => {
+      render(
+        <Autocomplete
+          {...baseProps}
+          items={[]}
+          menuTrigger="focus"
+          noItemsText="empty"
+        />
+      );
+
+      const input = getInput();
+      await user.click(input);
+
+      expect(getPopover()).toHaveTextContent('empty');
+    });
+  });
+
+  describe('loading', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should display the loading text when isLoading={true}', async () => {
+      render(
+        <Autocomplete {...baseProps} menuTrigger="focus" isLoading>
+          <Autocomplete.Item key="1">1</Autocomplete.Item>
+          <Autocomplete.Item key="2">2</Autocomplete.Item>
+          <Autocomplete.Item key="3">3</Autocomplete.Item>
+        </Autocomplete>
+      );
+
+      const input = getInput();
+      await user.click(input);
+
+      expect(screen.getByText('Loading…')).toBeInTheDocument();
+    });
+
+    it('should NOT display noItemsText when isLoading={true}', async () => {
+      render(
+        <Autocomplete
+          {...baseProps}
+          menuTrigger="focus"
+          noItemsText="empty"
+          items={[]}
+          isLoading
+        />
+      );
+
+      const input = getInput();
+      await user.click(input);
+
+      expect(getPopover()).not.toHaveTextContent('empty');
+    });
+
+    it('should display the custom loading text when isLoading={true}', async () => {
+      render(
+        <Autocomplete
+          {...baseProps}
+          menuTrigger="focus"
+          loadingText="foo"
+          isLoading
+        />
+      );
+
+      const input = getInput();
+      await user.click(input);
+
+      expect(screen.getByText('foo')).toBeInTheDocument();
+    });
   });
 
   describe('clear button', () => {

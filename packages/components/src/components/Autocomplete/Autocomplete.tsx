@@ -150,17 +150,17 @@ export function AutocompleteRender<T extends object = object>(
   const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
     {
       style,
-      labelPlacement,
-      labelAlign,
       fullWidth,
+      labelAlign,
+      labelPlacement,
       'data-testid': testId,
       'data-variant': variant,
+      className: clsx(s.base, className),
       'data-invalid': isInvalid || undefined,
       'data-readonly': isReadOnly || undefined,
       'data-disabled': isDisabled || undefined,
       'data-required': isRequired || undefined,
       'data-show-chevron': !disableShowChevron || undefined,
-      className: clsx(s.base, className),
     },
     slotProps?.root
   );
