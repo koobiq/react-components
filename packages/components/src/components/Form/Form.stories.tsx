@@ -3,6 +3,7 @@ import { type FormEvent, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Alert } from '../Alert';
+import { Autocomplete } from '../Autocomplete';
 import { Button } from '../Button';
 import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
@@ -446,6 +447,17 @@ export const FormFields: Story = {
           <Radio value="linux">Linux</Radio>
           <Radio value="other">Other</Radio>
         </RadioGroup>
+        <Autocomplete
+          label="Autocomplete"
+          placeholder="Select a protocol"
+          disableShowChevron
+        >
+          <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+          <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+          <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+          <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+          <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+        </Autocomplete>
         <FormField>
           <FormField.Label as="span">Inputs</FormField.Label>
           <FlexBox gap="m" style={{ inlineSize: '100%' }}>

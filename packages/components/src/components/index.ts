@@ -38,6 +38,7 @@ export * from './TimePicker';
 export * from './SearchInput';
 export * from './Form';
 export * from './Tabs';
+export * from './Autocomplete';
 export * from './layout';
 export {
   useListData,
@@ -54,6 +55,7 @@ export {
 export {
   useRouter,
   useLocale,
+  useFilter,
   type Locale,
   type SortDescriptor,
   type Selection,

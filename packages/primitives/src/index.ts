@@ -6,7 +6,7 @@ export {
   type AriaToggleButtonGroupItemProps,
 } from '@react-aria/button';
 
-export * from '@react-stately/collections';
+export { Item } from '@react-stately/collections';
 
 export * from '@react-stately/data';
 
@@ -56,6 +56,9 @@ export * from '@react-aria/searchfield';
 export * from '@react-stately/searchfield';
 
 export * from '@react-aria/progress';
+
+export * from '@react-aria/combobox';
+export * from '@react-stately/combobox';
 
 export type {
   CalendarProps,
