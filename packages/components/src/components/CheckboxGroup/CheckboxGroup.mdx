@@ -17,7 +17,7 @@ Provides the behavior and accessibility implementation for a checkbox group comp
 Checkbox groups allow users to select multiple items from a list of options.
 
 ```tsx
-import { CheckboxGroup } from '@koobiq/react-components';
+import { CheckboxGroup, Checkbox } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -25,3 +25,15 @@ import { CheckboxGroup } from '@koobiq/react-components';
 ## Props
 
 <Props />
+
+## Caption
+
+The `caption` can be used to associate additional help text with a checkbox group.
+
+<Story of={Stories.Caption} />
+
+## Orientation
+
+CheckboxGroups are vertically oriented by default. The `orientation` can be used to change the orientation to `horizontal`.
+
+<Story of={Stories.Orientation} />
