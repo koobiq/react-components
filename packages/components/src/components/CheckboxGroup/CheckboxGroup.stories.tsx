@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from '../Checkbox';
+import { FlexBox } from '../FlexBox';
+import { radioGroupPropSize } from '../RadioGroup';
 
 import { CheckboxGroup } from './index';
 
@@ -26,6 +28,44 @@ export const Base: Story = {
       <Checkbox value="devops">DevOps</Checkbox>
       <Checkbox value="design">Design</Checkbox>
       <Checkbox value="product">Product</Checkbox>
+    </CheckboxGroup>
+  ),
+};
+
+export const Size: Story = {
+  render: (args) => (
+    <FlexBox gap="3xl">
+      {radioGroupPropSize.map((size) => (
+        <CheckboxGroup
+          defaultValue={['one']}
+          key={size}
+          size={size}
+          label={`size = ${size}`}
+          {...args}
+        >
+          <Checkbox value="frontend">Frontend</Checkbox>
+          <Checkbox value="backend">Backend</Checkbox>
+          <Checkbox value="devops">DevOps</Checkbox>
+          <Checkbox value="design">Design</Checkbox>
+          <Checkbox value="product">Product</Checkbox>
+        </CheckboxGroup>
+      ))}
+    </FlexBox>
+  ),
+};
+
+export const Invalid: Story = {
+  render: (args) => (
+    <CheckboxGroup
+      label="Label"
+      defaultValue={['one']}
+      errorMessage="This field is required"
+      isInvalid
+      {...args}
+    >
+      <Checkbox value="one">One</Checkbox>
+      <Checkbox value="two">Two</Checkbox>
+      <Checkbox value="three">Three</Checkbox>
     </CheckboxGroup>
   ),
 };

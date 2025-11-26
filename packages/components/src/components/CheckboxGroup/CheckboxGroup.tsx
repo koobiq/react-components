@@ -6,20 +6,21 @@ import { clsx, mergeProps } from '@koobiq/react-core';
 import {
   FieldErrorContext,
   useCheckboxGroup,
-  CheckboxGroupContext,
   useCheckboxGroupState,
+  CheckboxGroupContext as CheckboxGroupPrimitiveContext,
 } from '@koobiq/react-primitives';
 
-import {
-  FormField,
-  type FormFieldCaptionProps,
-  type FormFieldErrorProps,
-  type FormFieldLabelProps,
-  type FormFieldProps,
+import { FormField } from '../FormField';
+import type {
+  FormFieldCaptionProps,
+  FormFieldErrorProps,
+  FormFieldLabelProps,
+  FormFieldProps,
 } from '../FormField';
 import { flex } from '../layout';
 
 import s from './CheckboxGroup.module.css';
+import { CheckboxGroupContext } from './CheckboxGroupContext';
 import type { CheckboxGroupProps } from './types';
 
 export const CheckboxGroup = forwardRef<
@@ -27,6 +28,7 @@ export const CheckboxGroup = forwardRef<
   CheckboxGroupProps
 >((props, ref) => {
   const {
+    size = 'normal',
     label,
     style,
     caption,
@@ -64,6 +66,7 @@ export const CheckboxGroup = forwardRef<
       style,
       labelAlign,
       labelPlacement,
+      'data-size': size,
       'data-testid': testId,
       'data-orientation': orientation,
       className: clsx(s.base, className),
@@ -112,18 +115,20 @@ export const CheckboxGroup = forwardRef<
   );
 
   return (
-    <FormField {...rootProps}>
-      <FormField.Label {...labelProps} />
-      <div className={s.body}>
-        <CheckboxGroupContext.Provider value={state}>
-          <div {...checkboxGroupProps}>{children}</div>
-        </CheckboxGroupContext.Provider>
-        <FormField.Caption {...descriptionProps} />
-        <FieldErrorContext.Provider value={validation}>
-          <FormField.Error {...errorMessageProps} />
-        </FieldErrorContext.Provider>
-      </div>
-    </FormField>
+    <CheckboxGroupContext.Provider value={{ size }}>
+      <FormField {...rootProps}>
+        <FormField.Label {...labelProps} />
+        <div className={s.body}>
+          <CheckboxGroupPrimitiveContext.Provider value={state}>
+            <div {...checkboxGroupProps}>{children}</div>
+          </CheckboxGroupPrimitiveContext.Provider>
+          <FormField.Caption {...descriptionProps} />
+          <FieldErrorContext.Provider value={validation}>
+            <FormField.Error {...errorMessageProps} />
+          </FieldErrorContext.Provider>
+        </div>
+      </FormField>
+    </CheckboxGroupContext.Provider>
   );
 });
 
