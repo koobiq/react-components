@@ -1,6 +1,10 @@
 import { forwardRef } from 'react';
 import type { SVGProps, Ref } from 'react';
 
+/**
+ * @deprecated
+ * This icon has been deprecated, please use IconTriangleExclamation32 instead.
+ */
 export const IconExclamationTriangle32 = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type { SVGProps, Ref } from 'react';
 
-export const IconXmarkCircleS16 = forwardRef(
+export const IconCircleXmarkS16 = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg
       width={16}
@@ -19,4 +19,4 @@ export const IconXmarkCircleS16 = forwardRef(
     </svg>
   )
 );
-IconXmarkCircleS16.displayName = 'IconXmarkCircleS16';
+IconCircleXmarkS16.displayName = 'IconCircleXmarkS16';

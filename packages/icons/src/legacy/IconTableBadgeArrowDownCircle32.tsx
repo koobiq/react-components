@@ -1,6 +1,10 @@
 import { forwardRef } from 'react';
 import type { SVGProps, Ref } from 'react';
 
+/**
+ * @deprecated
+ * This icon has been deprecated, please use IconTableBadgeCircleArrowDown32 instead.
+ */
 export const IconTableBadgeArrowDownCircle32 = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg
