@@ -38,6 +38,14 @@ export * from '@react-stately/menu';
 export * from '@react-aria/toggle';
 export * from '@react-stately/toggle';
 
+export { useCheckboxGroup, useCheckboxGroupItem } from '@react-aria/checkbox';
+export type {
+  AriaCheckboxGroupItemProps,
+  AriaCheckboxGroupProps,
+  AriaCheckboxProps,
+} from '@react-aria/checkbox';
+export * from '@react-stately/checkbox';
+
 export * from '@react-aria/tag';
 
 export * from '@react-aria/tooltip';
