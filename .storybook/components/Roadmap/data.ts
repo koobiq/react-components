@@ -278,11 +278,16 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q4 2025',
   },
+  {
+    component: 'CheckboxGroup',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q4 2025',
+  },
   { component: 'Breadcrumbs', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'Toast', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'ActionPanel', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'Collapse', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'Accordion', status: '🚧 Planned', planned: 'Q4 2025' },
-  { component: 'CheckboxGroup', status: '🚧 Planned', planned: 'Q4 2025' },
   { component: 'Tree', status: '🚧 Planned', planned: 'Q4 2025' },
 ];
