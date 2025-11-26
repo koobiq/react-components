@@ -6,7 +6,7 @@ import { clsx, mergeProps } from '@koobiq/react-core';
 import {
   FieldErrorContext,
   useCheckboxGroup,
-  // useCheckboxGroupItem,
+  CheckboxGroupContext,
   useCheckboxGroupState,
 } from '@koobiq/react-primitives';
 
@@ -19,7 +19,6 @@ import {
 } from '../FormField';
 
 import s from './CheckboxGroup.module.css';
-import { CheckboxGroupContext } from './CheckboxGroupContext';
 import type { CheckboxGroupProps } from './types';
 
 export const CheckboxGroup = forwardRef<
