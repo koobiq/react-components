@@ -193,3 +193,11 @@ export const Example: Story = {
     );
   },
 };
+
+export const HtmlForms: Story = {
+  render: (args) => (
+    <Toggle {...args} aria-label="Power" name="power" value="low">
+      Low power mode
+    </Toggle>
+  ),
+};
