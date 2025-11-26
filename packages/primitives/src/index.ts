@@ -38,7 +38,7 @@ export * from '@react-stately/menu';
 export * from '@react-aria/toggle';
 export * from '@react-stately/toggle';
 
-export { useCheckboxGroup, useCheckboxGroupItem } from '@react-aria/checkbox';
+export { useCheckboxGroup } from '@react-aria/checkbox';
 export type {
   AriaCheckboxGroupItemProps,
   AriaCheckboxGroupProps,

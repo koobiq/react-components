@@ -3,15 +3,15 @@
 import type { RefObject } from 'react';
 
 import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
-import { useCheckbox as useCheckboxReactAria } from '@react-aria/checkbox';
-import type { AriaCheckboxProps } from '@react-aria/checkbox';
-import type { ToggleState } from '@react-stately/toggle';
+import { useCheckboxGroupItem as useCheckboxGroupItemReactAria } from '@react-aria/checkbox';
+import type { CheckboxGroupState } from '@react-stately/checkbox';
+import type { AriaCheckboxGroupItemProps } from '@react-types/checkbox';
 
-export type UseCheckboxProps = AriaCheckboxProps;
+export type UseCheckboxGroupItemProps = AriaCheckboxGroupItemProps;
 
-export function useCheckbox(
-  props: UseCheckboxProps,
-  state: ToggleState,
+export function useCheckboxGroupItem(
+  props: UseCheckboxGroupItemProps,
+  state: CheckboxGroupState,
   inputRef: RefObject<HTMLInputElement | null>
 ) {
   const { isDisabled: isDisabledProp, isIndeterminate: isIndeterminateProp } =
@@ -32,7 +32,7 @@ export function useCheckbox(
     isReadOnly,
     isPressed,
     ...other
-  } = useCheckboxReactAria(props, state, inputRef);
+  } = useCheckboxGroupItemReactAria(props, state, inputRef);
 
   const labelProps = mergeProps(hoverProps, commonLabelProps);
 
@@ -56,4 +56,6 @@ export function useCheckbox(
   };
 }
 
-export type UseCheckboxReturn = ReturnType<typeof useCheckbox>;
+export type UseCheckboxGroupItemReturn = ReturnType<
+  typeof useCheckboxGroupItem
+>;

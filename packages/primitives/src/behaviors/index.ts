@@ -1,5 +1,6 @@
 export * from './useButton';
 export * from './useCheckbox';
+export * from './useCheckboxGroupItem';
 export * from './useLink';
 export * from './useSwitch';
 export * from './useRadio';
