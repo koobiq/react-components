@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Checkbox } from '../Checkbox';
+import { Checkbox, checkboxPropSize } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
-import { radioGroupPropSize } from '../RadioGroup';
 
 import { CheckboxGroup } from './index';
 
@@ -22,7 +21,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args) => (
-    <CheckboxGroup label="What are you interested in?" {...args}>
+    <CheckboxGroup
+      label="What are you interested in?"
+      defaultValue={['frontend']}
+      {...args}
+    >
       <Checkbox value="frontend">Frontend</Checkbox>
       <Checkbox value="backend">Backend</Checkbox>
       <Checkbox value="devops">DevOps</Checkbox>
@@ -35,11 +38,11 @@ export const Base: Story = {
 export const Size: Story = {
   render: (args) => (
     <FlexBox gap="3xl">
-      {radioGroupPropSize.map((size) => (
+      {checkboxPropSize.map((size) => (
         <CheckboxGroup
-          defaultValue={['one']}
           key={size}
           size={size}
+          defaultValue={['one']}
           label={`size = ${size}`}
           {...args}
         >
@@ -89,8 +92,56 @@ export const Caption: Story = {
 export const Orientation: Story = {
   render: (args) => (
     <CheckboxGroup
-      label="What are you interested in?"
       orientation="horizontal"
+      label="What are you interested in?"
+      {...args}
+    >
+      <Checkbox value="frontend">Frontend</Checkbox>
+      <Checkbox value="backend">Backend</Checkbox>
+      <Checkbox value="devops">DevOps</Checkbox>
+      <Checkbox value="design">Design</Checkbox>
+      <Checkbox value="product">Product</Checkbox>
+    </CheckboxGroup>
+  ),
+};
+
+export const Disabled: Story = {
+  render: (args) => (
+    <FlexBox gap="3xl">
+      <CheckboxGroup
+        label="Disabled group"
+        defaultValue={['one']}
+        isDisabled
+        {...args}
+      >
+        <Checkbox value="one">One</Checkbox>
+        <Checkbox value="two">Two</Checkbox>
+        <Checkbox value="three">Three</Checkbox>
+      </CheckboxGroup>
+      <CheckboxGroup
+        label="Disabled third checkbox"
+        defaultValue={['one']}
+        {...args}
+      >
+        <Checkbox value="one">One</Checkbox>
+        <Checkbox value="two">Two</Checkbox>
+        <Checkbox value="three" isDisabled>
+          Three
+        </Checkbox>
+      </CheckboxGroup>
+    </FlexBox>
+  ),
+};
+
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <CheckboxGroup
+      labelAlign="end"
+      labelPlacement="side"
+      orientation="horizontal"
+      defaultValue={['frontend']}
+      label="What are you interested in?"
       {...args}
     >
       <Checkbox value="frontend">Frontend</Checkbox>

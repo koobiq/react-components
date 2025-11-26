@@ -38,6 +38,13 @@ The `isInvalid` prop toggles the error state.
 
 <Story of={Stories.Invalid} />
 
+## Disabled
+
+A checkbox group can be disabled by passing the `isDisabled` prop.
+To disable an individual checkbox, pass `isDisabled` prop to the Checkbox instead.
+
+<Story of={Stories.Disabled} />
+
 ## Caption
 
 The `caption` can be used to associate additional help text with a checkbox group.
@@ -49,3 +56,11 @@ The `caption` can be used to associate additional help text with a checkbox grou
 CheckboxGroups are vertically oriented by default. The `orientation` can be used to change the orientation to `horizontal`.
 
 <Story of={Stories.Orientation} />
+
+## Label placement and alignment
+
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
+
+See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
+
+<Story of={Stories.LabelPlacementAlignment} />

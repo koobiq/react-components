@@ -5,6 +5,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Alert } from '../Alert';
 import { Autocomplete } from '../Autocomplete';
 import { Button } from '../Button';
+import { Checkbox } from '../Checkbox';
+import { CheckboxGroup } from '../CheckboxGroup';
 import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
 import { FormField } from '../FormField';
@@ -458,6 +460,11 @@ export const FormFields: Story = {
           <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
           <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
         </Autocomplete>
+        <CheckboxGroup label="CheckboxGroup" defaultValue={['one']}>
+          <Checkbox value="one">One</Checkbox>
+          <Checkbox value="two">Two</Checkbox>
+          <Checkbox value="three">Three</Checkbox>
+        </CheckboxGroup>
         <FormField>
           <FormField.Label as="span">Inputs</FormField.Label>
           <FlexBox gap="m" style={{ inlineSize: '100%' }}>

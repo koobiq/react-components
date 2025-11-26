@@ -8,8 +8,10 @@ import {
   useCheckboxGroup,
   useCheckboxGroupState,
   CheckboxGroupContext as CheckboxGroupPrimitiveContext,
+  removeDataAttributes,
 } from '@koobiq/react-primitives';
 
+import { useForm } from '../Form';
 import { FormField } from '../FormField';
 import type {
   FormFieldCaptionProps,
@@ -35,8 +37,8 @@ export const CheckboxGroup = forwardRef<
     children,
     className,
     slotProps,
-    isReadOnly,
-    isDisabled,
+    isReadOnly: isReadOnlyProp,
+    isDisabled: isDisabledProp,
     isRequired,
     labelAlign,
     orientation,
@@ -46,15 +48,25 @@ export const CheckboxGroup = forwardRef<
     'data-testid': testId,
   } = props;
 
-  const state = useCheckboxGroupState(props);
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
+
+  const state = useCheckboxGroupState(
+    removeDataAttributes({ ...props, isDisabled, isReadOnly })
+  );
 
   const {
     groupProps,
-    labelProps: ariaLabelProps,
-    descriptionProps: ariaDescriptionProps,
-    errorMessageProps: ariaErrorMessageProps,
+    labelProps: labelPropsAria,
+    descriptionProps: descriptionPropsAria,
+    errorMessageProps: errorMessagePropsAria,
     ...validation
-  } = useCheckboxGroup(props, state);
+  } = useCheckboxGroup(
+    removeDataAttributes({ ...props, isDisabled, isReadOnly }),
+    state
+  );
 
   const { isInvalid } = validation;
 
@@ -98,19 +110,19 @@ export const CheckboxGroup = forwardRef<
       className: s.label,
       isHidden: isLabelHidden,
     },
-    ariaLabelProps,
+    labelPropsAria,
     slotProps?.label
   );
 
   const errorMessageProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
     { children: errorMessage },
-    ariaErrorMessageProps,
+    errorMessagePropsAria,
     slotProps?.errorMessage
   );
 
   const descriptionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
     { children: caption },
-    ariaDescriptionProps,
+    descriptionPropsAria,
     slotProps?.caption
   );
 
