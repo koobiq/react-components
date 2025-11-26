@@ -14,29 +14,28 @@ export function useCheckbox(
   state: ToggleState,
   inputRef: RefObject<HTMLInputElement | null>
 ) {
-  const { isDisabled: isDisabledProp, isIndeterminate: isIndeterminateProp } =
-    props;
-
-  const { hoverProps, isHovered } = useHover({
-    isDisabled: isDisabledProp,
-  });
+  const { isIndeterminate: isIndeterminateProp } = props;
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
 
   const {
-    labelProps: commonLabelProps,
-    inputProps: commonInputProps,
     isInvalid,
     isDisabled,
     isSelected,
     isReadOnly,
     isPressed,
+    labelProps: labelPropsAria,
+    inputProps: inputPropsAria,
     ...other
   } = useCheckboxReactAria(props, state, inputRef);
 
-  const labelProps = mergeProps(hoverProps, commonLabelProps);
+  const { hoverProps, isHovered } = useHover({
+    isDisabled,
+  });
 
-  const inputProps = mergeProps(focusProps, commonInputProps, {
+  const labelProps = mergeProps(hoverProps, labelPropsAria);
+
+  const inputProps = mergeProps(focusProps, inputPropsAria, {
     ref: inputRef,
   });
 

@@ -61,7 +61,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
       isPressed,
       isFocusVisible,
       isIndeterminate,
-      isDisabled: props.isDisabled || false,
+      isDisabled: isDisabled || false,
     };
 
     const renderProps = useRenderProps({

@@ -14,29 +14,30 @@ export function useCheckboxGroupItem(
   state: CheckboxGroupState,
   inputRef: RefObject<HTMLInputElement | null>
 ) {
-  const { isDisabled: isDisabledProp, isIndeterminate: isIndeterminateProp } =
-    props;
-
-  const { hoverProps, isHovered } = useHover({
-    isDisabled: isDisabledProp,
-  });
+  const { isIndeterminate: isIndeterminateProp } = props;
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
 
   const {
-    labelProps: commonLabelProps,
-    inputProps: commonInputProps,
     isInvalid,
-    isDisabled,
     isSelected,
     isReadOnly,
     isPressed,
+    labelProps: labelPropsAria,
+    inputProps: inputPropsAria,
+    isDisabled: issDisabledAria,
     ...other
   } = useCheckboxGroupItemReactAria(props, state, inputRef);
 
-  const labelProps = mergeProps(hoverProps, commonLabelProps);
+  const isDisabled = state.isDisabled || issDisabledAria;
 
-  const inputProps = mergeProps(focusProps, commonInputProps, {
+  const { hoverProps, isHovered } = useHover({
+    isDisabled,
+  });
+
+  const labelProps = mergeProps(hoverProps, labelPropsAria);
+
+  const inputProps = mergeProps(focusProps, inputPropsAria, {
     ref: inputRef,
   });
 
