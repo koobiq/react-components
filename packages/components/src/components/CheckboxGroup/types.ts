@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 
 import type { AriaCheckboxGroupProps } from '@koobiq/react-primitives';
 
@@ -18,6 +18,11 @@ import {
 export const checkboxGroupPropSize = ['normal', 'big'] as const;
 
 export type CheckboxGroupPropSize = (typeof checkboxGroupPropSize)[number];
+
+export const checkboxGroupPropOrientation = ['horizontal', 'vertical'] as const;
+
+export type CheckboxGroupPropOrientation =
+  (typeof checkboxGroupPropOrientation)[number];
 
 export const checkboxGroupPropLabelPlacement = formFieldPropLabelPlacement;
 export type CheckboxGroupPropLabelPlacement = FormFieldPropLabelPlacement;
@@ -41,6 +46,11 @@ export type CheckboxGroupProps = {
    */
   size?: CheckboxGroupPropSize;
   /**
+   * The axis the Checkbox Button(s) should align with.
+   * @default 'vertical'
+   */
+  orientation?: CheckboxGroupPropOrientation;
+  /**
    * If `true`, the label is hidden. Be sure to add aria-label to the input element.
    */
   isLabelHidden?: boolean;
@@ -60,5 +70,6 @@ export type CheckboxGroupProps = {
     caption?: FormFieldCaptionProps;
     errorMessage?: FormFieldErrorProps;
     label?: FormFieldLabelProps<'span'>;
+    checkboxGroup?: ComponentPropsWithRef<'div'>;
   };
 } & Omit<AriaCheckboxGroupProps, 'description' | 'validationState'>;

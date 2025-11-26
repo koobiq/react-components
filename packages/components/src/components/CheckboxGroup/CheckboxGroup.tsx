@@ -17,6 +17,7 @@ import {
   type FormFieldLabelProps,
   type FormFieldProps,
 } from '../FormField';
+import { flex } from '../layout';
 
 import s from './CheckboxGroup.module.css';
 import type { CheckboxGroupProps } from './types';
@@ -36,6 +37,7 @@ export const CheckboxGroup = forwardRef<
     isDisabled,
     isRequired,
     labelAlign,
+    orientation,
     errorMessage,
     isLabelHidden,
     labelPlacement,
@@ -63,6 +65,7 @@ export const CheckboxGroup = forwardRef<
       labelAlign,
       labelPlacement,
       'data-testid': testId,
+      'data-orientation': orientation,
       className: clsx(s.base, className),
       'data-invalid': isInvalid || undefined,
       'data-readonly': isReadOnly || undefined,
@@ -71,6 +74,17 @@ export const CheckboxGroup = forwardRef<
     },
     groupProps,
     slotProps?.root
+  );
+
+  const checkboxGroupProps = mergeProps(
+    {
+      className: flex({
+        direction: orientation === 'horizontal' ? 'row' : 'column',
+        alignItems: orientation === 'horizontal' ? 'center' : 'flex-start',
+        gap: 's',
+      }),
+    },
+    slotProps?.checkboxGroup
   );
 
   const labelProps = mergeProps<(FormFieldLabelProps<'span'> | undefined)[]>(
@@ -102,7 +116,7 @@ export const CheckboxGroup = forwardRef<
       <FormField.Label {...labelProps} />
       <div className={s.body}>
         <CheckboxGroupContext.Provider value={state}>
-          {children}
+          <div {...checkboxGroupProps}>{children}</div>
         </CheckboxGroupContext.Provider>
         <FormField.Caption {...descriptionProps} />
         <FieldErrorContext.Provider value={validation}>
