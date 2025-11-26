@@ -70,6 +70,7 @@ export * from './IconQuestionCircle24';
 export * from './IconQuestionCircleO32';
 export * from './IconStopCircle16';
 export * from './IconStopCircle24';
+export * from './IconTableBadgeArrowDownCircle32';
 export * from './IconTelegramCircle16';
 export * from './IconTelegramCircle24';
 export * from './IconUserArrowTriangleUp16';
