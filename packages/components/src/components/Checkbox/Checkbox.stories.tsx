@@ -151,3 +151,16 @@ export const WithoutLabel: Story = {
     <Checkbox {...args} aria-label="Checkbox" defaultSelected />
   ),
 };
+
+export const HtmlForms: Story = {
+  render: (args) => (
+    <Checkbox
+      {...args}
+      aria-label="Newsletter"
+      name="newsletter"
+      value="subscribe"
+    >
+      Subscribe
+    </Checkbox>
+  ),
+};
