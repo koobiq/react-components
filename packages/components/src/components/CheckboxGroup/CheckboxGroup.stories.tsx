@@ -136,15 +136,12 @@ export const Disabled: Story = {
   ),
 };
 
-export const LabelPlacementAlignment: Story = {
-  name: 'Label placement and alignment',
+export const ReadOnly: Story = {
   render: (args) => (
     <CheckboxGroup
-      labelAlign="end"
-      labelPlacement="side"
-      orientation="horizontal"
-      defaultValue={['frontend']}
       label="What are you interested in?"
+      defaultValue={['frontend']}
+      isReadOnly
       {...args}
     >
       <Checkbox value="frontend">Frontend</Checkbox>
@@ -152,6 +149,24 @@ export const LabelPlacementAlignment: Story = {
       <Checkbox value="devops">DevOps</Checkbox>
       <Checkbox value="design">Design</Checkbox>
       <Checkbox value="product">Product</Checkbox>
+    </CheckboxGroup>
+  ),
+};
+
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: (args) => (
+    <CheckboxGroup
+      labelAlign="end"
+      labelPlacement="side"
+      orientation="horizontal"
+      defaultValue={['one']}
+      label="Label"
+      {...args}
+    >
+      <Checkbox value="one">One</Checkbox>
+      <Checkbox value="two">Two</Checkbox>
+      <Checkbox value="three">Three</Checkbox>
     </CheckboxGroup>
   ),
 };
@@ -188,4 +203,14 @@ export const ControlledValue: Story = {
       </FlexBox>
     );
   },
+};
+
+export const HtmlForms: Story = {
+  render: (args) => (
+    <CheckboxGroup label="Conditions" name="conditions" {...args}>
+      <Checkbox value="one">Condition 1</Checkbox>
+      <Checkbox value="two">Condition 2</Checkbox>
+      <Checkbox value="three">Condition 3</Checkbox>
+    </CheckboxGroup>
+  ),
 };

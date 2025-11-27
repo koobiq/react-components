@@ -45,6 +45,12 @@ To disable an individual checkbox, pass `isDisabled` prop to the Checkbox instea
 
 <Story of={Stories.Disabled} />
 
+## Read only
+
+The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the CheckboxGroup remains focusable.
+
+<Story of={Stories.ReadOnly} />
+
 ## Caption
 
 The `caption` can be used to associate additional help text with a checkbox group.
@@ -81,3 +87,9 @@ which accepts a value corresponding with the `value` prop of each `Checkbox`.
 The `onChange` event is fired when the user selects a radio.
 
 <Story of={Stories.ControlledValue} />
+
+## HTML forms
+
+CheckboxGroup supports the `name` prop, paired with the Checkbox `value` prop, for integration with HTML forms.
+
+<Story of={Stories.HtmlForms} />
