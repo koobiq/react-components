@@ -17,17 +17,18 @@ export function useSwitch(
 
   const state = useToggleState(props);
 
-  const { hoverProps, isHovered } = useHover({
-    isDisabled,
-  });
-
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
 
   const {
     labelProps: commonLabelProps,
     inputProps: commonInputProps,
+    isReadOnly,
     ...other
   } = useSwitchReactAria(props, state, ref);
+
+  const { hoverProps, isHovered } = useHover({
+    isDisabled: isDisabled || isReadOnly,
+  });
 
   const labelProps = mergeProps(hoverProps, commonLabelProps);
 
@@ -41,6 +42,7 @@ export function useSwitch(
     isInvalid,
     isHovered,
     isFocused,
+    isReadOnly,
     isFocusVisible,
     ...other,
   };

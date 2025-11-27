@@ -8,6 +8,7 @@ import type { RenderProps } from '../../utils';
 export type SwitchRenderProps = {
   isInvalid?: boolean;
   isPressed?: boolean;
+  isReadOnly?: boolean;
   isSelected?: boolean;
   isHovered?: boolean;
   isFocused?: boolean;

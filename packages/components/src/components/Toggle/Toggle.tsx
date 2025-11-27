@@ -76,6 +76,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
         isInvalid,
         isHovered,
         isFocusVisible,
+        isReadOnly,
         isDisabled,
         isSelected,
       }) =>
@@ -84,6 +85,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
           s[size],
           s[labelPlacement],
           isInvalid && s.invalid,
+          isReadOnly && s.readOnly,
           isHovered && s.hovered,
           isSelected && s.selected,
           isDisabled && s.disabled,

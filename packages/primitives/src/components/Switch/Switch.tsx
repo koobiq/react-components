@@ -9,7 +9,7 @@ import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useSwitch } from '../../behaviors';
 import { removeDataAttributes, useRenderProps } from '../../utils';
 
-import type { SwitchProps } from './index';
+import type { SwitchProps, SwitchRenderProps } from './index';
 
 export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
   (props, ref) => {
@@ -20,12 +20,14 @@ export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
     const {
       isHovered,
       isInvalid,
+      isReadOnly,
       isSelected,
       isFocused,
       isPressed,
-      isFocusVisible,
       labelProps,
       inputProps,
+      isFocusVisible,
+      isDisabled: isDisabledAria,
     } = useSwitch(
       {
         ...removeDataAttributes(props),
@@ -34,14 +36,17 @@ export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
       domRef
     );
 
-    const renderValues = {
+    const isDisabled = isDisabledAria || false;
+
+    const renderValues: SwitchRenderProps = {
       isHovered,
       isInvalid,
-      isSelected,
       isFocused,
       isPressed,
+      isDisabled,
+      isSelected,
+      isReadOnly,
       isFocusVisible,
-      isDisabled: props.isDisabled || false,
     };
 
     const renderProps = useRenderProps({
@@ -53,7 +58,19 @@ export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
     delete DOMProps.id;
 
     return (
-      <label {...mergeProps(DOMProps, labelProps, renderProps)} ref={ref}>
+      <label
+        data-hovered={isHovered || undefined}
+        data-pressed={isPressed || undefined}
+        data-focused={isFocused || undefined}
+        data-invalid={isInvalid || undefined}
+        data-selected={isSelected || undefined}
+        data-disabled={isDisabled || undefined}
+        data-read-only={isReadOnly || undefined}
+        data-focus-visible={isFocusVisible || undefined}
+        data-indeterminate={isDisabled || undefined}
+        {...mergeProps(DOMProps, labelProps, renderProps)}
+        ref={ref}
+      >
         <VisuallyHidden elementType="span">
           <input {...inputProps} ref={domRef} />
         </VisuallyHidden>
