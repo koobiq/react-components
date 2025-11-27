@@ -64,3 +64,20 @@ Use `labelPlacement` and `labelAlign` props to set the position of the label.
 See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
 
 <Story of={Stories.LabelPlacementAlignment} />
+
+## Value
+
+### Default value
+
+An initial, uncontrolled value can be provided to the `CheckboxGroup` using the `defaultValue` prop,
+which accepts a value corresponding with the `value` prop of each `Checkbox`.
+
+<Story of={Stories.DefaultValue} />
+
+### Controlled value
+
+A controlled value can be provided using the `value` prop,
+which accepts a value corresponding with the `value` prop of each `Checkbox`.
+The `onChange` event is fired when the user selects a radio.
+
+<Story of={Stories.ControlledValue} />

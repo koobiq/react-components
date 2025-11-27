@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox, checkboxPropSize } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
+import { Typography } from '../Typography';
 
 import { CheckboxGroup } from './index';
 
@@ -151,4 +154,38 @@ export const LabelPlacementAlignment: Story = {
       <Checkbox value="product">Product</Checkbox>
     </CheckboxGroup>
   ),
+};
+
+export const DefaultValue: Story = {
+  render: function Render(args) {
+    return (
+      <CheckboxGroup label="Uncontrolled" defaultValue={['one']} {...args}>
+        <Checkbox value="one">One</Checkbox>
+        <Checkbox value="two">Two</Checkbox>
+        <Checkbox value="three">Three</Checkbox>
+      </CheckboxGroup>
+    );
+  },
+};
+
+export const ControlledValue: Story = {
+  render: function Render(args) {
+    const [value, setValue] = useState(['one']);
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <CheckboxGroup
+          value={value}
+          label="Сontrolled"
+          onChange={setValue}
+          {...args}
+        >
+          <Checkbox value="one">One</Checkbox>
+          <Checkbox value="two">Two</Checkbox>
+          <Checkbox value="three">Three</Checkbox>
+        </CheckboxGroup>
+        <Typography>You have selected: {value.join(', ')}</Typography>
+      </FlexBox>
+    );
+  },
 };
