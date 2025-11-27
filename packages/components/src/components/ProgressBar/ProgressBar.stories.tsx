@@ -19,9 +19,9 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   render: (args) => (
     <ProgressBar
+      value={50}
       aria-label="Loading data…"
       style={{ inlineSize: 260 }}
-      value={50}
       {...args}
     />
   ),
@@ -30,8 +30,8 @@ export const Base: Story = {
 export const Value: Story = {
   render: (args) => (
     <ProgressBar
-      aria-label="Loading…"
       value={25}
+      aria-label="Loading…"
       style={{ inlineSize: 260 }}
       {...args}
     />
@@ -42,11 +42,11 @@ export const MinMaxValues: Story = {
   name: 'MinValue and MaxValue',
   render: (args) => (
     <ProgressBar
-      style={{ inlineSize: 260 }}
-      aria-label="Loading…"
+      value={100}
       minValue={50}
       maxValue={150}
-      value={100}
+      style={{ inlineSize: 260 }}
+      aria-label="Loading…"
       {...args}
     />
   ),
@@ -57,7 +57,7 @@ export const Indeterminate: Story = {
     <ProgressBar
       aria-label="System scan…"
       style={{ inlineSize: 260 }}
-      variant="indeterminate"
+      isIndeterminate
       {...args}
     />
   ),
@@ -82,9 +82,9 @@ export const LoadingEmulation: Story = {
 
     return (
       <ProgressBar
+        value={progress}
         aria-label="Loading…"
         style={{ inlineSize: 260 }}
-        value={progress}
         {...args}
       />
     );
