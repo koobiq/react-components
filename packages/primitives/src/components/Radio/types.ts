@@ -12,10 +12,10 @@ export type RadioRenderProps = {
   isFocused?: boolean;
   isHovered?: boolean;
   isPressed?: boolean;
+  isReadOnly?: boolean;
   isSelected?: boolean;
   isDisabled?: boolean;
   isFocusVisible?: boolean;
-  isIndeterminate?: boolean;
 };
 
 export type RadioGroupRenderProps = {

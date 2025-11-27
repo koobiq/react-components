@@ -121,6 +121,10 @@
   --radio-outline-color: var(--kbq-states-line-focus-error);
 }
 
+.readOnly {
+  cursor: default;
+}
+
 .disabled {
   --radio-bg-color: var(--kbq-states-background-disabled);
   --radio-border-color: var(--kbq-states-line-disabled);

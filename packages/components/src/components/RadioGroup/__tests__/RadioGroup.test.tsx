@@ -150,12 +150,18 @@ describe('RadioGroup', () => {
       expect(getRoot()).toHaveTextContent('validation error');
     });
 
-    it('should propagate Form isDisabled to fields unless overridden', () => {
+    it('should propagate Form isDisabled to fields unless overridden', async () => {
+      const onChange = vi.fn();
+
       const { rerender } = render(
-        <Form isDisabled>{renderComponent({})}</Form>
+        <Form isDisabled>{renderComponent({ onChange })}</Form>
       );
 
       expect(getRoot()).toHaveAttribute('aria-disabled', 'true');
+
+      await userEvent.click(screen.getByTestId(RADIO__TEST_ID));
+
+      expect(onChange).not.toBeCalled();
 
       rerender(
         <Form isDisabled>{renderComponent({ isDisabled: false })}</Form>
@@ -164,12 +170,18 @@ describe('RadioGroup', () => {
       expect(getRoot()).not.toHaveAttribute('aria-disabled', 'true');
     });
 
-    it('should propagate Form isReadOnly to fields unless overridden', () => {
+    it('should propagate Form isReadOnly to fields unless overridden', async () => {
+      const onChange = vi.fn();
+
       const { rerender } = render(
-        <Form isReadOnly>{renderComponent({})}</Form>
+        <Form isReadOnly>{renderComponent({ onChange })}</Form>
       );
 
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+      await userEvent.click(screen.getByTestId(RADIO__TEST_ID));
+
+      expect(onChange).not.toBeCalled();
 
       rerender(
         <Form isReadOnly>{renderComponent({ isReadOnly: false })}</Form>

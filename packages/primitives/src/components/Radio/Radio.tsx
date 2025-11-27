@@ -8,7 +8,7 @@ import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useRadio } from '../../behaviors';
 import { removeDataAttributes, useRenderProps } from '../../utils';
 
-import type { RadioProps } from './index';
+import type { RadioProps, RadioRenderProps } from './index';
 import { RadioContext } from './index';
 
 export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
@@ -28,6 +28,7 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
       isSelected,
       labelProps,
       inputProps,
+      isReadOnly,
       isFocusVisible,
     } = useRadio(
       {
@@ -38,12 +39,13 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
       domRef
     );
 
-    const renderValues = {
+    const renderValues: RadioRenderProps = {
       isInvalid,
       isHovered,
       isSelected,
       isFocused,
       isPressed,
+      isReadOnly,
       isDisabled,
       isFocusVisible,
     };
@@ -57,7 +59,18 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
     delete DOMProps.id;
 
     return (
-      <label {...mergeProps(DOMProps, labelProps, renderProps)} ref={ref}>
+      <label
+        data-hovered={isHovered || undefined}
+        data-pressed={isPressed || undefined}
+        data-focused={isFocused || undefined}
+        data-invalid={isInvalid || undefined}
+        data-selected={isSelected || undefined}
+        data-disabled={isDisabled || undefined}
+        data-read-only={isReadOnly || undefined}
+        data-focus-visible={isFocusVisible || undefined}
+        {...mergeProps(DOMProps, labelProps, renderProps)}
+        ref={ref}
+      >
         <VisuallyHidden elementType="span">
           <input {...inputProps} ref={domRef} />
         </VisuallyHidden>

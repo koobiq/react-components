@@ -44,6 +44,12 @@ To disable an individual radio, pass `isDisabled` prop to the Radio instead.
 
 <Story of={Stories.Disabled} />
 
+## Read only
+
+The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the RadioGroup remains focusable.
+
+<Story of={Stories.ReadOnly} />
+
 ## Label placement and alignment
 
 Use `labelPlacement` and `labelAlign` props to set the position of the label.
@@ -57,7 +63,7 @@ See the [Form](?path=/docs/components-form--docs#visual-options) for a two-colum
 ### Default value
 
 An initial, uncontrolled value can be provided to the `RadioGroup` using the `defaultValue` prop,
-which accepts a value corresponding with the `value` property of each `Radio`.
+which accepts a value corresponding with the `value` prop of each `Radio`.
 
 <Story of={Stories.DefaultValue} />
 
@@ -87,3 +93,9 @@ Input supports HTML validation attributes, custom validation logic, server error
 and can be integrated with external form libraries. See the [Forms](?path=/docs/forms--docs) guide for details.
 
 <Story of={Stories.Validation} />
+
+## HTML forms
+
+RadioGroup supports the `name` prop, paired with the Radio `value` prop, for integration with HTML forms.
+
+<Story of={Stories.HtmlForms} />
