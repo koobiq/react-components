@@ -90,6 +90,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       (FormFieldProps<typeof RadioGroupPrimitive> | undefined)[]
     >(
       {
+        ...props,
         style,
         labelPlacement,
         className,
@@ -98,7 +99,6 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         isInvalid,
         isReadOnly,
         isRequired,
-        ...props,
         ref,
         'data-size': size,
         'data-testid': testId,

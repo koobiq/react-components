@@ -78,6 +78,22 @@ export const Disabled: Story = {
   ),
 };
 
+export const ReadOnly: Story = {
+  render: (args) => (
+    <RadioGroup
+      label="Which OS do you use?"
+      defaultValue="windows"
+      isReadOnly
+      {...args}
+    >
+      <Radio value="windows">Windows</Radio>
+      <Radio value="macos">macOS</Radio>
+      <Radio value="linux">Linux</Radio>
+      <Radio value="other">Other</Radio>
+    </RadioGroup>
+  ),
+};
+
 export const Invalid: Story = {
   render: (args) => (
     <RadioGroup
@@ -150,7 +166,7 @@ export const ControlledValue: Story = {
 export const Caption: Story = {
   render: (args) => (
     <RadioGroup
-      label="Favorite fruit:"
+      label="Favorite fruit"
       caption="Please select a fruit."
       {...args}
     >
@@ -163,7 +179,7 @@ export const Caption: Story = {
 
 export const Orientation: Story = {
   render: (args) => (
-    <RadioGroup label="Favorite fruit:" orientation="horizontal" {...args}>
+    <RadioGroup label="Favorite fruit" orientation="horizontal" {...args}>
       <Radio value="banana">Banana</Radio>
       <Radio value="apple">Apple</Radio>
       <Radio value="peach">Peach</Radio>
@@ -175,10 +191,10 @@ export const Validation: Story = {
   render: (args) => (
     <Form>
       <RadioGroup
-        label="Numbers"
         name="numbers"
-        isRequired
+        label="Numbers"
         validationBehavior="native"
+        isRequired
         {...args}
       >
         <Radio value="one">One</Radio>
@@ -187,5 +203,15 @@ export const Validation: Story = {
       </RadioGroup>
       <Button type="submit">Submit</Button>
     </Form>
+  ),
+};
+
+export const HtmlForms: Story = {
+  render: (args) => (
+    <RadioGroup label="Favorite fruit" name="fruits" {...args}>
+      <Radio value="banana">Banana</Radio>
+      <Radio value="apple">Apple</Radio>
+      <Radio value="peach">Peach</Radio>
+    </RadioGroup>
   ),
 };

@@ -17,11 +17,11 @@ export function useRadio(
   ref: RefObject<HTMLInputElement | null>
 ) {
   const {
-    inputProps: commonInputProps,
-    labelProps: commonLabelProps,
     isDisabled,
     isSelected,
     isPressed,
+    inputProps: inputPropsAria,
+    labelProps: labelPropsAria,
   } = useRadioReactAria(
     props,
     Object.assign(state, {
@@ -34,14 +34,14 @@ export function useRadio(
   );
 
   const { hoverProps, isHovered } = useHover({
-    isDisabled,
+    isDisabled: isDisabled || state.isReadOnly,
   });
 
-  const labelProps = mergeProps(hoverProps, commonLabelProps);
+  const labelProps = mergeProps(hoverProps, labelPropsAria);
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
 
-  const inputProps = mergeProps(focusProps, commonInputProps, {
+  const inputProps = mergeProps(focusProps, inputPropsAria, {
     ref,
   });
 
@@ -54,6 +54,7 @@ export function useRadio(
     isSelected,
     isDisabled,
     isFocusVisible,
+    isReadOnly: state.isReadOnly,
   };
 }
 

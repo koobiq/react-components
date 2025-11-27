@@ -44,6 +44,7 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
         isSelected,
         isHovered,
         isDisabled,
+        isReadOnly,
         isFocusVisible,
       }) =>
         clsx(
@@ -52,6 +53,7 @@ export const Radio = forwardRef<ComponentRef<'label'>, RadioProps>(
           s[labelPlacement],
           isInvalid && s.invalid,
           isHovered && s.hovered,
+          isReadOnly && s.readOnly,
           isDisabled && s.disabled,
           isSelected && s.selected,
           isFocusVisible && s.focusVisible,
