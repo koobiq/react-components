@@ -11,7 +11,7 @@ import * as Stories from './ProgressSpinner.stories';
 
 # ProgressSpinner
 
-<Status variant="experimental" />
+<Status variant="stable" />
 
 ProgressSpinner shows the progression of a system operation such as downloading, uploading, or processing, in a visual way.
 They can represent determinate or indeterminate progress.
@@ -34,19 +34,20 @@ For `compact` or `big` progresses, use the `size` prop.
 
 ## Value
 
-ProgressBars are controlled with the `value` property.
-By default, the value property represents the current percentage of progress,
+ProgressBars are controlled with the `value` prop.
+By default, the `value` prop represents the current percentage of progress,
 as the minimum and maximum values default to 0 and 100, respectively.
 
 <Story of={Stories.Value} />
 
-Alternatively, a different scale can be used by setting the `minValue` and `maxValue` properties.
+Alternatively, a different scale can be used by setting the `minValue` and `maxValue` props.
 
 <Story of={Stories.MinMaxValues} />
 
 ## Indeterminate
 
-By default, ProgressBars are determinate. Use `variant` property as `indeterminate` when progress can't be calculated against a specific goal.
+By default, ProgressSpinners are determinate.
+Use `isIndeterminate` when progress can't be calculated against a specific goal.
 
 <Story of={Stories.Indeterminate} />
 
