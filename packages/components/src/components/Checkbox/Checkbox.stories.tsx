@@ -23,7 +23,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args) => <Checkbox {...args}>Label</Checkbox>,
+  render: (args) => (
+    <Checkbox defaultSelected {...args}>
+      Label
+    </Checkbox>
+  ),
 };
 
 export const Size: Story = {
