@@ -107,7 +107,7 @@ export const rows: Rows = [
   {
     component: 'ProgressSpinner',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2025',
   },
   {
