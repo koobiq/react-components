@@ -147,6 +147,10 @@
   --toggle-track-outline-color: var(--kbq-states-line-focus-error);
 }
 
+.readOnly {
+  cursor: default;
+}
+
 .disabled {
   cursor: not-allowed;
 }

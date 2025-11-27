@@ -111,6 +111,14 @@ export const Invalid: Story = {
   ),
 };
 
+export const ReadOnly: Story = {
+  render: (args) => (
+    <Toggle {...args} isReadOnly defaultSelected>
+      Label
+    </Toggle>
+  ),
+};
+
 export const Description: Story = {
   render: (args) => (
     <Toggle
