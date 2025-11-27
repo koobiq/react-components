@@ -36,7 +36,11 @@ export const ProgressBar = polymorphicForwardRef<'div', ProgressBarBaseProps>(
     });
 
     return (
-      <Tag {...mergeProps(other, progressBarProps, renderProps)} ref={ref}>
+      <Tag
+        data-indeterminate={isIndeterminate || undefined}
+        {...mergeProps(other, progressBarProps, renderProps)}
+        ref={ref}
+      >
         <Provider values={[[LabelContext, labelProps]]}>
           {renderProps.children}
         </Provider>
