@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { ProgressBar } from './index';
 
 describe('ProgressBar', () => {
-  const baseProps = { label: 'progressbar' };
+  const baseProps = { 'aria-label': 'progressbar' };
 
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -48,5 +48,25 @@ describe('ProgressBar', () => {
     const root = container.querySelector('div');
 
     expect(root).toHaveAttribute('aria-valuenow', '0');
+  });
+
+  it('should set indeterminate when `isIndeterminate` is true', () => {
+    const value = 50;
+
+    const { container } = render(
+      <ProgressBar {...baseProps} value={value} isIndeterminate />
+    );
+
+    const root = container.querySelector('div');
+
+    expect(root).toHaveAttribute('data-indeterminate', 'true');
+  });
+
+  it('should be indeterminate when no value is provided', () => {
+    const { container } = render(<ProgressBar {...baseProps} />);
+
+    const root = container.querySelector('div');
+
+    expect(root).toHaveAttribute('data-indeterminate', 'true');
   });
 });

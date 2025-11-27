@@ -3,6 +3,7 @@
 import type { ComponentRef, CSSProperties } from 'react';
 import { forwardRef } from 'react';
 
+import { deprecate } from '@koobiq/logger';
 import { clsx, isNotNil } from '@koobiq/react-core';
 import { ProgressBar as ProgressBarPrimitive } from '@koobiq/react-primitives';
 
@@ -12,17 +13,25 @@ import s from './ProgressBar.module.css';
 export const ProgressBar = forwardRef<ComponentRef<'div'>, ProgressBarProps>(
   (props, ref) => {
     const {
-      variant = 'determinate',
+      variant,
       minValue = 0,
       maxValue = 100,
       className,
       value,
       slotProps,
       style,
+      isIndeterminate: isIndeterminateProp,
       ...other
     } = props;
 
-    const isIndeterminate = variant === 'indeterminate' || !isNotNil(value);
+    const isIndeterminate =
+      isIndeterminateProp ?? (variant === 'indeterminate' || !isNotNil(value));
+
+    if (process.env.NODE_ENV !== 'production' && 'variant' in props) {
+      deprecate(
+        'ProgressBar: the "variant" prop is deprecated. Use "isIndeterminate" prop to replace it.'
+      );
+    }
 
     const setProgressTrackStyles = () => {
       if (isIndeterminate) return undefined;
@@ -43,7 +52,6 @@ export const ProgressBar = forwardRef<ComponentRef<'div'>, ProgressBarProps>(
         minValue={minValue}
         maxValue={maxValue}
         isIndeterminate={isIndeterminate}
-        data-variant={isIndeterminate ? 'indeterminate' : 'determinate'}
         style={{ ...style, ...setProgressTrackStyles() }}
         className={clsx(s.base, isIndeterminate && s.indeterminate, className)}
         {...other}

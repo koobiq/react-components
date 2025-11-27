@@ -101,7 +101,7 @@ export const rows: Rows = [
   {
     component: 'ProgressBar',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2025',
   },
   {
