@@ -18,6 +18,16 @@ export const progressSpinnerPropVariant = [
 export type ProgressSpinnerPropVariant =
   (typeof progressSpinnerPropVariant)[number];
 
+type ProgressSpinnerDeprecatedProps = {
+  /**
+   * The variant to use. Use indeterminate or query when there is no progress value.
+   * @default 'determinate'
+   * @deprecated
+   * The "variant" prop is deprecated. Use "isIndeterminate" prop to replace it.
+   */
+  variant?: ProgressSpinnerPropVariant;
+};
+
 export type ProgressSpinnerBaseProps = ExtendableComponentPropsWithRef<
   {
     children?: never;
@@ -30,11 +40,6 @@ export type ProgressSpinnerBaseProps = ExtendableComponentPropsWithRef<
     className?: string;
     /** Inline styles. */
     style?: CSSProperties;
-    /**
-     * The variant to use. Use indeterminate or query when there is no progress value.
-     * @default 'determinate'
-     */
-    variant?: ProgressSpinnerPropVariant;
     /** The props used for each slot inside. */
     slotProps?: {
       spin?: ComponentPropsWithRef<'svg'>;
@@ -44,9 +49,9 @@ export type ProgressSpinnerBaseProps = ExtendableComponentPropsWithRef<
 >;
 
 export type ProgressSpinnerProps = ExtendableProps<
-  ProgressSpinnerBaseProps,
+  ProgressSpinnerBaseProps & ProgressSpinnerDeprecatedProps,
   Omit<
     ProgressBarBasePrimitiveProps,
-    'children' | 'isIndeterminate' | 'label' | 'formatOptions' | 'valueLabel'
+    'children' | 'label' | 'formatOptions' | 'valueLabel'
   >
 >;
