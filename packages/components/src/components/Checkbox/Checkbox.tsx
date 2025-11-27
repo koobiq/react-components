@@ -11,6 +11,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { AnimatedIcon } from '../AnimatedIcon';
+import { useCheckboxGroupState } from '../CheckboxGroup/CheckboxGroupContext';
 
 import s from './Checkbox.module.css';
 import type { CheckboxProps } from './index';
@@ -18,7 +19,7 @@ import type { CheckboxProps } from './index';
 export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
   (props, ref) => {
     const {
-      size = 'normal',
+      size: sizeProp,
       labelPlacement = 'end',
       disabled,
       isDisabled: isDisabledProp,
@@ -48,6 +49,10 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
     const isRequired = isRequiredProp ?? required;
     const isIndeterminate = isIndeterminateProp ?? indeterminate;
 
+    const { size: sizeState } = useCheckboxGroupState();
+
+    const size = sizeProp || sizeState || 'normal';
+
     const commonProps: CheckboxPropsPrimitive = {
       isIndeterminate,
       isDisabled,
@@ -60,6 +65,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
         isInvalid,
         isSelected,
         isHovered,
+        isReadOnly,
         isDisabled,
         isFocusVisible,
         isIndeterminate,
@@ -70,6 +76,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
           s[labelPlacement],
           isInvalid && s.invalid,
           isHovered && s.hovered,
+          isReadOnly && s.readOnly,
           isDisabled && s.disabled,
           isSelected && s.selected,
           isFocusVisible && s.focusVisible,

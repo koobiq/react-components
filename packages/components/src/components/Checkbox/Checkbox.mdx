@@ -58,13 +58,19 @@ The `isInvalid` prop toggles the invalid state.
 
 <Story of={Stories.Invalid} />
 
+## Read only
+
+The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the Checkbox remains focusable.
+
+<Story of={Stories.ReadOnly} />
+
 ## Indeterminate
 
 A checkbox input can only have two states in a form: checked or unchecked.
 
 Visually, there are three states a checkbox can be in: checked, unchecked, or indeterminate.
 
-The `isInvalid` prop toggles the indeterminate state.
+The `isIndeterminate` prop toggles the indeterminate state.
 
 <Story of={Stories.Indeterminate} />
 
@@ -79,3 +85,9 @@ Add content to the children of the Checkbox component to add a description.
 You can use a component without a label, see the example.
 
 <Story of={Stories.WithoutLabel} />
+
+## HTML forms
+
+Checkbox supports the name and value props for integration with HTML forms.
+
+<Story of={Stories.HtmlForms} />

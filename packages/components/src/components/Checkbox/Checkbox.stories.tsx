@@ -23,7 +23,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  render: (args) => <Checkbox {...args}>Label</Checkbox>,
+  render: (args) => (
+    <Checkbox defaultSelected {...args}>
+      Label
+    </Checkbox>
+  ),
 };
 
 export const Size: Story = {
@@ -81,6 +85,14 @@ export const ControlledValue: Story = {
 export const Invalid: Story = {
   render: (args) => (
     <Checkbox {...args} isInvalid defaultSelected>
+      Label
+    </Checkbox>
+  ),
+};
+
+export const ReadOnly: Story = {
+  render: (args) => (
+    <Checkbox {...args} isReadOnly defaultSelected>
       Label
     </Checkbox>
   ),
@@ -149,5 +161,18 @@ export const Description: Story = {
 export const WithoutLabel: Story = {
   render: (args) => (
     <Checkbox {...args} aria-label="Checkbox" defaultSelected />
+  ),
+};
+
+export const HtmlForms: Story = {
+  render: (args) => (
+    <Checkbox
+      {...args}
+      aria-label="Newsletter"
+      name="newsletter"
+      value="subscribe"
+    >
+      Subscribe
+    </Checkbox>
   ),
 };

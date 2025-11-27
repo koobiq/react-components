@@ -1,0 +1,108 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './CheckboxGroup.stories';
+
+<Meta of={Stories} />
+
+# CheckboxGroup
+
+<Status variant="experimental" />
+
+Provides the behavior and accessibility implementation for a checkbox group component.
+Checkbox groups allow users to select multiple items from a list of options.
+
+```tsx
+import { CheckboxGroup, Checkbox } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Size
+
+For `normal` or `big` radios, use the `size` props.
+
+<Story of={Stories.Size} />
+
+## Invalid
+
+The `isInvalid` prop toggles the error state.
+
+<Story of={Stories.Invalid} />
+
+## Disabled
+
+A checkbox group can be disabled by passing the `isDisabled` prop.
+To disable an individual checkbox, pass `isDisabled` prop to the Checkbox instead.
+
+<Story of={Stories.Disabled} />
+
+## Read only
+
+The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the CheckboxGroup remains focusable.
+
+<Story of={Stories.ReadOnly} />
+
+## Caption
+
+The `caption` can be used to associate additional help text with a checkbox group.
+
+<Story of={Stories.Caption} />
+
+## Orientation
+
+CheckboxGroups are vertically oriented by default. The `orientation` can be used to change the orientation to `horizontal`.
+
+<Story of={Stories.Orientation} />
+
+## Label placement and alignment
+
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
+
+See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
+
+<Story of={Stories.LabelPlacementAlignment} />
+
+## Value
+
+### Default value
+
+An initial, uncontrolled value can be provided to the `CheckboxGroup` using the `defaultValue` prop,
+which accepts a value corresponding with the `value` prop of each `Checkbox`.
+
+<Story of={Stories.DefaultValue} />
+
+### Controlled value
+
+A controlled value can be provided using the `value` prop,
+which accepts a value corresponding with the `value` prop of each `Checkbox`.
+The `onChange` event is fired when the user selects a radio.
+
+<Story of={Stories.ControlledValue} />
+
+## Group validation
+
+The `isRequired` prop at the CheckboxGroup level requires that at least one item is selected.
+
+<Story of={Stories.GroupValidation} />
+
+## Individual Checkbox validation
+
+To require that specific checkboxes are checked, set the `isRequired` prop at the Checkbox level instead of the CheckboxGroup.
+The following example shows how to require that all items are selected.
+
+<Story of={Stories.IndividualValidation} />
+
+## HTML forms
+
+CheckboxGroup supports the `name` prop, paired with the Checkbox `value` prop, for integration with HTML forms.
+
+<Story of={Stories.HtmlForms} />

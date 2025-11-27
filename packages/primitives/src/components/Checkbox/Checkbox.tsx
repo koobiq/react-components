@@ -1,20 +1,26 @@
 'use client';
 
-import type { ComponentRef } from 'react';
+import { type ComponentRef, useContext } from 'react';
 import { forwardRef } from 'react';
 
 import { useDOMRef, mergeProps, filterDOMProps } from '@koobiq/react-core';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { useToggleState } from '@react-stately/toggle';
 
-import { useCheckbox } from '../../behaviors';
+import { useCheckbox, useCheckboxGroupItem } from '../../behaviors';
 import { removeDataAttributes, useRenderProps } from '../../utils';
 
-import type { CheckboxProps } from './index';
+import {
+  CheckboxGroupContext,
+  type CheckboxProps,
+  type CheckboxRenderProps,
+} from './index';
 
 export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
   (props, ref) => {
     const { children, inputRef } = props;
 
+    const groupState = useContext(CheckboxGroupContext);
     const domRef = useDOMRef<ComponentRef<'input'>>(inputRef);
 
     const {
@@ -29,23 +35,38 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
       isIndeterminate,
       labelProps,
       inputProps,
-    } = useCheckbox(
-      {
-        ...removeDataAttributes(props),
-        children: typeof children === 'function' ? true : children,
-      },
-      domRef
-    );
+    } = groupState
+      ? // eslint-disable-next-line react-hooks/rules-of-hooks
+        useCheckboxGroupItem(
+          {
+            ...removeDataAttributes(props),
+            children: typeof children === 'function' ? true : children,
+            value: props.value as string,
+          },
+          groupState,
+          domRef
+        )
+      : // eslint-disable-next-line react-hooks/rules-of-hooks
+        useCheckbox(
+          {
+            ...removeDataAttributes(props),
+            children: typeof children === 'function' ? true : children,
+          },
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          useToggleState(props),
+          domRef
+        );
 
-    const renderValues = {
+    const renderValues: CheckboxRenderProps = {
       isHovered,
       isInvalid,
       isSelected,
       isFocused,
       isPressed,
+      isReadOnly,
       isFocusVisible,
       isIndeterminate,
-      isDisabled: props.isDisabled || false,
+      isDisabled: isDisabled || false,
     };
 
     const renderProps = useRenderProps({
@@ -66,6 +87,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
         data-disabled={isDisabled || undefined}
         data-read-only={isReadOnly || undefined}
         data-focus-visible={isFocusVisible || undefined}
+        data-indeterminate={isIndeterminate || undefined}
         {...mergeProps(DOMProps, labelProps, renderProps)}
         ref={ref}
       >
