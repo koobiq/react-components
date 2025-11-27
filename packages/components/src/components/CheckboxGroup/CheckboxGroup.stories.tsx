@@ -2,8 +2,10 @@ import { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Button } from '../Button';
 import { Checkbox, checkboxPropSize } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
+import { Form } from '../Form';
 import { Typography } from '../Typography';
 
 import { CheckboxGroup } from './index';
@@ -201,6 +203,55 @@ export const ControlledValue: Story = {
         </CheckboxGroup>
         <Typography>You have selected: {value.join(', ')}</Typography>
       </FlexBox>
+    );
+  },
+};
+
+export const GroupValidation: Story = {
+  render: function Render(args) {
+    return (
+      <Form>
+        <CheckboxGroup
+          label="Agree to the following"
+          validationBehavior="native"
+          isRequired
+          {...args}
+        >
+          <Checkbox value="terms">Terms and conditions</Checkbox>
+          <Checkbox value="privacy">Privacy policy</Checkbox>
+          <Checkbox value="cookies">Cookie policy</Checkbox>
+        </CheckboxGroup>
+        <Form.Actions>
+          <Button type="submit">Submit</Button>
+        </Form.Actions>
+      </Form>
+    );
+  },
+};
+
+export const IndividualValidation: Story = {
+  render: function Render(args) {
+    return (
+      <Form>
+        <CheckboxGroup
+          label="Agree to the following"
+          validationBehavior="native"
+          {...args}
+        >
+          <Checkbox value="terms" isRequired>
+            Terms and conditions
+          </Checkbox>
+          <Checkbox value="privacy" isRequired>
+            Privacy policy
+          </Checkbox>
+          <Checkbox value="cookies" isRequired>
+            Cookie policy
+          </Checkbox>
+        </CheckboxGroup>
+        <Form.Actions>
+          <Button type="submit">Submit</Button>
+        </Form.Actions>
+      </Form>
     );
   },
 };
