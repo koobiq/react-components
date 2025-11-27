@@ -8,6 +8,7 @@ import type { RenderProps } from '../../utils';
 export type CheckboxRenderProps = {
   isInvalid?: boolean;
   isPressed?: boolean;
+  isReadOnly?: boolean;
   isSelected?: boolean;
   isHovered?: boolean;
   isFocused?: boolean;

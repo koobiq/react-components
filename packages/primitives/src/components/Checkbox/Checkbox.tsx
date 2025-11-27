@@ -10,7 +10,11 @@ import { useToggleState } from '@react-stately/toggle';
 import { useCheckbox, useCheckboxGroupItem } from '../../behaviors';
 import { removeDataAttributes, useRenderProps } from '../../utils';
 
-import { CheckboxGroupContext, type CheckboxProps } from './index';
+import {
+  CheckboxGroupContext,
+  type CheckboxProps,
+  type CheckboxRenderProps,
+} from './index';
 
 export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
   (props, ref) => {
@@ -53,12 +57,13 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
           domRef
         );
 
-    const renderValues = {
+    const renderValues: CheckboxRenderProps = {
       isHovered,
       isInvalid,
       isSelected,
       isFocused,
       isPressed,
+      isReadOnly,
       isFocusVisible,
       isIndeterminate,
       isDisabled: isDisabled || false,
@@ -82,6 +87,7 @@ export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
         data-disabled={isDisabled || undefined}
         data-read-only={isReadOnly || undefined}
         data-focus-visible={isFocusVisible || undefined}
+        data-indeterminate={isIndeterminate || undefined}
         {...mergeProps(DOMProps, labelProps, renderProps)}
         ref={ref}
       >

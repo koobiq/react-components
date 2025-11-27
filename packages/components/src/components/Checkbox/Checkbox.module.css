@@ -119,6 +119,10 @@
   --checkbox-border-color: var(--kbq-states-background-theme-hover);
 }
 
+.readOnly {
+  cursor: default;
+}
+
 .disabled {
   --checkbox-bg-color: var(--kbq-states-background-disabled);
   --checkbox-border-color: var(--kbq-states-line-disabled);

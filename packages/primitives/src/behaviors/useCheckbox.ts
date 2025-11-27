@@ -30,7 +30,7 @@ export function useCheckbox(
   } = useCheckboxReactAria(props, state, inputRef);
 
   const { hoverProps, isHovered } = useHover({
-    isDisabled,
+    isDisabled: isDisabled || isReadOnly,
   });
 
   const labelProps = mergeProps(hoverProps, labelPropsAria);

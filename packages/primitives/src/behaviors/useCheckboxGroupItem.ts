@@ -32,7 +32,7 @@ export function useCheckboxGroupItem(
   const isDisabled = state.isDisabled || issDisabledAria;
 
   const { hoverProps, isHovered } = useHover({
-    isDisabled,
+    isDisabled: isDisabled || isReadOnly,
   });
 
   const labelProps = mergeProps(hoverProps, labelPropsAria);

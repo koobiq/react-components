@@ -86,6 +86,14 @@ export const Invalid: Story = {
   ),
 };
 
+export const ReadOnly: Story = {
+  render: (args) => (
+    <Checkbox {...args} isReadOnly defaultSelected>
+      Label
+    </Checkbox>
+  ),
+};
+
 export const Indeterminate: Story = {
   render: function Render(args) {
     const [selectedGroup, setSelectedGroup] = useState([true, false]);
