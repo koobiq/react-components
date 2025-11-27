@@ -4,11 +4,13 @@ import { type ComponentRef, forwardRef } from 'react';
 
 import { clsx, mergeProps } from '@koobiq/react-core';
 import {
-  FieldErrorContext,
+  FormContext,
   useCheckboxGroup,
+  useSlottedContext,
+  FieldErrorContext,
+  removeDataAttributes,
   useCheckboxGroupState,
   CheckboxGroupContext as CheckboxGroupPrimitiveContext,
-  removeDataAttributes,
 } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -37,14 +39,14 @@ export const CheckboxGroup = forwardRef<
     children,
     className,
     slotProps,
-    isReadOnly: isReadOnlyProp,
-    isDisabled: isDisabledProp,
     isRequired,
     labelAlign,
     orientation,
     errorMessage,
     isLabelHidden,
     labelPlacement,
+    isReadOnly: isReadOnlyProp,
+    isDisabled: isDisabledProp,
     'data-testid': testId,
   } = props;
 
@@ -52,6 +54,12 @@ export const CheckboxGroup = forwardRef<
 
   const isDisabled = isDisabledProp ?? formIsDisabled;
   const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
+
+  const { validationBehavior: formValidationBehavior } =
+    useSlottedContext(FormContext) || {};
+
+  const validationBehavior =
+    props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
   const state = useCheckboxGroupState(
     removeDataAttributes({ ...props, isDisabled, isReadOnly })
@@ -64,7 +72,12 @@ export const CheckboxGroup = forwardRef<
     errorMessageProps: errorMessagePropsAria,
     ...validation
   } = useCheckboxGroup(
-    removeDataAttributes({ ...props, isDisabled, isReadOnly }),
+    removeDataAttributes({
+      ...props,
+      isDisabled,
+      isReadOnly,
+      validationBehavior,
+    }),
     state
   );
 

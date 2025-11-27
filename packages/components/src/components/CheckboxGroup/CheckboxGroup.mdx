@@ -88,6 +88,19 @@ The `onChange` event is fired when the user selects a radio.
 
 <Story of={Stories.ControlledValue} />
 
+## Group validation
+
+The `isRequired` prop at the CheckboxGroup level requires that at least one item is selected.
+
+<Story of={Stories.GroupValidation} />
+
+## Individual Checkbox validation
+
+To require that specific checkboxes are checked, set the `isRequired` prop at the Checkbox level instead of the CheckboxGroup.
+The following example shows how to require that all items are selected.
+
+<Story of={Stories.IndividualValidation} />
+
 ## HTML forms
 
 CheckboxGroup supports the `name` prop, paired with the Checkbox `value` prop, for integration with HTML forms.
