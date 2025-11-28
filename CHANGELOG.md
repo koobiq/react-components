@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.18.0](https://github.com/koobiq/react-components/compare/0.17.0...0.18.0) (2025-11-28)
+
+
+### 🚀 Features
+
+* add `Autocomplete` component (DS-4347) ([0c96fc1](https://github.com/koobiq/react-components/commit/0c96fc14645bf731e92bb6dcbe7e75614f8b5904))
+* **Autocomplete:** derive `validationBehavior` from `Form` context (DS-4472) ([54f1a6e](https://github.com/koobiq/react-components/commit/54f1a6ee79780fc0c7be6b102a365bd08002fe38))
+* **components:** add `CheckboxGroup` component (DS-3266) ([64d49b7](https://github.com/koobiq/react-components/commit/64d49b712991b84b78ead31c270b217a014e6115))
+* **core:** add `useCopyToClipboard` hook (DS-4386) ([1f6aaca](https://github.com/koobiq/react-components/commit/1f6aaca7f1b8e50237443a1cb4b5c7261a2493f1))
+* **icons:** normalize manifest metadata and update README.md (DS-4385) ([5900f20](https://github.com/koobiq/react-components/commit/5900f20edc27c4ea321b3eab0af51f294ac26cdf))
+* **icons:** rename icons (DS-4365) ([35ec149](https://github.com/koobiq/react-components/commit/35ec1491b6f3fa98b7cf7dc41be223354d76ddc2))
+* **icons:** rename icons (DS-4457) ([a6231f2](https://github.com/koobiq/react-components/commit/a6231f2d3ba7baa55c7650f7729357219fd3a10d))
+* **List, Select:** add `loadingText` prop (DS-4424) ([ca9fe70](https://github.com/koobiq/react-components/commit/ca9fe706adeb6822ecc1a29f8dc0c930c9d3b122))
+* **List, Select:** auto-trigger `onLoadMore` until scroll appears (infinite scroll pagination) (DS-4431) ([b49b9d7](https://github.com/koobiq/react-components/commit/b49b9d794dffd50758b38500dcb5dc40e7a354a8))
+* **List:** add ability to hide the list when no items are available (noItemsText=null) (DS-4421) ([be09d77](https://github.com/koobiq/react-components/commit/be09d7747f9e3e61f2f8f275f8bc4d0649c31af4))
+* **List:** add load-more and no-items-text support (DS-4370) ([b482500](https://github.com/koobiq/react-components/commit/b482500c15afeac425cab0533f22c732404dead3))
+* **ProgressBar:** replace deprecated `variant` prop with `isIndeterminate` (DS-4467) ([5667796](https://github.com/koobiq/react-components/commit/5667796abe1a46e083d197ae763fb4258ae31c95))
+* **ProgressSpinner:** replace deprecated `variant` prop with `isIndeterminate` (DS-4468) ([cce4495](https://github.com/koobiq/react-components/commit/cce449520bb87f7c28ecd10f7cf8ee7dc49d52a7))
+
+
+### 🐞 Bug Fixes
+
+* **Button:** add `--button-label-padding` css-var for label (DS-4423) ([b1f4609](https://github.com/koobiq/react-components/commit/b1f460943874f389b75f8fa6abe5517b8cac1ad2))
+* **Button:** replace padding-inline with padding for label spacing ([20dbeea](https://github.com/koobiq/react-components/commit/20dbeeaade15e430f477e07804b924294288b6f0))
+* **Modal:** add missing `style` attribute to component typings (DS-4422) ([7301e3b](https://github.com/koobiq/react-components/commit/7301e3b546e5eefe78df1b3743dd44a94ea570a0))
+* **Radio:** implement correct read-only behavior (DS-4470) ([5890fff](https://github.com/koobiq/react-components/commit/5890fff8ddf860fb6503cebacc2b949c1c6a40a5))
+* **Toggle:** implement correct read-only behavior (DS-4471) ([439535f](https://github.com/koobiq/react-components/commit/439535f99bbcd0319a6d0fcc6d2a73bf36a0ffdc))
+
 ## [0.17.0](https://github.com/koobiq/react-components/compare/0.16.0...0.17.0) (2025-11-12)
 
 

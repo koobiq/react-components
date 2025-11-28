@@ -1,6 +1,6 @@
 {
   "name": "@koobiq/react-icons",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "A collection of icons",
   "license": "MIT",
   "main": "dist/index.js",
