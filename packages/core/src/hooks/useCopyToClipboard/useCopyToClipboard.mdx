@@ -1,0 +1,37 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './useCopyToClipboard.stories';
+
+<Meta of={Stories} />
+
+# useCopyToClipboard
+
+<Status variant="experimental" />
+
+A simple hook for copying text to the clipboard.
+
+```tsx
+import { useCopyToClipboard } from '@koobiq/react-core';
+```
+
+## Definition
+
+```tsx
+type CopiedValue = string | null;
+
+/** Function to copy text to the clipboard. */
+type CopyFn = (text: string) => Promise<boolean>;
+
+/**
+ * A simple hook for copying text to the clipboard.
+ * Returns `[copiedValue, copy]`.
+ * @example
+ * const [copied, copy] = useCopyToClipboard();
+ * <button onClick={() => copy('Hello')}>Copy</button>
+ */
+export function useCopyToClipboard(): [CopiedValue, CopyFn];
+```
+
+## Example
+
+<Story of={Stories.Example} />
