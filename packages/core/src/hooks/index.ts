@@ -17,3 +17,4 @@ export * from './useResizeObserverRefs';
 export * from './useHideOverflowItems';
 export * from './useInfiniteScroll';
 export * from './useScrollPosition';
+export * from './useCopyToClipboard';
