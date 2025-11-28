@@ -60,9 +60,15 @@ async function buildManifest(): Promise<IconsManifest> {
           : undefined;
 
         const name = `Icon${pascalCase(baseName)}${size || ''}`;
+
         const { description, tags } = data ?? {};
 
-        return { name, size, description, keywords: tags };
+        return {
+          name,
+          size,
+          description: description || undefined,
+          keywords: Array.isArray(tags) ? tags : undefined,
+        };
       }
     );
 
