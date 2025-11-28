@@ -37,7 +37,7 @@ const Icon = () => <IconCheck16 color="#4CAF50" />;
 ```
 
 Some icons include an accent layer and support a two-tone (duotone) style.
-Override `--icon-accent-color` to change only the accent without affecting the base color.
+Override the `--icon-accent-color` [CSS-variable](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascading_variables/Using_custom_properties) to change only the accent color without affecting the base color.
 
 ```css
 /* Icon.module.css */
