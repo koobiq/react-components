@@ -2,11 +2,10 @@ import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 
 import {
+  Badge,
   Button,
   FlexBox,
   Modal,
-  Tag,
-  TagGroup,
   Typography,
 } from '@koobiq/react-components';
 import { useBoolean, useCopyToClipboard } from '@koobiq/react-core';
@@ -80,20 +79,24 @@ export const IconDetails: FC<IconDetailsProps> = ({
           <Typography color="contrast-secondary">Size</Typography>
           <Typography>{`${size}px`}</Typography>
         </FlexBox>
-        <FlexBox direction="column" gap="xxs">
-          <Typography color="contrast-secondary">Description</Typography>
-          <Typography>{description}</Typography>
-        </FlexBox>
-        <FlexBox direction="column" gap="xxs">
-          <Typography color="contrast-secondary">Keywords</Typography>
-          {keywords && keywords.length > 0 && (
-            <TagGroup>
+        {description && (
+          <FlexBox direction="column" gap="xxs">
+            <Typography color="contrast-secondary">Description</Typography>
+            <Typography>{description}</Typography>
+          </FlexBox>
+        )}
+        {!!keywords?.length && (
+          <FlexBox direction="column" gap="xxs">
+            <Typography color="contrast-secondary">Keywords</Typography>
+            <FlexBox gap="xs" wrap="wrap">
               {keywords.map((tag) => (
-                <Tag key={tag}>{tag}</Tag>
+                <Badge key={tag} variant="fade-theme">
+                  {tag}
+                </Badge>
               ))}
-            </TagGroup>
-          )}
-        </FlexBox>
+            </FlexBox>
+          </FlexBox>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button
