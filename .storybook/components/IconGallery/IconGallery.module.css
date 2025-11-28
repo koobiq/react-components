@@ -10,11 +10,29 @@
 .grid-item {
   gap: 1em;
   display: flex;
+  border: none;
   block-size: 100px;
   inline-size: 100%;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: var(--kbq-size-m);
+  transition: background-color var(--kbq-transition-slow);
+
+  &:hover {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &:active {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--kbq-states-line-focus-theme);
+    outline-offset: -1px;
+  }
 }
 
 .icon-name {
@@ -41,5 +59,28 @@
       var(--kbq-background-bg),
       var(--kbq-background-transparent)
     );
+  }
+}
+
+/* modal */
+.body {
+  padding-block-start: var(--kbq-size-m);
+  display: flex;
+  align-items: baseline;
+  flex-direction: column;
+  gap: var(--kbq-size-m);
+}
+
+.previewArea {
+  background: var(--kbq-background-bg-secondary);
+  padding-block: 40px;
+  text-align: center;
+}
+
+.source {
+  inline-size: 100%;
+
+  :global(.docblock-source) {
+    margin: 0;
   }
 }
