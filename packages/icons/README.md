@@ -1,6 +1,6 @@
 # @koobiq/react-icons
 
-A collection of React-icons for the web, part of Koobiq React.
+**A collection of React-icons for the web, part of Koobiq React.**
 
 We use icons as React components. This approach works out of the box (no special loaders needed),
 supports tree-shaking, and includes full TypeScript typings.
