@@ -30,6 +30,41 @@ function pascalCase(input: string): string {
     .join('');
 }
 
+type IconMeta = {
+  key: string;
+  baseName: string;
+  size?: IconSize;
+  name: string;
+};
+
+function parseIconKey(key: string): IconMeta {
+  const [baseName = '', rawSize] = key.split('_');
+
+  const size = SIZES.includes(rawSize as IconSize)
+    ? (rawSize as IconSize)
+    : undefined;
+
+  const name = `Icon${pascalCase(baseName)}${size || ''}`;
+
+  return {
+    key,
+    baseName,
+    size,
+    name,
+  };
+}
+
+// Stable order (by size first, then by name)
+function compareBySizeAndName(
+  a: { size?: IconSize; name: string },
+  b: { size?: IconSize; name: string }
+) {
+  const sa = Number(a.size ?? 0);
+  const sb = Number(b.size ?? 0);
+
+  return sa === sb ? a.name.localeCompare(b.name) : sa - sb;
+}
+
 function buildEntryFile(entry: string, componentNames: string[]) {
   return `
 ${entry}
@@ -53,14 +88,7 @@ async function buildManifest(): Promise<IconsManifest> {
 
     const icons = Object.entries(iconsInfo).map(
       ([key, data]: [string, any]) => {
-        const [baseName = '', rawSize] = key.split('_');
-
-        const size = SIZES.includes(rawSize as IconSize)
-          ? (rawSize as IconSize)
-          : undefined;
-
-        const name = `Icon${pascalCase(baseName)}${size || ''}`;
-
+        const { size, name } = parseIconKey(key);
         const { description, tags } = data ?? {};
 
         return {
@@ -72,13 +100,7 @@ async function buildManifest(): Promise<IconsManifest> {
       }
     );
 
-    // Stable order (by size first, then by name)
-    icons.sort((a, b) => {
-      const sa = Number(a.size ?? 0);
-      const sb = Number(b.size ?? 0);
-
-      return sa === sb ? String(a.name).localeCompare(String(b.name)) : sa - sb;
-    });
+    icons.sort(compareBySizeAndName);
 
     console.log(
       `✅ Manifest built entirely from ${MANIFEST_FILE} (${icons.length} entries)`
@@ -154,19 +176,16 @@ async function run() {
 
   // Read manifest keys
   const iconsInfo = JSON.parse(await fsp.readFile(MANIFEST_FILE, 'utf8'));
-  const keys = Object.keys(iconsInfo);
+  const metas: IconMeta[] = Object.keys(iconsInfo).map(parseIconKey);
 
-  // Build list of expected SVGs based on keys, e.g. "server-badge-linux_16" → "server-badge-linux_16.svg"
-  const files = keys.map((key) => `${key}.svg`);
-
-  const entryPoints: string[] = [];
-  const names: string[] = [];
+  // stable sorted
+  metas.sort(compareBySizeAndName);
 
   const results = await Promise.allSettled(
-    files.map(async (fileKey) => {
+    metas.map(async (meta) => {
+      const fileKey = `${meta.key}.svg`;
       const filePath = path.join(INPUT_DIR, fileKey);
 
-      // Read SVG source
       let svgCode: string;
 
       try {
@@ -177,19 +196,13 @@ async function run() {
         return;
       }
 
-      const baseName = path.basename(fileKey, '.svg');
-      const name = `Icon${pascalCase(baseName)}`;
-
       const tsxCode = await transform(svgCode || '', transformConfig, {
-        componentName: name,
+        componentName: meta.name,
       });
 
-      const outputPath = path.join(OUTPUT_DIR, `${name}.tsx`);
+      const outputPath = path.join(OUTPUT_DIR, `${meta.name}.tsx`);
       await fsp.writeFile(outputPath, tsxCode);
-      console.log(`✅ ${fileKey} → ${name}.tsx`);
-
-      entryPoints.push(`export * from './${name}';`);
-      names.push(`'${name}'`);
+      console.log(`✅ ${fileKey} → ${meta.name}.tsx`);
     })
   );
 
@@ -200,6 +213,9 @@ async function run() {
       `❌ Copy completed with errors: ${failed}/${results.length} files`
     );
   }
+
+  const entryPoints = metas.map((meta) => `export * from './${meta.name}';`);
+  const names = metas.map((meta) => `'${meta.name}'`);
 
   // Write manifest.json
   const finalManifest = await buildManifest();
