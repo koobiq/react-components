@@ -17,6 +17,8 @@ import {
   useComboBoxState,
   FieldErrorContext,
   removeDataAttributes,
+  useSlottedContext,
+  FormContext,
 } from '@koobiq/react-primitives';
 
 import { Section, Item } from '../Collections';
@@ -97,6 +99,12 @@ export function AutocompleteRender<T extends object = object>(
     })
   );
 
+  const { validationBehavior: formValidationBehavior } =
+    useSlottedContext(FormContext) || {};
+
+  const validationBehavior =
+    props.validationBehavior ?? formValidationBehavior ?? 'aria';
+
   // Setup refs
   const buttonRef = useRef(null);
   const listBoxRef = useRef(null);
@@ -119,6 +127,7 @@ export function AutocompleteRender<T extends object = object>(
       popoverRef,
       isDisabled,
       isReadOnly,
+      validationBehavior,
     }),
     state
   );
