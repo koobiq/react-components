@@ -2,6 +2,11 @@
 
 A collection of React-icons for the web, part of Koobiq React.
 
+We use icons as React components to keep the API consistent, support tree-shaking,
+provide TypeScript types, and allow easy styling with CSS variables — no extra loaders or config needed.
+
+If you need SVG files or icon fonts, use the [@koobiq/icons](https://github.com/koobiq/icons) package.
+
 ## Showcase
 
 Use the [icon showcase](https://react.koobiq.io/?path=/docs/icons--docs) to visually present the package contents.
@@ -25,8 +30,26 @@ yarn add @koobiq/react-icons
 
 Import the required icon from the package:
 
-```jsx
+```tsx
 import { IconCheck16 } from '@koobiq/react-icons';
 
-const SuccessIcon = () => <IconCheck16 color="#4CAF50" />;
+const Icon = () => <IconCheck16 color="#4CAF50" />;
+```
+
+Some icons include an accent layer and support a two-tone (duotone) style.
+Override `--icon-accent-color` to change only the accent without affecting the base color.
+
+```css
+/* Icon.module.css */
+.icon {
+  --icon-accent-color: red;
+}
+```
+
+```tsx
+// Icons.tsx
+import { IconFilterDot16 } from '@koobiq/react-icons';
+import styles from './Icon.module.css';
+
+const Icon = () => <IconFilterDot16 style={styles.icon} />;
 ```
