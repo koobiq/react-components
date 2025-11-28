@@ -2,8 +2,8 @@
 
 A collection of React-icons for the web, part of Koobiq React.
 
-We use icons as React components to keep the API consistent, support tree-shaking,
-provide TypeScript types, and allow easy styling with CSS variables — no extra loaders or config needed.
+We use icons as React components. This approach works out of the box (no special loaders needed),
+supports tree-shaking, and includes full TypeScript typings.
 
 If you need SVG files or icon fonts, use the [@koobiq/icons](https://github.com/koobiq/icons) package.
 
