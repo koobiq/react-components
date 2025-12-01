@@ -2,7 +2,12 @@
 
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import { polymorphicForwardRef, useDOMRef } from '@koobiq/react-core';
+import {
+  useDOMRef,
+  mergeProps,
+  filterDOMProps,
+  polymorphicForwardRef,
+} from '@koobiq/react-core';
 
 import { useButton } from '../../behaviors';
 import { useRenderProps } from '../../utils';
@@ -68,6 +73,9 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
       values: renderValues,
     });
 
+    const DOMProps = filterDOMProps(props, { global: true });
+    delete DOMProps.onClick;
+
     return (
       <Tag
         {...{
@@ -80,7 +88,7 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
           formTarget,
           formNoValidate,
         }}
-        {...buttonProps}
+        {...mergeProps(DOMProps, buttonProps)}
         {...renderProps}
         data-hovered={isHovered || undefined}
         data-pressed={isPressed || undefined}
