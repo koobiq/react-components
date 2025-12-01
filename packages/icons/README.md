@@ -5,7 +5,7 @@
 We use icons as React components. This approach works out of the box (no special loaders needed),
 supports tree-shaking, and includes full TypeScript typings.
 
-If you need SVG files or icon fonts, use the [@koobiq/icons](https://github.com/koobiq/icons) package.
+If you need SVG files or icon font (Koobiq Icons), use the [@koobiq/icons](https://github.com/koobiq/icons) package.
 
 ## Showcase
 
