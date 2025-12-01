@@ -116,6 +116,17 @@ describe('Button', () => {
     });
   });
 
+  it('should call onMouseDown handler', async () => {
+    const user = userEvent.setup();
+    const handleMouseDown = vi.fn();
+
+    render(<Button {...baseProps} onMouseDown={handleMouseDown} />);
+
+    await user.pointer({ keys: '[MouseLeft]', target: getButton() });
+
+    expect(handleMouseDown).toHaveBeenCalledTimes(1);
+  });
+
   describe('a', () => {
     it('should be focusable, non-clickable, and have correct accessibility attributes when in a loading state', async () => {
       const props = {
