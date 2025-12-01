@@ -68,6 +68,9 @@ export * from '@react-aria/progress';
 export * from '@react-aria/combobox';
 export * from '@react-stately/combobox';
 
+export * from '@react-aria/toast';
+export * from '@react-stately/toast';
+
 export type {
   CalendarProps,
   CalendarAria,

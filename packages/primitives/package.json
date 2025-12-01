@@ -23,7 +23,9 @@
     "url": "git+https://github.com/koobiq/react-components.git"
   },
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -54,6 +56,7 @@
     "@react-aria/tabs": "^3.10.8",
     "@react-aria/tag": "^3.6.0",
     "@react-aria/textfield": "^3.17.5",
+    "@react-aria/toast": "^3.0.8",
     "@react-aria/toggle": "^3.12.2",
     "@react-aria/tooltip": "^3.8.5",
     "@react-aria/visually-hidden": "^3.8.0",
@@ -72,6 +75,7 @@
     "@react-stately/select": "3.7.0",
     "@react-stately/table": "^3.14.3",
     "@react-stately/tabs": "^3.8.6",
+    "@react-stately/toast": "^3.1.2",
     "@react-stately/toggle": "^3.9.2",
     "@react-stately/tooltip": "^3.5.5",
     "@react-stately/tree": "^3.8.9"
