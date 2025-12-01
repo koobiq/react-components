@@ -31,8 +31,8 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   render: (args) => (
     <Tooltip
-      control={() => (
-        <IconButton>
+      control={(props) => (
+        <IconButton {...props}>
           <IconCircleQuestion24 />
         </IconButton>
       )}
@@ -48,14 +48,22 @@ export const Trigger: Story = {
     <FlexBox gap="l">
       <Tooltip
         {...args}
-        control={() => <Button variant="fade-contrast-filled">Hover me</Button>}
+        control={(props) => (
+          <Button variant="fade-contrast-filled" {...props}>
+            Hover me
+          </Button>
+        )}
       >
         This is a tooltip
       </Tooltip>
       <Tooltip
         trigger="focus"
         {...args}
-        control={() => <Button variant="fade-contrast-filled">Focus me</Button>}
+        control={(props) => (
+          <Button variant="fade-contrast-filled" {...props}>
+            Focus me
+          </Button>
+        )}
       >
         This is a tooltip
       </Tooltip>
@@ -70,8 +78,10 @@ export const Variant: Story = {
         <Tooltip
           key={variant}
           variant={variant}
-          control={() => (
-            <Button variant="fade-contrast-filled">{variant}</Button>
+          control={(props) => (
+            <Button variant="fade-contrast-filled" {...props}>
+              {variant}
+            </Button>
           )}
           {...args}
         >
@@ -85,7 +95,11 @@ export const Variant: Story = {
 export const Disabled: Story = {
   render: (args) => (
     <Tooltip
-      control={() => <Button variant="fade-contrast-filled">Disabled</Button>}
+      control={(props) => (
+        <Button variant="fade-contrast-filled" {...props}>
+          Disabled
+        </Button>
+      )}
       isDisabled
       {...args}
     >
@@ -97,7 +111,11 @@ export const Disabled: Story = {
 export const Arrow: Story = {
   render: (args) => (
     <Tooltip
-      control={() => <Button variant="fade-contrast-filled">Hover me</Button>}
+      control={(props) => (
+        <Button variant="fade-contrast-filled" {...props}>
+          Hover me
+        </Button>
+      )}
       hideArrow
       {...args}
     >
@@ -122,8 +140,10 @@ export const Delays: Story = {
           delay={delay}
           closeDelay={closeDelay}
           {...args}
-          control={() => (
-            <Button variant="fade-contrast-filled">Hover me</Button>
+          control={(props) => (
+            <Button variant="fade-contrast-filled" {...props}>
+              Hover me
+            </Button>
           )}
         >
           This is a tooltip
@@ -349,8 +369,10 @@ export const Offsets: Story = {
         <Tooltip
           offset={offset}
           crossOffset={crossOffset}
-          control={() => (
-            <Button variant="fade-contrast-filled">Hover me</Button>
+          control={(props) => (
+            <Button variant="fade-contrast-filled" {...props}>
+              Hover me
+            </Button>
           )}
           {...args}
         >

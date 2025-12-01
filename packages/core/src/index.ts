@@ -19,6 +19,7 @@ export type {
   SectionProps,
   LinkDOMProps,
   CollectionBase,
+  DOMAttributes,
   MultipleSelection,
   FocusableElement,
   ValidationResult,
