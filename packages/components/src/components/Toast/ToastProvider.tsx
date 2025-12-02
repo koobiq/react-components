@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode, ReactElement } from 'react';
 
 import { useToastState } from '@koobiq/react-primitives';
