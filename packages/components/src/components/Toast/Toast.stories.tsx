@@ -18,9 +18,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args) => (
-    <ToastProvider>
+    <ToastProvider {...args}>
       {(state) => (
-        <Button onPress={() => state.add('Toast is done!')}>Show toast</Button>
+        <Button
+          onPress={() =>
+            state.add(
+              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.'
+            )
+          }
+        >
+          Show toast
+        </Button>
       )}
     </ToastProvider>
   ),

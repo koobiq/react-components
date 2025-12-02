@@ -1,0 +1,10 @@
+.toastRegion {
+  gap: 8px;
+  outline: none;
+  display: flex;
+  position: fixed;
+  inset-inline-end: 16px;
+  inset-block-start: 16px;
+  flex-direction: column-reverse;
+  z-index: var(--kbq-layer-toast);
+}

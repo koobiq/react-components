@@ -1,0 +1,24 @@
+.base {
+  border-radius: var(--kbq-size-s);
+  box-shadow: var(--kbq-shadow-popup);
+  background-color: var(--kbq-background-card);
+  padding-inline: var(--kbq-size-m) var(--kbq-size-s);
+  display: flex;
+  inline-size: 360px;
+  box-sizing: border-box;
+}
+
+.content {
+  inline-size: 100%;
+  padding: var(--kbq-size-l) var(--kbq-size-s) var(--kbq-size-l) 0;
+}
+
+.icon {
+  margin-inline-end: var(--kbq-size-s);
+  margin-block-start: calc(var(--kbq-size-l) + 2px);
+}
+
+.close {
+  margin-block-start: var(--kbq-size-m);
+  margin-inline-end: var(--kbq-size-xxs);
+}
