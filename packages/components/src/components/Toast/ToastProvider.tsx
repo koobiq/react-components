@@ -1,19 +1,16 @@
 'use client';
 
-import type { ReactNode, ReactElement } from 'react';
+import type { ReactNode } from 'react';
+import { forwardRef } from 'react';
 
 import { useToastState } from '@koobiq/react-primitives';
 
 import { ToastRegion } from './components';
+import type { ToastProviderComponent, ToastProviderProps } from './types';
 
-export type ToastProviderProps = {
-  children?: (state: any) => ReactElement;
-};
+function ToastProviderRender<T extends ReactNode>(props: ToastProviderProps) {
+  const { children } = props;
 
-export function ToastProvider<T extends ReactNode>({
-  children,
-  ...props
-}: ToastProviderProps) {
   const state = useToastState<T>({
     maxVisibleToasts: 5,
   });
@@ -25,3 +22,7 @@ export function ToastProvider<T extends ReactNode>({
     </>
   );
 }
+
+export const ToastProvider = forwardRef(
+  ToastProviderRender
+) as ToastProviderComponent;

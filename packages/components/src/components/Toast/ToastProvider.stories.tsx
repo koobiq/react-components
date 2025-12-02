@@ -3,9 +3,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 
 import { ToastProvider } from './index';
+import type { ToastProviderProps } from './index';
 
 const meta = {
-  title: 'Components/Toast',
+  title: 'Components/ToastProvider',
   component: ToastProvider,
   parameters: {
     layout: 'centered',
@@ -15,7 +16,7 @@ const meta = {
 } satisfies Meta<typeof ToastProvider>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ToastProviderProps>;
 
 export const Base: Story = {
   render: (args) => (
