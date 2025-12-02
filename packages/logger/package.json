@@ -1,6 +1,6 @@
 {
   "name": "@koobiq/logger",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "description": "A client logger",
   "license": "MIT",
   "main": "dist/index.js",

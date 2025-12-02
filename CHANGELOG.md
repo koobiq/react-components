@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.1](https://github.com/koobiq/react-components/compare/0.18.0...0.18.1) (2025-12-02)
+
+
+### 🐞 Bug Fixes
+
+* **primitives:** add support for native mouse and pointer event handlers for `Button` (DS-4508) ([2a5ab2f](https://github.com/koobiq/react-components/commit/2a5ab2f38bd7dffdf3066c3a632946bea4b3154c))
+* **Tooltip:** enable control render-props by forwarding to `Button` and `IconButton` (DS-4324) ([bf7cfce](https://github.com/koobiq/react-components/commit/bf7cfcee4172672754428dac185e71536071ae5a))
+
 ## [0.18.0](https://github.com/koobiq/react-components/compare/0.17.0...0.18.0) (2025-11-28)
 
 
