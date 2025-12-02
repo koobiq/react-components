@@ -24,7 +24,8 @@ export const Base: Story = {
         <Button
           onPress={() =>
             state.add(
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.'
+              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+              { timeout: 5000 }
             )
           }
         >

@@ -1,8 +1,8 @@
 'use client';
 
-import { type ReactNode, useRef } from 'react';
+import { type ReactNode, type Ref } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useDOMRef } from '@koobiq/react-core';
 import { IconCircleInfo16, IconXmarkS16 } from '@koobiq/react-icons';
 import {
   type AriaToastProps,
@@ -19,21 +19,29 @@ const { typography } = utilClasses;
 
 export type ToastProps<T> = AriaToastProps<T> & {
   state: ToastState<T>;
+  innerRef: Ref<HTMLDivElement>;
+  'data-transition'?: string;
 };
 
-export function Toast<T extends ReactNode>({ state, ...props }: ToastProps<T>) {
-  const ref = useRef(null);
+export function Toast<T extends ReactNode>({
+  state,
+  innerRef,
+  'data-transition': transition,
+  ...props
+}: ToastProps<T>) {
+  const domRef = useDOMRef<HTMLDivElement>(innerRef);
 
   const { toastProps, contentProps, titleProps, closeButtonProps } = useToast(
     props,
     state,
-    ref
+    domRef
   );
 
   return (
     <div
       {...toastProps}
-      ref={ref}
+      ref={domRef}
+      data-transition={transition}
       className={clsx(s.base, typography['text-normal'])}
     >
       <IconCircleInfo16 className={s.icon} />

@@ -6,6 +6,18 @@
   display: flex;
   inline-size: 360px;
   box-sizing: border-box;
+  opacity: 0;
+  max-block-size: 1000px;
+  transform: translate(100%, 0);
+  margin-block-start: var(--kbq-size-s);
+  transition:
+    opacity var(--kbq-transition-slow),
+    transform var(--kbq-transition-slow),
+    max-block-size var(--kbq-transition-slow);
+
+  &:last-child {
+    margin-block-start: 0;
+  }
 }
 
 .content {
@@ -21,4 +33,27 @@
 .close {
   margin-block-start: var(--kbq-size-m);
   margin-inline-end: var(--kbq-size-xxs);
+}
+
+/* transition */
+.base[data-transition='entering'] {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.base[data-transition='entered'] {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.base[data-transition='exiting'] {
+  opacity: 0;
+  transform: translate(100%, 0);
+  max-block-size: 0;
+}
+
+.base[data-transition='exited'] {
+  opacity: 0;
+  transform: translate(100%, 0);
+  max-block-size: 0;
 }

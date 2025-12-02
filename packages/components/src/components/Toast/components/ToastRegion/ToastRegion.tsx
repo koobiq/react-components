@@ -2,7 +2,7 @@
 
 import { type ReactNode, useRef } from 'react';
 
-import { useSsr } from '@koobiq/react-core';
+import { useRefs, useSsr } from '@koobiq/react-core';
 import {
   type AriaToastRegionProps,
   type ToastState,
@@ -11,6 +11,7 @@ import {
   useUNSAFE_PortalContext,
 } from '@koobiq/react-primitives';
 import { createPortal } from 'react-dom';
+import { Transition, TransitionGroup } from 'react-transition-group';
 
 import { Toast } from '../Toast';
 
@@ -28,6 +29,9 @@ export function ToastRegion<T extends ReactNode>({
   const ref = useRef(null);
   const { regionProps } = useToastRegion(props, state, ref);
   const { getContainer } = useUNSAFE_PortalContext();
+
+  const refs = useRefs<HTMLDivElement>(state.visibleToasts.length);
+
   let portalContainer;
 
   if (isBrowser) {
@@ -38,12 +42,29 @@ export function ToastRegion<T extends ReactNode>({
     }
   }
 
-  return state.visibleToasts.length > 0 && portalContainer
+  return portalContainer
     ? createPortal(
-        <div {...regionProps} ref={ref} className={s.toastRegion}>
-          {state.visibleToasts.map((toast) => (
-            <Toast key={toast.key} toast={toast} state={state} />
-          ))}
+        <div {...regionProps} ref={ref} className={s.base}>
+          <TransitionGroup component={null} appear enter exit>
+            {state.visibleToasts.map((toast, index) => (
+              <Transition
+                key={toast.key}
+                timeout={300}
+                nodeRef={refs[index]}
+                unmountOnExit
+              >
+                {(transition) => (
+                  <Toast
+                    key={toast.key}
+                    toast={toast}
+                    state={state}
+                    innerRef={refs[index]}
+                    data-transition={transition}
+                  />
+                )}
+              </Transition>
+            ))}
+          </TransitionGroup>
         </div>,
         portalContainer
       )

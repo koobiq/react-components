@@ -21,9 +21,7 @@ export function ToastProvider<T extends ReactNode>({
   return (
     <>
       {children?.(state)}
-      {state.visibleToasts.length > 0 && (
-        <ToastRegion {...props} state={state} />
-      )}
+      {<ToastRegion {...props} state={state} />}
     </>
   );
 }
