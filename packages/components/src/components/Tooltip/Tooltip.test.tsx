@@ -109,7 +109,9 @@ describe('Tooltip', () => {
           {...baseProps}
           trigger="focus"
           onOpenChange={onOpenChange}
-          control={() => <IconButton data-testid="control"></IconButton>}
+          control={(props) => (
+            <IconButton data-testid="control" {...props}></IconButton>
+          )}
         >
           foo
         </Tooltip>

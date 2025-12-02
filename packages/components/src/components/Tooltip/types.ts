@@ -1,20 +1,15 @@
-import type {
-  ReactNode,
-  RefObject,
-  ComponentRef,
-  ReactElement,
-  DOMAttributes,
-} from 'react';
+import type { ReactNode, RefObject, ComponentRef, ReactElement } from 'react';
 
 import type {
   DataAttributeProps,
   ExtendableProps,
   FocusableElement,
+  DOMAttributes,
 } from '@koobiq/react-core';
 import type { TooltipTriggerProps } from '@koobiq/react-primitives';
 
 export type TooltipPropControl = (
-  props: DOMAttributes<FocusableElement | null> & {
+  props: DOMAttributes<Element> & {
     ref: ((node: FocusableElement | null) => void) | null;
   }
 ) => ReactElement;

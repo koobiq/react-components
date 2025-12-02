@@ -8,7 +8,6 @@ import {
   useDOMRef,
   mergeProps,
   useBoolean,
-  FocusableProvider,
   useMultiRef,
   type FocusableElement,
 } from '@koobiq/react-core';
@@ -130,12 +129,10 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
 
   return (
     <>
-      <FocusableProvider {...triggerProps} ref={controlRef}>
-        {control?.({
-          ref: controlRefCallback,
-          ...triggerProps,
-        })}
-      </FocusableProvider>
+      {control?.({
+        ref: controlRefCallback,
+        ...triggerProps,
+      })}
       <Transition
         onEnter={on}
         timeout={120}
@@ -149,10 +146,10 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
           <Overlay portalContainer={portalContainer}>
             <div
               {...tooltipProps}
-              data-arrow={showArrow || undefined}
               data-variant={variant}
-              data-placement={placement || undefined}
               data-transition={transition}
+              data-arrow={showArrow || undefined}
+              data-placement={placement || undefined}
             >
               {showArrow && (
                 <div
