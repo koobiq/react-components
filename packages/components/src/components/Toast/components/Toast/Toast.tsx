@@ -1,29 +1,20 @@
 'use client';
 
-import { type ReactNode, type Ref } from 'react';
-
 import { clsx, useDOMRef } from '@koobiq/react-core';
-import { IconCircleInfo16, IconXmarkS16 } from '@koobiq/react-icons';
-import {
-  type AriaToastProps,
-  type ToastState,
-  useToast,
-} from '@koobiq/react-primitives';
+import { IconXmarkS16 } from '@koobiq/react-icons';
+import { useToast } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { IconButton } from '../../../IconButton';
+import { Typography } from '../../../Typography';
 
 import s from './Toast.module.css';
+import { ToastStatusIcon } from './ToastStatusIcon';
+import type { ToastProps, MyToast } from './types';
 
 const { typography } = utilClasses;
 
-export type ToastProps<T> = AriaToastProps<T> & {
-  state: ToastState<T>;
-  innerRef: Ref<HTMLDivElement>;
-  'data-transition'?: string;
-};
-
-export function Toast<T extends ReactNode>({
+export function Toast<T extends object = MyToast>({
   state,
   innerRef,
   'data-transition': transition,
@@ -37,21 +28,27 @@ export function Toast<T extends ReactNode>({
     domRef
   );
 
+  const {
+    toast: { content: { status = 'info', title, description } = {} } = {},
+  } = props;
+
   return (
     <div
       {...toastProps}
       ref={domRef}
+      data-status={status}
       data-transition={transition}
-      className={clsx(s.base, typography['text-normal'])}
+      className={clsx(s.base, s[status], typography['text-normal'])}
     >
-      <IconCircleInfo16 className={s.icon} />
+      <ToastStatusIcon status={status} />
       <div {...contentProps} className={clsx(s.content)}>
-        <div {...titleProps}>{props.toast.content}</div>
+        <Typography {...titleProps}>{title}</Typography>
+        <Typography color="contrast-secondary">{description}</Typography>
       </div>
       <IconButton
         {...closeButtonProps}
         variant="theme-contrast"
-        className={s.close}
+        className={s.closeIcon}
       >
         <IconXmarkS16 />
       </IconButton>

@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useRef } from 'react';
+import { useRef } from 'react';
 
 import { useRefs, useSsr } from '@koobiq/react-core';
 import {
@@ -13,6 +13,7 @@ import {
 import { createPortal } from 'react-dom';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
+import type { MyToast } from '../Toast';
 import { Toast } from '../Toast';
 
 import s from './ToastRegion.module.css';
@@ -21,7 +22,7 @@ export type ToastRegionProps<T> = AriaToastRegionProps & {
   state: ToastState<T>;
 };
 
-export function ToastRegion<T extends ReactNode>({
+export function ToastRegion<T extends object = MyToast>({
   state,
   ...props
 }: ToastRegionProps<T>) {

@@ -22,15 +22,13 @@
 
 .content {
   inline-size: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--kbq-size-xxs);
   padding: var(--kbq-size-l) var(--kbq-size-s) var(--kbq-size-l) 0;
 }
 
-.icon {
-  margin-inline-end: var(--kbq-size-s);
-  margin-block-start: calc(var(--kbq-size-l) + 2px);
-}
-
-.close {
+.closeIcon {
   margin-block-start: var(--kbq-size-m);
   margin-inline-end: var(--kbq-size-xxs);
 }

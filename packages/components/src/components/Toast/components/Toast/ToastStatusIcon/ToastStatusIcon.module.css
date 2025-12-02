@@ -1,0 +1,19 @@
+.base {
+  --kbq-toast-icon-color: ;
+
+  margin-inline-end: var(--kbq-size-s);
+  margin-block-start: calc(var(--kbq-size-l) + 2px);
+  color: var(--kbq-toast-icon-color);
+}
+
+.error {
+  --kbq-toast-icon-color: var(--kbq-icon-error);
+}
+
+.warning {
+  --kbq-toast-icon-color: var(--kbq-icon-warning);
+}
+
+.success {
+  --kbq-toast-icon-color: var(--kbq-icon-success);
+}

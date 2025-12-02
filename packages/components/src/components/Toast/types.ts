@@ -1,13 +1,17 @@
 import type { CSSProperties, ReactElement } from 'react';
 
-export type ToastProviderProps = {
-  children?: (state: any) => ReactElement;
+import type { ToastState } from '@koobiq/react-primitives';
+
+import type { MyToast } from './components';
+
+export type ToastProviderProps<T extends object = MyToast> = {
+  children?: (state: ToastState<T>) => ReactElement;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
 };
 
-export type ToastProviderComponent = (
-  props: ToastProviderProps
+export type ToastProviderComponent<T extends object = MyToast> = (
+  props: ToastProviderProps<T>
 ) => ReactElement | null;
