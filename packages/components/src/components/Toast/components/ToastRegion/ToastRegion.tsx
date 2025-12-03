@@ -28,21 +28,22 @@ export function ToastRegion({ state, ...props }: ToastRegionProps) {
   const { regionProps } = useToastRegion(props, state, ref);
   const { getContainer } = useUNSAFE_PortalContext();
 
-  const refs = useRefs<HTMLDivElement>(state.visibleToasts.length);
+  const total = state.visibleToasts.length;
 
-  let portalContainer;
+  const refs = useRefs<HTMLDivElement>(total);
 
-  if (isBrowser) {
-    portalContainer = document.body;
+  const portalContainer = getContainer ? getContainer() : document.body;
+  if (!portalContainer || !isBrowser) return null;
 
-    if (getContainer) {
-      portalContainer = getContainer();
-    }
-  }
-
-  return portalContainer
-    ? createPortal(
-        <div {...regionProps} ref={ref} className={s.base}>
+  return createPortal(
+    <Transition in={total > 0} timeout={300} mountOnEnter unmountOnExit>
+      {(transition) => (
+        <div
+          {...regionProps}
+          ref={ref}
+          className={s.base}
+          data-transition={transition}
+        >
           <TransitionGroup component={null} appear enter exit>
             {state.visibleToasts.toReversed().map((toast, index) => (
               <Transition
@@ -51,20 +52,21 @@ export function ToastRegion({ state, ...props }: ToastRegionProps) {
                 nodeRef={refs[index]}
                 unmountOnExit
               >
-                {(transition) => (
+                {(toastTransition) => (
                   <Toast
                     key={toast.key}
                     toast={toast}
                     state={state}
                     innerRef={refs[index]}
-                    data-transition={transition}
+                    data-transition={toastTransition}
                   />
                 )}
               </Transition>
             ))}
           </TransitionGroup>
-        </div>,
-        portalContainer
-      )
-    : null;
+        </div>
+      )}
+    </Transition>,
+    portalContainer
+  );
 }
