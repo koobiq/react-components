@@ -1,12 +1,17 @@
 .base {
+  --toast-outline-color: transparent;
+  --toast-inline-size: 360px;
+  --toast-outline-width: var(--kbq-size-3xs);
+
   opacity: 0;
   display: flex;
-  inline-size: 360px;
+  outline: none;
   box-sizing: border-box;
   max-block-size: 1000px;
   transform: translate(100%, 0);
   border-radius: var(--kbq-size-s);
   box-shadow: var(--kbq-shadow-popup);
+  inline-size: var(--toast-inline-size);
   margin-block-start: var(--kbq-size-s);
   transition:
     opacity var(--kbq-transition-slow),
@@ -15,8 +20,24 @@
   background-color: var(--kbq-background-card);
   padding-inline: var(--kbq-size-m) var(--kbq-size-s);
 
+  &:focus-visible {
+    --toast-outline-color: var(--kbq-states-line-focus-theme);
+  }
+
   &:first-child {
     margin-block-start: 0;
+  }
+
+  &::after {
+    content: '';
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: var(--kbq-layer-absolute);
+    transition: outline-color var(--kbq-transition-default);
+    outline-offset: calc(-1 * var(--toast-outline-width) / 2);
+    outline: var(--toast-outline-width) solid var(--toast-outline-color);
   }
 }
 
