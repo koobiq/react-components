@@ -4,10 +4,11 @@ import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
 import type { ToastOptions } from '@koobiq/react-primitives';
-import { useToastQueue, ToastQueue } from '@koobiq/react-primitives';
+import { useToastQueue } from '@koobiq/react-primitives';
 
 import { ToastRegion } from './components';
 import type { ToastProps } from './index';
+import { ToastQueue } from './MyToastQueue';
 import type { ToastProviderComponent, ToastProviderProps } from './types';
 
 let globalToastQueue: ToastQueue<ToastProps> | null = null;
@@ -46,23 +47,12 @@ const add = ({ ...props }: ToastProps & ToastOptions) => {
   });
 };
 
-const closingToasts = new Map<string, ReturnType<typeof setTimeout>>();
-
 export const close = (key: string) => {
   if (!globalToastQueue) {
     return;
   }
 
-  if (closingToasts.has(key)) {
-    return;
-  }
-
-  const timeoutId = setTimeout(() => {
-    closingToasts.delete(key);
-    globalToastQueue?.close(key);
-  }, 300);
-
-  closingToasts.set(key, timeoutId);
+  globalToastQueue?.close(key);
 };
 
 export const toast = { add, close };
