@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
-import type { ToastPropStatus } from '../types';
+import type { ToastPropStatus } from '../../../index';
 
 import s from './ToastStatusIcon.module.css';
 import { matchStatusToIcon } from './utils';

@@ -16,7 +16,7 @@ import * as Stories from './ToastProvider.stories';
 Toasts are temporary notifications that provide concise feedback about an action or event.
 
 ```tsx
-import { Toast } from '@koobiq/react-components';
+import { ToastProvider, toast } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -30,3 +30,11 @@ import { Toast } from '@koobiq/react-components';
 To show a warning or error toast, use the following approach.
 
 <Story of={Stories.Status} />
+
+## Auto-dismiss
+
+<Story of={Stories.AutoDismiss} />
+
+## Close Toast
+
+<Story of={Stories.CloseToast} />

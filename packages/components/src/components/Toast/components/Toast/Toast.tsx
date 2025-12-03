@@ -1,6 +1,6 @@
 'use client';
 
-import { clsx, useDOMRef } from '@koobiq/react-core';
+import { clsx, isNotNil, useDOMRef } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
 import { useToast } from '@koobiq/react-primitives';
 
@@ -10,16 +10,16 @@ import { Typography } from '../../../Typography';
 
 import s from './Toast.module.css';
 import { ToastStatusIcon } from './ToastStatusIcon';
-import type { ToastProps, MyToast } from './types';
+import type { ToastProps } from './types';
 
 const { typography } = utilClasses;
 
-export function Toast<T extends object = MyToast>({
+export function Toast({
   state,
   innerRef,
   'data-transition': transition,
   ...props
-}: ToastProps<T>) {
+}: ToastProps) {
   const domRef = useDOMRef<HTMLDivElement>(innerRef);
 
   const { toastProps, contentProps, titleProps, closeButtonProps } = useToast(
@@ -43,7 +43,9 @@ export function Toast<T extends object = MyToast>({
       <ToastStatusIcon status={status} />
       <div {...contentProps} className={clsx(s.content)}>
         <Typography {...titleProps}>{title}</Typography>
-        <Typography color="contrast-secondary">{description}</Typography>
+        {isNotNil(description) && (
+          <Typography color="contrast-secondary">{description}</Typography>
+        )}
       </div>
       <IconButton
         {...closeButtonProps}

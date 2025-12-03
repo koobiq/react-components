@@ -13,19 +13,16 @@ import {
 import { createPortal } from 'react-dom';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
-import type { MyToast } from '../Toast';
+import type { ToastProps } from '../../index';
 import { Toast } from '../Toast';
 
 import s from './ToastRegion.module.css';
 
-export type ToastRegionProps<T> = AriaToastRegionProps & {
-  state: ToastState<T>;
+export type ToastRegionProps = AriaToastRegionProps & {
+  state: ToastState<ToastProps>;
 };
 
-export function ToastRegion<T extends object = MyToast>({
-  state,
-  ...props
-}: ToastRegionProps<T>) {
+export function ToastRegion({ state, ...props }: ToastRegionProps) {
   const { isBrowser } = useSsr();
   const ref = useRef(null);
   const { regionProps } = useToastRegion(props, state, ref);

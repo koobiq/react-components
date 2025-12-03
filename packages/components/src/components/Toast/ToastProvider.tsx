@@ -2,29 +2,63 @@
 
 import { forwardRef } from 'react';
 
-import { useToastState } from '@koobiq/react-primitives';
+import type { ToastOptions } from '@koobiq/react-primitives';
+import { useToastQueue, ToastQueue } from '@koobiq/react-primitives';
 
 import { ToastRegion } from './components';
-import type { MyToast } from './components';
+import type { ToastProps } from './index';
 import type { ToastProviderComponent, ToastProviderProps } from './types';
 
-function ToastProviderRender<T extends object = MyToast>(
-  props: ToastProviderProps<T>
-) {
-  const { children } = props;
+let globalToastQueue: ToastQueue<ToastProps> | null = null;
 
-  const state = useToastState<T>({
-    maxVisibleToasts: 5,
-  });
+export const getToastQueue = () => {
+  if (!globalToastQueue) {
+    globalToastQueue = new ToastQueue({
+      maxVisibleToasts: Infinity,
+    });
+  }
 
-  return (
-    <>
-      {children?.(state)}
-      <ToastRegion {...props} state={state} />
-    </>
-  );
+  return globalToastQueue;
+};
+
+function ToastProviderRender(props: ToastProviderProps) {
+  const state = useToastQueue(getToastQueue());
+
+  return <ToastRegion {...props} state={state} />;
 }
 
 export const ToastProvider = forwardRef(
   ToastProviderRender
 ) as ToastProviderComponent;
+
+const add = ({ ...props }: ToastProps & ToastOptions) => {
+  if (!globalToastQueue) {
+    return null;
+  }
+
+  return globalToastQueue.add(props, {
+    timeout: props.timeout,
+    onClose: props.onClose,
+  });
+};
+
+const closingToasts = new Map<string, ReturnType<typeof setTimeout>>();
+
+export const close = (key: string) => {
+  if (!globalToastQueue) {
+    return;
+  }
+
+  if (closingToasts.has(key)) {
+    return;
+  }
+
+  const timeoutId = setTimeout(() => {
+    closingToasts.delete(key);
+    globalToastQueue?.close(key);
+  }, 300);
+
+  closingToasts.set(key, timeoutId);
+};
+
+export const toast = { add, close };

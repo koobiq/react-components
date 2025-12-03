@@ -6,19 +6,11 @@ import type {
   AriaToastProps,
 } from '@koobiq/react-primitives';
 
-export const toastPropStatus = ['info', 'warning', 'error', 'success'] as const;
+import type { ToastProps as ToastBaseProps } from '../../index';
 
-export type ToastPropStatus = (typeof toastPropStatus)[number];
-
-export type MyToast = {
-  title?: string;
-  description?: string;
-  status?: ToastPropStatus;
-};
-
-export type ToastProps<T> = AriaToastProps<T> & {
-  state: ToastState<T>;
+export type ToastProps = AriaToastProps<ToastBaseProps> & {
+  state: ToastState<ToastBaseProps>;
   'data-transition'?: string;
-  toast: QueuedToast<MyToast>;
+  toast: QueuedToast<ToastBaseProps>;
   innerRef: Ref<HTMLDivElement>;
 };
