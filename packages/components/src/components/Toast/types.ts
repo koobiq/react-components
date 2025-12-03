@@ -16,6 +16,8 @@ export type ToastProviderProps = {
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
+  /** The maximum number of toasts to display at a time. */
+  maxVisibleToasts?: number;
 };
 
 export type ToastProviderComponent = (

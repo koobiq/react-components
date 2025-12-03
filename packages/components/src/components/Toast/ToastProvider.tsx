@@ -13,10 +13,10 @@ import type { ToastProviderComponent, ToastProviderProps } from './types';
 
 let globalToastQueue: ToastQueue<ToastProps> | null = null;
 
-export const getToastQueue = () => {
+export const getToastQueue = (maxVisibleToasts = Infinity) => {
   if (!globalToastQueue) {
     globalToastQueue = new ToastQueue({
-      maxVisibleToasts: 3,
+      maxVisibleToasts,
     });
   }
 
@@ -27,7 +27,7 @@ function ToastProviderRender(
   props: ToastProviderProps,
   ref: Ref<HTMLDivElement>
 ) {
-  const state = useToastQueue(getToastQueue());
+  const state = useToastQueue(getToastQueue(props.maxVisibleToasts));
 
   return <ToastRegion {...props} ref={ref} state={state} />;
 }

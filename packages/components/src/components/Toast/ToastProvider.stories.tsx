@@ -25,7 +25,7 @@ type Story = StoryObj<ToastProviderProps>;
 export const Base: Story = {
   render: (args) => (
     <>
-      <ToastProvider {...args} />
+      <ToastProvider maxVisibleToasts={3} {...args} />
       <Button
         onPress={() =>
           toast.add({
