@@ -29,7 +29,9 @@ export function Toast({
   );
 
   const {
-    toast: { content: { status = 'info', title, description } = {} } = {},
+    toast: {
+      content: { status = 'info', title, description, action } = {},
+    } = {},
   } = props;
 
   return (
@@ -42,10 +44,11 @@ export function Toast({
     >
       <ToastStatusIcon status={status} />
       <div {...contentProps} className={clsx(s.content)}>
-        <Typography {...titleProps}>{title}</Typography>
+        {isNotNil(title) && <Typography {...titleProps}>{title}</Typography>}
         {isNotNil(description) && (
           <Typography color="contrast-secondary">{description}</Typography>
         )}
+        {isNotNil(action) && <span className={s.action}>{action}</span>}
       </div>
       <IconButton
         {...closeButtonProps}

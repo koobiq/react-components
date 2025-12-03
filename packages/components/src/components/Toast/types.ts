@@ -1,12 +1,13 @@
-import type { CSSProperties, ReactElement } from 'react';
+import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
 export const toastPropStatus = ['info', 'warning', 'error', 'success'] as const;
 
 export type ToastPropStatus = (typeof toastPropStatus)[number];
 
 export type ToastProps = {
-  title?: string;
-  description?: string;
+  title?: ReactNode;
+  action?: ReactNode;
+  description?: ReactNode;
   status?: ToastPropStatus;
 };
 

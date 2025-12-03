@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Link } from '../Link';
 
 import { ToastProvider, toast } from './index';
 import type { ToastProviderProps } from './index';
@@ -150,4 +151,41 @@ export const CloseToast: Story = {
       </>
     );
   },
+};
+
+export const Actions: Story = {
+  render: () => (
+    <>
+      <Button
+        onPress={() =>
+          toast.add({
+            title: 'Message',
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+            action: (
+              <>
+                <Link
+                  as="button"
+                  onPress={() => alert('Submit the first action')}
+                  isPseudo
+                >
+                  First action
+                </Link>
+                <Link
+                  as="button"
+                  onPress={() => alert('Submit the second action')}
+                  isPseudo
+                >
+                  Second action
+                </Link>
+              </>
+            ),
+          })
+        }
+        variant="fade-contrast-filled"
+      >
+        Show toast with actions
+      </Button>
+    </>
+  ),
 };
