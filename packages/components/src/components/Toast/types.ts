@@ -7,7 +7,7 @@ export type ToastPropStatus = (typeof toastPropStatus)[number];
 export type ToastProps = {
   title?: ReactNode;
   action?: ReactNode;
-  description?: ReactNode;
+  caption?: ReactNode;
   status?: ToastPropStatus;
 };
 

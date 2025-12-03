@@ -30,7 +30,7 @@ export const Base: Story = {
         onPress={() =>
           toast.add({
             title: 'Message',
-            description:
+            caption:
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
             status: 'success',
           })
@@ -51,7 +51,7 @@ export const Status: Story = {
           onPress={() =>
             toast.add({
               title: 'Info',
-              description:
+              caption:
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
               status: 'info',
             })
@@ -64,7 +64,7 @@ export const Status: Story = {
           onPress={() =>
             toast.add({
               title: 'Success',
-              description:
+              caption:
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
               status: 'success',
             })
@@ -77,7 +77,7 @@ export const Status: Story = {
           onPress={() =>
             toast.add({
               title: 'Warning',
-              description:
+              caption:
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
               status: 'warning',
             })
@@ -90,7 +90,7 @@ export const Status: Story = {
           onPress={() =>
             toast.add({
               title: 'Error',
-              description:
+              caption:
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
               status: 'error',
             })
@@ -111,7 +111,7 @@ export const AutoDismiss: Story = {
         onPress={() =>
           toast.add({
             title: 'Message',
-            description:
+            caption:
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
             status: 'success',
             timeout: 5000,
@@ -160,7 +160,7 @@ export const Actions: Story = {
         onPress={() =>
           toast.add({
             title: 'Message',
-            description:
+            caption:
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
             action: (
               <>
