@@ -150,6 +150,17 @@ export class ToastQueue<T> {
   }
 
   private updateVisibleToasts(action: ToastAction) {
+    // Remove excess toasts when queue is too large
+    if (this.queue.length > this.maxVisibleToasts) {
+      const excess = this.queue.slice(this.maxVisibleToasts);
+
+      for (const toast of excess) {
+        toast.onClose?.();
+      }
+
+      this.queue = this.queue.slice(0, this.maxVisibleToasts);
+    }
+
     this.visibleToasts = this.queue.slice(0, this.maxVisibleToasts);
 
     this.runWithWrapUpdate(() => {

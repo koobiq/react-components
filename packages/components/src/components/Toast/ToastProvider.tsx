@@ -16,7 +16,7 @@ let globalToastQueue: ToastQueue<ToastProps> | null = null;
 export const getToastQueue = () => {
   if (!globalToastQueue) {
     globalToastQueue = new ToastQueue({
-      maxVisibleToasts: Infinity,
+      maxVisibleToasts: 3,
     });
   }
 
