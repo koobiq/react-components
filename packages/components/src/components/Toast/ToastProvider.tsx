@@ -1,6 +1,7 @@
 'use client';
 
 import { forwardRef } from 'react';
+import type { Ref } from 'react';
 
 import type { ToastOptions } from '@koobiq/react-primitives';
 import { useToastQueue, ToastQueue } from '@koobiq/react-primitives';
@@ -21,10 +22,13 @@ export const getToastQueue = () => {
   return globalToastQueue;
 };
 
-function ToastProviderRender(props: ToastProviderProps) {
+function ToastProviderRender(
+  props: ToastProviderProps,
+  ref: Ref<HTMLDivElement>
+) {
   const state = useToastQueue(getToastQueue());
 
-  return <ToastRegion {...props} state={state} />;
+  return <ToastRegion {...props} ref={ref} state={state} />;
 }
 
 export const ToastProvider = forwardRef(

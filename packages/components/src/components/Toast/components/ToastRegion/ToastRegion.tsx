@@ -1,11 +1,9 @@
 'use client';
 
-import { useRef } from 'react';
+import { forwardRef, type Ref } from 'react';
 
-import { useRefs, useSsr } from '@koobiq/react-core';
+import { useDOMRef, useRefs, useSsr } from '@koobiq/react-core';
 import {
-  type AriaToastRegionProps,
-  type ToastState,
   useToastRegion,
   // eslint-disable-next-line camelcase
   useUNSAFE_PortalContext,
@@ -13,19 +11,18 @@ import {
 import { createPortal } from 'react-dom';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
-import type { ToastProps } from '../../index';
 import { Toast } from '../Toast';
 
 import s from './ToastRegion.module.css';
+import type { ToastRegionComponent, ToastRegionProps } from './types';
 
-export type ToastRegionProps = AriaToastRegionProps & {
-  state: ToastState<ToastProps>;
-};
-
-export function ToastRegion({ state, ...props }: ToastRegionProps) {
+export function ToastRegionRender(
+  { state, ...props }: Omit<ToastRegionProps, 'ref'>,
+  ref: Ref<HTMLDivElement>
+) {
   const { isBrowser } = useSsr();
-  const ref = useRef(null);
-  const { regionProps } = useToastRegion(props, state, ref);
+  const domRef = useDOMRef<HTMLDivElement>(ref);
+  const { regionProps } = useToastRegion(props, state, domRef);
   const { getContainer } = useUNSAFE_PortalContext();
 
   const total = state.visibleToasts.length;
@@ -36,11 +33,17 @@ export function ToastRegion({ state, ...props }: ToastRegionProps) {
   if (!portalContainer || !isBrowser) return null;
 
   return createPortal(
-    <Transition in={total > 0} timeout={300} mountOnEnter unmountOnExit>
+    <Transition
+      in={total > 0}
+      timeout={300}
+      nodeRef={domRef}
+      mountOnEnter
+      unmountOnExit
+    >
       {(transition) => (
         <div
           {...regionProps}
-          ref={ref}
+          ref={domRef}
           className={s.base}
           data-transition={transition}
         >
@@ -70,3 +73,7 @@ export function ToastRegion({ state, ...props }: ToastRegionProps) {
     portalContainer
   );
 }
+
+export const ToastRegion = forwardRef(
+  ToastRegionRender
+) as ToastRegionComponent;
