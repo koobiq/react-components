@@ -2,8 +2,8 @@
   outline: none;
   display: flex;
   position: fixed;
+  flex-direction: column;
   justify-content: flex-end;
-  flex-direction: column-reverse;
   z-index: var(--kbq-layer-toast);
   inset-inline-end: var(--kbq-size-l);
   inset-block-start: var(--kbq-size-l);

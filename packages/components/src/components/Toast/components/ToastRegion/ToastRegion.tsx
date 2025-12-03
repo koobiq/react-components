@@ -44,7 +44,7 @@ export function ToastRegion({ state, ...props }: ToastRegionProps) {
     ? createPortal(
         <div {...regionProps} ref={ref} className={s.base}>
           <TransitionGroup component={null} appear enter exit>
-            {state.visibleToasts.map((toast, index) => (
+            {state.visibleToasts.toReversed().map((toast, index) => (
               <Transition
                 key={toast.key}
                 timeout={300}

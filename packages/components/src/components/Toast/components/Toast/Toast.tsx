@@ -40,6 +40,13 @@ export function Toast({
       data-transition={transition}
       className={clsx(s.base, s[status], typography['text-normal'])}
     >
+      <IconButton
+        {...closeButtonProps}
+        variant="theme-contrast"
+        className={s.closeIcon}
+      >
+        <IconXmarkS16 />
+      </IconButton>
       <ToastStatusIcon status={status} />
       <div {...contentProps} className={clsx(s.content)}>
         {isNotNil(title) && <Typography {...titleProps}>{title}</Typography>}
@@ -48,13 +55,6 @@ export function Toast({
         )}
         {isNotNil(action) && <span className={s.action}>{action}</span>}
       </div>
-      <IconButton
-        {...closeButtonProps}
-        variant="theme-contrast"
-        className={s.closeIcon}
-      >
-        <IconXmarkS16 />
-      </IconButton>
     </div>
   );
 }

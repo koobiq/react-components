@@ -15,7 +15,7 @@
   background-color: var(--kbq-background-card);
   padding-inline: var(--kbq-size-m) var(--kbq-size-s);
 
-  &:last-child {
+  &:first-child {
     margin-block-start: 0;
   }
 }
@@ -29,6 +29,7 @@
 }
 
 .closeIcon {
+  order: 1;
   margin-block-start: var(--kbq-size-m);
   margin-inline-end: var(--kbq-size-xxs);
 }
