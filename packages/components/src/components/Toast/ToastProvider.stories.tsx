@@ -29,10 +29,8 @@ export const Base: Story = {
       <Button
         onPress={() =>
           toast.add({
-            title: 'Message',
-            caption:
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
-            status: 'success',
+            title: 'How to create a Toast Notification',
+            caption: "Let's build it with Koobiq React",
           })
         }
         variant="fade-contrast-filled"
@@ -50,9 +48,7 @@ export const Status: Story = {
         <Button
           onPress={() =>
             toast.add({
-              title: 'Info',
-              caption:
-                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+              title: 'This is an info Toast.',
               status: 'info',
             })
           }
@@ -63,9 +59,7 @@ export const Status: Story = {
         <Button
           onPress={() =>
             toast.add({
-              title: 'Success',
-              caption:
-                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+              title: 'This is a success Toast.',
               status: 'success',
             })
           }
@@ -76,9 +70,7 @@ export const Status: Story = {
         <Button
           onPress={() =>
             toast.add({
-              title: 'Warning',
-              caption:
-                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+              title: 'This is a warning Toast.',
               status: 'warning',
             })
           }
@@ -89,9 +81,7 @@ export const Status: Story = {
         <Button
           onPress={() =>
             toast.add({
-              title: 'Error',
-              caption:
-                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+              title: 'This is an error Toast.',
               status: 'error',
             })
           }
@@ -110,9 +100,7 @@ export const AutoDismiss: Story = {
       <Button
         onPress={() =>
           toast.add({
-            title: 'Message',
-            caption:
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+            title: 'This Toast will be dismissed in 5 seconds.',
             status: 'success',
             timeout: 5000,
           })
@@ -159,9 +147,8 @@ export const Actions: Story = {
       <Button
         onPress={() =>
           toast.add({
-            title: 'Message',
-            caption:
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse rerum sed sunt.',
+            title: 'By the way',
+            caption: 'This Toast uses a Link component for its action.',
             action: (
               <>
                 <Link
