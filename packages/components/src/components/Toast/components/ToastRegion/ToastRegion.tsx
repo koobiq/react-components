@@ -16,6 +16,8 @@ import { Toast } from '../Toast';
 import s from './ToastRegion.module.css';
 import type { ToastRegionComponent, ToastRegionProps } from './types';
 
+const TIMEOUT = 300;
+
 export function ToastRegionRender(
   { state, placement = 'top-end', ...props }: Omit<ToastRegionProps, 'ref'>,
   ref: Ref<HTMLDivElement>
@@ -35,7 +37,7 @@ export function ToastRegionRender(
   return createPortal(
     <Transition
       in={total > 0}
-      timeout={300}
+      timeout={TIMEOUT}
       nodeRef={domRef}
       mountOnEnter
       unmountOnExit
@@ -52,7 +54,7 @@ export function ToastRegionRender(
             {state.visibleToasts.map((toast, index) => (
               <Transition
                 key={toast.key}
-                timeout={300}
+                timeout={TIMEOUT}
                 nodeRef={refs[index]}
                 unmountOnExit
               >

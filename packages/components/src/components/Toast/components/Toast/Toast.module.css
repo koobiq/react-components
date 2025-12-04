@@ -1,19 +1,20 @@
 .base {
-  --toast-inline-size: 360px;
   --toast-outline-color: transparent;
+  --toast-inline-size: 360px;
   --toast-outline-width: var(--kbq-size-3xs);
 
-  opacity: 0;
   display: flex;
   outline: none;
   box-sizing: border-box;
   border-radius: var(--kbq-size-s);
   box-shadow: var(--kbq-shadow-popup);
   inline-size: var(--toast-inline-size);
+  transform-origin: top;
   margin-block-start: var(--kbq-size-s);
   transition:
     opacity var(--kbq-transition-slow),
-    transform var(--kbq-transition-slow);
+    transform var(--kbq-transition-slow),
+    max-block-size var(--kbq-transition-slow);
   background-color: var(--kbq-background-card);
   padding-inline: var(--kbq-size-m) var(--kbq-size-s);
 
@@ -61,20 +62,28 @@
 /* transition */
 .base[data-transition='entering'] {
   opacity: 1;
+  max-block-size: 50vh;
   transform: scale(1);
+  transform-origin: top;
 }
 
 .base[data-transition='entered'] {
   opacity: 1;
+  max-block-size: 50vh;
   transform: scale(1);
+  transform-origin: top;
 }
 
 .base[data-transition='exiting'] {
   opacity: 0;
+  max-block-size: 0;
   transform: scale(0.5);
+  transform-origin: center;
 }
 
 .base[data-transition='exited'] {
   opacity: 0;
+  max-block-size: 0;
   transform: scale(0.5);
+  transform-origin: center;
 }

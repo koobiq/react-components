@@ -13,7 +13,7 @@ import type { ToastProviderComponent, ToastProviderProps } from './types';
 
 let globalToastQueue: ToastQueue<ToastProps> | null = null;
 
-export const getToastQueue = (maxVisibleToasts = Infinity) => {
+export const getToastQueue = (maxVisibleToasts = 5) => {
   if (!globalToastQueue) {
     globalToastQueue = new ToastQueue({
       maxVisibleToasts,
