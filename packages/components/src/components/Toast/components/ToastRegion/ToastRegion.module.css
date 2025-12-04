@@ -2,39 +2,38 @@
   outline: none;
   display: flex;
   position: fixed;
-  padding: var(--kbq-size-l);
   flex-direction: column-reverse;
   z-index: var(--kbq-layer-toast);
 }
 
 .bottom {
-  inset-block-end: 0;
+  inset-block-end: var(--kbq-size-l);
   inset-inline-start: 50%;
   transform: translate(-50%);
 }
 
 .bottom-start {
-  inset-inline-start: 0;
-  inset-block-end: 0;
+  inset-inline-start: var(--kbq-size-l);
+  inset-block-end: var(--kbq-size-l);
 }
 
 .bottom-end {
-  inset-inline-end: 0;
-  inset-block-end: 0;
+  inset-inline-end: var(--kbq-size-l);
+  inset-block-end: var(--kbq-size-l);
 }
 
 .top {
-  inset-block-start: 0;
+  inset-block-start: var(--kbq-size-l);
   inset-inline-start: 50%;
   transform: translate(-50%);
 }
 
 .top-start {
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  inset-block-start: var(--kbq-size-l);
+  inset-inline-start: var(--kbq-size-l);
 }
 
 .top-end {
-  inset-block-start: 0;
-  inset-inline-end: 0;
+  inset-block-start: var(--kbq-size-l);
+  inset-inline-end: var(--kbq-size-l);
 }
