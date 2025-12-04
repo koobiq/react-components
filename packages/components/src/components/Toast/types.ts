@@ -11,6 +11,17 @@ export type ToastProps = {
   status?: ToastPropStatus;
 };
 
+export const toastPlacement = [
+  'bottom',
+  'bottom-start',
+  'bottom-end',
+  'top',
+  'top-start',
+  'top-end',
+] as const;
+
+export type ToastPlacement = (typeof toastPlacement)[number];
+
 export type ToastProviderProps = {
   /** Additional CSS-classes. */
   className?: string;
@@ -18,6 +29,7 @@ export type ToastProviderProps = {
   style?: CSSProperties;
   /** The maximum number of toasts to display at a time. */
   maxVisibleToasts?: number;
+  placement?: ToastPlacement;
 };
 
 export type ToastProviderComponent = (

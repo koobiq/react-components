@@ -2,9 +2,42 @@
   outline: none;
   display: flex;
   position: fixed;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: column-reverse;
   z-index: var(--kbq-layer-toast);
+}
+
+.bottom {
+  inset-block-end: var(--kbq-size-l);
+  inset-inline-start: 50%;
+  transform: translate(-50%);
+}
+
+.bottom-start {
+  inset-inline-start: var(--kbq-size-l);
+  inset-block-end: var(--kbq-size-l);
+  justify-content: flex-start;
+}
+
+.bottom-end {
   inset-inline-end: var(--kbq-size-l);
+  inset-block-end: var(--kbq-size-l);
+  justify-content: flex-end;
+}
+
+.top {
   inset-block-start: var(--kbq-size-l);
+  inset-inline-start: 50%;
+  transform: translate(-50%);
+}
+
+.top-start {
+  inset-block-start: var(--kbq-size-l);
+  inset-inline-start: var(--kbq-size-l);
+  justify-content: flex-start;
+}
+
+.top-end {
+  inset-block-start: var(--kbq-size-l);
+  inset-inline-end: var(--kbq-size-l);
+  justify-content: flex-end;
 }

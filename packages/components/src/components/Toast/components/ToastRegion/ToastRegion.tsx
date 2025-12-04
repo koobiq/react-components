@@ -2,7 +2,7 @@
 
 import { forwardRef, type Ref } from 'react';
 
-import { useDOMRef, useRefs, useSsr } from '@koobiq/react-core';
+import { clsx, useDOMRef, useRefs, useSsr } from '@koobiq/react-core';
 import {
   useToastRegion,
   // eslint-disable-next-line camelcase
@@ -17,7 +17,7 @@ import s from './ToastRegion.module.css';
 import type { ToastRegionComponent, ToastRegionProps } from './types';
 
 export function ToastRegionRender(
-  { state, ...props }: Omit<ToastRegionProps, 'ref'>,
+  { state, placement = 'top-end', ...props }: Omit<ToastRegionProps, 'ref'>,
   ref: Ref<HTMLDivElement>
 ) {
   const { isBrowser } = useSsr();
@@ -44,11 +44,12 @@ export function ToastRegionRender(
         <div
           {...regionProps}
           ref={domRef}
-          className={s.base}
+          className={clsx(s.base, s[placement])}
+          data-placement={placement}
           data-transition={transition}
         >
           <TransitionGroup component={null} appear enter exit>
-            {state.visibleToasts.toReversed().map((toast, index) => (
+            {state.visibleToasts.map((toast, index) => (
               <Transition
                 key={toast.key}
                 timeout={300}

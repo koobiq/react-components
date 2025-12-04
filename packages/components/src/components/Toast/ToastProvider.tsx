@@ -55,4 +55,12 @@ export const close = (key: string) => {
   globalToastQueue?.close(key);
 };
 
-export const toast = { add, close };
+export const clear = () => {
+  if (!globalToastQueue) {
+    return;
+  }
+
+  globalToastQueue?.clear();
+};
+
+export const toast = { add, close, clear };
