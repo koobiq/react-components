@@ -72,7 +72,7 @@ export const Placement: Story = {
               variant="fade-contrast-filled"
               fullWidth
             >
-              top start
+              top-start
             </Button>
           </Grid.Item>
           <Grid.Item colStart={3} rowStart={2}>
@@ -81,7 +81,7 @@ export const Placement: Story = {
               variant="fade-contrast-filled"
               fullWidth
             >
-              top end
+              top-end
             </Button>
           </Grid.Item>
           <Grid.Item colStart={1} rowStart={3}>
@@ -90,7 +90,7 @@ export const Placement: Story = {
               variant="fade-contrast-filled"
               fullWidth
             >
-              bottom start
+              bottom-start
             </Button>
           </Grid.Item>
           <Grid.Item colStart={3} rowStart={3}>
@@ -99,7 +99,7 @@ export const Placement: Story = {
               variant="fade-contrast-filled"
               fullWidth
             >
-              bottom end
+              bottom-end
             </Button>
           </Grid.Item>
           <Grid.Item colStart={2} rowStart={4}>
