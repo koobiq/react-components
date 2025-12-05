@@ -18,10 +18,11 @@ export function Toast({ state, style, innerRef, ...props }: ToastProps) {
   const domRef = useDOMRef<HTMLDivElement>(innerRef);
 
   const {
-    toastProps: toastPropsAria,
-    contentProps,
     titleProps,
-    closeButtonProps,
+    descriptionProps,
+    toastProps: toastPropsAria,
+    contentProps: contentPropsAria,
+    closeButtonProps: closeButtonPropsAria,
   } = useToast(props, state, domRef);
 
   const {
@@ -52,23 +53,47 @@ export function Toast({ state, style, innerRef, ...props }: ToastProps) {
     className: clsx(s.base, s[status], typography['text-normal']),
   });
 
+  const contentProps = mergeProps(
+    contentPropsAria,
+    { className: s.content },
+    slotProps?.content
+  );
+
+  const closeButtonProps = mergeProps(
+    closeButtonPropsAria,
+    { variant: 'theme-contrast', className: s.closeIcon },
+    slotProps?.closeIcon
+  );
+
   return (
     <div {...toastProps}>
       <div className={s.wrapper}>
         {!hideCloseButton && (
-          <IconButton
-            {...closeButtonProps}
-            variant="theme-contrast"
-            className={s.closeIcon}
-          >
-            {icon || <IconXmarkS16 />}
+          <IconButton {...closeButtonProps}>
+            <IconXmarkS16 />
           </IconButton>
         )}
-        {!hideIcon && <ToastStatusIcon status={status} />}
-        <div {...contentProps} className={clsx(s.content)}>
-          {isNotNil(title) && <Typography {...titleProps}>{title}</Typography>}
+        {!hideIcon && (
+          <ToastStatusIcon
+            icon={icon}
+            status={status}
+            {...slotProps?.statusIcon}
+          />
+        )}
+        <div {...contentProps}>
+          {isNotNil(title) && (
+            <Typography as="span" {...titleProps}>
+              {title}
+            </Typography>
+          )}
           {isNotNil(caption) && (
-            <Typography color="contrast-secondary">{caption}</Typography>
+            <Typography
+              as="span"
+              color="contrast-secondary"
+              {...descriptionProps}
+            >
+              {caption}
+            </Typography>
           )}
           {isNotNil(action) && <span className={s.action}>{action}</span>}
         </div>

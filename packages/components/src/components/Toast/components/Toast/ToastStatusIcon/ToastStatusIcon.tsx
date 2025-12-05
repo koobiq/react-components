@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
@@ -9,12 +9,13 @@ import { matchStatusToIcon } from './utils';
 
 export type ToastStatusIconProps = {
   status?: ToastPropStatus;
+  icon?: ReactNode;
 };
 
 export const ToastStatusIcon = forwardRef<HTMLDivElement, ToastStatusIconProps>(
-  ({ status = 'info' }, ref) => (
+  ({ status = 'info', icon }, ref) => (
     <div className={clsx(s.base, status && s[status])} ref={ref}>
-      {matchStatusToIcon[status]}
+      {icon || matchStatusToIcon[status]}
     </div>
   )
 );

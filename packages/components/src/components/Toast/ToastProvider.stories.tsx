@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { IconVpn16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
@@ -262,5 +263,24 @@ export const Actions: Story = {
         Show toast with actions
       </Button>
     </>
+  ),
+};
+
+export const CustomToast: Story = {
+  render: () => (
+    <Button
+      onPress={() =>
+        toast.add({
+          title: 'VPN Connected',
+          timeout: Infinity,
+          props: {
+            icon: <IconVpn16 />,
+          },
+        })
+      }
+      variant="fade-contrast-filled"
+    >
+      Custom toast
+    </Button>
   ),
 };
