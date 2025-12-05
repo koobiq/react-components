@@ -14,12 +14,7 @@ import type { ToastProps } from './types';
 
 const { typography } = utilClasses;
 
-export function Toast({
-  state,
-  innerRef,
-  'data-transition': transition,
-  ...props
-}: ToastProps) {
+export function Toast({ state, style, innerRef, ...props }: ToastProps) {
   const domRef = useDOMRef<HTMLDivElement>(innerRef);
 
   const { toastProps, contentProps, titleProps, closeButtonProps } = useToast(
@@ -36,24 +31,26 @@ export function Toast({
     <div
       {...toastProps}
       ref={domRef}
+      style={style}
       data-status={status}
-      data-transition={transition}
       className={clsx(s.base, s[status], typography['text-normal'])}
     >
-      <IconButton
-        {...closeButtonProps}
-        variant="theme-contrast"
-        className={s.closeIcon}
-      >
-        <IconXmarkS16 />
-      </IconButton>
-      <ToastStatusIcon status={status} />
-      <div {...contentProps} className={clsx(s.content)}>
-        {isNotNil(title) && <Typography {...titleProps}>{title}</Typography>}
-        {isNotNil(caption) && (
-          <Typography color="contrast-secondary">{caption}</Typography>
-        )}
-        {isNotNil(action) && <span className={s.action}>{action}</span>}
+      <div className={s.wrapper}>
+        <IconButton
+          {...closeButtonProps}
+          variant="theme-contrast"
+          className={s.closeIcon}
+        >
+          <IconXmarkS16 />
+        </IconButton>
+        <ToastStatusIcon status={status} />
+        <div {...contentProps} className={clsx(s.content)}>
+          {isNotNil(title) && <Typography {...titleProps}>{title}</Typography>}
+          {isNotNil(caption) && (
+            <Typography color="contrast-secondary">{caption}</Typography>
+          )}
+          {isNotNil(action) && <span className={s.action}>{action}</span>}
+        </div>
       </div>
     </div>
   );

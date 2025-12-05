@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type Ref } from 'react';
+import { type CSSProperties, forwardRef, type Ref } from 'react';
 
 import { clsx, useDOMRef, useRefs, useSsr } from '@koobiq/react-core';
 import {
@@ -9,7 +9,11 @@ import {
   useUNSAFE_PortalContext,
 } from '@koobiq/react-primitives';
 import { createPortal } from 'react-dom';
-import { Transition, TransitionGroup } from 'react-transition-group';
+import {
+  Transition,
+  TransitionGroup,
+  type TransitionStatus,
+} from 'react-transition-group';
 
 import { Toast } from '../Toast';
 
@@ -29,7 +33,7 @@ export function ToastRegionRender(
 
   const total = state.visibleToasts.length;
 
-  const refs = useRefs<HTMLDivElement>(total);
+  const refs = useRefs<HTMLDivElement>(total, [state.visibleToasts[0]?.key]);
 
   const portalContainer = getContainer ? getContainer() : document.body;
   if (!portalContainer || !isBrowser) return null;
@@ -58,15 +62,48 @@ export function ToastRegionRender(
                 nodeRef={refs[index]}
                 unmountOnExit
               >
-                {(toastTransition) => (
-                  <Toast
-                    key={toast.key}
-                    toast={toast}
-                    state={state}
-                    innerRef={refs[index]}
-                    data-transition={toastTransition}
-                  />
-                )}
+                {(transition) => {
+                  const inner = refs[index].current?.children[0];
+
+                  const transitionStyles: Partial<
+                    Record<TransitionStatus, CSSProperties>
+                  > = {
+                    entering: {
+                      opacity: 1,
+                      height: inner?.clientHeight,
+                      transform: 'translate(0, 0)',
+                    },
+                    entered: {
+                      opacity: 1,
+                      transform: 'translate(0, 0)',
+                      height: inner?.clientHeight,
+                    },
+                    exiting: {
+                      transform: 'scale(0.5)',
+                      opacity: 0,
+                      margin: 0,
+                    },
+                    exited: {
+                      transform: 'scale(0.5)',
+                      opacity: 0,
+                      margin: 0,
+                    },
+                  };
+
+                  return (
+                    <Toast
+                      key={toast.key}
+                      toast={toast}
+                      state={state}
+                      innerRef={refs[index]}
+                      style={{
+                        height: 0,
+                        transitionDuration: `${TIMEOUT}ms`,
+                        ...transitionStyles[transition],
+                      }}
+                    />
+                  );
+                }}
               </Transition>
             ))}
           </TransitionGroup>

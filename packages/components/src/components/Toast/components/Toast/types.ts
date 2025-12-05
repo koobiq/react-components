@@ -1,4 +1,4 @@
-import type { Ref } from 'react';
+import type { CSSProperties, Ref } from 'react';
 
 import type {
   ToastState,
@@ -10,7 +10,7 @@ import type { ToastProps as ToastBaseProps } from '../../index';
 
 export type ToastProps = AriaToastProps<ToastBaseProps> & {
   state: ToastState<ToastBaseProps>;
-  'data-transition'?: string;
   toast: QueuedToast<ToastBaseProps>;
   innerRef: Ref<HTMLDivElement>;
+  style?: CSSProperties;
 };
