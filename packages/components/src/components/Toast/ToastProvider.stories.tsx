@@ -55,7 +55,7 @@ export const Placement: Story = {
 
     return (
       <>
-        <ToastProvider placement={placement} {...args} />
+        <ToastProvider placement={placement} maxVisibleToasts={3} {...args} />
         <Grid cols={3} gap="m">
           <Grid.Item colStart={2}>
             <Button
@@ -172,7 +172,7 @@ export const Status: Story = {
 
 export const AutoDismiss: Story = {
   render: () => (
-    <>
+    <FlexBox gap="m">
       <Button
         onPress={() =>
           toast.add({
@@ -185,7 +185,19 @@ export const AutoDismiss: Story = {
       >
         Show toast (5000ms)
       </Button>
-    </>
+      <Button
+        onPress={() =>
+          toast.add({
+            title: 'This Toast will not be dismissed.',
+            status: 'success',
+            timeout: Infinity,
+          })
+        }
+        variant="fade-contrast-filled"
+      >
+        Show toast
+      </Button>
+    </FlexBox>
   ),
 };
 

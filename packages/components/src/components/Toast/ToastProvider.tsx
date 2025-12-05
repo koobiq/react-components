@@ -13,10 +13,13 @@ import type { ToastProviderComponent, ToastProviderProps } from './types';
 
 let globalToastQueue: ToastQueue<ToastProps> | null = null;
 
-export const getToastQueue = (maxVisibleToasts = 3) => {
+const MIN_TIMEOUT = 5000;
+
+export const getToastQueue = (maxVisibleToasts = Infinity) => {
   if (!globalToastQueue) {
     globalToastQueue = new ToastQueue({
-      maxVisibleToasts,
+      maxVisibleToasts:
+        maxVisibleToasts === Infinity ? undefined : maxVisibleToasts,
     });
   }
 
@@ -42,7 +45,10 @@ const add = ({ ...props }: ToastProps & ToastOptions) => {
   }
 
   return globalToastQueue.add(props, {
-    timeout: props.timeout,
+    timeout:
+      props.timeout === Infinity
+        ? undefined
+        : Math.max(props.timeout || MIN_TIMEOUT, MIN_TIMEOUT),
     onClose: props.onClose,
   });
 };
