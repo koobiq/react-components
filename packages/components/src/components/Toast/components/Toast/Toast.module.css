@@ -10,7 +10,6 @@
   border-radius: var(--kbq-size-s);
   box-shadow: var(--kbq-shadow-popup);
   inline-size: var(--toast-inline-size);
-  margin-block-end: var(--kbq-size-s);
   transform-origin: center;
   transition:
     opacity var(--kbq-transition-slow),
@@ -19,10 +18,6 @@
     block-size var(--kbq-transition-slow);
   background-color: var(--kbq-background-card);
   padding-inline: var(--kbq-size-m) var(--kbq-size-s);
-
-  &:first-child {
-    margin-block-end: 0;
-  }
 
   &:focus-visible {
     --toast-outline-color: var(--kbq-states-line-focus-theme);
