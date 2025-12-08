@@ -44,8 +44,6 @@ export function Toast({ state, style, innerRef, ...props }: ToastProps) {
     } = {},
   } = props;
 
-  console.log(slotProps);
-
   const toastProps = mergeProps(toastPropsAria, componentProps, {
     style: { ...componentStyle, ...style },
     ref: domRef,

@@ -173,7 +173,7 @@ export const Status: Story = {
 
 export const AutoDismiss: Story = {
   render: () => (
-    <FlexBox gap="m">
+    <FlexBox gap="m" direction={{ m: 'column', l: 'row' }} alignItems="center">
       <Button
         onPress={() =>
           toast.add({
@@ -185,6 +185,18 @@ export const AutoDismiss: Story = {
         variant="fade-contrast-filled"
       >
         Show toast (5000ms)
+      </Button>
+      <Button
+        onPress={() =>
+          toast.add({
+            title: 'This Toast will be dismissed in 5 seconds.',
+            status: 'success',
+            timeout: 8000,
+          })
+        }
+        variant="fade-contrast-filled"
+      >
+        Show toast (8000ms)
       </Button>
       <Button
         onPress={() =>
