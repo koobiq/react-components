@@ -1,8 +1,15 @@
 'use client';
 
-import { type CSSProperties, forwardRef, type Ref } from 'react';
+import { type CSSProperties, forwardRef, type Ref, useEffect } from 'react';
 
-import { clsx, useDOMRef, useRefs, useSsr } from '@koobiq/react-core';
+import {
+  clsx,
+  useDOMRef,
+  useRefs,
+  useSsr,
+  useBoolean,
+  useTimeout,
+} from '@koobiq/react-core';
 import {
   useToastRegion,
   // eslint-disable-next-line camelcase
@@ -20,7 +27,7 @@ import { Toast } from '../Toast';
 import s from './ToastRegion.module.css';
 import type { ToastRegionComponent, ToastRegionProps } from './types';
 
-const TIMEOUT = 300;
+const TRANSITION_TIMEOUT = 300;
 
 export function ToastRegionRender(
   { state, placement = 'top-end', ...props }: Omit<ToastRegionProps, 'ref'>,
@@ -30,86 +37,87 @@ export function ToastRegionRender(
   const domRef = useDOMRef<HTMLDivElement>(ref);
   const { regionProps } = useToastRegion(props, state, domRef);
   const { getContainer } = useUNSAFE_PortalContext();
+  const [isMounted, { on, off }] = useBoolean(false);
 
   const total = state.visibleToasts.length;
+
+  useEffect(() => {
+    if (total) on();
+  }, [total, on]);
+
+  useTimeout(
+    () => {
+      if (!total) off();
+    },
+    total ? null : TRANSITION_TIMEOUT
+  );
 
   const refs = useRefs<HTMLDivElement>(total, [state.visibleToasts[0]?.key]);
 
   const portalContainer = getContainer ? getContainer() : document.body;
-  if (!portalContainer || !isBrowser) return null;
+  if (!portalContainer || !isBrowser || !isMounted) return null;
 
   return createPortal(
-    <Transition
-      in={total > 0}
-      timeout={TIMEOUT}
-      nodeRef={domRef}
-      mountOnEnter
-      unmountOnExit
+    <div
+      {...regionProps}
+      ref={domRef}
+      className={clsx(s.base, s[placement])}
+      data-placement={placement}
     >
-      {(transition) => (
-        <div
-          {...regionProps}
-          ref={domRef}
-          className={clsx(s.base, s[placement])}
-          data-placement={placement}
-          data-transition={transition}
-        >
-          <TransitionGroup component={null} appear enter exit>
-            {state.visibleToasts.map((toast, index) => (
-              <Transition
-                key={toast.key}
-                timeout={TIMEOUT}
-                nodeRef={refs[index]}
-                unmountOnExit
-              >
-                {(transition) => {
-                  const inner = refs[index].current?.children[0];
+      <TransitionGroup component={null} appear enter>
+        {state.visibleToasts.map((toast, index) => (
+          <Transition
+            key={toast.key}
+            timeout={TRANSITION_TIMEOUT}
+            nodeRef={refs[index]}
+            unmountOnExit
+          >
+            {(transition) => {
+              const inner = refs[index].current?.children[0];
 
-                  const transitionStyles: Partial<
-                    Record<TransitionStatus, CSSProperties>
-                  > = {
-                    entering: {
-                      opacity: 1,
-                      height: inner?.clientHeight,
-                      transform: 'translate(0, 0)',
-                    },
-                    entered: {
-                      opacity: 1,
-                      transform: 'translate(0, 0)',
-                      height: inner?.clientHeight,
-                    },
-                    exiting: {
-                      transform: 'scale(0.5)',
-                      opacity: 0,
-                      margin: 0,
-                    },
-                    exited: {
-                      transform: 'scale(0.5)',
-                      opacity: 0,
-                      margin: 0,
-                    },
-                  };
+              const transitionStyles: Partial<
+                Record<TransitionStatus, CSSProperties>
+              > = {
+                entering: {
+                  opacity: 1,
+                  height: inner?.clientHeight,
+                  transform: 'translate(0, 0)',
+                },
+                entered: {
+                  opacity: 1,
+                  transform: 'translate(0, 0)',
+                  height: inner?.clientHeight,
+                },
+                exiting: {
+                  transform: 'scale(0.5)',
+                  opacity: 0,
+                  margin: 0,
+                },
+                exited: {
+                  transform: 'scale(0.5)',
+                  opacity: 0,
+                  margin: 0,
+                },
+              };
 
-                  return (
-                    <Toast
-                      key={toast.key}
-                      toast={toast}
-                      state={state}
-                      innerRef={refs[index]}
-                      style={{
-                        height: 0,
-                        transitionDuration: `${TIMEOUT}ms`,
-                        ...transitionStyles[transition],
-                      }}
-                    />
-                  );
-                }}
-              </Transition>
-            ))}
-          </TransitionGroup>
-        </div>
-      )}
-    </Transition>,
+              return (
+                <Toast
+                  key={toast.key}
+                  toast={toast}
+                  state={state}
+                  innerRef={refs[index]}
+                  style={{
+                    height: 0,
+                    transitionDuration: `${TRANSITION_TIMEOUT}ms`,
+                    ...transitionStyles[transition],
+                  }}
+                />
+              );
+            }}
+          </Transition>
+        ))}
+      </TransitionGroup>
+    </div>,
     portalContainer
   );
 }

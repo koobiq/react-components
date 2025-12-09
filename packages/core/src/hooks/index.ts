@@ -7,6 +7,7 @@ export * from './useDOMRef';
 export * from './useBoolean';
 export * from './useMutableRef';
 export * from './useInterval';
+export * from './useTimeout';
 export * from './useIsFirstRender';
 export * from './useEventListener';
 export * from './useResizeObserver';
