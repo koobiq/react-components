@@ -31,7 +31,7 @@ export interface ToastState<T> {
   visibleToasts: QueuedToast<T>[];
 }
 
-const CHECK_INTERVAL = 500;
+const CHECK_INTERVAL = 100;
 const DELAY = 2000;
 
 export class ToastQueue<T> {
@@ -55,6 +55,9 @@ export class ToastQueue<T> {
   /** Next moment when an auto-close is allowed (gap after any close). */
   private nextCloseAllowedAt = 0;
 
+  /** Count of timed toasts (ttl != null) currently in the queue. */
+  private timedCount = 0;
+
   constructor(options?: ToastStateProps) {
     this.maxVisibleToasts = options?.maxVisibleToasts ?? Infinity;
     this.wrapUpdate = options?.wrapUpdate;
@@ -72,7 +75,7 @@ export class ToastQueue<T> {
     return () => this.subscriptions.delete(fn);
   }
 
-  // Ticker lifecycle
+  /** Starts the ticker. */
   private startTicker(): void {
     if (this.tickId != null) return;
     if (typeof window === 'undefined') return;
@@ -81,16 +84,15 @@ export class ToastQueue<T> {
     this.tickId = setInterval(this.onTick, CHECK_INTERVAL);
   }
 
+  /** Stops the ticker. */
   private stopTicker(): void {
     if (this.tickId == null) return;
 
     clearInterval(this.tickId);
     this.tickId = null;
-    this.lastTickAt = 0;
-  }
 
-  private hasAnyTimedToast(): boolean {
-    return this.queue.some((t) => t.ttl != null);
+    this.lastTickAt = 0;
+    this.nextCloseAllowedAt = 0;
   }
 
   /** Adds a new toast to the queue. */
@@ -108,9 +110,12 @@ export class ToastQueue<T> {
     // new toasts at the front (existing behavior)
     this.queue.unshift(toast);
 
+    if (toast.ttl != null) {
+      this.timedCount += 1;
+    }
+
     this.updateVisibleToasts('add');
 
-    // start ticking only if a timed toast exists
     if (toast.ttl != null) {
       this.startTicker();
     }
@@ -120,7 +125,7 @@ export class ToastQueue<T> {
 
   /**
    * Manual close.
-   * Also creates a gap before the next auto-close is allowed.
+   * Also creates a delay before the next auto-close is allowed.
    */
   close(key: string): void {
     this.removeToast(key);
@@ -147,10 +152,10 @@ export class ToastQueue<T> {
     for (const toast of this.queue) toast.onClose?.();
 
     this.queue = [];
-    this.updateVisibleToasts('clear');
+    this.timedCount = 0;
 
+    this.updateVisibleToasts('clear');
     this.stopTicker();
-    this.nextCloseAllowedAt = 0;
   }
 
   private updateVisibleToasts(action: ToastAction) {
@@ -159,6 +164,10 @@ export class ToastQueue<T> {
       const excess = this.queue.slice(this.maxVisibleToasts);
 
       for (const toast of excess) {
+        if (toast.ttl != null) {
+          this.timedCount -= 1;
+        }
+
         toast.onClose?.();
       }
 
@@ -171,8 +180,8 @@ export class ToastQueue<T> {
       for (const fn of this.subscriptions) fn();
     }, action);
 
-    // if timed toasts disappeared, stop ticker
-    if (!this.hasAnyTimedToast()) {
+    // if no timed toasts remain, stop ticker
+    if (this.timedCount === 0) {
       this.stopTicker();
     }
   }
@@ -181,13 +190,23 @@ export class ToastQueue<T> {
     const index = this.queue.findIndex((t) => t.key === key);
 
     if (index >= 0) {
-      this.queue[index].onClose?.();
+      const toast = this.queue[index];
+
+      if (toast.ttl != null) {
+        this.timedCount -= 1;
+      }
+
+      toast.onClose?.();
       this.queue.splice(index, 1);
     }
 
     this.updateVisibleToasts('remove');
   }
 
+  /**
+   * Oldest timed toast (FIFO among timed toasts).
+   * We add via unshift, so the oldest is at the end.
+   */
   private getHeadTimedToast(): QueuedToast<T> | undefined {
     for (let i = this.queue.length - 1; i >= 0; i -= 1) {
       const t = this.queue[i];
@@ -198,15 +217,10 @@ export class ToastQueue<T> {
   }
 
   private onTick = () => {
-    if (this.isPaused) return;
-    if (this.queue.length === 0) return;
-
-    // debug
-    console.log('tick');
+    if (this.isPaused || this.queue.length === 0) return;
 
     const now = Date.now();
 
-    // delta-based ticking (more accurate than subtracting CHECK_INTERVAL)
     const delta = this.lastTickAt
       ? Math.max(0, now - this.lastTickAt)
       : CHECK_INTERVAL;
@@ -214,20 +228,18 @@ export class ToastQueue<T> {
     this.lastTickAt = now;
 
     // all timed toasts tick simultaneously
-    for (const t of this.visibleToasts) {
-      // eslint-disable-next-line no-continue
-      if (t.ttl == null) continue;
-      t.ttl = Math.max(0, t.ttl - delta);
+    for (const t of this.queue) {
+      if (t.ttl != null) {
+        t.ttl = Math.max(0, t.ttl - delta);
+      }
     }
 
-    // enforce gap between closes
+    // enforce delay between closes
     if (now < this.nextCloseAllowedAt) return;
 
-    // close only the oldest timed toast, if it has expired
+    // close only the head timed toast, if it has expired
     const head = this.getHeadTimedToast();
-    if (!head) return;
-
-    if ((head.ttl ?? 0) > 0) return;
+    if (!head || (head.ttl ?? 0) > 0) return;
 
     this.removeToast(head.key);
     this.nextCloseAllowedAt = now + DELAY;

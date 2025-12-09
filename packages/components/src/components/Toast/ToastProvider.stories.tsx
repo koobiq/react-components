@@ -189,7 +189,7 @@ export const AutoDismiss: Story = {
       <Button
         onPress={() =>
           toast.add({
-            title: 'This Toast will be dismissed in 5 seconds.',
+            title: 'This Toast will be dismissed in 8 seconds.',
             status: 'success',
             timeout: 8000,
           })

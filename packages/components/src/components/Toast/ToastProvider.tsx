@@ -8,7 +8,7 @@ import { useToastQueue } from '@koobiq/react-primitives';
 
 import { ToastRegion } from './components';
 import type { ToastProps } from './index';
-import { ToastQueue } from './MyToastQueue';
+import { ToastQueue } from './KbqToastQueue';
 import type { ToastProviderComponent, ToastProviderProps } from './types';
 
 let globalToastQueue: ToastQueue<ToastProps> | null = null;
