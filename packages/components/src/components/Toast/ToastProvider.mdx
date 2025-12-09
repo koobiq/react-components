@@ -9,7 +9,7 @@ import * as Stories from './ToastProvider.stories';
 
 <Meta of={Stories} />
 
-# Toast
+# ToastProvider
 
 <Status variant="experimental" />
 
@@ -25,7 +25,35 @@ import { ToastProvider, toast } from '@koobiq/react-components';
 
 <Props />
 
+## Usage
+
+The `ToastProvider` must be added to the application before using the `toast` function.
+This is required to initialize the context for managing toasts.
+
+```tsx
+import { Provider, ToastProvider } from '@koobiq/react-components';
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <ToastProvider />
+      {children}
+    </>
+  );
+}
+```
+
+And next, just use the `toast.add()` function to show a toast.
+
+```tsx
+<Button onPress={() => toast.add({ title: 'Toast title' })}>
+  Show a toast
+</Button>
+```
+
 ## Placement
+
+The toast can be positioned in six different locations.
 
 <Story of={Stories.Placement} />
 
@@ -37,6 +65,14 @@ To show a warning or error toast, use the following approach.
 
 ## Don't Close Automatically
 
+By default, toasts close automatically after 5000ms.
+
+Sometimes, you may not want the toast to close automatically.
+For example, if you have a toast that waits for a user to click a button,
+you would not want it to close automatically when the button is clicked.
+
+You can do it like this.
+
 <Story of={Stories.AutoDismiss} />
 
 ## Close Toast
@@ -44,6 +80,8 @@ To show a warning or error toast, use the following approach.
 <Story of={Stories.CloseToast} />
 
 ## Actions
+
+To display a toast with an action, use the following method.
 
 <Story of={Stories.Actions} />
 

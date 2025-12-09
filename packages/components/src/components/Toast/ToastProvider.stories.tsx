@@ -219,25 +219,24 @@ export const CloseToast: Story = {
     const [toastKey, setToastKey] = useState<string | null>(null);
 
     return (
-      <>
-        <Button
-          onPress={() => {
-            if (!toastKey) {
-              setToastKey(
-                toast.add({
-                  title: 'Unable to save',
-                  onClose: () => setToastKey(null),
-                })
-              );
-            } else {
-              toast.close(toastKey);
-            }
-          }}
-          variant="fade-contrast-filled"
-        >
-          {toastKey ? 'Hide' : 'Show'} Toast
-        </Button>
-      </>
+      <Button
+        onPress={() => {
+          if (!toastKey) {
+            setToastKey(
+              toast.add({
+                title: 'Unable to save',
+                onClose: () => setToastKey(null),
+                timeout: Infinity,
+              })
+            );
+          } else {
+            toast.close(toastKey);
+          }
+        }}
+        variant="fade-contrast-filled"
+      >
+        {toastKey ? 'Hide' : 'Show'} Toast
+      </Button>
     );
   },
 };

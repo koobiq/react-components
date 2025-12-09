@@ -26,19 +26,6 @@ export const getToastQueue = (maxVisibleToasts = Infinity) => {
   return globalToastQueue;
 };
 
-function ToastProviderRender(
-  props: ToastProviderProps,
-  ref: Ref<HTMLDivElement>
-) {
-  const state = useToastQueue(getToastQueue(props.maxVisibleToasts));
-
-  return <ToastRegion {...props} ref={ref} state={state} />;
-}
-
-export const ToastProvider = forwardRef(
-  ToastProviderRender
-) as ToastProviderComponent;
-
 const add = ({ ...props }: ToastProps & ToastOptions) => {
   if (!globalToastQueue) {
     return null;
@@ -96,3 +83,16 @@ export const closeAll = () => {
 };
 
 export const toast = { add, close, clear };
+
+function ToastProviderRender(
+  props: ToastProviderProps,
+  ref: Ref<HTMLDivElement>
+) {
+  const state = useToastQueue(getToastQueue(props.maxVisibleToasts));
+
+  return <ToastRegion {...props} ref={ref} state={state} />;
+}
+
+export const ToastProvider = forwardRef(
+  ToastProviderRender
+) as ToastProviderComponent;
