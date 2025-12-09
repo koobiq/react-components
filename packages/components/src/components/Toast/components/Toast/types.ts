@@ -13,4 +13,5 @@ export type ToastProps = AriaToastProps<ToastBaseProps> & {
   toast: QueuedToast<ToastBaseProps>;
   innerRef: Ref<HTMLDivElement>;
   style?: CSSProperties;
+  'data-transition'?: string;
 };

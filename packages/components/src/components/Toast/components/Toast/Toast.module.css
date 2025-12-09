@@ -1,23 +1,17 @@
 .base {
-  --toast-outline-color: transparent;
   --toast-inline-size: 360px;
+  --toast-outline-color: transparent;
   --toast-outline-width: var(--kbq-size-3xs);
+  --toast-transition-duration: 300ms;
 
-  box-sizing: border-box;
   outline: none;
-  overflow: hidden;
-  position: relative;
+  box-sizing: border-box;
   border-radius: var(--kbq-size-s);
-  box-shadow: var(--kbq-shadow-popup);
   inline-size: var(--toast-inline-size);
-  transform-origin: center;
   transition:
-    opacity var(--kbq-transition-slow),
     margin var(--kbq-transition-slow),
-    transform var(--kbq-transition-slow),
     block-size var(--kbq-transition-slow);
-  background-color: var(--kbq-background-card);
-  padding-inline: var(--kbq-size-m) var(--kbq-size-s);
+  transition-duration: var(--toast-transition-duration);
 
   &:focus-visible {
     --toast-outline-color: var(--kbq-states-line-focus-theme);
@@ -38,6 +32,35 @@
 
 .wrapper {
   display: flex;
+  border-radius: inherit;
+  box-shadow: var(--kbq-shadow-popup);
+  background-color: var(--kbq-background-card);
+  padding-inline: var(--kbq-size-m) var(--kbq-size-s);
+  transition:
+    opacity var(--kbq-transition-slow),
+    transform var(--kbq-transition-slow);
+  transition-duration: var(--toast-transition-duration);
+}
+
+/* animation */
+.base[data-transition='entering'] .wrapper {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.base[data-transition='entered'] .wrapper {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.base[data-transition='exiting'] .wrapper {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.base[data-transition='exited'] .wrapper {
+  opacity: 0;
+  transform: scale(0.5);
 }
 
 .content {

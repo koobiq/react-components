@@ -14,7 +14,13 @@ import type { ToastProps } from './types';
 
 const { typography } = utilClasses;
 
-export function Toast({ state, style, innerRef, ...props }: ToastProps) {
+export function Toast({
+  state,
+  style,
+  innerRef,
+  'data-transition': transition,
+  ...props
+}: ToastProps) {
   const domRef = useDOMRef<HTMLDivElement>(innerRef);
 
   const {
@@ -48,6 +54,7 @@ export function Toast({ state, style, innerRef, ...props }: ToastProps) {
     style: { ...componentStyle, ...style },
     ref: domRef,
     'data-status': status,
+    'data-transition': transition,
     className: clsx(s.base, s[status], typography['text-normal']),
   });
 

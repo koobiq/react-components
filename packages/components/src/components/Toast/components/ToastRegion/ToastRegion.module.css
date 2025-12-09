@@ -8,18 +8,10 @@
 
 .base[data-placement^='top'] > * {
   margin-block-end: var(--kbq-size-s);
-
-  &:first-child {
-    margin-block-end: 0;
-  }
 }
 
 .base[data-placement^='bottom'] > * {
   margin-block-start: var(--kbq-size-s);
-
-  &:last-child {
-    margin-block-start: 0;
-  }
 }
 
 .bottom {

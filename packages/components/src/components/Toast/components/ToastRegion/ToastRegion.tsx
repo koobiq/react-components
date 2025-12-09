@@ -79,23 +79,15 @@ export function ToastRegionRender(
                 Record<TransitionStatus, CSSProperties>
               > = {
                 entering: {
-                  opacity: 1,
                   height: inner?.clientHeight,
-                  transform: 'translate(0, 0)',
                 },
                 entered: {
-                  opacity: 1,
-                  transform: 'translate(0, 0)',
                   height: inner?.clientHeight,
                 },
                 exiting: {
-                  transform: 'scale(0.5)',
-                  opacity: 0,
                   margin: 0,
                 },
                 exited: {
-                  transform: 'scale(0.5)',
-                  opacity: 0,
                   margin: 0,
                 },
               };
@@ -106,11 +98,14 @@ export function ToastRegionRender(
                   toast={toast}
                   state={state}
                   innerRef={refs[index]}
-                  style={{
-                    height: 0,
-                    transitionDuration: `${TRANSITION_TIMEOUT}ms`,
-                    ...transitionStyles[transition],
-                  }}
+                  data-transition={transition}
+                  style={
+                    {
+                      height: 0,
+                      '--toast-transition-duration': `${TRANSITION_TIMEOUT}ms`,
+                      ...transitionStyles[transition],
+                    } as CSSProperties
+                  }
                 />
               );
             }}
