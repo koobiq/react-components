@@ -69,4 +69,30 @@ export const clear = () => {
   globalToastQueue?.clear();
 };
 
+export const resumeAll = () => {
+  if (!globalToastQueue) {
+    return;
+  }
+
+  globalToastQueue?.resumeAll();
+};
+
+export const pauseAll = () => {
+  if (!globalToastQueue) {
+    return;
+  }
+
+  globalToastQueue?.pauseAll();
+};
+
+export const closeAll = () => {
+  if (!globalToastQueue) {
+    return;
+  }
+
+  [...globalToastQueue.visibleToasts].forEach((toast) => {
+    close(toast.key);
+  });
+};
+
 export const toast = { add, close, clear };
