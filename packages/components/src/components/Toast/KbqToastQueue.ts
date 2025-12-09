@@ -31,8 +31,8 @@ export interface ToastState<T> {
   visibleToasts: QueuedToast<T>[];
 }
 
-const CHECK_INTERVAL = 100;
-const DELAY = 2000;
+export const CHECK_INTERVAL = 100;
+export const DELAY = 2000;
 
 export class ToastQueue<T> {
   private queue: QueuedToast<T>[] = [];
@@ -219,6 +219,9 @@ export class ToastQueue<T> {
   private onTick = () => {
     if (this.isPaused || this.queue.length === 0) return;
 
+    // debug
+    // console.log('tick');
+
     const now = Date.now();
 
     const delta = this.lastTickAt
@@ -242,6 +245,6 @@ export class ToastQueue<T> {
     if (!head || (head.ttl ?? 0) > 0) return;
 
     this.removeToast(head.key);
-    this.nextCloseAllowedAt = now + DELAY;
+    this.nextCloseAllowedAt = this.timedCount > 0 ? now + DELAY : 0;
   };
 }
