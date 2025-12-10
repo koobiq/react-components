@@ -36,7 +36,7 @@ export const Base: Story = {
         }
         variant="fade-contrast-filled"
       >
-        Show toast
+        Show Toast
       </Button>
     </>
   ),
@@ -179,12 +179,11 @@ export const AutoDismiss: Story = {
           toast.add({
             title: 'This Toast will be dismissed in 5 seconds.',
             status: 'success',
-            timeout: 5000,
           })
         }
         variant="fade-contrast-filled"
       >
-        Show toast (5000ms)
+        Show Toast (5000ms)
       </Button>
       <Button
         onPress={() =>
@@ -196,7 +195,7 @@ export const AutoDismiss: Story = {
         }
         variant="fade-contrast-filled"
       >
-        Show toast (8000ms)
+        Show Toast (8000ms)
       </Button>
       <Button
         onPress={() =>
@@ -208,7 +207,7 @@ export const AutoDismiss: Story = {
         }
         variant="fade-contrast-filled"
       >
-        Show toast
+        Show Toast
       </Button>
     </FlexBox>
   ),
@@ -271,7 +270,7 @@ export const Actions: Story = {
         }
         variant="fade-contrast-filled"
       >
-        Show toast with actions
+        Show Toast with actions
       </Button>
     </>
   ),
@@ -291,7 +290,7 @@ export const CustomToast: Story = {
       }
       variant="fade-contrast-filled"
     >
-      Custom toast
+      Custom Toast
     </Button>
   ),
 };
