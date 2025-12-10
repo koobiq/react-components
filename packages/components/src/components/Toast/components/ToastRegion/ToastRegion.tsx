@@ -16,11 +16,7 @@ import {
   useUNSAFE_PortalContext,
 } from '@koobiq/react-primitives';
 import { createPortal } from 'react-dom';
-import {
-  Transition,
-  TransitionGroup,
-  type TransitionStatus,
-} from 'react-transition-group';
+import { Transition, TransitionGroup } from 'react-transition-group';
 
 import { Toast } from '../Toast';
 
@@ -75,23 +71,6 @@ export function ToastRegionRender(
             {(transition) => {
               const inner = refs[index].current?.children[0];
 
-              const transitionStyles: Partial<
-                Record<TransitionStatus, CSSProperties>
-              > = {
-                entering: {
-                  height: inner?.clientHeight,
-                },
-                entered: {
-                  height: inner?.clientHeight,
-                },
-                exiting: {
-                  margin: 0,
-                },
-                exited: {
-                  margin: 0,
-                },
-              };
-
               return (
                 <Toast
                   key={toast.key}
@@ -99,11 +78,11 @@ export function ToastRegionRender(
                   state={state}
                   innerRef={refs[index]}
                   data-transition={transition}
+                  data-placement={placement}
                   style={
                     {
-                      height: 0,
+                      '--toast-transition-block-size': `${inner?.clientHeight}px`,
                       '--toast-transition-duration': `${TRANSITION_TIMEOUT}ms`,
-                      ...transitionStyles[transition],
                     } as CSSProperties
                   }
                 />

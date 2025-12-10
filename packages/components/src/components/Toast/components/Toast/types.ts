@@ -1,5 +1,6 @@
 import type { CSSProperties, Ref } from 'react';
 
+import type { DataAttributeProps } from '@koobiq/react-core';
 import type {
   ToastState,
   QueuedToast,
@@ -13,5 +14,4 @@ export type ToastProps = AriaToastProps<ToastBaseProps> & {
   toast: QueuedToast<ToastBaseProps>;
   innerRef: Ref<HTMLDivElement>;
   style?: CSSProperties;
-  'data-transition'?: string;
-};
+} & DataAttributeProps;

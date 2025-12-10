@@ -6,14 +6,6 @@
   z-index: var(--kbq-layer-toast);
 }
 
-.base[data-placement^='top'] > * {
-  margin-block-end: var(--kbq-size-s);
-}
-
-.base[data-placement^='bottom'] > * {
-  margin-block-start: var(--kbq-size-s);
-}
-
 .bottom {
   inset-block-end: var(--kbq-size-l);
   inset-inline-start: 50%;

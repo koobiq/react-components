@@ -19,6 +19,7 @@ export function Toast({
   style,
   innerRef,
   'data-transition': transition,
+  'data-placement': placement,
   ...props
 }: ToastProps) {
   const domRef = useDOMRef<HTMLDivElement>(innerRef);
@@ -55,6 +56,7 @@ export function Toast({
     ref: domRef,
     'data-status': status,
     'data-transition': transition,
+    'data-placement': placement,
     className: clsx(s.base, s[status], typography['text-normal']),
   });
 
