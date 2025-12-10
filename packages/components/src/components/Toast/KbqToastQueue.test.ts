@@ -126,23 +126,4 @@ describe('ToastQueue', () => {
     expect((q as any).lastTickAt).toBe(0);
     expect((q as any).nextCloseAllowedAt).toBe(0);
   });
-
-  it('should drop excess toasts when maxVisibleToasts is reached and keep timedCount consistent', () => {
-    const q = new ToastQueue<string>({ maxVisibleToasts: 2 });
-
-    const onClose1 = vi.fn();
-    const onClose2 = vi.fn();
-    const onClose3 = vi.fn();
-
-    q.add('t1', { timeout: 5000, onClose: onClose1 });
-    q.add('t2', { timeout: 5000, onClose: onClose2 });
-    q.add('t3', { timeout: 5000, onClose: onClose3 });
-
-    // Because we unshift, the excess toast is the oldest one (t1) and it will be closed as "excess"
-    expect(onClose1).toHaveBeenCalledTimes(1);
-    expect(q.visibleToasts).toHaveLength(2);
-
-    // timedCount should be 2, otherwise ticker stopping logic will break
-    expect((q as any).timedCount).toBe(2);
-  });
 });

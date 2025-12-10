@@ -245,7 +245,7 @@ describe('Toast', () => {
 
     const wrapper = render(
       <>
-        <ToastProvider maxVisibleToasts={1} />
+        <ToastProvider />
         <button
           data-testid="button"
           onClick={() => {

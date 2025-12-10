@@ -20,8 +20,6 @@ export type ToastProviderProps = {
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
-  /** The maximum number of toasts to display at a time. */
-  maxVisibleToasts?: number;
   /**
    * Where to show the toast stack on the screen.
    * @default 'top-end'

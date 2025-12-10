@@ -241,7 +241,7 @@ export const Placement: Story = {
 
     return (
       <>
-        <ToastProvider placement={placement} maxVisibleToasts={3} {...args} />
+        <ToastProvider placement={placement} {...args} />
         <Grid cols={3} gap="m">
           <Grid.Item colStart={2}>
             <Button
