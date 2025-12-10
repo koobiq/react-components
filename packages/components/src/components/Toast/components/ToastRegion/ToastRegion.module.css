@@ -1,9 +1,13 @@
 .base {
-  outline: none;
   display: flex;
   position: fixed;
   flex-direction: column-reverse;
   z-index: var(--kbq-layer-toast);
+  border-radius: var(--kbq-size-s);
+
+  &:focus-visible {
+    outline: var(--kbq-size-3xs) solid var(--kbq-states-line-focus-theme);
+  }
 }
 
 .bottom {
