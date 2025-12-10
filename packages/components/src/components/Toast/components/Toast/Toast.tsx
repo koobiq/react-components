@@ -1,6 +1,12 @@
 'use client';
 
-import { clsx, isNotNil, useDOMRef, mergeProps } from '@koobiq/react-core';
+import {
+  clsx,
+  isNotNil,
+  useDOMRef,
+  mergeProps,
+  useMultiRef,
+} from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
 import { useToast } from '@koobiq/react-primitives';
 
@@ -33,27 +39,26 @@ export function Toast({
   } = useToast(props, state, domRef);
 
   const {
-    toast: {
-      content: {
-        status = 'info',
-        title,
-        caption,
-        action,
-        props: {
-          slotProps,
-          icon,
-          hideIcon,
-          hideCloseButton,
-          style: componentStyle,
-          ...componentProps
-        } = {},
-      } = {},
+    status = 'info',
+    title,
+    caption,
+    action,
+    ref,
+    props: {
+      slotProps,
+      icon,
+      hideIcon,
+      hideCloseButton,
+      style: componentStyle,
+      ...componentProps
     } = {},
-  } = props;
+  } = props.toast.content;
+
+  const toastRef = useMultiRef([domRef, ref]);
 
   const toastProps = mergeProps(toastPropsAria, componentProps, {
     style: { ...componentStyle, ...style },
-    ref: domRef,
+    ref: toastRef,
     'data-status': status,
     'data-transition': transition,
     'data-placement': placement,

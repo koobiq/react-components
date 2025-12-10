@@ -1,44 +1,8 @@
-import type {
-  ComponentPropsWithRef,
-  CSSProperties,
-  ReactElement,
-  ReactNode,
-} from 'react';
-
-import type { IconButtonProps } from '../IconButton';
+import type { CSSProperties, ReactElement } from 'react';
 
 export const toastPropStatus = ['info', 'warning', 'error', 'success'] as const;
 
 export type ToastPropStatus = (typeof toastPropStatus)[number];
-
-export type ToastProps = {
-  /** Title of the toast. */
-  title?: ReactNode;
-  /** Action element, such as a button or link. */
-  action?: ReactNode;
-  /** Description of the toast. */
-  caption?: ReactNode;
-  /**
-   * The status of the toast.
-   * @default 'info'
-   */
-  status?: ToastPropStatus;
-  /** Other toast's props. */
-  props?: ComponentPropsWithRef<'div'> & {
-    /** If `true`, the close button will be hidden in the component. */
-    hideCloseButton?: boolean;
-    /** If `true`, the status icon will be hidden in the component. */
-    hideIcon?: boolean;
-    /** Override default icon. */
-    icon?: ReactNode;
-    /** The props used for each slot inside. */
-    slotProps?: {
-      content?: ComponentPropsWithRef<'div'>;
-      statusIcon?: ComponentPropsWithRef<'div'>;
-      closeIcon?: IconButtonProps;
-    };
-  };
-};
 
 export const toastPlacement = [
   'bottom',
@@ -58,6 +22,7 @@ export type ToastProviderProps = {
   style?: CSSProperties;
   /** The maximum number of toasts to display at a time. */
   maxVisibleToasts?: number;
+  /** Where to show the toast stack on the screen. */
   placement?: ToastPlacement;
 };
 

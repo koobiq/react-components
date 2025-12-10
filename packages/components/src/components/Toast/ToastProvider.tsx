@@ -7,11 +7,11 @@ import type { ToastOptions } from '@koobiq/react-primitives';
 import { useToastQueue } from '@koobiq/react-primitives';
 
 import { ToastRegion } from './components';
-import type { ToastProps } from './index';
+import type { ToastContentProps } from './components';
 import { ToastQueue } from './KbqToastQueue';
 import type { ToastProviderComponent, ToastProviderProps } from './types';
 
-let globalToastQueue: ToastQueue<ToastProps> | null = null;
+let globalToastQueue: ToastQueue<ToastContentProps> | null = null;
 
 const MIN_TIMEOUT = 5000;
 
@@ -26,7 +26,7 @@ export const getToastQueue = (maxVisibleToasts = Infinity) => {
   return globalToastQueue;
 };
 
-const add = ({ ...props }: ToastProps & ToastOptions) => {
+const add = ({ ...props }: ToastContentProps & ToastOptions) => {
   if (!globalToastQueue) {
     return null;
   }

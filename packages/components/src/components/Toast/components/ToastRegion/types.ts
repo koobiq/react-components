@@ -5,11 +5,12 @@ import type {
   ToastState,
 } from '@koobiq/react-primitives';
 
-import type { ToastPlacement, ToastProps } from '../../types';
+import type { ToastPlacement } from '../../types';
+import type { ToastContentProps } from '../Toast';
 
 export type ToastRegionProps = AriaToastRegionProps & {
   ref?: Ref<HTMLDivElement>;
-  state: ToastState<ToastProps>;
+  state: ToastState<ToastContentProps>;
   placement?: ToastPlacement;
 };
 
