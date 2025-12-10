@@ -107,7 +107,6 @@ export class ToastQueue<T> {
       ttl: timeout > 0 ? timeout : undefined,
     };
 
-    // new toasts at the front (existing behavior)
     this.queue.unshift(toast);
 
     if (toast.ttl != null) {
@@ -161,17 +160,12 @@ export class ToastQueue<T> {
   private updateVisibleToasts(action: ToastAction) {
     // Remove excess toasts when queue is too large
     if (this.queue.length > this.maxVisibleToasts) {
-      const excess = this.queue.slice(this.maxVisibleToasts);
+      const excess = this.queue.splice(this.maxVisibleToasts);
 
       for (const toast of excess) {
-        if (toast.ttl != null) {
-          this.timedCount -= 1;
-        }
-
+        if (toast.ttl != null) this.timedCount -= 1;
         toast.onClose?.();
       }
-
-      this.queue = this.queue.slice(0, this.maxVisibleToasts);
     }
 
     this.visibleToasts = this.queue.slice(0, this.maxVisibleToasts);
@@ -218,9 +212,6 @@ export class ToastQueue<T> {
 
   private onTick = () => {
     if (this.isPaused || this.queue.length === 0) return;
-
-    // debug
-    // console.log('tick');
 
     const now = Date.now();
 
