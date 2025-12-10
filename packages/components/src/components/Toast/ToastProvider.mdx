@@ -51,19 +51,23 @@ And next, just use the `toast.add()` function to show a toast.
 </Button>
 ```
 
-## Placement
+## ToastProvider
 
-The toast can be positioned in six different locations.
+With ToastProvider, you can control `maxVisibleToasts` to limit how many toasts are visible at once and
+`placement` to choose where the toast stack appears on the screen, for example `top-end `or `bottom-start`.
 
-<Story of={Stories.Placement} />
+## Toast
 
-## Status
+To show a toast, call `toast.add()` and pass the required parameters to configure its content and behavior.
+You can also use other toast methods available on toast to manage notifications.
+
+### Status
 
 To show a warning or error toast, use the following approach.
 
 <Story of={Stories.Status} />
 
-## Don't Close Automatically
+### Don't Close Automatically
 
 By default, toasts close automatically after 5000ms.
 
@@ -75,20 +79,20 @@ You can do it like this.
 
 <Story of={Stories.AutoDismiss} />
 
-## Close Toast
+### Close Toast
 
 Show how to close a toast programmatically with `toast.close()`.
 
 <Story of={Stories.CloseToast} />
 
-## Actions
+### Actions
 
 To display a toast with an action, use the following method.
 
 <Story of={Stories.Actions} />
 
-## Custom toast
+### Custom Toast
 
-Show how to customize a toast via the `props` object (e.g., add an `icon`, custom `className`, and `style`).
+Show how to customize a toast via the `props` (e.g., add an `icon`, custom `className`, and `style`).
 
 <Story of={Stories.CustomToast} />

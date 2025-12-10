@@ -25,8 +25,12 @@ export default meta;
 type Story = StoryObj<ToastProviderProps>;
 
 export const Base: Story = {
-  render: () => (
+  parameters: {
+    preventToastProvider: true,
+  },
+  render: (args) => (
     <>
+      <ToastProvider {...args} />
       <Button
         onPress={() =>
           toast.add({
@@ -40,82 +44,6 @@ export const Base: Story = {
       </Button>
     </>
   ),
-};
-
-export const Placement: Story = {
-  render: function Render(args) {
-    const [placement, setPlacement] = useState<ToastPlacement>();
-
-    const handleOnPress = (placement: ToastPlacement) => () => {
-      setPlacement(placement);
-
-      toast.add({
-        title: `My placement: ${placement}`,
-      });
-    };
-
-    return (
-      <>
-        <ToastProvider placement={placement} maxVisibleToasts={3} {...args} />
-        <Grid cols={3} gap="m">
-          <Grid.Item colStart={2}>
-            <Button
-              onPress={handleOnPress('top')}
-              variant="fade-contrast-filled"
-              fullWidth
-            >
-              top
-            </Button>
-          </Grid.Item>
-          <Grid.Item colStart={1} rowStart={2}>
-            <Button
-              onPress={handleOnPress('top-start')}
-              variant="fade-contrast-filled"
-              fullWidth
-            >
-              top-start
-            </Button>
-          </Grid.Item>
-          <Grid.Item colStart={3} rowStart={2}>
-            <Button
-              onPress={handleOnPress('top-end')}
-              variant="fade-contrast-filled"
-              fullWidth
-            >
-              top-end
-            </Button>
-          </Grid.Item>
-          <Grid.Item colStart={1} rowStart={3}>
-            <Button
-              onPress={handleOnPress('bottom-start')}
-              variant="fade-contrast-filled"
-              fullWidth
-            >
-              bottom-start
-            </Button>
-          </Grid.Item>
-          <Grid.Item colStart={3} rowStart={3}>
-            <Button
-              onPress={handleOnPress('bottom-end')}
-              variant="fade-contrast-filled"
-              fullWidth
-            >
-              bottom-end
-            </Button>
-          </Grid.Item>
-          <Grid.Item colStart={2} rowStart={4}>
-            <Button
-              onPress={handleOnPress('bottom')}
-              variant="fade-contrast-filled"
-              fullWidth
-            >
-              bottom
-            </Button>
-          </Grid.Item>
-        </Grid>
-      </>
-    );
-  },
 };
 
 export const Status: Story = {
@@ -285,6 +213,7 @@ export const CustomToast: Story = {
           timeout: Infinity,
           props: {
             icon: <IconVpn16 />,
+            className: 'myToast',
           },
         })
       }
@@ -293,4 +222,83 @@ export const CustomToast: Story = {
       Custom Toast
     </Button>
   ),
+};
+
+export const Placement: Story = {
+  parameters: {
+    preventToastProvider: true,
+  },
+  render: function Render(args) {
+    const [placement, setPlacement] = useState<ToastPlacement>();
+
+    const handleOnPress = (placement: ToastPlacement) => () => {
+      setPlacement(placement);
+
+      toast.add({
+        title: `My placement: ${placement}`,
+      });
+    };
+
+    return (
+      <>
+        <ToastProvider placement={placement} maxVisibleToasts={3} {...args} />
+        <Grid cols={3} gap="m">
+          <Grid.Item colStart={2}>
+            <Button
+              onPress={handleOnPress('top')}
+              variant="fade-contrast-filled"
+              fullWidth
+            >
+              top
+            </Button>
+          </Grid.Item>
+          <Grid.Item colStart={1} rowStart={2}>
+            <Button
+              onPress={handleOnPress('top-start')}
+              variant="fade-contrast-filled"
+              fullWidth
+            >
+              top-start
+            </Button>
+          </Grid.Item>
+          <Grid.Item colStart={3} rowStart={2}>
+            <Button
+              onPress={handleOnPress('top-end')}
+              variant="fade-contrast-filled"
+              fullWidth
+            >
+              top-end
+            </Button>
+          </Grid.Item>
+          <Grid.Item colStart={1} rowStart={3}>
+            <Button
+              onPress={handleOnPress('bottom-start')}
+              variant="fade-contrast-filled"
+              fullWidth
+            >
+              bottom-start
+            </Button>
+          </Grid.Item>
+          <Grid.Item colStart={3} rowStart={3}>
+            <Button
+              onPress={handleOnPress('bottom-end')}
+              variant="fade-contrast-filled"
+              fullWidth
+            >
+              bottom-end
+            </Button>
+          </Grid.Item>
+          <Grid.Item colStart={2} rowStart={4}>
+            <Button
+              onPress={handleOnPress('bottom')}
+              variant="fade-contrast-filled"
+              fullWidth
+            >
+              bottom
+            </Button>
+          </Grid.Item>
+        </Grid>
+      </>
+    );
+  },
 };
