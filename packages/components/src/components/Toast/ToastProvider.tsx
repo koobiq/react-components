@@ -15,7 +15,7 @@ let globalToastQueue: ToastQueue<ToastContentProps> | null = null;
 
 const MIN_TIMEOUT = 5000;
 
-export const getToastQueue = (maxVisibleToasts = Infinity) => {
+export const getToastQueue = (maxVisibleToasts?: number) => {
   if (!globalToastQueue) {
     globalToastQueue = new ToastQueue({
       maxVisibleToasts:
@@ -40,7 +40,7 @@ const add = ({ ...props }: ToastContentProps & ToastOptions) => {
   });
 };
 
-export const close = (key: string) => {
+const close = (key: string) => {
   if (!globalToastQueue) {
     return;
   }
@@ -48,7 +48,7 @@ export const close = (key: string) => {
   globalToastQueue?.close(key);
 };
 
-export const clear = () => {
+const clear = () => {
   if (!globalToastQueue) {
     return;
   }
@@ -56,7 +56,7 @@ export const clear = () => {
   globalToastQueue?.clear();
 };
 
-export const resumeAll = () => {
+const resumeAll = () => {
   if (!globalToastQueue) {
     return;
   }
@@ -64,7 +64,7 @@ export const resumeAll = () => {
   globalToastQueue?.resumeAll();
 };
 
-export const pauseAll = () => {
+const pauseAll = () => {
   if (!globalToastQueue) {
     return;
   }
@@ -72,7 +72,7 @@ export const pauseAll = () => {
   globalToastQueue?.pauseAll();
 };
 
-export const closeAll = () => {
+const closeAll = () => {
   if (!globalToastQueue) {
     return;
   }
@@ -82,7 +82,7 @@ export const closeAll = () => {
   });
 };
 
-export const toast = { add, close, clear };
+export const toast = { add, close, clear, closeAll, resumeAll, pauseAll };
 
 function ToastProviderRender(
   props: ToastProviderProps,
