@@ -5,7 +5,6 @@ import { type CSSProperties, forwardRef, type Ref, useEffect } from 'react';
 import {
   clsx,
   useDOMRef,
-  useRefs,
   useSsr,
   useBoolean,
   useTimeout,
@@ -22,6 +21,7 @@ import { Toast } from '../Toast';
 
 import s from './ToastRegion.module.css';
 import type { ToastRegionComponent, ToastRegionProps } from './types';
+import { useKeyedRefs } from './useKeyedRefs';
 
 const TRANSITION_TIMEOUT = 300;
 
@@ -48,7 +48,7 @@ export function ToastRegionRender(
     total ? null : TRANSITION_TIMEOUT
   );
 
-  const refs = useRefs<HTMLDivElement>(total, [state.visibleToasts[0]?.key]);
+  const getNodeRef = useKeyedRefs<HTMLDivElement>();
 
   const portalContainer = getContainer ? getContainer() : document.body;
   if (!portalContainer || !isBrowser || !isMounted) return null;
@@ -61,35 +61,38 @@ export function ToastRegionRender(
       data-placement={placement}
     >
       <TransitionGroup component={null} appear enter>
-        {state.visibleToasts.map((toast, index) => (
-          <Transition
-            key={toast.key}
-            timeout={TRANSITION_TIMEOUT}
-            nodeRef={refs[index]}
-            unmountOnExit
-          >
-            {(transition) => {
-              const inner = refs[index].current?.children[0];
+        {state.visibleToasts.map((toast) => {
+          const nodeRef = getNodeRef(toast.key);
 
-              return (
-                <Toast
-                  key={toast.key}
-                  toast={toast}
-                  state={state}
-                  innerRef={refs[index]}
-                  data-transition={transition}
-                  data-placement={placement}
-                  style={
-                    {
-                      '--toast-transition-block-size': `${inner?.clientHeight}px`,
-                      '--toast-transition-duration': `${TRANSITION_TIMEOUT}ms`,
-                    } as CSSProperties
-                  }
-                />
-              );
-            }}
-          </Transition>
-        ))}
+          return (
+            <Transition
+              key={toast.key}
+              timeout={TRANSITION_TIMEOUT}
+              nodeRef={nodeRef}
+              unmountOnExit
+            >
+              {(transition) => {
+                const inner = nodeRef.current?.children[0];
+
+                return (
+                  <Toast
+                    toast={toast}
+                    state={state}
+                    innerRef={nodeRef}
+                    data-transition={transition}
+                    data-placement={placement}
+                    style={
+                      {
+                        '--toast-transition-block-size': `${inner?.clientHeight}px`,
+                        '--toast-transition-duration': `${TRANSITION_TIMEOUT}ms`,
+                      } as CSSProperties
+                    }
+                  />
+                );
+              }}
+            </Transition>
+          );
+        })}
       </TransitionGroup>
     </div>,
     portalContainer
