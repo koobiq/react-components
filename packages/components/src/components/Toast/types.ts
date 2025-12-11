@@ -15,7 +15,11 @@ export const toastPlacement = [
   'top-end',
 ] as const;
 
+export const toastStackDirection = ['ascending', 'descending'] as const;
+
 export type ToastPlacement = (typeof toastPlacement)[number];
+
+export type ToastStackDirection = (typeof toastStackDirection)[number];
 
 export type ToastProviderProps = ExtendableComponentPropsWithRef<
   {
@@ -28,6 +32,11 @@ export type ToastProviderProps = ExtendableComponentPropsWithRef<
      * @default 'top-end'
      */
     placement?: ToastPlacement;
+    /**
+     * Direction of toast stacking.
+     * @default 'ascending'
+     */
+    stackDirection?: ToastStackDirection;
   },
   'div'
 >;

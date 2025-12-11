@@ -33,22 +33,8 @@
   }
 }
 
-.base[data-placement^='top'] {
-  margin-block-end: var(--kbq-size-s);
-
-  &:first-child {
-    margin-block-end: 0;
-  }
-}
-
 .base[data-placement^='bottom'] {
   --toast-wrapper-inset-block-end: 0;
-
-  margin-block-start: var(--kbq-size-s);
-
-  &:last-child {
-    margin-block-start: 0;
-  }
 }
 
 .wrapper {

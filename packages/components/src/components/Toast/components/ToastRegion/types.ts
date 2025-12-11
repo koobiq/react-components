@@ -6,7 +6,7 @@ import type {
   ToastState,
 } from '@koobiq/react-primitives';
 
-import type { ToastPlacement } from '../../types';
+import type { ToastPlacement, ToastStackDirection } from '../../types';
 import type { ToastContentProps } from '../Toast';
 
 export type ToastRegionProps = ExtendableComponentPropsWithRef<
@@ -14,6 +14,7 @@ export type ToastRegionProps = ExtendableComponentPropsWithRef<
     ref?: Ref<HTMLDivElement>;
     state: ToastState<ToastContentProps>;
     placement?: ToastPlacement;
+    stackDirection?: ToastStackDirection;
   },
   'div'
 >;

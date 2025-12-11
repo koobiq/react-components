@@ -8,8 +8,12 @@ import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
 import { Link } from '../Link';
 
+import type {
+  ToastProviderProps,
+  ToastPlacement,
+  ToastStackDirection,
+} from './index';
 import { ToastProvider, toast } from './index';
-import type { ToastProviderProps, ToastPlacement } from './index';
 
 const meta = {
   title: 'Components/ToastProvider',
@@ -298,6 +302,48 @@ export const Placement: Story = {
             </Button>
           </Grid.Item>
         </Grid>
+      </>
+    );
+  },
+};
+
+export const StackDirection: Story = {
+  parameters: {
+    preventToastProvider: true,
+  },
+  render: function Render(args) {
+    const [stackDirection, setStackDirection] = useState<ToastStackDirection>();
+
+    const handleOnPress = (direction: ToastStackDirection) => () => {
+      setStackDirection(direction);
+
+      toast.add({
+        title: `My stack direction: ${direction}`,
+        timeout: Infinity,
+      });
+    };
+
+    return (
+      <>
+        <ToastProvider
+          stackDirection={stackDirection}
+          placement="top"
+          {...args}
+        />
+        <FlexBox gap="m">
+          <Button
+            onPress={handleOnPress('descending')}
+            variant="fade-contrast-filled"
+          >
+            descending
+          </Button>
+          <Button
+            onPress={handleOnPress('ascending')}
+            variant="fade-contrast-filled"
+          >
+            ascending
+          </Button>
+        </FlexBox>
       </>
     );
   },

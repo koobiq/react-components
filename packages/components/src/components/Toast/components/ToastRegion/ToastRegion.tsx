@@ -27,7 +27,12 @@ import { useKeyedRefs } from './useKeyedRefs';
 const TRANSITION_TIMEOUT = 300;
 
 export function ToastRegionRender(
-  { state, placement = 'top-end', ...props }: Omit<ToastRegionProps, 'ref'>,
+  {
+    state,
+    placement = 'top-end',
+    stackDirection = 'ascending',
+    ...props
+  }: Omit<ToastRegionProps, 'ref'>,
   ref: Ref<HTMLDivElement>
 ) {
   const { isBrowser } = useSsr();
@@ -57,9 +62,9 @@ export function ToastRegionRender(
   const regionProps = mergeProps(
     regionPropsAria,
     {
-      className: clsx(s.base, s[placement]),
-
+      className: clsx(s.base, s[placement], s[stackDirection]),
       'data-placement': placement,
+      'data-stack-direction': stackDirection,
       ref: domRef,
     },
     props
