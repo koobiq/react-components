@@ -285,7 +285,7 @@ export const rows: Rows = [
     planned: 'Q4 2025',
   },
   {
-    component: 'Toast',
+    component: 'ToastProvider',
     status: '✅ Done',
     stage: '🔵 experimental',
     planned: 'Q4 2025',
