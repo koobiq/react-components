@@ -6,14 +6,11 @@ import type {
 } from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
-import type {
-  ToastState,
-  QueuedToast,
-  AriaToastProps,
-} from '@koobiq/react-primitives';
+import type { ToastState, AriaToastProps } from '@koobiq/react-primitives';
 
 import type { IconButtonProps } from '../../../IconButton';
 import type { ToastPropStatus } from '../../index';
+import type { QueuedToast } from '../../KbqToastQueue';
 
 export type ToastContentProps = {
   /** Title of the toast. */

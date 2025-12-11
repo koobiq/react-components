@@ -3,11 +3,11 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
-import type { ToastOptions } from '@koobiq/react-primitives';
 import { useToastQueue } from '@koobiq/react-primitives';
 
 import { ToastRegion } from './components';
 import type { ToastContentProps } from './components';
+import type { ToastOptions } from './KbqToastQueue';
 import { ToastQueue } from './KbqToastQueue';
 import type { ToastProviderComponent, ToastProviderProps } from './types';
 
@@ -34,6 +34,7 @@ const add = ({ ...props }: ToastContentProps & ToastOptions) => {
         ? undefined
         : Math.max(props.timeout || MIN_TIMEOUT, MIN_TIMEOUT),
     onClose: props.onClose,
+    id: props.id,
   });
 };
 

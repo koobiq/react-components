@@ -9,6 +9,7 @@ import {
   useBoolean,
   useTimeout,
   mergeProps,
+  useKeyedRefs,
 } from '@koobiq/react-core';
 import {
   useToastRegion,
@@ -22,7 +23,6 @@ import { Toast } from '../Toast';
 
 import s from './ToastRegion.module.css';
 import type { ToastRegionComponent, ToastRegionProps } from './types';
-import { useKeyedRefs } from './useKeyedRefs';
 
 const TRANSITION_TIMEOUT = 300;
 

@@ -7,6 +7,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Grid } from '../Grid';
 import { Link } from '../Link';
+import { Modal } from '../Modal';
 
 import type {
   ToastProviderProps,
@@ -225,6 +226,46 @@ export const CustomToast: Story = {
     >
       Custom Toast
     </Button>
+  ),
+};
+
+export const Overlays: Story = {
+  render: () => (
+    <FlexBox gap="l">
+      <Modal
+        size="small"
+        control={(props) => <Button {...props}>Show Modal</Button>}
+      >
+        {({ close }) => (
+          <>
+            <Modal.Header>Modal</Modal.Header>
+            <Modal.Body>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Aspernatur cupiditate, eos et explicabo harum nobis obcaecati
+              quidem. Accusamus, fuga, officia.
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onPress={close}>Close</Button>
+            </Modal.Footer>
+          </>
+        )}
+      </Modal>
+      <Button
+        onPress={() => {
+          toast.add({
+            title: 'VPN Connected',
+            timeout: Infinity,
+            props: {
+              icon: <IconVpn16 />,
+              className: 'myToast',
+            },
+          });
+        }}
+        variant="fade-contrast-filled"
+      >
+        Show Toast
+      </Button>
+    </FlexBox>
   ),
 };
 

@@ -20,3 +20,4 @@ export * from './useInfiniteScroll';
 export * from './useScrollPosition';
 export * from './useCopyToClipboard';
 export * from './useTimer';
+export * from './useKeyedRefs';

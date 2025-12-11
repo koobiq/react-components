@@ -12,6 +12,12 @@ export interface ToastOptions {
   onClose?: () => void;
   /** A timeout to automatically close the toast after, in milliseconds. */
   timeout?: number;
+  /**
+   * Optional id for the toast.
+   * If not provided, a unique id is generated automatically,
+   * but you can also pass your own id if you need to control it.
+   */
+  id?: string;
 }
 
 export interface QueuedToast<T> extends ToastOptions {
@@ -97,7 +103,7 @@ export class ToastQueue<T> {
 
   /** Adds a new toast to the queue. */
   add(content: T, options: ToastOptions = {}): string {
-    const toastKey = `_${Math.random().toString(36).slice(2)}`;
+    const toastKey = options.id ?? `_${Math.random().toString(36).slice(2)}`;
     const timeout = options.timeout ?? 0;
 
     const toast: QueuedToast<T> = {
