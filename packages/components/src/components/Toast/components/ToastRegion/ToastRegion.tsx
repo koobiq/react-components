@@ -8,6 +8,7 @@ import {
   useSsr,
   useBoolean,
   useTimeout,
+  mergeProps,
 } from '@koobiq/react-core';
 import {
   useToastRegion,
@@ -31,7 +32,7 @@ export function ToastRegionRender(
 ) {
   const { isBrowser } = useSsr();
   const domRef = useDOMRef<HTMLDivElement>(ref);
-  const { regionProps } = useToastRegion(props, state, domRef);
+  const { regionProps: regionPropsAria } = useToastRegion(props, state, domRef);
   const { getContainer } = useUNSAFE_PortalContext();
   const [isMounted, { on, off }] = useBoolean(false);
 
@@ -53,13 +54,19 @@ export function ToastRegionRender(
   const portalContainer = getContainer ? getContainer() : document.body;
   if (!portalContainer || !isBrowser || !isMounted) return null;
 
+  const regionProps = mergeProps(
+    regionPropsAria,
+    {
+      className: clsx(s.base, s[placement]),
+
+      'data-placement': placement,
+      ref: domRef,
+    },
+    props
+  );
+
   return createPortal(
-    <div
-      {...regionProps}
-      ref={domRef}
-      className={clsx(s.base, s[placement])}
-      data-placement={placement}
-    >
+    <div {...regionProps}>
       <TransitionGroup component={null} appear enter>
         {state.visibleToasts.map((toast) => {
           const nodeRef = getNodeRef(toast.key);

@@ -1,5 +1,7 @@
 import type { CSSProperties, ReactElement } from 'react';
 
+import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+
 export const toastPropStatus = ['info', 'warning', 'error', 'success'] as const;
 
 export type ToastPropStatus = (typeof toastPropStatus)[number];
@@ -15,17 +17,20 @@ export const toastPlacement = [
 
 export type ToastPlacement = (typeof toastPlacement)[number];
 
-export type ToastProviderProps = {
-  /** Additional CSS-classes. */
-  className?: string;
-  /** Inline styles. */
-  style?: CSSProperties;
-  /**
-   * Where to show the toast stack on the screen.
-   * @default 'top-end'
-   */
-  placement?: ToastPlacement;
-};
+export type ToastProviderProps = ExtendableComponentPropsWithRef<
+  {
+    /** Additional CSS-classes. */
+    className?: string;
+    /** Inline styles. */
+    style?: CSSProperties;
+    /**
+     * Where to show the toast stack on the screen.
+     * @default 'top-end'
+     */
+    placement?: ToastPlacement;
+  },
+  'div'
+>;
 
 export type ToastProviderComponent = (
   props: ToastProviderProps

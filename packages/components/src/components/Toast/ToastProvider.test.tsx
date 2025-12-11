@@ -9,7 +9,7 @@ import { toast, ToastProvider } from '../index';
 const title = 'Testing Title';
 const caption = 'Testing Caption';
 
-describe('Toast', () => {
+describe('ToastProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers();
@@ -38,6 +38,65 @@ describe('Toast', () => {
   });
 
   const user = userEvent.setup({ delay: null });
+
+  describe('ToastRegion', () => {
+    it('should merge a custom class name with the default ones', async () => {
+      const className = 'foo';
+
+      const wrapper = render(
+        <>
+          <ToastProvider className="foo" />
+          <button
+            data-testid="button"
+            onClick={() => {
+              toast.add({
+                title: 'toast title',
+                caption: 'toast description',
+              });
+            }}
+          >
+            Show Toast
+          </button>
+        </>
+      );
+
+      const button = screen.getByTestId('button');
+
+      await user.click(button);
+
+      const component = wrapper.getAllByRole('region')[0]! as HTMLElement;
+
+      expect(component?.className).toContain(className);
+    });
+
+    it('should set a custom style', async () => {
+      const style = { padding: 20 };
+
+      const wrapper = render(
+        <>
+          <ToastProvider style={style} />
+          <button
+            data-testid="button"
+            onClick={() => {
+              toast.add({
+                title: 'toast title',
+                caption: 'toast description',
+              });
+            }}
+          >
+            Show Toast
+          </button>
+        </>
+      );
+
+      const button = wrapper.getByTestId('button');
+
+      await user.click(button);
+
+      const component = wrapper.getAllByRole('region')[0]! as HTMLElement;
+      expect(component).toHaveStyle('padding: 20px');
+    });
+  });
 
   it('should render correctly', () => {
     const wrapper = render(
