@@ -51,13 +51,31 @@ And next, just use the `toast.add()` function to show a toast.
 </Button>
 ```
 
+## Toast Queue
+
+Toasts are shown in a stack and disappear **one by one**, so the list doesn't jump and is easy to read.
+
+**How it works**:
+
+- Each toast has **its own timeout** and will not close earlier than it should.
+- Timed toasts close **in order**: the one that appeared first closes first (FIFO).
+- After any toast closes, there is a **2-second** pause before the next one can close.
+- **Manual close** (by button) also starts this 2-second pause.
+- When the user **hovers or focuses** the toast area, all timers are paused and continue when the user leaves.
+- Toasts **without a timeout** stay on screen until the user closes them.
+
+For users this means: every toast lives as long as it should, but they **disappear smoothly, one after another**,
+not all at once.
+
 ## ToastProvider
 
-The `ToastProvider` creates the toast region and renders the toast stack.
+Use the `placement` prop to choose where it appears on the screen
+(for example, `top-end` or `bottom`). See the
+[Placement story](?path=/story/components-toastprovider--placement) for examples.
 
-Use `placement` prop to choose where it appears on the screen (for example, `top-end` or `bottom`).
-
-Use `stackDirection` prop to control the stacking order — choose whether new toasts push existing ones upward or downward.
+Use the `stackDirection` prop to control the stacking order — choose whether
+new toasts push existing ones upward or downward. See the
+[Stack direction story](?path=/story/components-toastprovider--stack-direction) for examples.
 
 ## Toast
 
