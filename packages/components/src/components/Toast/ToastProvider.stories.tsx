@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { IconVpn16 } from '@koobiq/react-icons';
+import { IconUserBadgeLocation16, IconVpn16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
@@ -214,10 +214,11 @@ export const CustomToast: Story = {
     <Button
       onPress={() =>
         toast.add({
-          title: 'VPN Connected',
+          title: 'Location change',
+          caption: 'Login from a new location just now.',
           timeout: Infinity,
           props: {
-            icon: <IconVpn16 />,
+            icon: <IconUserBadgeLocation16 />,
             className: 'myToast',
           },
         })
@@ -254,10 +255,8 @@ export const Overlays: Story = {
         onPress={() => {
           toast.add({
             title: 'VPN Connected',
-            timeout: Infinity,
             props: {
               icon: <IconVpn16 />,
-              className: 'myToast',
             },
           });
         }}
