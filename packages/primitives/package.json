@@ -1,6 +1,6 @@
 {
   "name": "@koobiq/react-primitives",
-  "version": "0.18.1",
+  "version": "0.19.0",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",
@@ -23,9 +23,7 @@
     "url": "git+https://github.com/koobiq/react-components.git"
   },
   "type": "module",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "publishConfig": {
     "access": "public"
   },

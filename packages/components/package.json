@@ -1,6 +1,6 @@
 {
   "name": "@koobiq/react-components",
-  "version": "0.18.1",
+  "version": "0.19.0",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",

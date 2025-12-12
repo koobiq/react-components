@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0](https://github.com/koobiq/react-components/compare/0.18.1...0.19.0) (2025-12-12)
+
+
+### 🚀 Features
+
+* **components:** add `ToastProvider` component (DS-4381) ([0f79371](https://github.com/koobiq/react-components/commit/0f793718d6486b7a0250601dbf6cbb88de788a07))
+
 ## [0.18.1](https://github.com/koobiq/react-components/compare/0.18.0...0.18.1) (2025-12-02)
 
 
