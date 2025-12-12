@@ -73,7 +73,7 @@ export function ToastRegionRender(
   return createPortal(
     <div {...regionProps}>
       <TransitionGroup component={null} appear enter>
-        {state.visibleToasts.map((toast) => {
+        {state.visibleToasts.map((toast, idx) => {
           const nodeRef = getNodeRef(toast.key);
 
           return (
@@ -95,6 +95,10 @@ export function ToastRegionRender(
                     data-placement={placement}
                     style={
                       {
+                        zIndex:
+                          stackDirection === 'ascending'
+                            ? -(idx + 1)
+                            : -(total - (idx + 1)),
                         '--toast-transition-block-size': `${inner?.clientHeight}px`,
                         '--toast-transition-duration': `${TRANSITION_TIMEOUT}ms`,
                       } as CSSProperties
