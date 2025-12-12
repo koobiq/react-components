@@ -3,6 +3,7 @@
   --kbq-layer-default: 0;
   --kbq-layer-absolute: 1;
   --kbq-layer-modal: 1000;
+  --kbq-layer-toast: 1100;
 
   /* transition */
   --kbq-transition-default: 120ms ease-in-out;

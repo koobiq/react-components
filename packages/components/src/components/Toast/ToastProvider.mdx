@@ -1,0 +1,119 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ToastProvider.stories';
+
+<Meta of={Stories} />
+
+# ToastProvider
+
+<Status variant="experimental" />
+
+Toasts are temporary notifications that provide concise feedback about an action or event.
+
+```tsx
+import { ToastProvider, toast } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Usage
+
+The `ToastProvider` must be added to the application before using the `toast` function.
+This is required to initialize the context for managing toasts.
+
+```tsx
+import { Provider, ToastProvider } from '@koobiq/react-components';
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <ToastProvider />
+      {children}
+    </>
+  );
+}
+```
+
+And next, just use the `toast.add()` function to show a toast.
+
+```tsx
+<Button onPress={() => toast.add({ title: 'Toast title' })}>
+  Show a toast
+</Button>
+```
+
+## Toast Queue
+
+Toasts are shown in a stack and disappear **one by one**, so the list doesn't jump and is easy to read.
+
+**How it works**:
+
+- Each toast has **its own timeout** and will not close earlier than it should.
+- Timed toasts close **in order**: the one that appeared first closes first (FIFO).
+- After any toast closes, there is a **2-second** pause before the next one can close.
+- **Manual close** (by button) also starts this 2-second pause.
+- When the user **hovers or focuses** the toast area, all timers are paused and continue when the user leaves.
+- Toasts **without a timeout** stay on screen until the user closes them.
+
+For users this means: every toast lives as long as it should, but they **disappear smoothly, one after another**,
+not all at once.
+
+## ToastProvider
+
+Use the `placement` prop to choose where it appears on the screen
+(for example, `top-end` or `bottom`). See the
+[Placement story](?path=/story/components-toastprovider--placement) for examples.
+
+Use the `stackDirection` prop to control the stacking order — choose whether
+new toasts push existing ones upward or downward. See the
+[Stack direction story](?path=/story/components-toastprovider--stack-direction) for examples.
+
+## Toast
+
+To show a toast, call `toast.add()` and pass the required parameters to configure its content and behavior.
+You can also use other toast methods available on toast to manage notifications.
+
+### Status
+
+To show a success, warning, or error toast, use the following approach.
+
+<Story of={Stories.Status} />
+
+### Don't Close Automatically
+
+By default, toasts close automatically after 5000ms.
+
+Sometimes, you may not want the toast to close automatically.
+For example, if you have a toast that waits for a user to click a button,
+you would not want it to close automatically when the button is clicked.
+
+You can do it like this.
+
+<Story of={Stories.AutoDismiss} />
+
+### Close Toast
+
+Show how to close a toast programmatically with `toast.close()`.
+
+<Story of={Stories.CloseToast} />
+
+### Actions
+
+To display a toast with an action, use the following method.
+
+<Story of={Stories.Actions} />
+
+### Custom Toast
+
+Show how to customize a toast via the `props` (e.g., add an `icon`, custom `className`, and `style`).
+
+<Story of={Stories.CustomToast} />

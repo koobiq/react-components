@@ -362,6 +362,9 @@ importers:
       '@react-aria/textfield':
         specifier: ^3.17.5
         version: 3.17.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/toast':
+        specifier: ^3.0.8
+        version: 3.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-aria/toggle':
         specifier: ^3.12.2
         version: 3.12.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -416,6 +419,9 @@ importers:
       '@react-stately/tabs':
         specifier: ^3.8.6
         version: 3.8.6(react@18.3.1)
+      '@react-stately/toast':
+        specifier: ^3.1.2
+        version: 3.1.2(react@18.3.1)
       '@react-stately/toggle':
         specifier: ^3.9.2
         version: 3.9.2(react@18.3.1)
@@ -1871,6 +1877,12 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
+  '@react-aria/landmark@3.0.7':
+    resolution: {integrity: sha512-t8c610b8hPLS6Vwv+rbuSyljZosI1s5+Tosfa0Fk4q7d+Ex6Yj7hLfUFy59GxZAufhUYfGX396fT0gPqAbU1tg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
   '@react-aria/link@3.8.6':
     resolution: {integrity: sha512-7F7UDJnwbU9IjfoAdl6f3Hho5/WB7rwcydUOjUux0p7YVWh/fTjIFjfAGyIir7MJhPapun1D0t97QQ3+8jXVcg==}
     peerDependencies:
@@ -2042,6 +2054,12 @@ packages:
 
   '@react-aria/textfield@3.18.2':
     resolution: {integrity: sha512-G+lM8VYSor6g9Yptc6hLZ6BF+0cq0pYol1z6wdQUQgJN8tg4HPtzq75lsZtlCSIznL3amgRAxJtd0dUrsAnvaQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-aria/toast@3.0.8':
+    resolution: {integrity: sha512-rfJIms6AkMyQ7ZgKrMZgGfPwGcB/t1JoEwbc1PAmXcAvFI/hzF6YF7ZFDXiq38ucFsP9PnHmbXIzM9w4ccl18A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -2231,6 +2249,11 @@ packages:
 
   '@react-stately/tabs@3.8.6':
     resolution: {integrity: sha512-9RYxmgjVIxUpIsGKPIF7uRoHWOEz8muwaYiStCVeyiYBPmarvZoIYtTXcwSMN/vEs7heVN5uGCL6/bfdY4+WiA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-stately/toast@3.1.2':
+    resolution: {integrity: sha512-HiInm7bck32khFBHZThTQaAF6e6/qm57F4mYRWdTq8IVeGDzpkbUYibnLxRhk0UZ5ybc6me+nqqPkG/lVmM42Q==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
@@ -7976,6 +7999,11 @@ packages:
   url-template@2.0.8:
     resolution: {integrity: sha512-XdVKMF4SJ0nP/O7XIPB0JwAEuT9lDIYnNsK8yGVe43y0AWoKeJNdv3ZNWh7ksJ6KqQFjOO6ox/VEitLnaVNufw==}
 
+  use-sync-external-store@1.6.0:
+    resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -9784,6 +9812,15 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@react-aria/landmark@3.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-aria/utils': 3.31.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-types/shared': 3.32.1(react@18.3.1)
+      '@swc/helpers': 0.5.17
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      use-sync-external-store: 1.6.0(react@18.3.1)
+
   '@react-aria/link@3.8.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-aria/interactions': 3.25.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10178,6 +10215,19 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@react-aria/toast@3.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-aria/i18n': 3.12.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/interactions': 3.25.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/landmark': 3.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/utils': 3.31.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-stately/toast': 3.1.2(react@18.3.1)
+      '@react-types/button': 3.14.1(react@18.3.1)
+      '@react-types/shared': 3.32.1(react@18.3.1)
+      '@swc/helpers': 0.5.17
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@react-aria/toggle@3.12.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-aria/interactions': 3.25.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10502,6 +10552,12 @@ snapshots:
       '@react-types/tabs': 3.3.19(react@18.3.1)
       '@swc/helpers': 0.5.17
       react: 18.3.1
+
+  '@react-stately/toast@3.1.2(react@18.3.1)':
+    dependencies:
+      '@swc/helpers': 0.5.17
+      react: 18.3.1
+      use-sync-external-store: 1.6.0(react@18.3.1)
 
   '@react-stately/toggle@3.9.2(react@18.3.1)':
     dependencies:
@@ -17520,6 +17576,10 @@ snapshots:
   url-join@0.0.1: {}
 
   url-template@2.0.8: {}
+
+  use-sync-external-store@1.6.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   util-deprecate@1.0.2: {}
 

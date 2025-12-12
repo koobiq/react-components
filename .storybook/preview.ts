@@ -5,7 +5,7 @@ import '@koobiq/design-tokens/web/css-tokens-light.css';
 import '@koobiq/design-tokens/web/css-tokens-dark.css';
 
 import { DocContainer } from './components';
-import { withThemeProvider } from './decorators';
+import { StoryThemeProvider } from './decorators';
 import { light, dark } from './themes';
 
 const rawStories = import.meta.glob('../**/*.stories.@(js|jsx|ts|tsx)', {
@@ -126,7 +126,7 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [withThemeProvider],
+  decorators: [StoryThemeProvider],
 };
 
 export default preview;
