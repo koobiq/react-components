@@ -46,7 +46,7 @@ describe('Button', () => {
 
     render(<Button {...baseProps} style={style} />);
 
-    expect(getButton()).toHaveStyle('padding: 20px');
+    expect(getButton()).toHaveStyle({ padding: '20px' });
   });
 
   it('should accept a name', () => {

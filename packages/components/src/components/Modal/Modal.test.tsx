@@ -61,7 +61,7 @@ describe('Modal', () => {
     render(<Modal {...baseProps} style={style} isOpen />);
 
     const root = getModal();
-    expect(root).toHaveStyle('padding: 20px');
+    expect(root).toHaveStyle({ padding: '20px' });
   });
 
   describe('check the size prop', () => {

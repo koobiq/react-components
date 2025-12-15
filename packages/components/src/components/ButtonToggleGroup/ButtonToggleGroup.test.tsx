@@ -86,6 +86,6 @@ describe('ButtonToggleGroup', () => {
 
     const firstElement = container.firstChild;
 
-    expect(firstElement).toHaveStyle('padding: 20px');
+    expect(firstElement).toHaveStyle({ padding: '20px' });
   });
 });

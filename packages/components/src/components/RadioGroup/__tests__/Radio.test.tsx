@@ -45,7 +45,7 @@ describe('Radio', () => {
       </RadioGroup>
     );
 
-    expect(getRadio()).toHaveStyle('padding: 20px');
+    expect(getRadio()).toHaveStyle({ padding: '20px' });
   });
 
   it('should accept a custom class', () => {

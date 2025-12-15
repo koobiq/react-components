@@ -64,7 +64,7 @@ describe('Checkbox', () => {
 
       const firstElement = container.firstChild;
 
-      expect(firstElement).toHaveStyle('padding: 20px');
+      expect(firstElement).toHaveStyle({ padding: '20px' });
     });
 
     describe('check the size prop', () => {

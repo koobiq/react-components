@@ -94,7 +94,7 @@ describe('ToastProvider', () => {
       await user.click(button);
 
       const component = wrapper.getAllByRole('region')[0]! as HTMLElement;
-      expect(component).toHaveStyle('padding: 20px');
+      expect(component).toHaveStyle({ padding: '20px' });
     });
   });
 
@@ -205,7 +205,7 @@ describe('ToastProvider', () => {
     await user.click(button);
 
     const component = wrapper.getAllByRole('alertdialog')[0]! as HTMLElement;
-    expect(component).toHaveStyle('padding: 20px');
+    expect(component).toHaveStyle({ padding: '20px' });
   });
 
   it('should display title and caption when component is rendered', async () => {

@@ -50,7 +50,7 @@ describe('RadioGroup', () => {
 
     const firstElement = container.firstChild;
 
-    expect(firstElement).toHaveStyle('padding: 20px');
+    expect(firstElement).toHaveStyle({ padding: '20px' });
   });
 
   it('should accept a custom class', () => {

@@ -46,7 +46,7 @@ describe('Textarea', () => {
 
     render(<Textarea {...baseProps} style={style} />);
 
-    expect(getRoot()).toHaveStyle('padding: 20px');
+    expect(getRoot()).toHaveStyle({ padding: '20px' });
   });
 
   it('should be disabled when isDisabled is true', async () => {
