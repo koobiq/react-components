@@ -1,6 +1,7 @@
 .base {
   display: flex;
   position: fixed;
+  flex-direction: column;
   z-index: var(--kbq-layer-toast);
   border-radius: var(--kbq-size-s);
 
@@ -9,18 +10,10 @@
   }
 }
 
-.ascending {
-  flex-direction: column-reverse;
-}
-
-.descending {
-  flex-direction: column;
-}
-
 .base:where([data-placement^='top'].ascending) > * {
   margin-block-end: var(--kbq-size-s);
 
-  &:first-child {
+  &:last-child {
     margin-block-end: 0;
   }
 }
@@ -28,7 +21,7 @@
 .base:where([data-placement^='bottom'].ascending) > * {
   margin-block-start: var(--kbq-size-s);
 
-  &:last-child {
+  &:first-child {
     margin-block-start: 0;
   }
 }

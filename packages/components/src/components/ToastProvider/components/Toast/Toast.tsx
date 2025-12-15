@@ -78,7 +78,7 @@ export function Toast({
   );
 
   return (
-    <div {...toastProps}>
+    <div {...toastProps} tabIndex={undefined}>
       <div className={s.wrapper}>
         {!hideCloseButton && (
           <IconButton {...closeButtonProps}>
