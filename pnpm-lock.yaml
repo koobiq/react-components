@@ -18,8 +18,8 @@ importers:
         specifier: ^19.8.1
         version: 19.8.1
       '@koobiq/design-tokens':
-        specifier: ^3.14.0
-        version: 3.14.0
+        specifier: ^3.15.0
+        version: 3.15.0
       '@storybook/addon-a11y':
         specifier: ^9.1.16
         version: 9.1.16(storybook@9.1.16(@testing-library/dom@10.4.0)(prettier@3.6.2)(vite@6.4.1(@types/node@22.13.13)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@4.0.1(postcss@8.4.49))(tsx@4.19.3)(yaml@2.7.0)))
@@ -216,8 +216,8 @@ importers:
   packages/components:
     dependencies:
       '@koobiq/design-tokens':
-        specifier: ^3.14.0
-        version: 3.14.0
+        specifier: ^3.15.0
+        version: 3.15.0
       '@koobiq/logger':
         specifier: workspace:*
         version: link:../logger
@@ -462,7 +462,7 @@ importers:
         version: 0.12.0(react@18.3.1)
       next:
         specifier: ^15.5.9
-        version: 15.5.9(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 15.5.9(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -499,7 +499,7 @@ importers:
     dependencies:
       '@koobiq/react-components':
         specifier: 0.12.0
-        version: 0.12.0(@koobiq/design-tokens@3.14.0)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.12.0(@koobiq/design-tokens@3.15.0)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@koobiq/react-core':
         specifier: 0.12.0
         version: 0.12.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1735,6 +1735,9 @@ packages:
 
   '@koobiq/design-tokens@3.14.0':
     resolution: {integrity: sha512-FLtcCI5hm79SJcVBOhsiQRaYlC6IsFeAzX+CYLDrEDNcsX87bUUsGfRI61pqt0sSZFhL/EuGp5mh9LBHGKzhjg==}
+
+  '@koobiq/design-tokens@3.15.0':
+    resolution: {integrity: sha512-6x84zvL5Jpswxzh2Sxl4PqhJ69SglFxO/SebaGh1c94zXFUH3x/a2grU6GMNO2xNalCQ9efjxNueGIF8pGFlGw==}
 
   '@koobiq/icons@11.1.2':
     resolution: {integrity: sha512-GOs6KU/jf6cqwgeT6/C3PWb/UMzWGvt6VIGQRmcTWiYmHL408hyqoFhaVvwLDzTyXWp2N93aUASCoNK1GYqJwA==}
@@ -9538,6 +9541,8 @@ snapshots:
 
   '@koobiq/design-tokens@3.14.0': {}
 
+  '@koobiq/design-tokens@3.15.0': {}
+
   '@koobiq/icons@11.1.2': {}
 
   '@koobiq/logger@0.12.0': {}
@@ -9545,6 +9550,20 @@ snapshots:
   '@koobiq/react-components@0.12.0(@koobiq/design-tokens@3.14.0)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@koobiq/design-tokens': 3.14.0
+      '@koobiq/logger': 0.12.0
+      '@koobiq/react-core': 0.12.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@koobiq/react-icons': 0.12.0(react@18.3.1)
+      '@koobiq/react-primitives': 0.12.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react-transition-group': 4.4.12(@types/react@18.3.12)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/react'
+
+  '@koobiq/react-components@0.12.0(@koobiq/design-tokens@3.15.0)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@koobiq/design-tokens': 3.15.0
       '@koobiq/logger': 0.12.0
       '@koobiq/react-core': 0.12.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@koobiq/react-icons': 0.12.0(react@18.3.1)
@@ -15812,7 +15831,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  next@15.5.9(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@15.5.9(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 15.5.9
       '@swc/helpers': 0.5.15
@@ -15820,7 +15839,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.6(@babel/core@7.26.10)(react@18.3.1)
+      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.5.7
       '@next/swc-darwin-x64': 15.5.7
@@ -17178,12 +17197,12 @@ snapshots:
 
   stubs@3.0.0: {}
 
-  styled-jsx@5.1.6(@babel/core@7.26.10)(react@18.3.1):
+  styled-jsx@5.1.6(@babel/core@7.28.5)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
     optionalDependencies:
-      '@babel/core': 7.26.10
+      '@babel/core': 7.28.5
 
   stylelint-config-css-modules@4.5.1(stylelint@16.25.0(typescript@5.7.3)):
     dependencies:
