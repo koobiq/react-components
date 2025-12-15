@@ -63,7 +63,7 @@ describe('Tabs', () => {
 
     const firstElement = container.firstChild;
 
-    expect(firstElement).toHaveStyle('padding: 20px');
+    expect(firstElement).toHaveStyle({ padding: '20px' });
   });
 
   it('should onChange get correct id', async () => {

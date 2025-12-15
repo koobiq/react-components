@@ -43,7 +43,7 @@ describe('Popover', () => {
 
     const root = getRoot();
 
-    expect(root).toHaveStyle('padding: 20px');
+    expect(root).toHaveStyle({ padding: '20px' });
   });
 
   describe('check the size prop', () => {

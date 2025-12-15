@@ -47,7 +47,7 @@ describe('TagGroup', () => {
 
     const firstElement = container.firstChild;
 
-    expect(firstElement).toHaveStyle('padding: 20px');
+    expect(firstElement).toHaveStyle({ padding: '20px' });
   });
 
   it('should accept a ref', () => {
@@ -75,7 +75,7 @@ describe('TagGroup', () => {
     it('should set custom style', () => {
       render(renderComponent({}));
 
-      expect(getTag()).toHaveStyle('padding: 20px');
+      expect(getTag()).toHaveStyle({ padding: '20px' });
     });
 
     it('should be disabled', () => {
