@@ -1,36 +1,20 @@
 .base {
   --toast-inline-size: 360px;
+  --toast-transition-z-index: ;
   --toast-transition-duration: 300ms;
-  --toast-outline-color: transparent;
   --toast-transition-block-size: 0;
-  --toast-outline-width: var(--kbq-size-3xs);
 
   outline: none;
   position: relative;
   border-radius: var(--kbq-size-s);
   inline-size: var(--toast-inline-size);
+  z-index: var(--toast-transition-z-index);
   transition:
     margin-block-end var(--kbq-transition-slow),
     margin-block-start var(--kbq-transition-slow),
     block-size var(--kbq-transition-slow);
   will-change: margin-bottom, margin-top, block-size;
   transition-duration: var(--toast-transition-duration);
-
-  &:focus-visible {
-    --toast-outline-color: var(--kbq-states-line-focus-theme);
-  }
-
-  &::after {
-    inset: 0;
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    border-radius: inherit;
-    z-index: var(--kbq-layer-absolute);
-    transition: outline-color var(--kbq-transition-default);
-    outline-offset: calc(-1 * var(--toast-outline-width) / 2);
-    outline: var(--toast-outline-width) solid var(--toast-outline-color);
-  }
 }
 
 .base[data-placement^='bottom'] {
