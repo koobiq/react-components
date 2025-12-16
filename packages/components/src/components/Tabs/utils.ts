@@ -30,9 +30,9 @@ export type TabsMeta = {
 };
 
 export const getTabsMeta = (
-  tabListRef: RefObject<HTMLElement>,
-  scrollBoxRef: RefObject<HTMLElement>,
-  activeTabRef: RefObject<HTMLElement>
+  tabListRef: RefObject<HTMLElement | null>,
+  scrollBoxRef: RefObject<HTMLElement | null>,
+  activeTabRef: RefObject<HTMLElement | null>
 ): TabsMeta => {
   const scrollBoxNode = scrollBoxRef.current;
   const tabsListNode = tabListRef.current;

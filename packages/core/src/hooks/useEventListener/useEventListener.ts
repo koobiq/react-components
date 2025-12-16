@@ -50,7 +50,7 @@ export function useEventListener<
 }: UseEventListener<
   K,
   (event: HTMLElementEventMap[K]) => void,
-  RefObject<T>
+  RefObject<T | null>
 >): void;
 
 export function useEventListener<K extends keyof DocumentEventMap>({
@@ -100,7 +100,7 @@ export function useEventListener<
       | DocumentEventMap[KD]
       | Event
   ) => void,
-  RefObject<T> | undefined
+  RefObject<T | null> | undefined
 >): void {
   const savedListener = useMutableRef<typeof handler>(handler);
 

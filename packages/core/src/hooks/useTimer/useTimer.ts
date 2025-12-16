@@ -51,7 +51,7 @@ export function useTimer({
     isTimerRunning: false,
   });
 
-  const savedOnTimerEnd = useRef<TimerOptions['onTimerEnd']>();
+  const savedOnTimerEnd = useRef<TimerOptions['onTimerEnd']>(null);
 
   const timerCallback = () => {
     setState(({ count: prevCount }) => {

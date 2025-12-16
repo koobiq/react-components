@@ -30,7 +30,7 @@ export function useInfiniteScroll<T extends HTMLElement = any>({
 }: UseInfiniteScrollOptions) {
   const loadMoreRef = useRef<T>(null);
   const isFetchingRef = useRef(false);
-  const savedFetchData = useRef<typeof fetchData>();
+  const savedFetchData = useRef<typeof fetchData>(undefined);
 
   useEffect(() => {
     savedFetchData.current = fetchData;

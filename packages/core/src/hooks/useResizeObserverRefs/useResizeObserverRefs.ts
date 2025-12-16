@@ -9,7 +9,7 @@ export const useResizeObserverRefs = <
   Element extends HTMLElement | SVGGraphicsElement,
   ReturnType,
 >(
-  refs: Array<RefObject<Element>>,
+  refs: Array<RefObject<Element | null>>,
   mapper: (el: Element | null) => ReturnType
 ): ReturnType[] => {
   const calculateDimensionsRef = useMutableRef(() =>

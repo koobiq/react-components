@@ -35,7 +35,7 @@ export const FormFieldControlGroup = forwardRef<
   const { focusProps, isFocused } = useFocusRing({ within: true });
 
   const focusManagedChildren = Children.map(children, (child: ReactNode) => {
-    if (!isValidElement(child)) return child;
+    if (!isValidElement<Record<string, unknown>>(child)) return child;
 
     const merged = mergeProps(focusProps, child.props);
 

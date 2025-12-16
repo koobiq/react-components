@@ -70,9 +70,9 @@ export function TabsRender<T extends object>(
   }
 
   /** To calculate the size of the prev/next buttons. */
-  const scrollButtonRef = useRef<HTMLButtonElement>(null);
-  const tabListRef = useRef<HTMLDivElement>(null);
-  const scrollBoxRef = useRef<HTMLDivElement>(null);
+  const scrollButtonRef = useRef<HTMLButtonElement | null>(null);
+  const tabListRef = useRef<HTMLDivElement | null>(null);
+  const scrollBoxRef = useRef<HTMLDivElement | null>(null);
   const { tabListProps } = useTabList(props, state, tabListRef);
   const itemsRefs = useRefs<HTMLElement>(state.collection.size);
 
