@@ -31,6 +31,7 @@
   "dependencies": {
     "@koobiq/logger": "workspace:*",
     "@koobiq/react-core": "workspace:*",
+    "@react-aria/breadcrumbs": "^3.5.29",
     "@react-aria/button": "^3.9.0",
     "@react-aria/calendar": "^3.8.3",
     "@react-aria/checkbox": "^3.16.2",

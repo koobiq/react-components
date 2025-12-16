@@ -1,0 +1,20 @@
+.base {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.disabled {
+  color: gray;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+.current {
+  font-weight: bold;
+  cursor: default;
+}
+
+.divider {
+  padding: 0 5px;
+}
