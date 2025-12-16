@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@koobiq/react-components';
 
-import { IconChevronCircleRight16 } from '@koobiq/react-icons';
+import { IconCircleChevronRight16 } from '@koobiq/react-icons';
 
 import logo from '../../public/koobiq.svg';
 
@@ -45,7 +45,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           href="https://react.koobiq.io/"
-          startIcon={<IconChevronCircleRight16 />}
+          startIcon={<IconCircleChevronRight16 />}
         >
           Explore more
         </Button>
