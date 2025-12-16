@@ -60,13 +60,13 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
 
   // Unique nodeRef per key to avoid findDOMNode and animate enter/exit correctly
   const nodeRefs = useRef(
-    new Map<string, RefObject<HTMLTableSectionElement>>()
+    new Map<string, RefObject<HTMLTableSectionElement | null>>()
   );
 
   const k = currentKey;
 
   if (!nodeRefs.current.has(k)) {
-    nodeRefs.current.set(k, createRef<HTMLTableSectionElement>());
+    nodeRefs.current.set(k, createRef<HTMLTableSectionElement | null>());
   }
 
   const tbodyRef = nodeRefs.current.get(k)!;
