@@ -4,6 +4,7 @@ import type { SVGProps, Ref } from 'react';
 export const IconArrowPointer16 = forwardRef(
   (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
     <svg
+      xmlns="http://www.w3.org/2000/svg"
       width={17}
       height={16}
       viewBox="0 0 17 16"
