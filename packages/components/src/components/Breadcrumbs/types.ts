@@ -9,6 +9,11 @@ export const breadcrumbsPropSize = ['compact', 'normal', 'big'] as const;
 export type BreadcrumbsPropSize = (typeof breadcrumbsPropSize)[number];
 
 export type BreadcrumbsProps = AriaBreadcrumbsProps & {
+  /** The contents of the collection. */
   children: Array<ReactElement<BreadcrumbItemProps>>;
+  /**
+   * Size.
+   * @default 'compact'
+   */
   size?: BreadcrumbsPropSize;
 };

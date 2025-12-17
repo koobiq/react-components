@@ -2,7 +2,13 @@
 
 import { useRef } from 'react';
 
-import { clsx, useFocusRing, useHover, mergeProps } from '@koobiq/react-core';
+import {
+  clsx,
+  useFocusRing,
+  useHover,
+  mergeProps,
+  usePress,
+} from '@koobiq/react-core';
 import { useBreadcrumbItem } from '@koobiq/react-primitives';
 
 import { useBreadcrumbsContext } from '../../BreadcrumbsContext';
@@ -13,18 +19,20 @@ import type { BreadcrumbItemProps } from './types';
 export function BreadcrumbItem(props: BreadcrumbItemProps) {
   const ref = useRef(null);
 
+  const { isDisabled, isCurrent, children } = props;
+
   const { itemProps } = useBreadcrumbItem(
     { ...props, elementType: 'span' },
     ref
   );
 
-  const { isDisabled, isCurrent } = props;
+  const { size } = useBreadcrumbsContext();
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
 
   const { focusProps, isFocusVisible } = useFocusRing({});
 
-  const { size } = useBreadcrumbsContext();
+  const { isPressed, pressProps } = usePress({ isDisabled });
 
   return (
     <li className={clsx(s.base)}>
@@ -34,15 +42,16 @@ export function BreadcrumbItem(props: BreadcrumbItemProps) {
           s[size],
           isHovered && s.hovered,
           isCurrent && s.current,
+          isPressed && s.pressed,
           isDisabled && s.disabled,
           isFocusVisible && s.focusVisible
         )}
-        {...mergeProps(itemProps, hoverProps, focusProps)}
+        {...mergeProps(itemProps, hoverProps, focusProps, pressProps)}
         ref={ref}
       >
-        {props.children}
+        {children}
       </span>
-      {!props.isCurrent && (
+      {!isCurrent && (
         <span aria-hidden="true" className={s.divider}>
           &nbsp;/&nbsp;
         </span>
