@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { ComponentRef, ReactElement } from 'react';
 
 import type { AriaBreadcrumbsProps } from '@koobiq/react-primitives';
 
@@ -17,3 +17,5 @@ export type BreadcrumbsProps = AriaBreadcrumbsProps & {
    */
   size?: BreadcrumbsPropSize;
 };
+
+export type BreadcrumbsRef = ComponentRef<'nav'>;

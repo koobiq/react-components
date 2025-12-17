@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
@@ -46,4 +48,54 @@ export const Size: Story = {
       ))}
     </FlexBox>
   ),
+};
+
+export const Disabled: Story = {
+  render: (args) => (
+    <Breadcrumbs {...args}>
+      <BreadcrumbItem isDisabled onPress={() => alert('Pressed Folder 1')}>
+        Folder 1
+      </BreadcrumbItem>
+      <BreadcrumbItem onPress={() => alert('Pressed Folder 2')}>
+        Folder 2
+      </BreadcrumbItem>
+      <BreadcrumbItem>Folder 3</BreadcrumbItem>
+    </Breadcrumbs>
+  ),
+};
+
+export const Controlled: Story = {
+  render: function Render(args) {
+    const [currentPage, setCurrentPage] = useState<string>('folder-1');
+
+    const handleOnPress = (key: string) => () => {
+      setCurrentPage(key);
+    };
+
+    return (
+      <Breadcrumbs {...args}>
+        <BreadcrumbItem
+          key="folder-1"
+          onPress={handleOnPress('folder-1')}
+          isCurrent={currentPage === 'folder-1'}
+        >
+          Folder 1
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          key="folder-2"
+          onPress={handleOnPress('folder-2')}
+          isCurrent={currentPage === 'folder-2'}
+        >
+          Folder 2
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          key="folder-3"
+          onPress={handleOnPress('folder-3')}
+          isCurrent={currentPage === 'folder-3'}
+        >
+          Folder 3
+        </BreadcrumbItem>
+      </Breadcrumbs>
+    );
+  },
 };

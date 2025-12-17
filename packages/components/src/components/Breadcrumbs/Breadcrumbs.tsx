@@ -1,35 +1,56 @@
 'use client';
 
-import { Children, cloneElement, isValidElement } from 'react';
+import { Children, forwardRef, cloneElement, isValidElement } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 import { useBreadcrumbs } from '@koobiq/react-primitives';
 
 import s from './Breadcrumbs.module.css';
 import { BreadcrumbsContext } from './BreadcrumbsContext';
-import type { BreadcrumbsProps } from './types';
+import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
 
-export function Breadcrumbs(props: BreadcrumbsProps) {
-  const { navProps } = useBreadcrumbs(props);
+export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
+  (props, ref) => {
+    const { navProps } = useBreadcrumbs(props);
 
-  const { children, size = 'compact' } = props;
+    const { children, size = 'compact' } = props;
 
-  const items = Children.toArray(children) as typeof children;
-  const lastIndex = items.length - 1;
+    const items = Children.toArray(children) as typeof children;
 
-  return (
-    <BreadcrumbsContext.Provider value={{ size }}>
-      <nav className={clsx(s.base)} data-size={size} {...navProps}>
-        <ol className={s.list}>
-          {items.map((child, i) => {
-            if (!isValidElement(child)) return child;
+    const lastIndex = items.length - 1;
 
-            return cloneElement(child, {
-              isCurrent: i === lastIndex,
-            });
-          })}
-        </ol>
-      </nav>
-    </BreadcrumbsContext.Provider>
-  );
-}
+    return (
+      <BreadcrumbsContext.Provider value={{ size }}>
+        <nav
+          className={clsx(s.base, s[size])}
+          data-size={size}
+          {...navProps}
+          ref={ref}
+        >
+          <ol className={s.list}>
+            {items.map((child, i) => {
+              if (!isValidElement(child)) return child;
+
+              const isLast = i === lastIndex;
+
+              return (
+                <li key={child.key || i} className={s.item}>
+                  {cloneElement(child, {
+                    isCurrent: isLast || child.props.isCurrent,
+                  })}
+                  {!isLast && (
+                    <span aria-hidden="true" className={s.divider}>
+                      &nbsp;/&nbsp;
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
+      </BreadcrumbsContext.Provider>
+    );
+  }
+);
+
+Breadcrumbs.displayName = 'Breadcrumbs';

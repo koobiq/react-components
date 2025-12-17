@@ -16,7 +16,7 @@ import { useBreadcrumbsContext } from '../../BreadcrumbsContext';
 import s from './BreadcrumbItem.module.css';
 import type { BreadcrumbItemProps } from './types';
 
-export function BreadcrumbItem(props: BreadcrumbItemProps) {
+export const BreadcrumbItem = (props: BreadcrumbItemProps) => {
   const ref = useRef(null);
 
   const { isDisabled, isCurrent, children } = props;
@@ -35,27 +35,20 @@ export function BreadcrumbItem(props: BreadcrumbItemProps) {
   const { isPressed, pressProps } = usePress({ isDisabled });
 
   return (
-    <li className={clsx(s.base)}>
-      <span
-        className={clsx(
-          s.link,
-          s[size],
-          isHovered && s.hovered,
-          isCurrent && s.current,
-          isPressed && s.pressed,
-          isDisabled && s.disabled,
-          isFocusVisible && s.focusVisible
-        )}
-        {...mergeProps(itemProps, hoverProps, focusProps, pressProps)}
-        ref={ref}
-      >
-        {children}
-      </span>
-      {!isCurrent && (
-        <span aria-hidden="true" className={s.divider}>
-          &nbsp;/&nbsp;
-        </span>
+    <span
+      className={clsx(
+        s.base,
+        s[size],
+        isHovered && s.hovered,
+        isCurrent && s.current,
+        isPressed && s.pressed,
+        isDisabled && s.disabled,
+        isFocusVisible && s.focusVisible
       )}
-    </li>
+      {...mergeProps(itemProps, hoverProps, focusProps, pressProps)}
+      ref={ref}
+    >
+      {children}
+    </span>
   );
-}
+};

@@ -1,12 +1,6 @@
 @import url('../../../../styles/mixins.css');
 
 .base {
-  display: flex;
-  align-items: center;
-}
-
-/* link */
-.link {
   --breadcrumb-color: var(--kbq-foreground-contrast-secondary);
   --breadcrumb-padding: var(--kbq-size-3xs) var(--kbq-size-xs);
   --breadcrumb-outline-width: var(--kbq-size-3xs);
@@ -52,21 +46,6 @@
   cursor: default;
 }
 
-.compact,
-.compact + .divider {
-  @mixin typography text-normal;
-}
-
-.normal,
-.normal + .divider {
-  @mixin typography text-big;
-}
-
-.big,
-.big + .divider {
-  @mixin typography subheading;
-}
-
 .compact:where(.current) {
   @mixin typography text-normal-medium;
 }
@@ -77,10 +56,4 @@
 
 .big:where(.current) {
   @mixin typography subheading;
-}
-
-/* divider */
-.divider {
-  user-select: none;
-  color: var(--kbq-states-foreground-disabled);
 }

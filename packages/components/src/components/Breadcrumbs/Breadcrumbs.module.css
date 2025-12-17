@@ -1,6 +1,32 @@
+@import url('../../styles/mixins.css');
+
 .list {
   margin: 0;
   padding: 0;
   display: flex;
   list-style: none;
+}
+
+.compact {
+  @mixin typography text-normal;
+}
+
+.normal {
+  @mixin typography text-big;
+}
+
+.big {
+  @mixin typography subheading;
+}
+
+/* item-list */
+.item {
+  display: flex;
+  align-items: center;
+}
+
+/* divider */
+.divider {
+  user-select: none;
+  color: var(--kbq-states-foreground-disabled);
 }
