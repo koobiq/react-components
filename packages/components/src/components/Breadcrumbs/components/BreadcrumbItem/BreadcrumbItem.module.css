@@ -1,20 +1,73 @@
+@import url('../../../../styles/mixins.css');
+
 .base {
-  color: blue;
-  text-decoration: underline;
+  display: flex;
+  align-items: center;
+}
+
+/* link */
+.link {
+  --breadcrumb-color: var(--kbq-foreground-contrast-secondary);
+  --breadcrumb-padding: var(--kbq-size-3xs) var(--kbq-size-xs);
+  --breadcrumb-bg-color: ;
+
   cursor: pointer;
+  box-sizing: border-box;
+  color: var(--breadcrumb-color);
+  border-radius: var(--kbq-size-xs);
+  padding: var(--breadcrumb-padding);
+  background-color: var(--breadcrumb-bg-color);
+  transition:
+    color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default);
+}
+
+.hovered {
+  --breadcrumb-bg-color: var(--kbq-states-background-transparent-hover);
 }
 
 .disabled {
   color: gray;
-  text-decoration: none;
   cursor: not-allowed;
+  text-decoration: none;
 }
 
 .current {
-  font-weight: bold;
+  --breadcrumb-bg-color: ;
+  --breadcrumb-color: var(--kbq-foreground-contrast);
+
   cursor: default;
 }
 
+.compact,
+.compact + .divider {
+  @mixin typography text-normal;
+}
+
+.normal,
+.normal + .divider {
+  @mixin typography text-big;
+}
+
+.big,
+.big + .divider {
+  @mixin typography subheading;
+}
+
+.compact:where(.current) {
+  @mixin typography text-normal-medium;
+}
+
+.normal:where(.current) {
+  @mixin typography text-big-medium;
+}
+
+.big:where(.current) {
+  @mixin typography subheading;
+}
+
+/* divider */
 .divider {
-  padding: 0 5px;
+  user-select: none;
+  color: var(--kbq-states-foreground-disabled);
 }
