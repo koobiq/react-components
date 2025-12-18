@@ -204,7 +204,7 @@ export const Routing: Story = {
       >
         <Breadcrumbs {...args}>
           <BreadcrumbItem href="/Components/Button">Button</BreadcrumbItem>
-          <BreadcrumbItem href="/Components/Tabs">Card</BreadcrumbItem>
+          <BreadcrumbItem href="/Components/Tabs">Tabs</BreadcrumbItem>
           <BreadcrumbItem href="/Components/Checkbox">Checkbox</BreadcrumbItem>
           <BreadcrumbItem href="/Components/Breadcrumbs">
             Breadcrumbs
