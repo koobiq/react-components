@@ -2,7 +2,7 @@
 
 import { Children, forwardRef, cloneElement, isValidElement } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, mergeProps } from '@koobiq/react-core';
 import { useBreadcrumbs } from '@koobiq/react-primitives';
 
 import s from './Breadcrumbs.module.css';
@@ -11,32 +11,36 @@ import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
 
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
-    const { navProps } = useBreadcrumbs(props);
+    const { navProps: navPropsAria } = useBreadcrumbs(props);
 
-    const { children, size = 'compact' } = props;
+    const { children, size = 'compact', className, ...other } = props;
 
     const items = Children.toArray(children) as typeof children;
 
-    const lastIndex = items.length - 1;
+    const navProps = mergeProps(
+      {
+        className: clsx(s.base, s[size], className),
+        'data-size': size,
+        ...other,
+      },
+      navPropsAria
+    );
 
     return (
       <BreadcrumbsContext.Provider value={{ size }}>
-        <nav
-          className={clsx(s.base, s[size])}
-          data-size={size}
-          {...navProps}
-          ref={ref}
-        >
+        <nav {...navProps} ref={ref}>
           <ol className={s.list}>
-            {items.map((child, i) => {
+            {items?.map((child, i) => {
               if (!isValidElement(child)) return child;
+
+              const lastIndex = items.length - 1;
 
               const isLast = i === lastIndex;
 
               return (
                 <li key={child.key || i} className={s.item}>
                   {cloneElement(child, {
-                    isCurrent: isLast || child.props.isCurrent,
+                    isCurrent: child.props.isCurrent ?? isLast,
                   })}
                   {!isLast && (
                     <span aria-hidden="true" className={s.divider}>

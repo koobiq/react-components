@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import {
   clsx,
@@ -8,23 +8,30 @@ import {
   useHover,
   mergeProps,
   usePress,
+  useDOMRef,
+  polymorphicForwardRef,
 } from '@koobiq/react-core';
 import { useBreadcrumbItem } from '@koobiq/react-primitives';
 
 import { useBreadcrumbsContext } from '../../BreadcrumbsContext';
 
 import s from './BreadcrumbItem.module.css';
-import type { BreadcrumbItemProps } from './types';
+import type { BreadcrumbItemBaseProps } from './types';
 
-export const BreadcrumbItem = (props: BreadcrumbItemProps) => {
-  const ref = useRef(null);
+export const BreadcrumbItem = polymorphicForwardRef<
+  'a',
+  BreadcrumbItemBaseProps
+>((props, ref) => {
+  const domRef = useDOMRef(ref);
 
-  const { isDisabled, isCurrent, children } = props;
+  const { isDisabled, isCurrent, children, as = 'a' } = props;
 
   const { itemProps } = useBreadcrumbItem(
-    { ...props, elementType: 'span' },
-    ref
+    { ...props, elementType: `${as}` },
+    domRef
   );
+
+  const Tag = as;
 
   const { size } = useBreadcrumbsContext();
 
@@ -35,7 +42,7 @@ export const BreadcrumbItem = (props: BreadcrumbItemProps) => {
   const { isPressed, pressProps } = usePress({ isDisabled });
 
   return (
-    <span
+    <Tag
       className={clsx(
         s.base,
         s[size],
@@ -49,6 +56,9 @@ export const BreadcrumbItem = (props: BreadcrumbItemProps) => {
       ref={ref}
     >
       {children}
-    </span>
+    </Tag>
   );
-};
+});
+
+export type BreadcrumbItemProps<As extends ElementType = 'a'> =
+  ComponentPropsWithRef<typeof BreadcrumbItem<As>>;

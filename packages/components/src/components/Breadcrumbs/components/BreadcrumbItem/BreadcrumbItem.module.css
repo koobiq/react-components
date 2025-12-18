@@ -8,13 +8,14 @@
   --breadcrumb-bg-color: ;
 
   cursor: pointer;
+  text-decoration: none;
   box-sizing: border-box;
   color: var(--breadcrumb-color);
   border-radius: var(--kbq-size-xs);
   padding: var(--breadcrumb-padding);
+  background-color: var(--breadcrumb-bg-color);
   outline: var(--breadcrumb-outline-width) solid;
   outline-color: var(--breadcrumb-outline-color);
-  background-color: var(--breadcrumb-bg-color);
   transition:
     color var(--kbq-transition-default),
     outline var(--kbq-transition-default),

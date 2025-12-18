@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
+import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
+import { Provider } from '../Provider';
 
 import { Breadcrumbs, BreadcrumbItem, breadcrumbsPropSize } from './index.js';
 
@@ -96,6 +98,29 @@ export const Controlled: Story = {
           Folder 3
         </BreadcrumbItem>
       </Breadcrumbs>
+    );
+  },
+};
+
+export const Routing: Story = {
+  render: function Render(args) {
+    return (
+      <Provider
+        router={{
+          navigate: (href) => {
+            linkTo(href)();
+          },
+        }}
+      >
+        <Breadcrumbs {...args}>
+          <BreadcrumbItem href="/Components/Button">Button</BreadcrumbItem>
+          <BreadcrumbItem href="/Components/Tabs">Card</BreadcrumbItem>
+          <BreadcrumbItem href="/Components/Checkbox">Checkbox</BreadcrumbItem>
+          <BreadcrumbItem href="/Components/Breadcrumbs">
+            Breadcrumbs
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      </Provider>
     );
   },
 };
