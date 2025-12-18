@@ -1,7 +1,6 @@
 'use client';
 
 import { Children, forwardRef, cloneElement, isValidElement } from 'react';
-import type { CSSProperties } from 'react';
 
 import {
   clsx,
@@ -16,12 +15,6 @@ import s from './Breadcrumbs.module.css';
 import { BreadcrumbsContext } from './BreadcrumbsContext';
 import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
 
-const hiddenStyle = {
-  visibility: 'hidden',
-  position: 'absolute',
-  left: '-300vw',
-} as CSSProperties;
-
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
     const { navProps: navPropsAria } = useBreadcrumbs(props);
@@ -29,12 +22,14 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
     const {
       separator = `\u00A0/\u00A0`,
       size = 'normal',
+      slotProps,
       children,
       className,
       ...other
     } = props;
 
     const items = Children.toArray(children) as typeof children;
+    const length = items?.length || 0;
 
     const navProps = mergeProps(
       {
@@ -45,8 +40,6 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       navPropsAria
     );
 
-    const length = items?.length || 0;
-
     const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems<
       HTMLLIElement,
       HTMLOListElement
@@ -54,10 +47,21 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       length: length + 1,
     });
 
-    const listProps = {
-      className: s.list,
-      ref: parentRef,
-    };
+    const listProps = mergeProps(
+      {
+        className: s.list,
+        ref: parentRef,
+      },
+      slotProps?.list
+    );
+
+    const dividerProps = mergeProps(
+      {
+        'aria-hidden': 'true',
+        className: s.divider,
+      },
+      slotProps?.divider
+    );
 
     return (
       <BreadcrumbsContext.Provider value={{ size }}>
@@ -67,35 +71,26 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
               if (!isValidElement(child)) return child;
 
               const lastIndex = items.length - 1;
-
               const isLast = i === lastIndex;
 
               return (
                 <li
-                  key={child.key || i}
-                  className={s.item}
                   ref={itemsRefs[i]}
-                  style={{
-                    ...(!visibleMap[i] && hiddenStyle),
-                  }}
+                  key={child.key || i}
+                  className={clsx(s.item, !visibleMap[i] && s.hidden)}
                 >
                   {cloneElement(child, {
                     isCurrent: child.props.isCurrent ?? isLast,
                   })}
                   {!isLast && isNotNil(separator) && (
-                    <span aria-hidden="true" className={s.divider}>
-                      {separator}
-                    </span>
+                    <span {...dividerProps}>{separator}</span>
                   )}
                 </li>
               );
             })}
             <li
               ref={itemsRefs[itemsRefs.length - 1]}
-              className={s.more}
-              style={{
-                ...(!visibleMap[length] && hiddenStyle),
-              }}
+              className={clsx(s.ellipsisItem, !visibleMap[length] && s.hidden)}
             >
               <IconEllipsisHorizontal16 />
             </li>

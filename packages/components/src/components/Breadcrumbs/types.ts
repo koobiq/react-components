@@ -1,4 +1,9 @@
-import type { ComponentRef, ReactElement, ReactNode } from 'react';
+import type {
+  ReactNode,
+  ComponentRef,
+  ReactElement,
+  ComponentPropsWithRef,
+} from 'react';
 
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { AriaBreadcrumbsProps } from '@koobiq/react-primitives';
@@ -19,9 +24,17 @@ export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
      */
     size?: BreadcrumbsPropSize;
     /**
-     * The separator between each breadcrumb. It is a " / " by default.
+     * The separator between each breadcrumb.
+     * @default " / "
      */
     separator?: ReactNode;
+    /** Unique identifier for testing purposes. */
+    'data-testid'?: string | number;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      list?: ComponentPropsWithRef<'ol'>;
+      divider?: ComponentPropsWithRef<'span'>;
+    };
   },
   'nav'
 >;

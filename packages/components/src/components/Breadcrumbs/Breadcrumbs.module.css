@@ -33,12 +33,18 @@
   box-sizing: border-box;
 }
 
-/* more */
-.more {
+/* ellipsis */
+.ellipsisItem {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: var(--kbq-size-xxs);
+}
+
+.hidden {
+  visibility: hidden;
+  position: absolute;
+  inset-inline-start: -300vw;
 }
 
 /* divider */
