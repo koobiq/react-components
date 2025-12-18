@@ -35,6 +35,8 @@ export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
       list?: ComponentPropsWithRef<'ol'>;
       divider?: ComponentPropsWithRef<'span'>;
     };
+    /** Where to render the ellipsis item (0..items.length). Default: end. */
+    ellipsisIndex?: number;
   },
   'nav'
 >;

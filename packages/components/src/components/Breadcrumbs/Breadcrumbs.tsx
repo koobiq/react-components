@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactElement } from 'react';
 import { Children, forwardRef, cloneElement, isValidElement } from 'react';
 
 import {
@@ -13,7 +14,7 @@ import { useBreadcrumbs } from '@koobiq/react-primitives';
 
 import s from './Breadcrumbs.module.css';
 import { BreadcrumbsContext } from './BreadcrumbsContext';
-import { BreadcrumbItem } from './components';
+import { BreadcrumbItem, type BreadcrumbItemProps } from './components';
 import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
 
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
@@ -22,6 +23,7 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
 
     const {
       separator = `\u00A0/\u00A0`,
+      ellipsisIndex = 2,
       size = 'normal',
       slotProps,
       children,
@@ -29,8 +31,13 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       ...other
     } = props;
 
-    const items = Children.toArray(children) as typeof children;
-    const length = items?.length || 0;
+    const items = Children.toArray(children) as Array<
+      ReactElement<BreadcrumbItemProps>
+    >;
+
+    const { length } = items;
+
+    const resolvedEllipsisIndex = Math.max(0, Math.min(ellipsisIndex, length));
 
     const navProps = mergeProps(
       {
@@ -46,30 +53,33 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       HTMLOListElement
     >({
       length: length + 1,
+      moreIndex: resolvedEllipsisIndex,
     });
 
     const listProps = mergeProps(
-      {
-        className: s.list,
-        ref: parentRef,
-      },
+      { className: s.list, ref: parentRef },
       slotProps?.list
     );
 
     const separatorProps = mergeProps(
-      {
-        'aria-hidden': 'true',
-        className: s.divider,
-      },
+      { 'aria-hidden': 'true', className: s.divider },
       slotProps?.divider
     );
+
+    if (!items) return null;
 
     return (
       <BreadcrumbsContext.Provider value={{ size }}>
         <nav {...navProps} ref={ref}>
           <ol {...listProps}>
             {Array.from({ length: length + 1 }).map((_, i) => {
-              const isEllipsis = i === length;
+              const isEllipsis = i === resolvedEllipsisIndex;
+              const isLastVisual = i === length;
+
+              const separatorNode =
+                !isLastVisual && isNotNil(separator) ? (
+                  <span {...separatorProps}>{separator}</span>
+                ) : null;
 
               if (isEllipsis) {
                 return (
@@ -81,29 +91,28 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
                     <BreadcrumbItem>
                       <IconEllipsisHorizontal16 />
                     </BreadcrumbItem>
+                    {separatorNode}
                   </li>
                 );
               }
 
-              const child = items?.[i];
+              const childIndex = i < resolvedEllipsisIndex ? i : i - 1;
+              const child = items[childIndex];
 
               if (!isValidElement(child)) return child;
 
-              const lastIndex = length - 1;
-              const isLast = i === lastIndex;
+              const isLastItem = childIndex === length - 1;
 
               return (
                 <li
                   ref={itemsRefs[i]}
-                  key={child.key || i}
+                  key={child.key || childIndex}
                   className={clsx(s.item, !visibleMap[i] && s.hidden)}
                 >
                   {cloneElement(child, {
-                    isCurrent: child.props.isCurrent ?? isLast,
+                    isCurrent: child.props.isCurrent ?? isLastItem,
                   })}
-                  {!isLast && isNotNil(separator) && (
-                    <span {...separatorProps}>{separator}</span>
-                  )}
+                  {separatorNode}
                 </li>
               );
             })}
