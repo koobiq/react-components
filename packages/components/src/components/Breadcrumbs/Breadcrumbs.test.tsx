@@ -11,7 +11,7 @@ describe('Breadcrumbs', () => {
   const getRoot = () => screen.getByTestId<HTMLElement>('breadcrumbs');
 
   it('should receive ref', () => {
-    const ref = createRef<HTMLAnchorElement>();
+    const ref = createRef<HTMLElement>();
     const { container } = render(<Breadcrumbs {...baseProps} ref={ref} />);
     const breadcrumbs = container.querySelector('nav');
     expect(ref.current).toBe(breadcrumbs);
@@ -34,11 +34,48 @@ describe('Breadcrumbs', () => {
   });
 
   describe('BreadcrumbItem', () => {
+    const baseProps = { 'data-testid': 'breadcrumb-item' };
+    const getItem = () => screen.getByTestId<HTMLElement>('breadcrumb-item');
+
+    it('should receive ref', () => {
+      const ref = createRef<HTMLAnchorElement>();
+
+      const { container } = render(
+        <BreadcrumbItem {...baseProps} ref={ref}>
+          item
+        </BreadcrumbItem>
+      );
+
+      const item = container.querySelector('a');
+
+      expect(ref.current).toBe(item);
+    });
+
+    it('should accept a custom class', () => {
+      render(
+        <BreadcrumbItem {...baseProps} className="foo">
+          item
+        </BreadcrumbItem>
+      );
+
+      expect(getItem()).toHaveClass('foo');
+    });
+
+    it('should set custom style', () => {
+      const style = { padding: 20 };
+
+      const { container } = render(
+        <BreadcrumbItem {...baseProps} style={style}>
+          item
+        </BreadcrumbItem>
+      );
+
+      const firstElement = container.firstChild;
+
+      expect(firstElement).toHaveStyle({ padding: '20px' });
+    });
+
     describe('addons', () => {
-      const baseProps = { 'data-testid': 'breadcrumb-item' };
-
-      const getItem = () => screen.getByTestId<HTMLElement>('breadcrumb-item');
-
       it('should render the start addon', () => {
         const label = 'crumb';
         const addonStartText = 'addon-left';
