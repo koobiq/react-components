@@ -15,7 +15,7 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
 
     const {
       separator = `\u00A0/\u00A0`,
-      size = 'compact',
+      size = 'normal',
       children,
       className,
       ...other

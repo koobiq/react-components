@@ -15,7 +15,7 @@ export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
     children?: Array<ReactElement<BreadcrumbItemProps>>;
     /**
      * Size.
-     * @default 'compact'
+     * @default 'normal'
      */
     size?: BreadcrumbsPropSize;
     /**
