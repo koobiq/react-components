@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
+import { useBoolean } from '@koobiq/react-core';
 import {
   IconHouse16,
   IconGridDots16,
   IconSquare16,
   IconChevronRight16,
+  IconChevronDownS16,
 } from '@koobiq/react-icons';
 import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
+import { Menu } from '../Menu';
 import { Provider } from '../Provider';
 
 import { Breadcrumbs, BreadcrumbItem, breadcrumbsPropSize } from './index.js';
@@ -106,6 +109,36 @@ export const Icons: Story = {
       </BreadcrumbItem>
     </Breadcrumbs>
   ),
+};
+
+export const CustomItems: Story = {
+  render: function Render(args) {
+    const [isOpen, { toggle, set }] = useBoolean(false);
+    const anchorRef = useRef<HTMLButtonElement>(null);
+
+    return (
+      <>
+        <Menu isOpen={isOpen} anchorRef={anchorRef} onOpenChange={set}>
+          <Menu.Item key="page-3-1">Page 3-1</Menu.Item>
+          <Menu.Item key="page-3-2">Page 3-2</Menu.Item>
+        </Menu>
+        <Breadcrumbs {...args}>
+          <BreadcrumbItem>Home</BreadcrumbItem>
+          <BreadcrumbItem>Page 1</BreadcrumbItem>
+          <BreadcrumbItem>Page 2</BreadcrumbItem>
+          <BreadcrumbItem
+            as="button"
+            isCurrent={false}
+            ref={anchorRef}
+            onClick={toggle}
+            endAddon={<IconChevronDownS16 />}
+          >
+            Page 3
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      </>
+    );
+  },
 };
 
 export const Controlled: Story = {
