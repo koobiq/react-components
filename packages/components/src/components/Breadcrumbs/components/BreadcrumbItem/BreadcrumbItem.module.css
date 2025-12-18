@@ -5,7 +5,8 @@
   --breadcrumb-padding: var(--kbq-size-3xs) var(--kbq-size-xs);
   --breadcrumb-outline-width: var(--kbq-size-3xs);
   --breadcrumb-outline-color: transparent;
-  --breadcrumb-block-size: ;
+  --breadcrumb-size: ;
+  --breadcrumb-inline-size: ;
   --breadcrumb-bg-color: ;
 
   border: none;
@@ -15,6 +16,7 @@
   align-items: center;
   text-decoration: none;
   box-sizing: border-box;
+  justify-content: center;
   gap: var(--kbq-size-xs);
   color: var(--breadcrumb-color);
   border-radius: var(--kbq-size-xs);
@@ -22,8 +24,9 @@
   background-color: var(--breadcrumb-bg-color);
   outline: var(--breadcrumb-outline-width) solid;
   outline-color: var(--breadcrumb-outline-color);
-  block-size: var(--breadcrumb-block-size);
-  min-block-size: var(--breadcrumb-block-size);
+  block-size: var(--breadcrumb-size);
+  min-block-size: var(--breadcrumb-size);
+  min-inline-size: var(--breadcrumb-size);
   transition:
     color var(--kbq-transition-default),
     outline var(--kbq-transition-default),
@@ -63,19 +66,19 @@
 .compact {
   @mixin typography text-normal;
 
-  --breadcrumb-block-size: var(--kbq-size-xxl);
+  --breadcrumb-size: var(--kbq-size-xxl);
 }
 
 .normal {
   @mixin typography text-big;
 
-  --breadcrumb-block-size: var(--kbq-size-3xl);
+  --breadcrumb-size: var(--kbq-size-3xl);
 }
 
 .big {
   @mixin typography subheading;
 
-  --breadcrumb-block-size: var(--kbq-size-3xl);
+  --breadcrumb-size: var(--kbq-size-3xl);
 }
 
 .compact:where(.current) {

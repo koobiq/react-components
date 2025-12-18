@@ -84,7 +84,7 @@ export const Disabled: Story = {
   ),
 };
 
-export const Icons: Story = {
+export const Addons: Story = {
   render: (args) => (
     <Breadcrumbs {...args}>
       <BreadcrumbItem startAddon={<IconArrowLeft16 />} />

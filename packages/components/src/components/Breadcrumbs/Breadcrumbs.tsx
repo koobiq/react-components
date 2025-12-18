@@ -13,6 +13,7 @@ import { useBreadcrumbs } from '@koobiq/react-primitives';
 
 import s from './Breadcrumbs.module.css';
 import { BreadcrumbsContext } from './BreadcrumbsContext';
+import { BreadcrumbItem } from './components';
 import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
 
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
@@ -55,7 +56,7 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       slotProps?.list
     );
 
-    const dividerProps = mergeProps(
+    const separatorProps = mergeProps(
       {
         'aria-hidden': 'true',
         className: s.divider,
@@ -67,10 +68,28 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       <BreadcrumbsContext.Provider value={{ size }}>
         <nav {...navProps} ref={ref}>
           <ol {...listProps}>
-            {items?.map((child, i) => {
+            {Array.from({ length: length + 1 }).map((_, i) => {
+              const isEllipsis = i === length;
+
+              if (isEllipsis) {
+                return (
+                  <li
+                    key="ellipsis"
+                    ref={itemsRefs[i]}
+                    className={clsx(s.ellipsisItem, !visibleMap[i] && s.hidden)}
+                  >
+                    <BreadcrumbItem>
+                      <IconEllipsisHorizontal16 />
+                    </BreadcrumbItem>
+                  </li>
+                );
+              }
+
+              const child = items?.[i];
+
               if (!isValidElement(child)) return child;
 
-              const lastIndex = items.length - 1;
+              const lastIndex = length - 1;
               const isLast = i === lastIndex;
 
               return (
@@ -83,17 +102,11 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
                     isCurrent: child.props.isCurrent ?? isLast,
                   })}
                   {!isLast && isNotNil(separator) && (
-                    <span {...dividerProps}>{separator}</span>
+                    <span {...separatorProps}>{separator}</span>
                   )}
                 </li>
               );
             })}
-            <li
-              ref={itemsRefs[itemsRefs.length - 1]}
-              className={clsx(s.ellipsisItem, !visibleMap[length] && s.hidden)}
-            >
-              <IconEllipsisHorizontal16 />
-            </li>
           </ol>
         </nav>
       </BreadcrumbsContext.Provider>
