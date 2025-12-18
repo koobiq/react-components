@@ -144,7 +144,7 @@ export const CollapsingItems: Story = {
 
 export const Controlled: Story = {
   render: function Render(args) {
-    const [currentPage, setCurrentPage] = useState<string>('folder-1');
+    const [currentPage, setCurrentPage] = useState<string>('home');
 
     const handleOnPress = (key: string) => () => {
       setCurrentPage(key);
@@ -153,25 +153,39 @@ export const Controlled: Story = {
     return (
       <Breadcrumbs {...args}>
         <BreadcrumbItem
-          key="folder-1"
-          onPress={handleOnPress('folder-1')}
-          isCurrent={currentPage === 'folder-1'}
+          key="home"
+          onPress={handleOnPress('home')}
+          isCurrent={currentPage === 'home'}
         >
-          Folder 1
+          Home
         </BreadcrumbItem>
         <BreadcrumbItem
-          key="folder-2"
-          onPress={handleOnPress('folder-2')}
-          isCurrent={currentPage === 'folder-2'}
+          key="documentation"
+          onPress={handleOnPress('documentation')}
+          isCurrent={currentPage === 'documentation'}
         >
-          Folder 2
+          Documentation
         </BreadcrumbItem>
         <BreadcrumbItem
-          key="folder-3"
-          onPress={handleOnPress('folder-3')}
-          isCurrent={currentPage === 'folder-3'}
+          key="components"
+          onPress={handleOnPress('components')}
+          isCurrent={currentPage === 'components'}
         >
-          Folder 3
+          Components
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          key="navigation"
+          onPress={handleOnPress('navigation')}
+          isCurrent={currentPage === 'navigation'}
+        >
+          Navigation
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          key="breadcrumbs"
+          onPress={handleOnPress('breadcrumbs')}
+          isCurrent={currentPage === 'breadcrumbs'}
+        >
+          Breadcrumbs
         </BreadcrumbItem>
       </Breadcrumbs>
     );
