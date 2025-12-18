@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-import { IconHouse16, IconGridDots16, IconSquare16 } from '@koobiq/react-icons';
+import {
+  IconHouse16,
+  IconGridDots16,
+  IconSquare16,
+  IconChevronRight16,
+} from '@koobiq/react-icons';
 import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -50,6 +55,20 @@ export const Size: Story = {
         </Breadcrumbs>
       ))}
     </FlexBox>
+  ),
+};
+
+export const Separator: Story = {
+  render: (args) => (
+    <Breadcrumbs {...args} separator={<IconChevronRight16 />}>
+      <BreadcrumbItem onPress={() => alert('Pressed Folder 1')}>
+        Folder 1
+      </BreadcrumbItem>
+      <BreadcrumbItem onPress={() => alert('Pressed Folder 2')}>
+        Folder 2
+      </BreadcrumbItem>
+      <BreadcrumbItem>Folder 3</BreadcrumbItem>
+    </Breadcrumbs>
   ),
 };
 

@@ -24,6 +24,10 @@
     color var(--kbq-transition-default),
     outline var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
+
+  & > * {
+    flex-shrink: 0;
+  }
 }
 
 .hovered {

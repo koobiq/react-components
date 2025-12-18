@@ -2,7 +2,7 @@
 
 import { Children, forwardRef, cloneElement, isValidElement } from 'react';
 
-import { clsx, mergeProps } from '@koobiq/react-core';
+import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
 import { useBreadcrumbs } from '@koobiq/react-primitives';
 
 import s from './Breadcrumbs.module.css';
@@ -13,7 +13,13 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
     const { navProps: navPropsAria } = useBreadcrumbs(props);
 
-    const { children, size = 'compact', className, ...other } = props;
+    const {
+      separator = `\u00A0/\u00A0`,
+      size = 'compact',
+      children,
+      className,
+      ...other
+    } = props;
 
     const items = Children.toArray(children) as typeof children;
 
@@ -42,9 +48,9 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
                   {cloneElement(child, {
                     isCurrent: child.props.isCurrent ?? isLast,
                   })}
-                  {!isLast && (
+                  {!isLast && isNotNil(separator) && (
                     <span aria-hidden="true" className={s.divider}>
-                      &nbsp;/&nbsp;
+                      {separator}
                     </span>
                   )}
                 </li>
