@@ -2,11 +2,10 @@ import { useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
-  IconHouse16,
-  IconGridDots16,
-  IconSquare16,
   IconChevronRight16,
   IconChevronDownS16,
+  IconArrowLeft16,
+  IconSquareMultipleO16,
 } from '@koobiq/react-icons';
 import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -22,7 +21,7 @@ const meta = {
   component: Breadcrumbs,
   subcomponents: { BreadcrumbItem },
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
 } satisfies Meta<typeof Breadcrumbs>;
 
@@ -32,13 +31,15 @@ type Story = StoryObj<typeof Breadcrumbs>;
 export const Base: Story = {
   render: (args) => (
     <Breadcrumbs {...args}>
-      <BreadcrumbItem onPress={() => alert('Pressed Folder 1')}>
-        Folder 1
+      <BreadcrumbItem onPress={() => alert('Pressed Home')}>
+        Home
       </BreadcrumbItem>
-      <BreadcrumbItem onPress={() => alert('Pressed Folder 2')}>
-        Folder 2
+      <BreadcrumbItem onPress={() => alert('Pressed Documentation')}>
+        Documentation
       </BreadcrumbItem>
-      <BreadcrumbItem>Folder 3</BreadcrumbItem>
+      <BreadcrumbItem>Components</BreadcrumbItem>
+      <BreadcrumbItem>Navigation</BreadcrumbItem>
+      <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
     </Breadcrumbs>
   ),
 };
@@ -47,14 +48,12 @@ export const Size: Story = {
   render: (args) => (
     <FlexBox gap="l" direction="column">
       {breadcrumbsPropSize.map((size) => (
-        <Breadcrumbs {...args} key={size} size={size}>
-          <BreadcrumbItem onPress={() => alert('Pressed Folder 1')}>
-            Folder 1
-          </BreadcrumbItem>
-          <BreadcrumbItem onPress={() => alert('Pressed Folder 2')}>
-            Folder 2
-          </BreadcrumbItem>
-          <BreadcrumbItem>Folder 3</BreadcrumbItem>
+        <Breadcrumbs size={size} key={size} {...args}>
+          <BreadcrumbItem>Home</BreadcrumbItem>
+          <BreadcrumbItem>Documentation</BreadcrumbItem>
+          <BreadcrumbItem>Components</BreadcrumbItem>
+          <BreadcrumbItem>Navigation</BreadcrumbItem>
+          <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
         </Breadcrumbs>
       ))}
     </FlexBox>
@@ -64,13 +63,11 @@ export const Size: Story = {
 export const Separator: Story = {
   render: (args) => (
     <Breadcrumbs {...args} separator={<IconChevronRight16 />}>
-      <BreadcrumbItem onPress={() => alert('Pressed Folder 1')}>
-        Folder 1
-      </BreadcrumbItem>
-      <BreadcrumbItem onPress={() => alert('Pressed Folder 2')}>
-        Folder 2
-      </BreadcrumbItem>
-      <BreadcrumbItem>Folder 3</BreadcrumbItem>
+      <BreadcrumbItem>Home</BreadcrumbItem>
+      <BreadcrumbItem>Documentation</BreadcrumbItem>
+      <BreadcrumbItem>Components</BreadcrumbItem>
+      <BreadcrumbItem>Navigation</BreadcrumbItem>
+      <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
     </Breadcrumbs>
   ),
 };
@@ -78,13 +75,11 @@ export const Separator: Story = {
 export const Disabled: Story = {
   render: (args) => (
     <Breadcrumbs {...args}>
-      <BreadcrumbItem isDisabled onPress={() => alert('Pressed Folder 1')}>
-        Folder 1
-      </BreadcrumbItem>
-      <BreadcrumbItem onPress={() => alert('Pressed Folder 2')}>
-        Folder 2
-      </BreadcrumbItem>
-      <BreadcrumbItem>Folder 3</BreadcrumbItem>
+      <BreadcrumbItem isDisabled>Home</BreadcrumbItem>
+      <BreadcrumbItem>Documentation</BreadcrumbItem>
+      <BreadcrumbItem>Components</BreadcrumbItem>
+      <BreadcrumbItem>Navigation</BreadcrumbItem>
+      <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
     </Breadcrumbs>
   ),
 };
@@ -92,20 +87,12 @@ export const Disabled: Story = {
 export const Icons: Story = {
   render: (args) => (
     <Breadcrumbs {...args}>
-      <BreadcrumbItem startAddon={<IconHouse16 />} href="https://example.com">
-        Koobiq React
-      </BreadcrumbItem>
-      <BreadcrumbItem
-        startAddon={<IconSquare16 />}
-        href="https://example.com/page-1"
-      >
-        Components
-      </BreadcrumbItem>
-      <BreadcrumbItem
-        startAddon={<IconGridDots16 />}
-        href="https://example.com/page-2"
-      >
-        Breadcrumbs
+      <BreadcrumbItem startAddon={<IconArrowLeft16 />} />
+      <BreadcrumbItem>Projects</BreadcrumbItem>
+      <BreadcrumbItem>Koobiq React</BreadcrumbItem>
+      <BreadcrumbItem>Issues</BreadcrumbItem>
+      <BreadcrumbItem endAddon={<IconSquareMultipleO16 />} isCurrent={false}>
+        KBQ-1025
       </BreadcrumbItem>
     </Breadcrumbs>
   ),
@@ -139,6 +126,20 @@ export const CustomItems: Story = {
       </>
     );
   },
+};
+
+export const CollapsingItems: Story = {
+  render: (args) => (
+    <FlexBox style={{ width: 400 }}>
+      <Breadcrumbs {...args}>
+        <BreadcrumbItem>Home</BreadcrumbItem>
+        <BreadcrumbItem>Documentation</BreadcrumbItem>
+        <BreadcrumbItem>Components</BreadcrumbItem>
+        <BreadcrumbItem>Navigation</BreadcrumbItem>
+        <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
+      </Breadcrumbs>
+    </FlexBox>
+  ),
 };
 
 export const Controlled: Story = {

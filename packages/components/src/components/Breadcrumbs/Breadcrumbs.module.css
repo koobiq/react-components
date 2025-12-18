@@ -1,10 +1,16 @@
 @import url('../../styles/mixins.css');
 
+.base {
+  display: flex;
+  inline-size: 100%;
+}
+
 .list {
   margin: 0;
   padding: 0;
   display: flex;
   list-style: none;
+  inline-size: 100%;
 }
 
 .compact {
@@ -21,8 +27,18 @@
 
 /* item-list */
 .item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* more */
+.more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--kbq-size-xxs);
 }
 
 /* divider */

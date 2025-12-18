@@ -5,6 +5,7 @@
   --breadcrumb-padding: var(--kbq-size-3xs) var(--kbq-size-xs);
   --breadcrumb-outline-width: var(--kbq-size-3xs);
   --breadcrumb-outline-color: transparent;
+  --breadcrumb-block-size: ;
   --breadcrumb-bg-color: ;
 
   border: none;
@@ -21,6 +22,8 @@
   background-color: var(--breadcrumb-bg-color);
   outline: var(--breadcrumb-outline-width) solid;
   outline-color: var(--breadcrumb-outline-color);
+  block-size: var(--breadcrumb-block-size);
+  min-block-size: var(--breadcrumb-block-size);
   transition:
     color var(--kbq-transition-default),
     outline var(--kbq-transition-default),
@@ -58,14 +61,20 @@
 
 .compact {
   @mixin typography text-normal;
+
+  --breadcrumb-block-size: var(--kbq-size-xxl);
 }
 
 .normal {
   @mixin typography text-big;
+
+  --breadcrumb-block-size: var(--kbq-size-3xl);
 }
 
 .big {
   @mixin typography subheading;
+
+  --breadcrumb-block-size: var(--kbq-size-3xl);
 }
 
 .compact:where(.current) {

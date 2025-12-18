@@ -1,13 +1,26 @@
 'use client';
 
 import { Children, forwardRef, cloneElement, isValidElement } from 'react';
+import type { CSSProperties } from 'react';
 
-import { clsx, isNotNil, mergeProps } from '@koobiq/react-core';
+import {
+  clsx,
+  isNotNil,
+  mergeProps,
+  useHideOverflowItems,
+} from '@koobiq/react-core';
+import { IconEllipsisHorizontal16 } from '@koobiq/react-icons';
 import { useBreadcrumbs } from '@koobiq/react-primitives';
 
 import s from './Breadcrumbs.module.css';
 import { BreadcrumbsContext } from './BreadcrumbsContext';
 import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
+
+const hiddenStyle = {
+  visibility: 'hidden',
+  position: 'absolute',
+  left: '-300vw',
+} as CSSProperties;
 
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
@@ -32,10 +45,24 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       navPropsAria
     );
 
+    const length = items?.length || 0;
+
+    const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems<
+      HTMLLIElement,
+      HTMLOListElement
+    >({
+      length: length + 1,
+    });
+
+    const listProps = {
+      className: s.list,
+      ref: parentRef,
+    };
+
     return (
       <BreadcrumbsContext.Provider value={{ size }}>
         <nav {...navProps} ref={ref}>
-          <ol className={s.list}>
+          <ol {...listProps}>
             {items?.map((child, i) => {
               if (!isValidElement(child)) return child;
 
@@ -44,7 +71,14 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
               const isLast = i === lastIndex;
 
               return (
-                <li key={child.key || i} className={s.item}>
+                <li
+                  key={child.key || i}
+                  className={s.item}
+                  ref={itemsRefs[i]}
+                  style={{
+                    ...(!visibleMap[i] && hiddenStyle),
+                  }}
+                >
                   {cloneElement(child, {
                     isCurrent: child.props.isCurrent ?? isLast,
                   })}
@@ -56,6 +90,15 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
                 </li>
               );
             })}
+            <li
+              ref={itemsRefs[itemsRefs.length - 1]}
+              className={s.more}
+              style={{
+                ...(!visibleMap[length] && hiddenStyle),
+              }}
+            >
+              <IconEllipsisHorizontal16 />
+            </li>
           </ol>
         </nav>
       </BreadcrumbsContext.Provider>
