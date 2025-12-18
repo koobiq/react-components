@@ -3,7 +3,7 @@ import { createRef } from 'react';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { Breadcrumbs } from './index';
+import { BreadcrumbItem, type BreadcrumbItemProps, Breadcrumbs } from './index';
 
 describe('Breadcrumbs', () => {
   const baseProps = { 'data-testid': 'breadcrumbs' };
@@ -33,5 +33,65 @@ describe('Breadcrumbs', () => {
     expect(firstElement).toHaveStyle({ padding: '20px' });
   });
 
-  describe('BreadcrumbItem', () => {});
+  describe('BreadcrumbItem', () => {
+    describe('addons', () => {
+      const baseProps = { 'data-testid': 'breadcrumb-item' };
+
+      const getItem = () => screen.getByTestId<HTMLElement>('breadcrumb-item');
+
+      it('should render the start addon', () => {
+        const label = 'crumb';
+        const addonStartText = 'addon-left';
+        const AddonStart = () => <span>{addonStartText}</span>;
+
+        const props: BreadcrumbItemProps = {
+          ...baseProps,
+          children: label,
+          startAddon: <AddonStart />,
+        };
+
+        render(<BreadcrumbItem {...props} />);
+
+        expect(getItem()).toHaveTextContent(addonStartText + label);
+      });
+
+      it('should render the end addon', () => {
+        const label = 'crumb';
+        const addonEndText = 'addon-right';
+        const AddonEnd = () => <span>{addonEndText}</span>;
+
+        const props: BreadcrumbItemProps = {
+          ...baseProps,
+          children: label,
+          endAddon: <AddonEnd />,
+        };
+
+        render(<BreadcrumbItem {...props} />);
+
+        expect(getItem()).toHaveTextContent(label + addonEndText);
+      });
+
+      it('should render the start and end addons', () => {
+        const label = 'crumb';
+        const addonStartText = 'addon-left';
+        const addonEndText = 'addon-right';
+        const AddonStart = () => <span>{addonStartText}</span>;
+
+        const AddonEnd = () => <span>{addonEndText}</span>;
+
+        const props: BreadcrumbItemProps = {
+          ...baseProps,
+          children: label,
+          startAddon: <AddonStart />,
+          endAddon: <AddonEnd />,
+        };
+
+        render(<BreadcrumbItem {...props} />);
+
+        expect(getItem()).toHaveTextContent(
+          addonStartText + label + addonEndText
+        );
+      });
+    });
+  });
 });

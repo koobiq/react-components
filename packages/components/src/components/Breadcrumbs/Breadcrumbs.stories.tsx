@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { IconHouse16, IconGridDots16, IconSquare16 } from '@koobiq/react-icons';
 import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -62,6 +63,28 @@ export const Disabled: Story = {
         Folder 2
       </BreadcrumbItem>
       <BreadcrumbItem>Folder 3</BreadcrumbItem>
+    </Breadcrumbs>
+  ),
+};
+
+export const Icons: Story = {
+  render: (args) => (
+    <Breadcrumbs {...args}>
+      <BreadcrumbItem startAddon={<IconHouse16 />} href="https://example.com">
+        Koobiq React
+      </BreadcrumbItem>
+      <BreadcrumbItem
+        startAddon={<IconSquare16 />}
+        href="https://example.com/page-1"
+      >
+        Components
+      </BreadcrumbItem>
+      <BreadcrumbItem
+        startAddon={<IconGridDots16 />}
+        href="https://example.com/page-2"
+      >
+        Breadcrumbs
+      </BreadcrumbItem>
     </Breadcrumbs>
   ),
 };

@@ -10,6 +10,7 @@ import {
   usePress,
   useDOMRef,
   polymorphicForwardRef,
+  isNotNil,
 } from '@koobiq/react-core';
 import { useBreadcrumbItem } from '@koobiq/react-primitives';
 
@@ -24,7 +25,14 @@ export const BreadcrumbItem = polymorphicForwardRef<
 >((props, ref) => {
   const domRef = useDOMRef(ref);
 
-  const { isDisabled, isCurrent, children, as = 'a' } = props;
+  const {
+    as = 'a',
+    children,
+    endAddon,
+    isCurrent,
+    startAddon,
+    isDisabled,
+  } = props;
 
   const { itemProps } = useBreadcrumbItem(
     { ...props, elementType: `${as}` },
@@ -55,7 +63,9 @@ export const BreadcrumbItem = polymorphicForwardRef<
       {...mergeProps(itemProps, hoverProps, focusProps, pressProps)}
       ref={ref}
     >
+      {isNotNil(startAddon) && startAddon}
       {children}
+      {isNotNil(endAddon) && endAddon}
     </Tag>
   );
 });

@@ -7,9 +7,13 @@
   --breadcrumb-outline-color: transparent;
   --breadcrumb-bg-color: ;
 
+  display: flex;
   cursor: pointer;
+  flex-wrap: nowrap;
+  align-items: center;
   text-decoration: none;
   box-sizing: border-box;
+  gap: var(--kbq-size-xs);
   color: var(--breadcrumb-color);
   border-radius: var(--kbq-size-xs);
   padding: var(--breadcrumb-padding);
