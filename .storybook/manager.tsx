@@ -5,28 +5,36 @@ import '@koobiq/design-tokens/web/css-tokens-dark.css';
 
 import React from 'react';
 
-import { Badge, type BadgePropVariant } from '@koobiq/react-components';
 import { addons } from 'storybook/manager-api';
 
 (globalThis as any).React = React;
 
 type BadgeConfig = {
-  variant: BadgePropVariant;
   label: string;
+  style?: React.CSSProperties;
 };
 
 const badges = {
   'status:updated': {
     label: 'Updated',
-    variant: 'outline-fade-success',
+    style: {
+      color: 'var(--kbq-foreground-success)',
+      borderColor: 'var(--kbq-line-success-fade)',
+    },
   },
   'status:new': {
     label: 'New',
-    variant: 'outline-fade-theme',
+    style: {
+      color: 'var(--kbq-foreground-theme)',
+      borderColor: 'var(--kbq-line-theme-fade)',
+    },
   },
   'status:deprecated': {
     label: 'Deprecated',
-    variant: 'outline-fade-error',
+    style: {
+      color: 'var(--kbq-foreground-error)',
+      borderColor: 'var(--kbq-line-error-fade)',
+    },
   },
 } satisfies Record<string, BadgeConfig>;
 
@@ -64,9 +72,25 @@ addons.setConfig({
           }}
         >
           <span>{item.name}</span>
-          <Badge size="compact" variant={badge.variant}>
+          <span
+            style={{
+              ...badge.style,
+              blockSize: 16,
+              fontSize: '12px',
+              lineHeight: '1',
+              textAlign: 'center',
+              borderStyle: 'solid',
+              alignItems: 'center',
+              display: 'inline-flex',
+              boxSizing: 'border-box',
+              justifyContent: 'center',
+              paddingInline: 'var(--kbq-size-xxs)',
+              borderRadius: 'var(--kbq-size-xxs)',
+              borderWidth: 'var(--kbq-size-border-width)',
+            }}
+          >
             {badge.label}
-          </Badge>
+          </span>
         </div>
       );
     },
