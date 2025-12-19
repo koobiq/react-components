@@ -81,6 +81,7 @@ addons.setConfig({
               textAlign: 'center',
               borderStyle: 'solid',
               alignItems: 'center',
+              whiteSpace: 'nowrap',
               display: 'inline-flex',
               boxSizing: 'border-box',
               justifyContent: 'center',
