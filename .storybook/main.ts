@@ -1,18 +1,10 @@
-import { join, dirname } from 'node:path';
+import { join } from 'node:path';
 
 import type { StorybookConfig } from '@storybook/react-vite';
 import remarkGfm from 'remark-gfm';
 import preserveDirectives from 'rollup-preserve-directives';
 import { mergeConfig } from 'vite';
 import type { UserConfig } from 'vite';
-
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- */
-function getAbsolutePath(value: string): string {
-  return dirname(require.resolve(join(value, 'package.json')));
-}
 
 const toPath = (_path: string) => join(process.cwd(), _path);
 
@@ -24,7 +16,7 @@ const config: StorybookConfig = {
   ],
   addons: [
     {
-      name: getAbsolutePath('@storybook/addon-docs'),
+      name: '@storybook/addon-docs',
       options: {
         mdxPluginOptions: {
           mdxCompileOptions: {
@@ -33,10 +25,10 @@ const config: StorybookConfig = {
         },
       },
     },
-    getAbsolutePath('@storybook/addon-a11y'),
-    getAbsolutePath('@storybook/addon-links'),
-    getAbsolutePath('@chromatic-com/storybook'),
-    getAbsolutePath('@vueless/storybook-dark-mode'),
+    '@storybook/addon-a11y',
+    '@storybook/addon-links',
+    '@chromatic-com/storybook',
+    '@vueless/storybook-dark-mode',
   ],
   async viteFinal(config: UserConfig) {
     return mergeConfig(config, {
@@ -62,7 +54,7 @@ const config: StorybookConfig = {
     disableTelemetry: true,
   },
   framework: {
-    name: getAbsolutePath('@storybook/react-vite'),
+    name: '@storybook/react-vite',
     options: {
       // strictMode: true,
     },
