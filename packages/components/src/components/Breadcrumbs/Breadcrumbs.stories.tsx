@@ -23,6 +23,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  tags: ['status:new'],
 } satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;
