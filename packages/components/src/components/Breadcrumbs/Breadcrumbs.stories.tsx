@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { type CSSProperties, useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -130,7 +130,7 @@ export const CustomItems: Story = {
 
 export const CollapsingItems: Story = {
   render: (args) => (
-    <FlexBox style={{ width: 400 }}>
+    <FlexBox style={{ maxInlineSize: 400 }}>
       <Breadcrumbs {...args}>
         <BreadcrumbItem>Home</BreadcrumbItem>
         <BreadcrumbItem>Documentation</BreadcrumbItem>
@@ -140,6 +140,47 @@ export const CollapsingItems: Story = {
       </Breadcrumbs>
     </FlexBox>
   ),
+};
+
+export const CustomEllipsisItem: Story = {
+  render: function Render(args) {
+    const parentStyle = {
+      resize: 'horizontal',
+      overflow: 'hidden',
+      maxInlineSize: '100%',
+    } as CSSProperties;
+
+    const [isOpen, { toggle, set }] = useBoolean(false);
+    const anchorRef = useRef<HTMLSpanElement>(null);
+
+    return (
+      <Breadcrumbs
+        style={parentStyle}
+        ellipsisIndex={4}
+        renderEllipsis={({ ellipsisIcon, items }) => (
+          <>
+            <BreadcrumbItem as="span" onClick={toggle} ref={anchorRef}>
+              {ellipsisIcon}
+            </BreadcrumbItem>
+            <Menu isOpen={isOpen} anchorRef={anchorRef} onOpenChange={set}>
+              {items.map((item, i) => (
+                <Menu.Item key={i} href={item.href}>
+                  {item.children}
+                </Menu.Item>
+              ))}
+            </Menu>
+          </>
+        )}
+        {...args}
+      >
+        <BreadcrumbItem>Home</BreadcrumbItem>
+        <BreadcrumbItem href="/">Documentation</BreadcrumbItem>
+        <BreadcrumbItem href="/">Components</BreadcrumbItem>
+        <BreadcrumbItem href="/">Navigation</BreadcrumbItem>
+        <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
+      </Breadcrumbs>
+    );
+  },
 };
 
 export const Controlled: Story = {

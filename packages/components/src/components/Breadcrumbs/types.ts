@@ -14,6 +14,34 @@ export const breadcrumbsPropSize = ['compact', 'normal', 'big'] as const;
 
 export type BreadcrumbsPropSize = (typeof breadcrumbsPropSize)[number];
 
+export type BreadcrumbRenderItem = {
+  /** Original React element. */
+  element: ReactElement<BreadcrumbItemProps>;
+  /** Index in the `children` list. */
+  index: number;
+  /** Key. */
+  key: string | number | null;
+  /** Convenient access to the element's children. */
+  children: ReactNode;
+  /** Optional link target extracted from props. */
+  href?: string;
+  /** Element props shortcut. */
+  props: BreadcrumbItemProps;
+};
+
+export type RenderEllipsisParams = {
+  /** The collapsed items. */
+  items: BreadcrumbRenderItem[];
+  /** The default ellipsis icon. */
+  ellipsisIcon: ReactElement;
+  /** Index of the ellipsis in the visual list. */
+  ellipsisIndex: number;
+};
+
+export type BreadcrumbsPropRenderEllipsis = (
+  params: RenderEllipsisParams
+) => ReactNode;
+
 export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
   AriaBreadcrumbsProps & {
     /** The contents of the collection. */
@@ -37,6 +65,7 @@ export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
     };
     /** Where to render the ellipsis item (0..items.length). Default: end. */
     ellipsisIndex?: number;
+    renderEllipsis?: BreadcrumbsPropRenderEllipsis;
   },
   'nav'
 >;

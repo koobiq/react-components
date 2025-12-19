@@ -15,7 +15,11 @@ import { useBreadcrumbs } from '@koobiq/react-primitives';
 import s from './Breadcrumbs.module.css';
 import { BreadcrumbsContext } from './BreadcrumbsContext';
 import { BreadcrumbItem, type BreadcrumbItemProps } from './components';
-import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
+import type {
+  BreadcrumbsProps,
+  BreadcrumbsRef,
+  BreadcrumbRenderItem,
+} from './types';
 
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
@@ -28,14 +32,15 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       slotProps,
       children,
       className,
+      renderEllipsis,
       ...other
     } = props;
 
-    const items = Children.toArray(children) as Array<
+    const elements = Children.toArray(children) as Array<
       ReactElement<BreadcrumbItemProps>
     >;
 
-    const { length } = items;
+    const { length } = elements;
 
     const resolvedEllipsisIndex = Math.max(0, Math.min(ellipsisIndex, length));
 
@@ -53,6 +58,7 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       HTMLOListElement
     >({
       length: length + 1,
+      pinnedIndex: length,
       moreIndex: resolvedEllipsisIndex,
     });
 
@@ -66,7 +72,23 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       slotProps?.divider
     );
 
-    if (!items) return null;
+    const ellipsisIcon = <IconEllipsisHorizontal16 />;
+
+    const items: BreadcrumbRenderItem[] = elements.map((element, index) => ({
+      element,
+      index,
+      props: element.props,
+      key: element.key ?? null,
+      href: element.props.href,
+      children: element.props.children,
+    }));
+
+    const collapsedItems: BreadcrumbRenderItem[] = items.filter((item) => {
+      const slotIndex =
+        item.index < resolvedEllipsisIndex ? item.index : item.index + 1;
+
+      return !visibleMap[slotIndex];
+    });
 
     return (
       <BreadcrumbsContext.Provider value={{ size }}>
@@ -74,30 +96,38 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
           <ol {...listProps}>
             {Array.from({ length: length + 1 }).map((_, i) => {
               const isEllipsis = i === resolvedEllipsisIndex;
-              const isLastVisual = i === length;
+              const isLast = i === length;
 
               const separatorNode =
-                !isLastVisual && isNotNil(separator) ? (
+                !isLast && isNotNil(separator) ? (
                   <span {...separatorProps}>{separator}</span>
                 ) : null;
 
               if (isEllipsis) {
+                const defaultEllipsis = (
+                  <BreadcrumbItem as="span">{ellipsisIcon}</BreadcrumbItem>
+                );
+
+                const customEllipsis = renderEllipsis?.({
+                  ellipsisIcon,
+                  ellipsisIndex: i,
+                  items: collapsedItems,
+                });
+
                 return (
                   <li
                     key="ellipsis"
                     ref={itemsRefs[i]}
                     className={clsx(s.ellipsisItem, !visibleMap[i] && s.hidden)}
                   >
-                    <BreadcrumbItem>
-                      <IconEllipsisHorizontal16 />
-                    </BreadcrumbItem>
+                    {customEllipsis ?? defaultEllipsis}
                     {separatorNode}
                   </li>
                 );
               }
 
               const childIndex = i < resolvedEllipsisIndex ? i : i - 1;
-              const child = items[childIndex];
+              const child = items[childIndex]?.element;
 
               if (!isValidElement(child)) return child;
 

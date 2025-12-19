@@ -32,11 +32,17 @@ export const BreadcrumbItem = polymorphicForwardRef<
     isCurrent,
     startAddon,
     isDisabled,
+    onPress,
     ...other
   } = props;
 
   const { itemProps } = useBreadcrumbItem(
-    { ...props, children: props.children || null, elementType: `${as}` },
+    {
+      ...props,
+      onPress,
+      children: props.children || null,
+      elementType: `${as}`,
+    },
     domRef
   );
 
