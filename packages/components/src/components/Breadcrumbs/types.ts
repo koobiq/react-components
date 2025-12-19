@@ -14,8 +14,13 @@ export const breadcrumbsPropSize = ['compact', 'normal', 'big'] as const;
 
 export type BreadcrumbsPropSize = (typeof breadcrumbsPropSize)[number];
 
+export const breadcrumbsPropOverflowMode = ['collapse', 'wrap'] as const;
+
+export type BreadcrumbsPropOverflowMode =
+  (typeof breadcrumbsPropOverflowMode)[number];
+
 export type BreadcrumbRenderItem = {
-  /** Original React element. */
+  /** React element. */
   element: ReactElement<BreadcrumbItemProps>;
   /** Index in the `children` list. */
   index: number;
@@ -63,9 +68,18 @@ export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
       list?: ComponentPropsWithRef<'ol'>;
       divider?: ComponentPropsWithRef<'span'>;
     };
-    /** Where to render the ellipsis item (0..items.length). Default: end. */
+    /**
+     * Position of the ellipsis item.
+     * @default 2
+     */
     ellipsisIndex?: number;
+    /** Render-function for customizing the ellipsis item. */
     renderEllipsis?: BreadcrumbsPropRenderEllipsis;
+    /**
+     * Controls how breadcrumbs behave when they run out of space — collapse items or wrap to a new line.
+     * @default 'collapse'
+     */
+    overflowMode?: BreadcrumbsPropOverflowMode;
   },
   'nav'
 >;
