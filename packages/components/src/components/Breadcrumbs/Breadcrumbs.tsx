@@ -12,6 +12,8 @@ import {
 import { IconEllipsisHorizontal16 } from '@koobiq/react-icons';
 import { useBreadcrumbs } from '@koobiq/react-primitives';
 
+import { Menu } from '../Menu';
+
 import s from './Breadcrumbs.module.css';
 import { BreadcrumbsContext } from './BreadcrumbsContext';
 import { BreadcrumbItem, type BreadcrumbItemProps } from './components';
@@ -19,7 +21,27 @@ import type {
   BreadcrumbsProps,
   BreadcrumbsRef,
   BreadcrumbRenderItem,
+  BreadcrumbsPropRenderEllipsis,
 } from './types';
+
+const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
+  ellipsisIcon,
+  items,
+}) => (
+  <>
+    <Menu
+      control={(props) => (
+        <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
+      )}
+    >
+      {items.map((item, i) => (
+        <Menu.Item key={i} href={item.href}>
+          {item.children}
+        </Menu.Item>
+      ))}
+    </Menu>
+  </>
+);
 
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
@@ -33,7 +55,7 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       slotProps,
       children,
       className,
-      renderEllipsis,
+      renderEllipsis = renderEllipsisDefault,
       ...other
     } = props;
 
