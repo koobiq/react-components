@@ -4,7 +4,7 @@ import type { AriaBreadcrumbItemProps } from '@koobiq/react-primitives';
 
 export type BreadcrumbItemBaseProps = Omit<
   AriaBreadcrumbItemProps,
-  'children'
+  'children' | 'elementType'
 > & {
   /** Icon placed before the children. */
   startAddon?: ReactNode;
