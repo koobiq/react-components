@@ -1,6 +1,7 @@
 import type {
   ComponentPropsWithRef,
   ComponentRef,
+  ElementType,
   CSSProperties,
   ReactElement,
   Ref,
@@ -13,7 +14,10 @@ import type { ButtonOptions, AriaMenuProps } from '@koobiq/react-primitives';
 import type { PopoverProps, PopoverPropPlacement } from '../Popover';
 
 export type MenuPropControl = (
-  props: ButtonOptions & { ref?: Ref<HTMLButtonElement> }
+  props: Omit<ButtonOptions, 'elementType'> & {
+    ref?: Ref<HTMLButtonElement>;
+    as?: ElementType;
+  }
 ) => ReactElement;
 
 export type MenuPropPlacement = PopoverPropPlacement;
