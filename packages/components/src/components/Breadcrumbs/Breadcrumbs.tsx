@@ -27,6 +27,7 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
 
     const {
       separator = `\u00A0/\u00A0`,
+      overflowMode = 'collapse',
       ellipsisIndex = 2,
       size = 'normal',
       slotProps,
@@ -46,8 +47,9 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
 
     const navProps = mergeProps(
       {
-        className: clsx(s.base, s[size], className),
         'data-size': size,
+        'data-overflow-mode': overflowMode,
+        className: clsx(s.base, s[size], s[overflowMode], className),
         ...other,
       },
       navPropsAria
