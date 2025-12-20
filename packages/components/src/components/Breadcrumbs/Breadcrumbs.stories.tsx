@@ -1,6 +1,5 @@
-import { type CSSProperties, useRef, useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 
-import { useBoolean } from '@koobiq/react-core';
 import {
   IconChevronRight16,
   IconChevronDownS16,
@@ -101,28 +100,26 @@ export const Addons: Story = {
 
 export const CustomItems: Story = {
   render: function Render(args) {
-    const [isOpen, { toggle, set }] = useBoolean(false);
-    const anchorRef = useRef<HTMLButtonElement>(null);
-
     return (
       <>
-        <Menu isOpen={isOpen} anchorRef={anchorRef} onOpenChange={set}>
-          <Menu.Item key="page-3-1">Page 3-1</Menu.Item>
-          <Menu.Item key="page-3-2">Page 3-2</Menu.Item>
-        </Menu>
         <Breadcrumbs {...args}>
           <BreadcrumbItem>Home</BreadcrumbItem>
           <BreadcrumbItem>Page 1</BreadcrumbItem>
           <BreadcrumbItem>Page 2</BreadcrumbItem>
-          <BreadcrumbItem
-            as="button"
-            isCurrent={false}
-            ref={anchorRef}
-            onClick={toggle}
-            endAddon={<IconChevronDownS16 />}
+          <Menu
+            control={(props) => (
+              <BreadcrumbItem
+                isCurrent={false}
+                endAddon={<IconChevronDownS16 />}
+                {...props}
+              >
+                Page 3
+              </BreadcrumbItem>
+            )}
           >
-            Page 3
-          </BreadcrumbItem>
+            <Menu.Item key="page-3-1">Page 3-1</Menu.Item>
+            <Menu.Item key="page-3-2">Page 3-2</Menu.Item>
+          </Menu>
         </Breadcrumbs>
       </>
     );
@@ -151,19 +148,17 @@ export const CustomEllipsisItem: Story = {
       maxInlineSize: '100%',
     } as CSSProperties;
 
-    const [isOpen, { toggle, set }] = useBoolean(false);
-    const anchorRef = useRef<HTMLSpanElement>(null);
-
     return (
       <Breadcrumbs
         style={parentStyle}
         ellipsisIndex={4}
         renderEllipsis={({ ellipsisIcon, items }) => (
           <>
-            <BreadcrumbItem as="span" onClick={toggle} ref={anchorRef}>
-              {ellipsisIcon}
-            </BreadcrumbItem>
-            <Menu isOpen={isOpen} anchorRef={anchorRef} onOpenChange={set}>
+            <Menu
+              control={(props) => (
+                <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
+              )}
+            >
               {items.map((item, i) => (
                 <Menu.Item key={i} href={item.href}>
                   {item.children}
