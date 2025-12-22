@@ -119,7 +119,7 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
             <li
               key="ellipsis"
               ref={itemsRefs[i]}
-              className={clsx(s.ellipsisItem, !visibleMap[i] && s.hidden)}
+              className={clsx(s.ellipsis, !visibleMap[i] && s.hidden)}
             >
               {customEllipsis ?? defaultEllipsis}
               {separatorNode}

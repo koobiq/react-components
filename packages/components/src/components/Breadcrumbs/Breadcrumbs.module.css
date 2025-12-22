@@ -1,12 +1,14 @@
 @import url('../../styles/mixins.css');
 
 .base {
+  --breadcrumbs-wrap: ;
+
   display: flex;
   inline-size: 100%;
 }
 
 .wrap {
-  flex-wrap: wrap;
+  --breadcrumbs-wrap: wrap;
 }
 
 .list {
@@ -15,6 +17,7 @@
   display: flex;
   list-style: none;
   inline-size: 100%;
+  flex-wrap: var(--breadcrumbs-wrap);
 }
 
 .compact {
@@ -29,7 +32,7 @@
   @mixin typography subheading;
 }
 
-/* item-list */
+/* item */
 .item {
   display: inline-flex;
   align-items: center;
@@ -38,7 +41,7 @@
 }
 
 /* ellipsis */
-.ellipsisItem {
+.ellipsis {
   display: inline-flex;
   align-items: center;
   justify-content: center;
