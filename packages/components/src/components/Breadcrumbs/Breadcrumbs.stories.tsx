@@ -10,6 +10,7 @@ import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
+import { spacing } from '../layout';
 import { Menu } from '../Menu';
 import { Provider } from '../Provider';
 import { Typography } from '../Typography';
@@ -49,13 +50,16 @@ export const Size: Story = {
   render: (args) => (
     <FlexBox gap="l" direction="column">
       {breadcrumbsPropSize.map((size) => (
-        <Breadcrumbs size={size} key={size} {...args}>
-          <BreadcrumbItem>Home</BreadcrumbItem>
-          <BreadcrumbItem>Documentation</BreadcrumbItem>
-          <BreadcrumbItem>Components</BreadcrumbItem>
-          <BreadcrumbItem>Navigation</BreadcrumbItem>
-          <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
-        </Breadcrumbs>
+        <>
+          <Typography className={spacing({ mb: 's' })}>{size}</Typography>
+          <Breadcrumbs size={size} key={size} {...args}>
+            <BreadcrumbItem>Home</BreadcrumbItem>
+            <BreadcrumbItem>Documentation</BreadcrumbItem>
+            <BreadcrumbItem>Components</BreadcrumbItem>
+            <BreadcrumbItem>Navigation</BreadcrumbItem>
+            <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
+          </Breadcrumbs>
+        </>
       ))}
     </FlexBox>
   ),

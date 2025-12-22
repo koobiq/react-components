@@ -2,6 +2,8 @@
 
 .base {
   --breadcrumbs-wrap: ;
+  --breadcrumb-padding-inline: var(--kbq-size-xs);
+  --breadcrumb-padding-block: var(--kbq-size-3xs);
 
   inline-size: 100%;
 }
@@ -60,5 +62,6 @@
   flex-direction: column;
   justify-content: center;
   min-inline-size: var(--kbq-size-m);
+  margin-inline: var(--breadcrumb-padding-inline);
   color: var(--kbq-states-foreground-disabled);
 }
