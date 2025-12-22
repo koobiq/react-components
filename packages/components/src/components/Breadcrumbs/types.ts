@@ -58,7 +58,7 @@ export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
     size?: BreadcrumbsPropSize;
     /**
      * The separator between each breadcrumb.
-     * @default " / "
+     * @default "/"
      */
     separator?: ReactNode;
     /** Unique identifier for testing purposes. */

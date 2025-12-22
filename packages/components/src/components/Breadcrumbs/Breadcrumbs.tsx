@@ -13,7 +13,7 @@ import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
     const {
-      separator = `\u00A0/\u00A0`,
+      separator = `/`,
       overflowMode = 'collapse',
       renderEllipsis,
       ellipsisIndex,

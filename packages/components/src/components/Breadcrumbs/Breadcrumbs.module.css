@@ -3,7 +3,6 @@
 .base {
   --breadcrumbs-wrap: ;
 
-  display: flex;
   inline-size: 100%;
 }
 
@@ -60,5 +59,6 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  min-inline-size: var(--kbq-size-m);
   color: var(--kbq-states-foreground-disabled);
 }
