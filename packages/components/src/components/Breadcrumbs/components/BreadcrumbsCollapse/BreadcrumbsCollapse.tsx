@@ -23,21 +23,25 @@ import { BreadcrumbItem, type BreadcrumbItemProps } from '../BreadcrumbItem';
 const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
   ellipsisIcon,
   items,
-}) => (
-  <>
-    <Menu
-      control={(props) => (
-        <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
-      )}
-    >
-      {items.map((item, i) => (
-        <Menu.Item key={i} href={item.href}>
-          {item.children}
-        </Menu.Item>
-      ))}
-    </Menu>
-  </>
-);
+}) => {
+  if (!items.length) return null;
+
+  return (
+    <>
+      <Menu
+        control={(props) => (
+          <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
+        )}
+      >
+        {items.map((item, i) => (
+          <Menu.Item key={i} href={item.href}>
+            {item.children}
+          </Menu.Item>
+        ))}
+      </Menu>
+    </>
+  );
+};
 
 export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
   const {
