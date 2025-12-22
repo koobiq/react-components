@@ -3,8 +3,8 @@ import { type CSSProperties, useState } from 'react';
 import {
   IconChevronRight16,
   IconChevronDownS16,
-  IconArrowLeft16,
-  IconSquareMultipleO16,
+  IconHouse16,
+  IconUser16,
 } from '@koobiq/react-icons';
 import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -87,13 +87,11 @@ export const Disabled: Story = {
 export const Addons: Story = {
   render: (args) => (
     <Breadcrumbs {...args}>
-      <BreadcrumbItem startAddon={<IconArrowLeft16 />} />
-      <BreadcrumbItem>Projects</BreadcrumbItem>
-      <BreadcrumbItem>Koobiq React</BreadcrumbItem>
-      <BreadcrumbItem>Issues</BreadcrumbItem>
-      <BreadcrumbItem endAddon={<IconSquareMultipleO16 />} isCurrent={false}>
-        KBQ-1025
+      <BreadcrumbItem startAddon={<IconHouse16 />} />
+      <BreadcrumbItem startAddon={<IconUser16 />}>
+        Application List
       </BreadcrumbItem>
+      <BreadcrumbItem>Application</BreadcrumbItem>
     </Breadcrumbs>
   ),
 };
