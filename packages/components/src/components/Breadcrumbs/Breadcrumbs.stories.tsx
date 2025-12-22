@@ -1,4 +1,4 @@
-import { type CSSProperties, useState } from 'react';
+import { useState } from 'react';
 
 import {
   IconChevronRight16,
@@ -10,7 +10,7 @@ import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
-import { spacing } from '../layout';
+import { IconButton } from '../IconButton';
 import { Menu } from '../Menu';
 import { Provider } from '../Provider';
 import { Typography } from '../Typography';
@@ -50,16 +50,21 @@ export const Size: Story = {
   render: (args) => (
     <FlexBox gap="l" direction="column">
       {breadcrumbsPropSize.map((size) => (
-        <>
-          <Typography className={spacing({ mb: 's' })}>{size}</Typography>
-          <Breadcrumbs size={size} key={size} {...args}>
+        <FlexBox
+          gap="s"
+          key={size}
+          direction="column"
+          style={{ inlineSize: '100%' }}
+        >
+          <Typography>{size}</Typography>
+          <Breadcrumbs size={size} {...args}>
             <BreadcrumbItem>Home</BreadcrumbItem>
             <BreadcrumbItem>Documentation</BreadcrumbItem>
             <BreadcrumbItem>Components</BreadcrumbItem>
             <BreadcrumbItem>Navigation</BreadcrumbItem>
             <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
           </Breadcrumbs>
-        </>
+        </FlexBox>
       ))}
     </FlexBox>
   ),
@@ -145,39 +150,36 @@ export const CollapsingItems: Story = {
 
 export const CustomEllipsisItem: Story = {
   render: function Render(args) {
-    const parentStyle = {
-      resize: 'horizontal',
-      overflow: 'hidden',
-      maxInlineSize: '100%',
-    } as CSSProperties;
-
     return (
-      <Breadcrumbs
-        style={parentStyle}
-        ellipsisIndex={4}
-        renderEllipsis={({ ellipsisIcon, items }) => (
-          <>
-            <Menu
-              control={(props) => (
-                <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
-              )}
-            >
-              {items.map((item, i) => (
-                <Menu.Item key={i} href={item.href}>
-                  {item.children}
-                </Menu.Item>
-              ))}
-            </Menu>
-          </>
-        )}
-        {...args}
-      >
-        <BreadcrumbItem>Home</BreadcrumbItem>
-        <BreadcrumbItem href="/">Documentation</BreadcrumbItem>
-        <BreadcrumbItem href="/">Components</BreadcrumbItem>
-        <BreadcrumbItem href="/">Navigation</BreadcrumbItem>
-        <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
-      </Breadcrumbs>
+      <FlexBox style={{ maxInlineSize: 400 }}>
+        <Breadcrumbs
+          ellipsisIndex={5}
+          renderEllipsis={({ ellipsisIcon, items }) => (
+            <>
+              <Menu
+                control={(props) => (
+                  <IconButton {...props} variant="fade-contrast">
+                    {ellipsisIcon}
+                  </IconButton>
+                )}
+              >
+                {items.map((item, i) => (
+                  <Menu.Item key={i} href={item.href}>
+                    {item.children}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            </>
+          )}
+          {...args}
+        >
+          <BreadcrumbItem>Home</BreadcrumbItem>
+          <BreadcrumbItem href="/">Documentation</BreadcrumbItem>
+          <BreadcrumbItem href="/">Components</BreadcrumbItem>
+          <BreadcrumbItem href="/">Navigation</BreadcrumbItem>
+          <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
+        </Breadcrumbs>
+      </FlexBox>
     );
   },
 };
