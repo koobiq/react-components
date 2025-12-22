@@ -33,7 +33,8 @@ export const BreadcrumbItem = polymorphicForwardRef<
     startAddon,
     isDisabled,
     onPress,
-    ...other
+    className,
+    style,
   } = props;
 
   const { itemProps } = useBreadcrumbItem(
@@ -65,10 +66,11 @@ export const BreadcrumbItem = polymorphicForwardRef<
         isCurrent && s.current,
         isPressed && s.pressed,
         isDisabled && s.disabled,
-        isFocusVisible && s.focusVisible
+        isFocusVisible && s.focusVisible,
+        className
       )}
       {...mergeProps(itemProps, hoverProps, focusProps, pressProps)}
-      {...other}
+      style={style}
       ref={domRef}
     >
       {isNotNil(startAddon) && startAddon}

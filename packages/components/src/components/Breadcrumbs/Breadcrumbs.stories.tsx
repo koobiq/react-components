@@ -179,6 +179,20 @@ export const CustomEllipsisItem: Story = {
   },
 };
 
+export const WrapItems: Story = {
+  render: (args) => (
+    <FlexBox style={{ maxInlineSize: 400 }}>
+      <Breadcrumbs overflowMode="wrap" {...args}>
+        <BreadcrumbItem>Home</BreadcrumbItem>
+        <BreadcrumbItem>Documentation</BreadcrumbItem>
+        <BreadcrumbItem>Components</BreadcrumbItem>
+        <BreadcrumbItem>Navigation</BreadcrumbItem>
+        <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
+      </Breadcrumbs>
+    </FlexBox>
+  ),
+};
+
 export const Controlled: Story = {
   render: function Render(args) {
     const [currentPage, setCurrentPage] = useState<string>('home');

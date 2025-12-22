@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type { AriaBreadcrumbItemProps } from '@koobiq/react-primitives';
 
@@ -11,4 +11,8 @@ export type BreadcrumbItemBaseProps = Omit<
   /** Icon placed after the children. */
   endAddon?: ReactNode;
   children?: ReactNode;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
 };

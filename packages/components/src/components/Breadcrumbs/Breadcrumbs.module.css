@@ -5,6 +5,10 @@
   inline-size: 100%;
 }
 
+.wrap {
+  flex-wrap: wrap;
+}
+
 .list {
   margin: 0;
   padding: 0;
