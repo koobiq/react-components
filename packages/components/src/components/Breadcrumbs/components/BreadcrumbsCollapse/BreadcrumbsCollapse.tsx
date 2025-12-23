@@ -40,7 +40,7 @@ const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
       )}
     >
       {items.map((item) => (
-        <Menu.Item key={item.key} href={item.href}>
+        <Menu.Item key={item.key} {...item.props}>
           <Menu.ItemText>{item.children}</Menu.ItemText>
         </Menu.Item>
       ))}

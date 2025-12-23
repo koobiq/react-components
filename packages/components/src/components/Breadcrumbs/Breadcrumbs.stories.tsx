@@ -140,10 +140,10 @@ export const CollapsingItems: Story = {
   render: (args) => (
     <FlexBox style={{ maxInlineSize: 400 }}>
       <Breadcrumbs {...args}>
-        <BreadcrumbItem>Home</BreadcrumbItem>
-        <BreadcrumbItem>Documentation</BreadcrumbItem>
-        <BreadcrumbItem>Components</BreadcrumbItem>
-        <BreadcrumbItem>Navigation</BreadcrumbItem>
+        <BreadcrumbItem href="#">Home</BreadcrumbItem>
+        <BreadcrumbItem href="#">Documentation</BreadcrumbItem>
+        <BreadcrumbItem href="#">Components</BreadcrumbItem>
+        <BreadcrumbItem href="#">Navigation</BreadcrumbItem>
         <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
       </Breadcrumbs>
     </FlexBox>
@@ -175,10 +175,10 @@ export const CustomEllipsisItem: Story = {
           )}
           {...args}
         >
-          <BreadcrumbItem href="#home">Home</BreadcrumbItem>
-          <BreadcrumbItem href="#documentation">Documentation</BreadcrumbItem>
-          <BreadcrumbItem href="#components">Components</BreadcrumbItem>
-          <BreadcrumbItem href="#navigation">Navigation</BreadcrumbItem>
+          <BreadcrumbItem href="#">Home</BreadcrumbItem>
+          <BreadcrumbItem href="#">Documentation</BreadcrumbItem>
+          <BreadcrumbItem href="#">Components</BreadcrumbItem>
+          <BreadcrumbItem href="#">Navigation</BreadcrumbItem>
           <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
         </Breadcrumbs>
       </FlexBox>
@@ -190,10 +190,10 @@ export const WrapItems: Story = {
   render: (args) => (
     <FlexBox style={{ maxInlineSize: 400 }}>
       <Breadcrumbs overflowMode="wrap" {...args}>
-        <BreadcrumbItem>Home</BreadcrumbItem>
-        <BreadcrumbItem>Documentation</BreadcrumbItem>
-        <BreadcrumbItem>Components</BreadcrumbItem>
-        <BreadcrumbItem>Navigation</BreadcrumbItem>
+        <BreadcrumbItem href="#">Home</BreadcrumbItem>
+        <BreadcrumbItem href="#">Documentation</BreadcrumbItem>
+        <BreadcrumbItem href="#">Components</BreadcrumbItem>
+        <BreadcrumbItem href="#">Navigation</BreadcrumbItem>
         <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
       </Breadcrumbs>
     </FlexBox>
