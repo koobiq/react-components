@@ -10,6 +10,7 @@ import {
   useHideOverflowItems,
 } from '@koobiq/react-core';
 import { IconEllipsisHorizontal16 } from '@koobiq/react-icons';
+import { Button } from '@koobiq/react-primitives';
 
 import { Menu } from '../../../Menu';
 import s from '../../Breadcrumbs.module.css';
@@ -31,7 +32,9 @@ const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
   return (
     <Menu
       control={(props) => (
-        <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
+        <BreadcrumbItem {...props} as={Button}>
+          {ellipsisIcon}
+        </BreadcrumbItem>
       )}
     >
       {items.map((item) => (

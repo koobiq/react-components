@@ -11,8 +11,12 @@ import {
   useDOMRef,
   polymorphicForwardRef,
   isNotNil,
+  filterDOMProps,
 } from '@koobiq/react-core';
-import { useBreadcrumbItem } from '@koobiq/react-primitives';
+import {
+  removeDataAttributes,
+  useBreadcrumbItem,
+} from '@koobiq/react-primitives';
 
 import { useBreadcrumbsContext } from '../../BreadcrumbsContext';
 
@@ -20,34 +24,33 @@ import s from './BreadcrumbItem.module.css';
 import type { BreadcrumbItemBaseProps } from './types';
 
 export const BreadcrumbItem = polymorphicForwardRef<
-  'a',
+  'span',
   BreadcrumbItemBaseProps
 >((props, ref) => {
   const domRef = useDOMRef(ref);
 
   const {
-    as = 'a',
+    as = 'span',
     children,
     endAddon,
     isCurrent,
     startAddon,
     isDisabled,
-    onPress,
     className,
     style,
+    ...other
   } = props;
 
-  const { itemProps } = useBreadcrumbItem(
+  let { itemProps } = useBreadcrumbItem(
     {
-      ...props,
-      onPress,
+      ...removeDataAttributes(props),
       children: props.children || null,
-      elementType: `${as}`,
+      elementType: props.href ? 'a' : `${as}`,
     },
     domRef
   );
 
-  const Tag = as;
+  const Tag = props.href ? 'a' : as;
 
   const { size } = useBreadcrumbsContext();
 
@@ -56,6 +59,13 @@ export const BreadcrumbItem = polymorphicForwardRef<
   const { focusProps, isFocusVisible } = useFocusRing({});
 
   const { isPressed, pressProps } = usePress({ isDisabled });
+
+  const DOMProps = filterDOMProps(props);
+  delete DOMProps.id;
+
+  if (as !== 'a' && as !== 'span') {
+    itemProps = other;
+  }
 
   return (
     <Tag
@@ -69,7 +79,7 @@ export const BreadcrumbItem = polymorphicForwardRef<
         isFocusVisible && s.focusVisible,
         className
       )}
-      {...mergeProps(itemProps, hoverProps, focusProps, pressProps)}
+      {...mergeProps(DOMProps, itemProps, hoverProps, focusProps, pressProps)}
       style={style}
       ref={domRef}
     >
@@ -80,5 +90,5 @@ export const BreadcrumbItem = polymorphicForwardRef<
   );
 });
 
-export type BreadcrumbItemProps<As extends ElementType = 'a'> =
+export type BreadcrumbItemProps<As extends ElementType = 'span'> =
   ComponentPropsWithRef<typeof BreadcrumbItem<As>>;

@@ -38,10 +38,24 @@ describe('Breadcrumbs', () => {
     const getItem = () => screen.getByTestId<HTMLElement>('breadcrumb-item');
 
     it('should receive ref', () => {
-      const ref = createRef<HTMLAnchorElement>();
+      const ref = createRef<HTMLSpanElement>();
 
       const { container } = render(
         <BreadcrumbItem {...baseProps} ref={ref}>
+          item
+        </BreadcrumbItem>
+      );
+
+      const item = container.querySelector('span');
+
+      expect(ref.current).toBe(item);
+    });
+
+    it('should render as an anchor when href is provided', () => {
+      const ref = createRef<HTMLAnchorElement>();
+
+      const { container } = render(
+        <BreadcrumbItem href="/" {...baseProps} ref={ref}>
           item
         </BreadcrumbItem>
       );

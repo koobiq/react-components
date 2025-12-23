@@ -6,6 +6,7 @@ import {
   IconHouse16,
   IconUser16,
 } from '@koobiq/react-icons';
+import { Button } from '@koobiq/react-primitives';
 import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -117,9 +118,11 @@ export const CustomItems: Story = {
           <Menu
             control={(props) => (
               <BreadcrumbItem
+                {...props}
+                // Use `Button` from `@koobiq/react-primitives`.
+                as={Button}
                 isCurrent={false}
                 endAddon={<IconChevronDownS16 />}
-                {...props}
               >
                 Page 3
               </BreadcrumbItem>

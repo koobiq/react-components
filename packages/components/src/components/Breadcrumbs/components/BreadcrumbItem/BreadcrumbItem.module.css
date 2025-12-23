@@ -41,7 +41,8 @@
   --breadcrumb-bg-color: var(--kbq-states-background-transparent-hover);
 }
 
-.pressed {
+.pressed,
+[aria-expanded='true'] {
   --breadcrumb-bg-color: var(--kbq-states-background-transparent-active);
 }
 
