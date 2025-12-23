@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { type Key, useState } from 'react';
 
 import {
   IconChevronRight16,
@@ -254,45 +254,33 @@ export const TruncatedItems: Story = {
 
 export const Controlled: Story = {
   render: function Render(args) {
-    const [currentPage, setCurrentPage] = useState<string>('home');
-
-    const handleOnPress = (key: string) => () => {
-      setCurrentPage(key);
-    };
+    const [currentPage, setCurrentPage] = useState<Key>('home');
 
     return (
-      <Breadcrumbs {...args}>
-        <BreadcrumbItem
-          key="home"
-          onPress={handleOnPress('home')}
-          isCurrent={currentPage === 'home'}
-        >
+      <Breadcrumbs onAction={(key) => setCurrentPage(key)} {...args}>
+        <BreadcrumbItem key="home" isCurrent={currentPage === 'home'}>
           Home
         </BreadcrumbItem>
         <BreadcrumbItem
           key="documentation"
-          onPress={handleOnPress('documentation')}
           isCurrent={currentPage === 'documentation'}
         >
           Documentation
         </BreadcrumbItem>
         <BreadcrumbItem
           key="components"
-          onPress={handleOnPress('components')}
           isCurrent={currentPage === 'components'}
         >
           Components
         </BreadcrumbItem>
         <BreadcrumbItem
           key="navigation"
-          onPress={handleOnPress('navigation')}
           isCurrent={currentPage === 'navigation'}
         >
           Navigation
         </BreadcrumbItem>
         <BreadcrumbItem
           key="breadcrumbs"
-          onPress={handleOnPress('breadcrumbs')}
           isCurrent={currentPage === 'breadcrumbs'}
         >
           Breadcrumbs

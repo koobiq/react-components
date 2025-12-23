@@ -1,4 +1,5 @@
 import type {
+  Key,
   ReactNode,
   ComponentRef,
   ReactElement,
@@ -41,6 +42,8 @@ export type RenderEllipsisParams = {
   ellipsisIcon: ReactElement;
   /** Index of the ellipsis in the visual list. */
   ellipsisIndex: number;
+  /** Handler called when any breadcrumb item is pressed. It returns the item key. */
+  onAction?: (key: Key) => void;
 };
 
 export type BreadcrumbsPropRenderEllipsis = (
@@ -80,6 +83,8 @@ export type BreadcrumbsProps = ExtendableComponentPropsWithRef<
      * @default 'collapse'
      */
     overflowMode?: BreadcrumbsPropOverflowMode;
+    /** Handler called when any breadcrumb item is pressed. It returns the item key. */
+    onAction?: (key: Key) => void;
   },
   'nav'
 >;

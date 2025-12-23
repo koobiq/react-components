@@ -90,10 +90,13 @@ use `overflowMode="wrap"` to allow the items to wrap onto a new line.
 
 ## Controlled
 
-You can control the current/active item by using the `isCurrent` prop.
+You can control the current/active item by using the `isCurrent` and `onAction` props.
 
 <Story of={Stories.Controlled} />
 
 ## Routing
+
+The `BreadcrumbItem` component works with frameworks and client side routers like **Next.js** and **React Router**.
+As with other Koobiq React components that support links, this works via the `RouterProvider` component at the root of your app.
 
 <Story of={Stories.Routing} />

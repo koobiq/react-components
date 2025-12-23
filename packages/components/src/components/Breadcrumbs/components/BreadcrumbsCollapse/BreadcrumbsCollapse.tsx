@@ -25,12 +25,14 @@ import { clampEllipsisIndex, getSlotIndex } from './utils';
 
 const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
   ellipsisIcon,
+  onAction,
   items,
 }) => {
   if (items.length === 0) return null;
 
   return (
     <Menu
+      onAction={onAction}
       control={(props) => (
         <BreadcrumbItem {...props} as={Button}>
           {ellipsisIcon}
@@ -50,6 +52,7 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
   const {
     renderEllipsis = renderEllipsisDefault,
     ellipsisIndex = 2,
+    onAction,
     separator,
     slotProps,
     children,
@@ -119,6 +122,7 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
             ellipsisIcon,
             ellipsisIndex: slotIndex,
             items: collapsedItems,
+            onAction,
           });
 
           return (

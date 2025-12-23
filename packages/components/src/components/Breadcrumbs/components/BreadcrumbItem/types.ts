@@ -10,6 +10,7 @@ export type BreadcrumbItemBaseProps = Omit<
   startAddon?: ReactNode;
   /** Icon placed after the children. */
   endAddon?: ReactNode;
+  /** The content of the component. */
   children?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;

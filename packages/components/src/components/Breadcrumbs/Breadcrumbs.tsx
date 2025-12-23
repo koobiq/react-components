@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { cloneElement, forwardRef } from 'react';
 
 import { clsx, mergeProps } from '@koobiq/react-core';
 import { useBreadcrumbs } from '@koobiq/react-primitives';
@@ -16,11 +16,25 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       separator = `/`,
       overflowMode = 'collapse',
       renderEllipsis,
+      onAction,
       ellipsisIndex,
+      children: childrenProp,
       size = 'normal',
       className,
       ...other
     } = props;
+
+    const children = childrenProp?.map((child, i) => {
+      const itemKey = child?.key || i;
+
+      return cloneElement(child, {
+        key: itemKey,
+        onPress: (e) => {
+          child.props?.onPress?.(e);
+          onAction?.(itemKey);
+        },
+      });
+    });
 
     const { navProps: navPropsAria } = useBreadcrumbs(other);
 
@@ -38,14 +52,19 @@ export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
       <BreadcrumbsContext.Provider value={{ size }}>
         <nav {...navProps} ref={ref}>
           {overflowMode === 'wrap' ? (
-            <BreadcrumbsWrap {...other} separator={separator} />
+            <BreadcrumbsWrap {...other} separator={separator}>
+              {children}
+            </BreadcrumbsWrap>
           ) : (
             <BreadcrumbsCollapse
               {...other}
+              onAction={onAction}
               ellipsisIndex={ellipsisIndex}
               renderEllipsis={renderEllipsis}
               separator={separator}
-            />
+            >
+              {children}
+            </BreadcrumbsCollapse>
           )}
         </nav>
       </BreadcrumbsContext.Provider>
