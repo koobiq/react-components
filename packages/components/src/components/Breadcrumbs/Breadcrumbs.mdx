@@ -2,6 +2,7 @@ import {
   Meta,
   Story,
   Props,
+  Alert,
   Status,
 } from '../../../../../.storybook/components';
 
@@ -27,6 +28,8 @@ import { Breadcrumbs, BreadcrumbItem } from '@koobiq/react-components';
 
 ## Size
 
+The `size` prop sets the breadcrumb size: `compact`, `normal` or `big`. Default is `normal`.
+
 <Story of={Stories.Size} />
 
 ## Custom Separator
@@ -36,6 +39,8 @@ You can customize the separator between breadcrumbs by using the `separator` pro
 <Story of={Stories.Separator} />
 
 ## Disabled
+
+The `BreadcrumbItem` component can be disabled by setting the `isDisabled` prop to `true`.
 
 <Story of={Stories.Disabled} />
 
@@ -49,17 +54,33 @@ Both props expect an icon component from our [icon library](?path=/docs/icons--d
 
 ## Custom Items
 
+The `BreadcrumbItem` component accepts any element as its children.
+This allows you to customize the appearance of the breadcrumb items.
+
 <Story of={Stories.CustomItems} />
 
 ## Collapsing Items
+
+By default, when there isn’t enough space, Breadcrumbs hides the items in between and shows an ellipsis instead.
+Use `ellipsisIndex` to control where the ellipsis appears (default: `2`).
 
 <Story of={Stories.CollapsingItems} />
 
 ## Customizing the Ellipsis Item
 
+You can customize the ellipsis item by using the `renderEllipsis` prop. This prop accepts a function that returns a React element.
+
+<Alert status="info" isColored={false}>
+  If you don't provide `renderEllipsis`, the component renders the default
+  ellipsis item.
+</Alert>
+
 <Story of={Stories.CustomEllipsisItem} />
 
 ## Wrap Items
+
+If you want to show all breadcrumb items without collapsing or hiding them,
+use `overflowMode="wrap"` to allow the items to wrap onto a new line.
 
 <Story of={Stories.WrapItems} />
 
