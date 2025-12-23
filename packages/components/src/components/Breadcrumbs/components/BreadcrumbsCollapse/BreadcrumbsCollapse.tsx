@@ -20,43 +20,46 @@ import type {
 } from '../../types';
 import { BreadcrumbItem, type BreadcrumbItemProps } from '../BreadcrumbItem';
 
+import { clampEllipsisIndex, getSlotIndex } from './utils';
+
 const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
   ellipsisIcon,
   items,
 }) => {
-  if (!items.length) return null;
+  if (items.length === 0) return null;
 
   return (
-    <>
-      <Menu
-        control={(props) => (
-          <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
-        )}
-      >
-        {items.map((item, i) => (
-          <Menu.Item key={i} href={item.href}>
-            {item.children}
-          </Menu.Item>
-        ))}
-      </Menu>
-    </>
+    <Menu
+      control={(props) => (
+        <BreadcrumbItem {...props}>{ellipsisIcon}</BreadcrumbItem>
+      )}
+    >
+      {items.map((item) => (
+        <Menu.Item key={item.key} href={item.href}>
+          {item.children}
+        </Menu.Item>
+      ))}
+    </Menu>
   );
 };
 
 export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
   const {
-    separator,
     renderEllipsis = renderEllipsisDefault,
     ellipsisIndex = 2,
+    separator,
     slotProps,
     children,
   } = props;
+
+  const ellipsisIcon = <IconEllipsisHorizontal16 />;
 
   const elements = Children.toArray(children) as Array<
     ReactElement<BreadcrumbItemProps>
   >;
 
   const { length } = elements;
+  const slotsLength = length + 1;
 
   const items: BreadcrumbRenderItem[] = elements.map((element, index) => ({
     element,
@@ -67,15 +70,15 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
     children: element.props.children,
   }));
 
-  const resolvedEllipsisIndex = Math.max(0, Math.min(ellipsisIndex, length));
+  const moreIndex = clampEllipsisIndex(ellipsisIndex, length);
 
   const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems<
     HTMLLIElement,
     HTMLOListElement
   >({
-    length: length + 1,
+    length: slotsLength,
     pinnedIndex: length,
-    moreIndex: resolvedEllipsisIndex,
+    moreIndex,
   });
 
   const listProps = mergeProps(
@@ -88,25 +91,21 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
     slotProps?.divider
   );
 
-  const ellipsisIcon = <IconEllipsisHorizontal16 />;
+  const renderSeparator = (isLast: boolean) =>
+    !isLast && isNotNil(separator) ? (
+      <span {...separatorProps}>{separator}</span>
+    ) : null;
 
-  const collapsedItems = items.filter((item) => {
-    const slotIndex =
-      item.index < resolvedEllipsisIndex ? item.index : item.index + 1;
-
-    return !visibleMap[slotIndex];
-  });
+  const collapsedItems = items.filter(
+    ({ index }) => !visibleMap[getSlotIndex(index, moreIndex)]
+  );
 
   return (
     <ol {...listProps}>
-      {Array.from({ length: length + 1 }).map((_, i) => {
-        const isEllipsis = i === resolvedEllipsisIndex;
-        const isLast = i === length;
-
-        const separatorNode =
-          !isLast && isNotNil(separator) ? (
-            <span {...separatorProps}>{separator}</span>
-          ) : null;
+      {Array.from({ length: slotsLength }).map((_, slotIndex) => {
+        const isEllipsis = slotIndex === moreIndex;
+        const isLast = slotIndex === length;
+        const separatorNode = renderSeparator(isLast);
 
         if (isEllipsis) {
           const defaultEllipsis = (
@@ -115,15 +114,15 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
 
           const customEllipsis = renderEllipsis?.({
             ellipsisIcon,
-            ellipsisIndex: i,
+            ellipsisIndex: slotIndex,
             items: collapsedItems,
           });
 
           return (
             <li
-              key="ellipsis"
-              ref={itemsRefs[i]}
-              className={clsx(s.ellipsis, !visibleMap[i] && s.hidden)}
+              key={`ellipsis-${moreIndex}`}
+              ref={itemsRefs[slotIndex]}
+              className={clsx(s.ellipsis, !visibleMap[slotIndex] && s.hidden)}
             >
               {customEllipsis ?? defaultEllipsis}
               {separatorNode}
@@ -131,18 +130,19 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
           );
         }
 
-        const childIndex = i < resolvedEllipsisIndex ? i : i - 1;
-        const child = items[childIndex]?.element;
+        const itemIndex = slotIndex < moreIndex ? slotIndex : slotIndex - 1;
+        const child = items[itemIndex]?.element;
 
+        if (!child) return null;
         if (!isValidElement(child)) return child;
 
-        const isLastChild = childIndex === length - 1;
+        const isLastChild = itemIndex === length - 1;
 
         return (
           <li
-            ref={itemsRefs[i]}
-            key={child.key || childIndex}
-            className={clsx(s.item, !visibleMap[i] && s.hidden)}
+            key={child.key ?? itemIndex}
+            ref={itemsRefs[slotIndex]}
+            className={clsx(s.item, !visibleMap[slotIndex] && s.hidden)}
           >
             {cloneElement(child, {
               isCurrent: child.props.isCurrent ?? isLastChild,
