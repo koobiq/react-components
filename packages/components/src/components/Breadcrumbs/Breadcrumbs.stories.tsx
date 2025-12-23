@@ -121,7 +121,6 @@ export const CustomItems: Story = {
                 {...props}
                 // Use `Button` from `@koobiq/react-primitives`.
                 as={Button}
-                isCurrent={false}
                 endAddon={<IconChevronDownS16 />}
               >
                 Page 3
@@ -168,7 +167,7 @@ export const CustomEllipsisItem: Story = {
               >
                 {items.map((item, i) => (
                   <Menu.Item key={i} href={item.href}>
-                    {item.children}
+                    <Menu.ItemText>{item.children}</Menu.ItemText>
                   </Menu.Item>
                 ))}
               </Menu>
@@ -176,10 +175,10 @@ export const CustomEllipsisItem: Story = {
           )}
           {...args}
         >
-          <BreadcrumbItem>Home</BreadcrumbItem>
-          <BreadcrumbItem href="/">Documentation</BreadcrumbItem>
-          <BreadcrumbItem href="/">Components</BreadcrumbItem>
-          <BreadcrumbItem href="/">Navigation</BreadcrumbItem>
+          <BreadcrumbItem href="#home">Home</BreadcrumbItem>
+          <BreadcrumbItem href="#documentation">Documentation</BreadcrumbItem>
+          <BreadcrumbItem href="#components">Components</BreadcrumbItem>
+          <BreadcrumbItem href="#navigation">Navigation</BreadcrumbItem>
           <BreadcrumbItem>Breadcrumbs</BreadcrumbItem>
         </Breadcrumbs>
       </FlexBox>
