@@ -14,6 +14,7 @@ import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
 import { Menu } from '../Menu';
 import { Provider } from '../Provider';
+import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
 import { Breadcrumbs, BreadcrumbItem, breadcrumbsPropSize } from './index.js';
@@ -201,54 +202,86 @@ export const WrapItems: Story = {
 };
 
 export const TruncatedItems: Story = {
-  render: () => (
-    <FlexBox direction="column" gap="l" style={{ maxInlineSize: 400 }}>
-      <Breadcrumbs>
-        <BreadcrumbItem>Components</BreadcrumbItem>
-        <BreadcrumbItem>Commit</BreadcrumbItem>
-        <BreadcrumbItem>
-          <span style={{ maxInlineSize: 96, display: 'flex' }}>
-            <Typography as="span" variant="inherit" ellipsis>
-              cacb86c728451b57740706d19429e6629140b7c5
-            </Typography>
-          </span>
-        </BreadcrumbItem>
-      </Breadcrumbs>
-      <Breadcrumbs>
-        <BreadcrumbItem>Components</BreadcrumbItem>
-        <BreadcrumbItem>Commit</BreadcrumbItem>
-        <BreadcrumbItem>
-          <span style={{ maxInlineSize: 96, display: 'flex' }}>
-            <Typography
-              as="span"
-              variant="inherit"
-              style={{ direction: 'rtl' }}
-              ellipsis
+  render: function Render() {
+    return (
+      <FlexBox direction="column" gap="l" style={{ maxInlineSize: 400 }}>
+        <Breadcrumbs>
+          <BreadcrumbItem>Components</BreadcrumbItem>
+          <BreadcrumbItem>Commit</BreadcrumbItem>
+          <BreadcrumbItem>
+            <Tooltip
+              control={(props) => (
+                <Typography
+                  as="span"
+                  variant="inherit"
+                  style={{ maxInlineSize: 96 }}
+                  {...props}
+                  ellipsis
+                >
+                  cacb86c728451b57740706d19429e6629140b7c5
+                </Typography>
+              )}
+              placement="bottom"
+              hideArrow
             >
               cacb86c728451b57740706d19429e6629140b7c5
-            </Typography>
-          </span>
-        </BreadcrumbItem>
-      </Breadcrumbs>
-      <Breadcrumbs>
-        <BreadcrumbItem>Group</BreadcrumbItem>
-        <BreadcrumbItem>Users</BreadcrumbItem>
-        <BreadcrumbItem>
-          <span style={{ maxInlineSize: 140, display: 'flex' }}>
-            <Typography as="span" variant="inherit" ellipsis>
-              Report dated
-            </Typography>
-            <Typography as="span" aria-hidden="true">
-              &nbsp;
-            </Typography>
-            <Typography as="span" variant="inherit">
-              28.08.2025
-            </Typography>
-          </span>
-        </BreadcrumbItem>
-      </Breadcrumbs>
-    </FlexBox>
-  ),
+            </Tooltip>
+          </BreadcrumbItem>
+        </Breadcrumbs>
+        <Breadcrumbs>
+          <BreadcrumbItem>Components</BreadcrumbItem>
+          <BreadcrumbItem>Commit</BreadcrumbItem>
+          <BreadcrumbItem>
+            <Tooltip
+              control={(props) => (
+                <Typography
+                  as="span"
+                  variant="inherit"
+                  style={{ maxInlineSize: 96, direction: 'rtl' }}
+                  {...props}
+                  ellipsis
+                >
+                  cacb86c728451b57740706d19429e6629140b7c5
+                </Typography>
+              )}
+              placement="bottom"
+              hideArrow
+            >
+              cacb86c728451b57740706d19429e6629140b7c5
+            </Tooltip>
+          </BreadcrumbItem>
+        </Breadcrumbs>
+        <Breadcrumbs>
+          <BreadcrumbItem>Group</BreadcrumbItem>
+          <BreadcrumbItem>Users</BreadcrumbItem>
+          <BreadcrumbItem>
+            <Tooltip
+              control={(props) => (
+                <span
+                  style={{ maxInlineSize: 140, display: 'flex' }}
+                  {...props}
+                >
+                  <Typography as="span" variant="inherit" ellipsis>
+                    Report dated
+                  </Typography>
+                  <Typography as="span" aria-hidden="true">
+                    &nbsp;
+                  </Typography>
+                  <Typography as="span" variant="inherit">
+                    23.12.2025
+                  </Typography>
+                </span>
+              )}
+              placement="bottom"
+              hideArrow
+            >
+              Report dated 23.12.2025
+            </Tooltip>
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      </FlexBox>
+    );
+  },
 };
 
 export const Controlled: Story = {
