@@ -1,6 +1,7 @@
 import { createRef } from 'react';
 
 import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 
 import { BreadcrumbItem, type BreadcrumbItemProps, Breadcrumbs } from './index';
@@ -36,6 +37,7 @@ describe('Breadcrumbs', () => {
   describe('BreadcrumbItem', () => {
     const baseProps = { 'data-testid': 'breadcrumb-item' };
     const getItem = () => screen.getByTestId<HTMLElement>('breadcrumb-item');
+    const user = userEvent.setup();
 
     it('should receive ref', () => {
       const ref = createRef<HTMLSpanElement>();
@@ -54,15 +56,21 @@ describe('Breadcrumbs', () => {
     it('should render as an anchor when href is provided', () => {
       const ref = createRef<HTMLAnchorElement>();
 
-      const { container } = render(
+      render(
         <BreadcrumbItem href="/" {...baseProps} ref={ref}>
-          item
+          Text
         </BreadcrumbItem>
       );
 
-      const item = container.querySelector('a');
+      const el = screen.getByText('Text');
+      expect(el.tagName.toLowerCase()).toBe('a');
+    });
 
-      expect(ref.current).toBe(item);
+    it('should render a span by default when href is not provided', () => {
+      render(<BreadcrumbItem>Text</BreadcrumbItem>);
+
+      const el = screen.getByText('Text');
+      expect(el.tagName.toLowerCase()).toBe('span');
     });
 
     it('should accept a custom class', () => {
@@ -87,6 +95,50 @@ describe('Breadcrumbs', () => {
       const firstElement = container.firstChild;
 
       expect(firstElement).toHaveStyle({ padding: '20px' });
+    });
+
+    it('should mark the item as current when isCurrent is true', () => {
+      render(<BreadcrumbItem isCurrent>Current</BreadcrumbItem>);
+
+      expect(screen.getByText('Current')).toHaveAttribute(
+        'data-current',
+        'true'
+      );
+    });
+
+    it('should remain non-interactive when disabled', async () => {
+      render(<BreadcrumbItem isDisabled>Disabled</BreadcrumbItem>);
+      const el = screen.getByText('Disabled');
+
+      expect(el).toHaveAttribute('data-disabled', 'true');
+
+      await user.hover(el);
+      expect(el).not.toHaveAttribute('data-hovered', 'true');
+
+      await user.pointer([{ target: el, keys: '[MouseLeft>]' }]);
+      expect(el).not.toHaveAttribute('data-pressed', 'true');
+
+      await user.tab();
+      expect(el).not.toHaveAttribute('data-focus-visible', 'true');
+    });
+
+    it('should update its hover state on hover and unhover', async () => {
+      render(<BreadcrumbItem>Hover me</BreadcrumbItem>);
+      const el = screen.getByText('Hover me');
+
+      await user.hover(el);
+      expect(el).toHaveAttribute('data-hovered', 'true');
+
+      await user.unhover(el);
+      expect(el).not.toHaveAttribute('data-hovered', 'true');
+    });
+
+    it('should update its pressed state on pointer down', async () => {
+      render(<BreadcrumbItem>Press me</BreadcrumbItem>);
+      const el = screen.getByText('Press me');
+
+      await user.pointer([{ target: el, keys: '[MouseLeft>]' }]);
+      expect(el).toHaveAttribute('data-pressed', 'true');
     });
 
     describe('addons', () => {

@@ -79,6 +79,11 @@ export const BreadcrumbItem = polymorphicForwardRef<
         isFocusVisible && s.focusVisible,
         className
       )}
+      data-hovered={isHovered || undefined}
+      data-pressed={isPressed || undefined}
+      data-current={isCurrent || undefined}
+      data-disabled={isDisabled || undefined}
+      data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(DOMProps, itemProps, hoverProps, focusProps, pressProps)}
       style={style}
       ref={domRef}
