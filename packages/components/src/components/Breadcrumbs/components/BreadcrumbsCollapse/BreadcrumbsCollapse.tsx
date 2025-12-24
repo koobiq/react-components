@@ -6,6 +6,7 @@ import type { ReactElement } from 'react';
 import {
   clsx,
   isNotNil,
+  isString,
   mergeProps,
   useHideOverflowItems,
 } from '@koobiq/react-core';
@@ -39,8 +40,12 @@ const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
         </BreadcrumbItem>
       )}
     >
-      {items.map((item) => (
-        <Menu.Item key={item.key} {...item.props}>
+      {items.map((item, index) => (
+        <Menu.Item
+          key={item.key}
+          {...item.props}
+          textValue={isString(item.children) ? item.children : `${index}`}
+        >
           <Menu.ItemText>{item.children}</Menu.ItemText>
         </Menu.Item>
       ))}
