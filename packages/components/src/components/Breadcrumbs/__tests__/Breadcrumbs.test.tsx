@@ -218,4 +218,45 @@ describe('Breadcrumbs', () => {
       expect(li!).toHaveAttribute('aria-hidden', 'true');
     });
   });
+
+  it('should update ellipsisIndex when the prop changes', () => {
+    useHideOverflowItemsMock.mockImplementation(
+      ({ length }: { length: number }) => ({
+        parentRef: { current: null },
+        itemsRefs: Array.from({ length }, () => ({ current: null })),
+        visibleMap: Array.from({ length }, () => true),
+        parentSize: 0,
+      })
+    );
+
+    const renderEllipsis = vi.fn<(args: any) => ReactNode>(() => null);
+
+    const { rerender } = render(
+      <Breadcrumbs
+        overflowMode="collapse"
+        ellipsisIndex={1}
+        renderEllipsis={renderEllipsis}
+      >
+        <BreadcrumbItem key="a">A</BreadcrumbItem>
+        <BreadcrumbItem key="b">B</BreadcrumbItem>
+        <BreadcrumbItem key="c">C</BreadcrumbItem>
+      </Breadcrumbs>
+    );
+
+    expect(renderEllipsis.mock.calls[0]![0].ellipsisIndex).toBe(1);
+
+    rerender(
+      <Breadcrumbs
+        overflowMode="collapse"
+        ellipsisIndex={2}
+        renderEllipsis={renderEllipsis}
+      >
+        <BreadcrumbItem key="a">A</BreadcrumbItem>
+        <BreadcrumbItem key="b">B</BreadcrumbItem>
+        <BreadcrumbItem key="c">C</BreadcrumbItem>
+      </Breadcrumbs>
+    );
+
+    expect(renderEllipsis.mock.calls[1]![0].ellipsisIndex).toBe(2);
+  });
 });
