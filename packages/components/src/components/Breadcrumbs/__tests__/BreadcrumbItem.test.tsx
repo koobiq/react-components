@@ -2,8 +2,9 @@ import { createRef } from 'react';
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { Provider } from '../../Provider';
 import { BreadcrumbsContext } from '../BreadcrumbsContext';
 import { BreadcrumbItem, type BreadcrumbItemProps } from '../components';
 
@@ -180,5 +181,27 @@ describe('BreadcrumbItem', () => {
         addonStartText + label + addonEndText
       );
     });
+  });
+
+  it('check a client side routing', async () => {
+    const onNavigate = vi.fn();
+
+    render(
+      <Provider
+        router={{
+          navigate: () => {
+            onNavigate();
+          },
+        }}
+      >
+        <BreadcrumbItem href="/" {...baseProps}>
+          Item
+        </BreadcrumbItem>
+      </Provider>
+    );
+
+    await userEvent.click(screen.getByText('Item'));
+
+    expect(onNavigate).toBeCalled();
   });
 });
