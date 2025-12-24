@@ -1,6 +1,6 @@
 import { createRef, type ReactNode } from 'react';
 
-import { screen, render } from '@testing-library/react';
+import { screen, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 
@@ -258,5 +258,39 @@ describe('Breadcrumbs', () => {
     );
 
     expect(renderEllipsis.mock.calls[1]![0].ellipsisIndex).toBe(2);
+  });
+
+  describe('renderEllipsisDefault', () => {
+    it('should pass label and href into the default ellipsis menu item', async () => {
+      useHideOverflowItemsMock.mockReturnValueOnce({
+        parentRef: { current: null },
+        itemsRefs: Array.from({ length: 4 }, () => ({ current: null })),
+        visibleMap: [true, true, false, true],
+        parentSize: 0,
+      });
+
+      render(
+        <Breadcrumbs overflowMode="collapse" ellipsisIndex={1}>
+          <BreadcrumbItem key="a" href="/a">
+            A
+          </BreadcrumbItem>
+          <BreadcrumbItem key="b" href="/b">
+            B
+          </BreadcrumbItem>
+          <BreadcrumbItem key="c" href="/c">
+            C
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      );
+
+      await user.click(screen.getByRole('button'));
+
+      const menu = await screen.findByRole('menu');
+      const item = within(menu).getByRole('menuitem', { name: /^B$/ });
+
+      expect(item).toHaveTextContent('B');
+
+      expect(item).toHaveAttribute('href', '/b');
+    });
   });
 });
