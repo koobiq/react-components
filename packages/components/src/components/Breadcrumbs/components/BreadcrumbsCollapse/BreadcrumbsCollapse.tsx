@@ -129,6 +129,7 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
             <li
               key={`ellipsis-${moreIndex}`}
               ref={itemsRefs[slotIndex]}
+              aria-hidden={!visibleMap[slotIndex] || undefined}
               className={clsx(s.ellipsis, !visibleMap[slotIndex] && s.hidden)}
             >
               {customEllipsis ?? defaultEllipsis}
@@ -149,6 +150,7 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
           <li
             key={child.key ?? itemIndex}
             ref={itemsRefs[slotIndex]}
+            aria-hidden={!visibleMap[slotIndex] || undefined}
             className={clsx(s.item, !visibleMap[slotIndex] && s.hidden)}
           >
             {cloneElement(child, {
