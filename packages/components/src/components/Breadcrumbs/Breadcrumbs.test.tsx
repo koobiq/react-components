@@ -2,13 +2,14 @@ import { createRef } from 'react';
 
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect } from 'vitest';
+import { describe, it, vi, expect } from 'vitest';
 
 import { BreadcrumbsContext } from './BreadcrumbsContext';
 import { BreadcrumbItem, type BreadcrumbItemProps, Breadcrumbs } from './index';
 
 describe('Breadcrumbs', () => {
   const baseProps = { 'data-testid': 'breadcrumbs' };
+  const user = userEvent.setup();
 
   const getRoot = () => screen.getByTestId<HTMLElement>('breadcrumbs');
 
@@ -35,10 +36,60 @@ describe('Breadcrumbs', () => {
     expect(firstElement).toHaveStyle({ padding: '20px' });
   });
 
+  it('should provide size to items via context', () => {
+    render(
+      <Breadcrumbs {...baseProps} size="big">
+        <BreadcrumbItem key="a">A</BreadcrumbItem>
+        <BreadcrumbItem key="b">B</BreadcrumbItem>
+      </Breadcrumbs>
+    );
+
+    const a = screen.getByText('A');
+    const b = screen.getByText('B');
+
+    expect(a).toHaveAttribute('data-size', 'big');
+    expect(b).toHaveAttribute('data-size', 'big');
+  });
+
+  it('should call onAction with the item key and also call the original onPress', async () => {
+    const onAction = vi.fn();
+    const onPress = vi.fn();
+
+    render(
+      <Breadcrumbs {...baseProps} onAction={onAction}>
+        <BreadcrumbItem key="a" onPress={onPress}>
+          A
+        </BreadcrumbItem>
+        <BreadcrumbItem key="b">B</BreadcrumbItem>
+      </Breadcrumbs>
+    );
+
+    await user.click(screen.getByText('A'));
+
+    expect(onPress).toHaveBeenCalledTimes(1);
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(onAction).toHaveBeenCalledWith('a');
+  });
+
+  it('should fall back to index when key is not provided', async () => {
+    const onAction = vi.fn();
+
+    render(
+      <Breadcrumbs {...baseProps} onAction={onAction}>
+        <BreadcrumbItem>A</BreadcrumbItem>
+        <BreadcrumbItem>B</BreadcrumbItem>
+        <BreadcrumbItem>C</BreadcrumbItem>
+      </Breadcrumbs>
+    );
+
+    await user.click(screen.getByText('B'));
+
+    expect(onAction).toHaveBeenCalledWith(1);
+  });
+
   describe('BreadcrumbItem', () => {
     const baseProps = { 'data-testid': 'breadcrumb-item' };
     const getItem = () => screen.getByTestId<HTMLElement>('breadcrumb-item');
-    const user = userEvent.setup();
 
     it('should receive ref', () => {
       const ref = createRef<HTMLSpanElement>();
