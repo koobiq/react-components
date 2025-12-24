@@ -4,6 +4,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 
+import { BreadcrumbsContext } from './BreadcrumbsContext';
 import { BreadcrumbItem, type BreadcrumbItemProps, Breadcrumbs } from './index';
 
 describe('Breadcrumbs', () => {
@@ -139,6 +140,16 @@ describe('Breadcrumbs', () => {
 
       await user.pointer([{ target: el, keys: '[MouseLeft>]' }]);
       expect(el).toHaveAttribute('data-pressed', 'true');
+    });
+
+    it('should read size from BreadcrumbsContext', () => {
+      render(
+        <BreadcrumbsContext.Provider value={{ size: 'big' }}>
+          <BreadcrumbItem>Item</BreadcrumbItem>
+        </BreadcrumbsContext.Provider>
+      );
+
+      expect(screen.getByText('Item')).toHaveAttribute('data-size', 'big');
     });
 
     describe('addons', () => {

@@ -79,6 +79,7 @@ export const BreadcrumbItem = polymorphicForwardRef<
         isFocusVisible && s.focusVisible,
         className
       )}
+      data-size={size}
       data-hovered={isHovered || undefined}
       data-pressed={isPressed || undefined}
       data-current={isCurrent || undefined}
