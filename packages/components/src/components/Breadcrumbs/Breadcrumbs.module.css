@@ -48,10 +48,12 @@
   justify-content: center;
 }
 
-.hidden {
-  visibility: hidden;
-  position: absolute;
-  inset-inline-start: -300vw;
+:is(.item, .ellipsis) {
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    position: absolute;
+    inset-inline-start: -300vw;
+  }
 }
 
 /* divider */

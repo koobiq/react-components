@@ -4,7 +4,6 @@ import { Children, cloneElement, isValidElement } from 'react';
 import type { ReactElement } from 'react';
 
 import {
-  clsx,
   isNotNil,
   isString,
   mergeProps,
@@ -132,10 +131,10 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
 
           return (
             <li
-              key={`ellipsis-${moreIndex}`}
+              className={s.ellipsis}
               ref={itemsRefs[slotIndex]}
+              key={`ellipsis-${moreIndex}`}
               aria-hidden={!visibleMap[slotIndex] || undefined}
-              className={clsx(s.ellipsis, !visibleMap[slotIndex] && s.hidden)}
             >
               {customEllipsis ?? defaultEllipsis}
               {separatorNode}
@@ -153,10 +152,10 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
 
         return (
           <li
+            className={s.item}
             key={child.key ?? itemIndex}
             ref={itemsRefs[slotIndex]}
             aria-hidden={!visibleMap[slotIndex] || undefined}
-            className={clsx(s.item, !visibleMap[slotIndex] && s.hidden)}
           >
             {cloneElement(child, {
               isCurrent: child.props.isCurrent ?? isLastChild,
