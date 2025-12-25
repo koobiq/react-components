@@ -45,9 +45,10 @@ export const TagGroupResponsive: FC<TagGroupProps<unknown>> = ({
         {state.selectedItems?.map((item, i) => (
           <Tag
             key={item.key}
+            className={s.tag}
             ref={itemsRefs[i]}
-            className={clsx(s.tag, !visibleMap[i] && s.hidden)}
             isDisabled={isDisabled}
+            aria-hidden={!visibleMap[i] || undefined}
             variant={isInvalid ? 'error-fade' : 'contrast-fade'}
             onRemove={() => {
               if (state.selectionManager.isSelected(item.key)) {
@@ -60,8 +61,9 @@ export const TagGroupResponsive: FC<TagGroupProps<unknown>> = ({
         ))}
       </div>
       <div
+        className={s.more}
         ref={itemsRefs[itemsRefs.length - 1]}
-        className={clsx(s.more, !visibleMap[length] && s.hidden)}
+        aria-hidden={!visibleMap[length] || undefined}
       >
         {t.format('more', { count: hiddenCount })}
       </div>

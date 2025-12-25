@@ -37,8 +37,10 @@
     var(--kbq-size-3xs) var(--kbq-size-xxs);
 }
 
-.hidden {
-  inset-inline-start: -300vw;
-  visibility: hidden;
-  position: absolute;
+:is(.tag, .more) {
+  &[aria-hidden='true'] {
+    inset-inline-start: -300vw;
+    visibility: hidden;
+    position: absolute;
+  }
 }

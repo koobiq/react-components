@@ -7,6 +7,7 @@ import {
   type ComponentRef,
 } from 'react';
 
+import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import {
   clsx,
   mergeProps,
@@ -23,19 +24,22 @@ import s from '../../../TagGroup/components/Tag/Tag.module.css';
 import intlMessages from './intl.json';
 import { matchVariantToCloseButton } from './utils';
 
-type TagProps = {
-  /**
-   * The variant to use.
-   * @default 'theme-fade'
-   */
-  variant?: TagGroupPropVariant;
-  className?: string;
-  style?: CSSProperties;
-  children?: ReactNode;
-  icon?: ReactNode;
-  isDisabled?: boolean;
-  onRemove?: () => void;
-};
+type TagProps = ExtendableComponentPropsWithRef<
+  {
+    /**
+     * The variant to use.
+     * @default 'theme-fade'
+     */
+    variant?: TagGroupPropVariant;
+    className?: string;
+    style?: CSSProperties;
+    children?: ReactNode;
+    icon?: ReactNode;
+    isDisabled?: boolean;
+    onRemove?: () => void;
+  },
+  'div'
+>;
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
@@ -48,6 +52,7 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
     isDisabled,
     children,
     onRemove,
+    ...other
   } = props;
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -60,6 +65,7 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
       textNormalMedium,
       className
     ),
+    ...other,
     style,
   });
 
