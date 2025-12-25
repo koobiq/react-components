@@ -1,0 +1,95 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  --breadcrumb-color: var(--kbq-foreground-contrast-secondary);
+  --breadcrumb-outline-width: var(--kbq-size-3xs);
+  --breadcrumb-outline-color: transparent;
+  --breadcrumb-size: ;
+  --breadcrumb-inline-size: ;
+  --breadcrumb-bg-color: ;
+
+  border: none;
+  display: flex;
+  cursor: pointer;
+  flex-wrap: nowrap;
+  align-items: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  justify-content: center;
+  gap: var(--kbq-size-xs);
+  color: var(--breadcrumb-color);
+  border-radius: var(--kbq-size-xs);
+  background-color: var(--breadcrumb-bg-color);
+  outline: var(--breadcrumb-outline-width) solid;
+  outline-color: var(--breadcrumb-outline-color);
+  block-size: var(--breadcrumb-size);
+  min-block-size: var(--breadcrumb-size);
+  min-inline-size: var(--breadcrumb-size);
+  margin-inline: calc(-1 * var(--breadcrumb-padding-inline));
+  transition:
+    color var(--kbq-transition-default),
+    outline var(--kbq-transition-default),
+    background-color var(--kbq-transition-default);
+  padding: var(--breadcrumb-padding-block) var(--breadcrumb-padding-inline);
+
+  & > * {
+    flex-shrink: 0;
+  }
+}
+
+.hovered {
+  --breadcrumb-bg-color: var(--kbq-states-background-transparent-hover);
+}
+
+.pressed,
+[aria-expanded='true'] {
+  --breadcrumb-bg-color: var(--kbq-states-background-transparent-active);
+}
+
+.focusVisible {
+  --breadcrumb-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.disabled {
+  --breadcrumb-color: var(--kbq-states-foreground-disabled);
+
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.current {
+  --breadcrumb-bg-color: ;
+  --breadcrumb-color: var(--kbq-foreground-contrast);
+
+  cursor: default;
+}
+
+.compact {
+  @mixin typography text-normal;
+
+  --breadcrumb-size: var(--kbq-size-xxl);
+}
+
+.normal {
+  @mixin typography text-big;
+
+  --breadcrumb-size: var(--kbq-size-3xl);
+}
+
+.big {
+  @mixin typography subheading;
+
+  --breadcrumb-size: var(--kbq-size-3xl);
+}
+
+.compact:where(.current) {
+  @mixin typography text-normal-medium;
+}
+
+.normal:where(.current) {
+  @mixin typography text-big-medium;
+}
+
+.big:where(.current) {
+  @mixin typography subheading;
+}

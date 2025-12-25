@@ -71,6 +71,8 @@ export * from '@react-stately/combobox';
 export * from '@react-aria/toast';
 export * from '@react-stately/toast';
 
+export * from '@react-aria/breadcrumbs';
+
 export type {
   CalendarProps,
   CalendarAria,

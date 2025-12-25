@@ -67,11 +67,14 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
 
   const listProps = mergeProps(menuProps, other, slotProps?.list);
 
+  const { elementType, ...menuControlProps } = menuTriggerProps;
+
   return (
     <>
       {control?.({
+        as: elementType,
         ref: controlRef,
-        ...menuTriggerProps,
+        ...menuControlProps,
       })}
       <PopoverInner type="menu" placement={placement} {...popoverProps}>
         <MenuList {...listProps} />

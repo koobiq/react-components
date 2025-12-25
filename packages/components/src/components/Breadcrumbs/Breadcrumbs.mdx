@@ -1,0 +1,104 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Alert,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Breadcrumbs.stories';
+
+<Meta of={Stories} />
+
+# Breadcrumbs
+
+<Status variant="experimental" />
+
+Breadcrumbs display a hierarchy of links to the current page or resource in an application.
+
+```tsx
+import { Breadcrumbs, BreadcrumbItem } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Size
+
+The `size` prop sets the breadcrumb size: `compact`, `normal` or `big`. Default is `normal`.
+
+<Story of={Stories.Size} />
+
+## Custom Separator
+
+You can customize the separator between breadcrumbs by using the `separator` prop.
+
+<Story of={Stories.Separator} />
+
+## Disabled
+
+The `BreadcrumbItem` component can be disabled by setting the `isDisabled` prop to `true`.
+
+<Story of={Stories.Disabled} />
+
+## Start & End Addons
+
+You can add an icon using the `startAddon` and `endAddon` props.
+
+Both props expect an icon component from our [icon library](?path=/docs/icons--docs).
+
+<Story of={Stories.Addons} />
+
+## Custom Items
+
+The `BreadcrumbItem` component accepts any element as its children.
+This allows you to customize the appearance of the breadcrumb items.
+
+<Story of={Stories.CustomItems} />
+
+## Collapsing Items
+
+By default, when there isn’t enough space, Breadcrumbs hides the items in between and shows an ellipsis instead.
+Use `ellipsisIndex` to control where the ellipsis appears (default: `2`).
+
+<Story of={Stories.CollapsingItems} />
+
+## Customizing the Ellipsis Item
+
+You can customize the ellipsis item by using the `renderEllipsis` prop. This prop accepts a function that returns a React element.
+
+<Alert>
+  If you don't provide `renderEllipsis`, the component renders the default
+  ellipsis item.
+</Alert>
+
+<Story of={Stories.CustomEllipsisItem} />
+
+## Wrap Items
+
+If you want to show all breadcrumb items without collapsing or hiding them,
+use `overflowMode="wrap"` to allow the items to wrap onto a new line.
+
+<Story of={Stories.WrapItems} />
+
+## Truncated Items
+
+The `BreadcrumbItem` can have different lengths. The examples below show how to limit item width and truncate long labels.
+
+<Story of={Stories.TruncatedItems} />
+
+## Controlled
+
+You can control the current/active item by using the `isCurrent` and `onAction` props.
+
+<Story of={Stories.Controlled} />
+
+## Routing
+
+The `BreadcrumbItem` component works with frameworks and client side routers like **Next.js** and **React Router**.
+As with other Koobiq React components that support links, this works via the `RouterProvider` component at the root of your app.
+
+<Story of={Stories.Routing} />

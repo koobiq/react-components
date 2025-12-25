@@ -1,0 +1,69 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  --breadcrumbs-wrap: ;
+  --breadcrumb-padding-inline: var(--kbq-size-xs);
+  --breadcrumb-padding-block: var(--kbq-size-3xs);
+
+  inline-size: 100%;
+}
+
+.wrap {
+  --breadcrumbs-wrap: wrap;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  inline-size: 100%;
+  flex-wrap: var(--breadcrumbs-wrap);
+}
+
+.compact {
+  @mixin typography text-normal;
+}
+
+.normal {
+  @mixin typography text-big;
+}
+
+.big {
+  @mixin typography subheading;
+}
+
+/* item */
+.item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* ellipsis */
+.ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:is(.item, .ellipsis) {
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    position: absolute;
+    inset-inline-start: -300vw;
+  }
+}
+
+/* divider */
+.divider {
+  display: flex;
+  user-select: none;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  min-inline-size: var(--kbq-size-m);
+  margin-inline: var(--breadcrumb-padding-inline);
+  color: var(--kbq-states-foreground-disabled);
+}
