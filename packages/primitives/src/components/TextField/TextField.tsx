@@ -1,16 +1,22 @@
 'use client';
 
-import { forwardRef, type Ref, useRef } from 'react';
+import { forwardRef, useRef, useCallback } from 'react';
+import type { Ref, KeyboardEvent } from 'react';
 
-import { filterDOMProps } from '@koobiq/react-core';
+import {
+  filterDOMProps,
+  useControlledState,
+  useIsomorphicEffect,
+} from '@koobiq/react-core';
 import { useTextField } from '@react-aria/textfield';
 
 import {
   Provider,
-  removeDataAttributes,
   useRenderProps,
   useSlottedContext,
+  removeDataAttributes,
 } from '../../utils';
+import { ButtonContext } from '../Button';
 import { FieldErrorContext } from '../FieldError';
 import { FormContext } from '../Form';
 import { InputContext } from '../Input';
@@ -19,24 +25,62 @@ import { TextContext } from '../Text';
 import { TextareaContext } from '../Textarea';
 
 import type {
-  TextFieldComponentProps,
-  TextFieldProps,
   TextFieldRef,
+  TextFieldProps,
+  TextFieldComponentProps,
 } from './index';
 
 function TextFieldRender(
   props: Omit<TextFieldProps<HTMLInputElement | HTMLTextAreaElement>, 'ref'>,
   ref: Ref<TextFieldRef>
 ) {
-  const { isDisabled, isReadOnly, isRequired } = props;
+  const { isDisabled, isReadOnly, isRequired, onClear, isClearable } = props;
+
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+
+  const [inputValue, setInputValue] = useControlledState(
+    props.value,
+    props.defaultValue ?? '',
+    props?.onChange
+  );
+
+  const setValue = useCallback((value: string) => {
+    setInputValue(value);
+  }, []);
+
+  const handleClear = useCallback(() => {
+    setInputValue('');
+
+    onClear?.();
+    inputRef?.current?.focus();
+  }, [setInputValue, onClear]);
+
+  useIsomorphicEffect(() => {
+    if (!inputRef.current) return;
+
+    setInputValue(inputRef.current.value);
+  }, [inputRef.current]);
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (
+        e.key === 'Escape' &&
+        inputValue &&
+        (isClearable || onClear) &&
+        !isReadOnly
+      ) {
+        setInputValue('');
+        onClear?.();
+      }
+    },
+    [inputValue, setInputValue, onClear, isClearable, isReadOnly]
+  );
 
   const { validationBehavior: formValidationBehavior } =
     useSlottedContext(FormContext) || {};
 
   const validationBehavior =
     props.validationBehavior ?? formValidationBehavior ?? 'aria';
-
-  const inputRef = useRef(null);
 
   const {
     labelProps,
@@ -47,6 +91,12 @@ function TextFieldRender(
   } = useTextField<'input' | 'textarea'>(
     {
       ...removeDataAttributes(props),
+      value: inputValue,
+      onKeyDown: (e) => {
+        props?.onKeyDown?.(e);
+        handleKeyDown(e);
+      },
+      onChange: setInputValue,
       validationBehavior,
     },
     inputRef
@@ -62,6 +112,10 @@ function TextFieldRender(
       isDisabled: isDisabled || false,
       isReadOnly: isReadOnly || false,
       isRequired: isRequired || false,
+      state: {
+        value: inputValue,
+        set: setValue,
+      },
     },
   });
 
@@ -86,6 +140,19 @@ function TextFieldRender(
               slots: {
                 description: descriptionProps,
                 errorMessage: errorMessageProps,
+              },
+            },
+          ],
+          [
+            ButtonContext,
+            {
+              slots: {
+                clear: {
+                  'aria-label': 'clear',
+                  preventFocusOnPress: true,
+                  onPress: handleClear,
+                  tabIndex: -1,
+                },
               },
             },
           ],

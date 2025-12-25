@@ -12,7 +12,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const defaultProps = useInputContext();
   const commonProps = mergeProps(defaultProps, other);
 
-  const innerRef = useMultiRef([
+  const innerRef = useMultiRef<HTMLInputElement | HTMLTextAreaElement>([
     ref,
     ...(defaultProps.ref ? [defaultProps.ref] : []),
   ]);

@@ -55,8 +55,8 @@ export const Base: Story = {
   render: (args) => (
     <Input
       label="Name"
-      placeholder="Sophia"
       maxLength={100}
+      placeholder="Sophia"
       caption="Maximum 100 characters"
       {...args}
     />
@@ -92,8 +92,8 @@ export const Invalid: Story = {
             variant={variant}
             aria-label="error"
             placeholder={`variant = ${variant}`}
-            startAddon={<IconMagnifyingGlass16 />}
             errorMessage="This field is required"
+            startAddon={<IconMagnifyingGlass16 />}
             isInvalid
             {...args}
           />
@@ -202,9 +202,9 @@ export const Addons: Story = {
     return (
       <Input
         aria-label="addons"
+        endAddon={<IconGlobe16 />}
         caption="startAddon + endAddon"
         startAddon={<Typography>https://</Typography>}
-        endAddon={<IconGlobe16 />}
         slotProps={{
           group: {
             slotProps: {
@@ -226,15 +226,31 @@ export const LabelPlacementAlignment: Story = {
   render: (args) => (
     <Input
       label="Name"
-      placeholder="Sophia"
       maxLength={100}
-      caption="Maximum 100 characters"
-      labelPlacement="side"
       labelAlign="end"
+      placeholder="Sophia"
+      labelPlacement="side"
+      caption="Maximum 100 characters"
       fullWidth
       {...args}
     />
   ),
+};
+
+export const ClearButton: Story = {
+  render: function Render() {
+    return (
+      <Input
+        label="Name"
+        maxLength={100}
+        placeholder="Sophia"
+        defaultValue="Sophia"
+        style={{ inlineSize: 200 }}
+        caption="Maximum 100 characters"
+        isClearable
+      />
+    );
+  },
 };
 
 export const DefaultValue: Story = {
@@ -242,8 +258,8 @@ export const DefaultValue: Story = {
     return (
       <Input
         label="Name"
-        defaultValue="Sophia"
         placeholder="Sophia"
+        defaultValue="Sophia"
         {...args}
       />
     );
@@ -306,11 +322,11 @@ export const Validation: Story = {
   render: (args) => (
     <Form>
       <Input
-        label="Email"
         name="email"
         type="email"
-        isRequired
+        label="Email"
         validationBehavior="native"
+        isRequired
         {...args}
       />
       <Button type="submit">Submit</Button>

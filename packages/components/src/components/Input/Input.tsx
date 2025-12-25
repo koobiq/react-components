@@ -4,6 +4,7 @@ import { type ComponentRef, forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
+import { IconCircleXmark16 } from '@koobiq/react-icons';
 import { TextField } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -16,6 +17,7 @@ import type {
   FormFieldControlGroupProps,
 } from '../FormField';
 import { FormField } from '../FormField';
+import { IconButton } from '../IconButton';
 
 import type { InputProps, InputRef } from './index';
 import s from './Input.module.css';
@@ -23,8 +25,10 @@ import s from './Input.module.css';
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     variant = 'filled',
+    onClear,
     fullWidth,
     hiddenLabel,
+    isClearable,
     isLabelHidden: isLabelHiddenProp,
     disabled,
     isDisabled: isDisabledProp,
@@ -98,6 +102,8 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       errorMessage,
       labelPlacement,
       labelAlign,
+      isClearable,
+      onClear,
       'data-variant': variant,
       ...other,
     },
@@ -106,7 +112,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
   return (
     <FormField as={TextField} inputElementType="input" {...rootProps}>
-      {({ isInvalid, isRequired, isDisabled }) => {
+      {({ isInvalid, isRequired, isDisabled, state }) => {
         const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
           { isHidden: isLabelHidden, isRequired, children: label },
           slotProps?.label
@@ -121,7 +127,19 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           (FormFieldControlGroupProps | undefined)[]
         >(
           {
-            endAddon,
+            endAddon: (
+              <>
+                {isClearable &&
+                  state.value !== '' &&
+                  !isDisabled &&
+                  !isReadOnly && (
+                    <IconButton variant="fade-contrast" slot="clear">
+                      <IconCircleXmark16 />
+                    </IconButton>
+                  )}
+                {endAddon}
+              </>
+            ),
             variant,
             onMouseDown: (e) => {
               if (e.currentTarget !== e.target) return;

@@ -91,6 +91,10 @@ export type InputProps = ExtendableProps<
      * @default 'start'
      */
     labelAlign?: InputPropLabelAlign;
+    /** Whether the field can be emptied. */
+    isClearable?: boolean;
+    /** Handler that is called when the clear button is clicked. */
+    onClear?: () => void;
     /** The helper text content. */
     caption?: ReactNode;
     /** Inline styles. */
