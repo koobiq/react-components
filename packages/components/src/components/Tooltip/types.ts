@@ -1,4 +1,10 @@
-import type { ReactNode, RefObject, ComponentRef, ReactElement } from 'react';
+import type {
+  ReactNode,
+  RefObject,
+  ComponentRef,
+  ReactElement,
+  CSSProperties,
+} from 'react';
 
 import type {
   DataAttributeProps,
@@ -110,6 +116,8 @@ export type TooltipProps = ExtendableProps<
     id?: string;
     /** Additional CSS-classes. */
     className?: string;
+    /** Inline styles. */
+    style?: CSSProperties;
     /**
      * The container element in which the component portal will be placed.
      * @default document.body

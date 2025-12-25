@@ -40,6 +40,14 @@ describe('Tooltip', () => {
     expect(root?.className).toContain(s.base);
   });
 
+  it('should set a custom style', () => {
+    const style = { padding: 20 };
+
+    render(<Tooltip {...baseProps} style={style} isOpen />);
+
+    expect(getRoot()).toHaveStyle({ padding: '20px' });
+  });
+
   describe('check the variant prop', () => {
     it.each(tooltipPropVariant)(
       'should apply the size as a "%s"',
