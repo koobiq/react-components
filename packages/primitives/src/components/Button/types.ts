@@ -39,4 +39,5 @@ export type ButtonBaseProps = RenderProps<ButtonRenderProps> & {
    * Whether this button is loading.
    */
   isLoading?: boolean;
+  'aria-hidden'?: boolean | 'true' | 'false';
 } & Omit<UseButtonProps<never>, 'elementType' | 'href'>;
