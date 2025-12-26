@@ -308,7 +308,7 @@ describe('Autocomplete', () => {
         </Autocomplete>
       );
 
-      expect(getClearButton()).not.toBeInTheDocument();
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
 
       rerender(
         <Autocomplete {...baseProps} selectedKey="1" isClearable>
@@ -390,7 +390,7 @@ describe('Autocomplete', () => {
 
       const clearButton = getClearButton();
 
-      expect(clearButton).not.toBeInTheDocument();
+      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should NOT render clear button when the component is read only', async () => {
@@ -412,7 +412,7 @@ describe('Autocomplete', () => {
 
       const clearButton = getClearButton();
 
-      expect(clearButton).not.toBeInTheDocument();
+      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should show clear button when any value is entered with allowsCustomValue', async () => {
@@ -439,7 +439,7 @@ describe('Autocomplete', () => {
 
       if (clearButton) await userEvent.click(clearButton);
 
-      expect(clearButton).not.toBeInTheDocument();
+      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
     });
   });
 

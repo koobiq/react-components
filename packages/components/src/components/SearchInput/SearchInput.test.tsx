@@ -82,12 +82,12 @@ describe('SearchInput', () => {
 
     it('should not render when input is disabled', () => {
       render(<SearchInput {...baseProps} defaultValue="value" isDisabled />);
-      expect(getClearButton()).not.toBeInTheDocument();
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should not render when input is read-only', () => {
       render(<SearchInput {...baseProps} defaultValue="value" isReadOnly />);
-      expect(getClearButton()).not.toBeInTheDocument();
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should clear the input and call handlers when clicked', async () => {
@@ -109,7 +109,7 @@ describe('SearchInput', () => {
 
       if (clearButton) await userEvent.click(clearButton);
 
-      expect(clearButton).not.toBeInTheDocument();
+      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onClear).toHaveBeenCalledTimes(1);
     });

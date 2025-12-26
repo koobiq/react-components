@@ -295,7 +295,7 @@ describe('Select', () => {
         </Select>
       );
 
-      expect(getClearButton()).not.toBeInTheDocument();
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
 
       rerender(
         <Select {...baseProps} selectedKeys={['1']} isClearable>
@@ -377,7 +377,7 @@ describe('Select', () => {
 
       const clearButton = getClearButton();
 
-      expect(clearButton).not.toBeInTheDocument();
+      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
     });
   });
 

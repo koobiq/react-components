@@ -9,9 +9,8 @@ import {
   useDOMRef,
   useElementSize,
   useFilter,
-  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { IconChevronDownS16, IconCircleXmark16 } from '@koobiq/react-icons';
+import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   useComboBox,
   useComboBoxState,
@@ -31,7 +30,7 @@ import type {
   FormFieldCaptionProps,
   FormFieldControlGroupProps,
 } from '../FormField';
-import { FormField } from '../FormField';
+import { FormField, FormFieldClearButton } from '../FormField';
 import { IconButton } from '../IconButton';
 import { List, ListInner } from '../List';
 import type { ListInnerProps, ListItemText } from '../List';
@@ -44,7 +43,6 @@ import type {
   AutocompleteProps,
   AutocompleteComponent,
 } from './index';
-import intlMessages from './intl.json';
 
 export function AutocompleteRender<T extends object = object>(
   props: Omit<AutocompleteProps<T>, 'ref'>,
@@ -132,13 +130,10 @@ export function AutocompleteRender<T extends object = object>(
     state
   );
 
-  const t = useLocalizedStringFormatter(intlMessages);
-
-  const hasClearButton =
-    isClearable &&
-    !isReadOnly &&
-    !isDisabled &&
-    (allowsCustomValue ? !!state.inputValue : !!state.selectedItem);
+  const clearButtonIsHidden =
+    isReadOnly ||
+    isDisabled ||
+    (allowsCustomValue ? !state.inputValue : !state.selectedItem);
 
   const handleClear = useCallback(() => {
     state.selectionManager.setSelectedKeys(new Set());
@@ -218,10 +213,6 @@ export function AutocompleteRender<T extends object = object>(
   const clearButtonProps = mergeProps(
     {
       onPress: handleClear,
-      className: s.clearButton,
-      preventFocusOnPress: true,
-      'aria-label': t.format('clear'),
-      variant: isInvalid ? 'error' : 'fade-contrast',
     },
     slotProps?.clearButton
   );
@@ -238,13 +229,16 @@ export function AutocompleteRender<T extends object = object>(
         e.preventDefault();
         inputRef?.current?.focus();
       },
-      endAddon: (
+      endAddon: (isClearable ||
+        endAddon ||
+        !disableShowChevron ||
+        undefined) && (
         <>
-          {hasClearButton && (
-            <IconButton {...clearButtonProps}>
-              <IconCircleXmark16 />
-            </IconButton>
-          )}
+          <FormFieldClearButton
+            isClearable={isClearable}
+            isHidden={clearButtonIsHidden}
+            {...clearButtonProps}
+          />
           {endAddon}
           {!disableShowChevron && (
             <IconButton
