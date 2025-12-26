@@ -6,4 +6,5 @@ export * from './FormFieldError';
 export * from './FormFieldControlGroup';
 export * from './FormFieldInputDate';
 export * from './FormField';
+export * from './FormFieldClearButton';
 export * from './types';
