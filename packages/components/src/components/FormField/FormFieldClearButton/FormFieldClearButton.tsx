@@ -27,6 +27,7 @@ export const FormFieldClearButton = forwardRef<
     <IconButton
       slot="clear"
       aria-hidden={isHidden}
+      tabIndex={isHidden ? -1 : undefined}
       className={clsx(s.base, className)}
       variant={isInvalid ? 'error' : 'fade-contrast'}
       aria-label={t.format('clear')}
