@@ -19,6 +19,7 @@ import {
   formFieldPropLabelAlign,
   formFieldPropLabelPlacement,
 } from '../FormField';
+import type { IconButtonProps } from '../IconButton';
 
 export const inputPropVariant = formFieldControlGroupPropVariant;
 export const inputPropLabelPlacement = formFieldPropLabelPlacement;
@@ -108,6 +109,7 @@ export type InputProps = ExtendableProps<
       caption?: FormFieldCaptionProps;
       group?: FormFieldControlGroupProps;
       errorMessage?: FormFieldErrorProps;
+      clearButton?: IconButtonProps;
       input?: FormFieldInputProps;
     };
   } & InputDeprecatedProps,
