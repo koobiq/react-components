@@ -4,7 +4,6 @@ import { type ComponentRef, forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { mergeProps, useDOMRef } from '@koobiq/react-core';
-import { IconCircleXmark16 } from '@koobiq/react-icons';
 import { TextField } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -16,8 +15,7 @@ import type {
   FormFieldCaptionProps,
   FormFieldControlGroupProps,
 } from '../FormField';
-import { FormField } from '../FormField';
-import { IconButton } from '../IconButton';
+import { FormField, FormFieldClearButton } from '../FormField';
 
 import type { InputProps, InputRef } from './index';
 import s from './Input.module.css';
@@ -113,9 +111,20 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   return (
     <FormField as={TextField} inputElementType="input" {...rootProps}>
       {({ isInvalid, isRequired, isDisabled, state }) => {
+        const hasValue = state.value !== '';
+        const clearButtonIsHidden = !hasValue || isDisabled || isReadOnly;
+
         const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
           { isHidden: isLabelHidden, isRequired, children: label },
           slotProps?.label
+        );
+
+        const clearButtonProps = mergeProps(
+          {
+            isClearable,
+            isHidden: clearButtonIsHidden,
+          },
+          slotProps?.clearButton
         );
 
         const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
@@ -127,16 +136,9 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           (FormFieldControlGroupProps | undefined)[]
         >(
           {
-            endAddon: (
+            endAddon: (isClearable || endAddon) && (
               <>
-                {isClearable &&
-                  state.value !== '' &&
-                  !isDisabled &&
-                  !isReadOnly && (
-                    <IconButton variant="fade-contrast" slot="clear">
-                      <IconCircleXmark16 />
-                    </IconButton>
-                  )}
+                <FormFieldClearButton {...clearButtonProps} />
                 {endAddon}
               </>
             ),
