@@ -7,6 +7,7 @@ import {
   filterDOMProps,
   useControlledState,
   useIsomorphicEffect,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { useTextField } from '@react-aria/textfield';
 
@@ -29,12 +30,14 @@ import type {
   TextFieldProps,
   TextFieldComponentProps,
 } from './index';
+import intlMessages from './intl.json';
 
 function TextFieldRender(
   props: Omit<TextFieldProps<HTMLInputElement | HTMLTextAreaElement>, 'ref'>,
   ref: Ref<TextFieldRef>
 ) {
   const { isDisabled, isReadOnly, isRequired, onClear, isClearable } = props;
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
@@ -147,8 +150,8 @@ function TextFieldRender(
             ButtonContext,
             {
               slots: {
-                clear: {
-                  'aria-label': 'clear',
+                'clear-button': {
+                  'aria-label': stringFormatter.format('clear'),
                   preventFocusOnPress: true,
                   onPress: handleClear,
                   tabIndex: -1,
