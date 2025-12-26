@@ -16,11 +16,15 @@ describe('Input', () => {
       input: {
         'data-testid': 'input',
       },
+      clearButton: {
+        'aria-label': 'clear-button',
+      },
     },
   };
 
   const getRoot = () => screen.getByTestId('root');
   const getInput = () => screen.getByTestId('input');
+  const getClearButton = () => screen.queryByLabelText('clear-button');
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLInputElement>();
@@ -68,6 +72,54 @@ describe('Input', () => {
     render(<Input {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
+  });
+
+  describe('check the clear button', () => {
+    it('should render when input has value', () => {
+      render(<Input {...baseProps} defaultValue="value" isClearable />);
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should not render when input is disabled', () => {
+      render(
+        <Input {...baseProps} defaultValue="value" isDisabled isClearable />
+      );
+
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should not render when input is read-only', () => {
+      render(
+        <Input {...baseProps} defaultValue="value" isReadOnly isClearable />
+      );
+
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should clear the input and call handlers when clicked', async () => {
+      const onClear = vi.fn();
+      const onChange = vi.fn();
+
+      render(
+        <Input
+          {...baseProps}
+          defaultValue="value"
+          onClear={onClear}
+          onChange={onChange}
+          isClearable
+        />
+      );
+
+      const clearButton = getClearButton();
+
+      expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onClear).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('value', () => {

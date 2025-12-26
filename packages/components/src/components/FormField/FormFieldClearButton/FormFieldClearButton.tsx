@@ -17,7 +17,7 @@ export type FormFieldClearButtonProps = {
 export const FormFieldClearButton = forwardRef<
   ComponentRef<'button'>,
   FormFieldClearButtonProps
->(({ isHidden, isClearable, className, ...other }) => {
+>(({ isHidden, isClearable, className, ...other }, ref) => {
   const { isInvalid } = useFormFieldControlGroup();
   const t = useLocalizedStringFormatter(intlMessages);
 
@@ -25,12 +25,13 @@ export const FormFieldClearButton = forwardRef<
 
   return (
     <IconButton
-      slot="clear"
+      slot="clear-button"
       aria-hidden={isHidden}
       tabIndex={isHidden ? -1 : undefined}
       className={clsx(s.base, className)}
       variant={isInvalid ? 'error' : 'fade-contrast'}
       aria-label={t.format('clear')}
+      ref={ref}
       preventFocusOnPress
       {...other}
     >

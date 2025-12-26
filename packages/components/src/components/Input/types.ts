@@ -19,6 +19,7 @@ import {
   formFieldPropLabelAlign,
   formFieldPropLabelPlacement,
 } from '../FormField';
+import type { IconButtonProps } from '../IconButton';
 
 export const inputPropVariant = formFieldControlGroupPropVariant;
 export const inputPropLabelPlacement = formFieldPropLabelPlacement;
@@ -91,6 +92,10 @@ export type InputProps = ExtendableProps<
      * @default 'start'
      */
     labelAlign?: InputPropLabelAlign;
+    /** Whether the field can be emptied. */
+    isClearable?: boolean;
+    /** Handler that is called when the clear button is clicked. */
+    onClear?: () => void;
     /** The helper text content. */
     caption?: ReactNode;
     /** Inline styles. */
@@ -104,6 +109,7 @@ export type InputProps = ExtendableProps<
       caption?: FormFieldCaptionProps;
       group?: FormFieldControlGroupProps;
       errorMessage?: FormFieldErrorProps;
+      clearButton?: IconButtonProps;
       input?: FormFieldInputProps;
     };
   } & InputDeprecatedProps,

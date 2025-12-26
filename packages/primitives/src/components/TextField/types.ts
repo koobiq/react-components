@@ -26,10 +26,18 @@ export type TextFieldRenderProps = {
    * @selector [data-required]
    */
   isRequired: boolean;
+  state: {
+    value: string;
+    set: (value: string) => void;
+  };
 };
 
 type TextFieldBaseProps = RenderProps<TextFieldRenderProps> & {
   inputElementType?: 'input' | 'textarea';
+  /** Handler that is called when the clear button is clicked. */
+  onClear?: () => void;
+  /** Whether the field can be emptied. */
+  isClearable?: boolean;
 };
 
 export type TextFieldProps<T = HTMLInputElement> = ExtendableProps<

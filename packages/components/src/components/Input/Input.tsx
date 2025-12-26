@@ -15,7 +15,7 @@ import type {
   FormFieldCaptionProps,
   FormFieldControlGroupProps,
 } from '../FormField';
-import { FormField } from '../FormField';
+import { FormField, FormFieldClearButton } from '../FormField';
 
 import type { InputProps, InputRef } from './index';
 import s from './Input.module.css';
@@ -23,8 +23,10 @@ import s from './Input.module.css';
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     variant = 'filled',
+    onClear,
     fullWidth,
     hiddenLabel,
+    isClearable,
     isLabelHidden: isLabelHiddenProp,
     disabled,
     isDisabled: isDisabledProp,
@@ -98,6 +100,8 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       errorMessage,
       labelPlacement,
       labelAlign,
+      isClearable,
+      onClear,
       'data-variant': variant,
       ...other,
     },
@@ -106,10 +110,21 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
 
   return (
     <FormField as={TextField} inputElementType="input" {...rootProps}>
-      {({ isInvalid, isRequired, isDisabled }) => {
+      {({ isInvalid, isRequired, isDisabled, state }) => {
+        const hasValue = state.value !== '';
+        const clearButtonIsHidden = !hasValue || isDisabled || isReadOnly;
+
         const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
           { isHidden: isLabelHidden, isRequired, children: label },
           slotProps?.label
+        );
+
+        const clearButtonProps = mergeProps(
+          {
+            isClearable,
+            isHidden: clearButtonIsHidden,
+          },
+          slotProps?.clearButton
         );
 
         const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
@@ -121,7 +136,12 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           (FormFieldControlGroupProps | undefined)[]
         >(
           {
-            endAddon,
+            endAddon: (isClearable || endAddon) && (
+              <>
+                <FormFieldClearButton {...clearButtonProps} />
+                {endAddon}
+              </>
+            ),
             variant,
             onMouseDown: (e) => {
               if (e.currentTarget !== e.target) return;

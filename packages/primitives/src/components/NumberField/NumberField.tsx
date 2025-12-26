@@ -77,14 +77,8 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
             ButtonContext,
             {
               slots: {
-                increment: {
-                  ...incrementButtonProps,
-                  disabled: incrementButtonProps.isDisabled,
-                },
-                decrement: {
-                  ...decrementButtonProps,
-                  disabled: decrementButtonProps.isDisabled,
-                },
+                increment: incrementButtonProps,
+                decrement: decrementButtonProps,
               },
             },
           ],
