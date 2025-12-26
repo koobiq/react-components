@@ -318,7 +318,7 @@ describe('Autocomplete', () => {
         </Autocomplete>
       );
 
-      expect(getClearButton()).toBeInTheDocument();
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should call onSelectionChange with empty value when cleared', async () => {
@@ -435,7 +435,7 @@ describe('Autocomplete', () => {
 
       const clearButton = getClearButton();
 
-      expect(clearButton).toBeInTheDocument();
+      expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
 
       if (clearButton) await userEvent.click(clearButton);
 

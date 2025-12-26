@@ -305,7 +305,7 @@ describe('Select', () => {
         </Select>
       );
 
-      expect(getClearButton()).toBeInTheDocument();
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should call onSelectionChange with empty value when cleared', async () => {

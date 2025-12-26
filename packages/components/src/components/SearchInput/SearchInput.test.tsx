@@ -77,7 +77,7 @@ describe('SearchInput', () => {
   describe('check the clear button', () => {
     it('should render when input has value', () => {
       render(<SearchInput {...baseProps} defaultValue="value" />);
-      expect(getClearButton()).toBeInTheDocument();
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should not render when input is disabled', () => {
@@ -105,7 +105,7 @@ describe('SearchInput', () => {
 
       const clearButton = getClearButton();
 
-      expect(clearButton).toBeInTheDocument();
+      expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
 
       if (clearButton) await userEvent.click(clearButton);
 
