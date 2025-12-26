@@ -28,14 +28,17 @@ export function useButton<E extends ElementType>(
     within: true,
   });
 
-  const { hoverProps, isHovered } = useHover(props);
+  const { hoverProps, isHovered } = useHover({
+    ...props,
+    isDisabled: props.isDisabled,
+  });
 
-  const { buttonProps: buttonPropsReactAria, isPressed } = useButtonReactAria(
+  const { buttonProps: buttonPropsAria, isPressed } = useButtonReactAria(
     props,
     ref
   );
 
-  const buttonProps = mergeProps(buttonPropsReactAria, focusProps, hoverProps);
+  const buttonProps = mergeProps(buttonPropsAria, focusProps, hoverProps);
 
   return {
     isPressed,

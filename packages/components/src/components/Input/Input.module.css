@@ -1,11 +1,3 @@
-.hasStartAddon {
-  --field-padding-inline-start: 36px;
-}
-
-.hasEndAddon {
-  --field-padding-inline-end: 36px;
-}
-
 .body {
   inline-size: 100%;
   min-inline-size: fit-content;

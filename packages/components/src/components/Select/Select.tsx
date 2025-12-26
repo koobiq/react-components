@@ -2,13 +2,8 @@
 
 import { forwardRef, type Ref, useCallback } from 'react';
 
-import {
-  useDOMRef,
-  mergeProps,
-  useElementSize,
-  useLocalizedStringFormatter,
-} from '@koobiq/react-core';
-import { IconChevronDownS16, IconCircleXmark16 } from '@koobiq/react-icons';
+import { useDOMRef, mergeProps, useElementSize } from '@koobiq/react-core';
+import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   FieldErrorContext,
   FormContext,
@@ -27,8 +22,7 @@ import type {
   FormFieldCaptionProps,
   FormFieldControlGroupProps,
 } from '../FormField';
-import { FormField } from '../FormField';
-import { IconButton } from '../IconButton';
+import { FormField, FormFieldClearButton } from '../FormField';
 import type { ListItemText } from '../List';
 import { List } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
@@ -36,7 +30,6 @@ import { PopoverInner } from '../Popover/PopoverInner';
 
 import { SelectList, type SelectListProps, TagGroup } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
-import intlMessages from './intl';
 import s from './Select.module.css';
 
 function SelectRender<T extends object>(
@@ -75,8 +68,6 @@ function SelectRender<T extends object>(
 
   const isDisabled = isDisabledProp ?? formIsDisabled;
 
-  const t = useLocalizedStringFormatter(intlMessages);
-
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
   const { validationBehavior: formValidationBehavior } =
@@ -89,7 +80,7 @@ function SelectRender<T extends object>(
     removeDataAttributes({ ...props, isDisabled, selectionMode })
   );
 
-  const hasClearButton = isClearable && !isDisabled && state.selectedItems;
+  const clearButtonIsHidden = isDisabled || !state.selectedItems;
 
   const handleClear = useCallback(() => {
     state.selectionManager.setSelectedKeys(new Set());
@@ -160,11 +151,8 @@ function SelectRender<T extends object>(
 
   const clearButtonProps = mergeProps(
     {
-      'aria-label': t.format('clear'),
       onPress: handleClear,
       className: s.clearButton,
-      variant: isInvalid ? 'error' : 'fade-contrast',
-      preventFocusOnPress: true,
     },
     slotProps?.clearButton
   );
@@ -185,11 +173,11 @@ function SelectRender<T extends object>(
       endAddon: (
         <>
           {endAddon}
-          {hasClearButton && (
-            <IconButton {...clearButtonProps}>
-              <IconCircleXmark16 />
-            </IconButton>
-          )}
+          <FormFieldClearButton
+            isClearable={isClearable}
+            isHidden={clearButtonIsHidden}
+            {...clearButtonProps}
+          />
           <span className={s.chevron}>
             <IconChevronDownS16 />
           </span>

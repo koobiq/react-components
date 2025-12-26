@@ -18,13 +18,11 @@ import type { ButtonBaseProps } from './types.js';
 
 export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
   (props, ref) => {
-    const { as, slot, tabIndex } = props;
-
-    const Tag = as || 'button';
-
-    const commonProps = useSlottedContext(props, ButtonContext, slot);
+    const commonProps = useSlottedContext(props, ButtonContext, props.slot);
 
     const {
+      as,
+      tabIndex,
       isLoading,
       isDisabled,
       value,
@@ -36,6 +34,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
       formNoValidate,
       formTarget,
     } = commonProps;
+
+    const Tag = as || 'button';
 
     const domRef = useDOMRef(ref);
 
@@ -96,7 +96,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         data-disabled={isDisabled || undefined}
         data-focus-visible={isFocusVisible || undefined}
         tabIndex={buttonProps.tabIndex}
-        {...('tabIndex' in props && { tabIndex })}
+        {...('tabIndex' in commonProps && { tabIndex })}
+        aria-hidden={commonProps['aria-hidden']}
         aria-disabled={isLoading ? 'true' : buttonProps['aria-disabled']}
         aria-busy={isLoading}
         ref={domRef}

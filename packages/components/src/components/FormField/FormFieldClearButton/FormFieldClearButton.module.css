@@ -1,0 +1,13 @@
+.base {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    transform var(--kbq-transition-default),
+    opacity var(--kbq-transition-default);
+  transition-timing-function: cubic-bezier(0.7, 0, 0.5, 1);
+
+  &[aria-hidden='true'] {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
