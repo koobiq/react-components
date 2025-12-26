@@ -122,6 +122,8 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     const clearButtonProps = mergeProps(
       {
         className: s.clearButton,
+        isHidden: clearButtonIsHidden,
+        isClearable: true,
       },
       clearButtonPropsAria,
       slotProps?.clearButton
@@ -133,11 +135,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
         startAddon,
         endAddon: (
           <>
-            <FormFieldClearButton
-              isHidden={clearButtonIsHidden}
-              isClearable
-              {...clearButtonProps}
-            />
+            <FormFieldClearButton {...clearButtonProps} />
             {endAddon}
           </>
         ),

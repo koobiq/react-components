@@ -213,6 +213,8 @@ export function AutocompleteRender<T extends object = object>(
   const clearButtonProps = mergeProps(
     {
       onPress: handleClear,
+      isHidden: clearButtonIsHidden,
+      isClearable,
     },
     slotProps?.clearButton
   );
@@ -234,11 +236,7 @@ export function AutocompleteRender<T extends object = object>(
         !disableShowChevron ||
         undefined) && (
         <>
-          <FormFieldClearButton
-            isClearable={isClearable}
-            isHidden={clearButtonIsHidden}
-            {...clearButtonProps}
-          />
+          <FormFieldClearButton {...clearButtonProps} />
           {endAddon}
           {!disableShowChevron && (
             <IconButton

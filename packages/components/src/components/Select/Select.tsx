@@ -151,8 +151,10 @@ function SelectRender<T extends object>(
 
   const clearButtonProps = mergeProps(
     {
+      isClearable,
       onPress: handleClear,
       className: s.clearButton,
+      isHidden: clearButtonIsHidden,
     },
     slotProps?.clearButton
   );
@@ -173,11 +175,7 @@ function SelectRender<T extends object>(
       endAddon: (
         <>
           {endAddon}
-          <FormFieldClearButton
-            isClearable={isClearable}
-            isHidden={clearButtonIsHidden}
-            {...clearButtonProps}
-          />
+          <FormFieldClearButton {...clearButtonProps} />
           <span className={s.chevron}>
             <IconChevronDownS16 />
           </span>
