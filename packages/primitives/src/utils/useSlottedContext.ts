@@ -3,6 +3,7 @@ import { useContext } from 'react';
 
 import { mergeProps } from '@koobiq/react-core';
 
+// TODO: remove this and switch to useContextProps.
 export function useSlottedContext<
   PROPS extends object,
   CONTEXT extends Context<{ slots?: Record<string, any> }>,
@@ -13,5 +14,5 @@ export function useSlottedContext<
 
   const propsContext = slotContext.slots?.[slot];
 
-  return mergeProps(props, propsContext);
+  return mergeProps(propsContext, props);
 }
