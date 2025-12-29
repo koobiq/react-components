@@ -38,7 +38,9 @@ The `children` prop is `ReactNode` type.
 ```tsx
 import { Button, Tooltip } from '@koobiq/react-components';
 
-<Tooltip control={() => <Button>Hover me</Button>}>Content</Tooltip>;
+<Tooltip control={(props) => <Button {...props}>Hover me</Button>}>
+  Content
+</Tooltip>;
 ```
 
 You can also use controlled state to open the component and place the control element outside
