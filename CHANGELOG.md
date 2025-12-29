@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.20.0](https://github.com/koobiq/react-components/compare/0.19.0...0.20.0) (2025-12-29)
+
+
+### 🚀 Features
+
+* **components:** add `Breadcrumbs` component (DS-4379) ([#233](https://github.com/koobiq/react-components/issues/233)) ([1dcc847](https://github.com/koobiq/react-components/commit/1dcc8478c29e94b2ddc83e0c6160b285f35801aa))
+* **components:** bump `@koobiq/design-tokens` from 3.14.0 to 3.15.0 (DS-4554) ([c69e842](https://github.com/koobiq/react-components/commit/c69e842d9c6c5880668c1347ee2e227340fb5449))
+* **components:** unify clear button in form fields (add animation, prevent layout shift) (DS-4582) ([#236](https://github.com/koobiq/react-components/issues/236)) ([8f86768](https://github.com/koobiq/react-components/commit/8f86768b744df2818dc37dc6d4d3e0851f5adcd1))
+* **icons:** add `IconGrafana16`, `IconGrafana24`, `IconPlugSlash16`,`IconPlugSlash24` icons ([#239](https://github.com/koobiq/react-components/issues/239)) (DS-4586) ([cb9077c](https://github.com/koobiq/react-components/commit/cb9077cd873cf515b8eb287ff2c64ce0d7c3dc9e))
+* **Input:** add clear button when `isClearable` is enabled (DS-4024) ([#237](https://github.com/koobiq/react-components/issues/237)) ([e586c43](https://github.com/koobiq/react-components/commit/e586c43bcdb82285cacef090c9872c0a9c7fd863))
+* **primitives:** prioritize component props over context props in `useSlottedContext` ([0e25fdd](https://github.com/koobiq/react-components/commit/0e25fdd69fffc36f65a191ddb71866f1424cd3ab))
+
+
+### 🐞 Bug Fixes
+
+* **FormFieldClearButton:** prevent keyboard focus on hidden clear button ([20af1ef](https://github.com/koobiq/react-components/commit/20af1ef5a9c737932a17d1b5f035338d50fe8552))
+* **icons:** add `xmlns` attribute to svg sources (DS-4548) ([#229](https://github.com/koobiq/react-components/issues/229)) ([3eb4b86](https://github.com/koobiq/react-components/commit/3eb4b865720bcf6d459b8bec7702dba011d27164))
+* **Modal, SidePanel, Popover:** avoid passing id to React.Fragment ([#238](https://github.com/koobiq/react-components/issues/238)) (DS-4585) ([625c65b](https://github.com/koobiq/react-components/commit/625c65b8badec5743177c19e8f5ae4c548675775))
+* **Select:** hide collapsed tags from screen readers (aria-hidden) ([#234](https://github.com/koobiq/react-components/issues/234)) (DS-4576) ([c50d9c0](https://github.com/koobiq/react-components/commit/c50d9c0f235bc9ca2233dba34f3231135e35c260))
+* **ToastProvider:** improve toast keyboard navigation (DS-4549) ([01d896b](https://github.com/koobiq/react-components/commit/01d896bfa91f01c95aa218f48f7848fec6e08473))
+* **Tooltip:** fix typing for style attribute ([#235](https://github.com/koobiq/react-components/issues/235)) (DS-4577) ([113f280](https://github.com/koobiq/react-components/commit/113f28078b07c7dff9590d6f839e5cf2bb183662))
+
 ## [0.19.0](https://github.com/koobiq/react-components/compare/0.18.1...0.19.0) (2025-12-12)
 
 
