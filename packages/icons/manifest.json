@@ -2128,6 +2128,12 @@
       "size": "16"
     },
     {
+      "name": "IconGrafana16",
+      "size": "16",
+      "description": "Графана",
+      "keywords": ["logo"]
+    },
+    {
       "name": "IconGridDots16",
       "size": "16",
       "keywords": ["markers", "points", "маркеры", "точки"]
@@ -2633,7 +2639,7 @@
     {
       "name": "IconPaperclip16",
       "size": "16",
-      "keywords": ["attach", "прикрепить", "скрепка"]
+      "keywords": ["attach", "src", "прикрепить", "скрепка"]
     },
     {
       "name": "IconPaperPlane16",
@@ -2690,6 +2696,11 @@
       "name": "IconPlug16",
       "size": "16",
       "keywords": ["connect", "вилка", "подключить"]
+    },
+    {
+      "name": "IconPlugSlash16",
+      "size": "16",
+      "keywords": ["disconnect", "отключить", "вилка"]
     },
     {
       "name": "IconPlus16",
@@ -4170,7 +4181,8 @@
     },
     {
       "name": "IconBell24",
-      "size": "24"
+      "size": "24",
+      "keywords": ["alert", "notification", "звонок", "сигнал", "уведомление"]
     },
     {
       "name": "IconBellSlash24",
@@ -5522,6 +5534,12 @@
       "keywords": []
     },
     {
+      "name": "IconGrafana24",
+      "size": "24",
+      "description": "Графана",
+      "keywords": ["logo"]
+    },
+    {
       "name": "IconGridDots24",
       "size": "24",
       "keywords": ["markers", "points", "маркеры", "точки"]
@@ -5952,7 +5970,8 @@
     },
     {
       "name": "IconPaperclip24",
-      "size": "24"
+      "size": "24",
+      "keywords": ["attach", "src", "прикрепить", "скрепка"]
     },
     {
       "name": "IconPaperPlane24",
@@ -6006,6 +6025,11 @@
     {
       "name": "IconPlug24",
       "size": "24"
+    },
+    {
+      "name": "IconPlugSlash24",
+      "size": "24",
+      "keywords": ["disconnect", "отключить", "вилка"]
     },
     {
       "name": "IconPlus24",
@@ -6828,7 +6852,8 @@
     },
     {
       "name": "IconBell32",
-      "size": "32"
+      "size": "32",
+      "keywords": ["alert", "notification", "звонок", "сигнал", "уведомление"]
     },
     {
       "name": "IconBentoMenu32",
