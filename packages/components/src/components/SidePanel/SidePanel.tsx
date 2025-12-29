@@ -1,6 +1,6 @@
 'use client';
 
-import { cloneElement, forwardRef, isValidElement } from 'react';
+import { forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
@@ -74,7 +74,7 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       { ...state, isOpen: isOpenState }
     );
 
-    const { modalProps: modalCommonProps, underlayProps } = useModalOverlay(
+    const { modalProps: modalPropsAria, underlayProps } = useModalOverlay(
       {
         ...props,
         shouldCloseOnInteractOutside,
@@ -84,15 +84,6 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
       { ...state, isOpen: isOpened },
       modalRef
     );
-
-    const resolvedChildren = () => {
-      if (typeof children === 'function')
-        return cloneElement(children({ close }), overlayProps);
-
-      if (isValidElement(children)) return cloneElement(children, overlayProps);
-
-      return children;
-    };
 
     const containerProps = mergeProps(
       {
@@ -117,13 +108,15 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
         onClose: close,
         role: 'dialog',
         hideCloseButton,
-        children: resolvedChildren(),
+        children:
+          typeof children === 'function' ? children({ close }) : children,
       },
+      overlayProps,
       slotProps?.dialog
     );
 
     const panelProps = mergeProps(
-      modalCommonProps,
+      modalPropsAria,
       {
         ref: modalRef,
         className: s.panel,

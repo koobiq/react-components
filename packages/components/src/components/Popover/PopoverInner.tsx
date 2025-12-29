@@ -1,11 +1,5 @@
-import {
-  cloneElement,
-  type ComponentRef,
-  type CSSProperties,
-  type FC,
-  isValidElement,
-  useRef,
-} from 'react';
+import type { ComponentRef, CSSProperties, FC } from 'react';
+import { useRef } from 'react';
 
 import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
 import {
@@ -87,15 +81,6 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     { ...state, isOpen: openState || opened }
   );
 
-  const resolvedChildren = () => {
-    if (typeof children === 'function')
-      return cloneElement(children({ close: state.close }), overlayProps);
-
-    if (isValidElement(children)) return cloneElement(children, overlayProps);
-
-    return children;
-  };
-
   const arrowProps = mergeProps(
     { className: s.arrow },
     arrowPropsCommon,
@@ -109,6 +94,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
       className: s.dialog,
       onClose: state.close,
     },
+    overlayProps,
     slotProps?.dialog
   );
 
@@ -131,6 +117,11 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     slotProps?.transition
   );
 
+  const resolvedChildren =
+    typeof children === 'function'
+      ? children({ close: state.close })
+      : children;
+
   return (
     <>
       {control?.({
@@ -147,9 +138,9 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
             <div
               ref={domRef}
               data-size={size}
-              data-arrow={showArrow || undefined}
               data-placement={placement}
               data-transition={transition}
+              data-arrow={showArrow || undefined}
               className={clsx(s.base, s[size], className)}
               {...mergeProps(popoverProps, other)}
               style={
@@ -163,9 +154,9 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
               {showArrow && <div {...arrowProps} data-placement={placement} />}
               <div className={s.container}>
                 {type === 'dialog' ? (
-                  <Dialog {...dialogProps}>{resolvedChildren()}</Dialog>
+                  <Dialog {...dialogProps}>{resolvedChildren}</Dialog>
                 ) : (
-                  resolvedChildren()
+                  resolvedChildren
                 )}
               </div>
             </div>

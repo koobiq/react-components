@@ -1,6 +1,6 @@
 'use client';
 
-import { cloneElement, forwardRef, isValidElement } from 'react';
+import { forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
@@ -65,7 +65,7 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
     { ...state, isOpen: isOpenState }
   );
 
-  const { modalProps: modalCommonProps, underlayProps } = useModalOverlay(
+  const { modalProps: modalPropsAria, underlayProps } = useModalOverlay(
     {
       ...props,
       shouldCloseOnInteractOutside,
@@ -75,15 +75,6 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
     { ...state, isOpen: isOpened },
     modalRef
   );
-
-  const resolvedChildren = () => {
-    if (typeof children === 'function')
-      return cloneElement(children({ close }), overlayProps);
-
-    if (isValidElement(children)) return cloneElement(children, overlayProps);
-
-    return children;
-  };
 
   const containerProps = mergeProps(
     {
@@ -107,17 +98,18 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
       onClose: close,
       role: 'dialog',
       hideCloseButton,
-      children: resolvedChildren(),
+      children: typeof children === 'function' ? children({ close }) : children,
     },
+    overlayProps,
     slotProps?.dialog
   );
 
   const modalProps = mergeProps(
-    modalCommonProps,
     {
       ref: modalRef,
       className: s.modal,
     },
+    modalPropsAria,
     slotProps?.modal
   );
 
