@@ -291,6 +291,7 @@ export * from './IconGlobeDot16';
 export * from './IconGlobeMultiple16';
 export * from './IconGlobeOnLine16';
 export * from './IconGossopka16';
+export * from './IconGrafana16';
 export * from './IconGridDots16';
 export * from './IconGridGroup16';
 export * from './IconGridGroupDot16';
@@ -380,6 +381,7 @@ export * from './IconPinSlash16';
 export * from './IconPlay16';
 export * from './IconPlayRewind16';
 export * from './IconPlug16';
+export * from './IconPlugSlash16';
 export * from './IconPlus16';
 export * from './IconPlusS16';
 export * from './IconPrinter16';
@@ -804,6 +806,7 @@ export * from './IconGlobeDot24';
 export * from './IconGlobeMultiple24';
 export * from './IconGlobeOnLine24';
 export * from './IconGossopka24';
+export * from './IconGrafana24';
 export * from './IconGridDots24';
 export * from './IconGridGroup24';
 export * from './IconGridGroupDot24';
@@ -893,6 +896,7 @@ export * from './IconPinSlash24';
 export * from './IconPlay24';
 export * from './IconPlayRewind24';
 export * from './IconPlug24';
+export * from './IconPlugSlash24';
 export * from './IconPlus24';
 export * from './IconPlusS24';
 export * from './IconPrinter24';
@@ -1360,6 +1364,7 @@ export type IconName =
   | 'IconGlobeMultiple16'
   | 'IconGlobeOnLine16'
   | 'IconGossopka16'
+  | 'IconGrafana16'
   | 'IconGridDots16'
   | 'IconGridGroup16'
   | 'IconGridGroupDot16'
@@ -1449,6 +1454,7 @@ export type IconName =
   | 'IconPlay16'
   | 'IconPlayRewind16'
   | 'IconPlug16'
+  | 'IconPlugSlash16'
   | 'IconPlus16'
   | 'IconPlusS16'
   | 'IconPrinter16'
@@ -1873,6 +1879,7 @@ export type IconName =
   | 'IconGlobeMultiple24'
   | 'IconGlobeOnLine24'
   | 'IconGossopka24'
+  | 'IconGrafana24'
   | 'IconGridDots24'
   | 'IconGridGroup24'
   | 'IconGridGroupDot24'
@@ -1962,6 +1969,7 @@ export type IconName =
   | 'IconPlay24'
   | 'IconPlayRewind24'
   | 'IconPlug24'
+  | 'IconPlugSlash24'
   | 'IconPlus24'
   | 'IconPlusS24'
   | 'IconPrinter24'
