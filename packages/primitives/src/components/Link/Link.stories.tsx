@@ -22,6 +22,7 @@ export const Base = (args: LinkProps) => (
   <Link
     style={({ isHovered, isPressed, isFocusVisible, isDisabled }) => {
       const commonStyle: CSSProperties = {
+        padding: 0,
         fontSize: 16,
         color: '#06f',
         outline: 'none',
@@ -29,6 +30,9 @@ export const Base = (args: LinkProps) => (
         outlineOffset: 2,
         lineHeight: '24px',
         position: 'relative',
+        border: 'none',
+        background: 'none',
+        cursor: 'pointer',
         outlineStyle: 'solid',
         textDecoration: 'none',
         outlineColor: 'transparent',
@@ -55,6 +59,11 @@ export const Base = (args: LinkProps) => (
     {args.children ?? 'Link'}
   </Link>
 );
+
+export const Button = {
+  render: Base,
+  args: { children: 'Button', as: 'button', onPress: () => alert('Press!') },
+};
 
 export const Disabled = {
   render: Base,
