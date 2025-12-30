@@ -14,7 +14,7 @@ import { useRenderProps } from '../../utils';
 import { useSlottedContext } from '../../utils/useSlottedContext';
 
 import { ButtonContext } from './ButtonContext';
-import type { ButtonBaseProps } from './types.js';
+import type { ButtonBaseProps } from './types';
 
 export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
   (props, ref) => {
@@ -93,9 +93,9 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         data-hovered={isHovered || undefined}
         data-pressed={isPressed || undefined}
         data-focused={isFocused || undefined}
+        data-loading={isLoading || undefined}
         data-disabled={isDisabled || undefined}
         data-focus-visible={isFocusVisible || undefined}
-        tabIndex={buttonProps.tabIndex}
         {...('tabIndex' in commonProps && { tabIndex })}
         aria-hidden={commonProps['aria-hidden']}
         aria-disabled={isLoading ? 'true' : buttonProps['aria-disabled']}

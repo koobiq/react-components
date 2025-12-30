@@ -1,0 +1,94 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Button.stories';
+
+<Meta of={Stories} />
+
+# Button
+
+<Status variant="experimental" />
+
+A button primitive allows a user to perform an action, supporting mouse, touch, and keyboard interactions.
+
+```tsx
+import { Button } from '@koobiq/react-primitives';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Key behaviors
+
+- **Polymorphic:** renders `button` by default, or any tag via `as`.
+- **State attributes:** `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled` and `data-loading`.
+- **Disabled & loading**: `isDisabled`/`isLoading` block interactions, `isLoading` also sets `aria-busy` and forces `aria-disabled="true"`, in both cases press/click handlers and href are removed to prevent actions.
+- **Render props:** `className`, `style`, and `children` can be functions that receive interaction states.
+
+## Render props
+
+`Button` supports render functions for `className`, `style`, and `children`.
+Use them when you need small state-based tweaks without extra hooks.
+
+Render functions receive:
+
+```ts
+export type ButtonRenderProps = {
+  isHovered: boolean;
+  isFocused: boolean;
+  isPressed: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
+  isFocusVisible: boolean;
+};
+```
+
+```tsx
+import { clsx } from '@koobiq/react-core';
+
+const MyButton = () => (
+  <Button
+    className={({ isPressed, isHovered }) =>
+      clsx(
+        'myButton',
+        isHovered && 'myButton--hovered',
+        isPressed && 'myButton--pressed'
+      )
+    }
+    style={({ isPressed }) => ({
+      transform: isPressed ? 'scale(0.95)' : 'scale(1)',
+      transition: 'transform 120ms ease',
+    })}
+  >
+    {({ isLoading }) => (isLoading ? 'Loading…' : 'Action')}
+  </Button>
+);
+```
+
+## As a link
+
+The Button component is always a semantic button. To render a link that looks like a button,
+use `as="a"` with `href` it keeps the same interaction states, `isDisabled` and `isLoading` also block navigation
+
+<Story of={Stories.Link} />
+
+## Disabled
+
+Use `isDisabled` to make the button non-interactive it blocks press and click interactions,
+applies disabled semantics for assistive technologies, and if rendered as a link with `as="a"` it also prevents navigation.
+
+<Story of={Stories.Disabled} />
+
+## Loading
+
+Use `isLoading` prop to display a loading state. Loading buttons remain focusable, but are otherwise disabled.
+Loading state changes are announced to assistive technologies.
+
+<Story of={Stories.Loading} />

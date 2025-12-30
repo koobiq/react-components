@@ -1,0 +1,88 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Link.stories';
+
+<Meta of={Stories} />
+
+# Link
+
+<Status variant="experimental" />
+
+A link primitive allows a user to navigate to another page or resource within a web page or application.
+
+```tsx
+import { Link } from '@koobiq/react-primitives';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Key behaviors
+
+- **Polymorphic**: renders `a` by default, or any tag via `as`.
+- **State attributes:** `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible` and `data-disabled`.
+- **Disabled**: `isDisabled` blocks interactions by removing press/click handlers and also prevents navigation by removing `href`.
+- **Render props**: `className`, `style`, and `children` can be functions that receive interaction states.
+
+## Render props
+
+Link supports render functions for `className`, `style`, and `children`.
+Use them when you need small state-based tweaks without extra hooks.
+
+Render functions receive:
+
+```ts
+export type ButtonRenderProps = {
+  isHovered: boolean;
+  isFocused: boolean;
+  isPressed: boolean;
+  isDisabled: boolean;
+  isFocusVisible: boolean;
+};
+```
+
+```tsx
+import { clsx } from '@koobiq/react-core';
+
+const MyLink = () => (
+  <Link
+    href="/docs"
+    className={({ isHovered, isPressed, isDisabled }) =>
+      clsx(
+        'myLink',
+        isHovered && 'myLink--hovered',
+        isPressed && 'myLink--pressed',
+        isDisabled && 'myLink--disabled'
+      )
+    }
+    style={({ isPressed }) => ({
+      transform: isPressed ? 'translateY(1px)' : 'translateY(0)',
+      transition: 'transform 120ms ease',
+    })}
+  >
+    {({ isDisabled }) => (isDisabled ? 'Unavailable' : 'Read docs')}
+  </Link>
+);
+```
+
+## As a button
+
+The Link component is a semantic anchor by default.
+If you need button-like behavior, render it as a button via `as="button"` and handle actions with `onPress`.
+
+<Story of={Stories.Button} />
+
+## Disabled
+
+Use `isDisabled` to make the link non-interactive. It prevents navigation by removing `href`
+and removes press/click handlers to avoid accidental activation.
+
+<Story of={Stories.Disabled} />
