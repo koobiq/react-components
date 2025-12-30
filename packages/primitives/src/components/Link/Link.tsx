@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentRef } from 'react';
+import type { ComponentPropsWithRef, ComponentRef, ElementType } from 'react';
 
 import {
   useDOMRef,
@@ -52,13 +52,22 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
 
   return (
     <Tag
+      data-hovered={isHovered || undefined}
+      data-pressed={isPressed || undefined}
+      data-focused={isFocused || undefined}
+      data-disabled={props.isDisabled || undefined}
+      data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(linkProps, renderProps)}
-      tabIndex={props.tabIndex || linkProps.tabIndex}
+      {...('tabIndex' in props && { tabIndex: props.tabIndex })}
       ref={domRef}
     >
       {renderProps.children}
     </Tag>
   );
 });
+
+export type LinkProps<As extends ElementType = 'a'> = ComponentPropsWithRef<
+  typeof Link<As>
+>;
 
 Link.displayName = 'Link';
