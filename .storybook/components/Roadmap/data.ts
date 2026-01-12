@@ -296,8 +296,8 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q4 2025',
   },
-  { component: 'Collapse', status: '🚧 Planned', planned: 'Q4 2025' },
-  { component: 'ActionPanel', status: '🚧 Planned', planned: 'Q4 2025' },
-  { component: 'Accordion', status: '🚧 Planned', planned: 'Q4 2025' },
-  { component: 'Tree', status: '🚧 Planned', planned: 'Q4 2025' },
+  { component: 'Accordion', status: '🛠️ In Progress', planned: 'Q1 2026' },
+  { component: 'ContentPanel', status: '🚧 Planned', planned: 'Q1 2026' },
+  { component: 'ActionPanel', status: '🚧 Planned', planned: 'Q1 2026' },
+  { component: 'Tree', status: '🚧 Planned', planned: 'Q1 2026' },
 ];
