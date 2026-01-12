@@ -1,0 +1,32 @@
+.base {
+  display: flex;
+  flex-direction: column;
+}
+
+.trigger {
+  margin: unset;
+
+  & > * {
+    cursor: pointer;
+  }
+
+  & > button {
+    font: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+}
+
+.panel {
+  --disclosure-panel-duration: var(--kbq-transition-slow);
+
+  overflow: hidden;
+  will-change: block-size;
+  transition: block-size ease;
+  transition-duration: var(--disclosure-panel-duration);
+
+  & > p {
+    margin: unset;
+  }
+}

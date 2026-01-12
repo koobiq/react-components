@@ -42,6 +42,7 @@ export * from './Tabs';
 export * from './Autocomplete';
 export * from './ToastProvider';
 export * from './Breadcrumbs';
+export * from './Disclosure';
 export * from './layout';
 export {
   useListData,

@@ -328,6 +328,9 @@ importers:
       '@react-aria/dialog':
         specifier: ^3.5.19
         version: 3.5.31(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/disclosure':
+        specifier: ^3.1.1
+        version: 3.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/label':
         specifier: ^3.7.20
         version: 3.7.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -406,6 +409,9 @@ importers:
       '@react-stately/datepicker':
         specifier: ^3.15.2
         version: 3.15.2(react@19.2.3)
+      '@react-stately/disclosure':
+        specifier: ^3.0.9
+        version: 3.0.9(react@19.2.3)
       '@react-stately/form':
         specifier: ^3.2.0
         version: 3.2.2(react@19.2.3)
@@ -2025,6 +2031,12 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
+  '@react-aria/disclosure@3.1.1':
+    resolution: {integrity: sha512-4k8Y3CZEl+Qhou0fH7Sj7BbzvwAfi1JDL+hG7U20ZL5+MJ/VbDYuYX2gYK2KqdlbeuuzGcov3ZFQbyIVHMY+/A==}
+    peerDependencies:
+      react: ^19.0.0
+      react-dom: ^19.0.0
+
   '@react-aria/focus@3.21.2':
     resolution: {integrity: sha512-JWaCR7wJVggj+ldmM/cb/DXFg47CXR55lznJhZBh4XVqJjMKwaOOqpT5vNN7kpC1wUpXicGNuDnJDN1S/+6dhQ==}
     peerDependencies:
@@ -2307,6 +2319,12 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
+  '@react-aria/utils@3.32.0':
+    resolution: {integrity: sha512-/7Rud06+HVBIlTwmwmJa2W8xVtgxgzm0+kLbuFooZRzKDON6hhozS1dOMR/YLMxyJOaYOTpImcP4vRR9gL1hEg==}
+    peerDependencies:
+      react: ^19.0.0
+      react-dom: ^19.0.0
+
   '@react-aria/visually-hidden@3.8.28':
     resolution: {integrity: sha512-KRRjbVVob2CeBidF24dzufMxBveEUtUu7IM+hpdZKB+gxVROoh4XRLPv9SFmaH89Z7D9To3QoykVZoWD0lan6Q==}
     peerDependencies:
@@ -2345,6 +2363,11 @@ packages:
 
   '@react-stately/datepicker@3.15.2':
     resolution: {integrity: sha512-S5GL+W37chvV8knv9v0JRv0L6hKo732qqabCCHXzOpYxkLIkV4f/y3cHdEzFWzpZ0O0Gkg7WgeYo160xOdBKYg==}
+    peerDependencies:
+      react: ^19.0.0
+
+  '@react-stately/disclosure@3.0.9':
+    resolution: {integrity: sha512-M3HKsXqdzYKQf1TpnQRLZ6+/b8E3Nba3oOuY0OW5NnM5dZWSnXuj8foBQJT118FdLgMjpfBdPIkUvnaGiDCs5w==}
     peerDependencies:
       react: ^19.0.0
 
@@ -10034,6 +10057,16 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
+  '@react-aria/disclosure@3.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@react-aria/ssr': 3.9.10(react@19.2.3)
+      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-stately/disclosure': 3.0.9(react@19.2.3)
+      '@react-types/button': 3.14.1(react@19.2.3)
+      '@swc/helpers': 0.5.17
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+
   '@react-aria/focus@3.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10642,6 +10675,17 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
+  '@react-aria/utils@3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@react-aria/ssr': 3.9.10(react@19.2.3)
+      '@react-stately/flags': 3.1.2
+      '@react-stately/utils': 3.11.0(react@19.2.3)
+      '@react-types/shared': 3.32.1(react@19.2.3)
+      '@swc/helpers': 0.5.17
+      clsx: 2.1.1
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+
   '@react-aria/visually-hidden@3.8.28(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10710,6 +10754,13 @@ snapshots:
       '@react-stately/overlays': 3.6.20(react@19.2.3)
       '@react-stately/utils': 3.10.8(react@19.2.3)
       '@react-types/datepicker': 3.13.2(react@19.2.3)
+      '@react-types/shared': 3.32.1(react@19.2.3)
+      '@swc/helpers': 0.5.17
+      react: 19.2.3
+
+  '@react-stately/disclosure@3.0.9(react@19.2.3)':
+    dependencies:
+      '@react-stately/utils': 3.11.0(react@19.2.3)
       '@react-types/shared': 3.32.1(react@19.2.3)
       '@swc/helpers': 0.5.17
       react: 19.2.3
@@ -10822,7 +10873,7 @@ snapshots:
   '@react-stately/radio@3.11.2(react@19.2.3)':
     dependencies:
       '@react-stately/form': 3.2.2(react@19.2.3)
-      '@react-stately/utils': 3.10.8(react@19.2.3)
+      '@react-stately/utils': 3.11.0(react@19.2.3)
       '@react-types/radio': 3.9.2(react@19.2.3)
       '@react-types/shared': 3.32.1(react@19.2.3)
       '@swc/helpers': 0.5.17
@@ -10837,7 +10888,7 @@ snapshots:
 
   '@react-stately/searchfield@3.5.16(react@19.2.3)':
     dependencies:
-      '@react-stately/utils': 3.10.8(react@19.2.3)
+      '@react-stately/utils': 3.11.0(react@19.2.3)
       '@react-types/searchfield': 3.6.6(react@19.2.3)
       '@swc/helpers': 0.5.17
       react: 19.2.3
@@ -10857,7 +10908,7 @@ snapshots:
       '@react-stately/form': 3.2.2(react@19.2.3)
       '@react-stately/list': 3.13.1(react@19.2.3)
       '@react-stately/overlays': 3.6.20(react@19.2.3)
-      '@react-stately/utils': 3.10.8(react@19.2.3)
+      '@react-stately/utils': 3.11.0(react@19.2.3)
       '@react-types/select': 3.11.0(react@19.2.3)
       '@react-types/shared': 3.32.1(react@19.2.3)
       '@swc/helpers': 0.5.17
