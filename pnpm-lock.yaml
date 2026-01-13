@@ -10,6 +10,7 @@ overrides:
   '@types/react-dom': ^19.0.0
   '@types/react': ^19.0.0
   storybook: ^10.1.11
+  react-docgen-typescript: 2.2.2
 
 importers:
 
@@ -7199,8 +7200,8 @@ packages:
   re2@1.21.4:
     resolution: {integrity: sha512-MVIfXWJmsP28mRsSt8HeL750ifb8H5+oF2UDIxGaiJCr8fkMqhLZ7kcX9ADRk2dC8qeGKedB7UVYRfBVpEiLfA==}
 
-  react-docgen-typescript@2.4.0:
-    resolution: {integrity: sha512-ZtAp5XTO5HRzQctjPU0ybY0RRCQO19X/8fxn3w7y2VVTUbGHDKULPTL4ky3vB05euSgG5NpALhEhDPvQ56wvXg==}
+  react-docgen-typescript@2.2.2:
+    resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
     peerDependencies:
       typescript: '>= 4.3.x'
 
@@ -9678,7 +9679,7 @@ snapshots:
   '@joshwooding/vite-plugin-react-docgen-typescript@0.6.3(typescript@5.7.3)(vite@6.4.1(@types/node@22.13.13)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@4.0.1(postcss@8.4.49))(tsx@4.19.3)(yaml@2.7.0))':
     dependencies:
       glob: 11.1.0
-      react-docgen-typescript: 2.4.0(typescript@5.7.3)
+      react-docgen-typescript: 2.2.2(typescript@5.7.3)
       vite: 6.4.1(@types/node@22.13.13)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@4.0.1(postcss@8.4.49))(tsx@4.19.3)(yaml@2.7.0)
     optionalDependencies:
       typescript: 5.7.3
@@ -16634,7 +16635,7 @@ snapshots:
       - supports-color
     optional: true
 
-  react-docgen-typescript@2.4.0(typescript@5.7.3):
+  react-docgen-typescript@2.2.2(typescript@5.7.3):
     dependencies:
       typescript: 5.7.3
 

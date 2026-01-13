@@ -41,7 +41,7 @@ export default meta;
 type Story = StoryObj<FormProps>;
 
 export const Base: Story = {
-  render: function Render() {
+  render: function Render(args) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -77,6 +77,7 @@ export const Base: Story = {
         style={{ width: 240 }}
         onSubmit={handleSubmit}
         labelPlacement={{ xs: 'top', m: 'side' }}
+        {...args}
       >
         {error && (
           <Form.Caption>
