@@ -1,22 +1,22 @@
 'use client';
 
 import type { ComponentPropsWithRef, ElementType } from 'react';
-import { useContext } from 'react';
 
-import { polymorphicForwardRef, mergeProps } from '@koobiq/react-core';
+import { polymorphicForwardRef } from '@koobiq/react-core';
+
+import { useContextProps } from '../../utils';
 
 import type { LabelBaseProps } from './index';
 import { LabelContext } from './index';
 
 export const Label = polymorphicForwardRef<'label', LabelBaseProps>(
   (props, ref) => {
-    const { as: Tag = 'label', children, ...other } = props;
+    const [ctxProps, ctxRef] = useContextProps(props, ref, LabelContext);
 
-    const defaultProps = useContext(LabelContext);
-    const commonProps = mergeProps(defaultProps, other);
+    const { as: Tag = 'label', children, ...other } = ctxProps;
 
     return (
-      <Tag {...commonProps} ref={ref}>
+      <Tag {...other} ref={ctxRef}>
         {children}
       </Tag>
     );

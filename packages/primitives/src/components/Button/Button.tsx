@@ -10,15 +10,14 @@ import {
 } from '@koobiq/react-core';
 
 import { useButton } from '../../behaviors';
-import { useRenderProps } from '../../utils';
-import { useSlottedContext } from '../../utils/useSlottedContext';
+import { useContextProps, useRenderProps } from '../../utils';
 
 import { ButtonContext } from './ButtonContext';
 import type { ButtonBaseProps } from './types';
 
 export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
   (props, ref) => {
-    const commonProps = useSlottedContext(props, ButtonContext, props.slot);
+    const [ctxProps, ctxRef] = useContextProps(props, ref, ButtonContext);
 
     const {
       as,
@@ -33,16 +32,16 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
       formMethod,
       formNoValidate,
       formTarget,
-    } = commonProps;
+    } = ctxProps;
 
     const Tag = as || 'button';
 
-    const domRef = useDOMRef(ref);
+    const domRef = useDOMRef(ctxRef);
 
     const { isHovered, isPressed, isFocused, isFocusVisible, buttonProps } =
       useButton(
         {
-          ...commonProps,
+          ...ctxProps,
           ...((isLoading || isDisabled) && {
             onPress: undefined,
             onPressStart: undefined,
@@ -96,8 +95,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
         data-loading={isLoading || undefined}
         data-disabled={isDisabled || undefined}
         data-focus-visible={isFocusVisible || undefined}
-        {...('tabIndex' in commonProps && { tabIndex })}
-        aria-hidden={commonProps['aria-hidden']}
+        {...('tabIndex' in ctxProps && { tabIndex })}
+        aria-hidden={ctxProps['aria-hidden']}
         aria-disabled={isLoading ? 'true' : buttonProps['aria-disabled']}
         aria-busy={isLoading}
         ref={domRef}

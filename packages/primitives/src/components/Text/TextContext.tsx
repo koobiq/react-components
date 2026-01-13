@@ -2,10 +2,10 @@
 
 import { createContext } from 'react';
 
+import type { ContextValue } from '../../utils';
+
 import type { TextProps } from './Text';
 
-export type TextContextProps = {
-  slots?: Record<string, TextProps>;
-};
-
-export const TextContext = createContext<TextContextProps>({});
+export const TextContext = createContext<ContextValue<TextProps, HTMLElement>>(
+  {}
+);

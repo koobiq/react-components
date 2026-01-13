@@ -4,17 +4,17 @@ import type { ComponentPropsWithRef, ComponentRef, ElementType } from 'react';
 
 import { polymorphicForwardRef } from '@koobiq/react-core';
 
-import { useSlottedContext } from '../../utils/useSlottedContext';
+import { useContextProps } from '../../utils';
 
 import { type TextBaseProps, TextContext } from './index';
 
 export const Text = polymorphicForwardRef<'p', TextBaseProps>((props, ref) => {
-  const { as: Tag = 'p', children, slot, ...other } = props;
+  const [ctxProps, ctxRef] = useContextProps(props, ref, TextContext);
 
-  const commonProps = useSlottedContext(other, TextContext, slot);
+  const { as: Tag = 'p', children, ...other } = ctxProps;
 
   return (
-    <Tag {...commonProps} ref={ref}>
+    <Tag {...other} ref={ctxRef}>
       {children}
     </Tag>
   );
