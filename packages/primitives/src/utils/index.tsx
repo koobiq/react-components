@@ -12,7 +12,12 @@ import type {
   DOMProps as SharedDOMProps,
   RefObject,
 } from '@koobiq/react-core';
-import { mergeProps, mergeRefs, useObjectRef } from '@koobiq/react-core';
+import {
+  isNotNil,
+  mergeProps,
+  mergeRefs,
+  useObjectRef,
+} from '@koobiq/react-core';
 
 export const DEFAULT_SLOT = Symbol('default');
 
@@ -179,8 +184,7 @@ export function useSlottedContext<T>(
 ): T | null | undefined {
   const ctx = useContext(context);
 
-  if (slot === null) {
-    // An explicit `null` slot means don't use context.
+  if (!isNotNil(slot)) {
     return null;
   }
 
