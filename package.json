@@ -171,7 +171,8 @@
       "react-dom": "^19.0.0",
       "@types/react-dom": "^19.0.0",
       "@types/react": "^19.0.0",
-      "storybook": "$storybook"
+      "storybook": "$storybook",
+      "react-docgen-typescript": "2.2.2"
     }
   }
 }
