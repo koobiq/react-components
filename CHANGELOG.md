@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.0](https://github.com/koobiq/react-components/compare/0.20.0...0.21.0) (2026-01-13)
+
+
+### 🚀 Features
+
+* **primitives:** introduce experimental `Button` and `Link` primitives (DS-4555) ([#240](https://github.com/koobiq/react-components/issues/240)) ([c42c40a](https://github.com/koobiq/react-components/commit/c42c40aa49031bda9ac2caa9a42ffa4b322f1108))
+
 ## [0.20.0](https://github.com/koobiq/react-components/compare/0.19.0...0.20.0) (2025-12-29)
 
 
