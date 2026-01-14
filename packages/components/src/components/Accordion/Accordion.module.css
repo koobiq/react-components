@@ -1,0 +1,8 @@
+.base {
+  --accordion-summary-block-size: 36px;
+  --accordion-details-padding: 0 var(--kbq-size-m) var(--kbq-size-s)
+    var(--kbq-size-m);
+
+  display: flex;
+  flex-direction: column;
+}

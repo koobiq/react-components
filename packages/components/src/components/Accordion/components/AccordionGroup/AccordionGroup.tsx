@@ -5,13 +5,13 @@ import { forwardRef } from 'react';
 import { clsx } from '@koobiq/react-core';
 import { useDisclosureGroupState } from '@koobiq/react-primitives';
 
-import s from './DisclosureGroup.module.css';
-import type { DisclosureGroupProps, DisclosureGroupRef } from './index';
-import { DisclosureGroupStateContext } from './index';
+import s from './AccordionGroup.module.css';
+import type { AccordionGroupProps, AccordionGroupRef } from './index';
+import { AccordionGroupStateContext } from './index';
 
-export const DisclosureGroup = forwardRef<
-  DisclosureGroupRef,
-  DisclosureGroupProps
+export const AccordionGroup = forwardRef<
+  AccordionGroupRef,
+  AccordionGroupProps
 >((props, ref) => {
   const {
     children,
@@ -34,11 +34,11 @@ export const DisclosureGroup = forwardRef<
 
   return (
     <div className={clsx(s.base, className)} {...other} ref={ref}>
-      <DisclosureGroupStateContext.Provider value={state}>
+      <AccordionGroupStateContext.Provider value={state}>
         {children}
-      </DisclosureGroupStateContext.Provider>
+      </AccordionGroupStateContext.Provider>
     </div>
   );
 });
 
-DisclosureGroup.displayName = 'DisclosureGroup';
+AccordionGroup.displayName = 'AccordionGroup';

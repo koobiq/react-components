@@ -8,26 +8,26 @@ import { useContextProps } from '@koobiq/react-primitives';
 import { Transition, type TransitionStatus } from 'react-transition-group';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-import { DisclosureStateContext } from '../../index';
+import { AccordionStateContext } from '../../index';
 
-import s from './DisclosurePanel.module.css';
-import type { DisclosurePanelRef, DisclosurePanelProps } from './index';
-import { DisclosurePanelContext } from './index';
+import s from './AccordionDetails.module.css';
+import type { AccordionDetailsRef, AccordionDetailsProps } from './index';
+import { AccordionDetailsContext } from './index';
 
 const TIMEOUT = 300;
 
-export const DisclosurePanel = forwardRef<
-  DisclosurePanelRef,
-  DisclosurePanelProps
+export const AccordionDetails = forwardRef<
+  AccordionDetailsRef,
+  AccordionDetailsProps
 >((props, ref) => {
   const { children, className, style, slotProps, ...other } = props;
 
   const domRef = useDOMRef<ComponentRef<'div'>>(ref);
   const innerRef = useRef<HTMLParagraphElement>(null);
 
-  const [panelProps] = useContextProps({}, domRef, DisclosurePanelContext);
+  const [panelProps] = useContextProps({}, domRef, AccordionDetailsContext);
 
-  const { isExpanded } = useContext(DisclosureStateContext);
+  const { isExpanded } = useContext(AccordionStateContext);
 
   useEffect(() => {
     if (!isExpanded) domRef?.current?.setAttribute('hidden', 'until-found');
@@ -94,4 +94,4 @@ export const DisclosurePanel = forwardRef<
   );
 });
 
-DisclosurePanel.displayName = 'DisclosurePanel';
+AccordionDetails.displayName = 'AccordionDetails';

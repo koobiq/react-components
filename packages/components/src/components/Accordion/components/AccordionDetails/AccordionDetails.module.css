@@ -10,6 +10,7 @@
   transition-duration: var(--disclosure-panel-duration);
 
   & > * {
+    padding: var(--accordion-details-padding);
     margin: unset;
   }
 }

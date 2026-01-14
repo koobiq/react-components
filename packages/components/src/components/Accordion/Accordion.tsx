@@ -11,18 +11,20 @@ import {
 
 import { utilClasses } from '../../styles/utility';
 
+import s from './Accordion.module.css';
 import {
-  DisclosurePanel,
-  DisclosureTrigger,
-  DisclosurePanelContext,
-  DisclosureTriggerContext,
-  DisclosureGroupStateContext,
+  AccordionDetails,
+  AccordionSummary,
+  AccordionDetailsContext,
+  AccordionSummaryContext,
+  AccordionGroupStateContext,
 } from './components';
-import s from './Disclosure.module.css';
-import { DisclosureStateContext } from './index';
-import type { DisclosureProps, DisclosureRef } from './types';
+import { AccordionStateContext } from './index';
+import type { AccordionProps, AccordionRef } from './types';
 
-export const DisclosureComponent = forwardRef<DisclosureRef, DisclosureProps>(
+const textNormal = utilClasses.typography['text-normal'];
+
+export const AccordionComponent = forwardRef<AccordionRef, AccordionProps>(
   (props, ref) => {
     const {
       children,
@@ -45,7 +47,7 @@ export const DisclosureComponent = forwardRef<DisclosureRef, DisclosureProps>(
 
     const defaultId = useId();
     const id = idProp || defaultId;
-    const groupState = useContext(DisclosureGroupStateContext);
+    const groupState = useContext(AccordionGroupStateContext);
 
     const isExpanded = groupState
       ? groupState.expandedKeys?.has(id)
@@ -80,17 +82,13 @@ export const DisclosureComponent = forwardRef<DisclosureRef, DisclosureProps>(
     return (
       <Provider
         values={[
-          [DisclosureStateContext, state],
-          [DisclosureTriggerContext, { ...triggerProps, ref: triggerRef }],
-          [DisclosurePanelContext, { ...panelProps, ref: panelRef }],
+          [AccordionStateContext, state],
+          [AccordionSummaryContext, { ...triggerProps, ref: triggerRef }],
+          [AccordionDetailsContext, { ...panelProps, ref: panelRef }],
         ]}
       >
         <div
-          className={clsx(
-            s.base,
-            utilClasses.typography['text-normal'],
-            className
-          )}
+          className={clsx(s.base, textNormal, className)}
           id={idProp}
           {...other}
           ref={ref}
@@ -102,14 +100,14 @@ export const DisclosureComponent = forwardRef<DisclosureRef, DisclosureProps>(
   }
 );
 
-DisclosureComponent.displayName = 'Disclosure';
+AccordionComponent.displayName = 'Accordion';
 
-type CompoundedComponent = typeof DisclosureComponent & {
-  Trigger: typeof DisclosureTrigger;
-  Panel: typeof DisclosurePanel;
+type CompoundedComponent = typeof AccordionComponent & {
+  Summary: typeof AccordionSummary;
+  Details: typeof AccordionDetails;
 };
 
-export const Disclosure = DisclosureComponent as CompoundedComponent;
+export const Accordion = AccordionComponent as CompoundedComponent;
 
-Disclosure.Trigger = DisclosureTrigger;
-Disclosure.Panel = DisclosurePanel;
+Accordion.Summary = AccordionSummary;
+Accordion.Details = AccordionDetails;

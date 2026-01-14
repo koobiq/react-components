@@ -3,9 +3,9 @@ import type { ComponentRef, ReactNode } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-export type DisclosurePanelRef = ComponentRef<'div'>;
+export type AccordionDetailsRef = ComponentRef<'div'>;
 
-export type DisclosurePanelProps = ExtendableComponentPropsWithRef<
+export type AccordionDetailsProps = ExtendableComponentPropsWithRef<
   {
     /** The content of the component. */
     children?: ReactNode;

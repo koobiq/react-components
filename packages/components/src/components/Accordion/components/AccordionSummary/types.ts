@@ -1,8 +1,8 @@
 import type { ComponentRef, ReactNode } from 'react';
 
-export type DisclosureTriggerRef = ComponentRef<'h3'>;
+export type AccordionSummaryRef = ComponentRef<'h3'>;
 
-export type DisclosureBaseTriggerProps = {
+export type AccordionSummaryProps = {
   /** The content of the component. */
   children?: ReactNode;
   /** Additional CSS-classes. */

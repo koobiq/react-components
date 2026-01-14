@@ -5,19 +5,18 @@ import {
   Status,
 } from '../../../../../.storybook/components';
 
-import * as Stories from './Disclosure.stories';
+import * as Stories from './Accordion.stories';
 
 <Meta of={Stories} />
 
-# Disclosure
+# Accordion
 
 <Status variant="experimental" />
 
-A disclosure is a collapsible section of content.
-It is composed of a header with a heading and trigger button, and a panel that contains the content.
+Accordion display a list of high-level options that can expand/collapse to reveal more information.
 
 ```tsx
-import { Disclosure, DisclosureGroup } from '@koobiq/react-components';
+import { Accordion, AccordionGroup } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />

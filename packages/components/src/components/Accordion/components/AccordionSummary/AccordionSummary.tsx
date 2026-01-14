@@ -1,0 +1,53 @@
+'use client';
+
+import {
+  type ComponentPropsWithRef,
+  type ElementType,
+  useContext,
+} from 'react';
+
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
+import { IconChevronRight16 } from '@koobiq/react-icons';
+import { Button, useContextProps } from '@koobiq/react-primitives';
+
+import { utilClasses } from '../../../../styles/utility';
+import { AnimatedIcon } from '../../../AnimatedIcon';
+import { AccordionStateContext } from '../../AccordionStateContext';
+
+import s from './AccordionSummary.module.css';
+import type { AccordionSummaryProps } from './index';
+import { AccordionSummaryContext } from './index';
+
+const textBig = utilClasses.typography['text-big'];
+
+export const AccordionSummary = polymorphicForwardRef<
+  'h3',
+  AccordionSummaryProps
+>((props, ref) => {
+  const { className, children, as: Tag = 'h3', ...other } = props;
+  const { isExpanded } = useContext(AccordionStateContext);
+
+  const [triggerProps, triggerRef] = useContextProps(
+    { children },
+    undefined,
+    AccordionSummaryContext
+  );
+
+  return (
+    <Tag className={clsx(s.base, textBig, className)} {...other} ref={ref}>
+      <Button {...triggerProps} ref={triggerRef}>
+        <AnimatedIcon
+          icons={[<IconChevronRight16 key="chevron" />]}
+          directions={[0, 90]}
+          activeIndex={+isExpanded}
+        />
+        {triggerProps.children}
+      </Button>
+    </Tag>
+  );
+});
+
+AccordionSummary.displayName = 'AccordionSummary';
+
+export type DisclosureTriggerProps<As extends ElementType = 'h3'> =
+  ComponentPropsWithRef<typeof AccordionSummary<As>>;

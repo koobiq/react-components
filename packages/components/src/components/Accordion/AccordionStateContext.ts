@@ -2,6 +2,6 @@ import { createContext } from 'react';
 
 import type { DisclosureState } from '@koobiq/react-primitives';
 
-export const DisclosureStateContext = createContext<DisclosureState>(
+export const AccordionStateContext = createContext<DisclosureState>(
   {} as DisclosureState
 );
