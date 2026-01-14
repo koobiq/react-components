@@ -1,4 +1,7 @@
 .base {
+  --accordion-summary-block-size: 36px;
+  --accordion-summary-chevron-color: var(--kbq-icon-contrast-fade);
+
   margin: unset;
   min-block-size: var(--accordion-summary-block-size);
 
@@ -6,16 +9,32 @@
     cursor: pointer;
   }
 
-  & > button {
-    border: none;
-    font: inherit;
-    display: flex;
-    background: none;
-    gap: var(--kbq-size-xxs);
-    padding: var(--kbq-size-s);
-  }
-
   &:has(:disabled) > * {
     cursor: not-allowed;
   }
+}
+
+.trigger {
+  inline-size: 100%;
+  border: none;
+  font: inherit;
+  display: flex;
+  outline: none;
+  background: none;
+  gap: var(--kbq-size-xxs);
+  padding: var(--kbq-size-s);
+}
+
+.hovered {
+  --accordion-summary-chevron-color: var(--kbq-icon-contrast);
+}
+
+.chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: var(--kbq-size-xxl);
+  inline-size: var(--kbq-size-xxl);
+  color: var(--accordion-summary-chevron-color);
+  transition: color var(--kbq-transition-default);
 }

@@ -1,5 +1,7 @@
 .base {
-  --disclosure-panel-duration: 300ms;
+  --accordion-details-duration: 300ms;
+  --accordion-details-padding: 0 var(--kbq-size-m) var(--kbq-size-s)
+    var(--kbq-size-m);
 
   opacity: 1;
   overflow: hidden;
@@ -7,7 +9,7 @@
   transition:
     block-size var(--kbq-transition-slow),
     opacity var(--kbq-transition-slow);
-  transition-duration: var(--disclosure-panel-duration);
+  transition-duration: var(--accordion-details-duration);
 
   & > * {
     padding: var(--accordion-details-padding);

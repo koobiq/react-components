@@ -35,12 +35,19 @@ export const AccordionSummary = polymorphicForwardRef<
 
   return (
     <Tag className={clsx(s.base, textBig, className)} {...other} ref={ref}>
-      <Button {...triggerProps} ref={triggerRef}>
-        <AnimatedIcon
-          icons={[<IconChevronRight16 key="chevron" />]}
-          directions={[0, 90]}
-          activeIndex={+isExpanded}
-        />
+      <Button
+        {...triggerProps}
+        data-slot="trigger"
+        className={({ isHovered }) => clsx(s.trigger, isHovered && s.hovered)}
+        ref={triggerRef}
+      >
+        <span className={s.chevron}>
+          <AnimatedIcon
+            icons={[<IconChevronRight16 key="chevron" />]}
+            directions={[0, 90]}
+            activeIndex={+isExpanded}
+          />
+        </span>
         {triggerProps.children}
       </Button>
     </Tag>

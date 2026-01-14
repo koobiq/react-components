@@ -79,7 +79,7 @@ export const AccordionDetails = forwardRef<
             style={
               {
                 height: 0,
-                '--disclosure-panel-duration': `${TIMEOUT}ms`,
+                '--accordion-details-duration': `${TIMEOUT}ms`,
                 ...transitionStyles[state],
                 ...style,
               } as CSSProperties
