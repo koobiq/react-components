@@ -28,18 +28,18 @@ export const DisclosureComponent = forwardRef<DisclosureRef, DisclosureProps>(
       children,
       className,
       id: idProp,
-      isDisabled,
       defaultExpanded,
       onExpandedChange,
+      isDisabled: isDisabledProp,
       isExpanded: isExpandedProp,
       ...other
     } = props;
 
     const commonProps = {
       children,
-      isDisabled,
       onExpandedChange,
       defaultExpanded,
+      isDisabled: isDisabledProp,
       isExpanded: isExpandedProp,
     };
 
@@ -65,9 +65,14 @@ export const DisclosureComponent = forwardRef<DisclosureRef, DisclosureProps>(
 
     const panelRef = useRef<HTMLDivElement | null>(null);
     const triggerRef = useRef<HTMLButtonElement | null>(null);
+    const isDisabled = isDisabledProp || groupState?.isDisabled || false;
 
     const { buttonProps: triggerProps, panelProps } = useDisclosure(
-      commonProps,
+      {
+        ...commonProps,
+        isExpanded,
+        isDisabled,
+      },
       state,
       panelRef
     );

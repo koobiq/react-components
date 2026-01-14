@@ -11,4 +11,8 @@
     border: none;
     padding: 0;
   }
+
+  &:has(:disabled) > * {
+    cursor: not-allowed;
+  }
 }
