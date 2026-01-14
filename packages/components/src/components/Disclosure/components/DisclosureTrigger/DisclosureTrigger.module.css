@@ -1,0 +1,14 @@
+.base {
+  margin: unset;
+
+  & > * {
+    cursor: pointer;
+  }
+
+  & > button {
+    font: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+}

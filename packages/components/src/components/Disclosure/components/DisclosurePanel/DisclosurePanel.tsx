@@ -1,47 +1,36 @@
 'use client';
 
-import {
-  createContext,
-  type CSSProperties,
-  forwardRef,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
+import { useRef, useEffect, forwardRef, useContext } from 'react';
+import type { CSSProperties, ComponentRef } from 'react';
 
-import { clsx, mergeProps } from '@koobiq/react-core';
-import { type ContextValue, useContextProps } from '@koobiq/react-primitives';
-import type { DisclosureAria } from '@react-aria/disclosure';
+import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
+import { useContextProps } from '@koobiq/react-primitives';
 import { Transition, type TransitionStatus } from 'react-transition-group';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-import { DisclosureStateContext } from '../../Disclosure';
-import s from '../../Disclosure.module.css';
+import { DisclosureStateContext } from '../../index';
 
+import s from './DisclosurePanel.module.css';
 import type { DisclosurePanelRef, DisclosurePanelProps } from './index';
+import { DisclosurePanelContext } from './index';
 
-const TIMEOUT = 3000;
-
-export const DisclosurePanelContext =
-  createContext<ContextValue<DisclosureAria['panelProps'], HTMLDivElement>>(
-    null
-  );
+const TIMEOUT = 300;
 
 export const DisclosurePanel = forwardRef<
   DisclosurePanelRef,
   DisclosurePanelProps
 >((props, ref) => {
-  const { children, className, style, slotProps } = props;
+  const { children, className, style, slotProps, ...other } = props;
+
+  const domRef = useDOMRef<ComponentRef<'div'>>(ref);
   const innerRef = useRef<HTMLParagraphElement>(null);
 
-  const [panelProps] = useContextProps({}, ref, DisclosurePanelContext);
-
-  const panelRef = useRef<HTMLDivElement>(null);
+  const [panelProps] = useContextProps({}, domRef, DisclosurePanelContext);
 
   const { isExpanded } = useContext(DisclosureStateContext);
 
   useEffect(() => {
-    if (!isExpanded) panelRef?.current?.setAttribute('hidden', 'until-found');
+    if (!isExpanded) domRef?.current?.setAttribute('hidden', 'until-found');
   }, []);
 
   const transitionProps: TransitionProps<HTMLElement> = mergeProps(
@@ -49,13 +38,13 @@ export const DisclosurePanel = forwardRef<
       timeout: TIMEOUT,
       appear: true,
       onEnter: () => {
-        panelRef?.current?.removeAttribute('hidden');
+        domRef?.current?.removeAttribute('hidden');
       },
       onExited: () => {
-        panelRef?.current?.setAttribute('hidden', 'until-found');
+        domRef?.current?.setAttribute('hidden', 'until-found');
       },
       in: isExpanded,
-      nodeRef: panelRef,
+      nodeRef: domRef,
     },
     slotProps?.transition
   );
@@ -84,8 +73,8 @@ export const DisclosurePanel = forwardRef<
 
         return (
           <div
-            className={clsx(s.panel, className)}
-            ref={panelRef}
+            className={clsx(s.base, className)}
+            ref={domRef}
             {...panelProps}
             style={
               {
@@ -95,6 +84,7 @@ export const DisclosurePanel = forwardRef<
                 ...style,
               } as CSSProperties
             }
+            {...other}
           >
             <p ref={innerRef}>{children}</p>
           </div>

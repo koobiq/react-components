@@ -1,28 +1,44 @@
 'use client';
 
-import { createContext, type ReactNode } from 'react';
+import { forwardRef } from 'react';
 
-import type {
-  DisclosureGroupProps as AriaDisclosureGroupProps,
-  DisclosureGroupState,
-} from '@koobiq/react-primitives';
+import { clsx } from '@koobiq/react-core';
 import { useDisclosureGroupState } from '@koobiq/react-primitives';
 
-export const DisclosureGroupStateContext =
-  createContext<DisclosureGroupState | null>(null);
+import s from './DisclosureGroup.module.css';
+import type { DisclosureGroupProps, DisclosureGroupRef } from './index';
+import { DisclosureGroupStateContext } from './index';
 
-export type DisclosureGroupProps = AriaDisclosureGroupProps & {
-  children?: ReactNode;
-};
+export const DisclosureGroup = forwardRef<
+  DisclosureGroupRef,
+  DisclosureGroupProps
+>((props, ref) => {
+  const {
+    children,
+    className,
+    isDisabled,
+    expandedKeys,
+    onExpandedChange,
+    defaultExpandedKeys,
+    allowsMultipleExpanded,
+    ...other
+  } = props;
 
-export function DisclosureGroup(props: DisclosureGroupProps) {
-  const state = useDisclosureGroupState(props);
+  const state = useDisclosureGroupState({
+    isDisabled,
+    expandedKeys,
+    onExpandedChange,
+    defaultExpandedKeys,
+    allowsMultipleExpanded,
+  });
 
   return (
-    <div className="group">
+    <div className={clsx(s.base, className)} {...other} ref={ref}>
       <DisclosureGroupStateContext.Provider value={state}>
-        {props.children}
+        {children}
       </DisclosureGroupStateContext.Provider>
     </div>
   );
-}
+});
+
+DisclosureGroup.displayName = 'DisclosureGroup';

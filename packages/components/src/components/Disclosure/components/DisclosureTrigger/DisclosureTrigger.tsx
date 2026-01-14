@@ -1,27 +1,23 @@
 'use client';
 
-import { createContext, forwardRef } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import { clsx } from '@koobiq/react-core';
-import type { ContextValue } from '@koobiq/react-primitives';
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Button, useContextProps } from '@koobiq/react-primitives';
-import type { DisclosureAria } from '@react-aria/disclosure';
 
-import { Typography } from '../../../Typography';
-import s from '../../Disclosure.module.css';
+import { utilClasses } from '../../../../styles/utility';
 
-import type { DisclosureTriggerRef, DisclosureTriggerProps } from './index';
+import s from './DisclosureTrigger.module.css';
+import type { DisclosureBaseTriggerProps } from './index';
+import { DisclosureTriggerContext } from './index';
 
-export const DisclosureTriggerContext =
-  createContext<ContextValue<DisclosureAria['buttonProps'], HTMLButtonElement>>(
-    null
-  );
+const typography = utilClasses.typography.inherit;
 
-export const DisclosureTrigger = forwardRef<
-  DisclosureTriggerRef,
-  DisclosureTriggerProps
+export const DisclosureTrigger = polymorphicForwardRef<
+  'h3',
+  DisclosureBaseTriggerProps
 >((props, ref) => {
-  const { className, children } = props;
+  const { className, children, as: Tag = 'h3', ...other } = props;
 
   const [triggerProps, triggerRef] = useContextProps(
     { children },
@@ -30,15 +26,13 @@ export const DisclosureTrigger = forwardRef<
   );
 
   return (
-    <Typography
-      as="h3"
-      ref={ref}
-      variant="inherit"
-      className={clsx(s.trigger, className)}
-    >
+    <Tag className={clsx(s.base, typography, className)} {...other} ref={ref}>
       <Button {...triggerProps} ref={triggerRef} />
-    </Typography>
+    </Tag>
   );
 });
 
 DisclosureTrigger.displayName = 'DisclosureTrigger';
+
+export type DisclosureTriggerProps<As extends ElementType = 'h3'> =
+  ComponentPropsWithRef<typeof DisclosureTrigger<As>>;

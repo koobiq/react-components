@@ -1,0 +1,15 @@
+.base {
+  --disclosure-panel-duration: 300ms;
+
+  opacity: 1;
+  overflow: hidden;
+  will-change: block-size;
+  transition:
+    block-size var(--kbq-transition-slow),
+    opacity var(--kbq-transition-slow);
+  transition-duration: var(--disclosure-panel-duration);
+
+  & > * {
+    margin: unset;
+  }
+}

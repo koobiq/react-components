@@ -32,7 +32,7 @@ export const Base: Story = {
 
 export const Group: Story = {
   render: () => (
-    <DisclosureGroup>
+    <DisclosureGroup style={{ inlineSize: 300 }}>
       <Disclosure>
         <Disclosure.Trigger>Personal Information</Disclosure.Trigger>
         <Disclosure.Panel>Personal information form here.</Disclosure.Panel>
