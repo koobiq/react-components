@@ -18,6 +18,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  tags: ['status:new'],
 } satisfies Meta<typeof Accordion>;
 
 export default meta;
