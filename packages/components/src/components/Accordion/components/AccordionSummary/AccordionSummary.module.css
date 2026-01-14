@@ -1,5 +1,6 @@
 .base {
   --accordion-summary-block-size: 36px;
+  --accordion-summary-color: var(--kbq-foreground-contrast);
   --accordion-summary-chevron-color: var(--kbq-icon-contrast-fade);
 
   margin: unset;
@@ -14,6 +15,7 @@
   }
 }
 
+/* trigger */
 .trigger {
   inline-size: 100%;
   border: none;
@@ -23,12 +25,19 @@
   background: none;
   gap: var(--kbq-size-xxs);
   padding: var(--kbq-size-s);
+  color: var(--accordion-summary-color);
 }
 
 .hovered {
   --accordion-summary-chevron-color: var(--kbq-icon-contrast);
 }
 
+.disabled {
+  --accordion-summary-color: var(--kbq-foreground-contrast-secondary);
+  --accordion-summary-chevron-color: var(--kbq-states-icon-disabled);
+}
+
+/* chevron */
 .chevron {
   display: flex;
   align-items: center;

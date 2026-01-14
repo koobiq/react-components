@@ -38,7 +38,9 @@ export const AccordionSummary = polymorphicForwardRef<
       <Button
         {...triggerProps}
         data-slot="trigger"
-        className={({ isHovered }) => clsx(s.trigger, isHovered && s.hovered)}
+        className={({ isHovered, isDisabled }) =>
+          clsx(s.trigger, isHovered && s.hovered, isDisabled && s.disabled)
+        }
         ref={triggerRef}
       >
         <span className={s.chevron}>
