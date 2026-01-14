@@ -5,13 +5,9 @@ import type { ComponentPropsWithRef, ElementType } from 'react';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Button, useContextProps } from '@koobiq/react-primitives';
 
-import { utilClasses } from '../../../../styles/utility';
-
 import s from './DisclosureTrigger.module.css';
 import type { DisclosureBaseTriggerProps } from './index';
 import { DisclosureTriggerContext } from './index';
-
-const typography = utilClasses.typography.inherit;
 
 export const DisclosureTrigger = polymorphicForwardRef<
   'h3',
@@ -26,7 +22,7 @@ export const DisclosureTrigger = polymorphicForwardRef<
   );
 
   return (
-    <Tag className={clsx(s.base, typography, className)} {...other} ref={ref}>
+    <Tag className={clsx(s.base, className)} {...other} ref={ref}>
       <Button {...triggerProps} ref={triggerRef} />
     </Tag>
   );

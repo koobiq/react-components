@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../index';
+import { Typography } from '../index';
 
 import { Disclosure, DisclosureGroup } from './index';
 import { type DisclosureProps } from './index';
@@ -25,11 +26,12 @@ type Story = StoryObj<DisclosureProps>;
 
 export const Base: Story = {
   render: (args) => (
-    <Disclosure style={{ inlineSize: 300 }} {...args}>
-      <Disclosure.Trigger>Action</Disclosure.Trigger>
+    <Disclosure style={{ inlineSize: 200 }} {...args}>
+      <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+        Account settings
+      </Disclosure.Trigger>
       <Disclosure.Panel>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab distinctio
-        est libero nulla praesentium quidem quis quos sed sit velit!
+        Change your email, password, and security options.
       </Disclosure.Panel>
     </Disclosure>
   ),
@@ -37,11 +39,12 @@ export const Base: Story = {
 
 export const DefaultExpansion: Story = {
   render: (args) => (
-    <Disclosure style={{ inlineSize: 300 }} defaultExpanded {...args}>
-      <Disclosure.Trigger>Action</Disclosure.Trigger>
+    <Disclosure style={{ inlineSize: 200 }} defaultExpanded {...args}>
+      <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+        Account settings
+      </Disclosure.Trigger>
       <Disclosure.Panel>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab distinctio
-        est libero nulla praesentium quidem quis quos sed sit velit!
+        Change your email, password, and security options.
       </Disclosure.Panel>
     </Disclosure>
   ),
@@ -53,16 +56,16 @@ export const ControlledExpansion: Story = {
 
     return (
       <Disclosure
-        style={{ inlineSize: 300 }}
+        style={{ inlineSize: 200 }}
         isExpanded={isExpanded}
         onExpandedChange={setExpanded}
         {...args}
       >
-        <Disclosure.Trigger>Action</Disclosure.Trigger>
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Account settings
+        </Disclosure.Trigger>
         <Disclosure.Panel>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
-          distinctio est libero nulla praesentium quidem quis quos sed sit
-          velit!
+          Change your email, password, and security options.
         </Disclosure.Panel>
       </Disclosure>
     );
@@ -71,11 +74,12 @@ export const ControlledExpansion: Story = {
 
 export const Disabled: Story = {
   render: (args) => (
-    <Disclosure style={{ inlineSize: 300 }} isDisabled {...args}>
-      <Disclosure.Trigger>Action</Disclosure.Trigger>
+    <Disclosure style={{ inlineSize: 200 }} isDisabled {...args}>
+      <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+        Account settings
+      </Disclosure.Trigger>
       <Disclosure.Panel>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab distinctio
-        est libero nulla praesentium quidem quis quos sed sit velit!
+        Change your email, password, and security options.
       </Disclosure.Panel>
     </Disclosure>
   ),
@@ -83,14 +87,30 @@ export const Disabled: Story = {
 
 export const Group: Story = {
   render: () => (
-    <DisclosureGroup style={{ inlineSize: 300 }}>
+    <DisclosureGroup style={{ inlineSize: 200 }}>
       <Disclosure>
-        <Disclosure.Trigger>Personal Information</Disclosure.Trigger>
-        <Disclosure.Panel>Personal information form here.</Disclosure.Panel>
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Account settings
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Change your email, password, and security options.
+        </Disclosure.Panel>
       </Disclosure>
       <Disclosure>
-        <Disclosure.Trigger>Billing Address</Disclosure.Trigger>
-        <Disclosure.Panel>Billing address form here.</Disclosure.Panel>
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Notifications
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Choose what you want to be notified about and how often.
+        </Disclosure.Panel>
+      </Disclosure>
+      <Disclosure>
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Privacy
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Control profile visibility, data sharing, and connected apps.
+        </Disclosure.Panel>
       </Disclosure>
     </DisclosureGroup>
   ),
@@ -99,16 +119,32 @@ export const Group: Story = {
 export const DefaultExpansionDisclosureGroup: Story = {
   render: () => (
     <DisclosureGroup
-      defaultExpandedKeys={['personal']}
-      style={{ inlineSize: 300 }}
+      defaultExpandedKeys={['account']}
+      style={{ inlineSize: 200 }}
     >
-      <Disclosure id="personal">
-        <Disclosure.Trigger>Personal Information</Disclosure.Trigger>
-        <Disclosure.Panel>Personal information form here.</Disclosure.Panel>
+      <Disclosure id="account">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Account settings
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Change your email, password, and security options.
+        </Disclosure.Panel>
       </Disclosure>
-      <Disclosure id="billing">
-        <Disclosure.Trigger>Billing Address</Disclosure.Trigger>
-        <Disclosure.Panel>Billing address form here.</Disclosure.Panel>
+      <Disclosure id="notifications">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Notifications
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Choose what you want to be notified about and how often.
+        </Disclosure.Panel>
+      </Disclosure>
+      <Disclosure id="privacy">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Privacy
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Control profile visibility, data sharing, and connected apps.
+        </Disclosure.Panel>
       </Disclosure>
     </DisclosureGroup>
   ),
@@ -117,22 +153,38 @@ export const DefaultExpansionDisclosureGroup: Story = {
 export const ControlledDisclosureGroup: Story = {
   render: function Render() {
     const [expandedKeys, setExpandedKeys] = useState<Selection>(
-      new Set(['personal'])
+      new Set(['account'])
     );
 
     return (
       <DisclosureGroup
         expandedKeys={expandedKeys}
         onExpandedChange={setExpandedKeys}
-        style={{ inlineSize: 300 }}
+        style={{ inlineSize: 200 }}
       >
-        <Disclosure id="personal">
-          <Disclosure.Trigger>Personal Information</Disclosure.Trigger>
-          <Disclosure.Panel>Personal information form here.</Disclosure.Panel>
+        <Disclosure id="account">
+          <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+            Account settings
+          </Disclosure.Trigger>
+          <Disclosure.Panel>
+            Change your email, password, and security options.
+          </Disclosure.Panel>
         </Disclosure>
-        <Disclosure id="billing">
-          <Disclosure.Trigger>Billing Address</Disclosure.Trigger>
-          <Disclosure.Panel>Billing address form here.</Disclosure.Panel>
+        <Disclosure id="notifications">
+          <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+            Notifications
+          </Disclosure.Trigger>
+          <Disclosure.Panel>
+            Choose what you want to be notified about and how often.
+          </Disclosure.Panel>
+        </Disclosure>
+        <Disclosure id="privacy">
+          <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+            Privacy
+          </Disclosure.Trigger>
+          <Disclosure.Panel>
+            Control profile visibility, data sharing, and connected apps.
+          </Disclosure.Panel>
         </Disclosure>
       </DisclosureGroup>
     );
@@ -141,14 +193,30 @@ export const ControlledDisclosureGroup: Story = {
 
 export const MultipleExpandedDisclosureGroup: Story = {
   render: () => (
-    <DisclosureGroup allowsMultipleExpanded style={{ inlineSize: 300 }}>
-      <Disclosure id="personal">
-        <Disclosure.Trigger>Personal Information</Disclosure.Trigger>
-        <Disclosure.Panel>Personal information form here.</Disclosure.Panel>
+    <DisclosureGroup allowsMultipleExpanded style={{ inlineSize: 200 }}>
+      <Disclosure id="account">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Account settings
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Change your email, password, and security options.
+        </Disclosure.Panel>
       </Disclosure>
-      <Disclosure id="billing">
-        <Disclosure.Trigger>Billing Address</Disclosure.Trigger>
-        <Disclosure.Panel>Billing address form here.</Disclosure.Panel>
+      <Disclosure id="notifications">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Notifications
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Choose what you want to be notified about and how often.
+        </Disclosure.Panel>
+      </Disclosure>
+      <Disclosure id="privacy">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Privacy
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Control profile visibility, data sharing, and connected apps.
+        </Disclosure.Panel>
       </Disclosure>
     </DisclosureGroup>
   ),
@@ -156,14 +224,30 @@ export const MultipleExpandedDisclosureGroup: Story = {
 
 export const DisabledDisclosureGroup: Story = {
   render: () => (
-    <DisclosureGroup isDisabled style={{ inlineSize: 300 }}>
-      <Disclosure id="personal">
-        <Disclosure.Trigger>Personal Information</Disclosure.Trigger>
-        <Disclosure.Panel>Personal information form here.</Disclosure.Panel>
+    <DisclosureGroup isDisabled style={{ inlineSize: 200 }}>
+      <Disclosure id="account">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Account settings
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Change your email, password, and security options.
+        </Disclosure.Panel>
       </Disclosure>
-      <Disclosure id="billing">
-        <Disclosure.Trigger>Billing Address</Disclosure.Trigger>
-        <Disclosure.Panel>Billing address form here.</Disclosure.Panel>
+      <Disclosure id="notifications">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Notifications
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Choose what you want to be notified about and how often.
+        </Disclosure.Panel>
+      </Disclosure>
+      <Disclosure id="privacy">
+        <Disclosure.Trigger as={Typography} variant="text-normal-strong">
+          Privacy
+        </Disclosure.Trigger>
+        <Disclosure.Panel>
+          Control profile visibility, data sharing, and connected apps.
+        </Disclosure.Panel>
       </Disclosure>
     </DisclosureGroup>
   ),
