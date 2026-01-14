@@ -8,6 +8,7 @@ import { useNumberField } from '@react-aria/numberfield';
 import { useNumberFieldState } from '@react-stately/numberfield';
 
 import {
+  DEFAULT_SLOT,
   Provider,
   removeDataAttributes,
   useRenderProps,
@@ -77,6 +78,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
             ButtonContext,
             {
               slots: {
+                [DEFAULT_SLOT]: {},
                 increment: incrementButtonProps,
                 decrement: decrementButtonProps,
               },
@@ -86,6 +88,7 @@ export const NumberField = forwardRef<NumberFieldRef, NumberFieldProps>(
             TextContext,
             {
               slots: {
+                [DEFAULT_SLOT]: {},
                 description: descriptionProps,
                 errorMessage: errorMessageProps,
               },
