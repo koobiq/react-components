@@ -1,8 +1,8 @@
 'use client';
 
-import { createContext, useRef } from 'react';
+import { createContext, useRef, useContext } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useId } from '@koobiq/react-core';
 import {
   Provider,
   useDisclosure,
@@ -17,6 +17,7 @@ import {
   DisclosureTrigger,
   DisclosurePanelContext,
   DisclosureTriggerContext,
+  DisclosureGroupStateContext,
 } from './components';
 import s from './Disclosure.module.css';
 import type { DisclosureProps } from './types';
@@ -26,8 +27,28 @@ export const DisclosureStateContext = createContext<DisclosureState>(
 );
 
 export const DisclosureComponent = (props: DisclosureProps) => {
-  const { children, className, style } = props;
-  const state = useDisclosureState(props);
+  const { children, className, style, id: idProp } = props;
+
+  const defaultId = useId();
+  const id = idProp || defaultId;
+  const groupState = useContext(DisclosureGroupStateContext);
+
+  const isExpanded = groupState
+    ? groupState.expandedKeys?.has(id)
+    : props.isExpanded;
+
+  const state = useDisclosureState({
+    ...props,
+    isExpanded,
+    onExpandedChange(isExpanded) {
+      if (groupState) {
+        groupState.toggleKey(id);
+      }
+
+      props.onExpandedChange?.(isExpanded);
+    },
+  });
+
   const panelRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 

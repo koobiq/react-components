@@ -1,10 +1,15 @@
+'use client';
+
 import { createContext, type ReactNode } from 'react';
 
-import type { DisclosureGroupProps as AriaDisclosureGroupProps } from '@koobiq/react-primitives';
+import type {
+  DisclosureGroupProps as AriaDisclosureGroupProps,
+  DisclosureGroupState,
+} from '@koobiq/react-primitives';
 import { useDisclosureGroupState } from '@koobiq/react-primitives';
 
-const DisclosureGroupStateContext =
-  createContext<AriaDisclosureGroupProps | null>(null);
+export const DisclosureGroupStateContext =
+  createContext<DisclosureGroupState | null>(null);
 
 export type DisclosureGroupProps = AriaDisclosureGroupProps & {
   children?: ReactNode;

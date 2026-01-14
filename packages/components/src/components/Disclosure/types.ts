@@ -9,4 +9,5 @@ export type DisclosureProps = AriaDisclosureProps & {
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
+  id?: string;
 };
