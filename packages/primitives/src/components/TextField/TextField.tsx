@@ -16,6 +16,7 @@ import {
   useRenderProps,
   useSlottedContext,
   removeDataAttributes,
+  DEFAULT_SLOT,
 } from '../../utils';
 import { ButtonContext } from '../Button';
 import { FieldErrorContext } from '../FieldError';
@@ -141,6 +142,7 @@ function TextFieldRender(
             TextContext,
             {
               slots: {
+                [DEFAULT_SLOT]: {},
                 description: descriptionProps,
                 errorMessage: errorMessageProps,
               },
@@ -150,6 +152,7 @@ function TextFieldRender(
             ButtonContext,
             {
               slots: {
+                [DEFAULT_SLOT]: {},
                 'clear-button': {
                   'aria-label': stringFormatter.format('clear'),
                   preventFocusOnPress: true,

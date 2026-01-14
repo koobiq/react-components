@@ -11,6 +11,7 @@ import {
   Provider,
   removeDataAttributes,
   useSlottedContext,
+  DEFAULT_SLOT,
 } from '../../utils';
 import { FieldErrorContext } from '../FieldError';
 import { FormContext } from '../Form';
@@ -75,6 +76,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
               TextContext,
               {
                 slots: {
+                  [DEFAULT_SLOT]: {},
                   description: descriptionProps,
                   errorMessage: errorMessageProps,
                 },

@@ -10,7 +10,12 @@ import {
   useElementSize,
   useEventListener,
 } from '@koobiq/react-core';
-import { ButtonContext, Provider, useDialog } from '@koobiq/react-primitives';
+import {
+  ButtonContext,
+  Provider,
+  useDialog,
+  DEFAULT_SLOT,
+} from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 
@@ -81,6 +86,7 @@ const DialogComponent = forwardRef<DialogRef, DialogProps>(
             ButtonContext,
             {
               slots: {
+                [DEFAULT_SLOT]: {},
                 close: {
                   onPress: onClose,
                 },
