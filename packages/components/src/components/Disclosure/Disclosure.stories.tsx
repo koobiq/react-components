@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Disclosure } from './Disclosure';
+import { Disclosure, DisclosureGroup } from './index';
 import { type DisclosureProps } from './index';
 
 const meta = {
@@ -27,5 +27,20 @@ export const Base: Story = {
         est libero nulla praesentium quidem quis quos sed sit velit!
       </Disclosure.Panel>
     </Disclosure>
+  ),
+};
+
+export const Group: Story = {
+  render: () => (
+    <DisclosureGroup>
+      <Disclosure>
+        <Disclosure.Trigger>Personal Information</Disclosure.Trigger>
+        <Disclosure.Panel>Personal information form here.</Disclosure.Panel>
+      </Disclosure>
+      <Disclosure>
+        <Disclosure.Trigger>Billing Address</Disclosure.Trigger>
+        <Disclosure.Panel>Billing address form here.</Disclosure.Panel>
+      </Disclosure>
+    </DisclosureGroup>
   ),
 };
