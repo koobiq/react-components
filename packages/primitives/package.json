@@ -1,6 +1,6 @@
 {
   "name": "@koobiq/react-primitives",
-  "version": "0.21.0",
+  "version": "0.21.1",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",

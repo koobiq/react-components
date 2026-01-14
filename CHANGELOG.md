@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.1](https://github.com/koobiq/react-components/compare/0.21.0...0.21.1) (2026-01-14)
+
+
+### 🐞 Bug Fixes
+
+* fix slot-related errors in several components ([#250](https://github.com/koobiq/react-components/issues/250)) ([eb3f00b](https://github.com/koobiq/react-components/commit/eb3f00b4b6b2092cb9be83373c0b40c95c703ad2))
+
 ## [0.21.0](https://github.com/koobiq/react-components/compare/0.20.0...0.21.0) (2026-01-13)
 
 
