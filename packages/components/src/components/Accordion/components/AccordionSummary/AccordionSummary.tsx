@@ -29,7 +29,7 @@ export const AccordionSummary = polymorphicForwardRef<
     children,
     as: Tag = 'h3',
     expandIcon: expandIconProp,
-    expandIconPlacement = 'before-title',
+    expandIconPlacement = 'before-content',
     ...other
   } = props;
 

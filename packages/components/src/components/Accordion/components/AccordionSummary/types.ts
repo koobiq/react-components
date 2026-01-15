@@ -18,6 +18,9 @@ export type AccordionSummaryProps = {
   className?: string;
   /** Renders a custom expand icon. Receives the current expanded state. */
   expandIcon?: (isExpanded: boolean) => ReactElement;
-  /** Controls where the expand icon is placed relative to the content. */
+  /**
+   * Controls where the expand icon is placed relative to the content.
+   * @default "before-content"
+   */
   expandIconPlacement?: AccordionSummaryPropExpandIconPlacement;
 };
