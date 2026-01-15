@@ -22,6 +22,7 @@
   font: inherit;
   display: flex;
   outline: none;
+  text-align: start;
   background: none;
   gap: var(--kbq-size-xxs);
   padding: var(--kbq-size-s);
@@ -49,6 +50,7 @@
 /* expand-icon */
 .expandIcon {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   block-size: var(--kbq-size-xxl);
