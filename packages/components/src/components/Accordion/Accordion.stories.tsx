@@ -10,7 +10,14 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { AnimatedIcon, FlexBox, type Selection } from '../../index';
+import {
+  AnimatedIcon,
+  FlexBox,
+  Badge,
+  Link,
+  type Selection,
+  Typography,
+} from '../../index';
 
 import { accordionSummaryPropExpandIconPlacement } from './components';
 import { Accordion, AccordionGroup } from './index';
@@ -83,6 +90,74 @@ export const Disabled: Story = {
         Change your email, password, and security options.
       </Accordion.Details>
     </Accordion>
+  ),
+};
+
+export const Content: Story = {
+  render: (args) => (
+    <div style={{ inlineSize: 240 }}>
+      <Accordion {...args}>
+        <Accordion.Summary>
+          <FlexBox
+            gap="s"
+            alignItems="center"
+            justifyContent="space-between"
+            style={{ width: '100%' }}
+          >
+            <span>Accordion 1</span>
+            <Badge variant="error" size="compact">
+              Error
+            </Badge>
+          </FlexBox>
+        </Accordion.Summary>
+        <Accordion.Details>
+          <Typography variant="inherit">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis,
+            illum. <Link variant="inherit">See details.</Link>
+          </Typography>
+        </Accordion.Details>
+      </Accordion>
+      <Accordion {...args}>
+        <Accordion.Summary>
+          <FlexBox
+            gap="s"
+            alignItems="center"
+            justifyContent="space-between"
+            style={{ width: '100%' }}
+          >
+            <span>Accordion 2</span>
+            <Badge variant="success" size="compact">
+              Success
+            </Badge>
+          </FlexBox>
+        </Accordion.Summary>
+        <Accordion.Details>
+          <Typography variant="inherit">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis,
+            illum. <Link variant="inherit">See details.</Link>
+          </Typography>
+        </Accordion.Details>
+      </Accordion>
+      <Accordion {...args}>
+        <Accordion.Summary>
+          <FlexBox
+            gap="s"
+            alignItems="center"
+            justifyContent="space-between"
+            style={{ width: '100%' }}
+          >
+            <span>Accordion 3</span>
+            <Badge size="compact">System</Badge>
+          </FlexBox>
+        </Accordion.Summary>
+        <Accordion.Details>
+          <Typography variant="inherit">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis,
+            illum. <Link variant="inherit">See details.</Link>
+          </Typography>
+        </Accordion.Details>
+      </Accordion>
+    </div>
   ),
 };
 
