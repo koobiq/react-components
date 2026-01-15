@@ -20,7 +20,8 @@ export const AccordionDetails = forwardRef<
   AccordionDetailsRef,
   AccordionDetailsProps
 >((props, ref) => {
-  const { children, className, style, slotProps, ...other } = props;
+  const { children, className, style, slotProps, unmountOnExit, ...other } =
+    props;
 
   const domRef = useDOMRef<ComponentRef<'div'>>(ref);
   const innerRef = useRef<HTMLParagraphElement>(null);
@@ -44,6 +45,7 @@ export const AccordionDetails = forwardRef<
       },
       in: isExpanded,
       nodeRef: domRef,
+      unmountOnExit,
     },
     slotProps?.transition
   );

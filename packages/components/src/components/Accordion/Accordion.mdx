@@ -72,6 +72,14 @@ To change the expand icon placement in `Accordion.Summary`, set the `expandIconP
 
 <Story of={Stories.ExpandIconPlacement} />
 
+## Performance
+
+Accordion content is mounted by default, even when collapsed. This helps with SSR and SEO.
+If the content in `Accordion.Details` is heavy, or you render many accordions,
+you can improve performance by unmounting collapsed content with `unmountOnExit` prop.
+
+<Story of={Stories.UnmountOnExit} />
+
 ## Accordion Group
 
 An accordion group is a set of accordions where, by default, only one accordion can be expanded at a time.

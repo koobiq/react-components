@@ -247,6 +247,17 @@ export const ExpandIconPlacement: Story = {
   ),
 };
 
+export const UnmountOnExit: Story = {
+  render: (args) => (
+    <Accordion style={{ inlineSize: 200 }} {...args}>
+      <Accordion.Summary>Account settings</Accordion.Summary>
+      <Accordion.Details unmountOnExit>
+        Change your email, password, and security options.
+      </Accordion.Details>
+    </Accordion>
+  ),
+};
+
 export const Group: Story = {
   render: () => (
     <AccordionGroup style={{ inlineSize: 200 }}>
