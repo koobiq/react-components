@@ -1,7 +1,7 @@
 .base {
   --accordion-summary-block-size: 36px;
   --accordion-summary-color: var(--kbq-foreground-contrast);
-  --accordion-summary-chevron-color: var(--kbq-icon-contrast-fade);
+  --accordion-summary-expand-icon-color: var(--kbq-icon-contrast-fade);
 
   margin: unset;
   min-block-size: var(--accordion-summary-block-size);
@@ -29,21 +29,30 @@
 }
 
 .hovered {
-  --accordion-summary-chevron-color: var(--kbq-icon-contrast);
+  --accordion-summary-expand-icon-color: var(--kbq-icon-contrast);
 }
 
 .disabled {
   --accordion-summary-color: var(--kbq-foreground-contrast-secondary);
-  --accordion-summary-chevron-color: var(--kbq-states-icon-disabled);
+  --accordion-summary-expand-icon-color: var(--kbq-states-icon-disabled);
 }
 
-/* chevron */
-.chevron {
+.after-content,
+.separately {
+  padding: var(--kbq-size-s) var(--kbq-size-m);
+}
+
+.separately .expandIcon {
+  margin-inline-start: auto;
+}
+
+/* expand-icon */
+.expandIcon {
   display: flex;
   align-items: center;
   justify-content: center;
   block-size: var(--kbq-size-xxl);
   inline-size: var(--kbq-size-xxl);
-  color: var(--accordion-summary-chevron-color);
+  color: var(--accordion-summary-expand-icon-color);
   transition: color var(--kbq-transition-default);
 }

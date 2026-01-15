@@ -15,7 +15,7 @@ import { AnimatedIcon } from '../../../AnimatedIcon';
 import { AccordionStateContext } from '../../AccordionStateContext';
 
 import s from './AccordionSummary.module.css';
-import type { AccordionSummaryProps } from './index';
+import { type AccordionSummaryProps } from './index';
 import { AccordionSummaryContext } from './index';
 
 const textBig = utilClasses.typography['text-big'];
@@ -24,7 +24,15 @@ export const AccordionSummary = polymorphicForwardRef<
   'h3',
   AccordionSummaryProps
 >((props, ref) => {
-  const { className, children, as: Tag = 'h3', ...other } = props;
+  const {
+    className,
+    children,
+    as: Tag = 'h3',
+    expandIcon: expandIconProp,
+    expandIconPlacement = 'before-title',
+    ...other
+  } = props;
+
   const { isExpanded } = useContext(AccordionStateContext);
 
   const [triggerProps, triggerRef] = useContextProps(
@@ -33,24 +41,42 @@ export const AccordionSummary = polymorphicForwardRef<
     AccordionSummaryContext
   );
 
+  const expandIconDefault = (
+    <AnimatedIcon
+      icons={[<IconChevronRight16 key="expand-icon" />]}
+      directions={[0, 90]}
+      activeIndex={+isExpanded}
+    />
+  );
+
+  const expandIcon = (
+    <span
+      className={clsx(s.expandIcon)}
+      data-expanded={isExpanded || undefined}
+      aria-hidden="true"
+    >
+      {expandIconProp?.(isExpanded) ?? expandIconDefault}
+    </span>
+  );
+
   return (
     <Tag className={clsx(s.base, textBig, className)} {...other} ref={ref}>
       <Button
         {...triggerProps}
         data-slot="trigger"
         className={({ isHovered, isDisabled }) =>
-          clsx(s.trigger, isHovered && s.hovered, isDisabled && s.disabled)
+          clsx(
+            s.trigger,
+            isHovered && s.hovered,
+            isDisabled && s.disabled,
+            s[expandIconPlacement]
+          )
         }
         ref={triggerRef}
       >
-        <span className={s.chevron}>
-          <AnimatedIcon
-            icons={[<IconChevronRight16 key="chevron" />]}
-            directions={[0, 90]}
-            activeIndex={+isExpanded}
-          />
-        </span>
+        {expandIconPlacement === 'before-content' && expandIcon}
         {triggerProps.children}
+        {expandIconPlacement !== 'before-content' && expandIcon}
       </Button>
     </Tag>
   );

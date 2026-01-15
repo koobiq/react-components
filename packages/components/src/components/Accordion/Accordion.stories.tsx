@@ -1,9 +1,18 @@
 import { useState } from 'react';
 
+import {
+  IconPlus16,
+  IconXmark16,
+  IconLink16,
+  IconSun16,
+  IconLinkBroken16,
+  IconSunMoon16,
+} from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { Selection } from '../../index';
+import { AnimatedIcon, FlexBox, type Selection } from '../../index';
 
+import { accordionSummaryPropExpandIconPlacement } from './components';
 import { Accordion, AccordionGroup } from './index';
 import { type AccordionProps } from './index';
 
@@ -74,6 +83,89 @@ export const Disabled: Story = {
         Change your email, password, and security options.
       </Accordion.Details>
     </Accordion>
+  ),
+};
+
+export const CustomExpandIcon: Story = {
+  render: (args) => (
+    <div style={{ inlineSize: 200 }}>
+      <Accordion {...args}>
+        <Accordion.Summary
+          expandIconPlacement="separately"
+          expandIcon={(isExpanded) => (
+            <AnimatedIcon
+              icons={[<IconPlus16 key="plus" />, <IconXmark16 key="xmark" />]}
+              activeIndex={+isExpanded}
+            />
+          )}
+        >
+          Account settings
+        </Accordion.Summary>
+        <Accordion.Details>
+          Change your email, password, and security options.
+        </Accordion.Details>
+      </Accordion>
+      <Accordion>
+        <Accordion.Summary
+          expandIconPlacement="separately"
+          expandIcon={(isExpanded) => (
+            <AnimatedIcon
+              icons={[
+                <IconLink16 key="link" />,
+                <IconLinkBroken16 key="link-broken" />,
+              ]}
+              activeIndex={+isExpanded}
+            />
+          )}
+        >
+          Account settings
+        </Accordion.Summary>
+        <Accordion.Details>
+          Change your email, password, and security options.
+        </Accordion.Details>
+      </Accordion>
+      <Accordion>
+        <Accordion.Summary
+          expandIconPlacement="separately"
+          expandIcon={(isExpanded) => (
+            <AnimatedIcon
+              icons={[
+                <IconSun16 key="sun" />,
+                <IconSunMoon16 key="sun-moon" />,
+              ]}
+              directions={[0, 360]}
+              activeIndex={+isExpanded}
+            />
+          )}
+        >
+          Account settings
+        </Accordion.Summary>
+        <Accordion.Details>
+          Change your email, password, and security options.
+        </Accordion.Details>
+      </Accordion>
+    </div>
+  ),
+};
+
+export const ExpandIconPlacement: Story = {
+  render: () => (
+    <FlexBox
+      direction="column"
+      alignItems="stretch"
+      style={{ inlineSize: 200 }}
+    >
+      {accordionSummaryPropExpandIconPlacement.map((placement) => (
+        <Accordion key={placement}>
+          <Accordion.Summary expandIconPlacement={placement}>
+            Account settings
+          </Accordion.Summary>
+          <Accordion.Details>
+            Change your email, password, and security options.
+          </Accordion.Details>
+        </Accordion>
+      ))}
+    </FlexBox>
   ),
 };
 
