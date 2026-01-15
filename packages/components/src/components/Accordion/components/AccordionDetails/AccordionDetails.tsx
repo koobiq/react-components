@@ -36,7 +36,6 @@ export const AccordionDetails = forwardRef<
   const transitionProps: TransitionProps<HTMLElement> = mergeProps(
     {
       timeout: TIMEOUT,
-      appear: true,
       onEnter: () => {
         domRef?.current?.removeAttribute('hidden');
       },
