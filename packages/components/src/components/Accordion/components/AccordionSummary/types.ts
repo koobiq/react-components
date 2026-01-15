@@ -27,7 +27,7 @@ export type AccordionSummaryProps = {
   expandIcon?: (isExpanded: boolean) => ReactElement;
   /**
    * Controls where the expand icon is placed relative to the content.
-   * @default "before-content"
+   * @default 'before-content'
    */
   expandIconPlacement?: AccordionSummaryPropExpandIconPlacement;
   /** The props used for each slot inside. */

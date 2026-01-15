@@ -19,7 +19,6 @@ import {
   Typography,
 } from '../../index';
 
-import { accordionSummaryPropExpandIconPlacement } from './components';
 import { Accordion, AccordionGroup } from './index';
 import { type AccordionProps } from './index';
 
@@ -233,16 +232,30 @@ export const ExpandIconPlacement: Story = {
       alignItems="stretch"
       style={{ inlineSize: 200 }}
     >
-      {accordionSummaryPropExpandIconPlacement.map((placement) => (
-        <Accordion key={placement}>
-          <Accordion.Summary expandIconPlacement={placement}>
-            Account settings
-          </Accordion.Summary>
-          <Accordion.Details>
-            Change your email, password, and security options.
-          </Accordion.Details>
-        </Accordion>
-      ))}
+      <Accordion>
+        <Accordion.Summary expandIconPlacement="before-content">
+          Account settings
+        </Accordion.Summary>
+        <Accordion.Details>
+          Change your email, password, and security options.
+        </Accordion.Details>
+      </Accordion>
+      <Accordion>
+        <Accordion.Summary expandIconPlacement="after-content">
+          Account settings
+        </Accordion.Summary>
+        <Accordion.Details>
+          Change your email, password, and security options.
+        </Accordion.Details>
+      </Accordion>
+      <Accordion>
+        <Accordion.Summary expandIconPlacement="separately">
+          Account settings
+        </Accordion.Summary>
+        <Accordion.Details>
+          Change your email, password, and security options.
+        </Accordion.Details>
+      </Accordion>
     </FlexBox>
   ),
 };
