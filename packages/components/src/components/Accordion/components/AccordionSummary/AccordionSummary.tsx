@@ -3,12 +3,19 @@
 import {
   type ComponentPropsWithRef,
   type ElementType,
+  type ReactNode,
   useContext,
 } from 'react';
 
-import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
+import {
+  clsx,
+  type DataAttributeProps,
+  mergeProps,
+  polymorphicForwardRef,
+} from '@koobiq/react-core';
 import { IconChevronRight16 } from '@koobiq/react-icons';
 import { Button, useContextProps } from '@koobiq/react-primitives';
+import type { ButtonProps } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { AnimatedIcon } from '../../../AnimatedIcon';
@@ -30,15 +37,47 @@ export const AccordionSummary = polymorphicForwardRef<
     as: Tag = 'h3',
     expandIcon: expandIconProp,
     expandIconPlacement = 'before-content',
+    slotProps,
     ...other
   } = props;
 
   const { isExpanded } = useContext(AccordionStateContext);
 
-  const [triggerProps, triggerRef] = useContextProps(
+  const [triggerPropsAria, triggerRef] = useContextProps(
     { children },
     undefined,
     AccordionSummaryContext
+  );
+
+  const expandIconProps = mergeProps(
+    {
+      className: s.expandIcon,
+      'data-expanded': isExpanded || undefined,
+      'aria-hidden': 'true',
+    },
+    slotProps?.expandIcon
+  );
+
+  const triggerProps = mergeProps<
+    (
+      | (Omit<ButtonProps, 'children'> &
+          DataAttributeProps & { children?: ReactNode })
+      | undefined
+    )[]
+  >(
+    triggerPropsAria,
+    {
+      'data-slot': 'trigger',
+      className: ({ isHovered, isDisabled }) =>
+        clsx(
+          s.trigger,
+          isHovered && s.hovered,
+          isDisabled && s.disabled,
+          s[expandIconPlacement]
+        ),
+      ref: triggerRef,
+    },
+    slotProps?.trigger
   );
 
   const expandIconDefault = (
@@ -50,32 +89,16 @@ export const AccordionSummary = polymorphicForwardRef<
   );
 
   const expandIcon = (
-    <span
-      className={clsx(s.expandIcon)}
-      data-expanded={isExpanded || undefined}
-      aria-hidden="true"
-    >
+    <span {...expandIconProps}>
       {expandIconProp?.(isExpanded) ?? expandIconDefault}
     </span>
   );
 
   return (
     <Tag className={clsx(s.base, textBig, className)} {...other} ref={ref}>
-      <Button
-        {...triggerProps}
-        data-slot="trigger"
-        className={({ isHovered, isDisabled }) =>
-          clsx(
-            s.trigger,
-            isHovered && s.hovered,
-            isDisabled && s.disabled,
-            s[expandIconPlacement]
-          )
-        }
-        ref={triggerRef}
-      >
+      <Button {...triggerProps}>
         {expandIconPlacement === 'before-content' && expandIcon}
-        {triggerProps.children}
+        {triggerProps?.children}
         {expandIconPlacement !== 'before-content' && expandIcon}
       </Button>
     </Tag>

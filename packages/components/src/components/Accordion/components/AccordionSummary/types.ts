@@ -1,4 +1,11 @@
-import type { ComponentRef, ReactNode, ReactElement } from 'react';
+import type {
+  ComponentRef,
+  ReactNode,
+  ReactElement,
+  ComponentPropsWithRef,
+} from 'react';
+
+import type { ButtonProps } from '@koobiq/react-primitives';
 
 export type AccordionSummaryRef = ComponentRef<'h3'>;
 
@@ -23,4 +30,9 @@ export type AccordionSummaryProps = {
    * @default "before-content"
    */
   expandIconPlacement?: AccordionSummaryPropExpandIconPlacement;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    trigger?: Omit<ButtonProps, 'children'>;
+    expandIcon?: ComponentPropsWithRef<'span'>;
+  };
 };
