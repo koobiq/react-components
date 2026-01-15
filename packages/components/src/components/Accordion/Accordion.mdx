@@ -25,34 +25,63 @@ import { Accordion, AccordionGroup } from '@koobiq/react-components';
 
 <Props />
 
+## Components
+
+Use these components to create expandable sections.
+
+- `Accordion` — A single accordion item.
+- `Accordion.Summary` — The header. Press it to expand/collapse the item.
+- `Accordion.Details` — The content shown when the item is expanded.
+- `AccordionGroup` — A container for multiple accordions. By default, only one item is expanded at a time.
+
 ## Default expansion
+
+Whether the accordion is expanded or not by default can be set with the `defaultExpanded` prop.
 
 <Story of={Stories.DefaultExpansion} />
 
 ## Controlled expansion
 
+Expansion can be controlled using the `isExpanded` prop, paired with the `onExpandedChange` event.
+The `onExpandedChange` event is fired when the user presses the trigger button (`Accordion.Summary`).
+
 <Story of={Stories.ControlledExpansion} />
 
 ## Disabled
 
+An accordion can be disabled with the `isDisabled` prop.
+This will disable the trigger button and prevent the details panel from being opened or closed.
+
 <Story of={Stories.Disabled} />
 
-## Group
+## Accordion Group
+
+An accordion group is a set of accordions where, by default, only one accordion can be expanded at a time.
 
 <Story of={Stories.Group} />
 
 ### Default expansion
 
-<Story of={Stories.DefaultExpansionDisclosureGroup} />
+Which accordion is expanded by default can be set with the `defaultExpandedKeys` prop.
+
+<Story of={Stories.DefaultExpansionAccordionGroup} />
 
 ### Controlled expansion
 
-<Story of={Stories.ControlledDisclosureGroup} />
+Expansion can be controlled using the `expandedKeys` prop, paired with the `onExpandedChange` event.
+The `onExpandedChange` event is fired when one of the accordion is expanded or collapsed.
+
+<Story of={Stories.ControlledAccordionGroup} />
 
 ### Multiple expanded
 
-<Story of={Stories.MultipleExpandedDisclosureGroup} />
+Multiple accordions can be expanded at the same time by setting the `allowsMultipleExpanded` prop to `true`.
+
+<Story of={Stories.MultipleExpandedAccordionGroup} />
 
 ### Disabled
 
-<Story of={Stories.DisabledDisclosureGroup} />
+An entire accordion group can be disabled with the `isDisabled` prop.
+This will disable all trigger buttons and prevent the details panels from being opened or closed.
+
+<Story of={Stories.DisabledAccordionGroup} />

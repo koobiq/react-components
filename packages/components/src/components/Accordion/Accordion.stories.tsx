@@ -102,7 +102,7 @@ export const Group: Story = {
   ),
 };
 
-export const DefaultExpansionDisclosureGroup: Story = {
+export const DefaultExpansionAccordionGroup: Story = {
   render: () => (
     <AccordionGroup
       defaultExpandedKeys={['account']}
@@ -130,7 +130,7 @@ export const DefaultExpansionDisclosureGroup: Story = {
   ),
 };
 
-export const ControlledDisclosureGroup: Story = {
+export const ControlledAccordionGroup: Story = {
   render: function Render() {
     const [expandedKeys, setExpandedKeys] = useState<Selection>(
       new Set(['account'])
@@ -165,7 +165,7 @@ export const ControlledDisclosureGroup: Story = {
   },
 };
 
-export const MultipleExpandedDisclosureGroup: Story = {
+export const MultipleExpandedAccordionGroup: Story = {
   render: () => (
     <AccordionGroup allowsMultipleExpanded style={{ inlineSize: 200 }}>
       <Accordion id="account">
@@ -190,7 +190,7 @@ export const MultipleExpandedDisclosureGroup: Story = {
   ),
 };
 
-export const DisabledDisclosureGroup: Story = {
+export const DisabledAccordionGroup: Story = {
   render: () => (
     <AccordionGroup isDisabled style={{ inlineSize: 200 }}>
       <Accordion id="account">
