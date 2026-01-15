@@ -100,6 +100,7 @@ export const Content: Story = {
         <Accordion.Summary>
           <FlexBox
             gap="s"
+            as="span"
             alignItems="center"
             justifyContent="space-between"
             style={{ width: '100%' }}
@@ -111,7 +112,7 @@ export const Content: Story = {
           </FlexBox>
         </Accordion.Summary>
         <Accordion.Details>
-          <Typography variant="inherit">
+          <Typography variant="inherit" as="span">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis,
             illum. <Link variant="inherit">See details.</Link>
           </Typography>
@@ -121,6 +122,7 @@ export const Content: Story = {
         <Accordion.Summary>
           <FlexBox
             gap="s"
+            as="span"
             alignItems="center"
             justifyContent="space-between"
             style={{ width: '100%' }}
@@ -132,7 +134,7 @@ export const Content: Story = {
           </FlexBox>
         </Accordion.Summary>
         <Accordion.Details>
-          <Typography variant="inherit">
+          <Typography variant="inherit" as="span">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis,
             illum. <Link variant="inherit">See details.</Link>
           </Typography>
@@ -142,6 +144,7 @@ export const Content: Story = {
         <Accordion.Summary>
           <FlexBox
             gap="s"
+            as="span"
             alignItems="center"
             justifyContent="space-between"
             style={{ width: '100%' }}
@@ -151,7 +154,7 @@ export const Content: Story = {
           </FlexBox>
         </Accordion.Summary>
         <Accordion.Details>
-          <Typography variant="inherit">
+          <Typography variant="inherit" as="span">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis,
             illum. <Link variant="inherit">See details.</Link>
           </Typography>
