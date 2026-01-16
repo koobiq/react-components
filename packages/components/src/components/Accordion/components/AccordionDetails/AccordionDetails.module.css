@@ -1,0 +1,40 @@
+.base {
+  --accordion-details-duration: 300ms;
+  --accordion-details-block-size: 0;
+  --accordion-details-padding: 0 var(--kbq-size-m) var(--kbq-size-s)
+    var(--kbq-size-m);
+
+  opacity: 1;
+  overflow: hidden;
+  will-change: block-size;
+  transition:
+    block-size var(--kbq-transition-slow),
+    opacity var(--kbq-transition-slow);
+  transition-duration: var(--accordion-details-duration);
+
+  & > * {
+    padding: var(--accordion-details-padding);
+    margin: unset;
+  }
+}
+
+/* animation */
+.base[data-transition='entering'] {
+  opacity: 1;
+  block-size: var(--accordion-details-block-size);
+}
+
+.base[data-transition='entered'] {
+  opacity: 1;
+  block-size: var(--accordion-details-block-size);
+}
+
+.base[data-transition='exiting'] {
+  opacity: 0;
+  block-size: 0;
+}
+
+.base[data-transition='exited'] {
+  opacity: 0;
+  block-size: 0;
+}

@@ -1,0 +1,120 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Accordion.stories';
+
+<Meta of={Stories} />
+
+# Accordion
+
+<Status variant="experimental" />
+
+Accordion display a list of high-level options that can expand/collapse to reveal more information.
+
+```tsx
+import { Accordion, AccordionGroup } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Components
+
+Use these components to create expandable sections.
+
+- `Accordion` — A single accordion item.
+- `Accordion.Summary` — The header. Press it to expand/collapse the item.
+- `Accordion.Details` — The content shown when the item is expanded.
+- `AccordionGroup` — A container for multiple accordions. By default, only one item is expanded at a time.
+
+## Default expansion
+
+Whether the accordion is expanded or not by default can be set with the `defaultExpanded` prop.
+
+<Story of={Stories.DefaultExpansion} />
+
+## Controlled expansion
+
+Expansion can be controlled using the `isExpanded` prop, paired with the `onExpandedChange` event.
+The `onExpandedChange` event is fired when the user presses the trigger button (`Accordion.Summary`).
+
+<Story of={Stories.ControlledExpansion} />
+
+## Disabled
+
+An accordion can be disabled with the `isDisabled` prop.
+This will disable the trigger button and prevent the details panel from being opened or closed.
+
+<Story of={Stories.Disabled} />
+
+## Content
+
+You can place custom content inside `Accordion.Summary` as well as `Accordion.Details`.
+
+<Story of={Stories.Content} />
+
+## Custom Expand Icon
+
+The `Accordion.Summary` has a prop called `expandIcon`. You can use it to customize the open/close icon.
+
+<Story of={Stories.CustomExpandIcon} />
+
+## Expand Icon Placement
+
+To change the expand icon placement in `Accordion.Summary`, set the `expandIconPlacement` prop.
+
+<Story of={Stories.ExpandIconPlacement} />
+
+## Performance
+
+Accordion content is mounted by default, even when collapsed. This helps with SSR and SEO.
+If the content in `Accordion.Details` is heavy, or you render many accordions,
+you can improve performance by unmounting collapsed content with `unmountOnExit` prop.
+
+<Story of={Stories.UnmountOnExit} />
+
+## Changing heading level
+
+By default, the `Accordion.Summary` uses an **h3** element for the heading.
+You can change the heading element using the `as` prop to ensure the correct heading hierarchy in your document.
+
+<Story of={Stories.ChangingHeadingLevel} />
+
+## Accordion Group
+
+An accordion group is a set of accordions where, by default, only one accordion can be expanded at a time.
+
+<Story of={Stories.Group} />
+
+### Default expansion
+
+Which accordion is expanded by default can be set with the `defaultExpandedKeys` prop.
+
+<Story of={Stories.DefaultExpansionAccordionGroup} />
+
+### Controlled expansion
+
+Expansion can be controlled using the `expandedKeys` prop, paired with the `onExpandedChange` event.
+The `onExpandedChange` event is fired when one of the accordion is expanded or collapsed.
+
+<Story of={Stories.ControlledAccordionGroup} />
+
+### Multiple expanded
+
+Multiple accordions can be expanded at the same time by setting the `allowsMultipleExpanded` prop to `true`.
+
+<Story of={Stories.MultipleExpandedAccordionGroup} />
+
+### Disabled
+
+An entire accordion group can be disabled with the `isDisabled` prop.
+This will disable all trigger buttons and prevent the details panels from being opened or closed.
+
+<Story of={Stories.DisabledAccordionGroup} />

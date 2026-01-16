@@ -1,0 +1,14 @@
+.base {
+  --accordion-outline-width: var(--kbq-size-3xs);
+  --accordion-outline-color: transparent;
+
+  display: flex;
+  flex-direction: column;
+  transition: outline-color var(--kbq-transition-default);
+  outline-offset: calc(-1 * var(--accordion-outline-width));
+  outline: var(--accordion-outline-width) solid var(--accordion-outline-color);
+}
+
+.base:has([data-slot='trigger'][data-focus-visible='true']) {
+  --accordion-outline-color: var(--kbq-states-line-focus-theme);
+}
