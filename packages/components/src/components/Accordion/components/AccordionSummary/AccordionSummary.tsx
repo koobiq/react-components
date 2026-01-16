@@ -95,7 +95,13 @@ export const AccordionSummary = polymorphicForwardRef<
   );
 
   return (
-    <Tag className={clsx(s.base, textBig, className)} {...other} ref={ref}>
+    <Tag
+      className={clsx(s.base, textBig, className)}
+      data-expanded={isExpanded || undefined}
+      data-expand-icon-placement={expandIconPlacement}
+      {...other}
+      ref={ref}
+    >
       <Button {...triggerProps}>
         {expandIconPlacement === 'before-content' && expandIcon}
         {triggerProps?.children}
