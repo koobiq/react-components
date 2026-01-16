@@ -224,25 +224,19 @@ describe('AccordionGroup', () => {
   function RenderGroup(props?: AccordionGroupProps) {
     return (
       <AccordionGroup {...baseProps} style={{ inlineSize: 200 }} {...props}>
-        <Accordion id="account">
+        <Accordion id="accordion-1">
           <Accordion.Summary>Account settings</Accordion.Summary>
-          <Accordion.Details data-testid="details-account">
-            Change your email, password, and security options.
-          </Accordion.Details>
+          <Accordion.Details data-testid="details-accordion-1" />
         </Accordion>
 
-        <Accordion id="notifications">
+        <Accordion id="accordion-2">
           <Accordion.Summary>Notifications</Accordion.Summary>
-          <Accordion.Details data-testid="details-notifications">
-            Choose what you want to be notified about and how often.
-          </Accordion.Details>
+          <Accordion.Details data-testid="details-accordion-2" />
         </Accordion>
 
-        <Accordion id="privacy">
+        <Accordion id="accordion-3">
           <Accordion.Summary>Privacy</Accordion.Summary>
-          <Accordion.Details data-testid="details-privacy">
-            Control profile visibility, data sharing, and connected apps.
-          </Accordion.Details>
+          <Accordion.Details data-testid="details-accordion-3" />
         </Accordion>
       </AccordionGroup>
     );
@@ -258,9 +252,7 @@ describe('AccordionGroup', () => {
   it('should merge a custom class name with the default ones', () => {
     const className = 'foo';
 
-    const { container } = render(
-      <AccordionGroup className={className}>Body</AccordionGroup>
-    );
+    const { container } = render(<AccordionGroup className={className} />);
 
     const root = container.querySelector('div');
     expect(root?.className).toContain(className);
@@ -274,31 +266,31 @@ describe('AccordionGroup', () => {
   it('should render all accordions collapsed by default (single expansion mode)', () => {
     render(<RenderGroup />);
 
-    isCollapsed('account');
-    isCollapsed('notifications');
-    isCollapsed('privacy');
+    isCollapsed('accordion-1');
+    isCollapsed('accordion-2');
+    isCollapsed('accordion-3');
   });
 
   it('should expand one accordion on click and collapse the previously expanded one by default', async () => {
     render(<RenderGroup />);
 
     await user.click(screen.getByText('Account settings'));
-    isExpanded('account');
-    isCollapsed('notifications');
-    isCollapsed('privacy');
+    isExpanded('accordion-1');
+    isCollapsed('accordion-2');
+    isCollapsed('accordion-3');
 
     await user.click(screen.getByText('Notifications'));
-    isCollapsed('account');
-    isExpanded('notifications');
-    isCollapsed('privacy');
+    isCollapsed('accordion-1');
+    isExpanded('accordion-2');
+    isCollapsed('accordion-3');
   });
 
   it('should expand items from defaultExpandedKeys', () => {
-    render(<RenderGroup defaultExpandedKeys={['account']} />);
+    render(<RenderGroup defaultExpandedKeys={['accordion-1']} />);
 
-    isExpanded('account');
-    isCollapsed('notifications');
-    isCollapsed('privacy');
+    isExpanded('accordion-1');
+    isCollapsed('accordion-2');
+    isCollapsed('accordion-3');
   });
 
   it('should allow multiple expanded items when allowsMultipleExpanded is true', async () => {
@@ -307,15 +299,15 @@ describe('AccordionGroup', () => {
     await user.click(screen.getByText('Account settings'));
     await user.click(screen.getByText('Notifications'));
 
-    isExpanded('account');
-    isExpanded('notifications');
-    isCollapsed('privacy');
+    isExpanded('accordion-1');
+    isExpanded('accordion-2');
+    isCollapsed('accordion-3');
   });
 
   it('should work as a controlled component (expandedKeys + onExpandedChange)', async () => {
     function Controlled() {
       const [expandedKeys, setExpandedKeys] = useState<Selection>(
-        new Set(['account'])
+        new Set(['accordion-1'])
       );
 
       return (
@@ -328,14 +320,14 @@ describe('AccordionGroup', () => {
 
     render(<Controlled />);
 
-    isExpanded('account');
-    isCollapsed('notifications');
-    isCollapsed('privacy');
+    isExpanded('accordion-1');
+    isCollapsed('accordion-2');
+    isCollapsed('accordion-3');
 
     await user.click(screen.getByText('Privacy'));
-    isCollapsed('account');
-    isCollapsed('notifications');
-    isExpanded('privacy');
+    isCollapsed('accordion-1');
+    isCollapsed('accordion-2');
+    isExpanded('accordion-3');
   });
 
   it('should call onExpandedChange when toggled (uncontrolled -> controlled callback)', async () => {
@@ -354,8 +346,8 @@ describe('AccordionGroup', () => {
     await user.click(screen.getByText('Account settings'));
     await user.click(screen.getByText('Notifications'));
 
-    isCollapsed('account');
-    isCollapsed('notifications');
-    isCollapsed('privacy');
+    isCollapsed('accordion-1');
+    isCollapsed('accordion-2');
+    isCollapsed('accordion-3');
   });
 });
