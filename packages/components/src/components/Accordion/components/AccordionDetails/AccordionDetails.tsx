@@ -5,7 +5,7 @@ import type { CSSProperties, ComponentRef } from 'react';
 
 import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
 import { useContextProps } from '@koobiq/react-primitives';
-import { Transition, type TransitionStatus } from 'react-transition-group';
+import { Transition } from 'react-transition-group';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
 import { AccordionStateContext } from '../../index';
@@ -14,7 +14,7 @@ import s from './AccordionDetails.module.css';
 import type { AccordionDetailsRef, AccordionDetailsProps } from './index';
 import { AccordionDetailsContext } from './index';
 
-const TIMEOUT = 300;
+const TRANSITION_TIMEOUT = 300;
 
 export const AccordionDetails = forwardRef<
   AccordionDetailsRef,
@@ -36,7 +36,7 @@ export const AccordionDetails = forwardRef<
 
   const transitionProps: TransitionProps<HTMLElement> = mergeProps(
     {
-      timeout: TIMEOUT,
+      timeout: TRANSITION_TIMEOUT,
       onEnter: () => {
         domRef?.current?.removeAttribute('hidden');
       },
@@ -52,45 +52,24 @@ export const AccordionDetails = forwardRef<
 
   return (
     <Transition {...transitionProps}>
-      {(state) => {
-        const transitionStyles: Partial<
-          Record<TransitionStatus, CSSProperties>
-        > = {
-          entering: {
-            opacity: 1,
-            height: innerRef.current?.clientHeight,
-          },
-          entered: {
-            opacity: 1,
-            height: isExpanded ? 'auto' : innerRef.current?.clientHeight,
-          },
-          exiting: {
-            opacity: 0,
-          },
-          exited: {
-            opacity: 0,
-          },
-        };
-
-        return (
-          <div
-            className={clsx(s.base, className)}
-            ref={domRef}
-            {...panelProps}
-            style={
-              {
-                height: 0,
-                '--accordion-details-duration': `${TIMEOUT}ms`,
-                ...transitionStyles[state],
-                ...style,
-              } as CSSProperties
-            }
-            {...other}
-          >
-            <p ref={innerRef}>{children}</p>
-          </div>
-        );
-      }}
+      {(transition) => (
+        <div
+          ref={domRef}
+          {...panelProps}
+          data-transition={transition}
+          className={clsx(s.base, className)}
+          style={
+            {
+              '--accordion-details-block-size': `${innerRef.current?.clientHeight}px`,
+              '--accordion-details-duration': `${TRANSITION_TIMEOUT}ms`,
+              ...style,
+            } as CSSProperties
+          }
+          {...other}
+        >
+          <p ref={innerRef}>{children}</p>
+        </div>
+      )}
     </Transition>
   );
 });
