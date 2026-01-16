@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://github.com/koobiq/react-components/compare/0.21.1...0.22.0) (2026-01-16)
+
+
+### 🚀 Features
+
+* **components:** add `Accordion` component (DS-4388) ([#251](https://github.com/koobiq/react-components/issues/251)) ([e3d841b](https://github.com/koobiq/react-components/commit/e3d841bb3e1c7820bfcc21fbfab3610723b66e53))
+
 ## [0.21.1](https://github.com/koobiq/react-components/compare/0.21.0...0.21.1) (2026-01-14)
 
 
