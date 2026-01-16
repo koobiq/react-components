@@ -271,6 +271,17 @@ export const UnmountOnExit: Story = {
   ),
 };
 
+export const ChangingHeadingLevel: Story = {
+  render: (args) => (
+    <Accordion style={{ inlineSize: 200 }} {...args}>
+      <Accordion.Summary as="h4">Account settings</Accordion.Summary>
+      <Accordion.Details unmountOnExit>
+        Change your email, password, and security options.
+      </Accordion.Details>
+    </Accordion>
+  ),
+};
+
 export const Group: Story = {
   render: () => (
     <AccordionGroup style={{ inlineSize: 200 }}>
