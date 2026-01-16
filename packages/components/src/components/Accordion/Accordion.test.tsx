@@ -4,7 +4,9 @@ import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { Accordion, AccordionGroup } from './index';
+import type { Selection } from '../../index';
+
+import { Accordion, AccordionGroup, type AccordionGroupProps } from './index';
 
 describe('Accordion', () => {
   beforeEach(() => {
@@ -206,8 +208,45 @@ describe('Accordion', () => {
 describe('AccordionGroup', () => {
   const baseProps = { 'data-testid': 'accordion-group' };
 
+  const user = userEvent.setup();
+
   const getAccordionGroup = () =>
-    screen.getByTestId<HTMLButtonElement>('accordion-group');
+    screen.getByTestId<HTMLDivElement>('accordion-group');
+
+  const getDetails = (id: string) => screen.queryByTestId(`details-${id}`);
+
+  const isExpanded = (id: string) =>
+    expect(getDetails(id)).toHaveAttribute('aria-hidden', 'false');
+
+  const isCollapsed = (id: string) =>
+    expect(getDetails(id)).toHaveAttribute('aria-hidden', 'true');
+
+  function RenderGroup(props?: AccordionGroupProps) {
+    return (
+      <AccordionGroup {...baseProps} style={{ inlineSize: 200 }} {...props}>
+        <Accordion id="account">
+          <Accordion.Summary>Account settings</Accordion.Summary>
+          <Accordion.Details data-testid="details-account">
+            Change your email, password, and security options.
+          </Accordion.Details>
+        </Accordion>
+
+        <Accordion id="notifications">
+          <Accordion.Summary>Notifications</Accordion.Summary>
+          <Accordion.Details data-testid="details-notifications">
+            Choose what you want to be notified about and how often.
+          </Accordion.Details>
+        </Accordion>
+
+        <Accordion id="privacy">
+          <Accordion.Summary>Privacy</Accordion.Summary>
+          <Accordion.Details data-testid="details-privacy">
+            Control profile visibility, data sharing, and connected apps.
+          </Accordion.Details>
+        </Accordion>
+      </AccordionGroup>
+    );
+  }
 
   it('should forward a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -228,10 +267,95 @@ describe('AccordionGroup', () => {
   });
 
   it('should set a custom style', () => {
-    const style = { padding: 20 };
-
-    render(<AccordionGroup {...baseProps} style={style} />);
-
+    render(<AccordionGroup {...baseProps} style={{ padding: 20 }} />);
     expect(getAccordionGroup()).toHaveStyle({ padding: '20px' });
+  });
+
+  it('should render all accordions collapsed by default (single expansion mode)', () => {
+    render(<RenderGroup />);
+
+    isCollapsed('account');
+    isCollapsed('notifications');
+    isCollapsed('privacy');
+  });
+
+  it('should expand one accordion on click and collapse the previously expanded one by default', async () => {
+    render(<RenderGroup />);
+
+    await user.click(screen.getByText('Account settings'));
+    isExpanded('account');
+    isCollapsed('notifications');
+    isCollapsed('privacy');
+
+    await user.click(screen.getByText('Notifications'));
+    isCollapsed('account');
+    isExpanded('notifications');
+    isCollapsed('privacy');
+  });
+
+  it('should expand items from defaultExpandedKeys', () => {
+    render(<RenderGroup defaultExpandedKeys={['account']} />);
+
+    isExpanded('account');
+    isCollapsed('notifications');
+    isCollapsed('privacy');
+  });
+
+  it('should allow multiple expanded items when allowsMultipleExpanded is true', async () => {
+    render(<RenderGroup allowsMultipleExpanded />);
+
+    await user.click(screen.getByText('Account settings'));
+    await user.click(screen.getByText('Notifications'));
+
+    isExpanded('account');
+    isExpanded('notifications');
+    isCollapsed('privacy');
+  });
+
+  it('should work as a controlled component (expandedKeys + onExpandedChange)', async () => {
+    function Controlled() {
+      const [expandedKeys, setExpandedKeys] = useState<Selection>(
+        new Set(['account'])
+      );
+
+      return (
+        <RenderGroup
+          expandedKeys={expandedKeys}
+          onExpandedChange={setExpandedKeys}
+        />
+      );
+    }
+
+    render(<Controlled />);
+
+    isExpanded('account');
+    isCollapsed('notifications');
+    isCollapsed('privacy');
+
+    await user.click(screen.getByText('Privacy'));
+    isCollapsed('account');
+    isCollapsed('notifications');
+    isExpanded('privacy');
+  });
+
+  it('should call onExpandedChange when toggled (uncontrolled -> controlled callback)', async () => {
+    const onExpandedChange = vi.fn();
+
+    render(<RenderGroup onExpandedChange={onExpandedChange} />);
+
+    await user.click(screen.getByText('Account settings'));
+
+    expect(onExpandedChange).toHaveBeenCalled();
+  });
+
+  it('should not expand any accordion when group is disabled', async () => {
+    render(<RenderGroup isDisabled />);
+
+    await user.click(screen.getByText('Account settings'));
+    await user.click(screen.getByText('Notifications'));
+
+    isCollapsed('account');
+    isCollapsed('notifications');
+    isCollapsed('privacy');
   });
 });
