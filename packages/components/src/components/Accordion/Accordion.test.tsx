@@ -203,6 +203,29 @@ describe('Accordion', () => {
 
     expect(getSummary().tagName.toLowerCase()).toBe('h4');
   });
+
+  it('should render custom expandIcon and pass expanded state', async () => {
+    const user = userEvent.setup();
+
+    const expandIcon = vi.fn((isExpanded: boolean) => (
+      <span data-testid="expand-icon">{isExpanded ? 'OPEN' : 'CLOSED'}</span>
+    ));
+
+    render(
+      <Accordion>
+        <Accordion.Summary expandIcon={expandIcon}>Summary</Accordion.Summary>
+        <Accordion.Details>Details</Accordion.Details>
+      </Accordion>
+    );
+
+    expect(screen.getByTestId('expand-icon')).toHaveTextContent('CLOSED');
+    expect(expandIcon).toHaveBeenCalledWith(false);
+
+    await user.click(getTrigger());
+
+    expect(screen.getByTestId('expand-icon')).toHaveTextContent('OPEN');
+    expect(expandIcon).toHaveBeenLastCalledWith(true);
+  });
 });
 
 describe('AccordionGroup', () => {
