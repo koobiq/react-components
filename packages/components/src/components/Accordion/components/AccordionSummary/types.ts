@@ -30,6 +30,8 @@ export type AccordionSummaryProps = {
    * @default 'before-content'
    */
   expandIconPlacement?: AccordionSummaryPropExpandIconPlacement;
+  /** If `true`, hides the expand icon. */
+  hideExpandIcon?: boolean;
   /** The props used for each slot inside. */
   slotProps?: {
     trigger?: Omit<ButtonProps, 'children'>;

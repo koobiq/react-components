@@ -37,6 +37,7 @@ export const AccordionSummary = polymorphicForwardRef<
     as: Tag = 'h3',
     expandIcon: expandIconProp,
     expandIconPlacement = 'before-content',
+    hideExpandIcon,
     slotProps,
     ...other
   } = props;
@@ -88,7 +89,7 @@ export const AccordionSummary = polymorphicForwardRef<
     />
   );
 
-  const expandIcon = (
+  const expandIcon = hideExpandIcon ? null : (
     <span {...expandIconProps}>
       {expandIconProp?.(isExpanded) ?? expandIconDefault}
     </span>
