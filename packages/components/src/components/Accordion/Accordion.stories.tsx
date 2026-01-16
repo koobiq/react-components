@@ -164,9 +164,9 @@ export const Content: Story = {
 };
 
 export const CustomExpandIcon: Story = {
-  render: (args) => (
+  render: () => (
     <div style={{ inlineSize: 200 }}>
-      <Accordion {...args}>
+      <Accordion>
         <Accordion.Summary
           expandIconPlacement="separately"
           expandIcon={(isExpanded) => (
@@ -275,7 +275,7 @@ export const ChangingHeadingLevel: Story = {
   render: (args) => (
     <Accordion style={{ inlineSize: 200 }} {...args}>
       <Accordion.Summary as="h4">Account settings</Accordion.Summary>
-      <Accordion.Details unmountOnExit>
+      <Accordion.Details>
         Change your email, password, and security options.
       </Accordion.Details>
     </Accordion>
