@@ -1,0 +1,30 @@
+.base {
+  --content-panel-start-position: 100%;
+
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  block-size: 100%;
+  background-color: var(--kbq-background-card);
+  border-radius: var(--kbq-size-l);
+  border: 1px solid var(--kbq-line-contrast-less);
+  inline-size: 320px;
+  transition: transform var(--kbq-transition-slow);
+}
+
+/* animation */
+.base[data-transition='entering'] {
+  transform: translate(0, 0);
+}
+
+.base[data-transition='entered'] {
+  transform: translate(0, 0);
+}
+
+.base[data-transition='exiting'] {
+  transform: translate(var(--content-panel-start-position), 0);
+}
+
+.base[data-transition='exited'] {
+  transform: translate(var(--content-panel-start-position), 0);
+}
