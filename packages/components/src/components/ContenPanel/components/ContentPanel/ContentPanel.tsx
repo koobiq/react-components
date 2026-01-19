@@ -22,7 +22,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const { children } = props;
     const domRef = useDOMRef<HTMLDivElement>(ref);
 
-    const { state, containerRef } = useContext(ContentPanelStateContext);
+    const { state, portalContainer } = useContext(ContentPanelStateContext);
     const { isOpen, close } = state;
 
     const [sidePanelProps, sidePanelRef] = useContextProps(
@@ -31,11 +31,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       ContentPanelContext
     );
 
-    const portalContainer = containerRef?.current ?? null;
-
-    if (!portalContainer) {
-      return null;
-    }
+    if (!portalContainer) return null;
 
     return createPortal(
       <Transition

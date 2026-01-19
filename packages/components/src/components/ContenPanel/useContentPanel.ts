@@ -21,15 +21,22 @@ export function useContentPanel(
   const { ref: panelRef } = useElementSize();
 
   useEffect(() => {
-    if (state.isOpen && panelRef.current) {
-      const { width } = panelRef.current.getBoundingClientRect();
-      setOffsetInline(width);
-    }
-
     if (!state.isOpen) {
       setOffsetInline(0);
+
+      return undefined;
     }
-  }, [state.isOpen, panelRef.current]);
+
+    const measure = () => {
+      const el = panelRef.current;
+      setOffsetInline(el ? el.getBoundingClientRect().width : 0);
+    };
+
+    measure();
+    const id = requestAnimationFrame(measure);
+
+    return () => cancelAnimationFrame(id);
+  }, [state.isOpen]);
 
   return {
     panelRef,

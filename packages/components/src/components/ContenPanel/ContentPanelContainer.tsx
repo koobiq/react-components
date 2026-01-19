@@ -1,6 +1,6 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 
-import { useDOMRef } from '@koobiq/react-core';
+import { useMultiRef } from '@koobiq/react-core';
 import {
   ButtonContext,
   DEFAULT_SLOT,
@@ -23,7 +23,9 @@ export const ContentPanelContainer = forwardRef<
 >((props, ref) => {
   const { children, isOpen, onOpenChange, defaultOpen } = props;
 
-  const domRef = useDOMRef<HTMLDivElement>(ref);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
+    null
+  );
 
   const state = useOverlayTriggerState({
     isOpen,
@@ -33,10 +35,12 @@ export const ContentPanelContainer = forwardRef<
 
   const { panelProps, panelRef, bodyProps } = useContentPanel(props, state);
 
+  const domRef = useMultiRef([ref, setPortalContainer]);
+
   return (
     <Provider
       values={[
-        [ContentPanelStateContext, { state, containerRef: domRef }],
+        [ContentPanelStateContext, { state, portalContainer }],
         [ContentPanelContext, { ...panelProps, ref: panelRef }],
         [
           ButtonContext,

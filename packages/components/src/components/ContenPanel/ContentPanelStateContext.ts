@@ -1,9 +1,9 @@
-import { createContext, type RefObject } from 'react';
+import { createContext } from 'react';
 
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
 export type ContentPanelStateContextProps = {
-  containerRef?: RefObject<HTMLElement>;
+  portalContainer?: HTMLElement | null;
   state: OverlayTriggerState;
 };
 

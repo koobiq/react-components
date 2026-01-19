@@ -20,12 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args) => (
-    <ContentPanelContainer
-      onOpenChange={(open) => {
-        console.log(open);
-      }}
-      {...args}
-    >
+    <ContentPanelContainer defaultOpen {...args}>
       <FlexBox direction="column" gap="m">
         <Typography>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
