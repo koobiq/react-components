@@ -68,6 +68,7 @@ export const Base = (args: ButtonProps) => {
           outline: 'none',
           blockSize: 40,
           outlineWidth: 2,
+          overflow: 'hidden',
           borderRadius: 12,
           cursor: 'pointer',
           outlineOffset: 2,
