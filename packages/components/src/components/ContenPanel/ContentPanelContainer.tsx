@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { forwardRef, useState } from 'react';
 
 import { useMultiRef } from '@koobiq/react-core';
@@ -33,10 +34,8 @@ export const ContentPanelContainer = forwardRef<
     defaultOpen,
   });
 
-  const { panelProps, panelRef, bodyProps, triggerProps } = useContentPanel(
-    props,
-    state
-  );
+  const { panelProps, panelRef, panelSize, bodyProps, triggerProps } =
+    useContentPanel(props, state);
 
   const domRef = useMultiRef([ref, setPortalContainer]);
 
@@ -57,7 +56,13 @@ export const ContentPanelContainer = forwardRef<
       ]}
     >
       <div className={s.base} ref={domRef}>
-        <div {...bodyProps} className={s.body}>
+        <div
+          {...bodyProps}
+          className={s.body}
+          style={
+            { '--content-panel-inline-size': `${panelSize}px` } as CSSProperties
+          }
+        >
           {typeof children === 'function' ? children(state) : children}
         </div>
       </div>

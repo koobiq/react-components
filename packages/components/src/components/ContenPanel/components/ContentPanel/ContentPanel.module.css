@@ -1,14 +1,16 @@
 .base {
   --content-panel-start-position: 100%;
+  --content-panel-resizer-width: var(--kbq-size-l);
 
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
   block-size: 100%;
+  overflow: unset;
+  z-index: 2;
   background-color: var(--kbq-background-card);
   border-radius: var(--kbq-size-l);
   border: 1px solid var(--kbq-line-contrast-less);
-  inline-size: 320px;
   transition: transform var(--kbq-transition-slow);
 }
 
@@ -27,4 +29,15 @@
 
 .base[data-transition='exited'] {
   transform: translate(var(--content-panel-start-position), 0);
+}
+
+/* resizer */
+.resizer {
+  cursor: ew-resize;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: calc(var(--content-panel-resizer-width) / -2);
+  inline-size: var(--content-panel-resizer-width);
+  block-size: 100%;
+  z-index: 2;
 }

@@ -1,57 +1,83 @@
-import type { HTMLAttributes, CSSProperties, RefObject } from 'react';
-import { useEffect, useState } from 'react';
+import type { HTMLAttributes } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useElementSize } from '@koobiq/react-core';
 import type { ButtonBaseProps } from '@koobiq/react-primitives';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
 export type UseContentPanelProps = object;
+
 export type UseContentPanelReturnValue = {
-  panelRef: RefObject<HTMLElement>;
+  panelRef: (node: HTMLElement | null) => void;
+  panelSize: number;
   panelProps: HTMLAttributes<HTMLElement>;
   bodyProps: HTMLAttributes<HTMLElement>;
   triggerProps: ButtonBaseProps;
   closeButtonProps: ButtonBaseProps;
 };
 
+function measureInlineSize(el: HTMLElement | null) {
+  if (!el) return 0;
+  const cs = getComputedStyle(el);
+  const mis = parseFloat(cs.marginInlineStart) || 0;
+  const mie = parseFloat(cs.marginInlineEnd) || 0;
+
+  return mis + mie + el.getBoundingClientRect().width;
+}
+
 export function useContentPanel(
   _: UseContentPanelProps,
   state: OverlayTriggerState
 ): UseContentPanelReturnValue {
-  const [offsetInline, setOffsetInline] = useState(0);
-  const { ref: panelRef } = useElementSize();
+  const elRef = useRef<HTMLElement | null>(null);
+  const [el, setEl] = useState<HTMLElement | null>(null);
+
+  const panelRef = useCallback((node: HTMLElement | null) => {
+    if (elRef.current === node) return;
+    elRef.current = node;
+    setEl(node);
+  }, []);
+
+  const [panelSize, setPanelSize] = useState(0);
+  const didInitialMeasureRef = useRef(false);
 
   useEffect(() => {
     if (!state.isOpen) {
-      setOffsetInline(0);
+      didInitialMeasureRef.current = false;
+      setPanelSize(0);
 
       return undefined;
     }
 
     const measure = () => {
-      const el = panelRef.current;
-      setOffsetInline(el ? el.getBoundingClientRect().width : 0);
+      setPanelSize(measureInlineSize(elRef.current));
+      didInitialMeasureRef.current = true;
     };
 
     measure();
     const id = requestAnimationFrame(measure);
 
     return () => cancelAnimationFrame(id);
-  }, [state.isOpen]);
+  }, [state.isOpen, el]);
+
+  useEffect(() => {
+    if (!state.isOpen || !el) return undefined;
+
+    const observer = new ResizeObserver(() => {
+      if (!didInitialMeasureRef.current) return;
+      setPanelSize(measureInlineSize(elRef.current));
+    });
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [state.isOpen, el]);
 
   return {
     panelRef,
+    panelSize,
     panelProps: {},
-    triggerProps: {
-      onPress: state.open,
-    },
-    closeButtonProps: {
-      onPress: state.close,
-    },
-    bodyProps: {
-      style: {
-        '--content-panel-inline-size': `${offsetInline}px`,
-      } as CSSProperties,
-    },
+    triggerProps: { onPress: state.open },
+    closeButtonProps: { onPress: state.close },
+    bodyProps: {},
   };
 }

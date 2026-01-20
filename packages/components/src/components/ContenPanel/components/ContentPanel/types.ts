@@ -1,6 +1,6 @@
 import type { ComponentRef, ReactNode } from 'react';
 
-export type ContentPanelSize = number | `${number}` | `${number}%`;
+export type ContentPanelSize = number;
 
 export type ContentPanelProps = {
   children?: ReactNode;
