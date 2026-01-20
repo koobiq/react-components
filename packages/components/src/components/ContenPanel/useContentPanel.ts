@@ -8,9 +8,9 @@ export type UseContentPanelProps = object;
 
 export type UseContentPanelReturnValue = {
   panelRef: (node: HTMLElement | null) => void;
-  panelSize: number;
-  panelProps: HTMLAttributes<HTMLElement>;
-  bodyProps: HTMLAttributes<HTMLElement>;
+  panelWidth: number;
+  panelProps?: HTMLAttributes<HTMLElement>;
+  bodyProps?: HTMLAttributes<HTMLElement>;
   triggerProps: ButtonBaseProps;
   closeButtonProps: ButtonBaseProps;
 };
@@ -37,19 +37,19 @@ export function useContentPanel(
     setEl(node);
   }, []);
 
-  const [panelSize, setPanelSize] = useState(0);
+  const [panelWidth, setPanelWidth] = useState(0);
   const didInitialMeasureRef = useRef(false);
 
   useEffect(() => {
     if (!state.isOpen) {
       didInitialMeasureRef.current = false;
-      setPanelSize(0);
+      setPanelWidth(0);
 
       return undefined;
     }
 
     const measure = () => {
-      setPanelSize(measureInlineSize(elRef.current));
+      setPanelWidth(measureInlineSize(elRef.current));
       didInitialMeasureRef.current = true;
     };
 
@@ -64,7 +64,7 @@ export function useContentPanel(
 
     const observer = new ResizeObserver(() => {
       if (!didInitialMeasureRef.current) return;
-      setPanelSize(measureInlineSize(elRef.current));
+      setPanelWidth(measureInlineSize(elRef.current));
     });
 
     observer.observe(el);
@@ -74,10 +74,8 @@ export function useContentPanel(
 
   return {
     panelRef,
-    panelSize,
-    panelProps: {},
+    panelWidth,
     triggerProps: { onPress: state.open },
     closeButtonProps: { onPress: state.close },
-    bodyProps: {},
   };
 }

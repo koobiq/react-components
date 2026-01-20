@@ -34,8 +34,7 @@ export const ContentPanelContainer = forwardRef<
     defaultOpen,
   });
 
-  const { panelProps, panelRef, panelSize, bodyProps, triggerProps } =
-    useContentPanel(props, state);
+  const { panelRef, panelWidth, triggerProps } = useContentPanel(props, state);
 
   const domRef = useMultiRef([ref, setPortalContainer]);
 
@@ -43,7 +42,7 @@ export const ContentPanelContainer = forwardRef<
     <Provider
       values={[
         [ContentPanelStateContext, { state, portalContainer }],
-        [ContentPanelContext, { ...panelProps, ref: panelRef }],
+        [ContentPanelContext, { ref: panelRef }],
         [
           ButtonContext,
           {
@@ -57,10 +56,11 @@ export const ContentPanelContainer = forwardRef<
     >
       <div className={s.base} ref={domRef}>
         <div
-          {...bodyProps}
           className={s.body}
           style={
-            { '--content-panel-inline-size': `${panelSize}px` } as CSSProperties
+            {
+              '--content-panel-inline-size': `${panelWidth}px`,
+            } as CSSProperties
           }
         >
           {typeof children === 'function' ? children(state) : children}

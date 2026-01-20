@@ -12,6 +12,8 @@ export type ContentPanelProps = {
   maxWidth?: ContentPanelSize | null;
   /** The default width of the panel. */
   defaultWidth?: ContentPanelSize | null;
+  isResizable?: boolean;
+  onResize?: (width: number) => void;
 };
 
 export type ContentPanelRef = ComponentRef<'div'>;

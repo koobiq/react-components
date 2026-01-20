@@ -1,6 +1,6 @@
-import { forwardRef, useContext, useState, useMemo } from 'react';
+import { forwardRef, useContext } from 'react';
 
-import { useDOMRef, useMove, mergeProps } from '@koobiq/react-core';
+import { useDOMRef, useMultiRef } from '@koobiq/react-core';
 import { useContextProps } from '@koobiq/react-primitives';
 import { createPortal } from 'react-dom';
 import { Transition } from 'react-transition-group';
@@ -12,18 +12,16 @@ import {
   DialogHeader,
 } from '../../../Dialog';
 import { ContentPanelStateContext } from '../../ContentPanelStateContext';
+import { useContentPanelResize } from '../../useContentPanelResize';
 
 import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
 import type { ContentPanelProps, ContentPanelRef } from './types';
 
-const clamp = (v: number, min: number, max: number) =>
-  Math.max(min, Math.min(max, v));
-
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
   (props, ref) => {
-    const { defaultWidth = 320, minWidth = 200, maxWidth = 600 } = props;
-    const [width, setWidth] = useState(defaultWidth);
+    const { defaultWidth, minWidth, maxWidth, isResizable, width, onResize } =
+      props;
 
     const { children } = props;
     const domRef = useDOMRef<HTMLDivElement>(ref);
@@ -31,37 +29,18 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const { state, portalContainer } = useContext(ContentPanelStateContext);
     const { isOpen, close } = state;
 
-    const [sidePanelProps, sidePanelRef] = useContextProps(
-      {},
-      domRef,
-      ContentPanelContext
-    );
+    const [, ctxPanelRef] = useContextProps({}, domRef, ContentPanelContext);
 
-    const { moveProps } = useMove({
-      onMoveStart() {
-        document.body.dataset.resizing = 'true';
-      },
-      onMoveEnd() {
-        delete document.body.dataset.resizing;
-      },
-      onMove(e) {
-        // левая панель: ширина += deltaX
-        setWidth((w) => clamp(w - e.deltaX, minWidth, maxWidth));
-      },
+    const { panelRef, panelProps, resizerProps } = useContentPanelResize({
+      isResizable,
+      width,
+      defaultWidth,
+      minWidth,
+      maxWidth,
+      onResize,
     });
 
-    const separatorProps = useMemo(
-      () => ({
-        role: 'separator',
-        'aria-orientation': 'vertical',
-        'aria-label': 'Resize panel',
-        'aria-valuemin': minWidth,
-        'aria-valuemax': maxWidth,
-        'aria-valuenow': Math.round(width),
-        tabIndex: 0,
-      }),
-      [minWidth, maxWidth, width]
-    );
+    const dialogRef = useMultiRef([ctxPanelRef, panelRef]);
 
     if (!portalContainer) return null;
 
@@ -69,25 +48,20 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       <Transition
         timeout={300}
         in={isOpen}
-        nodeRef={sidePanelRef}
+        nodeRef={ctxPanelRef}
         unmountOnExit
         appear
       >
         {(transition) => (
           <Dialog
             onClose={close}
+            ref={dialogRef}
             className={s.base}
             data-transition={transition}
-            ref={sidePanelRef}
-            {...sidePanelProps}
-            style={{
-              width,
-            }}
+            {...panelProps}
+            role="dialog"
           >
-            <div
-              {...mergeProps(separatorProps, moveProps)}
-              className={s.resizer}
-            />
+            {isResizable && <div {...resizerProps} className={s.resizer} />}
             {children}
           </Dialog>
         )}

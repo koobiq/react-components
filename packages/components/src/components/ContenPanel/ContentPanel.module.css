@@ -1,13 +1,13 @@
 .base {
-  position: relative;
   display: flex;
   overflow: hidden;
+  position: relative;
 }
 
 .body {
   --content-panel-inline-size: ;
 
   z-index: 1;
+  transition: inline-size var(--kbq-transition-default);
   inline-size: calc(100% - var(--content-panel-inline-size) - 16px);
-  transition: inline-size var(--kbq-transition-slow);
 }

@@ -266,3 +266,38 @@ export const TableExample: Story = {
     );
   },
 };
+
+export const Resizable: Story = {
+  render: (args) => (
+    <ContentPanelContainer defaultOpen {...args}>
+      <FlexBox direction="column" gap="m">
+        <Typography>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta error
+          esse et fugit id in itaque maiores necessitatibus obcaecati odit
+          placeat quae, quod repellat reprehenderit sapiente soluta tempora
+          vitae voluptatem, voluptates voluptatibus? Atque dolore dolorum ex,
+          ipsum labore laudantium maiores minima nemo nobis numquam omnis optio
+          possimus sint vero voluptatum.
+        </Typography>
+        <Button slot="trigger">See details</Button>
+      </FlexBox>
+      <ContentPanel
+        defaultWidth={400}
+        maxWidth={600}
+        minWidth={200}
+        onResize={(width) => console.log(width)}
+        isResizable
+      >
+        <ContentPanel.Header>ContentPanel</ContentPanel.Header>
+        <ContentPanel.Body>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta error
+          esse et fugit id in itaque maiores necessitatibus obcaecati odit
+          placeat quae, quod repellat reprehenderit sapiente soluta tempora
+          vitae voluptatem, voluptates voluptatibus? Atque dolore dolorum ex,
+          ipsum labore laudantium maiores minima nemo nobis numquam omnis optio
+          possimus sint vero voluptatum.
+        </ContentPanel.Body>
+      </ContentPanel>
+    </ContentPanelContainer>
+  ),
+};
