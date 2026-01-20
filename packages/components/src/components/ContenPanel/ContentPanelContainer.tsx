@@ -33,7 +33,10 @@ export const ContentPanelContainer = forwardRef<
     defaultOpen,
   });
 
-  const { panelProps, panelRef, bodyProps } = useContentPanel(props, state);
+  const { panelProps, panelRef, bodyProps, triggerProps } = useContentPanel(
+    props,
+    state
+  );
 
   const domRef = useMultiRef([ref, setPortalContainer]);
 
@@ -47,9 +50,7 @@ export const ContentPanelContainer = forwardRef<
           {
             slots: {
               [DEFAULT_SLOT]: {},
-              trigger: {
-                onPress: state.toggle,
-              },
+              trigger: triggerProps,
             },
           },
         ],
@@ -57,7 +58,7 @@ export const ContentPanelContainer = forwardRef<
     >
       <div className={s.base} ref={domRef}>
         <div {...bodyProps} className={s.body}>
-          {children}
+          {typeof children === 'function' ? children(state) : children}
         </div>
       </div>
     </Provider>

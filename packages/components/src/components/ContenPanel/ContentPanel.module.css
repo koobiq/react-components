@@ -5,8 +5,8 @@
 }
 
 .body {
-  --content-panel-offset-inline: ;
+  --content-panel-inline-size: ;
 
-  margin-inline-end: var(--content-panel-offset-inline);
-  transition: margin-inline-end var(--kbq-transition-slow);
+  inline-size: calc(100% - var(--content-panel-inline-size));
+  transition: inline-size var(--kbq-transition-slow);
 }

@@ -2,6 +2,7 @@ import type { HTMLAttributes, CSSProperties, RefObject } from 'react';
 import { useEffect, useState } from 'react';
 
 import { useElementSize } from '@koobiq/react-core';
+import type { ButtonBaseProps } from '@koobiq/react-primitives';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
 export type UseContentPanelProps = object;
@@ -9,8 +10,8 @@ export type UseContentPanelReturnValue = {
   panelRef: RefObject<HTMLElement>;
   panelProps: HTMLAttributes<HTMLElement>;
   bodyProps: HTMLAttributes<HTMLElement>;
-  triggerProps: unknown;
-  closeButtonProps: unknown;
+  triggerProps: ButtonBaseProps;
+  closeButtonProps: ButtonBaseProps;
 };
 
 export function useContentPanel(
@@ -41,11 +42,15 @@ export function useContentPanel(
   return {
     panelRef,
     panelProps: {},
-    triggerProps: {},
-    closeButtonProps: {},
+    triggerProps: {
+      onPress: state.open,
+    },
+    closeButtonProps: {
+      onPress: state.close,
+    },
     bodyProps: {
       style: {
-        '--content-panel-offset-inline': `${offsetInline}px`,
+        '--content-panel-inline-size': `${offsetInline}px`,
       } as CSSProperties,
     },
   };
