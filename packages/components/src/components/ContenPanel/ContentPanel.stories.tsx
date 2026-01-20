@@ -197,7 +197,7 @@ export const TableExample: Story = {
 
     return (
       <ContentPanelContainer>
-        {({ open, isOpen }) => (
+        {({ open, close, isOpen }) => (
           <>
             <TableContainer blockSize={300}>
               <Table
@@ -256,6 +256,9 @@ export const TableExample: Story = {
                 veritatis vero voluptas voluptate voluptates! Alias
                 necessitatibus odit repudiandae.
               </ContentPanel.Body>
+              <ContentPanel.Footer>
+                <Button onPress={close}>Ok</Button>
+              </ContentPanel.Footer>
             </ContentPanel>
           </>
         )}
