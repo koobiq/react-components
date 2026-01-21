@@ -1,7 +1,10 @@
 import { forwardRef, useContext } from 'react';
 
-import { useDOMRef, useMultiRef } from '@koobiq/react-core';
-import { useContextProps } from '@koobiq/react-primitives';
+import { useDOMRef, useMultiRef, mergeProps, clsx } from '@koobiq/react-core';
+import {
+  useContextProps,
+  useOverlayTriggerState,
+} from '@koobiq/react-primitives';
 import { createPortal } from 'react-dom';
 import { Transition } from 'react-transition-group';
 
@@ -20,16 +23,35 @@ import type { ContentPanelProps, ContentPanelRef } from './types';
 
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
   (props, ref) => {
-    const { defaultWidth, minWidth, maxWidth, isResizable, width, onResize } =
-      props;
+    const {
+      defaultWidth,
+      minWidth,
+      maxWidth,
+      isResizable,
+      width,
+      onResize,
+      isOpen,
+      onOpenChange,
+      defaultOpen,
+      className,
+      style,
+      children,
+    } = props;
 
-    const { children } = props;
     const domRef = useDOMRef<HTMLDivElement>(ref);
 
-    const { state, portalContainer } = useContext(ContentPanelStateContext);
-    const { isOpen, close } = state;
+    const { state: containerState, portalContainer } = useContext(
+      ContentPanelStateContext
+    );
 
-    const [, ctxPanelRef] = useContextProps({}, domRef, ContentPanelContext);
+    const componentState = useOverlayTriggerState({
+      isOpen,
+      onOpenChange,
+      defaultOpen,
+    });
+
+    const state = containerState ?? componentState;
+    const { isOpen: isOpenState, close } = state;
 
     const { panelRef, panelProps, resizerProps } = useContentPanelResize({
       isResizable,
@@ -40,14 +62,21 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       onResize,
     });
 
+    const [ctxPanelProps, ctxPanelRef] = useContextProps(
+      {
+        className: clsx(s.base, className),
+        style: { ...panelProps.style, ...style },
+      },
+      domRef,
+      ContentPanelContext
+    );
+
     const dialogRef = useMultiRef([ctxPanelRef, panelRef]);
 
-    if (!portalContainer) return null;
-
-    return createPortal(
+    const panel = (
       <Transition
         timeout={300}
-        in={isOpen}
+        in={isOpenState}
         nodeRef={ctxPanelRef}
         unmountOnExit
         appear
@@ -56,18 +85,22 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
           <Dialog
             onClose={close}
             ref={dialogRef}
-            className={s.base}
             data-transition={transition}
-            {...panelProps}
+            {...mergeProps(panelProps, ctxPanelProps)}
             role="dialog"
           >
             {isResizable && <div {...resizerProps} className={s.resizer} />}
             {children}
           </Dialog>
         )}
-      </Transition>,
-      portalContainer
+      </Transition>
     );
+
+    if (containerState && portalContainer) {
+      return createPortal(panel, portalContainer);
+    }
+
+    return panel;
   }
 );
 

@@ -2,13 +2,8 @@
   --content-panel-start-position: 100%;
   --content-panel-resizer-width: var(--kbq-size-l);
 
-  z-index: var(--kbq-layer-absolute);
   overflow: unset;
   block-size: 100%;
-  inline-size: 400px;
-  position: absolute;
-  inset-inline-end: 0;
-  inset-block-start: 0;
   border-radius: var(--kbq-size-l);
   background-color: var(--kbq-background-card);
   border: 1px solid var(--kbq-line-contrast-less);

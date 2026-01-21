@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
+import { useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { spacing } from '../layout';
 import { Table, TableContainer } from '../Table';
 import { Typography } from '../Typography';
 
@@ -300,4 +302,64 @@ export const Resizable: Story = {
       </ContentPanel>
     </ContentPanelContainer>
   ),
+};
+
+export const Standalone: Story = {
+  render: function Render() {
+    const [open, { toggle, set }] = useBoolean();
+
+    return (
+      <div
+        style={{
+          width: 400,
+          height: 300,
+          display: 'grid',
+          overflow: 'hidden',
+          gridTemplateAreas: '"stack"',
+        }}
+      >
+        <div
+          style={{
+            gridArea: 'stack',
+            overflow: 'scroll',
+          }}
+        >
+          <Button onPress={toggle} className={spacing({ mbe: 'm' })}>
+            Open
+          </Button>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus
+            fuga maxime nostrum, recusandae sequi suscipit. Ab alias architecto
+            culpa, dicta dignissimos dolor enim est eveniet facilis fuga illum
+            in ipsum maiores molestiae natus neque porro quaerat quasi quisquam
+            rerum sapiente, sequi sunt tempore velit voluptas! Adipisci alias
+            architecto assumenda aut culpa, delectus dicta dolor doloribus earum
+            eius error harum illum in inventore ipsam iusto nam, nobis numquam
+            optio placeat praesentium repellat repudiandae sed sit sunt tempore
+            unde? Alias, labore, minima?
+          </Typography>
+        </div>
+        <ContentPanel
+          isOpen={open}
+          onOpenChange={set}
+          maxWidth={400}
+          minWidth={200}
+          defaultWidth={300}
+          style={{ gridArea: 'stack', blockSize: '100%', justifySelf: 'end' }}
+          onResize={(width) => console.log(width)}
+          isResizable
+        >
+          <ContentPanel.Header>ContentPanel</ContentPanel.Header>
+          <ContentPanel.Body>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta
+            error esse et fugit id in itaque maiores necessitatibus obcaecati
+            odit placeat quae, quod repellat reprehenderit sapiente soluta
+            tempora vitae voluptatem, voluptates voluptatibus? Atque dolore
+            dolorum ex, ipsum labore laudantium maiores minima nemo nobis
+            numquam omnis optio possimus sint vero voluptatum.
+          </ContentPanel.Body>
+        </ContentPanel>
+      </div>
+    );
+  },
 };

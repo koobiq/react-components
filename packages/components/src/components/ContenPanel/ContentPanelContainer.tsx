@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { forwardRef, useState } from 'react';
 
-import { useMultiRef } from '@koobiq/react-core';
+import { useMultiRef, clsx } from '@koobiq/react-core';
 import {
   ButtonContext,
   DEFAULT_SLOT,
@@ -10,7 +10,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { ContentPanelContext } from './components';
-import s from './ContentPanel.module.css';
+import s from './ContentPanelContainer.module.css';
 import { ContentPanelStateContext } from './ContentPanelStateContext';
 import type {
   ContentPanelContainerProps,
@@ -22,7 +22,8 @@ export const ContentPanelContainer = forwardRef<
   ContentPanelContainerRef,
   ContentPanelContainerProps
 >((props, ref) => {
-  const { children, isOpen, onOpenChange, defaultOpen } = props;
+  const { children, isOpen, onOpenChange, defaultOpen, className, ...other } =
+    props;
 
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
@@ -42,7 +43,7 @@ export const ContentPanelContainer = forwardRef<
     <Provider
       values={[
         [ContentPanelStateContext, { state, portalContainer }],
-        [ContentPanelContext, { ref: panelRef }],
+        [ContentPanelContext, { ref: panelRef, className: s.panel }],
         [
           ButtonContext,
           {
@@ -54,7 +55,7 @@ export const ContentPanelContainer = forwardRef<
         ],
       ]}
     >
-      <div className={s.base} ref={domRef}>
+      <div className={clsx(s.base, className)} ref={domRef} {...other}>
         <div
           className={s.body}
           style={
