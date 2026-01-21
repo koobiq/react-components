@@ -2,7 +2,7 @@
   --content-panel-start-position: 100%;
   --content-panel-resizer-width: var(--kbq-size-l);
 
-  z-index: 2;
+  z-index: var(--kbq-layer-absolute);
   overflow: unset;
   block-size: 100%;
   inline-size: 400px;

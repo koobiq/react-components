@@ -225,7 +225,7 @@ export const TableExample: Story = {
                 </Table.Body>
               </Table>
             </TableContainer>
-            <ContentPanel>
+            <ContentPanel isResizable>
               <ContentPanel.Header>
                 {user?.firstName}&nbsp;{user?.lastName}
               </ContentPanel.Header>
@@ -282,9 +282,9 @@ export const Resizable: Story = {
         <Button slot="trigger">See details</Button>
       </FlexBox>
       <ContentPanel
-        defaultWidth={400}
-        maxWidth={600}
+        maxWidth={800}
         minWidth={200}
+        defaultWidth={400}
         onResize={(width) => console.log(width)}
         isResizable
       >
