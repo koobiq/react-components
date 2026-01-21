@@ -15,7 +15,7 @@ import { Dialog, DialogBody, DialogFooter, DialogHeader } from '../Dialog';
 import { ContentPanelContainerContext } from './components';
 import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
-import { useContentPanelResize } from './hooks/useContentPanelResize';
+import { useContentPanelResize } from './hooks';
 import type { ContentPanelProps, ContentPanelRef } from './types';
 
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
