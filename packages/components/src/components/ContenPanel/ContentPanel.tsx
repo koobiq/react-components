@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, useContext } from 'react';
 
 import { useDOMRef, useMultiRef, mergeProps, clsx } from '@koobiq/react-core';
@@ -8,17 +10,12 @@ import {
 import { createPortal } from 'react-dom';
 import { Transition } from 'react-transition-group';
 
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-} from '../../../Dialog';
-import { ContentPanelStateContext } from '../../ContentPanelStateContext';
-import { useContentPanelResize } from '../../useContentPanelResize';
+import { Dialog, DialogBody, DialogFooter, DialogHeader } from '../Dialog';
 
+import { ContentPanelContainerContext } from './components';
 import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
+import { useContentPanelResize } from './hooks/useContentPanelResize';
 import type { ContentPanelProps, ContentPanelRef } from './types';
 
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
@@ -41,7 +38,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const domRef = useDOMRef<HTMLDivElement>(ref);
 
     const { state: containerState, portalContainer } = useContext(
-      ContentPanelStateContext
+      ContentPanelContainerContext
     );
 
     const componentState = useOverlayTriggerState({

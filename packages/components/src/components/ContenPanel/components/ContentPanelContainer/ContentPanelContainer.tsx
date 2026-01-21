@@ -1,3 +1,5 @@
+'use client';
+
 import type { CSSProperties } from 'react';
 import { forwardRef, useState } from 'react';
 
@@ -9,14 +11,15 @@ import {
   useOverlayTriggerState,
 } from '@koobiq/react-primitives';
 
-import { ContentPanelContext } from './components';
+import { ContentPanelContext } from '../../ContentPanelContext';
+import { useContentPanel } from '../../hooks';
+
 import s from './ContentPanelContainer.module.css';
-import { ContentPanelStateContext } from './ContentPanelStateContext';
+import { ContentPanelContainerContext } from './ContentPanelContainerContext';
 import type {
   ContentPanelContainerProps,
   ContentPanelContainerRef,
 } from './types';
-import { useContentPanel } from './useContentPanel';
 
 export const ContentPanelContainer = forwardRef<
   ContentPanelContainerRef,
@@ -42,7 +45,7 @@ export const ContentPanelContainer = forwardRef<
   return (
     <Provider
       values={[
-        [ContentPanelStateContext, { state, portalContainer }],
+        [ContentPanelContainerContext, { state, portalContainer }],
         [ContentPanelContext, { ref: panelRef, className: s.panel }],
         [
           ButtonContext,

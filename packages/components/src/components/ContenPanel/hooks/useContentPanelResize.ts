@@ -1,3 +1,5 @@
+'use client';
+
 import type { CSSProperties, HTMLAttributes } from 'react';
 import { useCallback, useMemo, useRef } from 'react';
 

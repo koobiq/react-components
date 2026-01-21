@@ -1,1 +1,1 @@
-export * from './ContentPanel';
+export * from './ContentPanelContainer';

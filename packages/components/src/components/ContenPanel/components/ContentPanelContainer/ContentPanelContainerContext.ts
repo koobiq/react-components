@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext } from 'react';
 
 import type { OverlayTriggerState } from '@react-stately/overlays';
@@ -7,7 +9,7 @@ export type ContentPanelStateContextProps = {
   state: OverlayTriggerState;
 };
 
-export const ContentPanelStateContext =
+export const ContentPanelContainerContext =
   createContext<ContentPanelStateContextProps>(
     {} as ContentPanelStateContextProps
   );

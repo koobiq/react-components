@@ -1,4 +1,3 @@
-export * from './ContentPanelContainer';
-export * from './components';
-export * from './ContentPanelStateContext';
+export * from './ContentPanel';
 export * from './types';
+export * from './components';

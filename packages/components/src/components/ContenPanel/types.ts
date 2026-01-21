@@ -1,21 +1,25 @@
-import type { ComponentRef, ReactElement, ReactNode } from 'react';
+import type { ComponentRef, ReactNode } from 'react';
 
-import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
-import type { OverlayTriggerState } from '@react-stately/overlays';
+import type { DialogProps } from '../Dialog';
 
-export type ContentPanelContainerPropContent =
-  | ReactNode
-  | ((props: OverlayTriggerState) => ReactElement);
+export type ContentPanelSize = number;
 
-export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
-  {
-    children?: ContentPanelContainerPropContent;
-    isOpen?: boolean;
-    defaultOpen?: boolean;
-    /** Handler that is called when the panel's open state changes. */
-    onOpenChange?: (open: boolean) => void;
-  },
-  'div'
->;
+export type ContentPanelProps = {
+  children?: ReactNode;
+  /** The width of the panel. */
+  width?: ContentPanelSize | null;
+  /** The minimum width of the panel. */
+  minWidth?: ContentPanelSize | null;
+  /** The maximum width of the panel. */
+  maxWidth?: ContentPanelSize | null;
+  /** The default width of the panel. */
+  defaultWidth?: ContentPanelSize | null;
+  isResizable?: boolean;
+  onResize?: (width: number) => void;
+  isOpen?: boolean;
+  defaultOpen?: boolean;
+  /** Handler that is called when the panel's open state changes. */
+  onOpenChange?: (open: boolean) => void;
+} & DialogProps;
 
-export type ContentPanelContainerRef = ComponentRef<'div'>;
+export type ContentPanelRef = ComponentRef<'div'>;
