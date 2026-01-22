@@ -1,20 +1,19 @@
 'use client';
 
-import type { HTMLAttributes } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import type { HTMLAttributes, RefObject } from 'react';
+import { useRef, useMemo } from 'react';
 
+import { useResizeObserverRefs } from '@koobiq/react-core';
 import type { ButtonBaseProps } from '@koobiq/react-primitives';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
-export type UseContentPanelProps = object;
-
 export type UseContentPanelReturnValue = {
-  panelRef: (node: HTMLElement | null) => void;
   panelWidth: number;
-  panelProps?: HTMLAttributes<HTMLElement>;
-  bodyProps?: HTMLAttributes<HTMLElement>;
+  panelRef: RefObject<HTMLElement | null>;
   triggerProps: ButtonBaseProps;
   closeButtonProps: ButtonBaseProps;
+  panelProps?: HTMLAttributes<HTMLElement>;
+  bodyProps?: HTMLAttributes<HTMLElement>;
 };
 
 function measureInlineSize(el: HTMLElement | null) {
@@ -27,52 +26,19 @@ function measureInlineSize(el: HTMLElement | null) {
 }
 
 export function useContentPanel(
-  _: UseContentPanelProps,
   state: OverlayTriggerState
 ): UseContentPanelReturnValue {
-  const elRef = useRef<HTMLElement | null>(null);
-  const [el, setEl] = useState<HTMLElement | null>(null);
+  const { isOpen } = state;
 
-  const panelRef = useCallback((node: HTMLElement | null) => {
-    if (elRef.current === node) return;
-    elRef.current = node;
-    setEl(node);
-  }, []);
+  const panelRef = useRef<HTMLElement | null>(null);
 
-  const [panelWidth, setPanelWidth] = useState(0);
-  const didInitialMeasureRef = useRef(false);
+  const refArr = useMemo(() => [panelRef], [panelRef.current, isOpen]);
 
-  useEffect(() => {
-    if (!state.isOpen) {
-      didInitialMeasureRef.current = false;
-      setPanelWidth(0);
+  const [panelWidth] = useResizeObserverRefs(refArr, (el) => {
+    if (el) return measureInlineSize(el);
 
-      return undefined;
-    }
-
-    const measure = () => {
-      setPanelWidth(measureInlineSize(elRef.current));
-      didInitialMeasureRef.current = true;
-    };
-
-    measure();
-    const id = requestAnimationFrame(measure);
-
-    return () => cancelAnimationFrame(id);
-  }, [state.isOpen, el]);
-
-  useEffect(() => {
-    if (!state.isOpen || !el) return undefined;
-
-    const observer = new ResizeObserver(() => {
-      if (!didInitialMeasureRef.current) return;
-      setPanelWidth(measureInlineSize(elRef.current));
-    });
-
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, [state.isOpen, el]);
+    return 0;
+  });
 
   return {
     panelRef,

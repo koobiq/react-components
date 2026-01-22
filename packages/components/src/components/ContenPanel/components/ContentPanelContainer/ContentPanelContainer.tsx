@@ -38,7 +38,7 @@ export const ContentPanelContainer = forwardRef<
     defaultOpen,
   });
 
-  const { panelRef, panelWidth, triggerProps } = useContentPanel(props, state);
+  const { panelRef, panelWidth, triggerProps } = useContentPanel(state);
 
   const domRef = useMultiRef([ref, setPortalContainer]);
 
