@@ -1,16 +1,23 @@
 'use client';
 
-import { forwardRef, useContext } from 'react';
+import { forwardRef, type HTMLAttributes, useContext, useRef } from 'react';
 
 import { useDOMRef, useMultiRef, mergeProps, clsx } from '@koobiq/react-core';
 import {
   useContextProps,
+  useOverlay,
   useOverlayTriggerState,
 } from '@koobiq/react-primitives';
 import { createPortal } from 'react-dom';
 import { Transition } from 'react-transition-group';
 
-import { Dialog, DialogBody, DialogFooter, DialogHeader } from '../Dialog';
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  type DialogProps,
+} from '../Dialog';
 
 import { ContentPanelContainerContext } from './components';
 import s from './ContentPanel.module.css';
@@ -36,6 +43,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     } = props;
 
     const domRef = useDOMRef<HTMLDivElement>(ref);
+    const overlayRef = useRef<HTMLDivElement | null>(null);
 
     const { state: containerState, portalContainer } = useContext(
       ContentPanelContainerContext
@@ -68,7 +76,36 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       ContentPanelContext
     );
 
-    const dialogRef = useMultiRef([ctxPanelRef, panelRef]);
+    const dialogRef = useMultiRef([ctxPanelRef, panelRef, overlayRef]);
+
+    const { overlayProps } = useOverlay(
+      {
+        isOpen: isOpenState,
+        onClose: close,
+        isKeyboardDismissDisabled: false,
+      },
+      overlayRef
+    );
+
+    const dialogProps = mergeProps<
+      [
+        DialogProps,
+        HTMLAttributes<HTMLElement>,
+        HTMLAttributes<HTMLElement>,
+        HTMLAttributes<HTMLElement>,
+      ]
+    >(
+      {
+        onKeyDown: (event) => {
+          if (event.key === 'Escape' && !containerState) {
+            state.close();
+          }
+        },
+      },
+      panelProps,
+      ctxPanelProps,
+      overlayProps
+    );
 
     const panel = (
       <Transition
@@ -83,7 +120,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
             onClose={close}
             ref={dialogRef}
             data-transition={transition}
-            {...mergeProps(panelProps, ctxPanelProps)}
+            {...dialogProps}
             role="dialog"
           >
             {isResizable && <div {...resizerProps} className={s.resizer} />}

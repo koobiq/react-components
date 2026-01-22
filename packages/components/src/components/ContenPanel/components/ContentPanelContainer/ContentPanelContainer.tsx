@@ -58,7 +58,16 @@ export const ContentPanelContainer = forwardRef<
         ],
       ]}
     >
-      <div className={clsx(s.base, className)} ref={domRef} {...other}>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      <div
+        tabIndex={-1}
+        className={clsx(s.base, className)}
+        ref={domRef}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') state.close();
+        }}
+        {...other}
+      >
         <div
           className={s.body}
           style={

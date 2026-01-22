@@ -112,7 +112,6 @@ export function useContentPanelResize(
       'aria-orientation': 'vertical',
       'aria-label': 'Resize panel',
       'aria-valuenow': Math.round(width),
-      tabIndex: 0,
     };
 
     if (isNumber(minWidth)) aria['aria-valuemin'] = min;

@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Autocomplete } from '../Autocomplete';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
+import { Select } from '../Select';
 import { Table, TableContainer } from '../Table';
 import { Typography } from '../Typography';
 
@@ -45,29 +47,56 @@ export const Base: Story = {
       <ContentPanel>
         <ContentPanel.Header>ContentPanel</ContentPanel.Header>
         <ContentPanel.Body>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A corporis
-          debitis doloremque fugiat harum laudantium odit perferendis placeat
-          qui, repudiandae. Doloribus excepturi ipsum maxime! Animi error ipsam
-          quae ratione voluptatum. Accusamus aliquid autem commodi culpa
-          distinctio dolorem ducimus eaque, eveniet expedita facilis incidunt
-          labore laboriosam minus molestias non, officiis pariatur porro
-          possimus quas quos rem sunt suscipit tenetur ut vel velit vero.
-          Libero, perspiciatis, repellat? Earum eligendi et magni necessitatibus
-          non quos sed, similique soluta tempore? Accusantium, alias animi ea
-          molestiae nulla voluptates voluptatum. A ab ad aperiam blanditiis,
-          commodi consectetur dolores et eveniet harum id ipsam necessitatibus
-          nemo, nisi praesentium quibusdam quis reprehenderit temporibus ullam
-          ut veritatis. A ab accusamus, adipisci aliquid animi aut consectetur
-          cum cumque cupiditate dicta doloremque ducimus eligendi eveniet ex
-          fuga fugiat illum incidunt ipsum iure iusto laborum maiores, molestias
-          necessitatibus nulla numquam odio officiis perferendis possimus quia
-          quibusdam ratione repudiandae sapiente unde ut vel voluptas voluptate.
-          A accusamus aperiam architecto atque commodi cum ducimus earum et
-          excepturi facere fuga fugiat, harum id ipsam itaque molestiae
-          molestias, nemo nulla, porro quaerat quas quasi quibusdam ratione
-          repellendus rerum saepe sed sint soluta tempora tenetur ullam vel
-          veniam veritatis vero voluptas voluptate voluptates! Alias
-          necessitatibus odit repudiandae.
+          <Select
+            label="Attack type"
+            style={{ inlineSize: 200 }}
+            placeholder="Select an option"
+          >
+            <Select.Item key="bruteforce">Bruteforce</Select.Item>
+            <Select.Item key="complex-attack">Complex Attack</Select.Item>
+            <Select.Item key="ddos">DDoS</Select.Item>
+            <Select.Item key="dos">DoS</Select.Item>
+            <Select.Item key="hips-alert">HIPS Alert</Select.Item>
+            <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
+            <Select.Item key="identity-theft">Identity Theft</Select.Item>
+            <Select.Item key="miscellaneous">Miscellaneous</Select.Item>
+            <Select.Item key="network-attack">Network Attack</Select.Item>
+            <Select.Item key="post-compromise">Post Compromise</Select.Item>
+            <Select.Item key="potential-attack">Potential Attack</Select.Item>
+          </Select>
+          <Autocomplete label="Protocol" placeholder="Search a protocol">
+            <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+            <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+            <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+            <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+            <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+          </Autocomplete>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A corporis
+            debitis doloremque fugiat harum laudantium odit perferendis placeat
+            qui, repudiandae. Doloribus excepturi ipsum maxime! Animi error
+            ipsam quae ratione voluptatum. Accusamus aliquid autem commodi culpa
+            distinctio dolorem ducimus eaque, eveniet expedita facilis incidunt
+            labore laboriosam minus molestias non, officiis pariatur porro
+            possimus quas quos rem sunt suscipit tenetur ut vel velit vero.
+            Libero, perspiciatis, repellat? Earum eligendi et magni
+            necessitatibus non quos sed, similique soluta tempore? Accusantium,
+            alias animi ea molestiae nulla voluptates voluptatum. A ab ad
+            aperiam blanditiis, commodi consectetur dolores et eveniet harum id
+            ipsam necessitatibus nemo, nisi praesentium quibusdam quis
+            reprehenderit temporibus ullam ut veritatis. A ab accusamus,
+            adipisci aliquid animi aut consectetur cum cumque cupiditate dicta
+            doloremque ducimus eligendi eveniet ex fuga fugiat illum incidunt
+            ipsum iure iusto laborum maiores, molestias necessitatibus nulla
+            numquam odio officiis perferendis possimus quia quibusdam ratione
+            repudiandae sapiente unde ut vel voluptas voluptate. A accusamus
+            aperiam architecto atque commodi cum ducimus earum et excepturi
+            facere fuga fugiat, harum id ipsam itaque molestiae molestias, nemo
+            nulla, porro quaerat quas quasi quibusdam ratione repellendus rerum
+            saepe sed sint soluta tempora tenetur ullam vel veniam veritatis
+            vero voluptas voluptate voluptates! Alias necessitatibus odit
+            repudiandae.
+          </Typography>
         </ContentPanel.Body>
       </ContentPanel>
     </ContentPanelContainer>
@@ -271,7 +300,7 @@ export const TableExample: Story = {
 
 export const Resizable: Story = {
   render: (args) => (
-    <ContentPanelContainer defaultOpen {...args}>
+    <ContentPanelContainer {...args}>
       <FlexBox direction="column" gap="m">
         <Typography>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta error
