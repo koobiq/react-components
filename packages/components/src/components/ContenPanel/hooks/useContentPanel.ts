@@ -12,6 +12,7 @@ export type UseContentPanelReturnValue = {
   panelRef: RefObject<HTMLElement | null>;
   triggerProps: ButtonBaseProps;
   closeButtonProps: ButtonBaseProps;
+  containerProps?: HTMLAttributes<HTMLElement>;
   panelProps?: HTMLAttributes<HTMLElement>;
   bodyProps?: HTMLAttributes<HTMLElement>;
 };
@@ -42,7 +43,13 @@ export function useContentPanel(
 
   return {
     panelRef,
-    panelWidth,
+    containerProps: {
+      tabIndex: -1,
+      onKeyDown: (event) => {
+        if (event.key === 'Escape') state.close();
+      },
+    },
+    panelWidth: isOpen ? panelWidth : 0,
     triggerProps: { onPress: state.open },
     closeButtonProps: { onPress: state.close },
   };

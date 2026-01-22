@@ -3,7 +3,7 @@
 import type { CSSProperties } from 'react';
 import { forwardRef, useState } from 'react';
 
-import { useMultiRef, clsx } from '@koobiq/react-core';
+import { useMultiRef, clsx, mergeProps } from '@koobiq/react-core';
 import {
   ButtonContext,
   DEFAULT_SLOT,
@@ -28,19 +28,26 @@ export const ContentPanelContainer = forwardRef<
   const { children, isOpen, onOpenChange, defaultOpen, className, ...other } =
     props;
 
-  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
-    null
-  );
-
   const state = useOverlayTriggerState({
     isOpen,
     onOpenChange,
     defaultOpen,
   });
 
-  const { panelRef, panelWidth, triggerProps } = useContentPanel(state);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
+    null
+  );
+
+  const { panelRef, panelWidth, triggerProps, containerProps } =
+    useContentPanel(state);
 
   const domRef = useMultiRef([ref, setPortalContainer]);
+
+  const rootProps = {
+    className: clsx(s.base, className),
+    ref: domRef,
+    ...other,
+  };
 
   return (
     <Provider
@@ -58,16 +65,7 @@ export const ContentPanelContainer = forwardRef<
         ],
       ]}
     >
-      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-      <div
-        tabIndex={-1}
-        className={clsx(s.base, className)}
-        ref={domRef}
-        onKeyDown={(event) => {
-          if (event.key === 'Escape') state.close();
-        }}
-        {...other}
-      >
+      <div {...mergeProps(rootProps, containerProps)}>
         <div
           className={s.body}
           style={
