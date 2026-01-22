@@ -44,7 +44,7 @@ export const Base: Story = {
         </Typography>
         <Button slot="trigger">See details</Button>
       </FlexBox>
-      <ContentPanel>
+      <ContentPanel isResizable>
         <ContentPanel.Header>ContentPanel</ContentPanel.Header>
         <ContentPanel.Body>
           <Select

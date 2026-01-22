@@ -1,21 +1,24 @@
 .base {
   display: flex;
+  outline: none;
   overflow: hidden;
   position: relative;
-  outline: none;
 }
 
 .body {
   --content-panel-inline-size: ;
 
+  overflow: auto;
   transition: inline-size var(--kbq-transition-default);
   inline-size: calc(100% - var(--content-panel-inline-size) - 16px);
 }
 
 .panel {
-  inline-size: 400px;
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
+  inline-size: 400px;
+  max-inline-size: 100%;
+  min-inline-size: 200px;
   z-index: var(--kbq-layer-absolute);
 }
