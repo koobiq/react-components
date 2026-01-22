@@ -63,11 +63,7 @@ export function useContentPanelResize(
 
   const panelRef = useCallback(
     (node: HTMLElement | null) => {
-      if (!node) {
-        didInitFromDomRef.current = false;
-
-        return;
-      }
+      if (!node) return;
 
       if (!isResizable) return;
       if (controlledWidth !== undefined) return;
