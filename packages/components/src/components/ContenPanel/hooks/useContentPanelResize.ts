@@ -4,10 +4,10 @@ import type { CSSProperties, HTMLAttributes } from 'react';
 import { useCallback, useMemo, useRef } from 'react';
 
 import {
-  mergeProps,
-  useControlledState,
   useMove,
   isNumber,
+  mergeProps,
+  useControlledState,
 } from '@koobiq/react-core';
 
 const clamp = (v: number, min: number, max: number) =>
@@ -98,14 +98,12 @@ export function useContentPanelResize(
   const resizerProps = useMemo(() => {
     if (!isResizable) {
       return {
-        'aria-hidden': 'true',
         tabIndex: -1,
+        'aria-hidden': 'true',
       } as HTMLAttributes<HTMLElement>;
     }
 
     const aria: HTMLAttributes<HTMLElement> = {
-      role: 'separator',
-      'aria-orientation': 'vertical',
       'aria-label': 'Resize panel',
       'aria-valuenow': Math.round(width),
     };
