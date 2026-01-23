@@ -9,19 +9,20 @@
   --content-panel-inline-size: ;
 
   overflow: auto;
+  will-change: inline-size;
   transition: inline-size var(--kbq-transition-slow);
   inline-size: calc(100% - var(--content-panel-inline-size) - 16px);
+}
+
+.open {
+  transition: none;
 }
 
 .panel {
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
-  z-index: var(--kbq-layer-absolute);
-}
-
-.panel:not([data-resizable='true']) {
   inline-size: 40%;
   max-inline-size: 100%;
-  min-inline-size: 10%;
+  z-index: var(--kbq-layer-absolute);
 }

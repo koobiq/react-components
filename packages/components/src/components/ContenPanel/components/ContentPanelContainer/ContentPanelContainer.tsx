@@ -8,6 +8,7 @@ import {
   clsx,
   mergeProps,
   useResizeObserverRefs,
+  useBoolean,
 } from '@koobiq/react-core';
 import {
   ButtonContext,
@@ -39,6 +40,8 @@ export const ContentPanelContainer = forwardRef<
     onOpenChange,
     defaultOpen,
   });
+
+  const [opened, { on, off }] = useBoolean(state.isOpen);
 
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
@@ -86,7 +89,19 @@ export const ContentPanelContainer = forwardRef<
             portalContainer,
           },
         ],
-        [ContentPanelContext, { ref: panelRef, className: s.panel }],
+        [
+          ContentPanelContext,
+          {
+            ref: panelRef,
+            className: s.panel,
+            slotProps: {
+              transition: {
+                onEntered: on,
+                onExit: off,
+              },
+            },
+          },
+        ],
         [
           ButtonContext,
           {
@@ -100,7 +115,7 @@ export const ContentPanelContainer = forwardRef<
     >
       <div {...mergeProps(rootProps, containerProps)}>
         <div
-          className={s.body}
+          className={clsx(s.body, opened && state.isOpen && s.open)}
           style={
             {
               '--content-panel-inline-size': `${state.isOpen ? panelWidth : 0}px`,

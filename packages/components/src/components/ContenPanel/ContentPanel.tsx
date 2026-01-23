@@ -48,6 +48,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       className,
       style,
       children,
+      slotProps,
     } = props;
 
     const domRef = useDOMRef<HTMLDivElement>(ref);
@@ -86,6 +87,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
     const [ctxPanelProps, ctxPanelRef] = useContextProps(
       {
+        slotProps,
         className: clsx(s.base, className),
         style: {
           ...panelProps.style,
@@ -129,14 +131,18 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       overlayProps
     );
 
+    const transitionProps = mergeProps(
+      {
+        timeout: TRANSITION_TIMEOUT,
+        in: isOpenState,
+        nodeRef: ctxPanelRef,
+        unmountOnExit: true,
+      },
+      ctxPanelProps.slotProps?.transition
+    );
+
     const panel = (
-      <Transition
-        timeout={TRANSITION_TIMEOUT}
-        in={isOpenState}
-        nodeRef={ctxPanelRef}
-        unmountOnExit
-        appear
-      >
+      <Transition {...transitionProps}>
         {(transition) => (
           <Dialog
             onClose={close}

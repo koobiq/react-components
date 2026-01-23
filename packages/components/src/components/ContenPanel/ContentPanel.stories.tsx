@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: (args) => (
-    <ContentPanelContainer defaultOpen {...args}>
+    <ContentPanelContainer defaultOpen style={{ blockSize: 300 }} {...args}>
       <FlexBox direction="column" gap="m">
         <Typography>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
@@ -45,7 +45,7 @@ export const Base: Story = {
         </Typography>
         <Button slot="trigger">See details</Button>
       </FlexBox>
-      <ContentPanel>
+      <ContentPanel isResizable>
         <ContentPanel.Header>ContentPanel</ContentPanel.Header>
         <ContentPanel.Body>
           <Select
@@ -301,7 +301,7 @@ export const Triggers: Story = {
 
 export const Resizable: Story = {
   render: (args) => (
-    <ContentPanelContainer {...args}>
+    <ContentPanelContainer style={{ blockSize: 300 }} {...args}>
       <FlexBox direction="column" gap="m">
         <Typography>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta error
