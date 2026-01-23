@@ -103,7 +103,7 @@ export const ContentPanelContainer = forwardRef<
           className={s.body}
           style={
             {
-              '--content-panel-inline-size': `${panelWidth}px`,
+              '--content-panel-inline-size': `${state.isOpen ? panelWidth : 0}px`,
             } as CSSProperties
           }
         >

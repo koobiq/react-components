@@ -1,4 +1,5 @@
 .base {
+  --content-panel-duration: 300ms;
   --content-panel-start-position: 100%;
   --content-panel-resizer-width: var(--kbq-size-l);
 
@@ -8,6 +9,7 @@
   background-color: var(--kbq-background-card);
   border: 1px solid var(--kbq-line-contrast-less);
   transition: transform var(--kbq-transition-slow);
+  transition-duration: var(--content-panel-duration);
 }
 
 /* animation */

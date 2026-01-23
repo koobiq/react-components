@@ -9,7 +9,7 @@
   --content-panel-inline-size: ;
 
   overflow: auto;
-  transition: inline-size var(--kbq-transition-default);
+  transition: inline-size var(--kbq-transition-slow);
   inline-size: calc(100% - var(--content-panel-inline-size) - 16px);
 }
 

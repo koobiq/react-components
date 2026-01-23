@@ -31,6 +31,8 @@ import { ContentPanelContext } from './ContentPanelContext';
 import { useContentPanel } from './hooks';
 import type { ContentPanelProps, ContentPanelRef } from './types';
 
+const TRANSITION_TIMEOUT = 300;
+
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
   (props, ref) => {
     const {
@@ -85,7 +87,11 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const [ctxPanelProps, ctxPanelRef] = useContextProps(
       {
         className: clsx(s.base, className),
-        style: { ...panelProps.style, ...style },
+        style: {
+          ...panelProps.style,
+          '--content-panel-duration': `${TRANSITION_TIMEOUT}ms`,
+          ...style,
+        },
       },
       domRef,
       ContentPanelContext
@@ -125,7 +131,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
     const panel = (
       <Transition
-        timeout={300}
+        timeout={TRANSITION_TIMEOUT}
         in={isOpenState}
         nodeRef={ctxPanelRef}
         unmountOnExit
