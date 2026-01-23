@@ -2,7 +2,13 @@
 
 import { forwardRef, type HTMLAttributes, useContext, useRef } from 'react';
 
-import { useDOMRef, useMultiRef, mergeProps, clsx } from '@koobiq/react-core';
+import {
+  useDOMRef,
+  useMultiRef,
+  mergeProps,
+  clsx,
+  isNumber,
+} from '@koobiq/react-core';
 import {
   useContextProps,
   useOverlay,
@@ -22,15 +28,15 @@ import {
 import { ContentPanelContainerContext } from './components';
 import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
-import { useContentPanelResize } from './hooks';
+import { useContentPanel } from './hooks';
 import type { ContentPanelProps, ContentPanelRef } from './types';
 
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
   (props, ref) => {
     const {
       defaultWidth,
-      minWidth,
-      maxWidth,
+      minWidth: minWidthProp,
+      maxWidth: maxWidthProp,
       isResizable,
       width,
       onResize,
@@ -45,9 +51,11 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const domRef = useDOMRef<HTMLDivElement>(ref);
     const overlayRef = useRef<HTMLDivElement | null>(null);
 
-    const { state: containerState, portalContainer } = useContext(
-      ContentPanelContainerContext
-    );
+    const {
+      state: containerState,
+      portalContainer,
+      containerWidth,
+    } = useContext(ContentPanelContainerContext);
 
     const componentState = useOverlayTriggerState({
       isOpen,
@@ -58,7 +66,14 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const state = containerState ?? componentState;
     const { isOpen: isOpenState, close } = state;
 
-    const { panelRef, panelProps, resizerProps } = useContentPanelResize({
+    const maxWidth = Math.min(
+      isNumber(containerWidth) ? containerWidth : Number.POSITIVE_INFINITY,
+      isNumber(maxWidthProp) ? maxWidthProp : Number.POSITIVE_INFINITY
+    );
+
+    const minWidth = Math.max(0, isNumber(minWidthProp) ? minWidthProp : 200);
+
+    const { panelRef, panelProps, resizerProps } = useContentPanel({
       isResizable,
       width,
       defaultWidth,
@@ -101,6 +116,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
             state.close();
           }
         },
+        'data-resizable': isResizable || undefined,
       },
       panelProps,
       ctxPanelProps,

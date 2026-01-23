@@ -16,6 +16,7 @@ import { ContentPanel, ContentPanelContainer } from './index';
 const meta = {
   title: 'Components/ContentPanel',
   component: ContentPanel,
+  subcomponents: { ContentPanelContainer },
   parameters: {
     layout: 'centered',
   },
@@ -44,7 +45,7 @@ export const Base: Story = {
         </Typography>
         <Button slot="trigger">See details</Button>
       </FlexBox>
-      <ContentPanel isResizable>
+      <ContentPanel>
         <ContentPanel.Header>ContentPanel</ContentPanel.Header>
         <ContentPanel.Body>
           <Select
@@ -103,7 +104,7 @@ export const Base: Story = {
   ),
 };
 
-export const TableExample: Story = {
+export const Triggers: Story = {
   parameters: {
     layout: 'padded',
   },
@@ -256,7 +257,7 @@ export const TableExample: Story = {
                 </Table.Body>
               </Table>
             </TableContainer>
-            <ContentPanel isResizable>
+            <ContentPanel defaultWidth={400} isResizable>
               <ContentPanel.Header>
                 {user?.firstName}&nbsp;{user?.lastName}
               </ContentPanel.Header>

@@ -1,2 +1,2 @@
-export * from './useContentPanelResize';
 export * from './useContentPanel';
+export * from './useContentPanelContainer';

@@ -17,8 +17,11 @@
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
-  inline-size: 400px;
-  max-inline-size: 100%;
-  min-inline-size: 200px;
   z-index: var(--kbq-layer-absolute);
+}
+
+.panel:not([data-resizable='true']) {
+  inline-size: 40%;
+  max-inline-size: 100%;
+  min-inline-size: 10%;
 }
