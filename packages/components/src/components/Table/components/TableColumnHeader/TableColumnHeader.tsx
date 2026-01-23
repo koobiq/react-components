@@ -74,7 +74,7 @@ export function TableColumnHeader<T>({
     </span>
   );
 
-  const isResizable = allowsResizing && layoutState;
+  const isResizable = !!(allowsResizing && layoutState);
 
   return (
     <th
@@ -106,8 +106,8 @@ export function TableColumnHeader<T>({
           </div>
           <Resizer
             column={column}
-            layoutState={layoutState}
             onResize={onResize}
+            layoutState={layoutState}
             onResizeEnd={onResizeEnd}
             onResizeStart={onResizeStart}
           />
