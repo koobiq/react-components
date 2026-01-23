@@ -17,7 +17,8 @@ export const Example1 = () => {
     eventName: 'mousemove',
     handler: (event) => {
       const { clientX, clientY } = event;
-      // обновляем координаты
+
+      // update coordinates
       setCoords({ x: clientX, y: clientY });
     },
     active,
