@@ -20,6 +20,8 @@ export type UseContentPanelResizeProps = {
   minWidth?: number | null;
   maxWidth?: number | null;
   onResize?: (width: number) => void;
+  onResizeStart?: () => void;
+  onResizeEnd?: (width: number) => void;
 };
 
 export type UseContentPanelResizeReturnValue = {
@@ -39,6 +41,8 @@ export function useContentPanel(
     minWidth,
     maxWidth,
     onResize,
+    onResizeStart,
+    onResizeEnd,
   } = props;
 
   const min = isNumber(minWidth) ? minWidth : 0;
@@ -83,11 +87,15 @@ export function useContentPanel(
   const { moveProps } = useMove({
     onMoveStart() {
       if (!isResizable) return;
+
       document.body.dataset.resizing = 'true';
+      onResizeStart?.();
     },
     onMoveEnd() {
       if (!isResizable) return;
+
       delete document.body.dataset.resizing;
+      onResizeEnd?.(Math.round(width));
     },
     onMove(e) {
       if (!isResizable) return;

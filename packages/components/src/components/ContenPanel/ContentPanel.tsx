@@ -42,6 +42,8 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       isResizable,
       width,
       onResize,
+      onResizeEnd,
+      onResizeStart,
       isOpen,
       onOpenChange,
       defaultOpen,
@@ -49,6 +51,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       style,
       children,
       slotProps,
+      ...other
     } = props;
 
     const domRef = useDOMRef<HTMLDivElement>(ref);
@@ -83,6 +86,8 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       minWidth,
       maxWidth,
       onResize,
+      onResizeEnd,
+      onResizeStart,
     });
 
     const [ctxPanelProps, ctxPanelRef] = useContextProps(
@@ -113,6 +118,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const dialogProps = mergeProps<
       [
         DialogProps,
+        DialogProps,
         HTMLAttributes<HTMLElement>,
         HTMLAttributes<HTMLElement>,
         HTMLAttributes<HTMLElement>,
@@ -126,6 +132,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
         },
         'data-resizable': isResizable || undefined,
       },
+      other,
       panelProps,
       ctxPanelProps,
       overlayProps

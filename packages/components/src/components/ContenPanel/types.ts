@@ -18,6 +18,8 @@ export type ContentPanelProps = {
   defaultWidth?: ContentPanelSize | null;
   isResizable?: boolean;
   onResize?: (width: number) => void;
+  onResizeStart?: () => void;
+  onResizeEnd?: (width: number) => void;
   isOpen?: boolean;
   defaultOpen?: boolean;
   /** Handler that is called when the panel's open state changes. */

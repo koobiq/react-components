@@ -8,8 +8,14 @@
   border-radius: var(--kbq-size-l);
   background-color: var(--kbq-background-card);
   border: 1px solid var(--kbq-line-contrast-less);
-  transition: transform var(--kbq-transition-slow);
+  transition:
+    transform var(--kbq-transition-slow),
+    inline-size var(--kbq-transition-slow);
   transition-duration: var(--content-panel-duration);
+}
+
+body[data-resizing='true'] .base {
+  transition: none;
 }
 
 /* animation */
