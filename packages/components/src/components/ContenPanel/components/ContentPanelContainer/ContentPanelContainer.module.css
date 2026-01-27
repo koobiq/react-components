@@ -11,7 +11,7 @@
   overflow: auto;
   will-change: inline-size;
   transition: inline-size var(--kbq-transition-slow);
-  inline-size: calc(100% - var(--content-panel-inline-size) - 16px);
+  inline-size: calc(100% - var(--content-panel-inline-size));
 }
 
 .open {
