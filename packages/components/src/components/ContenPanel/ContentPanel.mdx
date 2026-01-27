@@ -34,15 +34,59 @@ Use these components to build a side panel that pushes adjacent content.
 - `ContentPanel.Body` — The main scrollable content area.
 - `ContentPanel.Footer` — The bottom section, typically for primary actions.
 
-## Resizable
+## Container
 
-<Story of={Stories.Resizable} />
+First, wrap your content with `ContentPanelContainer`.
 
-## Triggers
+Render `ContentPanel` inside the same container, next to your main content, and put your panel content inside it.
+
+Build the panel UI with `ContentPanel.Header`, `ContentPanel.Body`, and `ContentPanel.Footer`.
+
+```tsx
+<ContentPanelContainer>
+  {({ toggle, isOpen }) => (
+    <>
+      <Button onPress={toggle}>{isOpen ? 'Close panel' : 'Open panel'}</Button>
+
+      <ContentPanel>
+        <ContentPanel.Header>...</ContentPanel.Header>
+        <ContentPanel.Body>...</ContentPanel.Body>
+        <ContentPanel.Footer>...</ContentPanel.Footer>
+      </ContentPanel>
+    </>
+  )}
+</ContentPanelContainer>
+```
+
+### Triggers
+
+Then use the render prop to control the panel — `open`, `close`, `toggle`, and read its state — `isOpen`.
 
 <Story of={Stories.Triggers} />
 
-## Standalone
+### Open
+
+You can control the open state outside the component.
+
+The container controls whether the panel is open. By default, the panel isn't open. Use `defaultOpen` to set the initial open state.
+Use the `isOpen` prop to control the open state from outside. The `onOpenChange` is called whenever the open state should change.
+
+<Story of={Stories.Open} />
+
+## Panel
+
+The `ContentPanel` is usually used inside `ContentPanelContainer`, which provides the open/close state.
+
+For more advanced use cases, `ContentPanel` can also be used as a [standalone](#Standalone) component when you want to manage its behavior yourself.
+
+### Resizable
+
+The `ContentPanel` can be made resizable by setting `isResizable` to `true` and supports four different width props that allow you
+to control sizing behavior: `defaultWidth`, `width`, `minWidth`, and `maxWidth`.
+
+<Story of={Stories.Resizable} />
+
+### Standalone
 
 <Story of={Stories.Standalone} />
 

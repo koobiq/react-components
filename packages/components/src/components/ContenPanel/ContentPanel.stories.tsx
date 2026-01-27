@@ -54,31 +54,25 @@ export const Base: Story = {
     return (
       <ContentPanelContainer
         style={{
-          blockSize: 300,
+          blockSize: 320,
+          display: 'flex',
           inlineSize: 480,
-          borderRadius: 16,
+          borderRadius: 'var(--kbq-size-l)',
           backgroundColor: 'var(--kbq-background-bg-secondary)',
         }}
-        {...args}
+        slotProps={{ body: { style: { display: 'flex' } } }}
       >
         {({ toggle, isOpen, close }) => (
           <>
-            <FlexBox
-              gap="m"
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              style={{ inlineSize: '100%', blockSize: '100%' }}
-            >
-              <Button onPress={toggle}>
-                {isOpen ? 'Close panel' : 'Open panel'}
-              </Button>
-            </FlexBox>
+            <Button onPress={toggle} className={spacing({ m: 'auto' })}>
+              {isOpen ? 'Close panel' : 'Open panel'}
+            </Button>
             <ContentPanel
               width={width}
               onResize={onResize}
               isResizable
               hideCloseButton
+              {...args}
             >
               <ContentPanel.Header>
                 <FlexBox
@@ -186,7 +180,7 @@ export const Triggers: Story = {
   render: function Render() {
     const columns = [
       { name: 'User ID', key: 'id' },
-      { name: 'First Name', key: 'firstName' },
+      { name: 'Name', key: 'firstName' },
       { name: 'Last Name', key: 'lastName' },
       { name: 'Email', key: 'email' },
       { name: 'Role', key: 'role' },
@@ -303,10 +297,16 @@ export const Triggers: Story = {
     const [user, setUser] = useState<(typeof users)[0]>();
 
     return (
-      <ContentPanelContainer>
+      <ContentPanelContainer style={{ blockSize: 300 }}>
         {({ open, close, isOpen }) => (
           <>
-            <TableContainer blockSize={300}>
+            <Typography variant="text-big-strong">
+              Click any table row to open Content panel
+            </Typography>
+            <TableContainer
+              style={{ blockSize: '100%' }}
+              className={spacing({ mbs: 'l' })}
+            >
               <Table
                 aria-label="The table with users"
                 onRowAction={(id) => {
@@ -332,7 +332,7 @@ export const Triggers: Story = {
                 </Table.Body>
               </Table>
             </TableContainer>
-            <ContentPanel defaultWidth={400} isResizable>
+            <ContentPanel>
               <ContentPanel.Header>
                 {user?.firstName}&nbsp;{user?.lastName}
               </ContentPanel.Header>
@@ -374,39 +374,289 @@ export const Triggers: Story = {
   },
 };
 
-export const Resizable: Story = {
-  render: (args) => (
-    <ContentPanelContainer style={{ blockSize: 300 }} {...args}>
-      <FlexBox direction="column" gap="m">
-        <Typography>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta error
-          esse et fugit id in itaque maiores necessitatibus obcaecati odit
-          placeat quae, quod repellat reprehenderit sapiente soluta tempora
-          vitae voluptatem, voluptates voluptatibus? Atque dolore dolorum ex,
-          ipsum labore laudantium maiores minima nemo nobis numquam omnis optio
-          possimus sint vero voluptatum.
-        </Typography>
-        <Button slot="trigger">See details</Button>
-      </FlexBox>
-      <ContentPanel
-        maxWidth={800}
-        minWidth={200}
-        defaultWidth={400}
-        onResize={(width) => console.log(width)}
-        isResizable
+export const Open: Story = {
+  render: function Render() {
+    return (
+      <ContentPanelContainer
+        style={{
+          blockSize: 320,
+          display: 'flex',
+          inlineSize: 480,
+          borderRadius: 'var(--kbq-size-l)',
+          backgroundColor: 'var(--kbq-background-bg-secondary)',
+        }}
+        slotProps={{ body: { style: { display: 'flex' } } }}
+        defaultOpen
       >
-        <ContentPanel.Header>ContentPanel</ContentPanel.Header>
-        <ContentPanel.Body>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta error
-          esse et fugit id in itaque maiores necessitatibus obcaecati odit
-          placeat quae, quod repellat reprehenderit sapiente soluta tempora
-          vitae voluptatem, voluptates voluptatibus? Atque dolore dolorum ex,
-          ipsum labore laudantium maiores minima nemo nobis numquam omnis optio
-          possimus sint vero voluptatum.
-        </ContentPanel.Body>
-      </ContentPanel>
-    </ContentPanelContainer>
-  ),
+        {({ toggle, isOpen }) => (
+          <>
+            <Button onPress={toggle} className={spacing({ m: 'auto' })}>
+              {isOpen ? 'Close panel' : 'Open panel'}
+            </Button>
+            <ContentPanel isResizable>
+              <ContentPanel.Header>Web Security</ContentPanel.Header>
+              <ContentPanel.Body>
+                <FlexBox gap="m" direction="column">
+                  <span>
+                    Web security is a crucial aspect of modern digital
+                    infrastructure, ensuring the protection of sensitive data,
+                    user privacy, and system integrity. As cyber threats
+                    continue to evolve, developers and organizations must adopt
+                    a proactive approach to securing web applications against
+                    attacks.
+                  </span>
+                  <span>
+                    One of the most common vulnerabilities is SQL injection,
+                    where attackers manipulate database queries to gain
+                    unauthorized access to sensitive information. Similarly,
+                    cross-site scripting (XSS) allows malicious scripts to run
+                    on a victim’s browser, leading to data theft or session
+                    hijacking. Another prevalent threat is cross-site request
+                    forgery (CSRF), in which users are tricked into executing
+                    unwanted actions on authenticated sites. Additionally,
+                    man-in-the-middle attacks intercept communication between
+                    users and servers, compromising the confidentiality of data.
+                    Distributed Denial-of-Service (DDoS) attacks can also
+                    cripple web services by overwhelming them with excessive
+                    traffic.
+                  </span>
+                  <span>
+                    To mitigate these risks, implementing strong security
+                    practices is essential. Using HTTPS ensures encrypted
+                    communication, protecting data from interception. Proper
+                    input validation and escaping mechanisms help prevent code
+                    injection attacks. Authentication and authorization
+                    mechanisms, including multi-factor authentication (MFA) and
+                    role-based access control (RBAC), add layers of security to
+                    user access. Secure API development, including
+                    authentication, rate limiting, and encryption, reduces
+                    vulnerabilities in web services. Keeping software,
+                    frameworks, and dependencies up to date minimizes the risk
+                    of exploiting known vulnerabilities. Continuous monitoring,
+                    logging, and security audits help detect and respond to
+                    threats before they cause significant damage.
+                  </span>
+                  <span>
+                    Web security is not a one-time implementation but an ongoing
+                    process that evolves alongside emerging threats. By
+                    following best practices and staying vigilant, businesses
+                    and developers can build resilient, secure applications that
+                    protect users and data in an increasingly connected world.
+                  </span>
+                </FlexBox>
+              </ContentPanel.Body>
+              <ContentPanel.Footer>
+                <Button variant="fade-contrast-filled">Show more</Button>
+              </ContentPanel.Footer>
+            </ContentPanel>
+          </>
+        )}
+      </ContentPanelContainer>
+    );
+  },
+};
+
+export const Resizable: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    const columns = [
+      { name: 'User ID', key: 'id' },
+      { name: 'Name', key: 'firstName' },
+      { name: 'Last Name', key: 'lastName' },
+      { name: 'Email', key: 'email' },
+      { name: 'Role', key: 'role' },
+    ];
+
+    const users = [
+      {
+        id: 1,
+        firstName: 'Emily',
+        lastName: 'Carter',
+        email: 'emily.carter@example.com',
+        role: 'Admin',
+      },
+      {
+        id: 2,
+        firstName: 'Michael',
+        lastName: 'Thompson',
+        email: 'michael.thompson@mail.com',
+        role: 'Editor',
+      },
+      {
+        id: 3,
+        firstName: 'Sophia',
+        lastName: 'Bellmont',
+        email: 'sophia.bellmont@example.org',
+        role: 'Subscriber',
+      },
+      {
+        id: 4,
+        firstName: 'Daniel',
+        lastName: 'Nguyen',
+        email: 'daniel.nguyen@mail.com',
+        role: 'User',
+      },
+      {
+        id: 5,
+        firstName: 'Olivia',
+        lastName: 'Brooks',
+        email: 'olivia.brooks@example.com',
+        role: 'Moderator',
+      },
+      {
+        id: 6,
+        firstName: 'James',
+        lastName: 'Harris',
+        email: 'james.harris@mail.org',
+        role: 'User',
+      },
+      {
+        id: 7,
+        firstName: 'Isabella',
+        lastName: 'Murphy',
+        email: 'isabella.murphy@mail.com',
+        role: 'Subscriber',
+      },
+      {
+        id: 8,
+        firstName: 'Benjamin',
+        lastName: 'Lee',
+        email: 'benjamin.lee@example.com',
+        role: 'Editor',
+      },
+      {
+        id: 9,
+        firstName: 'Ava',
+        lastName: 'Garcia',
+        email: 'ava.garcia@mail.com',
+        role: 'User',
+      },
+      {
+        id: 10,
+        firstName: 'William',
+        lastName: 'Martinez',
+        email: 'william.martinez@ex.org',
+        role: 'Admin',
+      },
+      {
+        id: 11,
+        firstName: 'Mia',
+        lastName: 'Robinson',
+        email: 'mia.robinson@mail.org',
+        role: 'Subscriber',
+      },
+      {
+        id: 12,
+        firstName: 'Alexander',
+        lastName: 'Walker',
+        email: 'alex.walker@example.com',
+        role: 'User',
+      },
+      {
+        id: 13,
+        firstName: 'Charlotte',
+        lastName: 'Scott',
+        email: 'charlotte.scott@mail.com',
+        role: 'Moderator',
+      },
+      {
+        id: 14,
+        firstName: 'Henry',
+        lastName: 'Adams',
+        email: 'henry.adams@example.org',
+        role: 'User',
+      },
+      {
+        id: 15,
+        firstName: 'Harper',
+        lastName: 'Bell',
+        email: 'harper.bell@mail.org',
+        role: 'Subscriber',
+      },
+    ];
+
+    const [user, setUser] = useState<(typeof users)[0]>();
+
+    return (
+      <ContentPanelContainer style={{ blockSize: 300 }}>
+        {({ open, close, isOpen }) => (
+          <>
+            <ContentPanel isResizable defaultWidth={400}>
+              <ContentPanel.Header>
+                {user?.firstName}&nbsp;{user?.lastName}
+              </ContentPanel.Header>
+              <ContentPanel.Body>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A
+                corporis debitis doloremque fugiat harum laudantium odit
+                perferendis placeat qui, repudiandae. Doloribus excepturi ipsum
+                maxime! Animi error ipsam quae ratione voluptatum. Accusamus
+                aliquid autem commodi culpa distinctio dolorem ducimus eaque,
+                eveniet expedita facilis incidunt labore laboriosam minus
+                molestias non, officiis pariatur porro possimus quas quos rem
+                sunt suscipit tenetur ut vel velit vero. Libero, perspiciatis,
+                repellat? Earum eligendi et magni necessitatibus non quos sed,
+                similique soluta tempore? Accusantium, alias animi ea molestiae
+                nulla voluptates voluptatum. A ab ad aperiam blanditiis, commodi
+                consectetur dolores et eveniet harum id ipsam necessitatibus
+                nemo, nisi praesentium quibusdam quis reprehenderit temporibus
+                ullam ut veritatis. A ab accusamus, adipisci aliquid animi aut
+                consectetur cum cumque cupiditate dicta doloremque ducimus
+                eligendi eveniet ex fuga fugiat illum incidunt ipsum iure iusto
+                laborum maiores, molestias necessitatibus nulla numquam odio
+                officiis perferendis possimus quia quibusdam ratione repudiandae
+                sapiente unde ut vel voluptas voluptate. A accusamus aperiam
+                architecto atque commodi cum ducimus earum et excepturi facere
+                fuga fugiat, harum id ipsam itaque molestiae molestias, nemo
+                nulla, porro quaerat quas quasi quibusdam ratione repellendus
+                rerum saepe sed sint soluta tempora tenetur ullam vel veniam
+                veritatis vero voluptas voluptate voluptates! Alias
+                necessitatibus odit repudiandae.
+              </ContentPanel.Body>
+              <ContentPanel.Footer>
+                <Button onPress={close}>Ok</Button>
+              </ContentPanel.Footer>
+            </ContentPanel>
+
+            <Typography variant="text-big-strong">
+              Click any table row to open Content panel
+            </Typography>
+
+            <TableContainer
+              style={{ blockSize: '100%' }}
+              className={spacing({ mbs: 'l' })}
+            >
+              <Table
+                aria-label="The table with users"
+                onRowAction={(id) => {
+                  setUser(users.find((user) => id === user.id));
+
+                  if (!isOpen) open();
+                }}
+                stickyHeader
+              >
+                <Table.Header columns={columns}>
+                  {(column) => <Table.Column>{column.name}</Table.Column>}
+                </Table.Header>
+                <Table.Body items={users}>
+                  {(item) => (
+                    <Table.Row>
+                      {(columnKey) => (
+                        <Table.Cell>
+                          {item[columnKey as keyof (typeof users)[0]]}
+                        </Table.Cell>
+                      )}
+                    </Table.Row>
+                  )}
+                </Table.Body>
+              </Table>
+            </TableContainer>
+          </>
+        )}
+      </ContentPanelContainer>
+    );
+  },
 };
 
 export const Standalone: Story = {
@@ -416,39 +666,30 @@ export const Standalone: Story = {
     return (
       <div
         style={{
-          width: 400,
-          height: 300,
+          inlineSize: 480,
+          blockSize: 320,
           display: 'grid',
           overflow: 'hidden',
           gridTemplateAreas: '"stack"',
+          borderRadius: 'var(--kbq-size-l)',
+          backgroundColor: 'var(--kbq-background-bg-secondary)',
         }}
       >
         <div
           style={{
             gridArea: 'stack',
             overflow: 'scroll',
+            justifySelf: 'center',
+            alignSelf: 'center',
           }}
         >
-          <Button onPress={toggle} className={spacing({ mbe: 'm' })}>
-            Open
-          </Button>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus
-            fuga maxime nostrum, recusandae sequi suscipit. Ab alias architecto
-            culpa, dicta dignissimos dolor enim est eveniet facilis fuga illum
-            in ipsum maiores molestiae natus neque porro quaerat quasi quisquam
-            rerum sapiente, sequi sunt tempore velit voluptas! Adipisci alias
-            architecto assumenda aut culpa, delectus dicta dolor doloribus earum
-            eius error harum illum in inventore ipsam iusto nam, nobis numquam
-            optio placeat praesentium repellat repudiandae sed sit sunt tempore
-            unde? Alias, labore, minima?
-          </Typography>
+          <Button onPress={toggle}>Open</Button>
         </div>
         <ContentPanel
           isOpen={open}
-          onOpenChange={set}
           maxWidth={400}
           minWidth={200}
+          onOpenChange={set}
           defaultWidth={300}
           style={{ gridArea: 'stack', blockSize: '100%', justifySelf: 'end' }}
           onResize={(width) => console.log(width)}
@@ -470,8 +711,8 @@ export const Standalone: Story = {
 };
 
 export const Sandbox: Story = {
-  render: (args) => (
-    <ContentPanelContainer defaultOpen style={{ blockSize: 300 }} {...args}>
+  render: () => (
+    <ContentPanelContainer defaultOpen style={{ blockSize: 300 }}>
       {({ toggle, isOpen }) => (
         <>
           <FlexBox direction="column" gap="m">
