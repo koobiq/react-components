@@ -9,13 +9,15 @@ export type ContentPanelContainerPropContent =
 
 export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
   {
+    /** The content of the container. Can be a render function with panel state. */
     children?: ContentPanelContainerPropContent;
+    /** If `true`, the panel is open (controlled). */
     isOpen?: boolean;
+    /** The default open state (uncontrolled). */
     defaultOpen?: boolean;
     /** Handler that is called when the panel's open state changes. */
     onOpenChange?: (open: boolean) => void;
   },
   'div'
 >;
-
 export type ContentPanelContainerRef = ComponentRef<'div'>;
