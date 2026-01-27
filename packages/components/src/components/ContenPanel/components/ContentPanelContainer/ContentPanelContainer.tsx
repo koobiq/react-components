@@ -32,8 +32,15 @@ export const ContentPanelContainer = forwardRef<
   ContentPanelContainerRef,
   ContentPanelContainerProps
 >((props, ref) => {
-  const { children, isOpen, onOpenChange, defaultOpen, className, ...other } =
-    props;
+  const {
+    children,
+    isOpen,
+    onOpenChange,
+    defaultOpen,
+    className,
+    slotProps,
+    ...other
+  } = props;
 
   const state = useOverlayTriggerState({
     isOpen,
@@ -72,10 +79,27 @@ export const ContentPanelContainer = forwardRef<
     }
   );
 
-  const rootProps = {
-    className: clsx(s.base, className),
-    ref: domRef,
-    ...other,
+  const rootProps = mergeProps(
+    {
+      className: clsx(s.base, className),
+      ref: domRef,
+      ...other,
+    },
+    containerProps
+  );
+
+  const bodyProps = {
+    ...slotProps?.body,
+    className: clsx(
+      s.body,
+      opened && state.isOpen && s.open,
+      slotProps?.body?.className
+    ),
+    children: typeof children === 'function' ? children(state) : children,
+    style: {
+      ...slotProps?.body?.style,
+      '--content-panel-inline-size': `${state.isOpen ? panelWidth : 0}px`,
+    } as CSSProperties,
   };
 
   return (
@@ -113,17 +137,8 @@ export const ContentPanelContainer = forwardRef<
         ],
       ]}
     >
-      <div {...mergeProps(rootProps, containerProps)}>
-        <div
-          className={clsx(s.body, opened && state.isOpen && s.open)}
-          style={
-            {
-              '--content-panel-inline-size': `${state.isOpen ? panelWidth : 0}px`,
-            } as CSSProperties
-          }
-        >
-          {typeof children === 'function' ? children(state) : children}
-        </div>
+      <div {...rootProps}>
+        <div {...bodyProps} />
       </div>
     </Provider>
   );

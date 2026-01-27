@@ -1,4 +1,9 @@
-import type { ComponentRef, ReactElement, ReactNode } from 'react';
+import type {
+  ComponentPropsWithRef,
+  ComponentRef,
+  ReactElement,
+  ReactNode,
+} from 'react';
 
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { OverlayTriggerState } from '@react-stately/overlays';
@@ -17,6 +22,10 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
     defaultOpen?: boolean;
     /** Handler that is called when the panel's open state changes. */
     onOpenChange?: (open: boolean) => void;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      body?: ComponentPropsWithRef<'div'>;
+    };
   },
   'div'
 >;
