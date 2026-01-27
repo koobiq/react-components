@@ -13,6 +13,9 @@ import * as Stories from './ContentPanel.stories';
 
 <Status variant="experimental" />
 
+ContentPanel — a side panel that slides in from the edge and pushes adjacent content,
+commonly used for quick preview of an item from a table.
+
 ```tsx
 import { ContentPanel, ContentPanelContainer } from '@koobiq/react-components';
 ```
@@ -20,6 +23,16 @@ import { ContentPanel, ContentPanelContainer } from '@koobiq/react-components';
 <Story of={Stories.Base} />
 
 <Props />
+
+## Components
+
+Use these components to build a side panel that pushes adjacent content.
+
+- `ContentPanel` — The side panel. Slides in from the edge and pushes adjacent content.
+- `ContentPanelContainer` — A container that manages the layout and provides a place for the panel.
+- `ContentPanel.Header` — The top section, typically for the title and actions.
+- `ContentPanel.Body` — The main scrollable content area.
+- `ContentPanel.Footer` — The bottom section, typically for primary actions.
 
 ## Resizable
 
@@ -32,3 +45,7 @@ import { ContentPanel, ContentPanelContainer } from '@koobiq/react-components';
 ## Standalone
 
 <Story of={Stories.Standalone} />
+
+## Sandbox
+
+<Story of={Stories.Sandbox} />
