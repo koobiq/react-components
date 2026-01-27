@@ -39,8 +39,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: function Render(args) {
-    const [isExpanded, setExpanded] = useBoolean(false);
     const collapsedSize = 300;
+    const [isExpanded, setExpanded] = useBoolean(false);
     const [width, onResize] = useState(collapsedSize);
 
     useEffect(() => {
@@ -70,8 +70,8 @@ export const Base: Story = {
             <ContentPanel
               width={width}
               onResize={onResize}
-              isResizable
               hideCloseButton
+              isResizable
               {...args}
             >
               <ContentPanel.Header>
@@ -86,9 +86,9 @@ export const Base: Story = {
                   </Typography>
                   <FlexBox>
                     <Button
-                      aria-label={isExpanded ? 'Collapse' : 'Expand'}
-                      variant="contrast-transparent"
                       onPress={setExpanded.toggle}
+                      variant="contrast-transparent"
+                      aria-label={isExpanded ? 'Collapse' : 'Expand'}
                       startIcon={
                         <AnimatedIcon
                           icons={[
@@ -101,12 +101,11 @@ export const Base: Story = {
                       }
                       onlyIcon
                     />
-
                     <Button
                       onPress={close}
                       aria-label="Close"
-                      variant="contrast-transparent"
                       startIcon={<IconXmark16 />}
+                      variant="contrast-transparent"
                       onlyIcon
                     />
                   </FlexBox>
@@ -294,7 +293,7 @@ export const Triggers: Story = {
       },
     ];
 
-    const [user, setUser] = useState<(typeof users)[0]>();
+    const [user, setUser] = useState<(typeof users)[number]>();
 
     return (
       <ContentPanelContainer style={{ blockSize: 300 }}>
@@ -324,7 +323,7 @@ export const Triggers: Story = {
                     <Table.Row>
                       {(columnKey) => (
                         <Table.Cell>
-                          {item[columnKey as keyof (typeof users)[0]]}
+                          {item[columnKey as keyof (typeof users)[number]]}
                         </Table.Cell>
                       )}
                     </Table.Row>
@@ -577,13 +576,13 @@ export const Resizable: Story = {
       },
     ];
 
-    const [user, setUser] = useState<(typeof users)[0]>();
+    const [user, setUser] = useState<(typeof users)[number]>();
 
     return (
       <ContentPanelContainer style={{ blockSize: 300 }}>
         {({ open, close, isOpen }) => (
           <>
-            <ContentPanel isResizable defaultWidth={400}>
+            <ContentPanel defaultWidth={400} isResizable>
               <ContentPanel.Header>
                 {user?.firstName}&nbsp;{user?.lastName}
               </ContentPanel.Header>
@@ -618,11 +617,9 @@ export const Resizable: Story = {
                 <Button onPress={close}>Ok</Button>
               </ContentPanel.Footer>
             </ContentPanel>
-
             <Typography variant="text-big-strong">
               Click any table row to open Content panel
             </Typography>
-
             <TableContainer
               style={{ blockSize: '100%' }}
               className={spacing({ mbs: 'l' })}
@@ -644,7 +641,7 @@ export const Resizable: Story = {
                     <Table.Row>
                       {(columnKey) => (
                         <Table.Cell>
-                          {item[columnKey as keyof (typeof users)[0]]}
+                          {item[columnKey as keyof (typeof users)[number]]}
                         </Table.Cell>
                       )}
                     </Table.Row>
@@ -737,8 +734,8 @@ export const Sandbox: Story = {
             <ContentPanel.Body>
               <Select
                 label="Attack type"
-                style={{ inlineSize: 200 }}
                 placeholder="Select an option"
+                fullWidth
               >
                 <Select.Item key="bruteforce">Bruteforce</Select.Item>
                 <Select.Item key="complex-attack">Complex Attack</Select.Item>
@@ -754,7 +751,11 @@ export const Sandbox: Story = {
                   Potential Attack
                 </Select.Item>
               </Select>
-              <Autocomplete label="Protocol" placeholder="Search a protocol">
+              <Autocomplete
+                label="Protocol"
+                placeholder="Search a protocol"
+                fullWidth
+              >
                 <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
                 <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
                 <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
