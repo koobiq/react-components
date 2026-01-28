@@ -18,7 +18,8 @@
   transition-duration: var(--content-body-transition-duration);
 }
 
-body[data-resizing='true'] .body {
+body[data-resizing='true'] .body,
+.opened {
   transition: none;
 }
 

@@ -1,12 +1,13 @@
 'use client';
 
-import type { CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import { useMemo, useRef, forwardRef, useState } from 'react';
 
 import {
   clsx,
   mergeProps,
   useMultiRef,
+  useBoolean,
   useResizeObserverRefs,
 } from '@koobiq/react-core';
 import {
@@ -48,6 +49,10 @@ export const ContentPanelContainer = forwardRef<
     defaultOpen,
   });
 
+  const [isOpened, setOpened] = useBoolean(state.isOpen);
+
+  const test = useRef(state.isOpen);
+
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
   );
@@ -88,7 +93,11 @@ export const ContentPanelContainer = forwardRef<
 
   const bodyProps = {
     ...slotProps?.body,
-    className: clsx(s.body, slotProps?.body?.className),
+    className: clsx(
+      s.body,
+      state.isOpen && isOpened && s.opened,
+      slotProps?.body?.className
+    ),
     children: typeof children === 'function' ? children(state) : children,
     style: {
       ...slotProps?.body?.style,
@@ -113,6 +122,18 @@ export const ContentPanelContainer = forwardRef<
           {
             ref: panelRef,
             className: s.panel,
+            slotProps: {
+              transition: {
+                onEntered: () => {
+                  setOpened.on();
+                  test.current = true;
+                },
+                onExit: () => {
+                  setOpened.off();
+                  test.current = false;
+                },
+              },
+            },
           },
         ],
         [

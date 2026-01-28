@@ -129,7 +129,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
           }
         },
         style: {
-          width: panelWidth,
+          inlineSize: panelWidth,
           '--content-panel-transition-duration': `${TRANSITION_TIMEOUT}ms`,
           ...style,
         } as CSSProperties,
