@@ -60,6 +60,7 @@ export const Base: Story = {
           borderRadius: 'var(--kbq-size-l)',
           backgroundColor: 'var(--kbq-background-bg-secondary)',
         }}
+        defaultOpen
         slotProps={{ body: { style: { display: 'flex' } } }}
       >
         {({ toggle, isOpen, close }) => (
@@ -385,7 +386,6 @@ export const Open: Story = {
           backgroundColor: 'var(--kbq-background-bg-secondary)',
         }}
         slotProps={{ body: { style: { display: 'flex' } } }}
-        defaultOpen
       >
         {({ toggle, isOpen }) => (
           <>
@@ -709,7 +709,7 @@ export const Standalone: Story = {
 
 export const Sandbox: Story = {
   render: () => (
-    <ContentPanelContainer defaultOpen style={{ blockSize: 300 }}>
+    <ContentPanelContainer style={{ blockSize: 300 }}>
       {({ toggle, isOpen }) => (
         <>
           <FlexBox direction="column" gap="m">

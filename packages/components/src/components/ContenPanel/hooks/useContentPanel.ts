@@ -1,7 +1,7 @@
 'use client';
 
-import type { CSSProperties, HTMLAttributes } from 'react';
-import { useCallback, useMemo, useRef } from 'react';
+import type { HTMLAttributes } from 'react';
+import { useMemo } from 'react';
 
 import {
   useMove,
@@ -25,9 +25,7 @@ export type UseContentPanelResizeProps = {
 };
 
 export type UseContentPanelResizeReturnValue = {
-  width: number;
-  panelRef: (node: HTMLElement | null) => void;
-  panelProps: HTMLAttributes<HTMLElement>;
+  width?: number;
   resizerProps: HTMLAttributes<HTMLElement>;
 };
 
@@ -56,32 +54,10 @@ export function useContentPanel(
     ? clamp(defaultWidth, min, max)
     : 0;
 
-  const [width, setWidth] = useControlledState<number>(
+  const [width, setWidth] = useControlledState(
     controlledWidth,
     defaultUncontrolled,
     onResize
-  );
-
-  // Init from DOM only when: resizable + uncontrolled + no defaultWidth.
-  const didInitFromDomRef = useRef(false);
-
-  const panelRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (!node) return;
-
-      if (!isResizable) return;
-      if (controlledWidth !== undefined) return;
-      if (isNumber(defaultWidth)) return;
-      if (didInitFromDomRef.current) return;
-
-      const domWidth = node.getBoundingClientRect().width;
-
-      if (domWidth > 0) {
-        setWidth(clamp(domWidth, min, max));
-        didInitFromDomRef.current = true;
-      }
-    },
-    [isResizable, controlledWidth, defaultWidth, min, max, setWidth]
   );
 
   const { moveProps } = useMove({
@@ -99,6 +75,7 @@ export function useContentPanel(
     },
     onMove(e) {
       if (!isResizable) return;
+
       setWidth((w) => clamp(w - e.deltaX, min, max));
     },
   });
@@ -122,25 +99,5 @@ export function useContentPanel(
     return mergeProps(aria, moveProps);
   }, [isResizable, width, minWidth, maxWidth, min, max, moveProps]);
 
-  const panelProps = useMemo(() => {
-    if (!isResizable) return {};
-
-    // Controlled: always apply width.
-    if (controlledWidth !== undefined) {
-      return { style: { width } as CSSProperties };
-    }
-
-    // Uncontrolled with defaultWidth: apply immediately.
-    if (isNumber(defaultWidth)) {
-      return { style: { width } as CSSProperties };
-    }
-
-    // Uncontrolled without defaultWidth: don't set style.width until we've initialized it from the DOM
-    // (otherwise the initial 0 would collapse the panel).
-    if (!didInitFromDomRef.current || width <= 0) return {};
-
-    return { style: { width } as CSSProperties };
-  }, [isResizable, controlledWidth, defaultWidth, width]);
-
-  return { panelRef, width, panelProps, resizerProps };
+  return { width: isResizable ? width : undefined, resizerProps };
 }
