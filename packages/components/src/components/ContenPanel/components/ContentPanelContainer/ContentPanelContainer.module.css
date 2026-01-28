@@ -1,4 +1,6 @@
 .base {
+  --content-body-transition-duration: 300ms;
+
   display: flex;
   outline: none;
   overflow: hidden;
@@ -13,9 +15,10 @@
   will-change: inline-size;
   transition: inline-size var(--kbq-transition-slow);
   inline-size: calc(100% - var(--content-panel-inline-size));
+  transition-duration: var(--content-body-transition-duration);
 }
 
-.open {
+body[data-resizing='true'] .body {
   transition: none;
 }
 

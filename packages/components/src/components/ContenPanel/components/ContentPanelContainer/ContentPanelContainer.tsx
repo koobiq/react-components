@@ -1,14 +1,13 @@
 'use client';
 
-import { type CSSProperties, useMemo, useRef } from 'react';
-import { forwardRef, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { useMemo, useRef, forwardRef, useState } from 'react';
 
 import {
-  useMultiRef,
   clsx,
   mergeProps,
+  useMultiRef,
   useResizeObserverRefs,
-  useBoolean,
 } from '@koobiq/react-core';
 import {
   ButtonContext,
@@ -17,6 +16,7 @@ import {
   useOverlayTriggerState,
 } from '@koobiq/react-primitives';
 
+import { TRANSITION_TIMEOUT } from '../../constants';
 import { ContentPanelContext } from '../../ContentPanelContext';
 import { useContentPanelContainer } from '../../hooks';
 import { getInlineSize } from '../../utils';
@@ -47,8 +47,6 @@ export const ContentPanelContainer = forwardRef<
     onOpenChange,
     defaultOpen,
   });
-
-  const [opened, { on, off }] = useBoolean(state.isOpen);
 
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
@@ -90,15 +88,12 @@ export const ContentPanelContainer = forwardRef<
 
   const bodyProps = {
     ...slotProps?.body,
-    className: clsx(
-      s.body,
-      opened && state.isOpen && s.open,
-      slotProps?.body?.className
-    ),
+    className: clsx(s.body, slotProps?.body?.className),
     children: typeof children === 'function' ? children(state) : children,
     style: {
       ...slotProps?.body?.style,
       '--content-panel-inline-size': `${state.isOpen ? panelWidth : 0}px`,
+      '--content-body-transition-duration': `${TRANSITION_TIMEOUT}ms`,
     } as CSSProperties,
   };
 
@@ -118,12 +113,6 @@ export const ContentPanelContainer = forwardRef<
           {
             ref: panelRef,
             className: s.panel,
-            slotProps: {
-              transition: {
-                onEntered: on,
-                onExit: off,
-              },
-            },
           },
         ],
         [

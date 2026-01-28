@@ -1,5 +1,5 @@
 .base {
-  --content-panel-duration: 300ms;
+  --content-panel-transition-duration: 300ms;
   --content-panel-start-position: 100%;
   --content-panel-resizer-width: var(--kbq-size-l);
 
@@ -12,7 +12,7 @@
   transition:
     transform var(--kbq-transition-slow),
     inline-size var(--kbq-transition-slow);
-  transition-duration: var(--content-panel-duration);
+  transition-duration: var(--content-panel-transition-duration);
 }
 
 body[data-resizing='true'] .base {

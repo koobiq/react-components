@@ -26,12 +26,11 @@ import {
 } from '../Dialog';
 
 import { ContentPanelContainerContext } from './components';
+import { TRANSITION_TIMEOUT } from './constants';
 import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
 import { useContentPanel } from './hooks';
 import type { ContentPanelProps, ContentPanelRef } from './types';
-
-const TRANSITION_TIMEOUT = 300;
 
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
   (props, ref) => {
@@ -96,7 +95,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
         className: clsx(s.base, className),
         style: {
           ...panelProps.style,
-          '--content-panel-duration': `${TRANSITION_TIMEOUT}ms`,
+          '--content-panel-transition-duration': `${TRANSITION_TIMEOUT}ms`,
           ...style,
         },
       },
