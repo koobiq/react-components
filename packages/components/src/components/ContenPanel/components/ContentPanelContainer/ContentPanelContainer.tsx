@@ -49,7 +49,7 @@ export const ContentPanelContainer = forwardRef<
     defaultOpen,
   });
 
-  const [isOpened, setOpened] = useBoolean(false);
+  const [isOpened, setOpened] = useBoolean(state.isOpen);
 
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
@@ -93,7 +93,7 @@ export const ContentPanelContainer = forwardRef<
     ...slotProps?.body,
     className: clsx(
       s.body,
-      isOpened && state.isOpen && s.opened,
+      state.isOpen && isOpened && s.opened,
       slotProps?.body?.className
     ),
     children: typeof children === 'function' ? children(state) : children,
