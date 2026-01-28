@@ -49,9 +49,7 @@ export const ContentPanelContainer = forwardRef<
     defaultOpen,
   });
 
-  const [isOpened, setOpened] = useBoolean(state.isOpen);
-
-  const test = useRef(state.isOpen);
+  const [isOpened, setOpened] = useBoolean(false);
 
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
@@ -95,7 +93,7 @@ export const ContentPanelContainer = forwardRef<
     ...slotProps?.body,
     className: clsx(
       s.body,
-      state.isOpen && isOpened && s.opened,
+      isOpened && state.isOpen && s.opened,
       slotProps?.body?.className
     ),
     children: typeof children === 'function' ? children(state) : children,
@@ -124,14 +122,8 @@ export const ContentPanelContainer = forwardRef<
             className: s.panel,
             slotProps: {
               transition: {
-                onEntered: () => {
-                  setOpened.on();
-                  test.current = true;
-                },
-                onExit: () => {
-                  setOpened.off();
-                  test.current = false;
-                },
+                onEntered: setOpened.on,
+                onExit: setOpened.off,
               },
             },
           },
