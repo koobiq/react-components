@@ -1,1 +1,1 @@
-export const TRANSITION_TIMEOUT = 1000;
+export const TRANSITION_TIMEOUT = 300;

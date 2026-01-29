@@ -12,6 +12,15 @@ export type ContentPanelContainerPropContent =
   | ReactNode
   | ((props: OverlayTriggerState) => ReactElement);
 
+export const contentPanelPropBodyInteraction = [
+  'shrink',
+  'overlay',
+  'shift',
+] as const;
+
+export type ContentPanelPropBodyInteraction =
+  (typeof contentPanelPropBodyInteraction)[number];
+
 export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
   {
     /** The content of the container. Can be a render function with panel state. */
@@ -22,6 +31,14 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
     defaultOpen?: boolean;
     /** Handler that is called when the panel's open state changes. */
     onOpenChange?: (open: boolean) => void;
+    /**
+     * Defines how the panel affects the body when opened.
+     * - `shrink`: body resizes to make room for the panel
+     * - `overlay`: panel overlays the body
+     * - `shift`: body shifts without resizing
+     * @default 'shrink'
+     */
+    bodyInteraction?: ContentPanelPropBodyInteraction;
     /** The props used for each slot inside. */
     slotProps?: {
       body?: ComponentPropsWithRef<'div'>;
@@ -29,4 +46,5 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
   },
   'div'
 >;
+
 export type ContentPanelContainerRef = ComponentRef<'div'>;

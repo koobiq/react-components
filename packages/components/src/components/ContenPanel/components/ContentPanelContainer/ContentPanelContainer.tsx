@@ -35,6 +35,7 @@ export const ContentPanelContainer = forwardRef<
   const {
     children,
     isOpen,
+    bodyInteraction = 'shrink',
     onOpenChange,
     defaultOpen,
     className,
@@ -79,7 +80,7 @@ export const ContentPanelContainer = forwardRef<
 
   const rootProps = mergeProps(
     {
-      className: clsx(s.base, className),
+      className: clsx(s.base, s[bodyInteraction], className),
       ref: domRef,
       ...other,
     },
@@ -127,7 +128,10 @@ export const ContentPanelContainer = forwardRef<
       ]}
     >
       <div {...rootProps}>
-        <div {...bodyProps} />
+        <div
+          {...bodyProps}
+          inert={bodyInteraction === 'shift' && state.isOpen && true}
+        />
       </div>
     </Provider>
   );
