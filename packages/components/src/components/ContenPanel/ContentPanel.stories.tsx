@@ -823,7 +823,7 @@ export const Resizable: Story = {
       <ContentPanelContainer style={{ blockSize: 300 }}>
         {({ open, close, isOpen }) => (
           <>
-            <ContentPanel defaultWidth={400} isResizable>
+            <ContentPanel defaultWidth={400} maxWidth="80%" isResizable>
               <ContentPanel.Header>
                 {user?.firstName}&nbsp;{user?.lastName}
               </ContentPanel.Header>
