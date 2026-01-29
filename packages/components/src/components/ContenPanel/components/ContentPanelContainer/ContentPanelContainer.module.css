@@ -12,14 +12,28 @@
   --content-panel-inline-size: ;
 
   overflow: auto;
+  inline-size: 100%;
   will-change: inline-size;
-  transition: inline-size var(--kbq-transition-slow);
+}
+
+.base:has(.panel[data-transition='entering']) .body {
   inline-size: calc(100% - var(--content-panel-inline-size));
+  transition: inline-size var(--kbq-transition-slow);
   transition-duration: var(--content-body-transition-duration);
 }
 
-.opened {
-  transition: none;
+.base:has(.panel[data-transition='entered']) .body {
+  inline-size: calc(100% - var(--content-panel-inline-size));
+}
+
+.base:has(.panel[data-transition='exiting']) .body {
+  inline-size: 100%;
+  transition: inline-size var(--kbq-transition-slow);
+  transition-duration: var(--content-body-transition-duration);
+}
+
+.base:has(.panel[data-transition='exited']) .body {
+  inline-size: 100%;
 }
 
 /* panel */
