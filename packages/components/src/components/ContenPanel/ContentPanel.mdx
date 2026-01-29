@@ -92,6 +92,12 @@ to control sizing behavior: `defaultWidth`, `width`, `minWidth`, and `maxWidth`.
 
 ### Standalone
 
+Use `ContentPanel` as a standalone component when you don't need `ContentPanelContainer`
+and want to control the open state yourself.
+
+In this mode, you manage the open state and close actions manually (e.g. via `isOpen` / `onOpenChange`),
+and are responsible for shifting the main content when the panel opens.
+
 <Story of={Stories.Standalone} />
 
 ## Sandbox

@@ -79,6 +79,7 @@ export const Base: Story = {
             <ContentPanel
               width={width}
               onResize={onResize}
+              className={spacing({ p: 's' })}
               hideCloseButton
               isResizable
               {...args}
@@ -609,81 +610,89 @@ export const BodyInteraction: Story = {
 
 export const Open: Story = {
   render: function Render() {
+    const [isOpen, { toggle, set }] = useBoolean();
+
     return (
-      <ContentPanelContainer
-        style={{
-          blockSize: 320,
-          display: 'flex',
-          inlineSize: 480,
-          borderRadius: 'var(--kbq-size-l)',
-          backgroundColor: 'var(--kbq-background-bg-secondary)',
-        }}
-        slotProps={{ body: { style: { display: 'flex' } } }}
-      >
-        {({ toggle, isOpen }) => (
-          <>
-            <Button onPress={toggle} className={spacing({ m: 'auto' })}>
-              {isOpen ? 'Close panel' : 'Open panel'}
-            </Button>
-            <ContentPanel isResizable>
-              <ContentPanel.Header>Web Security</ContentPanel.Header>
-              <ContentPanel.Body>
-                <FlexBox gap="m" direction="column">
-                  <span>
-                    Web security is a crucial aspect of modern digital
-                    infrastructure, ensuring the protection of sensitive data,
-                    user privacy, and system integrity. As cyber threats
-                    continue to evolve, developers and organizations must adopt
-                    a proactive approach to securing web applications against
-                    attacks.
-                  </span>
-                  <span>
-                    One of the most common vulnerabilities is SQL injection,
-                    where attackers manipulate database queries to gain
-                    unauthorized access to sensitive information. Similarly,
-                    cross-site scripting (XSS) allows malicious scripts to run
-                    on a victim’s browser, leading to data theft or session
-                    hijacking. Another prevalent threat is cross-site request
-                    forgery (CSRF), in which users are tricked into executing
-                    unwanted actions on authenticated sites. Additionally,
-                    man-in-the-middle attacks intercept communication between
-                    users and servers, compromising the confidentiality of data.
-                    Distributed Denial-of-Service (DDoS) attacks can also
-                    cripple web services by overwhelming them with excessive
-                    traffic.
-                  </span>
-                  <span>
-                    To mitigate these risks, implementing strong security
-                    practices is essential. Using HTTPS ensures encrypted
-                    communication, protecting data from interception. Proper
-                    input validation and escaping mechanisms help prevent code
-                    injection attacks. Authentication and authorization
-                    mechanisms, including multi-factor authentication (MFA) and
-                    role-based access control (RBAC), add layers of security to
-                    user access. Secure API development, including
-                    authentication, rate limiting, and encryption, reduces
-                    vulnerabilities in web services. Keeping software,
-                    frameworks, and dependencies up to date minimizes the risk
-                    of exploiting known vulnerabilities. Continuous monitoring,
-                    logging, and security audits help detect and respond to
-                    threats before they cause significant damage.
-                  </span>
-                  <span>
-                    Web security is not a one-time implementation but an ongoing
-                    process that evolves alongside emerging threats. By
-                    following best practices and staying vigilant, businesses
-                    and developers can build resilient, secure applications that
-                    protect users and data in an increasingly connected world.
-                  </span>
-                </FlexBox>
-              </ContentPanel.Body>
-              <ContentPanel.Footer>
-                <Button variant="fade-contrast-filled">Show more</Button>
-              </ContentPanel.Footer>
-            </ContentPanel>
-          </>
-        )}
-      </ContentPanelContainer>
+      <FlexBox direction="column" gap="m">
+        <Button onPress={toggle} variant="fade-contrast-filled">
+          {isOpen ? 'Close panel ' : 'Open panel'}
+        </Button>
+        <ContentPanelContainer
+          style={{
+            blockSize: 320,
+            display: 'flex',
+            inlineSize: 480,
+            borderRadius: 'var(--kbq-size-l)',
+            backgroundColor: 'var(--kbq-background-bg-secondary)',
+          }}
+          isOpen={isOpen}
+          onOpenChange={set}
+          slotProps={{ body: { style: { display: 'flex' } } }}
+        >
+          <Typography
+            variant="text-big-strong"
+            color="contrast-secondary"
+            style={{ margin: 'auto' }}
+            ellipsis
+          >
+            Open state is controlled externally
+          </Typography>
+          <ContentPanel isResizable>
+            <ContentPanel.Header>Web Security</ContentPanel.Header>
+            <ContentPanel.Body>
+              <FlexBox gap="m" direction="column">
+                <span>
+                  Web security is a crucial aspect of modern digital
+                  infrastructure, ensuring the protection of sensitive data,
+                  user privacy, and system integrity. As cyber threats continue
+                  to evolve, developers and organizations must adopt a proactive
+                  approach to securing web applications against attacks.
+                </span>
+                <span>
+                  One of the most common vulnerabilities is SQL injection, where
+                  attackers manipulate database queries to gain unauthorized
+                  access to sensitive information. Similarly, cross-site
+                  scripting (XSS) allows malicious scripts to run on a victim’s
+                  browser, leading to data theft or session hijacking. Another
+                  prevalent threat is cross-site request forgery (CSRF), in
+                  which users are tricked into executing unwanted actions on
+                  authenticated sites. Additionally, man-in-the-middle attacks
+                  intercept communication between users and servers,
+                  compromising the confidentiality of data. Distributed
+                  Denial-of-Service (DDoS) attacks can also cripple web services
+                  by overwhelming them with excessive traffic.
+                </span>
+                <span>
+                  To mitigate these risks, implementing strong security
+                  practices is essential. Using HTTPS ensures encrypted
+                  communication, protecting data from interception. Proper input
+                  validation and escaping mechanisms help prevent code injection
+                  attacks. Authentication and authorization mechanisms,
+                  including multi-factor authentication (MFA) and role-based
+                  access control (RBAC), add layers of security to user access.
+                  Secure API development, including authentication, rate
+                  limiting, and encryption, reduces vulnerabilities in web
+                  services. Keeping software, frameworks, and dependencies up to
+                  date minimizes the risk of exploiting known vulnerabilities.
+                  Continuous monitoring, logging, and security audits help
+                  detect and respond to threats before they cause significant
+                  damage.
+                </span>
+                <span>
+                  Web security is not a one-time implementation but an ongoing
+                  process that evolves alongside emerging threats. By following
+                  best practices and staying vigilant, businesses and developers
+                  can build resilient, secure applications that protect users
+                  and data in an increasingly connected world.
+                </span>
+              </FlexBox>
+            </ContentPanel.Body>
+            <ContentPanel.Footer>
+              <Button variant="fade-contrast-filled">Show more</Button>
+            </ContentPanel.Footer>
+          </ContentPanel>
+        </ContentPanelContainer>
+      </FlexBox>
     );
   },
 };
