@@ -6,9 +6,7 @@
   overflow: unset;
   block-size: 100%;
   margin-inline-start: var(--kbq-size-l);
-  border-radius: var(--kbq-size-l);
-  background-color: var(--kbq-background-card);
-  border: 1px solid var(--kbq-line-contrast-less);
+  box-sizing: border-box;
   transition:
     transform var(--kbq-transition-slow),
     inline-size var(--kbq-transition-slow);
@@ -34,6 +32,13 @@ body[data-resizing='true'] .base {
 
 .base[data-transition='exited'] {
   transform: translate(var(--content-panel-start-position), 0);
+}
+
+.dialog {
+  border-radius: var(--kbq-size-l);
+  background-color: var(--kbq-background-card);
+  border: 1px solid var(--kbq-line-contrast-less);
+  block-size: inherit;
 }
 
 /* resizer */

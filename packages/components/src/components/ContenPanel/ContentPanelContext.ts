@@ -7,4 +7,4 @@ import type { ContextValue } from '@koobiq/react-primitives';
 import type { ContentPanelProps } from './types';
 
 export const ContentPanelContext =
-  createContext<ContextValue<ContentPanelProps, HTMLElement>>(null);
+  createContext<ContextValue<ContentPanelProps, HTMLDivElement>>(null);

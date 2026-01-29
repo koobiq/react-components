@@ -56,7 +56,7 @@ export const ContentPanelContainer = forwardRef<
   const { triggerProps, containerProps } = useContentPanelContainer(state);
 
   const containerRef = useRef<HTMLElement | null>(null);
-  const panelRef = useRef<HTMLElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   const domRef = useMultiRef<HTMLElement>([
     ref,

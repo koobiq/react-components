@@ -1,4 +1,9 @@
-import type { ComponentRef, ReactNode } from 'react';
+import type {
+  ComponentPropsWithRef,
+  ComponentRef,
+  CSSProperties,
+  ReactNode,
+} from 'react';
 
 import type { TransitionProps } from 'react-transition-group/Transition';
 
@@ -31,10 +36,16 @@ export type ContentPanelProps = {
   defaultOpen?: boolean;
   /** Handler that is called when the panel's open state changes. */
   onOpenChange?: (open: boolean) => void;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
   /** The props used for each slot inside. */
   slotProps?: {
+    dialog?: DialogProps;
     transition?: Partial<TransitionProps<HTMLElement>>;
+    resizer?: ComponentPropsWithRef<'div'>;
   };
-} & Omit<DialogProps, 'slotProps'>;
+} & Pick<DialogProps, 'hideCloseButton'>;
 
 export type ContentPanelRef = ComponentRef<'div'>;

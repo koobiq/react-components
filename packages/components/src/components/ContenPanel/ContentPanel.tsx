@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  type ComponentPropsWithRef,
   forwardRef,
   type HTMLAttributes,
   type CSSProperties,
@@ -8,13 +9,7 @@ import {
   useRef,
 } from 'react';
 
-import {
-  useDOMRef,
-  useMultiRef,
-  mergeProps,
-  clsx,
-  isNumber,
-} from '@koobiq/react-core';
+import { useDOMRef, mergeProps, clsx, isNumber } from '@koobiq/react-core';
 import {
   useContextProps,
   useOverlay,
@@ -65,6 +60,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       style,
       children,
       slotProps,
+      hideCloseButton,
       ...other
     } = panelProps;
 
@@ -93,7 +89,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
     const defaultWidth = defaultWidthProp ?? 400;
 
-    const { width: panelWidth, resizerProps } = useContentPanel({
+    const { width: panelWidth, resizerProps: moveProps } = useContentPanel({
       width,
       isResizable,
       minWidth,
@@ -104,8 +100,6 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       defaultWidth,
     });
 
-    const dialogRef = useMultiRef([panelRef, overlayRef]);
-
     const { overlayProps } = useOverlay(
       {
         onClose: close,
@@ -115,14 +109,10 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       overlayRef
     );
 
-    const dialogProps = mergeProps<
-      [DialogProps, HTMLAttributes<HTMLElement>, HTMLAttributes<HTMLElement>]
-    >(
+    const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
       {
-        ref: dialogRef,
-        onClose: close,
+        ref: panelRef,
         className: clsx(s.base, className),
-        'data-resizable': isResizable || undefined,
         onKeyDown: (event) => {
           if (event.key === 'Escape' && !containerState) {
             state.close();
@@ -134,8 +124,27 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
           ...style,
         } as CSSProperties,
       },
-      other,
+      other
+    );
+
+    const dialogProps = mergeProps<
+      (DialogProps | undefined | HTMLAttributes<HTMLElement>)[]
+    >(
+      {
+        onClose: close,
+        className: s.dialog,
+        hideCloseButton,
+      },
+      slotProps?.dialog,
       overlayProps
+    );
+
+    const resizerProps = mergeProps(
+      {
+        className: s.resizer,
+      },
+      slotProps?.resizer,
+      moveProps
     );
 
     const transitionProps = mergeProps(
@@ -151,10 +160,16 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const panel = (
       <Transition {...transitionProps}>
         {(transition) => (
-          <Dialog data-transition={transition} {...dialogProps} role="dialog">
-            {isResizable && <div {...resizerProps} className={s.resizer} />}
-            {children}
-          </Dialog>
+          <div
+            {...rootProps}
+            data-transition={transition}
+            data-resizable={isResizable || undefined}
+          >
+            <Dialog {...dialogProps} role="dialog">
+              {isResizable && <div {...resizerProps} />}
+              {children}
+            </Dialog>
+          </div>
         )}
       </Transition>
     );
