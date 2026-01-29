@@ -32,6 +32,7 @@ import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
 import { useContentPanel } from './hooks';
 import type { ContentPanelProps, ContentPanelRef } from './types';
+import { parseContentPanelSize } from './utils';
 
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
   (props, ref) => {
@@ -80,17 +81,30 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
     const { isOpen: isOpenState, close } = state;
 
-    const maxWidth = Math.min(
-      isNumber(containerWidth) ? containerWidth : Number.POSITIVE_INFINITY,
-      isNumber(maxWidthProp) ? maxWidthProp : Number.POSITIVE_INFINITY
+    const maxWidthPropPx = parseContentPanelSize(containerWidth, maxWidthProp);
+    const minWidthPropPx = parseContentPanelSize(containerWidth, minWidthProp);
+
+    const defaultWidthPx = parseContentPanelSize(
+      containerWidth,
+      defaultWidthProp
     );
 
-    const minWidth = Math.max(0, isNumber(minWidthProp) ? minWidthProp : 200);
+    const maxWidth = Math.min(
+      isNumber(containerWidth) ? containerWidth : Number.POSITIVE_INFINITY,
+      isNumber(maxWidthPropPx) ? maxWidthPropPx : Number.POSITIVE_INFINITY
+    );
 
-    const defaultWidth = defaultWidthProp ?? 400;
+    const minWidth = Math.max(
+      0,
+      isNumber(minWidthPropPx) ? minWidthPropPx : 200
+    );
+
+    const defaultWidth = defaultWidthPx ?? 400;
+
+    const widthPx = parseContentPanelSize(containerWidth, width);
 
     const { width: panelWidth, resizerProps: moveProps } = useContentPanel({
-      width,
+      width: widthPx,
       isResizable,
       minWidth,
       maxWidth,

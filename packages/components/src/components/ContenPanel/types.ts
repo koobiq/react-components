@@ -9,7 +9,7 @@ import type { TransitionProps } from 'react-transition-group/Transition';
 
 import type { DialogProps } from '../Dialog';
 
-export type ContentPanelSize = number;
+export type ContentPanelSize = number | `${number}` | `${number}%`;
 
 export type ContentPanelProps = {
   /** The content of the panel. */

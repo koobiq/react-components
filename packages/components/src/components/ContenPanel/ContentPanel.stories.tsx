@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
-  IconAlignCenter16,
-  IconAlignLeft16,
-  IconAlignRight16,
   IconArrowsCollapseDiagonal16,
   IconArrowsExpandDiagonal16,
   IconXmark16,
@@ -22,6 +19,7 @@ import { Table, TableContainer } from '../Table';
 import { Typography } from '../Typography';
 
 import {
+  type ContentPanelSize,
   ContentPanel,
   ContentPanelContainer,
   type ContentPanelPropBodyInteraction,
@@ -47,17 +45,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: function Render(args) {
-    const collapsedSize = 300;
+    const expandedSize: ContentPanelSize = '100%';
+    const collapsedSize: ContentPanelSize = '40%';
     const [isExpanded, setExpanded] = useBoolean(false);
-    const [width, onResize] = useState(collapsedSize);
+    const [width, setWidth] = useState<ContentPanelSize>(300);
+
+    const isFirst = useRef(true);
 
     useEffect(() => {
-      if (isExpanded) {
-        onResize(480);
-      } else {
-        onResize(collapsedSize);
+      if (isFirst.current) {
+        isFirst.current = false;
+
+        return;
       }
-    }, [isExpanded]);
+
+      setWidth(isExpanded ? expandedSize : collapsedSize);
+    }, [isExpanded, collapsedSize]);
 
     return (
       <ContentPanelContainer
@@ -78,7 +81,7 @@ export const Base: Story = {
             </Button>
             <ContentPanel
               width={width}
-              onResize={onResize}
+              onResize={setWidth}
               className={spacing({ p: 's' })}
               hideCloseButton
               isResizable
@@ -512,20 +515,16 @@ export const BodyInteraction: Story = {
     return (
       <FlexBox direction="column" gap="l" style={{ width: '100%' }}>
         <ButtonToggleGroup
+          style={{ width: '40%' }}
           selectedKey={selected}
           onSelectionChange={(selected) =>
             setSelected(selected as ContentPanelPropBodyInteraction)
           }
+          hasEqualItemSize
         >
-          <ButtonToggle id="shrink" icon={<IconAlignLeft16 />}>
-            Shrink
-          </ButtonToggle>
-          <ButtonToggle id="overlay" icon={<IconAlignCenter16 />}>
-            Overlay
-          </ButtonToggle>
-          <ButtonToggle id="shift" icon={<IconAlignRight16 />}>
-            Shift
-          </ButtonToggle>
+          <ButtonToggle id="shrink">Shrink</ButtonToggle>
+          <ButtonToggle id="overlay">Overlay</ButtonToggle>
+          <ButtonToggle id="shift">Shift</ButtonToggle>
         </ButtonToggleGroup>
         <ContentPanelContainer
           bodyInteraction={selected}
