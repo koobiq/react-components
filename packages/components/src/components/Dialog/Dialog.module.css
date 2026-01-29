@@ -59,6 +59,11 @@
   box-sizing: border-box;
   padding: 0 var(--dialog-padding-inline-size) var(--kbq-size-s)
     var(--dialog-padding-inline-size);
+
+  &:focus-visible {
+    outline: 2px solid var(--kbq-states-line-focus-theme);
+    outline-offset: -2px;
+  }
 }
 
 .content:first-child {
