@@ -1,9 +1,10 @@
 import { createRef } from 'react';
 
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { Autocomplete } from '../../Autocomplete';
 import {
   ContentPanel,
   ContentPanelContainer,
@@ -14,7 +15,6 @@ const renderComponent = (
   props: Omit<ContentPanelContainerProps, 'children'>
 ) => (
   <ContentPanelContainer {...props}>
-    body
     <ContentPanel>content</ContentPanel>
   </ContentPanelContainer>
 );
@@ -151,6 +151,43 @@ describe('ContentPanelContainer', () => {
     await user.keyboard('{Escape}');
 
     expect(onOpenChange).toHaveBeenCalled();
+    expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
+  });
+
+  it('should close the panel on Escape with nested overlays', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <ContentPanelContainer
+        {...baseProps}
+        onOpenChange={onOpenChange}
+        defaultOpen
+      >
+        <ContentPanel>
+          <Autocomplete label="autocomplete">
+            <Autocomplete.Item key="1">One</Autocomplete.Item>
+            <Autocomplete.Item key="2">Two</Autocomplete.Item>
+          </Autocomplete>
+        </ContentPanel>
+      </ContentPanelContainer>
+    );
+
+    const input = screen.queryByRole('combobox');
+
+    if (input) await user.click(input);
+    await user.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    expect(onOpenChange).not.toHaveBeenCalledWith(false);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+
+    await user.keyboard('{Escape}');
     expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
   });
 });
