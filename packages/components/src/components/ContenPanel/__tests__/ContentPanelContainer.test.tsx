@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 
 import { screen, render, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -206,5 +206,71 @@ describe('ContentPanelContainer', () => {
 
     await user.keyboard('{Escape}');
     expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
+  });
+
+  it('should close the panel via toggle', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <ContentPanelContainer defaultOpen onOpenChange={onOpenChange}>
+        {({ toggle, isOpen }) => (
+          <>
+            <button onClick={toggle}>{isOpen ? 'close' : 'open'}</button>
+
+            <ContentPanel>content</ContentPanel>
+          </>
+        )}
+      </ContentPanelContainer>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'close' }));
+
+    expect(screen.getByRole('button', { name: 'open' })).toBeInTheDocument();
+
+    expect(onOpenChange).toHaveBeenCalled();
+    expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
+  });
+
+  describe('ContentPanelContainer (controlled open)', () => {
+    it('should open and close the panel in controlled mode', async () => {
+      function ControlledExample(props: {
+        onOpenChange?: (open: boolean) => void;
+      }) {
+        const [open, setOpen] = useState(false);
+
+        return (
+          <ContentPanelContainer
+            isOpen={open}
+            onOpenChange={(next) => {
+              setOpen(next);
+              props.onOpenChange?.(next);
+            }}
+          >
+            {({ toggle, isOpen }) => (
+              <>
+                <button onClick={toggle}>{isOpen ? 'close' : 'open'}</button>
+                <ContentPanel>content</ContentPanel>
+              </>
+            )}
+          </ContentPanelContainer>
+        );
+      }
+
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+
+      render(<ControlledExample onOpenChange={onOpenChange} />);
+
+      await user.click(screen.getByRole('button', { name: 'open' }));
+      expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(true);
+
+      expect(screen.getByRole('button', { name: 'close' })).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: 'close' }));
+      expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
+
+      expect(screen.getByRole('button', { name: 'open' })).toBeInTheDocument();
+    });
   });
 });
