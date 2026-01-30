@@ -5,6 +5,7 @@ import type {
   ReactNode,
 } from 'react';
 
+import type { DataAttributeProps } from '@koobiq/react-core';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
 import type { DialogProps } from '../Dialog';
@@ -53,7 +54,7 @@ export type ContentPanelProps = {
   slotProps?: {
     dialog?: DialogProps;
     transition?: Partial<TransitionProps<HTMLElement>>;
-    resizer?: ComponentPropsWithRef<'div'>;
+    resizer?: ComponentPropsWithRef<'div'> & DataAttributeProps;
   };
   /** If `true`, the content panel won't close when the ESC key is pressed. */
   disableExitOnEscapeKeyDown?: boolean;
