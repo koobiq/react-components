@@ -30,9 +30,15 @@ export type ContentPanelProps = {
   /** Handler that is called whenever the panel width changes. */
   onResize?: (width: number) => void;
   /** Handler that is called when the user starts resizing the panel. */
-  onResizeStart?: () => void;
+  onResizeStart?: (width: number) => void;
   /** Handler that is called when the user finishes resizing the panel. */
   onResizeEnd?: (width: number) => void;
+  /**
+   * Handler that is called when the panel width is reset (double-click on the resizer).
+   * Receives the initial width and can return a new width.
+   * If nothing is returned, the panel resets to the initial width.
+   */
+  onResetResize?: (initialWidth: number) => number | null | undefined;
   /** If `true`, the panel is shown. */
   isOpen?: boolean;
   /** The default open state. Use when the component is not controlled. */

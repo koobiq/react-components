@@ -49,6 +49,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       defaultWidth: defaultWidthProp,
       minWidth: minWidthProp,
       maxWidth: maxWidthProp,
+      onResetResize,
       isResizable = false,
       width,
       onResize,
@@ -111,6 +112,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       onResize,
       onResizeEnd,
       onResizeStart,
+      onResetResize,
       defaultWidth,
     });
 

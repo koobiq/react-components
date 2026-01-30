@@ -1,13 +1,13 @@
 'use client';
 
 import type { HTMLAttributes } from 'react';
-import { useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 
 import {
-  useMove,
   isNumber,
   mergeProps,
   useControlledState,
+  useMove,
 } from '@koobiq/react-core';
 
 const clamp = (v: number, min: number, max: number) =>
@@ -19,9 +19,11 @@ export type UseContentPanelResizeProps = {
   defaultWidth?: number | null;
   minWidth?: number | null;
   maxWidth?: number | null;
+
   onResize?: (width: number) => void;
-  onResizeStart?: () => void;
+  onResizeStart?: (width: number) => void;
   onResizeEnd?: (width: number) => void;
+  onResetResize?: (initialWidth: number) => number | null | undefined;
 };
 
 export type UseContentPanelResizeReturnValue = {
@@ -39,6 +41,7 @@ export function useContentPanel(
     minWidth,
     maxWidth,
     onResize,
+    onResetResize,
     onResizeStart,
     onResizeEnd,
   } = props;
@@ -60,23 +63,50 @@ export function useContentPanel(
     onResize
   );
 
+  const widthRef = useRef(width);
+  widthRef.current = width;
+
+  const initialResetRef = useRef<number | null>(null);
+
+  if (initialResetRef.current == null) {
+    initialResetRef.current = isNumber(widthProp)
+      ? clamp(widthProp, min, max)
+      : defaultUncontrolled;
+  }
+
+  const onReset = useCallback(() => {
+    if (!isResizable) return;
+
+    const initial = initialResetRef.current ?? 0;
+    const nextRaw = onResetResize?.(initial);
+
+    const next = clamp(isNumber(nextRaw) ? nextRaw : initial, min, max);
+
+    setWidth(next);
+  }, [isResizable, onResetResize, min, max, setWidth]);
+
   const { moveProps } = useMove({
     onMoveStart() {
       if (!isResizable) return;
 
       document.body.dataset.resizing = 'true';
-      onResizeStart?.();
+      onResizeStart?.(Math.round(widthRef.current));
     },
     onMoveEnd() {
       if (!isResizable) return;
 
       delete document.body.dataset.resizing;
-      onResizeEnd?.(Math.round(width));
+      onResizeEnd?.(Math.round(widthRef.current));
     },
     onMove(e) {
       if (!isResizable) return;
 
-      setWidth((w) => clamp(w - e.deltaX, min, max));
+      setWidth((w) => {
+        const next = clamp(w - e.deltaX, min, max);
+        widthRef.current = next;
+
+        return next;
+      });
     },
   });
 
@@ -96,8 +126,8 @@ export function useContentPanel(
     if (isNumber(minWidth)) aria['aria-valuemin'] = min;
     if (isNumber(maxWidth)) aria['aria-valuemax'] = max;
 
-    return mergeProps(aria, moveProps);
-  }, [isResizable, width, minWidth, maxWidth, min, max, moveProps]);
+    return mergeProps(aria, { onDoubleClick: onReset }, moveProps);
+  }, [isResizable, width, minWidth, maxWidth, min, max, moveProps, onReset]);
 
   return { width: isResizable ? width : undefined, resizerProps };
 }
