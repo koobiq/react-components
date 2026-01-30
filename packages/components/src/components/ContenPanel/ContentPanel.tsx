@@ -49,6 +49,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       defaultWidth: defaultWidthProp,
       minWidth: minWidthProp,
       maxWidth: maxWidthProp,
+      disableExitOnEscapeKeyDown,
       onResetResize,
       isResizable = false,
       width,
@@ -121,7 +122,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       {
         onClose: close,
         isOpen: isOpenState,
-        isKeyboardDismissDisabled: false,
+        isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
       },
       overlayRef
     );

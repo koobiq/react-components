@@ -36,6 +36,7 @@ export const ContentPanelContainer = forwardRef<
     children,
     isOpen,
     onOpenChange,
+    disableExitOnEscapeKeyDown,
     defaultOpen,
     className,
     slotProps,
@@ -52,7 +53,10 @@ export const ContentPanelContainer = forwardRef<
     null
   );
 
-  const { triggerProps, containerProps } = useContentPanelContainer(state);
+  const { triggerProps, containerProps } = useContentPanelContainer(
+    { isKeyboardDismissDisabled: !!disableExitOnEscapeKeyDown },
+    state
+  );
 
   const containerRef = useRef<HTMLElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -113,6 +117,7 @@ export const ContentPanelContainer = forwardRef<
           {
             ref: panelRef,
             className: s.panel,
+            disableExitOnEscapeKeyDown,
           },
         ],
         [

@@ -55,6 +55,8 @@ export type ContentPanelProps = {
     transition?: Partial<TransitionProps<HTMLElement>>;
     resizer?: ComponentPropsWithRef<'div'>;
   };
+  /** If `true`, the content panel won't close when the ESC key is pressed. */
+  disableExitOnEscapeKeyDown?: boolean;
 } & Pick<DialogProps, 'hideCloseButton'>;
 
 export type ContentPanelRef = ComponentRef<'div'>;

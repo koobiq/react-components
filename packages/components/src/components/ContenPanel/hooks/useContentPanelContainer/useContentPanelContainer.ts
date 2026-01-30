@@ -13,13 +13,21 @@ export type UseContentPanelReturnValue = {
   bodyProps?: HTMLAttributes<HTMLElement>;
 };
 
+export type UseContentPanelContainerProps = {
+  isKeyboardDismissDisabled: boolean;
+};
+
 export function useContentPanelContainer(
+  props: UseContentPanelContainerProps,
   state: OverlayTriggerState
 ): UseContentPanelReturnValue {
+  const { isKeyboardDismissDisabled } = props;
+
   return {
     containerProps: {
       tabIndex: -1,
       onKeyDown: (event) => {
+        if (isKeyboardDismissDisabled) return;
         if (!state.isOpen) return;
         if (event.key === 'Escape') state.close();
       },

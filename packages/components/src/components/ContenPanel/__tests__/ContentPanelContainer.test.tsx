@@ -129,6 +129,23 @@ describe('ContentPanelContainer', () => {
     expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
   });
 
+  it('should not close the panel on Escape when disableExitOnEscapeKeyDown is true', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      renderComponent({
+        defaultOpen: true,
+        onOpenChange,
+        disableExitOnEscapeKeyDown: true,
+      })
+    );
+
+    await user.keyboard('{Escape}');
+
+    expect(onOpenChange).not.toHaveBeenCalledWith(false);
+  });
+
   it('should close the panel on Escape inside a body', async () => {
     const user = userEvent.setup();
     const onOpenChange = vi.fn();

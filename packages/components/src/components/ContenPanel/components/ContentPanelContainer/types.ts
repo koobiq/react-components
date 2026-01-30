@@ -29,6 +29,10 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
     slotProps?: {
       body?: ComponentPropsWithRef<'div'> & DataAttributeProps;
     };
+    /**
+     * If `true`, the content panel won't close when the ESC key is pressed.
+     */
+    disableExitOnEscapeKeyDown?: boolean;
   },
   'div'
 >;
