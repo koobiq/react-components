@@ -22,7 +22,7 @@ import {
   type ContentPanelSize,
   ContentPanel,
   ContentPanelContainer,
-  type ContentPanelPropBodyInteraction,
+  type ContentPanelPropContentInteraction,
 } from './index';
 
 const meta = {
@@ -309,7 +309,10 @@ export const Triggers: Story = {
     const [user, setUser] = useState<(typeof users)[number]>();
 
     return (
-      <ContentPanelContainer style={{ blockSize: 300 }}>
+      <ContentPanelContainer
+        style={{ blockSize: 300 }}
+        contentInteraction={{ xs: 'shift', m: 'overlay', l: 'shrink' }}
+      >
         {({ open, close, isOpen }) => (
           <>
             <Typography variant="text-big-strong">
@@ -386,7 +389,7 @@ export const Triggers: Story = {
   },
 };
 
-export const BodyInteraction: Story = {
+export const ContentInteraction: Story = {
   parameters: {
     layout: 'padded',
   },
@@ -510,7 +513,7 @@ export const BodyInteraction: Story = {
     const [user, setUser] = useState<(typeof users)[number]>();
 
     const [selected, setSelected] =
-      useState<ContentPanelPropBodyInteraction>('shrink');
+      useState<ContentPanelPropContentInteraction>('shrink');
 
     return (
       <FlexBox direction="column" gap="l" style={{ width: '100%' }}>
@@ -518,7 +521,7 @@ export const BodyInteraction: Story = {
           style={{ width: '40%' }}
           selectedKey={selected}
           onSelectionChange={(selected) =>
-            setSelected(selected as ContentPanelPropBodyInteraction)
+            setSelected(selected as ContentPanelPropContentInteraction)
           }
           hasEqualItemSize
         >
@@ -527,7 +530,7 @@ export const BodyInteraction: Story = {
           <ButtonToggle id="shift">Shift</ButtonToggle>
         </ButtonToggleGroup>
         <ContentPanelContainer
-          bodyInteraction={selected}
+          contentInteraction={selected}
           style={{ blockSize: 300, inlineSize: '100%' }}
         >
           {({ open, close, isOpen }) => (

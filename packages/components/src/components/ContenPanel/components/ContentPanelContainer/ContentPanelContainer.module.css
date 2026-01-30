@@ -36,6 +36,10 @@
   inline-size: 100%;
 }
 
+.shift .panel {
+  inline-size: 100%;
+}
+
 .shift:has(.panel[data-transition='entering']) .body {
   transform: translate(calc(-1 * var(--content-panel-inline-size)), 0);
   transition: transform var(--kbq-transition-slow);

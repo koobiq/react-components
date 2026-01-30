@@ -8,18 +8,20 @@ import type {
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
+import type { ResponsiveValue } from '../../../../utils';
+
 export type ContentPanelContainerPropContent =
   | ReactNode
   | ((props: OverlayTriggerState) => ReactElement);
 
-export const contentPanelPropBodyInteraction = [
+export const contentPanelPropContentInteraction = [
   'shrink',
   'overlay',
   'shift',
 ] as const;
 
-export type ContentPanelPropBodyInteraction =
-  (typeof contentPanelPropBodyInteraction)[number];
+export type ContentPanelPropContentInteraction =
+  (typeof contentPanelPropContentInteraction)[number];
 
 export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
   {
@@ -38,7 +40,9 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
      * - `shift`: body shifts without resizing
      * @default 'shrink'
      */
-    bodyInteraction?: ContentPanelPropBodyInteraction;
+    contentInteraction?:
+      | ContentPanelPropContentInteraction
+      | ResponsiveValue<ContentPanelPropContentInteraction>;
     /** The props used for each slot inside. */
     slotProps?: {
       body?: ComponentPropsWithRef<'div'>;
