@@ -14,24 +14,38 @@ const clamp = (v: number, min: number, max: number) =>
   Math.max(min, Math.min(max, v));
 
 export type UseContentPanelResizeProps = {
-  isResizable?: boolean;
+  /** The controlled width of the panel (in pixels). */
   width?: number | null;
+  /** If `true`, the panel can be resized by dragging the resizer. */
+  isResizable?: boolean;
+  /** The initial width of the panel when uncontrolled (in pixels). */
   defaultWidth?: number | null;
+  /** The minimum allowed width of the panel (in pixels). */
   minWidth?: number | null;
+  /** The maximum allowed width of the panel (in pixels). */
   maxWidth?: number | null;
-
+  /** Handler that is called whenever the panel width changes. */
   onResize?: (width: number) => void;
+  /** Handler that is called when the user starts resizing the panel. */
   onResizeStart?: (width: number) => void;
+  /** Handler that is called when the user finishes resizing the panel. */
   onResizeEnd?: (width: number) => void;
+  /**
+   * Handler that is called when the panel width is reset (double click on the resizer).
+   * Receives the initial width and can return the width to apply.
+   * If nothing is returned, the panel resets to the initial width.
+   */
   onResetResize?: (initialWidth: number) => number | null | undefined;
 };
 
 export type UseContentPanelResizeReturnValue = {
+  /** Current panel width in pixels (only when `isResizable` is `true`). */
   width?: number;
+  /** Props to spread on the resizer element (drag + double click reset + aria). */
   resizerProps: HTMLAttributes<HTMLElement>;
 };
 
-export function useContentPanel(
+export function useContentPanelResize(
   props: UseContentPanelResizeProps
 ): UseContentPanelResizeReturnValue {
   const {

@@ -30,7 +30,7 @@ import { ContentPanelContainerContext } from './components';
 import { TRANSITION_TIMEOUT } from './constants';
 import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
-import { useContentPanel } from './hooks';
+import { useContentPanelResize } from './hooks';
 import type { ContentPanelProps, ContentPanelRef } from './types';
 import { parseContentPanelSize } from './utils';
 
@@ -104,17 +104,18 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
     const widthPx = parseContentPanelSize(containerWidth, width);
 
-    const { width: panelWidth, resizerProps: moveProps } = useContentPanel({
-      width: widthPx,
-      isResizable,
-      minWidth,
-      maxWidth,
-      onResize,
-      onResizeEnd,
-      onResizeStart,
-      onResetResize,
-      defaultWidth,
-    });
+    const { width: panelWidth, resizerProps: moveProps } =
+      useContentPanelResize({
+        width: widthPx,
+        isResizable,
+        minWidth,
+        maxWidth,
+        onResize,
+        onResizeEnd,
+        onResizeStart,
+        onResetResize,
+        defaultWidth,
+      });
 
     const { overlayProps } = useOverlay(
       {
