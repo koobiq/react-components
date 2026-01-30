@@ -43,6 +43,7 @@ export * from './Autocomplete';
 export * from './ToastProvider';
 export * from './Breadcrumbs';
 export * from './Accordion';
+export * from './ContenPanel';
 export * from './layout';
 export {
   useListData,

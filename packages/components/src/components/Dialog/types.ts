@@ -29,7 +29,7 @@ export type DialogBaseProps = {
 } & AriaDialogProps;
 
 export type DialogProps = ExtendableComponentPropsWithRef<
-  DialogBaseProps,
+  DialogBaseProps & DataAttributeProps,
   'section'
 >;
 

@@ -1,0 +1,58 @@
+.base {
+  --content-panel-transition-duration: 300ms;
+  --content-panel-start-position: 100%;
+  --content-panel-resizer-width: var(--kbq-size-l);
+
+  block-size: 100%;
+  inline-size: 50%;
+  box-sizing: border-box;
+  margin-inline-start: var(--kbq-size-l);
+  transition:
+    transform var(--kbq-transition-slow),
+    inline-size var(--kbq-transition-slow);
+  transition-duration: var(--content-panel-transition-duration);
+}
+
+.resizable {
+  inline-size: unset;
+}
+
+body[data-resizing='true'] .base {
+  transition: none;
+}
+
+/* animation */
+.base[data-transition='entering'] {
+  transform: translate(0, 0);
+}
+
+.base[data-transition='entered'] {
+  transform: translate(0, 0);
+}
+
+.base[data-transition='exiting'] {
+  transform: translate(var(--content-panel-start-position), 0);
+}
+
+.base[data-transition='exited'] {
+  transform: translate(var(--content-panel-start-position), 0);
+}
+
+/* dialog */
+.dialog {
+  border-radius: var(--kbq-size-l);
+  background-color: var(--kbq-background-card);
+  border: 1px solid var(--kbq-line-contrast-less);
+  overflow: unset;
+  block-size: inherit;
+}
+
+/* resizer */
+.resizer {
+  block-size: 100%;
+  cursor: ew-resize;
+  position: absolute;
+  inset-block-start: 0;
+  inline-size: var(--content-panel-resizer-width);
+  inset-inline-start: calc(var(--content-panel-resizer-width) / -2);
+}
