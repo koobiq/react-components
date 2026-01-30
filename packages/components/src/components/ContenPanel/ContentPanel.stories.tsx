@@ -343,7 +343,7 @@ export const Triggers: Story = {
                 if (!isOpen) open();
               }}
             />
-            <ContentPanel style={{ width: '50%', minInlineSize: '50%' }}>
+            <ContentPanel>
               <ContentPanel.Header>
                 {user?.firstName}&nbsp;{user?.lastName}
               </ContentPanel.Header>

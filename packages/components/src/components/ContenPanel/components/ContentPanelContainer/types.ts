@@ -5,7 +5,10 @@ import type {
   ReactNode,
 } from 'react';
 
-import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import type {
+  DataAttributeProps,
+  ExtendableComponentPropsWithRef,
+} from '@koobiq/react-core';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
 export type ContentPanelContainerPropContent =
@@ -24,7 +27,7 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
     onOpenChange?: (open: boolean) => void;
     /** The props used for each slot inside. */
     slotProps?: {
-      body?: ComponentPropsWithRef<'div'>;
+      body?: ComponentPropsWithRef<'div'> & DataAttributeProps;
     };
   },
   'div'

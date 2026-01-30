@@ -6,8 +6,6 @@
   block-size: 100%;
   inline-size: 50%;
   box-sizing: border-box;
-  min-inline-size: 480px;
-  max-inline-size: 800px;
   margin-inline-start: var(--kbq-size-l);
   transition:
     transform var(--kbq-transition-slow),
@@ -17,8 +15,6 @@
 
 .resizable {
   inline-size: unset;
-  min-inline-size: unset;
-  max-inline-size: unset;
 }
 
 body[data-resizing='true'] .base {
