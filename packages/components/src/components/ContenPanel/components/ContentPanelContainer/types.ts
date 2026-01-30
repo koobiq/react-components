@@ -8,20 +8,9 @@ import type {
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
-import type { ResponsiveValue } from '../../../../utils';
-
 export type ContentPanelContainerPropContent =
   | ReactNode
   | ((props: OverlayTriggerState) => ReactElement);
-
-export const contentPanelPropContentInteraction = [
-  'shrink',
-  'overlay',
-  'shift',
-] as const;
-
-export type ContentPanelPropContentInteraction =
-  (typeof contentPanelPropContentInteraction)[number];
 
 export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
   {
@@ -33,16 +22,6 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
     defaultOpen?: boolean;
     /** Handler that is called when the panel's open state changes. */
     onOpenChange?: (open: boolean) => void;
-    /**
-     * Defines how the panel affects the body when opened.
-     * - `shrink`: body resizes to make room for the panel
-     * - `overlay`: panel overlays the body
-     * - `shift`: body shifts without resizing
-     * @default 'shrink'
-     */
-    contentInteraction?:
-      | ContentPanelPropContentInteraction
-      | ResponsiveValue<ContentPanelPropContentInteraction>;
     /** The props used for each slot inside. */
     slotProps?: {
       body?: ComponentPropsWithRef<'div'>;

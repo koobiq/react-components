@@ -22,7 +22,10 @@ export type ContentPanelProps = {
   maxWidth?: ContentPanelSize | null;
   /** The default width of the panel. */
   defaultWidth?: ContentPanelSize | null;
-  /** If `true`, the panel can be resized by the user. */
+  /**
+   * If `true`, the panel can be resized by the user.
+   * @default false
+   */
   isResizable?: boolean;
   /** Handler that is called whenever the panel width changes. */
   onResize?: (width: number) => void;

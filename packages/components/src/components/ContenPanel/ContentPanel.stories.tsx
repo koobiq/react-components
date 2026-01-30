@@ -11,7 +11,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AnimatedIcon } from '../AnimatedIcon';
 import { Autocomplete } from '../Autocomplete';
 import { Button } from '../Button';
-import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import type { TableBodyProps } from '../Collections';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
@@ -20,12 +19,8 @@ import { Table, TableContainer } from '../Table';
 import type { TableProps } from '../Table/types';
 import { Typography } from '../Typography';
 
-import {
-  type ContentPanelSize,
-  ContentPanel,
-  ContentPanelContainer,
-  type ContentPanelPropContentInteraction,
-} from './index';
+import { ContentPanel, ContentPanelContainer } from './index';
+import type { ContentPanelSize } from './index';
 
 const meta = {
   title: 'Components/ContentPanel',
@@ -348,7 +343,7 @@ export const Triggers: Story = {
                 if (!isOpen) open();
               }}
             />
-            <ContentPanel>
+            <ContentPanel style={{ width: '50%', minInlineSize: '50%' }}>
               <ContentPanel.Header>
                 {user?.firstName}&nbsp;{user?.lastName}
               </ContentPanel.Header>
@@ -360,63 +355,6 @@ export const Triggers: Story = {
           </>
         )}
       </ContentPanelContainer>
-    );
-  },
-};
-
-export const ContentInteraction: Story = {
-  parameters: {
-    layout: 'padded',
-  },
-  render: function Render() {
-    const [user, setUser] = useState<(typeof users)[number]>();
-
-    const [selected, setSelected] =
-      useState<ContentPanelPropContentInteraction>('shrink');
-
-    return (
-      <FlexBox direction="column" gap="l" style={{ width: '100%' }}>
-        <ButtonToggleGroup
-          style={{ width: '40%' }}
-          selectedKey={selected}
-          onSelectionChange={(selected) =>
-            setSelected(selected as ContentPanelPropContentInteraction)
-          }
-          hasEqualItemSize
-        >
-          <ButtonToggle id="shrink">Shrink</ButtonToggle>
-          <ButtonToggle id="overlay">Overlay</ButtonToggle>
-          <ButtonToggle id="shift">Shift</ButtonToggle>
-        </ButtonToggleGroup>
-        <ContentPanelContainer
-          contentInteraction={selected}
-          style={{ blockSize: 300, inlineSize: '100%' }}
-        >
-          {({ open, close, isOpen }) => (
-            <>
-              <UsersTable
-                users={users}
-                onRowAction={(id) => {
-                  setUser(users.find((user) => id === user.id));
-
-                  if (!isOpen) open();
-                }}
-              />
-              <ContentPanel
-                {...(selected === 'shift' && { style: { width: '100%' } })}
-              >
-                <ContentPanel.Header>
-                  {user?.firstName}&nbsp;{user?.lastName}
-                </ContentPanel.Header>
-                <ContentPanel.Body>{content}</ContentPanel.Body>
-                <ContentPanel.Footer>
-                  <Button onPress={close}>Ok</Button>
-                </ContentPanel.Footer>
-              </ContentPanel>
-            </>
-          )}
-        </ContentPanelContainer>
-      </FlexBox>
     );
   },
 };

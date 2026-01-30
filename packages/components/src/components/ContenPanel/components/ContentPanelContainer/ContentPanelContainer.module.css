@@ -16,48 +16,24 @@
   will-change: inline-size;
 }
 
-.shrink:has(.panel[data-transition='entering']) .body {
+.base:has(.panel[data-transition='entering']) .body {
   inline-size: calc(100% - var(--content-panel-inline-size));
   transition: inline-size var(--kbq-transition-slow);
   transition-duration: var(--content-body-transition-duration);
 }
 
-.shrink:has(.panel[data-transition='entered']) .body {
+.base:has(.panel[data-transition='entered']) .body {
   inline-size: calc(100% - var(--content-panel-inline-size));
 }
 
-.shrink:has(.panel[data-transition='exiting']) .body {
+.base:has(.panel[data-transition='exiting']) .body {
   inline-size: 100%;
   transition: inline-size var(--kbq-transition-slow);
   transition-duration: var(--content-body-transition-duration);
 }
 
-.shrink:has(.panel[data-transition='exited']) .body {
+.base:has(.panel[data-transition='exited']) .body {
   inline-size: 100%;
-}
-
-.shift .panel {
-  inline-size: 100%;
-}
-
-.shift:has(.panel[data-transition='entering']) .body {
-  transform: translate(calc(-1 * var(--content-panel-inline-size)), 0);
-  transition: transform var(--kbq-transition-slow);
-  transition-duration: var(--content-body-transition-duration);
-}
-
-.shift:has(.panel[data-transition='entered']) .body {
-  transform: translate(calc(-1 * var(--content-panel-inline-size)), 0);
-}
-
-.shift:has(.panel[data-transition='exiting']) .body {
-  transform: translate(0, 0);
-  transition: transform var(--kbq-transition-slow);
-  transition-duration: var(--content-body-transition-duration);
-}
-
-.shift:has(.panel[data-transition='exited']) .body {
-  transform: translate(0, 0);
 }
 
 /* panel */
@@ -65,7 +41,5 @@
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
-  inline-size: 50%;
-  max-inline-size: 100%;
   z-index: var(--kbq-layer-absolute);
 }

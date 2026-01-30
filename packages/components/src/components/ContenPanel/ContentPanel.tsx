@@ -49,7 +49,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       defaultWidth: defaultWidthProp,
       minWidth: minWidthProp,
       maxWidth: maxWidthProp,
-      isResizable,
+      isResizable = false,
       width,
       onResize,
       onResizeEnd,
@@ -126,7 +126,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
       {
         ref: panelRef,
-        className: clsx(s.base, className),
+        className: clsx(s.base, isResizable && s.resizable, className),
         onKeyDown: (event) => {
           if (event.key === 'Escape' && !containerState) {
             state.close();

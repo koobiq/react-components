@@ -16,8 +16,6 @@ import {
   useOverlayTriggerState,
 } from '@koobiq/react-primitives';
 
-import { getResponsiveValue } from '../../../../utils';
-import { useMatchedBreakpoints } from '../../../Provider';
 import { TRANSITION_TIMEOUT } from '../../constants';
 import { ContentPanelContext } from '../../ContentPanelContext';
 import { useContentPanelContainer } from '../../hooks';
@@ -37,20 +35,12 @@ export const ContentPanelContainer = forwardRef<
   const {
     children,
     isOpen,
-    contentInteraction: contentInteractionProp = 'shrink',
     onOpenChange,
     defaultOpen,
     className,
     slotProps,
     ...other
   } = props;
-
-  const breakpoints = useMatchedBreakpoints();
-
-  const contentInteraction = getResponsiveValue(
-    contentInteractionProp,
-    breakpoints
-  );
 
   const state = useOverlayTriggerState({
     isOpen,
@@ -89,11 +79,7 @@ export const ContentPanelContainer = forwardRef<
 
   const rootProps = mergeProps(
     {
-      className: clsx(
-        s.base,
-        contentInteraction && s[contentInteraction],
-        className
-      ),
+      className: clsx(s.base, className),
       ref: domRef,
       ...other,
     },
@@ -141,10 +127,7 @@ export const ContentPanelContainer = forwardRef<
       ]}
     >
       <div {...rootProps}>
-        <div
-          {...bodyProps}
-          inert={contentInteraction === 'shift' && state.isOpen && true}
-        />
+        <div {...bodyProps} />
       </div>
     </Provider>
   );
