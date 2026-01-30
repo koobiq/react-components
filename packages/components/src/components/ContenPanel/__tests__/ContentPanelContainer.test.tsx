@@ -1,14 +1,30 @@
 import { createRef } from 'react';
 
 import { screen, render } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { userEvent } from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
 
-import { ContentPanelContainer } from '../index.js';
+import {
+  ContentPanel,
+  ContentPanelContainer,
+  type ContentPanelContainerProps,
+} from '../index';
+
+const renderComponent = (
+  props: Omit<ContentPanelContainerProps, 'children'>
+) => (
+  <ContentPanelContainer {...props}>
+    body
+    <ContentPanel>content</ContentPanel>
+  </ContentPanelContainer>
+);
 
 describe('ContentPanelContainer', () => {
   const baseProps = { 'data-testid': 'container' };
 
   const getContainer = () => screen.getByTestId<HTMLDivElement>('container');
+
+  const user = userEvent.setup();
 
   it('should accept the ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -101,5 +117,40 @@ describe('ContentPanelContainer', () => {
       expect(getBody()).toHaveAttribute('data-foo', 'bar');
       expect(getBody()).toHaveAttribute('tabindex', '0');
     });
+  });
+
+  it('should close the panel on Escape key press', async () => {
+    const onOpenChange = vi.fn();
+
+    render(renderComponent({ defaultOpen: true, onOpenChange }));
+    await user.keyboard('{Escape}');
+
+    expect(onOpenChange).toHaveBeenCalled();
+    expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
+  });
+
+  it('should close the panel on Escape inside a body', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <ContentPanelContainer
+        {...baseProps}
+        onOpenChange={onOpenChange}
+        defaultOpen
+      >
+        <button data-testid="button" />
+        <ContentPanel>content</ContentPanel>
+      </ContentPanelContainer>
+    );
+
+    const button = screen.getByTestId<HTMLButtonElement>('button');
+
+    button.focus();
+
+    await user.keyboard('{Escape}');
+
+    expect(onOpenChange).toHaveBeenCalled();
+    expect(onOpenChange.mock.calls.at(-1)?.[0]).toBe(false);
   });
 });

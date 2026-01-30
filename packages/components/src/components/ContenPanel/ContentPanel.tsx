@@ -130,11 +130,6 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       {
         ref: panelRef,
         className: clsx(s.base, isResizable && s.resizable, className),
-        onKeyDown: (event) => {
-          if (event.key === 'Escape' && !containerState) {
-            state.close();
-          }
-        },
         style: {
           inlineSize: panelWidth,
           '--content-panel-transition-duration': `${TRANSITION_TIMEOUT}ms`,
@@ -182,7 +177,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
             data-transition={transition}
             data-resizable={isResizable || undefined}
           >
-            <Dialog {...dialogProps} role="dialog">
+            <Dialog {...dialogProps} ref={overlayRef} role="dialog">
               {isResizable && <div {...resizerProps} />}
               {children}
             </Dialog>
