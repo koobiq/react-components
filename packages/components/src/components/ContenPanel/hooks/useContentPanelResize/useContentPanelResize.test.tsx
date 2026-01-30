@@ -11,8 +11,10 @@ type MoveConfig = {
 
 let lastMoveConfig: MoveConfig | null = null;
 
-vi.mock('@koobiq/react-core', async () => {
+vi.mock('@koobiq/react-core', async (importOriginal) => {
   const React = await import('react');
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const actual = await importOriginal<typeof import('@koobiq/react-core')>();
 
   const isNumber = (v: unknown): v is number =>
     typeof v === 'number' && Number.isFinite(v);
@@ -73,7 +75,18 @@ vi.mock('@koobiq/react-core', async () => {
     return { moveProps: {} as any };
   };
 
-  return { isNumber, mergeProps, useControlledState, useMove };
+  const useLocalizedStringFormatter = () => ({
+    format: (key: string) => (key === 'resize panel' ? 'Resize panel' : key),
+  });
+
+  return {
+    ...actual,
+    isNumber,
+    mergeProps,
+    useControlledState,
+    useMove,
+    useLocalizedStringFormatter,
+  };
 });
 
 describe('useContentPanelResize', () => {

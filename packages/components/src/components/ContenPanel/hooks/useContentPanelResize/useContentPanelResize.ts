@@ -5,10 +5,13 @@ import { useCallback, useMemo, useRef } from 'react';
 
 import {
   isNumber,
+  useMove,
   mergeProps,
   useControlledState,
-  useMove,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
+
+import intlMessages from './intl.json';
 
 const clamp = (v: number, min: number, max: number) =>
   Math.max(min, Math.min(max, v));
@@ -59,6 +62,8 @@ export function useContentPanelResize(
     onResizeStart,
     onResizeEnd,
   } = props;
+
+  const t = useLocalizedStringFormatter(intlMessages);
 
   const min = isNumber(minWidth) ? minWidth : 0;
   const max = isNumber(maxWidth) ? maxWidth : Number.POSITIVE_INFINITY;
@@ -133,7 +138,7 @@ export function useContentPanelResize(
     }
 
     const aria: HTMLAttributes<HTMLElement> = {
-      'aria-label': 'Resize panel',
+      'aria-label': t.format('resize panel'),
       'aria-valuenow': Math.round(width),
     };
 
