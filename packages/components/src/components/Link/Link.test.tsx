@@ -117,4 +117,15 @@ describe('Link', () => {
 
     expect(onNavigate).toBeCalled();
   });
+
+  it('should call onMouseDown handler', async () => {
+    const user = userEvent.setup();
+    const handleMouseDown = vi.fn();
+
+    render(<Link {...baseProps} as="button" onMouseDown={handleMouseDown} />);
+
+    await user.pointer({ keys: '[MouseLeft]', target: getRoot() });
+
+    expect(handleMouseDown).toHaveBeenCalledTimes(1);
+  });
 });
