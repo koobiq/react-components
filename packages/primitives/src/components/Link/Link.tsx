@@ -6,6 +6,7 @@ import {
   useDOMRef,
   mergeProps,
   polymorphicForwardRef,
+  filterDOMProps,
 } from '@koobiq/react-core';
 
 import { useLink } from '../../behaviors';
@@ -50,6 +51,9 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     values: renderValues,
   });
 
+  const DOMProps = filterDOMProps(props, { global: true });
+  delete DOMProps.onClick;
+
   return (
     <Tag
       data-hovered={isHovered || undefined}
@@ -57,7 +61,8 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
       data-focused={isFocused || undefined}
       data-disabled={props.isDisabled || undefined}
       data-focus-visible={isFocusVisible || undefined}
-      {...mergeProps(linkProps, renderProps)}
+      {...renderProps}
+      {...mergeProps(DOMProps, linkProps)}
       {...('tabIndex' in props && { tabIndex: props.tabIndex })}
       ref={domRef}
     >
