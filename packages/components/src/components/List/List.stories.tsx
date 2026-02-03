@@ -3,14 +3,8 @@ import { useCallback, useState } from 'react';
 import { isString, useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import {
-  Select,
-  type Selection,
-  SkeletonTypography,
-  spacing,
-  Toggle,
-  Typography,
-} from '../../index';
+import { SkeletonTypography, spacing, Toggle, Typography } from '../../index';
+import type { Selection } from '../../index';
 import { utilClasses } from '../../styles/utility';
 import { Checkbox } from '../Checkbox';
 import { FlexBox } from '../FlexBox';
@@ -354,7 +348,7 @@ export const NoItems: Story = {
           </FlexBox>
         }
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <List.Item>{item.name}</List.Item>}
       </List>
     );
   },
@@ -398,9 +392,9 @@ export const Loading: Story = {
           isLoading
         >
           {(item) => (
-            <Select.Item key={item.id} textValue={item.title}>
-              <Select.ItemText>{item.title}</Select.ItemText>
-            </Select.Item>
+            <List.Item key={item.id} textValue={item.title}>
+              <List.ItemText>{item.title}</List.ItemText>
+            </List.Item>
           )}
         </List>
       </FlexBox>
@@ -455,9 +449,9 @@ export const AsynchronousLoading: Story = {
         isPadded
       >
         {(item) => (
-          <Select.Item key={item.id} textValue={item.title}>
-            <Select.ItemText>{item.title}</Select.ItemText>
-          </Select.Item>
+          <List.Item key={item.id} textValue={item.title}>
+            <List.ItemText>{item.title}</List.ItemText>
+          </List.Item>
         )}
       </List>
     );
