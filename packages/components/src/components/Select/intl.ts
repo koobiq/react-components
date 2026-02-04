@@ -3,12 +3,12 @@ export default {
     'empty items': 'Нет вариантов выбора',
     loading: 'Загрузка…',
     'selected items': 'Выбранные элементы',
-    more: ({ count }: { count: number }) => `еще ${count}`,
+    more: ({ count }: { count: number }) => `+${count}`,
   },
   'en-US': {
     'empty items': 'No options available',
     'selected items': 'Selected items',
     loading: 'Loading…',
-    more: ({ count }: { count: number }) => `${count} more`,
+    more: ({ count }: { count: number }) => `+${count}`,
   },
 } as unknown as Record<string, Record<string, string>>;
