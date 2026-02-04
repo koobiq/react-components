@@ -3,7 +3,7 @@
 import type { ComponentPropsWithRef, ComponentRef, ElementType } from 'react';
 
 import {
-  useDOMRef,
+  useObjectRef,
   mergeProps,
   polymorphicForwardRef,
   filterDOMProps,
@@ -17,12 +17,13 @@ import type { LinkBaseProps } from './types.js';
 export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   const { as: Tag = 'a', ...other } = props;
 
-  const domRef = useDOMRef<ComponentRef<'a'>>(ref);
+  const domRef = useObjectRef<ComponentRef<'a'>>(ref);
 
   const { isHovered, isPressed, isFocusVisible, isFocused, linkProps } =
     useLink(
       {
         ...other,
+        elementType: `${Tag}`,
         ...(other.isDisabled && {
           onPress: undefined,
           onPressStart: undefined,
@@ -61,8 +62,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
       data-focused={isFocused || undefined}
       data-disabled={props.isDisabled || undefined}
       data-focus-visible={isFocusVisible || undefined}
-      {...renderProps}
-      {...mergeProps(DOMProps, linkProps)}
+      {...mergeProps(DOMProps, renderProps, linkProps)}
       {...('tabIndex' in props && { tabIndex: props.tabIndex })}
       ref={domRef}
     >

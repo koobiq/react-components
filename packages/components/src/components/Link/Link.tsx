@@ -50,13 +50,10 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     );
   }
 
-  const elementType = as !== 'a' && as !== 'button' ? `${as}` : undefined;
-
   return (
     <LinkPrimitive
       as={as}
       isDisabled={isDisabled}
-      elementType={elementType}
       {...(isDisabled && { tabIndex: -1 })}
       className={({ isHovered, isPressed, isFocusVisible }) =>
         clsx(
