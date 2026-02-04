@@ -1,0 +1,91 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Navbar.stories';
+
+<Meta of={Stories} />
+
+# Navbar
+
+<Status variant="draft" />
+
+The main menu organizes navigation within the product. It consists of a logo, section links, and can additionally include an app switcher, help section, and settings block.
+
+```tsx
+import { Navbar } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props />
+
+## Subcomponents
+
+The component has the following helper components:
+
+- `Navbar.Header` — header of the navbar, typically contains logo and app switcher
+- `Navbar.Body` — body of the navbar for placing navigation items
+- `Navbar.Footer` — footer of the navbar, can contain settings and help links
+- `Navbar.Item` — navigation item for the navbar body
+- `Navbar.AppItem` — app switcher item for the navbar header
+
+## Usage
+
+The Navbar component consists of several subcomponents that help organize the navigation structure:
+
+```tsx
+import { Navbar } from '@koobiq/react-components';
+
+<Navbar>
+  <Navbar.Header>
+    <Navbar.AppItem>App 1</Navbar.AppItem>
+  </Navbar.Header>
+
+  <Navbar.Body>
+    <Navbar.Item href="/dashboard">Dashboard</Navbar.Item>
+    <Navbar.Item href="/reports">Reports</Navbar.Item>
+  </Navbar.Body>
+
+  <Navbar.Footer>
+    <Navbar.Item href="/settings">Settings</Navbar.Item>
+  </Navbar.Footer>
+</Navbar>;
+```
+
+## Integration
+
+### Next.js
+
+Integrating navigation into Next.js:
+
+```tsx
+import { RouterProvider } from '@koobiq/react-core';
+
+const router = useRouter()
+
+<RouterProvider navigate={(path) => router.push(path)}>
+  <Navbar>
+    <Navbar.Header>
+      ...
+    </Navbar.Header>
+
+    <Navbar.Body>
+      <Navbar.Item href="/link-1">
+        Link 1
+      </Navbar.Item>
+
+      ...
+    </Navbar.Body>
+
+    ...
+  </Navbar>
+</RouterProvider>
+```
+
+<Story of={Stories.RouteProvider} />
