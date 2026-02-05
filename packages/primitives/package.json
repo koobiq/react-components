@@ -33,6 +33,7 @@
     "@koobiq/react-core": "workspace:*",
     "@react-aria/breadcrumbs": "^3.5.29",
     "@react-aria/button": "^3.9.0",
+    "@react-aria/collections": "^3.0.2",
     "@react-aria/calendar": "^3.8.3",
     "@react-aria/checkbox": "^3.16.2",
     "@react-aria/combobox": "^3.14.0",
