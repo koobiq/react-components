@@ -31,8 +31,6 @@ export const SelectOption = createLeafComponent(ItemNode, function ListBoxItem<
   const ref = useObjectRef<any>(forwardedRef);
   const state = useContext(SelectContext)!;
 
-  console.log(state);
-
   const { optionProps, isSelected, isDisabled, isFocusVisible } = useOption(
     { key: item.key },
     state,

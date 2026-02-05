@@ -9,7 +9,12 @@ import {
   useDOMRef,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { type MultiSelectState, useListBox } from '@koobiq/react-primitives';
+import {
+  type MultiSelectState,
+  useListBox,
+  UNSTABLE_useFilteredListState,
+} from '@koobiq/react-primitives';
+import type { Node } from '@react-types/shared';
 
 import { utilClasses } from '../../../../styles/utility';
 import type { ListProps } from '../../../List';
@@ -36,13 +41,22 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     className,
     style,
     slotProps,
-    state,
+    state: inputState,
     isLoading,
     onLoadMore,
     listRef,
     noItemsText: noItemsTextProp,
     loadingText: loadingTextProp,
   } = props;
+
+  const state = UNSTABLE_useFilteredListState?.(
+    inputState,
+    (nodeValue: string, node: Node<T>) => {
+      console.log(nodeValue, node);
+
+      return nodeValue === 'IDS/IPS Alert' || nodeValue === 'Identity Theft';
+    }
+  );
 
   const t = useLocalizedStringFormatter(intlMessages);
 
