@@ -1,10 +1,13 @@
 'use client';
 
-import { forwardRef, type Ref, useCallback } from 'react';
+import type { Ref, RefObject } from 'react';
+import { forwardRef, useCallback } from 'react';
 
 import { useDOMRef, mergeProps, useElementSize } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
+  Collection,
+  CollectionBuilder,
   FieldErrorContext,
   FormContext,
   removeDataAttributes,
@@ -12,8 +15,11 @@ import {
   useMultiSelectState,
   useSlottedContext,
 } from '@koobiq/react-primitives';
+import type {
+  MultiSelectState,
+  BaseCollection,
+} from '@koobiq/react-primitives';
 
-import { Item, Section, Divider } from '../Collections';
 import { useForm } from '../Form';
 import type {
   FormFieldLabelProps,
@@ -28,14 +34,24 @@ import { List } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
-import { SelectList, type SelectListProps, TagGroup } from './components';
+import {
+  SelectList,
+  type SelectListProps,
+  SelectOption,
+  TagGroup,
+} from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
 import s from './Select.module.css';
 
-function SelectRender<T extends object>(
-  props: Omit<SelectProps<T>, 'ref'>,
-  ref: Ref<SelectRef>
-) {
+function SelectInner<T extends object>({
+  state: inputState,
+  props,
+  listBoxRef,
+}: {
+  state: MultiSelectState<T>;
+  props: Omit<SelectProps<T>, 'items'>;
+  listBoxRef: RefObject<HTMLDivElement>;
+}) {
   const {
     fullWidth,
     isClearable,
@@ -46,7 +62,7 @@ function SelectRender<T extends object>(
     labelPlacement,
     labelAlign,
     isRequired,
-    isDisabled: isDisabledProp,
+    isDisabled,
     caption,
     errorMessage,
     className,
@@ -64,28 +80,18 @@ function SelectRender<T extends object>(
     renderValue: renderValueProp,
   } = props;
 
-  const { isDisabled: formIsDisabled } = useForm();
-
-  const isDisabled = isDisabledProp ?? formIsDisabled;
-
-  const domRef = useDOMRef<HTMLDivElement>(ref);
-
   const { validationBehavior: formValidationBehavior } =
     useSlottedContext(FormContext) || {};
 
   const validationBehavior =
     props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
-  const state = useMultiSelectState(
-    removeDataAttributes({ ...props, isDisabled, selectionMode })
-  );
-
-  const clearButtonIsHidden = isDisabled || !state.selectedItems;
+  const clearButtonIsHidden = isDisabled || !inputState.selectedItems;
 
   const handleClear = useCallback(() => {
-    state.selectionManager.setSelectedKeys(new Set());
+    inputState.selectionManager.setSelectedKeys(new Set());
     onClear?.();
-  }, [onClear, state]);
+  }, [onClear, inputState]);
 
   const {
     menuProps,
@@ -103,8 +109,8 @@ function SelectRender<T extends object>(
       disallowEmptySelection: true,
       validationBehavior,
     }),
-    state,
-    domRef
+    inputState,
+    listBoxRef
   );
 
   const { isInvalid } = validation;
@@ -133,7 +139,7 @@ function SelectRender<T extends object>(
   >(
     {
       className: s.list,
-      state,
+      state: inputState,
       noItemsText,
       loadingText,
       isLoading,
@@ -169,8 +175,8 @@ function SelectRender<T extends object>(
       onMouseDown: (e) => {
         if (e.currentTarget !== e.target || isDisabled) return;
         e.preventDefault();
-        domRef?.current?.focus();
-        state.open();
+        listBoxRef?.current?.focus();
+        inputState.open();
       },
       endAddon: (
         <>
@@ -190,7 +196,7 @@ function SelectRender<T extends object>(
 
   const controlProps = mergeProps<(FormFieldSelectProps | undefined)[]>(
     {
-      ref: domRef,
+      ref: listBoxRef,
       placeholder,
     },
     valueProps,
@@ -202,7 +208,7 @@ function SelectRender<T extends object>(
     [PopoverInnerProps, PopoverProps | undefined]
   >(
     {
-      state,
+      state: inputState,
       offset: 4,
       hideArrow: true,
       type: 'listbox',
@@ -251,7 +257,7 @@ function SelectRender<T extends object>(
         <div className={s.body}>
           <FormField.ControlGroup {...groupProps}>
             <FormField.Select {...controlProps}>
-              {renderValue(state, {
+              {renderValue(inputState, {
                 isInvalid,
                 isDisabled: props.isDisabled,
                 isRequired: props.isRequired,
@@ -271,18 +277,64 @@ function SelectRender<T extends object>(
   );
 }
 
+function StandaloneSelect<T extends object>({
+  props: inProps,
+  listBoxRef,
+  collection,
+}: {
+  props: Omit<SelectProps<T>, 'ref'>;
+  listBoxRef: RefObject<HTMLDivElement>;
+  collection: BaseCollection<T>;
+}) {
+  const props = { ...inProps, collection, children: null, items: null };
+  const { isDisabled: formIsDisabled } = useForm();
+
+  const isDisabled = inProps?.isDisabled ?? formIsDisabled;
+
+  const state = useMultiSelectState<T>(
+    removeDataAttributes({
+      ...props,
+      isDisabled,
+      selectionMode: inProps.selectionMode,
+    })
+  );
+
+  return (
+    <SelectInner
+      state={state}
+      props={{ ...props, isDisabled }}
+      listBoxRef={listBoxRef}
+    />
+  );
+}
+
+function SelectRender<T extends object>(
+  props: Omit<SelectProps<T>, 'ref'>,
+  ref: Ref<SelectRef>
+) {
+  const listBoxRef = useDOMRef<HTMLDivElement>(ref);
+
+  return (
+    <CollectionBuilder content={<Collection {...props} />}>
+      {(collection) => (
+        <StandaloneSelect
+          props={props as any}
+          collection={collection}
+          listBoxRef={listBoxRef}
+        />
+      )}
+    </CollectionBuilder>
+  );
+}
+
 const SelectComponent = forwardRef(SelectRender) as SelectComponent;
 
 type CompoundedComponent = typeof SelectComponent & {
-  Item: typeof Item;
-  Section: typeof Section;
-  Divider: typeof Divider;
+  Item: typeof SelectOption;
   ItemText: typeof ListItemText;
 };
 
 export const Select = SelectComponent as CompoundedComponent;
 
-Select.Item = Item;
-Select.Section = Section;
-Select.Divider = Divider;
+Select.Item = SelectOption;
 Select.ItemText = List.ItemText;

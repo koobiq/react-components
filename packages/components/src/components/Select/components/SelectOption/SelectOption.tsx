@@ -1,26 +1,37 @@
 'use client';
 
-import { type ElementType, useRef } from 'react';
+import { type ElementType, type ForwardedRef, useContext } from 'react';
 
-import { clsx, mergeProps, useHover, usePress } from '@koobiq/react-core';
+import {
+  clsx,
+  mergeProps,
+  useHover,
+  usePress,
+  useObjectRef,
+} from '@koobiq/react-core';
 import type { Node } from '@koobiq/react-core';
-import { type MultiSelectState, useOption } from '@koobiq/react-primitives';
+import {
+  useOption,
+  createLeafComponent,
+  ItemNode,
+} from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { Checkbox } from '../../../Checkbox';
+import { SelectContext } from '../../SelectContext';
 
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
 
-export type SelectOptionProps<T> = {
-  item: Node<T>;
-  state: MultiSelectState<T>;
-};
+export const SelectOption = createLeafComponent(ItemNode, function ListBoxItem<
+  T extends object,
+>(props: any, forwardedRef: ForwardedRef<HTMLDivElement>, item: Node<T>) {
+  const { href, className, style } = props;
 
-export function SelectOption<T>({ item, state }: SelectOptionProps<T>) {
-  const { href, className, style } = item.props;
+  const ref = useObjectRef<any>(forwardedRef);
+  const state = useContext(SelectContext)!;
 
-  const ref = useRef(null);
+  console.log(state);
 
   const { optionProps, isSelected, isDisabled, isFocusVisible } = useOption(
     { key: item.key },
@@ -52,4 +63,4 @@ export function SelectOption<T>({ item, state }: SelectOptionProps<T>) {
       {item.rendered}
     </Tag>
   );
-}
+});

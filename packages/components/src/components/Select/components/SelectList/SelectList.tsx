@@ -12,17 +12,13 @@ import {
 import { type MultiSelectState, useListBox } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
-import { Divider } from '../../../Divider';
 import type { ListProps } from '../../../List';
-import {
-  ListEmptyState,
-  ListLoadingState,
-  ListSection,
-} from '../../../List/components';
+import { ListEmptyState, ListLoadingState } from '../../../List/components';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
+import { SelectContext } from '../../SelectContext';
 import type { SelectProps } from '../../types';
-import { SelectOption } from '../SelectOption';
+import { CollectionRoot } from '../../utils';
 
 import s from './SelectList.module.css';
 
@@ -81,28 +77,32 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
 
   const loadingText = loadingTextProp ?? t.format('loading');
 
-  const renderItems = (treeState: typeof state) =>
-    [...treeState.collection].map((item) => {
-      switch (item.type) {
-        case 'divider':
-          return <Divider key={item.key} />;
+  // const renderItems = (treeState: typeof state) =>
+  //   [...treeState.collection].map((item) => {
+  //     switch (item.type) {
+  //       case 'divider':
+  //         return <Divider key={item.key} />;
+  //
+  //       case 'item':
+  //         return <SelectOption key={item.key} item={item} state={state} />;
+  //
+  //       case 'section':
+  //         return <ListSection key={item.key} section={item} state={state} />;
+  //
+  //       default:
+  //         return null;
+  //     }
+  //   });
 
-        case 'item':
-          return <SelectOption key={item.key} item={item} state={state} />;
-
-        case 'section':
-          return <ListSection key={item.key} section={item} state={state} />;
-
-        default:
-          return null;
-      }
-    });
+  const { collection } = state;
 
   return (
     <>
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
       <ul {...listProps}>
-        {renderItems(state)}
+        <SelectContext.Provider value={state}>
+          <CollectionRoot collection={collection} scrollRef={listRef} />
+        </SelectContext.Provider>
         <ListEmptyState
           isEmpty={isEmpty}
           isLoading={isLoading}
