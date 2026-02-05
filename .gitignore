@@ -4,6 +4,7 @@ dist
 .idea
 .firebase
 .next
+.vscode/settings.json
 
 # Dotenv environment variables file
 .env
