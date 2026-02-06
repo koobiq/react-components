@@ -25,6 +25,7 @@ import {
 import type {
   MultiSelectState,
   BaseCollection,
+  MultiSelectProps,
 } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -60,12 +61,12 @@ function SelectInner<T extends object>({
   listBoxRef: RefObject<HTMLDivElement>;
 }) {
   const {
+    selectedTagsOverflow = 'responsive',
+    'data-testid': testId,
     fullWidth,
     isClearable,
-    'data-testid': testId,
-    selectionMode = 'single',
+    selectionMode,
     noItemsText,
-    selectedTagsOverflow = 'responsive',
     labelPlacement,
     labelAlign,
     isRequired,
@@ -325,6 +326,7 @@ function StandaloneSelect<T extends object>({
   listBoxRef: RefObject<HTMLDivElement>;
   collection: BaseCollection<T>;
 }) {
+  const { selectionMode = 'single' } = inProps;
   const props = { ...inProps, collection, children: null, items: null };
   const { isDisabled: formIsDisabled } = useForm();
 
@@ -335,8 +337,8 @@ function StandaloneSelect<T extends object>({
     removeDataAttributes({
       ...props,
       isDisabled,
-      selectionMode: inProps.selectionMode,
-    })
+      selectionMode,
+    } as unknown as MultiSelectProps<T>)
   );
 
   return (

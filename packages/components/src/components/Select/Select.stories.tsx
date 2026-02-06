@@ -59,7 +59,6 @@ export const Base: Story = {
       label="Attack type"
       style={{ inlineSize: 200 }}
       placeholder="Select an option"
-      selectionMode="single"
       {...args}
     >
       <Select.Item key="bruteforce">Bruteforce</Select.Item>
