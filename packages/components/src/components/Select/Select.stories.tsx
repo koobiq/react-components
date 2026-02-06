@@ -65,6 +65,7 @@ export const Base: Story = {
       <Select.Item key="complex-attack">Complex Attack</Select.Item>
       <Select.Item key="ddos">DDoS</Select.Item>
       <Select.Item key="dos">DoS</Select.Item>
+      <Select.Divider />
       <Select.Item key="hips-alert">HIPS Alert</Select.Item>
       <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
       <Select.Item key="identity-theft">Identity Theft</Select.Item>

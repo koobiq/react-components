@@ -28,6 +28,7 @@ import type {
   MultiSelectProps,
 } from '@koobiq/react-primitives';
 
+import { Divider } from '../Divider';
 import { useForm } from '../Form';
 import type {
   FormFieldLabelProps,
@@ -373,10 +374,12 @@ const SelectComponent = forwardRef(SelectRender) as SelectComponent;
 
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof SelectOption;
+  Divider: typeof Divider;
   ItemText: typeof ListItemText;
 };
 
 export const Select = SelectComponent as CompoundedComponent;
 
 Select.Item = SelectOption;
+Select.Divider = Divider;
 Select.ItemText = List.ItemText;
