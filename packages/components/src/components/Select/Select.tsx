@@ -1,9 +1,14 @@
 'use client';
 
 import type { Ref, RefObject } from 'react';
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 
-import { useDOMRef, mergeProps, useElementSize } from '@koobiq/react-core';
+import {
+  useDOMRef,
+  mergeProps,
+  useElementSize,
+  useFilter,
+} from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   Collection,
@@ -14,6 +19,8 @@ import {
   useMultiSelect,
   useMultiSelectState,
   useSlottedContext,
+  useAutocompleteState,
+  useAutocomplete,
 } from '@koobiq/react-primitives';
 import type {
   MultiSelectState,
@@ -130,6 +137,33 @@ function SelectInner<T extends object>({
     style,
   });
 
+  // search
+  const { contains } = useFilter({ sensitivity: 'base' });
+
+  const [filterText, setFilterText] = useState('');
+
+  const autocompleteState = useAutocompleteState({
+    inputValue: filterText,
+    onInputChange: setFilterText,
+  });
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const collectionRef = useRef<HTMLElement>(null);
+
+  const {
+    inputProps,
+    collectionProps,
+    filter: filterFn,
+    collectionRef: mergedCollectionRef,
+  } = useAutocomplete(
+    {
+      inputRef,
+      collectionRef,
+      filter: contains,
+    },
+    autocompleteState
+  );
+
   const listProps = mergeProps<
     [
       SelectListProps<T>,
@@ -144,6 +178,11 @@ function SelectInner<T extends object>({
       loadingText,
       isLoading,
       onLoadMore,
+      filterFn,
+      inputProps,
+      inputRef,
+      listRef: mergedCollectionRef,
+      ...collectionProps,
     },
     menuProps,
     slotProps?.list
@@ -291,6 +330,7 @@ function StandaloneSelect<T extends object>({
 
   const isDisabled = inProps?.isDisabled ?? formIsDisabled;
 
+  // TODO: work out with these types
   const state = useMultiSelectState<T>(
     removeDataAttributes({
       ...props,

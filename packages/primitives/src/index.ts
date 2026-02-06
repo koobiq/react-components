@@ -40,6 +40,16 @@ export * from '@react-stately/menu';
 export * from '@react-aria/toggle';
 export * from '@react-stately/toggle';
 
+export {
+  type AriaAutocompleteProps,
+  type AutocompleteAria,
+  useAutocomplete,
+} from '@react-aria/autocomplete';
+export {
+  type AutocompleteState,
+  useAutocompleteState,
+} from '@react-stately/autocomplete';
+
 export { useCheckboxGroup } from '@react-aria/checkbox';
 export type {
   AriaCheckboxGroupItemProps,
