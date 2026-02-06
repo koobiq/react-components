@@ -1,24 +1,30 @@
 'use client';
 
-import type { Ref } from 'react';
+import type { RefObject } from 'react';
 
 import {
   clsx,
   isNotNil,
   mergeProps,
-  useDOMRef,
+  useObjectRef,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import {
-  type MultiSelectState,
   useListBox,
+  // eslint-disable-next-line camelcase
   UNSTABLE_useFilteredListState,
+} from '@koobiq/react-primitives';
+import type {
+  MultiSelectState,
+  AutocompleteAria,
 } from '@koobiq/react-primitives';
 import type { Node } from '@react-types/shared';
 
 import { utilClasses } from '../../../../styles/utility';
+import { Divider } from '../../../Divider';
 import type { ListProps } from '../../../List';
 import { ListEmptyState, ListLoadingState } from '../../../List/components';
+import { SearchInput } from '../../../SearchInput';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
 import { SelectContext } from '../../SelectContext';
@@ -31,7 +37,11 @@ const { list } = utilClasses;
 
 export type SelectListProps<T extends object> = {
   state: MultiSelectState<T>;
-  listRef?: Ref<HTMLUListElement>;
+  listRef?: RefObject<HTMLElement | null>;
+  inputRef?: RefObject<HTMLInputElement | null>;
+  filterFn?: (nodeValue: string, node: Node<T>) => boolean;
+  inputProps?: AutocompleteAria<T>['inputProps'];
+  collectionRef?: RefObject<HTMLElement | null>;
 } & Omit<ListProps<T>, 'ref' | 'children'> &
   Pick<SelectProps<T>, 'noItemsText' | 'isLoading' | 'onLoadMore'>;
 
@@ -40,27 +50,24 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     label,
     className,
     style,
+    filterFn,
     slotProps,
     state: inputState,
     isLoading,
     onLoadMore,
+    inputProps,
     listRef,
+    inputRef,
+    collectionRef,
     noItemsText: noItemsTextProp,
     loadingText: loadingTextProp,
   } = props;
 
-  const state = UNSTABLE_useFilteredListState?.(
-    inputState,
-    (nodeValue: string, node: Node<T>) => {
-      console.log(nodeValue, node);
-
-      return nodeValue === 'IDS/IPS Alert' || nodeValue === 'Identity Theft';
-    }
-  );
+  const state = UNSTABLE_useFilteredListState?.(inputState, filterFn);
 
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const domRef = useDOMRef(listRef);
+  const domRef = useObjectRef(listRef);
 
   const isEmpty = state.collection.size === 0;
 
@@ -78,7 +85,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
   const listProps = mergeProps(
     {
       style,
-      ref: domRef,
+      ref: domRef as RefObject<HTMLUListElement | null>,
       className: clsx(list, className),
       'data-padded': true,
     },
@@ -111,11 +118,21 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
   const { collection } = state;
 
   return (
-    <>
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+      <SearchInput
+        aria-label="search"
+        variant="transparent"
+        isLabelHidden
+        ref={inputRef}
+        autoFocus
+        fullWidth
+        {...inputProps}
+      />
+      <Divider disablePaddings />
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
       <ul {...listProps}>
         <SelectContext.Provider value={state}>
-          <CollectionRoot collection={collection} scrollRef={listRef} />
+          <CollectionRoot collection={collection} scrollRef={collectionRef} />
         </SelectContext.Provider>
         <ListEmptyState
           isEmpty={isEmpty}
@@ -130,6 +147,6 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
           observeDeps={[state.collection]}
         />
       </ul>
-    </>
+    </div>
   );
 }

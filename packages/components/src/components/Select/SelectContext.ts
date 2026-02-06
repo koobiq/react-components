@@ -1,9 +1,5 @@
-import { useContext, createContext } from 'react';
+import { createContext } from 'react';
 
-import type { MultiSelectState } from '@koobiq/react-primitives';
+import type { ListState } from '@koobiq/react-primitives';
 
-export const SelectContext = createContext<MultiSelectState<object> | null>(
-  null
-);
-
-export const useSelectContext = () => useContext(SelectContext);
+export const SelectContext = createContext<ListState<object> | null>(null);
