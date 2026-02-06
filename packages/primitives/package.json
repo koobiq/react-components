@@ -23,7 +23,9 @@
     "url": "git+https://github.com/koobiq/react-components.git"
   },
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -31,11 +33,12 @@
   "dependencies": {
     "@koobiq/logger": "workspace:*",
     "@koobiq/react-core": "workspace:*",
+    "@react-aria/autocomplete": "3.0.0-rc.5",
     "@react-aria/breadcrumbs": "^3.5.29",
     "@react-aria/button": "^3.9.0",
-    "@react-aria/collections": "^3.0.2",
     "@react-aria/calendar": "^3.8.3",
     "@react-aria/checkbox": "^3.16.2",
+    "@react-aria/collections": "^3.0.2",
     "@react-aria/combobox": "^3.14.0",
     "@react-aria/datepicker": "^3.15.2",
     "@react-aria/dialog": "^3.5.19",
@@ -62,6 +65,7 @@
     "@react-aria/toolbar": "3.0.0-beta.22",
     "@react-aria/tooltip": "^3.8.5",
     "@react-aria/visually-hidden": "^3.8.0",
+    "@react-stately/autocomplete": "3.0.0-beta.4",
     "@react-stately/calendar": "^3.8.2",
     "@react-stately/collections": "^3.12.5",
     "@react-stately/combobox": "^3.12.0",
