@@ -15,17 +15,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<SelectProps<object>>;
 
+const Test = () => (
+  <>
+    <Select.Item id="bruteforce1">Bruteforce1</Select.Item>
+    <Select.Item id="bruteforce2">Bruteforce2</Select.Item>
+  </>
+);
+
 export const Base: Story = {
   render: (args) => (
     <Select
       label="Attack type"
       style={{ inlineSize: 200 }}
+      defaultSelectedKeys={['bruteforce1']}
       placeholder="Select an option"
       selectionMode="single"
       {...args}
     >
-      <Select.Item id="bruteforce1">Bruteforce1</Select.Item>
-      <Select.Item id="bruteforce2">Bruteforce2</Select.Item>
+      <Test />
     </Select>
   ),
 };
