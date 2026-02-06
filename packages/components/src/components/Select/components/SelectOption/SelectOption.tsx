@@ -1,6 +1,7 @@
 'use client';
 
-import { type ElementType, type ForwardedRef, useContext } from 'react';
+import { useContext } from 'react';
+import type { ElementType, ForwardedRef } from 'react';
 
 import {
   clsx,
@@ -8,8 +9,13 @@ import {
   useHover,
   usePress,
   useObjectRef,
+  filterDOMProps,
 } from '@koobiq/react-core';
-import type { Node } from '@koobiq/react-core';
+import type {
+  Node,
+  Key,
+  ExtendableComponentPropsWithRef,
+} from '@koobiq/react-core';
 import {
   useOption,
   createLeafComponent,
@@ -23,9 +29,31 @@ import { SelectContext } from '../../SelectContext';
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
 
-export const SelectOption = createLeafComponent(ItemNode, function ListBoxItem<
+export type SelectOptionProps<T = object> = ExtendableComponentPropsWithRef<
+  {
+    className?: string;
+    /** The unique id of the item. */
+    id?: Key;
+    /** The object value that this item represents. When using dynamic collections, this is set automatically. */
+    value?: T;
+    /** A string representation of the item's contents, used for features like typeahead. */
+    textValue?: string;
+    /** An accessibility label for this item. */
+    'aria-label'?: string;
+    /** Whether the item is disabled. */
+    isDisabled?: boolean;
+    /**
+     * Handler that is called when a user performs an action on the item. The exact user event depends on
+     * the collection's `selectionBehavior` prop and the interaction modality.
+     */
+    onAction?: () => void;
+  },
+  'a'
+>;
+
+export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
   T extends object,
->(props: any, forwardedRef: ForwardedRef<HTMLDivElement>, item: Node<T>) {
+>(props: SelectOptionProps, forwardedRef: ForwardedRef<HTMLElement>, item: Node<T>) {
   const { href, className, style } = props;
 
   const ref = useObjectRef<any>(forwardedRef);
@@ -42,6 +70,10 @@ export const SelectOption = createLeafComponent(ItemNode, function ListBoxItem<
   const { isPressed, pressProps } = usePress({ isDisabled });
 
   const Tag: ElementType = href ? 'a' : 'li';
+
+  const DOMProps = filterDOMProps(props as any, { global: true });
+  delete DOMProps.id;
+  delete DOMProps.onClick;
 
   return (
     <Tag
