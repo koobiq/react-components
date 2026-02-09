@@ -10,11 +10,16 @@ export function useCollectionRender(collection: any, parent: any) {
   });
 }
 
-export function CollectionRoot({
+export function CollectionRoot({ collection }: { collection: any }) {
+  return useCollectionRender(collection, null);
+}
+
+export function CollectionBranch({
   collection,
+  parent,
 }: {
   collection: any;
-  scrollRef: any;
+  parent: any;
 }) {
-  return useCollectionRender(collection, null);
+  return useCollectionRender(collection, parent);
 }

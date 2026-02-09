@@ -2,6 +2,7 @@
 
 import type { RefObject } from 'react';
 
+import type { Node } from '@koobiq/react-core';
 import {
   clsx,
   isNotNil,
@@ -18,7 +19,6 @@ import type {
   MultiSelectState,
   AutocompleteAria,
 } from '@koobiq/react-primitives';
-import type { Node } from '@react-types/shared';
 
 import { utilClasses } from '../../../../styles/utility';
 import { Divider } from '../../../Divider';
@@ -98,23 +98,6 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
 
   const loadingText = loadingTextProp ?? t.format('loading');
 
-  // const renderItems = (treeState: typeof state) =>
-  //   [...treeState.collection].map((item) => {
-  //     switch (item.type) {
-  //       case 'divider':
-  //         return <Divider key={item.key} />;
-  //
-  //       case 'item':
-  //         return <SelectOption key={item.key} item={item} state={state} />;
-  //
-  //       case 'section':
-  //         return <ListSection key={item.key} section={item} state={state} />;
-  //
-  //       default:
-  //         return null;
-  //     }
-  //   });
-
   const { collection } = state;
 
   return (
@@ -122,8 +105,8 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
       <SearchInput
         aria-label="search"
         variant="transparent"
-        isLabelHidden
         ref={inputRef}
+        isLabelHidden
         autoFocus
         fullWidth
         {...inputProps}
@@ -132,7 +115,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
       <ul {...listProps}>
         <SelectContext.Provider value={state}>
-          <CollectionRoot collection={collection} scrollRef={collectionRef} />
+          <CollectionRoot collection={collection} />
         </SelectContext.Provider>
         <ListEmptyState
           isEmpty={isEmpty}

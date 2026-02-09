@@ -45,10 +45,11 @@ import { PopoverInner } from '../Popover/PopoverInner';
 
 import {
   SelectList,
-  type SelectListProps,
   SelectOption,
+  SelectSection,
   TagGroup,
 } from './components';
+import { type SelectListProps } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
 import s from './Select.module.css';
 
@@ -374,6 +375,7 @@ const SelectComponent = forwardRef(SelectRender) as SelectComponent;
 
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof SelectOption;
+  Section: typeof SelectSection;
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
 };
@@ -381,5 +383,6 @@ type CompoundedComponent = typeof SelectComponent & {
 export const Select = SelectComponent as CompoundedComponent;
 
 Select.Item = SelectOption;
+Select.Section = SelectSection;
 Select.Divider = Divider;
 Select.ItemText = List.ItemText;

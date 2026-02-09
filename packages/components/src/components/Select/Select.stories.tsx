@@ -65,7 +65,6 @@ export const Base: Story = {
       <Select.Item key="complex-attack">Complex Attack</Select.Item>
       <Select.Item key="ddos">DDoS</Select.Item>
       <Select.Item key="dos">DoS</Select.Item>
-      <Select.Divider />
       <Select.Item key="hips-alert">HIPS Alert</Select.Item>
       <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
       <Select.Item key="identity-theft">Identity Theft</Select.Item>
@@ -73,8 +72,6 @@ export const Base: Story = {
       <Select.Item key="network-attack">Network Attack</Select.Item>
       <Select.Item key="post-compromise">Post Compromise</Select.Item>
       <Select.Item key="potential-attack">Potential Attack</Select.Item>
-      <Select.Item id="bruteforce1">Bruteforce1</Select.Item>
-      <Select.Item id="bruteforce2">Bruteforce2</Select.Item>
     </Select>
   ),
 };
@@ -238,8 +235,8 @@ export const Disabled: Story = {
         label="Attack type"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
-        isDisabled
         selectionMode="multiple"
+        isDisabled
       >
         {(item) => <Select.Item>{item.name}</Select.Item>}
       </Select>
@@ -258,7 +255,6 @@ export const DisabledOptions: Story = {
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
         {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
       </Select>
     );
@@ -533,13 +529,13 @@ export const Section: Story = {
         placeholder="Select an option"
         style={{ inlineSize: 200 }}
       >
-        {(item) => (
+        {(section) => (
           <Select.Section
-            key={item.name}
-            items={item.children}
-            title={item.name}
+            id={section.name}
+            items={section.children}
+            title={section.name}
           >
-            {(item) => <Select.Item>{item.name}</Select.Item>}
+            {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
           </Select.Section>
         )}
       </Select>
