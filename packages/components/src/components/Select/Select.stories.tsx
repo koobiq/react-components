@@ -29,8 +29,8 @@ const meta = {
   },
   subcomponents: {
     'Select.Item': Select.Item,
-    // 'Select.Section': Select.Section,
-    // 'Select.Divider': Select.Divider,
+    'Select.Section': Select.Section,
+    'Select.Divider': Select.Divider,
     'Select.ItemText': Select.ItemText,
   },
   argTypes: {},
@@ -255,7 +255,7 @@ export const DisabledOptions: Story = {
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
       >
-        {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -352,7 +352,7 @@ export const Addons: Story = {
         placeholder="Select an option"
         defaultSelectedKeys={[1]}
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },

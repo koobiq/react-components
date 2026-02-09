@@ -96,7 +96,7 @@ function SelectInner<T extends object>({
   const validationBehavior =
     props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
-  const clearButtonIsHidden = isDisabled || !inputState.selectedItems;
+  const clearButtonIsHidden = isDisabled || !inputState.selectedItems?.length;
 
   const handleClear = useCallback(() => {
     inputState.selectionManager.setSelectedKeys(new Set());
