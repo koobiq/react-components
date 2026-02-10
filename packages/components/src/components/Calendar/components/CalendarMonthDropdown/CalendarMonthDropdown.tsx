@@ -1,21 +1,37 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, type ComponentPropsWithRef } from 'react';
 
-import { clsx, useBoolean, useDateFormatter } from '@koobiq/react-core';
+import {
+  clsx,
+  mergeProps,
+  useBoolean,
+  useDateFormatter,
+} from '@koobiq/react-core';
 import { IconChevronDown16 } from '@koobiq/react-icons';
 import { type CalendarState } from '@koobiq/react-primitives';
 
 import { capitalizeFirstLetter } from '../../../../utils';
 import { Button } from '../../../Button';
+import type { ItemProps } from '../../../Collections';
 import { Menu } from '../../../Menu';
+import type { PopoverProps } from '../../../Popover';
 import s from '../../Calendar.module.css';
 
-type CalendarMonthDropdownProps = {
+export type CalendarMonthDropdownProps = {
   state: CalendarState;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    item?: ItemProps<object>;
+    popover?: PopoverProps;
+    list?: ComponentPropsWithRef<'ul'>;
+  };
 };
 
-export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
+export function CalendarMonthDropdown({
+  state,
+  slotProps,
+}: CalendarMonthDropdownProps) {
   const months: { id: number; name: string }[] = [];
   const disabledKeys = new Set<number>();
   const [isOpen, { on, off }] = useBoolean();
@@ -78,6 +94,26 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
     });
   }
 
+  const listProps = mergeProps(
+    {
+      ref: menuRef,
+    },
+    slotProps?.list
+  );
+
+  const popoverProps = mergeProps(
+    {
+      maxBlockSize: 265,
+      slotProps: {
+        transition: {
+          onEnter: on,
+          onExited: off,
+        },
+      },
+    },
+    slotProps?.popover
+  );
+
   return (
     <Menu
       control={(props) => (
@@ -93,18 +129,8 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
       )}
       className={s.popover}
       slotProps={{
-        list: {
-          ref: menuRef,
-        },
-        popover: {
-          maxBlockSize: 265,
-          slotProps: {
-            transition: {
-              onEnter: on,
-              onExited: off,
-            },
-          },
-        },
+        list: listProps,
+        popover: popoverProps,
       }}
       items={months}
       disabledKeys={disabledKeys}
@@ -116,7 +142,11 @@ export function CalendarMonthDropdown({ state }: CalendarMonthDropdownProps) {
         state.setFocusedDate(date);
       }}
     >
-      {(item) => <Menu.Item>{capitalizeFirstLetter(item.name)}</Menu.Item>}
+      {(item) => (
+        <Menu.Item {...slotProps?.item}>
+          {capitalizeFirstLetter(item.name)}
+        </Menu.Item>
+      )}
     </Menu>
   );
 }

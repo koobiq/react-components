@@ -1,20 +1,31 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { type ComponentPropsWithRef, useEffect, useRef } from 'react';
 
-import { clsx, useBoolean } from '@koobiq/react-core';
+import { clsx, mergeProps, useBoolean } from '@koobiq/react-core';
 import { IconChevronDown16 } from '@koobiq/react-icons';
 import { type CalendarState } from '@koobiq/react-primitives';
 
 import { Button } from '../../../Button';
+import type { ItemProps } from '../../../Collections';
 import { Menu } from '../../../Menu';
+import type { PopoverProps } from '../../../Popover';
 import s from '../../Calendar.module.css';
 
-type CalendarYearDropdownProps = {
+export type CalendarYearDropdownProps = {
   state: CalendarState;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    item?: ItemProps<object>;
+    popover?: PopoverProps;
+    list?: ComponentPropsWithRef<'ul'>;
+  };
 };
 
-export function CalendarYearDropdown({ state }: CalendarYearDropdownProps) {
+export function CalendarYearDropdown({
+  state,
+  slotProps,
+}: CalendarYearDropdownProps) {
   const years: { id: number }[] = [];
   const [isOpen, { on, off }] = useBoolean();
 
@@ -49,21 +60,31 @@ export function CalendarYearDropdown({ state }: CalendarYearDropdownProps) {
   const selectedYearName =
     years.find(({ id }) => id === state.focusedDate.year)?.id ?? '';
 
+  const listProps = mergeProps(
+    {
+      ref: menuRef,
+    },
+    slotProps?.list
+  );
+
+  const popoverProps = mergeProps(
+    {
+      maxBlockSize: 265,
+      slotProps: {
+        transition: {
+          onEnter: on,
+          onExited: off,
+        },
+      },
+    },
+    slotProps?.popover
+  );
+
   return (
     <Menu
       slotProps={{
-        list: {
-          ref: menuRef,
-        },
-        popover: {
-          maxBlockSize: 265,
-          slotProps: {
-            transition: {
-              onEnter: on,
-              onExited: off,
-            },
-          },
-        },
+        list: listProps,
+        popover: popoverProps,
       }}
       control={(props) => (
         <Button
@@ -86,7 +107,11 @@ export function CalendarYearDropdown({ state }: CalendarYearDropdownProps) {
         state.setFocusedDate(date);
       }}
     >
-      {(item) => <Menu.Item textValue={String(item.id)}>{item.id}</Menu.Item>}
+      {(item) => (
+        <Menu.Item textValue={String(item.id)} {...slotProps?.item}>
+          {item.id}
+        </Menu.Item>
+      )}
     </Menu>
   );
 }

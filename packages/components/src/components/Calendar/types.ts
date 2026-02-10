@@ -1,7 +1,15 @@
-import type { ComponentRef, CSSProperties, ReactElement, Ref } from 'react';
+import type {
+  ComponentPropsWithRef,
+  ComponentRef,
+  CSSProperties,
+  ReactElement,
+  Ref,
+} from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { AriaCalendarProps, DateValue } from '@koobiq/react-primitives';
+
+import type { CalendarGridProps, CalendarHeaderProps } from './components';
 
 export type CalendarProps<T extends DateValue> = ExtendableProps<
   {
@@ -11,6 +19,12 @@ export type CalendarProps<T extends DateValue> = ExtendableProps<
     className?: string;
     /** Inline styles. */
     style?: CSSProperties;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      root?: ComponentPropsWithRef<'div'>;
+      grid?: Partial<CalendarGridProps>;
+      header?: Partial<CalendarHeaderProps>;
+    };
   },
   Omit<AriaCalendarProps<T>, 'validationState' | 'errorMessage'>
 >;

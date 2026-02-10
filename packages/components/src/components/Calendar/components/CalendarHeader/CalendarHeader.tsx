@@ -1,12 +1,15 @@
 'use client';
 
-import { today, useLocalizedStringFormatter } from '@koobiq/react-core';
+import {
+  mergeProps,
+  today,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import {
   IconChevronLeft16,
   IconChevronRight16,
   IconCircleXs16,
 } from '@koobiq/react-icons';
-import type { CalendarState, CalendarAria } from '@koobiq/react-primitives';
 
 import { Button } from '../../../Button';
 import intlMessages from '../../intl.json';
@@ -14,25 +17,26 @@ import { CalendarMonthDropdown } from '../CalendarMonthDropdown';
 import { CalendarYearDropdown } from '../CalendarYearDropdown';
 
 import s from './CalendarHeader.module.css';
-
-type CalendarHeaderProps = {
-  prevButtonProps: CalendarAria['prevButtonProps'];
-  nextButtonProps: CalendarAria['nextButtonProps'];
-  state: CalendarState;
-};
+import type { CalendarHeaderProps } from './types';
 
 export const CalendarHeader = (props: CalendarHeaderProps) => {
-  const { prevButtonProps, nextButtonProps, state } = props;
+  const { prevButtonProps, nextButtonProps, state, slotProps } = props;
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
+  const rootProps = mergeProps({ className: s.base }, slotProps?.root);
+  const actionsProps = mergeProps({ className: s.actions }, slotProps?.actions);
+  const monthDropdown = mergeProps({ state }, slotProps?.['month-picker']);
+  const yearDropdown = mergeProps({ state }, slotProps?.['year-picker']);
+
   return (
-    <div className={s.base}>
-      <CalendarMonthDropdown state={state} />
-      <CalendarYearDropdown state={state} />
-      <div className={s.actions}>
+    <div {...rootProps}>
+      <CalendarMonthDropdown {...monthDropdown} />
+      <CalendarYearDropdown {...yearDropdown} />
+      <div {...actionsProps}>
         <Button
           {...prevButtonProps}
+          data-slot="prev-period"
           variant="contrast-transparent"
           startIcon={<IconChevronLeft16 />}
           onlyIcon
@@ -43,6 +47,7 @@ export const CalendarHeader = (props: CalendarHeaderProps) => {
             const date = today(state.timeZone);
             state.setFocusedDate(date);
           }}
+          data-slot="today"
           isDisabled={state.isDisabled}
           variant="contrast-transparent"
           startIcon={<IconCircleXs16 />}
@@ -50,6 +55,7 @@ export const CalendarHeader = (props: CalendarHeaderProps) => {
         />
         <Button
           {...nextButtonProps}
+          data-slot="next-period"
           variant="contrast-transparent"
           startIcon={<IconChevronRight16 />}
           onlyIcon

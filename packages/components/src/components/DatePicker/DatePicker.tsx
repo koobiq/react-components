@@ -61,7 +61,6 @@ export function DatePickerRender<T extends DateValue>(
   const {
     isInvalid,
     groupProps,
-    labelProps,
     fieldProps,
     buttonProps,
     dialogProps,
@@ -77,6 +76,28 @@ export function DatePickerRender<T extends DateValue>(
     anchorRef
   );
 
+  // eslint-disable-next-line no-unsafe-optional-chaining
+  const { slotProps: rootSlotProps, ...otherRoot } = slotProps?.root || {};
+
+  const mergedRootSlotProps = {
+    ...rootSlotProps,
+    group: mergeProps(rootSlotProps?.group, groupProps, {
+      ref: anchorRef,
+      endAddon: (
+        <>
+          {endAddon}
+          <IconButton
+            variant={isInvalid ? 'error' : 'fade-contrast'}
+            className={s.calendar}
+            {...buttonProps}
+          >
+            <IconCalendarO16 />
+          </IconButton>
+        </>
+      ),
+    }),
+  };
+
   const rootProps = mergeProps(
     {
       ref,
@@ -90,27 +111,9 @@ export function DatePickerRender<T extends DateValue>(
       labelAlign,
       errorMessage,
       'data-testid': testId,
-      slotProps: {
-        label: mergeProps(labelProps, slotProps?.label),
-        group: {
-          endAddon: (
-            <>
-              {endAddon}
-              <IconButton
-                variant={isInvalid ? 'error' : 'fade-contrast'}
-                className={s.calendar}
-                {...buttonProps}
-              >
-                <IconCalendarO16 />
-              </IconButton>
-            </>
-          ),
-          ...groupProps,
-          ref: anchorRef,
-        },
-      },
+      slotProps: mergedRootSlotProps,
     },
-    slotProps?.root,
+    otherRoot,
     fieldProps
   );
 

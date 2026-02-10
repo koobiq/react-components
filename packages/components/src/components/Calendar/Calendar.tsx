@@ -27,7 +27,7 @@ function CalendarRender<T extends DateValue>(
   props: CalendarProps<T>,
   ref: Ref<CalendarRef>
 ) {
-  const { style, className } = props;
+  const { style, className, slotProps } = props;
   const { locale } = useLocale();
 
   const state = useCalendarState({
@@ -43,17 +43,21 @@ function CalendarRender<T extends DateValue>(
 
   const rootProps = mergeProps(
     { className: clsx(s.base, textNormal, className), style, ref },
+    slotProps?.root,
     calendarProps
   );
 
+  const headerProps = mergeProps(
+    { state, prevButtonProps, nextButtonProps },
+    slotProps?.header
+  );
+
+  const gridProps = mergeProps({ state }, slotProps?.grid);
+
   return (
     <div {...rootProps}>
-      <CalendarHeader
-        state={state}
-        prevButtonProps={prevButtonProps}
-        nextButtonProps={nextButtonProps}
-      />
-      <CalendarGrid state={state} />
+      <CalendarHeader {...headerProps} />
+      <CalendarGrid {...gridProps} />
     </div>
   );
 }

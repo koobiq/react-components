@@ -47,13 +47,23 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
     isDisabled: isDisabled || isUnavailable,
   });
 
-  const { focusProps, isFocusVisible } = useFocusRing({});
+  const { focusProps, isFocusVisible, isFocused } = useFocusRing({});
 
   return (
     <td {...cellProps}>
       <div
         {...mergeProps(hoverProps, focusProps, buttonProps)}
         ref={ref}
+        data-slot="calendar-cell"
+        data-today={isToday || undefined}
+        data-focused={isFocused || undefined}
+        data-pressed={isPressed || undefined}
+        data-hovered={isHovered || undefined}
+        data-invalid={isInvalid || undefined}
+        data-disabled={isDisabled || undefined}
+        data-selected={isSelected || undefined}
+        data-unavailable={isUnavailable || undefined}
+        data-focus-visible={isFocusVisible || undefined}
         className={clsx(
           s.base,
           isToday && s.today,

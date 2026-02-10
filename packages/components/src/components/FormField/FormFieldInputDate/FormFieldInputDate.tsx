@@ -1,15 +1,18 @@
 import { forwardRef, type ReactNode, type Ref } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, type ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 
 import s from './FormFieldInputDate.module.css';
 
-export type FormFieldInputDateProps = {
-  className?: string;
-  children?: ReactNode;
-  'data-testid'?: string;
-  ref?: Ref<HTMLDivElement>;
-};
+export type FormFieldInputDateProps = ExtendableComponentPropsWithRef<
+  {
+    className?: string;
+    children?: ReactNode;
+    'data-testid'?: string;
+    ref?: Ref<HTMLDivElement>;
+  },
+  'div'
+>;
 
 export const FormFieldInputDate = forwardRef<
   HTMLDivElement,
