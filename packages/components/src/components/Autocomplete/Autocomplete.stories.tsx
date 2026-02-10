@@ -30,7 +30,6 @@ const meta = {
     'Autocomplete.Section': Autocomplete.Section,
   },
   argTypes: {},
-  tags: ['status:new'],
 } satisfies Meta<typeof Autocomplete>;
 
 export default meta;

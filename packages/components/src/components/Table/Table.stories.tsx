@@ -28,7 +28,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:updated'],
 } satisfies Meta<typeof Table>;
 
 export default meta;

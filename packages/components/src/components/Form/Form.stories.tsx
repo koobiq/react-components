@@ -34,7 +34,6 @@ const meta = {
     'Form.Caption': Form.Caption,
     'Form.Actions': Form.Actions,
   },
-  tags: ['status:new'],
 } satisfies Meta<typeof Form>;
 
 export default meta;

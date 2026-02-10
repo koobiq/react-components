@@ -19,7 +19,7 @@ import { Link } from '../Link';
 import { Toggle } from '../Toggle';
 import { Typography } from '../Typography';
 
-import { Tabs, Tab } from './index.js';
+import { Tabs, Tab } from './index';
 
 const meta = {
   title: 'Components/Tabs',
@@ -28,7 +28,6 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['status:new'],
 } satisfies Meta<typeof Tabs>;
 
 export default meta;

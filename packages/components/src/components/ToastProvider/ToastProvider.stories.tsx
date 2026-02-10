@@ -23,7 +23,6 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
-  tags: ['status:new'],
 } satisfies Meta<typeof ToastProvider>;
 
 export default meta;

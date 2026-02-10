@@ -4,7 +4,6 @@ import { useHideOverflowItems } from './index';
 
 export default {
   title: 'Hooks/useHideOverflowItems',
-  tags: ['status:new'],
 };
 
 const parentStyle = {
