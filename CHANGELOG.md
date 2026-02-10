@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.23.0](https://github.com/koobiq/react-components/compare/0.22.0...0.23.0) (2026-02-10)
+
+
+### 🚀 Features
+
+* **components:** add `ContentPanel` component (DS-4597) ([#260](https://github.com/koobiq/react-components/issues/260)) ([e0d2c3a](https://github.com/koobiq/react-components/commit/e0d2c3a5683b695be94db4384ec037d836687c22))
+* **DatePicker:** extend `slotProps` for customization (DS-4689) ([#267](https://github.com/koobiq/react-components/issues/267)) ([b8733de](https://github.com/koobiq/react-components/commit/b8733de161657a435dbac6b40cadbea82d390d55))
+* **Select:** use "+N" more counter in multi-select ([#265](https://github.com/koobiq/react-components/issues/265)) (DS-4105) ([51b006e](https://github.com/koobiq/react-components/commit/51b006ea647ec66262b1c7bb5382be0c74618d59))
+
+
+### 🐞 Bug Fixes
+
+* **components:** show error before caption in form fields (DS-4658) ([#266](https://github.com/koobiq/react-components/issues/266)) ([2e2faad](https://github.com/koobiq/react-components/commit/2e2faad3465e1bd8bb160d4003b9440df7b1a04d))
+* **primitives:** add support for native mouse and pointer event handlers for Link (DS-4672) ([#263](https://github.com/koobiq/react-components/issues/263)) ([94016b0](https://github.com/koobiq/react-components/commit/94016b081c0893deb12c31069e55848cb2e0c4ba))
+* **Table/TableHeader:** avoid non-boolean values in `data-allows-resizing` ([682fc65](https://github.com/koobiq/react-components/commit/682fc65925dde93ffe7c162c1e08dd62abb54ff3))
+
 ## [0.22.0](https://github.com/koobiq/react-components/compare/0.21.1...0.22.0) (2026-01-16)
 
 
