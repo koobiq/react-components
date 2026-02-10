@@ -159,8 +159,8 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
                 <FormField.ControlGroup {...groupProps}>
                   <FormField.Input {...inputProps} />
                 </FormField.ControlGroup>
-                <FormField.Caption {...captionProps} />
                 <FormField.Error {...errorProps} />
+                <FormField.Caption {...captionProps} />
               </div>
             </>
           );

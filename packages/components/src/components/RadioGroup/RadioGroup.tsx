@@ -149,8 +149,8 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
                 <FormField.Label {...labelProps} />
                 <div className={s.body}>
                   <div {...radioGroupProps}>{children}</div>
-                  <FormField.Caption {...captionProps} />
                   <FormField.Error {...errorProps} />
+                  <FormField.Caption {...captionProps} />
                 </div>
               </>
             );

@@ -147,10 +147,10 @@ export const CheckboxGroup = forwardRef<
           <CheckboxGroupPrimitiveContext.Provider value={state}>
             <div {...checkboxGroupProps}>{children}</div>
           </CheckboxGroupPrimitiveContext.Provider>
-          <FormField.Caption {...descriptionProps} />
           <FieldErrorContext.Provider value={validation}>
             <FormField.Error {...errorMessageProps} />
           </FieldErrorContext.Provider>
+          <FormField.Caption {...descriptionProps} />
         </div>
       </FormField>
     </CheckboxGroupContext.Provider>

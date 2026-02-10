@@ -105,8 +105,8 @@ export const TextareaContextConsumer = forwardRef<
         <FormField.ControlGroup {...groupProps}>
           <FormField.Input as="textarea" {...textareaProps} />
         </FormField.ControlGroup>
-        <FormField.Caption {...captionProps} />
         <FormField.Error {...errorProps} />
+        <FormField.Caption {...captionProps} />
       </div>
     </>
   );
