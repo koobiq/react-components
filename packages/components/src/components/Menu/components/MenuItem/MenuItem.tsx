@@ -9,6 +9,7 @@ import type { TreeState } from '@koobiq/react-primitives';
 import { useMenuItem } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
+import type { ItemProps } from '../../../Collections';
 
 const { listItem } = utilClasses;
 const textVariant = utilClasses.typography;
@@ -35,6 +36,12 @@ export function MenuItem<T>({ item, state }: MenuItemProps<T>) {
 
   const Tag: ElementType = item.props.href ? 'a' : 'li';
 
+  const {
+    style,
+    className,
+    'data-testid': dataTestId,
+  }: ItemProps<T> = item.props;
+
   return (
     <Tag
       {...mergeProps(menuItemProps, hoverProps, pressProps)}
@@ -42,7 +49,9 @@ export function MenuItem<T>({ item, state }: MenuItemProps<T>) {
       data-pressed={pressed}
       data-selected={selected}
       data-focus-visible={focusVisible}
-      className={clsx(listItem, textVariant['text-normal'])}
+      style={style}
+      data-testid={dataTestId}
+      className={clsx(listItem, textVariant['text-normal'], className)}
       ref={ref}
     >
       {item.rendered}

@@ -2,29 +2,31 @@
 
 import { createRef, type RefObject, useEffect, useMemo, useRef } from 'react';
 
-import { clsx, useLocale, getWeeksInMonth } from '@koobiq/react-core';
 import {
-  useCalendarGrid,
-  type CalendarState,
-  type AriaCalendarGridProps,
-} from '@koobiq/react-primitives';
+  clsx,
+  useLocale,
+  getWeeksInMonth,
+  mergeProps,
+} from '@koobiq/react-core';
+import { useCalendarGrid } from '@koobiq/react-primitives';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { utilClasses } from '../../../../styles/utility';
 import { CalendarCell } from '../CalendarCell';
 
 import s from './CalendarGrid.module.css';
+import type { CalendarGridProps } from './index';
 import { monthIndex } from './utils';
 
 const textNormal = utilClasses.typography['text-normal'];
 
 type Dir = 'next' | 'prev' | 'jump';
 
-type CalendarGridProps = {
-  state: CalendarState;
-} & AriaCalendarGridProps;
-
-export function CalendarGrid({ state, ...props }: CalendarGridProps) {
+export function CalendarGrid({
+  state,
+  slotProps,
+  ...props
+}: CalendarGridProps) {
   const { locale } = useLocale();
 
   const { gridProps, headerProps, weekDays } = useCalendarGrid(
@@ -71,9 +73,17 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
 
   const tbodyRef = nodeRefs.current.get(k)!;
 
+  const rootProps = mergeProps({ className: s.container }, slotProps?.root);
+
+  const tableProps = mergeProps(
+    { className: clsx(s.base, s[dir], textNormal) },
+    slotProps?.table,
+    gridProps
+  );
+
   return (
-    <div className={s.container}>
-      <table {...gridProps} className={clsx(s.base, s[dir], textNormal)}>
+    <div {...rootProps}>
+      <table {...tableProps}>
         <thead {...headerProps}>
           <tr>
             {weekDays.map((day, i) => (

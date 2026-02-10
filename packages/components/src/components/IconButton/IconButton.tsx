@@ -67,6 +67,7 @@ export const IconButton = polymorphicForwardRef<'button', IconButtonBaseProps>(
         className={classNameFn}
         data-size={size}
         data-variant={variant}
+        data-slot="icon-button"
         data-compact={isCompact || undefined}
         {...other}
         ref={ref}

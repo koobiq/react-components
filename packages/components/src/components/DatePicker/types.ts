@@ -44,6 +44,7 @@ export type DatePickerProps<T extends DateValue> = {
   /** The props used for each slot inside. */
   slotProps?: {
     root?: DateInputProps<T>;
+    /** @deprecated */
     label?: FormFieldLabelProps;
     popover?: PopoverProps;
     calendar?: CalendarProps<T>;
