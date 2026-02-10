@@ -170,10 +170,10 @@ export function TimePickerRender<T extends TimeValue>(
             <input {...inputProps} />
           </FormField.InputDate>
         </FormField.ControlGroup>
-        <FormField.Caption {...captionProps} />
         <FieldErrorContext.Provider value={validation}>
           <FormField.Error {...errorProps} />
         </FieldErrorContext.Provider>
+        <FormField.Caption {...captionProps} />
       </div>
     </FormField>
   );

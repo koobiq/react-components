@@ -258,10 +258,10 @@ function SelectRender<T extends object>(
               })}
             </FormField.Select>
           </FormField.ControlGroup>
-          <FormField.Caption {...captionProps} />
           <FieldErrorContext.Provider value={validation}>
             <FormField.Error {...errorProps} />
           </FieldErrorContext.Provider>
+          <FormField.Caption {...captionProps} />
         </div>
       </FormField>
       <PopoverInner {...popoverProps}>

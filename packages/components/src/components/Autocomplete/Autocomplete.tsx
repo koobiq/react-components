@@ -284,10 +284,10 @@ export function AutocompleteRender<T extends object = object>(
         <FormField.ControlGroup {...groupProps}>
           <FormField.Input {...inputProps} />
         </FormField.ControlGroup>
-        <FormField.Caption {...captionProps} />
         <FieldErrorContext.Provider value={validation}>
           <FormField.Error {...errorProps} />
         </FieldErrorContext.Provider>
+        <FormField.Caption {...captionProps} />
       </div>
       <PopoverInner {...popoverProps}>
         <ListInner {...listProps} />
