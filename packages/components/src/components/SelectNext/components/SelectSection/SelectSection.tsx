@@ -3,7 +3,12 @@
 import type { ForwardedRef } from 'react';
 import { useContext } from 'react';
 
-import type { Key, Node, SectionProps } from '@koobiq/react-core';
+import type {
+  Key,
+  Node,
+  SectionProps,
+  ExtendableComponentPropsWithRef,
+} from '@koobiq/react-core';
 import { filterDOMProps, mergeProps } from '@koobiq/react-core';
 import {
   useListBoxSection,
@@ -18,21 +23,21 @@ import { CollectionBranch } from '../../utils';
 
 const { listHeading } = utilClasses;
 
-export type ListSectionProps<T> = SectionProps<T> & {
-  /** The unique id of the item. */
-  id?: Key;
-};
+export type SelectSectionProps<T> = ExtendableComponentPropsWithRef<
+  SectionProps<T> & {
+    /** The unique id of the item. */
+    id?: Key;
+  },
+  'section'
+>;
 
 function SelectSectionInner<T extends object>(
-  props: ListSectionProps<T>,
+  props: SelectSectionProps<T>,
   ref: ForwardedRef<HTMLElement>,
-  section: Node<T>,
-  // TODO: work out with it
-  className: string = ''
+  section: Node<T>
 ) {
-  console.warn(className);
-
   const state = useContext(SelectContext)!;
+  const { className, style } = props;
 
   const { headingProps, groupProps } = useListBoxSection({
     heading: section.rendered,
@@ -43,7 +48,12 @@ function SelectSectionInner<T extends object>(
   delete DOMProps.id;
 
   return (
-    <section {...mergeProps(DOMProps, groupProps)} ref={ref}>
+    <section
+      {...mergeProps(DOMProps, groupProps)}
+      className={className}
+      style={style}
+      ref={ref}
+    >
       <Typography
         as="span"
         display="block"
