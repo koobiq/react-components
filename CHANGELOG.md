@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.0](https://github.com/koobiq/react-components/compare/0.23.0...0.24.0) (2026-02-11)
+
+
+### 🚀 Features
+
+* **Navbar:** add draft component (DS-4389) ([#264](https://github.com/koobiq/react-components/issues/264)) ([97f5bd6](https://github.com/koobiq/react-components/commit/97f5bd60ef3870f161bf42d632b313a9540655ce))
+
 ## [0.23.0](https://github.com/koobiq/react-components/compare/0.22.0...0.23.0) (2026-02-10)
 
 
