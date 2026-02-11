@@ -308,7 +308,12 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q1 2026',
   },
-  { component: 'Navbar', status: '🛠️ In Progress', planned: 'Q1 2026' },
+  {
+    component: 'Navbar',
+    status: '✅ Done',
+    stage: '🟠 draft',
+    planned: 'Q1 2026',
+  },
   { component: 'ActionPanel', status: '🚧 Planned', planned: 'Q1 2026' },
   { component: 'Tree', status: '🚧 Planned', planned: 'Q1 2026' },
 ];
