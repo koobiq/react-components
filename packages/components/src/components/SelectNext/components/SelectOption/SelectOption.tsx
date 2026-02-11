@@ -1,14 +1,14 @@
 'use client';
 
-import { useContext } from 'react';
-import type { ElementType, ForwardedRef } from 'react';
+import { useContext, useRef } from 'react';
+import type { ForwardedRef } from 'react';
 
 import {
   clsx,
-  mergeProps,
   useHover,
   usePress,
-  useObjectRef,
+  mergeProps,
+  useMultiRef,
   filterDOMProps,
 } from '@koobiq/react-core';
 import type {
@@ -17,8 +17,8 @@ import type {
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
 import {
-  useOption,
   ItemNode,
+  useOption,
   createLeafComponent,
 } from '@koobiq/react-primitives';
 
@@ -56,20 +56,21 @@ export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
 >(props: SelectOptionProps, forwardedRef: ForwardedRef<HTMLElement>, item: Node<T>) {
   const { href, className, style } = props;
 
-  const ref = useObjectRef(forwardedRef);
+  const domRef = useRef<HTMLElement>(null);
+  const ref = useMultiRef([forwardedRef, domRef]);
   const state = useContext(SelectContext)!;
 
   const { optionProps, isSelected, isDisabled, isFocusVisible } = useOption(
     { key: item.key },
     state,
-    ref
+    domRef
   );
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
 
   const { isPressed, pressProps } = usePress({ isDisabled });
 
-  const Tag: ElementType = href ? 'a' : 'li';
+  const Tag = href ? 'a' : 'li';
 
   const DOMProps = filterDOMProps(props as any, { global: true });
   delete DOMProps.id;
@@ -77,17 +78,17 @@ export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
 
   return (
     <Tag
-      {...mergeProps(optionProps, hoverProps, pressProps)}
-      className={clsx(listItem, textVariant['text-normal'], className)}
-      style={style}
       ref={ref}
+      style={style}
       data-hovered={isHovered || undefined}
       data-pressed={isPressed || undefined}
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       data-focus-visible={isFocusVisible || undefined}
+      {...mergeProps(optionProps, hoverProps, pressProps)}
+      className={clsx(listItem, textVariant['text-normal'], className)}
     >
-      {state.selectionMode === 'multiple' && (
+      {state.selectionManager.selectionMode === 'multiple' && (
         <Checkbox isDisabled={isDisabled} isSelected={isSelected} isReadOnly />
       )}
       {item.rendered}
