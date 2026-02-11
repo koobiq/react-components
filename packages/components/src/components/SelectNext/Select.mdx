@@ -167,3 +167,12 @@ Select supports loading data asynchronously, and will display a progress circle 
 It also supports infinite scrolling to load more data on demand as the user scrolls, via the `onLoadMore` prop.
 
 <Story of={Stories.AsynchronousLoading} />
+
+## Server search
+
+This example shows select with server search.
+
+When the user types, the component asks the server for results and shows them in the list.
+The list is replaced every time you type something new — it does not load more items like an infinite scroll does.
+
+<Story of={Stories.ServerSearch} />

@@ -1,11 +1,12 @@
 import { useState, useCallback } from 'react';
 
-import { useBoolean } from '@koobiq/react-core';
+import { useBoolean, useDebounceCallback } from '@koobiq/react-core';
 import {
   IconAnomaly16,
   IconBug16,
   IconCrosshairs16,
   IconDesktop16,
+  IconMagnifyingGlass16,
   IconServer16,
   IconSwords16,
 } from '@koobiq/react-icons';
@@ -13,6 +14,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { ProgressSpinner } from '../ProgressSpinner';
 import { Typography } from '../Typography';
 
 import type { SelectProps } from './index.js';
@@ -576,6 +578,78 @@ export const AsynchronousLoading: Story = {
             <Select.ItemText>{item.title}</Select.ItemText>
           </Select.Item>
         )}
+      </Select>
+    );
+  },
+};
+
+export const ServerSearch: Story = {
+  render: function Render() {
+    type Product = {
+      id: number;
+      title: string;
+      price: number;
+    };
+
+    const [inputValue, setInputValue] = useState('');
+    const [items, setItems] = useState<Product[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string>();
+
+    const [debounceSetIsLoading] = useDebounceCallback({
+      callback: setIsLoading,
+      delay: 300,
+    });
+
+    async function fetchProducts(query: string): Promise<Product[]> {
+      if (!query.trim()) return [];
+
+      const url = new URL('https://dummyjson.com/products/search');
+      url.searchParams.set('q', query);
+      url.searchParams.set('limit', '10');
+
+      const res = await fetch(url.toString());
+      if (!res.ok) throw new Error('DummyJSON error');
+
+      const data = await res.json();
+
+      return data.products ?? [];
+    }
+
+    const onInputChange: SelectProps<object>['onInputChange'] = async (
+      value
+    ) => {
+      setError('');
+      setInputValue(value);
+      debounceSetIsLoading(true);
+
+      try {
+        const res = await fetchProducts(value);
+        setItems(res);
+      } catch {
+        setItems([]);
+        setError('Request failed!');
+      } finally {
+        debounceSetIsLoading(false);
+      }
+    };
+
+    return (
+      <Select
+        items={items}
+        label="Products"
+        inputValue={inputValue}
+        isInvalid={!!error}
+        errorMessage={error}
+        placeholder="Search…"
+        style={{ inlineSize: 200 }}
+        onInputChange={onInputChange}
+        startAddon={<IconMagnifyingGlass16 />}
+        endAddon={isLoading && <ProgressSpinner />}
+        noItemsText={inputValue ? 'Nothing found' : 'Start typing to search'}
+        isSearchable
+      >
+        {(item) => <Select.Item key={item.id}>{item.title}</Select.Item>}
       </Select>
     );
   },
