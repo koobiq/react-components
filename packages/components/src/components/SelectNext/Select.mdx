@@ -3,20 +3,15 @@ import {
   Story,
   Props,
   Status,
-  Alert,
 } from '../../../../../.storybook/components';
 
 import * as Stories from './Select.stories';
 
 <Meta of={Stories} />
 
-# Select
+# SelectNext
 
-<Status variant="deprecated" />
-
-<Alert status="error" title="This component has been deprecated">
-  Please use [SelectNext](?path=/docs/components-selectnext--docs) instead.
-</Alert>
+<Status variant="experimental" />
 
 A select displays a collapsible list of options and allows a user to select one or more of them.
 
@@ -128,6 +123,10 @@ You can customize this message — either as plain text or a component — using
 
 <Story of={Stories.NoItems} />
 
+## Searchable
+
+<Story of={Stories.Searchable} />
+
 ## Open
 
 ### Default open
@@ -164,15 +163,3 @@ Select supports loading data asynchronously, and will display a progress circle 
 It also supports infinite scrolling to load more data on demand as the user scrolls, via the `onLoadMore` prop.
 
 <Story of={Stories.AsynchronousLoading} />
-
-## State Helper
-
-Use the `useListData` hook to manage items with convenient methods for adding,
-updating, and removing entries. Pass an initial set of items and a function to extract
-a unique key for each item. The returned state can then be used to render component options.
-
-```ts
-import { useListData } from '@koobiq/react-componenets';
-```
-
-<Story of={Stories.StateHelper} />

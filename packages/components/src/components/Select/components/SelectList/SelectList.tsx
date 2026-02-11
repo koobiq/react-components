@@ -1,35 +1,28 @@
 'use client';
 
-import type { RefObject } from 'react';
+import type { Ref } from 'react';
 
-import type { Node } from '@koobiq/react-core';
 import {
   clsx,
   isNotNil,
   mergeProps,
-  useObjectRef,
+  useDOMRef,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import {
-  useListBox,
-  // eslint-disable-next-line camelcase
-  UNSTABLE_useFilteredListState,
-} from '@koobiq/react-primitives';
-import type {
-  MultiSelectState,
-  AutocompleteAria,
-} from '@koobiq/react-primitives';
+import { type MultiSelectState, useListBox } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { Divider } from '../../../Divider';
 import type { ListProps } from '../../../List';
-import { ListEmptyState, ListLoadingState } from '../../../List/components';
-import { SearchInput } from '../../../SearchInput';
+import {
+  ListEmptyState,
+  ListLoadingState,
+  ListSection,
+} from '../../../List/components';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl';
-import { SelectContext } from '../../SelectContext';
 import type { SelectProps } from '../../types';
-import { CollectionRoot } from '../../utils';
+import { SelectOption } from '../SelectOption';
 
 import s from './SelectList.module.css';
 
@@ -37,11 +30,7 @@ const { list } = utilClasses;
 
 export type SelectListProps<T extends object> = {
   state: MultiSelectState<T>;
-  listRef?: RefObject<HTMLElement | null>;
-  inputRef?: RefObject<HTMLInputElement | null>;
-  filterFn?: (nodeValue: string, node: Node<T>) => boolean;
-  inputProps?: AutocompleteAria<T>['inputProps'];
-  collectionRef?: RefObject<HTMLElement | null>;
+  listRef?: Ref<HTMLUListElement>;
 } & Omit<ListProps<T>, 'ref' | 'children'> &
   Pick<SelectProps<T>, 'noItemsText' | 'isLoading' | 'onLoadMore'>;
 
@@ -50,24 +39,18 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
     label,
     className,
     style,
-    filterFn,
     slotProps,
-    state: inputState,
+    state,
     isLoading,
     onLoadMore,
-    inputProps,
     listRef,
-    inputRef,
-    collectionRef,
     noItemsText: noItemsTextProp,
     loadingText: loadingTextProp,
   } = props;
 
-  const state = UNSTABLE_useFilteredListState?.(inputState, filterFn);
-
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const domRef = useObjectRef(listRef);
+  const domRef = useDOMRef(listRef);
 
   const isEmpty = state.collection.size === 0;
 
@@ -85,7 +68,7 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
   const listProps = mergeProps(
     {
       style,
-      ref: domRef as RefObject<HTMLUListElement | null>,
+      ref: domRef,
       className: clsx(list, className),
       'data-padded': true,
     },
@@ -98,25 +81,28 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
 
   const loadingText = loadingTextProp ?? t.format('loading');
 
-  const { collection } = state;
+  const renderItems = (treeState: typeof state) =>
+    [...treeState.collection].map((item) => {
+      switch (item.type) {
+        case 'divider':
+          return <Divider key={item.key} />;
+
+        case 'item':
+          return <SelectOption key={item.key} item={item} state={state} />;
+
+        case 'section':
+          return <ListSection key={item.key} section={item} state={state} />;
+
+        default:
+          return null;
+      }
+    });
 
   return (
-    <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-      <SearchInput
-        aria-label="search"
-        variant="transparent"
-        ref={inputRef}
-        isLabelHidden
-        autoFocus
-        fullWidth
-        {...inputProps}
-      />
-      <Divider disablePaddings />
+    <>
       {isNotNil(label) && <Typography {...titleProps}>{label}</Typography>}
       <ul {...listProps}>
-        <SelectContext.Provider value={state}>
-          <CollectionRoot collection={collection} />
-        </SelectContext.Provider>
+        {renderItems(state)}
         <ListEmptyState
           isEmpty={isEmpty}
           isLoading={isLoading}
@@ -130,6 +116,6 @@ export function SelectList<T extends object>(props: SelectListProps<T>) {
           observeDeps={[state.collection]}
         />
       </ul>
-    </div>
+    </>
   );
 }

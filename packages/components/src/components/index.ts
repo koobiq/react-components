@@ -63,6 +63,7 @@ export {
   useLocale,
   useFilter,
   type Locale,
+  type Key,
   type SortDescriptor,
   type Selection,
   RouterProvider,

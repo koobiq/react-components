@@ -23,9 +23,7 @@
     "url": "git+https://github.com/koobiq/react-components.git"
   },
   "type": "module",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "publishConfig": {
     "access": "public"
   },
@@ -33,7 +31,7 @@
   "dependencies": {
     "@koobiq/logger": "workspace:*",
     "@koobiq/react-core": "workspace:*",
-    "@react-aria/autocomplete": "3.0.0-rc.5",
+    "@react-aria/autocomplete": "^3.0.0-rc.5",
     "@react-aria/breadcrumbs": "^3.5.29",
     "@react-aria/button": "^3.9.0",
     "@react-aria/calendar": "^3.8.3",
@@ -45,14 +43,14 @@
     "@react-aria/disclosure": "^3.1.1",
     "@react-aria/label": "^3.7.20",
     "@react-aria/link": "^3.8.3",
-    "@react-aria/listbox": "^3.14.2",
+    "@react-aria/listbox": "^3.15.2",
     "@react-aria/menu": "^3.18.2",
     "@react-aria/numberfield": "^3.12.2",
     "@react-aria/overlays": "^3.27.3",
     "@react-aria/progress": "^3.4.17",
     "@react-aria/radio": "^3.10.9",
     "@react-aria/searchfield": "^3.8.7",
-    "@react-aria/select": "^3.15.7",
+    "@react-aria/select": "^3.17.2",
     "@react-aria/selection": "^3.25.0",
     "@react-aria/separator": "^3.4.8",
     "@react-aria/switch": "^3.7.5",
@@ -65,7 +63,7 @@
     "@react-aria/toolbar": "3.0.0-beta.22",
     "@react-aria/tooltip": "^3.8.5",
     "@react-aria/visually-hidden": "^3.8.0",
-    "@react-stately/autocomplete": "3.0.0-beta.4",
+    "@react-stately/autocomplete": "^3.0.0-beta.4",
     "@react-stately/calendar": "^3.8.2",
     "@react-stately/collections": "^3.12.5",
     "@react-stately/combobox": "^3.12.0",
@@ -79,7 +77,7 @@
     "@react-stately/overlays": "^3.6.17",
     "@react-stately/radio": "^3.10.8",
     "@react-stately/searchfield": "^3.5.14",
-    "@react-stately/select": "3.7.0",
+    "@react-stately/select": "^3.9.1",
     "@react-stately/table": "^3.14.3",
     "@react-stately/tabs": "^3.8.6",
     "@react-stately/toast": "^3.1.2",
