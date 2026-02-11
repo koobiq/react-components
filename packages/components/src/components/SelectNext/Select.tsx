@@ -1,13 +1,14 @@
 'use client';
 
 import type { Ref, RefObject } from 'react';
-import { forwardRef, useCallback, useRef, useState } from 'react';
+import { forwardRef, useCallback, useRef } from 'react';
 
 import {
   useDOMRef,
+  useFilter,
   mergeProps,
   useElementSize,
-  useFilter,
+  useControlledState,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
@@ -66,7 +67,9 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     selectedTagsOverflow = 'responsive',
     renderValue: renderValueProp,
     'data-testid': testId,
+    defaultInputValue,
     labelPlacement,
+    onInputChange,
     selectionMode,
     isLabelHidden,
     isSearchable,
@@ -75,6 +78,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     loadingText,
     isClearable,
     noItemsText,
+    inputValue,
     labelAlign,
     startAddon,
     isRequired,
@@ -97,7 +101,11 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   // search
   const { contains } = useFilter({ sensitivity: 'base' });
 
-  const [filterText, setFilterText] = useState('');
+  const [filterText, setFilterText] = useControlledState(
+    inputValue,
+    defaultInputValue ?? '',
+    onInputChange
+  );
 
   const { validationBehavior: formValidationBehavior } =
     useSlottedContext(FormContext) || {};
@@ -150,8 +158,8 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   });
 
   const autocompleteState = useAutocompleteState({
-    inputValue: filterText,
-    onInputChange: setFilterText,
+    inputValue: isSearchable ? filterText : '',
+    onInputChange: isSearchable ? setFilterText : () => {},
   });
 
   const {

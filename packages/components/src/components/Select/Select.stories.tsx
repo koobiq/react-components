@@ -34,6 +34,7 @@ const meta = {
     'Select.ItemText': Select.ItemText,
   },
   argTypes: {},
+  tags: ['status:deprecated'],
 } satisfies Meta<typeof Select>;
 
 export default meta;

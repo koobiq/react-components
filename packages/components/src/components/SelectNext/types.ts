@@ -110,6 +110,12 @@ export type SelectProps<
     loadingText?: ReactNode;
     /** Enables search input for filtering items in the list. */
     isSearchable?: boolean;
+    /** The value of the Select search input (controlled). */
+    inputValue?: string;
+    /** The default value of the Select search input (uncontrolled). */
+    defaultInputValue?: string;
+    /** Handler that is called when the Select search input value changes. */
+    onInputChange?: (value: string) => void;
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;

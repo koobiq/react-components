@@ -31,6 +31,7 @@ const meta = {
     'Select.ItemText': Select.ItemText,
   },
   argTypes: {},
+  tags: ['status:new'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -362,6 +363,7 @@ export const Searchable: Story = {
       <Select
         items={options}
         defaultValue={1}
+        onInputChange={console.log}
         label="Attack type"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
