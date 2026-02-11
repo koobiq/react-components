@@ -116,6 +116,8 @@ export type SelectProps<
     defaultInputValue?: string;
     /** Handler that is called when the Select search input value changes. */
     onInputChange?: (value: string) => void;
+    /** The filter function used to determine if a option should be included in the Select list. */
+    defaultFilter?: (textValue: string, inputValue: string) => boolean;
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;

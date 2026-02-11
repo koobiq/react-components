@@ -642,6 +642,7 @@ export const ServerSearch: Story = {
         isInvalid={!!error}
         errorMessage={error}
         placeholder="Search…"
+        defaultFilter={() => true}
         style={{ inlineSize: 200 }}
         onInputChange={onInputChange}
         startAddon={<IconMagnifyingGlass16 />}

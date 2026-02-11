@@ -65,6 +65,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
 }) {
   const {
     selectedTagsOverflow = 'responsive',
+    defaultFilter: defaultFilterProp,
     renderValue: renderValueProp,
     'data-testid': testId,
     defaultInputValue,
@@ -171,7 +172,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     {
       inputRef,
       collectionRef,
-      filter: contains,
+      filter: defaultFilterProp || contains,
     },
     autocompleteState
   );
