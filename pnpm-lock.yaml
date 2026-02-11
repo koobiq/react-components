@@ -394,6 +394,9 @@ importers:
       '@react-aria/toggle':
         specifier: ^3.12.2
         version: 3.12.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/toolbar':
+        specifier: 3.0.0-beta.22
+        version: 3.0.0-beta.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/tooltip':
         specifier: ^3.8.5
         version: 3.8.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -491,7 +494,7 @@ importers:
         version: 0.19.0(react@19.2.3)
       next:
         specifier: ^15.5.0
-        version: 15.5.9(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 15.5.9(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -2399,6 +2402,12 @@ packages:
 
   '@react-aria/toolbar@3.0.0-beta.21':
     resolution: {integrity: sha512-yRCk/GD8g+BhdDgxd3I0a0c8Ni4Wyo6ERzfSoBkPkwQ4X2E2nkopmraM9D0fXw4UcIr4bnmvADzkHXtBN0XrBg==}
+    peerDependencies:
+      react: ^19.0.0
+      react-dom: ^19.0.0
+
+  '@react-aria/toolbar@3.0.0-beta.22':
+    resolution: {integrity: sha512-Q1gOj6N4vzvpGrIoNAxpUudEQP82UgQACENH/bcH8FnEMbSP7DHvVfDhj7GTU6ldMXO2cjqLhiidoUK53gkCiA==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -5419,16 +5428,18 @@ packages:
 
   glob@10.5.0:
     resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@11.1.0:
     resolution: {integrity: sha512-vuNwKSaKiqm7g0THUBu2x7ckSs3XJLXE+2ssL7/MfTGPLLcrJQ/4Uq1CjPTtO5cCIiRxqvN6Twy1qOwhL0Xjcw==}
     engines: {node: 20 || >=22}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   global-directory@4.0.1:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}
@@ -10334,7 +10345,7 @@ snapshots:
   '@react-aria/form@3.1.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/form': 3.2.2(react@19.2.3)
       '@react-types/shared': 3.33.0(react@19.2.3)
       '@swc/helpers': 0.5.17
@@ -10363,12 +10374,12 @@ snapshots:
 
   '@react-aria/grid@3.14.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/focus': 3.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/focus': 3.21.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/live-announcer': 3.4.4
       '@react-aria/selection': 3.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/collections': 3.12.8(react@19.2.3)
       '@react-stately/grid': 3.11.6(react@19.2.3)
       '@react-stately/selection': 3.20.6(react@19.2.3)
@@ -10415,9 +10426,9 @@ snapshots:
 
   '@react-aria/gridlist@3.14.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/focus': 3.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/focus': 3.21.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/grid': 3.14.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.27.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/selection': 3.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10669,9 +10680,9 @@ snapshots:
 
   '@react-aria/progress@3.4.27(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/label': 3.7.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-types/progress': 3.5.16(react@19.2.3)
       '@react-types/shared': 3.33.0(react@19.2.3)
       '@swc/helpers': 0.5.17
@@ -10696,12 +10707,12 @@ snapshots:
 
   '@react-aria/radio@3.12.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/focus': 3.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/focus': 3.21.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/form': 3.1.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/label': 3.7.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/radio': 3.11.2(react@19.2.3)
       '@react-types/radio': 3.9.2(react@19.2.3)
       '@react-types/shared': 3.33.0(react@19.2.3)
@@ -10737,9 +10748,9 @@ snapshots:
 
   '@react-aria/searchfield@3.8.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/textfield': 3.18.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/searchfield': 3.5.16(react@19.2.3)
       '@react-types/button': 3.14.1(react@19.2.3)
       '@react-types/searchfield': 3.6.6(react@19.2.3)
@@ -10770,13 +10781,13 @@ snapshots:
   '@react-aria/select@3.17.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@react-aria/form': 3.1.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/label': 3.7.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/listbox': 3.15.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/menu': 3.19.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/selection': 3.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/visually-hidden': 3.8.28(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/select': 3.8.0(react@19.2.3)
       '@react-types/button': 3.14.1(react@19.2.3)
@@ -10812,7 +10823,7 @@ snapshots:
 
   '@react-aria/separator@3.4.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-types/shared': 3.33.0(react@19.2.3)
       '@swc/helpers': 0.5.17
       react: 19.2.3
@@ -10913,11 +10924,11 @@ snapshots:
   '@react-aria/tag@3.7.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@react-aria/gridlist': 3.14.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/label': 3.7.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/selection': 3.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/list': 3.13.3(react@19.2.3)
       '@react-types/button': 3.14.1(react@19.2.3)
       '@react-types/shared': 3.33.0(react@19.2.3)
@@ -11011,6 +11022,16 @@ snapshots:
       '@react-aria/i18n': 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/utils': 3.31.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-types/shared': 3.32.1(react@19.2.3)
+      '@swc/helpers': 0.5.17
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+
+  '@react-aria/toolbar@3.0.0-beta.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@react-aria/focus': 3.21.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/i18n': 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.33.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-types/shared': 3.33.0(react@19.2.3)
       '@swc/helpers': 0.5.17
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
@@ -16490,7 +16511,7 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  next@15.5.9(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  next@15.5.9(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@next/env': 15.5.9
       '@swc/helpers': 0.5.15
@@ -16498,7 +16519,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
-      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.2.3)
+      styled-jsx: 5.1.6(@babel/core@7.26.10)(react@19.2.3)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.5.7
       '@next/swc-darwin-x64': 15.5.7
@@ -17853,12 +17874,12 @@ snapshots:
 
   stubs@3.0.0: {}
 
-  styled-jsx@5.1.6(@babel/core@7.28.5)(react@19.2.3):
+  styled-jsx@5.1.6(@babel/core@7.26.10)(react@19.2.3):
     dependencies:
       client-only: 0.0.1
       react: 19.2.3
     optionalDependencies:
-      '@babel/core': 7.28.5
+      '@babel/core': 7.26.10
 
   stylelint-config-css-modules@4.5.1(stylelint@16.25.0(typescript@5.7.3)):
     dependencies:
