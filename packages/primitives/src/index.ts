@@ -73,6 +73,8 @@ export * from '@react-stately/toast';
 
 export * from '@react-aria/breadcrumbs';
 
+export * from '@react-aria/toolbar';
+
 export * from '@react-aria/disclosure';
 export * from '@react-stately/disclosure';
 
