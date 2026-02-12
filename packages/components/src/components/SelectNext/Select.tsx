@@ -1,26 +1,18 @@
 'use client';
 
 import type { Ref, RefObject } from 'react';
-import { forwardRef, useCallback, useRef } from 'react';
+import { forwardRef, useCallback } from 'react';
 
-import {
-  useDOMRef,
-  useFilter,
-  mergeProps,
-  useElementSize,
-  useControlledState,
-} from '@koobiq/react-core';
+import { useDOMRef, mergeProps, useElementSize } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   useSelect,
   Collection,
   FormContext,
   useSelectState,
-  useAutocomplete,
   useSlottedContext,
   CollectionBuilder,
   FieldErrorContext,
-  useAutocompleteState,
   removeDataAttributes,
 } from '@koobiq/react-primitives';
 import type {
@@ -50,6 +42,7 @@ import {
   SelectList,
   SelectOption,
   SelectSection,
+  type SelectListProps,
 } from './components';
 import type { SelectRef, SelectProps, SelectComponent } from './index';
 import s from './Select.module.css';
@@ -65,13 +58,13 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
 }) {
   const {
     selectedTagsOverflow = 'responsive',
-    defaultFilter: defaultFilterProp,
     renderValue: renderValueProp,
     'data-testid': testId,
     defaultInputValue,
     labelPlacement,
     onInputChange,
     selectionMode,
+    defaultFilter,
     isLabelHidden,
     isSearchable,
     errorMessage,
@@ -95,18 +88,6 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     style,
     label,
   } = props;
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const collectionRef = useRef<HTMLElement>(null);
-
-  // search
-  const { contains } = useFilter({ sensitivity: 'base' });
-
-  const [filterText, setFilterText] = useControlledState(
-    inputValue,
-    defaultInputValue ?? '',
-    onInputChange
-  );
 
   const { validationBehavior: formValidationBehavior } =
     useSlottedContext(FormContext) || {};
@@ -158,44 +139,28 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     style,
   });
 
-  const autocompleteState = useAutocompleteState({
-    inputValue: isSearchable ? filterText : '',
-    onInputChange: isSearchable ? setFilterText : () => {},
-  });
-
-  const {
-    inputProps,
-    collectionProps,
-    filter: filterFn,
-    collectionRef: mergedCollectionRef,
-  } = useAutocomplete(
+  const listProps = mergeProps<
+    [
+      SelectListProps<T, M>,
+      Omit<SelectListProps<T, M>, 'state'> | undefined,
+      typeof menuProps,
+    ]
+  >(
     {
-      inputRef,
-      collectionRef,
-      filter: defaultFilterProp || contains,
+      isLoading,
+      inputValue,
+      onLoadMore,
+      noItemsText,
+      loadingText,
+      isSearchable,
+      defaultFilter,
+      state: inState,
+      onInputChange,
+      className: s.list,
+      defaultInputValue,
     },
-    autocompleteState
-  );
-
-  const baseListProps = {
-    filterFn,
-    inputRef,
-    isLoading,
-    onLoadMore,
-    inputProps,
-    noItemsText,
-    loadingText,
-    state: inState,
-    isSearchable,
-    className: s.list,
-    listRef: isSearchable ? mergedCollectionRef : collectionRef,
-  };
-
-  const listProps = mergeProps(
-    baseListProps,
-    isSearchable ? collectionProps : null,
-    menuProps,
-    slotProps?.list
+    slotProps?.list,
+    menuProps
   );
 
   const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(

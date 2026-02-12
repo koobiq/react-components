@@ -1,30 +1,36 @@
 'use client';
 
-import type { RefObject } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { useRef } from 'react';
 
-import type { Node } from '@koobiq/react-core';
 import {
   clsx,
+  useFilter,
   mergeProps,
-  useObjectRef,
+  useMultiRef,
+  useControlledState,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import {
   useListBox,
+  useAutocomplete,
+  useAutocompleteState,
   // eslint-disable-next-line camelcase
   UNSTABLE_useFilteredListState,
 } from '@koobiq/react-primitives';
-import type { SelectState, AutocompleteAria } from '@koobiq/react-primitives';
+import type {
+  SelectState,
+  AutocompleteAria,
+  AriaListBoxProps,
+} from '@koobiq/react-primitives';
 import type { SelectionMode } from '@react-types/select';
 
 import { utilClasses } from '../../../../styles/utility';
 import { Divider } from '../../../Divider';
-import type { ListProps } from '../../../List';
 import { ListEmptyState, ListLoadingState } from '../../../List/components';
-import { SearchInput } from '../../../SearchInput';
+import { SearchInput, type SearchInputProps } from '../../../SearchInput';
 import intlMessages from '../../intl';
 import { SelectContext } from '../../SelectContext';
-import type { SelectProps } from '../../types';
 import { CollectionRoot } from '../../utils';
 
 import s from './SelectList.module.css';
@@ -36,15 +42,29 @@ export type SelectListProps<
   M extends SelectionMode = 'single',
 > = {
   state: SelectState<T, M>;
-  listRef?: RefObject<HTMLElement | null>;
-  inputRef?: RefObject<HTMLInputElement | null>;
-  filterFn?: (nodeValue: string, node: Node<T>) => boolean;
-  inputProps?: AutocompleteAria<T>['inputProps'];
-} & Omit<ListProps<T>, 'ref' | 'children'> &
-  Pick<
-    SelectProps<T>,
-    'noItemsText' | 'isLoading' | 'onLoadMore' | 'isSearchable'
-  >;
+  /** The filter function used to determine if a option should be included in the Select list. */
+  defaultFilter?: (textValue: string, inputValue: string) => boolean;
+  /** The value of the Select search input (controlled). */
+  inputValue?: string;
+  /** The default value of the Select search input (uncontrolled). */
+  defaultInputValue?: string;
+  /** Handler that is called when the Select search input value changes. */
+  onInputChange?: (value: string) => void;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
+  /** The load more spinner to render when loading additional items. */
+  isLoading?: boolean;
+  /** Handler that is called when more items should be loaded, e.g. while scrolling near the bottom. */
+  onLoadMore?: () => void;
+  /** Content to display when no items are available. */
+  noItemsText?: ReactNode;
+  /** Content to display when items are loading. */
+  loadingText?: ReactNode;
+  /** Enables search input for filtering items in the list. */
+  isSearchable?: boolean;
+} & Omit<AriaListBoxProps<T>, 'children'>;
 
 export function SelectList<
   T extends object,
@@ -52,23 +72,57 @@ export function SelectList<
 >(props: SelectListProps<T, M>) {
   const {
     style,
-    listRef,
-    inputRef,
-    filterFn,
-    slotProps,
     isLoading,
     className,
     onLoadMore,
-    inputProps,
+    inputValue,
     isSearchable,
+    onInputChange,
     state: inState,
+    defaultInputValue,
+    defaultFilter,
     noItemsText: noItemsTextProp,
     loadingText: loadingTextProp,
   } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const domRef = useObjectRef(listRef);
+  const noItemsText =
+    noItemsTextProp === undefined ? t.format('empty items') : noItemsTextProp;
+
+  const domRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const collectionRef = useRef<HTMLElement>(null);
+
+  // search
+  const { contains } = useFilter({ sensitivity: 'base' });
+
+  const [filterText, setFilterText] = useControlledState(
+    inputValue,
+    defaultInputValue ?? '',
+    onInputChange
+  );
+
+  const autocompleteState = useAutocompleteState({
+    inputValue: isSearchable ? filterText : '',
+    onInputChange: isSearchable ? setFilterText : () => {},
+  });
+
+  const {
+    inputProps,
+    collectionProps,
+    filter: filterFn,
+    collectionRef: mergedCollectionRef,
+  } = useAutocomplete(
+    {
+      inputRef,
+      collectionRef,
+      filter: defaultFilter || contains,
+    },
+    autocompleteState
+  );
+
+  const listRef = useMultiRef([mergedCollectionRef, domRef]);
 
   const state = UNSTABLE_useFilteredListState(
     inState,
@@ -77,21 +131,34 @@ export function SelectList<
 
   const isEmpty = state.collection.size === 0;
 
-  const { listBoxProps } = useListBox(props, state, domRef);
+  const { listBoxProps } = useListBox(
+    mergeProps(props, isSearchable ? collectionProps : null),
+    state,
+    domRef
+  );
 
   const listProps = mergeProps(
     {
       style,
-      ref: domRef as RefObject<HTMLUListElement | null>,
-      className: clsx(list, className),
+      ref: listRef,
       'data-padded': true,
+      className: clsx(list, className),
     },
-    slotProps?.list,
     listBoxProps
   );
 
-  const noItemsText =
-    noItemsTextProp === undefined ? t.format('empty items') : noItemsTextProp;
+  const searchInputProps = mergeProps<
+    [SearchInputProps, AutocompleteAria<T>['inputProps']]
+  >(
+    {
+      autoFocus: true,
+      fullWidth: true,
+      isLabelHidden: true,
+      'aria-label': 'search',
+      variant: 'transparent',
+    },
+    inputProps
+  );
 
   const loadingText = loadingTextProp ?? t.format('loading');
 
@@ -101,19 +168,10 @@ export function SelectList<
     <div className={s.base}>
       {isSearchable && (
         <>
-          <SearchInput
-            ref={inputRef}
-            aria-label="search"
-            variant="transparent"
-            isLabelHidden
-            autoFocus
-            fullWidth
-            {...inputProps}
-          />
+          <SearchInput ref={inputRef} {...searchInputProps} />
           <Divider disablePaddings />
         </>
       )}
-
       <ul {...listProps}>
         <SelectContext.Provider value={state}>
           <CollectionRoot collection={collection} />

@@ -122,12 +122,12 @@ export type SelectProps<
     slotProps?: {
       popover?: PopoverProps;
       label?: FormFieldLabelProps;
-      list?: Omit<SelectListProps<object>, 'state'>;
+      clearButton?: IconButtonProps;
       control?: FormFieldSelectProps;
       caption?: FormFieldCaptionProps;
       group?: FormFieldControlGroupProps;
       errorMessage?: FormFieldErrorProps;
-      clearButton?: IconButtonProps;
+      list?: Omit<SelectListProps<T, M>, 'state'>;
     };
   },
   Omit<
