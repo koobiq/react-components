@@ -1,11 +1,12 @@
 import { createRef } from 'react';
 
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { Form } from '../../Form';
-import { Select, type SelectProps } from '../index';
+import type { SelectProps } from '../index';
+import { Select } from '../index';
 
 describe('Select', () => {
   const baseProps: SelectProps<object> = {
@@ -32,8 +33,12 @@ describe('Select', () => {
   const getRoot = () => screen.getByTestId('root');
   const getControl = () => screen.getByTestId('control');
   const getPopover = () => screen.getByTestId('popover');
-  const getClearButton = () => screen?.queryByLabelText('clear-button');
+  const getClearButton = () => screen.queryByLabelText('clear-button');
   const getGroup = () => screen.getByTestId('group');
+  const getOptions = () => screen.getAllByRole('option');
+
+  const getSearchInput = () =>
+    screen.getByRole('searchbox', { name: 'search' }) as HTMLInputElement;
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
@@ -43,19 +48,16 @@ describe('Select', () => {
 
   it('should merge a custom class name with the default ones', () => {
     render(<Select {...baseProps} className="foo" />);
-
     expect(getRoot()).toHaveClass('foo');
   });
 
   it('should display a label', () => {
     render(<Select {...baseProps} />);
-
     expect(screen.getAllByText('label')[0]).toBeInTheDocument();
   });
 
   it('should display a placeholder', () => {
     render(<Select {...baseProps} placeholder="baz" />);
-
     expect(screen.getAllByText('baz')[1]).toBeInTheDocument();
   });
 
@@ -73,26 +75,22 @@ describe('Select', () => {
 
   it('should be required when isRequired is true', () => {
     render(<Select {...baseProps} isRequired />);
-
     expect(screen.getByText('*')).toBeInTheDocument();
   });
 
   it('should display a caption', () => {
     render(<Select {...baseProps} caption="helper" />);
-
     expect(getRoot()).toHaveTextContent('helper');
   });
 
   it('should display an errorMessage', () => {
     render(<Select {...baseProps} errorMessage="fail" isInvalid />);
-
     expect(getRoot()).toHaveTextContent('fail');
   });
 
   describe('noItemsText', () => {
     it('should display noItemsText for static items', () => {
       render(<Select {...baseProps} defaultOpen noItemsText="empty"></Select>);
-
       expect(getPopover()).toHaveTextContent('empty');
     });
 
@@ -134,7 +132,6 @@ describe('Select', () => {
 
     it('should display the custom loading text when isLoading={true}', async () => {
       render(<Select {...baseProps} loadingText="foo" defaultOpen isLoading />);
-
       expect(screen.getByText('foo')).toBeInTheDocument();
     });
   });
@@ -152,9 +149,9 @@ describe('Select', () => {
   });
 
   describe('value', () => {
-    it(`should set the defaultSelectedKey correctly`, () => {
+    it('should set the defaultSelectedKey correctly', () => {
       render(
-        <Select {...baseProps} defaultValue={'1'}>
+        <Select {...baseProps} defaultValue="1">
           <Select.Item id="1">1</Select.Item>
           <Select.Item id="2">2</Select.Item>
           <Select.Item id="3">3</Select.Item>
@@ -164,7 +161,7 @@ describe('Select', () => {
       expect(getControl()).toHaveTextContent('1');
     });
 
-    it(`should call the onChange when selecting an item`, async () => {
+    it('should call the onChange when selecting an item', async () => {
       const onChange = vi.fn((val) => val);
 
       render(
@@ -177,15 +174,10 @@ describe('Select', () => {
         </Select>
       );
 
-      const option = screen.getByTestId('option-1');
-
-      await userEvent.click(option);
+      await userEvent.click(screen.getByTestId('option-1'));
 
       expect(onChange).toHaveBeenCalledTimes(1);
-
-      const result = onChange.mock.results[0]?.value;
-      expect(result).toBe('1');
-
+      expect(onChange.mock.results[0]?.value).toBe('1');
       expect(getControl()).toHaveTextContent('1');
     });
   });
@@ -194,19 +186,17 @@ describe('Select', () => {
     const getStartAddon = () => screen.getByTestId('field-addon-start');
     const getEndAddon = () => screen.getByTestId('field-addon-end');
 
-    it(`should render a startAddon`, () => {
+    it('should render a startAddon', () => {
       render(<Select {...baseProps} startAddon="addon" />);
-
       expect(getRoot()).toHaveTextContent('addon');
     });
 
-    it(`should render an endAddon`, () => {
+    it('should render an endAddon', () => {
       render(<Select {...baseProps} endAddon="addon" />);
-
       expect(getRoot()).toHaveTextContent('addon');
     });
 
-    it(`should render addons in an error state`, () => {
+    it('should render addons in an error state', () => {
       render(
         <Select
           {...baseProps}
@@ -220,7 +210,7 @@ describe('Select', () => {
       expect(getEndAddon()).toHaveAttribute('data-invalid', 'true');
     });
 
-    it(`should render addons in a disabled state`, () => {
+    it('should render addons in a disabled state', () => {
       render(
         <Select
           {...baseProps}
@@ -238,25 +228,21 @@ describe('Select', () => {
   describe('check data-attributes', () => {
     it('check the fullWidth prop', () => {
       render(<Select {...baseProps} fullWidth />);
-
       expect(getRoot()).toHaveAttribute('data-fullwidth', 'true');
     });
 
     it('check the isDisabled prop', () => {
       render(<Select {...baseProps} isDisabled />);
-
       expect(getRoot()).toHaveAttribute('data-disabled', 'true');
     });
 
     it('check the isRequired prop', () => {
       render(<Select {...baseProps} isRequired />);
-
       expect(getRoot()).toHaveAttribute('data-required', 'true');
     });
 
     it('check the isInvalid prop', () => {
       render(<Select {...baseProps} isInvalid />);
-
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
     });
   });
@@ -296,14 +282,10 @@ describe('Select', () => {
       );
 
       const clearButton = getClearButton();
-
       if (clearButton) await userEvent.click(clearButton);
 
       expect(onChange).toHaveBeenCalledTimes(1);
-
-      const selection = onChange.mock.calls?.[0]?.[0];
-
-      expect(selection).toEqual(null);
+      expect(onChange.mock.calls?.[0]?.[0]).toEqual(null);
     });
 
     it('should call onClear when clear button is clicked', async () => {
@@ -318,7 +300,6 @@ describe('Select', () => {
       );
 
       const clearButton = getClearButton();
-
       if (clearButton) await userEvent.click(clearButton);
 
       expect(onClear).toHaveBeenCalledTimes(1);
@@ -341,9 +322,156 @@ describe('Select', () => {
         </Select>
       );
 
-      const clearButton = getClearButton();
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+  });
 
-      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
+  describe('keyboard navigation', () => {
+    it('should move focus through options with ArrowDown/ArrowUp', async () => {
+      render(
+        <Select {...baseProps} defaultOpen>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      const [opt1, opt2, opt3] = getOptions();
+
+      await userEvent.keyboard('{ArrowDown}');
+      expect(opt1).toBe(document.activeElement);
+
+      await userEvent.keyboard('{ArrowDown}');
+      expect(opt2).toBe(document.activeElement);
+
+      await userEvent.keyboard('{ArrowDown}');
+      expect(opt3).toBe(document.activeElement);
+
+      await userEvent.keyboard('{ArrowUp}');
+      expect(opt2).toBe(document.activeElement);
+    });
+
+    it('should support Home/End keys', async () => {
+      render(
+        <Select {...baseProps} defaultOpen>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      const [opt1, , opt3] = getOptions();
+
+      await userEvent.keyboard('{End}');
+      expect(opt3).toBe(document.activeElement);
+
+      await userEvent.keyboard('{Home}');
+      expect(opt1).toBe(document.activeElement);
+    });
+
+    it('should select focused option with Enter', async () => {
+      const onChange = vi.fn((val) => val);
+
+      render(
+        <Select {...baseProps} defaultOpen onChange={onChange}>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange.mock.results[0]?.value).toBe('2');
+      expect(getControl()).toHaveTextContent('2');
+    });
+
+    it('should close on Escape without changing selection', async () => {
+      const onChange = vi.fn((val) => val);
+
+      render(
+        <Select {...baseProps} value="1" onChange={onChange} defaultOpen>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.keyboard('{ArrowDown}{ArrowDown}{Escape}');
+
+      expect(onChange).toHaveBeenCalledTimes(0);
+      expect(getControl()).toHaveTextContent('1');
+    });
+
+    it('should set aria-selected after selection', async () => {
+      render(
+        <Select {...baseProps} defaultOpen>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}{Enter}');
+
+      expect(screen.getByRole('option', { name: '3' })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+    });
+
+    it('should update aria-activedescendant on search input while navigating', async () => {
+      render(
+        <Select {...baseProps} defaultOpen isSearchable>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      const input = getSearchInput();
+      input.focus();
+
+      const [opt1, opt2] = getOptions();
+
+      await userEvent.keyboard('{ArrowDown}');
+      expect(document.activeElement).toBe(input);
+
+      expect(opt1).toHaveAttribute(
+        'id',
+        input.getAttribute('aria-activedescendant')
+      );
+
+      await userEvent.keyboard('{ArrowDown}');
+      expect(document.activeElement).toBe(input);
+
+      expect(opt2).toHaveAttribute(
+        'id',
+        input.getAttribute('aria-activedescendant')
+      );
+    });
+
+    it('should select active option with Enter while focus stays on search input', async () => {
+      const onChange = vi.fn((val) => val);
+
+      render(
+        <Select {...baseProps} defaultOpen isSearchable onChange={onChange}>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      const input = getSearchInput();
+      input.focus();
+
+      await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+
+      expect(document.activeElement).toBe(input);
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange.mock.results[0]?.value).toBe('2');
+      expect(getControl()).toHaveTextContent('2');
     });
   });
 
