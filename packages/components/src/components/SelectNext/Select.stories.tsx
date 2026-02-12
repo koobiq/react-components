@@ -407,6 +407,7 @@ export const NoItems: Story = {
           placeholder="Select an option"
           caption="No options available"
           style={{ inlineSize: 200 }}
+          allowsEmptyCollection
         >
           {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
@@ -417,6 +418,7 @@ export const NoItems: Story = {
           noItemsText="No results found"
           caption="No results found"
           style={{ inlineSize: 200 }}
+          allowsEmptyCollection
         >
           {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
@@ -569,6 +571,7 @@ export const AsynchronousLoading: Story = {
         onLoadMore={fetchProducts}
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
+        allowsEmptyCollection
       >
         {(item) => (
           <Select.Item key={item.id} textValue={item.title}>

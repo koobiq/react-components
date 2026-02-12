@@ -118,7 +118,8 @@ You can add an extra content using the `startAddon` and `endAddon` props.
 
 ## No items
 
-If no items are available, the component shows a message in the dropdown list.
+With `allowsEmptyCollection` enabled, the Select can be opened even when the collection is empty.
+In this case, the component shows an empty-state message in the dropdown list.
 You can customize this message — either as plain text or a component — using the `noItemsText` prop.
 
 <Story of={Stories.NoItems} />

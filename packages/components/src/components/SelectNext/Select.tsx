@@ -322,7 +322,6 @@ function StandaloneSelect<
     removeDataAttributes({
       ...props,
       isDisabled,
-      allowsEmptyCollection: true,
     } as unknown as SelectStateOptions<T, M>)
   );
 
