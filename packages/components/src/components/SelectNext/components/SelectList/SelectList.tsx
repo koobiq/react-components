@@ -167,7 +167,7 @@ export function SelectList<
       autoFocus: true,
       fullWidth: true,
       isLabelHidden: true,
-      'aria-label': 'search',
+      'aria-label': t.format('search'),
       variant: 'transparent',
     },
     slotProps?.['search-input'],

@@ -38,7 +38,7 @@ describe('Select', () => {
   const getOptions = () => screen.getAllByRole('option');
 
   const getSearchInput = () =>
-    screen.getByRole('searchbox', { name: 'search' }) as HTMLInputElement;
+    screen.getByRole('searchbox', { name: 'Search' }) as HTMLInputElement;
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
