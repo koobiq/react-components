@@ -475,6 +475,211 @@ describe('Select', () => {
     });
   });
 
+  describe('search', () => {
+    it('should filter options when typing in search input (uncontrolled)', async () => {
+      render(
+        <Select {...baseProps} defaultOpen isSearchable>
+          <Select.Item id="apple">Apple</Select.Item>
+          <Select.Item id="banana">Banana</Select.Item>
+          <Select.Item id="apricot">Apricot</Select.Item>
+        </Select>
+      );
+
+      const input = getSearchInput();
+      await userEvent.type(input, 'ap');
+
+      const options = getOptions();
+      expect(options).toHaveLength(2);
+      expect(options[0]).toHaveTextContent('Apple');
+      expect(options[1]).toHaveTextContent('Apricot');
+    });
+
+    it('should call onInputChange when typing in search input', async () => {
+      const onInputChange = vi.fn((v) => v);
+
+      render(
+        <Select
+          {...baseProps}
+          defaultOpen
+          isSearchable
+          onInputChange={onInputChange}
+        >
+          <Select.Item id="1">One</Select.Item>
+          <Select.Item id="2">Two</Select.Item>
+          <Select.Item id="3">Three</Select.Item>
+        </Select>
+      );
+
+      const input = getSearchInput();
+      await userEvent.type(input, 't');
+
+      expect(onInputChange).toHaveBeenCalled();
+      expect(onInputChange.mock.calls.at(-1)?.[0]).toBe('t');
+    });
+
+    it('should show noItemsText when search matches nothing', async () => {
+      render(
+        <Select {...baseProps} defaultOpen isSearchable noItemsText="empty">
+          <Select.Item id="1">One</Select.Item>
+          <Select.Item id="2">Two</Select.Item>
+          <Select.Item id="3">Three</Select.Item>
+        </Select>
+      );
+
+      const input = getSearchInput();
+      await userEvent.type(input, 'zzzz');
+
+      expect(getPopover()).toHaveTextContent('empty');
+    });
+
+    it('should reset filtering when search input is cleared', async () => {
+      render(
+        <Select {...baseProps} defaultOpen isSearchable>
+          <Select.Item id="apple">Apple</Select.Item>
+          <Select.Item id="banana">Banana</Select.Item>
+          <Select.Item id="apricot">Apricot</Select.Item>
+        </Select>
+      );
+
+      const input = getSearchInput();
+
+      await userEvent.type(input, 'ap');
+      expect(getOptions()).toHaveLength(2);
+
+      await userEvent.clear(input);
+      expect(getOptions()).toHaveLength(3);
+    });
+
+    it('should use defaultFilter when provided', async () => {
+      render(
+        <Select
+          {...baseProps}
+          defaultOpen
+          isSearchable
+          defaultFilter={(textValue, inputValue) =>
+            textValue.startsWith(inputValue)
+          }
+        >
+          <Select.Item id="a1">alpha</Select.Item>
+          <Select.Item id="b1">beta</Select.Item>
+          <Select.Item id="a2">alphabet</Select.Item>
+        </Select>
+      );
+
+      const input = getSearchInput();
+      await userEvent.type(input, 'alp');
+
+      const options = getOptions();
+      expect(options).toHaveLength(2);
+      expect(options[0]).toHaveTextContent('alpha');
+      expect(options[1]).toHaveTextContent('alphabet');
+    });
+
+    it('should work with controlled inputValue', async () => {
+      const onInputChange = vi.fn();
+
+      const { rerender } = render(
+        <Select
+          {...baseProps}
+          defaultOpen
+          isSearchable
+          inputValue=""
+          onInputChange={onInputChange}
+        >
+          <Select.Item id="apple">Apple</Select.Item>
+          <Select.Item id="banana">Banana</Select.Item>
+          <Select.Item id="apricot">Apricot</Select.Item>
+        </Select>
+      );
+
+      rerender(
+        <Select
+          {...baseProps}
+          defaultOpen
+          isSearchable
+          inputValue="ap"
+          onInputChange={onInputChange}
+        >
+          <Select.Item id="apple">Apple</Select.Item>
+          <Select.Item id="banana">Banana</Select.Item>
+          <Select.Item id="apricot">Apricot</Select.Item>
+        </Select>
+      );
+
+      const options = getOptions();
+      expect(options).toHaveLength(2);
+      expect(options[0]).toHaveTextContent('Apple');
+      expect(options[1]).toHaveTextContent('Apricot');
+    });
+
+    describe('defaultFilter', () => {
+      it('should use defaultFilter (custom filterFn)', async () => {
+        render(
+          <Select
+            {...baseProps}
+            defaultOpen
+            isSearchable
+            defaultFilter={(textValue, inputValue) =>
+              textValue.toLowerCase().includes(inputValue.trim().toLowerCase())
+            }
+          >
+            <Select.Item id="apple">Green Apple</Select.Item>
+            <Select.Item id="banana">Banana</Select.Item>
+            <Select.Item id="apricot">Apricot</Select.Item>
+          </Select>
+        );
+
+        const input = getSearchInput();
+        await userEvent.type(input, '  aPp  ');
+
+        const options = getOptions();
+        expect(options).toHaveLength(1);
+        expect(options[0]).toHaveTextContent('Green Apple');
+      });
+
+      it('should return all options when defaultFilter allows all', async () => {
+        render(
+          <Select
+            {...baseProps}
+            defaultOpen
+            isSearchable
+            defaultFilter={() => true}
+          >
+            <Select.Item id="1">One</Select.Item>
+            <Select.Item id="2">Two</Select.Item>
+            <Select.Item id="3">Three</Select.Item>
+          </Select>
+        );
+
+        const input = getSearchInput();
+        await userEvent.type(input, 'zzz');
+
+        expect(getOptions()).toHaveLength(3);
+      });
+
+      it('should return no options when defaultFilter blocks all', async () => {
+        render(
+          <Select
+            {...baseProps}
+            defaultOpen
+            isSearchable
+            noItemsText="empty"
+            defaultFilter={() => false}
+          >
+            <Select.Item id="1">One</Select.Item>
+            <Select.Item id="2">Two</Select.Item>
+            <Select.Item id="3">Three</Select.Item>
+          </Select>
+        );
+
+        const input = getSearchInput();
+        await userEvent.type(input, 'o');
+
+        expect(getPopover()).toHaveTextContent('empty');
+      });
+    });
+  });
+
   describe('form', () => {
     it('should handle aria validation', () => {
       render(
