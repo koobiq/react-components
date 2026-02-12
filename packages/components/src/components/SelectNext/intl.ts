@@ -1,6 +1,7 @@
 export default {
   'ru-RU': {
     'empty items': 'Нет вариантов выбора',
+    'nothing found': 'Ничего не найдено',
     loading: 'Загрузка…',
     'selected items': 'Выбранные элементы',
     search: 'Поиск',
@@ -8,6 +9,7 @@ export default {
   },
   'en-US': {
     'empty items': 'No options available',
+    'nothing found': 'Nothing found',
     'selected items': 'Selected items',
     loading: 'Loading…',
     search: 'Search',

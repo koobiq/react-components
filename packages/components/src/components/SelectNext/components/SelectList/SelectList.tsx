@@ -94,9 +94,6 @@ export function SelectList<
 
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const noItemsText =
-    noItemsTextProp === undefined ? t.format('empty items') : noItemsTextProp;
-
   const domRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const collectionRef = useRef<HTMLElement>(null);
@@ -109,6 +106,14 @@ export function SelectList<
     defaultInputValue ?? '',
     onInputChange
   );
+
+  const noItemsText = (() => {
+    if (noItemsTextProp !== undefined) return noItemsTextProp;
+
+    const hasQuery = isSearchable && filterText.trim().length > 0;
+
+    return hasQuery ? t.format('nothing found') : t.format('empty items');
+  })();
 
   const autocompleteState = useAutocompleteState({
     inputValue: isSearchable ? filterText : '',
