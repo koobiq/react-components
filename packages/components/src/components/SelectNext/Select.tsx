@@ -179,12 +179,17 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     slotProps?.clearButton
   );
 
+  const { slotProps: groupSlotProps, ...otherGroup } = slotProps?.group || {};
+
   const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
-      slotProps: {
-        endAddon: { className: s.addon },
-        startAddon: { className: s.addon },
-      },
+      slotProps: mergeProps(
+        {
+          endAddon: { className: s.addon },
+          startAddon: { className: s.addon },
+        },
+        groupSlotProps
+      ),
       startAddon,
       onMouseDown: (e) => {
         if (e.currentTarget !== e.target || isDisabled) return;
@@ -205,7 +210,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       isDisabled,
       ref: containerRef,
     },
-    slotProps?.group
+    otherGroup
   );
 
   const controlProps = mergeProps<(FormFieldSelectProps | undefined)[]>(

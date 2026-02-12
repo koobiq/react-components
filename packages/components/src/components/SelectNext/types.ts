@@ -25,6 +25,7 @@ import {
 } from '../FormField';
 import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
+import type { SearchInputProps } from '../SearchInput';
 
 import type { SelectListProps } from './components';
 
@@ -128,6 +129,7 @@ export type SelectProps<
       group?: FormFieldControlGroupProps;
       errorMessage?: FormFieldErrorProps;
       list?: Omit<SelectListProps<T, M>, 'state'>;
+      'search-input'?: SearchInputProps;
     };
   },
   Omit<

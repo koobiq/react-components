@@ -1,6 +1,6 @@
 'use client';
 
-import type { CSSProperties, ReactNode } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 import { useRef } from 'react';
 
 import {
@@ -26,7 +26,7 @@ import type {
 import type { SelectionMode } from '@react-types/select';
 
 import { utilClasses } from '../../../../styles/utility';
-import { Divider } from '../../../Divider';
+import { Divider, type DividerProps } from '../../../Divider';
 import { ListEmptyState, ListLoadingState } from '../../../List/components';
 import { SearchInput, type SearchInputProps } from '../../../SearchInput';
 import intlMessages from '../../intl';
@@ -64,6 +64,12 @@ export type SelectListProps<
   loadingText?: ReactNode;
   /** Enables search input for filtering items in the list. */
   isSearchable?: boolean;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    divider?: DividerProps;
+    root?: ComponentPropsWithRef<'div'>;
+    'search-input'?: SearchInputProps;
+  };
 } & Omit<AriaListBoxProps<T>, 'children'>;
 
 export function SelectList<
@@ -75,12 +81,13 @@ export function SelectList<
     isLoading,
     className,
     onLoadMore,
+    slotProps,
     inputValue,
     isSearchable,
     onInputChange,
+    defaultFilter,
     state: inState,
     defaultInputValue,
-    defaultFilter,
     noItemsText: noItemsTextProp,
     loadingText: loadingTextProp,
   } = props;
@@ -137,6 +144,8 @@ export function SelectList<
     domRef
   );
 
+  const rootProps = mergeProps({ className: s.base }, slotProps?.root);
+
   const listProps = mergeProps(
     {
       style,
@@ -148,7 +157,11 @@ export function SelectList<
   );
 
   const searchInputProps = mergeProps<
-    [SearchInputProps, AutocompleteAria<T>['inputProps']]
+    [
+      SearchInputProps,
+      SearchInputProps | undefined,
+      AutocompleteAria<T>['inputProps'],
+    ]
   >(
     {
       autoFocus: true,
@@ -157,6 +170,7 @@ export function SelectList<
       'aria-label': 'search',
       variant: 'transparent',
     },
+    slotProps?.['search-input'],
     inputProps
   );
 
@@ -165,11 +179,11 @@ export function SelectList<
   const { collection } = state;
 
   return (
-    <div className={s.base}>
+    <div {...rootProps}>
       {isSearchable && (
         <>
           <SearchInput ref={inputRef} {...searchInputProps} />
-          <Divider disablePaddings />
+          <Divider disablePaddings {...slotProps?.divider} />
         </>
       )}
       <ul {...listProps}>
