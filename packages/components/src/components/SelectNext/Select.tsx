@@ -44,7 +44,11 @@ import {
   SelectSection,
   type SelectListProps,
 } from './components';
-import type { SelectRef, SelectProps, SelectComponent } from './index';
+import {
+  type SelectNextRef,
+  type SelectNextProps,
+  type SelectNextComponent,
+} from './index';
 import s from './Select.module.css';
 
 function SelectInner<T extends object, M extends SelectionMode = 'single'>({
@@ -53,7 +57,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   listBoxRef,
 }: {
   state: SelectState<T, M>;
-  props: Omit<SelectProps<T, M>, 'items'>;
+  props: Omit<SelectNextProps<T, M>, 'items'>;
   listBoxRef: RefObject<HTMLDivElement>;
 }) {
   const {
@@ -304,7 +308,7 @@ function StandaloneSelect<
   listBoxRef,
   collection,
 }: {
-  props: SelectProps<T, M>;
+  props: SelectNextProps<T, M>;
   listBoxRef: RefObject<HTMLDivElement>;
   collection: BaseCollection<T>;
 }) {
@@ -332,8 +336,8 @@ function StandaloneSelect<
 }
 
 function SelectRender<T extends object, M extends SelectionMode = 'single'>(
-  props: Omit<SelectProps<T, M>, 'ref'>,
-  ref: Ref<SelectRef>
+  props: Omit<SelectNextProps<T, M>, 'ref'>,
+  ref: Ref<SelectNextRef>
 ) {
   const listBoxRef = useDOMRef<HTMLDivElement>(ref);
 
@@ -350,7 +354,7 @@ function SelectRender<T extends object, M extends SelectionMode = 'single'>(
   );
 }
 
-const SelectComponent = forwardRef(SelectRender) as SelectComponent;
+const SelectComponent = forwardRef(SelectRender) as SelectNextComponent;
 
 type CompoundedComponent = typeof SelectComponent & {
   Item: typeof SelectOption;
@@ -359,9 +363,9 @@ type CompoundedComponent = typeof SelectComponent & {
   ItemText: typeof ListItemText;
 };
 
-export const Select = SelectComponent as CompoundedComponent;
+export const SelectNext = SelectComponent as CompoundedComponent;
 
-Select.Item = SelectOption;
-Select.Section = SelectSection;
-Select.Divider = Divider;
-Select.ItemText = List.ItemText;
+SelectNext.Item = SelectOption;
+SelectNext.Section = SelectSection;
+SelectNext.Divider = Divider;
+SelectNext.ItemText = List.ItemText;

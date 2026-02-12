@@ -16,7 +16,7 @@ import * as Stories from './Select.stories';
 A select displays a collapsible list of options and allows a user to select one or more of them.
 
 ```tsx
-import { Select } from '@koobiq/react-components';
+import { SelectNext as Select } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -167,12 +167,3 @@ Select supports loading data asynchronously, and will display a progress circle 
 It also supports infinite scrolling to load more data on demand as the user scrolls, via the `onLoadMore` prop.
 
 <Story of={Stories.AsynchronousLoading} />
-
-## Server search
-
-This example shows select with server search.
-
-When the user types, the component asks the server for results and shows them in the list.
-The list is replaced every time you type something new — it does not load more items like an infinite scroll does.
-
-<Story of={Stories.ServerSearch} />

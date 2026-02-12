@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeAll, afterAll } from 'vitest';
 
-import { Select } from '../Select';
-import type { SelectProps } from '../types';
+import { SelectNext as Select } from '../Select';
+import type { SelectNextProps as SelectProps } from '../types';
 
 const renderComponent = (
   props: Omit<SelectProps<{ key: number }, 'multiple'>, 'children'>

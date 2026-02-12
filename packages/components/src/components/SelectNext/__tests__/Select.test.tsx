@@ -5,8 +5,8 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Form } from '../../Form';
-import type { SelectProps } from '../index';
-import { Select } from '../index';
+import type { SelectNextProps as SelectProps } from '../index';
+import { SelectNext as Select } from '../index';
 
 describe('Select', () => {
   const baseProps: SelectProps<object> = {

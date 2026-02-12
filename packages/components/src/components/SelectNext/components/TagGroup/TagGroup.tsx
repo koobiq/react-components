@@ -4,7 +4,7 @@ import { logger } from '@koobiq/logger';
 import type { SelectState } from '@koobiq/react-primitives';
 import type { SelectionMode } from '@react-types/select';
 
-import type { SelectPropSelectedTagsOverflow } from '../../types';
+import type { SelectNextPropSelectedTagsOverflow } from '../../types';
 
 import { TagGroupMultiline } from './TagGroupMultiline';
 import { TagGroupResponsive } from './TagGroupResponsive';
@@ -19,7 +19,7 @@ export type TagGroupProps<
     isDisabled?: boolean;
     isRequired?: boolean;
   };
-  selectedTagsOverflow?: SelectPropSelectedTagsOverflow;
+  selectedTagsOverflow?: SelectNextPropSelectedTagsOverflow;
 };
 
 function assertNever(x: never) {

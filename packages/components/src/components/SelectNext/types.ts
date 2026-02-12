@@ -29,21 +29,21 @@ import type { SearchInputProps } from '../SearchInput';
 
 import type { SelectListProps } from './components';
 
-export const selectPropSelectedTagsOverflow = [
+export const selectNextPropSelectedTagsOverflow = [
   'multiline',
   'responsive',
 ] as const;
 
-export type SelectPropSelectedTagsOverflow =
-  (typeof selectPropSelectedTagsOverflow)[number];
+export type SelectNextPropSelectedTagsOverflow =
+  (typeof selectNextPropSelectedTagsOverflow)[number];
 
-export const selectPropLabelPlacement = formFieldPropLabelPlacement;
-export type SelectPropLabelPlacement = FormFieldPropLabelPlacement;
+export const selectNextPropLabelPlacement = formFieldPropLabelPlacement;
+export type SelectNextPropLabelPlacement = FormFieldPropLabelPlacement;
 
-export const selectPropLabelAlign = formFieldPropLabelAlign;
-export type SelectPropLabelAlign = FormFieldPropLabelAlign;
+export const selectNextPropLabelAlign = formFieldPropLabelAlign;
+export type SelectNextPropLabelAlign = FormFieldPropLabelAlign;
 
-export type SelectProps<
+export type SelectNextProps<
   T extends object,
   M extends SelectionMode = 'single',
 > = ExtendableProps<
@@ -55,7 +55,7 @@ export type SelectProps<
      *- `"responsive"` — tags collapse into a summary (e.g., "3 more").
      * @default 'responsive'
      */
-    selectedTagsOverflow?: SelectPropSelectedTagsOverflow;
+    selectedTagsOverflow?: SelectNextPropSelectedTagsOverflow;
     /** Handler that is called when the clear button is clicked. */
     onClear?: () => void;
     /** Sets the CSS [`className`](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. */
@@ -76,12 +76,12 @@ export type SelectProps<
      * The label's overall position relative to the element it is labeling.
      * @default 'top'
      */
-    labelPlacement?: SelectPropLabelPlacement;
+    labelPlacement?: SelectNextPropLabelPlacement;
     /**
      * The label's horizontal alignment relative to the element it is labeling.
      * @default 'start'
      */
-    labelAlign?: SelectPropLabelAlign;
+    labelAlign?: SelectNextPropLabelAlign;
     /** The helper text content. */
     caption?: ReactNode;
     /**
@@ -117,7 +117,7 @@ export type SelectProps<
     defaultInputValue?: string;
     /** Handler that is called when the Select search input value changes. */
     onInputChange?: (value: string) => void;
-    /** The filter function used to determine if a option should be included in the Select list. */
+    /** The filter function used to determine if an option should be included in the Select list. */
     defaultFilter?: (textValue: string, inputValue: string) => boolean;
     /** The props used for each slot inside. */
     slotProps?: {
@@ -142,11 +142,11 @@ export type SelectProps<
   >
 >;
 
-export type SelectComponent = <
+export type SelectNextComponent = <
   T extends object,
   M extends SelectionMode = 'single',
 >(
-  props: SelectProps<T, M>
+  props: SelectNextProps<T, M>
 ) => ReactElement | null;
 
-export type SelectRef = ComponentRef<'div'>;
+export type SelectNextRef = ComponentRef<'div'>;
