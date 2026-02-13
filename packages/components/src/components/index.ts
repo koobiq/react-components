@@ -46,6 +46,7 @@ export * from './Breadcrumbs';
 export * from './Accordion';
 export * from './ContenPanel';
 export * from './Navbar';
+export * from './ActionsPanel';
 export * from './layout';
 export {
   useListData,
