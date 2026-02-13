@@ -1,30 +1,23 @@
 'use client';
 
-import {
-  type ComponentPropsWithRef,
-  forwardRef,
-  type HTMLAttributes,
-  type CSSProperties,
-  useContext,
-  useRef,
+import type {
+  CSSProperties,
+  HTMLAttributes,
+  ComponentPropsWithRef,
 } from 'react';
+import { forwardRef, useContext, useRef } from 'react';
 
 import { useDOMRef, mergeProps, clsx, isNumber } from '@koobiq/react-core';
 import {
-  useContextProps,
   useOverlay,
+  useContextProps,
   useOverlayTriggerState,
 } from '@koobiq/react-primitives';
 import { createPortal } from 'react-dom';
 import { Transition } from 'react-transition-group';
 
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  type DialogProps,
-} from '../Dialog';
+import { Dialog, DialogBody, DialogFooter, DialogHeader } from '../Dialog';
+import type { DialogProps } from '../Dialog';
 
 import { ContentPanelContainerContext } from './components';
 import { TRANSITION_TIMEOUT } from './constants';
@@ -47,23 +40,23 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
     const {
       defaultWidth: defaultWidthProp,
+      disableExitOnEscapeKeyDown,
       minWidth: minWidthProp,
       maxWidth: maxWidthProp,
-      disableExitOnEscapeKeyDown,
-      onResetResize,
       isResizable = false,
-      width,
-      onResize,
-      onResizeEnd,
+      hideCloseButton,
       onResizeStart,
-      isOpen,
+      onResetResize,
       onOpenChange,
       defaultOpen,
-      className,
-      style,
-      children,
+      onResizeEnd,
       slotProps,
-      hideCloseButton,
+      className,
+      children,
+      onResize,
+      isOpen,
+      width,
+      style,
       ...other
     } = panelProps;
 
