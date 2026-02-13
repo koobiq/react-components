@@ -18,6 +18,10 @@ import { useNavbarState } from '../NavbarContext';
 
 export type NavbarItemProps = {
   /**
+   * Whether the item is active.
+   */
+  isActive?: boolean;
+  /**
    * Whether the item is a menu trigger.
    */
   isMenu?: boolean;
@@ -43,7 +47,16 @@ const { listItem, typography } = utilClasses;
 
 export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
   (
-    { as, className, isMenu = false, icon, badge, children, ...other },
+    {
+      as,
+      className,
+      isActive,
+      isMenu = false,
+      icon,
+      badge,
+      children,
+      ...other
+    },
     inRef
   ) => {
     const { isCollapsed } = useNavbarState();
@@ -63,6 +76,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
               s.item,
               className
             )}
+            data-selected={isActive || undefined}
             {...mergeProps(props, other)}
             ref={mergeRefs(props.ref, inRef)}
           >
