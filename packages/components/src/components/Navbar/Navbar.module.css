@@ -8,6 +8,7 @@
   block-size: 100%;
   min-inline-size: 240px;
   border-inline-end: 1px solid var(--kbq-line-contrast-less);
+  box-sizing: content-box;
 
   &[data-collapsed='true'] {
     min-inline-size: var(--kbq-size-6xl);
@@ -38,6 +39,10 @@
 
     padding: var(--kbq-size-xxs);
   }
+
+  .itemIcon {
+    min-block-size: 32px;
+  }
 }
 
 .item {
@@ -49,6 +54,10 @@
   gap: var(--kbq-size-m);
   border-color: transparent;
   background-color: transparent;
+
+  &[data-selected='true'] {
+    --list-item-bg-color: var(--kbq-states-background-transparent-active);
+  }
 
   .navbar[data-collapsed='true'] & {
     box-sizing: border-box;
