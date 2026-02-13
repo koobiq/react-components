@@ -1,18 +1,44 @@
 'use client';
 
-import type { ComponentPropsWithRef, ElementType } from 'react';
+import type { ElementType, ForwardedRef } from 'react';
 
-import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
-import { useSeparator } from '@koobiq/react-primitives';
+import { clsx } from '@koobiq/react-core';
+import type { BaseCollection } from '@koobiq/react-primitives';
+import {
+  useSeparator,
+  CollectionNode,
+  createLeafComponent,
+} from '@koobiq/react-primitives';
 
 import s from './Divider.module.css';
-import type { DividerBaseProps } from './index';
+import type { DividerProps } from './index';
 
-export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
-  (props, ref) => {
+export class DividerNode extends CollectionNode<any> {
+  static readonly type = 'separator';
+
+  filter(
+    collection: BaseCollection<any>,
+    newCollection: BaseCollection<any>
+  ): CollectionNode<any> | null {
+    const prevItem = newCollection.getItem(this.prevKey!);
+
+    if (prevItem && prevItem.type !== 'separator') {
+      const clone = this.clone();
+      newCollection.addDescendants(clone, collection);
+
+      return clone;
+    }
+
+    return null;
+  }
+}
+
+export const Divider = createLeafComponent(
+  DividerNode,
+  function Separator(props: DividerProps, ref: ForwardedRef<HTMLElement>) {
     const {
-      as: Tag = 'div',
       orientation = 'horizontal',
+      as = 'div',
       disablePaddings,
       flexItem,
       display,
@@ -23,10 +49,12 @@ export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
     const { separatorProps } = useSeparator({
       ...other,
       orientation,
-      elementType: Tag as string,
+      elementType: `${as}`,
     });
 
     const hasPaddings = !disablePaddings;
+
+    const Tag = as as ElementType;
 
     return (
       <Tag
@@ -49,8 +77,3 @@ export const Divider = polymorphicForwardRef<'div', DividerBaseProps>(
     );
   }
 );
-
-Divider.displayName = 'Divider';
-
-export type DividerProps<As extends ElementType = 'div'> =
-  ComponentPropsWithRef<typeof Divider<As>>;

@@ -3,25 +3,20 @@ import {
   Story,
   Props,
   Status,
-  Alert,
 } from '../../../../../.storybook/components';
 
 import * as Stories from './Select.stories';
 
 <Meta of={Stories} />
 
-# Select
+# SelectNext
 
-<Status variant="deprecated" />
-
-<Alert status="error" title="This component has been deprecated">
-  Please use [SelectNext](?path=/docs/components-selectnext--docs) instead.
-</Alert>
+<Status variant="experimental" />
 
 A select displays a collapsible list of options and allows a user to select one or more of them.
 
 ```tsx
-import { Select } from '@koobiq/react-components';
+import { SelectNext as Select } from '@koobiq/react-components';
 ```
 
 <Story of={Stories.Base} />
@@ -123,10 +118,19 @@ You can add an extra content using the `startAddon` and `endAddon` props.
 
 ## No items
 
-If no items are available, the component shows a message in the dropdown list.
+With `allowsEmptyCollection` enabled, the Select can be opened even when the collection is empty.
+In this case, the component shows an empty-state message in the dropdown list.
 You can customize this message — either as plain text or a component — using the `noItemsText` prop.
 
 <Story of={Stories.NoItems} />
+
+## Searchable
+
+Select with search renders a search input at the top of the menu so users can quickly filter the available options.
+Enable this behavior with the `isSearchable` prop. The input can be controlled via `inputValue` or used uncontrolled
+with `defaultInputValue`, and the `onInputChange` callback is called whenever the search value is edited by the user.
+
+<Story of={Stories.Searchable} />
 
 ## Open
 
@@ -164,15 +168,3 @@ Select supports loading data asynchronously, and will display a progress circle 
 It also supports infinite scrolling to load more data on demand as the user scrolls, via the `onLoadMore` prop.
 
 <Story of={Stories.AsynchronousLoading} />
-
-## State Helper
-
-Use the `useListData` hook to manage items with convenient methods for adding,
-updating, and removing entries. Pass an initial set of items and a function to extract
-a unique key for each item. The returned state can then be used to render component options.
-
-```ts
-import { useListData } from '@koobiq/react-componenets';
-```
-
-<Story of={Stories.StateHelper} />

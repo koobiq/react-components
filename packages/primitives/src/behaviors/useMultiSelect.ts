@@ -22,8 +22,12 @@ import type {
   MultiSelectState,
 } from './useMultiSelectState';
 
-type MultiSelectProps<T> = Omit<AriaSelectProps<T>, 'onSelectionChange'> & {
+type MultiSelectProps<T> = Omit<
+  AriaSelectProps<T>,
+  'onSelectionChange' | 'selectionMode'
+> & {
   disallowEmptySelection?: boolean;
+  selectionMode?: 'single' | 'multiple';
   onSelectionChange?: MultiSelectStateProps<T>['onSelectionChange'];
 };
 

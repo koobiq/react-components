@@ -185,7 +185,7 @@ export const rows: Rows = [
   {
     component: 'Select',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🔴 deprecated',
     planned: 'Q1 2025',
   },
   {
@@ -312,6 +312,12 @@ export const rows: Rows = [
     component: 'Navbar',
     status: '✅ Done',
     stage: '🟠 draft',
+    planned: 'Q1 2026',
+  },
+  {
+    component: 'SelectNext',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q1 2026',
   },
   { component: 'ActionPanel', status: '🚧 Planned', planned: 'Q1 2026' },

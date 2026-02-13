@@ -32,11 +32,23 @@ export * from '@react-stately/list';
 export * from '@react-aria/select';
 export * from '@react-stately/select';
 
+export * from '@react-aria/collections';
+
 export * from '@react-aria/menu';
 export * from '@react-stately/menu';
 
 export * from '@react-aria/toggle';
 export * from '@react-stately/toggle';
+
+export {
+  type AriaAutocompleteProps,
+  type AutocompleteAria,
+  useAutocomplete,
+} from '@react-aria/autocomplete';
+export {
+  type AutocompleteState,
+  useAutocompleteState,
+} from '@react-stately/autocomplete';
 
 export { useCheckboxGroup } from '@react-aria/checkbox';
 export type {
@@ -66,7 +78,11 @@ export * from '@react-stately/searchfield';
 export * from '@react-aria/progress';
 
 export * from '@react-aria/combobox';
-export * from '@react-stately/combobox';
+export {
+  type ComboBoxStateOptions,
+  type ComboBoxState,
+  useComboBoxState,
+} from '@react-stately/combobox';
 
 export * from '@react-aria/toast';
 export * from '@react-stately/toast';

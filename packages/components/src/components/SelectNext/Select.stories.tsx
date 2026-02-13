@@ -2,27 +2,24 @@ import { useState, useCallback } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
-  IconAnomaly16,
   IconBug16,
-  IconCrosshairs16,
-  IconDesktop16,
-  IconPlus16,
   IconServer16,
   IconSwords16,
+  IconAnomaly16,
+  IconDesktop16,
+  IconCrosshairs16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Divider, List, spacing, useListData } from '../../index';
-import type { Selection } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import type { SelectProps } from './index.js';
-import { Select } from './index.js';
+import type { SelectNextProps as SelectProps } from './index.js';
+import { SelectNext as Select } from './index.js';
 
 const meta = {
-  title: 'Components/Select',
+  title: 'Components/SelectNext',
   component: Select,
   parameters: {
     layout: 'centered',
@@ -34,7 +31,7 @@ const meta = {
     'Select.ItemText': Select.ItemText,
   },
   argTypes: {},
-  tags: ['status:deprecated'],
+  tags: ['status:new'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -62,17 +59,17 @@ export const Base: Story = {
       placeholder="Select an option"
       {...args}
     >
-      <Select.Item key="bruteforce">Bruteforce</Select.Item>
-      <Select.Item key="complex-attack">Complex Attack</Select.Item>
-      <Select.Item key="ddos">DDoS</Select.Item>
-      <Select.Item key="dos">DoS</Select.Item>
-      <Select.Item key="hips-alert">HIPS Alert</Select.Item>
-      <Select.Item key="ids-ips-alert">IDS/IPS Alert</Select.Item>
-      <Select.Item key="identity-theft">Identity Theft</Select.Item>
-      <Select.Item key="miscellaneous">Miscellaneous</Select.Item>
-      <Select.Item key="network-attack">Network Attack</Select.Item>
-      <Select.Item key="post-compromise">Post Compromise</Select.Item>
-      <Select.Item key="potential-attack">Potential Attack</Select.Item>
+      <Select.Item id="bruteforce">Bruteforce</Select.Item>
+      <Select.Item id="complex-attack">Complex Attack</Select.Item>
+      <Select.Item id="ddos">DDoS</Select.Item>
+      <Select.Item id="dos">DoS</Select.Item>
+      <Select.Item id="hips-alert">HIPS Alert</Select.Item>
+      <Select.Item id="ids-ips-alert">IDS/IPS Alert</Select.Item>
+      <Select.Item id="identity-theft">Identity Theft</Select.Item>
+      <Select.Item id="miscellaneous">Miscellaneous</Select.Item>
+      <Select.Item id="network-attack">Network Attack</Select.Item>
+      <Select.Item id="post-compromise">Post Compromise</Select.Item>
+      <Select.Item id="potential-attack">Potential Attack</Select.Item>
     </Select>
   ),
 };
@@ -101,7 +98,7 @@ export const Content: Story = {
         placeholder="Select an option"
         caption="Dynamic collections"
       >
-        {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -123,19 +120,19 @@ export const SingleSelection: Story = {
       { name: 'Potential Attack' },
     ];
 
-    const [attack, setAttack] = useState<Selection>(new Set(['Bruteforce']));
+    const [attack, setAttack] = useState<string | number | null>('Bruteforce');
 
     return (
       <FlexBox direction="column" gap="s">
         <Select
+          value={attack}
           items={options}
           label="Attack type"
-          selectedKeys={attack}
+          onChange={setAttack}
           style={{ inlineSize: 200 }}
           placeholder="Select an option"
-          onSelectionChange={(selected) => setAttack(selected!)}
         >
-          {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
         <Typography>Selected: {attack}</Typography>
       </FlexBox>
@@ -159,22 +156,22 @@ export const MultipleSelection: Story = {
       { name: 'Potential Attack' },
     ];
 
-    const [attack, setAttack] = useState<Selection>(new Set(['Bruteforce']));
+    const [attack, setAttack] = useState<(string | number)[]>(['Bruteforce']);
 
     return (
       <FlexBox direction="column" gap="s" style={{ inlineSize: 200 }}>
         <Select
+          value={attack}
           items={options}
           label="Attack type"
+          onChange={setAttack}
           selectionMode="multiple"
-          selectedKeys={attack}
-          style={{ inlineSize: 'inherit' }}
           placeholder="Select an option"
-          onSelectionChange={(selected) => setAttack(selected!)}
+          style={{ inlineSize: 'inherit' }}
         >
-          {(item) => <Select.Item key={item.name}>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
-        <Typography>Selected: {Array.from(attack).join(', ')}</Typography>
+        <Typography>Selected: {attack?.join(', ')}</Typography>
       </FlexBox>
     );
   },
@@ -187,23 +184,23 @@ export const SelectedTagsOverflow: Story = {
         <Select
           items={options}
           label="Attack type"
-          placeholder="Select an option"
           selectionMode="multiple"
-          caption="selectedTagsOverflow = responsive (default)"
           style={{ inlineSize: 220 }}
+          placeholder="Select an option"
+          caption="selectedTagsOverflow = responsive (default)"
         >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
         </Select>
         <Select
           items={options}
           label="Attack type"
-          placeholder="Select an option"
           selectionMode="multiple"
-          caption="selectedTagsOverflow = multiline"
           style={{ inlineSize: 220 }}
+          placeholder="Select an option"
           selectedTagsOverflow="multiline"
+          caption="selectedTagsOverflow = multiline"
         >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
         </Select>
       </FlexBox>
     );
@@ -221,7 +218,7 @@ export const Invalid: Story = {
         errorMessage="This field is required"
         isInvalid
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -234,11 +231,12 @@ export const Disabled: Story = {
         items={options}
         caption="disabled"
         label="Attack type"
+        selectionMode="multiple"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
         isDisabled
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -255,7 +253,7 @@ export const DisabledOptions: Story = {
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -273,7 +271,7 @@ export const Required: Story = {
           placeholder="Select an option"
           isRequired
         >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
         </Select>
         <Select
           items={options}
@@ -284,7 +282,7 @@ export const Required: Story = {
           slotProps={{ label: { isRequired: false } }}
           isRequired
         >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
         </Select>
       </FlexBox>
     );
@@ -303,7 +301,7 @@ export const FullWidth: Story = {
         placeholder="Select an option"
         fullWidth
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -314,12 +312,12 @@ export const LabelPlacementAlignment: Story = {
   render: () => (
     <Select
       items={options}
+      labelAlign="end"
+      labelPlacement="side"
       label={`Attack\u00A0type`}
       placeholder="Select an option"
-      labelPlacement="side"
-      labelAlign="end"
     >
-      {(item) => <Select.Item>{item.name}</Select.Item>}
+      {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
     </Select>
   ),
 };
@@ -329,13 +327,13 @@ export const ClearButton: Story = {
     return (
       <Select
         items={options}
+        defaultValue={1}
         label="Attack type"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
-        defaultSelectedKeys={[1]}
         isClearable
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -345,14 +343,32 @@ export const Addons: Story = {
   render: function Render() {
     return (
       <Select
-        startAddon={<IconCrosshairs16 />}
         items={options}
+        defaultValue={1}
         label="Attack type"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
-        defaultSelectedKeys={[1]}
+        startAddon={<IconCrosshairs16 />}
       >
-        {(item) => <Select.Item>{item.name}</Select.Item>}
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const Searchable: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        defaultValue={1}
+        label="Attack type"
+        onInputChange={console.log}
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        isSearchable
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
     );
   },
@@ -373,7 +389,7 @@ export const Open: Story = {
           style={{ inlineSize: 200 }}
           isLabelHidden
         >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
         <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
       </FlexBox>
@@ -391,8 +407,9 @@ export const NoItems: Story = {
           placeholder="Select an option"
           caption="No options available"
           style={{ inlineSize: 200 }}
+          allowsEmptyCollection
         >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
         <Select<{ name: string }>
           items={[]}
@@ -401,35 +418,9 @@ export const NoItems: Story = {
           noItemsText="No results found"
           caption="No results found"
           style={{ inlineSize: 200 }}
+          allowsEmptyCollection
         >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
-        </Select>
-        <Select<{ name: string }>
-          items={[]}
-          aria-label="No items"
-          placeholder="Select an option"
-          slotProps={{ list: { autoFocus: false } }}
-          noItemsText={
-            <>
-              <Typography
-                color="inherit"
-                className={spacing({ pi: 'l', pb: 'xs' })}
-              >
-                No results found
-              </Typography>
-              <Divider />
-              <List autoFocus="first" aria-label="extra actions">
-                <List.Item key="add" textValue="add">
-                  <IconPlus16 />
-                  Add an option
-                </List.Item>
-              </List>
-            </>
-          }
-          caption="No results found — add a new option below"
-          style={{ inlineSize: 200 }}
-        >
-          {(item) => <Select.Item>{item.name}</Select.Item>}
+          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
       </FlexBox>
     );
@@ -439,8 +430,6 @@ export const NoItems: Story = {
 export const WithIcons: Story = {
   name: 'With icons',
   render: function Render() {
-    const [selected, setSelected] = useState<Selection>(new Set(['First']));
-
     const options = [
       { id: 'First', icon: IconServer16 },
       { id: 'Second', icon: IconBug16 },
@@ -449,14 +438,16 @@ export const WithIcons: Story = {
       { id: 'Fifth', icon: IconSwords16 },
     ];
 
+    const [selected, setSelected] = useState<string | number | null>('First');
+
     return (
       <Select
-        selectedKeys={selected}
+        value={selected}
         items={options}
         label="Options"
-        onSelectionChange={(key) => setSelected(key!)}
-        placeholder="Select an option"
+        onChange={setSelected}
         style={{ inlineSize: 200 }}
+        placeholder="Select an option"
       >
         {({ id, icon: Icon }) => (
           <Select.Item textValue={id}>
@@ -472,7 +463,7 @@ export const WithIcons: Story = {
 export const WithItemDetails: Story = {
   name: 'With item details',
   render: function Render() {
-    const [selected, setSelected] = useState<Selection>(new Set(['First']));
+    const [selected, setSelected] = useState<string | number | null>('First');
 
     const options = [
       { id: 'First', caption: 'Helper text' },
@@ -484,10 +475,10 @@ export const WithItemDetails: Story = {
 
     return (
       <Select
-        selectedKeys={selected}
+        value={selected}
         items={options}
         label="Options"
-        onSelectionChange={(key) => setSelected(key!)}
+        onChange={setSelected}
         placeholder="Select an option"
         style={{ inlineSize: 200 }}
       >
@@ -526,16 +517,16 @@ export const Section: Story = {
       <Select
         items={options}
         label="Options"
-        placeholder="Select an option"
         style={{ inlineSize: 200 }}
+        placeholder="Select an option"
       >
-        {(item) => (
+        {(section) => (
           <Select.Section
-            key={item.name}
-            items={item.children}
-            title={item.name}
+            id={section.name}
+            title={section.name}
+            items={section.children}
           >
-            {(item) => <Select.Item>{item.name}</Select.Item>}
+            {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
           </Select.Section>
         )}
       </Select>
@@ -580,6 +571,7 @@ export const AsynchronousLoading: Story = {
         onLoadMore={fetchProducts}
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
+        allowsEmptyCollection
       >
         {(item) => (
           <Select.Item key={item.id} textValue={item.title}>
@@ -587,151 +579,6 @@ export const AsynchronousLoading: Story = {
           </Select.Item>
         )}
       </Select>
-    );
-  },
-};
-
-export const StateHelper: Story = {
-  parameters: {
-    layout: 'padded',
-  },
-  render: function Render() {
-    const users = [
-      {
-        id: 1,
-        firstName: 'Emily',
-        lastName: 'Carter',
-        email: 'emily.carter@example.com',
-        role: 'Admin',
-      },
-      {
-        id: 2,
-        firstName: 'Michael',
-        lastName: 'Thompson',
-        email: 'michael.thompson@mail.com',
-        role: 'Editor',
-      },
-      {
-        id: 3,
-        firstName: 'Sophia',
-        lastName: 'Bellmont',
-        email: 'sophia.bellmont@example.org',
-        role: 'Subscriber',
-      },
-      {
-        id: 4,
-        firstName: 'Daniel',
-        lastName: 'Nguyen',
-        email: 'daniel.nguyen@mail.com',
-        role: 'User',
-      },
-      {
-        id: 5,
-        firstName: 'Olivia',
-        lastName: 'Brooks',
-        email: 'olivia.brooks@example.com',
-        role: 'Moderator',
-      },
-      {
-        id: 6,
-        firstName: 'James',
-        lastName: 'Harris',
-        email: 'james.harris@mail.org',
-        role: 'User',
-      },
-      {
-        id: 7,
-        firstName: 'Isabella',
-        lastName: 'Murphy',
-        email: 'isabella.murphy@mail.com',
-        role: 'Subscriber',
-      },
-      {
-        id: 8,
-        firstName: 'Benjamin',
-        lastName: 'Lee',
-        email: 'benjamin.lee@example.com',
-        role: 'Editor',
-      },
-      {
-        id: 9,
-        firstName: 'Ava',
-        lastName: 'Garcia',
-        email: 'ava.garcia@mail.com',
-        role: 'User',
-      },
-      {
-        id: 10,
-        firstName: 'William',
-        lastName: 'Martinez',
-        email: 'william.martinez@ex.org',
-        role: 'Admin',
-      },
-      {
-        id: 11,
-        firstName: 'Mia',
-        lastName: 'Robinson',
-        email: 'mia.robinson@mail.org',
-        role: 'Subscriber',
-      },
-      {
-        id: 12,
-        firstName: 'Alexander',
-        lastName: 'Walker',
-        email: 'alex.walker@example.com',
-        role: 'User',
-      },
-      {
-        id: 13,
-        firstName: 'Charlotte',
-        lastName: 'Scott',
-        email: 'charlotte.scott@mail.com',
-        role: 'Moderator',
-      },
-      {
-        id: 14,
-        firstName: 'Henry',
-        lastName: 'Adams',
-        email: 'henry.adams@example.org',
-        role: 'User',
-      },
-      {
-        id: 15,
-        firstName: 'Harper',
-        lastName: 'Bell',
-        email: 'harper.bell@mail.org',
-        role: 'Subscriber',
-      },
-    ];
-
-    const list = useListData({
-      initialItems: users,
-      getKey: (item) => item.id,
-      initialSelectedKeys: [3, 6, 11],
-    });
-
-    return (
-      <FlexBox direction="column" gap="m">
-        <Select
-          label="Assigned to"
-          selectionMode="multiple"
-          placeholder="Select a user"
-          style={{ minInlineSize: 200, maxInlineSize: 400, inlineSize: '100%' }}
-          items={list.items}
-          selectedKeys={list.selectedKeys}
-          onSelectionChange={(key) => list.setSelectedKeys(key)}
-        >
-          {(item) => (
-            <Select.Item>{`${item.firstName} ${item.lastName}`}</Select.Item>
-          )}
-        </Select>
-        <Typography>
-          Selected emails:{' '}
-          {Array.from(list.selectedKeys)
-            .map((id) => list.getItem(id)?.email)
-            .join(', ')}
-        </Typography>
-      </FlexBox>
     );
   },
 };
