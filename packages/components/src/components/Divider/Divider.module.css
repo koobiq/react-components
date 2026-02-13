@@ -1,8 +1,10 @@
 .base {
+  --kbq-divider-color: var(--kbq-line-contrast-less);
+
   margin: 0;
   flex-shrink: 0;
   border-style: solid;
-  border-color: var(--kbq-line-contrast-less);
+  border-color: var(--kbq-divider-color);
 }
 
 .block {
