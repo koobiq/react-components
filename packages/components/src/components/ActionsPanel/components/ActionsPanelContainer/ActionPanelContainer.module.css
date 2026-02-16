@@ -1,3 +1,4 @@
 .base {
   position: relative;
+  overflow: hidden;
 }

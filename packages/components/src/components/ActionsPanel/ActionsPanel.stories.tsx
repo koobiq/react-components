@@ -27,9 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: function Render(args) {
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(
-      new Set(['first'])
-    );
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
 
     return (
       <ActionsPanelContainer>
