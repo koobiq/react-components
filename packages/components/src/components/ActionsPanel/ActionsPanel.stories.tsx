@@ -38,9 +38,16 @@ export const Base: Story = {
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
         >
-          <List.Item key="first">First</List.Item>
-          <List.Item key="second">Second</List.Item>
-          <List.Item key="third">Third</List.Item>
+          <List.Item key="item1">Item 1</List.Item>
+          <List.Item key="item2">Item 2</List.Item>
+          <List.Item key="item3">Item 3</List.Item>
+          <List.Item key="item4">Item 4</List.Item>
+          <List.Item key="item5">Item 5</List.Item>
+          <List.Item key="item6">Item 6</List.Item>
+          <List.Item key="item7">Item 7</List.Item>
+          <List.Item key="item8">Item 8</List.Item>
+          <List.Item key="item9">Item 9</List.Item>
+          <List.Item key="item10">Item 10</List.Item>
         </List>
         <ActionsPanel
           selectedItemCount={selectedKeys === 'all' ? 'all' : selectedKeys.size}
@@ -67,10 +74,19 @@ export const Base: Story = {
 
 export const Overflow: Story = {
   render: function Render(args) {
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      new Set(['item1'])
+    );
 
     return (
-      <ActionsPanelContainer>
+      <ActionsPanelContainer
+        style={{
+          minWidth: 89,
+          maxWidth: '100%',
+          overflow: 'hidden',
+          resize: 'horizontal',
+        }}
+      >
         <List
           aria-label="List with actions panel"
           selectionMode="multiple"

@@ -12,9 +12,9 @@ export const ActionsPanelAction = (props: ActionsPanelActionProps) => {
 
   return (
     <Button
+      ref={ref}
       data-slot="action"
       className={clsx(s.base, className)}
-      ref={ref}
       {...other}
     >
       {children}

@@ -1,14 +1,15 @@
 .base {
-  flex-shrink: 0;
-  margin-inline-start: var(--kbq-size-xxs);
-}
-
-.base:first-child {
-  margin-inline-start: unset;
+  order: -1;
 }
 
 .base[aria-hidden='true'] {
   visibility: hidden;
   position: absolute;
   inset-inline-start: -300vw;
+}
+
+/* text */
+.text {
+  padding-inline: var(--kbq-size-m);
+  padding-block: var(--kbq-size-xs);
 }

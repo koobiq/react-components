@@ -7,19 +7,18 @@ import {
   mergeProps,
   useObjectRef,
   useHideOverflowItems,
+  useMultiRef,
 } from '@koobiq/react-core';
-import { IconCircleXmark16, IconEllipsisVertical16 } from '@koobiq/react-icons';
 import { useToolbar } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
-import { Button } from '../Button';
-import { Divider } from '../Divider';
-import { FlexBox } from '../FlexBox';
-import { spacing } from '../layout';
-import { Typography } from '../Typography';
-
 import s from './ActionPanel.module.css';
-import { ActionsPanelAction } from './components';
+import {
+  ActionsPanelAction,
+  ActionsPanelClearButton,
+  ActionsPanelCounter,
+} from './components';
+import { ActionsPanelMoreAction } from './components/ActionsPanelMoreAction';
 import type { ActionsPanelProps, ActionsPanelActionProps } from './index';
 
 const ActionsPanelComponent = (props: ActionsPanelProps) => {
@@ -34,10 +33,11 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const { length } = elements;
 
   const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems<
-    HTMLButtonElement,
+    any,
     HTMLDivElement
   >({
-    length: length + 1,
+    length: length + 2,
+    busy: 41, // TODO: calculate this size from the more-action
     deps: [!!selectedItemCount],
   });
 
@@ -57,42 +57,30 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     });
   });
 
+  const rootRef = useMultiRef([parentRef, panelRef]);
+
   return (
     <Transition {...transitionProps}>
       {(transition) => (
         <div
-          ref={panelRef}
+          ref={rootRef}
           className={s.base}
           data-transition={transition}
           {...toolbarProps}
         >
-          <FlexBox alignItems="center">
-            <Typography
-              color="on-contrast"
-              variant="text-normal-medium"
-              className={spacing({ pi: 'm', pb: 'xs' })}
-            >
-              Selected:&nbsp;{selectedItemCount}
-            </Typography>
-            <Divider orientation="vertical" className={s.divider} />
-          </FlexBox>
-          <div className={s.actions} ref={parentRef}>
+          <div className={s.actions}>
             {items}
-            <ActionsPanelAction
+            <ActionsPanelCounter
               ref={itemsRefs[length]}
-              startIcon={<IconEllipsisVertical16 />}
               aria-hidden={!visibleMap[length]}
-              onlyIcon
+              selectedItemCount={selectedItemCount}
             />
+            <ActionsPanelMoreAction
+              ref={itemsRefs[length + 1]}
+              aria-hidden={!visibleMap[length + 1]}
+            />
+            <ActionsPanelClearButton onClearSelection={onClearSelection} />
           </div>
-          <FlexBox alignItems="center">
-            <Divider orientation="vertical" className={s.divider} />
-            <Button
-              onPress={onClearSelection}
-              startIcon={<IconCircleXmark16 />}
-              onlyIcon
-            />
-          </FlexBox>
         </div>
       )}
     </Transition>

@@ -1,5 +1,10 @@
 import type { ReactNode } from 'react';
 
-export type ActionsPanelContainerProps = {
-  children?: ReactNode;
-};
+import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+
+export type ActionsPanelContainerProps = ExtendableComponentPropsWithRef<
+  {
+    children?: ReactNode;
+  },
+  'div'
+>;
