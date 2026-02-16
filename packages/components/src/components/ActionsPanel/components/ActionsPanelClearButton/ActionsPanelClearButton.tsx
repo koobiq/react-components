@@ -1,8 +1,8 @@
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import { IconCircleXmark16 } from '@koobiq/react-icons';
 
+import { Button } from '../../../Button';
 import { FlexBox } from '../../../FlexBox';
-import { ActionsPanelAction } from '../ActionsPanelAction';
 import { ActionsPanelDivider } from '../ActionsPanelDivider';
 
 export type ActionsPanelClearButtonProps = ExtendableComponentPropsWithRef<
@@ -18,7 +18,7 @@ export const ActionsPanelClearButton = ({
 }: ActionsPanelClearButtonProps) => (
   <FlexBox alignItems="center" {...other}>
     <ActionsPanelDivider />
-    <ActionsPanelAction
+    <Button
       onPress={onClearSelection}
       startIcon={<IconCircleXmark16 />}
       onlyIcon

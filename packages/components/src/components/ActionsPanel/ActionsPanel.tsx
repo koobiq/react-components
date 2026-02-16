@@ -37,7 +37,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     HTMLDivElement
   >({
     length: length + 2,
-    busy: 41, // TODO: calculate this size from the more-action
+    busy: 41 + 16, // TODO: calculate this size from the more-action
     deps: [!!selectedItemCount],
   });
 

@@ -52,8 +52,8 @@
   align-items: center;
   pointer-events: auto;
   box-sizing: border-box;
-  padding: var(--actions-panel-padding);
   color: var(--actions-panel-color);
+  padding: var(--actions-panel-padding);
   block-size: var(--actions-panel-height);
   box-shadow: var(--actions-panel-box-shadow);
   border-radius: var(--actions-panel-border-radius);
