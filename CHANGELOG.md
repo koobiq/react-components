@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.25.0](https://github.com/koobiq/react-components/compare/0.24.0...0.25.0) (2026-02-16)
+
+
+### 🚀 Features
+
+* **components:** add new `SelectNext` with option search support (DS-4049) ([#269](https://github.com/koobiq/react-components/issues/269)) ([216dd49](https://github.com/koobiq/react-components/commit/216dd49c747f40c454343d757f2cf800e4a27ef3))
+* **Divider:** support `--kbq-divider-color` ([ed97a43](https://github.com/koobiq/react-components/commit/ed97a4399272fa86ebb4babc20b5a076a32bf483))
+
+
+### 🐞 Bug Fixes
+
+* **Navbar:** fix style issues, add isActive prop for Navbar.Item ([#270](https://github.com/koobiq/react-components/issues/270)) ([5a0a799](https://github.com/koobiq/react-components/commit/5a0a799dfcc792d5ff622ff3b3d78ca5354f76fa))
+* **SelectNext:** improve layout and add placeholder ([#271](https://github.com/koobiq/react-components/issues/271)) ([298bb2f](https://github.com/koobiq/react-components/commit/298bb2f56529ebb46f038cc50986dfb00e572df2))
+
 ## [0.24.0](https://github.com/koobiq/react-components/compare/0.23.0...0.24.0) (2026-02-11)
 
 
