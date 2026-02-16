@@ -172,6 +172,8 @@ export function SelectList<
       autoFocus: true,
       fullWidth: true,
       isLabelHidden: true,
+      className: s.search,
+      placeholder: t.format('search'),
       'aria-label': t.format('search'),
       variant: 'transparent',
     },
