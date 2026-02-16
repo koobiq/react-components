@@ -1,0 +1,9 @@
+.base {
+  flex-shrink: 0;
+}
+
+.base[aria-hidden='true'] {
+  visibility: hidden;
+  position: absolute;
+  inset-inline-start: -300vw;
+}

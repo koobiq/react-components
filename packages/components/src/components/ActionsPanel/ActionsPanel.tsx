@@ -1,7 +1,14 @@
 'use client';
 
-import { mergeProps, useObjectRef } from '@koobiq/react-core';
-import { IconCircleXmark16 } from '@koobiq/react-icons';
+import { Children, cloneElement } from 'react';
+import type { ReactElement } from 'react';
+
+import {
+  mergeProps,
+  useObjectRef,
+  useHideOverflowItems,
+} from '@koobiq/react-core';
+import { IconCircleXmark16, IconEllipsisVertical16 } from '@koobiq/react-icons';
 import { useToolbar } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
@@ -13,18 +20,41 @@ import { Typography } from '../Typography';
 
 import s from './ActionPanel.module.css';
 import { ActionsPanelAction } from './components';
-import type { ActionsPanelProps } from './type';
+import type { ActionsPanelProps, ActionsPanelActionProps } from './index';
 
 const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const { children, selectedItemCount, onClearSelection, ref } = props;
   const panelRef = useObjectRef(ref);
   const { toolbarProps } = useToolbar({ orientation: 'horizontal' }, panelRef);
 
+  const elements = Children.toArray(children) as Array<
+    ReactElement<ActionsPanelActionProps>
+  >;
+
+  const { length } = elements;
+
+  const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems<
+    HTMLButtonElement,
+    HTMLDivElement
+  >({
+    length: length + 1,
+    deps: [!!selectedItemCount],
+  });
+
   const transitionProps = mergeProps({
     timeout: 300,
-    in: !!selectedItemCount,
     nodeRef: panelRef,
     unmountOnExit: true,
+    in: !!selectedItemCount,
+  });
+
+  const items = elements.map((child, idx) => {
+    if (child.type !== ActionsPanelAction) return child;
+
+    return cloneElement(child, {
+      ref: itemsRefs[idx],
+      'aria-hidden': !visibleMap[idx],
+    });
   });
 
   return (
@@ -46,7 +76,15 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
             </Typography>
             <Divider orientation="vertical" className={s.divider} />
           </FlexBox>
-          <FlexBox gap="xs">{children}</FlexBox>
+          <div className={s.actions} ref={parentRef}>
+            {items}
+            <ActionsPanelAction
+              ref={itemsRefs[length]}
+              startIcon={<IconEllipsisVertical16 />}
+              aria-hidden={!visibleMap[length]}
+              onlyIcon
+            />
+          </div>
           <FlexBox alignItems="center">
             <Divider orientation="vertical" className={s.divider} />
             <Button
