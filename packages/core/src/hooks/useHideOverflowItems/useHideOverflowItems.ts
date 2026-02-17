@@ -48,6 +48,11 @@ export type UseHideOverflowItemsProps = {
   deps?: unknown[];
   /** Index that should always remain visible. */
   pinnedIndex?: number;
+  /**
+   * Minimum number of hidden items required to show the "more" item.
+   * @default 1
+   */
+  minHiddenForMore?: number;
 };
 
 export function useHideOverflowItems<
@@ -56,6 +61,7 @@ export function useHideOverflowItems<
 >({
   length,
   moreIndex = length - 1,
+  minHiddenForMore = 1,
   busy = 0,
   deps = [],
   pinnedIndex,
@@ -78,6 +84,15 @@ export function useHideOverflowItems<
     return 0;
   });
 
+  if (length <= 0) {
+    return {
+      visibleMap: [],
+      itemsRefs: [],
+      parentRef,
+      parentSize,
+    };
+  }
+
   const map = createMap(length, moreIndex, pinnedIndex);
 
   const hideByIndex = (index: number) => {
@@ -99,6 +114,16 @@ export function useHideOverflowItems<
     // Hide the element to the right of "more"
     hideByIndex(moreIndex + index);
   }
+
+  let hiddenCount = 0;
+
+  for (let i = 0; i < map.length; i += 1) {
+    if (i !== moreIndex && !map[i]) {
+      hiddenCount += 1;
+    }
+  }
+
+  map[moreIndex] = hiddenCount >= minHiddenForMore;
 
   return {
     visibleMap: map,
