@@ -1,6 +1,6 @@
 'use client';
 
-import { Children, cloneElement } from 'react';
+import { Children, cloneElement, useRef } from 'react';
 import type { ReactElement } from 'react';
 
 import {
@@ -9,22 +9,45 @@ import {
   useHideOverflowItems,
   useMultiRef,
 } from '@koobiq/react-core';
-import { useToolbar } from '@koobiq/react-primitives';
+import {
+  useOverlay,
+  useToolbar,
+  useOverlayTriggerState,
+} from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
 import s from './ActionPanel.module.css';
 import {
   ActionsPanelAction,
-  ActionsPanelClearButton,
   ActionsPanelCounter,
+  ActionsPanelClearButton,
 } from './components';
 import { ActionsPanelMoreAction } from './components/ActionsPanelMoreAction';
 import type { ActionsPanelProps, ActionsPanelActionProps } from './index';
 
 const ActionsPanelComponent = (props: ActionsPanelProps) => {
-  const { children, selectedItemCount, onClearSelection, ref } = props;
+  const {
+    ref,
+    isOpen,
+    children,
+    defaultOpen,
+    onOpenChange,
+    onClearSelection,
+    selectedItemCount,
+    disableExitOnEscapeKeyDown,
+  } = props;
+
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useObjectRef(ref);
   const { toolbarProps } = useToolbar({ orientation: 'horizontal' }, panelRef);
+
+  const state = useOverlayTriggerState({
+    isOpen: isOpen || !!selectedItemCount,
+    defaultOpen,
+    onOpenChange,
+  });
+
+  const { isOpen: isOpenState, close } = state;
 
   const elements = Children.toArray(children) as Array<
     ReactElement<ActionsPanelActionProps>
@@ -37,15 +60,25 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     HTMLDivElement
   >({
     length: length + 2,
-    busy: 41 + 16, // TODO: calculate this size from the more-action
-    deps: [!!selectedItemCount],
+    // TODO: calculate this size from the more-action
+    busy: 41 + 16,
+    deps: [isOpenState],
   });
 
+  const { overlayProps } = useOverlay(
+    {
+      isOpen: isOpenState,
+      onClose: close,
+      isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
+    },
+    overlayRef
+  );
+
   const transitionProps = mergeProps({
+    in: isOpenState,
     timeout: 300,
     nodeRef: panelRef,
     unmountOnExit: true,
-    in: !!selectedItemCount,
   });
 
   const items = elements.map((child, idx) => {
@@ -57,7 +90,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     });
   });
 
-  const rootRef = useMultiRef([parentRef, panelRef]);
+  const rootRef = useMultiRef([parentRef, panelRef, overlayRef]);
 
   return (
     <Transition {...transitionProps}>
@@ -66,7 +99,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
           ref={rootRef}
           className={s.base}
           data-transition={transition}
-          {...toolbarProps}
+          {...mergeProps(toolbarProps, overlayProps)}
         >
           <div className={s.actions}>
             {items}

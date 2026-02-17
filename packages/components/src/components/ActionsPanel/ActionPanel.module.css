@@ -10,10 +10,12 @@
     --kbq-line-contrast-fade
   );
 
+  display: flex;
   inline-size: 100%;
   position: absolute;
-  display: flex;
+  align-items: center;
   pointer-events: none;
+  justify-content: center;
   inset-block-end: var(--kbq-size-l);
   z-index: var(--kbq-layer-absolute);
 }
@@ -47,7 +49,6 @@
 
 /* actions */
 .actions {
-  margin: auto;
   display: flex;
   align-items: center;
   pointer-events: auto;
