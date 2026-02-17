@@ -1,10 +1,13 @@
 .base {
-  --kbq-divider-color: var(--kbq-line-contrast-less);
+  --divider-color: var(--kbq-line-contrast-less);
+  --divider-inline-padding: var(--kbq-size-xxs);
+  --divider-block-padding: var(--kbq-size-xxs);
+  --divider-size: 1px;
 
   margin: 0;
   flex-shrink: 0;
   border-style: solid;
-  border-color: var(--kbq-divider-color);
+  border-color: var(--divider-color);
 }
 
 .block {
@@ -20,19 +23,19 @@
 }
 
 .vertical {
-  --divider-paddings: 0 var(--kbq-size-xxs);
+  --divider-paddings: 0 var(--divider-inline-padding);
 
-  block-size: 100%;
   inline-size: 0;
-  border-width: 0 1px 0 0;
+  block-size: 100%;
+  border-width: 0 var(--divider-size) 0 0;
 }
 
 .horizontal {
-  --divider-paddings: var(--kbq-size-xxs) 0;
+  --divider-paddings: var(--divider-block-padding) 0;
 
   block-size: 0;
   inline-size: 100%;
-  border-width: 0 0 1px;
+  border-width: 0 0 var(--divider-size);
 }
 
 .hasPaddings {
