@@ -44,6 +44,8 @@ export type RenderEllipsisParams = {
   ellipsisIndex: number;
   /** Handler called when any breadcrumb item is pressed. It returns the item key. */
   onAction?: (key: Key) => void;
+  /** Defines a string value that labels the current element. */
+  'aria-label'?: string;
 };
 
 export type BreadcrumbsPropRenderEllipsis = (
