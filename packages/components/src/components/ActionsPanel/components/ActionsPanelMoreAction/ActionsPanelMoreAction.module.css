@@ -7,3 +7,7 @@
   position: absolute;
   inset-inline-start: -300vw;
 }
+
+.menuTitle {
+  padding: var(--kbq-size-s) var(--kbq-size-l);
+}

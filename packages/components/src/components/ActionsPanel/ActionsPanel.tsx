@@ -24,7 +24,11 @@ import {
   ActionsPanelClearButton,
 } from './components';
 import { ActionsPanelMoreAction } from './components/ActionsPanelMoreAction';
-import type { ActionsPanelProps, ActionsPanelActionProps } from './index';
+import type {
+  ActionsPanelProps,
+  ActionsPanelActionProps,
+  ActionsPanelActionRenderItem,
+} from './index';
 
 const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const {
@@ -37,6 +41,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useObjectRef(ref);
+
   const { toolbarProps } = useToolbar({ orientation: 'horizontal' }, panelRef);
   const { ref: clearBtnRef, width: clearBtnWidth } = useElementSize();
 
@@ -57,6 +62,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     HTMLDivElement
   >({
     length: length + 2,
+    minHiddenForMore: 2,
     // TODO: calculate this size from the more-action
     busy: clearBtnWidth + 16,
     deps: [isOpenState, clearBtnWidth],
@@ -67,28 +73,48 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
   const { overlayProps } = useOverlay(
     {
-      isOpen: isOpenState,
       onClose: close,
+      isOpen: isOpenState,
       isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
     },
     overlayRef
   );
 
   const transitionProps = mergeProps({
-    in: isOpenState,
     timeout: 300,
+    in: isOpenState,
     nodeRef: panelRef,
     unmountOnExit: true,
   });
 
-  const items = elements.map((child, idx) => {
-    if (child.type !== ActionsPanelAction) return child;
+  const items: Array<ReactElement<ActionsPanelActionProps>> = [];
+  const collapsedItems: ActionsPanelActionRenderItem[] = [];
 
-    return cloneElement(child, {
-      ref: itemsRefs[idx],
-      'aria-hidden': !visibleMap[idx],
-    });
-  });
+  for (let index = 0; index < elements.length; index += 1) {
+    const element = elements[index];
+    const isAction = element.type === ActionsPanelAction;
+    const isHidden = !visibleMap[index];
+
+    if (isAction && isHidden) {
+      collapsedItems.push({
+        index,
+        element,
+        props: element.props,
+        key: element.key ?? null,
+        children: element.props.children,
+      });
+    }
+
+    if (!isAction) items.push(element);
+    else {
+      items.push(
+        cloneElement(element, {
+          ref: itemsRefs[index],
+          'aria-hidden': isHidden || undefined,
+        })
+      );
+    }
+  }
 
   const rootRef = useMultiRef([parentRef, panelRef, overlayRef]);
 
@@ -103,15 +129,20 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
         >
           <div className={s.actions}>
             {items}
+
             <ActionsPanelCounter
               ref={itemsRefs[counterIndex]}
               selectedItemCount={selectedItemCount}
               aria-hidden={!visibleMap[counterIndex]}
             />
+
             <ActionsPanelMoreAction
               ref={itemsRefs[moreIndex]}
+              collapsedItems={collapsedItems}
+              selectedItemCount={selectedItemCount}
               aria-hidden={!visibleMap[moreIndex]}
             />
+
             <ActionsPanelClearButton
               ref={clearBtnRef}
               onClearSelection={onClearSelection}
