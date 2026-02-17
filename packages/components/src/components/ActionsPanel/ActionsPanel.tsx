@@ -5,9 +5,10 @@ import type { ReactElement } from 'react';
 
 import {
   mergeProps,
-  useObjectRef,
-  useHideOverflowItems,
   useMultiRef,
+  useObjectRef,
+  useElementSize,
+  useHideOverflowItems,
 } from '@koobiq/react-core';
 import {
   useOverlay,
@@ -40,6 +41,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useObjectRef(ref);
   const { toolbarProps } = useToolbar({ orientation: 'horizontal' }, panelRef);
+  const { ref: clearBtnRef, width: clearBtnWidth } = useElementSize();
 
   const state = useOverlayTriggerState({
     isOpen: isOpen || !!selectedItemCount,
@@ -61,9 +63,12 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   >({
     length: length + 2,
     // TODO: calculate this size from the more-action
-    busy: 41 + 16,
-    deps: [isOpenState],
+    busy: clearBtnWidth + 16,
+    deps: [isOpenState, clearBtnWidth],
   });
+
+  const counterIndex = length;
+  const moreIndex = length + 1;
 
   const { overlayProps } = useOverlay(
     {
@@ -104,15 +109,18 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
           <div className={s.actions}>
             {items}
             <ActionsPanelCounter
-              ref={itemsRefs[length]}
-              aria-hidden={!visibleMap[length]}
+              ref={itemsRefs[counterIndex]}
+              aria-hidden={!visibleMap[counterIndex]}
               selectedItemCount={selectedItemCount}
             />
             <ActionsPanelMoreAction
-              ref={itemsRefs[length + 1]}
-              aria-hidden={!visibleMap[length + 1]}
+              ref={itemsRefs[moreIndex]}
+              aria-hidden={!visibleMap[moreIndex]}
             />
-            <ActionsPanelClearButton onClearSelection={onClearSelection} />
+            <ActionsPanelClearButton
+              ref={clearBtnRef}
+              onClearSelection={onClearSelection}
+            />
           </div>
         </div>
       )}
