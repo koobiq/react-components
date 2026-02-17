@@ -8,12 +8,14 @@ import {
   isString,
   mergeProps,
   useHideOverflowItems,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconEllipsisHorizontal16 } from '@koobiq/react-icons';
 import { Button } from '@koobiq/react-primitives';
 
 import { Menu } from '../../../Menu';
 import s from '../../Breadcrumbs.module.css';
+import intlMessages from '../../intl.json';
 import type {
   BreadcrumbsProps,
   BreadcrumbRenderItem,
@@ -27,6 +29,7 @@ const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
   ellipsisIcon,
   onAction,
   items,
+  'aria-label': label,
 }) => {
   if (items.length === 0) return null;
 
@@ -34,7 +37,7 @@ const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
     <Menu
       onAction={onAction}
       control={(props) => (
-        <BreadcrumbItem {...props} as={Button}>
+        <BreadcrumbItem aria-label={label} {...props} as={Button}>
           {ellipsisIcon}
         </BreadcrumbItem>
       )}
@@ -61,6 +64,8 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
     slotProps,
     children,
   } = props;
+
+  const t = useLocalizedStringFormatter(intlMessages);
 
   const ellipsisIcon = <IconEllipsisHorizontal16 />;
 
@@ -123,10 +128,11 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
           );
 
           const customEllipsis = renderEllipsis?.({
-            ellipsisIcon,
-            ellipsisIndex: slotIndex,
-            items: collapsedItems,
             onAction,
+            ellipsisIcon,
+            items: collapsedItems,
+            ellipsisIndex: slotIndex,
+            'aria-label': t.format('show more'),
           });
 
           return (
@@ -153,8 +159,8 @@ export const BreadcrumbsCollapse = (props: BreadcrumbsProps) => {
         return (
           <li
             className={s.item}
-            key={child.key ?? itemIndex}
             ref={itemsRefs[slotIndex]}
+            key={child.key ?? itemIndex}
             aria-hidden={!visibleMap[slotIndex] || undefined}
           >
             {cloneElement(child, {
