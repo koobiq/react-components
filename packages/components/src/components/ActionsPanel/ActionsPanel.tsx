@@ -110,8 +110,8 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
             {items}
             <ActionsPanelCounter
               ref={itemsRefs[counterIndex]}
-              aria-hidden={!visibleMap[counterIndex]}
               selectedItemCount={selectedItemCount}
+              aria-hidden={!visibleMap[counterIndex]}
             />
             <ActionsPanelMoreAction
               ref={itemsRefs[moreIndex]}
