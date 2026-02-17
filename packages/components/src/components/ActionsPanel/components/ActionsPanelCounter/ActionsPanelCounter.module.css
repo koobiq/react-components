@@ -13,3 +13,13 @@
   padding-inline: var(--kbq-size-m);
   padding-block: var(--kbq-size-xs);
 }
+
+.counterValue {
+  display: inline-block;
+  min-inline-size: 2ch;
+  text-align: start;
+}
+
+.divider {
+  margin-inline-start: -4px;
+}

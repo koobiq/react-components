@@ -24,8 +24,8 @@ export const ActionsPanelCounter = ({
       color="on-contrast"
       variant="text-normal-medium"
     >
-      Selected:&nbsp;{selectedItemCount}
+      Selected:&nbsp;<span className={s.counterValue}>{selectedItemCount}</span>
     </Typography>
-    <ActionsPanelDivider />
+    <ActionsPanelDivider className={s.divider} />
   </FlexBox>
 );
