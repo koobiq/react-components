@@ -29,10 +29,7 @@ import type { ActionsPanelProps, ActionsPanelActionProps } from './index';
 const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const {
     ref,
-    isOpen,
     children,
-    defaultOpen,
-    onOpenChange,
     onClearSelection,
     selectedItemCount,
     disableExitOnEscapeKeyDown,
@@ -44,9 +41,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const { ref: clearBtnRef, width: clearBtnWidth } = useElementSize();
 
   const state = useOverlayTriggerState({
-    isOpen: isOpen || !!selectedItemCount,
-    defaultOpen,
-    onOpenChange,
+    isOpen: !!selectedItemCount,
   });
 
   const { isOpen: isOpenState, close } = state;
