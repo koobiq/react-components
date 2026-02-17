@@ -14,12 +14,14 @@
   padding-block: var(--kbq-size-xs);
 }
 
+/* counter-value */
 .counterValue {
-  display: inline-block;
-  min-inline-size: 2ch;
   text-align: start;
+  min-inline-size: 2ch;
+  display: inline-block;
 }
 
+/* divider */
 .divider {
-  margin-inline-start: -4px;
+  margin-inline-start: calc(-1 * var(--divider-inline-padding));
 }

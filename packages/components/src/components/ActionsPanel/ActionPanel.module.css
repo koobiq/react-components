@@ -1,14 +1,12 @@
 .base {
   --actions-panel-start-position: 100%;
-  --actions-panel-background-color: var(--kbq-background-contrast);
-  --actions-panel-color: var(--kbq-foreground-on-contrast);
   --actions-panel-padding: var(--kbq-size-s);
+  --actions-panel-block-size: var(--kbq-size-5xl);
   --actions-panel-border-radius: var(--kbq-size-l);
   --actions-panel-box-shadow: var(--kbq-shadow-card);
-  --actions-panel-height: var(--kbq-size-5xl);
-  --actions-panel-vertical-divider-background-color: var(
-    --kbq-line-contrast-fade
-  );
+  --actions-panel-bg-color: var(--kbq-background-contrast);
+  --actions-panel-color: var(--kbq-foreground-on-contrast);
+  --actions-panel-vertical-divider-color: var(--kbq-line-contrast-fade);
 
   display: flex;
   inline-size: 100%;
@@ -55,8 +53,8 @@
   box-sizing: border-box;
   color: var(--actions-panel-color);
   padding: var(--actions-panel-padding);
-  block-size: var(--actions-panel-height);
+  background: var(--actions-panel-bg-color);
+  block-size: var(--actions-panel-block-size);
   box-shadow: var(--actions-panel-box-shadow);
   border-radius: var(--actions-panel-border-radius);
-  background: var(--actions-panel-background-color);
 }
