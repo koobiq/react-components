@@ -1,6 +1,13 @@
 'use client';
 
-import { Children, cloneElement, useRef, useEffect, useState } from 'react';
+import {
+  Children,
+  cloneElement,
+  useRef,
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
 import type { ReactElement } from 'react';
 
 import {
@@ -11,6 +18,7 @@ import {
   useHideOverflowItems,
 } from '@koobiq/react-core';
 import {
+  Overlay,
   useOverlay,
   useToolbar,
   useOverlayTriggerState,
@@ -23,6 +31,7 @@ import {
   ActionsPanelCounter,
   ActionsPanelClearButton,
 } from './components';
+import { ActionsPanelContainerContext } from './components/ActionsPanelContainer/ActionstPanelContainerContext';
 import { ActionsPanelMoreAction } from './components/ActionsPanelMoreAction';
 import type {
   ActionsPanelProps,
@@ -45,6 +54,8 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
   const panelRef = useObjectRef(ref);
+
+  const { portalContainer } = useContext(ActionsPanelContainerContext);
 
   // Preserve count during close animation
   const [shownCount, setShownCount] = useState(selectedItemCount);
@@ -154,29 +165,31 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   return (
     <Transition {...transitionProps}>
       {(transition) => (
-        <div data-transition={transition} {...rootProps} ref={rootRef}>
-          <div className={s.actions}>
-            {items}
-            <ActionsPanelCounter
-              ref={itemsRefs[counterIndex]}
-              selectedItemCount={shownCount}
-              selectedExtraCount={selectedExtraCount}
-              aria-hidden={!visibleMap[counterIndex]}
-            />
-            <ActionsPanelMoreAction
-              onAction={onAction}
-              ref={itemsRefs[moreIndex]}
-              selectedItemCount={shownCount}
-              selectedExtraCount={selectedExtraCount}
-              collapsedItems={collapsedItems}
-              aria-hidden={!visibleMap[moreIndex]}
-            />
-            <ActionsPanelClearButton
-              ref={clearBtnRef}
-              onClearSelection={onClearSelection}
-            />
+        <Overlay portalContainer={portalContainer || undefined}>
+          <div data-transition={transition} {...rootProps} ref={rootRef}>
+            <div className={s.actions}>
+              {items}
+              <ActionsPanelCounter
+                ref={itemsRefs[counterIndex]}
+                selectedItemCount={shownCount}
+                selectedExtraCount={selectedExtraCount}
+                aria-hidden={!visibleMap[counterIndex]}
+              />
+              <ActionsPanelMoreAction
+                onAction={onAction}
+                ref={itemsRefs[moreIndex]}
+                selectedItemCount={shownCount}
+                selectedExtraCount={selectedExtraCount}
+                collapsedItems={collapsedItems}
+                aria-hidden={!visibleMap[moreIndex]}
+              />
+              <ActionsPanelClearButton
+                ref={clearBtnRef}
+                onClearSelection={onClearSelection}
+              />
+            </div>
           </div>
-        </div>
+        </Overlay>
       )}
     </Transition>
   );
