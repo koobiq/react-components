@@ -12,7 +12,7 @@ import { IconEllipsisVertical16 } from '@koobiq/react-icons';
 
 import { Badge } from '../../../Badge';
 import { Button } from '../../../Button';
-import { Menu } from '../../../Menu';
+import { Menu, type MenuPropControl } from '../../../Menu';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl.json';
 
@@ -34,26 +34,31 @@ export const ActionsPanelMoreAction = (props: ActionsPanelMoreActionProps) => {
   const t = useLocalizedStringFormatter(intlMessages);
 
   const isAll = selectedItemCount === 'all';
+  const hasItems = collapsedItems.length > 0;
 
-  if (!collapsedItems.length) return null;
+  const renderButton: MenuPropControl = ({
+    ref: controlRef,
+    ...controlProps
+  }) => (
+    <Button
+      data-slot="more-action"
+      ref={mergeRefs(ref, controlRef)}
+      aria-label={t.format('show more actions')}
+      className={clsx(s.base, className)}
+      startIcon={<IconEllipsisVertical16 />}
+      {...mergeProps(other, controlProps)}
+      onlyIcon
+    >
+      {children}
+    </Button>
+  );
+
+  if (!hasItems) {
+    return renderButton({});
+  }
 
   return (
-    <Menu
-      onAction={onAction}
-      control={({ ref: controlRef, ...controlProps }) => (
-        <Button
-          data-slot="more-action"
-          ref={mergeRefs(ref, controlRef)}
-          aria-label={t.format('show more actions')}
-          className={clsx(s.base, className)}
-          startIcon={<IconEllipsisVertical16 />}
-          {...mergeProps(other, controlProps)}
-          onlyIcon
-        >
-          {children}
-        </Button>
-      )}
-    >
+    <Menu onAction={onAction} control={(props) => renderButton(props)}>
       <Menu.Header>
         <Typography variant="text-normal-strong" className={s.menuTitle}>
           {isAll ? (
