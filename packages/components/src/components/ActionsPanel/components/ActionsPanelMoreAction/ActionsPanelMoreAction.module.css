@@ -8,6 +8,11 @@
   inset-inline-start: -300vw;
 }
 
+.base[aria-expanded='true'] {
+  background-color: var(--button-bg-color-active);
+}
+
+/* menu-header-title */
 .menuTitle {
   padding: var(--kbq-size-s) var(--kbq-size-l);
 }
