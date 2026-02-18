@@ -1,6 +1,6 @@
 'use client';
 
-import { Children, cloneElement, useRef } from 'react';
+import { Children, cloneElement, useRef, useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 
 import {
@@ -42,7 +42,11 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   } = props;
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
+
   const panelRef = useObjectRef(ref);
+
+  // Preserve count during close animation
+  const [shownCount, setShownCount] = useState(selectedItemCount);
 
   const { toolbarProps } = useToolbar({ orientation: 'horizontal' }, panelRef);
   const { ref: clearBtnRef, width: clearBtnWidth } = useElementSize();
@@ -52,6 +56,12 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   });
 
   const { isOpen: isOpenState, close } = state;
+
+  useEffect(() => {
+    if (isOpenState) {
+      setShownCount(selectedItemCount);
+    }
+  }, [isOpenState, selectedItemCount]);
 
   const elements: Array<ReactElement<ActionsPanelActionProps>> = [];
   const elementKeys: Array<string | null> = [];
@@ -148,7 +158,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
             {items}
             <ActionsPanelCounter
               ref={itemsRefs[counterIndex]}
-              selectedItemCount={selectedItemCount}
+              selectedItemCount={shownCount}
               aria-hidden={!visibleMap[counterIndex]}
             />
 
@@ -156,7 +166,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
               onAction={onAction}
               ref={itemsRefs[moreIndex]}
               collapsedItems={collapsedItems}
-              selectedItemCount={selectedItemCount}
+              selectedItemCount={shownCount}
               aria-hidden={!visibleMap[moreIndex]}
             />
 
