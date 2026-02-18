@@ -19,8 +19,9 @@ import type { ActionsPanelMoreActionProps } from './types';
 
 export const ActionsPanelMoreAction = (props: ActionsPanelMoreActionProps) => {
   const {
-    children,
     ref,
+    onAction,
+    children,
     className,
     collapsedItems,
     selectedItemCount,
@@ -33,6 +34,7 @@ export const ActionsPanelMoreAction = (props: ActionsPanelMoreActionProps) => {
 
   return (
     <Menu
+      onAction={onAction}
       control={({ ref: controlRef, ...controlProps }) => (
         <Button
           data-slot="more-action"

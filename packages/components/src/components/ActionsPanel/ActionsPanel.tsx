@@ -34,6 +34,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const {
     ref,
     children,
+    onAction,
     onClearSelection,
     selectedItemCount,
     disableExitOnEscapeKeyDown,
@@ -51,9 +52,15 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
   const { isOpen: isOpenState, close } = state;
 
-  const elements = Children.toArray(children) as Array<
-    ReactElement<ActionsPanelActionProps>
-  >;
+  const elements: Array<ReactElement<ActionsPanelActionProps>> = [];
+  const elementKeys: Array<string | null> = [];
+
+  Children.forEach(children, (child) => {
+    if (!child || typeof child !== 'object') return;
+    const el = child as ReactElement<ActionsPanelActionProps>;
+    elements.push(el);
+    elementKeys.push(el.key);
+  });
 
   const { length } = elements;
 
@@ -90,27 +97,34 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const items: Array<ReactElement<ActionsPanelActionProps>> = [];
   const collapsedItems: ActionsPanelActionRenderItem[] = [];
 
-  for (let index = 0; index < elements.length; index += 1) {
-    const element = elements[index];
+  for (let idx = 0; idx < elements.length; idx += 1) {
+    const element = elements[idx];
     const isAction = element.type === ActionsPanelAction;
-    const isHidden = !visibleMap[index];
+    const isHidden = !visibleMap[idx];
 
-    if (isAction && isHidden) {
-      collapsedItems.push({
-        index,
-        element,
-        props: element.props,
-        key: element.key ?? null,
-        children: element.props.children,
-      });
-    }
+    if (!isAction) {
+      items.push(element);
+    } else {
+      const itemKey = elementKeys[idx] ?? String(idx);
 
-    if (!isAction) items.push(element);
-    else {
+      if (isHidden) {
+        collapsedItems.push({
+          element,
+          index: idx,
+          key: itemKey,
+          props: element.props,
+          children: element.props.children,
+        });
+      }
+
       items.push(
         cloneElement(element, {
-          ref: itemsRefs[index],
+          ref: itemsRefs[idx],
           'aria-hidden': isHidden || undefined,
+          onPress: (e) => {
+            element.props?.onPress?.(e);
+            onAction?.(itemKey);
+          },
         })
       );
     }
@@ -129,7 +143,6 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
         >
           <div className={s.actions}>
             {items}
-
             <ActionsPanelCounter
               ref={itemsRefs[counterIndex]}
               selectedItemCount={selectedItemCount}
@@ -137,6 +150,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
             />
 
             <ActionsPanelMoreAction
+              onAction={onAction}
               ref={itemsRefs[moreIndex]}
               collapsedItems={collapsedItems}
               selectedItemCount={selectedItemCount}
