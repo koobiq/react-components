@@ -33,21 +33,21 @@ export const Base: Story = {
     return (
       <ActionsPanelContainer>
         <List
-          aria-label="List with actions panel"
           selectionMode="multiple"
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
+          aria-label="List with actions panel"
         >
-          <List.Item key="item1">Item 1</List.Item>
-          <List.Item key="item2">Item 2</List.Item>
-          <List.Item key="item3">Item 3</List.Item>
-          <List.Item key="item4">Item 4</List.Item>
-          <List.Item key="item5">Item 5</List.Item>
-          <List.Item key="item6">Item 6</List.Item>
-          <List.Item key="item7">Item 7</List.Item>
-          <List.Item key="item8">Item 8</List.Item>
-          <List.Item key="item9">Item 9</List.Item>
-          <List.Item key="item10">Item 10</List.Item>
+          <List.Item key="item-1">Item 1</List.Item>
+          <List.Item key="item-2">Item 2</List.Item>
+          <List.Item key="item-3">Item 3</List.Item>
+          <List.Item key="item-4">Item 4</List.Item>
+          <List.Item key="item-5">Item 5</List.Item>
+          <List.Item key="item-6">Item 6</List.Item>
+          <List.Item key="item-7">Item 7</List.Item>
+          <List.Item key="item-8">Item 8</List.Item>
+          <List.Item key="item-9">Item 9</List.Item>
+          <List.Item key="item-10">Item 10</List.Item>
         </List>
         <ActionsPanel
           selectedItemCount={selectedKeys === 'all' ? 'all' : selectedKeys.size}
@@ -88,21 +88,21 @@ export const Overflow: Story = {
         }}
       >
         <List
-          aria-label="List with actions panel"
           selectionMode="multiple"
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
+          aria-label="List with actions panel"
         >
-          <List.Item key="item1">Item 1</List.Item>
-          <List.Item key="item2">Item 2</List.Item>
-          <List.Item key="item3">Item 3</List.Item>
-          <List.Item key="item4">Item 4</List.Item>
-          <List.Item key="item5">Item 5</List.Item>
-          <List.Item key="item6">Item 6</List.Item>
-          <List.Item key="item7">Item 7</List.Item>
-          <List.Item key="item8">Item 8</List.Item>
-          <List.Item key="item9">Item 9</List.Item>
-          <List.Item key="item10">Item 10</List.Item>
+          <List.Item key="item-1">Item 1</List.Item>
+          <List.Item key="item-2">Item 2</List.Item>
+          <List.Item key="item-3">Item 3</List.Item>
+          <List.Item key="item-4">Item 4</List.Item>
+          <List.Item key="item-5">Item 5</List.Item>
+          <List.Item key="item-6">Item 6</List.Item>
+          <List.Item key="item-7">Item 7</List.Item>
+          <List.Item key="item-8">Item 8</List.Item>
+          <List.Item key="item-9">Item 9</List.Item>
+          <List.Item key="item-10">Item 10</List.Item>
         </List>
         <ActionsPanel
           selectedItemCount={selectedKeys === 'all' ? 'all' : selectedKeys.size}

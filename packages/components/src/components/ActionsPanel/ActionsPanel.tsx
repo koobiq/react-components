@@ -38,6 +38,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     onClearSelection,
     selectedItemCount,
     disableExitOnEscapeKeyDown,
+    ...other
   } = props;
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -132,15 +133,17 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
   const rootRef = useMultiRef([parentRef, panelRef, overlayRef]);
 
+  const rootProps = mergeProps(
+    { className: s.base },
+    other,
+    toolbarProps,
+    overlayProps
+  );
+
   return (
     <Transition {...transitionProps}>
       {(transition) => (
-        <div
-          ref={rootRef}
-          className={s.base}
-          data-transition={transition}
-          {...mergeProps(toolbarProps, overlayProps)}
-        >
+        <div data-transition={transition} {...rootProps} ref={rootRef}>
           <div className={s.actions}>
             {items}
             <ActionsPanelCounter
