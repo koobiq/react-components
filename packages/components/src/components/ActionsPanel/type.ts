@@ -27,6 +27,8 @@ export type ActionsPanelProps = ExtendableComponentPropsWithRef<
     disableExitOnEscapeKeyDown?: boolean;
     /** The number of selected items that the ActionsPanel is currently linked to. */
     selectedItemCount?: number | 'all';
+    /** Optional secondary counter displayed next to `selectedItemCount`. */
+    selectedExtraCount?: number;
     /** The contents of the collection. */
     children?: Array<ReactElement<ActionsPanelActionProps>>;
     /** Handler that is called when the ActionsPanel clear button is pressed. */

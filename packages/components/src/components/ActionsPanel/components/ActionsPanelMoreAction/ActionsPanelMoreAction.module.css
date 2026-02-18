@@ -11,3 +11,8 @@
 .menuTitle {
   padding: var(--kbq-size-s) var(--kbq-size-l);
 }
+
+/* extra-counter */
+.extraCounter {
+  margin-inline-start: var(--kbq-size-xs);
+}

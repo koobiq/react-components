@@ -37,6 +37,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     onAction,
     onClearSelection,
     selectedItemCount,
+    selectedExtraCount,
     disableExitOnEscapeKeyDown,
     ...other
   } = props;
@@ -159,17 +160,17 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
             <ActionsPanelCounter
               ref={itemsRefs[counterIndex]}
               selectedItemCount={shownCount}
+              selectedExtraCount={selectedExtraCount}
               aria-hidden={!visibleMap[counterIndex]}
             />
-
             <ActionsPanelMoreAction
               onAction={onAction}
               ref={itemsRefs[moreIndex]}
-              collapsedItems={collapsedItems}
               selectedItemCount={shownCount}
+              selectedExtraCount={selectedExtraCount}
+              collapsedItems={collapsedItems}
               aria-hidden={!visibleMap[moreIndex]}
             />
-
             <ActionsPanelClearButton
               ref={clearBtnRef}
               onClearSelection={onClearSelection}

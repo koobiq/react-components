@@ -2,6 +2,7 @@
 
 import {
   clsx,
+  isNumber,
   isString,
   mergeProps,
   mergeRefs,
@@ -9,6 +10,7 @@ import {
 } from '@koobiq/react-core';
 import { IconEllipsisVertical16 } from '@koobiq/react-icons';
 
+import { Badge } from '../../../Badge';
 import { Button } from '../../../Button';
 import { Menu } from '../../../Menu';
 import { Typography } from '../../../Typography';
@@ -25,12 +27,15 @@ export const ActionsPanelMoreAction = (props: ActionsPanelMoreActionProps) => {
     className,
     collapsedItems,
     selectedItemCount,
+    selectedExtraCount,
     ...other
   } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
 
   const isAll = selectedItemCount === 'all';
+
+  if (!collapsedItems.length) return null;
 
   return (
     <Menu
@@ -57,6 +62,11 @@ export const ActionsPanelMoreAction = (props: ActionsPanelMoreActionProps) => {
             <>
               {t.format('selected')}&nbsp;{selectedItemCount}
             </>
+          )}
+          {isNumber(selectedExtraCount) && (
+            <Badge variant="fade-contrast" className={s.extraCounter}>
+              +{selectedExtraCount}
+            </Badge>
           )}
         </Typography>
       </Menu.Header>

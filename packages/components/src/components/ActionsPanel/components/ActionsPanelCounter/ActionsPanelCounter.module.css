@@ -17,11 +17,12 @@
 /* counter-value */
 .counterValue {
   text-align: start;
-  min-inline-size: 2ch;
+  min-inline-size: 1ch;
   display: inline-block;
 }
 
-/* divider */
-.divider {
-  margin-inline-start: calc(-1 * var(--divider-inline-padding));
+/* extra-counter */
+.extraCounter {
+  margin-inline-start: var(--kbq-size-xs);
+  color: inherit;
 }
