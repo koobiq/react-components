@@ -196,19 +196,19 @@ export const Base: Story = {
           onAction={(key) => alert(`submit ${key} action`)}
           {...args}
         >
-          <ActionsPanel.Action key="edit" startIcon={<IconPencil16 />}>
+          <ActionsPanel.Action key="edit" icon={<IconPencil16 />}>
             Edit
           </ActionsPanel.Action>
-          <ActionsPanel.Action key="copy" startIcon={<IconSquareMultipleO16 />}>
+          <ActionsPanel.Action key="copy" icon={<IconSquareMultipleO16 />}>
             Copy
           </ActionsPanel.Action>
           <ActionsPanel.Action
             key="archive"
-            startIcon={<IconBoxArchiveArrowDown16 />}
+            icon={<IconBoxArchiveArrowDown16 />}
           >
             Archive
           </ActionsPanel.Action>
-          <ActionsPanel.Action key="delete" startIcon={<IconTrash16 />}>
+          <ActionsPanel.Action key="delete" icon={<IconTrash16 />}>
             Delete
           </ActionsPanel.Action>
         </ActionsPanel>
@@ -257,19 +257,19 @@ export const Overflow: Story = {
           onAction={(key) => alert(`submit ${key} action`)}
           {...args}
         >
-          <ActionsPanel.Action key="edit" startIcon={<IconPencil16 />}>
+          <ActionsPanel.Action key="edit" icon={<IconPencil16 />}>
             Edit
           </ActionsPanel.Action>
-          <ActionsPanel.Action key="copy" startIcon={<IconSquareMultipleO16 />}>
+          <ActionsPanel.Action key="copy" icon={<IconSquareMultipleO16 />}>
             Copy
           </ActionsPanel.Action>
           <ActionsPanel.Action
             key="archive"
-            startIcon={<IconBoxArchiveArrowDown16 />}
+            icon={<IconBoxArchiveArrowDown16 />}
           >
             Archive
           </ActionsPanel.Action>
-          <ActionsPanel.Action key="delete" startIcon={<IconTrash16 />}>
+          <ActionsPanel.Action key="delete" icon={<IconTrash16 />}>
             Delete
           </ActionsPanel.Action>
         </ActionsPanel>
@@ -319,19 +319,19 @@ export const ExtraCount: Story = {
           onAction={(key) => alert(`submit ${key} action`)}
           {...args}
         >
-          <ActionsPanel.Action key="edit" startIcon={<IconPencil16 />}>
+          <ActionsPanel.Action key="edit" icon={<IconPencil16 />}>
             Edit
           </ActionsPanel.Action>
-          <ActionsPanel.Action key="copy" startIcon={<IconSquareMultipleO16 />}>
+          <ActionsPanel.Action key="copy" icon={<IconSquareMultipleO16 />}>
             Copy
           </ActionsPanel.Action>
           <ActionsPanel.Action
             key="archive"
-            startIcon={<IconBoxArchiveArrowDown16 />}
+            icon={<IconBoxArchiveArrowDown16 />}
           >
             Archive
           </ActionsPanel.Action>
-          <ActionsPanel.Action key="delete" startIcon={<IconTrash16 />}>
+          <ActionsPanel.Action key="delete" icon={<IconTrash16 />}>
             Delete
           </ActionsPanel.Action>
         </ActionsPanel>

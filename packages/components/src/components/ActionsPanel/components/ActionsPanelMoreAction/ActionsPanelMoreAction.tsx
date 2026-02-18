@@ -82,7 +82,7 @@ export const ActionsPanelMoreAction = (props: ActionsPanelMoreActionProps) => {
             key={item.key}
             textValue={isString(item.children) ? item.children : `${index}`}
           >
-            {item.props.startIcon}
+            {item.props.icon}
             <Menu.ItemText>{item.children}</Menu.ItemText>
           </Menu.Item>
         ))}
