@@ -65,6 +65,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
   const state = useOverlayTriggerState({
     isOpen: !!selectedItemCount,
+    onOpenChange: onClearSelection,
   });
 
   const { isOpen: isOpenState, close } = state;
