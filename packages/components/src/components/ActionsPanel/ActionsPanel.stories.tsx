@@ -75,7 +75,7 @@ export const Base: Story = {
 export const Overflow: Story = {
   render: function Render(args) {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(
-      new Set(['item1'])
+      new Set(['item-1'])
     );
 
     return (
