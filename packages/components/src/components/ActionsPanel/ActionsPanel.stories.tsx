@@ -8,7 +8,15 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { type Selection, Table, TableContainer } from '../../index';
+import {
+  Table,
+  Button,
+  FlexBox,
+  ContentPanel,
+  TableContainer,
+  ContentPanelContainer,
+} from '../../index';
+import type { Selection } from '../../index';
 import type { TableBodyProps } from '../Collections';
 import { List } from '../List';
 import type { TableProps } from '../Table/types';
@@ -168,6 +176,50 @@ const UsersTable = (
     </TableContainer>
   );
 };
+
+const content = (
+  <FlexBox gap="m" direction="column">
+    <span>
+      Web security is a crucial aspect of modern digital infrastructure,
+      ensuring the protection of sensitive data, user privacy, and system
+      integrity. As cyber threats continue to evolve, developers and
+      organizations must adopt a proactive approach to securing web applications
+      against attacks.
+    </span>
+    <span>
+      One of the most common vulnerabilities is SQL injection, where attackers
+      manipulate database queries to gain unauthorized access to sensitive
+      information. Similarly, cross-site scripting (XSS) allows malicious
+      scripts to run on a victim’s browser, leading to data theft or session
+      hijacking. Another prevalent threat is cross-site request forgery (CSRF),
+      in which users are tricked into executing unwanted actions on
+      authenticated sites. Additionally, man-in-the-middle attacks intercept
+      communication between users and servers, compromising the confidentiality
+      of data. Distributed Denial-of-Service (DDoS) attacks can also cripple web
+      services by overwhelming them with excessive traffic.
+    </span>
+    <span>
+      To mitigate these risks, implementing strong security practices is
+      essential. Using HTTPS ensures encrypted communication, protecting data
+      from interception. Proper input validation and escaping mechanisms help
+      prevent code injection attacks. Authentication and authorization
+      mechanisms, including multi-factor authentication (MFA) and role-based
+      access control (RBAC), add layers of security to user access. Secure API
+      development, including authentication, rate limiting, and encryption,
+      reduces vulnerabilities in web services. Keeping software, frameworks, and
+      dependencies up to date minimizes the risk of exploiting known
+      vulnerabilities. Continuous monitoring, logging, and security audits help
+      detect and respond to threats before they cause significant damage.
+    </span>
+    <span>
+      Web security is not a one-time implementation but an ongoing process that
+      evolves alongside emerging threats. By following best practices and
+      staying vigilant, businesses and developers can build resilient, secure
+      applications that protect users and data in an increasingly connected
+      world.
+    </span>
+  </FlexBox>
+);
 
 export const Base: Story = {
   render: function Render(args) {
@@ -336,6 +388,73 @@ export const ExtraCount: Story = {
           </ActionsPanel.Action>
         </ActionsPanel>
       </ActionsPanelContainer>
+    );
+  },
+};
+
+export const Standalone: Story = {
+  render: function Render() {
+    const [user, setUser] = useState<(typeof users)[number]>();
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+
+    return (
+      <ContentPanelContainer>
+        {({ open, close, isOpen }) => (
+          <>
+            <ContentPanel defaultWidth={400} maxWidth="80%" isResizable>
+              <ContentPanel.Header>
+                {user?.firstName}&nbsp;{user?.lastName}
+              </ContentPanel.Header>
+              <ContentPanel.Body>{content}</ContentPanel.Body>
+              <ContentPanel.Footer>
+                <Button onPress={close}>Ok</Button>
+              </ContentPanel.Footer>
+            </ContentPanel>
+            <ActionsPanelContainer>
+              <ActionsPanel
+                selectedExtraCount={4}
+                selectedItemCount={
+                  selectedKeys === 'all' ? 'all' : selectedKeys.size
+                }
+                onClearSelection={() => {
+                  setSelectedKeys(new Set());
+                }}
+                onAction={(key) => alert(`submit ${key} action`)}
+              >
+                <ActionsPanel.Action key="edit" icon={<IconPencil16 />}>
+                  Edit
+                </ActionsPanel.Action>
+                <ActionsPanel.Action
+                  key="copy"
+                  icon={<IconSquareMultipleO16 />}
+                >
+                  Copy
+                </ActionsPanel.Action>
+                <ActionsPanel.Action
+                  key="archive"
+                  icon={<IconBoxArchiveArrowDown16 />}
+                >
+                  Archive
+                </ActionsPanel.Action>
+                <ActionsPanel.Action key="delete" icon={<IconTrash16 />}>
+                  Delete
+                </ActionsPanel.Action>
+              </ActionsPanel>
+              <UsersTable
+                users={users}
+                selectionMode="multiple"
+                selectedKeys={selectedKeys}
+                onSelectionChange={setSelectedKeys}
+                onRowAction={(id) => {
+                  setUser(users.find((user) => id === user.id));
+
+                  if (!isOpen) open();
+                }}
+              />
+            </ActionsPanelContainer>
+          </>
+        )}
+      </ContentPanelContainer>
     );
   },
 };
