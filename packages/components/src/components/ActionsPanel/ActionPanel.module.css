@@ -11,12 +11,13 @@
   display: flex;
   position: fixed;
   inset-inline: 0;
+  inset-block-end: 0;
   align-items: center;
   pointer-events: none;
   justify-content: center;
   margin-inline: var(--kbq-size-s);
-  inset-block-end: var(--kbq-size-l);
   z-index: var(--kbq-layer-absolute);
+  margin-block-end: var(--kbq-size-l);
 }
 
 /* animation */
