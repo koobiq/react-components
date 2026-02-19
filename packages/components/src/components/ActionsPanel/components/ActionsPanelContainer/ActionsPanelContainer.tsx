@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { clsx, useMultiRef } from '@koobiq/react-core';
 import { Provider } from '@koobiq/react-primitives';
 
+import { ActionsPanelContext } from '../../ActionsPanelContext';
+
 import s from './ActionPanelContainer.module.css';
 import { ActionsPanelContainerContext } from './ActionstPanelContainerContext';
 import type { ActionsPanelContainerProps } from './types';
@@ -25,6 +27,12 @@ export const ActionsPanelContainer = (props: ActionsPanelContainerProps) => {
           ActionsPanelContainerContext,
           {
             portalContainer,
+          },
+        ],
+        [
+          ActionsPanelContext,
+          {
+            className: s.panel,
           },
         ],
       ]}

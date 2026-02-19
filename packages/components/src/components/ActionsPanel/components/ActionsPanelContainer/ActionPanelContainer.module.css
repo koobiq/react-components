@@ -2,3 +2,7 @@
   position: relative;
   overflow: hidden;
 }
+
+.panel {
+  position: absolute;
+}

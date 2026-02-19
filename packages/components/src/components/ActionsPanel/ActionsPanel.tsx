@@ -13,7 +13,6 @@ import type { ReactElement } from 'react';
 import {
   mergeProps,
   useMultiRef,
-  useObjectRef,
   useElementSize,
   useHideOverflowItems,
 } from '@koobiq/react-core';
@@ -22,6 +21,7 @@ import {
   useOverlay,
   useToolbar,
   useOverlayTriggerState,
+  useContextProps,
 } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
@@ -38,10 +38,16 @@ import type {
   ActionsPanelActionProps,
   ActionsPanelActionRenderItem,
 } from './index';
+import { ActionsPanelContext } from './index';
 
 const ActionsPanelComponent = (props: ActionsPanelProps) => {
+  const [panelProps, panelRef] = useContextProps(
+    props,
+    props.ref,
+    ActionsPanelContext
+  );
+
   const {
-    ref,
     children,
     onAction,
     onClearSelection,
@@ -49,11 +55,9 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     selectedExtraCount,
     disableExitOnEscapeKeyDown,
     ...other
-  } = props;
+  } = panelProps;
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
-
-  const panelRef = useObjectRef(ref);
 
   const { portalContainer } = useContext(ActionsPanelContainerContext);
 

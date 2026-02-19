@@ -9,7 +9,7 @@
   --actions-panel-vertical-divider-color: var(--kbq-line-contrast-fade);
 
   display: flex;
-  position: absolute;
+  position: fixed;
   align-items: center;
   pointer-events: none;
   justify-content: center;
