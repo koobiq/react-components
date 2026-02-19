@@ -94,8 +94,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   >({
     length: length + 2,
     minHiddenForMore: 2,
-    // TODO: calculate this size from the more-action
-    busy: clearBtnWidth + 16,
+    busy: clearBtnWidth,
     deps: [isOpenState, clearBtnWidth],
   });
 

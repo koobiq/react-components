@@ -13,10 +13,9 @@
   align-items: center;
   pointer-events: none;
   justify-content: center;
-  inset-inline: var(--kbq-size-s) var(--kbq-size-s);
   inset-block-end: var(--kbq-size-l);
   z-index: var(--kbq-layer-absolute);
-  inline-size: calc(100% - 2 * var(--kbq-size-s));
+  inset-inline: calc(2 * var(--actions-panel-padding));
 }
 
 /* animation */
