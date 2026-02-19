@@ -43,6 +43,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   const {
     children,
     onAction,
+    slotProps,
     onClearSelection,
     selectedItemCount,
     selectedExtraCount,
@@ -107,12 +108,15 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     overlayRef
   );
 
-  const transitionProps = mergeProps({
-    timeout: 300,
-    in: isOpenState,
-    nodeRef: panelRef,
-    unmountOnExit: true,
-  });
+  const transitionProps = mergeProps(
+    {
+      timeout: 300,
+      in: isOpenState,
+      nodeRef: panelRef,
+      unmountOnExit: true,
+    },
+    slotProps?.transition
+  );
 
   const items: Array<ReactElement<ActionsPanelActionProps>> = [];
   const collapsedItems: ActionsPanelActionRenderItem[] = [];
@@ -162,17 +166,27 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     overlayProps
   );
 
+  const containerProps = mergeProps(
+    { className: s.container, ref: parentRef },
+    slotProps?.container
+  );
+
+  const actionsProps = mergeProps(
+    {
+      ref: actionsRef,
+      className: s.actions,
+      'data-only-counter-hidden': isOnlyCounterHidden || undefined,
+    },
+    slotProps?.actions
+  );
+
   return (
     <Transition {...transitionProps}>
       {(transition) => (
         <Overlay portalContainer={portalContainer || undefined}>
           <div data-transition={transition} {...rootProps} ref={rootRef}>
-            <div className={s.container} ref={parentRef}>
-              <div
-                ref={actionsRef}
-                className={s.actions}
-                data-only-counter-hidden={isOnlyCounterHidden || undefined}
-              >
+            <div {...containerProps}>
+              <div {...actionsProps}>
                 {items}
                 <ActionsPanelCounter
                   ref={itemsRefs[counterIndex]}

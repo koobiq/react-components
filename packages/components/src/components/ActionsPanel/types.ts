@@ -1,6 +1,7 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ComponentPropsWithRef, ReactElement, ReactNode } from 'react';
 
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import type { TransitionProps } from 'react-transition-group/Transition';
 
 import type { Key } from '../../index';
 
@@ -40,6 +41,12 @@ export type ActionsPanelProps = ExtendableComponentPropsWithRef<
      * @default document.body
      */
     portalContainer?: HTMLElement | null;
+    /** The props used for each slot inside. */
+    slotProps?: {
+      transition?: Partial<TransitionProps<HTMLElement>>;
+      container?: ComponentPropsWithRef<'div'>;
+      actions?: ComponentPropsWithRef<'div'>;
+    };
   },
   'div'
 >;
