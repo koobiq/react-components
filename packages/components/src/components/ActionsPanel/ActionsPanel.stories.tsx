@@ -28,6 +28,7 @@ const meta = {
   component: ActionsPanel,
   subcomponents: {
     ActionsPanelContainer,
+    'ActionsPanel.Action': ActionsPanel.Action,
   },
   argTypes: {},
   tags: ['status:new'],

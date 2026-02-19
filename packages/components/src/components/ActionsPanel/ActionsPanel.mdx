@@ -24,6 +24,14 @@ import { ActionsPanel, ActionsPanelContainer } from '@koobiq/react-components';
 
 <Props />
 
+## Components
+
+Use these components to build a contextual actions panel that appears when items are selected.
+
+- `ActionsPanelContainer` — A wrapper that provides a portal container for the panel overlay and controls where the panel is rendered.
+- `ActionsPanel` — The main panel. Shows as an overlay when `selectedItemCount > 0`, handles keyboard dismissal, and calls `onClearSelection` to close.
+- `ActionsPanel.Action` — An action item inside the panel. Actions can be automatically collapsed into the overflow menu when there isn't enough space.
+
 ## Overflow
 
 <Story of={Stories.Overflow} />
