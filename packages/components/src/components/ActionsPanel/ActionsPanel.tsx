@@ -148,6 +148,9 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     }
   }
 
+  const isOnlyCounterHidden =
+    collapsedItems.length === 0 && !visibleMap[counterIndex];
+
   const rootRef = useMultiRef([panelRef, overlayRef]);
 
   const rootProps = mergeProps(
@@ -156,9 +159,6 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     toolbarProps,
     overlayProps
   );
-
-  const isOnlyCounterHidden =
-    collapsedItems.length === 0 && !visibleMap[counterIndex];
 
   return (
     <Transition {...transitionProps}>
@@ -172,15 +172,15 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
                   ref={itemsRefs[counterIndex]}
                   selectedItemCount={shownCount}
                   selectedExtraCount={selectedExtraCount}
-                  aria-hidden={!visibleMap[counterIndex]}
+                  aria-hidden={!visibleMap[counterIndex] || undefined}
                 />
                 <ActionsPanelMoreAction
                   onAction={onAction}
                   ref={itemsRefs[moreIndex]}
                   selectedItemCount={shownCount}
                   collapsedItems={collapsedItems}
-                  aria-hidden={!visibleMap[moreIndex]}
                   selectedExtraCount={selectedExtraCount}
+                  aria-hidden={!visibleMap[moreIndex] || undefined}
                   className={clsx(isOnlyCounterHidden && s.moreHidden)}
                 />
                 <ActionsPanelClearButton
