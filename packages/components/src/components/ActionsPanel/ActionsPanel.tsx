@@ -4,7 +4,6 @@ import { Children, cloneElement, useRef, useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 
 import {
-  clsx,
   mergeProps,
   useMultiRef,
   useElementSize,
@@ -166,7 +165,10 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
         <Overlay portalContainer={portalContainer || undefined}>
           <div data-transition={transition} {...rootProps} ref={rootRef}>
             <div className={s.container} ref={parentRef}>
-              <div className={s.actions}>
+              <div
+                className={s.actions}
+                data-only-counter-hidden={isOnlyCounterHidden || undefined}
+              >
                 {items}
                 <ActionsPanelCounter
                   ref={itemsRefs[counterIndex]}
@@ -175,13 +177,13 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
                   aria-hidden={!visibleMap[counterIndex] || undefined}
                 />
                 <ActionsPanelMoreAction
+                  className={s.more}
                   onAction={onAction}
                   ref={itemsRefs[moreIndex]}
                   selectedItemCount={shownCount}
                   collapsedItems={collapsedItems}
                   selectedExtraCount={selectedExtraCount}
                   aria-hidden={!visibleMap[moreIndex] || undefined}
-                  className={clsx(isOnlyCounterHidden && s.moreHidden)}
                 />
                 <ActionsPanelClearButton
                   ref={clearBtnRef}
