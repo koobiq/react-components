@@ -393,6 +393,47 @@ export const ExtraCount: Story = {
 };
 
 export const Standalone: Story = {
+  render: function Render(args) {
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+
+    return (
+      <>
+        <UsersTable
+          selectionMode="multiple"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          users={users}
+        />
+        <ActionsPanel
+          selectedItemCount={selectedKeys === 'all' ? 'all' : selectedKeys.size}
+          onClearSelection={() => {
+            setSelectedKeys(new Set());
+          }}
+          onAction={(key) => alert(`submit ${key} action`)}
+          {...args}
+        >
+          <ActionsPanel.Action key="edit" icon={<IconPencil16 />}>
+            Edit
+          </ActionsPanel.Action>
+          <ActionsPanel.Action key="copy" icon={<IconSquareMultipleO16 />}>
+            Copy
+          </ActionsPanel.Action>
+          <ActionsPanel.Action
+            key="archive"
+            icon={<IconBoxArchiveArrowDown16 />}
+          >
+            Archive
+          </ActionsPanel.Action>
+          <ActionsPanel.Action key="delete" icon={<IconTrash16 />}>
+            Delete
+          </ActionsPanel.Action>
+        </ActionsPanel>
+      </>
+    );
+  },
+};
+
+export const WithContentPanel: Story = {
   render: function Render() {
     const [user, setUser] = useState<(typeof users)[number]>();
     const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
