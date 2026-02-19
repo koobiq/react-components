@@ -89,7 +89,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   >({
     length: length + 2,
     minHiddenForMore: 2,
-    busy: clearBtnWidth,
+    busy: clearBtnWidth + 16,
     deps: [isOpenState, clearBtnWidth],
   });
 
@@ -148,7 +148,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     }
   }
 
-  const rootRef = useMultiRef([parentRef, panelRef, overlayRef]);
+  const rootRef = useMultiRef([panelRef, overlayRef]);
 
   const rootProps = mergeProps(
     { className: s.base },
@@ -162,26 +162,28 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
       {(transition) => (
         <Overlay portalContainer={portalContainer || undefined}>
           <div data-transition={transition} {...rootProps} ref={rootRef}>
-            <div className={s.actions}>
-              {items}
-              <ActionsPanelCounter
-                ref={itemsRefs[counterIndex]}
-                selectedItemCount={shownCount}
-                selectedExtraCount={selectedExtraCount}
-                aria-hidden={!visibleMap[counterIndex]}
-              />
-              <ActionsPanelMoreAction
-                onAction={onAction}
-                ref={itemsRefs[moreIndex]}
-                selectedItemCount={shownCount}
-                selectedExtraCount={selectedExtraCount}
-                collapsedItems={collapsedItems}
-                aria-hidden={!visibleMap[moreIndex]}
-              />
-              <ActionsPanelClearButton
-                ref={clearBtnRef}
-                onClearSelection={onClearSelection}
-              />
+            <div className={s.container} ref={parentRef}>
+              <div className={s.actions}>
+                {items}
+                <ActionsPanelCounter
+                  ref={itemsRefs[counterIndex]}
+                  selectedItemCount={shownCount}
+                  selectedExtraCount={selectedExtraCount}
+                  aria-hidden={!visibleMap[counterIndex]}
+                />
+                <ActionsPanelMoreAction
+                  onAction={onAction}
+                  ref={itemsRefs[moreIndex]}
+                  selectedItemCount={shownCount}
+                  selectedExtraCount={selectedExtraCount}
+                  collapsedItems={collapsedItems}
+                  aria-hidden={!visibleMap[moreIndex]}
+                />
+                <ActionsPanelClearButton
+                  ref={clearBtnRef}
+                  onClearSelection={onClearSelection}
+                />
+              </div>
             </div>
           </div>
         </Overlay>

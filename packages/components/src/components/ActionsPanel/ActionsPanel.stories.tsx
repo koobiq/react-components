@@ -229,7 +229,14 @@ export const Base: Story = {
     );
 
     return (
-      <ActionsPanelContainer>
+      <ActionsPanelContainer
+        style={{
+          minWidth: 89,
+          maxWidth: '100%',
+          overflow: 'hidden',
+          resize: 'horizontal',
+        }}
+      >
         <UsersTable
           selectionMode="multiple"
           selectedKeys={selectedKeys}

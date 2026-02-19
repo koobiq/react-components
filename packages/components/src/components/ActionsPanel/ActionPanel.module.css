@@ -10,12 +10,13 @@
 
   display: flex;
   position: fixed;
+  inset-inline: 0;
   align-items: center;
   pointer-events: none;
   justify-content: center;
+  margin-inline: var(--kbq-size-s);
   inset-block-end: var(--kbq-size-l);
   z-index: var(--kbq-layer-absolute);
-  inset-inline: calc(2 * var(--actions-panel-padding));
 }
 
 /* animation */
@@ -43,6 +44,12 @@
 .base[data-transition='exited'] {
   transform: translate(0, var(--actions-panel-start-position));
   opacity: 0;
+}
+
+.container {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* actions */
