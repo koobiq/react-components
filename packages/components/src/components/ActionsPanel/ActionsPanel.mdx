@@ -54,9 +54,14 @@ When triggered, `onAction` is called with that key.
 </ActionsPanelContainer>
 ```
 
-## Overflow
+## Overflow Actions
 
-<Story of={Stories.Overflow} />
+When there isn't enough space, `ActionsPanel` collapses extra actions into a "More" menu.
+
+By default, actions that don't fit are hidden and grouped under the "More" button,
+keeping the panel compact while preserving access to all actions.
+
+<Story of={Stories.OverflowActions} />
 
 ## Additional counter
 

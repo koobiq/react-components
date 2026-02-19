@@ -227,14 +227,7 @@ export const Base: Story = {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
 
     return (
-      <ActionsPanelContainer
-        style={{
-          minWidth: 89,
-          maxWidth: '100%',
-          overflow: 'hidden',
-          resize: 'horizontal',
-        }}
-      >
+      <ActionsPanelContainer>
         <UsersTable
           selectionMode="multiple"
           selectedKeys={selectedKeys}
@@ -270,7 +263,7 @@ export const Base: Story = {
   },
 };
 
-export const Overflow: Story = {
+export const OverflowActions: Story = {
   render: function Render(args) {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(
       new Set(['item-1'])
