@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Children,
-  cloneElement,
-  useRef,
-  useEffect,
-  useState,
-  useContext,
-} from 'react';
+import { Children, cloneElement, useRef, useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 
 import {
@@ -31,7 +24,6 @@ import {
   ActionsPanelCounter,
   ActionsPanelClearButton,
 } from './components';
-import { ActionsPanelContainerContext } from './components/ActionsPanelContainer/ActionstPanelContainerContext';
 import { ActionsPanelMoreAction } from './components/ActionsPanelMoreAction';
 import type {
   ActionsPanelProps,
@@ -53,13 +45,12 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     onClearSelection,
     selectedItemCount,
     selectedExtraCount,
+    portalContainer,
     disableExitOnEscapeKeyDown,
     ...other
   } = panelProps;
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
-
-  const { portalContainer } = useContext(ActionsPanelContainerContext);
 
   // Preserve count during close animation
   const [shownCount, setShownCount] = useState(selectedItemCount);

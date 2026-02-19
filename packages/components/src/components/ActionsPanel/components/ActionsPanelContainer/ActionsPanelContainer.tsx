@@ -8,7 +8,6 @@ import { Provider } from '@koobiq/react-primitives';
 import { ActionsPanelContext } from '../../ActionsPanelContext';
 
 import s from './ActionPanelContainer.module.css';
-import { ActionsPanelContainerContext } from './ActionstPanelContainerContext';
 import type { ActionsPanelContainerProps } from './types';
 
 export const ActionsPanelContainer = (props: ActionsPanelContainerProps) => {
@@ -24,15 +23,10 @@ export const ActionsPanelContainer = (props: ActionsPanelContainerProps) => {
     <Provider
       values={[
         [
-          ActionsPanelContainerContext,
-          {
-            portalContainer,
-          },
-        ],
-        [
           ActionsPanelContext,
           {
             className: s.panel,
+            portalContainer,
           },
         ],
       ]}

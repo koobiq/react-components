@@ -35,6 +35,11 @@ export type ActionsPanelProps = ExtendableComponentPropsWithRef<
     onClearSelection?: () => void;
     /** Handler called when any breadcrumb item is pressed. It returns the item key. */
     onAction?: (key: Key) => void;
+    /**
+     * The container element in which the component portal will be placed.
+     * @default document.body
+     */
+    portalContainer?: HTMLElement | null;
   },
   'div'
 >;
