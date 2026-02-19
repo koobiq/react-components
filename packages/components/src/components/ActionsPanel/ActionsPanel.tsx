@@ -25,6 +25,7 @@ import {
   ActionsPanelClearButton,
 } from './components';
 import { ActionsPanelMoreAction } from './components/ActionsPanelMoreAction';
+import { useInlinePaddingSize } from './hooks';
 import type {
   ActionsPanelProps,
   ActionsPanelActionProps,
@@ -51,6 +52,8 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
   } = panelProps;
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
+  const actionsRef = useRef<HTMLDivElement | null>(null);
+  const actionsInlinePadding = useInlinePaddingSize(actionsRef);
 
   // Preserve count during close animation
   const [shownCount, setShownCount] = useState(selectedItemCount);
@@ -88,8 +91,8 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     HTMLDivElement
   >({
     length: length + 2,
-    busy: clearBtnWidth + 16,
-    deps: [isOpenState, clearBtnWidth],
+    busy: clearBtnWidth + actionsInlinePadding,
+    deps: [isOpenState, clearBtnWidth, actionsInlinePadding],
   });
 
   const counterIndex = length;
@@ -166,6 +169,7 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
           <div data-transition={transition} {...rootProps} ref={rootRef}>
             <div className={s.container} ref={parentRef}>
               <div
+                ref={actionsRef}
                 className={s.actions}
                 data-only-counter-hidden={isOnlyCounterHidden || undefined}
               >
