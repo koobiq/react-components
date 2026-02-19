@@ -4,6 +4,7 @@ import { Children, cloneElement, useRef, useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 
 import {
+  clsx,
   mergeProps,
   useMultiRef,
   useElementSize,
@@ -88,7 +89,6 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     HTMLDivElement
   >({
     length: length + 2,
-    minHiddenForMore: 2,
     busy: clearBtnWidth + 16,
     deps: [isOpenState, clearBtnWidth],
   });
@@ -157,6 +157,9 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     overlayProps
   );
 
+  const isOnlyCounterHidden =
+    collapsedItems.length === 0 && !visibleMap[counterIndex];
+
   return (
     <Transition {...transitionProps}>
       {(transition) => (
@@ -175,9 +178,10 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
                   onAction={onAction}
                   ref={itemsRefs[moreIndex]}
                   selectedItemCount={shownCount}
-                  selectedExtraCount={selectedExtraCount}
                   collapsedItems={collapsedItems}
                   aria-hidden={!visibleMap[moreIndex]}
+                  selectedExtraCount={selectedExtraCount}
+                  className={clsx(isOnlyCounterHidden && s.moreHidden)}
                 />
                 <ActionsPanelClearButton
                   ref={clearBtnRef}
