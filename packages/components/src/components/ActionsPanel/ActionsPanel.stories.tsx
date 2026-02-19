@@ -224,7 +224,9 @@ const content = (
 
 export const Base: Story = {
   render: function Render(args) {
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      new Set([1, 2, 3])
+    );
 
     return (
       <ActionsPanelContainer>
