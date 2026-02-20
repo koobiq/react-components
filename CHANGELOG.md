@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.26.0](https://github.com/koobiq/react-components/compare/0.25.0...0.26.0) (2026-02-20)
+
+
+### 🚀 Features
+
+* **Breadcrumbs:** add i18n for "More" button (DS-4720) ([#273](https://github.com/koobiq/react-components/issues/273)) ([aea5463](https://github.com/koobiq/react-components/commit/aea54637e32693a3dffb405c6c65a7d19450a0a4))
+* **components:** add `ActionsPanel` component (DS-4664) ([#275](https://github.com/koobiq/react-components/issues/275)) ([021981a](https://github.com/koobiq/react-components/commit/021981a4568b44e2ae37879b7e08ba51c8590c53))
+* **Divider:** define CSS vars for base styling (DS-4719) ([#272](https://github.com/koobiq/react-components/issues/272)) ([535bb76](https://github.com/koobiq/react-components/commit/535bb7679cf645bfa2d95c31b3f6315e51b792ec))
+
+
+### 🐞 Bug Fixes
+
+* **Button:** resolve incompatible prop types (DS-4734) ([#276](https://github.com/koobiq/react-components/issues/276)) ([cab34a5](https://github.com/koobiq/react-components/commit/cab34a5704a9b1e05e9ff55a759f69c7c62b7b6a))
+
 ## [0.25.0](https://github.com/koobiq/react-components/compare/0.24.0...0.25.0) (2026-02-16)
 
 
