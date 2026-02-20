@@ -320,6 +320,11 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q1 2026',
   },
-  { component: 'ActionPanel', status: '🚧 Planned', planned: 'Q1 2026' },
+  {
+    component: 'ActionsPanel',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q1 2026',
+  },
   { component: 'Tree', status: '🚧 Planned', planned: 'Q1 2026' },
 ];

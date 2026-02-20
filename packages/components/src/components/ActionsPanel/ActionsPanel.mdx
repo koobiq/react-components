@@ -1,0 +1,89 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ActionsPanel.stories';
+
+<Meta of={Stories} />
+
+# ActionsPanel
+
+<Status variant="experimental" />
+
+ActionsPanel is used for single and bulk selection patterns when
+a user needs to perform actions on one or more items at the same time.
+
+```tsx
+import { ActionsPanel, ActionsPanelContainer } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+<Props />
+
+## Components
+
+Use these components to build a contextual actions panel.
+
+- `ActionsPanelContainer` — Wraps the content and hosts the panel.
+- `ActionsPanel` — Displays actions for selected items.
+- `ActionsPanel.Action` — Defines an individual action.
+
+## Usage
+
+Wrap your page content with `ActionsPanelContainer` — it provides the container for the panel.
+
+Place `ActionsPanel` next to your content. The panel appears when `selectedItemCount > 0`.
+
+Add `ActionsPanel.Action` to define actions for selected items. Each action should have a `key`.
+When triggered, `onAction` is called with that key.
+
+```tsx
+<ActionsPanelContainer>
+  {/* List, Table, or any other content that controls selection */}
+  <YourContent />
+
+  <ActionsPanel selectedItemCount={3} onAction={(key) => alert(key)}>
+    <ActionsPanel.Action key="action-1">Action 1</ActionsPanel.Action>
+    <ActionsPanel.Action key="action-2">Action 2</ActionsPanel.Action>
+    <ActionsPanel.Action key="action-3">Action 3</ActionsPanel.Action>
+  </ActionsPanel>
+</ActionsPanelContainer>
+```
+
+## Overflow Actions
+
+When there isn't enough space, `ActionsPanel` collapses extra actions into a "More" menu.
+
+By default, actions that don't fit are hidden and grouped under the "More" button,
+keeping the panel compact while preserving access to all actions.
+
+<Story of={Stories.OverflowActions} />
+
+## Additional counter
+
+The component supports an optional secondary counter via the `selectedExtraCount` prop.
+
+This counter is displayed next to `selectedItemCount` and can be used to show additional context.
+For example, if items are grouped, it can represent the total number of items instead of just selected groups.
+
+<Story of={Stories.ExtraCount} />
+
+## Standalone
+
+Use `ActionsPanel` as a standalone component when you don't need `ActionsPanelContainer` and want to control when the panel is shown.
+
+You can control where it is rendered by providing the `portalContainer` prop (for example, to render it within a specific layout or section).
+
+<Story of={Stories.Standalone} />
+
+## Responsive
+
+See how the `ActionsPanel` adapts across breakpoints.
+Below the `xl` breakpoint, actions switch to icon-only mode; above it, labels are shown.
+The panel updates based on the current selection.
+
+<Story of={Stories.Responsive} />

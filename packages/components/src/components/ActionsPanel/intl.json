@@ -1,0 +1,14 @@
+{
+  "ru-RU": {
+    "selected": "Выбрано:",
+    "all selected": "Выбраны все",
+    "clear selection": "Очистить выделение",
+    "show more actions": "Показать остальные действия"
+  },
+  "en-US": {
+    "selected": "Selected:",
+    "all selected": "All selected",
+    "clear selection": "Clear selection",
+    "show more actions": "Show more actions"
+  }
+}

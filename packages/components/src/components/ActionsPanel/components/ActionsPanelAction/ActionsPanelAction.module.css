@@ -1,0 +1,14 @@
+.base {
+  flex-shrink: 0;
+  margin-inline-start: var(--kbq-size-xxs);
+}
+
+.base:first-child {
+  margin-inline-start: unset;
+}
+
+.base[aria-hidden='true'] {
+  visibility: hidden;
+  position: absolute;
+  inset-inline-start: -300vw;
+}

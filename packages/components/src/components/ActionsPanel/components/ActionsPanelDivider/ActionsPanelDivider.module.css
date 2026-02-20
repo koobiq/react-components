@@ -1,0 +1,5 @@
+.base {
+  --divider-color: var(--actions-panel-vertical-divider-color);
+
+  block-size: var(--kbq-size-m);
+}

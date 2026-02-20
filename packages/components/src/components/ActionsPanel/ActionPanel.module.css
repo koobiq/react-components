@@ -1,0 +1,80 @@
+.base {
+  --actions-panel-start-position: 100%;
+  --actions-panel-padding: var(--kbq-size-s);
+  --actions-panel-block-size: var(--kbq-size-5xl);
+  --actions-panel-border-radius: var(--kbq-size-l);
+  --actions-panel-box-shadow: var(--kbq-shadow-card);
+  --actions-panel-bg-color: var(--kbq-background-contrast);
+  --actions-panel-color: var(--kbq-foreground-on-contrast);
+  --actions-panel-vertical-divider-color: var(--kbq-line-contrast-fade);
+
+  display: flex;
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  align-items: center;
+  pointer-events: none;
+  justify-content: center;
+  margin-inline: var(--kbq-size-s);
+  z-index: var(--kbq-layer-absolute);
+  margin-block-end: var(--kbq-size-l);
+}
+
+/* animation */
+.base[data-transition='entering'] {
+  transform: translate(0, 0);
+  opacity: 1;
+  transition:
+    transform var(--kbq-transition-slow),
+    opacity var(--kbq-transition-slow);
+}
+
+.base[data-transition='entered'] {
+  transform: translate(0, 0);
+  opacity: 1;
+}
+
+.base[data-transition='exiting'] {
+  transform: translate(0, var(--actions-panel-start-position));
+  opacity: 0;
+  transition:
+    transform var(--kbq-transition-slow),
+    opacity var(--kbq-transition-slow);
+}
+
+.base[data-transition='exited'] {
+  transform: translate(0, var(--actions-panel-start-position));
+  opacity: 0;
+}
+
+/* container */
+.container {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* actions */
+.actions {
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+  box-sizing: border-box;
+  color: var(--actions-panel-color);
+  padding: var(--actions-panel-padding);
+  background: var(--actions-panel-bg-color);
+  block-size: var(--actions-panel-block-size);
+  box-shadow: var(--actions-panel-box-shadow);
+  border-radius: var(--actions-panel-border-radius);
+}
+
+.actions[data-only-counter-hidden='true'] {
+  .more {
+    margin: 0;
+    padding: 0;
+    inline-size: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

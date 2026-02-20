@@ -1,0 +1,23 @@
+.base {
+  flex-shrink: 0;
+}
+
+.base[aria-hidden='true'] {
+  visibility: hidden;
+  position: absolute;
+  inset-inline-start: -300vw;
+}
+
+.base[aria-expanded='true'] {
+  background-color: var(--button-bg-color-active);
+}
+
+/* menu-header-title */
+.menuTitle {
+  padding: var(--kbq-size-s) var(--kbq-size-l);
+}
+
+/* extra-counter */
+.extraCounter {
+  margin-inline-start: var(--kbq-size-xs);
+}
