@@ -212,7 +212,8 @@ describe('ActionsPanel', () => {
   });
 
   describe('overflow', () => {
-    it('should mark hidden action with aria-hidden when it overflows', () => {
+    it('should hide counter and not set data-only-counter-hidden when actions are collapsed', () => {
+      // 2 actions => [a1 visible, a2 hidden, counter hidden, more visible]
       mockOverflow([true, false, false, true]);
 
       render(
@@ -221,6 +222,7 @@ describe('ActionsPanel', () => {
             selectedItemCount={1}
             slotProps={{
               counter: { 'data-testid': 'counter' },
+              actions: { 'data-testid': 'actions' },
             }}
           >
             <ActionsPanel.Action key="a1">Action 1</ActionsPanel.Action>
@@ -233,16 +235,24 @@ describe('ActionsPanel', () => {
         'aria-hidden',
         'true'
       );
+
+      expect(screen.getByTestId('actions')).not.toHaveAttribute(
+        'data-only-counter-hidden'
+      );
     });
 
-    it('should set aria-hidden on counter when counter is hidden by overflow', () => {
+    it('should hide counter and set data-only-counter-hidden when only counter is hidden', () => {
+      // 1 action => [action0 visible, counter1 hidden, more2 visible]
       mockOverflow([true, false, true]);
 
       render(
         <ActionsPanelContainer>
           <ActionsPanel
             selectedItemCount={1}
-            slotProps={{ counter: { 'data-testid': 'counter' } }}
+            slotProps={{
+              counter: { 'data-testid': 'counter' },
+              actions: { 'data-testid': 'actions' },
+            }}
           >
             <ActionsPanel.Action key="a1">Action 1</ActionsPanel.Action>
           </ActionsPanel>
@@ -253,9 +263,15 @@ describe('ActionsPanel', () => {
         'aria-hidden',
         'true'
       );
+
+      expect(screen.getByTestId('actions')).toHaveAttribute(
+        'data-only-counter-hidden',
+        'true'
+      );
     });
 
-    it('should set aria-hidden on more when more is hidden by overflow', () => {
+    it('should hide more when more is hidden by overflow', () => {
+      // 1 action => [action0 visible, counter1 visible, more2 hidden]
       mockOverflow([true, true, false]);
 
       render(
@@ -270,46 +286,6 @@ describe('ActionsPanel', () => {
       );
 
       expect(screen.getByTestId('more')).toHaveAttribute('aria-hidden', 'true');
-    });
-
-    it('should set data-only-counter-hidden when only counter is hidden', () => {
-      mockOverflow([true, false, true]);
-
-      render(
-        <ActionsPanelContainer>
-          <ActionsPanel
-            selectedItemCount={1}
-            slotProps={{ actions: { 'data-testid': 'actions' } }}
-          >
-            <ActionsPanel.Action key="a1">Action 1</ActionsPanel.Action>
-          </ActionsPanel>
-        </ActionsPanelContainer>
-      );
-
-      expect(screen.getByTestId('actions')).toHaveAttribute(
-        'data-only-counter-hidden',
-        'true'
-      );
-    });
-
-    it('should not set data-only-counter-hidden when an action is collapsed', () => {
-      mockOverflow([true, false, false, true]);
-
-      render(
-        <ActionsPanelContainer>
-          <ActionsPanel
-            selectedItemCount={1}
-            slotProps={{ actions: { 'data-testid': 'actions' } }}
-          >
-            <ActionsPanel.Action key="a1">Action 1</ActionsPanel.Action>
-            <ActionsPanel.Action key="a2">Action 2</ActionsPanel.Action>
-          </ActionsPanel>
-        </ActionsPanelContainer>
-      );
-
-      expect(screen.getByTestId('actions')).not.toHaveAttribute(
-        'data-only-counter-hidden'
-      );
     });
   });
 });
