@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   checks: write
@@ -13,19 +14,19 @@ permissions:
 jobs:
   deploy-pr-preview:
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository }}
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version-file: .nvmrc
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -39,12 +40,11 @@ jobs:
         run: pnpm run build-storybook
 
       - name: Deploy Preview
-        if: github.actor != 'dependabot[bot]'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KOOBIQ }}
-          firebaseToolsVersion: '15.3.1'
+          firebaseToolsVersion: '15.7.0'
           projectId: koobiq
           target: next
           channelId: prs-${{ github.event.number }}
