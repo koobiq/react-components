@@ -180,6 +180,29 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
     slotProps?.actions
   );
 
+  const counterProps = mergeProps(
+    {
+      ref: itemsRefs[counterIndex],
+      selectedItemCount: shownCount,
+      selectedExtraCount,
+      'aria-hidden': !visibleMap[counterIndex] || undefined,
+    },
+    slotProps?.counter
+  );
+
+  const moreProps = mergeProps(
+    {
+      className: s.more,
+      onAction,
+      ref: itemsRefs[moreIndex],
+      selectedItemCount: shownCount,
+      collapsedItems,
+      selectedExtraCount,
+      'aria-hidden': !visibleMap[moreIndex] || undefined,
+    },
+    slotProps?.more
+  );
+
   return (
     <Transition {...transitionProps}>
       {(transition) => (
@@ -188,21 +211,8 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
             <div {...containerProps}>
               <div {...actionsProps}>
                 {items}
-                <ActionsPanelCounter
-                  ref={itemsRefs[counterIndex]}
-                  selectedItemCount={shownCount}
-                  selectedExtraCount={selectedExtraCount}
-                  aria-hidden={!visibleMap[counterIndex] || undefined}
-                />
-                <ActionsPanelMoreAction
-                  className={s.more}
-                  onAction={onAction}
-                  ref={itemsRefs[moreIndex]}
-                  selectedItemCount={shownCount}
-                  collapsedItems={collapsedItems}
-                  selectedExtraCount={selectedExtraCount}
-                  aria-hidden={!visibleMap[moreIndex] || undefined}
-                />
+                <ActionsPanelCounter {...counterProps} />
+                <ActionsPanelMoreAction {...moreProps} />
                 <ActionsPanelClearButton
                   ref={clearBtnRef}
                   onClearSelection={onClearSelection}

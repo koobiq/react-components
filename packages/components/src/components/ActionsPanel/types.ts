@@ -5,7 +5,11 @@ import type { TransitionProps } from 'react-transition-group/Transition';
 
 import type { Key } from '../../index';
 
-import type { ActionsPanelActionProps } from './components';
+import type {
+  ActionsPanelActionProps,
+  ActionsPanelCounterProps,
+} from './components';
+import type { ActionsPanelMoreActionProps } from './components/ActionsPanelMoreAction';
 
 export type ActionsPanelActionRenderItem = {
   /** React element. */
@@ -48,6 +52,8 @@ export type ActionsPanelProps = ExtendableComponentPropsWithRef<
       transition?: Partial<TransitionProps<HTMLElement>>;
       container?: ComponentPropsWithRef<'div'>;
       actions?: ComponentPropsWithRef<'div'>;
+      counter?: ActionsPanelCounterProps;
+      more?: ActionsPanelMoreActionProps;
     };
   },
   'div'
