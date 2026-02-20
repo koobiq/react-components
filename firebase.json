@@ -51,6 +51,58 @@
         }
       ],
       "ignore": ["firebase.json", "**/node_modules/**"]
+    },
+    {
+      "target": "next",
+      "public": "storybook-static",
+      "cleanUrls": true,
+      "rewrites": [
+        {
+          "source": "/**/!(*.@(js|ts|html|css|json|svg|png|jpg|jpeg))",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**/!(*.*)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              // The `index.html` file (or when loaded as SPA), should never be cached. Older
+              // JavaScript sources and assets would be loaded that might no longer be available.
+              "value": "no-cache"
+            }
+          ]
+        },
+        {
+          "source": "/**",
+          "headers": [
+            {
+              "key": "X-XSS-Protection",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "source": "/assets/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=15811200, s-maxage=31536000"
+            }
+          ]
+        },
+        {
+          "source": "/*.@(js|css)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=31536000"
+            }
+          ]
+        }
+      ],
+      "ignore": ["firebase.json", "**/node_modules/**"]
     }
   ]
 }
