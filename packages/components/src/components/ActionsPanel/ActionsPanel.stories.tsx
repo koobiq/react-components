@@ -230,14 +230,7 @@ export const Base: Story = {
     );
 
     return (
-      <ActionsPanelContainer
-        style={{
-          minWidth: 89,
-          maxWidth: '100%',
-          overflow: 'hidden',
-          resize: 'horizontal',
-        }}
-      >
+      <ActionsPanelContainer>
         <UsersTable
           selectionMode="multiple"
           selectedKeys={selectedKeys}
@@ -459,14 +452,7 @@ export const Responsive: Story = {
     const onlyIcon = !xl;
 
     return (
-      <ActionsPanelContainer
-        style={{
-          minWidth: 89,
-          maxWidth: '100%',
-          overflow: 'hidden',
-          resize: 'horizontal',
-        }}
-      >
+      <ActionsPanelContainer>
         <List
           selectionMode="multiple"
           selectedKeys={selectedKeys}
