@@ -2,26 +2,29 @@
 
 import type { ElementType, RefObject } from 'react';
 
-import {
-  useHover,
-  mergeProps,
-  useFocusRing,
-  type HoverEvents,
-} from '@koobiq/react-core';
-import {
-  type AriaButtonOptions,
-  useButton as useButtonReactAria,
-} from '@react-aria/button';
+import type { DOMAttributes, HoverEvents } from '@koobiq/react-core';
+import { useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
+import { useButton as useButtonReactAria } from '@react-aria/button';
+import type { AriaButtonOptions, ButtonAria } from '@react-aria/button';
 
 export type UseButtonProps<E extends ElementType> = AriaButtonOptions<E> &
   HoverEvents;
 
 export type ButtonOptions = AriaButtonOptions<ElementType>;
 
+export type UseButtonReturn = {
+  isPressed: boolean;
+  isHovered: boolean;
+  isFocused: boolean;
+  isDisabled?: boolean;
+  isFocusVisible: boolean;
+  buttonProps: ButtonAria<DOMAttributes>['buttonProps'];
+};
+
 export function useButton<E extends ElementType>(
   props: UseButtonProps<E>,
   ref: RefObject<Element | null>
-) {
+): UseButtonReturn {
   const { isDisabled } = props;
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing({
@@ -49,7 +52,3 @@ export function useButton<E extends ElementType>(
     isFocusVisible,
   };
 }
-
-export type UseButtonReturn<E extends ElementType> = ReturnType<
-  typeof useButton<E>
->;
