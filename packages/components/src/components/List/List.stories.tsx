@@ -36,19 +36,19 @@ export const Base: Story = {
       autoFocus
       {...args}
     >
-      <List.Item key="first">
+      <List.Item key="first" textValue="First">
         <List.ItemText>First</List.ItemText>
       </List.Item>
-      <List.Item key="second">
+      <List.Item key="second" textValue="Second">
         <List.ItemText>Second</List.ItemText>
       </List.Item>
-      <List.Item key="third">
+      <List.Item key="third" textValue="Third">
         <List.ItemText>Third</List.ItemText>
       </List.Item>
-      <List.Item key="fourth">
+      <List.Item key="fourth" textValue="Fourth">
         <List.ItemText>Fourth</List.ItemText>
       </List.Item>
-      <List.Item key="fifth">
+      <List.Item key="fifth" textValue="Fifth">
         <List.ItemText>Fifth</List.ItemText>
       </List.Item>
     </List>
@@ -72,7 +72,11 @@ export const DynamicCollections: Story = {
     ];
 
     return (
-      <List selectionMode="single" items={options}>
+      <List
+        aria-label="Dynamic collections"
+        selectionMode="single"
+        items={options}
+      >
         {(item) => <List.Item>{item.name}</List.Item>}
       </List>
     );
@@ -111,6 +115,7 @@ export const SelectionStory: Story = {
       <>
         <List
           items={options}
+          aria-label="Selection"
           selectedKeys={selected}
           selectionMode="multiple"
           onSelectionChange={(selected) => {
@@ -151,9 +156,10 @@ export const DisabledItems: Story = {
     return (
       <List
         items={options}
-        selectionMode="multiple"
-        defaultSelectedKeys={[2, 3]}
         disabledKeys={[1, 2]}
+        selectionMode="multiple"
+        aria-label="Disabled items"
+        defaultSelectedKeys={[2, 3]}
       >
         {(item) => <List.Item>{item.name}</List.Item>}
       </List>
@@ -248,23 +254,23 @@ export const OtherExamples: Story = {
           selectionMode="single"
           defaultSelectedKeys={['1']}
         >
-          <List.Item key="1">
+          <List.Item key="1" textValue="First">
             <List.ItemText caption="HelperText">First</List.ItemText>
           </List.Item>
-          <List.Item key="2">
+          <List.Item key="2" textValue="Second">
             <List.ItemText>Second</List.ItemText>
           </List.Item>
-          <List.Item key="3">
+          <List.Item key="3" textValue="Third">
             <List.ItemText>Third</List.ItemText>
           </List.Item>
-          <List.Item key="4">
+          <List.Item key="4" textValue="Fourth">
             <List.ItemText>Fourth</List.ItemText>
           </List.Item>
-          <List.Item key="5">
+          <List.Item key="5" textValue="Fifth">
             <List.ItemText>Fifth</List.ItemText>
           </List.Item>
           <List.Divider />
-          <List.Item key="6">
+          <List.Item key="6" textValue="Sixth">
             <List.ItemText
               slotProps={{
                 text: { ellipsis: false },
@@ -280,7 +286,7 @@ export const OtherExamples: Story = {
               quibusdam quidem sapiente voluptas.
             </List.ItemText>
           </List.Item>
-          <List.Item key="7">
+          <List.Item key="7" textValue="Seventh">
             <List.ItemText
               slotProps={{
                 caption: { ellipsis: true },
@@ -298,6 +304,7 @@ export const OtherExamples: Story = {
           </List.Item>
         </List>
         <List
+          aria-label="List"
           selectionMode="multiple"
           selectedKeys={selected}
           onSelectionChange={(selected) => {
@@ -310,7 +317,7 @@ export const OtherExamples: Story = {
           ]}
         >
           {(item) => (
-            <List.Item>
+            <List.Item textValue={item.name}>
               <Checkbox
                 isSelected={!isString(selected) && selected.has(item.id)}
                 isReadOnly
