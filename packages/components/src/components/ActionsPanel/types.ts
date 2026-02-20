@@ -31,7 +31,9 @@ export type ActionsPanelProps = ExtendableComponentPropsWithRef<
     /** Optional secondary counter displayed next to `selectedItemCount`. */
     selectedExtraCount?: number;
     /** The contents of the collection. */
-    children?: Array<ReactElement<ActionsPanelActionProps>>;
+    children?:
+      | ReactElement<ActionsPanelActionProps>
+      | Array<ReactElement<ActionsPanelActionProps>>;
     /** Handler that is called when the ActionsPanel clear button is pressed. */
     onClearSelection?: () => void;
     /** Handler called when any breadcrumb item is pressed. It returns the item key. */
