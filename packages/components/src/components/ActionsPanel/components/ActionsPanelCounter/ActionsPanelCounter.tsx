@@ -1,4 +1,5 @@
 import {
+  type DataAttributeProps,
   type ExtendableComponentPropsWithRef,
   isNumber,
 } from '@koobiq/react-core';
@@ -16,7 +17,7 @@ export type ActionsPanelCounterProps = ExtendableComponentPropsWithRef<
   {
     selectedItemCount?: number | 'all';
     selectedExtraCount?: number;
-  },
+  } & DataAttributeProps,
   'div'
 >;
 

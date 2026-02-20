@@ -1,6 +1,9 @@
 import type { ComponentPropsWithRef, ReactElement, ReactNode } from 'react';
 
-import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import type {
+  DataAttributeProps,
+  ExtendableComponentPropsWithRef,
+} from '@koobiq/react-core';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
 import type { Key } from '../../index';
@@ -50,10 +53,10 @@ export type ActionsPanelProps = ExtendableComponentPropsWithRef<
     /** The props used for each slot inside. */
     slotProps?: {
       transition?: Partial<TransitionProps<HTMLElement>>;
-      container?: ComponentPropsWithRef<'div'>;
-      actions?: ComponentPropsWithRef<'div'>;
+      container?: ComponentPropsWithRef<'div'> & DataAttributeProps;
+      actions?: ComponentPropsWithRef<'div'> & DataAttributeProps;
       counter?: ActionsPanelCounterProps;
-      more?: ActionsPanelMoreActionProps;
+      more?: Partial<ActionsPanelMoreActionProps>;
     };
   },
   'div'
