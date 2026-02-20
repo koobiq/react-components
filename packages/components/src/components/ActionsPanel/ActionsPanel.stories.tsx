@@ -15,6 +15,7 @@ import {
   ContentPanel,
   TableContainer,
   ContentPanelContainer,
+  useBreakpoints,
 } from '../../index';
 import type { Selection } from '../../index';
 import type { TableBodyProps } from '../Collections';
@@ -443,6 +444,84 @@ export const Standalone: Story = {
           </ActionsPanel.Action>
         </ActionsPanel>
       </>
+    );
+  },
+};
+
+export const Responsive: Story = {
+  render: function Render(args) {
+    const { xl } = useBreakpoints();
+
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      new Set(['item-1'])
+    );
+
+    const onlyIcon = !xl;
+
+    return (
+      <ActionsPanelContainer
+        style={{
+          minWidth: 89,
+          maxWidth: '100%',
+          overflow: 'hidden',
+          resize: 'horizontal',
+        }}
+      >
+        <List
+          selectionMode="multiple"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          aria-label="List with actions panel"
+        >
+          <List.Item key="item-1">Item 1</List.Item>
+          <List.Item key="item-2">Item 2</List.Item>
+          <List.Item key="item-3">Item 3</List.Item>
+          <List.Item key="item-4">Item 4</List.Item>
+          <List.Item key="item-5">Item 5</List.Item>
+          <List.Item key="item-6">Item 6</List.Item>
+          <List.Item key="item-7">Item 7</List.Item>
+          <List.Item key="item-8">Item 8</List.Item>
+          <List.Item key="item-9">Item 9</List.Item>
+          <List.Item key="item-10">Item 10</List.Item>
+        </List>
+        <ActionsPanel
+          selectedItemCount={selectedKeys === 'all' ? 'all' : selectedKeys.size}
+          onClearSelection={() => {
+            setSelectedKeys(new Set());
+          }}
+          onAction={(key) => alert(`submit ${key} action`)}
+          {...args}
+        >
+          <ActionsPanel.Action
+            key="edit"
+            icon={<IconPencil16 />}
+            onlyIcon={onlyIcon}
+          >
+            Edit
+          </ActionsPanel.Action>
+          <ActionsPanel.Action
+            key="copy"
+            icon={<IconSquareMultipleO16 />}
+            onlyIcon={onlyIcon}
+          >
+            Copy
+          </ActionsPanel.Action>
+          <ActionsPanel.Action
+            key="archive"
+            icon={<IconBoxArchiveArrowDown16 />}
+            onlyIcon={onlyIcon}
+          >
+            Archive
+          </ActionsPanel.Action>
+          <ActionsPanel.Action
+            key="delete"
+            icon={<IconTrash16 />}
+            onlyIcon={onlyIcon}
+          >
+            Delete
+          </ActionsPanel.Action>
+        </ActionsPanel>
+      </ActionsPanelContainer>
     );
   },
 };
