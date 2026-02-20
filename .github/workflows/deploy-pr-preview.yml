@@ -1,0 +1,51 @@
+name: Deploy PR Preview Docs
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  deploy-pr-preview:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Storybook
+        run: pnpm run build-storybook
+
+      - name: Deploy Preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KOOBIQ }}
+          firebaseToolsVersion: '15.7.0'
+          projectId: koobiq
+          target: next
+          channelId: prs-${{ github.event.number }}
+          expires: 5d
