@@ -156,4 +156,30 @@ describe('ActionsPanel', () => {
       expect(a1).toHaveFocus();
     });
   });
+
+  describe('selectedExtraCount', () => {
+    it('should render extra counter badge when selectedExtraCount is a number', () => {
+      render(
+        <ActionsPanelContainer>
+          <ActionsPanel selectedItemCount={1} selectedExtraCount={3}>
+            <ActionsPanel.Action key="action-1">Action 1</ActionsPanel.Action>
+          </ActionsPanel>
+        </ActionsPanelContainer>
+      );
+
+      expect(screen.getByText('+3')).toBeInTheDocument();
+    });
+
+    it('should render +0 when selectedExtraCount is 0', () => {
+      render(
+        <ActionsPanelContainer>
+          <ActionsPanel selectedItemCount={1} selectedExtraCount={0}>
+            <ActionsPanel.Action key="action-1">Action 1</ActionsPanel.Action>
+          </ActionsPanel>
+        </ActionsPanelContainer>
+      );
+
+      expect(screen.getByText('+0')).toBeInTheDocument();
+    });
+  });
 });
