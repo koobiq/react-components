@@ -336,7 +336,6 @@ describe('ActionsPanel', () => {
 
       await user.click(moreButton);
 
-      // click menu item by stable data-key
       const menuItem = await waitFor(() => {
         const el = document.querySelector<HTMLElement>(
           '[role="menuitem"][data-key="delete"]'
@@ -351,6 +350,87 @@ describe('ActionsPanel', () => {
 
       expect(onAction).toHaveBeenCalledTimes(1);
       expect(onAction).toHaveBeenCalledWith('delete');
+    });
+  });
+
+  describe('slotProps', () => {
+    it('should pass through props to container/actions/counter/more', () => {
+      mockOverflow([true, true, true]);
+
+      render(
+        <ActionsPanelContainer>
+          <ActionsPanel
+            selectedItemCount={1}
+            slotProps={{
+              container: {
+                'data-testid': 'container',
+                className: 'container-foo',
+                style: { padding: 10 },
+                'data-foo': 'bar',
+              },
+              actions: {
+                'data-testid': 'actions',
+                className: 'actions-foo',
+                style: { margin: 4 },
+              },
+              counter: {
+                'data-testid': 'counter',
+                className: 'counter-foo',
+              },
+              more: {
+                'data-testid': 'more',
+                className: 'more-foo',
+              },
+            }}
+          >
+            <ActionsPanel.Action key="a1">Action 1</ActionsPanel.Action>
+          </ActionsPanel>
+        </ActionsPanelContainer>
+      );
+
+      expect(screen.getByTestId('container')).toHaveClass('container-foo');
+      expect(screen.getByTestId('container')).toHaveStyle({ padding: '10px' });
+
+      expect(screen.getByTestId('container')).toHaveAttribute(
+        'data-foo',
+        'bar'
+      );
+
+      expect(screen.getByTestId('actions')).toHaveClass('actions-foo');
+      expect(screen.getByTestId('actions')).toHaveStyle({ margin: '4px' });
+
+      expect(screen.getByTestId('counter')).toHaveClass('counter-foo');
+      expect(screen.getByTestId('more')).toHaveClass('more-foo');
+    });
+  });
+
+  describe('action press handling', () => {
+    it('should call item onPress and panel onAction with the same key', async () => {
+      const user = userEvent.setup({ delay: null });
+
+      const onAction = vi.fn();
+      const onPress = vi.fn();
+      const calls: string[] = [];
+
+      onPress.mockImplementation(() => calls.push('onPress'));
+      onAction.mockImplementation(() => calls.push('onAction'));
+
+      render(
+        <ActionsPanelContainer>
+          <ActionsPanel selectedItemCount={1} onAction={onAction}>
+            <ActionsPanel.Action key="archive" onPress={onPress}>
+              Archive
+            </ActionsPanel.Action>
+          </ActionsPanel>
+        </ActionsPanelContainer>
+      );
+
+      await user.click(screen.getByRole('button', { name: 'Archive' }));
+
+      expect(onPress).toHaveBeenCalledTimes(1);
+      expect(onAction).toHaveBeenCalledTimes(1);
+      expect(onAction).toHaveBeenCalledWith('archive');
+      expect(calls).toEqual(['onPress', 'onAction']);
     });
   });
 });

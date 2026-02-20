@@ -182,9 +182,9 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
   const counterProps = mergeProps(
     {
+      selectedExtraCount,
       ref: itemsRefs[counterIndex],
       selectedItemCount: shownCount,
-      selectedExtraCount,
       'aria-hidden': !visibleMap[counterIndex] || undefined,
     },
     slotProps?.counter
@@ -192,12 +192,12 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
   const moreProps = mergeProps(
     {
-      className: s.more,
       onAction,
+      collapsedItems,
+      className: s.more,
+      selectedExtraCount,
       ref: itemsRefs[moreIndex],
       selectedItemCount: shownCount,
-      collapsedItems,
-      selectedExtraCount,
       'aria-hidden': !visibleMap[moreIndex] || undefined,
     },
     slotProps?.more
