@@ -288,4 +288,69 @@ describe('ActionsPanel', () => {
       expect(screen.getByTestId('more')).toHaveAttribute('aria-hidden', 'true');
     });
   });
+
+  describe('onAction', () => {
+    it('should call onAction with item key when action is pressed', async () => {
+      const user = userEvent.setup({ delay: null });
+      const onAction = vi.fn();
+
+      render(
+        <ActionsPanelContainer>
+          <ActionsPanel selectedItemCount={1} onAction={onAction}>
+            <ActionsPanel.Action key="archive">Archive</ActionsPanel.Action>
+          </ActionsPanel>
+        </ActionsPanelContainer>
+      );
+
+      await user.click(screen.getByRole('button', { name: 'Archive' }));
+
+      expect(onAction).toHaveBeenCalledTimes(1);
+      expect(onAction).toHaveBeenCalledWith('archive');
+    });
+
+    it('should call onAction with collapsed item key when selected from More menu', async () => {
+      const user = userEvent.setup({ delay: null });
+      const onAction = vi.fn();
+
+      // 2 actions => [a1 visible, a2 hidden, counter hidden, more visible]
+      mockOverflow([true, false, false, true]);
+
+      render(
+        <ActionsPanelContainer>
+          <ActionsPanel
+            selectedItemCount={1}
+            onAction={onAction}
+            slotProps={{ more: { 'data-testid': 'more' } }}
+          >
+            <ActionsPanel.Action key="archive">Archive</ActionsPanel.Action>
+            <ActionsPanel.Action key="delete">Delete</ActionsPanel.Action>
+          </ActionsPanel>
+        </ActionsPanelContainer>
+      );
+
+      const moreRoot = screen.getByTestId('more');
+
+      const moreButton =
+        moreRoot.querySelector<HTMLElement>('[data-slot="more-action"]') ??
+        moreRoot;
+
+      await user.click(moreButton);
+
+      // click menu item by stable data-key
+      const menuItem = await waitFor(() => {
+        const el = document.querySelector<HTMLElement>(
+          '[role="menuitem"][data-key="delete"]'
+        );
+
+        expect(el).toBeTruthy();
+
+        return el!;
+      });
+
+      await user.click(menuItem);
+
+      expect(onAction).toHaveBeenCalledTimes(1);
+      expect(onAction).toHaveBeenCalledWith('delete');
+    });
+  });
 });
