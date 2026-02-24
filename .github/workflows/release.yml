@@ -19,14 +19,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version-file: .nvmrc
 
       - name: Install PNPM
         uses: pnpm/action-setup@v4
@@ -39,18 +39,18 @@ jobs:
       - name: Build Packages
         run: pnpm run build
 
+      - name: Configure NPM Auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ~/.npmrc
+
+      - name: Publish Packages to NPM
+        run: pnpm run release:publish --no-git-checks
+
       - name: Parse Changelog
         id: changelog
         uses: ocavue/changelog-parser-action@v1
         with:
           removeMarkdown: false
           filePath: './CHANGELOG.md'
-
-      - name: Configure NPM Auth
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ~/.npmrc
-
-      - name: Publish Packages to NPM
-        run: pnpm run release:publish --no-git-checks
 
       - name: Upload Binaries to Release
         uses: svenstaro/upload-release-action@v2
