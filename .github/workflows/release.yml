@@ -46,6 +46,12 @@ jobs:
           removeMarkdown: false
           filePath: './CHANGELOG.md'
 
+      - name: Configure NPM Auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ~/.npmrc
+
+      - name: Publish Packages to NPM
+        run: pnpm run release:publish --no-git-checks
+
       - name: Upload Binaries to Release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -55,8 +61,13 @@ jobs:
           body: |
             ${{ steps.changelog.outputs.latestBody }}
 
-      - name: Configure NPM Auth
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ~/.npmrc
+      - name: Notify Mattermost
+        uses: mattermost/action-mattermost-notify@2.0.0
+        with:
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_WEBHOOK_URL }}
+          MATTERMOST_CHANNEL: ${{ secrets.MM_CHANNEL_NAME }}
+          MATTERMOST_USERNAME: ${{ secrets.MM_BOT_NAME }}
+          TEXT: |
+            ## ${{ steps.changelog.outputs.latestVersion }}
 
-      - name: Publish Packages to NPM
-        run: pnpm run release:publish --no-git-checks
+            ${{ steps.changelog.outputs.latestBody }}
