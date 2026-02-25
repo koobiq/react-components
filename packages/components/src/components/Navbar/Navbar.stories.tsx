@@ -25,7 +25,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new'],
+  tags: ['status:new', 'date:2026-02-11'],
   decorators: [
     (Story) => (
       <div

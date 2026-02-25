@@ -31,7 +31,7 @@ const meta = {
     'Select.ItemText': Select.ItemText,
   },
   argTypes: {},
-  tags: ['status:new'],
+  tags: ['status:new', 'date:2026-02-13'],
 } satisfies Meta<typeof Select>;
 
 export default meta;

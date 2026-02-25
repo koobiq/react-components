@@ -33,7 +33,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new'],
+  tags: ['status:new', 'date:2026-01-16'],
 } satisfies Meta<typeof Accordion>;
 
 export default meta;

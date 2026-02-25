@@ -26,7 +26,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['status:new'],
+  tags: ['status:new', 'date:2025-12-25'],
 } satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;

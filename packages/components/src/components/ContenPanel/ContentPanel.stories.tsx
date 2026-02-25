@@ -32,7 +32,7 @@ const meta = {
     'ContentPanel.Footer': ContentPanel.Footer,
   },
   argTypes: {},
-  tags: ['status:new'],
+  tags: ['status:new', 'date:2026-01-30'],
 } satisfies Meta<typeof ContentPanel>;
 
 export default meta;

@@ -46,7 +46,7 @@ const meta = {
       },
     },
   },
-  tags: ['status:updated'],
+  tags: ['status:updated', 'date:2025-12-26'],
 } satisfies Meta<typeof Input>;
 
 export default meta;

@@ -32,7 +32,7 @@ const meta = {
     'ActionsPanel.Action': ActionsPanel.Action,
   },
   argTypes: {},
-  tags: ['status:new'],
+  tags: ['status:new', 'date:2026-02-20'],
 } satisfies Meta<typeof ActionsPanel>;
 
 export default meta;
