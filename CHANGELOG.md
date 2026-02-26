@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.1](https://github.com/koobiq/react-components/compare/0.27.0...0.27.1) (2026-02-26)
+
+
+### 🐞 Bug Fixes
+
+* **Select, Autocomplete, SearchInput:** prevent Invalid slot "clear-button" error in modals (DS-4752) ([#279](https://github.com/koobiq/react-components/issues/279)) ([3ae4a45](https://github.com/koobiq/react-components/commit/3ae4a45f60c9448c31388c6f55d7b53537cb295b))
+
 ## [0.27.0](https://github.com/koobiq/react-components/compare/0.26.0...0.27.0) (2026-02-25)
 
 
