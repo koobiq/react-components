@@ -4,7 +4,13 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 
-import { Form, Provider, Autocomplete, type AutocompleteProps } from '../index';
+import {
+  Form,
+  Provider,
+  Autocomplete,
+  type AutocompleteProps,
+  Modal,
+} from '../index';
 
 declare global {
   // eslint-disable-next-line no-var,vars-on-top
@@ -319,6 +325,22 @@ describe('Autocomplete', () => {
       );
 
       expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should not throw on render in modal', () => {
+      expect(() => {
+        render(
+          <Modal defaultOpen>
+            <Modal.Body>
+              <Autocomplete {...baseProps} isClearable>
+                <Autocomplete.Item key="1">1</Autocomplete.Item>
+                <Autocomplete.Item key="2">2</Autocomplete.Item>
+                <Autocomplete.Item key="3">3</Autocomplete.Item>
+              </Autocomplete>
+            </Modal.Body>
+          </Modal>
+        );
+      }).not.toThrow();
     });
 
     it('should call onSelectionChange with empty value when cleared', async () => {
