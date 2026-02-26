@@ -11,6 +11,9 @@ import {
   FieldErrorContext,
   useSlottedContext,
   FormContext,
+  ButtonContext,
+  DEFAULT_SLOT,
+  Provider,
 } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -164,18 +167,32 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     );
 
     return (
-      <FormField {...rootProps}>
-        <FormField.Label {...labelProps}>{label}</FormField.Label>
-        <div className={s.body}>
-          <FormField.ControlGroup {...groupProps}>
-            <FormField.Input {...inputProps} />
-          </FormField.ControlGroup>
-          <FieldErrorContext.Provider value={validation}>
-            <FormField.Error {...errorProps} />
-          </FieldErrorContext.Provider>
-          <FormField.Caption {...captionProps} />
-        </div>
-      </FormField>
+      <Provider
+        values={[
+          [
+            ButtonContext,
+            {
+              slots: {
+                [DEFAULT_SLOT]: {},
+                'clear-button': {},
+              },
+            },
+          ],
+        ]}
+      >
+        <FormField {...rootProps}>
+          <FormField.Label {...labelProps}>{label}</FormField.Label>
+          <div className={s.body}>
+            <FormField.ControlGroup {...groupProps}>
+              <FormField.Input {...inputProps} />
+            </FormField.ControlGroup>
+            <FieldErrorContext.Provider value={validation}>
+              <FormField.Error {...errorProps} />
+            </FieldErrorContext.Provider>
+            <FormField.Caption {...captionProps} />
+          </div>
+        </FormField>
+      </Provider>
     );
   }
 );

@@ -14,6 +14,9 @@ import {
   CollectionBuilder,
   FieldErrorContext,
   removeDataAttributes,
+  Provider,
+  ButtonContext,
+  DEFAULT_SLOT,
 } from '@koobiq/react-primitives';
 import type {
   SelectState,
@@ -274,7 +277,19 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   const renderValue = renderValueProp || renderDefaultValue;
 
   return (
-    <>
+    <Provider
+      values={[
+        [
+          ButtonContext,
+          {
+            slots: {
+              [DEFAULT_SLOT]: {},
+              'clear-button': {},
+            },
+          },
+        ],
+      ]}
+    >
       <FormField {...rootProps}>
         <FormField.Label {...labelProps} />
         <div className={s.body}>
@@ -296,7 +311,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       <PopoverInner {...popoverProps}>
         <SelectList {...listProps} />
       </PopoverInner>
-    </>
+    </Provider>
   );
 }
 

@@ -5,12 +5,15 @@ import { forwardRef, type Ref, useCallback } from 'react';
 import { useDOMRef, mergeProps, useElementSize } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
+  ButtonContext,
+  DEFAULT_SLOT,
   FieldErrorContext,
   FormContext,
   removeDataAttributes,
   useMultiSelect,
   useMultiSelectState,
   useSlottedContext,
+  Provider,
 } from '@koobiq/react-primitives';
 
 import { Item, Section, Divider } from '../Collections';
@@ -245,7 +248,19 @@ function SelectRender<T extends object>(
   const renderValue = renderValueProp || renderDefaultValue;
 
   return (
-    <>
+    <Provider
+      values={[
+        [
+          ButtonContext,
+          {
+            slots: {
+              [DEFAULT_SLOT]: {},
+              'clear-button': {},
+            },
+          },
+        ],
+      ]}
+    >
       <FormField {...rootProps}>
         <FormField.Label {...labelProps} />
         <div className={s.body}>
@@ -267,7 +282,7 @@ function SelectRender<T extends object>(
       <PopoverInner {...popoverProps}>
         <SelectList {...listProps} />
       </PopoverInner>
-    </>
+    </Provider>
   );
 }
 

@@ -18,6 +18,9 @@ import {
   removeDataAttributes,
   useSlottedContext,
   FormContext,
+  ButtonContext,
+  DEFAULT_SLOT,
+  Provider,
 } from '@koobiq/react-primitives';
 
 import { Section, Item } from '../Collections';
@@ -278,21 +281,35 @@ export function AutocompleteRender<T extends object = object>(
   );
 
   return (
-    <FormField {...rootProps}>
-      <FormField.Label {...labelProps} />
-      <div className={s.body}>
-        <FormField.ControlGroup {...groupProps}>
-          <FormField.Input {...inputProps} />
-        </FormField.ControlGroup>
-        <FieldErrorContext.Provider value={validation}>
-          <FormField.Error {...errorProps} />
-        </FieldErrorContext.Provider>
-        <FormField.Caption {...captionProps} />
-      </div>
-      <PopoverInner {...popoverProps}>
-        <ListInner {...listProps} />
-      </PopoverInner>
-    </FormField>
+    <Provider
+      values={[
+        [
+          ButtonContext,
+          {
+            slots: {
+              [DEFAULT_SLOT]: {},
+              'clear-button': {},
+            },
+          },
+        ],
+      ]}
+    >
+      <FormField {...rootProps}>
+        <FormField.Label {...labelProps} />
+        <div className={s.body}>
+          <FormField.ControlGroup {...groupProps}>
+            <FormField.Input {...inputProps} />
+          </FormField.ControlGroup>
+          <FieldErrorContext.Provider value={validation}>
+            <FormField.Error {...errorProps} />
+          </FieldErrorContext.Provider>
+          <FormField.Caption {...captionProps} />
+        </div>
+        <PopoverInner {...popoverProps}>
+          <ListInner {...listProps} />
+        </PopoverInner>
+      </FormField>
+    </Provider>
   );
 }
 

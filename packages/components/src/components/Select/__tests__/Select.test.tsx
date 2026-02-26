@@ -5,6 +5,7 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
 import { Form } from '../../Form';
+import { Modal } from '../../Modal';
 import { Select, type SelectProps } from '../index';
 
 describe('Select', () => {
@@ -306,6 +307,22 @@ describe('Select', () => {
       );
 
       expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should not throw on render in modal', () => {
+      expect(() => {
+        render(
+          <Modal defaultOpen>
+            <Modal.Body>
+              <Select {...baseProps} isClearable>
+                <Select.Item key="1">1</Select.Item>
+                <Select.Item key="2">2</Select.Item>
+                <Select.Item key="3">3</Select.Item>
+              </Select>
+            </Modal.Body>
+          </Modal>
+        );
+      }).not.toThrow();
     });
 
     it('should call onSelectionChange with empty value when cleared', async () => {

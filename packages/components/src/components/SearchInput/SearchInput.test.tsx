@@ -5,6 +5,7 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
 import { Form } from '../Form';
+import { Modal } from '../Modal';
 
 import { SearchInput, type SearchInputProps } from './index';
 
@@ -88,6 +89,18 @@ describe('SearchInput', () => {
     it('should not render when input is read-only', () => {
       render(<SearchInput {...baseProps} defaultValue="value" isReadOnly />);
       expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should not throw on render in modal', () => {
+      expect(() => {
+        render(
+          <Modal defaultOpen>
+            <Modal.Body>
+              <SearchInput {...baseProps} />
+            </Modal.Body>
+          </Modal>
+        );
+      }).not.toThrow();
     });
 
     it('should clear the input and call handlers when clicked', async () => {
