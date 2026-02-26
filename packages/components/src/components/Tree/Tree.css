@@ -1,0 +1,43 @@
+.kbq-Tree {
+  --tree-item-level: ;
+  --drag-button-width: 0px;
+  --checkbox-width: 0px;
+
+  outline: none;
+  overflow: auto;
+  box-sizing: border-box;
+  forced-color-adjust: none;
+
+  &[data-empty] {
+    align-items: center;
+    justify-content: center;
+    min-block-size: 100px;
+  }
+}
+
+.kbq-TreeItem {
+  --tree-item-padding: var(--kbq-size-m);
+
+  position: relative;
+  padding-inline-start: calc(
+    (var(--tree-item-level)) * var(--tree-item-padding)
+  );
+
+  &[data-href] {
+    cursor: pointer;
+  }
+
+  [data-slot='icon-button'] {
+    visibility: hidden;
+  }
+
+  &[data-has-child-items] [data-slot='icon-button'] {
+    visibility: visible;
+  }
+}
+
+.kbq-TreeLoader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
