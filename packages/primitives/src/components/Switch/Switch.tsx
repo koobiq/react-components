@@ -5,9 +5,10 @@ import { forwardRef } from 'react';
 
 import { useDOMRef, mergeProps, filterDOMProps } from '@koobiq/react-core';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { useRenderProps } from 'react-aria-components';
 
 import { useSwitch } from '../../behaviors';
-import { removeDataAttributes, useRenderProps } from '../../utils';
+import { removeDataAttributes } from '../../utils';
 
 import type { SwitchProps, SwitchRenderProps } from './index';
 

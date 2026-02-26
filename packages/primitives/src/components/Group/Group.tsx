@@ -8,10 +8,10 @@ import {
   useHover,
   useFocusRing,
 } from '@koobiq/react-core';
+import { useRenderProps } from 'react-aria-components';
 
-import { useRenderProps } from '../../utils';
-
-import { type GroupProps, type GroupRef, useGroupContext } from './index';
+import { useGroupContext } from './index';
+import type { GroupProps, GroupRef } from './index';
 
 export const Group = forwardRef<GroupRef, GroupProps>((props, ref) => {
   const defaultProps = useGroupContext();

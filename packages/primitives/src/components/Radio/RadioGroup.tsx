@@ -4,15 +4,14 @@ import { forwardRef } from 'react';
 import type { ComponentRef } from 'react';
 
 import { filterDOMProps } from '@koobiq/react-core';
-
-import { useRadioGroup, useRadioGroupState } from '../../behaviors';
 import {
+  useSlottedContext,
   useRenderProps,
   Provider,
-  removeDataAttributes,
-  useSlottedContext,
-  DEFAULT_SLOT,
-} from '../../utils';
+} from 'react-aria-components';
+
+import { useRadioGroup, useRadioGroupState } from '../../behaviors';
+import { removeDataAttributes, DEFAULT_SLOT } from '../../utils';
 import { FieldErrorContext } from '../FieldError';
 import { FormContext } from '../Form';
 import { LabelContext } from '../Label';

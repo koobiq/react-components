@@ -2,8 +2,8 @@
 
 import { mergeProps, polymorphicForwardRef } from '@koobiq/react-core';
 import { useProgressBar } from '@react-aria/progress';
+import { Provider, useRenderProps } from 'react-aria-components';
 
-import { Provider, useRenderProps } from '../../utils';
 import { LabelContext } from '../Label';
 
 import type { ProgressBarBaseProps } from './index';

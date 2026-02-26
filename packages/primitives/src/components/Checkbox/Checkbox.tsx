@@ -1,20 +1,18 @@
 'use client';
 
-import { type ComponentRef, useContext } from 'react';
-import { forwardRef } from 'react';
+import type { ComponentRef } from 'react';
+import { forwardRef, useContext } from 'react';
 
 import { useDOMRef, mergeProps, filterDOMProps } from '@koobiq/react-core';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useToggleState } from '@react-stately/toggle';
+import { useRenderProps } from 'react-aria-components';
 
 import { useCheckbox, useCheckboxGroupItem } from '../../behaviors';
-import { removeDataAttributes, useRenderProps } from '../../utils';
+import { removeDataAttributes } from '../../utils';
 
-import {
-  CheckboxGroupContext,
-  type CheckboxProps,
-  type CheckboxRenderProps,
-} from './index';
+import { CheckboxGroupContext } from './index';
+import type { CheckboxProps, CheckboxRenderProps } from './index';
 
 export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
   (props, ref) => {

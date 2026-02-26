@@ -6,15 +6,15 @@ import { filterDOMProps } from '@koobiq/react-core';
 import { useLocale } from '@react-aria/i18n';
 import { useNumberField } from '@react-aria/numberfield';
 import { useNumberFieldState } from '@react-stately/numberfield';
-
 import {
+  ButtonContext,
   DEFAULT_SLOT,
   Provider,
-  removeDataAttributes,
   useRenderProps,
   useSlottedContext,
-} from '../../utils';
-import { ButtonContext } from '../Button';
+} from 'react-aria-components';
+
+import { removeDataAttributes } from '../../utils';
 import { FieldErrorContext } from '../FieldError';
 import { FormContext } from '../Form';
 import { GroupContext } from '../Group';

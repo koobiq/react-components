@@ -8,11 +8,14 @@ import {
   filterDOMProps,
   polymorphicForwardRef,
 } from '@koobiq/react-core';
+import {
+  useContextProps,
+  ButtonContext,
+  useRenderProps,
+} from 'react-aria-components';
 
 import { useButton } from '../../behaviors';
-import { useContextProps, useRenderProps } from '../../utils';
 
-import { ButtonContext } from './ButtonContext';
 import type { ButtonBaseProps } from './types';
 
 export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(

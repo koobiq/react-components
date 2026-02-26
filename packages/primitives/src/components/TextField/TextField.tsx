@@ -10,15 +10,15 @@ import {
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { useTextField } from '@react-aria/textfield';
-
 import {
   Provider,
+  DEFAULT_SLOT,
+  ButtonContext,
   useRenderProps,
   useSlottedContext,
-  removeDataAttributes,
-  DEFAULT_SLOT,
-} from '../../utils';
-import { ButtonContext } from '../Button';
+} from 'react-aria-components';
+
+import { removeDataAttributes } from '../../utils';
 import { FieldErrorContext } from '../FieldError';
 import { FormContext } from '../Form';
 import { InputContext } from '../Input';
@@ -157,7 +157,6 @@ function TextFieldRender(
                   'aria-label': stringFormatter.format('clear'),
                   preventFocusOnPress: true,
                   onPress: handleClear,
-                  tabIndex: -1,
                 },
               },
             },

@@ -3,8 +3,7 @@
 import type { ComponentPropsWithRef, ComponentRef, ElementType } from 'react';
 
 import { polymorphicForwardRef } from '@koobiq/react-core';
-
-import { useContextProps } from '../../utils';
+import { useContextProps } from 'react-aria-components';
 
 import { type TextBaseProps, TextContext } from './index';
 

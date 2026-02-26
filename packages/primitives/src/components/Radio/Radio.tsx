@@ -4,9 +4,10 @@ import { type ComponentRef, forwardRef, useContext } from 'react';
 
 import { useDOMRef, mergeProps, filterDOMProps } from '@koobiq/react-core';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { useRenderProps } from 'react-aria-components';
 
 import { useRadio } from '../../behaviors';
-import { removeDataAttributes, useRenderProps } from '../../utils';
+import { removeDataAttributes } from '../../utils';
 
 import type { RadioProps, RadioRenderProps } from './index';
 import { RadioContext } from './index';

@@ -122,6 +122,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
         const clearButtonProps = mergeProps(
           {
             isClearable,
+            tabIndex: -1,
             isHidden: clearButtonIsHidden,
           },
           slotProps?.clearButton

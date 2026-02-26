@@ -114,6 +114,33 @@ export * from '@react-stately/form';
 
 export * from '@react-aria/selection';
 
+// RAC
+export type {
+  ContextValue,
+  TreeProps,
+  TreeRenderProps,
+  TreeItemProps,
+  TreeItemRenderProps,
+  TreeItemContentProps,
+  TreeItemContentRenderProps,
+  TreeLoadMoreItemProps,
+  TreeLoadMoreItemRenderProps,
+} from 'react-aria-components';
+
+export {
+  Tree,
+  Provider,
+  TreeItem,
+  TreeContext,
+  TreeItemContent,
+  ButtonContext,
+  TreeStateContext,
+  TreeLoadMoreItem,
+  useContextProps,
+  DEFAULT_SLOT,
+  useSlottedContext,
+} from 'react-aria-components';
+
 export * from './behaviors';
 export * from './components';
-export * from './utils';
+export { removeDataAttributes } from './utils';
