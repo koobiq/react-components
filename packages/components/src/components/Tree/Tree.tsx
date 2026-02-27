@@ -7,7 +7,7 @@ import { Tree as AriaTree } from '@koobiq/react-primitives';
 import './Tree.css';
 import { utilClasses } from '../../styles/utility';
 
-import { TreeItem, TreeItemContent } from './components';
+import { TreeItem, TreeItemContent, TreeLoadMoreItem } from './components';
 
 const { list } = utilClasses;
 
@@ -22,9 +22,11 @@ TreeComponent.displayName = 'Tree';
 type CompoundedComponent = typeof TreeComponent & {
   Item: typeof TreeItem;
   ItemContent: typeof TreeItemContent;
+  LoadMoreItem: typeof TreeLoadMoreItem;
 };
 
 export const Tree = TreeComponent as CompoundedComponent;
 
 TreeComponent.Item = TreeItem;
 TreeComponent.ItemContent = TreeItemContent;
+TreeComponent.LoadMoreItem = TreeLoadMoreItem;

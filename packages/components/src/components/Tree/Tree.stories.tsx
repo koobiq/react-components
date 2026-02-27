@@ -2,6 +2,7 @@ import { IconFileLines16, IconFolder16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { useAsyncList } from '../../index';
 import { Badge } from '../Badge';
 import { spacing } from '../layout';
 import { Typography } from '../Typography';
@@ -158,6 +159,86 @@ export const EmptyState: Story = {
         renderEmptyState={() => 'No results found.'}
       >
         {[]}
+      </Tree>
+    );
+  },
+};
+
+interface Character {
+  name: string;
+}
+
+export const AsyncLoading: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    const starWarsList = useAsyncList<Character>({
+      async load({ signal, cursor }) {
+        if (cursor) {
+          // eslint-disable-next-line no-param-reassign
+          cursor = cursor.replace(/^http:\/\//i, 'https://');
+        }
+
+        const res = await fetch(
+          cursor || 'https://swapi.py4e.com/api/people/?search=',
+          { signal }
+        );
+
+        const json = await res.json();
+
+        return {
+          items: json.results,
+          cursor: json.next,
+        };
+      },
+    });
+
+    const pokemonList = useAsyncList<Character>({
+      async load({ signal, cursor }) {
+        const res = await fetch(cursor || `https://pokeapi.co/api/v2/pokemon`, {
+          signal,
+        });
+
+        const json = await res.json();
+
+        return {
+          items: json.results,
+          cursor: json.next,
+        };
+      },
+    });
+
+    return (
+      <Tree aria-label="Async loading tree" style={{ height: 300 }}>
+        <Tree.Item textValue="Pokemon">
+          <Tree.ItemContent>Pokemon</Tree.ItemContent>
+          <Collection items={pokemonList.items}>
+            {(item) => (
+              <Tree.Item id={item.name} textValue={item.name}>
+                <Tree.ItemContent>{item.name}</Tree.ItemContent>
+              </Tree.Item>
+            )}
+          </Collection>
+          <Tree.LoadMoreItem
+            onLoadMore={pokemonList.loadMore}
+            isLoading={pokemonList.loadingState === 'loadingMore'}
+          />
+        </Tree.Item>
+        <Tree.Item textValue="Star Wars">
+          <Tree.ItemContent>Star Wars</Tree.ItemContent>
+          <Collection items={starWarsList.items}>
+            {(item) => (
+              <Tree.Item id={item.name} textValue={item.name}>
+                <Tree.ItemContent>{item.name}</Tree.ItemContent>
+              </Tree.Item>
+            )}
+          </Collection>
+          <Tree.LoadMoreItem
+            onLoadMore={starWarsList.loadMore}
+            isLoading={starWarsList.loadingState === 'loadingMore'}
+          />
+        </Tree.Item>
       </Tree>
     );
   },

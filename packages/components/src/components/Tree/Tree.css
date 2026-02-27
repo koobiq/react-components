@@ -2,8 +2,7 @@
 
 .kbq-Tree {
   --tree-item-level: ;
-  --drag-button-width: 0px;
-  --checkbox-width: 0px;
+  --tree-item-padding: var(--kbq-size-m);
 
   outline: none;
   overflow: auto;
@@ -22,8 +21,7 @@
 }
 
 .kbq-TreeItem {
-  --tree-item-padding: var(--kbq-size-m);
-
+  cursor: default;
   position: relative;
   padding-inline-start: calc(
     (var(--tree-item-level)) * var(--tree-item-padding)
@@ -37,6 +35,11 @@
     visibility: hidden;
   }
 
+  &[data-has-child-items],
+  &[data-selection-mode] {
+    cursor: pointer;
+  }
+
   &[data-has-child-items] [data-slot='icon-button'] {
     visibility: visible;
   }
@@ -46,4 +49,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.kbq-TreeLoadMoreItem {
+  display: flex;
+  align-items: center;
+  gap: var(--kbq-size-m);
+  cursor: default;
+  padding-inline-start: calc(
+    (var(--tree-item-level)) * var(--tree-item-padding) + 24px
+  );
+
+  & > * {
+    display: contents;
+  }
 }
