@@ -146,3 +146,19 @@ export const Slots: Story = {
     );
   },
 };
+
+export const EmptyState: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    return (
+      <Tree
+        aria-label="Search results"
+        renderEmptyState={() => 'No results found.'}
+      >
+        {[]}
+      </Tree>
+    );
+  },
+};

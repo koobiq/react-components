@@ -1,3 +1,5 @@
+@import url('../../styles/mixins.css');
+
 .kbq-Tree {
   --tree-item-level: ;
   --drag-button-width: 0px;
@@ -7,11 +9,15 @@
   overflow: auto;
   box-sizing: border-box;
   forced-color-adjust: none;
+  display: flex;
+  flex-direction: column;
 
   &[data-empty] {
     align-items: center;
     justify-content: center;
     min-block-size: 100px;
+
+    @mixin typography text-normal;
   }
 }
 
