@@ -46,20 +46,15 @@ export function TreeItemContent(
   );
 }
 
-export interface TreeItemProps extends Partial<AriaTreeItemProps> {
-  title: ReactNode;
-}
+export type TreeItemProps = Partial<AriaTreeItemProps>;
 
 export function TreeItem(props: TreeItemProps) {
-  const textValue = typeof props.title === 'string' ? props.title : '';
-
   return (
     <AriaTreeItem
-      textValue={textValue}
+      textValue={props.textValue ?? ''}
       className={clsx('kbq-TreeItem', listItem, textVariant['text-normal'])}
       {...props}
     >
-      <TreeItemContent>{props.title}</TreeItemContent>
       {props.children}
     </AriaTreeItem>
   );
