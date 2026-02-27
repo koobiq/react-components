@@ -19,6 +19,7 @@ export type CheckboxRenderProps = {
 
 type CheckboxBaseProps = RenderProps<CheckboxRenderProps> & {
   inputRef?: RefObject<HTMLInputElement | null>;
+  slot?: string;
 };
 
 export type CheckboxProps = ExtendableProps<

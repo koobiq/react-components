@@ -12,8 +12,8 @@ import {
 
 import { utilClasses } from '../../../../styles/utility';
 import { AnimatedIcon } from '../../../AnimatedIcon';
+import { Checkbox } from '../../../Checkbox';
 import { IconButton } from '../../../IconButton';
-import { Checkbox } from '../../Checkbox';
 
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
