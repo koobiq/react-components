@@ -132,6 +132,7 @@ export {
   Provider,
   TreeItem,
   TreeContext,
+  Collection,
   TreeItemContent,
   ButtonContext,
   TreeStateContext,

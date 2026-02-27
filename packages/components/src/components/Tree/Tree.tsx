@@ -7,8 +7,22 @@ import { Tree as AriaTree } from '@koobiq/react-primitives';
 import './Tree.css';
 import { utilClasses } from '../../styles/utility';
 
+import { TreeItem } from './components';
+
 const { list } = utilClasses;
 
-export function Tree<T extends object>(props: TreeProps<T>) {
+export type { TreeProps };
+
+export function TreeComponent<T extends object>(props: TreeProps<T>) {
   return <AriaTree className={clsx('kbq-Tree', list)} {...props} />;
 }
+
+TreeComponent.displayName = 'Tree';
+
+type CompoundedComponent = typeof TreeComponent & {
+  Item: typeof TreeItem;
+};
+
+export const Tree = TreeComponent as CompoundedComponent;
+
+TreeComponent.Item = TreeItem;
