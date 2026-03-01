@@ -17,12 +17,6 @@ const meta = {
   component: Tree,
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component:
-          'Tree displays hierarchical data with expandable nodes, selection support, and optional async loading.',
-      },
-    },
   },
   subcomponents: {
     'Tree.Item': Tree.Item,
@@ -67,12 +61,6 @@ const items = [
 export const Base: Story = {
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        story:
-          'Basic Tree with static nested items using Tree.Item composition.',
-      },
-    },
   },
   render: (args) => (
     <Tree selectionMode="multiple" aria-label="Files" {...args}>
@@ -101,12 +89,6 @@ export const Base: Story = {
 export const Content: Story = {
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        story:
-          'Render a dynamic tree from an items array using recursive Collection rendering.',
-      },
-    },
   },
   render: function Render() {
     return (
@@ -133,12 +115,6 @@ export const Content: Story = {
 export const Slots: Story = {
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        story:
-          'Customize Tree.ItemContent with icons, typography, and trailing metadata.',
-      },
-    },
   },
   render: function Render() {
     return (
@@ -179,11 +155,6 @@ export const Slots: Story = {
 export const EmptyState: Story = {
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        story: 'Empty state rendering with the renderEmptyState callback.',
-      },
-    },
   },
   render: function Render() {
     return (
@@ -197,19 +168,15 @@ export const EmptyState: Story = {
   },
 };
 
-interface Character {
-  name: string;
+interface Product {
+  id: number;
+  title: string;
+  brand: string;
 }
 
 export const Links: Story = {
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        story:
-          'Use href on tree items to create a navigation tree where each node acts as a link.',
-      },
-    },
   },
   render: function Render() {
     return (
@@ -254,12 +221,6 @@ export const SelectionAndActions: Story = {
   name: 'Selection and actions',
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        story:
-          'Controlled selection with onSelectionChange and onAction for item activation.',
-      },
-    },
   },
   render: function Render() {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(
@@ -306,78 +267,86 @@ export const SelectionAndActions: Story = {
 export const AsyncLoading: Story = {
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        story:
-          'Async loading example using useAsyncList and Tree.LoadMoreItem.',
-      },
-    },
   },
   render: function Render() {
-    const starWarsList = useAsyncList<Character>({
-      async load({ signal, cursor }) {
-        if (cursor) {
-          // eslint-disable-next-line no-param-reassign
-          cursor = cursor.replace(/^http:\/\//i, 'https://');
-        }
+    const ITEMS_PER_PAGE = 5;
 
-        const res = await fetch(
-          cursor || 'https://swapi.py4e.com/api/people/?search=',
+    const smartphonesList = useAsyncList<Product>({
+      async load({ signal, cursor }) {
+        const skip = Number(cursor ?? 0);
+
+        const response = await fetch(
+          `https://dummyjson.com/products/category/smartphones?limit=${ITEMS_PER_PAGE}&skip=${skip}`,
           { signal }
         );
 
-        const json = await res.json();
+        const data = await response.json();
+        const nextSkip = skip + ITEMS_PER_PAGE;
 
         return {
-          items: json.results,
-          cursor: json.next,
+          items: data.products ?? [],
+          cursor: nextSkip < data.total ? String(nextSkip) : undefined,
         };
       },
     });
 
-    const pokemonList = useAsyncList<Character>({
+    const mobileAccessoriesList = useAsyncList<Product>({
       async load({ signal, cursor }) {
-        const res = await fetch(cursor || `https://pokeapi.co/api/v2/pokemon`, {
-          signal,
-        });
+        const skip = Number(cursor ?? 0);
 
-        const json = await res.json();
+        const response = await fetch(
+          `https://dummyjson.com/products/category/mobile-accessories?limit=${ITEMS_PER_PAGE}&skip=${skip}`,
+          { signal }
+        );
+
+        const data = await response.json();
+        const nextSkip = skip + ITEMS_PER_PAGE;
 
         return {
-          items: json.results,
-          cursor: json.next,
+          items: data.products ?? [],
+          cursor: nextSkip < data.total ? String(nextSkip) : undefined,
         };
       },
     });
 
     return (
       <Tree aria-label="Async loading tree" style={{ height: 300 }}>
-        <Tree.Item textValue="Pokemon">
-          <Tree.ItemContent>Pokemon</Tree.ItemContent>
-          <Collection items={pokemonList.items}>
+        <Tree.Item id="smartphones" textValue="Smartphones">
+          <Tree.ItemContent>Smartphones</Tree.ItemContent>
+          <Collection items={smartphonesList.items}>
             {(item) => (
-              <Tree.Item id={item.name} textValue={item.name}>
-                <Tree.ItemContent>{item.name}</Tree.ItemContent>
+              <Tree.Item
+                id={`smartphone-${item.id}`}
+                textValue={`${item.brand} ${item.title}`}
+              >
+                <Tree.ItemContent>
+                  {item.brand} {item.title}
+                </Tree.ItemContent>
               </Tree.Item>
             )}
           </Collection>
           <Tree.LoadMoreItem
-            onLoadMore={pokemonList.loadMore}
-            isLoading={pokemonList.loadingState === 'loadingMore'}
+            onLoadMore={smartphonesList.loadMore}
+            isLoading={smartphonesList.loadingState === 'loadingMore'}
           />
         </Tree.Item>
-        <Tree.Item textValue="Star Wars">
-          <Tree.ItemContent>Star Wars</Tree.ItemContent>
-          <Collection items={starWarsList.items}>
+        <Tree.Item id="mobile-accessories" textValue="Mobile accessories">
+          <Tree.ItemContent>Mobile accessories</Tree.ItemContent>
+          <Collection items={mobileAccessoriesList.items}>
             {(item) => (
-              <Tree.Item id={item.name} textValue={item.name}>
-                <Tree.ItemContent>{item.name}</Tree.ItemContent>
+              <Tree.Item
+                id={`mobile-accessory-${item.id}`}
+                textValue={`${item.brand} ${item.title}`}
+              >
+                <Tree.ItemContent>
+                  {item.brand} {item.title}
+                </Tree.ItemContent>
               </Tree.Item>
             )}
           </Collection>
           <Tree.LoadMoreItem
-            onLoadMore={starWarsList.loadMore}
-            isLoading={starWarsList.loadingState === 'loadingMore'}
+            onLoadMore={mobileAccessoriesList.loadMore}
+            isLoading={mobileAccessoriesList.loadingState === 'loadingMore'}
           />
         </Tree.Item>
       </Tree>
