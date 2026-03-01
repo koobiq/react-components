@@ -1,8 +1,11 @@
+import { useState } from 'react';
+
 import { IconFileLines16, IconFolder16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useAsyncList } from '../../index';
+import type { Selection } from '../../index';
 import { Badge } from '../Badge';
 import { spacing } from '../layout';
 import { Typography } from '../Typography';
@@ -14,10 +17,17 @@ const meta = {
   component: Tree,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Tree displays hierarchical data with expandable nodes, selection support, and optional async loading.',
+      },
+    },
   },
   subcomponents: {
     'Tree.Item': Tree.Item,
     'Tree.ItemContent': Tree.ItemContent,
+    'Tree.LoadMoreItem': Tree.LoadMoreItem,
   },
   argTypes: {},
   tags: ['status:new', 'date:2026-03-02'],
@@ -57,6 +67,12 @@ const items = [
 export const Base: Story = {
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        story:
+          'Basic Tree with static nested items using Tree.Item composition.',
+      },
+    },
   },
   render: (args) => (
     <Tree selectionMode="multiple" aria-label="Files" {...args}>
@@ -85,6 +101,12 @@ export const Base: Story = {
 export const Content: Story = {
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        story:
+          'Render a dynamic tree from an items array using recursive Collection rendering.',
+      },
+    },
   },
   render: function Render() {
     return (
@@ -111,6 +133,12 @@ export const Content: Story = {
 export const Slots: Story = {
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        story:
+          'Customize Tree.ItemContent with icons, typography, and trailing metadata.',
+      },
+    },
   },
   render: function Render() {
     return (
@@ -151,6 +179,11 @@ export const Slots: Story = {
 export const EmptyState: Story = {
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        story: 'Empty state rendering with the renderEmptyState callback.',
+      },
+    },
   },
   render: function Render() {
     return (
@@ -168,9 +201,117 @@ interface Character {
   name: string;
 }
 
+export const Links: Story = {
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        story:
+          'Use href on tree items to create a navigation tree where each node acts as a link.',
+      },
+    },
+  },
+  render: function Render() {
+    return (
+      <Tree aria-label="Documentation links" defaultExpandedKeys={['react']}>
+        <Tree.Item id="react" textValue="React" href="https://react.dev/">
+          <Tree.ItemContent>React</Tree.ItemContent>
+          <Tree.Item
+            id="components"
+            textValue="Components"
+            href="https://react.dev/reference/react"
+          >
+            <Tree.ItemContent>Components</Tree.ItemContent>
+          </Tree.Item>
+          <Tree.Item
+            id="hooks"
+            textValue="Hooks"
+            href="https://react.dev/reference/react/hooks"
+          >
+            <Tree.ItemContent>Hooks</Tree.ItemContent>
+          </Tree.Item>
+        </Tree.Item>
+        <Tree.Item
+          id="storybook"
+          textValue="Storybook"
+          href="https://storybook.js.org/docs"
+        >
+          <Tree.ItemContent>Storybook</Tree.ItemContent>
+          <Tree.Item
+            id="essentials"
+            textValue="Essentials"
+            href="https://storybook.js.org/docs/essentials"
+          >
+            <Tree.ItemContent>Essentials</Tree.ItemContent>
+          </Tree.Item>
+        </Tree.Item>
+      </Tree>
+    );
+  },
+};
+
+export const SelectionAndActions: Story = {
+  name: 'Selection and actions',
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        story:
+          'Controlled selection with onSelectionChange and onAction for item activation.',
+      },
+    },
+  },
+  render: function Render() {
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      new Set(['components'])
+    );
+
+    const [lastAction, setLastAction] = useState('none');
+
+    return (
+      <>
+        <Tree
+          aria-label="Project files"
+          selectionMode="multiple"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          onAction={(key) => setLastAction(String(key))}
+          defaultExpandedKeys={['docs', 'src']}
+        >
+          <Tree.Item id="docs" textValue="docs">
+            <Tree.ItemContent>docs</Tree.ItemContent>
+            <Tree.Item id="components" textValue="components">
+              <Tree.ItemContent>components</Tree.ItemContent>
+            </Tree.Item>
+            <Tree.Item id="guides" textValue="guides">
+              <Tree.ItemContent>guides</Tree.ItemContent>
+            </Tree.Item>
+          </Tree.Item>
+          <Tree.Item id="src" textValue="src">
+            <Tree.ItemContent>src</Tree.ItemContent>
+            <Tree.Item id="tree" textValue="Tree.tsx">
+              <Tree.ItemContent>Tree.tsx</Tree.ItemContent>
+            </Tree.Item>
+          </Tree.Item>
+        </Tree>
+        <Typography className={spacing({ pbs: 'm' })}>
+          Selected keys: {Array.from(selectedKeys).join(', ') || 'none'}
+        </Typography>
+        <Typography>Last action: {lastAction}</Typography>
+      </>
+    );
+  },
+};
+
 export const AsyncLoading: Story = {
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        story:
+          'Async loading example using useAsyncList and Tree.LoadMoreItem.',
+      },
+    },
   },
   render: function Render() {
     const starWarsList = useAsyncList<Character>({
