@@ -42,7 +42,7 @@ export function TreeItemContent(props: TreeItemContentProps) {
               />
             </IconButton>
             {selectionBehavior === 'toggle' && selectionMode !== 'none' && (
-              <Checkbox slot="selection" {...slotProps?.selection} />
+              <Checkbox slot="selection" {...slotProps?.checkbox} />
             )}
             {children}
           </>
