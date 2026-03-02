@@ -63,7 +63,7 @@ export const Base: Story = {
     layout: 'padded',
   },
   render: (args) => (
-    <Tree selectionMode="multiple" aria-label="Files" {...args}>
+    <Tree aria-label="Files" {...args}>
       <Tree.Item id="documents" textValue="Documents">
         <Tree.ItemContent>Departments</Tree.ItemContent>
         <Tree.Item id="project" textValue="Project">
