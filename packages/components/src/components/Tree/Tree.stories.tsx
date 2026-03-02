@@ -86,6 +86,56 @@ export const Base: Story = {
   ),
 };
 
+export const MultipleSelection: Story = {
+  name: 'Multiple selection',
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      new Set(['project', 'image 1'])
+    );
+
+    return (
+      <>
+        <Tree
+          aria-label="Files"
+          selectionMode="multiple"
+          selectionBehavior="toggle"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          defaultExpandedKeys={['documents', 'photos']}
+        >
+          <Tree.Item id="documents" textValue="Documents">
+            <Tree.ItemContent>Documents</Tree.ItemContent>
+            <Tree.Item id="project" textValue="Project">
+              <Tree.ItemContent>Project</Tree.ItemContent>
+              <Tree.Item id="weekly Report" textValue="Weekly Report">
+                <Tree.ItemContent>Weekly Report</Tree.ItemContent>
+              </Tree.Item>
+              <Tree.Item id="budget" textValue="Budget">
+                <Tree.ItemContent>Budget</Tree.ItemContent>
+              </Tree.Item>
+            </Tree.Item>
+          </Tree.Item>
+          <Tree.Item id="photos" textValue="Photos">
+            <Tree.ItemContent>Photos</Tree.ItemContent>
+            <Tree.Item id="image 1" textValue="Image 1">
+              <Tree.ItemContent>Image 1</Tree.ItemContent>
+            </Tree.Item>
+            <Tree.Item id="image 2" textValue="Image 2">
+              <Tree.ItemContent>Image 2</Tree.ItemContent>
+            </Tree.Item>
+          </Tree.Item>
+        </Tree>
+        <Typography className={spacing({ pbs: 'm' })}>
+          Selected keys: {Array.from(selectedKeys).join(', ') || 'none'}
+        </Typography>
+      </>
+    );
+  },
+};
+
 export const Content: Story = {
   parameters: {
     layout: 'padded',
