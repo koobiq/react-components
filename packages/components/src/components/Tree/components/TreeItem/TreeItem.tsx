@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, mergeProps } from '@koobiq/react-core';
 import { IconChevronRightS16 } from '@koobiq/react-icons';
 import {
   TreeItem as AriaTreeItem,
@@ -14,23 +14,39 @@ import {
 import { utilClasses } from '../../../../styles/utility';
 import { AnimatedIcon } from '../../../AnimatedIcon';
 import { Checkbox } from '../../../Checkbox';
-import { IconButton } from '../../../IconButton';
+import type { CheckboxProps } from '../../../Checkbox';
+import { IconButton, type IconButtonProps } from '../../../IconButton';
 
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
 
+type TreeItemContentSlotProps = {
+  chevron?: Omit<IconButtonProps, 'slot' | 'children'>;
+  selection?: Omit<CheckboxProps, 'slot'>;
+};
+
 export function TreeItemContent(
-  props: Omit<TreeItemContentProps, 'children'> & { children?: ReactNode }
+  props: Omit<TreeItemContentProps, 'children'> & {
+    children?: ReactNode;
+    slotProps?: TreeItemContentSlotProps;
+  }
 ) {
+  const { children, slotProps, ...other } = props;
+
+  const chevronProps = mergeProps<(IconButtonProps | undefined)[]>(
+    { variant: 'fade-contrast', size: 'l', isCompact: true },
+    slotProps?.chevron
+  );
+
   return (
-    <AriaTreeItemContent>
+    <AriaTreeItemContent {...other}>
       {({
         selectionBehavior,
         selectionMode,
         isExpanded,
       }: TreeItemContentRenderProps) => (
         <>
-          <IconButton slot="chevron" variant="fade-contrast" size="l" isCompact>
+          <IconButton slot="chevron" {...chevronProps}>
             <AnimatedIcon
               icons={[<IconChevronRightS16 key="chevron" />]}
               directions={[0, 90]}
@@ -38,9 +54,9 @@ export function TreeItemContent(
             />
           </IconButton>
           {selectionBehavior === 'toggle' && selectionMode !== 'none' && (
-            <Checkbox slot="selection" />
+            <Checkbox slot="selection" {...slotProps?.selection} />
           )}
-          {props.children}
+          {children}
         </>
       )}
     </AriaTreeItemContent>
