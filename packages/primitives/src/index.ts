@@ -140,6 +140,7 @@ export {
   useContextProps,
   DEFAULT_SLOT,
   useSlottedContext,
+  composeRenderProps,
 } from 'react-aria-components';
 
 export * from './behaviors';

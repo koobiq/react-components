@@ -5,6 +5,7 @@ import { IconChevronRightS16 } from '@koobiq/react-icons';
 import {
   TreeItem as AriaTreeItem,
   TreeItemContent as AriaTreeItemContent,
+  composeRenderProps,
   type TreeItemContentProps,
   type TreeItemContentRenderProps,
   type TreeItemProps as AriaTreeItemProps,
@@ -48,14 +49,21 @@ export function TreeItemContent(
 
 export type TreeItemProps = Partial<AriaTreeItemProps>;
 
-export function TreeItem(props: TreeItemProps) {
+export function TreeItem({
+  children,
+  className,
+  textValue,
+  ...props
+}: TreeItemProps) {
   return (
     <AriaTreeItem
-      textValue={props.textValue ?? ''}
-      className={clsx('kbq-TreeItem', listItem, textVariant['text-normal'])}
       {...props}
+      textValue={textValue ?? ''}
+      className={composeRenderProps(className, (className) =>
+        clsx('kbq-TreeItem', listItem, textVariant['text-normal'], className)
+      )}
     >
-      {props.children}
+      {children}
     </AriaTreeItem>
   );
 }
