@@ -21,23 +21,23 @@
 }
 
 .kbq-TreeItem {
-  cursor: default;
   position: relative;
   padding-inline-start: calc(
     (var(--tree-item-level)) * var(--tree-item-padding)
   );
 
-  &[data-href] {
+  &:not([data-disabled], [data-has-child-items], [data-selection-mode]) {
+    cursor: default;
+  }
+
+  &:not([data-disabled])[data-has-child-items],
+  &:not([data-disabled])[data-selection-mode],
+  &:not([data-disabled])[data-href] {
     cursor: pointer;
   }
 
   [data-slot='icon-button'] {
     visibility: hidden;
-  }
-
-  &[data-has-child-items],
-  &[data-selection-mode] {
-    cursor: pointer;
   }
 
   &[data-has-child-items] [data-slot='icon-button'] {

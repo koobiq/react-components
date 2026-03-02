@@ -168,6 +168,32 @@ export const EmptyState: Story = {
   },
 };
 
+export const Disabled: Story = {
+  name: 'Disabled items',
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    return (
+      <Tree
+        items={items}
+        aria-label="Files"
+        defaultExpandedKeys={[1, 5]}
+        disabledKeys={[2, 7]}
+      >
+        {function renderItem(item) {
+          return (
+            <Tree.Item key={item.id} textValue={item.title}>
+              <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Collection items={item.children}>{renderItem}</Collection>
+            </Tree.Item>
+          );
+        }}
+      </Tree>
+    );
+  },
+};
+
 interface Product {
   id: number;
   title: string;

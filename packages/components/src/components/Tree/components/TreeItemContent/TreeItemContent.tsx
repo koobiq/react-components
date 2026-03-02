@@ -17,34 +17,37 @@ import type {
 export function TreeItemContent(props: TreeItemContentProps) {
   const { children, slotProps, ...other } = props;
 
-  const chevronProps = mergeProps<
-    (TreeItemContentPropSlotProps['chevron'] | undefined)[]
-  >(
-    { variant: 'fade-contrast', size: 'l', isCompact: true },
-    slotProps?.chevron
-  );
-
   return (
     <AriaTreeItemContent {...other}>
       {({
         selectionBehavior,
         selectionMode,
+        isDisabled,
         isExpanded,
-      }: TreeItemContentRenderProps) => (
-        <>
-          <IconButton slot="chevron" {...chevronProps}>
-            <AnimatedIcon
-              icons={[<IconChevronRightS16 key="chevron" />]}
-              directions={[0, 90]}
-              activeIndex={+isExpanded}
-            />
-          </IconButton>
-          {selectionBehavior === 'toggle' && selectionMode !== 'none' && (
-            <Checkbox slot="selection" {...slotProps?.selection} />
-          )}
-          {children}
-        </>
-      )}
+      }: TreeItemContentRenderProps) => {
+        const chevronProps = mergeProps<
+          (TreeItemContentPropSlotProps['chevron'] | undefined)[]
+        >(
+          { variant: 'fade-contrast', size: 'l', isCompact: true, isDisabled },
+          slotProps?.chevron
+        );
+
+        return (
+          <>
+            <IconButton slot="chevron" {...chevronProps}>
+              <AnimatedIcon
+                icons={[<IconChevronRightS16 key="chevron" />]}
+                directions={[0, 90]}
+                activeIndex={+isExpanded}
+              />
+            </IconButton>
+            {selectionBehavior === 'toggle' && selectionMode !== 'none' && (
+              <Checkbox slot="selection" {...slotProps?.selection} />
+            )}
+            {children}
+          </>
+        );
+      }}
     </AriaTreeItemContent>
   );
 }
