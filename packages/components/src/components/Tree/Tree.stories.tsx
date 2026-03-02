@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { IconFileLines16, IconFolder16 } from '@koobiq/react-icons';
+import { IconFolder16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -118,21 +118,12 @@ export const Slots: Story = {
   },
   render: function Render() {
     return (
-      <Tree
-        items={items}
-        aria-label="Files"
-        selectionMode="multiple"
-        defaultExpandedKeys={[1, 4]}
-      >
+      <Tree items={items} aria-label="Files" defaultExpandedKeys={[1, 4]}>
         {function renderItem(item) {
           return (
             <Tree.Item key={item.id} textValue={item.title}>
               <Tree.ItemContent>
-                {item.type === 'directory' ? (
-                  <IconFolder16 />
-                ) : (
-                  <IconFileLines16 />
-                )}
+                {item.type === 'directory' && <IconFolder16 />}
                 <Typography>{item.title}</Typography>
                 <Badge
                   size="compact"
