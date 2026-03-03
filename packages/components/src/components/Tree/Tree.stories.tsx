@@ -33,29 +33,43 @@ type Story = StoryObj<typeof meta>;
 const items = [
   {
     id: 1,
-    title: 'Documents',
+    title: 'app',
     type: 'directory',
     children: [
       {
         id: 2,
-        title: 'Project',
+        title: 'Http',
+        type: 'directory',
+        children: [{ id: 3, title: 'index.html', type: 'file', children: [] }],
+      },
+      {
+        id: 4,
+        title: 'Providers',
         type: 'directory',
         children: [
-          { id: 3, title: 'Weekly Report', type: 'file', children: [] },
-          { id: 4, title: 'Budget', type: 'file', children: [] },
+          {
+            id: 5,
+            title: 'EventServiceProvider.js',
+            type: 'file',
+            children: [],
+          },
         ],
       },
     ],
   },
   {
-    id: 5,
-    title: 'Photos',
+    id: 6,
+    title: 'config',
     type: 'directory',
     children: [
-      { id: 6, title: 'Image 1', type: 'file', children: [] },
-      { id: 7, title: 'Image 2', type: 'file', children: [] },
+      { id: 7, title: 'app.js', type: 'file', children: [] },
+      { id: 8, title: 'database.js', type: 'file', children: [] },
     ],
   },
+  { id: 9, title: 'public', type: 'directory', children: [] },
+  { id: 10, title: '.env', type: 'file', children: [] },
+  { id: 11, title: '.gitignore', type: 'file', children: [] },
+  { id: 12, title: 'README.md', type: 'file', children: [] },
 ];
 
 export const Base: Story = {
@@ -63,24 +77,45 @@ export const Base: Story = {
     layout: 'padded',
   },
   render: (args) => (
-    <Tree aria-label="Files" {...args}>
-      <Tree.Item id="documents" textValue="Documents">
-        <Tree.ItemContent>Departments</Tree.ItemContent>
-        <Tree.Item id="project" textValue="Project">
-          <Tree.ItemContent>Project</Tree.ItemContent>
-          <Tree.Item id="weekly Report" textValue="Weekly Report">
-            <Tree.ItemContent>Weekly Report</Tree.ItemContent>
+    <Tree aria-label="Project files" {...args}>
+      <Tree.Item id="app" textValue="app">
+        <Tree.ItemContent>app</Tree.ItemContent>
+        <Tree.Item id="http" textValue="Http">
+          <Tree.ItemContent>Http</Tree.ItemContent>
+          <Tree.Item id="index-html" textValue="index.html">
+            <Tree.ItemContent>index.html</Tree.ItemContent>
+          </Tree.Item>
+        </Tree.Item>
+        <Tree.Item id="providers" textValue="Providers">
+          <Tree.ItemContent>Providers</Tree.ItemContent>
+          <Tree.Item
+            id="event-service-provider-js"
+            textValue="EventServiceProvider.js"
+          >
+            <Tree.ItemContent>EventServiceProvider.js</Tree.ItemContent>
           </Tree.Item>
         </Tree.Item>
       </Tree.Item>
-      <Tree.Item id="photos" textValue="Photos">
-        <Tree.ItemContent>Photos</Tree.ItemContent>
-        <Tree.Item id="image 1" textValue="Image 1">
-          <Tree.ItemContent>Image 1</Tree.ItemContent>
+      <Tree.Item id="config" textValue="config">
+        <Tree.ItemContent>config</Tree.ItemContent>
+        <Tree.Item id="config-app-js" textValue="app.js">
+          <Tree.ItemContent>app.js</Tree.ItemContent>
         </Tree.Item>
-        <Tree.Item id="image 2" textValue="Image 2">
-          <Tree.ItemContent>Image 2</Tree.ItemContent>
+        <Tree.Item id="database-js" textValue="database.js">
+          <Tree.ItemContent>database.js</Tree.ItemContent>
         </Tree.Item>
+      </Tree.Item>
+      <Tree.Item id="public" textValue="public">
+        <Tree.ItemContent>public</Tree.ItemContent>
+      </Tree.Item>
+      <Tree.Item id="env-file" textValue=".env">
+        <Tree.ItemContent>.env</Tree.ItemContent>
+      </Tree.Item>
+      <Tree.Item id="gitignore-file" textValue=".gitignore">
+        <Tree.ItemContent>.gitignore</Tree.ItemContent>
+      </Tree.Item>
+      <Tree.Item id="readme-file" textValue="README.md">
+        <Tree.ItemContent>README.md</Tree.ItemContent>
       </Tree.Item>
     </Tree>
   ),
@@ -93,39 +128,57 @@ export const MultipleSelection: Story = {
   },
   render: function Render() {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(
-      new Set(['project', 'image 1'])
+      new Set(['index-html', 'database-js', 'readme-file'])
     );
 
     return (
       <>
         <Tree
-          aria-label="Files"
+          aria-label="Project files"
           selectionMode="multiple"
           selectionBehavior="toggle"
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
-          defaultExpandedKeys={['documents', 'photos']}
+          defaultExpandedKeys={['app', 'http', 'providers', 'config']}
         >
-          <Tree.Item id="documents" textValue="Documents">
-            <Tree.ItemContent>Documents</Tree.ItemContent>
-            <Tree.Item id="project" textValue="Project">
-              <Tree.ItemContent>Project</Tree.ItemContent>
-              <Tree.Item id="weekly Report" textValue="Weekly Report">
-                <Tree.ItemContent>Weekly Report</Tree.ItemContent>
+          <Tree.Item id="app" textValue="app">
+            <Tree.ItemContent>app</Tree.ItemContent>
+            <Tree.Item id="http" textValue="Http">
+              <Tree.ItemContent>Http</Tree.ItemContent>
+              <Tree.Item id="index-html" textValue="index.html">
+                <Tree.ItemContent>index.html</Tree.ItemContent>
               </Tree.Item>
-              <Tree.Item id="budget" textValue="Budget">
-                <Tree.ItemContent>Budget</Tree.ItemContent>
+            </Tree.Item>
+            <Tree.Item id="providers" textValue="Providers">
+              <Tree.ItemContent>Providers</Tree.ItemContent>
+              <Tree.Item
+                id="event-service-provider-js"
+                textValue="EventServiceProvider.js"
+              >
+                <Tree.ItemContent>EventServiceProvider.js</Tree.ItemContent>
               </Tree.Item>
             </Tree.Item>
           </Tree.Item>
-          <Tree.Item id="photos" textValue="Photos">
-            <Tree.ItemContent>Photos</Tree.ItemContent>
-            <Tree.Item id="image 1" textValue="Image 1">
-              <Tree.ItemContent>Image 1</Tree.ItemContent>
+          <Tree.Item id="config" textValue="config">
+            <Tree.ItemContent>config</Tree.ItemContent>
+            <Tree.Item id="config-app-js" textValue="app.js">
+              <Tree.ItemContent>app.js</Tree.ItemContent>
             </Tree.Item>
-            <Tree.Item id="image 2" textValue="Image 2">
-              <Tree.ItemContent>Image 2</Tree.ItemContent>
+            <Tree.Item id="database-js" textValue="database.js">
+              <Tree.ItemContent>database.js</Tree.ItemContent>
             </Tree.Item>
+          </Tree.Item>
+          <Tree.Item id="public" textValue="public">
+            <Tree.ItemContent>public</Tree.ItemContent>
+          </Tree.Item>
+          <Tree.Item id="env-file" textValue=".env">
+            <Tree.ItemContent>.env</Tree.ItemContent>
+          </Tree.Item>
+          <Tree.Item id="gitignore-file" textValue=".gitignore">
+            <Tree.ItemContent>.gitignore</Tree.ItemContent>
+          </Tree.Item>
+          <Tree.Item id="readme-file" textValue="README.md">
+            <Tree.ItemContent>README.md</Tree.ItemContent>
           </Tree.Item>
         </Tree>
         <Typography className={spacing({ pbs: 'm' })}>
@@ -142,12 +195,7 @@ export const Content: Story = {
   },
   render: function Render() {
     return (
-      <Tree
-        items={items}
-        aria-label="Files"
-        selectionMode="multiple"
-        defaultExpandedKeys={[1, 4]}
-      >
+      <Tree items={items} aria-label="Project files">
         {function renderItem(item) {
           return (
             <Tree.Item key={item.id} textValue={item.title}>
@@ -168,7 +216,7 @@ export const Slots: Story = {
   },
   render: function Render() {
     return (
-      <Tree items={items} aria-label="Files" defaultExpandedKeys={[1, 4]}>
+      <Tree items={items} aria-label="Project files">
         {function renderItem(item) {
           return (
             <Tree.Item key={item.id} textValue={item.title}>
@@ -218,9 +266,9 @@ export const Disabled: Story = {
     return (
       <Tree
         items={items}
-        aria-label="Files"
-        defaultExpandedKeys={[1, 5]}
-        disabledKeys={[2, 7]}
+        aria-label="Project files"
+        defaultExpandedKeys={[1, 2]}
+        disabledKeys={[3, 8, 10]}
       >
         {function renderItem(item) {
           return (
@@ -291,7 +339,7 @@ export const SelectionAndActions: Story = {
   },
   render: function Render() {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(
-      new Set(['components'])
+      new Set(['index-html'])
     );
 
     const [lastAction, setLastAction] = useState('none');
@@ -304,22 +352,46 @@ export const SelectionAndActions: Story = {
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
           onAction={(key) => setLastAction(String(key))}
-          defaultExpandedKeys={['docs', 'src']}
+          defaultExpandedKeys={['app', 'http', 'providers', 'config']}
         >
-          <Tree.Item id="docs" textValue="docs">
-            <Tree.ItemContent>docs</Tree.ItemContent>
-            <Tree.Item id="components" textValue="components">
-              <Tree.ItemContent>components</Tree.ItemContent>
+          <Tree.Item id="app" textValue="app">
+            <Tree.ItemContent>app</Tree.ItemContent>
+            <Tree.Item id="http" textValue="Http">
+              <Tree.ItemContent>Http</Tree.ItemContent>
+              <Tree.Item id="index-html" textValue="index.html">
+                <Tree.ItemContent>index.html</Tree.ItemContent>
+              </Tree.Item>
             </Tree.Item>
-            <Tree.Item id="guides" textValue="guides">
-              <Tree.ItemContent>guides</Tree.ItemContent>
+            <Tree.Item id="providers" textValue="Providers">
+              <Tree.ItemContent>Providers</Tree.ItemContent>
+              <Tree.Item
+                id="event-service-provider-js"
+                textValue="EventServiceProvider.js"
+              >
+                <Tree.ItemContent>EventServiceProvider.js</Tree.ItemContent>
+              </Tree.Item>
             </Tree.Item>
           </Tree.Item>
-          <Tree.Item id="src" textValue="src">
-            <Tree.ItemContent>src</Tree.ItemContent>
-            <Tree.Item id="tree" textValue="Tree.tsx">
-              <Tree.ItemContent>Tree.tsx</Tree.ItemContent>
+          <Tree.Item id="config" textValue="config">
+            <Tree.ItemContent>config</Tree.ItemContent>
+            <Tree.Item id="config-app-js" textValue="app.js">
+              <Tree.ItemContent>app.js</Tree.ItemContent>
             </Tree.Item>
+            <Tree.Item id="database-js" textValue="database.js">
+              <Tree.ItemContent>database.js</Tree.ItemContent>
+            </Tree.Item>
+          </Tree.Item>
+          <Tree.Item id="public" textValue="public">
+            <Tree.ItemContent>public</Tree.ItemContent>
+          </Tree.Item>
+          <Tree.Item id="env-file" textValue=".env">
+            <Tree.ItemContent>.env</Tree.ItemContent>
+          </Tree.Item>
+          <Tree.Item id="gitignore-file" textValue=".gitignore">
+            <Tree.ItemContent>.gitignore</Tree.ItemContent>
+          </Tree.Item>
+          <Tree.Item id="readme-file" textValue="README.md">
+            <Tree.ItemContent>README.md</Tree.ItemContent>
           </Tree.Item>
         </Tree>
         <Typography className={spacing({ pbs: 'm' })}>
