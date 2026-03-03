@@ -1,5 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+
+import { Provider } from '../Provider';
 
 import { Tree } from './index';
 
@@ -146,5 +149,29 @@ describe('Tree', () => {
     );
 
     expect(screen.getByTestId('load-more')).toHaveStyle({ padding: '8px' });
+  });
+
+  it('should support client side routing via Provider router', async () => {
+    const onNavigate = vi.fn();
+
+    render(
+      <Provider
+        router={{
+          navigate: () => {
+            onNavigate();
+          },
+        }}
+      >
+        <Tree aria-label="Links">
+          <Tree.Item id="react-docs" textValue="React docs" href="/">
+            <Tree.ItemContent>React docs</Tree.ItemContent>
+          </Tree.Item>
+        </Tree>
+      </Provider>
+    );
+
+    await userEvent.click(screen.getByText('React docs'));
+
+    expect(onNavigate).toBeCalled();
   });
 });
