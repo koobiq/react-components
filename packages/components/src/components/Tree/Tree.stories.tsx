@@ -1,13 +1,15 @@
 import { useState } from 'react';
 
-import { IconFolder16 } from '@koobiq/react-icons';
+import { useHover } from '@koobiq/react-core';
+import { IconEllipsisVertical16, IconFolder16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useAsyncList } from '../../index';
 import type { Selection } from '../../index';
-import { Badge } from '../Badge';
+import { IconButton } from '../IconButton';
 import { spacing } from '../layout';
+import { Menu } from '../Menu';
 import { Typography } from '../Typography';
 
 import { Tree } from './Tree';
@@ -215,27 +217,66 @@ export const Slots: Story = {
     layout: 'padded',
   },
   render: function Render() {
+    function MyTreeItemContent({
+      title,
+      type,
+      isHovered,
+    }: {
+      title: string;
+      type: string;
+      isHovered: boolean;
+    }) {
+      const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+      return (
+        <Tree.ItemContent>
+          {type === 'directory' && <IconFolder16 />}
+          <Typography>{title}</Typography>
+          {(isHovered || isMenuOpen) && (
+            <Menu
+              onOpenChange={setIsMenuOpen}
+              control={(props) => (
+                <IconButton
+                  {...props}
+                  size="l"
+                  variant="fade-contrast"
+                  aria-label="More actions"
+                  className={spacing({ mis: 'auto' })}
+                  isCompact
+                >
+                  <IconEllipsisVertical16 />
+                </IconButton>
+              )}
+            >
+              <Menu.Item key="edit">Edit</Menu.Item>
+              <Menu.Item key="copy">Copy</Menu.Item>
+              <Menu.Item key="delete">Delete</Menu.Item>
+            </Menu>
+          )}
+        </Tree.ItemContent>
+      );
+    }
+
+    function MyTreeItem({ item }: { item: (typeof items)[number] }) {
+      const { hoverProps, isHovered } = useHover({});
+
+      return (
+        <Tree.Item key={item.id} textValue={item.title} {...hoverProps}>
+          <MyTreeItemContent
+            title={item.title}
+            type={item.type}
+            isHovered={isHovered}
+          />
+          <Collection items={item.children}>
+            {(child) => <MyTreeItem item={child} />}
+          </Collection>
+        </Tree.Item>
+      );
+    }
+
     return (
       <Tree items={items} aria-label="Project files">
-        {function renderItem(item) {
-          return (
-            <Tree.Item key={item.id} textValue={item.title}>
-              <Tree.ItemContent>
-                {item.type === 'directory' && <IconFolder16 />}
-                <Typography>{item.title}</Typography>
-                <Badge
-                  size="compact"
-                  variant="theme"
-                  className={spacing({ mis: 'auto' })}
-                >
-                  Badge
-                </Badge>
-              </Tree.ItemContent>
-              {/* recursively render children */}
-              <Collection items={item.children}>{renderItem}</Collection>
-            </Tree.Item>
-          );
-        }}
+        {(item) => <MyTreeItem item={item} />}
       </Tree>
     );
   },
