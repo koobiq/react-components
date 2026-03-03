@@ -36,11 +36,11 @@
     cursor: pointer;
   }
 
-  [data-slot='icon-button'] {
+  [data-slot='chevron'] {
     visibility: hidden;
   }
 
-  &[data-has-child-items] [data-slot='icon-button'] {
+  &[data-has-child-items] [data-slot='chevron'] {
     visibility: visible;
   }
 }

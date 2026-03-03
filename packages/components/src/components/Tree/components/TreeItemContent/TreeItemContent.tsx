@@ -34,7 +34,7 @@ export function TreeItemContent(props: TreeItemContentProps) {
 
         return (
           <>
-            <IconButton slot="chevron" {...chevronProps}>
+            <IconButton slot="chevron" data-slot="chevron" {...chevronProps}>
               <AnimatedIcon
                 icons={[<IconChevronRightS16 key="chevron" />]}
                 directions={[0, 90]}
