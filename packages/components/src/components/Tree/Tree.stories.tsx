@@ -68,10 +68,15 @@ const items = [
       { id: 8, title: 'database.js', type: 'file', children: [] },
     ],
   },
-  { id: 9, title: 'public', type: 'directory', children: [] },
-  { id: 10, title: '.env', type: 'file', children: [] },
-  { id: 11, title: '.gitignore', type: 'file', children: [] },
-  { id: 12, title: 'README.md', type: 'file', children: [] },
+  {
+    id: 9,
+    title: 'public',
+    type: 'directory',
+    children: [{ id: 10, title: 'logo.svg', type: 'file', children: [] }],
+  },
+  { id: 11, title: '.env', type: 'file', children: [] },
+  { id: 12, title: '.gitignore', type: 'file', children: [] },
+  { id: 13, title: 'README.md', type: 'file', children: [] },
 ];
 
 export const Base: Story = {
@@ -109,6 +114,9 @@ export const Base: Story = {
       </Tree.Item>
       <Tree.Item id="public" textValue="public">
         <Tree.ItemContent>public</Tree.ItemContent>
+        <Tree.Item id="logo-svg" textValue="logo.svg">
+          <Tree.ItemContent>logo.svg</Tree.ItemContent>
+        </Tree.Item>
       </Tree.Item>
       <Tree.Item id="env-file" textValue=".env">
         <Tree.ItemContent>.env</Tree.ItemContent>
@@ -130,7 +138,7 @@ export const MultipleSelection: Story = {
   },
   render: function Render() {
     const [selectedKeys, setSelectedKeys] = useState<Selection>(
-      new Set(['index-html', 'database-js', 'readme-file'])
+      new Set(['index-html', 'logo-svg', 'readme-file'])
     );
 
     return (
@@ -141,7 +149,7 @@ export const MultipleSelection: Story = {
           selectionBehavior="toggle"
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
-          defaultExpandedKeys={['app', 'http', 'providers', 'config']}
+          defaultExpandedKeys={['app', 'http']}
         >
           <Tree.Item id="app" textValue="app">
             <Tree.ItemContent>app</Tree.ItemContent>
@@ -172,6 +180,9 @@ export const MultipleSelection: Story = {
           </Tree.Item>
           <Tree.Item id="public" textValue="public">
             <Tree.ItemContent>public</Tree.ItemContent>
+            <Tree.Item id="logo-svg" textValue="logo.svg">
+              <Tree.ItemContent>logo.svg</Tree.ItemContent>
+            </Tree.Item>
           </Tree.Item>
           <Tree.Item id="env-file" textValue=".env">
             <Tree.ItemContent>.env</Tree.ItemContent>
@@ -308,8 +319,8 @@ export const Disabled: Story = {
       <Tree
         items={items}
         aria-label="Project files"
-        defaultExpandedKeys={[1, 2]}
-        disabledKeys={[3, 8, 10]}
+        defaultExpandedKeys={[1, 2, 9]}
+        disabledKeys={[3, 8, 11]}
       >
         {function renderItem(item) {
           return (
@@ -424,6 +435,9 @@ export const SelectionAndActions: Story = {
           </Tree.Item>
           <Tree.Item id="public" textValue="public">
             <Tree.ItemContent>public</Tree.ItemContent>
+            <Tree.Item id="logo-svg" textValue="logo.svg">
+              <Tree.ItemContent>logo.svg</Tree.ItemContent>
+            </Tree.Item>
           </Tree.Item>
           <Tree.Item id="env-file" textValue=".env">
             <Tree.ItemContent>.env</Tree.ItemContent>
