@@ -84,7 +84,7 @@
     "@react-stately/toggle": "^3.9.4",
     "@react-stately/tooltip": "^3.5.10",
     "@react-stately/tree": "^3.9.5",
-    "react-aria-components": "^1.14.0"
+    "react-aria-components": "^1.15.1"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
