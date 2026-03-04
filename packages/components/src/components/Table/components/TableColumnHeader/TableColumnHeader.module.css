@@ -97,6 +97,7 @@
 .sortIcon {
   display: flex;
   visibility: hidden;
+  opacity: 1;
 
   &.active {
     visibility: visible;
@@ -110,4 +111,13 @@
   & > * {
     margin: auto;
   }
+}
+
+.sortable:where(.hovered, .focusVisible) .sortIcon {
+  visibility: visible;
+  opacity: 1;
+}
+
+.sortable:where(.hovered, .focusVisible) .sortIcon:not(.active) {
+  opacity: 0.4;
 }

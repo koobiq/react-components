@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 
-import { useFocusRing, mergeProps, clsx } from '@koobiq/react-core';
+import { useFocusRing, mergeProps, useHover, clsx } from '@koobiq/react-core';
 import { IconChevronUpS16, IconChevronDownS16 } from '@koobiq/react-icons';
 import type {
   TableState,
@@ -58,15 +58,23 @@ export function TableColumnHeader<T>({
   }: ColumnProps<T> = column.props;
 
   const { isFocusVisible, focusProps } = useFocusRing();
+  const { isHovered, hoverProps } = useHover({ isDisabled: !allowsSorting });
 
   const isActive = state.sortDescriptor?.column === column.key;
 
   const direction = isActive ? state.sortDescriptor?.direction : undefined;
+  const isPreview = !isActive && (isHovered || isFocusVisible);
+  const iconDirection = isPreview ? 'ascending' : direction;
 
   const defaultIcon =
-    direction === 'ascending' ? <IconChevronUpS16 /> : <IconChevronDownS16 />;
+    iconDirection === 'ascending' ? (
+      <IconChevronUpS16 />
+    ) : (
+      <IconChevronDownS16 />
+    );
 
-  const iconToRender = renderSortIcon?.({ direction, isActive }) ?? defaultIcon;
+  const iconToRender =
+    renderSortIcon?.({ direction: iconDirection, isActive }) ?? defaultIcon;
 
   const columnSortIcon = allowsSorting && (
     <span aria-hidden="true" className={clsx(s.sortIcon, isActive && s.active)}>
@@ -84,6 +92,7 @@ export function TableColumnHeader<T>({
         align && s[align],
         valign && s[valign],
         allowsSorting && s.sortable,
+        isHovered && s.hovered,
         isFocusVisible && s.focusVisible,
         className
       )}
@@ -91,7 +100,7 @@ export function TableColumnHeader<T>({
       data-valign={valign || undefined}
       data-allows-sorting={allowsSorting || undefined}
       data-allows-resizing={isResizable || undefined}
-      {...mergeProps(columnHeaderProps, focusProps)}
+      {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       style={{
         ...styleProp,
         inlineSize: layoutState?.getColumnWidth(column.key),
