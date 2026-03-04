@@ -5,6 +5,8 @@ export {
   mergeProps,
   filterDOMProps,
   RouterProvider,
+  handleLinkClick,
+  useLinkProps,
   mergeRefs,
   useObjectRef,
 } from '@react-aria/utils';
@@ -34,6 +36,7 @@ export type {
   RefObject,
   CollectionChildren,
   CollectionElement,
+  RouterOptions,
   SortDescriptor,
   Selection,
 } from '@react-types/shared';

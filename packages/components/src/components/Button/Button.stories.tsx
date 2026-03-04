@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-import { useBoolean } from '@koobiq/react-core';
+import { RouterProvider, useBoolean } from '@koobiq/react-core';
 import {
   IconArrowUpRightFromSquare16,
   IconChevronDown16,
@@ -8,6 +8,7 @@ import {
   IconPlus16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
+import { linkTo } from '@storybook/addon-links';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from '../Checkbox';
@@ -173,4 +174,18 @@ export const Custom: Story = {
       </Button>
     );
   },
+};
+
+export const RouterProviderStory = {
+  render: () => (
+    <RouterProvider
+      navigate={(href) => {
+        linkTo(href)();
+      }}
+    >
+      <Button as="a" href="Icons">
+        Router link
+      </Button>
+    </RouterProvider>
+  ),
 };
