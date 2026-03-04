@@ -43,6 +43,7 @@ const meta = {
       },
     },
   },
+  tags: ['status:updated', 'date:2026-03-04'],
 } satisfies Meta<typeof Button>;
 
 export default meta;
