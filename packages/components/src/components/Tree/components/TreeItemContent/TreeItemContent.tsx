@@ -36,7 +36,7 @@ export function TreeItemContent(props: TreeItemContentProps) {
                 activeIndex={+isExpanded}
               />
             </IconButton>
-            {selectionBehavior === 'toggle' && selectionMode !== 'none' && (
+            {selectionBehavior === 'toggle' && selectionMode === 'multiple' && (
               <Checkbox slot="selection" {...slotProps?.checkbox} />
             )}
             {typeof children === 'function' ? children(renderProps) : children}
