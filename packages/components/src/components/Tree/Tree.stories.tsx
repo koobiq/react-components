@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
-import { useHover } from '@koobiq/react-core';
 import { IconEllipsisVertical16, IconFolder16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { useAsyncList } from '../../index';
+import { FlexBox, useAsyncList } from '../../index';
 import type { Selection } from '../../index';
 import { IconButton } from '../IconButton';
 import { spacing } from '../layout';
@@ -84,7 +83,7 @@ export const Base: Story = {
     layout: 'padded',
   },
   render: (args) => (
-    <Tree aria-label="Project files" {...args}>
+    <Tree aria-label="Project files" selectionMode="single" {...args}>
       <Tree.Item id="app" textValue="app">
         <Tree.ItemContent>app</Tree.ItemContent>
         <Tree.Item id="http" textValue="Http">
@@ -231,53 +230,49 @@ export const Slots: Story = {
     function MyTreeItemContent({
       title,
       type,
-      isHovered,
     }: {
       title: string;
       type: string;
-      isHovered: boolean;
     }) {
       const [isMenuOpen, setIsMenuOpen] = useState(false);
 
       return (
         <Tree.ItemContent>
-          {type === 'directory' && <IconFolder16 />}
-          <Typography>{title}</Typography>
-          {(isHovered || isMenuOpen) && (
-            <Menu
-              onOpenChange={setIsMenuOpen}
-              control={(props) => (
-                <IconButton
-                  {...props}
-                  size="l"
-                  variant="fade-contrast"
-                  aria-label="More actions"
-                  className={spacing({ mis: 'auto' })}
-                  isCompact
+          {({ isFocusVisible, isHovered }) => (
+            <>
+              {type === 'directory' && <IconFolder16 />}
+              {title}
+              {(isHovered || isFocusVisible || isMenuOpen) && (
+                <Menu
+                  onOpenChange={setIsMenuOpen}
+                  control={(props) => (
+                    <IconButton
+                      {...props}
+                      size="l"
+                      variant="fade-contrast"
+                      aria-label="More actions"
+                      className={spacing({ mis: 'auto' })}
+                      isCompact
+                    >
+                      <IconEllipsisVertical16 />
+                    </IconButton>
+                  )}
                 >
-                  <IconEllipsisVertical16 />
-                </IconButton>
+                  <Menu.Item key="edit">Edit</Menu.Item>
+                  <Menu.Item key="copy">Copy</Menu.Item>
+                  <Menu.Item key="delete">Delete</Menu.Item>
+                </Menu>
               )}
-            >
-              <Menu.Item key="edit">Edit</Menu.Item>
-              <Menu.Item key="copy">Copy</Menu.Item>
-              <Menu.Item key="delete">Delete</Menu.Item>
-            </Menu>
+            </>
           )}
         </Tree.ItemContent>
       );
     }
 
     function MyTreeItem({ item }: { item: (typeof items)[number] }) {
-      const { hoverProps, isHovered } = useHover({});
-
       return (
-        <Tree.Item key={item.id} textValue={item.title} {...hoverProps}>
-          <MyTreeItemContent
-            title={item.title}
-            type={item.type}
-            isHovered={isHovered}
-          />
+        <Tree.Item key={item.id} textValue={item.title}>
+          <MyTreeItemContent title={item.title} type={item.type} />
           <Collection items={item.children}>
             {(child) => <MyTreeItem item={child} />}
           </Collection>
@@ -286,7 +281,7 @@ export const Slots: Story = {
     }
 
     return (
-      <Tree items={items} aria-label="Project files">
+      <Tree items={items} aria-label="Project files" selectionMode="single">
         {(item) => <MyTreeItem item={item} />}
       </Tree>
     );
@@ -546,4 +541,108 @@ export const AsyncLoading: Story = {
       </Tree>
     );
   },
+};
+
+export const Examples: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: (args) => (
+    <Tree
+      aria-label="Project files"
+      selectionMode="single"
+      defaultExpandedKeys={['long-folder-1']}
+      {...args}
+    >
+      <Tree.Item id="app" textValue="app">
+        <Tree.ItemContent>app</Tree.ItemContent>
+        <Tree.Item id="http" textValue="Http">
+          <Tree.ItemContent>Http</Tree.ItemContent>
+          <Tree.Item id="index-html" textValue="index.html">
+            <Tree.ItemContent>index.html</Tree.ItemContent>
+          </Tree.Item>
+        </Tree.Item>
+        <Tree.Item id="providers" textValue="Providers">
+          <Tree.ItemContent>Providers</Tree.ItemContent>
+          <Tree.Item
+            id="event-service-provider-js"
+            textValue="EventServiceProvider.js"
+          >
+            <Tree.ItemContent>EventServiceProvider.js</Tree.ItemContent>
+          </Tree.Item>
+        </Tree.Item>
+      </Tree.Item>
+      <Tree.Item id="config" textValue="config">
+        <Tree.ItemContent>config</Tree.ItemContent>
+        <Tree.Item id="config-app-js" textValue="app.js">
+          <Tree.ItemContent>app.js</Tree.ItemContent>
+        </Tree.Item>
+        <Tree.Item id="database-js" textValue="database.js">
+          <Tree.ItemContent>database.js</Tree.ItemContent>
+        </Tree.Item>
+      </Tree.Item>
+      <Tree.Item
+        id="long-folder-1"
+        textValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
+            asperiores delectus doloremque fugiat illo laudantium nesciunt
+            omnis. Aliquam, earum, velit?"
+      >
+        <Tree.ItemContent>
+          <Typography ellipsis>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
+            asperiores delectus doloremque fugiat illo laudantium nesciunt
+            omnis. Aliquam, earum, velit?
+          </Typography>
+        </Tree.ItemContent>
+        <Tree.Item
+          id="long-file-1"
+          textValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
+          asperiores delectus doloremque fugiat illo laudantium nesciunt omnis.
+          Aliquam, earum, velit?"
+        >
+          <Tree.ItemContent>
+            <Typography ellipsis>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus asperiores delectus doloremque fugiat illo laudantium
+              nesciunt omnis. Aliquam, earum, velit?
+            </Typography>
+          </Tree.ItemContent>
+        </Tree.Item>
+      </Tree.Item>
+      <Tree.Item id="env-file" textValue=".env">
+        <Tree.ItemContent>.env</Tree.ItemContent>
+      </Tree.Item>
+      <Tree.Item id="gitignore-file" textValue=".gitignore">
+        <Tree.ItemContent>.gitignore</Tree.ItemContent>
+      </Tree.Item>
+      <Tree.Item id="readme-file" textValue="README.md">
+        <Tree.ItemContent>README.md</Tree.ItemContent>
+      </Tree.Item>
+      <Tree.Item
+        style={{ alignItems: 'flex-start' }}
+        id="long-file-2"
+        textValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus asperiores delectus doloremque fugiat illo laudantium nesciunt omnis. Aliquam, earum, velit?"
+      >
+        <Tree.ItemContent>
+          <FlexBox gap="3xs" direction="column" style={{ minWidth: 0 }}>
+            <Typography style={{ width: '100%' }} ellipsis>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus asperiores delectus doloremque fugiat illo laudantium
+              nesciunt omnis. Aliquam, earum, velit?
+            </Typography>
+            <Typography
+              style={{ width: '100%' }}
+              color="contrast-secondary"
+              variant="text-compact"
+              ellipsis
+            >
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus asperiores delectus doloremque fugiat illo laudantium
+              nesciunt omnis. Aliquam, earum, velit?
+            </Typography>
+          </FlexBox>
+        </Tree.ItemContent>
+      </Tree.Item>
+    </Tree>
+  ),
 };

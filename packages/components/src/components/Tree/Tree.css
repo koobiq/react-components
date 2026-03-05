@@ -38,6 +38,7 @@
 
   [data-slot='chevron'] {
     visibility: hidden;
+    margin-block: var(--kbq-size-3xs);
   }
 
   &[data-has-child-items] [data-slot='chevron'] {

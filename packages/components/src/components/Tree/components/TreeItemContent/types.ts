@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { TreeItemContentProps as AriaTreeItemContentProps } from '@koobiq/react-primitives';
 
@@ -11,10 +9,6 @@ export type TreeItemContentPropSlotProps = {
   checkbox?: Omit<CheckboxProps, 'slot'>;
 };
 
-export type TreeItemContentProps = Omit<
-  AriaTreeItemContentProps,
-  'children'
-> & {
-  children?: ReactNode;
+export type TreeItemContentProps = AriaTreeItemContentProps & {
   slotProps?: TreeItemContentPropSlotProps;
 } & DataAttributeProps;

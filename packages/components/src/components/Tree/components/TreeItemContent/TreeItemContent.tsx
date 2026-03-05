@@ -1,9 +1,6 @@
 import { mergeProps } from '@koobiq/react-core';
 import { IconChevronRightS16 } from '@koobiq/react-icons';
-import {
-  TreeItemContent as AriaTreeItemContent,
-  type TreeItemContentRenderProps,
-} from '@koobiq/react-primitives';
+import { TreeItemContent as AriaTreeItemContent } from '@koobiq/react-primitives';
 
 import { AnimatedIcon } from '../../../AnimatedIcon';
 import { Checkbox } from '../../../Checkbox';
@@ -19,12 +16,10 @@ export function TreeItemContent(props: TreeItemContentProps) {
 
   return (
     <AriaTreeItemContent {...other}>
-      {({
-        selectionBehavior,
-        selectionMode,
-        isDisabled,
-        isExpanded,
-      }: TreeItemContentRenderProps) => {
+      {(renderProps) => {
+        const { selectionBehavior, selectionMode, isDisabled, isExpanded } =
+          renderProps;
+
         const chevronProps = mergeProps<
           (TreeItemContentPropSlotProps['chevron'] | undefined)[]
         >(
@@ -44,7 +39,7 @@ export function TreeItemContent(props: TreeItemContentProps) {
             {selectionBehavior === 'toggle' && selectionMode !== 'none' && (
               <Checkbox slot="selection" {...slotProps?.checkbox} />
             )}
-            {children}
+            {typeof children === 'function' ? children(renderProps) : children}
           </>
         );
       }}
