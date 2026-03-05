@@ -238,11 +238,11 @@ export const Slots: Story = {
 
       return (
         <Tree.ItemContent>
-          {({ isFocusVisible, isHovered }) => (
+          {({ isHovered, isFocusVisibleWithin }) => (
             <>
               {type === 'directory' && <IconFolder16 />}
               {title}
-              {(isHovered || isFocusVisible || isMenuOpen) && (
+              {(isHovered || isFocusVisibleWithin || isMenuOpen) && (
                 <Menu
                   onOpenChange={setIsMenuOpen}
                   control={(props) => (
@@ -314,8 +314,8 @@ export const Disabled: Story = {
       <Tree
         items={items}
         aria-label="Project files"
-        defaultExpandedKeys={[1, 2, 9]}
-        disabledKeys={[3, 8, 11]}
+        defaultExpandedKeys={[1, 9]}
+        disabledKeys={[2, 3, 8, 11]}
       >
         {function renderItem(item) {
           return (
