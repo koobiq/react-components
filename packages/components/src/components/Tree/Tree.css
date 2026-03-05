@@ -21,7 +21,6 @@
 }
 
 .kbq-TreeItem {
-  position: relative;
   padding-inline-start: calc(
     (var(--tree-item-level)) * var(--tree-item-padding)
   );
