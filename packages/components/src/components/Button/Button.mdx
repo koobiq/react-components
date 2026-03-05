@@ -92,29 +92,8 @@ If needed, you can use your own **class names** and the component's helper
 
 <Story of={Stories.Custom} />
 
-## Integration
+## Router provider
 
-### Next.js
+For client-side navigation (without full page reload), wrap your app in `RouterProvider`.
 
-Integrating navigation into a Button using Next.js Link:
-
-```tsx
-import NextLink from 'next/link';
-
-type ButtonLinkProps = Omit<ButtonProps<'a'>, 'href'> & { href: string };
-
-const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
-  ({ href, ...other }, ref) => {
-    return (
-      <Button
-        {...other}
-        as={(props: typeof other) => (
-          <NextLink {...props} href={href} ref={ref} />
-        )}
-      />
-    );
-  }
-);
-
-ButtonLink.displayName = 'ButtonLink';
-```
+<Story of={Stories.RouterProviderStory} />
