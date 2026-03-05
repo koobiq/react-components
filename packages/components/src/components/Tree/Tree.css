@@ -35,6 +35,10 @@
     cursor: pointer;
   }
 
+  &[data-disabled]:not([data-has-child-items], [data-selection-mode]) {
+    cursor: default;
+  }
+
   [data-slot='chevron'] {
     visibility: hidden;
     margin-block: var(--kbq-size-3xs);

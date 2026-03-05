@@ -313,6 +313,7 @@ export const Disabled: Story = {
     return (
       <Tree
         items={items}
+        selectionMode="single"
         aria-label="Project files"
         defaultExpandedKeys={[1, 9]}
         disabledKeys={[2, 3, 8, 11]}
