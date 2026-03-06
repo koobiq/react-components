@@ -1,3 +1,5 @@
+'use client';
+
 import { mergeProps } from '@koobiq/react-core';
 import { IconChevronRightS16 } from '@koobiq/react-icons';
 import { TreeItemContent as AriaTreeItemContent } from '@koobiq/react-primitives';
