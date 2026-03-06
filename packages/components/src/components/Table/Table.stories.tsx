@@ -1,6 +1,10 @@
 import { useState, useMemo } from 'react';
 
-import { IconArrowDownS16, IconArrowUpS16 } from '@koobiq/react-icons';
+import {
+  IconArrowDownS16,
+  IconArrowUpS16,
+  IconArrowUpArrowDown16,
+} from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import type {
@@ -727,9 +731,16 @@ export const RenderSortIcon: Story = {
         aria-label="Fast animals"
         {...(sortDescriptor && { sortDescriptor })}
         onSortChange={handleSortChange}
-        renderSortIcon={({ direction }) =>
-          direction === 'ascending' ? <IconArrowUpS16 /> : <IconArrowDownS16 />
-        }
+        renderSortIcon={({ direction }) => {
+          if (!direction)
+            return <IconArrowUpArrowDown16 style={{ opacity: '0.5' }} />;
+
+          return direction === 'ascending' ? (
+            <IconArrowUpS16 />
+          ) : (
+            <IconArrowDownS16 />
+          );
+        }}
         selectionMode="multiple"
         {...args}
       >
