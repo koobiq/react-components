@@ -8,9 +8,9 @@ import {
   polymorphicForwardRef,
   filterDOMProps,
 } from '@koobiq/react-core';
+import { useRenderProps } from 'react-aria-components';
 
 import { useLink } from '../../behaviors';
-import { useRenderProps } from '../../utils';
 
 import type { LinkBaseProps } from './types.js';
 

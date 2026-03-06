@@ -3,8 +3,7 @@
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import { polymorphicForwardRef } from '@koobiq/react-core';
-
-import { useContextProps } from '../../utils';
+import { useContextProps } from 'react-aria-components';
 
 import type { LabelBaseProps } from './index';
 import { LabelContext } from './index';

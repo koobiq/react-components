@@ -1,0 +1,94 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Tree.stories';
+
+<Meta of={Stories} />
+
+# Tree
+
+<Status variant="experimental" />
+
+A tree provides users with a way to navigate nested hierarchical information,
+with support for keyboard navigation and selection.
+
+```tsx
+import { Tree } from '@koobiq/react-components';
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Components
+
+Use these components to build hierarchical navigation, selection, and lazy loading flows.
+
+- `Tree` — Root container for hierarchical items.
+- `Tree.Item` — Defines a node in the tree (leaf or branch).
+- `Tree.ItemContent` — Customizes row content (text, icons, slots).
+- `Tree.LoadMoreItem` — Triggers and displays async loading state for additional items.
+
+## Content
+
+Tree supports both static and dynamic collections.
+Use static items when the structure is known in advance, and use the render function with the `items` prop when the data comes from an external source or changes over time.
+
+<Story of={Stories.Content} />
+
+## Multiple selection
+
+Use `selectionMode="multiple"` to allow selecting more than one item.
+Use `selectionBehavior="toggle"` to render checkbox selection controls.
+
+<Story of={Stories.MultipleSelection} />
+
+## Slots
+
+Use `Tree.ItemContent` to customize item layout.
+For example, you can add icons, typography, badges, and slot-specific props for chevron and checkbox controls.
+
+<Story of={Stories.Slots} />
+
+## Empty state
+
+When no items are available, use `renderEmptyState` to render a clear empty result message.
+
+<Story of={Stories.EmptyState} />
+
+## Disabled
+
+Use `disabledKeys` to disable specific items in the tree.
+
+<Story of={Stories.Disabled} />
+
+## Links
+
+Tree items can act as links using `href`.
+This is useful for navigation trees and any hierarchical link structure.
+
+<Story of={Stories.Links} />
+
+## Selection and actions
+
+Use `selectionMode` and `onSelectionChange` for controlled selection.
+Use `onAction` to handle item activation separately from selection.
+
+<Story of={Stories.SelectionAndActions} />
+
+## Async Loading
+
+Tree supports progressive loading with `Tree.LoadMoreItem`.
+Combine it with `useAsyncList` to fetch nested data on demand.
+
+<Story of={Stories.AsyncLoading} />
+
+## Other examples
+
+<Story of={Stories.Examples} />

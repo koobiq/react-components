@@ -6,9 +6,10 @@ import type {
   FormProps as SharedFormProps,
 } from '@koobiq/react-core';
 import { FormValidationContext } from '@react-stately/form';
+import type { ContextValue } from 'react-aria-components';
+import { useContextProps } from 'react-aria-components';
 
-import type { ContextValue, DOMProps } from '../../utils';
-import { useContextProps } from '../../utils';
+import type { DOMProps } from '../../utils';
 
 export interface FormProps
   extends SharedFormProps, DOMProps, GlobalDOMAttributes<HTMLFormElement> {

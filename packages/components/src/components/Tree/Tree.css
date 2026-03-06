@@ -1,0 +1,70 @@
+@import url('../../styles/mixins.css');
+
+.kbq-Tree {
+  --tree-item-level: ;
+  --tree-item-padding: var(--kbq-size-m);
+
+  outline: none;
+  overflow: auto;
+  box-sizing: border-box;
+  forced-color-adjust: none;
+  display: flex;
+  flex-direction: column;
+
+  &[data-empty] {
+    align-items: center;
+    justify-content: center;
+    min-block-size: 100px;
+
+    @mixin typography text-normal;
+  }
+}
+
+.kbq-TreeItem {
+  padding-inline-start: calc(
+    (var(--tree-item-level)) * var(--tree-item-padding)
+  );
+
+  &:not([data-disabled], [data-has-child-items], [data-selection-mode]) {
+    cursor: default;
+  }
+
+  &:not([data-disabled])[data-has-child-items],
+  &:not([data-disabled])[data-selection-mode],
+  &:not([data-disabled])[data-href] {
+    cursor: pointer;
+  }
+
+  &[data-disabled]:not([data-has-child-items], [data-selection-mode]) {
+    cursor: default;
+  }
+
+  [data-slot='chevron'] {
+    visibility: hidden;
+    margin-block: var(--kbq-size-3xs);
+  }
+
+  &[data-has-child-items] [data-slot='chevron'] {
+    visibility: visible;
+  }
+}
+
+.kbq-TreeLoader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kbq-TreeLoadMoreItem {
+  display: flex;
+  align-items: center;
+  gap: var(--kbq-size-m);
+  cursor: default;
+  padding-inline-start: calc(
+    (var(--tree-item-level)) * var(--tree-item-padding) + 24px
+  );
+
+  & > * {
+    display: contents;
+  }
+}

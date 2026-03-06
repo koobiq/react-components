@@ -1,14 +1,11 @@
-import {
-  type ComponentPropsWithRef,
-  createContext,
-  type ElementType,
-  useContext,
-} from 'react';
+import { createContext, useContext } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import type { ValidationResult } from '@koobiq/react-core';
 import { isNotNil, polymorphicForwardRef } from '@koobiq/react-core';
+import type { RenderProps } from 'react-aria-components';
+import { useRenderProps } from 'react-aria-components';
 
-import { type RenderProps, useRenderProps } from '../../utils';
 import { Text } from '../Text';
 
 export const FieldErrorContext = createContext<ValidationResult | null>(null);

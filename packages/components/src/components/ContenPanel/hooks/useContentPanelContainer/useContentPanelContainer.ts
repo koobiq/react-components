@@ -6,7 +6,10 @@ import type { ButtonBaseProps } from '@koobiq/react-primitives';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
 export type UseContentPanelReturnValue = {
-  triggerProps: ButtonBaseProps;
+  triggerProps: Omit<
+    ButtonBaseProps,
+    'isLoading' | 'children' | 'className' | 'style'
+  >;
   closeButtonProps: ButtonBaseProps;
   containerProps?: HTMLAttributes<HTMLElement>;
   panelProps?: HTMLAttributes<HTMLElement>;

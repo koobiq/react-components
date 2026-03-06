@@ -11,10 +11,10 @@ import {
   useEventListener,
 } from '@koobiq/react-core';
 import {
-  ButtonContext,
   Provider,
   useDialog,
   DEFAULT_SLOT,
+  ButtonContext,
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
