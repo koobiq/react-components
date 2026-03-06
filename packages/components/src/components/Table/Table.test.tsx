@@ -203,4 +203,62 @@ describe('Table', () => {
 
     expect(onNavigate).toBeCalled();
   });
+
+  it('should pass unsorted state to renderSortIcon for sortable column', () => {
+    const renderSortIcon = vi.fn(() => <span data-testid="sort-icon" />);
+
+    render(
+      <Table aria-label="Sortable table" renderSortIcon={renderSortIcon}>
+        <Table.Header>
+          <Table.Column key="name" allowsSorting>
+            Name
+          </Table.Column>
+        </Table.Header>
+        <Table.Body items={[{ id: 1, name: 'home' }]}>
+          {(item) => (
+            <Table.Row>
+              <Table.Cell>{item.name}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+
+    expect(renderSortIcon).toBeCalledWith({
+      direction: undefined,
+      isActive: false,
+    });
+
+    expect(screen.getByTestId('sort-icon')).toBeInTheDocument();
+  });
+
+  it('should pass active sort direction to renderSortIcon', () => {
+    const renderSortIcon = vi.fn(() => <span data-testid="sort-icon" />);
+
+    render(
+      <Table
+        aria-label="Sortable table"
+        sortDescriptor={{ column: 'name', direction: 'ascending' }}
+        renderSortIcon={renderSortIcon}
+      >
+        <Table.Header>
+          <Table.Column key="name" allowsSorting>
+            Name
+          </Table.Column>
+        </Table.Header>
+        <Table.Body items={[{ id: 1, name: 'home' }]}>
+          {(item) => (
+            <Table.Row>
+              <Table.Cell>{item.name}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+
+    expect(renderSortIcon).toBeCalledWith({
+      direction: 'ascending',
+      isActive: true,
+    });
+  });
 });

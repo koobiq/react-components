@@ -97,6 +97,10 @@
 .sortIcon {
   display: flex;
   visibility: hidden;
+  opacity: 1;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--kbq-size-l);
 
   &.active {
     visibility: visible;
