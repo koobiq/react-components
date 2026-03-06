@@ -64,7 +64,7 @@ export function TableColumnHeader<T>({
 
   const direction = isActive ? state.sortDescriptor?.direction : undefined;
 
-  const defaultIcon = (() => {
+  const defaultIcon = () => {
     if (direction === 'ascending') {
       return <IconChevronUpS16 />;
     }
@@ -74,9 +74,10 @@ export function TableColumnHeader<T>({
     }
 
     return null;
-  })();
+  };
 
-  const iconToRender = renderSortIcon?.({ direction, isActive }) ?? defaultIcon;
+  const iconToRender =
+    renderSortIcon?.({ direction, isActive }) ?? defaultIcon();
 
   const columnSortIcon = allowsSorting && (
     <span
