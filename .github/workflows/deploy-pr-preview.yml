@@ -23,18 +23,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
-      - name: Install Node
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-
-      - name: Install Dependencies
-        run: pnpm install
+      - uses: ./.github/actions/setup-node
 
       - name: Build Storybook
         run: pnpm run build-storybook

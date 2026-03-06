@@ -1,0 +1,19 @@
+name: Linters
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  linters:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-node
+      - run: |
+          pnpm run type-check
+          pnpm run format:check
+          pnpm run lint:css --max-warnings=0
+          pnpm run lint:js --max-warnings=0
