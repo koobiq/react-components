@@ -12,8 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-node
-      - run: |
-          pnpm run type-check
-          pnpm run format:check
-          pnpm run lint:css --max-warnings=0
-          pnpm run lint:js --max-warnings=0
+      - name: Type check
+        run: pnpm run type-check
+      - name: Check formatting
+        run: pnpm run format:check
+      - name: Lint CSS
+        run: pnpm run lint:css --max-warnings=0
+      - name: Lint JS
+        run: pnpm run lint:js --max-warnings=0
