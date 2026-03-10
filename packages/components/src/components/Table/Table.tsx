@@ -49,6 +49,7 @@ function TableBase<T extends object>(props: TableBaseProps<T>) {
   const {
     divider = 'none',
     stickyHeader,
+    hideSelectAll = false,
     fullWidth,
     slotProps,
     isResizable,
@@ -102,6 +103,7 @@ function TableBase<T extends object>(props: TableBaseProps<T>) {
                   column={column}
                   key={column.key}
                   layoutState={layoutState}
+                  hideSelectAll={hideSelectAll}
                 />
               ) : (
                 <TableColumnHeader

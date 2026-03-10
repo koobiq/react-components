@@ -57,6 +57,11 @@ export type TableProps<T> = Pick<
     fullWidth?: boolean;
     /** Flag indicating a fixed table header. */
     stickyHeader?: boolean;
+    /**
+     * Hides the select-all checkbox in the table header during multiple selection.
+     * @default false
+     */
+    hideSelectAll?: boolean;
     /** Render function for a custom sort icon for the column */
     renderSortIcon?: TablePropSortIconRender;
     /**
