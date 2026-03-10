@@ -79,23 +79,31 @@ export function DatePickerRender<T extends DateValue>(
   // eslint-disable-next-line no-unsafe-optional-chaining
   const { slotProps: rootSlotProps, ...otherRoot } = slotProps?.root || {};
 
+  const triggerButtonProps = mergeProps(
+    {
+      variant: isInvalid ? 'error' : 'fade-contrast',
+      className: s.calendar,
+      children: <IconCalendarO16 />,
+    },
+    buttonProps,
+    slotProps?.triggerButton
+  );
+
   const mergedRootSlotProps = {
     ...rootSlotProps,
-    group: mergeProps(rootSlotProps?.group, groupProps, {
-      ref: anchorRef,
-      endAddon: (
-        <>
-          {endAddon}
-          <IconButton
-            variant={isInvalid ? 'error' : 'fade-contrast'}
-            className={s.calendar}
-            {...buttonProps}
-          >
-            <IconCalendarO16 />
-          </IconButton>
-        </>
-      ),
-    }),
+    group: mergeProps(
+      groupProps,
+      {
+        ref: anchorRef,
+        endAddon: (
+          <>
+            {endAddon}
+            <IconButton {...triggerButtonProps} />
+          </>
+        ),
+      },
+      rootSlotProps?.group
+    ),
   };
 
   const rootProps = mergeProps(

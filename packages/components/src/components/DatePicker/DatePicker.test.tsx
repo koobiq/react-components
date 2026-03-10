@@ -1,6 +1,7 @@
 import { createRef } from 'react';
 
 import type { CalendarDate } from '@internationalized/date';
+import { IconClock16 } from '@koobiq/react-icons';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
@@ -64,5 +65,28 @@ describe('DatePicker', () => {
     render(<DatePicker {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
+  });
+
+  it('should allow custom open button icon via triggerButton slot', () => {
+    render(
+      <DatePicker
+        {...baseProps}
+        slotProps={{
+          triggerButton: {
+            children: <IconClock16 data-testid="custom-open-icon" />,
+          },
+        }}
+      />
+    );
+
+    const openButton = screen.getByRole('button');
+
+    expect(screen.getByTestId('custom-open-icon')).toBeInTheDocument();
+
+    expect(
+      openButton.querySelector('svg[data-testid="custom-open-icon"]')
+    ).toBeInTheDocument();
+
+    expect(openButton.querySelectorAll('svg')).toHaveLength(1);
   });
 });
