@@ -10,6 +10,7 @@ import type {
   DateInputRef,
 } from '../DateInput';
 import type { FormFieldLabelProps } from '../FormField';
+import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
 
 export type DatePickerProps<T extends DateValue> = {
@@ -48,6 +49,7 @@ export type DatePickerProps<T extends DateValue> = {
     label?: FormFieldLabelProps;
     popover?: PopoverProps;
     calendar?: CalendarProps<T>;
+    triggerButton?: IconButtonProps;
   };
 } & Omit<AriaDatePickerProps<T>, 'description' | 'validationState'>;
 

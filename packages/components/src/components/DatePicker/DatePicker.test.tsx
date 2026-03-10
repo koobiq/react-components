@@ -65,4 +65,27 @@ describe('DatePicker', () => {
 
     expect(getRoot()).toHaveTextContent('fail');
   });
+
+  it('should allow custom open button icon via triggerButton slot', () => {
+    render(
+      <DatePicker
+        {...baseProps}
+        slotProps={{
+          triggerButton: {
+            children: <span data-testid="custom-open-icon" />,
+          },
+        }}
+      />
+    );
+
+    const openButton = screen.getByRole('button');
+
+    expect(screen.getByTestId('custom-open-icon')).toBeInTheDocument();
+
+    expect(
+      openButton.querySelector('[data-testid="custom-open-icon"]')
+    ).toBeInTheDocument();
+
+    expect(openButton.querySelector('svg')).not.toBeInTheDocument();
+  });
 });
