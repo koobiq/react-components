@@ -18,12 +18,14 @@ type TableSelectAllCellProps<T> = {
   column: AriaTableColumnHeaderProps<T>['node'];
   state: TableState<T>;
   layoutState?: TableColumnResizeState<T>;
+  hideSelectAll?: boolean;
 };
 
 export function TableSelectAllCell<T>({
   column,
   state,
   layoutState,
+  hideSelectAll = false,
 }: TableSelectAllCellProps<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
 
@@ -34,6 +36,14 @@ export function TableSelectAllCell<T>({
   );
 
   const { checkboxProps } = useTableSelectAllCheckbox(state);
+  const isSingleSelection = state.selectionManager.selectionMode === 'single';
+  let content = null;
+
+  if (isSingleSelection) {
+    content = <VisuallyHidden>{checkboxProps['aria-label']}</VisuallyHidden>;
+  } else if (!hideSelectAll) {
+    content = <Checkbox {...checkboxProps} />;
+  }
 
   return (
     <th
@@ -44,11 +54,7 @@ export function TableSelectAllCell<T>({
       }}
       ref={ref}
     >
-      {state.selectionManager.selectionMode === 'single' ? (
-        <VisuallyHidden>{checkboxProps['aria-label']}</VisuallyHidden>
-      ) : (
-        <Checkbox {...checkboxProps} />
-      )}
+      {content}
     </th>
   );
 }

@@ -154,6 +154,17 @@ describe('Table', () => {
 
       expect([...selection]).toEqual([1, 3, 2]);
     });
+
+    it('should hide the header select all checkbox when configured', () => {
+      render(
+        renderComponent({
+          selectionMode: 'multiple',
+          hideSelectAll: true,
+        })
+      );
+
+      expect(screen.getAllByRole('checkbox')).toHaveLength(4);
+    });
   });
 
   it('should not trigger onSelectionChange when clicking a disabled item', async () => {
