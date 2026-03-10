@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.28.0](https://github.com/koobiq/react-components/compare/0.27.1...0.28.0) (2026-03-10)
+
+
+### 🚀 Features
+
+* **Button:** enable RouterProvider navigation for link buttons (DS-4659) ([#281](https://github.com/koobiq/react-components/issues/281)) ([3a09bee](https://github.com/koobiq/react-components/commit/3a09bee24039f4bb5de0374f771ac0512baf023e))
+* **components:** add `Tree` component (DS-4661) ([#280](https://github.com/koobiq/react-components/issues/280)) ([a497fae](https://github.com/koobiq/react-components/commit/a497fae86f8a94b45206f8bd9e66d3e77fb0974a))
+* **DatePicker:** add `triggerButton` slot (DS-4767) ([#285](https://github.com/koobiq/react-components/issues/285)) ([24a77fb](https://github.com/koobiq/react-components/commit/24a77fb5816bab9be21bc346d21088bb9bce6ad4))
+* **Table:** add `hideSelectAll` prop (DS-4773) ([#284](https://github.com/koobiq/react-components/issues/284)) ([64b0723](https://github.com/koobiq/react-components/commit/64b072389a7bd86311ef214e38b4203e27cef978))
+* **Table:** allow custom hover icon for unsorted sortable columns (DS-4323) ([#283](https://github.com/koobiq/react-components/issues/283)) ([c85e0bf](https://github.com/koobiq/react-components/commit/c85e0bff90ed761caceb3647c902032f5bc3b787))
+
 ## [0.27.1](https://github.com/koobiq/react-components/compare/0.27.0...0.27.1) (2026-02-26)
 
 
