@@ -1293,6 +1293,23 @@
       "keywords": ["number", "shape", "six", "круг", "форма", "шесть"]
     },
     {
+      "name": "IconClipboardCheck16",
+      "size": "16",
+      "keywords": [
+        "task",
+        "to-do",
+        "checkmark",
+        "planner",
+        "cutting board",
+        "клипборд",
+        "планшет",
+        "галочка",
+        "задача",
+        "планировщик",
+        "разделочная доска"
+      ]
+    },
+    {
       "name": "IconClock16",
       "size": "16",
       "keywords": ["time", "watch", "время", "наручные", "часы"]
@@ -1365,6 +1382,11 @@
       "name": "IconCloudBadgeKeyO16",
       "size": "16",
       "keywords": ["network", "vpn", "впн", "облако", "сеть"]
+    },
+    {
+      "name": "IconCloudHalf16",
+      "size": "16",
+      "keywords": ["network", "облако", "половина", "сеть"]
     },
     {
       "name": "IconCloudO16",
@@ -4761,18 +4783,36 @@
     },
     {
       "name": "IconClipboardCheck24",
-      "size": "24"
+      "size": "24",
+      "keywords": [
+        "task",
+        "to-do",
+        "checkmark",
+        "planner",
+        "cutting board",
+        "клипборд",
+        "планшет",
+        "галочка",
+        "задача",
+        "планировщик",
+        "разделочная доска"
+      ]
     },
     {
       "name": "IconClipboardCheckO24",
       "size": "24",
       "keywords": [
-        "outline",
-        "policies",
-        "rules",
-        "контур",
-        "политики",
-        "правила"
+        "task",
+        "to-do",
+        "checkmark",
+        "planner",
+        "cutting board",
+        "клипборд",
+        "планшет",
+        "галочка",
+        "задача",
+        "планировщик",
+        "разделочная доска"
       ]
     },
     {
@@ -4840,6 +4880,11 @@
       "name": "IconCloudBadgeKeyO24",
       "size": "24",
       "keywords": ["network", "vpn", "впн", "облако", "сеть"]
+    },
+    {
+      "name": "IconCloudHalf24",
+      "size": "24",
+      "keywords": ["network", "облако", "половина", "сеть"]
     },
     {
       "name": "IconCloudO24",

@@ -185,6 +185,7 @@ export * from './IconCircleTelegram16';
 export * from './IconCircleXmark16';
 export * from './IconCircleXmarkS16';
 export * from './IconCircleXs16';
+export * from './IconClipboardCheck16';
 export * from './IconClock16';
 export * from './IconClockBadgeLinux16';
 export * from './IconClockBadgePause16';
@@ -196,6 +197,7 @@ export * from './IconCloud16';
 export * from './IconCloudBadgeGlobe16';
 export * from './IconCloudBadgeGlobeO16';
 export * from './IconCloudBadgeKeyO16';
+export * from './IconCloudHalf16';
 export * from './IconCloudO16';
 export * from './IconCode16';
 export * from './IconCompass16';
@@ -711,6 +713,7 @@ export * from './IconCloudArrowUpO24';
 export * from './IconCloudBadgeGlobe24';
 export * from './IconCloudBadgeGlobeO24';
 export * from './IconCloudBadgeKeyO24';
+export * from './IconCloudHalf24';
 export * from './IconCloudO24';
 export * from './IconCode24';
 export * from './IconCompass24';
@@ -1258,6 +1261,7 @@ export type IconName =
   | 'IconCircleXmark16'
   | 'IconCircleXmarkS16'
   | 'IconCircleXs16'
+  | 'IconClipboardCheck16'
   | 'IconClock16'
   | 'IconClockBadgeLinux16'
   | 'IconClockBadgePause16'
@@ -1269,6 +1273,7 @@ export type IconName =
   | 'IconCloudBadgeGlobe16'
   | 'IconCloudBadgeGlobeO16'
   | 'IconCloudBadgeKeyO16'
+  | 'IconCloudHalf16'
   | 'IconCloudO16'
   | 'IconCode16'
   | 'IconCompass16'
@@ -1784,6 +1789,7 @@ export type IconName =
   | 'IconCloudBadgeGlobe24'
   | 'IconCloudBadgeGlobeO24'
   | 'IconCloudBadgeKeyO24'
+  | 'IconCloudHalf24'
   | 'IconCloudO24'
   | 'IconCode24'
   | 'IconCompass24'
