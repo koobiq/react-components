@@ -116,7 +116,7 @@
     {
       "name": "IconArrowDownToLine16",
       "size": "16",
-      "keywords": ["download", "загрузить", "скачать"]
+      "keywords": []
     },
     {
       "name": "IconArrowDownXs16",
@@ -170,7 +170,7 @@
     {
       "name": "IconArrowRightFromBracket16",
       "size": "16",
-      "keywords": ["export", "экспорт"]
+      "keywords": []
     },
     {
       "name": "IconArrowRightFromRectangle16",
@@ -230,11 +230,13 @@
     },
     {
       "name": "IconArrowRotateLeftBadgeLinux16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconArrowRotateLeftBadgeWindows16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconArrowRotateRight16",
@@ -367,12 +369,12 @@
     {
       "name": "IconArrowUpFromBracket16",
       "size": "16",
-      "keywords": ["alt", "upload", "загрузить"]
+      "keywords": []
     },
     {
       "name": "IconArrowUpFromLine16",
       "size": "16",
-      "keywords": ["to cloud", "upload", "в облако", "загрузить"]
+      "keywords": []
     },
     {
       "name": "IconArrowUpFromRectangle16",
@@ -406,6 +408,11 @@
       "name": "IconArrowUpS16",
       "size": "16",
       "keywords": ["small", "вверх", "маленькая", "наверх", "стрелка"]
+    },
+    {
+      "name": "IconArrowUpToBracket16",
+      "size": "16",
+      "keywords": ["share", "поделиться"]
     },
     {
       "name": "IconArrowUpXs16",
@@ -690,7 +697,8 @@
     },
     {
       "name": "IconBucketS316",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconBug16",
@@ -720,15 +728,18 @@
     },
     {
       "name": "IconCable16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconCalendarDaysO16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconCalendarO16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconCalendarXmarkO16",
@@ -877,7 +888,8 @@
     },
     {
       "name": "IconChartStackedBarHorizontal16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconChartStackedBarVertical16",
@@ -913,7 +925,8 @@
     },
     {
       "name": "IconCheckS16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconChevronDoubleDown16",
@@ -1285,7 +1298,8 @@
     },
     {
       "name": "IconCircleXmarkS16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconCircleXs16",
@@ -1349,7 +1363,8 @@
     },
     {
       "name": "IconClockBadgeWindows16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconClockRotateLeft16",
@@ -1376,7 +1391,8 @@
     },
     {
       "name": "IconCloudBadgeGlobeO16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconCloudBadgeKeyO16",
@@ -1574,7 +1590,8 @@
     },
     {
       "name": "IconDiamond16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconDiamondExclamation16",
@@ -1584,7 +1601,8 @@
     },
     {
       "name": "IconDiamondHalf16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconDiamondInfo16",
@@ -1741,7 +1759,8 @@
     },
     {
       "name": "IconFileBadgeArrowTurnRight16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconFileBadgeBanO16",
@@ -2147,7 +2166,8 @@
     },
     {
       "name": "IconGossopka16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconGrafana16",
@@ -2172,7 +2192,8 @@
     },
     {
       "name": "IconGridSquares16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconGripVertical16",
@@ -2426,11 +2447,13 @@
     },
     {
       "name": "IconLocationArrowRight16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconLocationArrowUp16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconLocationChevronDown16",
@@ -2618,7 +2641,8 @@
     {
       "name": "IconNodeTree16",
       "size": "16",
-      "description": "Дерево узлов"
+      "description": "Дерево узлов",
+      "keywords": []
     },
     {
       "name": "IconNorthEast16",
@@ -2812,7 +2836,8 @@
     },
     {
       "name": "IconRectanglesO16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconRectangleTriangleVerticalThin16",
@@ -3021,7 +3046,8 @@
     },
     {
       "name": "IconShieldExclamation16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconShieldHalf16",
@@ -3353,7 +3379,8 @@
     },
     {
       "name": "IconTextOverflow16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconTextUnderline16",
@@ -3500,7 +3527,8 @@
     },
     {
       "name": "IconUserBadgeGear16",
-      "size": "16"
+      "size": "16",
+      "keywords": []
     },
     {
       "name": "IconUserBadgeGlobe16",
@@ -3653,11 +3681,13 @@
     },
     {
       "name": "IconActiveDirectory24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconAix24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconAlignCenter24",
@@ -3676,7 +3706,8 @@
     },
     {
       "name": "IconAndroid24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconAnomaly24",
@@ -3693,11 +3724,13 @@
     },
     {
       "name": "IconApi24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconApple24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowDown24",
@@ -3809,7 +3842,8 @@
     },
     {
       "name": "IconArrowRightFromArc24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowRightFromBracket24",
@@ -3841,7 +3875,8 @@
     },
     {
       "name": "IconArrowRightToArc24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowRightToBracket24",
@@ -3855,11 +3890,13 @@
     },
     {
       "name": "IconArrowRightToRectangle24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowRotateLeft24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowRotateLeftBadgeLinux24",
@@ -3954,11 +3991,13 @@
     },
     {
       "name": "IconArrowsRotateReverse24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowsRotateReverseSlash24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowsRotateSlash24",
@@ -4019,11 +4058,12 @@
     {
       "name": "IconArrowUpFromBracket24",
       "size": "24",
-      "keywords": ["upload", "вверх", "скобка", "стрелка"]
+      "keywords": []
     },
     {
       "name": "IconArrowUpFromLine24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconArrowUpFromRectangle24",
@@ -4067,6 +4107,11 @@
       "keywords": ["angle", "small", "вверх", "маленький", "шеврон"]
     },
     {
+      "name": "IconArrowUpToBracket24",
+      "size": "24",
+      "keywords": ["share", "поделиться"]
+    },
+    {
       "name": "IconArrowUpXs24",
       "size": "24",
       "description": "Сортировка по возрастанию",
@@ -4108,7 +4153,8 @@
     },
     {
       "name": "IconBan24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBandAid24",
@@ -4175,7 +4221,8 @@
     },
     {
       "name": "IconBarsProgress24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBarsSortBottom24",
@@ -4194,7 +4241,8 @@
     },
     {
       "name": "IconBarsVertical24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBehance24",
@@ -4208,11 +4256,13 @@
     },
     {
       "name": "IconBellSlash24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBentoMenu24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBinoculars24",
@@ -4221,7 +4271,8 @@
     },
     {
       "name": "IconBlockBrick24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBolt24",
@@ -4248,7 +4299,8 @@
     },
     {
       "name": "IconBookOpen24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBox24",
@@ -4280,7 +4332,8 @@
     },
     {
       "name": "IconBranch24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBreakBlock24",
@@ -4294,7 +4347,8 @@
     },
     {
       "name": "IconBsd24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconBucketS324",
@@ -4362,7 +4416,8 @@
     },
     {
       "name": "IconCertificateHorizontal24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCertificateVertical24",
@@ -4376,23 +4431,28 @@
     },
     {
       "name": "IconChartArea24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartBarHorizontal24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartBarVertical24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartBubble24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartDonut24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartGaugeO24",
@@ -4401,7 +4461,8 @@
     },
     {
       "name": "IconChartHeatmap24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartIndex24",
@@ -4410,15 +4471,18 @@
     },
     {
       "name": "IconChartIndexLine24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartLine24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartLineMultiple24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartNetwork24",
@@ -4435,15 +4499,18 @@
     },
     {
       "name": "IconChartPie24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartStackedBarHorizontal24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChartStackedBarVertical24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCheck24",
@@ -4512,27 +4579,33 @@
     },
     {
       "name": "IconChevronDown24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChevronDownS24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChevronLeft24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChevronLeftS24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChevronRight24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChevronRightS24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChevronsCompress24",
@@ -4586,11 +4659,13 @@
     },
     {
       "name": "IconChevronUp24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconChevronUpS24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCircle24",
@@ -4646,7 +4721,8 @@
     },
     {
       "name": "IconCircleCheck24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCircleChevronDown24",
@@ -4685,7 +4761,8 @@
     },
     {
       "name": "IconCircleExclamation24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCircleHalf24",
@@ -4694,7 +4771,8 @@
     },
     {
       "name": "IconCircleInfo24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCircleLocationArrowO24",
@@ -4722,7 +4800,8 @@
     },
     {
       "name": "IconCircleMinusO24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCircleMinusS24",
@@ -4731,7 +4810,8 @@
     },
     {
       "name": "IconCircleO24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCirclePause24",
@@ -4755,7 +4835,8 @@
     },
     {
       "name": "IconCircleQuestion24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCircleStop24",
@@ -4769,7 +4850,8 @@
     },
     {
       "name": "IconCircleXmark24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCircleXmarkS24",
@@ -4859,7 +4941,8 @@
     },
     {
       "name": "IconCloud24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCloudArrowUpO24",
@@ -4874,7 +4957,8 @@
     },
     {
       "name": "IconCloudBadgeGlobeO24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconCloudBadgeKeyO24",
@@ -4976,7 +5060,8 @@
     },
     {
       "name": "IconDesktop24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconDesktopBadgeLinux24",
@@ -4999,7 +5084,8 @@
     },
     {
       "name": "IconDesktopMultiple24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconDesktopMultipleO24",
@@ -5085,7 +5171,8 @@
     },
     {
       "name": "IconDiskDrive24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconDrop24",
@@ -5127,11 +5214,13 @@
     },
     {
       "name": "IconEllipsisVertical24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconEnvelope24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconEnvelopeBadgeArrowRight24",
@@ -5152,7 +5241,8 @@
     },
     {
       "name": "IconEnvelopeDot24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconEnvelopeMta24",
@@ -5264,7 +5354,8 @@
     },
     {
       "name": "IconFileBadgeBanO24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconFileCodeO24",
@@ -5305,11 +5396,13 @@
     },
     {
       "name": "IconFileMultipleO24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconFileO24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconFilePlusO24",
@@ -5393,7 +5486,8 @@
     },
     {
       "name": "IconFolder24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconFolderBadgeArrowRight24",
@@ -5438,7 +5532,8 @@
     },
     {
       "name": "IconFolderOpen24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconFolderOpenBadgeMagnifyingGlass24",
@@ -5480,7 +5575,8 @@
     },
     {
       "name": "IconGear24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconGearBadgeSquare24",
@@ -5566,7 +5662,8 @@
     },
     {
       "name": "IconGlobeMultiple24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconGlobeOnLine24",
@@ -5678,15 +5775,18 @@
     },
     {
       "name": "IconHpux24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconHypervisor24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconIdrac24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconImage24",
@@ -5720,7 +5820,8 @@
     },
     {
       "name": "IconKey24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconKeyboard24",
@@ -5766,15 +5867,18 @@
     },
     {
       "name": "IconLinkMultiple24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconLinux24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconList24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconListBadgePlus24",
@@ -5864,7 +5968,8 @@
     },
     {
       "name": "IconLock24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconLock25624",
@@ -5888,7 +5993,8 @@
     },
     {
       "name": "IconMagnifyingGlass24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconMagnifyingGlassBadgeSparkles24",
@@ -5912,7 +6018,8 @@
     },
     {
       "name": "IconMapSlash24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconMattermost24",
@@ -5921,15 +6028,18 @@
     },
     {
       "name": "IconMessage24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconMessageArrowRight24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconMessageDot24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconMessageFaq24",
@@ -5956,7 +6066,8 @@
     },
     {
       "name": "IconMobile24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconMoon24",
@@ -5981,7 +6092,8 @@
     {
       "name": "IconNodeTree24",
       "size": "24",
-      "description": "Дерево узлов"
+      "description": "Дерево узлов",
+      "keywords": []
     },
     {
       "name": "IconNorthEast24",
@@ -6035,7 +6147,8 @@
     },
     {
       "name": "IconPencil24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconPencilOnLine24",
@@ -6069,7 +6182,8 @@
     },
     {
       "name": "IconPlug24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconPlugSlash24",
@@ -6088,7 +6202,8 @@
     },
     {
       "name": "IconPrinter24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconPulse24",
@@ -6264,7 +6379,8 @@
     },
     {
       "name": "IconRouter24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconRuler24",
@@ -6273,7 +6389,8 @@
     },
     {
       "name": "IconSap24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconSatelliteDish24",
@@ -6305,7 +6422,8 @@
     },
     {
       "name": "IconScrollO24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconServer24",
@@ -6438,11 +6556,13 @@
     },
     {
       "name": "IconSignalStream24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconSliders24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconSlidersDot24",
@@ -6595,11 +6715,13 @@
     },
     {
       "name": "IconTable24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconTableBadgeClock24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconTableLine24",
@@ -6685,7 +6807,8 @@
     },
     {
       "name": "IconTopology24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconTopologyLines24",
@@ -6758,7 +6881,8 @@
     },
     {
       "name": "IconUser24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconUserBadgeFileText24",
@@ -6800,7 +6924,8 @@
     },
     {
       "name": "IconUserMultiple24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconUserSecret24",
@@ -6847,7 +6972,8 @@
     },
     {
       "name": "IconWindows24",
-      "size": "24"
+      "size": "24",
+      "keywords": []
     },
     {
       "name": "IconWindowsArrowRotateLeft24",
@@ -6893,7 +7019,8 @@
     },
     {
       "name": "IconBarsHorizontal32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconBell32",
@@ -6907,31 +7034,38 @@
     },
     {
       "name": "IconBoltO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconChartBarHorizontal32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconChartLineMultiple32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconChevronDown32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconChevronLeft32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconChevronRight32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconChevronUp32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconCircleQuestionO32",
@@ -6940,15 +7074,18 @@
     },
     {
       "name": "IconCloudArrowDownO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconCloudArrowUpO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconDashboardO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconDatabaseO32",
@@ -6957,51 +7094,63 @@
     },
     {
       "name": "IconFileLinesO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconFileO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconFolderO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconList32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconPause32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconPlay32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconPlus32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconRadarO32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconSliders32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconStop32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconTableBadgeCircleArrowDown32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconTriangleExclamation32",
-      "size": "32"
+      "size": "32",
+      "keywords": []
     },
     {
       "name": "IconXmark32",
@@ -7018,59 +7167,73 @@
     },
     {
       "name": "IconArrowsRotate48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconChartBarHorizontal48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconChartLineMultiple48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconCheck48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconFileDocO48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconFilePdfO48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconPause48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconPlay48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconStop48",
-      "size": "48"
+      "size": "48",
+      "keywords": []
     },
     {
       "name": "IconCloudArrowUpO64",
-      "size": "64"
+      "size": "64",
+      "keywords": []
     },
     {
       "name": "IconPause64",
-      "size": "64"
+      "size": "64",
+      "keywords": []
     },
     {
       "name": "IconPlay64",
-      "size": "64"
+      "size": "64",
+      "keywords": []
     },
     {
       "name": "IconPlus64",
-      "size": "64"
+      "size": "64",
+      "keywords": []
     },
     {
       "name": "IconStop64",
-      "size": "64"
+      "size": "64",
+      "keywords": []
     }
   ]
 }
