@@ -63,6 +63,7 @@ export * from './IconArrowUpLeft16';
 export * from './IconArrowUpRight16';
 export * from './IconArrowUpRightFromSquare16';
 export * from './IconArrowUpS16';
+export * from './IconArrowUpToBracket16';
 export * from './IconArrowUpXs16';
 export * from './IconAsterisk16';
 export * from './IconAstraLinux16';
@@ -575,6 +576,7 @@ export * from './IconArrowUpLeft24';
 export * from './IconArrowUpRight24';
 export * from './IconArrowUpRightFromSquare24';
 export * from './IconArrowUpS24';
+export * from './IconArrowUpToBracket24';
 export * from './IconArrowUpXs24';
 export * from './IconAsterisk24';
 export * from './IconAstraLinux24';
@@ -1139,6 +1141,7 @@ export type IconName =
   | 'IconArrowUpRight16'
   | 'IconArrowUpRightFromSquare16'
   | 'IconArrowUpS16'
+  | 'IconArrowUpToBracket16'
   | 'IconArrowUpXs16'
   | 'IconAsterisk16'
   | 'IconAstraLinux16'
@@ -1651,6 +1654,7 @@ export type IconName =
   | 'IconArrowUpRight24'
   | 'IconArrowUpRightFromSquare24'
   | 'IconArrowUpS24'
+  | 'IconArrowUpToBracket24'
   | 'IconArrowUpXs24'
   | 'IconAsterisk24'
   | 'IconAstraLinux24'
