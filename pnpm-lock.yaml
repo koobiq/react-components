@@ -490,11 +490,11 @@ importers:
         specifier: ^3.15.2
         version: 3.15.2
       '@koobiq/react-components':
-        specifier: 0.26.0
-        version: 0.26.0(@koobiq/design-tokens@3.15.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.28.0
+        version: 0.28.0(@koobiq/design-tokens@3.15.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@koobiq/react-icons':
-        specifier: 0.26.0
-        version: 0.26.0(react@19.2.3)
+        specifier: 0.28.0
+        version: 0.28.0(react@19.2.3)
       next:
         specifier: ^15.5.10
         version: 15.5.10(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -533,11 +533,11 @@ importers:
   templates/vite/template:
     dependencies:
       '@koobiq/react-components':
-        specifier: 0.26.0
-        version: 0.26.0(@koobiq/design-tokens@3.15.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.28.0
+        version: 0.28.0(@koobiq/design-tokens@3.15.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@koobiq/react-core':
-        specifier: 0.26.0
-        version: 0.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.28.0
+        version: 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -1956,29 +1956,29 @@ packages:
   '@koobiq/icons@11.4.0':
     resolution: {integrity: sha512-ABrKQy+J8rXVoDxHBzc0oS8dZprns+ezcgGuaU2LNcmymjmKBldxBH3l8l9MU+++RB+aI9PYYp1DnYGb7nBwLw==}
 
-  '@koobiq/logger@0.26.0':
-    resolution: {integrity: sha512-oLDCzTFoD+2DoCVYSvFFLfOxkD1jSdHKZCN4CeBbsYisXRfLwU4qfMD6X6On2b2t/dEqeDJclLVKi1G+0XGvOw==}
+  '@koobiq/logger@0.28.0':
+    resolution: {integrity: sha512-72n3jktRkMSMQ/1vIDSpdLRMIyJhrLZkCFtPxBn7H/In/cfeHQ6sY3jzvGsJSqIgnRe6HwkGUME4MIKX24LO1w==}
 
-  '@koobiq/react-components@0.26.0':
-    resolution: {integrity: sha512-ar9jfS52mDXPlhebdIeXnVjHcjokPC9nY3pjcacG7Wow8rABRfbYzWAviS5zbFHBiPkYS1Eq/OHOMlAwacMXRQ==}
+  '@koobiq/react-components@0.28.0':
+    resolution: {integrity: sha512-4YGRPW2FvJ2tTIJ8sUHyV2nyhh014ecGi4zXMRcwfh7Lb8kzKK/GxDX0wVmfM+/9rexNHuL30BvOdMw5TFDCkA==}
     peerDependencies:
-      '@koobiq/design-tokens': ^3.15.0
+      '@koobiq/design-tokens': ^3.15.2
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@koobiq/react-core@0.26.0':
-    resolution: {integrity: sha512-tAiYyM83YStmMaENvcdIE0RvWBLWv4rI4fMh5/vj0LUbV4dUTlzoJRP1IOeUink4JsSbYK6mLDvcNzhpgdVDsA==}
+  '@koobiq/react-core@0.28.0':
+    resolution: {integrity: sha512-tF2aZtCADbzmMih0tjylx6JZ30yyR9hJLyBPWzb64xL/ukvLiE/1j51dFmTw93s0pdn14YZwlNLdLrfaWiU+sw==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@koobiq/react-icons@0.26.0':
-    resolution: {integrity: sha512-zT5XFSImoMaUrtsfgA/2xUA4wmOjLgAvfgOeXI18mHzRXlc3rqD+EhddS14pVYjaELkgGC5M3DVkqW7me73Qlw==}
+  '@koobiq/react-icons@0.28.0':
+    resolution: {integrity: sha512-w9H2mYrsKWPQxm+cyEX3hOwZqOwvqQi7EfRcEsGVaqlSsNvsw4tuN+SIwchTSMzt6Fd0QI4pP4o3a5w2fJXdjw==}
     peerDependencies:
       react: ^19.0.0
 
-  '@koobiq/react-primitives@0.26.0':
-    resolution: {integrity: sha512-Gc2jVgGMfD3ivgnSnJ5AdLdCY0Xwg0PZ/+3+YbOE2K2UoYLlffAk/cpnhpjqUueI/vi9FCnlM0m1T39VSDbMsg==}
+  '@koobiq/react-primitives@0.28.0':
+    resolution: {integrity: sha512-R+xwF9N0C2/TElGqbZ5MOUHNdOTvbk6LHkSQ6yJ4aOMWO9sI23sqssHTun3CSR1PxiKcUxYzkY02LI01iRa0cQ==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -2410,8 +2410,8 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@react-aria/toolbar@3.0.0-beta.22':
-    resolution: {integrity: sha512-Q1gOj6N4vzvpGrIoNAxpUudEQP82UgQACENH/bcH8FnEMbSP7DHvVfDhj7GTU6ldMXO2cjqLhiidoUK53gkCiA==}
+  '@react-aria/toolbar@3.0.0-beta.23':
+    resolution: {integrity: sha512-FzvNf2hWtjEwk8F2MBf4qSs6AAR/p2WFSws6kJ4f0SrWXl4wR9VDEwBEUQcIPbWCK2aUsyOjubCh55Cl4t3MoQ==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -10097,15 +10097,15 @@ snapshots:
 
   '@koobiq/icons@11.4.0': {}
 
-  '@koobiq/logger@0.26.0': {}
+  '@koobiq/logger@0.28.0': {}
 
-  '@koobiq/react-components@0.26.0(@koobiq/design-tokens@3.15.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-components@0.28.0(@koobiq/design-tokens@3.15.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@koobiq/design-tokens': 3.15.2
-      '@koobiq/logger': 0.26.0
-      '@koobiq/react-core': 0.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@koobiq/react-icons': 0.26.0(react@19.2.3)
-      '@koobiq/react-primitives': 0.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/logger': 0.28.0
+      '@koobiq/react-core': 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/react-icons': 0.28.0(react@19.2.3)
+      '@koobiq/react-primitives': 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/react-transition-group': 4.4.12(@types/react@19.2.7)
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
@@ -10113,10 +10113,10 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@koobiq/react-core@0.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-core@0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@internationalized/date': 3.12.0
-      '@koobiq/logger': 0.26.0
+      '@koobiq/logger': 0.28.0
       '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.27.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10127,14 +10127,14 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  '@koobiq/react-icons@0.26.0(react@19.2.3)':
+  '@koobiq/react-icons@0.28.0(react@19.2.3)':
     dependencies:
       react: 19.2.3
 
-  '@koobiq/react-primitives@0.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-primitives@0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@koobiq/logger': 0.26.0
-      '@koobiq/react-core': 0.26.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/logger': 0.28.0
+      '@koobiq/react-core': 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/autocomplete': 3.0.0-rc.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/breadcrumbs': 3.5.32(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/button': 3.14.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10164,7 +10164,7 @@ snapshots:
       '@react-aria/textfield': 3.18.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/toast': 3.0.11(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/toggle': 3.12.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/toolbar': 3.0.0-beta.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/toolbar': 3.0.0-beta.23(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/tooltip': 3.9.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/visually-hidden': 3.8.31(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/autocomplete': 3.0.0-beta.4(react@19.2.3)
@@ -10189,6 +10189,7 @@ snapshots:
       '@react-stately/tooltip': 3.5.11(react@19.2.3)
       '@react-stately/tree': 3.9.6(react@19.2.3)
       react: 19.2.3
+      react-aria-components: 1.16.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-dom: 19.2.3(react@19.2.3)
 
   '@mdx-js/react@3.1.1(@types/react@19.2.7)(react@19.2.3)':
@@ -10913,7 +10914,7 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  '@react-aria/toolbar@3.0.0-beta.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@react-aria/toolbar@3.0.0-beta.23(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
