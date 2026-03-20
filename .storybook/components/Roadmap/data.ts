@@ -249,12 +249,6 @@ export const rows: Rows = [
     planned: 'Q3 2025',
   },
   {
-    component: 'Select (multiple)',
-    status: '✅ Done',
-    stage: '🔵 experimental',
-    planned: 'Q3 2025',
-  },
-  {
     component: 'SearchInput',
     status: '✅ Done',
     stage: '🔵 experimental',
