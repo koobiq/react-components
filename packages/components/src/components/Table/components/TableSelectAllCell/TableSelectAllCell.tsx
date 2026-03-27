@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 
+import { useSsr } from '@koobiq/react-core';
 import {
   useTableColumnHeader,
   VisuallyHidden,
@@ -28,12 +29,28 @@ export function TableSelectAllCell<T>({
   hideSelectAll = false,
 }: TableSelectAllCellProps<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
+  const { isServer } = useSsr();
 
   const { columnHeaderProps } = useTableColumnHeader(
     { node: column },
     state,
     ref
   );
+
+  const safeColumnHeaderProps = {
+    ...columnHeaderProps,
+  } as typeof columnHeaderProps & {
+    id?: string;
+    'data-key'?: string;
+  };
+
+  if (isServer) {
+    // Selection header props include id/data-key derived from a random internal column key.
+    // Omit them during SSR to avoid hydration mismatches.
+    // https://github.com/adobe/react-spectrum/blob/main/packages/react-stately/src/table/TableCollection.ts#L36
+    delete safeColumnHeaderProps.id;
+    delete safeColumnHeaderProps['data-key'];
+  }
 
   const { checkboxProps } = useTableSelectAllCheckbox(state);
   const isSingleSelection = state.selectionManager.selectionMode === 'single';
@@ -48,7 +65,7 @@ export function TableSelectAllCell<T>({
   return (
     <th
       className={s.base}
-      {...columnHeaderProps}
+      {...(isServer ? safeColumnHeaderProps : columnHeaderProps)}
       style={{
         inlineSize: layoutState?.getColumnWidth(column.key),
       }}
