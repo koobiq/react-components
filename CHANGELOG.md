@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.29.0](https://github.com/koobiq/react-components/compare/0.28.0...0.29.0) (2026-03-27)
+
+
+### 🚀 Features
+
+* **icons:** add `IconClipboardCheck16`, `IconClipboardCheck24`, `IconCloudHalf16` and `IconCloudHalf24` icons (DS-4780) ([#286](https://github.com/koobiq/react-components/issues/286)) ([0be5a11](https://github.com/koobiq/react-components/commit/0be5a112ebe7357b897afa9db2b57d7f0c44090b))
+* **icons:** add IconArrowUpToBracket16 and IconArrowUpToBracket24 (DS-4831) ([#288](https://github.com/koobiq/react-components/issues/288)) ([d966add](https://github.com/koobiq/react-components/commit/d966addac29ee25fb88d62af3845a09f7f480451))
+
+
+### 🐞 Bug Fixes
+
+* pin react-aria dependencies (DS-4830) ([#289](https://github.com/koobiq/react-components/issues/289)) ([9a3ca79](https://github.com/koobiq/react-components/commit/9a3ca79694b9e027f1ea40ac0b4f6a9ae7c08bb7))
+* **Table:** avoid hydration mismatch in select-all header cell (DS-4829) ([#294](https://github.com/koobiq/react-components/issues/294)) ([fb2625a](https://github.com/koobiq/react-components/commit/fb2625a751b67226124833a70c24e15b5c9d6a51))
+
 ## [0.28.0](https://github.com/koobiq/react-components/compare/0.27.1...0.28.0) (2026-03-10)
 
 
