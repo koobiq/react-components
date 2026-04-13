@@ -483,7 +483,7 @@ export const Stretched: Story = {
 };
 
 export const Scrolling: Story = {
-  render: function Render(args) {
+  render: function Render() {
     const tabs = [
       { key: '0', title: 'Phishing' },
       {
@@ -512,26 +512,24 @@ export const Scrolling: Story = {
 
     return (
       <Tabs
-        aria-label="Threat intelligence"
-        isUnderlined
+        items={tabs}
         defaultSelectedKey="1"
         disabledKeys={['7', '12']}
-        {...args}
+        aria-label="Threat intelligence"
+        isUnderlined
       >
-        <>
-          {tabs.map(({ key, title }) => (
-            <Tab key={key} title={title}>
-              {`${title} — brief overview of the attack scenario and typical indicators of compromise. Vector: network, email, supply chain, user action. Impact: data access, encryption, downtime. Mitigation: MFA, least privilege, segmentation, WAF, training.`}
-            </Tab>
-          ))}
-        </>
+        {({ key, title }) => (
+          <Tab key={key} title={title}>
+            {`${title} — brief overview of the attack scenario and typical indicators of compromise. Vector: network, email, supply chain, user action. Impact: data access, encryption, downtime. Mitigation: MFA, least privilege, segmentation, WAF, training.`}
+          </Tab>
+        )}
       </Tabs>
     );
   },
 };
 
 export const VerticalScrolling: Story = {
-  render: function Render(args) {
+  render: function Render() {
     const tabs = [
       { key: '0', title: 'Phishing' },
       {
@@ -560,24 +558,22 @@ export const VerticalScrolling: Story = {
 
     return (
       <Tabs
+        items={tabs}
+        orientation="vertical"
+        defaultSelectedKey="1"
         style={{ blockSize: 200 }}
+        disabledKeys={['7', '12']}
+        aria-label="Threat intelligence"
         slotProps={{
           tabs: { style: { inlineSize: '30%' } },
           tabPanel: { style: { paddingBlock: 0 } },
         }}
-        aria-label="Threat intelligence"
-        orientation="vertical"
-        disabledKeys={['7', '12']}
-        defaultSelectedKey="1"
-        {...args}
       >
-        <>
-          {tabs.map(({ key, title }) => (
-            <Tab key={key} title={title}>
-              {`${title} — brief overview of the attack scenario and typical indicators of compromise. Vector: network, email, supply chain, user action. Impact: data access, encryption, downtime. Mitigation: MFA, least privilege, segmentation, WAF, training.`}
-            </Tab>
-          ))}
-        </>
+        {({ key, title }) => (
+          <Tab key={key} title={title}>
+            {`${title} — brief overview of the attack scenario and typical indicators of compromise. Vector: network, email, supply chain, user action. Impact: data access, encryption, downtime. Mitigation: MFA, least privilege, segmentation, WAF, training.`}
+          </Tab>
+        )}
       </Tabs>
     );
   },
