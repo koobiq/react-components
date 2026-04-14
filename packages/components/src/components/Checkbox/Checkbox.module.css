@@ -5,8 +5,8 @@
   --checkbox-outline-width: var(--kbq-size-3xs);
   --checkbox-color: var(--kbq-foreground-contrast);
   --checkbox-border-color: var(--kbq-line-contrast-fade);
-  --checkbox-outline-color: transparent;
-  --checkbox-icon-color: transparent;
+  --checkbox-outline-color: var(--kbq-background-transparent);
+  --checkbox-icon-color: var(--kbq-background-transparent);
 
   cursor: pointer;
   vertical-align: top;
@@ -64,15 +64,15 @@
 }
 
 .selected {
-  --checkbox-icon-color: var(--kbq-white-default);
+  --checkbox-icon-color: var(--kbq-icon-white);
   --checkbox-bg-color: var(--kbq-background-theme);
-  --checkbox-border-color: var(--kbq-background-theme);
+  --checkbox-border-color: var(--kbq-background-transparent);
 }
 
 .selected:where(.hovered) {
-  --checkbox-icon-color: var(--kbq-white-default);
+  --checkbox-icon-color: var(--kbq-icon-white);
   --checkbox-bg-color: var(--kbq-states-background-theme-hover);
-  --checkbox-border-color: var(--kbq-states-background-theme-hover);
+  --checkbox-border-color: var(--kbq-background-transparent);
 }
 
 .invalid {
@@ -86,37 +86,37 @@
 }
 
 .invalid:where(.selected) {
-  --checkbox-icon-color: var(--kbq-white-default);
-  --checkbox-border-color: var(--kbq-background-error);
+  --checkbox-icon-color: var(--kbq-icon-white);
+  --checkbox-border-color: var(--kbq-background-transparent);
   --checkbox-bg-color: var(--kbq-background-error);
 }
 
 .invalid:where(.selected.hovered) {
-  --checkbox-icon-color: var(--kbq-white-default);
-  --checkbox-border-color: var(--kbq-states-background-error-hover);
+  --checkbox-icon-color: var(--kbq-icon-white);
+  --checkbox-border-color: var(--kbq-background-transparent);
   --checkbox-bg-color: var(--kbq-states-background-error-hover);
 }
 
 .focusVisible {
-  --checkbox-border-color: transparent;
+  --checkbox-border-color: var(--kbq-background-transparent);
   --checkbox-outline-color: var(--kbq-states-line-focus-theme);
 }
 
 .focusVisible:where(.invalid) {
-  --checkbox-border-color: transparent;
+  --checkbox-border-color: var(--kbq-background-transparent);
   --checkbox-outline-color: var(--kbq-states-line-focus-error);
 }
 
 .indeterminate {
-  --checkbox-icon-color: var(--kbq-white-default);
+  --checkbox-icon-color: var(--kbq-icon-white);
   --checkbox-bg-color: var(--kbq-background-theme);
-  --checkbox-border-color: var(--kbq-background-theme);
+  --checkbox-border-color: var(--kbq-background-transparent);
 }
 
 .indeterminate:where(.hovered) {
-  --checkbox-icon-color: var(--kbq-white-default);
+  --checkbox-icon-color: var(--kbq-icon-white);
   --checkbox-bg-color: var(--kbq-states-background-theme-hover);
-  --checkbox-border-color: var(--kbq-states-background-theme-hover);
+  --checkbox-border-color: var(--kbq-background-transparent);
 }
 
 .readOnly {
