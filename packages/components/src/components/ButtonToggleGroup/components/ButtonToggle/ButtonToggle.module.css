@@ -1,7 +1,7 @@
 @import url('../../../../styles/mixins.css');
 
 [data-animated='true'] .base {
-  --button-toggle-bg-color: transparent;
+  --button-toggle-bg-color: var(--kbq-background-transparent);
 }
 
 [data-equal-item-size='true'] .base {
@@ -16,8 +16,8 @@
   --button-toggle-padding-inline-end: var(--kbq-size-3xs);
   --button-toggle-color: var(--kbq-foreground-contrast);
   --button-toggle-icon-color: var(--kbq-icon-contrast-fade);
-  --button-toggle-bg-color: transparent;
-  --button-toggle-outline-color: transparent;
+  --button-toggle-bg-color: var(--kbq-background-transparent);
+  --button-toggle-outline-color: var(--kbq-background-transparent);
 
   flex: auto;
   border: none;
@@ -26,7 +26,7 @@
   min-inline-size: 0;
   align-items: center;
   display: inline-flex;
-  background: transparent;
+  background: var(--kbq-background-transparent);
   padding-block: var(--button-toggle-padding-block);
   padding-inline: var(--button-toggle-padding-inline-start)
     var(--button-toggle-padding-inline-end);
