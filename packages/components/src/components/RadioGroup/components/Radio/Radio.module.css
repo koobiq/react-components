@@ -5,8 +5,8 @@
   --radio-opacity: 0;
   --radio-margin-block: ;
   --radio-border-radius: 50%;
-  --radio-icon-color: transparent;
-  --radio-outline-color: transparent;
+  --radio-icon-color: var(--kbq-background-transparent);
+  --radio-outline-color: var(--kbq-background-transparent);
   --radio-icon-size: var(--kbq-size-xs);
   --radio-outline-width: var(--kbq-size-3xs);
   --radio-bg-color: var(--kbq-background-bg);
@@ -73,8 +73,8 @@
 }
 
 .selected {
-  --radio-icon-color: var(--kbq-white-default);
-  --radio-border-color: var(--kbq-background-theme);
+  --radio-icon-color: var(--kbq-icon-white);
+  --radio-border-color: var(--kbq-background-transparent);
   --radio-bg-color: var(--kbq-background-theme);
   --radio-opacity: 1;
 
@@ -85,9 +85,9 @@
 }
 
 .selected:where(.hovered) {
-  --radio-icon-color: var(--kbq-white-default);
+  --radio-icon-color: var(--kbq-icon-white);
   --radio-bg-color: var(--kbq-states-background-theme-hover);
-  --radio-border-color: var(--kbq-states-background-theme-hover);
+  --radio-border-color: var(--kbq-background-transparent);
 }
 
 .invalid {
@@ -100,24 +100,24 @@
 }
 
 .invalid:where(.selected) {
-  --radio-icon-color: var(--kbq-white-default);
-  --radio-border-color: var(--kbq-background-error);
+  --radio-icon-color: var(--kbq-icon-white);
+  --radio-border-color: var(--kbq-background-transparent);
   --radio-bg-color: var(--kbq-background-error);
 }
 
 .invalid:where(.selected.hovered) {
-  --radio-icon-color: var(--kbq-white-default);
-  --radio-border-color: var(--kbq-states-background-error-hover);
+  --radio-icon-color: var(--kbq-icon-white);
+  --radio-border-color: var(--kbq-background-transparent);
   --radio-bg-color: var(--kbq-states-background-error-hover);
 }
 
 .focusVisible {
-  --radio-border-color: transparent;
+  --radio-border-color: var(--kbq-background-transparent);
   --radio-outline-color: var(--kbq-states-line-focus-theme);
 }
 
 .focusVisible:where(.invalid) {
-  --radio-border-color: transparent;
+  --radio-border-color: var(--kbq-background-transparent);
   --radio-outline-color: var(--kbq-states-line-focus-error);
 }
 
