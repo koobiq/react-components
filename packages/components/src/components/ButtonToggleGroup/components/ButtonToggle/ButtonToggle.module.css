@@ -16,7 +16,7 @@
   --button-toggle-padding-inline-end: var(--kbq-size-3xs);
   --button-toggle-color: var(--kbq-foreground-contrast);
   --button-toggle-icon-color: var(--kbq-icon-contrast-fade);
-  --button-toggle-bg-color: var(--kbq-background-contrast-fade);
+  --button-toggle-bg-color: transparent;
   --button-toggle-outline-color: transparent;
 
   flex: auto;
