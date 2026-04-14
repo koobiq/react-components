@@ -145,7 +145,7 @@ const blockStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: 'var(--kbq-size-s)',
-  color: 'var(--kbq-white-default)',
+  color: 'var(--kbq-icon-white)',
   fontFamily: 'var(--kbq-font-family-mono)',
   backgroundColor: 'var(--kbq-background-theme)',
 } as CSSProperties;

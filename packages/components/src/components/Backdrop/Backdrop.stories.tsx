@@ -36,7 +36,7 @@ export const Base: Story = {
     } as CSSProperties;
 
     const progressStyle = {
-      '--progressbar-spin-color': 'var(--kbq-white-default)',
+      '--progressbar-spin-color': 'var(--kbq-icon-white)',
     } as CSSProperties;
 
     return (
