@@ -1,7 +1,7 @@
 .base {
   --alert-icon-bg-color: ;
   --alert-icon-size: var(--kbq-size-3xl);
-  --alert-icon-color: var(--kbq-icon-on-contrast);
+  --alert-icon-color: var(--kbq-icon-white);
   --alert-icon-margin: calc(var(--kbq-size-l) + var(--kbq-size-3xs)) 0
     var(--kbq-size-l) var(--kbq-size-m);
 
