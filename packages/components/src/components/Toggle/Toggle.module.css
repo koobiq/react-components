@@ -3,16 +3,16 @@
 .base {
   --toggle-track-block-size: 16px;
   --toggle-track-inline-size: 28px;
-  --toggle-track-outline-color: transparent;
-  --toggle-track-border-radius: var(--kbq-size-s);
+  --toggle-track-outline-color: var(--kbq-background-transparent);
+  --toggle-track-outline-width: var(--kbq-size-3xs);
   --toggle-track-bg-color: var(--kbq-background-bg);
+  --toggle-track-border-width: var(--kbq-size-border-width);
   --toggle-track-border-color: var(--kbq-line-contrast-less);
-  --toggle-thumb-size: 10px;
-  --toggle-thumb-border-color: transparent;
-  --toggle-thumb-bg-color: var(--kbq-icon-contrast);
-  --toggle-thumb-margin: calc(
-    (var(--toggle-track-block-size) - var(--toggle-thumb-size)) / 2
-  );
+  --toggle-track-border-radius: var(--toggle-track-block-size);
+  --toggle-knob-size: 10px;
+  --toggle-knob-border-color: var(--kbq-background-transparent);
+  --toggle-knob-border-width: var(--kbq-size-border-width);
+  --toggle-knob-bg-color: var(--kbq-icon-contrast);
   --toggle-color: var(--kbq-foreground-contrast);
 
   color: var(--toggle-color);
@@ -27,43 +27,38 @@
 .track {
   flex-shrink: 0;
   position: relative;
+  box-sizing: border-box;
   outline-offset: -1px;
+  border: var(--toggle-track-border-width) solid
+    var(--toggle-track-border-color);
   block-size: var(--toggle-track-block-size);
   inline-size: var(--toggle-track-inline-size);
   background-color: var(--toggle-track-bg-color);
   margin-block: var(--toggle-track-margin-block);
   border-radius: var(--toggle-track-border-radius);
-  outline: 2px solid var(--toggle-track-outline-color);
+  outline: var(--toggle-track-outline-width) solid
+    var(--toggle-track-outline-color);
   transition:
     border-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),
     outline-color var(--kbq-transition-default);
 
-  /* thumb */
+  /* knob */
   &::before {
     content: '';
+    position: absolute;
+    inset-block-start: 50%;
     border-radius: 50%;
     box-sizing: border-box;
-    margin: var(--toggle-thumb-margin);
-    block-size: var(--toggle-thumb-size);
-    inline-size: var(--toggle-thumb-size);
-    background: var(--toggle-thumb-bg-color);
-    border: 1px solid var(--toggle-thumb-border-color);
+    block-size: var(--toggle-knob-size);
+    inline-size: var(--toggle-knob-size);
+    transform: translate3d(var(--kbq-size-3xs), -50%, 0);
+    background: var(--toggle-knob-bg-color);
+    border: var(--toggle-knob-border-width) solid
+      var(--toggle-knob-border-color);
     transition:
       transform var(--kbq-transition-default),
       background-color var(--kbq-transition-default);
-    display: block;
-  }
-
-  /* border */
-  &::after {
-    content: '';
-    inset: 0;
-    position: absolute;
-    pointer-events: none;
-    border-radius: inherit;
-    transition: border-color var(--kbq-transition-default);
-    border: var(--kbq-size-border-width) solid var(--toggle-track-border-color);
   }
 }
 
@@ -96,16 +91,18 @@
 }
 
 .selected {
-  --toggle-track-border-color: transparent;
-  --toggle-thumb-bg-color: var(--kbq-icon-white);
+  --toggle-track-border-color: var(--kbq-background-transparent);
+  --toggle-knob-bg-color: var(--kbq-icon-white);
   --toggle-track-bg-color: var(--kbq-background-theme);
 
   .track::before {
-    transform: translate(
+    transform: translate3d(
       calc(
-        var(--toggle-track-inline-size) - var(--toggle-thumb-size) -
-          var(--toggle-thumb-margin) * 2
-      )
+        var(--toggle-track-inline-size) - var(--toggle-knob-size) -
+          var(--kbq-size-3xs) - var(--toggle-track-border-width) * 2
+      ),
+      -50%,
+      0
     );
   }
 }
@@ -117,29 +114,29 @@
 .invalid {
   --toggle-track-bg-color: var(--kbq-background-error-less);
   --toggle-track-border-color: var(--kbq-line-error);
-  --toggle-thumb-bg-color: var(--kbq-icon-error);
+  --toggle-knob-bg-color: var(--kbq-icon-error);
 }
 
 .invalid:where(.selected) {
   --toggle-track-bg-color: var(--kbq-background-error);
-  --toggle-track-border-color: transparent;
-  --toggle-thumb-bg-color: var(--kbq-icon-white);
+  --toggle-track-border-color: var(--kbq-background-transparent);
+  --toggle-knob-bg-color: var(--kbq-icon-white);
 }
 
 .invalid:where(.hovered) {
   --toggle-track-bg-color: var(--kbq-states-background-error-fade-hover);
   --toggle-track-border-color: var(--kbq-line-error);
-  --toggle-thumb-bg-color: var(--kbq-icon-error);
+  --toggle-knob-bg-color: var(--kbq-icon-error);
 }
 
 .invalid:where(.hovered.selected) {
   --toggle-track-bg-color: var(--kbq-states-background-error-hover);
-  --toggle-track-border-color: transparent;
-  --toggle-thumb-bg-color: var(--kbq-icon-white);
+  --toggle-track-border-color: var(--kbq-background-transparent);
+  --toggle-knob-bg-color: var(--kbq-icon-white);
 }
 
 .focusVisible {
-  --toggle-track-border-color: transparent;
+  --toggle-track-border-color: var(--kbq-background-transparent);
   --toggle-track-outline-color: var(--kbq-states-line-focus-theme);
 }
 
@@ -158,7 +155,7 @@
 .disabled:not(.selected) {
   --toggle-track-border-color: var(--kbq-states-line-disabled);
   --toggle-track-bg-color: var(--kbq-states-background-disabled);
-  --toggle-thumb-bg-color: var(--kbq-states-icon-disabled);
+  --toggle-knob-bg-color: var(--kbq-states-icon-disabled);
   --toggle-color: var(--kbq-states-foreground-disabled);
 }
 
