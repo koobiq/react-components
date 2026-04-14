@@ -516,6 +516,7 @@ export const AsyncLoading: Story = {
             )}
           </Collection>
           <Tree.LoadMoreItem
+            scrollOffset={0}
             onLoadMore={smartphonesList.loadMore}
             isLoading={smartphonesList.loadingState === 'loadingMore'}
           />
@@ -535,6 +536,7 @@ export const AsyncLoading: Story = {
             )}
           </Collection>
           <Tree.LoadMoreItem
+            scrollOffset={0}
             onLoadMore={mobileAccessoriesList.loadMore}
             isLoading={mobileAccessoriesList.loadingState === 'loadingMore'}
           />
