@@ -1,6 +1,7 @@
 .base {
   flex-shrink: 0;
   margin-inline-start: var(--kbq-size-xxs);
+  background-color: var(--kbq-background-transparent);
 }
 
 .base:first-child {

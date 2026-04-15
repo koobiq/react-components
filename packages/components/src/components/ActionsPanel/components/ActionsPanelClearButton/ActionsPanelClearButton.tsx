@@ -27,6 +27,7 @@ export const ActionsPanelClearButton = ({
     <FlexBox className={clsx(s.base, className)} alignItems="center" {...other}>
       <ActionsPanelDivider />
       <Button
+        className={s.clearButton}
         aria-label={t.format('clear selection')}
         onPress={onClearSelection}
         startIcon={<IconCircleXmark16 />}

@@ -1,3 +1,7 @@
 .base {
   margin-inline-start: auto;
 }
+
+.clearButton {
+  background-color: var(--kbq-background-transparent);
+}

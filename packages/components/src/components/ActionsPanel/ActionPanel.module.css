@@ -6,7 +6,10 @@
   --actions-panel-box-shadow: var(--kbq-shadow-card);
   --actions-panel-bg-color: var(--kbq-background-contrast);
   --actions-panel-color: var(--kbq-foreground-on-contrast);
-  --actions-panel-vertical-divider-color: var(--kbq-line-contrast-fade);
+  --actions-panel-vertical-divider-color: var(
+    --kbq-line-on-contrast-less,
+    var(--kbq-line-contrast-fade)
+  );
 
   display: flex;
   position: fixed;
