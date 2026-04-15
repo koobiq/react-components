@@ -1,6 +1,7 @@
 .base {
   --tooltip-bg-color: ;
   --tooltip-color: ;
+  --tooltip-arrow-size: var(--kbq-size-s);
 
   display: flex;
   position: absolute;
@@ -16,19 +17,19 @@
 }
 
 .base[data-placement='top'][data-arrow='true'] {
-  margin-block-end: 10px;
+  margin-block-end: var(--tooltip-arrow-size);
 }
 
 .base[data-placement='bottom'][data-arrow='true'] {
-  margin-block-start: 10px;
+  margin-block-start: var(--tooltip-arrow-size);
 }
 
 .base[data-placement='left'][data-arrow='true'] {
-  margin-inline-end: 10px;
+  margin-inline-end: var(--tooltip-arrow-size);
 }
 
 .base[data-placement='right'][data-arrow='true'] {
-  margin-inline-start: 10px;
+  margin-inline-start: var(--tooltip-arrow-size);
 }
 
 .container {
@@ -38,7 +39,6 @@
   max-block-size: 100%;
   border-radius: inherit;
   flex-direction: column;
-  background-color: inherit;
 }
 
 .content {
@@ -78,31 +78,32 @@
 /* arrow */
 .arrow {
   z-index: -1;
-  block-size: 12px;
-  inline-size: 12px;
   position: absolute;
-  box-shadow: inherit;
-  background-color: inherit;
+  inline-size: 0;
+  block-size: 0;
+  border-inline-start: var(--tooltip-arrow-size) solid transparent;
+  border-inline-end: var(--tooltip-arrow-size) solid transparent;
+  border-block-start: var(--tooltip-arrow-size) solid var(--tooltip-bg-color);
 }
 
 .arrow[data-placement='top'] {
-  inset-block-end: -5px;
-  transform: translate(-50%) rotate(45deg);
+  inset-block-end: calc(-1 * var(--tooltip-arrow-size));
+  transform: translate(-50%) rotate(0deg);
 }
 
 .arrow[data-placement='bottom'] {
-  inset-block-start: -5px;
-  transform: translate(-50%) rotate(45deg);
+  inset-block-start: calc(-1 * var(--tooltip-arrow-size));
+  transform: translate(-50%) rotate(180deg);
 }
 
 .arrow[data-placement='left'] {
-  inset-inline-end: -5px;
-  transform: translateY(-50%) rotate(45deg);
+  inset-inline-end: calc(-1.5 * var(--tooltip-arrow-size));
+  transform: translateY(-50%) rotate(-90deg);
 }
 
 .arrow[data-placement='right'] {
-  inset-inline-start: -5px;
-  transform: translateY(-50%) rotate(45deg);
+  inset-inline-start: calc(-1.5 * var(--tooltip-arrow-size));
+  transform: translateY(-50%) rotate(90deg);
 }
 
 /* transition */
