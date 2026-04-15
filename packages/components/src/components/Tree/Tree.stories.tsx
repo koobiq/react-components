@@ -519,7 +519,9 @@ export const AsyncLoading: Story = {
             scrollOffset={0}
             onLoadMore={smartphonesList.loadMore}
             isLoading={smartphonesList.loadingState === 'loadingMore'}
-          />
+          >
+            Custom load more...
+          </Tree.LoadMoreItem>
         </Tree.Item>
         <Tree.Item id="mobile-accessories" textValue="Mobile accessories">
           <Tree.ItemContent>Mobile accessories</Tree.ItemContent>
