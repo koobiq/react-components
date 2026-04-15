@@ -81,8 +81,10 @@
   position: absolute;
   inline-size: 0;
   block-size: 0;
-  border-inline-start: var(--tooltip-arrow-size) solid transparent;
-  border-inline-end: var(--tooltip-arrow-size) solid transparent;
+  border-inline-start: var(--tooltip-arrow-size) solid
+    var(--kbq-background-transparent);
+  border-inline-end: var(--tooltip-arrow-size) solid
+    var(--kbq-background-transparent);
   border-block-start: var(--tooltip-arrow-size) solid var(--tooltip-bg-color);
 }
 
