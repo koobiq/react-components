@@ -6,7 +6,7 @@
   inline-size: 100%;
   box-sizing: border-box;
   color: var(--form-field-control-color);
-  background-color: transparent;
+  background-color: var(--kbq-background-transparent);
   padding-block: var(--form-field-control-padding-block-start)
     var(--form-field-control-padding-block-end);
   padding-inline: 0;
@@ -16,8 +16,9 @@
   min-inline-size: 40px;
 
   &:-webkit-autofill {
-    box-shadow: 0 0 0 1000px var(--kbq-background-theme-fade) inset !important;
-    background-color: transparent !important;
+    background-color: var(--kbq-background-transparent) !important;
+    transition: background-color 5000s ease-in-out 0s;
+    background-clip: text;
   }
 
   &::placeholder {
