@@ -1,0 +1,46 @@
+.base {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+  white-space: nowrap;
+  text-decoration: none;
+  box-sizing: border-box;
+  color: var(--tab-color);
+  inline-size: var(--tab-width);
+  min-block-size: var(--kbq-size-3xl);
+  background-color: var(--tab-bg-color);
+  border-radius: var(--tab-border-radius);
+  padding-block: var(--tab-padding-block);
+  padding-inline: var(--tab-padding-inline);
+  justify-content: var(--tab-justify-content);
+  outline-offset: calc(-1 * var(--tab-outline-width));
+  outline: var(--tab-outline-width) solid var(--tab-outline-color);
+  transition:
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+}
+
+.hovered {
+  --tab-bg-color: var(--kbq-states-background-transparent-hover);
+}
+
+.focusVisible {
+  --tab-outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.disabled {
+  --tab-color: var(--kbq-states-foreground-disabled);
+
+  cursor: not-allowed;
+}
+
+/* content */
+.content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-inline-size: calc(var(--tab-min-width) - 2 * var(--tab-padding-inline));
+}
