@@ -8,11 +8,6 @@
   --tabs-scrollbar-overflow-x: auto;
   --tabs-scrollbar-overflow-y: hidden;
 
-  /* indicator */
-  --tabs-indicator-inline-size: ;
-  --tabs-indicator-block-size: ;
-  --tabs-indicator-transform: ;
-
   /* tab */
   --tab-justify-content: center;
   --tab-width: ;
