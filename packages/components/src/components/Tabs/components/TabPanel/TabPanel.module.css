@@ -1,0 +1,4 @@
+.base {
+  padding: var(--kbq-size-m);
+  outline: none;
+}

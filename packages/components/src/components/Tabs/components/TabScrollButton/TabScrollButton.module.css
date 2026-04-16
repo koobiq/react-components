@@ -1,0 +1,53 @@
+.base {
+  opacity: 1;
+  flex-shrink: 0;
+  block-size: 100%;
+  position: absolute;
+  inline-size: var(--tab-height);
+  z-index: calc(var(--kbq-layer-absolute) + 1);
+
+  &::after,
+  &::before {
+    content: '';
+    z-index: -1;
+    block-size: 100%;
+    inline-size: 56px;
+    position: absolute;
+    pointer-events: none;
+  }
+}
+
+.prev {
+  inset-inline-start: 0;
+
+  &::after {
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    background: linear-gradient(
+      to right,
+      var(--kbq-background-bg) 0,
+      var(--kbq-background-bg) 32px,
+      var(--kbq-background-transparent) 100%
+    );
+  }
+}
+
+.next {
+  inset-inline-end: 0;
+
+  &::after {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    background: linear-gradient(
+      to left,
+      var(--kbq-background-bg) 0,
+      var(--kbq-background-bg) 32px,
+      var(--kbq-background-transparent) 100%
+    );
+  }
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}

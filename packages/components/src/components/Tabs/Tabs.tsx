@@ -13,14 +13,12 @@ import {
   useResizeObserverRefs,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { IconChevronLeft16, IconChevronRight16 } from '@koobiq/react-icons';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 import { Item } from '../Collections';
-import { IconButton } from '../IconButton';
 
-import { TabPanel, Tab as TabItem } from './components';
+import { TabPanel, Tab as TabItem, TabScrollButton } from './components';
 import intlMessages from './intl.json';
 import s from './Tabs.module.css';
 import type { TabsProps, TabsComponent, TabsRef } from './types';
@@ -300,10 +298,10 @@ export function TabsRender<T extends object>(
       style={style}
       data-testid={dataTestId}
       data-orientation={orientation}
-      data-horizontal-scrollable={hasHScroll || undefined}
-      data-vertical-scrollable={hasVScroll || undefined}
       data-stretched={isStretched || undefined}
       data-underlined={isUnderlined || undefined}
+      data-vertical-scrollable={hasVScroll || undefined}
+      data-horizontal-scrollable={hasHScroll || undefined}
       className={clsx(
         s.root,
         isStretched && s.stretched,
@@ -315,37 +313,18 @@ export function TabsRender<T extends object>(
       <div {...tabsProps}>
         {hasHScroll && (
           <>
-            <IconButton
-              key="prev"
-              tabIndex={-1}
-              type="button"
-              aria-label={t.format('prev')}
-              ref={scrollButtonRef}
+            <TabScrollButton
               onPress={scrollPrev}
-              variant="theme-contrast"
-              className={clsx(
-                s.button,
-                s.prev,
-                !scrollButtonsVisibility.prev && s.invisible
-              )}
-            >
-              <IconChevronLeft16 />
-            </IconButton>
-            <IconButton
-              key="next"
-              type="button"
-              tabIndex={-1}
-              aria-label={t.format('next')}
+              ref={scrollButtonRef}
+              aria-label={t.format('prev')}
+              isInvisible={!scrollButtonsVisibility.prev}
+            />
+            <TabScrollButton
+              dir="next"
               onPress={scrollNext}
-              variant="theme-contrast"
-              className={clsx(
-                s.button,
-                s.next,
-                !scrollButtonsVisibility.next && s.invisible
-              )}
-            >
-              <IconChevronRight16 />
-            </IconButton>
+              aria-label={t.format('next')}
+              isInvisible={!scrollButtonsVisibility.next}
+            />
           </>
         )}
         <div {...scrollBoxProps}>
