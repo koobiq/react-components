@@ -1,0 +1,29 @@
+.base {
+  --tabs-indicator-inline-size: ;
+  --tabs-indicator-block-size: ;
+  --tabs-indicator-transform: ;
+
+  position: absolute;
+  transform: var(--tabs-indicator-transform);
+  block-size: var(--tabs-indicator-block-size);
+  inline-size: var(--tabs-indicator-inline-size);
+  will-change: transform, inline-size, block-size;
+  transition:
+    inline-size 200ms ease-in,
+    block-size 200ms ease-in,
+    transform 200ms ease-in;
+}
+
+.default {
+  inset-block-start: 0;
+  border-radius: var(--tab-border-radius);
+  background-color: var(--kbq-states-background-transparent-active);
+}
+
+.underlined {
+  display: block;
+  block-size: 3px;
+  inset-block-end: 0;
+  border-radius: 2px 2px 0 0;
+  background: var(--kbq-line-contrast);
+}

@@ -81,37 +81,6 @@
   inline-size: var(--tabs-scrollbar-inline-size);
 }
 
-/* indicator */
-.indicator {
-  --indicator-inline-size: ;
-  --indicator-block-size: ;
-  --indicator-transform: ;
-
-  transform: var(--indicator-transform);
-  inline-size: var(--indicator-inline-size);
-  block-size: var(--indicator-block-size);
-  position: absolute;
-  will-change: transform, width, height;
-  transition:
-    inline-size 200ms ease-in,
-    block-size 200ms ease-in,
-    transform 200ms ease-in;
-}
-
-.defaultIndicator {
-  inset-block-start: 0;
-  border-radius: var(--tab-border-radius);
-  background-color: var(--kbq-states-background-transparent-active);
-}
-
-.underlinedIndicator {
-  inset-block-end: 0;
-  block-size: 3px;
-  display: block;
-  border-radius: 2px 2px 0 0;
-  background: var(--kbq-line-contrast);
-}
-
 /* tab */
 .tab {
   display: flex;

@@ -7,9 +7,9 @@ export function getIndicatorCssVars(
   const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = el;
 
   return {
-    '--indicator-inline-size': `${offsetWidth}px`,
-    '--indicator-block-size': `${offsetHeight}px`,
-    '--indicator-transform':
+    '--tabs-indicator-inline-size': `${offsetWidth}px`,
+    '--tabs-indicator-block-size': `${offsetHeight}px`,
+    '--tabs-indicator-transform':
       orientation === 'horizontal'
         ? `translateX(${offsetLeft}px)`
         : `translateY(${offsetTop}px)`,

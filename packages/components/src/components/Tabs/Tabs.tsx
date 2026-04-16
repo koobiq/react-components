@@ -18,7 +18,12 @@ import { useTabList, useTabListState } from '@koobiq/react-primitives';
 import { utilClasses } from '../../styles/utility';
 import { Item } from '../Collections';
 
-import { TabPanel, Tab as TabItem, TabScrollButton } from './components';
+import {
+  TabIndicator,
+  TabPanel,
+  Tab as TabItem,
+  TabScrollButton,
+} from './components';
 import intlMessages from './intl.json';
 import s from './Tabs.module.css';
 import type { TabsProps, TabsComponent, TabsRef } from './types';
@@ -283,10 +288,6 @@ export function TabsRender<T extends object>(
 
   const indicatorProps = mergeProps(
     {
-      className: clsx(
-        s.indicator,
-        isUnderlined ? s.underlinedIndicator : s.defaultIndicator
-      ),
       style: indicatorStyle,
     },
     slotProps?.indicator
@@ -338,7 +339,9 @@ export function TabsRender<T extends object>(
                 onFocused={() => scrollCorrection(orientation, i, 'auto')}
               />
             ))}
-            {isMounted && <span {...indicatorProps} />}
+            {isMounted && (
+              <TabIndicator {...indicatorProps} isUnderlined={isUnderlined} />
+            )}
           </div>
         </div>
       </div>
