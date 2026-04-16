@@ -258,20 +258,12 @@ export function TabsRender<T extends object>(
     }
   }, [selectedItemIdx, isMounted]);
 
-  /** PROPS */
-  const tabsProps = mergeProps(
-    { className: clsx(s.base, isUnderlined && s.underlined) },
-    slotProps?.tabs
-  );
+  const tabsProps = mergeProps({ className: s.base }, slotProps?.tabs);
 
   const tabsListProps = mergeProps(
     tabListProps,
     {
-      className: clsx(
-        s.tabList,
-        textNormalMedium,
-        isUnderlined && s.underlined
-      ),
+      className: clsx(s.tabList, textNormalMedium),
       ref: tabListRef,
     },
     slotProps?.tabList

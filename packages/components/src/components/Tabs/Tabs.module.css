@@ -1,8 +1,20 @@
 /* root */
 .root {
-  --tabs-gap: ;
-  --tabs-direction: ;
-  --tabs-scrollbar-width: ;
+  --tabs-gap: 0;
+  --tabs-direction: row;
+  --tabs-scrollbar-width: none;
+  --tabs-scrollbar-display: flex;
+  --tabs-scrollbar-inline-size: 100%;
+  --tabs-scrollbar-overflow-x: auto;
+  --tabs-scrollbar-overflow-y: hidden;
+
+  /* indicator */
+  --tabs-indicator-inline-size: ;
+  --tabs-indicator-block-size: ;
+  --tabs-indicator-transform: ;
+
+  /* tab */
+  --tab-justify-content: center;
   --tab-width: ;
   --tab-bg-color: ;
   --tab-min-width: 40px;
@@ -15,40 +27,29 @@
   --tab-padding-block: var(--kbq-size-xs);
 }
 
+.horizontal {
+  &.stretched {
+    --tab-width: 100%;
+  }
+}
+
+.vertical {
+  --tab-justify-content: start;
+  --tabs-gap: var(--kbq-size-s);
+  --tabs-direction: column;
+  --tabs-scrollbar-width: auto;
+  --tabs-scrollbar-display: inline-block;
+  --tabs-scrollbar-inline-size: auto;
+  --tabs-scrollbar-overflow-x: hidden;
+  --tabs-scrollbar-overflow-y: auto;
+
+  display: flex;
+}
+
 .underlined {
   --tab-min-width: 44px;
-}
 
-.stretched:not(.vertical) {
-  --tab-width: 100%;
-}
-
-.horizontal {
-  --tab-justify-content: center;
-  --tabs-scrollbar-width: none;
-  --tabs-scrollbar-display: flex;
-  --tabs-scrollbar-overflow-x: auto;
-  --tabs-scrollbar-inline-size: 100%;
-  --tabs-scrollbar-overflow-y: hidden;
-}
-
-.vertical:not(.underlined) {
-  --tab-justify-content: start;
-  --tabs-direction: column;
-  --tabs-gap: var(--kbq-size-s);
-  --tabs-scrollbar-inline-size: ;
-  --tabs-scrollbar-overflow-y: auto;
-  --tabs-scrollbar-overflow-x: hidden;
-  --tabs-scrollbar-display: inline-block;
-
-  display: flex;
-}
-
-.base {
-  display: flex;
-  position: relative;
-
-  &.underlined::after {
+  & .base::after {
     content: '';
     block-size: 1px;
     inset-inline: 0;
@@ -57,6 +58,16 @@
     background: var(--kbq-line-contrast-less);
     z-index: calc(var(--kbq-layer-absolute) + 2);
   }
+
+  & .tabList {
+    padding-block: var(--kbq-size-s);
+  }
+}
+
+/* tabs */
+.base {
+  display: flex;
+  position: relative;
 }
 
 /* tab-list */
@@ -66,10 +77,6 @@
   position: relative;
   gap: var(--tabs-gap);
   flex-direction: var(--tabs-direction);
-
-  &.underlined {
-    padding-block: var(--kbq-size-s);
-  }
 }
 
 /* scrollBox */
