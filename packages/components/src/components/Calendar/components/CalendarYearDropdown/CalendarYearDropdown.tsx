@@ -100,10 +100,21 @@ export function CalendarYearDropdown({
       className={s.popover}
       items={years}
       selectionMode="single"
+      disallowEmptySelection
       selectedKeys={new Set([state.focusedDate.year])}
       onSelectionChange={(keys) => {
-        const value = Array.from(keys)[0];
-        const date = state.focusedDate.set({ year: +value });
+        const value = keys === 'all' ? undefined : keys.values().next().value;
+        const year = Number(value);
+
+        if (
+          value == null ||
+          Number.isNaN(year) ||
+          year === state.focusedDate.year
+        ) {
+          return;
+        }
+
+        const date = state.focusedDate.set({ year });
         state.setFocusedDate(date);
       }}
     >
