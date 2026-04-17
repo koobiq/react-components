@@ -1,0 +1,112 @@
+import { Meta, Story } from '../.storybook/components';
+import * as Stories from './date-formatting.stories';
+
+<Meta title="Date formatter" />
+
+# Date formatter
+
+The `DateFormatter` is a unified system for formatting dates and times.
+It ensures consistent output across the application based on shared product rules.
+
+```tsx
+import { DateFormatter as KbqDateFormatter } from '@koobiq/date-formatter';
+import { InternationalizedDateAdapter } from '@koobiq/internationalized-date-adapter';
+```
+
+<Story of={Stories.Base} />
+
+## Integration
+
+Koobiq React date components use values from `@internationalized/date`.
+To integrate them with `@koobiq/date-formatter`, use `@koobiq/internationalized-date-adapter`.
+
+The adapter supports [CalendarDateTime](https://react-aria.adobe.com/internationalized/date/CalendarDateTime).
+Convert other `@internationalized/date` values to `CalendarDateTime` before use.
+
+## Create formatter
+
+```tsx
+const adapter = new InternationalizedDateAdapter('en-US');
+
+const formatter = new DateFormatter(adapter, 'en-US');
+```
+
+## Format a date
+
+```tsx
+const value = adapter.parse('2026-02-03')!;
+
+formatter.absoluteLongDate(value);
+// February 3, 2026
+
+formatter.absoluteShortDate(value);
+// Feb 3, 2026
+```
+
+## Format a date and time value
+
+```tsx
+const value = adapter.parse('2026-02-03T11:48:15')!;
+
+formatter.absoluteLongDateTime(value);
+// February 3, 2026, 11:48
+
+formatter.absoluteLongDateTime(value, { seconds: true });
+// February 3, 2026, 11:48:15
+```
+
+## Format backend data
+
+```tsx
+const value = adapter.parse('2026-03-23T15:05:33.980Z')!;
+
+formatter.absoluteLongDateTime(value);
+// March 23, 18:05
+```
+
+## Format a component value
+
+```tsx
+// CalendarDate value returned by DatePicker.
+const value = adapter.parse(CalendarDate(2026, 3, 23))!;
+
+formatter.absoluteLongDate(value);
+// March 23, 2026
+```
+
+## Format a value in a specific time zone
+
+```tsx
+const adapter = new InternationalizedDateAdapter('en-US', 'America/New_York');
+const formatter = new DateFormatter(adapter, 'en-US');
+
+const value = adapter.parse('2026-03-23T15:05:33.980Z')!;
+
+formatter.absoluteLongDateTime(value);
+// March 23, 2026, 11:05
+```
+
+## Available formats
+
+Below are examples of the available formats.
+
+- [absolute date formatting](#absolute)
+- [relative date formatting](#relative)
+- [date ranges](#range)
+- [duration formatting](#duration)
+
+### Absolute
+
+<Story of={Stories.AbsoluteDateFormats} />
+
+### Relative
+
+<Story of={Stories.RelativeDateFormats} />
+
+### Range
+
+<Story of={Stories.RangeDateFormats} />
+
+### Duration
+
+<Story of={Stories.DurationFormats} />
