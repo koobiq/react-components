@@ -2,7 +2,7 @@
 .root {
   --tabs-gap: 0;
   --tabs-direction: row;
-  --tabs-scrollbar-width: none;
+  --tabs-scrollbar-scroll-width: none;
   --tabs-scrollbar-display: flex;
   --tabs-scrollbar-inline-size: 100%;
   --tabs-scrollbar-overflow-x: auto;
@@ -10,21 +10,22 @@
 
   /* tab */
   --tab-justify-content: center;
-  --tab-width: ;
   --tab-bg-color: ;
-  --tab-min-width: 40px;
-  --tab-height: var(--kbq-size-3xl);
+  --tab-inline-size: ;
+  --tab-min-inline-size: 40px;
+  --tab-block-size: var(--kbq-size-3xl);
+  --tab-min-block-size: ;
   --tab-outline-color: transparent;
   --tab-outline-width: var(--kbq-size-3xs);
   --tab-color: var(--kbq-foreground-contrast);
-  --tab-border-radius: var(--kbq-size-s);
+  --tab-border-radius: var(--kbq-size-border-radius);
   --tab-padding-inline: var(--kbq-size-m);
   --tab-padding-block: var(--kbq-size-xs);
 }
 
 .horizontal {
   &.stretched {
-    --tab-width: 100%;
+    --tab-inline-size: 100%;
   }
 }
 
@@ -32,7 +33,7 @@
   --tab-justify-content: start;
   --tabs-gap: var(--kbq-size-s);
   --tabs-direction: column;
-  --tabs-scrollbar-width: auto;
+  --tabs-scrollbar-scroll-width: auto;
   --tabs-scrollbar-display: inline-block;
   --tabs-scrollbar-inline-size: auto;
   --tabs-scrollbar-overflow-x: hidden;
@@ -42,14 +43,14 @@
 }
 
 .underlined {
-  --tab-min-width: 44px;
+  --tab-min-inline-size: 44px;
 
   & .base::after {
     content: '';
-    block-size: 1px;
     inset-inline: 0;
     inset-block-end: 0;
     position: absolute;
+    block-size: var(--kbq-size-border-width);
     background: var(--kbq-line-contrast-less);
     z-index: calc(var(--kbq-layer-absolute) + 2);
   }
@@ -78,7 +79,7 @@
 .scrollBox {
   position: relative;
   display: var(--tabs-scrollbar-display);
-  scrollbar-width: var(--tabs-scrollbar-width);
   inline-size: var(--tabs-scrollbar-inline-size);
+  scrollbar-width: var(--tabs-scrollbar-scroll-width);
   overflow: var(--tabs-scrollbar-overflow-x) var(--tabs-scrollbar-overflow-y);
 }

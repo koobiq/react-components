@@ -3,7 +3,7 @@
   flex-shrink: 0;
   block-size: 100%;
   position: absolute;
-  inline-size: var(--tab-height);
+  inline-size: var(--tab-block-size);
   z-index: calc(var(--kbq-layer-absolute) + 1);
 
   &::after,
@@ -11,9 +11,9 @@
     content: '';
     z-index: -1;
     block-size: 100%;
-    inline-size: 56px;
     position: absolute;
     pointer-events: none;
+    inline-size: calc(var(--tab-block-size) + 24px);
   }
 }
 
@@ -26,7 +26,7 @@
     background: linear-gradient(
       to right,
       var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) 32px,
+      var(--kbq-background-bg) var(--tab-block-size),
       var(--kbq-background-transparent) 100%
     );
   }
@@ -41,7 +41,7 @@
     background: linear-gradient(
       to left,
       var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) 32px,
+      var(--kbq-background-bg) var(--tab-block-size),
       var(--kbq-background-transparent) 100%
     );
   }

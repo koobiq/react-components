@@ -8,8 +8,8 @@
   text-decoration: none;
   box-sizing: border-box;
   color: var(--tab-color);
-  inline-size: var(--tab-width);
-  min-block-size: var(--kbq-size-3xl);
+  inline-size: var(--tab-inline-size);
+  min-block-size: var(--tab-block-size);
   background-color: var(--tab-bg-color);
   border-radius: var(--tab-border-radius);
   padding-block: var(--tab-padding-block);
@@ -17,6 +17,7 @@
   justify-content: var(--tab-justify-content);
   outline-offset: calc(-1 * var(--tab-outline-width));
   outline: var(--tab-outline-width) solid var(--tab-outline-color);
+  min-inline-size: var(--tab-min-inline-size);
   transition:
     outline-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),
@@ -42,5 +43,4 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  min-inline-size: calc(var(--tab-min-width) - 2 * var(--tab-padding-inline));
 }

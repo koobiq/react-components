@@ -38,7 +38,6 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
       className={clsx(
         s.base,
         isHovered && s.hovered,
-        isSelected && s.selected,
         isDisabled && s.disabled,
         isFocusVisible && s.focusVisible,
         className
