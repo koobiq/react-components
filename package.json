@@ -106,7 +106,10 @@
     "vite": "^6.4.2",
     "vite-plugin-lib-inject-css": "^2.2.2",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@koobiq/date-adapter": "^3.5.1",
+    "@koobiq/date-formatter": "^3.5.1",
+    "@koobiq/internationalized-date-adapter": "^3.5.1"
   },
   "commit-and-tag-version": {
     "header": "# Changelog\n",

@@ -25,9 +25,18 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.8.1
         version: 19.8.1
+      '@koobiq/date-adapter':
+        specifier: ^3.5.1
+        version: 3.5.1
+      '@koobiq/date-formatter':
+        specifier: ^3.5.1
+        version: 3.5.1(@koobiq/date-adapter@3.5.1)(@messageformat/core@3.4.0)
       '@koobiq/design-tokens':
         specifier: ^3.17.2
         version: 3.17.2
+      '@koobiq/internationalized-date-adapter':
+        specifier: ^3.5.1
+        version: 3.5.1(@internationalized/date@3.12.0)(@koobiq/date-adapter@3.5.1)
       '@storybook/addon-a11y':
         specifier: ^10.2.12
         version: 10.2.12(storybook@10.2.12(@testing-library/dom@10.4.0)(prettier@3.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
@@ -1946,11 +1955,26 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
+  '@koobiq/date-adapter@3.5.1':
+    resolution: {integrity: sha512-GnOAZ8puSAUCl8KCNUJNQmWrCw8x1TsryZ9+ENofqUHQR+Flx4k2jd70KDYpMbgEq5mPYVWlsZQTE2pChxyoQw==}
+
+  '@koobiq/date-formatter@3.5.1':
+    resolution: {integrity: sha512-KWq6/3l5CZU1jnqd/13XjhbV/7SdB8Y2gw2S4fI1fRVTC9cJQ7mXVHS0H9CWMf6z0maoCILq8cE+Ikpv676coQ==}
+    peerDependencies:
+      '@koobiq/date-adapter': ^3.0.0
+      '@messageformat/core': ^3.2.0
+
   '@koobiq/design-tokens@3.17.2':
     resolution: {integrity: sha512-bSpCQS1V82BBJ6q2Wf80ZW/eVBjAQ6+7t8rM4kAIgJ//1RFuU+o9AMigcRSpHZQ5l9KTqpa95BPk993HR2JPEA==}
 
   '@koobiq/icons@11.4.0':
     resolution: {integrity: sha512-ABrKQy+J8rXVoDxHBzc0oS8dZprns+ezcgGuaU2LNcmymjmKBldxBH3l8l9MU+++RB+aI9PYYp1DnYGb7nBwLw==}
+
+  '@koobiq/internationalized-date-adapter@3.5.1':
+    resolution: {integrity: sha512-Wl6soze8EAadgX3Js+JNwwQPNiMjLTXMlIxej6sGYFaE2Nk3CMOKyMZFOHlz+KWCXLF7mAa8TDYvpPlkI5EKNw==}
+    peerDependencies:
+      '@internationalized/date': ^3.8.2
+      '@koobiq/date-adapter': ^3.0.0
 
   '@koobiq/logger@0.28.0':
     resolution: {integrity: sha512-72n3jktRkMSMQ/1vIDSpdLRMIyJhrLZkCFtPxBn7H/In/cfeHQ6sY3jzvGsJSqIgnRe6HwkGUME4MIKX24LO1w==}
@@ -1984,6 +2008,21 @@ packages:
     peerDependencies:
       '@types/react': ^19.0.0
       react: ^19.0.0
+
+  '@messageformat/core@3.4.0':
+    resolution: {integrity: sha512-NgCFubFFIdMWJGN5WuQhHCNmzk7QgiVfrViFxcS99j7F5dDS5EP6raR54I+2ydhe4+5/XTn/YIEppFaqqVWHsw==}
+
+  '@messageformat/date-skeleton@1.1.0':
+    resolution: {integrity: sha512-rmGAfB1tIPER+gh3p/RgA+PVeRE/gxuQ2w4snFWPF5xtb5mbWR7Cbw7wCOftcUypbD6HVoxrVdyyghPm3WzP5A==}
+
+  '@messageformat/number-skeleton@1.2.0':
+    resolution: {integrity: sha512-xsgwcL7J7WhlHJ3RNbaVgssaIwcEyFkBqxHdcdaiJzwTZAWEOD8BuUFxnxV9k5S0qHN3v/KzUpq0IUpjH1seRg==}
+
+  '@messageformat/parser@5.1.1':
+    resolution: {integrity: sha512-3p0YRGCcTUCYvBKLIxtDDyrJ0YijGIwrTRu1DT8gIviIDZru8H23+FkY6MJBzM1n9n20CiM4VeDYuBsrrwnLjg==}
+
+  '@messageformat/runtime@3.0.2':
+    resolution: {integrity: sha512-dkIPDCjXcfhSHgNE1/qV6TeczQZR59Yx0xXeafVKgK3QVWoxc38ljwpksUpnzCGvN151KUbCJTDZVmahtf1YZw==}
 
   '@modelcontextprotocol/sdk@1.26.0':
     resolution: {integrity: sha512-Y5RmPncpiDtTXDbLKswIJzTqu2hyBKxTNsgKqKclDbhIgg1wgtf1fRuvxgTnRfcnxtvvgbIEcqUOzZrJ6iSReg==}
@@ -6426,6 +6465,9 @@ packages:
     resolution: {integrity: sha512-iyyEpDty1mwW3dGlYXAJqC/azFn5PPvgKVwXayOGBSmKLxhKZ9fg4qIan2ePpp1vJIwfFiO34LAPZgq9SZW9Aw==}
     engines: {node: ^20.17.0 || >=22.9.0}
 
+  make-plural@7.5.0:
+    resolution: {integrity: sha512-0booA+aVYyVFoR67JBHdfVk0U08HmrBH2FrtmBqBa+NldlqXv/G2Z9VQuQq6Wgp2jDWdybEWGfBkk1cq5264WA==}
+
   map-obj@1.0.1:
     resolution: {integrity: sha512-7N/q3lyZ+LVCp7PzuxrJr4KMbBE2hW7BT7YNia330OFxIf4d3r5zVpicP2650l7CPN6RM9zOJRl3NGpqSiw3Eg==}
     engines: {node: '>=0.10.0'}
@@ -7699,6 +7741,9 @@ packages:
 
   safe-buffer@5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
+
+  safe-identifier@0.4.2:
+    resolution: {integrity: sha512-6pNbSMW6OhAi9j+N8V+U715yBQsaWJ7eyEUaOrawX+isg5ZxhUlV1NipNtgaKHmFGiABwt+ZF04Ii+3Xjkg+8w==}
 
   safe-push-apply@1.0.0:
     resolution: {integrity: sha512-iKE9w/Z7xCzUMIZqdBsp6pEQvwuEebH4vdpjcDWnyzaI6yl6O9FHvVpmGelvEHNsoY6wGblkxR6Zty/h00WiSA==}
@@ -10130,9 +10175,21 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
+  '@koobiq/date-adapter@3.5.1': {}
+
+  '@koobiq/date-formatter@3.5.1(@koobiq/date-adapter@3.5.1)(@messageformat/core@3.4.0)':
+    dependencies:
+      '@koobiq/date-adapter': 3.5.1
+      '@messageformat/core': 3.4.0
+
   '@koobiq/design-tokens@3.17.2': {}
 
   '@koobiq/icons@11.4.0': {}
+
+  '@koobiq/internationalized-date-adapter@3.5.1(@internationalized/date@3.12.0)(@koobiq/date-adapter@3.5.1)':
+    dependencies:
+      '@internationalized/date': 3.12.0
+      '@koobiq/date-adapter': 3.5.1
 
   '@koobiq/logger@0.28.0': {}
 
@@ -10234,6 +10291,27 @@ snapshots:
       '@types/mdx': 2.0.13
       '@types/react': 19.2.7
       react: 19.2.3
+
+  '@messageformat/core@3.4.0':
+    dependencies:
+      '@messageformat/date-skeleton': 1.1.0
+      '@messageformat/number-skeleton': 1.2.0
+      '@messageformat/parser': 5.1.1
+      '@messageformat/runtime': 3.0.2
+      make-plural: 7.5.0
+      safe-identifier: 0.4.2
+
+  '@messageformat/date-skeleton@1.1.0': {}
+
+  '@messageformat/number-skeleton@1.2.0': {}
+
+  '@messageformat/parser@5.1.1':
+    dependencies:
+      moo: 0.5.2
+
+  '@messageformat/runtime@3.0.2':
+    dependencies:
+      make-plural: 7.5.0
 
   '@modelcontextprotocol/sdk@1.26.0(zod@3.25.76)':
     dependencies:
@@ -15923,6 +16001,8 @@ snapshots:
       - supports-color
     optional: true
 
+  make-plural@7.5.0: {}
+
   map-obj@1.0.1: {}
 
   map-obj@4.3.0: {}
@@ -17564,6 +17644,8 @@ snapshots:
   safe-buffer@5.1.2: {}
 
   safe-buffer@5.2.1: {}
+
+  safe-identifier@0.4.2: {}
 
   safe-push-apply@1.0.0:
     dependencies:
