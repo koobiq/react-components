@@ -4,7 +4,7 @@
   --tabs-indicator-transform: ;
 
   position: absolute;
-  z-index: calc(var(--kbq-layer-absolute) + 3);
+  z-index: var(--kbq-layer-absolute);
   transform: var(--tabs-indicator-transform);
   block-size: var(--tabs-indicator-block-size);
   inline-size: var(--tabs-indicator-inline-size);

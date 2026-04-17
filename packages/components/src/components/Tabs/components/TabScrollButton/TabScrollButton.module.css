@@ -4,7 +4,7 @@
   block-size: 100%;
   position: absolute;
   inline-size: var(--tab-block-size);
-  z-index: calc(var(--kbq-layer-absolute) + 1);
+  z-index: calc(var(--kbq-layer-absolute) + 2);
 
   &::after,
   &::before {

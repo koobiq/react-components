@@ -52,7 +52,7 @@
     position: absolute;
     block-size: var(--kbq-size-border-width);
     background: var(--kbq-line-contrast-less);
-    z-index: calc(var(--kbq-layer-absolute) + 2);
+    z-index: calc(var(--kbq-layer-absolute) + 1);
   }
 
   & .tabList {
