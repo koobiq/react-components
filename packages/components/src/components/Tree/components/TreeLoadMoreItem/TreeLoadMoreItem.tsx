@@ -1,22 +1,28 @@
 'use client';
 
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 import {
   TreeLoadMoreItem as AriaTreeLoadMoreItem,
   composeRenderProps,
-  type TreeLoadMoreItemProps,
+  type TreeLoadMoreItemProps as AriaTreeLoadMoreItemProps,
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
+import { isPrimitiveNode } from '../../../../utils';
 import { ProgressSpinner } from '../../../ProgressSpinner';
 import { Typography } from '../../../Typography';
 
 const { listItem } = utilClasses;
 
+export type TreeLoadMoreItemProps = Omit<
+  AriaTreeLoadMoreItemProps,
+  'children'
+> & { children?: ReactNode };
+
 export function TreeLoadMoreItem(props: TreeLoadMoreItemProps) {
-  const { className, style, ...other } = props;
+  const { className, style, children = 'Loading more...', ...other } = props;
 
   return (
     <AriaTreeLoadMoreItem
@@ -33,8 +39,14 @@ export function TreeLoadMoreItem(props: TreeLoadMoreItemProps) {
           }) as CSSProperties
       )}
     >
-      <ProgressSpinner isIndeterminate aria-label="Loading more..." />
-      <Typography>Loading more...</Typography>
+      {isPrimitiveNode(children) ? (
+        <>
+          <ProgressSpinner isIndeterminate aria-label={String(children)} />
+          <Typography>{children}</Typography>
+        </>
+      ) : (
+        children
+      )}
     </AriaTreeLoadMoreItem>
   );
 }
