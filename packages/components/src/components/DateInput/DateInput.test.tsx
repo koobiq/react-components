@@ -5,6 +5,7 @@ import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
 import { Form } from '../Form';
+import { Provider } from '../Provider';
 
 import { DateInput, type DateInputProps } from './index';
 
@@ -71,6 +72,16 @@ describe('DateInput', () => {
     render(<DateInput {...baseProps} errorMessage="fail" isInvalid />);
 
     expect(getRoot()).toHaveTextContent('fail');
+  });
+
+  it('should use ISO date format for en-US locale', () => {
+    render(
+      <Provider locale="en-US">
+        <DateInput {...baseProps} defaultValue={parseDate('2025-02-03')} />
+      </Provider>
+    );
+
+    expect(screen.getByTestId('input')).toHaveTextContent('2025-02-03');
   });
 
   describe('addons', () => {
