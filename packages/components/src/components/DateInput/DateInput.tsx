@@ -30,11 +30,23 @@ import { FormField } from '../FormField';
 import s from './DateInput.module.css';
 import type { DateInputRef, DateInputProps, DateInputComponent } from './types';
 
+function resolveDateInputLocale(locale: string) {
+  const intlLocale = new Intl.Locale(locale);
+
+  if (intlLocale.language === 'en') {
+    return new Intl.Locale(locale, { calendar: 'iso8601' }).toString();
+  }
+
+  return locale;
+}
+
 export function DateInputRender<T extends DateValue>(
   props: Omit<DateInputProps<T>, 'ref'>,
   ref: Ref<DateInputRef>
 ) {
   const { locale } = useLocale();
+  // The spec requires YYYY-MM-DD formatting for English locale.
+  const resolvedLocale = resolveDateInputLocale(locale);
 
   const {
     variant = 'filled',
@@ -63,7 +75,7 @@ export function DateInputRender<T extends DateValue>(
 
   const state = useDateFieldState({
     ...removeDataAttributes({ ...props, isDisabled, isReadOnly }),
-    locale,
+    locale: resolvedLocale,
     createCalendar,
   });
 
