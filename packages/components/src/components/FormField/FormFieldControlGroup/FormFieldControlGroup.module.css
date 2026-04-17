@@ -5,9 +5,9 @@
   --form-field-control-bg-color: ;
   --form-field-control-size-height: 32px;
   --form-field-control-placeholder-color: ;
-  --form-field-control-group-border-color: ;
-  --form-field-control-group-outline-width: 2px;
-  --form-field-control-group-outline-color: transparent;
+  --form-field-control-group-border-color: var(--kbq-background-transparent);
+  --form-field-control-group-outline-width: var(--kbq-size-3xs);
+  --form-field-control-group-outline-color: var(--kbq-background-transparent);
   --form-field-control-group-border-radius: var(--kbq-size-s);
   --form-field-control-group-border-width: var(--kbq-size-border-width);
   --form-field-control-padding-inline-start: var(--kbq-size-m);
@@ -37,7 +37,7 @@
     z-index: var(--kbq-layer-absolute);
     transition: border-color var(--kbq-transition-default);
     border: var(--form-field-control-group-border-width) solid
-      var(--form-field-control-group-border-color, transparent);
+      var(--form-field-control-group-border-color);
   }
 
   /* focus */
@@ -67,11 +67,11 @@
 
 .transparent {
   --form-field-control-color: var(--kbq-foreground-contrast);
-  --form-field-control-bg-color: transparent;
+  --form-field-control-bg-color: var(--kbq-background-transparent);
   --form-field-control-placeholder-color: var(
     --kbq-foreground-contrast-tertiary
   );
-  --form-field-control-group-border-color: transparent;
+  --form-field-control-group-border-color: var(--kbq-background-transparent);
 }
 
 .filled {
@@ -85,6 +85,7 @@
 
 .filled:where(.focused) {
   --form-field-control-group-outline-color: var(--kbq-states-line-focus-theme);
+  --form-field-control-group-border-color: var(--kbq-background-transparent);
 }
 
 .filled:where(.invalid) {
@@ -95,16 +96,15 @@
 }
 
 .filled:where(.invalid.focused) {
-  --form-field-control-group-outline-color: var(
-    --form-field-control-group-border-color
-  );
+  --form-field-control-group-outline-color: var(--kbq-line-error);
+  --form-field-control-group-border-color: var(--kbq-background-transparent);
 }
 
 .transparent:where(.invalid) {
   --form-field-control-color: var(--kbq-foreground-error);
-  --form-field-control-bg-color: transparent;
+  --form-field-control-bg-color: var(--kbq-background-transparent);
   --form-field-control-placeholder-color: var(--kbq-foreground-error-tertiary);
-  --form-field-control-group-border-color: transparent;
+  --form-field-control-group-border-color: var(--kbq-background-transparent);
 }
 
 .disabled {

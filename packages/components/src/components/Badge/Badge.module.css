@@ -95,7 +95,7 @@
 .warning {
   --badge-border-color: transparent;
   --badge-bg-color: var(--kbq-background-warning);
-  --badge-color: var(--kbq-foreground-white);
+  --badge-color: var(--kbq-foreground-contrast);
 }
 
 .fade-warning {

@@ -1,5 +1,6 @@
 .base {
   flex-shrink: 0;
+  background-color: var(--kbq-background-transparent);
 }
 
 .base[aria-hidden='true'] {

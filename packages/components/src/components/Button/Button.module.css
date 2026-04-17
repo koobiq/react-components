@@ -74,10 +74,6 @@
   background-color: var(--button-bg-color-active);
 }
 
-.focusVisible {
-  --button-outline-color: var(--kbq-states-line-focus-theme);
-}
-
 .loading,
 .disabled {
   cursor: not-allowed;
@@ -197,6 +193,11 @@
   --button-bg-color-hover: var(--kbq-states-background-transparent-hover);
   --button-bg-color-active: var(--kbq-states-background-transparent-active);
   --button-bg-color-disabled: var(--kbq-background-transparent);
+}
+
+.focusVisible {
+  --button-outline-color: var(--kbq-states-line-focus-theme);
+  --button-border-color: var(--kbq-background-transparent);
 }
 
 @keyframes progress {
