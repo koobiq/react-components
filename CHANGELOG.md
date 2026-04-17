@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.30.0](https://github.com/koobiq/react-components/compare/0.29.0...0.30.0) (2026-04-17)
+
+
+### 🚀 Features
+
+* **components:** support new color palette (DS-4927) ([#304](https://github.com/koobiq/react-components/issues/304)) ([db9b5ab](https://github.com/koobiq/react-components/commit/db9b5ab9c8621161771431b28b83960ca5bc57e1))
+* **Tree:** add custom children support to `TreeLoadMoreItem` component ([#303](https://github.com/koobiq/react-components/issues/303)) ([a590ddb](https://github.com/koobiq/react-components/commit/a590ddbe4259d700aed9d521a081c35da3ff8c8d))
+
+
+### 🐞 Bug Fixes
+
+* **DateInput:** use ISO date format for English locale (DS-4928) ([#305](https://github.com/koobiq/react-components/issues/305)) ([ba1303d](https://github.com/koobiq/react-components/commit/ba1303dcc93075e0544cb68a4aec0b0f39226720))
+* **DatePicker:** prevent crash when reselecting current month or year (DS-4951) ([#306](https://github.com/koobiq/react-components/issues/306)) ([cd61c99](https://github.com/koobiq/react-components/commit/cd61c991ae0ac0a386666bb221d8fa4f512720da))
+
 ## [0.29.0](https://github.com/koobiq/react-components/compare/0.28.0...0.29.0) (2026-03-27)
 
 
