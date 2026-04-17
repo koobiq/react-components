@@ -135,10 +135,21 @@ export function CalendarMonthDropdown({
       items={months}
       disabledKeys={disabledKeys}
       selectionMode="single"
+      disallowEmptySelection
       selectedKeys={new Set([state.focusedDate.month])}
       onSelectionChange={(keys) => {
-        const value = Array.from(keys)[0];
-        const date = state.focusedDate.set({ month: +value });
+        const value = keys === 'all' ? undefined : keys.values().next().value;
+        const month = Number(value);
+
+        if (
+          value == null ||
+          Number.isNaN(month) ||
+          month === state.focusedDate.month
+        ) {
+          return;
+        }
+
+        const date = state.focusedDate.set({ month });
         state.setFocusedDate(date);
       }}
     >
