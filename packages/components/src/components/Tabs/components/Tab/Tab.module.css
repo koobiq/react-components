@@ -2,26 +2,16 @@
   display: flex;
   position: relative;
   cursor: pointer;
+  outline: none;
   text-align: center;
-  align-items: center;
+  align-items: stretch;
   white-space: nowrap;
   text-decoration: none;
   box-sizing: border-box;
   color: var(--tab-color);
   inline-size: var(--tab-inline-size);
   min-block-size: var(--tab-block-size);
-  background-color: var(--tab-bg-color);
-  border-radius: var(--tab-border-radius);
-  padding-block: var(--tab-padding-block);
-  padding-inline: var(--tab-padding-inline);
-  justify-content: var(--tab-justify-content);
-  outline-offset: calc(-1 * var(--tab-outline-width));
-  outline: var(--tab-outline-width) solid var(--tab-outline-color);
   min-inline-size: var(--tab-min-inline-size);
-  transition:
-    outline-color var(--kbq-transition-default),
-    background-color var(--kbq-transition-default),
-    color var(--kbq-transition-default);
 }
 
 .hovered {
@@ -38,9 +28,27 @@
   cursor: not-allowed;
 }
 
+.underlined {
+  padding-block: var(--kbq-size-s);
+}
+
 /* content */
 .content {
+  display: flex;
   overflow: hidden;
+  inline-size: 100%;
   white-space: nowrap;
+  align-items: center;
   text-overflow: ellipsis;
+  border-radius: var(--tab-border-radius);
+  outline-offset: calc(-1 * var(--tab-outline-width));
+  outline: var(--tab-outline-width) solid var(--tab-outline-color);
+  background-color: var(--tab-bg-color);
+  padding-block: var(--tab-padding-block);
+  padding-inline: var(--tab-padding-inline);
+  justify-content: var(--tab-justify-content);
+  transition:
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
 }

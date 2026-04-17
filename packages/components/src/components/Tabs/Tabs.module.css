@@ -54,10 +54,6 @@
     background: var(--kbq-line-contrast-less);
     z-index: calc(var(--kbq-layer-absolute) + 1);
   }
-
-  & .tabList {
-    padding-block: var(--kbq-size-s);
-  }
 }
 
 /* tabs */
