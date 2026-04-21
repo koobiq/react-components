@@ -23,10 +23,8 @@
   --tab-padding-block: var(--kbq-size-xs);
 }
 
-.horizontal {
-  &.stretched {
-    --tab-inline-size: 100%;
-  }
+.stretched {
+  --tab-inline-size: 100%;
 }
 
 .vertical {

@@ -39,7 +39,7 @@ export function TabsRender<T extends object>(
     orientation: orientationProp = 'horizontal',
     'data-testid': dataTestId,
     isUnderlined = false,
-    isStretched = false,
+    isStretched: isStretchedProp = false,
     style,
     className,
     slotProps,
@@ -60,6 +60,7 @@ export function TabsRender<T extends object>(
 
   const orientation = isUnderlined ? 'horizontal' : orientationProp;
   const isHorizontal = orientation === 'horizontal';
+  const isStretched = isHorizontal && isStretchedProp;
   const selectedItemIdx = selectedItem?.index;
 
   if (
