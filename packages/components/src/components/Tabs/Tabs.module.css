@@ -1,49 +1,23 @@
-/* root */
-.root {
-  --tabs-gap: 0;
-  --tabs-direction: row;
-  --tabs-scrollbar-scroll-width: none;
-  --tabs-scrollbar-display: flex;
-  --tabs-scrollbar-inline-size: 100%;
-  --tabs-scrollbar-overflow-x: auto;
-  --tabs-scrollbar-overflow-y: hidden;
-
-  /* tab */
-  --tab-justify-content: center;
-  --tab-bg-color: ;
-  --tab-inline-size: ;
-  --tab-min-inline-size: 40px;
-  --tab-block-size: var(--kbq-size-3xl);
-  --tab-min-block-size: ;
-  --tab-outline-color: transparent;
-  --tab-outline-width: var(--kbq-size-3xs);
-  --tab-color: var(--kbq-foreground-contrast);
-  --tab-border-radius: var(--kbq-size-border-radius);
-  --tab-padding-inline: var(--kbq-size-m);
-  --tab-padding-block: var(--kbq-size-xs);
-}
-
-.stretched {
-  --tab-inline-size: 100%;
-}
-
-.vertical {
-  --tab-justify-content: start;
-  --tabs-gap: var(--kbq-size-s);
-  --tabs-direction: column;
-  --tabs-scrollbar-scroll-width: auto;
-  --tabs-scrollbar-display: inline-block;
-  --tabs-scrollbar-inline-size: auto;
-  --tabs-scrollbar-overflow-x: hidden;
-  --tabs-scrollbar-overflow-y: auto;
-
+.base {
   display: flex;
+  position: relative;
+}
+
+/* container */
+.default {
+  .indicator {
+    inset-block-start: 0;
+    border-radius: var(--kbq-size-border-radius);
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  .tab {
+    min-inline-size: 40px;
+  }
 }
 
 .underlined {
-  --tab-min-inline-size: 44px;
-
-  & .base::after {
+  .base::after {
     content: '';
     inset-inline: 0;
     inset-block-end: 0;
@@ -52,12 +26,70 @@
     background: var(--kbq-line-contrast-less);
     z-index: calc(var(--kbq-layer-absolute) + 1);
   }
+
+  .indicator {
+    block-size: 3px;
+    inset-block-end: 0;
+    inset-block-start: unset;
+    border-radius: 2px 2px 0 0;
+    background-color: var(--kbq-line-contrast);
+  }
+
+  .tab {
+    padding-block: var(--kbq-size-s);
+    min-inline-size: 44px;
+  }
 }
 
-/* tabs */
-.base {
+.horizontal {
+  --tabs-gap: 0;
+  --tabs-direction: row;
+
+  .scrollBox {
+    display: flex;
+    inline-size: 100%;
+    scrollbar-width: none;
+    overflow: auto hidden;
+  }
+
+  .tabList {
+    gap: 0;
+    flex-direction: row;
+  }
+
+  .tab .content {
+    text-align: center;
+  }
+}
+
+.vertical {
   display: flex;
-  position: relative;
+
+  .scrollBox {
+    display: inline-block;
+    inline-size: auto;
+    scrollbar-width: auto;
+    overflow: hidden auto;
+  }
+
+  .tabList {
+    gap: var(--kbq-size-s);
+    flex-direction: column;
+  }
+
+  .tab {
+    inline-size: 100%;
+
+    .content {
+      text-align: start;
+    }
+  }
+}
+
+.stretched {
+  .tab {
+    inline-size: 100%;
+  }
 }
 
 /* tab-list */
@@ -65,15 +97,64 @@
   flex-grow: 1;
   display: flex;
   position: relative;
-  gap: var(--tabs-gap);
-  flex-direction: var(--tabs-direction);
 }
 
-/* scrollBox */
-.scrollBox {
-  position: relative;
-  display: var(--tabs-scrollbar-display);
-  inline-size: var(--tabs-scrollbar-inline-size);
-  scrollbar-width: var(--tabs-scrollbar-scroll-width);
-  overflow: var(--tabs-scrollbar-overflow-x) var(--tabs-scrollbar-overflow-y);
+/* indicator */
+.indicator {
+  --tabs-indicator-inline-size: ;
+  --tabs-indicator-block-size: ;
+  --tabs-indicator-transform: ;
+
+  position: absolute;
+  z-index: var(--kbq-layer-absolute);
+  transform: var(--tabs-indicator-transform);
+  block-size: var(--tabs-indicator-block-size);
+  inline-size: var(--tabs-indicator-inline-size);
+  will-change: transform, inline-size, block-size;
+  transition:
+    inline-size 200ms ease-in,
+    block-size 200ms ease-in,
+    transform 200ms ease-in;
+}
+
+/* tab */
+.tab {
+  display: flex;
+  outline: none;
+  cursor: pointer;
+  align-items: stretch;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.hovered .content {
+  background-color: var(--kbq-states-background-transparent-hover);
+}
+
+.focusVisible .content {
+  outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.disabled .content {
+  color: var(--kbq-states-foreground-disabled);
+  cursor: not-allowed;
+}
+
+.content {
+  overflow: hidden;
+  inline-size: 100%;
+  white-space: nowrap;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  padding-inline: var(--kbq-size-m);
+  padding-block: var(--kbq-size-xs);
+  color: var(--kbq-foreground-contrast);
+  border-radius: var(--kbq-size-border-radius);
+  outline-offset: calc(-1 * var(--kbq-size-3xs));
+  outline: var(--kbq-size-3xs) solid;
+  outline-color: transparent;
+  transition:
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
 }

@@ -1,9 +1,11 @@
 .base {
+  --tabs-scroll-button-inline-size: var(--kbq-size-3xl);
+
   opacity: 1;
   flex-shrink: 0;
   block-size: 100%;
   position: absolute;
-  inline-size: var(--tab-block-size);
+  inline-size: var(--tabs-scroll-button-inline-size);
   z-index: calc(var(--kbq-layer-absolute) + 2);
 
   &::after,
@@ -13,7 +15,7 @@
     block-size: 100%;
     position: absolute;
     pointer-events: none;
-    inline-size: calc(var(--tab-block-size) + 24px);
+    inline-size: calc(1.75 * var(--tabs-scroll-button-inline-size));
   }
 }
 
@@ -26,7 +28,7 @@
     background: linear-gradient(
       to right,
       var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) var(--tab-block-size),
+      var(--kbq-background-bg) var(--tabs-scroll-button-inline-size),
       var(--kbq-background-transparent) 100%
     );
   }
@@ -41,7 +43,7 @@
     background: linear-gradient(
       to left,
       var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) var(--tab-block-size),
+      var(--kbq-background-bg) var(--tabs-scroll-button-inline-size),
       var(--kbq-background-transparent) 100%
     );
   }

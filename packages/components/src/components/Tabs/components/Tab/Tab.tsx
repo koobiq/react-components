@@ -7,7 +7,7 @@ import { useHover, mergeProps, clsx, useDOMRef } from '@koobiq/react-core';
 import type { TabListState } from '@koobiq/react-primitives';
 import { useTab } from '@koobiq/react-primitives';
 
-import s from './Tab.module.css';
+import s from '../../Tabs.module.css';
 
 export type TabProps<T> = {
   item: Node<T>;
@@ -36,7 +36,7 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
     <Tag
       style={style}
       className={clsx(
-        s.base,
+        s.tab,
         isHovered && s.hovered,
         isDisabled && s.disabled,
         isFocusVisible && s.focusVisible,
