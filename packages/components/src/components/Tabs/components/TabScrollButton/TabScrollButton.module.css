@@ -8,8 +8,7 @@
   inline-size: var(--tabs-scroll-button-inline-size);
   z-index: calc(var(--kbq-layer-absolute) + 2);
 
-  &::after,
-  &::before {
+  &::after {
     content: '';
     z-index: -1;
     block-size: 100%;
