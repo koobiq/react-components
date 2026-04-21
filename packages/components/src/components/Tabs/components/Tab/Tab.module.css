@@ -10,7 +10,7 @@
   box-sizing: border-box;
   color: var(--tab-color);
   inline-size: var(--tab-inline-size);
-  min-block-size: var(--tab-block-size);
+  min-block-size: var(--tab-min-block-size);
   min-inline-size: var(--tab-min-inline-size);
 }
 
