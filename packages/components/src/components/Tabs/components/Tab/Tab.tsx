@@ -50,7 +50,7 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
       {...mergeProps(hoverProps, focusProps, tabProps, { onFocus: onFocused })}
       ref={domRef as any}
     >
-      <span className={s.content}>{rendered}</span>
+      <div className={s.content}>{rendered}</div>
     </Tag>
   );
 }
