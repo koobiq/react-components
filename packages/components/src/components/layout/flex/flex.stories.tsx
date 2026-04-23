@@ -84,7 +84,7 @@ const blockStyle = {
   backgroundColor: 'var(--kbq-background-contrast-fade)',
 } as CSSProperties;
 
-export const Example: Story = (props: FlexProps) => (
+export const Base: Story = (props: FlexProps) => (
   <div className={flex(props)}>
     <div
       style={blockStyle}
@@ -125,4 +125,4 @@ export const Example: Story = (props: FlexProps) => (
   </div>
 );
 
-Example.storyName = 'Example';
+Base.storyName = 'Base';

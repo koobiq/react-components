@@ -26,6 +26,7 @@ const config: StorybookConfig = {
       },
     },
     '@storybook/addon-a11y',
+    '@storybook/addon-mcp',
     '@storybook/addon-links',
     '@chromatic-com/storybook',
     '@vueless/storybook-dark-mode',
@@ -53,6 +54,9 @@ const config: StorybookConfig = {
   core: {
     disableTelemetry: true,
   },
+  features: {
+    componentsManifest: true,
+  },
   framework: {
     name: '@storybook/react-vite',
     options: {
@@ -62,6 +66,12 @@ const config: StorybookConfig = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
+      tsconfigPath: join(process.cwd(), 'tsconfig.json'),
+      exclude: [
+        '**/*.stories.tsx',
+        '**/.storybook/**/*.ts',
+        '**/.storybook/**/*.tsx',
+      ],
       // Filter out third-party props from node_modules.
       propFilter: (prop) => {
         if (!prop.parent) return true;
