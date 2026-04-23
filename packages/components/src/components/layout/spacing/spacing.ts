@@ -53,6 +53,7 @@ export type SpacingProps = {
   pbs?: SpacingGap;
 };
 
+/** The spacing mixin adds logical padding and margin around any element. */
 export const spacing = (props?: SpacingProps): string => {
   const { m, mb, mi, mis, mbe, mie, mbs, p, pb, pi, pis, pbe, pie, pbs } =
     props || {};

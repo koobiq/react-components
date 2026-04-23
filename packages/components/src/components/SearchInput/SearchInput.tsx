@@ -30,6 +30,7 @@ import { FormField, FormFieldClearButton } from '../FormField';
 import s from './SearchInput.module.css';
 import type { SearchInputProps, SearchInputRef } from './types';
 
+/** A search input allows a user to enter and clear a search query. */
 export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
   (props, ref) => {
     const {

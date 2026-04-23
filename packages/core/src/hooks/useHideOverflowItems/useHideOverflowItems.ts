@@ -50,6 +50,10 @@ export type UseHideOverflowItemsProps = {
   pinnedIndex?: number;
 };
 
+/**
+ * A React hook that hides items that overflow the width of their parent
+ * container.
+ */
 export function useHideOverflowItems<
   Item extends HTMLElement = HTMLDivElement,
   Parent extends HTMLElement = HTMLDivElement,

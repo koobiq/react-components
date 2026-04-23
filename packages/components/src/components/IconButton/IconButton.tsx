@@ -10,6 +10,10 @@ import { Button as ButtonPrimitive } from '@koobiq/react-primitives';
 import s from './IconButton.module.css';
 import type { IconButtonBaseProps } from './types.js';
 
+/**
+ * The IconButton component integrates icons within buttons, combining the visual
+ * appeal of icons with the functionality of buttons.
+ */
 export const IconButton = polymorphicForwardRef<'button', IconButtonBaseProps>(
   (props, ref) => {
     const {

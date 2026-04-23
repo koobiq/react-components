@@ -8,7 +8,7 @@ const meta = {
 
 export default meta;
 
-export const Example = () => {
+export const Base = () => {
   const buttons = ['first', 'second', 'third'];
   const refs = useRefs<HTMLLIElement>(buttons.length);
 

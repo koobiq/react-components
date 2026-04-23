@@ -114,6 +114,7 @@ type CompoundedComponent = typeof DialogComponent & {
   Footer: typeof DialogFooter;
 };
 
+/** Dialog presents important information and actions in a focused modal surface. */
 export const Dialog = DialogComponent as CompoundedComponent;
 
 Dialog.Header = DialogHeader;

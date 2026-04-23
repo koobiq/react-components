@@ -1,11 +1,14 @@
+import type { Meta } from '@storybook/react';
+
 import { useResizeObserver } from './index';
 
-export default {
+const meta = {
   title: 'Hooks/useResizeObserver',
-  id: 'Hooks/useResizeObserver',
-};
+} satisfies Meta<typeof useResizeObserver>;
 
-export const Example = () => {
+export default meta;
+
+export const Base = () => {
   const [ref, rect] = useResizeObserver();
 
   return (
@@ -16,5 +19,3 @@ export const Example = () => {
     </div>
   );
 };
-
-Example.storyName = 'Example';

@@ -10,6 +10,10 @@ import { BreadcrumbsContext } from './BreadcrumbsContext';
 import { BreadcrumbsCollapse, BreadcrumbsWrap } from './components';
 import type { BreadcrumbsProps, BreadcrumbsRef } from './types';
 
+/**
+ * Breadcrumbs display a hierarchy of links to the current page or resource in an
+ * application.
+ */
 export const Breadcrumbs = forwardRef<BreadcrumbsRef, BreadcrumbsProps>(
   (props, ref) => {
     const {

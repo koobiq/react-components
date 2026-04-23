@@ -16,6 +16,7 @@ export type UseBooleanControllers = {
 
 export type UseBooleanReturnValue = [boolean, UseBooleanControllers];
 
+/** A hook for controlling a boolean value. */
 export function useBoolean(defaultValue = false): UseBooleanReturnValue {
   const [value, setValue] = useState(defaultValue);
 

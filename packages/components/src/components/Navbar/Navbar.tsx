@@ -96,6 +96,11 @@ type CompoundedComponent = typeof NavbarComponent & {
   AppItem: typeof NavbarAppItem;
 };
 
+/**
+ * The main menu organizes navigation within the product. It consists of a logo,
+ * section links, and can additionally include an app switcher, help section, and
+ * settings block.
+ */
 export const Navbar = NavbarComponent as CompoundedComponent;
 
 Navbar.Header = NavbarHeader;

@@ -19,6 +19,7 @@ import { AlertIcon } from './components';
 import type { AlertBaseProps } from './index';
 import intlMessages from './intl.json';
 
+/** Alert displays warning messages that require attention. */
 export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
   (props, ref) => {
     const {

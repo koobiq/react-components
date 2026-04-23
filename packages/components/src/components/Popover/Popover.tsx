@@ -48,6 +48,10 @@ type CompoundedComponent = typeof PopoverComponent & {
   Footer: typeof Dialog.Footer;
 };
 
+/**
+ * Popover component as an overlay whose position is anchored to an element in
+ * the user interface.
+ */
 export const Popover = PopoverComponent as CompoundedComponent;
 
 Popover.Header = Dialog.Header;

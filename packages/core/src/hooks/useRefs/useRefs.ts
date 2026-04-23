@@ -11,6 +11,7 @@ export type UseRefsReturn<
   ? Record<Keys[number], RefObject<T>>
   : Array<RefObject<T>>;
 
+/** This hook to create an array of refs. */
 export const useRefs = <T, Keys extends number | readonly string[] = number>(
   keys: Keys,
   deps: unknown[] = []

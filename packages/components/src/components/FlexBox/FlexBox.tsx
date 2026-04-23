@@ -10,6 +10,12 @@ import { useMatchedBreakpoints } from '../Provider';
 
 import type { FlexBoxBaseProps } from './index';
 
+/**
+ * FlexBox is a layout component that uses [CSS
+ * Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox)
+ * to arrange its children in a row or column. It helps you control gaps,
+ * alignment, and direction without writing custom CSS.
+ */
 export const FlexBox = polymorphicForwardRef<'div', FlexBoxBaseProps>(
   (
     {

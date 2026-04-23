@@ -70,6 +70,7 @@ type CompoundedComponent = typeof GridComponent & {
   Item: typeof GridItem;
 };
 
+/** Grid is a base tool for organizing content on a page. */
 export const Grid = GridComponent as CompoundedComponent;
 
 Grid.Item = GridItem;

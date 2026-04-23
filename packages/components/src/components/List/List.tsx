@@ -142,6 +142,10 @@ type CompoundedComponent = typeof ListComponent & {
   ItemText: typeof ListItemText;
 };
 
+/**
+ * List displays a list of options and allows a user to select one or more of
+ * them.
+ */
 export const List = ListComponent as CompoundedComponent;
 
 List.Item = Item;

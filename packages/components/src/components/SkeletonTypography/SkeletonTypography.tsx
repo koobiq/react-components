@@ -11,6 +11,11 @@ import { getRowWidth } from './utils';
 
 const textVariant = utilClasses.typography;
 
+/**
+ * SkeletonTypography is a preview placeholder for text components that haven't
+ * loaded yet, reducing load-time frustration by displaying a temporary text-like
+ * shape until the actual content appears.
+ */
 export const SkeletonTypography = polymorphicForwardRef<
   'span',
   SkeletonTypographyBaseProps

@@ -18,6 +18,10 @@ import { useButton } from '../../behaviors';
 
 import type { ButtonBaseProps } from './types';
 
+/**
+ * A button primitive allows a user to perform an action, supporting mouse,
+ * touch, and keyboard interactions.
+ */
 export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
   (props, ref) => {
     const [ctxProps, ctxRef] = useContextProps(props, ref, ButtonContext);

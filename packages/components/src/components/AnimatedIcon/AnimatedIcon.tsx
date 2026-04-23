@@ -8,6 +8,7 @@ import { Transition } from 'react-transition-group';
 import s from './AnimatedIcon.module.css';
 import type { AnimatedIconBaseProps } from './index';
 
+/** This component for creating animated icon transformations. */
 export const AnimatedIcon = polymorphicForwardRef<
   'span',
   AnimatedIconBaseProps

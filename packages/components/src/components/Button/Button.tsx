@@ -10,6 +10,7 @@ import { Button as ButtonPrimitive } from '@koobiq/react-primitives';
 import s from './Button.module.css';
 import type { ButtonBaseProps } from './types.js';
 
+/** The Button is a clickable UI component that triggers actions or events. */
 export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
   (props, ref) => {
     const {

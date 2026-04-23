@@ -16,6 +16,10 @@ const defaultState: ObserverRect = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+/**
+ * A hook listens for size changes of the particular element and returns its size
+ * and position.
+ */
 export function useResizeObserver<T extends HTMLElement = any>(
   options?: ResizeObserverOptions
 ) {

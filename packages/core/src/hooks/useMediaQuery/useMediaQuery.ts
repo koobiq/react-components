@@ -25,6 +25,10 @@ export type UseMediaQueryOptions = {
   ssr?: boolean;
 };
 
+/**
+ * This hook tracks the state of a [media
+ * query](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries).
+ */
 export function useMediaQuery(
   query: string[],
   options?: UseMediaQueryOptions

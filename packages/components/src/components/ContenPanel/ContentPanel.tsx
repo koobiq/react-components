@@ -196,6 +196,10 @@ type CompoundedComponent = typeof ContentPanelComponent & {
   Footer: typeof DialogFooter;
 };
 
+/**
+ * ContentPanel — a side panel that slides in from the edge and pushes adjacent
+ * content, commonly used for quick preview of an item from a table.
+ */
 export const ContentPanel = ContentPanelComponent as CompoundedComponent;
 
 ContentPanel.Header = DialogHeader;

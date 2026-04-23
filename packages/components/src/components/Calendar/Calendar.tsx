@@ -62,4 +62,9 @@ function CalendarRender<T extends DateValue>(
   );
 }
 
+/**
+ * Provides the behavior and accessibility implementation for a calendar
+ * component. A calendar displays one or more date grids and allows users to
+ * select a single date.
+ */
 export const Calendar = forwardRef(CalendarRender) as CalendarComponent;

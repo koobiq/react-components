@@ -377,6 +377,10 @@ type CompoundedComponent = typeof SelectComponent & {
   ItemText: typeof ListItemText;
 };
 
+/**
+ * A select displays a collapsible list of options and allows a user to select
+ * one or more of them.
+ */
 export const SelectNext = SelectComponent as CompoundedComponent;
 
 SelectNext.Item = SelectOption;

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
+import type { Meta } from '@storybook/react';
 
 import { useDebounceCallback } from './index';
 
-export default {
+const meta = {
   title: 'Hooks/useDebounceCallback',
-  id: 'Hooks/useDebounceCallback',
-};
+} satisfies Meta<typeof useDebounceCallback>;
 
-export const Example = () => {
+export default meta;
+
+export const Base = () => {
   const [value, setValue] = useState('');
   const [active, setActive] = useBoolean(true);
   const [firstCall, setFirstCall] = useBoolean(false);
@@ -58,5 +60,3 @@ export const Example = () => {
     </div>
   );
 };
-
-Example.storyName = 'Example';

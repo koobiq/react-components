@@ -94,6 +94,7 @@ type CompoundedComponent = typeof MenuComponent & {
   Control: typeof Pressable;
 };
 
+/** A menu displays a list of actions or options that a user can choose. */
 export const Menu = MenuComponent as CompoundedComponent;
 
 Menu.Item = Item;

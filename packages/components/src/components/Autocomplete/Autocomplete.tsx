@@ -323,6 +323,10 @@ type CompoundedComponent = typeof AutocompleteComponent & {
   ItemText: typeof ListItemText;
 };
 
+/**
+ * An autocomplete combines a text input with a listbox, allowing users to filter
+ * a list of options to items matching a query.
+ */
 export const Autocomplete = AutocompleteComponent as CompoundedComponent;
 
 Autocomplete.Item = Item;

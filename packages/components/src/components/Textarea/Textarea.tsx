@@ -12,6 +12,10 @@ import { FormField, type FormFieldProps } from '../FormField';
 import { TextareaContextConsumer } from './components';
 import type { TextareaProps, TextareaRef } from './index';
 
+/**
+ * Textarea is an input element that allows users to enter and edit multiline
+ * text.
+ */
 export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
   const {
     variant = 'filled',

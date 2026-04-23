@@ -179,4 +179,5 @@ export function TimePickerRender<T extends TimeValue>(
   );
 }
 
+/** A time picker allows users to enter and edit time values using a keyboard. */
 export const TimePicker = forwardRef(TimePickerRender) as TimePickerComponent;

@@ -18,6 +18,7 @@ type UseEventListener<T, K, P> = {
   active?: boolean;
 };
 
+/** A hook that adds event listeners and removes them on unmount. */
 export function useEventListener<K extends keyof MediaQueryListEventMap>({
   eventName,
   handler,

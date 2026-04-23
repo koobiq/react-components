@@ -20,6 +20,10 @@ import { RadioGroupContext } from './index';
 import type { RadioGroupProps } from './index';
 import s from './RadioGroup.module.css';
 
+/**
+ * A radio group allows a user to select a single item from a list of mutually
+ * exclusive options.
+ */
 export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
   (props, ref) => {
     const {

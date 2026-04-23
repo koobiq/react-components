@@ -107,6 +107,10 @@ function ToastProviderRender(
   return <ToastRegion {...props} ref={ref} state={state} />;
 }
 
+/**
+ * Toasts are temporary notifications that provide concise feedback about an
+ * action or event.
+ */
 export const ToastProvider = forwardRef(
   ToastProviderRender
 ) as ToastProviderComponent;

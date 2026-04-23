@@ -78,6 +78,7 @@ export type FlexProps = {
 
 export type FlexParams = (props: FlexProps, className?: string) => string;
 
+/** The flex mixin turns the element it’s applied to into a flex container. */
 export const flex: FlexParams = (props, className) => {
   const {
     alignItems,

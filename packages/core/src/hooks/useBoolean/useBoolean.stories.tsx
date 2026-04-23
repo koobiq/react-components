@@ -8,7 +8,7 @@ const meta = {
 
 export default meta;
 
-export const Example = () => {
+export const Base = () => {
   const [isChecked, { toggle }] = useBoolean(true);
 
   return (

@@ -14,6 +14,10 @@ import { useLink } from '../../behaviors';
 
 import type { LinkBaseProps } from './types.js';
 
+/**
+ * A link primitive allows a user to navigate to another page or resource within
+ * a web page or application.
+ */
 export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   const { as: Tag = 'a', ...other } = props;
 
