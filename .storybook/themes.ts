@@ -10,40 +10,41 @@ export const brand = {
     "'JetBrains Mono', 'Roboto Mono', 'Consolas', 'Menlo', 'Monaco', monospace;", // var(--kbq-font-family-mono)
 };
 
+// Use hsla here instead of oklch/lab: Storybook theming does not reliably support newer CSS color functions.
 export const light = create({
   ...brand,
   base: 'light',
-  textColor: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-foreground-contrast)
-  colorSecondary: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-states-background-transparent-active)
-  barBg: 'hsla(0, 0%, 100%, 100%)', // var(--kbq-background-bg)
-  barHoverColor: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
-  barTextColor: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
-  barSelectedColor: 'hsla(229, 15%, 15%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
-  appBg: 'hsla(229, 15%, 95%, 100%)', // var(--kbq-background-bg-secondary)
-  appContentBg: 'hsla(0, 0%, 100%, 100%)', // var(--kbq-background-bg)
-  appPreviewBg: 'hsla(0, 0%, 100%, 100%)', // var(--kbq-background-bg)
-  appBorderColor: 'hsla(229, 15%, 92%, 100%)', // var(--kbq-background-contrast-fade)
+  textColor: 'hsla(221, 100%, 5.1%, 0.85)', // var(--kbq-foreground-contrast)
+  colorSecondary: 'hsla(217, 100%, 15.5%, 0.11)', // var(--kbq-states-background-transparent-active)
+  barBg: 'hsla(0, 0%, 100%, 1)', // var(--kbq-background-bg)
+  barHoverColor: 'hsla(221, 100%, 5.1%, 0.85)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
+  barTextColor: 'hsla(221, 100%, 5.1%, 0.85)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
+  barSelectedColor: 'hsla(221, 100%, 5.1%, 0.85)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
+  appBg: 'hsla(217, 28.5%, 96.3%, 1)', // var(--kbq-background-bg-secondary)
+  appContentBg: 'hsla(0, 0%, 100%, 1)', // var(--kbq-background-bg)
+  appPreviewBg: 'hsla(0, 0%, 100%, 1)', // var(--kbq-background-bg)
+  appBorderColor: 'hsla(217, 100%, 15.5%, 0.11)', // var(--kbq-background-contrast-fade)
   appBorderRadius: 12,
-  buttonBorder: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-form-field-default-border-color)
-  buttonBg: 'hsla(229, 15%, 95%, 100%)', // var(--kbq-background-bg-secondary)
+  buttonBorder: 'hsla(223, 100%, 12.5%, 0.24)', // var(--kbq-form-field-default-border-color)
+  buttonBg: 'hsla(217, 28.5%, 96.3%, 1)', // var(--kbq-background-bg-secondary)
   brandImage: '/images/logo-name-light.svg',
 });
 
 export const dark = create({
   ...brand,
   base: 'dark',
-  textColor: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-foreground-contrast)
-  colorSecondary: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-states-background-transparent-active)
-  barBg: 'hsla(229, 15%, 12%, 100%)', // var(--kbq-background-bg)
-  barHoverColor: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
-  barTextColor: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
-  barSelectedColor: 'hsla(229, 15%, 80%, 100%)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
-  appBg: 'hsla(229, 15%, 16%, 100%)', // var(--kbq-background-bg-secondary)
-  appContentBg: 'hsla(229, 15%, 12%, 100%)', // var(--kbq-background-bg)
-  appPreviewBg: 'hsla(229, 15%, 12%, 100%)', // var(--kbq-background-bg),
-  appBorderColor: 'hsla(229, 15%, 25%, 100%)', // var(--kbq-background-contrast-fade)
+  textColor: 'hsla(212, 100%, 96.8%, 0.9)', // var(--kbq-foreground-contrast)
+  colorSecondary: 'hsla(224, 100%, 85.8%, 0.17)', // var(--kbq-states-background-transparent-active)
+  barBg: 'hsla(225, 20.1%, 9.5%, 1)', // var(--kbq-background-bg)
+  barHoverColor: 'hsla(216, 100%, 95.6%, 0.83)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
+  barTextColor: 'hsla(216, 100%, 95.6%, 0.83)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
+  barSelectedColor: 'hsla(216, 100%, 95.6%, 0.83)', // var(--kbq-button-transparent-contrast-fade-on-left-icon)
+  appBg: 'hsla(224, 17.7%, 14.3%, 1)', // var(--kbq-background-bg-secondary)
+  appContentBg: 'hsla(225, 20.1%, 9.5%, 1)', // var(--kbq-background-bg)
+  appPreviewBg: 'hsla(225, 20.1%, 9.5%, 1)', // var(--kbq-background-bg),
+  appBorderColor: 'hsla(224, 100%, 85.8%, 0.17)', // var(--kbq-background-contrast-fade)
   appBorderRadius: 12,
-  buttonBorder: 'hsla(229, 15%, 30%, 100%)', // var(--kbq-form-field-default-border-color)
-  buttonBg: 'hsla(229, 15%, 16%, 100%)', // var(--kbq-background-bg-secondary)
+  buttonBorder: 'hsla(219, 100%, 84.7%, 0.29)', // var(--kbq-form-field-default-border-color)
+  buttonBg: 'hsla(224, 17.7%, 14.3%, 1)', // var(--kbq-background-bg-secondary)
   brandImage: '/images/logo-name-dark.svg',
 });
