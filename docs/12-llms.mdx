@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="AI/LLMs.txt" />
+
+# LLMs.txt
+
+Koobiq React provides `llms.txt` files to help AI tools quickly understand the component library and find the right documentation.
+
+## Available files
+
+- [`/llms.txt`](/llms.txt) — the main entry point with an overview of available guides, components, hooks, primitives, and mixins.
+- [`/llms/components-button.txt`](/llms/components-button.txt) — an example of a detailed component file.
+- [`/llms/components-accordion.txt`](/llms/components-accordion.txt) — another detailed component file with props and usage examples.
+- [`/llms/hooks-usemediaquery.txt`](/llms/hooks-usemediaquery.txt) — an example of a detailed hook file.
+
+## What's included
+
+- Storybook documentation content
+- Props tables for components and hooks when metadata is available
+- Usage examples from stories
+- Separate detailed files for more focused prompts and smaller context windows
+
+## How to use
+
+Start with [`/llms.txt`](/llms.txt).
+It gives AI tools a clear overview of the documentation structure and helps them find the most relevant files faster.
+
+Then open the specific file in [`/llms/`](/llms/) when more detail is needed.
+For example, use [`/llms/components-button.txt`](/llms/components-button.txt) for Button documentation.
+
+Use source code only when the documentation is not enough.
+For most tasks, the `llms.txt` files should be the best place to start.

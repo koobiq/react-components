@@ -82,7 +82,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Welcome', 'Icons', 'Components'],
+        order: ['Welcome', 'Icons', 'AI', 'Components'],
         includeName: true,
       },
     },

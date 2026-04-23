@@ -301,7 +301,7 @@ function writeOutput(rootDir) {
   }
 
   const summaryLines = [
-    'Generator llms.txt',
+    'Generator LLMs.txt',
     `ℹ️ Found ${componentItems.length} component entries and ${Object.keys(docsEntries).length} docs entries.`,
     `✅ Wrote index to ${config.distPath}/llms.txt`,
     `✅ Wrote detailed files to ${config.distPath}/llms (${componentItems.length} files)`,
