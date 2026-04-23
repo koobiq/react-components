@@ -150,7 +150,7 @@ const blockStyle = {
   backgroundColor: 'var(--kbq-background-theme)',
 } as CSSProperties;
 
-export const Example: Story = (props: SpacingProps) => (
+export const Base: Story = (props: SpacingProps) => (
   <div style={wrapperStyle}>
     <div style={blockStyle} className={spacing(props)}>
       Content
@@ -158,4 +158,4 @@ export const Example: Story = (props: SpacingProps) => (
   </div>
 );
 
-Example.storyName = 'Example';
+Base.storyName = 'Base';
