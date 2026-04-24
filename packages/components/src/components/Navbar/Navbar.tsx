@@ -47,7 +47,7 @@ export const NavbarComponent = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
-    <NavbarContext value={{ isCollapsed: isCollapsedActual }}>
+    <NavbarContext.Provider value={{ isCollapsed: isCollapsedActual }}>
       <nav
         {...mergeProps(other, toolbarProps)}
         className={clsx(s.navbar, className)}
@@ -82,7 +82,7 @@ export const NavbarComponent = ({
           </Tooltip>
         )}
       </nav>
-    </NavbarContext>
+    </NavbarContext.Provider>
   );
 };
 
