@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.30.1](https://github.com/koobiq/react-components/compare/0.30.0...0.30.1) (2026-04-24)
+
+
+### 🐞 Bug Fixes
+
+* **components:** resolve `@internationalized/date` type mismatches in date inputs (DS-5029) ([#311](https://github.com/koobiq/react-components/issues/311)) ([b6eb34c](https://github.com/koobiq/react-components/commit/b6eb34c1bd1473f32bd9ccd90692d6651cc8682a))
+* **Navbar:** add React 18 support for `Navbar` context (DS-5027) ([#310](https://github.com/koobiq/react-components/issues/310)) ([3bc64fd](https://github.com/koobiq/react-components/commit/3bc64fd191dd8121fac448f8fda72ec8ab64bab4))
+* **Typography:** remove `Text` dependency to prevent composition crashes (DS-5030) ([#312](https://github.com/koobiq/react-components/issues/312)) ([cade5c3](https://github.com/koobiq/react-components/commit/cade5c331a60e94b3c93aece6703b7fed48a897b))
+
 ## [0.30.0](https://github.com/koobiq/react-components/compare/0.29.0...0.30.0) (2026-04-17)
 
 
