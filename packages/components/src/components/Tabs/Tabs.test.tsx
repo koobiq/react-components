@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -189,6 +189,53 @@ describe('Tabs', () => {
 
       expect(hasPrevScrollButton(container)).toBe(true);
       expect(hasNextScrollButton(container)).toBe(true);
+    });
+
+    it('should scroll vertically when selected tab is out of view', async () => {
+      vi.useFakeTimers();
+
+      try {
+        const { container } = render(
+          renderComponent({
+            orientation: 'vertical',
+            selectedKey: '4',
+          })
+        );
+
+        const scrollBox = container.querySelector(
+          `.${s.scrollBox}`
+        ) as HTMLElement;
+
+        const selectedTab = screen.getByRole('tab', { selected: true });
+
+        Object.defineProperty(scrollBox, 'scrollTop', {
+          value: 0,
+          configurable: true,
+          writable: true,
+        });
+
+        vi.spyOn(scrollBox, 'getBoundingClientRect').mockReturnValue({
+          top: 0,
+          bottom: 100,
+          left: 0,
+          right: 200,
+        } as DOMRect);
+
+        vi.spyOn(selectedTab, 'getBoundingClientRect').mockReturnValue({
+          top: 120,
+          bottom: 160,
+          left: 0,
+          right: 200,
+        } as DOMRect);
+
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(100);
+        });
+
+        expect(scrollBox.scrollTop).toBe(60);
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     describe('scroll buttons behavior', () => {

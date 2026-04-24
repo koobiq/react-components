@@ -3,7 +3,7 @@
 import type { ElementType, Ref } from 'react';
 
 import type { Node } from '@koobiq/react-core';
-import { clsx, useDOMRef } from '@koobiq/react-core';
+import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
 import type { TabListState } from '@koobiq/react-primitives';
 import { useTab } from '@koobiq/react-primitives';
 
@@ -13,9 +13,10 @@ export type TabProps<T> = {
   item: Node<T>;
   state: TabListState<T>;
   innerRef: Ref<HTMLElement>;
+  onFocused?: () => void;
 };
 
-export function Tab<T>({ item, state, innerRef }: TabProps<T>) {
+export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
   const { key, rendered } = item;
 
   const domRef = useDOMRef<HTMLElement>(innerRef);
@@ -37,7 +38,7 @@ export function Tab<T>({ item, state, innerRef }: TabProps<T>) {
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       style={style}
-      {...tabProps}
+      {...mergeProps(tabProps, { onFocus: onFocused })}
       ref={domRef as any}
     >
       <span className={s.tabContent}>{rendered}</span>

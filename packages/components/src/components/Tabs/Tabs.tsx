@@ -79,15 +79,16 @@ export function TabsRender<T extends object>(
   /** Scrolls the container to the specified position. */
   const scroll = (
     value: number,
-    orientation: 'horizontal' | 'vertical' = 'horizontal'
+    orientation: 'horizontal' | 'vertical' = 'horizontal',
+    behavior: ScrollBehavior = 'smooth'
   ) => {
     const el = scrollBoxRef.current;
     if (!el) return;
 
     if (orientation === 'horizontal') {
-      el.scrollTo({ left: value, behavior: 'smooth' });
+      el.scrollTo({ left: value, behavior });
     } else {
-      el.scrollTo({ top: value, behavior: 'smooth' });
+      el.scrollTo({ top: value, behavior });
     }
   };
 
@@ -151,10 +152,14 @@ export function TabsRender<T extends object>(
   };
 
   /** Adjusts the scroll position based on the selected tab's position and orientation. */
-  const scrollCorrection = (orientation: 'horizontal' | 'vertical') => {
-    if (!isNotNil(selectedItemIdx)) return;
+  const scrollCorrection = (
+    orientation: 'horizontal' | 'vertical',
+    itemIdx = selectedItemIdx,
+    behavior: ScrollBehavior = 'smooth'
+  ) => {
+    if (!isNotNil(itemIdx)) return;
 
-    const selectedEl = itemsRefs[selectedItemIdx];
+    const selectedEl = itemsRefs[itemIdx];
     if (!selectedEl) return;
 
     const { scrollBoxMeta, activeTabMeta } = getTabsMeta(
@@ -172,13 +177,13 @@ export function TabsRender<T extends object>(
         const nextScrollLeft =
           scrollBoxMeta.scrollLeft + (activeTabMeta.left - scrollBoxMeta.left);
 
-        scroll(nextScrollLeft - buttonWidth, 'horizontal');
+        scroll(nextScrollLeft - buttonWidth, 'horizontal', behavior);
       } else if (activeTabMeta.right + buttonWidth > scrollBoxMeta.right) {
         const nextScrollLeft =
           scrollBoxMeta.scrollLeft +
           (activeTabMeta.right - scrollBoxMeta.right);
 
-        scroll(nextScrollLeft + buttonWidth, 'horizontal');
+        scroll(nextScrollLeft + buttonWidth, 'horizontal', behavior);
       }
     }
 
@@ -187,13 +192,13 @@ export function TabsRender<T extends object>(
         const nextScrollTop =
           scrollBoxMeta.scrollTop + (activeTabMeta.top - scrollBoxMeta.top);
 
-        scroll(nextScrollTop, 'vertical');
+        scroll(nextScrollTop, 'vertical', behavior);
       } else if (activeTabMeta.bottom > scrollBoxMeta.bottom) {
         const nextScrollTop =
           scrollBoxMeta.scrollTop +
           (activeTabMeta.bottom - scrollBoxMeta.bottom);
 
-        scroll(nextScrollTop, 'vertical');
+        scroll(nextScrollTop, 'vertical', behavior);
       }
     }
   };
@@ -351,6 +356,7 @@ export function TabsRender<T extends object>(
                 state={state}
                 key={item.key}
                 innerRef={itemsRefs[i]}
+                onFocused={() => scrollCorrection(orientation, i, 'auto')}
               />
             ))}
             {isMounted && <span {...indicatorProps} />}
