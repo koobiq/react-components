@@ -1,7 +1,6 @@
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
-import { Text } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 
@@ -20,7 +19,7 @@ export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
     {
       variant = 'text-normal',
       color = 'contrast',
-      as = 'p',
+      as: Tag = 'p',
       children,
       ellipsis,
       display,
@@ -30,8 +29,7 @@ export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
     },
     ref
   ) => (
-    <Text
-      as={as}
+    <Tag
       data-align={align}
       data-color={color}
       data-variant={variant}
@@ -50,7 +48,7 @@ export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
       ref={ref}
     >
       {children}
-    </Text>
+    </Tag>
   )
 );
 
