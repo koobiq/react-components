@@ -6,6 +6,10 @@ import type { SkeletonBlockBaseProps } from './index';
 import s from './SkeletonBlock.module.css';
 import { normalizeSize } from './utils';
 
+/**
+ * Skeleton is preview placeholder for components that haven't loaded yet,
+ * reducing load-time frustration.
+ */
 export const SkeletonBlock = polymorphicForwardRef<
   'span',
   SkeletonBlockBaseProps

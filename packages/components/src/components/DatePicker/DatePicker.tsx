@@ -154,4 +154,8 @@ export function DatePickerRender<T extends DateValue>(
   );
 }
 
+/**
+ * A date picker combines a DateInput and a Calendar popover to allow users to
+ * enter or select a date and time value.
+ */
 export const DatePicker = forwardRef(DatePickerRender) as DatePickerComponent;

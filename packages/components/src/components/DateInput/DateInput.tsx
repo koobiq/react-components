@@ -183,4 +183,5 @@ export function DateInputRender<T extends DateValue>(
   );
 }
 
+/** The DateInput component lets users select a date with the keyboard. */
 export const DateInput = forwardRef(DateInputRender) as DateInputComponent;

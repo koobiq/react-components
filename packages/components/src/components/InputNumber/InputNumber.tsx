@@ -21,6 +21,10 @@ import { InputNumberCounterControls } from './components';
 import type { InputNumberProps, InputNumberRef } from './index';
 import s from './InputNumber.module.css';
 
+/**
+ * A number field allows a user to enter a number, and increment or decrement the
+ * value using stepper buttons.
+ */
 export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
   (props, ref) => {
     const {

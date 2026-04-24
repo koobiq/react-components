@@ -11,6 +11,10 @@ import s from './Typography.module.css';
 const foregroundColor = utilClasses.color.foreground;
 const textVariant = utilClasses.typography;
 
+/**
+ * Typography is a component that consistently styles text in an application and
+ * manages it in accordance with the rules of the design-system.
+ */
 export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
   (
     {

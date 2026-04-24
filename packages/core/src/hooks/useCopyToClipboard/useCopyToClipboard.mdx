@@ -10,6 +10,8 @@ import * as Stories from './useCopyToClipboard.stories';
 
 A simple hook for copying text to the clipboard.
 
+## Import
+
 ```tsx
 import { useCopyToClipboard } from '@koobiq/react-core';
 ```
@@ -32,6 +34,6 @@ type CopyFn = (text: string) => Promise<boolean>;
 export function useCopyToClipboard(): [CopiedValue, CopyFn];
 ```
 
-## Example
+## Usage
 
-<Story of={Stories.Example} />
+<Story of={Stories.Base} />

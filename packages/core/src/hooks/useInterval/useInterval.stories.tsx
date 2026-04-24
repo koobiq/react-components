@@ -1,15 +1,17 @@
 import { type ChangeEvent, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
+import type { Meta } from '@storybook/react';
 
 import { useInterval } from './useInterval';
 
-export default {
+const meta = {
   title: 'Hooks/useInterval',
-  id: 'Hooks/useInterval',
-};
+} satisfies Meta<typeof useInterval>;
 
-export const Example = () => {
+export default meta;
+
+export const Base = () => {
   // The counter
   const [count, setCount] = useState<number>(0);
   // Dynamic delay
@@ -46,5 +48,3 @@ export const Example = () => {
     </>
   );
 };
-
-Example.storyName = 'Пример';

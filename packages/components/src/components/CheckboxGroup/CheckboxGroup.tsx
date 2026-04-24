@@ -27,6 +27,11 @@ import s from './CheckboxGroup.module.css';
 import { CheckboxGroupContext } from './CheckboxGroupContext';
 import type { CheckboxGroupProps } from './types';
 
+/**
+ * Provides the behavior and accessibility implementation for a checkbox group
+ * component. Checkbox groups allow users to select multiple items from a list of
+ * options.
+ */
 export const CheckboxGroup = forwardRef<
   ComponentRef<'div'>,
   CheckboxGroupProps

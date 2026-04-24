@@ -107,6 +107,10 @@ type CompoundedComponent = typeof AccordionComponent & {
   Details: typeof AccordionDetails;
 };
 
+/**
+ * Accordion display a list of high-level options that can expand/collapse to
+ * reveal more information.
+ */
 export const Accordion = AccordionComponent as CompoundedComponent;
 
 Accordion.Summary = AccordionSummary;

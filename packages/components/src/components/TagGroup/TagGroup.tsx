@@ -35,4 +35,8 @@ function TagGroupRender<T extends object>(
   );
 }
 
+/**
+ * A tag group is a focusable list of labels, categories, keywords, filters, or
+ * other items, with support for keyboard navigation and removal.
+ */
 export const TagGroup = forwardRef(TagGroupRender) as TagGroupComponent;

@@ -65,6 +65,10 @@ type CompoundedComponent = typeof FormComponent & {
   Actions: typeof FormActions;
 };
 
+/**
+ * Forms allow users to enter data that can be submitted while providing
+ * alignment and styling for form controls.
+ */
 export const Form = FormComponent as CompoundedComponent;
 
 Form.Group = FormGroup;

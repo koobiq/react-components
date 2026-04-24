@@ -163,6 +163,10 @@ type CompoundedComponent = typeof SidePanelComponent & {
   Footer: typeof Dialog.Footer;
 };
 
+/**
+ * SidePanel is a panel that slides out from the edges of the screen. It's often
+ * used for navigation, menus, or to display details about the page a user is on.
+ */
 export const SidePanel = SidePanelComponent as CompoundedComponent;
 
 SidePanel.Header = Dialog.Header;

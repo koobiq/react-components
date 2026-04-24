@@ -16,6 +16,10 @@ import {
   normalizePosition,
 } from './utils';
 
+/**
+ * The container centers your content horizontally. It's the most basic layout
+ * element.
+ */
 export const Container = polymorphicForwardRef<'div', ContainerBaseProps>(
   (props, ref) => {
     const {

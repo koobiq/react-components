@@ -11,6 +11,11 @@ import type { ProgressSpinnerProps } from './index';
 import s from './ProgressSpinner.module.css';
 import { getSvgParamsBySize } from './utils';
 
+/**
+ * ProgressSpinner shows the progression of a system operation such as
+ * downloading, uploading, or processing, in a visual way. They can represent
+ * determinate or indeterminate progress.
+ */
 export const ProgressSpinner = forwardRef<
   ComponentRef<'div'>,
   ProgressSpinnerProps

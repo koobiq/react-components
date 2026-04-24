@@ -33,6 +33,7 @@ export class DividerNode extends CollectionNode<any> {
   }
 }
 
+/** A divider is used to visually separate blocks of content. */
 export const Divider = createLeafComponent(
   DividerNode,
   function Separator(props: DividerProps, ref: ForwardedRef<HTMLElement>) {

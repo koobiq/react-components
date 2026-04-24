@@ -1,13 +1,16 @@
 import { useState, useRef } from 'react';
 
+import type { Meta } from '@storybook/react';
+
 import { useBoolean } from '../useBoolean';
 
 import { useEventListener } from './index';
 
-export default {
+const meta = {
   title: 'Hooks/useEventListener',
-  id: 'Hooks/useEventListener',
-};
+} satisfies Meta<typeof useEventListener>;
+
+export default meta;
 
 export const Example1 = () => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });

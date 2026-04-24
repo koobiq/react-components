@@ -1,11 +1,14 @@
+import type { Meta } from '@storybook/react';
+
 import { useElementSize } from './useElementSize';
 
-export default {
+const meta = {
   title: 'Hooks/useElementSize',
-  id: 'Hooks/useElementSize',
-};
+} satisfies Meta<typeof useElementSize>;
 
-export const Example = () => {
+export default meta;
+
+export const Base = () => {
   const { ref, width, height } = useElementSize();
 
   return (
@@ -18,5 +21,3 @@ export const Example = () => {
     </div>
   );
 };
-
-Example.storyName = 'Example';

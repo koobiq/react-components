@@ -18,6 +18,7 @@ import { getSelectedToggleButton, getToggleButtonStyle } from './utils';
 
 const MAX_ITEMS = 5;
 
+/** Display multiple options and allow users to select a single option. */
 export const ButtonToggleGroup = forwardRef<
   ButtonToggleGroupRef,
   ButtonToggleGroupProps

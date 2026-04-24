@@ -10,6 +10,8 @@ import * as Stories from './useResizeObserver.stories';
 
 A hook listens for size changes of the particular element and returns its size and position.
 
+## Import
+
 ```tsx
 import { useResizeObserver } from '@koobiq/react-core';
 ```
@@ -26,6 +28,6 @@ function useResizeObserver<T extends HTMLElement = any>(
 ): readonly [React.RefObject<T>, ObserverRect];
 ```
 
-## Example
+## Usage
 
-<Story of={Stories.Example} />
+<Story of={Stories.Base} />

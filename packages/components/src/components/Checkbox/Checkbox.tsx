@@ -16,6 +16,10 @@ import { useCheckboxGroupState } from '../CheckboxGroup/CheckboxGroupContext';
 import s from './Checkbox.module.css';
 import type { CheckboxProps } from './index';
 
+/**
+ * A checkbox is used in forms when a user needs to select multiple values from a
+ * range of available options.
+ */
 export const Checkbox = forwardRef<ComponentRef<'label'>, CheckboxProps>(
   (props, ref) => {
     const {

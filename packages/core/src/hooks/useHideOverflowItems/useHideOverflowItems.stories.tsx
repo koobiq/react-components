@@ -1,10 +1,14 @@
 import { type CSSProperties, useState } from 'react';
 
+import type { Meta } from '@storybook/react';
+
 import { useHideOverflowItems } from './index';
 
-export default {
+const meta = {
   title: 'Hooks/useHideOverflowItems',
-};
+} satisfies Meta<typeof useHideOverflowItems>;
+
+export default meta;
 
 const parentStyle = {
   blockSize: 24,

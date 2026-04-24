@@ -15,6 +15,10 @@ export const defaultBreakpoints: Breakpoints = {
   xxl: 1536, // (min-width: 1536px)
 };
 
+/**
+ * Wrap your application in a `Provider` to configure the general settings of
+ * your project, such as breakpoints, localization, etc.
+ */
 export const Provider = ({
   breakpoints = defaultBreakpoints,
   breakpointsFallback,

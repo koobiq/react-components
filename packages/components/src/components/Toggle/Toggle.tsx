@@ -9,6 +9,10 @@ import { Switch, type SwitchProps } from '@koobiq/react-primitives';
 import type { ToggleProps } from './index';
 import s from './Toggle.module.css';
 
+/**
+ * Toggle is a component that is used to quickly switch between two possible
+ * states: "on" and "off".
+ */
 export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
   (props, ref) => {
     const {

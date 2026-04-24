@@ -4,6 +4,11 @@ import { useEffect } from 'react';
 
 import { useMutableRef } from '../useMutableRef';
 
+/**
+ * Custom hook that creates an interval that invokes a callback function at a
+ * specified delay using the [setInterval
+ * API](https://developer.mozilla.org/en-US/docs/Web/API/Window/setInterval).
+ */
 export function useInterval(
   /** A callback function that will be triggered at a given interval. */
   callback: () => void,

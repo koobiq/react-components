@@ -20,6 +20,7 @@ import { FormField, FormFieldClearButton } from '../FormField';
 import type { InputProps, InputRef } from './index';
 import s from './Input.module.css';
 
+/** Input component is a component that is used to get user input in a text field. */
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     variant = 'filled',

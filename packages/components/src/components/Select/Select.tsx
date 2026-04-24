@@ -296,8 +296,10 @@ type CompoundedComponent = typeof SelectComponent & {
 };
 
 /**
- * @deprecated
- * This component has been deprecated, please use SelectNext instead.
+ * A select displays a collapsible list of options and allows a user to select
+ * one or more of them.
+ * @deprecated This component has been deprecated, please use SelectNext
+ * instead.
  */
 export const Select = SelectComponent as CompoundedComponent;
 

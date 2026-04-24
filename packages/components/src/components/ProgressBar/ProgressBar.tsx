@@ -10,6 +10,10 @@ import { ProgressBar as ProgressBarPrimitive } from '@koobiq/react-primitives';
 import type { ProgressBarProps } from './index';
 import s from './ProgressBar.module.css';
 
+/**
+ * ProgressBar shows either determinate or indeterminate progress of an operation
+ * over time.
+ */
 export const ProgressBar = forwardRef<ComponentRef<'div'>, ProgressBarProps>(
   (props, ref) => {
     const {

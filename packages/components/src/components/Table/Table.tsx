@@ -204,6 +204,11 @@ type CompoundedComponent = typeof TableComponent & {
   Cell: typeof Cell;
 };
 
+/**
+ * A table displays data in rows and columns and enables a user to navigate its
+ * contents via directional navigation keys, and optionally supports row
+ * selection.
+ */
 export const Table = TableComponent as CompoundedComponent;
 
 export { TableContainer };

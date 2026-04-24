@@ -14,6 +14,10 @@ import { Transition } from 'react-transition-group';
 import s from './Backdrop.module.css';
 import type { BackdropBaseProps } from './index';
 
+/**
+ * The Backdrop component narrows the user's focus to a particular element on the
+ * screen.
+ */
 export const Backdrop = polymorphicForwardRef<'div', BackdropBaseProps>(
   (props, ref) => {
     const {

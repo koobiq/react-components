@@ -13,6 +13,10 @@ const { list } = utilClasses;
 
 export type { TreeProps };
 
+/**
+ * A tree provides users with a way to navigate nested hierarchical
+ * information, with support for keyboard navigation and selection.
+ */
 export function TreeComponent<T extends object>({
   className,
   ...props
@@ -35,6 +39,10 @@ type CompoundedComponent = typeof TreeComponent & {
   LoadMoreItem: typeof TreeLoadMoreItem;
 };
 
+/**
+ * A tree provides users with a way to navigate nested hierarchical information,
+ * with support for keyboard navigation and selection.
+ */
 export const Tree = TreeComponent as CompoundedComponent;
 
 TreeComponent.Item = TreeItem;

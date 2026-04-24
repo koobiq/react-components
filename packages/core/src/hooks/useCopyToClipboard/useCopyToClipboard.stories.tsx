@@ -1,13 +1,16 @@
 import { useState } from 'react';
 
+import type { Meta } from '@storybook/react';
+
 import { useCopyToClipboard } from './index';
 
-export default {
+const meta = {
   title: 'Hooks/useCopyToClipboard',
-  id: 'Hooks/useCopyToClipboard',
-};
+} satisfies Meta<typeof useCopyToClipboard>;
 
-export const Example = () => {
+export default meta;
+
+export const Base = () => {
   const [value, setValue] = useState('Hello, clipboard!');
   const [copiedText, copy] = useCopyToClipboard();
 
@@ -38,5 +41,3 @@ export const Example = () => {
     </div>
   );
 };
-
-Example.storyName = 'Example';

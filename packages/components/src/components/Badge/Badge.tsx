@@ -6,6 +6,10 @@ import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import s from './Badge.module.css';
 import type { BadgeBaseProps } from './index';
 
+/**
+ * Badge is used to highlight the status, quantity, or other important
+ * characteristics of an object.
+ */
 export const Badge = polymorphicForwardRef<'span', BadgeBaseProps>(
   (props, ref) => {
     const {

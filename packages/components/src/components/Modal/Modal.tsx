@@ -151,6 +151,10 @@ type CompoundedComponent = typeof ModalComponent & {
   Footer: typeof Dialog.Footer;
 };
 
+/**
+ * Modal is a window that appears in front of app content to provide critical
+ * information or ask for a decision.
+ */
 export const Modal = ModalComponent as CompoundedComponent;
 
 Modal.Header = Dialog.Header;

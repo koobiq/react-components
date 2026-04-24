@@ -12,7 +12,7 @@ const meta = {
 
 export default meta;
 
-export const Example = () => {
+export const Base = () => {
   const [isMatch] = useMediaQuery(['(max-width: 1024px)']);
 
   const background = isMatch

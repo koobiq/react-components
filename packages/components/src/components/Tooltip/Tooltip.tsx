@@ -25,6 +25,7 @@ import { utilClasses } from '../../styles/utility';
 import s from './Tooltip.module.css';
 import type { TooltipProps, TooltipRef } from './types';
 
+/** Tooltips display informative text when users hover over or focus on. */
 export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const {
     variant = 'contrast',

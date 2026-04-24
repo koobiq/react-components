@@ -368,6 +368,10 @@ export function TabsRender<T extends object>(
   );
 }
 
+/**
+ * Tabs organize content into multiple sections and allow users to navigate
+ * between them.
+ */
 export const Tabs = forwardRef(TabsRender) as TabsComponent;
 
 export const Tab = Item;
