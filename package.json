@@ -43,6 +43,7 @@
     "@chromatic-com/storybook": "^5.1.2",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@internationalized/date": "^3.12.1",
     "@koobiq/date-adapter": "^3.5.1",
     "@koobiq/date-formatter": "^3.5.1",
     "@koobiq/design-tokens": "^3.17.2",

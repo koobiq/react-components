@@ -1,10 +1,7 @@
 'use client';
 
-import {
-  mergeProps,
-  today,
-  useLocalizedStringFormatter,
-} from '@koobiq/react-core';
+import { today } from '@internationalized/date';
+import { mergeProps, useLocalizedStringFormatter } from '@koobiq/react-core';
 import {
   IconChevronLeft16,
   IconChevronRight16,

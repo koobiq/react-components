@@ -2,12 +2,8 @@
 
 import { createRef, type RefObject, useEffect, useMemo, useRef } from 'react';
 
-import {
-  clsx,
-  useLocale,
-  getWeeksInMonth,
-  mergeProps,
-} from '@koobiq/react-core';
+import { getWeeksInMonth } from '@internationalized/date';
+import { clsx, useLocale, mergeProps } from '@koobiq/react-core';
 import { useCalendarGrid } from '@koobiq/react-primitives';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
