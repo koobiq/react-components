@@ -36,7 +36,8 @@
     "@koobiq/react-icons": "workspace:*",
     "@koobiq/react-primitives": "workspace:*",
     "@types/react-transition-group": "^4.4.12",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "@internationalized/date": "^3.12.0"
   },
   "peerDependencies": {
     "@koobiq/design-tokens": "^3.17.2",

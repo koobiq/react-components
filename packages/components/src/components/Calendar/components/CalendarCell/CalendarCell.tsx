@@ -2,13 +2,8 @@
 
 import { useRef } from 'react';
 
-import {
-  clsx,
-  useHover,
-  mergeProps,
-  useFocusRing,
-  today,
-} from '@koobiq/react-core';
+import { today } from '@internationalized/date';
+import { clsx, useHover, mergeProps, useFocusRing } from '@koobiq/react-core';
 import { useCalendarCell } from '@koobiq/react-primitives';
 import type {
   CalendarState,

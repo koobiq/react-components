@@ -25,6 +25,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.8.1
         version: 19.8.1
+      '@internationalized/date':
+        specifier: ^3.12.1
+        version: 3.12.1
       '@koobiq/date-adapter':
         specifier: ^3.5.1
         version: 3.5.1
@@ -36,7 +39,7 @@ importers:
         version: 3.17.2
       '@koobiq/internationalized-date-adapter':
         specifier: ^3.5.1
-        version: 3.5.1(@internationalized/date@3.12.0)(@koobiq/date-adapter@3.5.1)
+        version: 3.5.1(@internationalized/date@3.12.1)(@koobiq/date-adapter@3.5.1)
       '@storybook/addon-a11y':
         specifier: ^10.3.5
         version: 10.3.5(storybook@10.3.5(@testing-library/dom@10.4.0)(prettier@3.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
@@ -235,6 +238,9 @@ importers:
 
   packages/components:
     dependencies:
+      '@internationalized/date':
+        specifier: ^3.12.0
+        version: 3.12.1
       '@koobiq/design-tokens':
         specifier: ^3.17.2
         version: 3.17.2
@@ -265,9 +271,6 @@ importers:
 
   packages/core:
     dependencies:
-      '@internationalized/date':
-        specifier: 3.12.0
-        version: 3.12.0
       '@koobiq/logger':
         specifier: workspace:*
         version: link:../logger
@@ -1880,8 +1883,8 @@ packages:
       '@types/node':
         optional: true
 
-  '@internationalized/date@3.12.0':
-    resolution: {integrity: sha512-/PyIMzK29jtXaGU23qTvNZxvBXRtKbNnGDFD+PY6CZw/Y8Ex8pFUzkuCJCG9aOqmShjqhS9mPqP6Dk5onQY8rQ==}
+  '@internationalized/date@3.12.1':
+    resolution: {integrity: sha512-6IedsVWXyq4P9Tj+TxuU8WGWM70hYLl12nbYU8jkikVpa6WXapFazPUcHUMDMoWftIDE2ILDkFFte6W2nFCkRQ==}
 
   '@internationalized/message@3.1.8':
     resolution: {integrity: sha512-Rwk3j/TlYZhn3HQ6PyXUV0XP9Uv42jqZGNegt0BXlxjE6G3+LwHjbQZAGHhCnCPdaA6Tvd3ma/7QzLlLkJxAWA==}
@@ -10158,22 +10161,22 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.13.13
 
-  '@internationalized/date@3.12.0':
+  '@internationalized/date@3.12.1':
     dependencies:
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
 
   '@internationalized/message@3.1.8':
     dependencies:
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       intl-messageformat: 10.7.7
 
   '@internationalized/number@3.6.5':
     dependencies:
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
 
   '@internationalized/string@3.2.7':
     dependencies:
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
 
   '@isaacs/balanced-match@4.0.1': {}
 
@@ -10254,9 +10257,9 @@ snapshots:
 
   '@koobiq/icons@11.4.0': {}
 
-  '@koobiq/internationalized-date-adapter@3.5.1(@internationalized/date@3.12.0)(@koobiq/date-adapter@3.5.1)':
+  '@koobiq/internationalized-date-adapter@3.5.1(@internationalized/date@3.12.1)(@koobiq/date-adapter@3.5.1)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@koobiq/date-adapter': 3.5.1
 
   '@koobiq/logger@0.28.0': {}
@@ -10277,7 +10280,7 @@ snapshots:
 
   '@koobiq/react-core@0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@koobiq/logger': 0.28.0
       '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10571,7 +10574,7 @@ snapshots:
 
   '@react-aria/calendar@3.9.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.27.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/live-announcer': 3.4.4
@@ -10653,7 +10656,7 @@ snapshots:
 
   '@react-aria/datepicker@3.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/number': 3.6.5
       '@internationalized/string': 3.2.7
       '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10707,7 +10710,7 @@ snapshots:
       '@react-stately/dnd': 3.7.4(react@19.2.3)
       '@react-types/button': 3.15.1(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
@@ -10745,7 +10748,7 @@ snapshots:
       '@react-types/checkbox': 3.10.4(react@19.2.3)
       '@react-types/grid': 3.3.8(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
@@ -10760,13 +10763,13 @@ snapshots:
       '@react-stately/list': 3.13.4(react@19.2.3)
       '@react-stately/tree': 3.9.6(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
   '@react-aria/i18n@3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/message': 3.1.8
       '@internationalized/number': 3.6.5
       '@internationalized/string': 3.2.7
@@ -10799,7 +10802,7 @@ snapshots:
     dependencies:
       '@react-aria/utils': 3.33.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
       use-sync-external-store: 1.6.0(react@19.2.3)
@@ -10830,7 +10833,7 @@ snapshots:
 
   '@react-aria/live-announcer@3.4.4':
     dependencies:
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
 
   '@react-aria/menu@3.21.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
@@ -10992,13 +10995,13 @@ snapshots:
       '@react-aria/utils': 3.33.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-types/button': 3.15.1(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
   '@react-aria/ssr@3.9.10(react@19.2.3)':
     dependencies:
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
 
   '@react-aria/switch@3.7.11(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
@@ -11159,7 +11162,7 @@ snapshots:
       '@react-aria/utils': 3.33.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/virtualizer': 4.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
@@ -11180,7 +11183,7 @@ snapshots:
 
   '@react-stately/calendar@3.9.3(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-stately/utils': 3.11.0(react@19.2.3)
       '@react-types/calendar': 3.8.3(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
@@ -11235,7 +11238,7 @@ snapshots:
 
   '@react-stately/datepicker@3.16.1(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/number': 3.6.5
       '@internationalized/string': 3.2.7
       '@react-stately/form': 3.2.4(react@19.2.3)
@@ -11276,7 +11279,7 @@ snapshots:
       '@react-stately/selection': 3.20.9(react@19.2.3)
       '@react-types/grid': 3.3.8(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
 
   '@react-stately/layout@4.6.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
@@ -11287,7 +11290,7 @@ snapshots:
       '@react-types/grid': 3.3.8(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
       '@react-types/table': 3.13.6(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
@@ -11356,7 +11359,7 @@ snapshots:
       '@react-stately/collections': 3.12.10(react@19.2.3)
       '@react-stately/utils': 3.11.0(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
 
   '@react-stately/slider@3.7.5(react@19.2.3)':
@@ -11426,7 +11429,7 @@ snapshots:
   '@react-stately/virtualizer@4.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
+      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
@@ -11450,7 +11453,7 @@ snapshots:
 
   '@react-types/calendar@3.8.3(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-types/shared': 3.33.1(react@19.2.3)
       react: 19.2.3
 
@@ -11472,7 +11475,7 @@ snapshots:
 
   '@react-types/datepicker@3.13.5(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-types/calendar': 3.8.3(react@19.2.3)
       '@react-types/overlays': 3.9.4(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
@@ -17351,7 +17354,7 @@ snapshots:
 
   react-aria-components@1.16.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/string': 3.2.7
       '@react-aria/autocomplete': 3.0.0-rc.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/collections': 3.0.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)

@@ -43,7 +43,6 @@ export type {
 
 export * from '@react-aria/i18n';
 export * from '@react-aria/focus';
-export * from '@internationalized/date';
 export * from '@react-stately/utils';
 export * from '@react-aria/interactions';
 export type { FormProps } from '@react-types/form';
