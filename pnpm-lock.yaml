@@ -502,14 +502,14 @@ importers:
         specifier: ^5.2.5
         version: 5.2.5
       '@koobiq/design-tokens':
-        specifier: ^3.15.2
+        specifier: ^3.17.2
         version: 3.17.2
       '@koobiq/react-components':
-        specifier: 0.28.0
-        version: 0.28.0(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.30.1
+        version: 0.30.1(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@koobiq/react-icons':
-        specifier: 0.28.0
-        version: 0.28.0(react@19.2.3)
+        specifier: 0.30.1
+        version: 0.30.1(react@19.2.3)
       next:
         specifier: ^15.5.15
         version: 15.5.15(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -548,11 +548,11 @@ importers:
   templates/vite/template:
     dependencies:
       '@koobiq/react-components':
-        specifier: 0.28.0
-        version: 0.28.0(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.30.1
+        version: 0.30.1(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@koobiq/react-core':
-        specifier: 0.28.0
-        version: 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.30.1
+        version: 0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -1982,29 +1982,29 @@ packages:
       '@internationalized/date': ^3.8.2
       '@koobiq/date-adapter': ^3.0.0
 
-  '@koobiq/logger@0.28.0':
-    resolution: {integrity: sha512-72n3jktRkMSMQ/1vIDSpdLRMIyJhrLZkCFtPxBn7H/In/cfeHQ6sY3jzvGsJSqIgnRe6HwkGUME4MIKX24LO1w==}
+  '@koobiq/logger@0.30.1':
+    resolution: {integrity: sha512-w/GffYna97pajQRuUQL/1nm1t6toW3GGOHH2XuP8P1/4h7hiCVrfvPOy58a2unPWEaxyFmkT+yGYqh7SI5FtVA==}
 
-  '@koobiq/react-components@0.28.0':
-    resolution: {integrity: sha512-4YGRPW2FvJ2tTIJ8sUHyV2nyhh014ecGi4zXMRcwfh7Lb8kzKK/GxDX0wVmfM+/9rexNHuL30BvOdMw5TFDCkA==}
+  '@koobiq/react-components@0.30.1':
+    resolution: {integrity: sha512-mfX/eh4yraIjByF3Jgh3KeHQExytzUj04ryi3yDTEr+GSTCI+DL5QHXAA/IuNuCGWOP72A1YULxB8iKwYYx/2g==}
     peerDependencies:
-      '@koobiq/design-tokens': ^3.15.2
+      '@koobiq/design-tokens': ^3.17.2
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@koobiq/react-core@0.28.0':
-    resolution: {integrity: sha512-tF2aZtCADbzmMih0tjylx6JZ30yyR9hJLyBPWzb64xL/ukvLiE/1j51dFmTw93s0pdn14YZwlNLdLrfaWiU+sw==}
+  '@koobiq/react-core@0.30.1':
+    resolution: {integrity: sha512-rInzsOuzMzIYUeQYeFF+tNayMeJqC7Yi8IeDf/xHo7663dIUdRjYF2B/k7KHy9qWKVt0lJAbwrDoRJD82W8gcQ==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@koobiq/react-icons@0.28.0':
-    resolution: {integrity: sha512-w9H2mYrsKWPQxm+cyEX3hOwZqOwvqQi7EfRcEsGVaqlSsNvsw4tuN+SIwchTSMzt6Fd0QI4pP4o3a5w2fJXdjw==}
+  '@koobiq/react-icons@0.30.1':
+    resolution: {integrity: sha512-0iGZcDNTnmBiPmORyD52rhtoA+DLuYfsdUuZ7/1V3GbTvGZ00OwO8AS1ejh0GPWMluyH+GREpn1dcyVx7hrD/Q==}
     peerDependencies:
       react: ^19.0.0
 
-  '@koobiq/react-primitives@0.28.0':
-    resolution: {integrity: sha512-R+xwF9N0C2/TElGqbZ5MOUHNdOTvbk6LHkSQ6yJ4aOMWO9sI23sqssHTun3CSR1PxiKcUxYzkY02LI01iRa0cQ==}
+  '@koobiq/react-primitives@0.30.1':
+    resolution: {integrity: sha512-OolcKtjsx7sjcAEw1NmmICsXzBB5onGVA5n+ocsBZlhgYmHqj6pWGNsHTKh6rGcLpme9FINR+vP7jGYjBsUVXA==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -2447,12 +2447,6 @@ packages:
 
   '@react-aria/toggle@3.12.5':
     resolution: {integrity: sha512-XXVFLzcV8fr9mz7y/wfxEAhWvaBZ9jSfhCMuxH2bsivO7nTcMJ1jb4g2xJNwZgne17bMWNc7mKvW5dbsdlI6BA==}
-    peerDependencies:
-      react: ^19.0.0
-      react-dom: ^19.0.0
-
-  '@react-aria/toolbar@3.0.0-beta.23':
-    resolution: {integrity: sha512-FzvNf2hWtjEwk8F2MBf4qSs6AAR/p2WFSws6kJ4f0SrWXl4wR9VDEwBEUQcIPbWCK2aUsyOjubCh55Cl4t3MoQ==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -10262,15 +10256,16 @@ snapshots:
       '@internationalized/date': 3.12.1
       '@koobiq/date-adapter': 3.5.1
 
-  '@koobiq/logger@0.28.0': {}
+  '@koobiq/logger@0.30.1': {}
 
-  '@koobiq/react-components@0.28.0(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-components@0.30.1(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
+      '@internationalized/date': 3.12.1
       '@koobiq/design-tokens': 3.17.2
-      '@koobiq/logger': 0.28.0
-      '@koobiq/react-core': 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@koobiq/react-icons': 0.28.0(react@19.2.3)
-      '@koobiq/react-primitives': 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/logger': 0.30.1
+      '@koobiq/react-core': 0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/react-icons': 0.30.1(react@19.2.3)
+      '@koobiq/react-primitives': 0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/react-transition-group': 4.4.12(@types/react@19.2.7)
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
@@ -10278,10 +10273,9 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@koobiq/react-core@0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-core@0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.1
-      '@koobiq/logger': 0.28.0
+      '@koobiq/logger': 0.30.1
       '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.27.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10292,14 +10286,14 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  '@koobiq/react-icons@0.28.0(react@19.2.3)':
+  '@koobiq/react-icons@0.30.1(react@19.2.3)':
     dependencies:
       react: 19.2.3
 
-  '@koobiq/react-primitives@0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-primitives@0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@koobiq/logger': 0.28.0
-      '@koobiq/react-core': 0.28.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/logger': 0.30.1
+      '@koobiq/react-core': 0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/autocomplete': 3.0.0-rc.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/breadcrumbs': 3.5.32(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/button': 3.14.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10329,7 +10323,7 @@ snapshots:
       '@react-aria/textfield': 3.18.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/toast': 3.0.11(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/toggle': 3.12.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/toolbar': 3.0.0-beta.23(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/toolbar': 3.0.0-beta.24(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/tooltip': 3.9.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/visually-hidden': 3.8.31(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/autocomplete': 3.0.0-beta.4(react@19.2.3)
@@ -11097,16 +11091,6 @@ snapshots:
       '@react-types/checkbox': 3.10.4(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
       '@swc/helpers': 0.5.19
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-
-  '@react-aria/toolbar@3.0.0-beta.23(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.33.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.21
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
