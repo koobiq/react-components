@@ -42,9 +42,6 @@
 }
 
 .horizontal {
-  --tabs-gap: 0;
-  --tabs-direction: row;
-
   .scrollBox {
     display: flex;
     inline-size: 100%;
