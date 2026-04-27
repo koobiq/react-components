@@ -1,27 +1,25 @@
 @import url('../../styles/mixins.css');
 
 .base {
+  --toggle-color: var(--kbq-foreground-contrast);
   --toggle-track-block-size: 16px;
   --toggle-track-inline-size: 28px;
-  --toggle-track-outline-color: transparent;
-  --toggle-track-border-radius: var(--kbq-size-s);
   --toggle-track-bg-color: var(--kbq-background-bg);
   --toggle-track-border-color: var(--kbq-line-contrast-less);
+  --toggle-track-border-radius: var(--toggle-track-block-size);
+  --toggle-track-outline-color: var(--kbq-background-transparent);
+  --toggle-thumb-margin: ;
   --toggle-thumb-size: 10px;
-  --toggle-thumb-border-color: transparent;
+  --toggle-thumb-border-color: var(--kbq-background-transparent);
   --toggle-thumb-bg-color: var(--kbq-icon-contrast);
-  --toggle-thumb-margin: calc(
-    (var(--toggle-track-block-size) - var(--toggle-thumb-size)) / 2
-  );
-  --toggle-color: var(--kbq-foreground-contrast);
 
-  color: var(--toggle-color);
   cursor: pointer;
+  position: relative;
   vertical-align: top;
   display: inline-flex;
   gap: var(--kbq-size-s);
   align-items: flex-start;
-  position: relative;
+  color: var(--toggle-color);
 }
 
 .track {
@@ -42,23 +40,30 @@
   /* thumb */
   &::before {
     content: '';
-    border-radius: 50%;
+    display: block;
+    position: absolute;
     box-sizing: border-box;
+    inset-block-start: 50%;
     margin: var(--toggle-thumb-margin);
     block-size: var(--toggle-thumb-size);
     inline-size: var(--toggle-thumb-size);
+    border-radius: var(--toggle-thumb-size);
     background: var(--toggle-thumb-bg-color);
-    border: 1px solid var(--toggle-thumb-border-color);
+    border: var(--kbq-size-border-width) solid var(--toggle-thumb-border-color);
+    transform: translate3d(
+      calc((var(--toggle-track-block-size) - var(--toggle-thumb-size)) / 2),
+      -50%,
+      0
+    );
     transition:
       transform var(--kbq-transition-default),
       background-color var(--kbq-transition-default);
-    display: block;
   }
 
   /* border */
   &::after {
-    content: '';
     inset: 0;
+    content: '';
     position: absolute;
     pointer-events: none;
     border-radius: inherit;
@@ -96,16 +101,18 @@
 }
 
 .selected {
-  --toggle-track-border-color: transparent;
+  --toggle-track-border-color: var(--kbq-background-transparent);
   --toggle-thumb-bg-color: var(--kbq-icon-white);
   --toggle-track-bg-color: var(--kbq-background-theme);
 
   .track::before {
-    transform: translate(
+    transform: translate3d(
       calc(
         var(--toggle-track-inline-size) - var(--toggle-thumb-size) -
-          var(--toggle-thumb-margin) * 2
-      )
+          calc((var(--toggle-track-block-size) - var(--toggle-thumb-size)) / 2)
+      ),
+      -50%,
+      0
     );
   }
 }
@@ -122,7 +129,7 @@
 
 .invalid:where(.selected) {
   --toggle-track-bg-color: var(--kbq-background-error);
-  --toggle-track-border-color: transparent;
+  --toggle-track-border-color: var(--kbq-background-transparent);
   --toggle-thumb-bg-color: var(--kbq-icon-white);
 }
 
@@ -134,12 +141,12 @@
 
 .invalid:where(.hovered.selected) {
   --toggle-track-bg-color: var(--kbq-states-background-error-hover);
-  --toggle-track-border-color: transparent;
+  --toggle-track-border-color: var(--kbq-background-transparent);
   --toggle-thumb-bg-color: var(--kbq-icon-white);
 }
 
 .focusVisible {
-  --toggle-track-border-color: transparent;
+  --toggle-track-border-color: var(--kbq-background-transparent);
   --toggle-track-outline-color: var(--kbq-states-line-focus-theme);
 }
 
@@ -165,5 +172,4 @@
 
 .disabled:where(.selected) {
   opacity: var(--kbq-opacity-disabled);
-  display: flex;
 }
