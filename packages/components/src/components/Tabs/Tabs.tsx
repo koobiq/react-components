@@ -16,13 +16,13 @@ import {
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
-import { Item } from '../Collections';
 
-import { TabPanel, Tab as TabItem, TabScrollButton } from './components';
+import { Tab as TabInner, TabPanel, TabScrollButton } from './components';
 import intlMessages from './intl.json';
+import type { TabProps as TabItemProps } from './Tab';
 import s from './Tabs.module.css';
 import type { TabsProps, TabsComponent, TabsRef } from './types';
-import { getIndicatorCssVars, getTabsMeta } from './utils';
+import { getIndicatorCssVars, getTabsMeta, hasIconOnlyTabPanel } from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
@@ -57,6 +57,11 @@ export function TabsRender<T extends object>(
   const isHorizontal = orientation === 'horizontal';
   const isStretched = isHorizontal && isStretchedProp;
   const selectedItemIdx = selectedItem?.index;
+  const selectedTabProps = selectedItem?.props as TabItemProps<T> | undefined;
+
+  const hasSelectedTabPanel =
+    Boolean(selectedItem?.hasChildNodes) ||
+    hasIconOnlyTabPanel(selectedTabProps);
 
   if (
     process.env.NODE_ENV !== 'production' &&
@@ -321,7 +326,7 @@ export function TabsRender<T extends object>(
         <div {...scrollBoxProps}>
           <div {...tabsListProps}>
             {[...state.collection].map((item, i) => (
-              <TabItem
+              <TabInner
                 item={item}
                 state={state}
                 key={item.key}
@@ -333,7 +338,7 @@ export function TabsRender<T extends object>(
           </div>
         </div>
       </div>
-      {selectedItem?.hasChildNodes && (
+      {hasSelectedTabPanel && (
         <TabPanel
           key={selectedItem?.key}
           {...slotProps?.tabPanel}
@@ -349,5 +354,3 @@ export function TabsRender<T extends object>(
  * between them.
  */
 export const Tabs = forwardRef(TabsRender) as TabsComponent;
-
-export const Tab = Item;

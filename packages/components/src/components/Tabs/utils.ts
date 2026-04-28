@@ -1,4 +1,5 @@
-import type { CSSProperties, RefObject } from 'react';
+import { Children } from 'react';
+import type { CSSProperties, ReactNode, RefObject } from 'react';
 
 export function getIndicatorCssVars(
   el: HTMLElement,
@@ -61,3 +62,11 @@ export const getTabsMeta = (
 
   return { tabsListMeta, activeTabMeta, scrollBoxMeta };
 };
+
+type IconOnlyTabPanelProps = {
+  children?: ReactNode;
+  onlyIcon?: boolean;
+};
+
+export const hasIconOnlyTabPanel = (props?: IconOnlyTabPanelProps): boolean =>
+  Boolean(props?.onlyIcon) && Children.count(props?.children) > 0;

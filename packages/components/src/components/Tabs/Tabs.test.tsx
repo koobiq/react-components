@@ -81,6 +81,60 @@ describe('Tabs', () => {
     expect(onSelectionChange).toBeCalledWith('2');
   });
 
+  it('should render the tab title separately from the panel content', () => {
+    render(
+      <Tabs aria-label="tabs">
+        <Tab key="overview" title="Overview">
+          Overview content
+        </Tab>
+      </Tabs>
+    );
+
+    expect(screen.getByRole('tab', { name: 'Overview' })).toBeInTheDocument();
+    expect(screen.getByText('Overview content')).toBeInTheDocument();
+  });
+
+  it('should render startAddon and endAddon', () => {
+    render(
+      <Tabs aria-label="tabs">
+        <Tab
+          key="overview"
+          startAddon={<span>start-addon</span>}
+          endAddon={<span>end-addon</span>}
+        >
+          Overview
+        </Tab>
+      </Tabs>
+    );
+
+    expect(screen.getByText('Overview')).toBeInTheDocument();
+    expect(screen.getByText('start-addon')).toBeInTheDocument();
+    expect(screen.getByText('end-addon')).toBeInTheDocument();
+  });
+
+  it('should render an icon-only tab with panel content', () => {
+    render(
+      <Tabs aria-label="tabs">
+        <Tab
+          key="indicator"
+          aria-label="Threat indicator"
+          onlyIcon
+          startAddon={<span>icon</span>}
+        >
+          Indicator panel content
+        </Tab>
+      </Tabs>
+    );
+
+    const tab = screen.getByRole('tab', { name: 'Threat indicator' });
+
+    expect(tab).toBeInTheDocument();
+    expect(tab).not.toHaveTextContent('Indicator panel content');
+
+    expect(screen.getByText('icon')).toBeInTheDocument();
+    expect(screen.getByText('Indicator panel content')).toBeInTheDocument();
+  });
+
   it('should fallback orientation to horizontal and warn when isUnderlined + vertical', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
