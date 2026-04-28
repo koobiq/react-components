@@ -132,14 +132,45 @@ export const WithIcons: Story = {
             requests to a victim, exhausting bandwidth, CPU, or connection
             limits and causing outages.
           </Tab>
+        </Tabs>
+
+        <Tabs
+          aria-label="Types of cyberattacks"
+          orientation={isVertical ? 'vertical' : 'horizontal'}
+          {...args}
+        >
           <Tab
-            key="indicator"
-            aria-label="Threat indicator"
+            key="brute-force"
+            aria-label="BruteForce"
             startAddon={<IconBug16 />}
             onlyIcon
           >
-            This compact tab uses an icon-only trigger while still exposing a
-            full panel with additional context and guidance.
+            A brute-force attack systematically guesses passwords or
+            cryptographic keys, often using automated tools to try vast
+            combinations until access is gained. It doesn’t rely on clever
+            tricks—just exhaustive search.
+          </Tab>
+          <Tab
+            key="complex-attack"
+            aria-label="Complex Attack"
+            startAddon={<IconBug16 />}
+            onlyIcon
+          >
+            A denial-of-service attack floods a server or exploits
+            resource-heavy operations to exhaust CPU, memory, bandwidth, or
+            connection limits, causing slowdowns or outages without breaching
+            the system.
+          </Tab>
+          <Tab
+            key="ddos"
+            aria-label="DDoS"
+            endAddon={<IconCircleInfo16 />}
+            onlyIcon
+          >
+            Distributed Denial of Service (DDoS) uses a botnet of infected
+            devices to send massive, coordinated traffic or resource-intensive
+            requests to a victim, exhausting bandwidth, CPU, or connection
+            limits and causing outages.
           </Tab>
         </Tabs>
       </FlexBox>
@@ -445,13 +476,8 @@ export const Underlined: Story = {
 export const Stretched: Story = {
   render: function Render(args) {
     return (
-      <Tabs
-        aria-label="Types of cyberattacks"
-        isUnderlined
-        isStretched
-        {...args}
-      >
-        <Tab key="brute-force" title="BruteForce">
+      <Tabs aria-label="Types of cyberattacks" isStretched {...args}>
+        <Tab key="brute-force" title="BruteForce" startAddon={<IconBug16 />}>
           A brute-force attack systematically guesses passwords or cryptographic
           keys, often using automated tools to try vast combinations until
           access is gained. It doesn’t rely on clever tricks—just exhaustive
@@ -557,7 +583,6 @@ export const VerticalScrolling: Story = {
         aria-label="Threat intelligence"
         slotProps={{
           tabs: { style: { inlineSize: '30%' } },
-          tabPanel: { style: { paddingBlock: 0 } },
         }}
       >
         {({ key, title }) => (

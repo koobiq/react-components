@@ -30,12 +30,12 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
     slotProps,
     startAddon,
     endAddon,
-    onlyIcon = false,
+    onlyIcon: onlyIconProp = false,
     'data-testid': dataTestId,
   } = item.props as TabItemProps<T>;
 
-  const iconOnly =
-    Boolean(onlyIcon) && (isNotNil(startAddon) || isNotNil(endAddon));
+  const onlyIcon =
+    Boolean(onlyIconProp) && (isNotNil(startAddon) || isNotNil(endAddon));
 
   const { hoverProps, isHovered } = useHover({
     isDisabled: isDisabled || isSelected,
@@ -69,14 +69,14 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
       data-hovered={isHovered || undefined}
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
-      data-onlyicon={iconOnly || undefined}
+      data-onlyicon={onlyIcon || undefined}
       data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(hoverProps, focusProps, tabProps, { onFocus: onFocused })}
       ref={domRef as any}
     >
       <div {...contentProps}>
         {isNotNil(startAddon) && <div {...startAddonProps}>{startAddon}</div>}
-        {!iconOnly && isNotNil(rendered) && (
+        {!onlyIcon && isNotNil(rendered) && (
           <div {...labelProps}>{rendered}</div>
         )}
         {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}

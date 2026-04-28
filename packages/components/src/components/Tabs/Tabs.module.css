@@ -145,6 +145,7 @@
   inline-size: 100%;
   white-space: nowrap;
   box-sizing: border-box;
+  min-block-size: 32px;
   padding-inline: var(--kbq-size-m);
   padding-block: var(--kbq-size-xs);
   color: var(--kbq-foreground-contrast);
