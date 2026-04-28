@@ -2,11 +2,12 @@
 
 import type { ElementType, Ref } from 'react';
 
-import { type Node, useFocusRing } from '@koobiq/react-core';
+import { type Node, isNotNil, useFocusRing } from '@koobiq/react-core';
 import { useHover, mergeProps, clsx, useDOMRef } from '@koobiq/react-core';
 import type { TabListState } from '@koobiq/react-primitives';
 import { useTab } from '@koobiq/react-primitives';
 
+import type { TabProps as TabItemProps } from '../../Tab';
 import s from '../../Tabs.module.css';
 
 export type TabProps<T> = {
@@ -22,13 +23,35 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
   const domRef = useDOMRef<HTMLElement>(innerRef);
   const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
 
-  const { href, className, style, 'data-testid': dataTestId } = item.props;
+  const {
+    href,
+    className,
+    style,
+    slotProps,
+    startAddon,
+    endAddon,
+    onlyIcon = false,
+    'data-testid': dataTestId,
+  } = item.props as TabItemProps<T>;
+
+  const iconOnly =
+    Boolean(onlyIcon) && (isNotNil(startAddon) || isNotNil(endAddon));
 
   const { hoverProps, isHovered } = useHover({
     isDisabled: isDisabled || isSelected,
   });
 
   const { isFocusVisible, focusProps } = useFocusRing();
+
+  const contentProps = mergeProps({ className: s.content }, slotProps?.content);
+  const labelProps = mergeProps({ className: s.label }, slotProps?.label);
+
+  const startAddonProps = mergeProps(
+    { className: s.addon },
+    slotProps?.startAddon
+  );
+
+  const endAddonProps = mergeProps({ className: s.addon }, slotProps?.endAddon);
 
   const Tag: ElementType = href ? 'a' : 'div';
 
@@ -46,11 +69,18 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
       data-hovered={isHovered || undefined}
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
+      data-onlyicon={iconOnly || undefined}
       data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(hoverProps, focusProps, tabProps, { onFocus: onFocused })}
       ref={domRef as any}
     >
-      <div className={s.content}>{rendered}</div>
+      <div {...contentProps}>
+        {isNotNil(startAddon) && <div {...startAddonProps}>{startAddon}</div>}
+        {!iconOnly && isNotNil(rendered) && (
+          <div {...labelProps}>{rendered}</div>
+        )}
+        {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}
+      </div>
     </Tag>
   );
 }

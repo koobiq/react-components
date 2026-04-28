@@ -55,7 +55,7 @@
   }
 
   .tab .content {
-    text-align: center;
+    justify-content: center;
   }
 }
 
@@ -78,7 +78,7 @@
     inline-size: 100%;
 
     .content {
-      text-align: start;
+      justify-content: flex-start;
     }
   }
 }
@@ -138,11 +138,13 @@
 }
 
 .content {
+  display: flex;
+  gap: var(--kbq-size-xxs);
+  align-items: center;
   overflow: hidden;
   inline-size: 100%;
   white-space: nowrap;
   box-sizing: border-box;
-  text-overflow: ellipsis;
   padding-inline: var(--kbq-size-m);
   padding-block: var(--kbq-size-xs);
   color: var(--kbq-foreground-contrast);
@@ -154,4 +156,18 @@
     outline-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),
     color var(--kbq-transition-default);
+}
+
+.addon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  min-inline-size: 0;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -5,6 +5,7 @@ import {
   IconApple24,
   IconBsd24,
   IconBug16,
+  IconCircleInfo16,
   IconUbuntu24,
   IconWindows24,
 } from '@koobiq/react-icons';
@@ -96,50 +97,52 @@ export const Dynamic: Story = {
 
 export const WithIcons: Story = {
   render: function Render(args) {
+    const [isVertical, { set }] = useBoolean(false);
+
     return (
-      <Tabs aria-label="Types of cyberattacks" {...args}>
-        <Tab
-          key="brute-force"
-          title={
-            <FlexBox alignItems="center" gap="m">
-              <IconBug16 />
-              <span>BruteForce</span>
-            </FlexBox>
-          }
+      <FlexBox direction="column" gap="l">
+        <Toggle isSelected={isVertical} onChange={set}>
+          Vertical
+        </Toggle>
+        <Tabs
+          aria-label="Types of cyberattacks"
+          orientation={isVertical ? 'vertical' : 'horizontal'}
+          {...args}
         >
-          A brute-force attack systematically guesses passwords or cryptographic
-          keys, often using automated tools to try vast combinations until
-          access is gained. It doesn’t rely on clever tricks—just exhaustive
-          search.
-        </Tab>
-        <Tab
-          key="complex-attack"
-          title={
-            <FlexBox alignItems="center" gap="m">
-              <IconBug16 />
-              <span>Complex Attack</span>
-            </FlexBox>
-          }
-        >
-          A denial-of-service attack floods a server or exploits resource-heavy
-          operations to exhaust CPU, memory, bandwidth, or connection limits,
-          causing slowdowns or outages without breaching the system.
-        </Tab>
-        <Tab
-          key="ddos"
-          title={
-            <FlexBox alignItems="center" gap="m">
-              <IconBug16 />
-              <span>DDoS</span>
-            </FlexBox>
-          }
-        >
-          Distributed Denial of Service (DDoS) uses a botnet of infected devices
-          to send massive, coordinated traffic or resource-intensive requests to
-          a victim, exhausting bandwidth, CPU, or connection limits and causing
-          outages.
-        </Tab>
-      </Tabs>
+          <Tab key="brute-force" title="BruteForce" startAddon={<IconBug16 />}>
+            A brute-force attack systematically guesses passwords or
+            cryptographic keys, often using automated tools to try vast
+            combinations until access is gained. It doesn’t rely on clever
+            tricks—just exhaustive search.
+          </Tab>
+          <Tab
+            key="complex-attack"
+            title="Complex Attack"
+            startAddon={<IconBug16 />}
+            endAddon={<IconCircleInfo16 />}
+          >
+            A denial-of-service attack floods a server or exploits
+            resource-heavy operations to exhaust CPU, memory, bandwidth, or
+            connection limits, causing slowdowns or outages without breaching
+            the system.
+          </Tab>
+          <Tab key="ddos" title="DDoS" endAddon={<IconCircleInfo16 />}>
+            Distributed Denial of Service (DDoS) uses a botnet of infected
+            devices to send massive, coordinated traffic or resource-intensive
+            requests to a victim, exhausting bandwidth, CPU, or connection
+            limits and causing outages.
+          </Tab>
+          <Tab
+            key="indicator"
+            aria-label="Threat indicator"
+            startAddon={<IconBug16 />}
+            onlyIcon
+          >
+            This compact tab uses an icon-only trigger while still exposing a
+            full panel with additional context and guidance.
+          </Tab>
+        </Tabs>
+      </FlexBox>
     );
   },
 };
@@ -148,54 +151,42 @@ export const CustomTabTitle: Story = {
   render: function Render(args) {
     return (
       <Tabs aria-label="Operation systems" {...args}>
-        <Tab
-          key="mac-os"
-          title={
-            <FlexBox direction="column" alignItems="center">
-              <IconApple24 className={spacing({ mb: 'xxs' })} />
-              <Typography variant="text-normal-medium">macOS</Typography>
-              <Typography variant="text-compact" color="contrast-secondary">
-                14.5+
-              </Typography>
-            </FlexBox>
-          }
-        />
-        <Tab
-          key="windows"
-          title={
-            <FlexBox direction="column" alignItems="center">
-              <IconWindows24 className={spacing({ mb: 'xxs' })} />
-              <Typography variant="text-normal-medium">Windows</Typography>
-              <Typography variant="text-compact" color="contrast-secondary">
-                XP+
-              </Typography>
-            </FlexBox>
-          }
-        />
-        <Tab
-          key="linux"
-          title={
-            <FlexBox direction="column" alignItems="center">
-              <IconUbuntu24 className={spacing({ mb: 'xxs' })} />
-              <Typography variant="text-normal-medium">Linux</Typography>
-              <Typography variant="text-compact" color="contrast-secondary">
-                Ubuntu 10+
-              </Typography>
-            </FlexBox>
-          }
-        />
-        <Tab
-          key="free-bsd"
-          title={
-            <FlexBox direction="column" alignItems="center">
-              <IconBsd24 className={spacing({ mb: 'xxs' })} />
-              <Typography variant="text-normal-medium">FreeBSD</Typography>
-              <Typography variant="text-compact" color="contrast-secondary">
-                14.1+
-              </Typography>
-            </FlexBox>
-          }
-        />
+        <Tab key="mac-os">
+          <FlexBox direction="column" alignItems="center">
+            <IconApple24 className={spacing({ mb: 'xxs' })} />
+            <Typography variant="text-normal-medium">macOS</Typography>
+            <Typography variant="text-compact" color="contrast-secondary">
+              14.5+
+            </Typography>
+          </FlexBox>
+        </Tab>
+        <Tab key="windows">
+          <FlexBox direction="column" alignItems="center">
+            <IconWindows24 className={spacing({ mb: 'xxs' })} />
+            <Typography variant="text-normal-medium">Windows</Typography>
+            <Typography variant="text-compact" color="contrast-secondary">
+              XP+
+            </Typography>
+          </FlexBox>
+        </Tab>
+        <Tab key="linux">
+          <FlexBox direction="column" alignItems="center">
+            <IconUbuntu24 className={spacing({ mb: 'xxs' })} />
+            <Typography variant="text-normal-medium">Linux</Typography>
+            <Typography variant="text-compact" color="contrast-secondary">
+              Ubuntu 10+
+            </Typography>
+          </FlexBox>
+        </Tab>
+        <Tab key="free-bsd">
+          <FlexBox direction="column" alignItems="center">
+            <IconBsd24 className={spacing({ mb: 'xxs' })} />
+            <Typography variant="text-normal-medium">FreeBSD</Typography>
+            <Typography variant="text-compact" color="contrast-secondary">
+              14.1+
+            </Typography>
+          </FlexBox>
+        </Tab>
       </Tabs>
     );
   },
