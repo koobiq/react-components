@@ -29,6 +29,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  tags: ['status:updated', 'date:2026-04-30'],
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
