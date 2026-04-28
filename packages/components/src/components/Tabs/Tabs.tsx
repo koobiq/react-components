@@ -13,14 +13,12 @@ import {
   useResizeObserverRefs,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { IconChevronLeft16, IconChevronRight16 } from '@koobiq/react-icons';
 import { useTabList, useTabListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 import { Item } from '../Collections';
-import { IconButton } from '../IconButton';
 
-import { TabPanel, Tab as TabItem } from './components';
+import { TabPanel, Tab as TabItem, TabScrollButton } from './components';
 import intlMessages from './intl.json';
 import s from './Tabs.module.css';
 import type { TabsProps, TabsComponent, TabsRef } from './types';
@@ -36,7 +34,7 @@ export function TabsRender<T extends object>(
     orientation: orientationProp = 'horizontal',
     'data-testid': dataTestId,
     isUnderlined = false,
-    isStretched = false,
+    isStretched: isStretchedProp = false,
     style,
     className,
     slotProps,
@@ -57,6 +55,7 @@ export function TabsRender<T extends object>(
 
   const orientation = isUnderlined ? 'horizontal' : orientationProp;
   const isHorizontal = orientation === 'horizontal';
+  const isStretched = isHorizontal && isStretchedProp;
   const selectedItemIdx = selectedItem?.index;
 
   if (
@@ -255,20 +254,12 @@ export function TabsRender<T extends object>(
     }
   }, [selectedItemIdx, isMounted]);
 
-  /** PROPS */
-  const tabsProps = mergeProps(
-    { className: clsx(s.base, isUnderlined && s.underlined) },
-    slotProps?.tabs
-  );
+  const tabsProps = mergeProps({ className: s.base }, slotProps?.tabs);
 
   const tabsListProps = mergeProps(
     tabListProps,
     {
-      className: clsx(
-        s.tabList,
-        textNormalMedium,
-        isUnderlined && s.underlined
-      ),
+      className: clsx(s.tabList, textNormalMedium),
       ref: tabListRef,
     },
     slotProps?.tabList
@@ -285,11 +276,8 @@ export function TabsRender<T extends object>(
 
   const indicatorProps = mergeProps(
     {
-      className: clsx(
-        s.indicator,
-        isUnderlined ? s.underlinedIndicator : s.defaultIndicator
-      ),
       style: indicatorStyle,
+      className: s.indicator,
     },
     slotProps?.indicator
   );
@@ -300,12 +288,13 @@ export function TabsRender<T extends object>(
       style={style}
       data-testid={dataTestId}
       data-orientation={orientation}
-      data-horizontal-scrollable={hasHScroll || undefined}
-      data-vertical-scrollable={hasVScroll || undefined}
       data-stretched={isStretched || undefined}
       data-underlined={isUnderlined || undefined}
+      data-vertical-scrollable={hasVScroll || undefined}
+      data-horizontal-scrollable={hasHScroll || undefined}
       className={clsx(
-        s.root,
+        s.container,
+        !isUnderlined && s.default,
         isStretched && s.stretched,
         isUnderlined && s.underlined,
         orientation && s[orientation],
@@ -315,37 +304,18 @@ export function TabsRender<T extends object>(
       <div {...tabsProps}>
         {hasHScroll && (
           <>
-            <IconButton
-              key="prev"
-              tabIndex={-1}
-              type="button"
-              aria-label={t.format('prev')}
-              ref={scrollButtonRef}
+            <TabScrollButton
               onPress={scrollPrev}
-              variant="theme-contrast"
-              className={clsx(
-                s.button,
-                s.prev,
-                !scrollButtonsVisibility.prev && s.invisible
-              )}
-            >
-              <IconChevronLeft16 />
-            </IconButton>
-            <IconButton
-              key="next"
-              type="button"
-              tabIndex={-1}
-              aria-label={t.format('next')}
+              ref={scrollButtonRef}
+              aria-label={t.format('prev')}
+              isInvisible={!scrollButtonsVisibility.prev}
+            />
+            <TabScrollButton
+              dir="next"
               onPress={scrollNext}
-              variant="theme-contrast"
-              className={clsx(
-                s.button,
-                s.next,
-                !scrollButtonsVisibility.next && s.invisible
-              )}
-            >
-              <IconChevronRight16 />
-            </IconButton>
+              aria-label={t.format('next')}
+              isInvisible={!scrollButtonsVisibility.next}
+            />
           </>
         )}
         <div {...scrollBoxProps}>

@@ -1,47 +1,92 @@
-/* root */
-.root {
-  --tabs-gap: ;
-  --tabs-direction: ;
-  --tabs-scrollbar-width: ;
-  --tab-width: ;
-  --tab-bg-color: ;
-  --tab-min-width: 40px;
-  --tab-height: var(--kbq-size-3xl);
-  --tab-outline-color: transparent;
-  --tab-outline-width: var(--kbq-size-3xs);
-  --tab-color: var(--kbq-foreground-contrast);
-  --tab-border-radius: var(--kbq-size-s);
-  --tab-padding-inline: var(--kbq-size-m);
-  --tab-padding-block: var(--kbq-size-xs);
+.base {
+  display: flex;
+  position: relative;
+}
+
+/* container */
+.default {
+  .indicator {
+    inset-block-start: 0;
+    border-radius: var(--kbq-size-border-radius);
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  .tab {
+    min-inline-size: 40px;
+  }
 }
 
 .underlined {
-  --tab-min-width: 44px;
-}
+  .base::after {
+    content: '';
+    inset-inline: 0;
+    inset-block-end: 0;
+    position: absolute;
+    block-size: var(--kbq-size-border-width);
+    background: var(--kbq-line-contrast-less);
+    z-index: calc(var(--kbq-layer-absolute) + 1);
+  }
 
-.stretched:not(.vertical) {
-  --tab-width: 100%;
+  .indicator {
+    block-size: 3px;
+    inset-block-end: 0;
+    inset-block-start: unset;
+    border-radius: 2px 2px 0 0;
+    background-color: var(--kbq-line-contrast);
+  }
+
+  .tab {
+    padding-block: var(--kbq-size-s);
+    min-inline-size: 44px;
+  }
 }
 
 .horizontal {
-  --tab-justify-content: center;
-  --tabs-scrollbar-width: none;
-  --tabs-scrollbar-display: flex;
-  --tabs-scrollbar-overflow-x: auto;
-  --tabs-scrollbar-inline-size: 100%;
-  --tabs-scrollbar-overflow-y: hidden;
+  .scrollBox {
+    display: flex;
+    inline-size: 100%;
+    scrollbar-width: none;
+    overflow: auto hidden;
+  }
+
+  .tabList {
+    gap: 0;
+    flex-direction: row;
+  }
+
+  .tab .content {
+    text-align: center;
+  }
 }
 
-.vertical:not(.underlined) {
-  --tab-justify-content: start;
-  --tabs-direction: column;
-  --tabs-gap: var(--kbq-size-s);
-  --tabs-scrollbar-inline-size: ;
-  --tabs-scrollbar-overflow-y: auto;
-  --tabs-scrollbar-overflow-x: hidden;
-  --tabs-scrollbar-display: inline-block;
-
+.vertical {
   display: flex;
+
+  .scrollBox {
+    display: inline-block;
+    inline-size: auto;
+    scrollbar-width: auto;
+    overflow: hidden auto;
+  }
+
+  .tabList {
+    gap: var(--kbq-size-s);
+    flex-direction: column;
+  }
+
+  .tab {
+    inline-size: 100%;
+
+    .content {
+      text-align: start;
+    }
+  }
+}
+
+.stretched {
+  .tab {
+    inline-size: 100%;
+  }
 }
 
 /* tab-list */
@@ -49,174 +94,64 @@
   flex-grow: 1;
   display: flex;
   position: relative;
-  gap: var(--tabs-gap);
-  flex-direction: var(--tabs-direction);
-
-  &.underlined {
-    padding-block: var(--kbq-size-s);
-  }
-}
-
-.base {
-  display: flex;
-  position: relative;
-
-  &.underlined::after {
-    content: '';
-    block-size: 1px;
-    inset-inline: 0;
-    inset-block-end: 0;
-    position: absolute;
-    background: var(--kbq-line-contrast-less);
-    z-index: calc(var(--kbq-layer-absolute) + 2);
-  }
-}
-
-/* scrollBox */
-.scrollBox {
-  position: relative;
-  display: var(--tabs-scrollbar-display);
-  overflow: var(--tabs-scrollbar-overflow-x) var(--tabs-scrollbar-overflow-y);
-  scrollbar-width: var(--tabs-scrollbar-width);
-  inline-size: var(--tabs-scrollbar-inline-size);
 }
 
 /* indicator */
 .indicator {
-  --indicator-inline-size: ;
-  --indicator-block-size: ;
-  --indicator-transform: ;
+  --tabs-indicator-inline-size: ;
+  --tabs-indicator-block-size: ;
+  --tabs-indicator-transform: ;
 
-  transform: var(--indicator-transform);
-  inline-size: var(--indicator-inline-size);
-  block-size: var(--indicator-block-size);
   position: absolute;
-  will-change: transform, width, height;
+  z-index: var(--kbq-layer-absolute);
+  transform: var(--tabs-indicator-transform);
+  block-size: var(--tabs-indicator-block-size);
+  inline-size: var(--tabs-indicator-inline-size);
+  will-change: transform, inline-size, block-size;
   transition:
     inline-size 200ms ease-in,
     block-size 200ms ease-in,
     transform 200ms ease-in;
 }
 
-.defaultIndicator {
-  inset-block-start: 0;
-  border-radius: var(--tab-border-radius);
-  background-color: var(--kbq-states-background-transparent-active);
-}
-
-.underlinedIndicator {
-  inset-block-end: 0;
-  block-size: 3px;
-  display: block;
-  border-radius: 2px 2px 0 0;
-  background: var(--kbq-line-contrast);
-}
-
-/* tab-panel */
-.tabPanel {
-  padding: var(--kbq-size-m);
-  outline: none;
-}
-
 /* tab */
 .tab {
   display: flex;
+  outline: none;
   cursor: pointer;
-  text-align: center;
-  align-items: center;
-  white-space: nowrap;
+  align-items: stretch;
   text-decoration: none;
   box-sizing: border-box;
-  color: var(--tab-color);
-  inline-size: var(--tab-width);
-  min-block-size: var(--kbq-size-3xl);
-  background-color: var(--tab-bg-color);
-  border-radius: var(--tab-border-radius);
-  padding-block: var(--tab-padding-block);
-  padding-inline: var(--tab-padding-inline);
-  justify-content: var(--tab-justify-content);
-  outline-offset: calc(-1 * var(--tab-outline-width));
-  outline: var(--tab-outline-width) solid var(--tab-outline-color);
+}
+
+.hovered .content {
+  background-color: var(--kbq-states-background-transparent-hover);
+}
+
+.focusVisible .content {
+  outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.disabled .content {
+  color: var(--kbq-states-foreground-disabled);
+  cursor: not-allowed;
+}
+
+.content {
+  overflow: hidden;
+  inline-size: 100%;
+  white-space: nowrap;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  padding-inline: var(--kbq-size-m);
+  padding-block: var(--kbq-size-xs);
+  color: var(--kbq-foreground-contrast);
+  border-radius: var(--kbq-size-border-radius);
+  outline-offset: calc(-1 * var(--kbq-size-3xs));
+  outline: var(--kbq-size-3xs) solid;
+  outline-color: transparent;
   transition:
     outline-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),
     color var(--kbq-transition-default);
-
-  &:hover:not(.selected, .disabled) {
-    --tab-bg-color: var(--kbq-states-background-transparent-hover);
-  }
-
-  &:focus-visible {
-    --tab-outline-color: var(--kbq-states-line-focus-theme);
-  }
-}
-
-.disabled {
-  --tab-color: var(--kbq-states-foreground-disabled);
-
-  cursor: not-allowed;
-}
-
-.tabContent {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  min-inline-size: calc(var(--tab-min-width) - 2 * var(--tab-padding-inline));
-}
-
-/* buttons */
-.button {
-  opacity: 1;
-  flex-shrink: 0;
-  position: absolute;
-  inline-size: var(--tab-height);
-  block-size: 100%;
-  z-index: calc(var(--kbq-layer-absolute) + 1);
-}
-
-.prev {
-  inset-inline-start: 0;
-
-  &::after {
-    content: '';
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    inline-size: 56px;
-    z-index: -1;
-    position: absolute;
-    block-size: 100%;
-    pointer-events: none;
-    background: linear-gradient(
-      to right,
-      var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) 32px,
-      var(--kbq-background-transparent) 100%
-    );
-  }
-}
-
-.next {
-  inset-inline-end: 0;
-
-  &::after {
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    z-index: -1;
-    inline-size: 56px;
-    content: '';
-    position: absolute;
-    block-size: 100%;
-    pointer-events: none;
-    background: linear-gradient(
-      to left,
-      var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) 32px,
-      var(--kbq-background-transparent) 100%
-    );
-  }
-}
-
-.invisible {
-  visibility: hidden;
-  opacity: 0;
 }

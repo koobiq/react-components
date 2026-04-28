@@ -7,7 +7,8 @@ import type { AriaTabPanelProps, TabListState } from '@koobiq/react-primitives';
 import { useTabPanel } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
-import s from '../../Tabs.module.css';
+
+import s from './TabPanel.module.css';
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -31,7 +32,7 @@ export function TabPanel<T>({
     <div
       {...tabPanelProps}
       style={style}
-      className={clsx(s.tabPanel, textNormal, className)}
+      className={clsx(s.base, textNormal, className)}
       ref={ref}
     >
       {state.selectedItem?.props.children}
