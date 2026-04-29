@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   IconKey16,
   IconBug16,

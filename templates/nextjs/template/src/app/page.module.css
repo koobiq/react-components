@@ -1,16 +1,24 @@
+.header {
+  inline-size: 100vw;
+  block-size: 64px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: var(--kbq-size-l);
+}
+
 .content {
   flex: 1 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
   gap: var(--kbq-size-3xl);
 }
 
 .definition {
-  width: 80%;
   text-align: center;
-  max-width: 480px;
+  inline-size: min(80%, 480px);
 }
 
 .footer {
@@ -19,7 +27,7 @@
   justify-content: center;
   gap: var(--kbq-size-m);
   position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 64px;
+  inset-block-end: 0;
+  inline-size: 100%;
+  block-size: 64px;
 }

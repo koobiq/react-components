@@ -47,9 +47,6 @@ export const css: UserConfig['css'] = {
           minify: false,
           targets: browserslistToTargets(browserslist(browsers)),
         },
-        drafts: {
-          nesting: true,
-        },
       }),
     ],
   },
