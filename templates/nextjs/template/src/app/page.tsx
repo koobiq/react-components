@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import {
   Link,
@@ -16,11 +15,14 @@ import { IconCircleChevronRight16 } from '@koobiq/react-icons';
 import logo from '../../public/koobiq.svg';
 
 import s from './page.module.css';
-import { AnimatedBackground } from '@/app/components';
+import { AnimatedBackground, ThemeSwitch } from '@/app/components';
 
 export default function Home() {
   return (
     <Provider>
+      <header className={s.header}>
+        <ThemeSwitch className={spacing({ mis: 'auto' })} />
+      </header>
       <AnimatedBackground />
       <div className={s.content}>
         <FlexBox gap="m" alignItems="center">

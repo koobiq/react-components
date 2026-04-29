@@ -2,31 +2,41 @@
   "name": "next-app",
   "version": "0.30.1",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "next experimental-analyze",
     "start": "next start",
-    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
     "format": "prettier --write \"{,!(.next)/**/}*.{ts, tsx}\""
   },
   "dependencies": {
-    "@fontsource/inter": "^5.2.5",
-    "@fontsource/jetbrains-mono": "^5.2.5",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "@koobiq/design-tokens": "^3.17.2",
     "@koobiq/react-components": "0.30.1",
     "@koobiq/react-icons": "0.30.1",
-    "next": "^15.5.15",
+    "next": "^16.2.4",
     "next-themes": "^0.4.6",
-    "prettier": "^3.8.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19.2.7",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "eslint": "^8",
-    "eslint-config-next": "15.5.12",
-    "typescript": "^5"
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.4",
+    "jsdom": "^25.0.1",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3",
+    "vitest": "^3.2.4"
   }
 }
