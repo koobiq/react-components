@@ -1,21 +1,5 @@
 import { Children } from 'react';
-import type { CSSProperties, ReactNode, RefObject } from 'react';
-
-export function getIndicatorCssVars(
-  el: HTMLElement,
-  orientation: 'horizontal' | 'vertical' = 'horizontal'
-): CSSProperties {
-  const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = el;
-
-  return {
-    '--tabs-indicator-inline-size': `${offsetWidth}px`,
-    '--tabs-indicator-block-size': `${offsetHeight}px`,
-    '--tabs-indicator-transform':
-      orientation === 'horizontal'
-        ? `translateX(${offsetLeft}px)`
-        : `translateY(${offsetTop}px)`,
-  } as CSSProperties;
-}
+import type { ReactNode, RefObject } from 'react';
 
 export type TabsMeta = {
   tabsListMeta: null | DOMRect;

@@ -1,18 +1,27 @@
+@import url('../../styles/mixins.css');
+
 .base {
   display: flex;
   position: relative;
 }
 
 /* container */
-.default {
-  .indicator {
-    inset-block-start: 0;
-    border-radius: var(--kbq-size-border-radius);
-    background-color: var(--kbq-states-background-transparent-active);
-  }
+.container {
+  display: flex;
+  gap: var(--kbq-size-m);
+}
 
+.default {
   .tab {
     min-inline-size: 40px;
+
+    &.selected .content {
+      background-color: var(--kbq-states-background-transparent-active);
+    }
+
+    &.hovered .content {
+      background-color: var(--kbq-states-background-transparent-hover);
+    }
   }
 }
 
@@ -24,24 +33,67 @@
     position: absolute;
     block-size: var(--kbq-size-border-width);
     background: var(--kbq-line-contrast-less);
-    z-index: calc(var(--kbq-layer-absolute) + 1);
-  }
-
-  .indicator {
-    block-size: 3px;
-    inset-block-end: 0;
-    inset-block-start: unset;
-    border-radius: 2px 2px 0 0;
-    background-color: var(--kbq-line-contrast);
+    z-index: var(--kbq-layer-absolute);
   }
 
   .tab {
+    --tab-content-offset: var(--kbq-size-m);
+
+    min-inline-size: 40px;
+    box-sizing: content-box;
     padding-block: var(--kbq-size-s);
-    min-inline-size: 44px;
+    border-inline: var(--tab-content-offset) solid transparent;
+
+    .content {
+      padding-inline: var(--tab-content-offset);
+      margin-inline: calc(-1 * var(--tab-content-offset));
+      inline-size: calc(100% + calc(2 * var(--tab-content-offset)));
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inline-size: 100%;
+      block-size: 3px;
+      inset-block-end: 0;
+      inset-block-start: unset;
+      border-radius: 2px 2px 0 0;
+      background-color: transparent;
+      z-index: calc(var(--kbq-layer-absolute) + 1);
+    }
+  }
+
+  .tab.onlyIcon {
+    --tab-content-offset: 0px;
+
+    min-inline-size: 32px;
+    border-inline: var(--kbq-size-xs) solid transparent;
+  }
+
+  .tab:first-child {
+    border-inline-start: 0;
+  }
+
+  .tab:last-child {
+    border-inline-end: 0;
+  }
+
+  .tab.selected {
+    &::after {
+      background-color: var(--kbq-line-contrast);
+    }
+  }
+
+  .tab.hovered {
+    &::after {
+      background-color: var(--kbq-line-contrast-fade);
+    }
   }
 }
 
 .horizontal {
+  flex-direction: column;
+
   .scrollBox {
     display: flex;
     inline-size: 100%;
@@ -50,7 +102,6 @@
   }
 
   .tabList {
-    gap: 0;
     flex-direction: row;
   }
 
@@ -60,8 +111,6 @@
 }
 
 .vertical {
-  display: flex;
-
   .scrollBox {
     display: inline-block;
     inline-size: auto;
@@ -70,22 +119,46 @@
   }
 
   .tabList {
-    gap: var(--kbq-size-s);
     flex-direction: column;
   }
 
   .tab {
     inline-size: 100%;
+    padding-block: var(--kbq-size-xxs);
 
     .content {
       justify-content: flex-start;
     }
   }
+
+  .tab:first-child {
+    padding-block-start: 0;
+  }
+
+  .tab:last-child {
+    padding-block-end: 0;
+  }
+
+  .label {
+    min-inline-size: 0;
+
+    @mixin ellipsis;
+  }
 }
 
 .stretched {
+  .scrollBox {
+    overflow: hidden;
+  }
+
   .tab {
     inline-size: 100%;
+  }
+
+  .label {
+    min-inline-size: 0;
+
+    @mixin ellipsis;
   }
 }
 
@@ -96,36 +169,21 @@
   position: relative;
 }
 
-/* indicator */
-.indicator {
-  --tabs-indicator-inline-size: ;
-  --tabs-indicator-block-size: ;
-  --tabs-indicator-transform: ;
-
-  position: absolute;
-  z-index: var(--kbq-layer-absolute);
-  transform: var(--tabs-indicator-transform);
-  block-size: var(--tabs-indicator-block-size);
-  inline-size: var(--tabs-indicator-inline-size);
-  will-change: transform, inline-size, block-size;
-  transition:
-    inline-size 200ms ease-in,
-    block-size 200ms ease-in,
-    transform 200ms ease-in;
-}
-
 /* tab */
 .tab {
   display: flex;
   outline: none;
   cursor: pointer;
+  position: relative;
   align-items: stretch;
   text-decoration: none;
   box-sizing: border-box;
-}
+  justify-content: center;
+  transition: background-color var(--kbq-transition-default);
 
-.hovered .content {
-  background-color: var(--kbq-states-background-transparent-hover);
+  &::after {
+    transition: background-color var(--kbq-transition-default);
+  }
 }
 
 .focusVisible .content {
@@ -163,12 +221,4 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-}
-
-.label {
-  min-inline-size: 0;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }

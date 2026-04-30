@@ -26,6 +26,7 @@ export type TabsProps<T> = AriaTabListProps<T> & {
     tabList?: ComponentProps<'div'>;
     tabPanel?: ComponentProps<'div'>;
     scrollBox?: ComponentProps<'div'>;
+    /** @deprecated */
     indicator?: ComponentProps<'span'>;
   };
   /**

@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useEffect, useRef, useState, useMemo } from 'react';
-import type { Ref, CSSProperties } from 'react';
+import type { Ref } from 'react';
 
 import { once } from '@koobiq/logger';
 import {
@@ -22,7 +22,7 @@ import intlMessages from './intl.json';
 import type { TabProps as TabItemProps } from './Tab';
 import s from './Tabs.module.css';
 import type { TabsProps, TabsComponent, TabsRef } from './types';
-import { getIndicatorCssVars, getTabsMeta, hasIconOnlyTabPanel } from './utils';
+import { getTabsMeta, hasIconOnlyTabPanel } from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
@@ -46,7 +46,6 @@ export function TabsRender<T extends object>(
   const { selectedItem } = state;
 
   const [isMounted, setIsMounted] = useState(false);
-  const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>();
 
   const [scrollButtonsVisibility, setScrollButtonsVisibility] = useState({
     prev: false,
@@ -140,21 +139,6 @@ export function TabsRender<T extends object>(
     scrollBoxRef.current &&
     tabListRef.current.clientHeight > scrollBoxRef.current.clientHeight;
 
-  const updateIndicatorSize = (isAnimated = true) => {
-    if (!isNotNil(selectedItemIdx)) return;
-
-    const activeTab = itemsRefs[selectedItemIdx].current;
-
-    if (activeTab)
-      setIndicatorStyle({
-        ...getIndicatorCssVars(
-          activeTab,
-          isUnderlined ? 'horizontal' : orientation
-        ),
-        ...(!isAnimated && { transition: 'none' }),
-      });
-  };
-
   /** Adjusts the scroll position based on the selected tab's position and orientation. */
   const scrollCorrection = (
     orientation: 'horizontal' | 'vertical',
@@ -207,11 +191,6 @@ export function TabsRender<T extends object>(
     }
   };
 
-  const [debouncedUpdateIndicatorSize] = useDebounceCallback({
-    callback: updateIndicatorSize,
-    delay: 100,
-  });
-
   const [debouncedUpdateScrollButtonsActivity] = useDebounceCallback({
     callback: updateScrollButtonsVisibility,
     delay: 100,
@@ -221,8 +200,6 @@ export function TabsRender<T extends object>(
     callback: scrollCorrection,
     delay: 100,
   });
-
-  useResizeObserverRefs(itemsRefs, () => debouncedUpdateIndicatorSize());
 
   useResizeObserverRefs(
     useMemo(() => [scrollBoxRef], [scrollBoxRef]),
@@ -249,13 +226,10 @@ export function TabsRender<T extends object>(
     if (!isNotNil(selectedItemIdx)) return;
 
     if (isMounted) {
-      updateIndicatorSize();
       debouncedScrollCorrection(orientation);
     } else {
       updateScrollButtonsVisibility();
       setIsMounted(true);
-      // Update indicator styles without animation on the initial render.
-      updateIndicatorSize(false);
     }
   }, [selectedItemIdx, isMounted]);
 
@@ -277,14 +251,6 @@ export function TabsRender<T extends object>(
       onScroll: updateScrollButtonsVisibility,
     },
     slotProps?.scrollBox
-  );
-
-  const indicatorProps = mergeProps(
-    {
-      style: indicatorStyle,
-      className: s.indicator,
-    },
-    slotProps?.indicator
   );
 
   return (
@@ -334,7 +300,6 @@ export function TabsRender<T extends object>(
                 onFocused={() => scrollCorrection(orientation, i, 'auto')}
               />
             ))}
-            {isMounted && <span {...indicatorProps} />}
           </div>
         </div>
       </div>
