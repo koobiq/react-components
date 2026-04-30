@@ -3,3 +3,9 @@
   min-inline-size: 200px;
   max-inline-size: 640px;
 }
+
+.container {
+  flex-direction: column;
+  inline-size: 100%;
+  display: flex;
+}

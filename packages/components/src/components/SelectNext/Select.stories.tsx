@@ -374,6 +374,22 @@ export const Searchable: Story = {
   },
 };
 
+export const DropdownFooter: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        dropdownFooter="The text in the footer of the drop-down list."
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
 export const Open: Story = {
   render: function Render() {
     const [isOpen, { toggle, set }] = useBoolean(false);

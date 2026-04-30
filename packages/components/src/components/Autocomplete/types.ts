@@ -9,6 +9,7 @@ import type {
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { AriaComboBoxProps } from '@koobiq/react-primitives';
 
+import type { DropdownFooterProps } from '../DropdownFooter';
 import {
   formFieldControlGroupPropVariant,
   formFieldPropLabelAlign,
@@ -84,6 +85,7 @@ export type AutocompleteProps<T extends object = object> = {
     caption?: FormFieldCaptionProps;
     group?: FormFieldControlGroupProps;
     errorMessage?: FormFieldErrorProps;
+    dropdownFooter?: DropdownFooterProps;
     list?: Omit<ListInnerProps<object>, 'state'>;
   };
   /**
@@ -103,6 +105,8 @@ export type AutocompleteProps<T extends object = object> = {
   onLoadMore?: () => void;
   /** Content to display when items are loading. */
   loadingText?: ReactNode;
+  /** Content to display at the bottom of the dropdown. */
+  dropdownFooter?: ReactNode;
 } & DataAttributeProps &
   Omit<AriaComboBoxProps<T>, 'description' | 'validationState'>;
 

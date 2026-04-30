@@ -8,6 +8,7 @@ import { useDOMRef, Pressable, mergeProps, clsx } from '@koobiq/react-core';
 import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 
 import { Divider, Item, Section, Header } from '../Collections';
+import { DropdownFooter } from '../DropdownFooter';
 import { ListItemText } from '../List';
 import type { PopoverInnerProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
@@ -27,6 +28,7 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
     anchorRef,
     className,
     slotProps,
+    dropdownFooter,
     ...other
   } = props;
 
@@ -61,6 +63,9 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
       'data-testid': testId,
       anchorRef: anchorRef || controlRef,
       className: clsx(s.popover, className),
+      slotProps: {
+        container: { className: s.container },
+      },
     },
     slotProps?.popover
   );
@@ -78,6 +83,9 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
       })}
       <PopoverInner type="menu" placement={placement} {...popoverProps}>
         <MenuList {...listProps} />
+        <DropdownFooter {...slotProps?.dropdownFooter}>
+          {dropdownFooter}
+        </DropdownFooter>
       </PopoverInner>
     </>
   );

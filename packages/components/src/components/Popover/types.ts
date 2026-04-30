@@ -165,6 +165,7 @@ export type PopoverProps = {
     dialog?: DialogProps;
     arrow?: ComponentPropsWithRef<'div'>;
     backdrop?: ComponentPropsWithRef<'div'>;
+    container?: ComponentPropsWithRef<'div'>;
     transition?: Partial<TransitionProps<HTMLElement>>;
   };
 } & PopoverDeprecatedProps;

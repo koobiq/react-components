@@ -125,6 +125,26 @@ describe('Autocomplete', () => {
     expect(getRoot()).toHaveTextContent('fail');
   });
 
+  it('should display dropdown footer and apply slot props', async () => {
+    render(
+      <Autocomplete
+        {...baseProps}
+        menuTrigger="focus"
+        dropdownFooter="Footer"
+        slotProps={{
+          ...baseProps.slotProps,
+          dropdownFooter: { className: 'custom-footer' },
+        }}
+      >
+        <Autocomplete.Item key="1">1</Autocomplete.Item>
+      </Autocomplete>
+    );
+
+    await user.click(getInput());
+
+    expect(screen.getByText('Footer')).toHaveClass('custom-footer');
+  });
+
   describe('addons', () => {
     const getStartAddon = () => screen.getByTestId('field-addon-start');
     const getEndAddon = () => screen.getByTestId('field-addon-end');

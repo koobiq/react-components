@@ -24,6 +24,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Section, Item } from '../Collections';
+import { DropdownFooter } from '../DropdownFooter';
 import { useForm } from '../Form';
 import type {
   FormFieldProps,
@@ -77,6 +78,7 @@ export function AutocompleteRender<T extends object = object>(
     isLabelHidden,
     labelPlacement,
     allowsCustomValue,
+    dropdownFooter,
     'data-testid': testId,
     isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
@@ -187,7 +189,10 @@ export function AutocompleteRender<T extends object = object>(
       anchorRef: containerRef,
       placement: 'bottom start',
       size: Math.max(width, 200),
-      slotProps: { backdrop: { hidden: true } },
+      slotProps: {
+        backdrop: { hidden: true },
+        container: { className: s.container },
+      },
     },
     slotProps?.popover
   );
@@ -307,6 +312,9 @@ export function AutocompleteRender<T extends object = object>(
         </div>
         <PopoverInner {...popoverProps}>
           <ListInner {...listProps} />
+          <DropdownFooter {...slotProps?.dropdownFooter}>
+            {dropdownFooter}
+          </DropdownFooter>
         </PopoverInner>
       </FormField>
     </Provider>
