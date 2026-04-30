@@ -6,11 +6,13 @@ import type {
   ReactElement,
   Ref,
   RefObject,
+  ReactNode,
 } from 'react';
 
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { ButtonOptions, AriaMenuProps } from '@koobiq/react-primitives';
 
+import type { DropdownFooterProps } from '../DropdownFooter';
 import type { PopoverProps, PopoverPropPlacement } from '../Popover';
 
 export type MenuPropControl = (
@@ -54,11 +56,14 @@ export type MenuProps<T> = ExtendableProps<
      * @default 'bottom start'
      */
     placement?: MenuPropPlacement;
+    /** Content to display at the bottom of the dropdown. */
+    dropdownFooter?: ReactNode;
     /** Ref to the popover. */
     ref?: Ref<HTMLDivElement>;
     /** The props used for each slot inside. */
     slotProps?: {
       popover?: PopoverProps;
+      dropdownFooter?: DropdownFooterProps;
       list?: ComponentPropsWithRef<'ul'>;
     };
   } & MenuDeprecatedProps,

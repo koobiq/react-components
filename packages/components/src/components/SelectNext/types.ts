@@ -10,6 +10,7 @@ import type { ExtendableProps } from '@koobiq/react-core';
 import type { AriaSelectProps, SelectState } from '@koobiq/react-primitives';
 import type { SelectionMode } from '@react-types/select';
 
+import type { DropdownFooterProps } from '../DropdownFooter';
 import type {
   FormFieldLabelProps,
   FormFieldErrorProps,
@@ -109,6 +110,8 @@ export type SelectNextProps<
     noItemsText?: ReactNode;
     /** Content to display when items are loading. */
     loadingText?: ReactNode;
+    /** Content to display at the bottom of the dropdown. */
+    dropdownFooter?: ReactNode;
     /** Enables search input for filtering items in the list. */
     isSearchable?: boolean;
     /** The value of the Select search input (controlled). */
@@ -127,6 +130,7 @@ export type SelectNextProps<
       control?: FormFieldSelectProps;
       caption?: FormFieldCaptionProps;
       group?: FormFieldControlGroupProps;
+      dropdownFooter?: DropdownFooterProps;
       errorMessage?: FormFieldErrorProps;
       list?: Omit<SelectListProps<T, M>, 'state'>;
       'search-input'?: SearchInputProps;

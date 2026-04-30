@@ -49,6 +49,21 @@ describe('Menu', () => {
     expect(root?.className).toContain(className);
   });
 
+  it('should display dropdown footer and apply slot props', () => {
+    render(
+      <Menu
+        {...baseProps}
+        isOpen
+        dropdownFooter="Footer"
+        slotProps={{ dropdownFooter: { className: 'custom-footer' } }}
+      >
+        <Menu.Item>item</Menu.Item>
+      </Menu>
+    );
+
+    expect(screen.getByText('Footer')).toHaveClass('custom-footer');
+  });
+
   describe('check Menu.Header', () => {
     const className = 'foo';
 

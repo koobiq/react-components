@@ -27,6 +27,10 @@ import type { SelectionMode } from '@react-types/select';
 
 import { utilClasses } from '../../../../styles/utility';
 import { Divider, type DividerProps } from '../../../Divider';
+import {
+  DropdownFooter,
+  type DropdownFooterProps,
+} from '../../../DropdownFooter';
 import { ListEmptyState, ListLoadingState } from '../../../List/components';
 import { SearchInput, type SearchInputProps } from '../../../SearchInput';
 import intlMessages from '../../intl';
@@ -64,9 +68,12 @@ export type SelectListProps<
   loadingText?: ReactNode;
   /** Enables search input for filtering items in the list. */
   isSearchable?: boolean;
+  dropdownFooter?: ReactNode;
   /** The props used for each slot inside. */
   slotProps?: {
     divider?: DividerProps;
+    /** The props used for the dropdown footer slot. */
+    dropdownFooter?: DropdownFooterProps;
     root?: ComponentPropsWithRef<'div'>;
     'search-input'?: SearchInputProps;
   };
@@ -88,6 +95,7 @@ export function SelectList<
     defaultFilter,
     state: inState,
     defaultInputValue,
+    dropdownFooter,
     noItemsText: noItemsTextProp,
     loadingText: loadingTextProp,
   } = props;
@@ -210,6 +218,9 @@ export function SelectList<
           observeDeps={[state.collection]}
         />
       </ul>
+      <DropdownFooter {...slotProps?.dropdownFooter}>
+        {dropdownFooter}
+      </DropdownFooter>
     </div>
   );
 }

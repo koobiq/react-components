@@ -69,6 +69,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     'data-testid': testId,
     defaultInputValue,
     labelPlacement,
+    dropdownFooter,
     onInputChange,
     selectionMode,
     defaultFilter,
@@ -146,6 +147,9 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     style,
   });
 
+  const { slotProps: selectListSlotProps, ...otherSelectListProps } =
+    slotProps?.list || {};
+
   const listProps = mergeProps<
     [
       SelectListProps<T, M>,
@@ -159,6 +163,13 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       onLoadMore,
       noItemsText,
       loadingText,
+      dropdownFooter,
+      slotProps: mergeProps(
+        {
+          dropdownFooter: slotProps?.dropdownFooter,
+        },
+        selectListSlotProps
+      ),
       isSearchable,
       defaultFilter,
       state: inState,
@@ -166,7 +177,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       className: s.list,
       defaultInputValue,
     },
-    slotProps?.list,
+    otherSelectListProps,
     menuProps
   );
 
@@ -243,6 +254,9 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       anchorRef: containerRef,
       placement: 'bottom start',
       size: Math.max(width, 200),
+      slotProps: {
+        container: { className: s.container },
+      },
     },
     slotProps?.popover
   );

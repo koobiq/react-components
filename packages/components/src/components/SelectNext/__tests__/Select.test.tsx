@@ -89,6 +89,22 @@ describe('Select', () => {
     expect(getRoot()).toHaveTextContent('fail');
   });
 
+  it('should display dropdown footer and apply slot props', () => {
+    render(
+      <Select
+        {...baseProps}
+        defaultOpen
+        dropdownFooter="Footer"
+        slotProps={{
+          ...baseProps.slotProps,
+          dropdownFooter: { className: 'custom-footer' },
+        }}
+      />
+    );
+
+    expect(screen.getByText('Footer')).toHaveClass('custom-footer');
+  });
+
   describe('noItemsText', () => {
     it('should display noItemsText for static items', () => {
       render(<Select {...baseProps} defaultOpen noItemsText="empty"></Select>);

@@ -1,0 +1,15 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  padding: 10px var(--kbq-size-l);
+  border-block-start: var(--kbq-size-border-width) solid
+    var(--kbq-line-contrast-less);
+  color: var(--kbq-foreground-contrast-secondary);
+  min-block-size: 40px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  flex-shrink: 0;
+
+  @mixin typography text-normal;
+}

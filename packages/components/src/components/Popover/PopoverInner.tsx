@@ -152,7 +152,10 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
               }
             >
               {showArrow && <div {...arrowProps} data-placement={placement} />}
-              <div className={s.container}>
+              <div
+                {...slotProps?.container}
+                className={clsx(s.container, slotProps?.container?.className)}
+              >
                 {type === 'dialog' ? (
                   <Dialog {...dialogProps}>{resolvedChildren}</Dialog>
                 ) : (

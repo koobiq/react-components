@@ -293,6 +293,25 @@ export const Open: Story = {
   },
 };
 
+export const DropdownFooter: Story = {
+  render: (args) => (
+    <Menu
+      control={(props) => <Button {...props}>Actions</Button>}
+      slotProps={{ popover: { size: '200px' } }}
+      dropdownFooter="The text in the footer of the drop-down list."
+      {...args}
+    >
+      <Menu.Item key="new">New</Menu.Item>
+      <Menu.Item key="open">Open</Menu.Item>
+      <Menu.Item key="close">Close</Menu.Item>
+      <Menu.Item key="save">Save</Menu.Item>
+      <Menu.Item key="duplicate">Duplicate</Menu.Item>
+      <Menu.Item key="rename">Rename</Menu.Item>
+      <Menu.Item key="move">Move</Menu.Item>
+    </Menu>
+  ),
+};
+
 export const Dividers: Story = {
   render: function Render() {
     const buttonStyle: CSSProperties = {

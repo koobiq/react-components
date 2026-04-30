@@ -267,6 +267,25 @@ export const Addons: Story = {
   },
 };
 
+export const DropdownFooter: Story = {
+  render: function Render(args) {
+    return (
+      <Autocomplete
+        label="Protocol"
+        placeholder="Search a protocol"
+        dropdownFooter="The text in the footer of the drop-down list."
+        {...args}
+      >
+        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+      </Autocomplete>
+    );
+  },
+};
+
 export const LabelPlacementAlignment: Story = {
   name: 'Label placement and alignment',
   render: (args) => (
