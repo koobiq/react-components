@@ -62,6 +62,8 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
         s.tab,
         isHovered && s.hovered,
         isDisabled && s.disabled,
+        isSelected && s.selected,
+        onlyIcon && s.onlyIcon,
         isFocusVisible && s.focusVisible,
         className
       )}

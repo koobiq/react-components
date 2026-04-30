@@ -29,6 +29,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  tags: ['status:updated', 'date:2026-04-30'],
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -98,16 +99,23 @@ export const Dynamic: Story = {
 export const WithIcons: Story = {
   render: function Render(args) {
     const [isVertical, { set }] = useBoolean(false);
+    const [isUnderlined, { set: setIsUnderlined }] = useBoolean(false);
 
     return (
-      <FlexBox direction="column" gap="l">
-        <Toggle isSelected={isVertical} onChange={set}>
-          Vertical
-        </Toggle>
+      <FlexBox direction="column" gap="l" alignItems="stretch">
+        <FlexBox gap="l" alignItems="center">
+          <Toggle isSelected={isVertical} onChange={set}>
+            Vertical
+          </Toggle>
+          <Toggle isSelected={isUnderlined} onChange={setIsUnderlined}>
+            Underlined
+          </Toggle>
+        </FlexBox>
         <Tabs
           aria-label="Types of cyberattacks"
           orientation={isVertical ? 'vertical' : 'horizontal'}
           {...args}
+          isUnderlined={isUnderlined}
         >
           <Tab key="brute-force" title="BruteForce" startAddon={<IconBug16 />}>
             A brute-force attack systematically guesses passwords or
@@ -138,6 +146,7 @@ export const WithIcons: Story = {
           aria-label="Types of cyberattacks"
           orientation={isVertical ? 'vertical' : 'horizontal'}
           {...args}
+          isUnderlined={isUnderlined}
         >
           <Tab
             key="brute-force"
