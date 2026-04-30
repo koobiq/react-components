@@ -376,6 +376,11 @@ export const WithForm: Story = {
       padding: '1.5em',
     };
 
+    const requiredFieldProps = {
+      isRequired: true,
+      slotProps: { label: { isRequired: false } },
+    };
+
     return (
       <FlexBox>
         <div style={cardStyle}>
@@ -391,16 +396,20 @@ export const WithForm: Story = {
             <Tab key="login" title="Login">
               <Form style={{ inlineSize: 300 }}>
                 <Input
-                  isRequired
+                  {...requiredFieldProps}
                   label="Email"
+                  name="email"
                   placeholder="Enter your email"
                   type="email"
+                  autoComplete="email"
                 />
                 <Input
-                  isRequired
+                  {...requiredFieldProps}
                   label="Password"
+                  name="password"
                   placeholder="Enter your password"
                   type="password"
+                  autoComplete="current-password"
                 />
                 <Typography>
                   Need to create an account?{' '}
@@ -414,22 +423,28 @@ export const WithForm: Story = {
             <Tab key="sign-up" title="Sign up">
               <Form style={{ inlineSize: 300 }}>
                 <Input
-                  isRequired
+                  {...requiredFieldProps}
                   label="Name"
+                  name="name"
                   placeholder="Enter your name"
-                  type="password"
+                  type="text"
+                  autoComplete="name"
                 />
                 <Input
-                  isRequired
+                  {...requiredFieldProps}
                   label="Email"
+                  name="email"
                   placeholder="Enter your email"
                   type="email"
+                  autoComplete="email"
                 />
                 <Input
-                  isRequired
+                  {...requiredFieldProps}
                   label="Password"
+                  name="password"
                   placeholder="Enter your password"
                   type="password"
+                  autoComplete="new-password"
                 />
                 <Typography>
                   Already have an account?{' '}
