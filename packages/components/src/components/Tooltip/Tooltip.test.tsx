@@ -59,8 +59,20 @@ describe('Tooltip', () => {
     );
   });
 
-  it('check the hideArrow prop', () => {
+  it('should hide the arrow by default and show it when arrow is true', () => {
     const { rerender } = render(<Tooltip {...baseProps} isOpen />);
+
+    expect(getRoot()).not.toHaveAttribute('data-arrow');
+
+    rerender(<Tooltip {...baseProps} arrow isOpen />);
+
+    expect(getRoot()).toHaveAttribute('data-arrow', 'true');
+  });
+
+  it('should support deprecated hideArrow prop', () => {
+    const { rerender } = render(
+      <Tooltip {...baseProps} hideArrow={false} isOpen />
+    );
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'true');
 

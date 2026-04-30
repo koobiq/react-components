@@ -116,7 +116,7 @@ export const Arrow: Story = {
           Hover me
         </Button>
       )}
-      hideArrow
+      arrow
       {...args}
     >
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi deserunt

@@ -36,6 +36,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     isOpen: isOpenProp,
     disabled,
     open,
+    arrow: arrowProp,
     hideArrow,
     control,
     children,
@@ -64,7 +65,13 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     );
   }
 
-  const showArrow = !hideArrow;
+  if (process.env.NODE_ENV !== 'production' && 'hideArrow' in props) {
+    deprecate(
+      'Tooltip: the "hideArrow" prop is deprecated. Use the "arrow" prop instead.'
+    );
+  }
+
+  const showArrow = arrowProp ?? (hideArrow === undefined ? false : !hideArrow);
 
   const offset = showArrow ? offsetProp : offsetProp || 4;
 
