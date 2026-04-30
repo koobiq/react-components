@@ -30,6 +30,7 @@ const meta = {
     'Autocomplete.Section': Autocomplete.Section,
   },
   argTypes: {},
+  tags: ['status:updated', 'date:2026-04-30'],
 } satisfies Meta<typeof Autocomplete>;
 
 export default meta;

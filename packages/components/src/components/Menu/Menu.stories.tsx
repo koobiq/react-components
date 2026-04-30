@@ -35,6 +35,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  tags: ['status:updated', 'date:2026-04-30'],
 } satisfies Meta<typeof Menu>;
 
 export default meta;
