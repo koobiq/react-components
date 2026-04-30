@@ -53,7 +53,7 @@
 .disabled {
   --breadcrumb-color: var(--kbq-states-foreground-disabled);
 
-  cursor: not-allowed;
+  cursor: default;
   text-decoration: none;
 }
 

@@ -113,7 +113,7 @@
   );
   --form-field-control-color: var(--kbq-states-foreground-disabled);
 
-  cursor: not-allowed;
+  cursor: default;
 }
 
 .filled:where(.disabled) {

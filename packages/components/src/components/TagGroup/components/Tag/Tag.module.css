@@ -105,5 +105,5 @@
   --tag-color: var(--kbq-states-foreground-disabled);
   --tag-outline-color: none;
 
-  cursor: not-allowed;
+  cursor: default;
 }

@@ -134,7 +134,7 @@
 
 .disabled .content {
   color: var(--kbq-states-foreground-disabled);
-  cursor: not-allowed;
+  cursor: default;
 }
 
 .content {

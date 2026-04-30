@@ -76,7 +76,7 @@
 
 .loading,
 .disabled {
-  cursor: not-allowed;
+  cursor: default;
 }
 
 .disabled {

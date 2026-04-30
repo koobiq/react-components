@@ -365,7 +365,7 @@
 .list-item:where([aria-disabled='true']) {
   --list-item-bg-color: ;
 
-  cursor: not-allowed;
+  cursor: default;
   opacity: 0.3;
 }
 
