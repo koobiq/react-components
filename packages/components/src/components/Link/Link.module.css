@@ -19,7 +19,7 @@
     text-decoration-color var(--kbq-transition-default);
 
   &[aria-disabled='true'] {
-    cursor: not-allowed;
+    cursor: default;
     text-decoration: none;
     outline-color: transparent;
     color: var(--kbq-states-foreground-disabled);

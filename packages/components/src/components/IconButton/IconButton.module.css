@@ -68,7 +68,7 @@
 }
 
 .disabled {
-  cursor: not-allowed;
+  cursor: default;
   color: var(--icon-button-color-disabled);
 }
 

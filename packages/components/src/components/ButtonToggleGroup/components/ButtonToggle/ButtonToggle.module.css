@@ -63,7 +63,7 @@
   --button-toggle-color: var(--kbq-states-foreground-disabled);
   --button-toggle-icon-color: inherit;
 
-  cursor: not-allowed;
+  cursor: default;
 }
 
 .disabled:where(.selected) {

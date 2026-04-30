@@ -128,7 +128,7 @@
   --checkbox-border-color: var(--kbq-states-line-disabled);
   --checkbox-color: var(--kbq-states-foreground-disabled);
 
-  cursor: not-allowed;
+  cursor: default;
 }
 
 .selected:where(.disabled) {
