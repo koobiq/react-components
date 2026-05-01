@@ -309,8 +309,8 @@ importers:
         version: 19.2.3
     devDependencies:
       '@koobiq/icons':
-        specifier: ^11.4.0
-        version: 11.4.0
+        specifier: ^11.5.0
+        version: 11.5.0
 
   packages/logger: {}
 
@@ -2013,8 +2013,8 @@ packages:
   '@koobiq/design-tokens@3.17.2':
     resolution: {integrity: sha512-bSpCQS1V82BBJ6q2Wf80ZW/eVBjAQ6+7t8rM4kAIgJ//1RFuU+o9AMigcRSpHZQ5l9KTqpa95BPk993HR2JPEA==}
 
-  '@koobiq/icons@11.4.0':
-    resolution: {integrity: sha512-ABrKQy+J8rXVoDxHBzc0oS8dZprns+ezcgGuaU2LNcmymjmKBldxBH3l8l9MU+++RB+aI9PYYp1DnYGb7nBwLw==}
+  '@koobiq/icons@11.5.0':
+    resolution: {integrity: sha512-n/NibPbH2Wz+mvg35sxjlYQ0e49Sp4dCNH29N5fiynvBE1uFOptBx1HeB7aAozUZYfcjW2vrEZITYQAOwouiOA==}
 
   '@koobiq/internationalized-date-adapter@3.5.1':
     resolution: {integrity: sha512-Wl6soze8EAadgX3Js+JNwwQPNiMjLTXMlIxej6sGYFaE2Nk3CMOKyMZFOHlz+KWCXLF7mAa8TDYvpPlkI5EKNw==}
@@ -7019,6 +7019,9 @@ packages:
   moo@0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
 
+  moo@0.5.3:
+    resolution: {integrity: sha512-m2fmM2dDm7GZQsY7KK2cme8agi+AAljILjQnof7p1ZMDe6dQ4bdnSMx0cPppudoeNv5hEFQirN6u+O4fDE0IWA==}
+
   morgan@1.10.1:
     resolution: {integrity: sha512-223dMRJtI/l25dJKWpgij2cMtywuG/WiUKXdvwfbhGKBhy1puASqXwFzmWZ7+K73vUPoR7SS2Qz2cI/g9MKw0A==}
     engines: {node: '>= 0.8.0'}
@@ -8844,10 +8847,12 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   v8-compile-cache-lib@3.0.1:
@@ -10512,7 +10517,7 @@ snapshots:
 
   '@koobiq/design-tokens@3.17.2': {}
 
-  '@koobiq/icons@11.4.0': {}
+  '@koobiq/icons@11.5.0': {}
 
   '@koobiq/internationalized-date-adapter@3.5.1(@internationalized/date@3.12.1)(@koobiq/date-adapter@3.5.1)':
     dependencies:
@@ -10635,7 +10640,7 @@ snapshots:
 
   '@messageformat/parser@5.1.1':
     dependencies:
-      moo: 0.5.2
+      moo: 0.5.3
 
   '@messageformat/runtime@3.0.2':
     dependencies:
@@ -17035,6 +17040,8 @@ snapshots:
   modify-values@1.0.1: {}
 
   moo@0.5.2: {}
+
+  moo@0.5.3: {}
 
   morgan@1.10.1:
     dependencies:
