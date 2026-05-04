@@ -309,8 +309,8 @@ importers:
         version: 19.2.3
     devDependencies:
       '@koobiq/icons':
-        specifier: ^11.4.0
-        version: 11.4.0
+        specifier: ^11.5.0
+        version: 11.5.0
 
   packages/logger: {}
 
@@ -512,7 +512,7 @@ importers:
         version: 0.30.1(react@19.2.3)
       next:
         specifier: ^16.2.4
-        version: 16.2.4(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -2013,8 +2013,8 @@ packages:
   '@koobiq/design-tokens@3.17.2':
     resolution: {integrity: sha512-bSpCQS1V82BBJ6q2Wf80ZW/eVBjAQ6+7t8rM4kAIgJ//1RFuU+o9AMigcRSpHZQ5l9KTqpa95BPk993HR2JPEA==}
 
-  '@koobiq/icons@11.4.0':
-    resolution: {integrity: sha512-ABrKQy+J8rXVoDxHBzc0oS8dZprns+ezcgGuaU2LNcmymjmKBldxBH3l8l9MU+++RB+aI9PYYp1DnYGb7nBwLw==}
+  '@koobiq/icons@11.5.0':
+    resolution: {integrity: sha512-n/NibPbH2Wz+mvg35sxjlYQ0e49Sp4dCNH29N5fiynvBE1uFOptBx1HeB7aAozUZYfcjW2vrEZITYQAOwouiOA==}
 
   '@koobiq/internationalized-date-adapter@3.5.1':
     resolution: {integrity: sha512-Wl6soze8EAadgX3Js+JNwwQPNiMjLTXMlIxej6sGYFaE2Nk3CMOKyMZFOHlz+KWCXLF7mAa8TDYvpPlkI5EKNw==}
@@ -7019,6 +7019,9 @@ packages:
   moo@0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
 
+  moo@0.5.3:
+    resolution: {integrity: sha512-m2fmM2dDm7GZQsY7KK2cme8agi+AAljILjQnof7p1ZMDe6dQ4bdnSMx0cPppudoeNv5hEFQirN6u+O4fDE0IWA==}
+
   morgan@1.10.1:
     resolution: {integrity: sha512-223dMRJtI/l25dJKWpgij2cMtywuG/WiUKXdvwfbhGKBhy1puASqXwFzmWZ7+K73vUPoR7SS2Qz2cI/g9MKw0A==}
     engines: {node: '>= 0.8.0'}
@@ -10512,7 +10515,7 @@ snapshots:
 
   '@koobiq/design-tokens@3.17.2': {}
 
-  '@koobiq/icons@11.4.0': {}
+  '@koobiq/icons@11.5.0': {}
 
   '@koobiq/internationalized-date-adapter@3.5.1(@internationalized/date@3.12.1)(@koobiq/date-adapter@3.5.1)':
     dependencies:
@@ -10635,7 +10638,7 @@ snapshots:
 
   '@messageformat/parser@5.1.1':
     dependencies:
-      moo: 0.5.2
+      moo: 0.5.3
 
   '@messageformat/runtime@3.0.2':
     dependencies:
@@ -17036,6 +17039,8 @@ snapshots:
 
   moo@0.5.2: {}
 
+  moo@0.5.3: {}
+
   morgan@1.10.1:
     dependencies:
       basic-auth: 2.0.1
@@ -17097,7 +17102,7 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  next@16.2.4(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  next@16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@next/env': 16.2.4
       '@swc/helpers': 0.5.15
@@ -17106,7 +17111,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
-      styled-jsx: 5.1.6(@babel/core@7.26.10)(react@19.2.3)
+      styled-jsx: 5.1.6(@babel/core@7.29.0)(react@19.2.3)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.2.4
       '@next/swc-darwin-x64': 16.2.4
@@ -18661,12 +18666,12 @@ snapshots:
 
   stubs@3.0.0: {}
 
-  styled-jsx@5.1.6(@babel/core@7.26.10)(react@19.2.3):
+  styled-jsx@5.1.6(@babel/core@7.29.0)(react@19.2.3):
     dependencies:
       client-only: 0.0.1
       react: 19.2.3
     optionalDependencies:
-      '@babel/core': 7.26.10
+      '@babel/core': 7.29.0
 
   stylelint-config-css-modules@4.6.0(stylelint@16.26.1(typescript@5.7.3)):
     dependencies:

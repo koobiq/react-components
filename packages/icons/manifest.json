@@ -2426,6 +2426,11 @@
       ]
     },
     {
+      "name": "IconListCircleXmark16",
+      "size": "16",
+      "keywords": ["список", "круг", "крестик"]
+    },
+    {
       "name": "IconListCollapse16",
       "size": "16",
       "keywords": ["items", "свернуть", "список"]
@@ -5897,6 +5902,11 @@
         "удалить",
         "удалить из списка"
       ]
+    },
+    {
+      "name": "IconListCircleXmark24",
+      "size": "24",
+      "keywords": ["список", "круг", "крестик"]
     },
     {
       "name": "IconListCollapse24",
