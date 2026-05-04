@@ -334,6 +334,7 @@ export * from './IconLinux16';
 export * from './IconList16';
 export * from './IconListBadgePlus16';
 export * from './IconListBadgeXmark16';
+export * from './IconListCircleXmark16';
 export * from './IconListCollapse16';
 export * from './IconListExpand16';
 export * from './IconListOl16';
@@ -851,6 +852,7 @@ export * from './IconLinux24';
 export * from './IconList24';
 export * from './IconListBadgePlus24';
 export * from './IconListBadgeXmark24';
+export * from './IconListCircleXmark24';
 export * from './IconListCollapse24';
 export * from './IconListExpand24';
 export * from './IconListOl24';
@@ -1412,6 +1414,7 @@ export type IconName =
   | 'IconList16'
   | 'IconListBadgePlus16'
   | 'IconListBadgeXmark16'
+  | 'IconListCircleXmark16'
   | 'IconListCollapse16'
   | 'IconListExpand16'
   | 'IconListOl16'
@@ -1929,6 +1932,7 @@ export type IconName =
   | 'IconList24'
   | 'IconListBadgePlus24'
   | 'IconListBadgeXmark24'
+  | 'IconListCircleXmark24'
   | 'IconListCollapse24'
   | 'IconListExpand24'
   | 'IconListOl24'
