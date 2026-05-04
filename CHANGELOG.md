@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.31.0](https://github.com/koobiq/react-components/compare/0.30.1...0.31.0) (2026-05-04)
+
+
+### 🚀 Features
+
+* **Autocomplete, Menu, SelectNext:** add dropdown footer support (DS-4955) ([#321](https://github.com/koobiq/react-components/issues/321)) ([25fd3da](https://github.com/koobiq/react-components/commit/25fd3da7a7decef2ca5d8e22e180fcbd2064025d))
+* **icons:** add `IconListCircleXmark16` and `IconListCircleXmark24` icons (DS-5056) ([#328](https://github.com/koobiq/react-components/issues/328)) ([8cc6826](https://github.com/koobiq/react-components/commit/8cc68267db084b63c9b39546025dbcbba3b6ae2e))
+* **Tab:** add `startAddon`, `endAddon` and `onlyIcon` props (DS-5034) ([#316](https://github.com/koobiq/react-components/issues/316)) ([32223fa](https://github.com/koobiq/react-components/commit/32223fa83fc7d9deebffae3af8c061307b9cc0aa))
+* **Tabs:** redesign underlined tabs (DS-4762) ([#318](https://github.com/koobiq/react-components/issues/318)) ([7a3d585](https://github.com/koobiq/react-components/commit/7a3d585987081ad4bf3b13c3b5d8c39f808a3b93))
+* **Toggle:** improve component styles (DS-4998) ([#314](https://github.com/koobiq/react-components/issues/314)) ([171f305](https://github.com/koobiq/react-components/commit/171f3050003e7b0a2ecd3de351cbe574741dbd22))
+
+
+### 🐞 Bug Fixes
+
+* **components:** use default cursor for disabled states (DS-5042) ([#320](https://github.com/koobiq/react-components/issues/320)) ([15d703b](https://github.com/koobiq/react-components/commit/15d703b133293c4725d039065be611f5233dd3b5))
+* **Tab:** correct `onlyIcon` tab height (DS-5036) ([#317](https://github.com/koobiq/react-components/issues/317)) ([79dd67b](https://github.com/koobiq/react-components/commit/79dd67bc853e80f8f0db7d1a2878df0cc0071b9d))
+* **Tabs:** improve styles structure and tab layout (DS-4999) ([#315](https://github.com/koobiq/react-components/issues/315)) ([018f98f](https://github.com/koobiq/react-components/commit/018f98fc6bd0028fc10c7198380d9d099dd4e110))
+* **Tabs:** scroll focused tab into view (DS-4997) ([#313](https://github.com/koobiq/react-components/issues/313)) ([1695b84](https://github.com/koobiq/react-components/commit/1695b845feb815e7c331b360fe57ac41aa108f73))
+
 ## [0.30.1](https://github.com/koobiq/react-components/compare/0.30.0...0.30.1) (2026-04-24)
 
 
