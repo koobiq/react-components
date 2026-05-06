@@ -10,6 +10,7 @@ import { useMenuTriggerState, useMenuTrigger } from '@koobiq/react-primitives';
 import { Divider, Item, Section, Header } from '../Collections';
 import { DropdownFooter } from '../DropdownFooter';
 import { ListItemText } from '../List';
+import { ListItemAddon } from '../List/components';
 import type { PopoverInnerProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
@@ -99,6 +100,7 @@ type CompoundedComponent = typeof MenuComponent & {
   Section: typeof Section;
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
+  ItemAddon: typeof ListItemAddon;
   Control: typeof Pressable;
 };
 
@@ -110,4 +112,5 @@ Menu.Section = Section;
 Menu.Header = Header;
 Menu.Divider = Divider;
 Menu.ItemText = ListItemText;
+Menu.ItemAddon = ListItemAddon;
 Menu.Control = Pressable;

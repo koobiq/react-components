@@ -1,7 +1,6 @@
 'use client';
 
-import { useContext, useRef } from 'react';
-import type { ForwardedRef } from 'react';
+import { type ForwardedRef, useContext, useRef } from 'react';
 
 import {
   clsx,
@@ -26,8 +25,14 @@ import { utilClasses } from '../../../../styles/utility';
 import { Checkbox } from '../../../Checkbox';
 import { SelectContext } from '../../SelectContext';
 
+import s from './SelectOption.module.css';
+
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
+
+export const selectOptionPropAlign = ['start', 'center'] as const;
+
+export type SelectOptionPropAlign = (typeof selectOptionPropAlign)[number];
 
 export type SelectOptionProps<T = object> = ExtendableComponentPropsWithRef<
   {
@@ -47,6 +52,11 @@ export type SelectOptionProps<T = object> = ExtendableComponentPropsWithRef<
      * the collection's `selectionBehavior` prop and the interaction modality.
      */
     onAction?: () => void;
+    /**
+     * Vertical alignment of the item content.
+     * @default 'center'
+     */
+    align?: SelectOptionPropAlign;
   },
   'a'
 >;
@@ -54,7 +64,7 @@ export type SelectOptionProps<T = object> = ExtendableComponentPropsWithRef<
 export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
   T extends object,
 >(props: SelectOptionProps, forwardedRef: ForwardedRef<HTMLElement>, item: Node<T>) {
-  const { href, className, style } = props;
+  const { href, className, style, align = 'center' } = props;
 
   const domRef = useRef<HTMLElement>(null);
   const ref = useMultiRef([forwardedRef, domRef]);
@@ -80,16 +90,22 @@ export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
     <Tag
       ref={ref}
       style={style}
+      data-align={align}
       data-hovered={isHovered || undefined}
       data-pressed={isPressed || undefined}
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(optionProps, hoverProps, pressProps)}
-      className={clsx(listItem, textVariant['text-normal'], className)}
+      className={clsx(s.base, listItem, textVariant['text-normal'], className)}
     >
       {state.selectionManager.selectionMode === 'multiple' && (
-        <Checkbox isDisabled={isDisabled} isSelected={isSelected} isReadOnly />
+        <Checkbox
+          isDisabled={isDisabled}
+          className={s.checkbox}
+          isSelected={isSelected}
+          isReadOnly
+        />
       )}
       {item.rendered}
     </Tag>

@@ -23,6 +23,7 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
     href,
     style,
     className,
+    align = 'center',
     'data-testid': dataTestId,
   }: ItemProps<T> = item.props;
 
@@ -46,6 +47,7 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
       className={clsx(listItem, textVariant['text-normal'], className)}
       style={style}
       ref={ref}
+      data-align={align}
       data-hovered={isHovered || undefined}
       data-pressed={isPressed || undefined}
       data-disabled={isDisabled || undefined}

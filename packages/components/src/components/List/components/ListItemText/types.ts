@@ -15,6 +15,8 @@ export type ListItemTextProps = ExtendableComponentPropsWithRef<
     children?: ReactNode;
     /** The helper text content. */
     caption?: ReactNode;
+    /** If `true`, prevents the component from growing to fill available inline space. */
+    autoWidth?: boolean;
     /** The props used for each slot inside. */
     slotProps?: {
       text?: TypographyProps;

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Meta,
   Story,
   Props,
@@ -31,7 +32,9 @@ import { SelectNext as Select } from '@koobiq/react-components';
 
 ## Content
 
-Select accepts static and dynamic collections.The examples above show static collections,
+### Dynamic items
+
+Select accepts static and dynamic collections. The examples above show static collections,
 which can be used when the full list of options is known ahead of time.
 Dynamic collections, as shown below, can be used when the options come from an external
 data source such as an API call, or update over time.
@@ -43,14 +46,95 @@ in the example below, then this is used automatically and an `id` prop is not re
 
 <Story of={Stories.Content} />
 
-## Single Selection
+### Disabled options
+
+Select supports marking items as disabled using the `disabledKeys` prop.
+Each key in this list corresponds with the `id` prop passed to the `Select.Item` component.
+
+<Story of={Stories.DisabledOptions} />
+
+### Empty state
+
+With `allowsEmptyCollection` enabled, the Select can be opened even when the collection is empty.
+In this case, the component shows an empty-state message in the dropdown list.
+You can customize this message — either as plain text or a component — using the `noItemsText` prop.
+
+<Story of={Stories.NoItems} />
+
+### Sections
+
+A select component can display items grouped together in sections.
+
+<Story of={Stories.Section} />
+
+### Item content
+
+Select items can be composed with helper components:
+
+- `Select.ItemText` for text and captions.
+- `Select.ItemAddon` for icons, badges, or other secondary content.
+
+Select items also have layout props, such as `align`, which sets vertical alignment. Use `align="start"` for captions or multi-line content.
+
+<Alert>
+  If `Select.Item` does not have plain text content in `children`, pass
+  `textValue`. The list uses it as the item's readable label for accessibility
+  and keyboard navigation.
+</Alert>
+
+<Story of={Stories.ItemContent} />
+
+### Dropdown footer
+
+Use `dropdownFooter` to show text under the options list.
+
+<Story of={Stories.DropdownFooter} />
+
+## Appearance
+
+### Addons
+
+You can add extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+### Invalid
+
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+
+<Story of={Stories.Invalid} />
+
+### Required
+
+To make a select required, add the `isRequired` prop.
+If the field has a label, a required indicator will appear next to it.
+
+<Story of={Stories.Required} />
+
+### Full width
+
+The `fullWidth` prop will make a select fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+### Label placement and alignment
+
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
+
+See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
+
+<Story of={Stories.LabelPlacementAlignment} />
+
+## Behavior
+
+### Single selection
 
 Setting a selected option can be done by using the `defaultValue` or `value` prop.
 The selected id corresponds to the `id` prop of an item.
 
 <Story of={Stories.SingleSelection} />
 
-## Multiple Selection
+### Multiple selection
 
 You can use the `selectionMode="multiple"` prop to allow multiple selection.
 
@@ -67,68 +151,20 @@ To control how tags are displayed, use the `selectedTagsOverflow` prop. It suppo
 
 <Story of={Stories.SelectedTagsOverflow} />
 
-## Invalid
-
-The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
-
-<Story of={Stories.Invalid} />
-
-## Disabled
+### Disabled
 
 When the select component is disabled, it cannot be interacted with.
 
 <Story of={Stories.Disabled} />
 
-## Disabled options
-
-Select supports marking items as disabled using the `disabledKeys` prop.
-Each key in this list corresponds with the `id` prop passed to the `Select.Item` component.
-
-<Story of={Stories.DisabledOptions} />
-
-## Required
-
-To make a select required, add the `isRequired` prop.
-If the field has a label, a required indicator will appear next to it.
-
-<Story of={Stories.Required} />
-
-## Full width
-
-The `fullWidth` prop will make a select fit to its parent width.
-
-<Story of={Stories.FullWidth} />
-
-## Label placement and alignment
-
-Use `labelPlacement` and `labelAlign` props to set the position of the label.
-
-See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
-
-<Story of={Stories.LabelPlacementAlignment} />
-
-## Clear Button
+### Clear button
 
 If you pass the `isClearable` prop to the select, it will have a clear
 button which will be visible only when a value is selected.
 
 <Story of={Stories.ClearButton} />
 
-## Addons
-
-You can add an extra content using the `startAddon` and `endAddon` props.
-
-<Story of={Stories.Addons} />
-
-## No items
-
-With `allowsEmptyCollection` enabled, the Select can be opened even when the collection is empty.
-In this case, the component shows an empty-state message in the dropdown list.
-You can customize this message — either as plain text or a component — using the `noItemsText` prop.
-
-<Story of={Stories.NoItems} />
-
-## Searchable
+### Searchable
 
 Select with search renders a search input at the top of the menu so users can quickly filter the available options.
 Enable this behavior with the `isSearchable` prop. The input can be controlled via `inputValue` or used uncontrolled
@@ -136,44 +172,20 @@ with `defaultInputValue`, and the `onInputChange` callback is called whenever th
 
 <Story of={Stories.Searchable} />
 
-## Dropdown Footer
+### Open
 
-Use `dropdownFooter` to show text under the options list.
-
-<Story of={Stories.DropdownFooter} />
-
-## Open
-
-### Default open
+#### Default open
 
 Select isn't opened by default. The `defaultOpen` prop can be used to set the default state.
 
-### Controlled open
+#### Controlled open
 
 The `isOpen` prop can be used to make the opened state controlled.
 The `onOpenChange` event is fired when the select's open state changes.
 
 <Story of={Stories.Open} />
 
-## Section
-
-A select component can display items grouped together in sections.
-
-<Story of={Stories.Section} />
-
-## With icons
-
-See the example below how to use [icons](?path=/docs/icons--docs) in items of the component.
-
-<Story of={Stories.WithIcons} />
-
-## With item details
-
-See the example below for using details in items of the component.
-
-<Story of={Stories.WithItemDetails} />
-
-## Asynchronous Loading
+### Asynchronous loading
 
 Select supports loading data asynchronously, and will display a progress circle when the `isLoading` prop is set.
 It also supports infinite scrolling to load more data on demand as the user scrolls, via the `onLoadMore` prop.

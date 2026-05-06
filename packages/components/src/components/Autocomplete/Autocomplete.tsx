@@ -38,6 +38,7 @@ import { FormField, FormFieldClearButton } from '../FormField';
 import { IconButton } from '../IconButton';
 import { List, ListInner } from '../List';
 import type { ListInnerProps, ListItemText } from '../List';
+import type { ListItemAddon } from '../List/components';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
@@ -329,6 +330,7 @@ type CompoundedComponent = typeof AutocompleteComponent & {
   Item: typeof Item;
   Section: typeof Section;
   ItemText: typeof ListItemText;
+  ItemAddon: typeof ListItemAddon;
 };
 
 /**
@@ -340,3 +342,4 @@ export const Autocomplete = AutocompleteComponent as CompoundedComponent;
 Autocomplete.Item = Item;
 Autocomplete.Section = Section;
 Autocomplete.ItemText = List.ItemText;
+Autocomplete.ItemAddon = List.ItemAddon;

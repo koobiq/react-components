@@ -4,6 +4,15 @@
   min-inline-size: 0;
   gap: var(--kbq-size-3xs);
   flex-direction: column;
+  margin-inline-end: var(--kbq-size-s);
+
+  &:last-child {
+    margin-inline-end: 0;
+  }
+}
+
+.autoWidth {
+  flex-grow: 0;
 }
 
 [data-slot='select-value'] .caption {

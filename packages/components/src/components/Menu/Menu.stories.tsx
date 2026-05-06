@@ -29,13 +29,14 @@ const meta = {
     'Menu.Item': Menu.Item,
     'Menu.Section': Menu.Section,
     'Menu.ItemText': Menu.ItemText,
+    'Menu.ItemAddon': Menu.ItemAddon,
     'Menu.Divider': Menu.Divider,
     'Menu.Header': Menu.Header,
   },
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:updated', 'date:2026-04-30'],
+  tags: ['status:updated', 'date:2026-05-15'],
 } satisfies Meta<typeof Menu>;
 
 export default meta;
@@ -353,29 +354,41 @@ export const Dividers: Story = {
         </Menu.Header>
         <Menu.Divider />
         <Menu.Item textValue="Dashboard">
-          <IconDashboard16 />
+          <Menu.ItemAddon>
+            <IconDashboard16 />
+          </Menu.ItemAddon>
           <Menu.ItemText>Dashboard</Menu.ItemText>
         </Menu.Item>
         <Menu.Item textValue="Notifications">
-          <IconBell16 />
+          <Menu.ItemAddon>
+            <IconBell16 />
+          </Menu.ItemAddon>
           <Menu.ItemText>Notifications</Menu.ItemText>
         </Menu.Item>
         <Menu.Item textValue="Create team">
-          <IconPlus16 />
+          <Menu.ItemAddon>
+            <IconPlus16 />
+          </Menu.ItemAddon>
           <Menu.ItemText>Create team</Menu.ItemText>
         </Menu.Item>
         <Menu.Item textValue="Settings">
-          <IconGear16 />
+          <Menu.ItemAddon>
+            <IconGear16 />
+          </Menu.ItemAddon>
           <Menu.ItemText>Settings</Menu.ItemText>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item textValue="Contact Support">
-          <IconMessage16 />
+          <Menu.ItemAddon>
+            <IconMessage16 />
+          </Menu.ItemAddon>
           <Menu.ItemText>Contact Support</Menu.ItemText>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item textValue="Log out">
-          <IconArrowRightToBracket16 />
+          <Menu.ItemAddon>
+            <IconArrowRightToBracket16 />
+          </Menu.ItemAddon>
           <Menu.ItemText>Log out</Menu.ItemText>
         </Menu.Item>
       </Menu>

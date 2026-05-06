@@ -11,6 +11,10 @@ type ItemComponent<T> = FC<AriaItemProps<T>> & {
 
 const ItemInner = AriaItem as ItemComponent<unknown>;
 
+export const itemPropAlign = ['start', 'center'] as const;
+
+export type ItemPropAlign = (typeof itemPropAlign)[number];
+
 export type ItemProps<T> = Omit<AriaItemProps<T>, 'children'> & {
   /** Additional CSS-classes. */
   className?: string;
@@ -20,6 +24,11 @@ export type ItemProps<T> = Omit<AriaItemProps<T>, 'children'> & {
   'data-testid'?: string | number;
   /** Rendered contents of the item or child items. */
   children?: ReactNode;
+  /**
+   * Vertical alignment of the item content.
+   * @default 'center'
+   */
+  align?: ItemPropAlign;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
