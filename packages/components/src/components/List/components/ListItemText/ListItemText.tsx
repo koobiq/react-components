@@ -10,8 +10,12 @@ import s from './ListItemText.module.css';
 import type { ListItemTextProps, ListItemTextRef } from './types';
 
 export const ListItemText = forwardRef<ListItemTextRef, ListItemTextProps>(
-  ({ className, children, caption, slotProps, ...other }, ref) => (
-    <span className={clsx(s.base, className)} {...other} ref={ref}>
+  ({ className, children, caption, autoWidth, slotProps, ...other }, ref) => (
+    <span
+      className={clsx(s.base, autoWidth && s.autoWidth, className)}
+      {...other}
+      ref={ref}
+    >
       <Typography as="span" align="start" ellipsis {...slotProps?.text}>
         {children}
       </Typography>

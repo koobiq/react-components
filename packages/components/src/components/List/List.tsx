@@ -22,6 +22,7 @@ import { Divider as ListDivider } from '../Divider';
 import { Typography } from '../Typography';
 
 import {
+  ListItemAddon,
   ListEmptyState,
   ListItemText,
   ListLoadingState,
@@ -140,6 +141,7 @@ type CompoundedComponent = typeof ListComponent & {
   Section: typeof Section;
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
+  ItemAddon: typeof ListItemAddon;
 };
 
 /**
@@ -152,3 +154,4 @@ List.Item = Item;
 List.Section = Section;
 List.Divider = Divider;
 List.ItemText = ListItemText;
+List.ItemAddon = ListItemAddon;

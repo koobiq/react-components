@@ -337,6 +337,18 @@
   }
 }
 
+.list-item:has([data-slot='list-item-addon']) {
+  gap: unset;
+}
+
+.list-item:where([data-align='center']) {
+  align-items: center;
+}
+
+.list-item:where([data-align='start']) {
+  align-items: start;
+}
+
 .list-item:where([data-hovered='true']) {
   --list-item-bg-color: var(--kbq-states-background-transparent-hover);
 }

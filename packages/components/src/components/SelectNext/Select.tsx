@@ -37,6 +37,7 @@ import type {
 import { FormField, FormFieldClearButton } from '../FormField';
 import type { ListItemText } from '../List';
 import { List } from '../List';
+import type { ListItemAddon } from '../List/components';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
@@ -389,6 +390,7 @@ type CompoundedComponent = typeof SelectComponent & {
   Section: typeof SelectSection;
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
+  ItemAddon: typeof ListItemAddon;
 };
 
 /**
@@ -401,3 +403,4 @@ SelectNext.Item = SelectOption;
 SelectNext.Section = SelectSection;
 SelectNext.Divider = Divider;
 SelectNext.ItemText = List.ItemText;
+SelectNext.ItemAddon = List.ItemAddon;

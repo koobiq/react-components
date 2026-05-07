@@ -1,9 +1,16 @@
 import { useCallback, useState } from 'react';
 
 import { isString, useBoolean } from '@koobiq/react-core';
+import { IconCircle16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SkeletonTypography, spacing, Toggle, Typography } from '../../index';
+import {
+  Badge,
+  SkeletonTypography,
+  spacing,
+  Toggle,
+  Typography,
+} from '../../index';
 import type { Selection } from '../../index';
 import { utilClasses } from '../../styles/utility';
 import { Checkbox } from '../Checkbox';
@@ -19,8 +26,10 @@ const meta = {
     'List.Section': List.Section,
     'List.Divider': List.Divider,
     'List.ItemText': List.ItemText,
+    'List.ItemAddon': List.ItemAddon,
   },
   argTypes: {},
+  tags: ['status:updated', 'date:2026-05-15'],
 } satisfies Meta<typeof List>;
 
 export default meta;
@@ -242,8 +251,8 @@ export const Sections: Story = {
   },
 };
 
-export const OtherExamples: Story = {
-  name: 'Other examples',
+export const ItemContent: Story = {
+  name: 'Item Content',
   render: function Render() {
     const [selected, setSelected] = useState<Selection>(new Set([1, 2]));
 
@@ -254,23 +263,52 @@ export const OtherExamples: Story = {
           selectionMode="single"
           defaultSelectedKeys={['1']}
         >
-          <List.Item key="1" textValue="First">
+          <List.Item key="1" textValue="First" align="start">
+            <List.ItemAddon>
+              <IconCircle16 />
+            </List.ItemAddon>
             <List.ItemText caption="HelperText">First</List.ItemText>
+            <List.ItemAddon>
+              <Badge size="compact">Badge</Badge>
+            </List.ItemAddon>
           </List.Item>
           <List.Item key="2" textValue="Second">
+            <List.ItemAddon>
+              <IconCircle16 />
+            </List.ItemAddon>
             <List.ItemText>Second</List.ItemText>
+            <List.ItemAddon>
+              <Badge size="compact">Badge</Badge>
+            </List.ItemAddon>
           </List.Item>
           <List.Item key="3" textValue="Third">
-            <List.ItemText>Third</List.ItemText>
+            <List.ItemAddon>
+              <IconCircle16 />
+            </List.ItemAddon>
+            <List.ItemText autoWidth>Third</List.ItemText>
+            <List.ItemAddon>
+              <Badge size="compact">Badge</Badge>
+            </List.ItemAddon>
           </List.Item>
           <List.Item key="4" textValue="Fourth">
+            <List.ItemAddon />
             <List.ItemText>Fourth</List.ItemText>
+            <List.ItemText
+              autoWidth
+              slotProps={{ text: { color: 'contrast-secondary' } }}
+            >
+              Some value
+            </List.ItemText>
           </List.Item>
           <List.Item key="5" textValue="Fifth">
+            <List.ItemAddon />
             <List.ItemText>Fifth</List.ItemText>
           </List.Item>
           <List.Divider />
-          <List.Item key="6" textValue="Sixth">
+          <List.Item key="6" textValue="Sixth" align="start">
+            <List.ItemAddon>
+              <IconCircle16 />
+            </List.ItemAddon>
             <List.ItemText
               slotProps={{
                 text: { ellipsis: false },
@@ -286,7 +324,10 @@ export const OtherExamples: Story = {
               quibusdam quidem sapiente voluptas.
             </List.ItemText>
           </List.Item>
-          <List.Item key="7" textValue="Seventh">
+          <List.Item key="7" textValue="Seventh" align="start">
+            <List.ItemAddon>
+              <IconCircle16 />
+            </List.ItemAddon>
             <List.ItemText
               slotProps={{
                 caption: { ellipsis: true },
@@ -313,16 +354,23 @@ export const OtherExamples: Story = {
           items={[
             { id: 1, name: 'item 1' },
             { id: 2, name: 'item 2' },
-            { id: 3, name: 'item 3' },
+            {
+              id: 3,
+              name: 'item 3',
+              caption:
+                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consectetur, eius. Aliquam eum maiores qui. Alias dignissimos doloremque quo sit.',
+            },
           ]}
         >
           {(item) => (
-            <List.Item textValue={item.name}>
-              <Checkbox
-                isSelected={!isString(selected) && selected.has(item.id)}
-                isReadOnly
-              />
-              {item.name}
+            <List.Item textValue={item.name} align="start">
+              <List.ItemAddon>
+                <Checkbox
+                  isSelected={!isString(selected) && selected.has(item.id)}
+                  isReadOnly
+                />
+              </List.ItemAddon>
+              <List.ItemText caption={item?.caption}>{item.name}</List.ItemText>
             </List.Item>
           )}
         </List>

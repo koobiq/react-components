@@ -3,6 +3,7 @@ import {
   Story,
   Props,
   Status,
+  Alert,
 } from '../../../../../.storybook/components';
 
 import * as Stories from './List.stories';
@@ -23,6 +24,8 @@ import { List } from '@koobiq/react-components';
 
 ## Usage
 
+List consists of a container element, with a list of items or sections inside. Users can select one or more items by clicking, tapping, or navigating with the keyboard.
+
 <Story of={Stories.Base} />
 
 ## Props
@@ -37,26 +40,7 @@ The component has the following helper components:
 - `List.Section` — a group of items.
 - `List.Divider` — list divider component
 - `List.ItemText` — a component to show text in an item.
-
-## Usage
-
-List consists of a container element, with a list of items or sections inside.
-Users can select one or more items by clicking, tapping, or navigating with the keyboard.
-
-```tsx
-import { List } from '@koobiq/react-components';
-
-<List>
-  <List.Item>
-    <List.ItemText caption="description">label</List.ItemText>
-  </List.Item>
-  <List.Section label="group">
-    <List.Item>
-      <List.ItemText caption="description">label</List.ItemText>
-    </List.Item>
-  </List.Section>
-</List>;
-```
+- `List.ItemAddon` — a component to show addon in an item.
 
 ## Content
 
@@ -70,6 +54,23 @@ Each item accepts an `key` prop, which is passed to the `onSelectionChange` hand
 Alternatively, if the item objects contain an id property, as shown in the example below, then this is used automatically and an `key` prop is not required.
 
 <Story of={Stories.DynamicCollections} />
+
+## Item content
+
+List items can be composed with helper components:
+
+- `List.ItemText` for text and captions.
+- `List.ItemAddon` for icons, badges, or other secondary content.
+
+List items also have layout props, such as `align`, which sets vertical alignment. Use `align="start"` for captions or multi-line content.
+
+<Alert>
+  If `List.Item` does not have plain text content in `children`, pass
+  `textValue`. The list uses it as the item's readable label for accessibility
+  and keyboard navigation.
+</Alert>
+
+<Story of={Stories.ItemContent} />
 
 ## Selection
 
@@ -150,7 +151,3 @@ Sections can be used by wrapping groups of `List.Item` in a `List.Section` compo
 Each `List.Section` takes a `title` and `key` prop.
 
 <Story of={Stories.Sections} />
-
-## Other examples
-
-<Story of={Stories.OtherExamples} />

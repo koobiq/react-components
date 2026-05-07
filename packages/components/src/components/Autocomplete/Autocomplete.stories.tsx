@@ -2,12 +2,13 @@ import { useCallback, useState } from 'react';
 
 import { isString, useDebounceCallback } from '@koobiq/react-core';
 import {
+  IconCircle16,
   IconMagnifyingGlass16,
   IconNetworkDevice16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { useFilter } from '../../index';
+import { Badge, useFilter } from '../../index';
 import { FlexBox } from '../FlexBox';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Typography } from '../Typography';
@@ -27,10 +28,11 @@ const meta = {
   subcomponents: {
     'Autocomplete.Item': Autocomplete.Item,
     'Autocomplete.ItemText': Autocomplete.ItemText,
+    'Autocomplete.ItemAddon': Autocomplete.ItemAddon,
     'Autocomplete.Section': Autocomplete.Section,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-04-30'],
+  tags: ['status:updated', 'date:2026-05-15'],
 } satisfies Meta<typeof Autocomplete>;
 
 export default meta;
@@ -67,6 +69,224 @@ export const DynamicItems: Story = {
         {(item) => (
           <Autocomplete.Item key={item.key}>{item.name}</Autocomplete.Item>
         )}
+      </Autocomplete>
+    );
+  },
+};
+
+export const ItemContent: Story = {
+  render: (args) => (
+    <Autocomplete label="Protocol" placeholder="Search a protocol" {...args}>
+      <Autocomplete.Item key="tls" align="start" textValue="TLS">
+        <Autocomplete.ItemAddon>
+          <IconCircle16 />
+        </Autocomplete.ItemAddon>
+        <Autocomplete.ItemText caption="Lorem ipsum dolor sit amet, consectetur adipisicing elit.">
+          TLS
+        </Autocomplete.ItemText>
+      </Autocomplete.Item>
+      <Autocomplete.Item key="ssh" align="start" textValue="SSH">
+        <Autocomplete.ItemAddon>
+          <IconCircle16 />
+        </Autocomplete.ItemAddon>
+        <Autocomplete.ItemText>SSH</Autocomplete.ItemText>
+        <Autocomplete.ItemAddon>
+          <Badge size="compact">Badge</Badge>
+        </Autocomplete.ItemAddon>
+      </Autocomplete.Item>
+      <Autocomplete.Item key="pgp" align="start" textValue="PGP">
+        <Autocomplete.ItemAddon>
+          <IconCircle16 />
+        </Autocomplete.ItemAddon>
+        <Autocomplete.ItemText
+          caption="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+          slotProps={{ caption: { ellipsis: true } }}
+        >
+          PGP
+        </Autocomplete.ItemText>
+      </Autocomplete.Item>
+      <Autocomplete.Item key="ipsec" align="start" textValue="IPSec">
+        <Autocomplete.ItemAddon>
+          <IconCircle16 />
+        </Autocomplete.ItemAddon>
+        <Autocomplete.ItemText>IPSec</Autocomplete.ItemText>
+      </Autocomplete.Item>
+      <Autocomplete.Item key="kerberos" align="start" textValue="Kerberos">
+        <Autocomplete.ItemAddon>
+          <IconCircle16 />
+        </Autocomplete.ItemAddon>
+        <Autocomplete.ItemText>Kerberos</Autocomplete.ItemText>
+      </Autocomplete.Item>
+    </Autocomplete>
+  ),
+};
+
+export const DisabledItems: Story = {
+  render: function Render() {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    return (
+      <Autocomplete
+        label="Protocol"
+        defaultItems={items}
+        placeholder="Search a protocol"
+        disabledKeys={['ssh', 'ipsec']}
+      >
+        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+      </Autocomplete>
+    );
+  },
+};
+
+export const NoItems: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m" direction="column">
+        <Autocomplete<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Search a protocol"
+          caption="No options available"
+          style={{ inlineSize: 200 }}
+        >
+          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+        </Autocomplete>
+        <Autocomplete<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Search a protocol"
+          noItemsText="No results found"
+          caption="No results found"
+          style={{ inlineSize: 200 }}
+        >
+          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+        </Autocomplete>
+      </FlexBox>
+    );
+  },
+};
+
+export const Section: Story = {
+  render: function Render() {
+    const options = [
+      {
+        name: 'Group 1',
+        children: [
+          { id: 2, name: 'Item 1' },
+          { id: 3, name: 'Item 2' },
+          { id: 4, name: 'Item 3' },
+        ],
+      },
+      {
+        name: 'Group 2',
+        children: [
+          { id: 6, name: 'Item 4' },
+          { id: 7, name: 'Item 5' },
+          { id: 8, name: 'Item 6' },
+        ],
+      },
+    ];
+
+    return (
+      <Autocomplete
+        label="Options"
+        defaultItems={options}
+        style={{ inlineSize: 200 }}
+        placeholder="Search…"
+      >
+        {(item) => (
+          <Autocomplete.Section
+            key={item.name}
+            items={item.children}
+            title={item.name}
+          >
+            {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+          </Autocomplete.Section>
+        )}
+      </Autocomplete>
+    );
+  },
+};
+
+export const DropdownFooter: Story = {
+  render: function Render(args) {
+    return (
+      <Autocomplete
+        label="Protocol"
+        placeholder="Search a protocol"
+        dropdownFooter="The text in the footer of the drop-down list."
+        {...args}
+      >
+        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+      </Autocomplete>
+    );
+  },
+};
+
+export const CustomFiltering: Story = {
+  render: function Render() {
+    const items: { key: string; name: string }[] = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    const myFilter: AutocompleteProps['defaultFilter'] = (
+      textValue,
+      inputValue
+    ) => {
+      if (inputValue.length === 0) {
+        return true;
+      }
+
+      const textValueLowerCase = textValue.toLocaleLowerCase();
+      const inputValueLowerCase = inputValue.toLocaleLowerCase();
+
+      return (
+        textValueLowerCase.slice(0, inputValue.length) === inputValueLowerCase
+      );
+    };
+
+    return (
+      <Autocomplete
+        label="Protocol"
+        defaultItems={items}
+        defaultFilter={myFilter}
+        placeholder="Search a protocol"
+        allowsCustomValue
+      >
+        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+      </Autocomplete>
+    );
+  },
+};
+
+export const Addons: Story = {
+  render: function Render(args) {
+    return (
+      <Autocomplete
+        label="Protocol"
+        placeholder="Search a protocol"
+        startAddon={<IconNetworkDevice16 />}
+        {...args}
+      >
+        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
       </Autocomplete>
     );
   },
@@ -123,77 +343,6 @@ export const Invalid: Story = {
   },
 };
 
-export const FullWidth: Story = {
-  parameters: {
-    layout: 'padded',
-  },
-  render: function Render(args) {
-    return (
-      <Autocomplete
-        label="Protocol"
-        placeholder="Search a protocol"
-        fullWidth
-        {...args}
-      >
-        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
-        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
-        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
-        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
-        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
-      </Autocomplete>
-    );
-  },
-};
-
-export const Disabled: Story = {
-  render: function Render(args) {
-    return (
-      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
-        {autocompletePropVariant.map((variant) => (
-          <Autocomplete
-            key={variant}
-            variant={variant}
-            caption="disabled"
-            aria-label="disabled"
-            placeholder={`variant = ${variant}`}
-            isDisabled
-            {...args}
-          >
-            <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
-            <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
-            <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
-            <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
-            <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
-          </Autocomplete>
-        ))}
-      </FlexBox>
-    );
-  },
-};
-
-export const DisabledItems: Story = {
-  render: function Render() {
-    const items = [
-      { key: 'tls', name: 'TLS' },
-      { key: 'ssh', name: 'SSH' },
-      { key: 'pgp', name: 'PGP' },
-      { key: 'ipsec', name: 'IPSec' },
-      { key: 'kerberos', name: 'Kerberos' },
-    ];
-
-    return (
-      <Autocomplete
-        label="Protocol"
-        defaultItems={items}
-        placeholder="Search a protocol"
-        disabledKeys={['ssh', 'ipsec']}
-      >
-        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
-      </Autocomplete>
-    );
-  },
-};
-
 export const Required: Story = {
   render: function Render(args) {
     return (
@@ -230,51 +379,16 @@ export const Required: Story = {
   },
 };
 
-export const ReadOnly: Story = {
-  render: function Render(args) {
-    return (
-      <Autocomplete
-        label="Protocol"
-        placeholder="Search a protocol"
-        isReadOnly
-        {...args}
-      >
-        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
-        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
-        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
-        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
-        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
-      </Autocomplete>
-    );
+export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
   },
-};
-
-export const Addons: Story = {
   render: function Render(args) {
     return (
       <Autocomplete
         label="Protocol"
         placeholder="Search a protocol"
-        startAddon={<IconNetworkDevice16 />}
-        {...args}
-      >
-        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
-        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
-        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
-        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
-        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
-      </Autocomplete>
-    );
-  },
-};
-
-export const DropdownFooter: Story = {
-  render: function Render(args) {
-    return (
-      <Autocomplete
-        label="Protocol"
-        placeholder="Search a protocol"
-        dropdownFooter="The text in the footer of the drop-down list."
+        fullWidth
         {...args}
       >
         <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
@@ -305,43 +419,46 @@ export const LabelPlacementAlignment: Story = {
   ),
 };
 
-export const Section: Story = {
-  render: function Render() {
-    const options = [
-      {
-        name: 'Group 1',
-        children: [
-          { id: 2, name: 'Item 1' },
-          { id: 3, name: 'Item 2' },
-          { id: 4, name: 'Item 3' },
-        ],
-      },
-      {
-        name: 'Group 2',
-        children: [
-          { id: 6, name: 'Item 4' },
-          { id: 7, name: 'Item 5' },
-          { id: 8, name: 'Item 6' },
-        ],
-      },
-    ];
+export const Disabled: Story = {
+  render: function Render(args) {
+    return (
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
+        {autocompletePropVariant.map((variant) => (
+          <Autocomplete
+            key={variant}
+            variant={variant}
+            caption="disabled"
+            aria-label="disabled"
+            placeholder={`variant = ${variant}`}
+            isDisabled
+            {...args}
+          >
+            <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+            <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+            <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+            <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+            <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+          </Autocomplete>
+        ))}
+      </FlexBox>
+    );
+  },
+};
 
+export const ReadOnly: Story = {
+  render: function Render(args) {
     return (
       <Autocomplete
-        label="Options"
-        defaultItems={options}
-        style={{ inlineSize: 200 }}
-        placeholder="Search…"
+        label="Protocol"
+        placeholder="Search a protocol"
+        isReadOnly
+        {...args}
       >
-        {(item) => (
-          <Autocomplete.Section
-            key={item.name}
-            items={item.children}
-            title={item.name}
-          >
-            {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
-          </Autocomplete.Section>
-        )}
+        <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+        <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+        <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+        <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+        <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
       </Autocomplete>
     );
   },
@@ -531,74 +648,6 @@ export const Events: Story = {
         </Autocomplete>
         <Typography>Current selected key: {selectedKey}</Typography>
         <Typography>Current input text: {value}</Typography>
-      </FlexBox>
-    );
-  },
-};
-
-export const CustomFiltering: Story = {
-  render: function Render() {
-    const items: { key: string; name: string }[] = [
-      { key: 'tls', name: 'TLS' },
-      { key: 'ssh', name: 'SSH' },
-      { key: 'pgp', name: 'PGP' },
-      { key: 'ipsec', name: 'IPSec' },
-      { key: 'kerberos', name: 'Kerberos' },
-    ];
-
-    const myFilter: AutocompleteProps['defaultFilter'] = (
-      textValue,
-      inputValue
-    ) => {
-      if (inputValue.length === 0) {
-        return true;
-      }
-
-      const textValueLowerCase = textValue.toLocaleLowerCase();
-      const inputValueLowerCase = inputValue.toLocaleLowerCase();
-
-      return (
-        textValueLowerCase.slice(0, inputValue.length) === inputValueLowerCase
-      );
-    };
-
-    return (
-      <Autocomplete
-        label="Protocol"
-        defaultItems={items}
-        defaultFilter={myFilter}
-        placeholder="Search a protocol"
-        allowsCustomValue
-      >
-        {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
-      </Autocomplete>
-    );
-  },
-};
-
-export const NoItems: Story = {
-  render: function Render() {
-    return (
-      <FlexBox gap="m" direction="column">
-        <Autocomplete<{ name: string }>
-          items={[]}
-          aria-label="No items"
-          placeholder="Search a protocol"
-          caption="No options available"
-          style={{ inlineSize: 200 }}
-        >
-          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
-        </Autocomplete>
-        <Autocomplete<{ name: string }>
-          items={[]}
-          aria-label="No items"
-          placeholder="Search a protocol"
-          noItemsText="No results found"
-          caption="No results found"
-          style={{ inlineSize: 200 }}
-        >
-          {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
-        </Autocomplete>
       </FlexBox>
     );
   },

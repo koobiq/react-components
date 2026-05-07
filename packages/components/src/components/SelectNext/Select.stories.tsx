@@ -29,9 +29,10 @@ const meta = {
     'Select.Section': Select.Section,
     'Select.Divider': Select.Divider,
     'Select.ItemText': Select.ItemText,
+    'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-04-30'],
+  tags: ['status:updated', 'date:2026-05-15'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -102,6 +103,243 @@ export const Content: Story = {
       </Select>
     );
   },
+};
+
+export const DisabledOptions: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        caption="disabled"
+        label="Attack type"
+        disabledKeys={[4, 5]}
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const NoItems: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m" direction="column">
+        <Select<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Select an option"
+          caption="No options available"
+          style={{ inlineSize: 200 }}
+          allowsEmptyCollection
+        >
+          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
+        </Select>
+        <Select<{ name: string }>
+          items={[]}
+          aria-label="No items"
+          placeholder="Select an option"
+          noItemsText="No results found"
+          caption="No results found"
+          style={{ inlineSize: 200 }}
+          allowsEmptyCollection
+        >
+          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
+        </Select>
+      </FlexBox>
+    );
+  },
+};
+
+export const Section: Story = {
+  render: function Render() {
+    const options = [
+      {
+        name: 'Group 1',
+        children: [
+          { id: 2, name: 'Item 1' },
+          { id: 3, name: 'Item 2' },
+          { id: 4, name: 'Item 3' },
+        ],
+      },
+      {
+        name: 'Group 2',
+        children: [
+          { id: 6, name: 'Item 4' },
+          { id: 7, name: 'Item 5' },
+          { id: 8, name: 'Item 6' },
+        ],
+      },
+    ];
+
+    return (
+      <Select
+        items={options}
+        label="Options"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+      >
+        {(section) => (
+          <Select.Section
+            id={section.name}
+            title={section.name}
+            items={section.children}
+          >
+            {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+          </Select.Section>
+        )}
+      </Select>
+    );
+  },
+};
+
+export const ItemContent: Story = {
+  name: 'With icons',
+  render: function Render() {
+    const options = [
+      { id: 'First', icon: IconServer16, caption: 'Helper text' },
+      { id: 'Second', icon: IconBug16, caption: 'Helper text' },
+      { id: 'Third', icon: IconAnomaly16, caption: 'Helper text' },
+      { id: 'Fourth', icon: IconDesktop16, caption: 'Helper text' },
+      { id: 'Fifth', icon: IconSwords16, caption: 'Helper text' },
+    ];
+
+    const [selected, setSelected] = useState<string | number | null>('First');
+
+    return (
+      <Select
+        value={selected}
+        items={options}
+        label="Options"
+        onChange={setSelected}
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+      >
+        {({ id, icon: Icon, caption }) => (
+          <Select.Item textValue={id} align="start">
+            <Select.ItemAddon>
+              <Icon />
+            </Select.ItemAddon>
+            <Select.ItemText caption={caption}>{id}</Select.ItemText>
+          </Select.Item>
+        )}
+      </Select>
+    );
+  },
+};
+
+export const DropdownFooter: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        dropdownFooter="The text in the footer of the drop-down list."
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const Addons: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        defaultValue={1}
+        label="Attack type"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        startAddon={<IconCrosshairs16 />}
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const Invalid: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        errorMessage="This field is required"
+        isInvalid
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const Required: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
+        <Select
+          items={options}
+          caption="required"
+          label="Attack type"
+          style={{ inlineSize: 200 }}
+          placeholder="Select an option"
+          isRequired
+        >
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+        </Select>
+        <Select
+          items={options}
+          label="Attack type"
+          style={{ inlineSize: 200 }}
+          placeholder="Select an option"
+          caption="required, without an indicator"
+          slotProps={{ label: { isRequired: false } }}
+          isRequired
+        >
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+        </Select>
+      </FlexBox>
+    );
+  },
+};
+
+export const FullWidth: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        placeholder="Select an option"
+        fullWidth
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const LabelPlacementAlignment: Story = {
+  name: 'Label placement and alignment',
+  render: () => (
+    <Select
+      items={options}
+      labelAlign="end"
+      labelPlacement="side"
+      label={`Attack\u00A0type`}
+      placeholder="Select an option"
+    >
+      {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+    </Select>
+  ),
 };
 
 export const SingleSelection: Story = {
@@ -207,23 +445,6 @@ export const SelectedTagsOverflow: Story = {
   },
 };
 
-export const Invalid: Story = {
-  render: function Render() {
-    return (
-      <Select
-        items={options}
-        label="Attack type"
-        style={{ inlineSize: 200 }}
-        placeholder="Select an option"
-        errorMessage="This field is required"
-        isInvalid
-      >
-        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-      </Select>
-    );
-  },
-};
-
 export const Disabled: Story = {
   render: function Render() {
     return (
@@ -240,86 +461,6 @@ export const Disabled: Story = {
       </Select>
     );
   },
-};
-
-export const DisabledOptions: Story = {
-  render: function Render() {
-    return (
-      <Select
-        items={options}
-        caption="disabled"
-        label="Attack type"
-        disabledKeys={[4, 5]}
-        style={{ inlineSize: 200 }}
-        placeholder="Select an option"
-      >
-        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-      </Select>
-    );
-  },
-};
-
-export const Required: Story = {
-  render: function Render() {
-    return (
-      <FlexBox gap="m" direction={{ xs: 'column', l: 'row' }}>
-        <Select
-          items={options}
-          caption="required"
-          label="Attack type"
-          style={{ inlineSize: 200 }}
-          placeholder="Select an option"
-          isRequired
-        >
-          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-        </Select>
-        <Select
-          items={options}
-          label="Attack type"
-          style={{ inlineSize: 200 }}
-          placeholder="Select an option"
-          caption="required, without an indicator"
-          slotProps={{ label: { isRequired: false } }}
-          isRequired
-        >
-          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-        </Select>
-      </FlexBox>
-    );
-  },
-};
-
-export const FullWidth: Story = {
-  parameters: {
-    layout: 'padded',
-  },
-  render: function Render() {
-    return (
-      <Select
-        items={options}
-        label="Attack type"
-        placeholder="Select an option"
-        fullWidth
-      >
-        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-      </Select>
-    );
-  },
-};
-
-export const LabelPlacementAlignment: Story = {
-  name: 'Label placement and alignment',
-  render: () => (
-    <Select
-      items={options}
-      labelAlign="end"
-      labelPlacement="side"
-      label={`Attack\u00A0type`}
-      placeholder="Select an option"
-    >
-      {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-    </Select>
-  ),
 };
 
 export const ClearButton: Story = {
@@ -339,23 +480,6 @@ export const ClearButton: Story = {
   },
 };
 
-export const Addons: Story = {
-  render: function Render() {
-    return (
-      <Select
-        items={options}
-        defaultValue={1}
-        label="Attack type"
-        style={{ inlineSize: 200 }}
-        placeholder="Select an option"
-        startAddon={<IconCrosshairs16 />}
-      >
-        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-      </Select>
-    );
-  },
-};
-
 export const Searchable: Story = {
   render: function Render() {
     return (
@@ -367,22 +491,6 @@ export const Searchable: Story = {
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
         isSearchable
-      >
-        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-      </Select>
-    );
-  },
-};
-
-export const DropdownFooter: Story = {
-  render: function Render() {
-    return (
-      <Select
-        items={options}
-        label="Attack type"
-        style={{ inlineSize: 200 }}
-        placeholder="Select an option"
-        dropdownFooter="The text in the footer of the drop-down list."
       >
         {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
@@ -409,143 +517,6 @@ export const Open: Story = {
         </Select>
         <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
       </FlexBox>
-    );
-  },
-};
-
-export const NoItems: Story = {
-  render: function Render() {
-    return (
-      <FlexBox gap="m" direction="column">
-        <Select<{ name: string }>
-          items={[]}
-          aria-label="No items"
-          placeholder="Select an option"
-          caption="No options available"
-          style={{ inlineSize: 200 }}
-          allowsEmptyCollection
-        >
-          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
-        </Select>
-        <Select<{ name: string }>
-          items={[]}
-          aria-label="No items"
-          placeholder="Select an option"
-          noItemsText="No results found"
-          caption="No results found"
-          style={{ inlineSize: 200 }}
-          allowsEmptyCollection
-        >
-          {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
-        </Select>
-      </FlexBox>
-    );
-  },
-};
-
-export const WithIcons: Story = {
-  name: 'With icons',
-  render: function Render() {
-    const options = [
-      { id: 'First', icon: IconServer16 },
-      { id: 'Second', icon: IconBug16 },
-      { id: 'Third', icon: IconAnomaly16 },
-      { id: 'Fourth', icon: IconDesktop16 },
-      { id: 'Fifth', icon: IconSwords16 },
-    ];
-
-    const [selected, setSelected] = useState<string | number | null>('First');
-
-    return (
-      <Select
-        value={selected}
-        items={options}
-        label="Options"
-        onChange={setSelected}
-        style={{ inlineSize: 200 }}
-        placeholder="Select an option"
-      >
-        {({ id, icon: Icon }) => (
-          <Select.Item textValue={id}>
-            <Icon />
-            <Select.ItemText>{id}</Select.ItemText>
-          </Select.Item>
-        )}
-      </Select>
-    );
-  },
-};
-
-export const WithItemDetails: Story = {
-  name: 'With item details',
-  render: function Render() {
-    const [selected, setSelected] = useState<string | number | null>('First');
-
-    const options = [
-      { id: 'First', caption: 'Helper text' },
-      { id: 'Second', caption: 'Helper text' },
-      { id: 'Third', caption: 'Helper text' },
-      { id: 'Fourth', caption: 'Helper text' },
-      { id: 'Fifth', caption: 'Helper text' },
-    ];
-
-    return (
-      <Select
-        value={selected}
-        items={options}
-        label="Options"
-        onChange={setSelected}
-        placeholder="Select an option"
-        style={{ inlineSize: 200 }}
-      >
-        {({ id, caption }) => (
-          <Select.Item textValue={id}>
-            <Select.ItemText caption={caption}>{id}</Select.ItemText>
-          </Select.Item>
-        )}
-      </Select>
-    );
-  },
-};
-
-export const Section: Story = {
-  render: function Render() {
-    const options = [
-      {
-        name: 'Group 1',
-        children: [
-          { id: 2, name: 'Item 1' },
-          { id: 3, name: 'Item 2' },
-          { id: 4, name: 'Item 3' },
-        ],
-      },
-      {
-        name: 'Group 2',
-        children: [
-          { id: 6, name: 'Item 4' },
-          { id: 7, name: 'Item 5' },
-          { id: 8, name: 'Item 6' },
-        ],
-      },
-    ];
-
-    return (
-      <Select
-        items={options}
-        label="Options"
-        style={{ inlineSize: 200 }}
-        placeholder="Select an option"
-      >
-        {(section) => (
-          <Select.Section
-            id={section.name}
-            title={section.name}
-            items={section.children}
-          >
-            {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
-          </Select.Section>
-        )}
-      </Select>
     );
   },
 };

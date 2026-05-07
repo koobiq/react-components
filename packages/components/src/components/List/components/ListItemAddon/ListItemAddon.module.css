@@ -1,0 +1,21 @@
+.base {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: center;
+  margin-inline-end: var(--kbq-size-s);
+  min-inline-size: var(--kbq-size-l);
+
+  &:last-child {
+    margin-inline-end: 0;
+  }
+
+  &::after {
+    content: '\00a0';
+    font-size: 0;
+  }
+}
+
+.disableMargin {
+  margin: 0;
+}

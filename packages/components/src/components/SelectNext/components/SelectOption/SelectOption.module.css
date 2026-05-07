@@ -1,0 +1,5 @@
+.base:has([data-slot='list-item-addon']) {
+  .checkbox {
+    margin-inline-end: var(--kbq-size-s);
+  }
+}
