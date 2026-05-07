@@ -98,6 +98,7 @@ export type TooltipProps = ExtendableProps<
     crossOffset?: number;
     /**
      * If `true`, the arrow isn't shown.
+     * @default true
      */
     hideArrow?: boolean;
     /**

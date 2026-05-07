@@ -29,6 +29,9 @@ import type { TooltipProps, TooltipRef } from './types';
 export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const {
     variant = 'contrast',
+    // TODO: Replace `hideArrow` with an affirmative `showArrow` prop in the next major release.
+    // Boolean props should default to `false`. This default is kept for compatibility.
+    hideArrow = true,
     placement: placementProp = 'top',
     closeDelay = 120,
     delay = 120,
@@ -36,7 +39,6 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     isOpen: isOpenProp,
     disabled,
     open,
-    hideArrow,
     control,
     children,
     anchorRef,

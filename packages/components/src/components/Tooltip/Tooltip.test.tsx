@@ -62,11 +62,11 @@ describe('Tooltip', () => {
   it('check the hideArrow prop', () => {
     const { rerender } = render(<Tooltip {...baseProps} isOpen />);
 
-    expect(getRoot()).toHaveAttribute('data-arrow', 'true');
-
-    rerender(<Tooltip {...baseProps} hideArrow isOpen />);
-
     expect(getRoot()).not.toHaveAttribute('data-arrow');
+
+    rerender(<Tooltip {...baseProps} hideArrow={false} isOpen />);
+
+    expect(getRoot()).toHaveAttribute('data-arrow', 'true');
   });
 
   it('should apply the focus trap', async () => {
