@@ -11,7 +11,7 @@ export const rows: Rows = [
   {
     component: 'Provider',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
@@ -29,13 +29,13 @@ export const rows: Rows = [
   {
     component: 'Button',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
     component: 'IconButton',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
@@ -47,37 +47,37 @@ export const rows: Rows = [
   {
     component: 'Link',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
     component: 'Checkbox',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
     component: 'Radio, RadioGroup',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
     component: 'Toggle',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
     component: 'Input',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
     component: 'Textarea',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2024',
   },
   {
@@ -119,7 +119,7 @@ export const rows: Rows = [
   {
     component: 'Backdrop',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2025',
   },
   {
@@ -131,13 +131,13 @@ export const rows: Rows = [
   {
     component: 'Modal',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2025',
   },
   {
     component: 'SidePanel',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2025',
   },
   {
@@ -161,7 +161,7 @@ export const rows: Rows = [
   {
     component: 'Popover',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2025',
   },
   {
@@ -179,7 +179,7 @@ export const rows: Rows = [
   {
     component: 'AnimatedIcon',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2025',
   },
   {
@@ -191,7 +191,7 @@ export const rows: Rows = [
   {
     component: 'Divider',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q2 2025',
   },
   {
@@ -203,7 +203,7 @@ export const rows: Rows = [
   {
     component: 'ButtonToggleGroup',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q2 2025',
   },
   {
@@ -221,7 +221,7 @@ export const rows: Rows = [
   {
     component: 'Calendar',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q2 2025',
   },
   {
@@ -233,25 +233,25 @@ export const rows: Rows = [
   {
     component: 'DateInput',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q3 2025',
   },
   {
     component: 'DatePicker',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q3 2025',
   },
   {
     component: 'TimePicker',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q3 2025',
   },
   {
     component: 'SearchInput',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q3 2025',
   },
   {
@@ -263,7 +263,7 @@ export const rows: Rows = [
   {
     component: 'Tabs',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2025',
   },
   {
@@ -275,7 +275,7 @@ export const rows: Rows = [
   {
     component: 'CheckboxGroup',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q4 2025',
   },
   {
@@ -293,7 +293,7 @@ export const rows: Rows = [
   {
     component: 'Accordion',
     status: '✅ Done',
-    stage: '🔵 experimental',
+    stage: '🟢 stable',
     planned: 'Q1 2026',
   },
   {
@@ -325,5 +325,15 @@ export const rows: Rows = [
     status: '✅ Done',
     stage: '🔵 experimental',
     planned: 'Q1 2026',
+  },
+  {
+    component: 'DropdownMenu',
+    status: '🚧 Planned',
+    planned: 'Q2 2026',
+  },
+  {
+    component: 'Autocomplete (Multiple)',
+    status: '🚧 Planned',
+    planned: 'Q2 2026',
   },
 ];
