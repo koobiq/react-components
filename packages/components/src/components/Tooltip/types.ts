@@ -97,13 +97,8 @@ export type TooltipProps = ExtendableProps<
      */
     crossOffset?: number;
     /**
-     * If `true`, the arrow is shown.
-     * @default false
-     */
-    arrow?: boolean;
-    /**
      * If `true`, the arrow isn't shown.
-     * @deprecated Use the `arrow` prop instead.
+     * @default true
      */
     hideArrow?: boolean;
     /**

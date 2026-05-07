@@ -29,6 +29,9 @@ import type { TooltipProps, TooltipRef } from './types';
 export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const {
     variant = 'contrast',
+    // TODO: Replace `hideArrow` with an affirmative `showArrow` prop in the next major release.
+    // Boolean props should default to `false`. This default is kept for compatibility.
+    hideArrow = true,
     placement: placementProp = 'top',
     closeDelay = 120,
     delay = 120,
@@ -36,8 +39,6 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     isOpen: isOpenProp,
     disabled,
     open,
-    arrow: arrowProp,
-    hideArrow,
     control,
     children,
     anchorRef,
@@ -65,13 +66,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     );
   }
 
-  if (process.env.NODE_ENV !== 'production' && 'hideArrow' in props) {
-    deprecate(
-      'Tooltip: the "hideArrow" prop is deprecated. Use the "arrow" prop instead.'
-    );
-  }
-
-  const showArrow = arrowProp ?? (hideArrow === undefined ? false : !hideArrow);
+  const showArrow = !hideArrow;
 
   const offset = showArrow ? offsetProp : offsetProp || 4;
 

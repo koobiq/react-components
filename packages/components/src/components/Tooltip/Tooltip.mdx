@@ -23,14 +23,6 @@ import { Tooltip } from '@koobiq/react-components';
 
 ## Usage
 
-<Story of={Stories.Base} />
-
-## Props
-
-<Props of={Stories.Base} />
-
-## Usage
-
 The best way to use a tooltip's control in most cases is to use
 the `control` render function with the `TooltipPropControl` type.
 
@@ -39,16 +31,14 @@ Pass these props to your component.
 
 The `children` prop is `ReactNode` type.
 
-```tsx
-import { Button, Tooltip } from '@koobiq/react-components';
-
-<Tooltip control={(props) => <Button {...props}>Hover me</Button>}>
-  Content
-</Tooltip>;
-```
+<Story of={Stories.Base} />
 
 You can also use controlled state to open the component and place the control element outside
 the component. For this, see the [Controlled open state](#controlled-open-state) section.
+
+## Props
+
+<Props of={Stories.Base} />
 
 ## Variant
 
@@ -65,7 +55,7 @@ The `isDisabled` prop can be provided to a Tooltip to disable the tooltip, witho
 ## Arrow
 
 By default, the tooltip has no arrow.
-Use `arrow` to show an arrow pointing to the anchor element.
+Use `hideArrow={false}` to show an arrow pointing to the anchor element.
 
 <Story of={Stories.Arrow} />
 

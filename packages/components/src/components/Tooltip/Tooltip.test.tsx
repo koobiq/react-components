@@ -59,26 +59,14 @@ describe('Tooltip', () => {
     );
   });
 
-  it('should hide the arrow by default and show it when arrow is true', () => {
+  it('check the hideArrow prop', () => {
     const { rerender } = render(<Tooltip {...baseProps} isOpen />);
 
     expect(getRoot()).not.toHaveAttribute('data-arrow');
 
-    rerender(<Tooltip {...baseProps} arrow isOpen />);
+    rerender(<Tooltip {...baseProps} hideArrow={false} isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'true');
-  });
-
-  it('should support deprecated hideArrow prop', () => {
-    const { rerender } = render(
-      <Tooltip {...baseProps} hideArrow={false} isOpen />
-    );
-
-    expect(getRoot()).toHaveAttribute('data-arrow', 'true');
-
-    rerender(<Tooltip {...baseProps} hideArrow isOpen />);
-
-    expect(getRoot()).not.toHaveAttribute('data-arrow');
   });
 
   it('should apply the focus trap', async () => {
