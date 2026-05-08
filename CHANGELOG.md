@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.32.0](https://github.com/koobiq/react-components/compare/0.31.0...0.32.0) (2026-05-08)
+
+
+### 🚀 Features
+
+* **List, Autocomplete, Menu, SelectNext:** add `ItemAddon` and item alignment (DS-4775) ([#332](https://github.com/koobiq/react-components/issues/332)) ([c6b24a0](https://github.com/koobiq/react-components/commit/c6b24a0145c7eb02c62dc505dcd376d50e4bb784))
+* **Tooltip:** hide arrow by default (DS-4736) ([#322](https://github.com/koobiq/react-components/issues/322)) ([bac1374](https://github.com/koobiq/react-components/commit/bac1374288356373c3eeb0fedbd437c80084b7de))
+
 ## [0.31.0](https://github.com/koobiq/react-components/compare/0.30.1...0.31.0) (2026-05-04)
 
 
