@@ -1,7 +1,17 @@
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vitest/config';
+import { analyzer } from 'vite-bundle-analyzer';
+import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-});
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    mode === 'analyze' &&
+      analyzer({
+        analyzerMode: 'static',
+        fileName: 'stats',
+        openAnalyzer: false,
+        reportTitle: 'Vite Bundle Analyzer',
+      }),
+  ],
+}));
