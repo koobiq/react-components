@@ -12,11 +12,14 @@ import { IconCircleChevronRight16 } from '@koobiq/react-icons';
 import logo from './assets/koobiq.svg';
 
 import s from './App.module.css';
-import { AnimatedBackground } from './components';
+import { AnimatedBackground, ThemeSwitch } from './components';
 
 export default function Home() {
   return (
     <Provider>
+      <header className={s.header}>
+        <ThemeSwitch className={spacing({ mis: 'auto' })} />
+      </header>
       <AnimatedBackground />
       <div className={s.content}>
         <FlexBox gap="m" alignItems="center">
