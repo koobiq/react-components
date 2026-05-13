@@ -1,0 +1,82 @@
+.base {
+  --kbq-icon-item-size: ;
+  --kbq-icon-item-border-radius: ;
+  --kbq-icon-item-color: ;
+  --kbq-icon-item-bg-color: ;
+
+  display: inline-flex;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  vertical-align: middle;
+  flex-shrink: 0;
+  inline-size: var(--kbq-icon-item-size);
+  block-size: var(--kbq-icon-item-size);
+  border-radius: var(--kbq-icon-item-border-radius);
+  color: var(--kbq-icon-item-color);
+  background-color: var(--kbq-icon-item-bg-color);
+}
+
+/* size */
+.normal {
+  --kbq-icon-item-size: var(--kbq-size-3xl);
+  --kbq-icon-item-border-radius: var(--kbq-size-l);
+}
+
+.big {
+  --kbq-icon-item-size: var(--kbq-size-5xl);
+  --kbq-icon-item-border-radius: var(--kbq-size-xxl);
+}
+
+/* solid */
+.theme:where(.solid) {
+  --kbq-icon-item-color: var(--kbq-icon-white);
+  --kbq-icon-item-bg-color: var(--kbq-background-theme);
+}
+
+.contrast:where(.solid) {
+  --kbq-icon-item-color: var(--kbq-icon-white);
+  --kbq-icon-item-bg-color: var(--kbq-background-contrast);
+}
+
+.warning:where(.solid) {
+  --kbq-icon-item-color: var(--kbq-icon-white);
+  --kbq-icon-item-bg-color: var(--kbq-background-warning);
+}
+
+.error:where(.solid) {
+  --kbq-icon-item-color: var(--kbq-icon-white);
+  --kbq-icon-item-bg-color: var(--kbq-background-error);
+}
+
+.success:where(.solid) {
+  --kbq-icon-item-color: var(--kbq-icon-white);
+  --kbq-icon-item-bg-color: var(--kbq-background-success);
+}
+
+/* fade */
+.theme:where(.fade) {
+  --kbq-icon-item-color: var(--kbq-icon-theme);
+  --kbq-icon-item-bg-color: var(--kbq-background-theme-fade);
+}
+
+.contrast:where(.fade) {
+  --kbq-icon-item-color: var(--kbq-icon-contrast);
+  --kbq-icon-item-bg-color: var(--kbq-background-contrast-fade);
+}
+
+.warning:where(.fade) {
+  --kbq-icon-item-color: var(--kbq-icon-warning);
+  --kbq-icon-item-bg-color: var(--kbq-background-warning-fade);
+}
+
+.error:where(.fade) {
+  --kbq-icon-item-color: var(--kbq-icon-error);
+  --kbq-icon-item-bg-color: var(--kbq-background-error-fade);
+}
+
+.success:where(.fade) {
+  --kbq-icon-item-color: var(--kbq-icon-success);
+  --kbq-icon-item-bg-color: var(--kbq-background-success-fade);
+}

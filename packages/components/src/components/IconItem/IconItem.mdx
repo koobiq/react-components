@@ -1,0 +1,62 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './IconItem.stories';
+
+<Meta of={Stories} />
+
+# IconItem
+
+<Status variant="experimental" />
+
+IconItem is a small colored container for an icon.
+Use it to show a product, status, or object icon with a clear visual accent.
+
+## Import
+
+```tsx
+import { IconItem } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Size
+
+Use the `size` prop to change the item size.
+
+<Story of={Stories.Size} />
+
+## Color
+
+Use the `color` prop to set the item color.
+
+<Story of={Stories.Color} />
+
+## Variant
+
+Use the `variant` prop to change the item view.
+
+<Story of={Stories.Variant} />
+
+## CSS Variables
+
+Use CSS variables to customize the icon item.
+
+```css
+:root {
+  --kbq-icon-item-size: var(--kbq-size-3xl);
+  --kbq-icon-item-border-radius: var(--kbq-size-l);
+  --kbq-icon-item-color: var(--kbq-icon-white);
+  --kbq-icon-item-bg-color: var(--kbq-background-theme);
+}
+```

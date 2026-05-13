@@ -326,4 +326,10 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q1 2026',
   },
+  {
+    component: 'IconItem',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q2 2026',
+  },
 ];
