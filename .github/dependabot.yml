@@ -15,9 +15,12 @@ updates:
     groups:
       eslint:
         patterns:
-          - 'eslint*'
+          - 'eslint'
+          - 'eslint-*'
+          - '@eslint/*'
+          - 'typescript-eslint'
           - '@typescript-eslint/*'
-          - '@stylistic/*'
+          - 'globals'
       prettier:
         patterns:
           - 'prettier*'
