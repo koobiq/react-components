@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.33.0](https://github.com/koobiq/react-components/compare/0.32.0...0.33.0) (2026-05-13)
+
+
+### 🚀 Features
+
+* **components:** add `IconItem` (DS-5072) ([#336](https://github.com/koobiq/react-components/issues/336)) ([d8183a5](https://github.com/koobiq/react-components/commit/d8183a57b6670da935b69fd790a61f1cf5145232))
+
+
+### 🐞 Bug Fixes
+
+* **IconItem:** correct icon colors (DS-5089) ([#338](https://github.com/koobiq/react-components/issues/338)) ([bdc495b](https://github.com/koobiq/react-components/commit/bdc495b649a31c1d96abb2e5598beacc4929b06a))
+
 ## [0.32.0](https://github.com/koobiq/react-components/compare/0.31.0...0.32.0) (2026-05-08)
 
 
