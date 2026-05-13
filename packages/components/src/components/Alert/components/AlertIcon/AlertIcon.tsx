@@ -14,7 +14,12 @@ export const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(
       {...other}
       color={matchStatusToIconItemColor[status]}
       variant={isCompact ? 'fade' : 'solid'}
-      className={clsx(s.base, isCompact && s.compact, className)}
+      className={clsx(
+        s.base,
+        isCompact && s[status],
+        isCompact && s.compact,
+        className
+      )}
       ref={ref}
     >
       {icon || matchStatusToIcon[isCompact ? 'compact' : 'normal'][status]}
