@@ -1,6 +1,10 @@
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
+import type { DataAttributeProps } from '@koobiq/react-core';
+
 import type { IconButtonProps } from '../IconButton';
+
+import type { AlertIconProps } from './components';
 
 export const alertPropStatus = ['info', 'warning', 'error', 'success'] as const;
 
@@ -53,8 +57,9 @@ export type AlertBaseProps = {
   onClose?: IconButtonProps['onPress'];
   /** The props used for each slot inside. */
   slotProps?: {
-    content?: ComponentPropsWithRef<'div'>;
-    statusIcon?: ComponentPropsWithRef<'div'>;
+    content?: ComponentPropsWithRef<'div'> & DataAttributeProps;
+    statusIcon?: AlertIconProps;
     closeIcon?: IconButtonProps;
   };
-} & AlertDeprecatedProps;
+} & AlertDeprecatedProps &
+  DataAttributeProps;

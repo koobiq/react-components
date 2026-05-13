@@ -50,6 +50,36 @@ describe('Alert', () => {
     expect(customIcon).toBeInTheDocument();
   });
 
+  it('should render a default status icon through IconItem', () => {
+    render(
+      <Alert
+        {...baseProps}
+        slotProps={{ statusIcon: { 'data-testid': 'status-icon' } }}
+      />
+    );
+
+    const statusIcon = screen.getByTestId('status-icon');
+
+    expect(statusIcon).toHaveAttribute('data-color', 'contrast');
+    expect(statusIcon).toHaveAttribute('data-variant', 'solid');
+  });
+
+  it('should render a compact status icon through IconItem fade variant', () => {
+    render(
+      <Alert
+        {...baseProps}
+        isCompact
+        status="warning"
+        slotProps={{ statusIcon: { 'data-testid': 'status-icon' } }}
+      />
+    );
+
+    const statusIcon = screen.getByTestId('status-icon');
+
+    expect(statusIcon).toHaveAttribute('data-color', 'warning');
+    expect(statusIcon).toHaveAttribute('data-variant', 'fade');
+  });
+
   it(`should hide a default icon`, () => {
     render(
       <Alert
