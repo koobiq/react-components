@@ -36,7 +36,7 @@
 }
 
 .contrast:where(.solid) {
-  --kbq-icon-item-color: var(--kbq-icon-white);
+  --kbq-icon-item-color: var(--kbq-icon-on-contrast);
   --kbq-icon-item-bg-color: var(--kbq-background-contrast);
 }
 
@@ -67,7 +67,7 @@
 }
 
 .warning:where(.fade) {
-  --kbq-icon-item-color: var(--kbq-icon-warning);
+  --kbq-icon-item-color: var(--kbq-foreground-warning);
   --kbq-icon-item-bg-color: var(--kbq-background-warning-fade);
 }
 
@@ -77,6 +77,6 @@
 }
 
 .success:where(.fade) {
-  --kbq-icon-item-color: var(--kbq-icon-success);
+  --kbq-icon-item-color: var(--kbq-foreground-success);
   --kbq-icon-item-bg-color: var(--kbq-background-success-fade);
 }
