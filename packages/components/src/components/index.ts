@@ -2,6 +2,7 @@ export * from './Provider';
 export * from './FlexBox';
 export * from './Container';
 export * from './FormField';
+export * from './IconItem';
 export * from './Alert';
 export * from './Button';
 export * from './IconButton';
