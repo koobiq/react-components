@@ -9,3 +9,19 @@
 
   margin: calc(var(--kbq-size-m) + var(--kbq-size-3xs)) var(--kbq-size-s) 0 0;
 }
+
+.compact:where(.info) {
+  --kbq-icon-item-color: var(--kbq-icon-contrast);
+}
+
+.compact:where(.success) {
+  --kbq-icon-item-color: var(--kbq-icon-success);
+}
+
+.compact:where(.warning) {
+  --kbq-icon-item-color: var(--kbq-icon-warning);
+}
+
+.compact:where(.error) {
+  --kbq-icon-item-color: var(--kbq-icon-error);
+}
