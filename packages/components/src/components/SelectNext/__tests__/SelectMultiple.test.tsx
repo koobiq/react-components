@@ -31,11 +31,13 @@ const renderComponent = (
 };
 
 describe('Select_multiple', () => {
-  const ResizeObserverMock = vi.fn(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-  }));
+  class ResizeObserverMock {
+    observe = vi.fn();
+
+    unobserve = vi.fn();
+
+    disconnect = vi.fn();
+  }
 
   beforeAll(() => {
     vi.stubGlobal('ResizeObserver', ResizeObserverMock);

@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import crypto from 'crypto';
 import path from 'node:path';
 
@@ -5,8 +7,7 @@ import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import postcssLightningcss from 'postcss-lightningcss';
 import mixins from 'postcss-mixins';
-import type { UserConfig } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, type UserConfig } from 'vite';
 
 import { browserslist as browsers } from './package.json';
 
@@ -55,6 +56,7 @@ export const css: UserConfig['css'] = {
 export default defineConfig({
   css,
   test: {
+    projects: ['packages/**/vitest.config.ts', 'packages/**/vite.config.ts'],
     coverage: {
       include: ['packages/components'],
       exclude: [

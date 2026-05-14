@@ -11,12 +11,15 @@ describe('Tree', () => {
 
   beforeAll(() => {
     // jsdom doesn't provide IntersectionObserver, but Tree.LoadMoreItem uses it.
-    globalThis.IntersectionObserver = vi.fn(() => ({
-      disconnect: () => {},
-      observe: () => {},
-      takeRecords: () => [],
-      unobserve: () => {},
-    })) as unknown as typeof IntersectionObserver;
+    globalThis.IntersectionObserver = class IntersectionObserverMock {
+      disconnect = vi.fn();
+
+      observe = vi.fn();
+
+      takeRecords = vi.fn(() => []);
+
+      unobserve = vi.fn();
+    } as unknown as typeof IntersectionObserver;
   });
 
   afterAll(() => {

@@ -3,7 +3,6 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import browserslist from 'browserslist';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 import { browserslist as browsers } from '../../package.json';
@@ -15,8 +14,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
   },
-  // tsconfigPaths: support aliases for tests
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
