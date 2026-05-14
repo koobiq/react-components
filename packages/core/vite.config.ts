@@ -11,6 +11,9 @@ import { browserslist as browsers } from '../../package.json';
 const isExternal = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
 
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     globals: true,
     environment: 'jsdom',
@@ -25,7 +28,7 @@ export default defineConfig({
     },
     minify: false,
     target: browserslistToEsbuild(browserslist(browsers)),
-    rollupOptions: {
+    rolldownOptions: {
       external: isExternal,
       output: {
         preserveModules: true,

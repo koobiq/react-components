@@ -55,6 +55,9 @@ export const css: UserConfig['css'] = {
 
 export default defineConfig({
   css,
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     projects: ['packages/**/vitest.config.ts', 'packages/**/vite.config.ts'],
     coverage: {
