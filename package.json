@@ -85,7 +85,6 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "firebase-tools": "^15.7.0",
     "fs-extra": "^11.3.0",
-    "glob": "^11.1.0",
     "husky": "^9.1.6",
     "jsdom": "^25.0.1",
     "lightningcss": "^1.29.3",

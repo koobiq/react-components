@@ -151,9 +151,6 @@ importers:
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
-      glob:
-        specifier: ^11.1.0
-        version: 11.1.0
       husky:
         specifier: ^9.1.6
         version: 9.1.7
@@ -13064,7 +13061,7 @@ snapshots:
       obug: 2.1.1
       std-env: 4.1.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.6(@opentelemetry/api@1.9.0)(@types/node@25.8.0)(@vitest/coverage-v8@4.1.6)(jsdom@29.1.1)(vite@8.0.13(@types/node@25.8.0)(esbuild@0.27.7)(jiti@2.6.1)(sugarss@5.0.1(postcss@8.5.14))(tsx@4.19.3)(yaml@2.8.2))
+      vitest: 4.1.6(@opentelemetry/api@1.9.0)(@types/node@25.8.0)(@vitest/coverage-v8@4.1.6)(jsdom@25.0.1)(vite@8.0.13(@types/node@25.8.0)(esbuild@0.27.7)(jiti@2.6.1)(sugarss@5.0.1(postcss@8.4.49))(tsx@4.19.3)(yaml@2.8.2))
 
   '@vitest/expect@3.2.4':
     dependencies:
@@ -14939,7 +14936,7 @@ snapshots:
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
       eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.59.3(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint@8.57.1)
-      hasown: 2.0.2
+      hasown: 2.0.3
       is-core-module: 2.16.1
       is-glob: 4.0.3
       minimatch: 3.1.5
