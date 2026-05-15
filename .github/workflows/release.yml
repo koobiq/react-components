@@ -51,7 +51,7 @@ jobs:
             ${{ steps.changelog.outputs.latestBody }}
 
       - name: Notify Mattermost
-        uses: mattermost/action-mattermost-notify@2.0.0
+        uses: mattermost/action-mattermost-notify@v2.1.0
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_WEBHOOK_URL }}
           MATTERMOST_CHANNEL: ${{ secrets.MM_CHANNEL_NAME }}
