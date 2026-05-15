@@ -12,6 +12,14 @@ updates:
       # Ignores any major updates
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
+      # Ignores the entire Adobe react-aria family — versions across
+      # @react-aria/*, @react-stately/*, @react-types/* and react-aria
+      # are tightly coupled and must be upgraded together manually
+      - dependency-name: 'react-aria'
+      - dependency-name: 'react-aria-components'
+      - dependency-name: '@react-aria/*'
+      - dependency-name: '@react-stately/*'
+      - dependency-name: '@react-types/*'
     groups:
       eslint:
         patterns:
