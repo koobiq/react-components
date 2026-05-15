@@ -6612,8 +6612,8 @@ packages:
   lodash.upperfirst@4.3.1:
     resolution: {integrity: sha512-sReKOYJIJf74dhJONhU4e0/shzi1trVbSWDOhKYE5XV2O+H7Sb2Dihwuc7xWxVl+DgFPyTqIN3zMfT9cq5iWDg==}
 
-  lodash@4.17.23:
-    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -13015,7 +13015,7 @@ snapshots:
       graceful-fs: 4.2.11
       is-stream: 2.0.1
       lazystream: 1.0.1
-      lodash: 4.17.23
+      lodash: 4.18.1
       normalize-path: 3.0.0
       readable-stream: 4.7.0
 
@@ -14897,7 +14897,7 @@ snapshots:
       glob: 10.5.0
       json-ptr: 3.1.1
       json-schema-traverse: 1.0.0
-      lodash: 4.17.23
+      lodash: 4.18.1
       openapi3-ts: 3.2.0
       promise-breaker: 6.0.0
       qs: 6.15.0
@@ -15155,7 +15155,7 @@ snapshots:
       jsonwebtoken: 9.0.3
       leven: 3.1.0
       libsodium-wrappers: 0.7.16
-      lodash: 4.17.23
+      lodash: 4.18.1
       lsofi: 1.0.0
       marked: 13.0.3
       marked-terminal: 7.3.0(marked@13.0.3)
@@ -16483,7 +16483,7 @@ snapshots:
 
   lodash.upperfirst@4.3.1: {}
 
-  lodash@4.17.23: {}
+  lodash@4.18.1: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -18478,7 +18478,7 @@ snapshots:
 
   sort-any@2.0.0:
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.1
 
   source-map-js@1.2.1: {}
 
@@ -18819,7 +18819,7 @@ snapshots:
       glob-slasher: 1.0.1
       is-url: 1.2.4
       join-path: 1.1.1
-      lodash: 4.17.23
+      lodash: 4.18.1
       mime-types: 2.1.35
       minimatch: 6.2.0
       morgan: 1.10.1
@@ -19011,7 +19011,7 @@ snapshots:
 
   toxic@1.0.1:
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.1
 
   tr46@0.0.3: {}
 
