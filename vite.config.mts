@@ -8,6 +8,7 @@ import { browserslistToTargets } from 'lightningcss';
 import postcssLightningcss from 'postcss-lightningcss';
 import mixins from 'postcss-mixins';
 import { defineConfig, type UserConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 import { browserslist as browsers } from './package.json';
 
@@ -55,9 +56,7 @@ export const css: UserConfig['css'] = {
 
 export default defineConfig({
   css,
-  resolve: {
-    tsconfigPaths: true,
-  },
+  plugins: [tsconfigPaths()],
   test: {
     projects: ['packages/**/vitest.config.ts', 'packages/**/vite.config.ts'],
     coverage: {

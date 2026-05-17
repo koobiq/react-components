@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import browserslist from 'browserslist';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 import preserveDirectives from 'rollup-preserve-directives';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 import { browserslist as browsers } from '../../package.json';
@@ -11,15 +12,12 @@ import { browserslist as browsers } from '../../package.json';
 const isExternal = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
 
 export default defineConfig({
-  resolve: {
-    tsconfigPaths: true,
-  },
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './setupTests.ts',
   },
-  plugins: [react(), preserveDirectives()],
+  plugins: [tsconfigPaths(), react(), preserveDirectives()],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
@@ -28,7 +26,7 @@ export default defineConfig({
     },
     minify: false,
     target: browserslistToEsbuild(browserslist(browsers)),
-    rolldownOptions: {
+    rollupOptions: {
       output: {
         preserveModules: true,
       },
