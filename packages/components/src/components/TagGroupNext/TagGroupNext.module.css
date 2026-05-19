@@ -1,0 +1,9 @@
+.base {
+  flex-wrap: wrap;
+  gap: var(--kbq-size-xxs);
+  display: flex;
+}
+
+.base [role='gridcell'] {
+  display: contents;
+}
