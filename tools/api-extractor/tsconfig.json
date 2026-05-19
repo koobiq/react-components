@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "esnext"],
+    "paths": {}
+  },
+  "include": ["../../packages/*/dist/**/*.d.ts"]
+}

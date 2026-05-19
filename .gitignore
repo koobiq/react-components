@@ -16,3 +16,6 @@ storybook-static
 
 # Turborepo cache directory
 .turbo
+
+# api-extractor temp
+tools/public_api_guard/temp
