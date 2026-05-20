@@ -1,9 +1,15 @@
 'use client';
 
 import { forwardRef, useMemo } from 'react';
-import type { FocusEvent, RefObject, Ref } from 'react';
+import type { RefObject, Ref } from 'react';
 
-import { clsx, mergeProps, useDOMRef, useLocale } from '@koobiq/react-core';
+import {
+  clsx,
+  mergeProps,
+  useDOMRef,
+  useFocusWithin,
+  useLocale,
+} from '@koobiq/react-core';
 import {
   ListKeyboardDelegate,
   useListState,
@@ -60,18 +66,12 @@ function TagGroupNextRender<T extends object>(
     ref: domRef as RefObject<HTMLDivElement | null>,
   });
 
-  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
-    const nextFocusedElement = event.relatedTarget;
-
-    if (
-      nextFocusedElement instanceof Node &&
-      event.currentTarget.contains(nextFocusedElement)
-    ) {
-      return;
-    }
-
-    state.selectionManager.clearSelection();
-  };
+  // Drop selection when focus leaves the entire group. `useFocusWithin`
+  // correctly handles Shadow DOM / portal cases that a hand-rolled
+  // `onBlur` + `relatedTarget` check wouldn't.
+  const { focusWithinProps } = useFocusWithin({
+    onBlurWithin: () => state.selectionManager.clearSelection(),
+  });
 
   const collectionId = (listProps as Record<string, unknown>)[
     'data-collection'
@@ -81,11 +81,11 @@ function TagGroupNextRender<T extends object>(
     {
       style,
       ref: domRef,
-      onBlur: handleBlur,
       className: clsx(groupStyles.base, className),
       role: state.collection.size ? 'grid' : 'group',
     },
     listProps,
+    focusWithinProps,
     slotProps?.root
   );
 
