@@ -15,14 +15,17 @@
   display: inline-flex;
   text-decoration: none;
   box-sizing: border-box;
-  color: var(--tag-color);
+  color: var(--kbq-tag-color, var(--tag-color));
   gap: var(--kbq-size-3xs);
   block-size: var(--kbq-size-xxl);
   border-radius: var(--kbq-size-xxs);
   padding-inline: var(--kbq-size-xxs);
-  background-color: var(--tag-bg-color);
-  outline-offset: calc(-1 * var(--tag-outline-width) / 2);
-  outline: var(--tag-outline-width) solid var(--tag-outline-color);
+  background-color: var(--kbq-tag-bg-color, var(--tag-bg-color));
+  outline-offset: calc(
+    -1 * var(--kbq-tag-outline-width, var(--tag-outline-width)) / 2
+  );
+  outline: var(--kbq-tag-outline-width, var(--tag-outline-width)) solid
+    var(--kbq-tag-outline-color, var(--tag-outline-color));
   transition:
     outline-color var(--kbq-transition-default),
     box-shadow var(--kbq-transition-default),
@@ -42,7 +45,7 @@
   flex: none;
   align-items: center;
   justify-content: center;
-  color: var(--tag-icon-color);
+  color: var(--kbq-tag-icon-color, var(--tag-icon-color));
   margin-inline-start: var(--kbq-size-3xs);
 }
 
