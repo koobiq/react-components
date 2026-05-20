@@ -4,6 +4,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { Provider } from '../Provider';
+
 import { isInteractiveTarget } from './hooks/useTagItem';
 import { TagGroupNext, type TagGroupNextProps } from './index';
 
@@ -258,5 +260,53 @@ describe('TagGroupNext', () => {
     await user.keyboard('{Delete}');
 
     await waitFor(() => expect(screen.queryByTestId('tag-4')).toBeNull());
+  });
+
+  it('should localize the remove button aria-label (en-US by default)', () => {
+    const { container } = render(
+      renderComponent({
+        onRemove: vi.fn(),
+      })
+    );
+
+    const buttons = container.querySelectorAll('button[aria-label="Remove"]');
+    expect(buttons.length).toBeGreaterThan(0);
+  });
+
+  it('should localize the remove button aria-label under ru-RU locale', () => {
+    const { container } = render(
+      <Provider locale="ru-RU">
+        {renderComponent({ onRemove: vi.fn() })}
+      </Provider>
+    );
+
+    const buttons = container.querySelectorAll('button[aria-label="Удалить"]');
+    expect(buttons.length).toBeGreaterThan(0);
+  });
+
+  it('should not add aria-describedby when onRemove is not provided', () => {
+    render(renderComponent({}));
+
+    expect(getTag()).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('should announce the removal shortcut to screen readers after keyboard interaction', async () => {
+    const user = userEvent.setup();
+
+    render(renderComponent({ onRemove: vi.fn() }));
+
+    // Force keyboard modality — without a user keyboard event the modality
+    // stays at its initial value and the description is intentionally not
+    // attached (pointer users see the visible remove button).
+    await user.tab();
+
+    await waitFor(() => {
+      const tag = getTag();
+      const describedBy = tag.getAttribute('aria-describedby');
+      expect(describedBy).toBeTruthy();
+
+      const description = document.getElementById(describedBy ?? '');
+      expect(description?.textContent).toMatch(/delete or backspace/i);
+    });
   });
 });

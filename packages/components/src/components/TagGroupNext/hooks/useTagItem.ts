@@ -8,11 +8,15 @@ import {
   mergeProps,
   isFocusable,
   filterDOMProps,
+  useDescription,
+  useInteractionModality,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import type { Key, Node, PressEvent, DOMAttributes } from '@koobiq/react-core';
 import type { ListState } from '@koobiq/react-primitives';
 
 import { getTagGroupNextItemProps } from '../components/TagItem/utils';
+import intlMessages from '../intl.json';
 
 export type UseTagItemProps<T extends object> = {
   state: ListState<T>;
@@ -64,6 +68,30 @@ export function useTagItem<T extends object>(props: UseTagItemProps<T>) {
 
   const allowsSelection =
     !isDisabled && selectionManager.canSelectItem(item.key);
+
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  // Screen-reader hint announcing the Delete/Backspace shortcut. We only
+  // surface it for keyboard/virtual modalities — pointer users already see
+  // the remove button, and reading the hint out loud would be redundant.
+  // The `'ontouchstart' in window` heuristic re-classifies touch devices as
+  // pointer (same approach as React Aria's `useTag`).
+  let modality = useInteractionModality();
+
+  if (
+    modality === 'virtual' &&
+    typeof window !== 'undefined' &&
+    'ontouchstart' in window
+  ) {
+    modality = 'pointer';
+  }
+
+  const description =
+    allowsRemoving && (modality === 'keyboard' || modality === 'virtual')
+      ? stringFormatter.format('removeDescription')
+      : '';
+
+  const descProps = useDescription(description);
 
   // Move DOM focus to this tag when it becomes the focused item.
   useEffect(() => {
@@ -177,6 +205,7 @@ export function useTagItem<T extends object>(props: UseTagItemProps<T>) {
       'aria-disabled': isDisabled || undefined,
       'aria-label': item['aria-label'] || item.textValue || undefined,
       'aria-selected': allowsSelection ? isSelected : undefined,
+      'aria-describedby': descProps['aria-describedby'],
       'data-collection': collectionId,
       'data-key': item.key,
       onFocus: handleFocus,
@@ -194,7 +223,7 @@ export function useTagItem<T extends object>(props: UseTagItemProps<T>) {
     isDisabled,
     tabIndex: -1,
     id: removeButtonId,
-    'aria-label': 'Remove',
+    'aria-label': stringFormatter.format('removeButtonLabel'),
     'aria-labelledby': `${removeButtonId} ${rowId}`,
     onPress: () => onRemove?.(new Set([item.key])),
   };
