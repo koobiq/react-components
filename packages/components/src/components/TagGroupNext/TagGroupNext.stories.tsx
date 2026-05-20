@@ -111,13 +111,13 @@ export const RemoveTags: Story = {
 
 export const WithInput: Story = {
   render: function Render() {
+    const [value, setValue] = useState('');
     const tagGroupRef = useRef<HTMLDivElement>(null);
     const nextIdRef = useRef(1);
 
     const list = useListData<EditableTagItem>({
       initialItems: editableInitialItems,
     });
-    const [value, setValue] = useState('');
 
     const focusLastTag = () => {
       const tags =
