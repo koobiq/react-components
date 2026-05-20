@@ -1,0 +1,10 @@
+{
+  "en-US": {
+    "removeButtonLabel": "Remove",
+    "removeDescription": "Press Delete or Backspace to remove."
+  },
+  "ru-RU": {
+    "removeButtonLabel": "Удалить",
+    "removeDescription": "Нажмите Delete или Backspace, чтобы удалить."
+  }
+}

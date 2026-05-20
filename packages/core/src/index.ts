@@ -9,6 +9,7 @@ export {
   useLinkProps,
   mergeRefs,
   useObjectRef,
+  useDescription,
 } from '@react-aria/utils';
 
 export type {
