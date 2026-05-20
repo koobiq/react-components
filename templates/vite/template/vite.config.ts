@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import react from '@vitejs/plugin-react';
 import { analyzer } from 'vite-bundle-analyzer';
 import { defineConfig } from 'vite';
@@ -14,4 +15,12 @@ export default defineConfig(({ mode }) => ({
         reportTitle: 'Vite Bundle Analyzer',
       }),
   ],
+  esbuild: {
+    jsx: 'automatic',
+  },
+  test: {
+    environment: 'jsdom',
+    include: ['src/**/*.test.{ts,tsx}'],
+    setupFiles: './setupTests.ts',
+  },
 }));
