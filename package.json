@@ -75,6 +75,7 @@
     "@vueless/storybook-dark-mode": "^10.0.8",
     "browserslist": "^4.28.1",
     "browserslist-to-esbuild": "^2.1.1",
+    "chalk": "^4.1.2",
     "bumpp": "^10.1.0",
     "commit-and-tag-version": "^12.5.0",
     "dotenv": "^16.4.7",

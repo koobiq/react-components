@@ -3,6 +3,9 @@ import * as path from 'node:path';
 import type { ExtractorResult, IConfigFile } from '@microsoft/api-extractor';
 import { Extractor, ExtractorConfig } from '@microsoft/api-extractor';
 import { JsonFile, PackageJsonLookup } from '@rushstack/node-core-library';
+import chalk from 'chalk';
+
+const { red, green } = chalk;
 
 type PackageEntry = { dir: string; report: string };
 type BuildConfig = { components: string[]; packages: PackageEntry[] };
@@ -88,18 +91,15 @@ function runForPackage({ dir, report }: PackageEntry): ExtractorResult {
 
 function handle(label: string, result: ExtractorResult): void {
   if (result.succeeded) {
-    console.log(`API Extractor: ${label} OK`);
-    return;
-  }
-  if (result.apiReportChanged) {
+    console.error(green(`API Extractor completed successfully: ${label}`));
+  } else if (result.errorCount > 0) {
     console.error(
-      `API Extractor: ${label} — report changed; run "pnpm approve-api ${label}"`
+      red(`API Extractor completed with ${result.errorCount} errors`)
     );
+    hasErrors = true;
+  } else if (result.apiReportChanged) {
+    process.exit(1);
   }
-  if (result.errorCount > 0) {
-    console.error(`API Extractor: ${label} — ${result.errorCount} errors`);
-  }
-  hasErrors = true;
 }
 
 for (const name of components) {

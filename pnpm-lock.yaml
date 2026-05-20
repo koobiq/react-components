@@ -118,6 +118,9 @@ importers:
       bumpp:
         specifier: ^10.1.0
         version: 10.1.0(magicast@0.3.5)
+      chalk:
+        specifier: ^4.1.2
+        version: 4.1.2
       commit-and-tag-version:
         specifier: ^12.5.0
         version: 12.5.0

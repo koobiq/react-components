@@ -1,0 +1,18 @@
+name: API
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-node
+      - name: Build packages
+        run: pnpm run build
+      - name: Check public API
+        run: pnpm run check-api
