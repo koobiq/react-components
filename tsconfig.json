@@ -17,21 +17,28 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2019",
-    "lib": ["DOM", "DOM.Iterable", "esnext"],
-    "baseUrl": "./",
+    "lib": ["DOM", "esnext"],
     "module": "esnext",
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": false,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
+    "noEmit": true,
     "paths": {
       "@koobiq/react-primitives": ["./packages/primitives/src"],
       "@koobiq/react-components": ["./packages/components/src"],
       "@koobiq/react-core": ["./packages/core/src"],
       "@koobiq/react-icons": ["./packages/icons/src"]
-    }
+    },
+    "types": ["vite/client", "@testing-library/jest-dom/vitest", "node"]
   },
   "include": ["**/*", "./.storybook/**/*"],
-  "typeRoots": ["./global.d.ts"]
+  "exclude": [
+    "node_modules",
+    "**/dist",
+    "templates",
+    "coverage",
+    "storybook-static"
+  ]
 }
