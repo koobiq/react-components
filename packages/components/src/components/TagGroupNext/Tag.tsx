@@ -25,7 +25,22 @@ export type TagSlotProps = {
   removeIcon?: IconButtonProps;
 };
 
-export type ItemProps<T> = Omit<AriaItemProps<T>, 'children'> & {
+type AriaTagItemProps<T> = Omit<
+  AriaItemProps<T>,
+  | 'children'
+  | 'href'
+  | 'hrefLang'
+  | 'target'
+  | 'rel'
+  | 'download'
+  | 'ping'
+  | 'referrerPolicy'
+  | 'title'
+  | 'childItems'
+  | 'hasChildItems'
+>;
+
+export type ItemProps<T> = AriaTagItemProps<T> & {
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */
@@ -38,7 +53,7 @@ export type ItemProps<T> = Omit<AriaItemProps<T>, 'children'> & {
   isDisabled?: boolean;
   /** The props used for each slot inside. */
   slotProps?: TagSlotProps;
-  /** Rendered contents of the item or child items. */
+  /** Rendered contents of the tag. */
   children?: ReactNode;
 };
 
