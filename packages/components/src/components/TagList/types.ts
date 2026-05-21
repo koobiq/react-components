@@ -38,10 +38,7 @@ type TagListKeyboardProps = {
    * @default 'clearSelection'
    */
   escapeKeyBehavior?: 'clearSelection' | 'none';
-  /**
-   * Whether the collection auto-focuses on mount. `true` / `'first'` focuses
-   * the first tag, `'last'` the last tag.
-   */
+  /** Focus the first (`true` / `'first'`) or last (`'last'`) tag on mount. */
   autoFocus?: boolean | FocusStrategy;
 };
 

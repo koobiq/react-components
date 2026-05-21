@@ -1,30 +1,32 @@
 import type { FocusEvent } from 'react';
 import { useEffect, useRef } from 'react';
 
+import type { DOMAttributes, Key, Node, PressEvent } from '@koobiq/react-core';
 import {
-  useId,
-  usePress,
-  useKeyboard,
-  mergeProps,
-  isFocusable,
   filterDOMProps,
+  isFocusable,
+  mergeProps,
   useDescription,
+  useId,
   useInteractionModality,
+  useKeyboard,
   useLocalizedStringFormatter,
+  usePress,
 } from '@koobiq/react-core';
-import type { Key, Node, PressEvent, DOMAttributes } from '@koobiq/react-core';
-import type { ListState } from '@koobiq/react-primitives';
+import type { ListState } from '@react-stately/list';
 
-import { getTagListItemProps } from '../components/TagItem/utils';
-import intlMessages from '../intl.json';
-
-export type UseTagListItemProps<T extends object> = {
-  state: ListState<T>;
-  collectionId?: string;
-  item: Node<T>;
-  onRemove?: (keys: Set<Key>) => void;
+const intlMessages = {
+  'en-US': {
+    removeButtonLabel: 'Remove',
+    removeDescription: 'Press Delete or Backspace to remove.',
+  },
+  'ru-RU': {
+    removeButtonLabel: 'Удалить',
+    removeDescription: 'Нажмите Delete или Backspace, чтобы удалить.',
+  },
 };
 
+/** True if Ctrl (Windows/Linux) or Cmd (macOS) is held during the event. */
 export function isCommandModifier(event: {
   ctrlKey: boolean;
   metaKey: boolean;
@@ -32,7 +34,12 @@ export function isCommandModifier(event: {
   return event.ctrlKey || event.metaKey;
 }
 
-// Nested focusable controls handle their own interactions.
+/**
+ * Walks up from `target` to `root` (exclusive) checking whether any element
+ * along the way is itself focusable. Used to let nested focusable controls
+ * (links, buttons) handle their own interactions instead of being swallowed
+ * by the tag's `usePress`.
+ */
 export function isInteractiveTarget(target: Element, root: Element) {
   let element: Element | null = target;
 
@@ -45,9 +52,25 @@ export function isInteractiveTarget(target: Element, root: Element) {
   return false;
 }
 
-function isSpaceKey(key: string) {
+export function isSpaceKey(key: string) {
   return key === ' ' || key === 'Space' || key === 'Spacebar';
 }
+
+/**
+ * Minimal shape `useTagListItem` reads from `item.props`. Renderers can use
+ * a richer prop type (icons, slot props, etc.) — only `isDisabled` matters
+ * to the headless behavior.
+ */
+interface AriaTagListItemNodeProps {
+  isDisabled?: boolean;
+}
+
+export type UseTagListItemProps<T extends object> = {
+  state: ListState<T>;
+  collectionId?: string;
+  item: Node<T>;
+  onRemove?: (keys: Set<Key>) => void;
+};
 
 export function useTagListItem<T extends object>(
   props: UseTagListItemProps<T>
@@ -58,7 +81,7 @@ export function useTagListItem<T extends object>(
   const rowId = useId();
   const removeButtonId = useId();
 
-  const itemProps = getTagListItemProps(item);
+  const itemProps = item.props as AriaTagListItemNodeProps;
 
   const { selectionManager } = state;
 

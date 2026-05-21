@@ -10,3 +10,6 @@ export * from './useNumberField';
 export * from './useMultiSelect';
 export * from './useMultiSelectState';
 export * from './useMultiSelectListState';
+export * from './useTagList';
+export * from './useTagListItem';
+export * from './useTagListState';
