@@ -33,7 +33,7 @@ import { TagList } from '@koobiq/react-components';
 ## Selection
 
 TagList keeps pointer selection explicit: a regular click only focuses a tag.
-To select tags, use `Ctrl` + click, `Ctrl+A`, or press `Space` while a tag is focused.
+To select tags, use <kbd>Ctrl</kbd> + click, <kbd>Ctrl</kbd> + <kbd>A</kbd>, or press <kbd>Space</kbd> while a tag is focused.
 
 <Story of={Stories.ModifierSelection} />
 
@@ -64,14 +64,16 @@ Prop expects an icon component from our [icon library](?path=/docs/icons--docs).
 ## Remove tags
 
 The `onRemove` prop can be used to include a remove button which can be used to remove a tag.
-This allows the user to press the remove button, or press `Backspace`/`Delete` while the tag
+This allows the user to press the remove button, or press <kbd>Backspace</kbd> / <kbd>Delete</kbd> while the tag
 is focused to remove the tag from the group. If the focused tag is part of the current
 selection, every selected tag is removed in one call.
 
 The remove button's `aria-label` and the screen-reader hint announcing the
-`Backspace`/`Delete` shortcut are both localized — pass a `locale` to `Provider`
-to switch between languages. The hint is only attached for keyboard / assistive
-modalities, so pointer users won't hear redundant guidance.
+
+<kbd>Backspace</kbd> / <kbd>Delete</kbd> shortcut are both localized — pass a
+`locale` to `Provider` to switch between languages. The hint is only attached
+for keyboard / assistive modalities, so pointer users won't hear redundant
+guidance.
 
 <Story of={Stories.RemoveTags} />
 
@@ -91,24 +93,24 @@ or automatically derived from the values passed to the `items` prop.
 - `aria-selected` is exposed on a tag only when `selectionMode !== 'none'`.
 - When `onRemove` is provided, every removable tag carries an
   `aria-describedby` link to a screen-reader-only message announcing the
-  `Backspace`/`Delete` shortcut. The hint is attached only for keyboard /
-  virtual interaction modalities, so pointer users won't hear redundant
-  guidance.
+  <kbd>Backspace</kbd> / <kbd>Delete</kbd> shortcut. The hint is attached only
+  for keyboard / virtual interaction modalities, so pointer users won't hear
+  redundant guidance.
 - The remove button's `aria-label` and the screen-reader hint are localized
   through the active `<Provider locale=...>`.
 
 ## Keyboard
 
-| Key                    | Behavior                                                                                                        |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `→` / `←`              | Move focus to the next / previous tag (respects RTL direction).                                                 |
-| `Home` / `End`         | Move focus to the first / last tag.                                                                             |
-| `Space`                | Toggle selection on the focused tag.                                                                            |
-| `Ctrl` + click         | Toggle selection without clearing the previous one.                                                             |
-| `Ctrl` + `A`           | Select all tags.                                                                                                |
-| `Escape`               | Clear selection. Override with `escapeKeyBehavior="none"`.                                                      |
-| `Backspace` / `Delete` | Remove the focused tag, or every selected tag if the focused tag is part of the selection. Requires `onRemove`. |
-| `Tab`                  | Move focus into / out of the group as a single tab stop.                                                        |
+| Key                                      | Behavior                                                                                                        |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| <kbd>→</kbd> / <kbd>←</kbd>              | Move focus to the next / previous tag (respects RTL direction).                                                 |
+| <kbd>Home</kbd> / <kbd>End</kbd>         | Move focus to the first / last tag.                                                                             |
+| <kbd>Space</kbd>                         | Toggle selection on the focused tag.                                                                            |
+| <kbd>Ctrl</kbd> + click                  | Toggle selection without clearing the previous one.                                                             |
+| <kbd>Ctrl</kbd> + <kbd>A</kbd>           | Select all tags.                                                                                                |
+| <kbd>Escape</kbd>                        | Clear selection. Override with `escapeKeyBehavior="none"`.                                                      |
+| <kbd>Backspace</kbd> / <kbd>Delete</kbd> | Remove the focused tag, or every selected tag if the focused tag is part of the selection. Requires `onRemove`. |
+| <kbd>Tab</kbd>                           | Move focus into / out of the group as a single tab stop.                                                        |
 
 ## CSS Variables
 
