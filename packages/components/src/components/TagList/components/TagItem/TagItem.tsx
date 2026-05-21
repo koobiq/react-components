@@ -8,15 +8,16 @@ import {
 } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
 import type { ListState } from '@koobiq/react-primitives';
+import { useTagListItem } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { IconButton } from '../../../IconButton';
 import type { IconButtonProps } from '../../../IconButton';
-import { useTagListItem } from '../../hooks';
+import type { TagProps } from '../../Tag';
 import type { TagListPropVariant } from '../../types';
 
 import s from './TagItem.module.css';
-import { getTagListItemProps, matchVariantToIconButton } from './utils';
+import { matchVariantToIconButton } from './utils';
 
 type TagItemProps<T extends object> = {
   state: ListState<T>;
@@ -30,7 +31,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagItem<T extends object>(props: TagItemProps<T>) {
   const { collectionId, item, onRemove, state, variant: groupVariant } = props;
-  const itemProps = getTagListItemProps(item);
+  const itemProps = item.props as TagProps<T>;
   const variant = groupVariant;
 
   const {

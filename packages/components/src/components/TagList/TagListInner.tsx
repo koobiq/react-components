@@ -1,9 +1,9 @@
 'use client';
 
 import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
+import { useTagList } from '@koobiq/react-primitives';
 
 import { TagItem } from './components';
-import { useTagList } from './hooks';
 import groupStyles from './TagList.module.css';
 import type { TagListInnerProps } from './types';
 

@@ -1,12 +1,12 @@
 import { createRef, useState } from 'react';
 
+import { isInteractiveTarget } from '@koobiq/react-primitives';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Provider } from '../Provider';
 
-import { isInteractiveTarget } from './hooks';
 import { TagList, type TagListProps } from './index';
 
 const TAG_LIST_TEST_ID = 'TAG_LIST_TAG';

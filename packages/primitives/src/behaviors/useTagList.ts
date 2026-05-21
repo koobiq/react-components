@@ -7,11 +7,8 @@ import type {
   RefObject as AriaRefObject,
 } from '@koobiq/react-core';
 import { mergeProps, useFocusWithin, useLocale } from '@koobiq/react-core';
-import type { ListState } from '@koobiq/react-primitives';
-import {
-  ListKeyboardDelegate,
-  useSelectableList,
-} from '@koobiq/react-primitives';
+import { ListKeyboardDelegate, useSelectableList } from '@react-aria/selection';
+import type { ListState } from '@react-stately/list';
 
 export type AriaTagListProps = {
   /**
@@ -19,7 +16,7 @@ export type AriaTagListProps = {
    * @default 'clearSelection'
    */
   escapeKeyBehavior?: 'clearSelection' | 'none';
-  /** Auto-focus the first/last tag on mount. */
+  /** Focus the first (`true` / `'first'`) or last (`'last'`) tag on mount. */
   autoFocus?: boolean | FocusStrategy;
 };
 
@@ -29,7 +26,7 @@ export type TagListAria = {
 };
 
 /**
- * Provides behavior and accessibility wiring for a `TagList` root.
+ * Provides behavior and accessibility wiring for a TagList root.
  * Pair with `useTagListState` for state and `useTagListItem` for tags.
  */
 export function useTagList<T extends object>(

@@ -3,7 +3,8 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
-import { useTagListState } from './hooks';
+import { useTagListState } from '@koobiq/react-primitives';
+
 import { Tag } from './Tag';
 import { TagListInner } from './TagListInner';
 import type { TagListComponent, TagListProps } from './types';
