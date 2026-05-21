@@ -40,6 +40,7 @@ export type {
   RouterOptions,
   SortDescriptor,
   Selection,
+  FocusStrategy,
 } from '@react-types/shared';
 
 export * from '@react-aria/i18n';

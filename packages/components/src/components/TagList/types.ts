@@ -10,40 +10,46 @@ import type {
   Key,
   CollectionBase,
   ExtendableProps,
+  FocusStrategy,
   MultipleSelection,
 } from '@koobiq/react-core';
 
-export const tagGroupNextPropVariant = [
+export const tagListPropVariant = [
   'theme-fade',
   'contrast-fade',
   'error-fade',
   'warning-fade',
 ] as const;
 
-export type TagGroupNextPropVariant = (typeof tagGroupNextPropVariant)[number];
+export type TagListPropVariant = (typeof tagListPropVariant)[number];
 
-type TagGroupNextDOMProps = Omit<
+type TagListDOMProps = Omit<
   ComponentPropsWithRef<'div'>,
-  'children' | 'defaultValue' | 'onChange' | 'onSelect' | 'ref'
+  'children' | 'defaultValue' | 'onChange' | 'onSelect' | 'ref' | 'autoFocus'
 >;
 
-type TagGroupNextCollectionProps<T extends object> = CollectionBase<T> &
+type TagListCollectionProps<T extends object> = CollectionBase<T> &
   Omit<MultipleSelection, 'disabledKeys'>;
 
-type TagGroupNextKeyboardProps = {
+type TagListKeyboardProps = {
   /**
    * Whether pressing the Escape key should clear selection.
    * @default 'clearSelection'
    */
   escapeKeyBehavior?: 'clearSelection' | 'none';
+  /**
+   * Whether the collection auto-focuses on mount. `true` / `'first'` focuses
+   * the first tag, `'last'` the last tag.
+   */
+  autoFocus?: boolean | FocusStrategy;
 };
 
-type TagGroupNextOwnProps = {
+type TagListBaseProps = {
   /**
    * The variant to use.
    * @default 'theme-fade'
    */
-  variant?: TagGroupNextPropVariant;
+  variant?: TagListPropVariant;
   /** Ref to the root element. */
   ref?: Ref<HTMLDivElement>;
   /** Additional CSS-classes. */
@@ -60,18 +66,17 @@ type TagGroupNextOwnProps = {
   };
 };
 
-type TagGroupNextInheritedProps<T extends object> =
-  TagGroupNextCollectionProps<T> &
-    TagGroupNextKeyboardProps &
-    TagGroupNextDOMProps;
+type TagListInheritedProps<T extends object> = TagListCollectionProps<T> &
+  TagListKeyboardProps &
+  TagListDOMProps;
 
-export type TagGroupNextProps<T extends object = object> = ExtendableProps<
-  TagGroupNextOwnProps,
-  TagGroupNextInheritedProps<T>
+export type TagListProps<T extends object = object> = ExtendableProps<
+  TagListBaseProps,
+  TagListInheritedProps<T>
 >;
 
-export type TagGroupNextComponent = <T extends object = object>(
-  props: TagGroupNextProps<T>
+export type TagListComponent = <T extends object = object>(
+  props: TagListProps<T>
 ) => ReactElement | null;
 
-export type TagGroupNextRef = ComponentRef<'div'>;
+export type TagListRef = ComponentRef<'div'>;

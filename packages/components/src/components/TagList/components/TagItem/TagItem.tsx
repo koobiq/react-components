@@ -12,17 +12,17 @@ import type { ListState } from '@koobiq/react-primitives';
 import { utilClasses } from '../../../../styles/utility';
 import { IconButton } from '../../../IconButton';
 import type { IconButtonProps } from '../../../IconButton';
-import { useTagItem } from '../../hooks';
-import type { TagGroupNextPropVariant } from '../../types';
+import { useTagListItem } from '../../hooks';
+import type { TagListPropVariant } from '../../types';
 
 import s from './TagItem.module.css';
-import { getTagGroupNextItemProps, matchVariantToIconButton } from './utils';
+import { getTagListItemProps, matchVariantToIconButton } from './utils';
 
 type TagItemProps<T extends object> = {
   state: ListState<T>;
   collectionId?: string;
   item: CollectionNode<T>;
-  variant: TagGroupNextPropVariant;
+  variant: TagListPropVariant;
   onRemove?: (keys: Set<Key>) => void;
 };
 
@@ -30,7 +30,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagItem<T extends object>(props: TagItemProps<T>) {
   const { collectionId, item, onRemove, state, variant: groupVariant } = props;
-  const itemProps = getTagGroupNextItemProps(item);
+  const itemProps = getTagListItemProps(item);
   const variant = groupVariant;
 
   const {
@@ -41,7 +41,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     gridCellProps,
     allowsRemoving,
     removeButtonProps: removeButtonPropsAria,
-  } = useTagItem({ collectionId, item, onRemove, state });
+  } = useTagListItem({ collectionId, item, onRemove, state });
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
     within: false,

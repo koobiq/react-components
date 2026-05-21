@@ -1,40 +1,81 @@
 'use client';
 
-import { forwardRef, useMemo } from 'react';
-import type { RefObject, Ref } from 'react';
+import { useMemo } from 'react';
+import type {
+  Ref,
+  RefObject,
+  CSSProperties,
+  ComponentPropsWithRef,
+} from 'react';
 
+import type { FocusStrategy, Key } from '@koobiq/react-core';
 import {
   clsx,
-  mergeProps,
-  useDOMRef,
-  useFocusWithin,
   useLocale,
+  useDOMRef,
+  mergeProps,
+  useFocusWithin,
 } from '@koobiq/react-core';
+import type { ListState } from '@koobiq/react-primitives';
 import {
-  ListKeyboardDelegate,
-  useListState,
   useSelectableList,
+  ListKeyboardDelegate,
 } from '@koobiq/react-primitives';
 
 import { TagItem } from './components';
-import { Tag } from './Tag';
-import groupStyles from './TagGroupNext.module.css';
-import type { TagGroupNextComponent, TagGroupNextProps } from './types';
+import groupStyles from './TagList.module.css';
+import type { TagListPropVariant } from './types';
 
-function TagGroupNextRender<T extends object>(
-  props: TagGroupNextProps<T>,
-  ref?: Ref<HTMLDivElement>
-) {
+export type TagListInnerProps<T extends object> = {
+  /** Pre-built collection state, e.g. from `useListState`. */
+  state: ListState<T>;
+  /**
+   * The variant to use.
+   * @default 'theme-fade'
+   */
+  variant?: TagListPropVariant;
+  /** Handler that is called when a user deletes a tag. */
+  onRemove?: (keys: Set<Key>) => void;
+  /**
+   * Whether pressing the Escape key should clear selection.
+   * @default 'clearSelection'
+   */
+  escapeKeyBehavior?: 'clearSelection' | 'none';
+  /** Auto-focus the first/last tag on mount. */
+  autoFocus?: boolean | FocusStrategy;
+  /** Ref to the root element. */
+  tagListRef?: Ref<HTMLDivElement>;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
+  /** Unique identifier for testing purposes. */
+  'data-testid'?: string | number;
+  /** An accessibility label. */
+  'aria-label'?: string;
+  /** ID of an element that labels this collection. */
+  'aria-labelledby'?: string;
+  /** ID of an element that describes this collection. */
+  'aria-describedby'?: string;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    root?: ComponentPropsWithRef<'div'>;
+  };
+};
+
+export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
   const {
+    state,
     variant = 'theme-fade',
     style,
     className,
     slotProps,
     onRemove,
     escapeKeyBehavior,
+    autoFocus,
+    tagListRef,
   } = props;
-  const domRef = useDOMRef(ref);
-  const state = useListState(props);
+  const domRef = useDOMRef(tagListRef);
   const { direction } = useLocale();
 
   const keyboardDelegate = useMemo(
@@ -60,15 +101,14 @@ function TagGroupNextRender<T extends object>(
     keyboardDelegate,
     shouldFocusWrap: true,
     escapeKeyBehavior,
+    autoFocus,
     collection: state.collection,
     disabledKeys: state.disabledKeys,
     selectionManager: state.selectionManager,
     ref: domRef as RefObject<HTMLDivElement | null>,
   });
 
-  // Drop selection when focus leaves the entire group. `useFocusWithin`
-  // correctly handles Shadow DOM / portal cases that a hand-rolled
-  // `onBlur` + `relatedTarget` check wouldn't.
+  // Clear selection when focus leaves the group.
   const { focusWithinProps } = useFocusWithin({
     onBlurWithin: () => state.selectionManager.clearSelection(),
   });
@@ -104,15 +144,3 @@ function TagGroupNextRender<T extends object>(
     </div>
   );
 }
-
-const TagGroupNextComponent = forwardRef(
-  TagGroupNextRender
-) as TagGroupNextComponent;
-
-type CompoundedComponent = typeof TagGroupNextComponent & {
-  Tag: typeof Tag;
-};
-
-export const TagGroupNext = TagGroupNextComponent as CompoundedComponent;
-
-TagGroupNext.Tag = Tag;

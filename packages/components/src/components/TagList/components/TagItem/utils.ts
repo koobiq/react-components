@@ -1,15 +1,15 @@
 import type { Node } from '@koobiq/react-core';
 
 import type { IconButtonPropVariant } from '../../../IconButton';
-import type { ItemProps } from '../../Tag';
-import type { TagGroupNextPropVariant } from '../../types';
+import type { TagProps } from '../../Tag';
+import type { TagListPropVariant } from '../../types';
 
-export function getTagGroupNextItemProps<T extends object>(node: Node<T>) {
-  return node.props as ItemProps<T>;
+export function getTagListItemProps<T extends object>(node: Node<T>) {
+  return node.props as TagProps<T>;
 }
 
 export const matchVariantToIconButton: Record<
-  TagGroupNextPropVariant,
+  TagListPropVariant,
   IconButtonPropVariant
 > = {
   'theme-fade': 'theme',

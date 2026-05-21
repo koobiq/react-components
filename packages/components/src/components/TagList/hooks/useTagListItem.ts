@@ -15,10 +15,10 @@ import {
 import type { Key, Node, PressEvent, DOMAttributes } from '@koobiq/react-core';
 import type { ListState } from '@koobiq/react-primitives';
 
-import { getTagGroupNextItemProps } from '../components/TagItem/utils';
+import { getTagListItemProps } from '../components/TagItem/utils';
 import intlMessages from '../intl.json';
 
-export type UseTagItemProps<T extends object> = {
+export type UseTagListItemProps<T extends object> = {
   state: ListState<T>;
   collectionId?: string;
   item: Node<T>;
@@ -49,14 +49,16 @@ function isSpaceKey(key: string) {
   return key === ' ' || key === 'Space' || key === 'Spacebar';
 }
 
-export function useTagItem<T extends object>(props: UseTagItemProps<T>) {
+export function useTagListItem<T extends object>(
+  props: UseTagListItemProps<T>
+) {
   const { collectionId, item, onRemove, state } = props;
 
   const ref = useRef<HTMLDivElement>(null);
   const rowId = useId();
   const removeButtonId = useId();
 
-  const itemProps = getTagGroupNextItemProps(item);
+  const itemProps = getTagListItemProps(item);
 
   const { selectionManager } = state;
 
