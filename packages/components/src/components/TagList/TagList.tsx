@@ -21,9 +21,9 @@ function TagListRender<T extends object>(
     slotProps,
     escapeKeyBehavior,
     'aria-label': ariaLabel,
+    'data-testid': dataTestid,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
-    'data-testid': dataTestid,
   } = props;
 
   const state = useTagListState(props);
@@ -39,10 +39,10 @@ function TagListRender<T extends object>(
       className={className}
       slotProps={slotProps}
       aria-label={ariaLabel}
+      data-testid={dataTestid}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       escapeKeyBehavior={escapeKeyBehavior}
-      data-testid={dataTestid}
     />
   );
 }
