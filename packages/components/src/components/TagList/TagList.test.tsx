@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 
 import { render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -431,5 +431,58 @@ describe('TagList', () => {
 
     const allRemoveButtons = screen.queryAllByRole('button');
     expect(allRemoveButtons).toHaveLength(3);
+  });
+
+  describe('prop forwarding', () => {
+    it('should forward className to the root element', () => {
+      const { container } = render(
+        renderComponent({ className: 'custom-root' })
+      );
+
+      expect(container.firstElementChild).toHaveClass('custom-root');
+    });
+
+    it('should forward style to the root element', () => {
+      const { container } = render(renderComponent({ style: { padding: 20 } }));
+
+      expect(container.firstElementChild).toHaveStyle({ padding: '20px' });
+    });
+
+    it('should forward ref to the root element', () => {
+      const ref = createRef<HTMLDivElement>();
+      const { container } = render(renderComponent({ ref }));
+
+      expect(ref.current).toBe(container.firstElementChild);
+    });
+
+    it('should forward data-testid to the root element', () => {
+      render(renderComponent({ 'data-testid': 'TAG_LIST_ROOT' }));
+
+      expect(screen.getByTestId('TAG_LIST_ROOT')).toBeInTheDocument();
+    });
+
+    it('should forward className to a Tag element', () => {
+      render(
+        <TagList aria-label="x">
+          <TagList.Tag key="1" className="tag-class" data-testid="single-tag">
+            one
+          </TagList.Tag>
+        </TagList>
+      );
+
+      expect(screen.getByTestId('single-tag')).toHaveClass('tag-class');
+    });
+
+    it('should forward style to a Tag element', () => {
+      render(
+        <TagList aria-label="x">
+          <TagList.Tag key="1" style={{ padding: 5 }} data-testid="single-tag">
+            one
+          </TagList.Tag>
+        </TagList>
+      );
+
+      expect(screen.getByTestId('single-tag')).toHaveStyle({ padding: '5px' });
+    });
   });
 });

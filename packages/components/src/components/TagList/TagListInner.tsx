@@ -50,15 +50,19 @@ export type TagListInnerProps<T extends object> = {
 
 export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
   const {
-    state,
     variant = 'theme-fade',
     style,
+    state,
+    onRemove,
     className,
     slotProps,
-    onRemove,
-    escapeKeyBehavior,
     autoFocus,
     tagListRef,
+    escapeKeyBehavior,
+    'aria-label': ariaLabel,
+    'data-testid': dataTestid,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
   } = props;
   const domRef = useDOMRef(tagListRef);
 
@@ -77,6 +81,10 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
       style,
       ref: domRef,
       className: clsx(groupStyles.base, className),
+      'data-testid': dataTestid,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
+      'aria-describedby': ariaDescribedBy,
     },
     gridProps,
     slotProps?.root
