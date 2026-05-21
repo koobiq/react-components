@@ -12,34 +12,34 @@
 
 ## Tech Stack
 
-| Technology              | Version | Purpose                                                        |
-| ----------------------- | ------- | -------------------------------------------------------------- |
-| Node.js                 | >=20.19 | Runtime                                                        |
-| pnpm                    | 9.12.2  | Package manager                                                |
-| React                   | 19.x    | UI framework                                                   |
-| TypeScript              | 6.x     | Type safety                                                    |
-| Turborepo               | 2.x     | Build orchestration                                            |
-| Vite                    | 7.x     | Bundler                                                        |
-| Storybook               | 10.x    | Component development                                          |
-| Vitest                  | 4.x     | Testing                                                        |
-| React Aria              | pinned  | Accessibility primitives (`@react-aria/*`, `@react-stately/*`) |
-| Lightning CSS           | 1.x     | CSS processing                                                 |
-| `@koobiq/design-tokens` | 3.x     | Design tokens (`--kbq-*` CSS custom properties)                |
+| Technology              | Version | Purpose                                                                                                                       |
+| ----------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Node.js                 | >=20.19 | Runtime                                                                                                                       |
+| pnpm                    | 9.12.2  | Package manager                                                                                                               |
+| React                   | 19.x    | UI framework                                                                                                                  |
+| TypeScript              | 6.x     | Type safety                                                                                                                   |
+| Turborepo               | 2.x     | Build orchestration                                                                                                           |
+| Vite                    | 7.x     | Bundler                                                                                                                       |
+| Storybook               | 10.x    | Component development                                                                                                         |
+| Vitest                  | 4.x     | Testing                                                                                                                       |
+| React Aria              | pinned  | Hooks, state, behavior, accessibility, and unstyled primitives (`react-aria-components`, `@react-aria/*`, `@react-stately/*`) |
+| Lightning CSS           | 1.x     | CSS processing                                                                                                                |
+| `@koobiq/design-tokens` | 3.x     | Design tokens (`--kbq-*` CSS custom properties)                                                                               |
 
 ## Monorepo Structure
 
 ```
 ├── packages/
 │   ├── logger/                        # @koobiq/logger — deprecation/warning logger
-│   ├── core/                          # @koobiq/react-core — depends on logger
+│   ├── core/                          # @koobiq/react-core — shared hooks, utilities, types, providers
 │   │   └── src/
 │   │       ├── hooks/                 # useBoolean, useResizeObserver, …
 │   │       ├── utils/                 # polymorphicForwardRef, clsx, mergeProps, …
 │   │       └── types/                 # ExtendableProps, Merge, …
-│   ├── primitives/                    # @koobiq/react-primitives — depends on core
+│   ├── primitives/                    # @koobiq/react-primitives — React Aria integration layer with Koobiq React behavior abstractions
 │   │   └── src/
-│   │       ├── components/            # React Aria wrappers
-│   │       └── behaviors/             # lower-level React Aria hooks
+│   │       ├── components/            # Koobiq React primitives built on React Aria
+│   │       └── behaviors/             # Koobiq React hooks built on lower-level React Aria behavior
 │   ├── components/                    # @koobiq/react-components — depends on primitives (primary deliverable)
 │   │   └── src/
 │   │       ├── components/            # one folder per component
@@ -47,40 +47,37 @@
 │   └── icons/                         # @koobiq/react-icons — standalone SVGR icon library
 ├── docs/                              # MDX documentation pages (rendered in Storybook)
 ├── .storybook/                        # Storybook configuration
-├── tools/                             # internal tooling, if present
-├── scripts/                           # build and release scripts
+├── tools/                             # internal tooling
+├── scripts/                           # repository automation scripts
 └── templates/                         # Next.js and Vite starter templates
 ```
 
 ## Commands
 
-| Action                      | Command                                                                          |
-| --------------------------- | -------------------------------------------------------------------------------- |
-| Install dependencies        | `pnpm install`                                                                   |
-| Install and start Storybook | `pnpm dev`                                                                       |
-| Start Storybook             | `pnpm storybook`                                                                 |
-| Build all packages          | `pnpm build`                                                                     |
-| Test in watch mode          | `pnpm test`                                                                      |
-| Run all tests once          | `pnpm exec vitest run`                                                           |
-| Test with coverage          | `pnpm test:coverage`                                                             |
-| Test a specific file        | `pnpm exec vitest run packages/components/src/components/Button/Button.test.tsx` |
-| Lint JS + CSS               | `pnpm lint`                                                                      |
-| Auto-fix lint               | `pnpm lint:fix`                                                                  |
-| Format files                | `pnpm format:write`                                                              |
-| Type check                  | `pnpm type-check`                                                                |
-| Build Storybook             | `pnpm build-storybook`                                                           |
-
-Use `pnpm storybook` instead of `pnpm dev` when dependencies are already installed. `pnpm dev` runs `pnpm install` before starting Storybook.
+| Action                      | Command                           |
+| --------------------------- | --------------------------------- |
+| Install dependencies        | `pnpm install`                    |
+| Install and start Storybook | `pnpm dev`                        |
+| Start Storybook             | `pnpm storybook`                  |
+| Build all packages          | `pnpm build`                      |
+| Test in watch mode          | `pnpm test`                       |
+| Run all tests once          | `pnpm vitest run`                 |
+| Test with coverage          | `pnpm test:coverage`              |
+| Test a specific file        | `pnpm vitest run Button.test.tsx` |
+| Lint JS + CSS               | `pnpm lint`                       |
+| Auto-fix lint               | `pnpm lint:fix`                   |
+| Format files                | `pnpm format:write`               |
+| Type check                  | `pnpm type-check`                 |
+| Build Storybook             | `pnpm build-storybook`            |
 
 ### Verification
 
-Pick the smallest verification that covers the change, then broaden if the blast radius grows.
+Run the narrowest check that covers the change, then add broader checks if needed.
 
-- Component-only change: run the affected test file with `pnpm exec vitest run <path>`.
+- Component-only change: run the affected test file with `pnpm vitest run <path>`.
 - Type or public export change: run `pnpm type-check`.
 - CSS or lint-sensitive change: run `pnpm lint`.
 - Package boundary, build config, or broad shared behavior change: run `pnpm build`.
-- Documentation or Storybook-only change: run `pnpm build-storybook` when practical.
 
 Pre-commit uses `nano-staged`: TS/JS files run ESLint and related Vitest tests, CSS runs Stylelint, staged changes run `pnpm type-check`, and docs-like files are formatted with Prettier.
 
@@ -92,7 +89,7 @@ All commits follow [Conventional Commits](https://www.conventionalcommits.org/) 
 | ---------- | ---------------------------------------- |
 | `feat`     | New feature or component                 |
 | `fix`      | Bug fix                                  |
-| `refactor` | Code change with no behaviour change     |
+| `refactor` | Code change with no behavior change      |
 | `chore`    | Maintenance, deps, config                |
 | `docs`     | Documentation only                       |
 | `perf`     | Performance improvement                  |
@@ -103,7 +100,7 @@ Only `feat` and `fix` appear in the changelog. Branch naming: `type/description`
 
 ```
 feat(Button): add isLoading prop
-fix(TagList): resolve disabled state not applying
+fix(Checkbox): resolve disabled state not applying
 chore(deps): bump typescript to 6.x
 ```
 
@@ -113,13 +110,13 @@ Each component lives in its own directory under `packages/components/src/compone
 
 ```
 packages/components/src/components/Button/
-├── Button.tsx            # component implementation ('use client' at top)
+├── Button.tsx            # component implementation
 ├── Button.mdx            # documentation page (Storybook)
 ├── types.ts              # prop types (exported as public API)
 ├── Button.module.css     # CSS Modules styles
 ├── Button.stories.tsx    # Storybook stories
 ├── Button.test.tsx       # Vitest + Testing Library unit tests
-└── index.ts              # public API re-exports
+└── index.ts              # component entry point
 ```
 
 Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or `intl.json`, and `__tests__/`. Follow nearby component patterns before adding new structure.
@@ -130,7 +127,7 @@ Build through the package layers instead of jumping straight to local component 
 
 1. **Core** (`@koobiq/react-core`) — shared hooks, utilities, DOM helpers, providers, and types used by the rest of the workspace.
 2. **Primitives** (`@koobiq/react-primitives`) — unstyled components and behavior hooks built on React Aria and React Stately plus core utilities. This is where reusable accessibility, keyboard, focus, collection, and state behavior should live.
-3. **Components** (`@koobiq/react-components`) — styled Koobiq components that compose primitives, apply CSS Modules and design tokens, and expose the public design-system API.
+3. **Components** (`@koobiq/react-components`) — styled Koobiq React components that compose primitives, apply CSS Modules and design tokens, and expose the public design-system API.
 
 When adding behavior, look for an existing primitive or core helper first. If the behavior is reusable, add or extend it in primitives or core before wiring it into a styled component. Drop down to lower-level React Aria hooks inside `@koobiq/react-components` only when the primitives layer cannot represent the use case — see the [React Aria advanced guide](https://react-spectrum.adobe.com/react-aria/advanced.html#hooks).
 
