@@ -4,7 +4,7 @@ import { IconGlobe16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { FlexBox } from '../FlexBox';
-import { useListData } from '../index';
+import { Typography, useListData } from '../index';
 
 import { TagList } from './TagList';
 import { tagListPropVariant } from './types';
@@ -12,7 +12,7 @@ import { tagListPropVariant } from './types';
 const meta = {
   title: 'Components/TagList',
   component: TagList,
-  subcomponents: { Tag: TagList.Tag },
+  subcomponents: { 'TagList.Tag': TagList.Tag },
   parameters: {
     layout: 'centered',
   },
@@ -44,8 +44,8 @@ export const Variant: Story = {
         <TagList
           key={variant}
           variant={variant}
-          onRemove={() => undefined}
           aria-label="Libraries"
+          onRemove={() => undefined}
           {...args}
         >
           <TagList.Tag key="react">React</TagList.Tag>
@@ -82,10 +82,10 @@ export const RemoveTags: Story = {
 
     return (
       <TagList<{ id: number; name: string }>
-        aria-label="Libraries"
-        selectionMode="multiple"
         items={list.items}
         disabledKeys={[4]}
+        aria-label="Libraries"
+        selectionMode="multiple"
         onRemove={(keys) => {
           args.onRemove?.(keys);
           list.remove(...keys);
@@ -156,7 +156,9 @@ export const ControlledSelection: Story = {
           <TagList.Tag key="storybook">Storybook</TagList.Tag>
           <TagList.Tag key="tailwind">Tailwind</TagList.Tag>
         </TagList>
-        <small>Selected: {[...selected].join(', ') || '(none)'}</small>
+        <Typography>
+          Selected: {[...selected].join(', ') || '(none)'}
+        </Typography>
       </FlexBox>
     );
   },

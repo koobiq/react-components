@@ -12,39 +12,9 @@ function TagListRender<T extends object>(
   props: TagListProps<T>,
   ref?: Ref<HTMLDivElement>
 ) {
-  const {
-    style,
-    variant,
-    onRemove,
-    autoFocus,
-    className,
-    slotProps,
-    escapeKeyBehavior,
-    'aria-label': ariaLabel,
-    'data-testid': dataTestid,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy,
-  } = props;
-
   const state = useTagListState(props);
 
-  return (
-    <TagListInner
-      state={state}
-      style={style}
-      tagListRef={ref}
-      variant={variant}
-      onRemove={onRemove}
-      autoFocus={autoFocus}
-      className={className}
-      slotProps={slotProps}
-      aria-label={ariaLabel}
-      data-testid={dataTestid}
-      aria-labelledby={ariaLabelledBy}
-      aria-describedby={ariaDescribedBy}
-      escapeKeyBehavior={escapeKeyBehavior}
-    />
-  );
+  return <TagListInner {...props} state={state} tagListRef={ref} />;
 }
 
 const TagListComponent = forwardRef(TagListRender) as TagListComponent;
