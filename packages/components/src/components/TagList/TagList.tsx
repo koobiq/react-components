@@ -3,8 +3,7 @@
 import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
-import { useListState } from '@koobiq/react-primitives';
-
+import { useTagListState } from './hooks';
 import { Tag } from './Tag';
 import { TagListInner } from './TagListInner';
 import type { TagListComponent, TagListProps } from './types';
@@ -27,7 +26,7 @@ function TagListRender<T extends object>(
     'data-testid': dataTestid,
   } = props;
 
-  const state = useListState(props);
+  const state = useTagListState(props);
 
   return (
     <TagListInner

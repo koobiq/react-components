@@ -1,28 +1,13 @@
 'use client';
 
-import { useMemo } from 'react';
-import type {
-  Ref,
-  RefObject,
-  CSSProperties,
-  ComponentPropsWithRef,
-} from 'react';
+import type { ComponentPropsWithRef, CSSProperties, Ref } from 'react';
 
 import type { FocusStrategy, Key } from '@koobiq/react-core';
-import {
-  clsx,
-  useLocale,
-  useDOMRef,
-  mergeProps,
-  useFocusWithin,
-} from '@koobiq/react-core';
+import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
 import type { ListState } from '@koobiq/react-primitives';
-import {
-  useSelectableList,
-  ListKeyboardDelegate,
-} from '@koobiq/react-primitives';
 
 import { TagItem } from './components';
+import { useTagList } from './hooks';
 import groupStyles from './TagList.module.css';
 import type { TagListPropVariant } from './types';
 
@@ -76,44 +61,14 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
     tagListRef,
   } = props;
   const domRef = useDOMRef(tagListRef);
-  const { direction } = useLocale();
 
-  const keyboardDelegate = useMemo(
-    () =>
-      new ListKeyboardDelegate({
-        collection: state.collection,
-        direction,
-        disabledBehavior: state.selectionManager.disabledBehavior,
-        disabledKeys: state.disabledKeys,
-        orientation: 'horizontal',
-        ref: domRef as RefObject<HTMLDivElement | null>,
-      }),
-    [
-      domRef,
-      direction,
-      state.collection,
-      state.disabledKeys,
-      state.selectionManager.disabledBehavior,
-    ]
+  const { gridProps } = useTagList(
+    { escapeKeyBehavior, autoFocus },
+    state,
+    domRef
   );
 
-  const { listProps } = useSelectableList({
-    keyboardDelegate,
-    shouldFocusWrap: true,
-    escapeKeyBehavior,
-    autoFocus,
-    collection: state.collection,
-    disabledKeys: state.disabledKeys,
-    selectionManager: state.selectionManager,
-    ref: domRef as RefObject<HTMLDivElement | null>,
-  });
-
-  // Clear selection when focus leaves the group.
-  const { focusWithinProps } = useFocusWithin({
-    onBlurWithin: () => state.selectionManager.clearSelection(),
-  });
-
-  const collectionId = (listProps as Record<string, unknown>)[
+  const collectionId = (gridProps as Record<string, unknown>)[
     'data-collection'
   ] as string | undefined;
 
@@ -122,10 +77,8 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
       style,
       ref: domRef,
       className: clsx(groupStyles.base, className),
-      role: state.collection.size ? 'grid' : 'group',
     },
-    listProps,
-    focusWithinProps,
+    gridProps,
     slotProps?.root
   );
 
