@@ -34,7 +34,9 @@
     "release": "pnpm release:check && pnpm release:version",
     "release:check": "pnpm type-check && vitest --run && pnpm build",
     "release:version": "bumpp",
-    "release:publish": "pnpm publish -r"
+    "release:publish": "pnpm publish -r",
+    "check-api": "tsx tools/api-extractor/api-extractor.ts onlyCheck",
+    "approve-api": "tsx tools/api-extractor/api-extractor.ts"
   },
   "keywords": [],
   "author": "",
@@ -48,6 +50,8 @@
     "@koobiq/date-formatter": "^3.5.1",
     "@koobiq/design-tokens": "^3.17.2",
     "@koobiq/internationalized-date-adapter": "^3.5.1",
+    "@microsoft/api-extractor": "^7.56.0",
+    "@rushstack/node-core-library": "^3.66.1",
     "@storybook/addon-a11y": "^10.3.6",
     "@storybook/addon-docs": "^10.3.6",
     "@storybook/addon-links": "^10.3.6",
@@ -71,6 +75,7 @@
     "@vueless/storybook-dark-mode": "^10.0.8",
     "browserslist": "^4.28.1",
     "browserslist-to-esbuild": "^2.1.1",
+    "chalk": "^4.1.2",
     "bumpp": "^10.1.0",
     "commit-and-tag-version": "^12.5.0",
     "dotenv": "^16.4.7",

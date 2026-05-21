@@ -23,6 +23,7 @@ export default defineConfig(
       '**/*.min.js',
       'templates/nextjs/template/**',
       'templates/vite/template/**',
+      'tools/public_api_guard/**',
     ],
   },
   {

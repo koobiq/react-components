@@ -33,3 +33,20 @@ Our technology stack:
 - `pnpm run test` — will run unit tests on every change
 - `pnpm run lint` — will lint the code once
 - `pnpm run type-check` — will check the typing of the code once
+
+## 🛡 Public API guard
+
+The public API of each component and package is pinned in `tools/public_api_guard/`. Before opening a PR:
+
+```bash
+pnpm build
+pnpm check-api
+```
+
+If the API change is intentional, refresh the snapshots and commit them:
+
+```bash
+pnpm approve-api                # refresh all
+pnpm approve-api Button         # refresh a single component
+pnpm approve-api react-icons    # refresh a single package
+```
