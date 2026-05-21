@@ -18,7 +18,7 @@ type ItemComponent<T> = FC<AriaItemProps<T>> & {
 
 const TagInner = AriaItem as ItemComponent<unknown>;
 
-export type TagSlotProps = {
+type TagSlotProps = {
   root?: ComponentPropsWithRef<'div'>;
   icon?: ComponentPropsWithRef<'span'>;
   content?: ComponentPropsWithRef<'span'>;
@@ -40,7 +40,7 @@ type AriaTagItemProps<T> = Omit<
   | 'hasChildItems'
 >;
 
-export type ItemProps<T> = AriaTagItemProps<T> & {
+export type TagProps<T> = AriaTagItemProps<T> & {
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */
@@ -58,7 +58,7 @@ export type ItemProps<T> = AriaTagItemProps<T> & {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function Tag<T>(_props: ItemProps<T>) {
+export function Tag<T>(_props: TagProps<T>) {
   return null;
 }
 

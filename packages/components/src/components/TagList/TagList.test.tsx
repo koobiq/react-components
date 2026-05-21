@@ -1,27 +1,25 @@
 import { useState } from 'react';
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Provider } from '../Provider';
 
-import { isInteractiveTarget } from './hooks/useTagItem';
-import { TagGroupNext, type TagGroupNextProps } from './index';
+import { isInteractiveTarget } from './hooks';
+import { TagList, type TagListProps } from './index';
 
-const TAG_GROUP_NEXT_TEST_ID = 'TAG_GROUP_NEXT_TAG';
+const TAG_LIST_TEST_ID = 'TAG_LIST_TAG';
 
-const renderComponent = (
-  props: Omit<TagGroupNextProps<object>, 'children'>
-) => (
-  <TagGroupNext {...props} aria-label="tag-group-next">
-    <TagGroupNext.Tag key={1}>one</TagGroupNext.Tag>
-    <TagGroupNext.Tag key={2} data-testid={TAG_GROUP_NEXT_TEST_ID}>
+const renderComponent = (props: Omit<TagListProps<object>, 'children'>) => (
+  <TagList {...props} aria-label="tag-list">
+    <TagList.Tag key={1}>one</TagList.Tag>
+    <TagList.Tag key={2} data-testid={TAG_LIST_TEST_ID}>
       two
-    </TagGroupNext.Tag>
-    <TagGroupNext.Tag key={3}>three</TagGroupNext.Tag>
-    <TagGroupNext.Tag key={4}>four</TagGroupNext.Tag>
-  </TagGroupNext>
+    </TagList.Tag>
+    <TagList.Tag key={3}>three</TagList.Tag>
+    <TagList.Tag key={4}>four</TagList.Tag>
+  </TagList>
 );
 
 const removableItems = [
@@ -31,12 +29,12 @@ const removableItems = [
   { id: '4', name: 'four' },
 ];
 
-function RemovableTagGroupNext() {
+function RemovableTagList() {
   const [items, setItems] = useState(removableItems);
 
   return (
-    <TagGroupNext<(typeof removableItems)[number]>
-      aria-label="removable-tag-group-next"
+    <TagList<(typeof removableItems)[number]>
+      aria-label="removable-tag-list"
       selectionMode="multiple"
       items={items}
       onRemove={(keys) => {
@@ -46,16 +44,16 @@ function RemovableTagGroupNext() {
       }}
     >
       {(item) => (
-        <TagGroupNext.Tag key={item.id} data-testid={`tag-${item.id}`}>
+        <TagList.Tag key={item.id} data-testid={`tag-${item.id}`}>
           {item.name}
-        </TagGroupNext.Tag>
+        </TagList.Tag>
       )}
-    </TagGroupNext>
+    </TagList>
   );
 }
 
-describe('TagGroupNext', () => {
-  const getTag = () => screen.getByTestId(TAG_GROUP_NEXT_TEST_ID);
+describe('TagList', () => {
+  const getTag = () => screen.getByTestId(TAG_LIST_TEST_ID);
 
   it('should detect nested focusable interaction targets', () => {
     const root = document.createElement('div');
@@ -94,7 +92,7 @@ describe('TagGroupNext', () => {
     expect(getTag()).not.toHaveAttribute('data-selected');
   });
 
-  it('should toggle selection on ctrl click', async () => {
+  it('should toggle selection on ctrl+click', async () => {
     const user = userEvent.setup();
     const onSelectionChange = vi.fn();
 
@@ -113,7 +111,7 @@ describe('TagGroupNext', () => {
     expect(getTag()).toHaveAttribute('data-selected', 'true');
   });
 
-  it('should toggle selection on cmd click', async () => {
+  it('should toggle selection on cmd+click', async () => {
     const user = userEvent.setup();
     const onSelectionChange = vi.fn();
 
@@ -212,7 +210,8 @@ describe('TagGroupNext', () => {
 
     await user.click(getTag());
     await user.keyboard('{Space}');
-    await user.click(screen.getAllByRole('row')[0]);
+    const firstRow = screen.getAllByRole('row')[0];
+    if (firstRow) await user.click(firstRow);
 
     expect(getTag()).toHaveAttribute('data-selected', 'true');
   });
@@ -237,7 +236,7 @@ describe('TagGroupNext', () => {
   it('should remove focused tag after selected tags were removed', async () => {
     const user = userEvent.setup();
 
-    render(<RemovableTagGroupNext />);
+    render(<RemovableTagList />);
 
     await user.keyboard('{Control>}');
     await user.click(screen.getByTestId('tag-2'));
@@ -308,5 +307,129 @@ describe('TagGroupNext', () => {
       const description = document.getElementById(describedBy ?? '');
       expect(description?.textContent).toMatch(/delete or backspace/i);
     });
+  });
+
+  it('should auto-focus the first tag when autoFocus="first"', async () => {
+    render(renderComponent({ autoFocus: 'first' }));
+
+    await waitFor(() =>
+      expect(screen.getByText('one').closest('[role="row"]')).toHaveFocus()
+    );
+  });
+
+  it('should auto-focus the last tag when autoFocus="last"', async () => {
+    render(renderComponent({ autoFocus: 'last' }));
+
+    await waitFor(() =>
+      expect(screen.getByText('four').closest('[role="row"]')).toHaveFocus()
+    );
+  });
+
+  it('should reflect controlled selectedKeys from props', () => {
+    render(
+      renderComponent({
+        selectionMode: 'multiple',
+        // React stringifies element keys, so the collection node id is '2'.
+        selectedKeys: new Set(['2']),
+      })
+    );
+
+    expect(getTag()).toHaveAttribute('aria-selected', 'true');
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+  });
+
+  it('should call onSelectionChange when user toggles a controlled key', async () => {
+    const user = userEvent.setup();
+    const onSelectionChange = vi.fn();
+
+    render(
+      renderComponent({
+        selectionMode: 'multiple',
+        selectedKeys: new Set<string>(),
+        onSelectionChange,
+      })
+    );
+
+    await user.keyboard('{Control>}');
+    await user.click(getTag());
+    await user.keyboard('{/Control}');
+
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
+    const next = onSelectionChange.mock.calls[0]?.[0] as Set<string>;
+    expect([...next]).toContain('2');
+  });
+
+  it('should keep selection on Escape when escapeKeyBehavior="none"', async () => {
+    const user = userEvent.setup();
+
+    render(
+      renderComponent({
+        selectionMode: 'multiple',
+        escapeKeyBehavior: 'none',
+      })
+    );
+
+    await user.click(getTag());
+    await user.keyboard('{Space}');
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+
+    await user.keyboard('{Escape}');
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+  });
+
+  it('should render role="group" when collection is empty', () => {
+    render(
+      <TagList aria-label="empty" items={[] as Iterable<{ id: string }>}>
+        {() => <TagList.Tag>unused</TagList.Tag>}
+      </TagList>
+    );
+
+    expect(screen.getByRole('group')).toBeInTheDocument();
+    expect(screen.queryByRole('grid')).toBeNull();
+  });
+
+  it('should react to items prop mutations', () => {
+    type Item = { id: string; name: string };
+    const initial: Item[] = [
+      { id: '1', name: 'one' },
+      { id: '2', name: 'two' },
+    ];
+    const extended: Item[] = [...initial, { id: '3', name: 'three' }];
+
+    const Wrapper = ({ items }: { items: Item[] }) => (
+      <TagList<Item> aria-label="mutating" items={items}>
+        {(item) => (
+          <TagList.Tag key={item.id} data-testid={`tag-${item.id}`}>
+            {item.name}
+          </TagList.Tag>
+        )}
+      </TagList>
+    );
+
+    const { rerender } = render(<Wrapper items={initial} />);
+    expect(screen.queryByTestId('tag-3')).toBeNull();
+
+    rerender(<Wrapper items={extended} />);
+    expect(screen.getByTestId('tag-3')).toBeInTheDocument();
+  });
+
+  it('should not render a remove button on a disabled tag', () => {
+    render(
+      renderComponent({
+        onRemove: vi.fn(),
+        disabledKeys: ['2'],
+      })
+    );
+
+    // With default `disabledBehavior: 'all'`, the disabled tag is taken
+    // out of the focus order entirely (so keyboard removal cannot reach
+    // it) AND the remove-button affordance is suppressed for it. We
+    // assert the affordance contract here — the non-disabled tags still
+    // get their buttons (3 of them in the fixture).
+    const disabledTag = getTag();
+    expect(within(disabledTag).queryByRole('button')).toBeNull();
+
+    const allRemoveButtons = screen.queryAllByRole('button');
+    expect(allRemoveButtons).toHaveLength(3);
   });
 });

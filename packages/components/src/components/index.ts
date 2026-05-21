@@ -33,7 +33,7 @@ export * from './Divider';
 export * from './Menu';
 export * from './ButtonToggleGroup';
 export * from './TagGroup';
-export * from './TagGroupNext';
+export * from './TagList';
 export * from './Table';
 export * from './Calendar';
 export * from './DateInput';
