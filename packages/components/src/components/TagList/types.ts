@@ -13,6 +13,7 @@ import type {
   FocusStrategy,
   MultipleSelection,
 } from '@koobiq/react-core';
+import type { ListState } from '@koobiq/react-primitives';
 
 export const tagListPropVariant = [
   'theme-fade',
@@ -73,6 +74,25 @@ type TagListInheritedProps<T extends object> = TagListCollectionProps<T> &
 export type TagListProps<T extends object = object> = ExtendableProps<
   TagListBaseProps,
   TagListInheritedProps<T>
+>;
+
+export type TagListInnerProps<T extends object = object> = {
+  /** Pre-built collection state, e.g. from `useTagListState`. */
+  state: ListState<T>;
+  /** Ref to the root element. */
+  tagListRef?: Ref<HTMLDivElement>;
+} & Omit<
+  TagListProps<T>,
+  // Collection / selection inputs are baked into `state` already.
+  | 'ref'
+  | 'children'
+  | 'items'
+  | 'disabledKeys'
+  | 'selectionMode'
+  | 'disallowEmptySelection'
+  | 'selectedKeys'
+  | 'defaultSelectedKeys'
+  | 'onSelectionChange'
 >;
 
 export type TagListComponent = <T extends object = object>(
