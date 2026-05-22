@@ -125,39 +125,41 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
 - CSS Modules. Class names are hashed and not part of the public API — don't target them externally; use `data-*` attributes and public props instead.
 - Expose state via `data-*` attributes (`data-loading`, `data-fullwidth`, …). Set them as `data-loading={isLoading || undefined}` so the attribute is absent in the false state.
 - Visual values come from `@koobiq/design-tokens` CSS custom properties (`--kbq-*`). Don't hard-code a value that has a token.
-- Use logical CSS properties (`inline-size`, `padding-inline`, `inset`) over physical ones.
+- Use logical CSS properties (`inline-size`, `padding-inline`, `inset`). Stylelint warns on physical ones (`stylelint-plugin-logical-css`); `pnpm lint:fix` auto-converts them.
+- Only use CSS features supported by the project's [browserslist](package.json) targets.
 - Mostly plain CSS. Mixins are used for typography and text ellipsis (`packages/components/src/styles/mixins.css`).
 
 ### Prop System
 
-Props are defined in `types.ts` and exported through the component's `index.ts`. Variants are exported as `as const` arrays plus a derived union type:
+- Props with a fixed set of allowed values are exported as `as const` arrays plus a derived union type:
 
-```ts
-export const buttonVariant = ['contrast-filled', 'fade-contrast-filled', ...] as const;
-export type ButtonVariant = (typeof buttonVariant)[number];
-```
+  ```ts
+  export const buttonVariant = ['contrast-filled', 'fade-contrast-filled', ...] as const;
+  export type ButtonVariant = (typeof buttonVariant)[number];
+  ```
 
-- Boolean state props follow the React Aria convention — `is` prefix (`isDisabled`, `isLoading`, `isRequired`, `isReadOnly`, `isInvalid`, `isOpen`, `isSelected`). Don't use the HTML equivalents.
-- Visual/layout modifiers have no prefix and default to `false` (`fullWidth`, `onlyIcon`, `hideArrow`, `hiddenLabel`).
+- All boolean props default to `false`. If `true` would be the natural default, invert the name (e.g. `hideArrow` instead of `showArrow={true}`).
 - Deprecated props warn via `deprecate()` (from `@koobiq/logger`) guarded by `process.env.NODE_ENV !== 'production'`:
 
-```tsx
-if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
-  deprecate('Button: "disabled" is deprecated. Use "isDisabled" instead.');
-}
-```
-
-- Compound components are attached as static properties (e.g. `Select.Item`) and can't be used standalone.
+  ```tsx
+  if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
+    deprecate('Button: "disabled" is deprecated. Use "isDisabled" instead.');
+  }
+  ```
 
 ## Coding Conventions
 
 - Prettier for formatting.
+- Type-only imports use `import type`.
 - ESLint and Stylelint, configured in the repo.
 - Every component `.tsx` starts with `'use client'` (Next.js RSC).
-- Type-only imports use `import type`.
+- Keep files focused. When the main file grows, split helpers, hooks, sub-components, and translations into separate files (`utils.ts`, `intl.ts`, nested `components/`) as already done in complex components.
 - Public exports go through the component's local `index.ts`, then `packages/components/src/components/index.ts`.
 
-**Commits and branches.** All commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are validated by commitlint. Only `feat` and `fix` appear in the changelog. Keep titles short (≤72 chars). Branch naming is `type/description` or `type/DS-XXXX/description` (ticket optional but preferred).
+## Git Commit Convention
+
+All commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are validated by commitlint.
+Only `feat` and `fix` appear in the changelog. Keep titles short (≤100 chars).
 
 | Type       | When to use                              |
 | ---------- | ---------------------------------------- |
@@ -173,17 +175,13 @@ if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
 Examples:
 
 ```
-feat(Button): add isLoading prop
+feat(Button): add `isLoading` prop
 fix(Checkbox): resolve disabled state not applying
-chore(deps): bump typescript from 5.7.3 to 6.0.3 (DS-5117)
+chore(deps): bump `typescript` from 5.7.3 to 6.0.3
 ```
-
-The third example shows how to attach a `DS-XXXX` ticket — keep it in parentheses at the end so the title stays short and scannable.
 
 ## Important Notes for Agents
 
 - When Storybook runs locally, an MCP server is available at `http://localhost:6006/mcp` (via `@storybook/addon-mcp`) — use it for component introspection.
 - Pre-commit runs `nano-staged`: ESLint and related Vitest tests for TS/JS, Stylelint for CSS, `pnpm type-check` on staged changes, Prettier for docs-like files. Before committing, also run `pnpm vitest run <path>` and `pnpm type-check` for the area you touched.
 - Component stories (`*.stories.tsx`) use the `Components` group and `tags` such as `status:new`, `status:updated`, `status:deprecated`. For `new`/`updated`, include a `date:YYYY-MM-DD` tag — Storybook uses it to expire temporary badges.
-- `@koobiq/react-icons` is a separate package; consume icons through `startIcon`/`endIcon` props or inline.
-- Public API is published only from `@koobiq/react-components`; `core` and `primitives` are internal layers.
