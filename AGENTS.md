@@ -4,107 +4,106 @@
 
 ## Project Overview
 
-**Koobiq React** is an open-source React component library built on top of [React Aria](https://react-spectrum.adobe.com/react-aria/), focused on designing products related to cybersecurity.
+**Koobiq React** is an open-source React component library built on top of [React Aria](https://react-spectrum.adobe.com/react-aria/), used to build user interfaces for information-security products.
 
-- **Package:** `@koobiq/react-components`
+- **Package name:** `@koobiq/react-components`
+- **Current version:** 0.x (check `packages/components/package.json` for the exact version)
 - **License:** MIT
 - **Documentation:** https://react.koobiq.io
 
-## Tech Stack
-
-| Technology              | Version | Purpose                                                                                                                       |
-| ----------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Node.js                 | >=20.19 | Runtime                                                                                                                       |
-| pnpm                    | 9.12.2  | Package manager                                                                                                               |
-| React                   | 19.x    | UI framework                                                                                                                  |
-| TypeScript              | 6.x     | Type safety                                                                                                                   |
-| Turborepo               | 2.x     | Build orchestration                                                                                                           |
-| Vite                    | 7.x     | Bundler                                                                                                                       |
-| Storybook               | 10.x    | Component development                                                                                                         |
-| Vitest                  | 4.x     | Testing                                                                                                                       |
-| React Aria              | pinned  | Hooks, state, behavior, accessibility, and unstyled primitives (`react-aria-components`, `@react-aria/*`, `@react-stately/*`) |
-| Lightning CSS           | 1.x     | CSS processing                                                                                                                |
-| `@koobiq/design-tokens` | 3.x     | Design tokens (`--kbq-*` CSS custom properties)                                                                               |
-
-## Monorepo Structure
+## Repository Structure
 
 ```
 ├── packages/
-│   ├── logger/                        # @koobiq/logger — deprecation/warning logger
-│   ├── core/                          # @koobiq/react-core — shared hooks, utilities, types, providers
+│   ├── logger/                        # The utilities for displaying the log on the client side (@koobiq/logger)
+│   ├── core/                          # Common hooks, utilities, and types used by Koobiq React packages (@koobiq/react-core)
 │   │   └── src/
 │   │       ├── hooks/                 # useBoolean, useResizeObserver, …
 │   │       ├── utils/                 # polymorphicForwardRef, clsx, mergeProps, …
-│   │       └── types/                 # ExtendableProps, Merge, …
-│   ├── primitives/                    # @koobiq/react-primitives — React Aria integration layer with Koobiq React behavior abstractions
+│   │       ├── types/                 # ExtendableProps, Merge, …
+│   │       └── index.ts               # Re-exports React Aria hooks/utilities/types + Koobiq hooks/utilities/types
+│   ├── primitives/                    # React Aria primitives integration layer (@koobiq/react-primitives)
 │   │   └── src/
-│   │       ├── components/            # Koobiq React primitives built on React Aria
-│   │       └── behaviors/             # Koobiq React hooks built on lower-level React Aria behavior
-│   ├── components/                    # @koobiq/react-components — depends on primitives (primary deliverable)
+│   │       ├── components/            # Koobiq primitives built on React Aria
+│   │       ├── behaviors/             # Koobiq behavior hooks built on React Aria
+│   │       └── index.ts               # Re-exports unmodified React Aria hooks/state/types + RAC components + Koobiq primitives and behavior hooks
+│   ├── components/                    # Koobiq React components (@koobiq/react-components)
 │   │   └── src/
-│   │       ├── components/            # one folder per component
-│   │       └── styles/                # shared PostCSS mixins, utility classes
-│   └── icons/                         # @koobiq/react-icons — standalone SVGR icon library
+│   │       ├── components/            # All component source files
+│   │       ├── styles/                # CSS mixins, utility classes
+│   │       ├── utils/                 # Component-level helpers
+│   │       ├── types.ts
+│   │       ├── global.css
+│   │       └── index.ts
+│   └── icons/                         # A collection of React-icons (@koobiq/react-icons)
 ├── docs/                              # MDX documentation pages (rendered in Storybook)
 ├── .storybook/                        # Storybook configuration
-├── tools/                             # internal tooling
-├── scripts/                           # repository automation scripts
-└── templates/                         # Next.js and Vite starter templates
+├── tools/                             # Internal tooling
+├── scripts/                           # Repository automation (release, llms.txt generation)
+├── templates/                         # Next.js and Vite starter templates
+├── package.json                       # Root monorepo config
+├── pnpm-workspace.yaml
+├── turbo.json
+├── vite.config.mts                    # Shared Vite + Vitest config
+└── vitest.workspace.ts
 ```
 
-## Commands
+## Tech Stack
 
-| Action                      | Command                           |
-| --------------------------- | --------------------------------- |
-| Install dependencies        | `pnpm install`                    |
-| Install and start Storybook | `pnpm dev`                        |
-| Start Storybook             | `pnpm storybook`                  |
-| Build all packages          | `pnpm build`                      |
-| Test in watch mode          | `pnpm test`                       |
-| Run all tests once          | `pnpm vitest run`                 |
-| Test with coverage          | `pnpm test:coverage`              |
-| Test a specific file        | `pnpm vitest run Button.test.tsx` |
-| Lint JS + CSS               | `pnpm lint`                       |
-| Auto-fix lint               | `pnpm lint:fix`                   |
-| Format files                | `pnpm format:write`               |
-| Type check                  | `pnpm type-check`                 |
-| Build Storybook             | `pnpm build-storybook`            |
+| Concern                  | Tool                                                                      |
+| ------------------------ | ------------------------------------------------------------------------- |
+| Package manager          | pnpm 9.12.2                                                               |
+| Node version             | >=20.19                                                                   |
+| Monorepo orchestration   | Turborepo                                                                 |
+| Language                 | TypeScript 6 (strict)                                                     |
+| Framework                | React 19 (18 supported)                                                   |
+| Bundler                  | Vite 7                                                                    |
+| CSS processing           | Lightning CSS                                                             |
+| Linting                  | ESLint, Stylelint                                                         |
+| Formatting               | Prettier                                                                  |
+| Component playground     | Storybook 10                                                              |
+| Testing                  | Vitest 4 + React Testing Library                                          |
+| Accessibility primitives | React Aria (`react-aria-components`, `@react-aria/*`, `@react-stately/*`) |
+| Design tokens            | `@koobiq/design-tokens` (`--kbq-*` CSS custom properties)                 |
 
-### Verification
+React Aria packages are pinned to exact versions and updated together.
 
-Run the narrowest check that covers the change, then add broader checks if needed.
+## Key Commands
 
-- Component-only change: run the affected test file with `pnpm vitest run <path>`.
-- Type or public export change: run `pnpm type-check`.
-- CSS or lint-sensitive change: run `pnpm lint`.
-- Package boundary, build config, or broad shared behavior change: run `pnpm build`.
+```bash
+# Install dependencies
+pnpm install
 
-Pre-commit uses `nano-staged`: TS/JS files run ESLint and related Vitest tests, CSS runs Stylelint, staged changes run `pnpm type-check`, and docs-like files are formatted with Prettier.
+# Start Storybook playground (dev mode)
+pnpm dev
+# Then visit http://localhost:6006
 
-## Git Commit Convention
+# Build all packages
+pnpm build
 
-All commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are validated by commitlint.
+# Build Storybook
+pnpm build-storybook
 
-| Type       | When to use                              |
-| ---------- | ---------------------------------------- |
-| `feat`     | New feature or component                 |
-| `fix`      | Bug fix                                  |
-| `refactor` | Code change with no behavior change      |
-| `chore`    | Maintenance, deps, config                |
-| `docs`     | Documentation only                       |
-| `perf`     | Performance improvement                  |
-| `test`     | Tests only                               |
-| `style`    | Code style, formatting (no logic change) |
+# Run tests
+pnpm test                          # watch mode
+pnpm vitest run                    # one-off run
+pnpm vitest run Button.test.tsx    # one test file
+pnpm test:coverage
 
-Only `feat` and `fix` appear in the changelog. Branch naming: `type/description` or `type/DS-XXXX/description` (ticket optional).
+# Type check
+pnpm type-check
 
-```
-feat(Button): add isLoading prop
-fix(Checkbox): resolve disabled state not applying
-chore(deps): bump typescript to 6.x
+# Lint and format
+pnpm lint
+pnpm lint:fix
+pnpm format:write
 ```
 
 ## Component Architecture
+
+Components are built on top of [`react-aria-components`](https://react-spectrum.adobe.com/react-aria/) (RAC) via `@koobiq/react-primitives`. When RAC doesn't fit, drop down to lower-level `@react-aria/*` and `@react-stately/*` hooks.
+
+### File Convention
 
 Each component lives in its own directory under `packages/components/src/components/`:
 
@@ -121,42 +120,26 @@ packages/components/src/components/Button/
 
 Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or `intl.json`, and `__tests__/`. Follow nearby component patterns before adding new structure.
 
-### Layering
+### Styling Approach
 
-Build through the package layers instead of jumping straight to local component code. The intended dependency path is `core` → `primitives` → `components`:
+- CSS Modules. Class names are hashed and not part of the public API — don't target them externally; use `data-*` attributes and public props instead.
+- Expose state via `data-*` attributes (`data-loading`, `data-fullwidth`, …). Set them as `data-loading={isLoading || undefined}` so the attribute is absent in the false state.
+- Visual values come from `@koobiq/design-tokens` CSS custom properties (`--kbq-*`). Don't hard-code a value that has a token.
+- Use logical CSS properties (`inline-size`, `padding-inline`, `inset`) over physical ones.
+- Mostly plain CSS. Mixins are used for typography and text ellipsis (`packages/components/src/styles/mixins.css`).
 
-1. **Core** (`@koobiq/react-core`) — shared hooks, utilities, DOM helpers, providers, and types used by the rest of the workspace.
-2. **Primitives** (`@koobiq/react-primitives`) — unstyled components and behavior hooks built on React Aria and React Stately plus core utilities. This is where reusable accessibility, keyboard, focus, collection, and state behavior should live.
-3. **Components** (`@koobiq/react-components`) — styled Koobiq React components that compose primitives, apply CSS Modules and design tokens, and expose the public design-system API.
+### Prop System
 
-When adding behavior, look for an existing primitive or core helper first. If the behavior is reusable, add or extend it in primitives or core before wiring it into a styled component. Drop down to lower-level React Aria hooks inside `@koobiq/react-components` only when the primitives layer cannot represent the use case — see the [React Aria advanced guide](https://react-spectrum.adobe.com/react-aria/advanced.html#hooks).
-
-Supporting packages:
-
-- **`@koobiq/react-icons`** — icon components, used as `startIcon`/`endIcon` props or inline.
-- **`@koobiq/logger`** — `deprecate()` for deprecated prop warnings in development.
-
-### File conventions
-
-- Every component file must start with `'use client'` — required for Next.js RSC compatibility.
-- Always use `import type` for type-only imports.
-- Keep public exports explicit through the component `index.ts`, then through `packages/components/src/components/index.ts`.
-
-### Props
-
-Define props in `types.ts`, export via `index.ts`. Define variants as `as const` arrays:
+Props are defined in `types.ts` and exported through the component's `index.ts`. Variants are exported as `as const` arrays plus a derived union type:
 
 ```ts
 export const buttonVariant = ['contrast-filled', 'fade-contrast-filled', ...] as const;
 export type ButtonVariant = (typeof buttonVariant)[number];
 ```
 
-**Naming:**
-
-- State props: `is` prefix — `isDisabled`, `isLoading`, `isRequired`, `isReadOnly`, `isInvalid`, `isOpen`, `isSelected`. Never use HTML equivalents.
-- Visual/layout modifiers: no prefix, default `false` — `fullWidth`, `onlyIcon`, `hideArrow`, `hiddenLabel`.
-
-**Deprecated props:** warn via `deprecate()` guarded by `process.env.NODE_ENV !== 'production'`:
+- Boolean state props follow the React Aria convention — `is` prefix (`isDisabled`, `isLoading`, `isRequired`, `isReadOnly`, `isInvalid`, `isOpen`, `isSelected`). Don't use the HTML equivalents.
+- Visual/layout modifiers have no prefix and default to `false` (`fullWidth`, `onlyIcon`, `hideArrow`, `hiddenLabel`).
+- Deprecated props warn via `deprecate()` (from `@koobiq/logger`) guarded by `process.env.NODE_ENV !== 'production'`:
 
 ```tsx
 if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
@@ -164,55 +147,43 @@ if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
 }
 ```
 
-**Compound components:** sub-components that only make sense in context (e.g. `Select.Item`) are attached as static properties on the parent and cannot be used standalone.
+- Compound components are attached as static properties (e.g. `Select.Item`) and can't be used standalone.
 
-**Form context:** form-aware components (inputs, selects, etc.) must consume `useForm()` from `../Form` to inherit applicable parent `<Form>` state such as `isDisabled` and, when supported by the component, `isReadOnly`.
+## Coding Conventions
 
-### CSS
+- Prettier for formatting.
+- ESLint and Stylelint, configured in the repo.
+- Every component `.tsx` starts with `'use client'` (Next.js RSC).
+- Type-only imports use `import type`.
+- Public exports go through the component's local `index.ts`, then `packages/components/src/components/index.ts`.
 
-- CSS Modules only. Class names scoped as `kbq-{component}-{class}-{hash}` — unreachable from outside.
-- Expose interactive state via `data-*` attributes (`data-loading`, `data-fullwidth`, …) so consumers can style by state.
-- All visual values via `@koobiq/design-tokens` CSS custom properties (`--kbq-*`). Never hard-code a value that has a token.
-- Use logical CSS properties (`inline-size`, `block-size`, `padding-inline`, `inset`) over physical ones.
-- Prefer modern CSS over mixins within [`browserslist`](package.json) targets. Use mixins only when no native equivalent exists — `@mixin typography <token-name>` for typography, `@mixin ellipsis` for text overflow (`packages/components/src/styles/mixins.css`).
+**Commits and branches.** All commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are validated by commitlint. Only `feat` and `fix` appear in the changelog. Keep titles short (≤72 chars). Branch naming is `type/description` or `type/DS-XXXX/description` (ticket optional but preferred).
 
-### Testing
+| Type       | When to use                              |
+| ---------- | ---------------------------------------- |
+| `feat`     | New feature or component                 |
+| `fix`      | Bug fix                                  |
+| `refactor` | Code change with no behavior change      |
+| `chore`    | Maintenance, deps, config                |
+| `docs`     | Documentation only                       |
+| `perf`     | Performance improvement                  |
+| `test`     | Tests only                               |
+| `style`    | Code style, formatting (no logic change) |
 
-Use this as a baseline checklist for component tests. When adding or changing a component, cover the items that are part of that component's public contract:
+Examples:
 
-- `ref` forwarding
-- `className` and `style` forwarding to the root element
-- polymorphic `as` rendering the correct element, if supported
-- `isDisabled`: unfocusable, non-clickable, expected ARIA/data state
-- `isLoading`: action blocked, expected focus behavior, `aria-busy` and `aria-disabled`
-- main interaction callbacks: `onPress`, `onChange`, `onSelectionChange`, etc.
-- form-aware behavior inherited from `<Form>`
-- deprecated props warn in development only
-
-### Stories
-
-Storybook is the primary dev workflow — `pnpm dev` (port 6006). When running locally, an MCP server is available at `http://localhost:6006/mcp` via `@storybook/addon-mcp`.
-
-New or touched component stories use the `Components` group and include `tags`:
-
-```tsx
-export default {
-  title: 'Components/Button',
-  component: Button,
-  tags: ['status:updated', 'date:2026-03-04'],
-};
+```
+feat(Button): add isLoading prop
+fix(Checkbox): resolve disabled state not applying
+chore(deps): bump typescript from 5.7.3 to 6.0.3 (DS-5117)
 ```
 
-Valid status tags: `status:new`, `status:updated`, `status:deprecated`.
+The third example shows how to attach a `DS-XXXX` ticket — keep it in parentheses at the end so the title stays short and scannable.
 
-For `status:new` and `status:updated`, include a `date:YYYY-MM-DD` tag. Storybook uses this date to expire temporary badges. `status:deprecated` does not require a date.
+## Important Notes for Agents
 
-### Adding a New Component
-
-Start by finding the closest existing component by behavior and shape: field, overlay, collection, layout, polymorphic primitive, etc. Mirror that structure before introducing a new pattern.
-
-1. Create `packages/components/src/components/ComponentName/` with `ComponentName.tsx`, `types.ts`, `index.ts`, `ComponentName.module.css`, `ComponentName.stories.tsx`, `ComponentName.mdx`, and a focused test file. Use `__tests__/` when nearby complex components already do.
-2. Implement the public API in `types.ts` and the local `index.ts`; then export it from `packages/components/src/components/index.ts`.
-3. Follow the Layering, Props, CSS, Testing, and Stories sections above instead of introducing component-local conventions.
-4. Add MDX docs, stories, and focused tests together with the component implementation.
-5. Verify according to the Verification section.
+- When Storybook runs locally, an MCP server is available at `http://localhost:6006/mcp` (via `@storybook/addon-mcp`) — use it for component introspection.
+- Pre-commit runs `nano-staged`: ESLint and related Vitest tests for TS/JS, Stylelint for CSS, `pnpm type-check` on staged changes, Prettier for docs-like files. Before committing, also run `pnpm vitest run <path>` and `pnpm type-check` for the area you touched.
+- Component stories (`*.stories.tsx`) use the `Components` group and `tags` such as `status:new`, `status:updated`, `status:deprecated`. For `new`/`updated`, include a `date:YYYY-MM-DD` tag — Storybook uses it to expire temporary badges.
+- `@koobiq/react-icons` is a separate package; consume icons through `startIcon`/`endIcon` props or inline.
+- Public API is published only from `@koobiq/react-components`; `core` and `primitives` are internal layers.
