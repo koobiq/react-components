@@ -24,6 +24,10 @@ type CompoundedComponent = typeof TagListComponent & {
   Tag: typeof Tag;
 };
 
+/**
+ * A focusable tag list with explicit modifier-based selection, designed as
+ * a foundation for `TagInput`, `TagAutocomplete` and multi-select composers.
+ */
 export const TagList = TagListComponent as CompoundedComponent;
 
 TagList.Tag = Tag;
