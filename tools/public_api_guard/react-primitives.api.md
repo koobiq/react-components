@@ -16,6 +16,7 @@ import type { AriaCheckboxGroupItemProps as AriaCheckboxGroupItemProps_2 } from 
 import { AriaCheckboxGroupProps } from '@react-aria/checkbox';
 import { AriaCheckboxProps } from '@react-aria/checkbox';
 import { AriaCheckboxProps as AriaCheckboxProps_2 } from 'react-aria';
+import { AriaLabelingProps } from '@react-types/shared';
 import type { AriaLinkOptions } from '@react-aria/link';
 import type { AriaListBoxOptions } from '@react-aria/listbox';
 import type { AriaNumberFieldProps } from '@react-aria/numberfield';
@@ -60,20 +61,24 @@ import { DetailedHTMLProps } from 'react';
 import { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import { DOMAttributes as DOMAttributes_2 } from '@react-types/shared';
-import type { DOMProps as DOMProps_2 } from '@koobiq/react-core';
+import { DOMProps } from '@react-types/shared';
+import type { DOMProps as DOMProps_3 } from '@koobiq/react-core';
 import { DragEventHandler } from 'react';
 import { ElementType } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { FocusableElement } from '@react-types/shared';
 import { FocusableProps } from '@koobiq/react-core';
+import type { FocusEvent as FocusEvent_2 } from 'react';
 import { FocusEventHandler } from 'react';
+import type { FocusStrategy } from '@koobiq/react-core';
 import { FormEventHandler } from 'react';
 import type { FormProps as FormProps_2 } from '@koobiq/react-core';
 import type { FormValidationState } from '@react-stately/form';
 import type { ForwardedRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
-import type { GlobalDOMAttributes } from '@koobiq/react-core';
+import { GlobalDOMAttributes } from '@react-types/shared';
+import type { GlobalDOMAttributes as GlobalDOMAttributes_2 } from '@koobiq/react-core';
 import type { HoverEvents } from '@koobiq/react-core';
 import type { HTMLAttributes } from 'react';
 import { HTMLInputAutoCompleteAttribute } from 'react';
@@ -83,9 +88,11 @@ import { InputEventHandler } from 'react';
 import { InputHTMLAttributes } from 'react';
 import { Item } from '@react-stately/collections';
 import type { Key } from 'react';
+import type { Key as Key_2 } from '@koobiq/react-core';
 import { KeyboardEventHandler } from 'react';
 import { LabelableProps } from '@koobiq/react-core';
 import { LabelHTMLAttributes } from 'react';
+import type { ListProps } from '@react-stately/list';
 import type { ListState } from '@react-stately/list';
 import type { MenuTriggerState } from '@react-stately/menu';
 import { MouseEventHandler } from 'react';
@@ -159,6 +166,15 @@ export { AriaCheckboxGroupItemProps }
 export { AriaCheckboxGroupProps }
 
 export { AriaCheckboxProps }
+
+// @public (undocumented)
+export type AriaTagListProps = {
+    escapeKeyBehavior?: 'clearSelection' | 'none';
+    autoFocus?: boolean | FocusStrategy;
+};
+
+// @public (undocumented)
+export type AriaTagListStateProps<T extends object> = ListProps<T>;
 
 export { AriaToggleButtonGroupItemProps }
 
@@ -270,10 +286,10 @@ export const Form: ForwardRefExoticComponent<FormProps & RefAttributes<HTMLFormE
 // @public (undocumented)
 export const FormContext: Context<ContextValue<FormProps, HTMLFormElement>>;
 
-// Warning: (ae-forgotten-export) The symbol "DOMProps" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "DOMProps_2" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export interface FormProps extends FormProps_2, DOMProps, GlobalDOMAttributes<HTMLFormElement> {
+export interface FormProps extends FormProps_2, DOMProps_2, GlobalDOMAttributes_2<HTMLFormElement> {
     validationBehavior?: 'aria' | 'native';
 }
 
@@ -321,6 +337,18 @@ export type InputProps = {
 
 // @public (undocumented)
 export type InputRef = ComponentRef<'input'>;
+
+// @public
+export function isCommandModifier(event: {
+    ctrlKey: boolean;
+    metaKey: boolean;
+}): boolean;
+
+// @public
+export function isInteractiveTarget(target: Element, root: Element): boolean;
+
+// @public (undocumented)
+export function isSpaceKey(key: string): key is " " | "Space" | "Spacebar";
 
 export { Item }
 
@@ -484,6 +512,14 @@ export type SwitchRenderProps = {
     isDisabled?: boolean;
     isFocusVisible?: boolean;
 };
+
+// @public (undocumented)
+export type TagListAria = {
+    gridProps: DOMAttributes;
+};
+
+// @public (undocumented)
+export type TagListState<T extends object> = ListState<T>;
 
 // @public (undocumented)
 const Text_2: PolyForwardComponent<"p", TextBaseProps, ElementType>;
@@ -1068,6 +1104,50 @@ export type UseSwitchProps = AriaSwitchProps & {
 
 // @public (undocumented)
 export type UseSwitchReturn = ReturnType<typeof useSwitch>;
+
+// @public
+export function useTagList<T extends object>(props: AriaTagListProps, state: ListState<T>, ref: RefObject<HTMLElement | null>): TagListAria;
+
+// @public (undocumented)
+export function useTagListItem<T extends object>(props: UseTagListItemProps<T>): {
+    tagProps: DOMAttributes<FocusableElement> & DOMProps & AriaLabelingProps & GlobalDOMAttributes<Element> & {
+        ref: RefObject<HTMLDivElement | null>;
+        id: string;
+        role: string;
+        tabIndex: number;
+        'aria-disabled': true | undefined;
+        'aria-label': string | undefined;
+        'aria-selected': boolean | undefined;
+        'aria-describedby': string | undefined;
+        'data-collection': string | undefined;
+        'data-key': Key_2;
+        onFocus: (event: FocusEvent_2<HTMLDivElement>) => void;
+    };
+    isPressed: boolean;
+    isSelected: boolean;
+    isDisabled: boolean | undefined;
+    gridCellProps: DOMAttributes<FocusableElement>;
+    allowsRemoving: boolean;
+    removeButtonProps: {
+        isDisabled: boolean | undefined;
+        tabIndex: number;
+        id: string;
+        'aria-label': string;
+        'aria-labelledby': string;
+        onPress: () => void | undefined;
+    };
+};
+
+// @public (undocumented)
+export type UseTagListItemProps<T extends object> = {
+    state: ListState<T>;
+    collectionId?: string;
+    item: Node_2<T>;
+    onRemove?: (keys: Set<Key_2>) => void;
+};
+
+// @public
+export function useTagListState<T extends object>(props: AriaTagListStateProps<T>): TagListState<T>;
 
 // @public (undocumented)
 export const useTextareaContext: () => TextareaProps;
