@@ -13,8 +13,8 @@ import * as Stories from './TagList.stories';
 
 <Status variant="experimental" />
 
-A tag group is a focusable list of labels, categories, keywords, filters,
-or other items, with support for keyboard navigation and removal.
+A focusable tag list with explicit modifier-based selection, designed as
+a foundation for `TagInput`, `TagAutocomplete` and multi-select composers.
 
 ## Import
 
@@ -39,11 +39,10 @@ To select tags, use <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + click, <kbd>Ctrl</kbd> / 
 
 ## Controlled selection
 
-Pass `selectedKeys` together with `onSelectionChange` to drive selection from
-the parent. `selectedKeys` accepts a `Set<Key>` or the literal `'all'`;
-`onSelectionChange` is invoked with the next selection (also a `Set<Key>` or
-`'all'`) whenever the user toggles a tag. Use `defaultSelectedKeys` for the
-uncontrolled equivalent.
+When you need the parent to own selection (form binding, syncing with
+external state, derived UI), pass `selectedKeys` and `onSelectionChange`.
+`selectedKeys` takes a `Set<Key>` or the literal `'all'`. For uncontrolled
+use, switch to `defaultSelectedKeys`.
 
 <Story of={Stories.ControlledSelection} />
 
