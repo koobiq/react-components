@@ -413,24 +413,25 @@ describe('TagList', () => {
     expect(screen.getByTestId('tag-3')).toBeInTheDocument();
   });
 
-  it('should not render a remove button on a disabled tag', () => {
+  it('should render a disabled remove button on a disabled tag', async () => {
+    const onRemove = vi.fn();
     render(
       renderComponent({
-        onRemove: vi.fn(),
+        onRemove,
         disabledKeys: ['2'],
       })
     );
 
-    // With default `disabledBehavior: 'all'`, the disabled tag is taken
-    // out of the focus order entirely (so keyboard removal cannot reach
-    // it) AND the remove-button affordance is suppressed for it. We
-    // assert the affordance contract here — the non-disabled tags still
-    // get their buttons (3 of them in the fixture).
+    // The affordance stays — the button is rendered but in a disabled
+    // state. Every tag in the fixture still gets its remove button.
     const disabledTag = getTag();
-    expect(within(disabledTag).queryByRole('button')).toBeNull();
+    const button = within(disabledTag).getByRole('button');
+    expect(button).toBeDisabled();
+    expect(screen.queryAllByRole('button')).toHaveLength(4);
 
-    const allRemoveButtons = screen.queryAllByRole('button');
-    expect(allRemoveButtons).toHaveLength(3);
+    // Clicking the disabled button must not trigger onRemove.
+    await userEvent.click(button);
+    expect(onRemove).not.toHaveBeenCalled();
   });
 
   describe('prop forwarding', () => {
