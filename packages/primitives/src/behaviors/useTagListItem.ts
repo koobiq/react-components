@@ -89,7 +89,9 @@ export function useTagListItem<T extends object>(
   const isDisabled =
     selectionManager.isDisabled(item.key) || itemProps.isDisabled;
 
-  const allowsRemoving = !!onRemove && !isDisabled;
+  // The remove affordance stays visible on disabled tags — the button just
+  // renders disabled (state propagated via `removeButtonProps.isDisabled`).
+  const allowsRemoving = !!onRemove;
 
   const allowsSelection =
     !isDisabled && selectionManager.canSelectItem(item.key);
@@ -112,7 +114,9 @@ export function useTagListItem<T extends object>(
   }
 
   const description =
-    allowsRemoving && (modality === 'keyboard' || modality === 'virtual')
+    allowsRemoving &&
+    !isDisabled &&
+    (modality === 'keyboard' || modality === 'virtual')
       ? stringFormatter.format('removeDescription')
       : '';
 
