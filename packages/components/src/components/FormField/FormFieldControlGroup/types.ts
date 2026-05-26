@@ -1,11 +1,21 @@
 import type { ComponentRef, ReactNode } from 'react';
 
 import type {
+  DOMAttributes,
   DataAttributeProps,
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
 
 import type { FormFieldAddonProps } from '../FormFieldAddon';
+
+export type FormFieldControlGroupRenderProps = {
+  /** Attach to the element that should drive the group's focus-ring. */
+  focusProps: DOMAttributes;
+};
+
+export type FormFieldControlGroupPropChildren =
+  | ReactNode
+  | ((props: FormFieldControlGroupRenderProps) => ReactNode);
 
 export const formFieldControlGroupPropVariant = [
   'filled',
@@ -18,7 +28,7 @@ export type FormFieldControlGroupPropVariant =
 export type FormFieldControlGroupProps = ExtendableComponentPropsWithRef<
   {
     /** The content of the component. */
-    children?: ReactNode;
+    children?: FormFieldControlGroupPropChildren;
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */
