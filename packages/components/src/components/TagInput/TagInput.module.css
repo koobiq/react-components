@@ -1,0 +1,55 @@
+.body {
+  inline-size: 100%;
+  min-inline-size: fit-content;
+}
+
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}
+
+.group {
+  --form-field-control-padding-inline-start: var(--kbq-size-xxs);
+  --form-field-control-padding-block-start: var(--kbq-size-xxs);
+  --form-field-control-padding-block-end: var(--kbq-size-xxs);
+}
+
+.tagListContainer {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  min-inline-size: 0;
+  align-items: center;
+  gap: var(--kbq-size-xxs);
+  padding-block: var(--form-field-control-padding-block-start)
+    var(--form-field-control-padding-block-end);
+}
+
+.tagList {
+  display: contents;
+}
+
+.tagList:empty + .input {
+  padding-inline-start: var(--kbq-size-s);
+}
+
+.input {
+  flex: 1;
+  padding-block: 0;
+  min-inline-size: 4rem;
+  block-size: var(--kbq-size-xxl);
+  padding-inline: var(--kbq-size-xxs);
+}
+
+@supports (field-sizing: content) {
+  .input {
+    flex: 0 1 auto;
+    inline-size: auto;
+    field-sizing: content;
+  }
+}

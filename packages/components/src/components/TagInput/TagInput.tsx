@@ -1,169 +1,453 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-//
-// DRAFT — work in progress.
-//
-// Not exported from `@koobiq/react-components`. Lives here as the seed for
-// a future stable `TagInput` component. The goal of this file is to
-// demonstrate how the `TagListInner` render-layer is composed with an
-// `<Input>` via lifted `useListState`:
-//
-//   - the parent owns the items collection (`useListData` here, but a
-//     consumer can pass plain `useState<string[]>` or a controlled value)
-//   - the parent creates the React-Aria `state` via `useListState`, so
-//     `state.selectionManager.setFocusedKey(...)` is available for
-//     programmatic focus moves (Backspace from empty input → focus last
-//     tag) without DOM queries
-//   - tag removal flows through `onRemove`; tag creation through input
-//     keydown handlers (Enter / `,` / `;`) and (in a future iteration)
-//     paste with split
-//
-// API and UX details (controlled vs uncontrolled value, paste splitting,
-// distinct, blur-commit, validation hooks) will be finalised when this
-// graduates to a real component with stories, tests, and MDX.
-//
-
-import { useRef, useState, type KeyboardEvent } from 'react';
+import { forwardRef, useCallback, useMemo, useRef } from 'react';
+import type { ClipboardEvent, FocusEvent, MouseEvent } from 'react';
 
 import type { Key } from '@koobiq/react-core';
-import { useListData, useListState } from '@koobiq/react-primitives';
+import {
+  mergeProps,
+  useControlledState,
+  useDOMRef,
+  useKeyboard,
+} from '@koobiq/react-core';
+import { TextField, useTagListState } from '@koobiq/react-primitives';
 
-import { Input } from '../Input';
+import { useForm } from '../Form';
+import type {
+  FormFieldProps,
+  FormFieldInputProps,
+  FormFieldLabelProps,
+  FormFieldErrorProps,
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+} from '../FormField';
+import { FormField, FormFieldClearButton } from '../FormField';
+import type { TagListInnerProps } from '../TagList';
 import { Tag } from '../TagList/Tag';
 import { TagListInner } from '../TagList/TagListInner';
 
-export interface TagInputProps {
-  /** Initial tags (uncontrolled mode). */
-  defaultValue?: string[];
-  /** Notified whenever the set of committed tags changes. */
-  onChange?: (next: string[]) => void;
-  /**
-   * Characters (besides Enter) that commit the current input value as a
-   * new tag.
-   * @default /[,;]/
-   */
-  splitPattern?: RegExp;
-  /** Placeholder for the text input. */
-  placeholder?: string;
-  /** Accessibility label, applied to both the input and the tag list. */
-  'aria-label'?: string;
-  /** Whether the whole control is disabled. */
-  isDisabled?: boolean;
-  /** Whether the control is read-only (tags shown, can't add or remove). */
-  isReadOnly?: boolean;
-}
+import s from './TagInput.module.css';
+import type { TagInputItem, TagInputProps, TagInputRef } from './types';
 
-interface TagInputItem {
-  id: string;
-  value: string;
-}
+const DEFAULT_SPLIT_PATTERN = /,/;
 
-const makeItem = (value: string): TagInputItem => ({ id: value, value });
+const toItem = (value: string): TagInputItem => ({ id: value, value });
 
-export function TagInput(props: TagInputProps) {
+const splitInputValue = (raw: string, splitPattern: RegExp): string[] =>
+  raw
+    .split(splitPattern)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+/**
+ * An input component that allows users to enter, display, and manage
+ * multiple tags or keywords dynamically. It supports adding and removing
+ * tags.
+ */
+export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
   const {
-    defaultValue = [],
+    splitPattern = DEFAULT_SPLIT_PATTERN,
+    variant = 'filled',
+    name,
+    className,
+    style,
+    value,
+    defaultValue,
     onChange,
-    splitPattern = /[,;]/,
+    inputValue,
+    defaultInputValue,
+    onInputChange,
     placeholder,
+    isClearable,
+    onClear,
+    label,
+    caption,
+    errorMessage,
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
+    isRequired,
+    isInvalid,
+    isLabelHidden,
+    fullWidth,
+    labelPlacement,
+    labelAlign,
     'aria-label': ariaLabel,
-    isDisabled,
-    isReadOnly,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
+    'data-testid': dataTestid,
+    slotProps,
   } = props;
 
-  const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
-  const list = useListData<TagInputItem>({
-    initialItems: defaultValue.map(makeItem),
-    getKey: (item) => item.id,
-  });
+  const inputRef = useDOMRef<HTMLInputElement>(ref);
+  const innerRef = useRef<HTMLDivElement>(null);
 
-  // Lifted React-Aria state. The parent (this component) gets direct
-  // access to `state.selectionManager`, so we can drive focus from outside
-  // the tag list without DOM queries.
-  const state = useListState<TagInputItem>({
-    items: list.items,
+  // Tag collection state
+  const [tagValues, setTagValues] = useControlledState<string[]>(
+    value,
+    defaultValue ?? [],
+    onChange
+  );
+
+  const items = useMemo(() => tagValues.map(toItem), [tagValues]);
+
+  // When the whole field is disabled, propagate it to every tag via
+  // `disabledKeys` so each TagItem renders in its disabled state.
+  const disabledTagKeys = useMemo(
+    () => (isDisabled ? tagValues : undefined),
+    [isDisabled, tagValues]
+  );
+
+  const tagListState = useTagListState<TagInputItem>({
+    items,
     children: (item) => <Tag key={item.id}>{item.value}</Tag>,
-    selectionMode: 'multiple',
+    // Read-only fields keep focus navigation but disable tag selection.
+    selectionMode: isReadOnly ? 'none' : 'multiple',
+    disabledKeys: disabledTagKeys,
   });
 
-  const commit = () => onChange?.(list.items.map((i) => i.value));
+  // Input value state
+  const [inputValueState, setInputValueState] = useControlledState<string>(
+    inputValue,
+    defaultInputValue ?? '',
+    onInputChange
+  );
 
-  const addTags = (raw: string) => {
-    if (isDisabled || isReadOnly) return;
-    const existing = new Set(list.items.map((i) => i.value));
-    const candidates = raw
-      .split(splitPattern)
-      .map((s) => s.trim())
-      .filter((s) => s && !existing.has(s));
-    if (candidates.length === 0) {
-      setInputValue('');
-      return;
-    }
-    candidates.forEach((value) => list.append(makeItem(value)));
-    setInputValue('');
-    commit();
-  };
+  // Mutation helpers
+  const addTags = useCallback(
+    (raw: string) => {
+      if (isDisabled || isReadOnly) return;
+      const candidates = splitInputValue(raw, splitPattern);
+      if (candidates.length === 0) return;
+      setTagValues([...tagValues, ...candidates]);
+      setInputValueState('');
+    },
+    [
+      isDisabled,
+      isReadOnly,
+      splitPattern,
+      tagValues,
+      setTagValues,
+      setInputValueState,
+    ]
+  );
 
-  const removeKeys = (keys: Set<Key>) => {
-    if (isDisabled || isReadOnly) return;
-    list.remove(...keys);
-    commit();
-  };
-
-  const focusLastTag = () => {
-    const lastKey = state.collection.getLastKey();
-    if (lastKey == null) return;
-    state.selectionManager.setFocused(true);
-    state.selectionManager.setFocusedKey(lastKey);
-  };
-
-  const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (isDisabled || isReadOnly) return;
-
-    // Enter / configured separator characters commit the current input.
-    if (event.key === 'Enter' || splitPattern.test(event.key)) {
-      if (inputValue.trim()) {
-        event.preventDefault();
-        addTags(inputValue);
+  const removeKeys = useCallback(
+    (keys: Set<Key>) => {
+      if (isDisabled || isReadOnly) return;
+      const next = tagValues.filter((v) => !keys.has(v));
+      setTagValues(next);
+      // When the list becomes empty, focus has nowhere to go inside the
+      // tag list — pull it back to the input synchronously, before React
+      // unmounts the focused remove button.
+      if (next.length === 0) {
+        inputRef.current?.focus({ preventScroll: true });
       }
-      return;
-    }
+    },
+    [isDisabled, isReadOnly, tagValues, setTagValues, inputRef]
+  );
 
-    // Backspace / ArrowLeft at the very start of an empty input moves focus
-    // to the last tag — typed-safe via lifted state, no querySelector hack.
-    const { selectionStart, selectionEnd } = event.currentTarget;
-    if (
-      (event.key === 'Backspace' || event.key === 'ArrowLeft') &&
-      selectionStart === 0 &&
-      selectionEnd === 0 &&
-      !inputValue
-    ) {
+  const focusTagAt = useCallback(
+    (position: 'first' | 'last') => {
+      const key =
+        position === 'first'
+          ? tagListState.collection.getFirstKey()
+          : tagListState.collection.getLastKey();
+      if (key == null) return;
+      tagListState.selectionManager.setFocused(true);
+      tagListState.selectionManager.setFocusedKey(key);
+    },
+    [tagListState]
+  );
+
+  const focusLastTag = useCallback(() => focusTagAt('last'), [focusTagAt]);
+  const focusFirstTag = useCallback(() => focusTagAt('first'), [focusTagAt]);
+
+  const focusInput = useCallback(() => {
+    inputRef.current?.focus();
+  }, [inputRef]);
+
+  const handleClear = useCallback(() => {
+    if (isDisabled || isReadOnly) return;
+    setTagValues([]);
+    setInputValueState('');
+    onClear?.();
+    focusInput();
+  }, [
+    isDisabled,
+    isReadOnly,
+    setTagValues,
+    setInputValueState,
+    onClear,
+    focusInput,
+  ]);
+
+  // Keyboard handling via @react-aria useKeyboard.
+  // `isDisabled` skips the handler entirely; non-handled keys are explicitly
+  // bubbled with `event.continuePropagation()`.
+  const { keyboardProps: inputKeyboardProps } = useKeyboard({
+    isDisabled: isDisabled || isReadOnly,
+    onKeyDown: (event) => {
+      // Enter / split character → commit current value as a tag.
+      if (event.key === 'Enter') {
+        if (inputValueState.trim()) {
+          event.preventDefault();
+          addTags(inputValueState);
+          return;
+        }
+        event.continuePropagation();
+        return;
+      }
+
+      if (event.key.length === 1 && splitPattern.test(event.key)) {
+        if (inputValueState.trim()) {
+          addTags(inputValueState);
+        }
+        // Don't let a bare separator end up in the input either way.
+        event.preventDefault();
+        return;
+      }
+
+      const input = event.currentTarget;
+      const { selectionStart, selectionEnd } = input;
+      const isCaretAtStart =
+        selectionStart === 0 && selectionEnd === 0 && !inputValueState;
+
+      // Empty input + Backspace / ArrowLeft → focus last tag.
+      if (
+        isCaretAtStart &&
+        (event.key === 'Backspace' || event.key === 'ArrowLeft')
+      ) {
+        if (tagValues.length === 0) {
+          event.continuePropagation();
+          return;
+        }
+        event.preventDefault();
+        focusLastTag();
+        return;
+      }
+
+      // Empty input + Ctrl/Cmd+A → select all tags, focus the last one.
+      if (
+        !inputValueState &&
+        tagValues.length > 0 &&
+        (event.ctrlKey || event.metaKey) &&
+        (event.key === 'a' || event.key === 'A')
+      ) {
+        event.preventDefault();
+        tagListState.selectionManager.selectAll();
+        focusLastTag();
+        return;
+      }
+
+      // Shift+Tab from empty input → focus the first tag (per spec).
+      if (
+        isCaretAtStart &&
+        event.key === 'Tab' &&
+        event.shiftKey &&
+        tagValues.length > 0
+      ) {
+        event.preventDefault();
+        focusFirstTag();
+        return;
+      }
+
+      event.continuePropagation();
+    },
+  });
+
+  // Paste handling
+  const handlePaste = useCallback(
+    (event: ClipboardEvent<HTMLInputElement>) => {
+      if (isDisabled || isReadOnly) return;
+      const text = event.clipboardData.getData('text/plain');
+      if (!text || !splitPattern.test(text)) return;
+
       event.preventDefault();
-      focusLastTag();
-    }
-  };
+      const candidates = splitInputValue(text, splitPattern);
+      if (candidates.length === 0) return;
+      setTagValues([...tagValues, ...candidates]);
+    },
+    [isDisabled, isReadOnly, splitPattern, tagValues, setTagValues]
+  );
+
+  // Commit on blur
+  const handleBlur = useCallback(
+    (event: FocusEvent<HTMLInputElement>) => {
+      if (isDisabled || isReadOnly) return;
+      const next = event.relatedTarget;
+      // If focus is moving inside the same TagInput (to a tag, to the
+      // cleaner, etc.), don't commit — the value is still being edited.
+      if (next && innerRef.current?.contains(next)) return;
+      if (inputValueState.trim()) {
+        addTags(inputValueState);
+      }
+    },
+    [isDisabled, isReadOnly, inputValueState, addTags]
+  );
+
+  // Click on empty canvas → focus the input. Attached to wrapper + group.
+  const handleCanvasMouseDown = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      if (event.target !== event.currentTarget) return;
+      event.preventDefault();
+      focusInput();
+    },
+    [focusInput]
+  );
+
+  // Render
+  const hasTags = tagValues.length > 0;
+  const hasInputValue = inputValueState !== '';
+  const showCleaner = Boolean(isClearable);
+  const cleanerIsHidden =
+    !showCleaner || (!hasTags && !hasInputValue) || isDisabled || isReadOnly;
+
+  const rootProps = mergeProps<
+    (FormFieldProps<typeof TextField<HTMLInputElement>> | undefined)[]
+  >(
+    {
+      label,
+      fullWidth,
+      isDisabled,
+      isRequired,
+      isReadOnly,
+      isInvalid,
+      errorMessage,
+      labelPlacement,
+      labelAlign,
+      'data-variant': variant,
+      'data-testid': dataTestid,
+      className,
+      style,
+      name,
+      // The TextField primitive owns the text input value — wire it to our
+      // inputValue so labels / errors / descriptions get correctly aria-linked
+      // and the form context sees the controlled string.
+      value: inputValueState,
+      defaultValue: defaultInputValue,
+      onChange: setInputValueState,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
+      'aria-describedby': ariaDescribedBy,
+    },
+    slotProps?.root
+  );
 
   return (
-    <>
-      <Input
-        ref={inputRef}
-        value={inputValue}
-        onChange={setInputValue}
-        placeholder={placeholder}
-        aria-label={ariaLabel}
-        isDisabled={isDisabled}
-        isReadOnly={isReadOnly}
-        slotProps={{ input: { onKeyDown: handleInputKeyDown } }}
-        fullWidth
-      />
-      <TagListInner<TagInputItem>
-        state={state}
-        onRemove={isReadOnly ? undefined : removeKeys}
-        aria-label={ariaLabel ?? 'Selected tags'}
-      />
-    </>
+    <FormField as={TextField} inputElementType="input" {...rootProps}>
+      {({ isInvalid: groupIsInvalid, isRequired: groupIsRequired }) => {
+        const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
+          {
+            isHidden: isLabelHidden,
+            isRequired: groupIsRequired,
+            children: label,
+          },
+          slotProps?.label
+        );
+
+        const clearButtonProps = mergeProps(
+          {
+            isClearable: showCleaner,
+            tabIndex: cleanerIsHidden ? -1 : undefined,
+            isHidden: cleanerIsHidden,
+            onPress: handleClear,
+          },
+          slotProps?.clearButton
+        );
+
+        const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
+          {
+            ref: inputRef,
+            placeholder,
+            onPaste: handlePaste,
+            onBlur: handleBlur,
+          },
+          inputKeyboardProps,
+          slotProps?.input
+        );
+
+        // `state` stays out of the merge — it's the only required prop on
+        // TagListInner and the user can't override it through slotProps anyway.
+        const tagListProps = mergeProps<
+          (
+            | Partial<Omit<TagListInnerProps<TagInputItem>, 'state'>>
+            | undefined
+          )[]
+        >(
+          {
+            variant: groupIsInvalid ? 'error-fade' : undefined,
+            // Keep onRemove set even when disabled — the × button stays
+            // visible per spec; disabledKeys turn it into a disabled state
+            // and `removeKeys` guards against accidental fires.
+            onRemove: isReadOnly ? undefined : removeKeys,
+            'aria-label': ariaLabel ?? 'Selected tags',
+            slotProps: { root: { className: s.tagList } },
+          },
+          slotProps?.tagList
+        );
+
+        const groupProps = mergeProps<
+          (FormFieldControlGroupProps | undefined)[]
+        >(
+          {
+            endAddon: showCleaner ? (
+              <FormFieldClearButton {...clearButtonProps} />
+            ) : undefined,
+            variant,
+            onMouseDown: handleCanvasMouseDown,
+            isInvalid: groupIsInvalid,
+            isDisabled,
+            className: s.group,
+          },
+          slotProps?.group
+        );
+
+        const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+          { children: caption },
+          slotProps?.caption
+        );
+
+        const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+          { children: errorMessage },
+          slotProps?.errorMessage
+        );
+
+        return (
+          <>
+            <FormField.Label {...labelProps} />
+            <div className={s.body}>
+              <FormField.ControlGroup {...groupProps}>
+                {({ focusProps }) => (
+                  <div
+                    ref={innerRef}
+                    role="presentation"
+                    className={s.tagListContainer}
+                    onMouseDown={handleCanvasMouseDown}
+                  >
+                    <TagListInner<TagInputItem>
+                      state={tagListState}
+                      {...tagListProps}
+                    />
+                    {/* focusProps on the input only — tags don't drive the group ring. */}
+                    <FormField.Input
+                      {...mergeProps(focusProps, inputProps)}
+                      className={s.input}
+                    />
+                  </div>
+                )}
+              </FormField.ControlGroup>
+              <FormField.Error {...errorProps} />
+              <FormField.Caption {...captionProps} />
+            </div>
+          </>
+        );
+      }}
+    </FormField>
   );
-}
+});
+
+TagInput.displayName = 'TagInput';

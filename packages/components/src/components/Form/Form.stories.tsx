@@ -16,6 +16,7 @@ import { spacing } from '../layout';
 import { Radio, RadioGroup } from '../RadioGroup';
 import { SearchInput } from '../SearchInput';
 import { Select } from '../Select';
+import { TagInput } from '../TagInput';
 import { Textarea } from '../Textarea';
 import { TimePicker } from '../TimePicker';
 import { Typography } from '../Typography';
@@ -438,6 +439,7 @@ export const FormFields: Story = {
           <Select.Item key="3">Option 3</Select.Item>
         </Select>
         <Input label="Input" placeholder="Type a word..." />
+        <TagInput label="Tag input" placeholder="Type and press Enter" />
         <Textarea label="Textarea" placeholder="Type a word..." />
         <InputNumber label="InputNumber" placeholder="Type a number..." />
         <SearchInput label="SearchInput" placeholder="Type a word..." />

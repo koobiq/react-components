@@ -45,6 +45,7 @@
     "Tabs",
     "TagGroup",
     "TagList",
+    "TagInput",
     "Textarea",
     "TimePicker",
     "ToastProvider",
