@@ -34,13 +34,17 @@ export const FormFieldControlGroup = forwardRef<
   const hasEndAddon = isNotNil(endAddon);
   const { focusProps, isFocused } = useFocusRing({ within: true });
 
-  const focusManagedChildren = Children.map(children, (child: ReactNode) => {
-    if (!isValidElement<Record<string, unknown>>(child)) return child;
+  // Render-function children let the consumer place focusProps explicitly.
+  const renderedChildren =
+    typeof children === 'function'
+      ? children({ focusProps })
+      : Children.map(children, (child: ReactNode) => {
+          if (!isValidElement<Record<string, unknown>>(child)) return child;
 
-    const merged = mergeProps(focusProps, child.props);
+          const merged = mergeProps(focusProps, child.props);
 
-    return cloneElement(child, merged);
-  });
+          return cloneElement(child, merged);
+        });
 
   return (
     <Group
@@ -73,7 +77,7 @@ export const FormFieldControlGroup = forwardRef<
           <FormFieldAddon placement="start" {...slotProps?.startAddon}>
             {startAddon}
           </FormFieldAddon>
-          {focusManagedChildren}
+          {renderedChildren}
           <FormFieldAddon placement="end" {...slotProps?.endAddon}>
             {endAddon}
           </FormFieldAddon>
