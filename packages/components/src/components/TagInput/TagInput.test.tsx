@@ -1,5 +1,6 @@
-import { createRef, useState } from 'react';
+import { createRef, useRef, useState } from 'react';
 
+import type { Key, Selection } from '@koobiq/react-core';
 import {
   fireEvent,
   render,
@@ -11,18 +12,61 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Form } from '../Form';
+import { useListData } from '../index';
 
 import { TagInput } from './TagInput';
 import type { TagInputProps } from './types';
 
-const baseProps: TagInputProps = {
-  'data-testid': 'root',
-  label: 'Tags',
-  slotProps: {
-    input: { 'data-testid': 'input' },
-    clearButton: { 'aria-label': 'clear-button' },
-  },
+type TagItem = { id: string; name: string };
+
+type WrapperProps = Partial<TagInputProps<TagItem>> & {
+  initialItems?: TagItem[];
 };
+
+function Wrapper(props: WrapperProps) {
+  const {
+    initialItems = [],
+    onAdd: userOnAdd,
+    onRemove: userOnRemove,
+    ...rest
+  } = props;
+
+  const list = useListData<TagItem>({
+    initialItems,
+    getKey: (item) => item.id,
+  });
+
+  const counter = useRef(0);
+
+  const newTag = (name: string): TagItem => {
+    counter.current += 1;
+
+    return { id: `t-${counter.current}-${name}`, name };
+  };
+
+  return (
+    <TagInput<TagItem>
+      data-testid="root"
+      label="Tags"
+      slotProps={{
+        input: { 'data-testid': 'input' },
+        clearButton: { 'aria-label': 'clear-button' },
+      }}
+      items={list.items}
+      {...rest}
+      onAdd={(values, ctx) => {
+        list.append(...values.map(newTag));
+        userOnAdd?.(values, ctx);
+      }}
+      onRemove={(keys) => {
+        list.remove(...keys);
+        userOnRemove?.(keys);
+      }}
+    >
+      {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+    </TagInput>
+  );
+}
 
 const getInput = () => screen.getByTestId('input') as HTMLInputElement;
 const getClearButton = () => screen.queryByLabelText('clear-button');
@@ -33,438 +77,603 @@ const queryTag = (label: string): HTMLElement | null => {
   return (node?.closest('[role="row"]') as HTMLElement | null) ?? null;
 };
 
+const seed = (names: string[]): TagItem[] =>
+  names.map((name, i) => ({ id: `seed-${i}-${name}`, name }));
+
 describe('TagInput', () => {
   it('should forward ref to the underlying input', () => {
     const ref = createRef<HTMLInputElement>();
-    render(<TagInput {...baseProps} ref={ref} />);
+    render(<Wrapper ref={ref} />);
     expect(ref.current).toBe(getInput());
   });
 
   it('should render the label', () => {
-    render(<TagInput {...baseProps} />);
+    render(<Wrapper />);
     expect(screen.getByText('Tags')).toBeInTheDocument();
   });
 
-  it('should render initial tags from defaultValue', () => {
-    render(<TagInput {...baseProps} defaultValue={['one', 'two']} />);
+  it('should render initial tags from items', () => {
+    render(<Wrapper initialItems={seed(['one', 'two'])} />);
     expect(queryTag('one')).toBeInTheDocument();
     expect(queryTag('two')).toBeInTheDocument();
   });
 
-  it('should add a tag on Enter', async () => {
-    const onChange = vi.fn();
-    render(<TagInput {...baseProps} onChange={onChange} />);
+  describe('onAdd', () => {
+    it("fires with source='enter' on Enter", async () => {
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} />);
 
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), 'react{Enter}');
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'react{Enter}');
 
-    expect(onChange).toHaveBeenLastCalledWith(['react']);
-    await waitFor(() => expect(queryTag('react')).toBeInTheDocument());
-  });
-
-  it('should add a tag on split character (comma by default)', async () => {
-    const onChange = vi.fn();
-    render(<TagInput {...baseProps} onChange={onChange} />);
-
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), 'react,');
-
-    expect(onChange).toHaveBeenLastCalledWith(['react']);
-    expect(getInput()).toHaveValue('');
-  });
-
-  it('should respect a custom splitPattern', async () => {
-    const onChange = vi.fn();
-
-    render(
-      <TagInput {...baseProps} onChange={onChange} splitPattern={/[,;]/} />
-    );
-
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), 'a;');
-    expect(onChange).toHaveBeenLastCalledWith(['a']);
-
-    await userEvent.type(getInput(), 'b,');
-    expect(onChange).toHaveBeenLastCalledWith(['a', 'b']);
-  });
-
-  it('should trim whitespace from input before committing', async () => {
-    const onChange = vi.fn();
-    render(<TagInput {...baseProps} onChange={onChange} />);
-
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), '  spaced  {Enter}');
-
-    expect(onChange).toHaveBeenLastCalledWith(['spaced']);
-  });
-
-  it('should commit input value on blur', async () => {
-    const onChange = vi.fn();
-
-    render(
-      <>
-        <TagInput {...baseProps} onChange={onChange} />
-        <button data-testid="outside">outside</button>
-      </>
-    );
-
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), 'committed');
-    await userEvent.click(screen.getByTestId('outside'));
-
-    expect(onChange).toHaveBeenLastCalledWith(['committed']);
-  });
-
-  it('should split a pasted string into multiple tags', async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
-    render(<TagInput {...baseProps} onChange={onChange} />);
-
-    await user.click(getInput());
-    await user.paste('one, two, three');
-
-    expect(onChange).toHaveBeenLastCalledWith(['one', 'two', 'three']);
-    expect(queryTag('one')).toBeInTheDocument();
-    expect(queryTag('two')).toBeInTheDocument();
-    expect(queryTag('three')).toBeInTheDocument();
-  });
-
-  it('should not split a paste without separators', async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
-    render(<TagInput {...baseProps} onChange={onChange} />);
-
-    await user.click(getInput());
-    await user.paste('plain text');
-
-    expect(onChange).not.toHaveBeenCalled();
-    expect(getInput()).toHaveValue('plain text');
-  });
-
-  it('should remove a tag when its remove button is clicked', async () => {
-    const onChange = vi.fn();
-
-    render(
-      <TagInput {...baseProps} onChange={onChange} defaultValue={['a', 'b']} />
-    );
-
-    const tagA = queryTag('a');
-    expect(tagA).not.toBeNull();
-    const removeButton = within(tagA as HTMLElement).getByRole('button');
-    await userEvent.click(removeButton);
-
-    expect(onChange).toHaveBeenLastCalledWith(['b']);
-  });
-
-  it('should focus the last tag on Backspace from empty input', async () => {
-    const user = userEvent.setup();
-    render(<TagInput {...baseProps} defaultValue={['one', 'two']} />);
-
-    await user.click(getInput());
-    await user.keyboard('{Backspace}');
-
-    await waitFor(() => expect(queryTag('two')).toHaveFocus());
-  });
-
-  it('should focus the first tag on Shift+Tab from empty input', async () => {
-    const user = userEvent.setup();
-    render(<TagInput {...baseProps} defaultValue={['one', 'two']} />);
-
-    await user.click(getInput());
-    await user.keyboard('{Shift>}{Tab}{/Shift}');
-
-    await waitFor(() => expect(queryTag('one')).toHaveFocus());
-  });
-
-  it('should focus the last tag on ArrowLeft from empty input', async () => {
-    const user = userEvent.setup();
-    render(<TagInput {...baseProps} defaultValue={['one', 'two']} />);
-
-    await user.click(getInput());
-    await user.keyboard('{ArrowLeft}');
-
-    await waitFor(() => expect(queryTag('two')).toHaveFocus());
-  });
-
-  it('should select all tags on Ctrl+A from empty input', async () => {
-    const user = userEvent.setup();
-    render(<TagInput {...baseProps} defaultValue={['one', 'two']} />);
-
-    await user.click(getInput());
-    await user.keyboard('{Control>}a{/Control}');
-
-    await waitFor(() => {
-      expect(queryTag('one')).toHaveAttribute('aria-selected', 'true');
-      expect(queryTag('two')).toHaveAttribute('aria-selected', 'true');
+      expect(onAdd).toHaveBeenLastCalledWith(['react'], { source: 'enter' });
     });
-  });
 
-  it('should delete a focused tag via Delete / Backspace', async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
+    it("fires with source='separator' on a split character", async () => {
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} />);
 
-    render(
-      <TagInput
-        {...baseProps}
-        defaultValue={['one', 'two', 'three']}
-        onChange={onChange}
-      />
-    );
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'react,');
 
-    await user.click(queryTag('two') as HTMLElement);
-    await user.keyboard('{Delete}');
+      expect(onAdd).toHaveBeenLastCalledWith(['react'], {
+        source: 'separator',
+      });
 
-    expect(onChange).toHaveBeenLastCalledWith(['one', 'three']);
-    expect(queryTag('two')).not.toBeInTheDocument();
-  });
+      expect(getInput()).toHaveValue('');
+    });
 
-  it('should remove all selected tags when Backspace is pressed', async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
+    it("fires with source='paste' on a delimited paste", async () => {
+      const user = userEvent.setup();
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} />);
 
-    render(
-      <TagInput
-        {...baseProps}
-        defaultValue={['one', 'two', 'three']}
-        onChange={onChange}
-      />
-    );
+      await user.click(getInput());
+      await user.paste('one, two, three');
 
-    await user.click(getInput());
-    await user.keyboard('{Control>}a{/Control}');
-    await user.keyboard('{Backspace}');
+      expect(onAdd).toHaveBeenLastCalledWith(['one', 'two', 'three'], {
+        source: 'paste',
+      });
+    });
 
-    expect(onChange).toHaveBeenLastCalledWith([]);
-  });
+    it('replaces the selected input value before splitting pasted tags', async () => {
+      const user = userEvent.setup();
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} />);
 
-  it('should return focus to the input after the last tag is removed', async () => {
-    const user = userEvent.setup();
-    render(<TagInput {...baseProps} defaultValue={['only']} />);
+      await user.click(getInput());
+      await user.type(getInput(), 'draft');
+      getInput().select();
+      await user.paste('one, two');
 
-    const removeButton = within(queryTag('only') as HTMLElement).getByRole(
-      'button'
-    );
+      expect(onAdd).toHaveBeenLastCalledWith(['one', 'two'], {
+        source: 'paste',
+      });
 
-    await user.click(removeButton);
+      expect(getInput()).toHaveValue('');
+    });
 
-    await waitFor(() => {
-      expect(queryTag('only')).not.toBeInTheDocument();
+    it("fires with source='blur' on focus loss with non-empty input", async () => {
+      const onAdd = vi.fn();
+
+      render(
+        <>
+          <Wrapper onAdd={onAdd} />
+          <button data-testid="outside">outside</button>
+        </>
+      );
+
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'committed');
+      await userEvent.click(screen.getByTestId('outside'));
+
+      expect(onAdd).toHaveBeenLastCalledWith(['committed'], {
+        source: 'blur',
+      });
+    });
+
+    it('respects a custom splitPattern', async () => {
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} splitPattern={/[,;]/} />);
+
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'a;');
+      expect(onAdd).toHaveBeenLastCalledWith(['a'], { source: 'separator' });
+    });
+
+    it('trims whitespace before committing', async () => {
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} />);
+
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), '  spaced  {Enter}');
+
+      expect(onAdd).toHaveBeenLastCalledWith(['spaced'], { source: 'enter' });
+    });
+
+    it('does not split a paste without separators', async () => {
+      const user = userEvent.setup();
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} />);
+
+      await user.click(getInput());
+      await user.paste('plain text');
+
+      expect(onAdd).not.toHaveBeenCalled();
+      expect(getInput()).toHaveValue('plain text');
+    });
+
+    it('does not clear committed input when onAdd is not provided', async () => {
+      render(
+        <TagInput<TagItem>
+          aria-label="Tags"
+          items={[]}
+          slotProps={{ input: { 'data-testid': 'input' } }}
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
+      );
+
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'react{Enter}');
+
+      expect(getInput()).toHaveValue('react');
+    });
+
+    it('does not intercept a delimited paste when onAdd is not provided', async () => {
+      const user = userEvent.setup();
+
+      render(
+        <TagInput<TagItem>
+          aria-label="Tags"
+          items={[]}
+          slotProps={{ input: { 'data-testid': 'input' } }}
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
+      );
+
+      await user.click(getInput());
+      await user.paste('one, two');
+
+      expect(getInput()).toHaveValue('one, two');
+    });
+
+    it('keeps focus in the input (no focus ring on the new tag) after Enter', async () => {
+      render(<Wrapper />);
+
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'react{Enter}');
+
+      await waitFor(() => expect(queryTag('react')).toBeInTheDocument());
+      expect(queryTag('react')).not.toHaveAttribute('data-focus-visible');
       expect(getInput()).toHaveFocus();
     });
   });
 
-  it('should focus the input when the canvas between tags is clicked', () => {
-    const { container } = render(
-      <TagInput {...baseProps} defaultValue={['one']} />
-    );
+  describe('onRemove', () => {
+    it('fires with the clicked tag key', async () => {
+      const onRemove = vi.fn();
+      render(<Wrapper initialItems={seed(['a', 'b'])} onRemove={onRemove} />);
 
-    expect(getInput()).not.toHaveFocus();
+      const tagA = queryTag('a');
+      const button = within(tagA as HTMLElement).getByRole('button');
+      await userEvent.click(button);
 
-    // Locate the flex-wrap canvas (role="presentation") and dispatch a
-    // mousedown directly on it — that's the slice between tags / input.
-    const canvas = container.querySelector(
-      '[role="presentation"]'
-    ) as HTMLElement;
+      const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
+      expect(lastCall?.[0].has('seed-0-a')).toBe(true);
+    });
 
-    fireEvent.mouseDown(canvas);
-    expect(getInput()).toHaveFocus();
+    it('removes a focused tag via Delete', async () => {
+      const user = userEvent.setup();
+      const onRemove = vi.fn();
+
+      render(
+        <Wrapper
+          initialItems={seed(['one', 'two', 'three'])}
+          onRemove={onRemove}
+        />
+      );
+
+      await user.click(queryTag('two') as HTMLElement);
+      await user.keyboard('{Delete}');
+
+      const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
+      expect(lastCall?.[0].has('seed-1-two')).toBe(true);
+      await waitFor(() => expect(queryTag('two')).not.toBeInTheDocument());
+    });
+
+    it('removes all selected tags via Ctrl+A → Backspace from input', async () => {
+      const user = userEvent.setup();
+      const onRemove = vi.fn();
+
+      render(
+        <Wrapper
+          initialItems={seed(['one', 'two', 'three'])}
+          onRemove={onRemove}
+        />
+      );
+
+      await user.click(getInput());
+      await user.keyboard('{Control>}a{/Control}');
+      await user.keyboard('{Backspace}');
+
+      const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
+      expect(lastCall?.[0].size).toBe(3);
+    });
+
+    it('returns focus to the input after the last tag is removed', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['only'])} />);
+
+      const button = within(queryTag('only') as HTMLElement).getByRole(
+        'button'
+      );
+
+      await user.click(button);
+
+      await waitFor(() => {
+        expect(queryTag('only')).not.toBeInTheDocument();
+        expect(getInput()).toHaveFocus();
+      });
+    });
   });
 
-  it('should be controlled when value is provided', async () => {
-    function Wrapper() {
-      const [tags, setTags] = useState<string[]>(['initial']);
+  describe('duplicate values', () => {
+    it('does not collide keys: removing one duplicate keeps the other', async () => {
+      const user = userEvent.setup();
 
-      return (
+      // Two tags with the same NAME but distinct ids (consumer-owned).
+      const initialItems: TagItem[] = [
+        { id: 'a1', name: 'foo' },
+        { id: 'a2', name: 'foo' },
+      ];
+
+      render(<Wrapper initialItems={initialItems} />);
+
+      // Two role=row elements present.
+      expect(screen.getAllByRole('row')).toHaveLength(2);
+
+      // Click × on the FIRST "foo".
+      const firstRow = screen.getAllByRole('row')[0] as HTMLElement;
+      const firstRemove = within(firstRow).getByRole('button');
+      await user.click(firstRemove);
+
+      // One "foo" remains, the second one with id 'a2'.
+      await waitFor(() => {
+        expect(screen.getAllByRole('row')).toHaveLength(1);
+        expect(screen.getByRole('row')).toHaveAttribute('data-key', 'a2');
+      });
+    });
+
+    it('arrow keys navigate across duplicates', async () => {
+      const user = userEvent.setup();
+
+      const initialItems: TagItem[] = [
+        { id: 'a1', name: 'foo' },
+        { id: 'a2', name: 'foo' },
+      ];
+
+      render(<Wrapper initialItems={initialItems} />);
+
+      const rows = screen.getAllByRole('row') as HTMLElement[];
+      await user.click(rows[0] as HTMLElement);
+      await user.keyboard('{ArrowRight}');
+      await waitFor(() => expect(rows[1]).toHaveFocus());
+    });
+  });
+
+  describe('focus navigation', () => {
+    it('focuses the last tag on Backspace from empty input', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['one', 'two'])} />);
+
+      await user.click(getInput());
+      await user.keyboard('{Backspace}');
+
+      await waitFor(() => expect(queryTag('two')).toHaveFocus());
+    });
+
+    it('focuses the last tag on ArrowLeft from empty input', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['one', 'two'])} />);
+
+      await user.click(getInput());
+      await user.keyboard('{ArrowLeft}');
+
+      await waitFor(() => expect(queryTag('two')).toHaveFocus());
+    });
+
+    it('focuses the first tag on Shift+Tab from empty input', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['one', 'two'])} />);
+
+      await user.click(getInput());
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
+
+      await waitFor(() => expect(queryTag('one')).toHaveFocus());
+    });
+
+    it('focuses the input when the canvas between tags is clicked', () => {
+      const { container } = render(<Wrapper initialItems={seed(['one'])} />);
+      expect(getInput()).not.toHaveFocus();
+
+      const canvas = container.querySelector(
+        '[role="presentation"]'
+      ) as HTMLElement;
+
+      fireEvent.mouseDown(canvas);
+      expect(getInput()).toHaveFocus();
+    });
+
+    it('returns to the input when tabbing back into the field after a tag was focused', async () => {
+      const user = userEvent.setup();
+
+      render(
         <>
-          <TagInput {...baseProps} value={tags} onChange={setTags} />
-          <button onClick={() => setTags(['external'])}>swap</button>
+          <button data-testid="before">before</button>
+          <Wrapper initialItems={seed(['one', 'two'])} />
         </>
       );
-    }
 
-    render(<Wrapper />);
-    expect(queryTag('initial')).toBeInTheDocument();
+      await user.click(getInput());
+      await user.keyboard('{Backspace}');
+      await waitFor(() => expect(queryTag('two')).toHaveFocus());
 
-    await userEvent.click(screen.getByText('swap'));
+      await user.click(screen.getByTestId('before'));
+      await user.tab();
 
-    await waitFor(() => {
-      expect(queryTag('external')).toBeInTheDocument();
-      expect(queryTag('initial')).not.toBeInTheDocument();
+      expect(getInput()).toHaveFocus();
     });
   });
 
-  it('should not update tag list when controlled parent ignores onChange', async () => {
-    const onChange = vi.fn();
-    render(<TagInput {...baseProps} value={['locked']} onChange={onChange} />);
+  describe('selection', () => {
+    it('selects all tags on Ctrl+A from empty input', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['one', 'two'])} />);
 
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), 'attempt{Enter}');
+      await user.click(getInput());
+      await user.keyboard('{Control>}a{/Control}');
 
-    expect(onChange).toHaveBeenLastCalledWith(['locked', 'attempt']);
-    // Parent never propagated → list still shows only 'locked'.
-    expect(queryTag('locked')).toBeInTheDocument();
-    expect(queryTag('attempt')).not.toBeInTheDocument();
-  });
+      await waitFor(() => {
+        expect(queryTag('one')).toHaveAttribute('aria-selected', 'true');
+        expect(queryTag('two')).toHaveAttribute('aria-selected', 'true');
+      });
+    });
 
-  it('should fire onInputChange on every keystroke', async () => {
-    const onInputChange = vi.fn();
-    render(<TagInput {...baseProps} onInputChange={onInputChange} />);
+    it('passes through controlled selectedKeys and emits onSelectionChange', async () => {
+      const user = userEvent.setup();
+      const onSelectionChange = vi.fn();
 
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), 'ab');
+      function Controlled() {
+        const [selected, setSelected] = useState<Selection>(new Set<Key>());
 
-    expect(onInputChange).toHaveBeenCalledWith('a');
-    expect(onInputChange).toHaveBeenCalledWith('ab');
-  });
+        return (
+          <Wrapper
+            initialItems={seed(['one', 'two'])}
+            selectedKeys={selected}
+            onSelectionChange={(keys) => {
+              setSelected(keys);
+              onSelectionChange(keys);
+            }}
+          />
+        );
+      }
 
-  it('should not allow typing when disabled', async () => {
-    const onChange = vi.fn();
-    render(<TagInput {...baseProps} onChange={onChange} isDisabled />);
+      render(<Controlled />);
 
-    expect(getInput()).toBeDisabled();
-    await userEvent.type(getInput(), 'x{Enter}');
-    expect(onChange).not.toHaveBeenCalled();
-  });
+      await user.click(queryTag('one') as HTMLElement);
+      await user.keyboard('{Space}');
 
-  it('should mark every tag as disabled when the field is disabled', () => {
-    render(
-      <TagInput {...baseProps} defaultValue={['one', 'two']} isDisabled />
-    );
-
-    [queryTag('one'), queryTag('two')].forEach((tag) => {
-      expect(tag).toHaveAttribute('data-disabled', 'true');
-      // Remove button stays visible but disabled (see TagList behavior).
-      const removeBtn = within(tag as HTMLElement).getByRole('button');
-      expect(removeBtn).toBeDisabled();
+      expect(onSelectionChange).toHaveBeenCalled();
     });
   });
 
-  it('should render tags in the error variant when invalid', () => {
-    render(
-      <TagInput
-        {...baseProps}
-        defaultValue={['one', 'two']}
-        isInvalid
-        errorMessage="Invalid"
-      />
-    );
+  describe('disabled / read-only', () => {
+    it('does not allow typing when disabled', async () => {
+      const onAdd = vi.fn();
+      render(<Wrapper onAdd={onAdd} isDisabled />);
 
-    [queryTag('one'), queryTag('two')].forEach((tag) => {
-      expect(tag).toHaveAttribute('data-variant', 'error-fade');
+      expect(getInput()).toBeDisabled();
+      await userEvent.type(getInput(), 'x{Enter}');
+      expect(onAdd).not.toHaveBeenCalled();
+    });
+
+    it('marks every tag as disabled when the field is disabled', () => {
+      render(<Wrapper initialItems={seed(['one', 'two'])} isDisabled />);
+
+      [queryTag('one'), queryTag('two')].forEach((tag) => {
+        expect(tag).toHaveAttribute('data-disabled', 'true');
+        const removeBtn = within(tag as HTMLElement).getByRole('button');
+        expect(removeBtn).toBeDisabled();
+      });
+    });
+
+    it('disables tags rendered as a static JSX list', () => {
+      render(
+        <TagInput<TagItem>
+          aria-label="Static"
+          onAdd={() => undefined}
+          onRemove={() => undefined}
+          isDisabled
+        >
+          <TagInput.Tag key="r">React</TagInput.Tag>
+          <TagInput.Tag key="t">TypeScript</TagInput.Tag>
+        </TagInput>
+      );
+
+      [queryTag('React'), queryTag('TypeScript')].forEach((tag) => {
+        expect(tag).toHaveAttribute('data-disabled', 'true');
+      });
+    });
+
+    it('does not consume iterable items while disabling the whole field', () => {
+      function* items() {
+        yield { id: 'r', name: 'React' };
+        yield { id: 't', name: 'TypeScript' };
+      }
+
+      render(
+        <TagInput<TagItem>
+          aria-label="Generated"
+          items={items()}
+          onAdd={() => undefined}
+          onRemove={() => undefined}
+          isDisabled
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
+      );
+
+      [queryTag('React'), queryTag('TypeScript')].forEach((tag) => {
+        expect(tag).toBeInTheDocument();
+        expect(tag).toHaveAttribute('data-disabled', 'true');
+      });
+    });
+
+    it('does not allow modification when read-only', async () => {
+      const onAdd = vi.fn();
+      const onRemove = vi.fn();
+
+      render(
+        <Wrapper
+          initialItems={seed(['a'])}
+          onAdd={onAdd}
+          onRemove={onRemove}
+          isReadOnly
+        />
+      );
+
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'b{Enter}');
+      expect(onAdd).not.toHaveBeenCalled();
+      expect(queryTag('a')).toBeInTheDocument();
+    });
+
+    it('disables tag selection in read-only but keeps focus navigation', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['one', 'two'])} isReadOnly />);
+
+      const firstTag = queryTag('one') as HTMLElement;
+      await user.click(firstTag);
+      await user.keyboard('{Space}');
+      expect(firstTag).not.toHaveAttribute('aria-selected', 'true');
+
+      await user.keyboard('{ArrowRight}');
+      await waitFor(() => expect(queryTag('two')).toHaveFocus());
+    });
+
+    it('marks every tag as disabled via consumer disabledKeys', () => {
+      const initialItems = seed(['one', 'two']);
+
+      render(
+        <Wrapper
+          initialItems={initialItems}
+          disabledKeys={initialItems.map((item) => item.id)}
+        />
+      );
+
+      [queryTag('one'), queryTag('two')].forEach((tag) => {
+        expect(tag).toHaveAttribute('data-disabled', 'true');
+        const removeBtn = within(tag as HTMLElement).getByRole('button');
+        expect(removeBtn).toBeDisabled();
+      });
+    });
+
+    it('renders tags in the error variant when invalid', () => {
+      render(
+        <Wrapper
+          initialItems={seed(['one', 'two'])}
+          isInvalid
+          errorMessage="Invalid"
+        />
+      );
+
+      [queryTag('one'), queryTag('two')].forEach((tag) => {
+        expect(tag).toHaveAttribute('data-variant', 'error-fade');
+      });
+    });
+
+    it('displays an error message when isInvalid', () => {
+      render(<Wrapper isInvalid errorMessage="Required" />);
+      expect(screen.getByText('Required')).toBeInTheDocument();
+    });
+
+    it('displays a caption', () => {
+      render(<Wrapper caption="Helper" />);
+      expect(screen.getByText('Helper')).toBeInTheDocument();
+    });
+
+    it('inherits isDisabled from a parent Form', () => {
+      render(
+        <Form isDisabled>
+          <Wrapper />
+        </Form>
+      );
+
+      expect(getInput()).toBeDisabled();
     });
   });
 
-  it('should not allow modification when read-only', async () => {
-    const onChange = vi.fn();
+  describe('onInputChange', () => {
+    it('fires on every keystroke', async () => {
+      const onInputChange = vi.fn();
+      render(<Wrapper onInputChange={onInputChange} />);
 
-    render(
-      <TagInput
-        {...baseProps}
-        onChange={onChange}
-        defaultValue={['a']}
-        isReadOnly
-      />
-    );
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'ab');
 
-    await userEvent.click(getInput());
-    await userEvent.type(getInput(), 'b{Enter}');
-    expect(onChange).not.toHaveBeenCalled();
-    expect(queryTag('a')).toBeInTheDocument();
-  });
-
-  it('should disable tag selection in read-only but keep focus navigation', async () => {
-    const user = userEvent.setup();
-
-    render(
-      <TagInput {...baseProps} defaultValue={['one', 'two']} isReadOnly />
-    );
-
-    // Selection is off — Space on a focused tag must not toggle aria-selected.
-    const firstTag = queryTag('one') as HTMLElement;
-    await user.click(firstTag);
-    await user.keyboard('{Space}');
-    expect(firstTag).not.toHaveAttribute('aria-selected', 'true');
-
-    // Ctrl+A from a focused tag must not select all either.
-    await user.keyboard('{Control>}a{/Control}');
-    expect(queryTag('one')).not.toHaveAttribute('aria-selected', 'true');
-    expect(queryTag('two')).not.toHaveAttribute('aria-selected', 'true');
-
-    // Focus navigation between tags still works.
-    await user.keyboard('{ArrowRight}');
-    await waitFor(() => expect(queryTag('two')).toHaveFocus());
-  });
-
-  it('should display an error message when isInvalid', () => {
-    render(<TagInput {...baseProps} isInvalid errorMessage="Required" />);
-
-    expect(screen.getByText('Required')).toBeInTheDocument();
-  });
-
-  it('should display a caption', () => {
-    render(<TagInput {...baseProps} caption="Helper" />);
-    expect(screen.getByText('Helper')).toBeInTheDocument();
-  });
-
-  it('should inherit isDisabled from a parent Form', () => {
-    render(
-      <Form isDisabled>
-        <TagInput {...baseProps} />
-      </Form>
-    );
-
-    expect(getInput()).toBeDisabled();
+      expect(onInputChange).toHaveBeenCalledWith('a');
+      expect(onInputChange).toHaveBeenCalledWith('ab');
+    });
   });
 
   describe('Cleaner', () => {
-    it('should not render when isClearable is false', () => {
-      render(<TagInput {...baseProps} defaultValue={['a']} />);
+    it('does not render when isClearable is false', () => {
+      render(<Wrapper initialItems={seed(['a'])} />);
       expect(getClearButton()).toBeNull();
     });
 
-    it('should be hidden when there are no tags and no input value', () => {
-      render(<TagInput {...baseProps} isClearable />);
+    it('is hidden when there are no tags and no input value', () => {
+      render(<Wrapper isClearable />);
       expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('should be visible when there are tags', () => {
-      render(<TagInput {...baseProps} defaultValue={['a']} isClearable />);
+    it('is visible when there are tags', () => {
+      render(<Wrapper initialItems={seed(['a'])} isClearable />);
       expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('should clear tags and input and refocus when pressed', async () => {
-      const onChange = vi.fn();
+    it('auto-emits onRemove(allKeys) + onClear + refocus on press', async () => {
+      const onRemove = vi.fn();
       const onClear = vi.fn();
 
       render(
-        <TagInput
-          {...baseProps}
+        <Wrapper
+          initialItems={seed(['a', 'b'])}
           isClearable
-          defaultValue={['a', 'b']}
-          onChange={onChange}
+          onRemove={onRemove}
           onClear={onClear}
         />
       );
 
       const clearBtn = getClearButton();
-      expect(clearBtn).not.toBeNull();
       await userEvent.click(clearBtn as HTMLElement);
+
+      const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
+      expect(lastCall?.[0].size).toBe(2);
+      expect(onClear).toHaveBeenCalledTimes(1);
 
       await waitFor(() => {
         expect(queryTag('a')).not.toBeInTheDocument();
         expect(queryTag('b')).not.toBeInTheDocument();
       });
 
-      expect(onChange).toHaveBeenLastCalledWith([]);
-      expect(onClear).toHaveBeenCalledTimes(1);
       expect(getInput()).toHaveFocus();
     });
 
-    it('should be hidden when disabled even with tags', () => {
-      render(
-        <TagInput {...baseProps} defaultValue={['a']} isClearable isDisabled />
-      );
-
+    it('is hidden when disabled even with tags', () => {
+      render(<Wrapper initialItems={seed(['a'])} isClearable isDisabled />);
       expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
     });
   });

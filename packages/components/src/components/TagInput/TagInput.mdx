@@ -30,29 +30,66 @@ import { TagInput } from '@koobiq/react-components';
 
 <Props of={Stories.Base} />
 
-## Controlled / uncontrolled
+## Items
 
-For simple cases, pass `defaultValue` and let the component manage tags
-internally. For controlled mode, pass `value` and an `onChange` handler that
-updates external state.
+The tag collection is **owned by the consumer**. `TagInput` only renders
+items and emits intent events — assign each item a stable, unique `id` and
+manage the list externally. `useListData` from `@koobiq/react-components`
+is the most convenient option:
 
-`inputValue` / `defaultInputValue` / `onInputChange` work the same way for the
-text input.
+```tsx
+const list = useListData({
+  initialItems: [{ id: 'react', name: 'React' }],
+  getKey: (item) => item.id,
+});
 
-<Story of={Stories.Controlled} />
+<TagInput
+  items={list.items}
+  onAdd={(values) =>
+    list.append(...values.map((name) => ({ id: crypto.randomUUID(), name })))
+  }
+  onRemove={(keys) => list.remove(...keys)}
+>
+  {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+</TagInput>;
+```
 
-## Splitting input
+Because the consumer assigns ids, duplicate display values never collide
+— each tag has its own identity in the collection.
 
-Tags are added when the user presses <kbd>Enter</kbd> or types a split
-character. The default split pattern is `,` — to also split on `;` or
-whitespace, pass a custom `splitPattern`. Pasting a delimited string into
-the field creates several tags at once, leaving any text already typed in
-the input intact.
+## Adding tags
 
-When the field loses focus with a non-empty input value, the component
-tries to commit it as a final tag (commit-on-blur).
+`onAdd(values, context)` fires when the user commits new values from the
+text input. `context.source` tells how it happened — `'enter'`,
+`'separator'`, `'paste'`, or `'blur'`. Tags are committed when the user:
+
+- presses <kbd>Enter</kbd>;
+- types a character matching `splitPattern` (default `/,/`);
+- pastes a delimited string into the input (multiple values arrive in one
+  call);
+- moves focus out of the field while the input has a non-empty value
+  (commit-on-blur).
+
+To also split on `;` or whitespace, pass a custom `splitPattern`.
 
 <Story of={Stories.SplitPattern} />
+
+## Removing tags
+
+`onRemove(keys)` fires with the set of removed tag keys. Tags can be
+removed via the × button on each tag, by <kbd>Backspace</kbd> /
+
+<kbd>Delete</kbd> on a focused tag, or all at once with the cleaner button
+(`isClearable`).
+
+## Selection
+
+`selectedKeys`, `defaultSelectedKeys` and `onSelectionChange` expose the
+tag-list selection state. Useful for syncing with external state (e.g.
+showing the count of selected tags). Press <kbd>Space</kbd> on a focused
+tag or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd> to select.
+
+<Story of={Stories.WithSelection} />
 
 ## Variant
 
@@ -110,7 +147,7 @@ When wrapped in a `<Form>`, `TagInput` inherits `isDisabled`, `isReadOnly`,
 - The tag list inside the field uses `role="grid"` when there are tags,
   `role="group"` otherwise. Each tag is a `role="row"` with one
   `role="gridcell"`.
-- When `onChange` is wired up, the remove button on each tag (and the
+- When `onRemove` is wired up, the remove button on each tag (and the
   global cleaner) is announced with its localized `aria-label`.
 - Keyboard hints for tag removal (<kbd>Backspace</kbd> / <kbd>Delete</kbd>)
   are exposed via `aria-describedby` on tags — only for keyboard /

@@ -1,5 +1,12 @@
-import type { Ref, CSSProperties, ComponentRef, ReactNode } from 'react';
+import type {
+  Ref,
+  CSSProperties,
+  ComponentRef,
+  ReactNode,
+  ReactElement,
+} from 'react';
 
+import type { CollectionChildren, Key, Selection } from '@koobiq/react-core';
 import type { TextField } from '@koobiq/react-primitives';
 
 import type {
@@ -30,29 +37,36 @@ export type TagInputPropLabelPlacement = FormFieldPropLabelPlacement;
 export const tagInputPropLabelAlign = formFieldPropLabelAlign;
 export type TagInputPropLabelAlign = FormFieldPropLabelAlign;
 
-/**
- * Item in the tag collection. The id always matches the string value — this
- * is the simple TagInput model. `TagAutocomplete` will use a richer item
- * shape with independent ids and labels.
- */
-export interface TagInputItem {
-  id: string;
-  value: string;
-}
+/** How the user's input ended up as new tags. */
+export type TagInputAddSource = 'enter' | 'separator' | 'paste' | 'blur';
 
-export interface TagInputProps {
-  /** Controlled list of tags. Each string is both the key and the label. */
-  value?: string[];
-  /** Uncontrolled initial list of tags. */
-  defaultValue?: string[];
-  /** Fires whenever the tag list changes (add / remove / clear). */
-  onChange?: (next: string[]) => void;
+export type TagInputAddContext = {
+  source: TagInputAddSource;
+};
+
+export interface TagInputProps<T extends object = object> {
+  /** Tag collection — owned by the consumer (e.g. via `useListData`). */
+  items?: Iterable<T>;
+  /** Render function for each item in the collection. */
+  children: CollectionChildren<T>;
+  /** Fires when the user commits one or more new values from the text input. */
+  onAdd?: (values: string[], context: TagInputAddContext) => void;
+  /** Fires when the user removes one or more tags. */
+  onRemove?: (keys: Set<Key>) => void;
   /** Controlled value of the text input. */
   inputValue?: string;
   /** Uncontrolled initial value of the text input. */
   defaultInputValue?: string;
   /** Fires whenever the text input value changes. */
   onInputChange?: (value: string) => void;
+  /** Controlled set of selected tag keys. */
+  selectedKeys?: Selection;
+  /** Uncontrolled initial set of selected tag keys. */
+  defaultSelectedKeys?: Iterable<Key>;
+  /** Fires when the user changes which tags are selected. */
+  onSelectionChange?: (keys: Selection) => void;
+  /** Keys of tags that should be rendered as disabled. */
+  disabledKeys?: Iterable<Key>;
   /**
    * Characters (besides Enter) that commit the current input as a new tag.
    * @default /,/
@@ -62,7 +76,7 @@ export interface TagInputProps {
   placeholder?: string;
   /** Whether to show the cleaner button that removes all tags and the input. */
   isClearable?: boolean;
-  /** Fires when the cleaner is pressed (after the tags and input are reset). */
+  /** Fires after the cleaner is pressed and the field is reset. */
   onClear?: () => void;
   /** The label of the field. */
   label?: ReactNode;
@@ -72,7 +86,7 @@ export interface TagInputProps {
   errorMessage?: ReactNode;
   /** Whether the field is disabled. */
   isDisabled?: boolean;
-  /** Whether the field is read-only — tags visible, can't add or remove. */
+  /** Whether the field is read-only — tags visible, but no add / remove / select. */
   isReadOnly?: boolean;
   /** Whether the field is required. */
   isRequired?: boolean;
@@ -122,8 +136,12 @@ export interface TagInputProps {
     errorMessage?: FormFieldErrorProps;
     clearButton?: IconButtonProps;
     input?: FormFieldInputProps;
-    tagList?: Partial<Omit<TagListInnerProps<TagInputItem>, 'state'>>;
+    tagList?: Partial<Omit<TagListInnerProps<T>, 'state' | 'isDisabled'>>;
   };
 }
+
+export type TagInputComponent = <T extends object = object>(
+  props: TagInputProps<T> & { ref?: Ref<TagInputRef> }
+) => ReactElement | null;
 
 export type TagInputRef = ComponentRef<'input'>;

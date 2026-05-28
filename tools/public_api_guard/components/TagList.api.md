@@ -32,6 +32,7 @@ export type TagListComponent = <T extends object = object>(props: TagListProps<T
 // @public (undocumented)
 export type TagListInnerProps<T extends object = object> = {
     state: ListState<T>;
+    isDisabled?: boolean;
     tagListRef?: Ref<HTMLDivElement>;
 } & Omit<TagListProps<T>, 'ref' | 'children' | 'items' | 'disabledKeys' | 'selectionMode' | 'disallowEmptySelection' | 'selectedKeys' | 'defaultSelectedKeys' | 'onSelectionChange'>;
 
