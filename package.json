@@ -59,6 +59,7 @@
     "@storybook/react": "^10.3.6",
     "@storybook/react-vite": "^10.3.6",
     "@eslint/js": "^9.39.4",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-prettier": "^8.1.0",

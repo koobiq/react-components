@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import stylistic from '@stylistic/eslint-plugin';
 import { defineConfig } from 'eslint/config';
 import importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
@@ -61,6 +62,7 @@ export default defineConfig(
   {
     files: sourceFiles,
     plugins: {
+      '@stylistic': stylistic,
       import: importPlugin,
       'react-hooks': reactHooks,
     },
@@ -75,6 +77,25 @@ export default defineConfig(
       'no-bitwise': 'off',
       'no-restricted-exports': 'off',
       'no-restricted-syntax': 'off',
+      'padding-line-between-statements': 'off',
+      '@stylistic/padding-line-between-statements': [
+        'warn',
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: ['multiline-const', 'multiline-let', 'multiline-expression'],
+        },
+        {
+          blankLine: 'always',
+          prev: ['multiline-const', 'multiline-let', 'multiline-expression'],
+          next: '*',
+        },
+        { blankLine: 'always', prev: '*', next: 'block' },
+        { blankLine: 'always', prev: 'block', next: '*' },
+        { blankLine: 'always', prev: '*', next: 'block-like' },
+        { blankLine: 'always', prev: 'block-like', next: '*' },
+        { blankLine: 'always', prev: '*', next: 'return' },
+      ],
       'react/prop-types': 'off',
       'react/jsx-handler-names': 'off',
       'react/jsx-fragments': 'off',

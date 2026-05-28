@@ -67,6 +67,9 @@ importers:
       '@storybook/react-vite':
         specifier: ^10.3.6
         version: 10.3.6(esbuild@0.27.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rollup@4.60.1)(storybook@10.3.6(@testing-library/dom@10.4.0)(prettier@3.8.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(typescript@6.0.3)(vite@7.3.3(@types/node@25.8.0)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@5.0.1(postcss@8.5.15))(tsx@4.19.3)(yaml@2.9.0))
+      '@stylistic/eslint-plugin':
+        specifier: ^5.10.0
+        version: 5.10.0(eslint@9.39.4(jiti@2.6.1))
       '@svgr/core':
         specifier: ^8.1.0
         version: 8.1.0(typescript@6.0.3)
@@ -3042,6 +3045,12 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  '@stylistic/eslint-plugin@5.10.0':
+    resolution: {integrity: sha512-nPK52ZHvot8Ju/0A4ucSX1dcPV2/1clx0kLcH5wDmrE4naKso7TUC/voUyU1O9OTKTrR6MYip6LP0ogEMQ9jPQ==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^9.0.0 || ^10.0.0
 
   '@svgr/babel-plugin-add-jsx-attribute@8.0.0':
     resolution: {integrity: sha512-b9MIk7yhdS1pMCZM8VeNfUlSKVRhsHZNMl5O9SfaX0l0t5wjdgu4IDzGB8bpnGBBOjGST3rRFVsaaEtI4W6f7g==}
@@ -11998,6 +12007,16 @@ snapshots:
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
+
+  '@stylistic/eslint-plugin@5.10.0(eslint@9.39.4(jiti@2.6.1))':
+    dependencies:
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4(jiti@2.6.1))
+      '@typescript-eslint/types': 8.59.3
+      eslint: 9.39.4(jiti@2.6.1)
+      eslint-visitor-keys: 4.2.1
+      espree: 10.4.0
+      estraverse: 5.3.0
+      picomatch: 4.0.4
 
   '@svgr/babel-plugin-add-jsx-attribute@8.0.0(@babel/core@7.26.10)':
     dependencies:
