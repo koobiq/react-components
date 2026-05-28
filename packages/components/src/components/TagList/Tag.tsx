@@ -12,6 +12,8 @@ import { Item as AriaItem } from '@koobiq/react-primitives';
 
 import type { IconButtonProps } from '../IconButton';
 
+import type { TagListPropVariant } from './types';
+
 type ItemComponent<T> = FC<AriaItemProps<T>> & {
   getCollectionNode: unknown;
 };
@@ -51,6 +53,8 @@ export type TagProps<T> = AriaTagItemProps<T> & {
   icon?: ReactNode;
   /** Whether the tag is disabled. */
   isDisabled?: boolean;
+  /** Visual variant for this tag. */
+  variant?: TagListPropVariant;
   /** The props used for each slot inside. */
   slotProps?: TagSlotProps;
   /** Rendered contents of the tag. */

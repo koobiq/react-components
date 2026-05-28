@@ -216,6 +216,26 @@ describe('TagList', () => {
     expect(getTag()).toHaveAttribute('data-selected', 'true');
   });
 
+  it('should let an individual tag override the parent variant', () => {
+    render(
+      <TagList variant="theme-fade" aria-label="tag-list">
+        <TagList.Tag key="default">Default</TagList.Tag>
+        <TagList.Tag key="custom" variant="error-fade">
+          Custom
+        </TagList.Tag>
+      </TagList>
+    );
+
+    expect(screen.getByText('Default').closest('[role="row"]')).toHaveAttribute(
+      'data-variant',
+      'theme-fade'
+    );
+    expect(screen.getByText('Custom').closest('[role="row"]')).toHaveAttribute(
+      'data-variant',
+      'error-fade'
+    );
+  });
+
   it('should clear selection when focus leaves tag group', async () => {
     const user = userEvent.setup();
 

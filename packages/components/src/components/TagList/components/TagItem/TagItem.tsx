@@ -40,7 +40,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     variant: groupVariant,
   } = props;
   const itemProps = item.props as TagProps<T>;
-  const variant = groupVariant;
+  const variant = itemProps.variant ?? groupVariant;
 
   const {
     tagProps,
