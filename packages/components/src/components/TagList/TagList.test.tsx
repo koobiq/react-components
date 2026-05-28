@@ -198,6 +198,7 @@ describe('TagList', () => {
     await user.keyboard('{Control>}a{/Control}');
 
     expect(onSelectionChange).toHaveBeenCalledTimes(1);
+
     screen
       .getAllByRole('row')
       .forEach((tag) => expect(tag).toHaveAttribute('aria-selected', 'true'));
@@ -230,6 +231,7 @@ describe('TagList', () => {
       'data-variant',
       'theme-fade'
     );
+
     expect(screen.getByText('Custom').closest('[role="row"]')).toHaveAttribute(
       'data-variant',
       'error-fade'
@@ -410,10 +412,12 @@ describe('TagList', () => {
 
   it('should react to items prop mutations', () => {
     type Item = { id: string; name: string };
+
     const initial: Item[] = [
       { id: '1', name: 'one' },
       { id: '2', name: 'two' },
     ];
+
     const extended: Item[] = [...initial, { id: '3', name: 'three' }];
 
     const Wrapper = ({ items }: { items: Item[] }) => (
@@ -435,6 +439,7 @@ describe('TagList', () => {
 
   it('should render a disabled remove button on a disabled tag', async () => {
     const onRemove = vi.fn();
+
     render(
       renderComponent({
         onRemove,

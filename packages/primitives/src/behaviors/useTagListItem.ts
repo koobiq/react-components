@@ -93,6 +93,7 @@ export function useTagListItem<T extends object>(
   const { selectionManager } = state;
 
   const isSelected = selectionManager.isSelected(item.key);
+
   const isDisabled =
     isDisabledProp ||
     selectionManager.isDisabled(item.key) ||

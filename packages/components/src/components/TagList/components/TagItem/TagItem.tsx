@@ -39,6 +39,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     isDisabled: isDisabledProp,
     variant: groupVariant,
   } = props;
+
   const itemProps = item.props as TagProps<T>;
   const variant = itemProps.variant ?? groupVariant;
 
@@ -61,6 +62,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
     within: false,
   });
+
   const { hoverProps, isHovered } = useHover({ isDisabled });
 
   const {

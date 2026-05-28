@@ -200,6 +200,7 @@ export const DynamicItems: Story = {
         { id: 'typescript', name: 'Typescript' },
       ],
     });
+
     const [counter, setCounter] = useState(1);
 
     return (

@@ -26,8 +26,10 @@ const baseProps: TagInputProps = {
 
 const getInput = () => screen.getByTestId('input') as HTMLInputElement;
 const getClearButton = () => screen.queryByLabelText('clear-button');
+
 const queryTag = (label: string): HTMLElement | null => {
   const node = screen.queryByText(label);
+
   return (node?.closest('[role="row"]') as HTMLElement | null) ?? null;
 };
 
@@ -73,6 +75,7 @@ describe('TagInput', () => {
 
   it('should respect a custom splitPattern', async () => {
     const onChange = vi.fn();
+
     render(
       <TagInput {...baseProps} onChange={onChange} splitPattern={/[,;]/} />
     );
@@ -97,6 +100,7 @@ describe('TagInput', () => {
 
   it('should commit input value on blur', async () => {
     const onChange = vi.fn();
+
     render(
       <>
         <TagInput {...baseProps} onChange={onChange} />
@@ -139,6 +143,7 @@ describe('TagInput', () => {
 
   it('should remove a tag when its remove button is clicked', async () => {
     const onChange = vi.fn();
+
     render(
       <TagInput {...baseProps} onChange={onChange} defaultValue={['a', 'b']} />
     );
@@ -197,6 +202,7 @@ describe('TagInput', () => {
   it('should delete a focused tag via Delete / Backspace', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
+
     render(
       <TagInput
         {...baseProps}
@@ -215,6 +221,7 @@ describe('TagInput', () => {
   it('should remove all selected tags when Backspace is pressed', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
+
     render(
       <TagInput
         {...baseProps}
@@ -237,6 +244,7 @@ describe('TagInput', () => {
     const removeButton = within(queryTag('only') as HTMLElement).getByRole(
       'button'
     );
+
     await user.click(removeButton);
 
     await waitFor(() => {
@@ -257,6 +265,7 @@ describe('TagInput', () => {
     const canvas = container.querySelector(
       '[role="presentation"]'
     ) as HTMLElement;
+
     fireEvent.mouseDown(canvas);
     expect(getInput()).toHaveFocus();
   });
@@ -264,6 +273,7 @@ describe('TagInput', () => {
   it('should be controlled when value is provided', async () => {
     function Wrapper() {
       const [tags, setTags] = useState<string[]>(['initial']);
+
       return (
         <>
           <TagInput {...baseProps} value={tags} onChange={setTags} />
@@ -276,6 +286,7 @@ describe('TagInput', () => {
     expect(queryTag('initial')).toBeInTheDocument();
 
     await userEvent.click(screen.getByText('swap'));
+
     await waitFor(() => {
       expect(queryTag('external')).toBeInTheDocument();
       expect(queryTag('initial')).not.toBeInTheDocument();
@@ -345,6 +356,7 @@ describe('TagInput', () => {
 
   it('should not allow modification when read-only', async () => {
     const onChange = vi.fn();
+
     render(
       <TagInput
         {...baseProps}
@@ -362,6 +374,7 @@ describe('TagInput', () => {
 
   it('should disable tag selection in read-only but keep focus navigation', async () => {
     const user = userEvent.setup();
+
     render(
       <TagInput {...baseProps} defaultValue={['one', 'two']} isReadOnly />
     );
@@ -399,6 +412,7 @@ describe('TagInput', () => {
         <TagInput {...baseProps} />
       </Form>
     );
+
     expect(getInput()).toBeDisabled();
   });
 
@@ -421,6 +435,7 @@ describe('TagInput', () => {
     it('should clear tags and input and refocus when pressed', async () => {
       const onChange = vi.fn();
       const onClear = vi.fn();
+
       render(
         <TagInput
           {...baseProps}
@@ -439,6 +454,7 @@ describe('TagInput', () => {
         expect(queryTag('a')).not.toBeInTheDocument();
         expect(queryTag('b')).not.toBeInTheDocument();
       });
+
       expect(onChange).toHaveBeenLastCalledWith([]);
       expect(onClear).toHaveBeenCalledTimes(1);
       expect(getInput()).toHaveFocus();
@@ -448,6 +464,7 @@ describe('TagInput', () => {
       render(
         <TagInput {...baseProps} defaultValue={['a']} isClearable isDisabled />
       );
+
       expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
     });
   });

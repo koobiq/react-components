@@ -140,6 +140,7 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
       if (isDisabled || isReadOnly) return;
       const next = tagValues.filter((v) => !keys.has(v));
       setTagValues(next);
+
       // When the list becomes empty, focus has nowhere to go inside the
       // tag list — pull it back to the input synchronously, before React
       // unmounts the focused remove button.
@@ -156,6 +157,7 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
         position === 'first'
           ? tagListState.collection.getFirstKey()
           : tagListState.collection.getLastKey();
+
       if (key == null) return;
       tagListState.selectionManager.setFocused(true);
       tagListState.selectionManager.setFocusedKey(key);
@@ -196,9 +198,12 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
         if (inputValueState.trim()) {
           event.preventDefault();
           addTags(inputValueState);
+
           return;
         }
+
         event.continuePropagation();
+
         return;
       }
 
@@ -206,13 +211,16 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
         if (inputValueState.trim()) {
           addTags(inputValueState);
         }
+
         // Don't let a bare separator end up in the input either way.
         event.preventDefault();
+
         return;
       }
 
       const input = event.currentTarget;
       const { selectionStart, selectionEnd } = input;
+
       const isCaretAtStart =
         selectionStart === 0 && selectionEnd === 0 && !inputValueState;
 
@@ -223,10 +231,13 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
       ) {
         if (tagValues.length === 0) {
           event.continuePropagation();
+
           return;
         }
+
         event.preventDefault();
         focusLastTag();
+
         return;
       }
 
@@ -240,6 +251,7 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
         event.preventDefault();
         tagListState.selectionManager.selectAll();
         focusLastTag();
+
         return;
       }
 
@@ -252,6 +264,7 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
       ) {
         event.preventDefault();
         focusFirstTag();
+
         return;
       }
 
@@ -282,6 +295,7 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
       // If focus is moving inside the same TagInput (to a tag, to the
       // cleaner, etc.), don't commit — the value is still being edited.
       if (next && innerRef.current?.contains(next)) return;
+
       if (inputValueState.trim()) {
         addTags(inputValueState);
       }
@@ -303,6 +317,7 @@ export const TagInput = forwardRef<TagInputRef, TagInputProps>((props, ref) => {
   const hasTags = tagValues.length > 0;
   const hasInputValue = inputValueState !== '';
   const showCleaner = Boolean(isClearable);
+
   const cleanerIsHidden =
     !showCleaner || (!hasTags && !hasInputValue) || isDisabled || isReadOnly;
 

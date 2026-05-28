@@ -24,6 +24,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
   } = props;
+
   const domRef = useDOMRef(tagListRef);
 
   const { gridProps } = useTagList(
