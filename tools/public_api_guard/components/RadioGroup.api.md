@@ -8,6 +8,7 @@ import { ComponentPropsWithRef } from 'react';
 import { Context } from 'react';
 import { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
+import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';

@@ -10,6 +10,7 @@ import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { DateValue } from '@koobiq/react-primitives';
+import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';

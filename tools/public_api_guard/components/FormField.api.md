@@ -10,6 +10,7 @@ import type { ComponentRef } from 'react';
 import { Context } from 'react';
 import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
+import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
@@ -75,8 +76,11 @@ export type FormFieldControlGroupContextProps = {
 };
 
 // @public (undocumented)
+export type FormFieldControlGroupPropChildren = ReactNode | ((props: FormFieldControlGroupRenderProps) => ReactNode);
+
+// @public (undocumented)
 export type FormFieldControlGroupProps = ExtendableComponentPropsWithRef<{
-    children?: ReactNode;
+    children?: FormFieldControlGroupPropChildren;
     startAddon?: ReactNode;
     endAddon?: ReactNode;
     variant?: FormFieldControlGroupPropVariant;
@@ -97,6 +101,11 @@ export const formFieldControlGroupPropVariant: readonly ["filled", "transparent"
 
 // @public (undocumented)
 export type FormFieldControlGroupRef = ComponentRef<'div'>;
+
+// @public (undocumented)
+export type FormFieldControlGroupRenderProps = {
+    focusProps: DOMAttributes;
+};
 
 // @public (undocumented)
 export const FormFieldError: ForwardRefExoticComponent<Omit<FormFieldErrorProps, "ref"> & RefAttributes<HTMLParagraphElement>>;
@@ -181,7 +190,7 @@ export const useFormFieldControlGroup: () => FormFieldControlGroupContextProps;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/FormField/FormFieldControlGroup/types.d.ts:26:9 - (ae-forgotten-export) The symbol "FormFieldAddonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/FormField/FormFieldControlGroup/types.d.ts:31:9 - (ae-forgotten-export) The symbol "FormFieldAddonProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
