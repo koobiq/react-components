@@ -14,6 +14,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
     state,
     onRemove,
     className,
+    isDisabled,
     slotProps,
     autoFocus,
     tagListRef,
@@ -44,6 +45,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
       'aria-describedby': ariaDescribedBy,
+      'data-disabled': isDisabled || undefined,
     },
     gridProps,
     slotProps?.root
@@ -58,6 +60,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
           key={item.key}
           variant={variant}
           onRemove={onRemove}
+          isDisabled={isDisabled}
           collectionId={collectionId}
         />
       ))}

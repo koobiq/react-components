@@ -25,12 +25,20 @@ type TagItemProps<T extends object> = {
   item: CollectionNode<T>;
   variant: TagListPropVariant;
   onRemove?: (keys: Set<Key>) => void;
+  isDisabled?: boolean;
 };
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagItem<T extends object>(props: TagItemProps<T>) {
-  const { collectionId, item, onRemove, state, variant: groupVariant } = props;
+  const {
+    collectionId,
+    item,
+    onRemove,
+    state,
+    isDisabled: isDisabledProp,
+    variant: groupVariant,
+  } = props;
   const itemProps = item.props as TagProps<T>;
   const variant = groupVariant;
 
@@ -42,7 +50,13 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     gridCellProps,
     allowsRemoving,
     removeButtonProps: removeButtonPropsAria,
-  } = useTagListItem({ collectionId, item, onRemove, state });
+  } = useTagListItem({
+    collectionId,
+    item,
+    onRemove,
+    state,
+    isDisabled: isDisabledProp,
+  });
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
     within: false,

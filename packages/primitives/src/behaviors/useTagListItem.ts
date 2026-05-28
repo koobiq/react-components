@@ -70,12 +70,19 @@ export type UseTagListItemProps<T extends object> = {
   collectionId?: string;
   item: Node<T>;
   onRemove?: (keys: Set<Key>) => void;
+  isDisabled?: boolean;
 };
 
 export function useTagListItem<T extends object>(
   props: UseTagListItemProps<T>
 ) {
-  const { collectionId, item, onRemove, state } = props;
+  const {
+    collectionId,
+    item,
+    onRemove,
+    state,
+    isDisabled: isDisabledProp,
+  } = props;
 
   const ref = useRef<HTMLDivElement>(null);
   const rowId = useId();
@@ -87,7 +94,9 @@ export function useTagListItem<T extends object>(
 
   const isSelected = selectionManager.isSelected(item.key);
   const isDisabled =
-    selectionManager.isDisabled(item.key) || itemProps.isDisabled;
+    isDisabledProp ||
+    selectionManager.isDisabled(item.key) ||
+    itemProps.isDisabled;
 
   // The remove affordance stays visible on disabled tags — the button just
   // renders disabled (state propagated via `removeButtonProps.isDisabled`).

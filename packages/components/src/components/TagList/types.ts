@@ -76,6 +76,8 @@ export type TagListProps<T extends object = object> = ExtendableProps<
 export type TagListInnerProps<T extends object = object> = {
   /** Pre-built collection state, e.g. from `useTagListState`. */
   state: ListState<T>;
+  /** Whether all tags are disabled by an owning composite component. */
+  isDisabled?: boolean;
   /** Ref to the root element. */
   tagListRef?: Ref<HTMLDivElement>;
 } & Omit<
