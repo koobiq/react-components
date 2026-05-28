@@ -17,6 +17,7 @@ type TagItem = { id: string; name: string };
 const meta = {
   title: 'Components/TagInput',
   component: TagInput,
+  subcomponents: { 'TagInput.Tag': TagInput.Tag },
   parameters: { layout: 'centered' },
   tags: ['status:new', 'date:2026-05-25'],
 } satisfies Meta<typeof TagInput>;

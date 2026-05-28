@@ -26,6 +26,7 @@ import type { TagListInnerProps } from '../TagList';
 import { Tag } from '../TagList/Tag';
 import { TagListInner } from '../TagList/TagListInner';
 
+import { useFieldSizingFallback } from './hooks/useFieldSizingFallback';
 import s from './TagInput.module.css';
 import type {
   TagInputAddSource,
@@ -106,6 +107,11 @@ function TagInputRender<T extends object>(
     defaultInputValue ?? '',
     onInputChange
   );
+
+  useFieldSizingFallback(inputRef, {
+    fallbackText: placeholder,
+    text: inputValueState,
+  });
 
   const addTagsFromInput = useCallback(
     (raw: string, source: TagInputAddSource) => {

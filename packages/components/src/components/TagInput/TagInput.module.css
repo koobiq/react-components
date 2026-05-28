@@ -43,12 +43,20 @@
   min-inline-size: 4rem;
   block-size: var(--kbq-size-xxl);
   padding-inline: var(--kbq-size-xxs);
+  box-sizing: border-box;
+}
+
+.input[data-field-sizing-fallback] {
+  flex: 0 0 auto;
+  inline-size: min(var(--kbq-autosize-inline-size), 100%);
+  max-inline-size: 100%;
 }
 
 @supports (field-sizing: content) {
   .input {
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     inline-size: auto;
+    max-inline-size: 100%;
     field-sizing: content;
   }
 }
