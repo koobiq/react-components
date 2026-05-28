@@ -27,9 +27,11 @@ if (arg === 'onlyCheck') {
   if (components.length === 0 && packages.length === 0) {
     console.error(`Unknown target "${arg}".`);
     console.error(`Known components: ${cfg.components.join(', ')}`);
+
     console.error(
       `Known packages: ${cfg.packages.map((p) => p.report).join(', ')}`
     );
+
     process.exit(1);
   }
 }
@@ -37,8 +39,10 @@ if (arg === 'onlyCheck') {
 const configObjectFullPath = path.resolve(
   'tools/api-extractor/api-extractor.json'
 );
+
 const packageJsonFullPath =
   new PackageJsonLookup().tryGetPackageJsonFilePathFor(configObjectFullPath);
+
 const repoRoot = path.resolve('.');
 
 let hasErrors = false;
@@ -49,8 +53,10 @@ function runForComponent(name: string): ExtractorResult {
 
   configObject.projectFolder = repoRoot;
   configObject.mainEntryPointFilePath = `<projectFolder>/packages/components/dist/components/${name}/index.d.ts`;
+
   configObject.apiReport!.reportFolder =
     '<projectFolder>/tools/public_api_guard/components';
+
   configObject.apiReport!.reportFileName = `${name}.api.md`;
 
   const extractorConfig = ExtractorConfig.prepare({
@@ -72,8 +78,10 @@ function runForPackage({ dir, report }: PackageEntry): ExtractorResult {
 
   configObject.projectFolder = repoRoot;
   configObject.mainEntryPointFilePath = `<projectFolder>/packages/${dir}/dist/index.d.ts`;
+
   configObject.apiReport!.reportFolder =
     '<projectFolder>/tools/public_api_guard';
+
   configObject.apiReport!.reportFileName = `${report}.api.md`;
 
   const extractorConfig = ExtractorConfig.prepare({
@@ -96,6 +104,7 @@ function handle(label: string, result: ExtractorResult): void {
     console.error(
       red(`API Extractor completed with ${result.errorCount} errors`)
     );
+
     hasErrors = true;
   } else if (result.apiReportChanged) {
     process.exit(1);
@@ -119,6 +128,7 @@ for (const pkg of packages) {
     console.error(
       `API Extractor: ${pkg.report} — crashed: ${(e as Error).message}`
     );
+
     if (process.env.AE_DIAG === '1') console.error((e as Error).stack);
     hasErrors = true;
   }
