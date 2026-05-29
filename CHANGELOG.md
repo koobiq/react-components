@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.34.0](https://github.com/koobiq/react-components/compare/0.33.0...0.34.0) (2026-05-29)
+
+
+### 🚀 Features
+
+* **FormFieldControlGroup:** add children render function for focus props (DS-5134) ([#375](https://github.com/koobiq/react-components/issues/375)) ([e07ee30](https://github.com/koobiq/react-components/commit/e07ee30ce1dfe62b357923d1cf13251e8aa31009))
+
+
+### 🐞 Bug Fixes
+
+* **FormField:** fix clear icon position (DS-5131) ([#374](https://github.com/koobiq/react-components/issues/374)) ([c273f82](https://github.com/koobiq/react-components/commit/c273f822db174be27962c30da6ec4e9efe41f365))
+* **Tooltip:** default arrowBoundaryOffset to 16 (DS-5145) ([#378](https://github.com/koobiq/react-components/issues/378)) ([a6c5cc7](https://github.com/koobiq/react-components/commit/a6c5cc7ca018bd54f2c6fc7eddc595a2693779ec))
+
 ## [0.33.0](https://github.com/koobiq/react-components/compare/0.32.0...0.33.0) (2026-05-13)
 
 
