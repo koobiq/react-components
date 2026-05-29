@@ -95,6 +95,16 @@ values, or any other policy.
 
 <Story of={Stories.PreventDuplicates} />
 
+## Validation
+
+`inputValue` and `onInputChange` make the text input controlled, so you can
+check every change. To reject a character, don't save the new value. The
+input then keeps what it had. Paste runs through the same handler, so it is
+filtered too. Show the error however you like. The example below flashes a
+red `Tooltip` by the control. See the story source for the full code.
+
+<Story of={Stories.Validation} />
+
 ## Removing tags
 
 `onRemove(keys)` fires with the set of removed tag keys. Tags can be

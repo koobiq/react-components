@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
 
 import type { Key, Selection } from '@koobiq/react-core';
+import { useTimeout } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { Button, useBreakpoints, useListData } from '../index';
+import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
 import { TagInput } from './TagInput';
@@ -325,6 +327,75 @@ export const PreventDuplicates: Story = {
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
       </TagInput>
+    );
+  },
+};
+
+export const Validation: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const anchorRef = useRef<HTMLDivElement>(null);
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'first', name: 'First' },
+        { id: 'second', name: 'Second' },
+      ],
+    });
+
+    const tagCounter = useRef(0);
+    const [inputValue, setInputValue] = useState('');
+    const [error, setError] = useState('');
+    const [isErrorOpen, setIsErrorOpen] = useState(false);
+
+    useTimeout(() => setIsErrorOpen(false), isErrorOpen ? 2000 : null);
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <>
+        <TagInput<TagItem>
+          label="Tags"
+          items={list.items}
+          slotProps={{
+            group: { ref: anchorRef },
+          }}
+          inputValue={inputValue}
+          placeholder="Letters and digits only"
+          style={{ inlineSize: m ? 360 : 240 }}
+          onInputChange={(next) => {
+            if (!/^[\p{L}\p{N}]*$/u.test(next)) {
+              setError('Only letters and digits');
+              setIsErrorOpen(true);
+
+              return;
+            }
+
+            setIsErrorOpen(false);
+            setInputValue(next);
+          }}
+          onAdd={(values) => list.append(...values.map(createTag))}
+          onRemove={(keys) => list.remove(...keys)}
+          fullWidth
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
+        <Tooltip
+          variant="error"
+          placement="top"
+          hideArrow={false}
+          isOpen={isErrorOpen}
+          anchorRef={anchorRef}
+          onOpenChange={setIsErrorOpen}
+        >
+          {error}
+        </Tooltip>
+      </>
     );
   },
 };
