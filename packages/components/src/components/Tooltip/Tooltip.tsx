@@ -33,6 +33,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     // Boolean props should default to `false`. This default is kept for compatibility.
     hideArrow = true,
     placement: placementProp = 'top',
+    arrowBoundaryOffset = 16,
     closeDelay = 120,
     delay = 120,
     isDisabled: isDisabledProp,
@@ -47,7 +48,6 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     onOpenChange,
     portalContainer,
     offset: offsetProp,
-    arrowBoundaryOffset,
     ...other
   } = props;
 
