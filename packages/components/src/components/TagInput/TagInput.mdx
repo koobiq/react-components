@@ -74,6 +74,27 @@ To also split on `;` or whitespace, pass a custom `splitPattern`.
 
 <Story of={Stories.SplitPattern} />
 
+## Preventing duplicates
+
+`TagInput` passes every committed value to `onAdd` as-is, even if it
+already exists in the collection. To keep the list unique, filter the
+values inside the handler:
+
+```tsx
+onAdd={(values) => {
+  const existing = new Set(list.items.map((item) => item.name.toLowerCase()));
+  const fresh = values.filter((value) => !existing.has(value.toLowerCase()));
+  if (fresh.length === 0) return;
+  list.append(...fresh.map(createTag));
+}}
+```
+
+The input is cleared after every commit, so a rejected duplicate just
+disappears. The same pattern works for case-insensitive matches, trimmed
+values, or any other policy.
+
+<Story of={Stories.PreventDuplicates} />
+
 ## Removing tags
 
 `onRemove(keys)` fires with the set of removed tag keys. Tags can be

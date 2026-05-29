@@ -282,6 +282,53 @@ export const SplitPattern: Story = {
   },
 };
 
+export const PreventDuplicates: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'react', name: 'React' },
+        { id: 'typescript', name: 'TypeScript' },
+      ],
+    });
+
+    const tagCounter = useRef(0);
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagInput<TagItem>
+        label="Tags"
+        items={list.items}
+        style={{ inlineSize: m ? 360 : 240 }}
+        caption="Duplicates are ignored — try typing React again"
+        placeholder="Type and press Enter"
+        onAdd={(values) => {
+          const existing = new Set(
+            list.items.map((item) => item.name.toLowerCase())
+          );
+
+          const fresh = values.filter(
+            (value) => !existing.has(value.toLowerCase())
+          );
+
+          if (fresh.length === 0) return;
+          list.append(...fresh.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        fullWidth
+      >
+        {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+      </TagInput>
+    );
+  },
+};
+
 export const WithSelection: Story = {
   render: function Render() {
     const { m } = useBreakpoints();
