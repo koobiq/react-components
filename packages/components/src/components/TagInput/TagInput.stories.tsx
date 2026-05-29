@@ -26,7 +26,7 @@ export default meta;
 type Story = StoryObj<TagInputProps<TagItem>>;
 
 export const Base: Story = {
-  render: function Render() {
+  render: function Render(args) {
     const { m } = useBreakpoints();
 
     const tagCounter = useRef(0);
@@ -53,6 +53,7 @@ export const Base: Story = {
         items={list.items}
         onAdd={(values) => list.append(...values.map(createTag))}
         onRemove={(keys) => list.remove(...keys)}
+        {...args}
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
       </TagInput>
