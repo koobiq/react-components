@@ -364,3 +364,42 @@ export const InsideForm: Story = {
     );
   },
 };
+
+export const Autofill: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const list = useListData<TagItem>({
+      initialItems: [{ id: 'react', name: 'React' }],
+    });
+
+    const tagCounter = useRef(0);
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <FlexBox gap="m" direction="column" style={{ inlineSize: m ? 360 : 240 }}>
+        <Typography>
+          Click on the text box and choose any option suggested by your browser.
+        </Typography>
+        <TagInput<TagItem>
+          label="Tags"
+          id="autofill"
+          name="autofill"
+          items={list.items}
+          placeholder="Form-wide disabled"
+          onRemove={(keys) => list.remove(...keys)}
+          onAdd={(values) => list.append(...values.map(createTag))}
+          fullWidth
+          disableCommitOnBlur
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
+      </FlexBox>
+    );
+  },
+};

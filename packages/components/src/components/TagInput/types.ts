@@ -124,6 +124,8 @@ export interface TagInputProps<T extends object = object> {
   'aria-describedby'?: string;
   /** Form field name (used when the component is submitted in a form). */
   name?: string;
+  /** Id forwarded to the underlying text input. */
+  id?: string;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

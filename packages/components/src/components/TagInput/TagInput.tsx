@@ -55,6 +55,7 @@ function TagInputRender<T extends object>(
     disableCommitOnBlur,
     variant = 'filled',
     name,
+    id,
     className,
     style,
     inputValue,
@@ -344,6 +345,7 @@ function TagInputRender<T extends object>(
       className,
       style,
       name,
+      id,
       // TextField primitive owns the text input value — wire it to our
       // inputValue so labels / errors / descriptions get correctly aria-linked.
       value: inputValueState,
