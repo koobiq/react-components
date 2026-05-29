@@ -392,7 +392,7 @@ function TagInputRender<T extends object>(
           )[]
         >(
           {
-            variant: groupIsInvalid ? 'error-fade' : undefined,
+            variant: groupIsInvalid ? 'error-fade' : 'contrast-fade',
             onRemove: isReadOnly ? undefined : handleRemove,
             'aria-label': ariaLabel ?? 'Selected tags',
             slotProps: { root: { className: s.tagList, tabIndex: -1 } },
