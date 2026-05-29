@@ -81,7 +81,7 @@ export type TooltipProps = ExtendableProps<
     anchorRef?: RefObject<HTMLElement | null>;
     /**
      * The minimum distance the arrow's edge should be from the edge of the overlay element.
-     * @default 0
+     * @default 16
      */
     arrowBoundaryOffset?: number;
     /**

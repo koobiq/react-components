@@ -4,7 +4,7 @@ import { useBoolean } from '@koobiq/react-core';
 import { IconCircleQuestion24 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button, type ButtonProps } from '../Button';
+import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
 import { IconButton } from '../IconButton';
@@ -207,154 +207,45 @@ export const ControlledOpen: Story = {
 };
 
 export const Placement: Story = {
-  render: function Render(args) {
-    const [isOpen, { on, off, set }] = useBoolean();
-    const [placement, setPlacement] = useState<TooltipPropPlacement>();
-    const anchorRef = useRef<HTMLElement | null>(null);
-
-    const onHoverStart = (placement: TooltipPropPlacement) => {
-      const fn: ButtonProps['onHoverStart'] = (e) => {
-        on();
-        setPlacement(placement);
-        anchorRef.current = e.target as HTMLElement;
-      };
-
-      return fn;
-    };
+  render: (args) => {
+    const placements: TooltipPropPlacement[] = [
+      'top start',
+      'top',
+      'top end',
+      'start top',
+      'start',
+      'start bottom',
+      'end top',
+      'end',
+      'end bottom',
+      'bottom start',
+      'bottom',
+      'bottom end',
+    ];
 
     return (
       <Grid cols={{ xs: 3, m: 5 }} gap="l">
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('top start')}
-            onHoverEnd={off}
-            fullWidth
+        {placements.map((placement, index) => (
+          <GridItem
+            key={placement}
+            colStart={index % 3 === 0 ? { xs: 1, m: 2 } : undefined}
           >
-            top start
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('top')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            top
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('top end')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            top end
-          </Button>
-        </GridItem>
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('start top')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            start top
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('start')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            start
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('start bottom')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            start bottom
-          </Button>
-        </GridItem>
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('end top')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            end top
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('end')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            end
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('end bottom')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            end bottom
-          </Button>
-        </GridItem>
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('bottom start')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            bottom start
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('bottom')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            bottom
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onHoverStart={onHoverStart('bottom end')}
-            onHoverEnd={off}
-            fullWidth
-          >
-            bottom end
-          </Button>
-        </GridItem>
-        <Tooltip
-          delay={0}
-          closeDelay={0}
-          isOpen={isOpen}
-          onOpenChange={(open) => set(open)}
-          placement={placement}
-          anchorRef={anchorRef}
-          {...args}
-        >
-          Check out my placement
-        </Tooltip>
+            <Tooltip
+              delay={0}
+              closeDelay={0}
+              hideArrow={false}
+              placement={placement}
+              control={(props) => (
+                <Button variant="fade-contrast-filled" fullWidth {...props}>
+                  {placement}
+                </Button>
+              )}
+              {...args}
+            >
+              Check out my placement
+            </Tooltip>
+          </GridItem>
+        ))}
       </Grid>
     );
   },
