@@ -58,7 +58,8 @@ export function useTagList<T extends object>(
 
   const { listProps } = useSelectableList({
     keyboardDelegate,
-    shouldFocusWrap: true,
+    // Spec: arrow navigation in the tag list is not cyclic.
+    shouldFocusWrap: false,
     escapeKeyBehavior,
     autoFocus,
     collection: state.collection,

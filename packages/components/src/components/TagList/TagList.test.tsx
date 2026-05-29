@@ -165,6 +165,32 @@ describe('TagList', () => {
     await waitFor(() => expect(getTag()).toHaveFocus());
   });
 
+  it('should not wrap focus past the last tag with ArrowRight', async () => {
+    const user = userEvent.setup();
+
+    render(renderComponent({ selectionMode: 'multiple' }));
+
+    const lastTag = screen.getByText('four').closest('[role="row"]');
+
+    await user.click(lastTag as HTMLElement);
+    await user.keyboard('{ArrowRight}');
+
+    await waitFor(() => expect(lastTag).toHaveFocus());
+  });
+
+  it('should not wrap focus past the first tag with ArrowLeft', async () => {
+    const user = userEvent.setup();
+
+    render(renderComponent({ selectionMode: 'multiple' }));
+
+    const firstTag = screen.getByText('one').closest('[role="row"]');
+
+    await user.click(firstTag as HTMLElement);
+    await user.keyboard('{ArrowLeft}');
+
+    await waitFor(() => expect(firstTag).toHaveFocus());
+  });
+
   it('should not select focused tag on Enter', async () => {
     const user = userEvent.setup();
     const onSelectionChange = vi.fn();
