@@ -76,6 +76,7 @@ export interface TagInputProps<T extends object = object> {
     className?: string;
     defaultInputValue?: string;
     defaultSelectedKeys?: Iterable<Key>;
+    disableCommitOnBlur?: boolean;
     disabledKeys?: Iterable<Key>;
     errorMessage?: ReactNode;
     fullWidth?: boolean;

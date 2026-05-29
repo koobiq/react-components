@@ -72,6 +72,11 @@ export interface TagInputProps<T extends object = object> {
    * @default /,/
    */
   splitPattern?: RegExp;
+  /**
+   * Whether to suppress committing the input value as a new tag when focus leaves the field.
+   * @default false
+   */
+  disableCommitOnBlur?: boolean;
   /** Placeholder for the text input. */
   placeholder?: string;
   /** Whether to show the cleaner button that removes all tags and the input. */

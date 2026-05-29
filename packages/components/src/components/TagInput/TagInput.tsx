@@ -52,6 +52,7 @@ function TagInputRender<T extends object>(
     onAdd,
     onRemove,
     splitPattern = DEFAULT_SPLIT_PATTERN,
+    disableCommitOnBlur,
     variant = 'filled',
     name,
     className,
@@ -280,7 +281,7 @@ function TagInputRender<T extends object>(
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
-      if (isDisabled || isReadOnly) return;
+      if (isDisabled || isReadOnly || disableCommitOnBlur) return;
       const next = event.relatedTarget;
       // If focus is moving inside the same TagInput, don't commit — the user is still editing.
       if (next && innerRef.current?.contains(next)) return;
@@ -289,7 +290,13 @@ function TagInputRender<T extends object>(
         addTagsFromInput(inputValueState, 'blur');
       }
     },
-    [isDisabled, isReadOnly, inputValueState, addTagsFromInput]
+    [
+      isDisabled,
+      isReadOnly,
+      disableCommitOnBlur,
+      inputValueState,
+      addTagsFromInput,
+    ]
   );
 
   const handleTagListContainerBlur = useCallback(

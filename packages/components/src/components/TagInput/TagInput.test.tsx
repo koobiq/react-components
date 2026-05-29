@@ -172,6 +172,24 @@ describe('TagInput', () => {
       });
     });
 
+    it('does not commit on blur when disableCommitOnBlur is set', async () => {
+      const onAdd = vi.fn();
+
+      render(
+        <>
+          <Wrapper onAdd={onAdd} disableCommitOnBlur />
+          <button data-testid="outside">outside</button>
+        </>
+      );
+
+      await userEvent.click(getInput());
+      await userEvent.type(getInput(), 'pending');
+      await userEvent.click(screen.getByTestId('outside'));
+
+      expect(onAdd).not.toHaveBeenCalled();
+      expect(getInput()).toHaveValue('pending');
+    });
+
     it('respects a custom splitPattern', async () => {
       const onAdd = vi.fn();
       render(<Wrapper onAdd={onAdd} splitPattern={/[,;]/} />);
