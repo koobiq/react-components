@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
-import { useListData } from '../index';
+import { Button, useBreakpoints, useListData } from '../index';
 import { Typography } from '../Typography';
 
 import { TagInput } from './TagInput';
@@ -27,6 +27,8 @@ type Story = StoryObj<TagInputProps<TagItem>>;
 
 export const Base: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const tagCounter = useRef(0);
 
     const list = useListData<TagItem>({
@@ -45,7 +47,8 @@ export const Base: Story = {
     return (
       <TagInput<TagItem>
         label="Tags"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
+        fullWidth
+        style={{ inlineSize: m ? 360 : 240 }}
         placeholder="Type and press Enter"
         items={list.items}
         onAdd={(values) => list.append(...values.map(createTag))}
@@ -59,12 +62,10 @@ export const Base: Story = {
 
 export const Variant: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     return (
-      <FlexBox
-        gap="m"
-        direction="column"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
-      >
+      <FlexBox gap="m" direction="column" style={{ inlineSize: m ? 360 : 240 }}>
         {tagInputPropVariant.map((variant) => (
           <TagInput
             key={variant}
@@ -84,6 +85,8 @@ export const Variant: Story = {
 
 export const FormField: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const categories = useListData<TagItem>({
       initialItems: [
         { id: 'news', name: 'News' },
@@ -110,32 +113,28 @@ export const FormField: Story = {
     const isEmpty = tags.items.length === 0;
 
     return (
-      <FlexBox
-        direction="column"
-        gap="m"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
-      >
+      <FlexBox direction="column" gap="m" style={{ inlineSize: m ? 360 : 240 }}>
         <TagInput<TagItem>
           label="Categories"
-          caption="Press Enter or comma to add"
-          placeholder="Add a category"
           items={categories.items}
-          onAdd={(values) => categories.append(...values.map(createCategory))}
+          placeholder="Add a category"
+          caption="Press Enter or comma to add"
           onRemove={(keys) => categories.remove(...keys)}
-          isRequired
+          onAdd={(values) => categories.append(...values.map(createCategory))}
           fullWidth
+          isRequired
         >
           {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
         </TagInput>
         <TagInput<TagItem>
           label="Tags"
-          placeholder="Add at least one tag"
           items={tags.items}
-          onAdd={(values) => tags.append(...values.map(createTag))}
-          onRemove={(keys) => tags.remove(...keys)}
           isInvalid={isEmpty}
-          errorMessage={isEmpty ? 'At least one tag is required' : undefined}
+          placeholder="Add at least one tag"
           caption={isEmpty ? undefined : 'Looks good'}
+          onRemove={(keys) => tags.remove(...keys)}
+          onAdd={(values) => tags.append(...values.map(createTag))}
+          errorMessage={isEmpty ? 'At least one tag is required' : undefined}
           fullWidth
         >
           {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
@@ -147,6 +146,8 @@ export const FormField: Story = {
 
 export const Disabled: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const list = useListData<TagItem>({
       initialItems: [
         { id: 'react', name: 'React' },
@@ -165,11 +166,11 @@ export const Disabled: Story = {
     return (
       <TagInput<TagItem>
         label="Tags"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
-        placeholder="Disabled"
         items={list.items}
-        onAdd={(values) => list.append(...values.map(createTag))}
+        placeholder="Disabled"
+        style={{ inlineSize: m ? 360 : 240 }}
         onRemove={(keys) => list.remove(...keys)}
+        onAdd={(values) => list.append(...values.map(createTag))}
         isDisabled
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
@@ -180,6 +181,8 @@ export const Disabled: Story = {
 
 export const ReadOnly: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const list = useListData<TagItem>({
       initialItems: [
         { id: 'react', name: 'React' },
@@ -198,11 +201,11 @@ export const ReadOnly: Story = {
     return (
       <TagInput<TagItem>
         label="Tags"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
-        placeholder="Read-only"
         items={list.items}
-        onAdd={(values) => list.append(...values.map(createTag))}
+        placeholder="Read-only"
+        style={{ inlineSize: m ? 360 : 240 }}
         onRemove={(keys) => list.remove(...keys)}
+        onAdd={(values) => list.append(...values.map(createTag))}
         isReadOnly
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
@@ -213,6 +216,8 @@ export const ReadOnly: Story = {
 
 export const Clearable: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const list = useListData<TagItem>({
       initialItems: [
         { id: 'react', name: 'React' },
@@ -232,9 +237,9 @@ export const Clearable: Story = {
     return (
       <TagInput<TagItem>
         label="Tags"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
         items={list.items}
         placeholder="Type and press Enter"
+        style={{ inlineSize: m ? 360 : 240 }}
         onRemove={(keys) => list.remove(...keys)}
         onAdd={(values) => list.append(...values.map(createTag))}
         isClearable
@@ -247,6 +252,8 @@ export const Clearable: Story = {
 
 export const SplitPattern: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const list = useListData<TagItem>({ initialItems: [] });
     const tagCounter = useRef(0);
 
@@ -259,13 +266,13 @@ export const SplitPattern: Story = {
     return (
       <TagInput<TagItem>
         label="Tags"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
+        items={list.items}
         splitPattern={/[,;\s]/}
+        style={{ inlineSize: m ? 360 : 240 }}
         caption="Try pasting: foo, bar; baz qux"
         placeholder="Use comma, semicolon or space"
-        items={list.items}
-        onAdd={(values) => list.append(...values.map(createTag))}
         onRemove={(keys) => list.remove(...keys)}
+        onAdd={(values) => list.append(...values.map(createTag))}
         fullWidth
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
@@ -276,6 +283,8 @@ export const SplitPattern: Story = {
 
 export const WithSelection: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const list = useListData<TagItem>({
       initialItems: [
         { id: 'react', name: 'React' },
@@ -295,19 +304,15 @@ export const WithSelection: Story = {
     const [selected, setSelected] = useState<Selection>(new Set<Key>());
 
     return (
-      <FlexBox
-        direction="column"
-        gap="s"
-        style={{ inlineSize: '100%', maxInlineSize: 360 }}
-      >
+      <FlexBox direction="column" gap="s" style={{ inlineSize: m ? 360 : 240 }}>
         <TagInput<TagItem>
           label="Tags"
-          placeholder="Click a tag with Cmd/Ctrl, press Space, or Ctrl+A"
           items={list.items}
-          onAdd={(values) => list.append(...values.map(createTag))}
-          onRemove={(keys) => list.remove(...keys)}
           selectedKeys={selected}
           onSelectionChange={setSelected}
+          onRemove={(keys) => list.remove(...keys)}
+          placeholder="Click a tag with Cmd/Ctrl, press Space, or Ctrl+A"
+          onAdd={(values) => list.append(...values.map(createTag))}
           fullWidth
         >
           {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
@@ -323,6 +328,8 @@ export const WithSelection: Story = {
 
 export const InsideForm: Story = {
   render: function Render() {
+    const { m } = useBreakpoints();
+
     const list = useListData<TagItem>({
       initialItems: [{ id: 'react', name: 'React' }],
     });
@@ -336,16 +343,23 @@ export const InsideForm: Story = {
     };
 
     return (
-      <Form isDisabled style={{ inlineSize: '100%', maxInlineSize: 360 }}>
+      <Form
+        labelPlacement="side"
+        style={{ inlineSize: m ? 360 : 240 }}
+        isDisabled
+      >
         <TagInput<TagItem>
           label="Tags"
-          placeholder="Form-wide disabled"
           items={list.items}
-          onAdd={(values) => list.append(...values.map(createTag))}
+          placeholder="Form-wide disabled"
           onRemove={(keys) => list.remove(...keys)}
+          onAdd={(values) => list.append(...values.map(createTag))}
         >
           {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
         </TagInput>
+        <Form.Actions>
+          <Button>Submit</Button>
+        </Form.Actions>
       </Form>
     );
   },
