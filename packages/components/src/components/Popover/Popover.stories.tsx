@@ -4,7 +4,6 @@ import { capitalizeFirstLetter, useBoolean } from '@koobiq/react-core';
 import { IconSparkles16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { PressEvent } from '../../types';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Grid, GridItem } from '../Grid';
@@ -144,139 +143,44 @@ export const Size: Story = {
 };
 
 export const Placement: Story = {
-  render: function Render(args) {
-    const [isOpen, { toggle, set }] = useBoolean();
-    const [placement, setPlacement] = useState<PopoverPropPlacement>();
-    const anchorRef = useRef<HTMLElement | null>(null);
-
-    const handlePress =
-      (placement: PopoverPropPlacement) => (e: PressEvent) => {
-        toggle();
-        setPlacement(placement);
-        anchorRef.current = e.target as HTMLElement;
-      };
+  render: (args) => {
+    const placements: PopoverPropPlacement[] = [
+      'top start',
+      'top',
+      'top end',
+      'start top',
+      'start',
+      'start bottom',
+      'end top',
+      'end',
+      'end bottom',
+      'bottom start',
+      'bottom',
+      'bottom end',
+    ];
 
     return (
       <Grid cols={{ xs: 3, m: 5 }} gap="l">
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('top start')}
-            fullWidth
+        {placements.map((placement, index) => (
+          <GridItem
+            key={placement}
+            colStart={index % 3 === 0 ? { xs: 1, m: 2 } : undefined}
           >
-            top start
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('top')}
-            fullWidth
-          >
-            top
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('top end')}
-            fullWidth
-          >
-            top end
-          </Button>
-        </GridItem>
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('start top')}
-            fullWidth
-          >
-            start top
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('start')}
-            fullWidth
-          >
-            start
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('start bottom')}
-            fullWidth
-          >
-            start bottom
-          </Button>
-        </GridItem>
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('end top')}
-            fullWidth
-          >
-            end top
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('end')}
-            fullWidth
-          >
-            end
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('end bottom')}
-            fullWidth
-          >
-            end bottom
-          </Button>
-        </GridItem>
-        <GridItem colStart={{ xs: 1, m: 2 }}>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('bottom start')}
-            fullWidth
-          >
-            bottom start
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('bottom')}
-            fullWidth
-          >
-            bottom
-          </Button>
-        </GridItem>
-        <GridItem>
-          <Button
-            variant="fade-contrast-filled"
-            onPress={handlePress('bottom end')}
-            fullWidth
-          >
-            bottom end
-          </Button>
-        </GridItem>
-        <Popover
-          isOpen={isOpen}
-          size="auto"
-          onOpenChange={set}
-          placement={placement}
-          anchorRef={anchorRef}
-          hideCloseButton
-          {...args}
-        >
-          <Popover.Body>Check out my placement</Popover.Body>
-        </Popover>
+            <Popover
+              size="auto"
+              placement={placement}
+              hideCloseButton
+              control={(props) => (
+                <Button variant="fade-contrast-filled" fullWidth {...props}>
+                  {placement}
+                </Button>
+              )}
+              {...args}
+            >
+              <Popover.Body>Check out my placement</Popover.Body>
+            </Popover>
+          </GridItem>
+        ))}
       </Grid>
     );
   },
