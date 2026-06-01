@@ -33,10 +33,6 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
     domRef
   );
 
-  const collectionId = (gridProps as Record<string, unknown>)[
-    'data-collection'
-  ] as string | undefined;
-
   const rootProps = mergeProps(
     {
       style,
@@ -62,7 +58,6 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
           variant={variant}
           onRemove={onRemove}
           isDisabled={isDisabled}
-          collectionId={collectionId}
         />
       ))}
     </div>
