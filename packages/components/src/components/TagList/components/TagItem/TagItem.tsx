@@ -21,23 +21,23 @@ import { matchVariantToIconButton } from './utils';
 
 type TagItemProps<T extends object> = {
   state: ListState<T>;
-  collectionId?: string;
   item: CollectionNode<T>;
   variant: TagListPropVariant;
   onRemove?: (keys: Set<Key>) => void;
   isDisabled?: boolean;
+  collectionId?: string;
 };
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagItem<T extends object>(props: TagItemProps<T>) {
   const {
-    collectionId,
     item,
     onRemove,
     state,
     isDisabled: isDisabledProp,
     variant: groupVariant,
+    collectionId,
   } = props;
 
   const itemProps = item.props as TagProps<T>;
@@ -52,11 +52,11 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     allowsRemoving,
     removeButtonProps: removeButtonPropsAria,
   } = useTagListItem({
-    collectionId,
     item,
     onRemove,
     state,
     isDisabled: isDisabledProp,
+    collectionId,
   });
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({

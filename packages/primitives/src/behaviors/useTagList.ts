@@ -23,6 +23,7 @@ export type AriaTagListProps = {
 export type TagListAria = {
   /** Props for the root grid/group element. */
   gridProps: DOMAttributes;
+  collectionId: string | undefined;
 };
 
 /**
@@ -73,6 +74,10 @@ export function useTagList<T extends object>(
     onBlurWithin: () => state.selectionManager.clearSelection(),
   });
 
+  const { 'data-collection': collectionId } = listProps as {
+    'data-collection'?: string;
+  };
+
   return {
     gridProps: mergeProps(
       {
@@ -81,5 +86,6 @@ export function useTagList<T extends object>(
       listProps,
       focusWithinProps
     ),
+    collectionId,
   };
 }

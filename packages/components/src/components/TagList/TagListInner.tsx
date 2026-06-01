@@ -27,7 +27,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
 
   const domRef = useDOMRef(tagListRef);
 
-  const { gridProps } = useTagList(
+  const { gridProps, collectionId } = useTagList(
     { escapeKeyBehavior, autoFocus },
     state,
     domRef
@@ -58,6 +58,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
           variant={variant}
           onRemove={onRemove}
           isDisabled={isDisabled}
+          collectionId={collectionId}
         />
       ))}
     </div>
