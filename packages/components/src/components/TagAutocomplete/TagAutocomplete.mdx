@@ -1,0 +1,67 @@
+import {
+  Props,
+  Story,
+  Meta,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TagAutocomplete.stories';
+
+<Meta of={Stories} />
+
+# TagAutocomplete
+
+<Status variant="draft" />
+
+A compositional multi-tag entry with autocomplete suggestions. Pairs a
+`TagInput` with a popover listbox; the user picks suggestions while still
+being able to type free-form tags.
+
+## Import
+
+```tsx
+import { TagAutocomplete, TagInput } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Composition
+
+`TagAutocomplete` is a container; the actual UI is its children:
+
+```tsx
+<TagAutocomplete onSelect={...}>
+  <TagInput items={tags.items} onAdd={...} onRemove={...}>
+    {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+  </TagInput>
+  <TagAutocomplete.List items={suggestions.items}>
+    {(item) => (
+      <TagAutocomplete.Item key={item.id} textValue={item.name}>
+        {item.name}
+      </TagAutocomplete.Item>
+    )}
+  </TagAutocomplete.List>
+</TagAutocomplete>
+```
+
+The list defines the suggestion collection, while the root owns the resulting
+list state and provides a context with the popover state and anchor element:
+
+- `TagInput` consumes it to open the popover when the input is focused, and
+  to avoid auto-committing typed text as a tag when focus moves into the
+  popover (e.g. while clicking a suggestion).
+- `TagAutocomplete.List` provides collection items/children and renders the
+  root-owned list state in a popover anchored to the field, sized to its width.
+
+## Behaviour
+
+- Focusing the input opens the popover.
+- Pressing **Escape** or clicking outside closes it.
+- Picking a suggestion fires `onSelect(item)` and keeps the popover open,
+  so the user can pick several in a row.
+
+## Props
+
+<Props of={Stories.Base} />

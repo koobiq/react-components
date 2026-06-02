@@ -35,6 +35,7 @@ export * from './ButtonToggleGroup';
 export * from './TagGroup';
 export * from './TagList';
 export * from './TagInput';
+export * from './TagAutocomplete';
 export * from './Table';
 export * from './Calendar';
 export * from './DateInput';

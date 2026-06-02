@@ -1,6 +1,5 @@
 'use client';
 
-import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
 import { mergeProps } from '@koobiq/react-core';
@@ -9,6 +8,7 @@ import {
   DEFAULT_SLOT,
   FieldErrorContext,
   Provider,
+  createHideableComponent,
   useTagField,
   useTagListState,
 } from '@koobiq/react-primitives';
@@ -23,6 +23,7 @@ import type {
   FormFieldControlGroupProps,
 } from '../FormField';
 import { FormField, FormFieldClearButton } from '../FormField';
+import { useTagAutocompleteContext } from '../TagAutocomplete/TagAutocompleteContext';
 import { Tag } from '../TagList/Tag';
 import { TagListInner } from '../TagList/TagListInner';
 
@@ -79,6 +80,8 @@ function TagInputRender<T extends object>(
     disabledKeys,
   });
 
+  const autocomplete = useTagAutocompleteContext();
+
   const {
     inputValue,
     inputRef,
@@ -105,7 +108,8 @@ function TagInputRender<T extends object>(
       isReadOnly: resolvedIsReadOnly,
     },
     state,
-    ref
+    ref,
+    autocomplete
   );
 
   useFieldSizingFallback(inputRef, {
@@ -172,6 +176,7 @@ function TagInputRender<T extends object>(
         <FormFieldClearButton {...clearButtonProps} />
       ) : undefined,
       variant,
+      ref: autocomplete?.anchorRef,
       isDisabled,
       onMouseDown: (event) => {
         if (event.target !== event.currentTarget) return;
@@ -232,7 +237,9 @@ function TagInputRender<T extends object>(
   );
 }
 
-const TagInputComponent = forwardRef(TagInputRender) as TagInputComponent;
+const TagInputComponent = createHideableComponent(
+  TagInputRender
+) as TagInputComponent;
 
 type CompoundedComponent = typeof TagInputComponent & {
   Tag: typeof Tag;

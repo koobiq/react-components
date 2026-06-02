@@ -1,0 +1,14 @@
+.popover {
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+.list {
+  overflow-y: auto;
+  max-block-size: inherit;
+}

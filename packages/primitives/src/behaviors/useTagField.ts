@@ -22,6 +22,7 @@ import { useSlottedContext } from 'react-aria-components';
 import { FormContext } from '../components';
 import { removeDataAttributes } from '../utils';
 
+import type { TagAutocompleteState } from './useTagAutocomplete';
 import type { TagListState } from './useTagListState';
 
 const DEFAULT_SPLIT_PATTERN = /,/;
@@ -122,7 +123,8 @@ export interface TagFieldAria<T extends object> extends ValidationResult {
 export function useTagField<T extends object>(
   props: AriaTagFieldProps,
   state: TagListState<T>,
-  ref?: Ref<HTMLInputElement>
+  ref?: Ref<HTMLInputElement>,
+  autocomplete?: TagAutocompleteState | null
 ): TagFieldAria<T> {
   const {
     onAdd,
@@ -141,6 +143,13 @@ export function useTagField<T extends object>(
     'aria-label': ariaLabel,
     ...textFieldProps
   } = props;
+
+  const {
+    state: autocompleteState,
+    listState: autocompleteListState,
+    onAction: autocompleteOnAction,
+    popoverRef,
+  } = autocomplete ?? {};
 
   const inputRef = useDOMRef<HTMLInputElement>(ref);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -214,10 +223,73 @@ export function useTagField<T extends object>(
     state.collection,
   ]);
 
+  const focusAutocompleteOption = useCallback(
+    (direction: 'next' | 'previous') => {
+      if (!autocompleteState?.isOpen || !autocompleteListState) {
+        autocompleteState?.open();
+
+        return false;
+      }
+
+      const { collection, selectionManager } = autocompleteListState;
+
+      if (collection.size === 0) return false;
+
+      const { focusedKey } = selectionManager;
+
+      const nextKey =
+        direction === 'next'
+          ? focusedKey == null
+            ? collection.getFirstKey()
+            : (collection.getKeyAfter(focusedKey) ?? focusedKey)
+          : focusedKey == null
+            ? collection.getLastKey()
+            : (collection.getKeyBefore(focusedKey) ?? focusedKey);
+
+      if (nextKey == null) return false;
+
+      selectionManager.setFocused(true);
+      selectionManager.setFocusedKey(nextKey);
+
+      return true;
+    },
+    [autocompleteListState, autocompleteState]
+  );
+
+  const selectFocusedAutocompleteOption = useCallback(() => {
+    if (
+      !autocompleteState?.isOpen ||
+      !autocompleteListState ||
+      !autocompleteOnAction
+    ) {
+      return false;
+    }
+
+    const { focusedKey } = autocompleteListState.selectionManager;
+    if (focusedKey == null) return false;
+
+    autocompleteOnAction(focusedKey);
+
+    return true;
+  }, [autocompleteListState, autocompleteOnAction, autocompleteState]);
+
   const { keyboardProps: inputKeyboardProps } = useKeyboard({
     isDisabled: isDisabled || isReadOnly,
     onKeyDown: (event) => {
+      if (event.key === 'Escape' && autocompleteState?.isOpen) {
+        event.preventDefault();
+        autocompleteState.close();
+
+        return;
+      }
+
       if (event.key === 'Enter') {
+        if (selectFocusedAutocompleteOption()) {
+          event.preventDefault();
+
+          return;
+        }
+
         if (inputValueState.trim() && onAdd) {
           event.preventDefault();
           addTagsFromInput(inputValueState, 'enter');
@@ -226,6 +298,19 @@ export function useTagField<T extends object>(
         }
 
         event.continuePropagation();
+
+        return;
+      }
+
+      if (
+        autocompleteState &&
+        (event.key === 'ArrowDown' || event.key === 'ArrowUp')
+      ) {
+        event.preventDefault();
+
+        focusAutocompleteOption(
+          event.key === 'ArrowDown' ? 'next' : 'previous'
+        );
 
         return;
       }
@@ -241,7 +326,6 @@ export function useTagField<T extends object>(
           addTagsFromInput(inputValueState, 'separator');
         }
 
-        // Don't let a bare separator end up in the input either way.
         event.preventDefault();
 
         return;
@@ -322,6 +406,7 @@ export function useTagField<T extends object>(
       const next = event.relatedTarget;
 
       if (next && innerRef.current?.contains(next)) return;
+      if (next && popoverRef?.current?.contains(next)) return;
 
       if (inputValueState.trim()) {
         addTagsFromInput(inputValueState, 'blur');
@@ -333,6 +418,7 @@ export function useTagField<T extends object>(
       disableCommitOnBlur,
       inputValueState,
       addTagsFromInput,
+      popoverRef,
     ]
   );
 
@@ -417,6 +503,7 @@ export function useTagField<T extends object>(
 
   const inputProps = mergeProps(
     inputPropsAria,
+    autocompleteState ? { onFocus: autocompleteState.open } : undefined,
     {
       onFocus: resetTagListFocus,
       onPaste: handlePaste,
