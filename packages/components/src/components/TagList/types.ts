@@ -58,10 +58,6 @@ type TagListBaseProps = {
   style?: CSSProperties;
   /** Handler that is called when a user deletes a tag. */
   onRemove?: (keys: Set<Key>) => void;
-  /** The props used for each slot inside. */
-  slotProps?: {
-    root?: ComponentPropsWithRef<'div'>;
-  };
 };
 
 type TagListInheritedProps<T extends object> = TagListCollectionProps<T> &

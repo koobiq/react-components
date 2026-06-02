@@ -7,7 +7,11 @@ import type {
 } from 'react';
 
 import type { CollectionChildren, Key, Selection } from '@koobiq/react-core';
-import type { TextField } from '@koobiq/react-primitives';
+import type {
+  AriaTextFieldProps,
+  TagFieldAddContext,
+  TagFieldAddSource,
+} from '@koobiq/react-primitives';
 
 import type {
   FormFieldProps,
@@ -38,11 +42,9 @@ export const tagInputPropLabelAlign = formFieldPropLabelAlign;
 export type TagInputPropLabelAlign = FormFieldPropLabelAlign;
 
 /** How the user's input ended up as new tags. */
-export type TagInputAddSource = 'enter' | 'separator' | 'paste' | 'blur';
+export type TagInputAddSource = TagFieldAddSource;
 
-export type TagInputAddContext = {
-  source: TagInputAddSource;
-};
+export type TagInputAddContext = TagFieldAddContext;
 
 export interface TagInputProps<T extends object = object> {
   /** Tag collection — owned by the consumer (e.g. via `useListData`). */
@@ -97,6 +99,11 @@ export interface TagInputProps<T extends object = object> {
   isRequired?: boolean;
   /** Whether the field is in an invalid state. */
   isInvalid?: boolean;
+  /**
+   * Whether to use native HTML form validation or ARIA validation.
+   * @default 'aria'
+   */
+  validationBehavior?: AriaTextFieldProps<HTMLInputElement>['validationBehavior'];
   /** Whether the label is visually hidden. */
   isLabelHidden?: boolean;
   /** Whether the field takes up the full width of its container. */
@@ -136,7 +143,7 @@ export interface TagInputProps<T extends object = object> {
   ref?: Ref<HTMLInputElement>;
   /** Props used for each slot inside. */
   slotProps?: {
-    root?: FormFieldProps<typeof TextField<HTMLInputElement>>;
+    root?: FormFieldProps;
     label?: FormFieldLabelProps;
     caption?: FormFieldCaptionProps;
     group?: FormFieldControlGroupProps;

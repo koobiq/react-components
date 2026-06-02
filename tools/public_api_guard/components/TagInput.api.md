@@ -4,6 +4,7 @@
 
 ```ts
 
+import type { AriaTextFieldProps } from '@koobiq/react-primitives';
 import type { ButtonBaseProps } from '@koobiq/react-primitives';
 import type { CollectionBase } from '@koobiq/react-core';
 import type { CollectionChildren } from '@koobiq/react-core';
@@ -27,7 +28,8 @@ import { ReactNode } from 'react';
 import { Ref } from 'react';
 import { RefAttributes } from 'react';
 import type { Selection as Selection_2 } from '@koobiq/react-core';
-import type { TextField } from '@koobiq/react-primitives';
+import type { TagFieldAddContext } from '@koobiq/react-primitives';
+import type { TagFieldAddSource } from '@koobiq/react-primitives';
 import { TextProps } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
@@ -37,12 +39,10 @@ import { ValidationResult } from '@koobiq/react-core';
 export const TagInput: CompoundedComponent;
 
 // @public (undocumented)
-export type TagInputAddContext = {
-    source: TagInputAddSource;
-};
+export type TagInputAddContext = TagFieldAddContext;
 
 // @public
-export type TagInputAddSource = 'enter' | 'separator' | 'paste' | 'blur';
+export type TagInputAddSource = TagFieldAddSource;
 
 // @public (undocumented)
 export type TagInputComponent = <T extends object = object>(props: TagInputProps<T> & {
@@ -102,7 +102,7 @@ export interface TagInputProps<T extends object = object> {
     ref?: Ref<HTMLInputElement>;
     selectedKeys?: Selection_2;
     slotProps?: {
-        root?: FormFieldProps<typeof TextField<HTMLInputElement>>;
+        root?: FormFieldProps;
         label?: FormFieldLabelProps;
         caption?: FormFieldCaptionProps;
         group?: FormFieldControlGroupProps;
@@ -113,6 +113,7 @@ export interface TagInputProps<T extends object = object> {
     };
     splitPattern?: RegExp;
     style?: CSSProperties;
+    validationBehavior?: AriaTextFieldProps<HTMLInputElement>['validationBehavior'];
     variant?: TagInputPropVariant;
 }
 
@@ -129,14 +130,14 @@ export type TagInputRef = ComponentRef<'input'>;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TagInput/types.d.ts:110:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagInput/types.d.ts:111:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagInput/types.d.ts:112:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagInput/types.d.ts:113:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagInput/types.d.ts:114:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagInput/types.d.ts:115:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagInput/types.d.ts:116:9 - (ae-forgotten-export) The symbol "FormFieldInputProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagInput/types.d.ts:117:9 - (ae-forgotten-export) The symbol "TagListInnerProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:113:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:114:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:115:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:116:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:117:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:118:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:119:9 - (ae-forgotten-export) The symbol "FormFieldInputProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagInput/types.d.ts:120:9 - (ae-forgotten-export) The symbol "TagListInnerProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

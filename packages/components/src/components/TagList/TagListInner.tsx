@@ -10,19 +10,14 @@ import type { TagListInnerProps } from './types';
 export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
   const {
     variant = 'theme-fade',
-    style,
     state,
     onRemove,
     className,
     isDisabled,
-    slotProps,
     autoFocus,
     tagListRef,
     escapeKeyBehavior,
-    'aria-label': ariaLabel,
-    'data-testid': dataTestid,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy,
+    ...rootDOMProps
   } = props;
 
   const domRef = useDOMRef(tagListRef);
@@ -35,17 +30,12 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
 
   const rootProps = mergeProps(
     {
-      style,
       ref: domRef,
       className: clsx(groupStyles.base, className),
-      'data-testid': dataTestid,
-      'aria-label': ariaLabel,
-      'aria-labelledby': ariaLabelledBy,
-      'aria-describedby': ariaDescribedBy,
       'data-disabled': isDisabled || undefined,
     },
     gridProps,
-    slotProps?.root
+    rootDOMProps
   );
 
   return (
