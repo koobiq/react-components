@@ -13,3 +13,4 @@ export * from './useMultiSelectListState';
 export * from './useTagList';
 export * from './useTagListItem';
 export * from './useTagListState';
+export * from './useTagField';

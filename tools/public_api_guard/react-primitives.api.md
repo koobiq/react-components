@@ -113,6 +113,7 @@ import { RefAttributes } from 'react';
 import { RefObject } from 'react';
 import type { RenderProps as RenderProps_2 } from 'react-aria-components';
 import type { RouterOptions } from '@koobiq/react-core';
+import type { TextFieldAria } from '@react-aria/textfield';
 import { TextInputBase } from '@koobiq/react-core';
 import { ToggleEventHandler } from 'react';
 import type { ToggleState } from '@react-stately/toggle';
@@ -166,6 +167,19 @@ export { AriaCheckboxGroupItemProps }
 export { AriaCheckboxGroupProps }
 
 export { AriaCheckboxProps }
+
+// @public (undocumented)
+export interface AriaTagFieldProps extends Omit<AriaTextFieldProps<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange'> {
+    defaultInputValue?: string;
+    disableCommitOnBlur?: boolean;
+    inputValue?: string;
+    isClearable?: boolean;
+    onAdd?: (values: string[], context: TagFieldAddContext) => void;
+    onClear?: () => void;
+    onInputChange?: (value: string) => void;
+    onRemove?: (keys: Set<Key_2>) => void;
+    splitPattern?: RegExp;
+}
 
 // @public (undocumented)
 export type AriaTagListProps = {
@@ -514,8 +528,59 @@ export type SwitchRenderProps = {
 };
 
 // @public (undocumented)
+export type TagFieldAddContext = {
+    source: TagFieldAddSource;
+};
+
+// @public
+export type TagFieldAddSource = 'enter' | 'separator' | 'paste' | 'blur';
+
+// @public (undocumented)
+export interface TagFieldAria<T extends object> extends ValidationResult {
+    clearButtonProps: TagFieldClearButtonProps;
+    descriptionProps: TextFieldAria<'input'>['descriptionProps'];
+    errorMessageProps: TextFieldAria<'input'>['errorMessageProps'];
+    inputProps: TextFieldAria<'input'>['inputProps'];
+    inputRef: RefObject<HTMLInputElement | null>;
+    inputValue: string;
+    // (undocumented)
+    isDisabled: boolean | undefined;
+    // (undocumented)
+    isReadOnly: boolean | undefined;
+    // (undocumented)
+    isRequired: boolean | undefined;
+    labelProps: TextFieldAria<'input'>['labelProps'];
+    tagListContainerProps: TagFieldTagListContainerProps;
+    tagListProps: TagFieldTagListProps<T>;
+}
+
+// @public (undocumented)
+export type TagFieldClearButtonProps = {
+    isClearable: boolean;
+    tabIndex: -1 | undefined;
+    isHidden: boolean;
+    onPress: () => void;
+};
+
+// @public (undocumented)
+export type TagFieldTagListContainerProps = HTMLAttributes<HTMLDivElement> & {
+    ref: RefObject<HTMLDivElement | null>;
+    role: 'presentation';
+};
+
+// @public (undocumented)
+export type TagFieldTagListProps<T extends object> = {
+    state: TagListState<T>;
+    isDisabled: boolean | undefined;
+    tabIndex: -1;
+    onRemove: ((keys: Set<Key_2>) => void) | undefined;
+    'aria-label': string;
+};
+
+// @public (undocumented)
 export type TagListAria = {
     gridProps: DOMAttributes;
+    collectionId: string | undefined;
 };
 
 // @public (undocumented)
@@ -1105,6 +1170,9 @@ export type UseSwitchProps = AriaSwitchProps & {
 // @public (undocumented)
 export type UseSwitchReturn = ReturnType<typeof useSwitch>;
 
+// @public (undocumented)
+export function useTagField<T extends object>(props: AriaTagFieldProps, state: TagListState<T>, ref?: Ref<HTMLInputElement>): TagFieldAria<T>;
+
 // @public
 export function useTagList<T extends object>(props: AriaTagListProps, state: ListState<T>, ref: RefObject<HTMLElement | null>): TagListAria;
 
@@ -1176,6 +1244,7 @@ export * from "@react-aria/separator";
 export * from "@react-aria/table";
 export * from "@react-aria/tabs";
 export * from "@react-aria/tag";
+export * from "@react-aria/textfield";
 export * from "@react-aria/toast";
 export * from "@react-aria/toggle";
 export * from "@react-aria/toolbar";
