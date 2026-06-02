@@ -1,3 +1,5 @@
+import { startTransition, useOptimistic, useRef, useState } from 'react';
+
 import { useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -5,12 +7,7 @@ import { FlexBox } from '../FlexBox';
 import { flex } from '../layout';
 import { Typography } from '../Typography';
 
-import {
-  Toggle,
-  togglePropLabelPlacement,
-  type ToggleProps,
-  togglePropSize,
-} from './index.js';
+import { Toggle, togglePropLabelPlacement, togglePropSize } from './index.js';
 
 const meta = {
   title: 'Components/Toggle',
@@ -136,67 +133,78 @@ export const Description: Story = {
   ),
 };
 
-export const Example: Story = {
+export const ServerApi: Story = {
   parameters: {
     layout: 'padded',
   },
-  render: function Render(args) {
-    const [isLoading, { on: startLoading, off: stopLoading }] =
-      useBoolean(false);
+  render: function Render() {
+    const vpnStatusMessage = {
+      connected: 'VPN Connected',
+      connecting: 'Connecting to VPN…',
+      disconnected: 'VPN Disconnected',
+      disconnecting: 'Disconnecting from VPN…',
+      failed: 'VPN Connection Failed',
+    } as const;
 
-    const [isConnected, { set: setConnected }] = useBoolean(false);
+    type VpnStatusCode = keyof typeof vpnStatusMessage;
 
-    const simulateVpnConnection = (checked: boolean) =>
-      new Promise<string>((resolve, reject) => {
-        const shouldConnect = checked ? Math.random() < 0.5 : false;
+    const fetchVpnConnection = async (
+      nextConnected: boolean,
+      signal: AbortSignal
+    ) => {
+      const response = await fetch(
+        'https://dummyjson.com/http/200?delay=2000',
+        {
+          signal,
+        }
+      );
 
-        if (checked) {
-          setTimeout(() => {
-            if (shouldConnect) {
-              reject(new window.Error('VPN connection failed!'));
-            } else {
-              resolve('VPN successfully connected!');
-            }
-          }, 2000);
-        } else {
-          resolve('VPN successfully disconnected!');
+      if (!response.ok) {
+        throw new Error('VPN connection failed');
+      }
+
+      return nextConnected;
+    };
+
+    const abortControllerRef = useRef<AbortController | null>(null);
+    const [isConnected, setConnected] = useState(false);
+    const [statusCode, setStatusCode] = useState<VpnStatusCode>('disconnected');
+
+    const [optimisticConnected, setOptimisticConnected] =
+      useOptimistic(isConnected);
+
+    const handleChange = (nextConnected: boolean) => {
+      abortControllerRef.current?.abort();
+
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
+
+      setStatusCode(nextConnected ? 'connecting' : 'disconnecting');
+
+      startTransition(async () => {
+        setOptimisticConnected(nextConnected);
+
+        try {
+          const confirmedConnected = await fetchVpnConnection(
+            nextConnected,
+            abortController.signal
+          );
+
+          setConnected(confirmedConnected);
+          setStatusCode(confirmedConnected ? 'connected' : 'disconnected');
+        } catch (error) {
+          if (error instanceof DOMException && error.name === 'AbortError') {
+            return;
+          }
+
+          setStatusCode('failed');
         }
       });
-
-    const handleVpnToggle = async (isChecked: boolean) => {
-      startLoading();
-
-      try {
-        const message = await simulateVpnConnection(isChecked);
-        setConnected(isChecked);
-        console.log(message);
-      } catch (error) {
-        setConnected(!isChecked);
-        console.error(error);
-      } finally {
-        stopLoading();
-      }
-    };
-
-    const handleChange: ToggleProps['onChange'] = (isChecked) => {
-      setConnected(isChecked);
-
-      if (!isLoading) {
-        handleVpnToggle(isChecked);
-      }
-    };
-
-    const getStatusMessage = () => {
-      if (isLoading && isConnected) return 'Connecting to VPN…';
-      if (isLoading && !isConnected) return 'Disconnecting from VPN…';
-      if (isConnected) return 'VPN Connected';
-
-      return 'VPN Disconnected';
     };
 
     return (
-      <Toggle isSelected={isConnected} onChange={handleChange} {...args}>
-        {getStatusMessage()}
+      <Toggle onChange={handleChange} isSelected={optimisticConnected}>
+        {vpnStatusMessage[statusCode]}
       </Toggle>
     );
   },
