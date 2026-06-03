@@ -5,7 +5,6 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { useListData } from '../index';
-import { TagInput } from '../TagInput';
 import type { TagInputAddContext } from '../TagInput';
 
 import { TagAutocomplete } from './index';
@@ -15,6 +14,7 @@ type TagItem = { id: string; name: string };
 type HarnessProps = {
   initialTags?: TagItem[];
   suggestions?: TagItem[];
+  defaultFilter?: (textValue: string, inputValue: string) => boolean;
   onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
 };
 
@@ -26,6 +26,7 @@ function Harness(props: HarnessProps) {
       { id: 'typescript', name: 'TypeScript' },
       { id: 'storybook', name: 'Storybook' },
     ],
+    defaultFilter,
     onAdd: userOnAdd,
   } = props;
 
@@ -43,35 +44,35 @@ function Harness(props: HarnessProps) {
   };
 
   return (
-    <TagAutocomplete>
-      <TagInput<TagItem>
-        aria-label="Tags"
-        slotProps={{ input: { 'data-testid': 'input' } }}
-        items={tags.items}
-        onAdd={(values, ctx) => {
-          if (ctx.source === 'suggestion') {
-            tags.append(ctx.suggestion);
-          } else {
-            tags.append(...values.map(newTag));
-          }
+    <TagAutocomplete<TagItem>
+      aria-label="Tags"
+      slotProps={{ input: { 'data-testid': 'input' } }}
+      items={tags.items}
+      onAdd={(values, ctx) => {
+        if (ctx.source === 'suggestion') {
+          tags.append(ctx.suggestion);
+        } else {
+          tags.append(...values.map(newTag));
+        }
 
-          userOnAdd?.(values, ctx);
-        }}
-        onRemove={(keys) => tags.remove(...keys)}
-      >
-        {(item) => (
-          <TagInput.Tag key={item.id} textValue={item.name}>
+        userOnAdd?.(values, ctx);
+      }}
+      onRemove={(keys) => tags.remove(...keys)}
+      list={{
+        items: suggestions,
+        defaultFilter,
+        renderItem: (item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
             {item.name}
-          </TagInput.Tag>
-        )}
-      </TagInput>
-      <TagAutocomplete.List<TagItem> items={suggestions}>
-        {(item) => (
-          <TagAutocomplete.Item key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.Item>
-        )}
-      </TagAutocomplete.List>
+          </TagAutocomplete.ListItem>
+        ),
+      }}
+    >
+      {(item) => (
+        <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+          {item.name}
+        </TagAutocomplete.Tag>
+      )}
     </TagAutocomplete>
   );
 }
@@ -125,6 +126,43 @@ describe('TagAutocomplete', () => {
     expect(
       screen.getByRole('option', { name: 'Storybook' })
     ).toBeInTheDocument();
+  });
+
+  it('excludes selected tags from the suggestions by key or textValue', async () => {
+    const user = userEvent.setup();
+
+    render(<Harness initialTags={[{ id: 'react', name: 'React' }]} />);
+
+    await user.click(getInput());
+
+    expect(
+      await screen.findByRole('option', { name: 'TypeScript' })
+    ).toBeInTheDocument();
+
+    expect(screen.queryByRole('option', { name: 'React' })).toBeNull();
+  });
+
+  it('filters suggestions with list.defaultFilter', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Harness
+        defaultFilter={(textValue, inputValue) =>
+          textValue.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())
+        }
+      />
+    );
+
+    await user.click(getInput());
+    await user.type(getInput(), 'type');
+
+    expect(
+      await screen.findByRole('option', { name: 'TypeScript' })
+    ).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(screen.queryByRole('option', { name: 'React' })).toBeNull()
+    );
   });
 
   it('closes the popover on Escape', async () => {

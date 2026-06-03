@@ -1,32 +1,30 @@
-import type { ReactElement } from 'react';
-
 import { Tag } from '../TagList/Tag';
 
 import { TagAutocompleteRoot } from './TagAutocomplete';
-import { TagAutocompleteItem } from './TagAutocompleteItem';
-import type { TagAutocompleteItemProps } from './TagAutocompleteItem';
-import { TagAutocompleteList } from './TagAutocompleteList';
-import type { TagAutocompleteListProps, TagAutocompleteProps } from './types';
+import { TagAutocompleteListItem } from './TagAutocompleteItem';
+import type { TagAutocompleteListItemProps } from './TagAutocompleteItem';
+import type {
+  TagAutocompleteComponent,
+  TagAutocompleteListConfig,
+  TagAutocompleteProps,
+  TagAutocompleteRef,
+} from './types';
 
-type TagAutocompleteComponent = ((
-  props: TagAutocompleteProps
-) => ReactElement) & {
-  /** Popover with the suggestion listbox. */
-  List: typeof TagAutocompleteList;
-  /** Item inside `TagAutocomplete.List`. */
-  Item: typeof TagAutocompleteItem;
-  /** Tag inside the nested `TagInput`. Re-export of `TagInput.Tag`. */
+type CompoundedComponent = TagAutocompleteComponent & {
+  /** Item inside the autocomplete list. */
+  ListItem: typeof TagAutocompleteListItem;
+  /** Selected tag item. Re-export of `TagInput.Tag`. */
   Tag: typeof Tag;
 };
 
-export const TagAutocomplete = TagAutocompleteRoot as TagAutocompleteComponent;
+export const TagAutocomplete = TagAutocompleteRoot as CompoundedComponent;
 
-TagAutocomplete.List = TagAutocompleteList;
-TagAutocomplete.Item = TagAutocompleteItem;
+TagAutocomplete.ListItem = TagAutocompleteListItem;
 TagAutocomplete.Tag = Tag;
 
 export type {
   TagAutocompleteProps,
-  TagAutocompleteListProps,
-  TagAutocompleteItemProps,
+  TagAutocompleteRef,
+  TagAutocompleteListConfig,
+  TagAutocompleteListItemProps,
 };

@@ -9,6 +9,7 @@ import {
   FieldErrorContext,
   Provider,
   createHideableComponent,
+  type TagAutocompleteState,
   useTagField,
   useTagListState,
 } from '@koobiq/react-primitives';
@@ -23,7 +24,6 @@ import type {
   FormFieldControlGroupProps,
 } from '../FormField';
 import { FormField, FormFieldClearButton } from '../FormField';
-import { useTagAutocompleteContext } from '../TagAutocomplete/TagAutocompleteContext';
 import { Tag } from '../TagList/Tag';
 import { TagListInner } from '../TagList/TagListInner';
 
@@ -31,55 +31,56 @@ import { useFieldSizingFallback } from './hooks/useFieldSizingFallback';
 import s from './TagInput.module.css';
 import type { TagInputComponent, TagInputProps } from './types';
 
-/**
- * An input component that allows users to enter, display, and manage
- * multiple tags or keywords dynamically. It supports adding and removing
- * tags.
- */
-function TagInputRender<T extends object>(
-  props: TagInputProps<T>,
-  ref?: Ref<HTMLInputElement>
+type TagInputFieldProps<T extends object> = {
+  props: TagInputProps<T>;
+  inputRef?: Ref<HTMLInputElement>;
+  state?: TagAutocompleteState<T> | null;
+};
+
+export function TagInputField<T extends object>(
+  fieldProps: TagInputFieldProps<T>
 ) {
+  const { props, inputRef: forwardedInputRef, state } = fieldProps;
+
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
   const {
     variant = 'filled',
-    items,
     style,
     label,
     caption,
-    children,
     className,
     fullWidth,
     labelAlign,
-    disabledKeys,
     errorMessage,
-    selectedKeys,
     isLabelHidden,
     labelPlacement,
-    onSelectionChange,
-    defaultSelectedKeys,
     isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
     'data-testid': dataTestid,
     slotProps,
     placeholder,
+    items,
+    children,
+    disabledKeys,
+    selectedKeys,
+    onSelectionChange,
+    defaultSelectedKeys,
     ...tagFieldProps
   } = props;
 
-  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
   const resolvedIsDisabled = isDisabledProp ?? formIsDisabled;
   const resolvedIsReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
-  const state = useTagListState<T>({
-    items,
-    children,
+  const standaloneState = useTagListState<T>({
+    items: state ? undefined : items,
+    children: state ? undefined : children,
     selectionMode: resolvedIsReadOnly ? 'none' : 'multiple',
     selectedKeys,
     defaultSelectedKeys,
     onSelectionChange,
     disabledKeys,
   });
-
-  const autocomplete = useTagAutocompleteContext();
 
   const {
     inputValue,
@@ -106,9 +107,8 @@ function TagInputRender<T extends object>(
       isDisabled: resolvedIsDisabled,
       isReadOnly: resolvedIsReadOnly,
     },
-    state,
-    ref,
-    autocomplete
+    state ?? { tagListState: standaloneState },
+    forwardedInputRef
   );
 
   useFieldSizingFallback(inputRef, {
@@ -175,7 +175,6 @@ function TagInputRender<T extends object>(
         <FormFieldClearButton {...clearButtonProps} />
       ) : undefined,
       variant,
-      ref: autocomplete?.anchorRef,
       isDisabled,
       onMouseDown: (event) => {
         if (event.target !== event.currentTarget) return;
@@ -221,7 +220,6 @@ function TagInputRender<T extends object>(
             {({ focusProps }) => (
               <div {...tagListContainerProps}>
                 <TagListInner<T> {...tagListProps} />
-                {/* focusProps on the input only: tags don't drive the group ring. */}
                 <FormField.Input {...mergeProps(focusProps, inputProps)} />
               </div>
             )}
@@ -234,6 +232,18 @@ function TagInputRender<T extends object>(
       </FormField>
     </Provider>
   );
+}
+
+/**
+ * An input component that allows users to enter, display, and manage
+ * multiple tags or keywords dynamically. It supports adding and removing
+ * tags.
+ */
+function TagInputRender<T extends object>(
+  props: TagInputProps<T>,
+  ref?: Ref<HTMLInputElement>
+) {
+  return <TagInputField props={props} inputRef={ref} />;
 }
 
 const TagInputComponent = createHideableComponent(

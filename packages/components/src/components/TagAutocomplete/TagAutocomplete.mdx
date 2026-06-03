@@ -13,54 +13,56 @@ import * as Stories from './TagAutocomplete.stories';
 
 <Status variant="draft" />
 
-A compositional multi-tag entry with autocomplete suggestions. Pairs a
-`TagInput` with a popover listbox; the user picks suggestions while still
-being able to type free-form tags.
+A multi-tag entry with autocomplete suggestions. It behaves like a `TagInput`
+with a popover listbox while keeping free-form tag entry.
 
 ## Import
 
 ```tsx
-import { TagAutocomplete, TagInput } from '@koobiq/react-components';
+import { TagAutocomplete } from '@koobiq/react-components';
 ```
 
 ## Usage
 
 <Story of={Stories.Base} />
 
-## Composition
+## List API
 
-`TagAutocomplete` is a container; the actual UI is its children:
+`TagAutocomplete` receives combobox semantics and renders list items from
+`list.renderItem`:
 
 ```tsx
-<TagAutocomplete onSelect={...}>
-  <TagInput items={tags.items} onAdd={...} onRemove={...}>
-    {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
-  </TagInput>
-  <TagAutocomplete.List items={suggestions.items}>
-    {(item) => (
-      <TagAutocomplete.Item key={item.id} textValue={item.name}>
+<TagAutocomplete
+  label="Tags"
+  items={tags.items}
+  onAdd={...}
+  onRemove={...}
+  list={{
+    items: suggestions.items,
+    renderItem: (item) => (
+      <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
         {item.name}
-      </TagAutocomplete.Item>
-    )}
-  </TagAutocomplete.List>
+      </TagAutocomplete.ListItem>
+    ),
+  }}
+>
+  {(item) => (
+    <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+      {item.name}
+    </TagAutocomplete.Tag>
+  )}
 </TagAutocomplete>
 ```
 
-The list defines the suggestion collection, while the root owns the resulting
-list state and provides a context with the popover state and anchor element:
-
-- `TagInput` consumes it to open the popover when the input is focused, and
-  to avoid auto-committing typed text as a tag when focus moves into the
-  popover (e.g. while clicking a suggestion).
-- `TagAutocomplete.List` provides collection items/children and renders the
-  root-owned list state in a popover anchored to the field, sized to its width.
+`TagAutocomplete.ListItem` provides the suggestion key and `textValue` used for
+filtering, exclusion of already selected tags, and `onAdd` context.
 
 ## Behaviour
 
 - Focusing the input opens the popover.
 - Pressing **Escape** or clicking outside closes it.
-- Picking a suggestion fires `onSelect(item)` and keeps the popover open,
-  so the user can pick several in a row.
+- Picking a suggestion calls `onAdd` with `source: 'suggestion'`, clears the
+  input, and keeps the popover open.
 
 ## Props
 

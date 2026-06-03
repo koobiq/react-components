@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useListData } from '../index';
-import { TagInput } from '../TagInput';
 
 import { TagAutocomplete } from './index';
 import type { TagAutocompleteProps } from './types';
@@ -14,8 +13,8 @@ const meta = {
   title: 'Components/TagAutocomplete',
   component: TagAutocomplete,
   subcomponents: {
-    'TagAutocomplete.List': TagAutocomplete.List,
-    'TagAutocomplete.Item': TagAutocomplete.Item,
+    'TagAutocomplete.ListItem': TagAutocomplete.ListItem,
+    'TagAutocomplete.Tag': TagAutocomplete.Tag,
   },
   parameters: { layout: 'centered' },
   tags: ['status:new', 'date:2026-06-01'],
@@ -52,36 +51,38 @@ export const Base: Story = {
     };
 
     return (
-      <TagAutocomplete>
-        <TagInput<TagItem>
-          label="Tags"
-          fullWidth
-          items={tags.items}
-          style={{ inlineSize: 360 }}
-          placeholder="Type and press Enter"
-          onAdd={(values, context) => {
-            if (context.source === 'suggestion') {
-              tags.append(context.suggestion);
-            } else {
-              tags.append(...values.map(createTag));
-            }
-          }}
-          onRemove={(keys) => tags.remove(...keys)}
-        >
-          {(item) => (
-            <TagInput.Tag key={item.id} textValue={item.name}>
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        fullWidth
+        items={tags.items}
+        style={{ inlineSize: 360 }}
+        placeholder="Type and press Enter"
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            tags.append(context.suggestion);
+          } else {
+            tags.append(...values.map(createTag));
+          }
+        }}
+        onRemove={(keys) => tags.remove(...keys)}
+        list={{
+          items: suggestions.items,
+          renderItem: (item) => (
+            <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
               {item.name}
-            </TagInput.Tag>
-          )}
-        </TagInput>
-
-        <TagAutocomplete.List<TagItem> items={suggestions.items}>
-          {(item) => (
-            <TagAutocomplete.Item key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.Item>
-          )}
-        </TagAutocomplete.List>
+            </TagAutocomplete.ListItem>
+          ),
+          defaultFilter: (textValue, inputValue) =>
+            textValue
+              .toLocaleLowerCase()
+              .includes(inputValue.toLocaleLowerCase()),
+        }}
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
       </TagAutocomplete>
     );
   },
