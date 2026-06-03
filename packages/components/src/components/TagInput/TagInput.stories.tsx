@@ -510,7 +510,7 @@ export const Autofill: Story = {
           id="autofill"
           name="autofill"
           items={list.items}
-          placeholder="Form-wide disabled"
+          placeholder="Type and press Enter"
           onRemove={(keys) => list.remove(...keys)}
           onAdd={(values) => list.append(...values.map(createTag))}
           fullWidth
