@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import type {
   ClipboardEvent,
   FocusEvent,
@@ -8,13 +8,19 @@ import type {
   RefObject,
 } from 'react';
 
-import type { Key, ValidationResult } from '@koobiq/react-core';
+import type { FocusStrategy, Key, ValidationResult } from '@koobiq/react-core';
 import {
   mergeProps,
+  useCollator,
   useControlledState,
   useDOMRef,
   useKeyboard,
 } from '@koobiq/react-core';
+import { getItemId } from '@react-aria/listbox';
+import {
+  ListKeyboardDelegate,
+  useSelectableCollection,
+} from '@react-aria/selection';
 import type { AriaTextFieldProps, TextFieldAria } from '@react-aria/textfield';
 import { useTextField } from '@react-aria/textfield';
 import { useSlottedContext } from 'react-aria-components';
@@ -145,14 +151,17 @@ export function useTagField<T extends object>(
   } = props;
 
   const {
-    state: autocompleteState,
+    overlayState: autocompleteOverlayState,
     listState: autocompleteListState,
     onAction: autocompleteOnAction,
     popoverRef,
+    listBoxRef,
+    listBoxId,
   } = autocomplete ?? {};
 
   const inputRef = useDOMRef<HTMLInputElement>(ref);
   const innerRef = useRef<HTMLDivElement>(null);
+  const collator = useCollator({ usage: 'search', sensitivity: 'base' });
 
   const [inputValueState, setInputValueState] = useControlledState<string>(
     inputValue,
@@ -206,6 +215,17 @@ export function useTagField<T extends object>(
     inputRef.current?.focus();
   }, [inputRef]);
 
+  const openAutocomplete = useCallback(
+    (focusStrategy?: FocusStrategy) => {
+      autocomplete?.open(focusStrategy);
+    },
+    [autocomplete]
+  );
+
+  const closeAutocomplete = useCallback(() => {
+    autocomplete?.close();
+  }, [autocomplete]);
+
   const handleClear = useCallback(() => {
     if (isDisabled || isReadOnly) return;
     const allKeys = new Set<Key>(state.collection.getKeys());
@@ -223,42 +243,56 @@ export function useTagField<T extends object>(
     state.collection,
   ]);
 
-  const focusAutocompleteOption = useCallback(
-    (direction: 'next' | 'previous') => {
-      if (!autocompleteState?.isOpen || !autocompleteListState) {
-        autocompleteState?.open();
+  const collectionState = autocompleteListState ?? state;
+  const collectionRef = listBoxRef ?? innerRef;
 
-        return false;
-      }
-
-      const { collection, selectionManager } = autocompleteListState;
-
-      if (collection.size === 0) return false;
-
-      const { focusedKey } = selectionManager;
-
-      const nextKey =
-        direction === 'next'
-          ? focusedKey == null
-            ? collection.getFirstKey()
-            : (collection.getKeyAfter(focusedKey) ?? focusedKey)
-          : focusedKey == null
-            ? collection.getLastKey()
-            : (collection.getKeyBefore(focusedKey) ?? focusedKey);
-
-      if (nextKey == null) return false;
-
-      selectionManager.setFocused(true);
-      selectionManager.setFocusedKey(nextKey);
-
-      return true;
-    },
-    [autocompleteListState, autocompleteState]
+  const keyboardDelegate = useMemo(
+    () =>
+      new ListKeyboardDelegate({
+        collection: collectionState.collection,
+        collator,
+        disabledBehavior: collectionState.selectionManager.disabledBehavior,
+        disabledKeys: collectionState.disabledKeys,
+        ref: collectionRef,
+      }),
+    [
+      collator,
+      collectionRef,
+      collectionState.collection,
+      collectionState.disabledKeys,
+      collectionState.selectionManager.disabledBehavior,
+    ]
   );
+
+  const { collectionProps: autocompleteCollectionProps } =
+    useSelectableCollection({
+      selectionManager: collectionState.selectionManager,
+      keyboardDelegate,
+      disallowEmptySelection: true,
+      disallowTypeAhead: true,
+      isVirtualized: true,
+      ref: inputRef,
+      selectOnFocus: false,
+      shouldUseVirtualFocus: true,
+    });
+
+  const isAutocompleteOpen = Boolean(
+    autocompleteOverlayState?.isOpen && autocompleteListState
+  );
+
+  const focusedAutocompleteKey =
+    isAutocompleteOpen && autocompleteListState
+      ? autocompleteListState.selectionManager.focusedKey
+      : null;
+
+  const autocompleteActiveDescendant =
+    focusedAutocompleteKey != null && autocompleteListState
+      ? getItemId(autocompleteListState, focusedAutocompleteKey)
+      : undefined;
 
   const selectFocusedAutocompleteOption = useCallback(() => {
     if (
-      !autocompleteState?.isOpen ||
+      !isAutocompleteOpen ||
       !autocompleteListState ||
       !autocompleteOnAction
     ) {
@@ -271,14 +305,20 @@ export function useTagField<T extends object>(
     autocompleteOnAction(focusedKey);
 
     return true;
-  }, [autocompleteListState, autocompleteOnAction, autocompleteState]);
+  }, [autocompleteListState, autocompleteOnAction, isAutocompleteOpen]);
 
   const { keyboardProps: inputKeyboardProps } = useKeyboard({
     isDisabled: isDisabled || isReadOnly,
     onKeyDown: (event) => {
-      if (event.key === 'Escape' && autocompleteState?.isOpen) {
+      if (event.nativeEvent.isComposing) {
+        event.continuePropagation();
+
+        return;
+      }
+
+      if (event.key === 'Escape' && autocompleteOverlayState?.isOpen) {
         event.preventDefault();
-        autocompleteState.close();
+        closeAutocomplete();
 
         return;
       }
@@ -303,14 +343,18 @@ export function useTagField<T extends object>(
       }
 
       if (
-        autocompleteState &&
+        autocompleteOverlayState &&
         (event.key === 'ArrowDown' || event.key === 'ArrowUp')
       ) {
         event.preventDefault();
 
-        focusAutocompleteOption(
-          event.key === 'ArrowDown' ? 'next' : 'previous'
-        );
+        if (!autocompleteOverlayState.isOpen) {
+          openAutocomplete(event.key === 'ArrowDown' ? 'first' : 'last');
+
+          return;
+        }
+
+        event.continuePropagation();
 
         return;
       }
@@ -368,7 +412,6 @@ export function useTagField<T extends object>(
         return;
       }
 
-      // Shift+Tab from empty input -> focus the first tag.
       if (isCaretAtStart && event.key === 'Tab' && event.shiftKey && hasTags) {
         event.preventDefault();
         focusTagAt('first');
@@ -501,9 +544,32 @@ export function useTagField<T extends object>(
     onBlur: handleTagListContainerBlur,
   } as const;
 
+  const comboboxInputProps = autocompleteOverlayState
+    ? {
+        onFocus: () => openAutocomplete(),
+        role: 'combobox',
+        'aria-expanded': autocompleteOverlayState.isOpen,
+        'aria-controls': autocompleteOverlayState.isOpen
+          ? listBoxId
+          : undefined,
+        'aria-autocomplete': 'list',
+        autoComplete: 'off',
+        autoCorrect: 'off',
+        spellCheck: 'false',
+      }
+    : undefined;
+
+  const autocompleteKeyboardProps = isAutocompleteOpen
+    ? {
+        onKeyDown: autocompleteCollectionProps.onKeyDown,
+        'aria-activedescendant': autocompleteActiveDescendant,
+      }
+    : undefined;
+
   const inputProps = mergeProps(
     inputPropsAria,
-    autocompleteState ? { onFocus: autocompleteState.open } : undefined,
+    comboboxInputProps,
+    autocompleteKeyboardProps,
     {
       onFocus: resetTagListFocus,
       onPaste: handlePaste,

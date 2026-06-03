@@ -72,7 +72,6 @@ function TagInputRender<T extends object>(
   const state = useTagListState<T>({
     items,
     children,
-    // Read-only fields keep focus navigation but disable tag selection.
     selectionMode: resolvedIsReadOnly ? 'none' : 'multiple',
     selectedKeys,
     defaultSelectedKeys,

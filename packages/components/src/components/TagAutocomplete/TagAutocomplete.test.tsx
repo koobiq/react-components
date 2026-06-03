@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -84,6 +84,20 @@ describe('TagAutocomplete', () => {
   it('does not render the popover until the input is focused', () => {
     render(<Harness />);
     expect(queryListbox()).toBeNull();
+  });
+
+  it('exposes combobox semantics while the popover is closed', () => {
+    render(<Harness />);
+
+    const input = getInput();
+
+    expect(input).toHaveAttribute('role', 'combobox');
+    expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(input).toHaveAttribute('aria-autocomplete', 'list');
+    expect(input).not.toHaveAttribute('aria-controls');
+    expect(input).toHaveAttribute('autocomplete', 'off');
+    expect(input).toHaveAttribute('autocorrect', 'off');
+    expect(input).toHaveAttribute('spellcheck', 'false');
   });
 
   it('opens the popover on input focus', async () => {
@@ -219,10 +233,35 @@ describe('TagAutocomplete', () => {
       await user.click(getInput());
       await waitFor(() => expect(queryListbox()).toBeInTheDocument());
 
-      await user.keyboard('{ArrowDown}{Enter}');
+      await user.keyboard('{Escape}');
+      await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
+
+      await user.keyboard('{ArrowDown}');
+      await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+      await user.keyboard('{Enter}');
 
       expect(getInput()).toHaveFocus();
       expect(onSelect).toHaveBeenCalledWith({ id: 'react', name: 'React' });
+    });
+
+    it('updates active descendant while DOM focus stays on the input', async () => {
+      const user = userEvent.setup();
+      render(<Harness />);
+
+      await user.click(getInput());
+      await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+      await user.keyboard('{ArrowDown}');
+
+      const input = getInput();
+      const option = screen.getByRole('option', { name: 'React' });
+
+      expect(input).toHaveFocus();
+
+      expect(option).toHaveAttribute(
+        'id',
+        input.getAttribute('aria-activedescendant')
+      );
     });
 
     it('walks ArrowDown across options and stops at the last', async () => {
@@ -259,6 +298,27 @@ describe('TagAutocomplete', () => {
       });
     });
 
+    it('ArrowUp from a closed-collection state focuses the last option', async () => {
+      const user = userEvent.setup();
+      const onSelect = vi.fn();
+      render(<Harness onSelect={onSelect} />);
+
+      await user.click(getInput());
+      await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+      await user.keyboard('{Escape}');
+      await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
+
+      await user.keyboard('{ArrowUp}');
+      await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+      await user.keyboard('{Enter}');
+
+      expect(onSelect).toHaveBeenCalledWith({
+        id: 'storybook',
+        name: 'Storybook',
+      });
+    });
+
     it('Enter on a focused option keeps the popover open', async () => {
       const user = userEvent.setup();
       render(<Harness />);
@@ -283,6 +343,25 @@ describe('TagAutocomplete', () => {
 
       expect(onSelect).not.toHaveBeenCalled();
       expect(onAdd).toHaveBeenLastCalledWith(['foo'], { source: 'enter' });
+    });
+
+    it('ignores Enter while IME composition is active', async () => {
+      const user = userEvent.setup();
+      const onAdd = vi.fn();
+      const onSelect = vi.fn();
+      render(<Harness onAdd={onAdd} onSelect={onSelect} />);
+
+      await user.click(getInput());
+      await user.type(getInput(), 'foo');
+
+      fireEvent.keyDown(getInput(), {
+        key: 'Enter',
+        code: 'Enter',
+        isComposing: true,
+      });
+
+      expect(onAdd).not.toHaveBeenCalled();
+      expect(onSelect).not.toHaveBeenCalled();
     });
   });
 
