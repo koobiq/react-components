@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import type {
   ClipboardEvent,
   FocusEvent,
@@ -47,18 +47,28 @@ const testSplitPattern = (splitPattern: RegExp, value: string): boolean => {
 };
 
 /** How the user's input ended up as new tags. */
-export type TagFieldAddSource = 'enter' | 'separator' | 'paste' | 'blur';
+export type TagFieldAddSource =
+  | 'enter'
+  | 'separator'
+  | 'paste'
+  | 'blur'
+  | 'suggestion';
 
-export type TagFieldAddContext = {
-  source: TagFieldAddSource;
-};
+/**
+ * Discriminated by `source`. When `source === 'suggestion'`, the picked
+ * suggestion is guaranteed to be present, so consumers can use it directly
+ * without `?` checks.
+ */
+export type TagFieldAddContext<T = unknown> =
+  | { source: Exclude<TagFieldAddSource, 'suggestion'> }
+  | { source: 'suggestion'; suggestion: T };
 
-export interface AriaTagFieldProps extends Omit<
+export interface AriaTagFieldProps<T = unknown> extends Omit<
   AriaTextFieldProps<HTMLInputElement>,
   'value' | 'defaultValue' | 'onChange'
 > {
   /** Fires when the user commits one or more new values from the text input. */
-  onAdd?: (values: string[], context: TagFieldAddContext) => void;
+  onAdd?: (values: string[], context: TagFieldAddContext<T>) => void;
   /** Fires when the user removes one or more tags. */
   onRemove?: (keys: Set<Key>) => void;
   /** Controlled value of the text input. */
@@ -130,10 +140,10 @@ export interface TagFieldAria<T extends object> extends ValidationResult {
 }
 
 export function useTagField<T extends object>(
-  props: AriaTagFieldProps,
+  props: AriaTagFieldProps<T>,
   state: TagListState<T>,
   ref?: Ref<HTMLInputElement>,
-  autocomplete?: TagAutocompleteState | null
+  autocomplete?: TagAutocompleteState<T> | null
 ): TagFieldAria<T> {
   const {
     onAdd,
@@ -160,6 +170,7 @@ export function useTagField<T extends object>(
     popoverRef,
     listBoxRef,
     listBoxId,
+    onSelectionRef: autocompleteOnSelectionRef,
   } = autocomplete ?? {};
 
   const inputRef = useDOMRef<HTMLInputElement>(ref);
@@ -173,7 +184,7 @@ export function useTagField<T extends object>(
   );
 
   const addTagsFromInput = useCallback(
-    (raw: string, source: TagFieldAddSource) => {
+    (raw: string, source: Exclude<TagFieldAddSource, 'suggestion'>) => {
       if (isDisabled || isReadOnly || !onAdd) return;
       const candidates = splitInputValue(raw, splitPattern);
       if (candidates.length === 0) return;
@@ -182,6 +193,26 @@ export function useTagField<T extends object>(
     },
     [isDisabled, isReadOnly, splitPattern, onAdd, setInputValueState]
   );
+
+  // Route suggestion picks through the field's onAdd channel — typed text and
+  // picked suggestions share the same callback, only `ctx.source` differs.
+  const handleSuggestion = useCallback(
+    (value: T, textValue: string) => {
+      if (isDisabled || isReadOnly || !onAdd) return;
+      onAdd([textValue], { source: 'suggestion', suggestion: value });
+      setInputValueState('');
+    },
+    [isDisabled, isReadOnly, onAdd, setInputValueState]
+  );
+
+  useEffect(() => {
+    if (!autocompleteOnSelectionRef) return;
+    autocompleteOnSelectionRef.current = handleSuggestion;
+
+    return () => {
+      autocompleteOnSelectionRef.current = null;
+    };
+  }, [autocompleteOnSelectionRef, handleSuggestion]);
 
   const handleRemove = useCallback(
     (keys: Set<Key>) => {

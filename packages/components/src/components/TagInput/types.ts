@@ -44,7 +44,7 @@ export type TagInputPropLabelAlign = FormFieldPropLabelAlign;
 /** How the user's input ended up as new tags. */
 export type TagInputAddSource = TagFieldAddSource;
 
-export type TagInputAddContext = TagFieldAddContext;
+export type TagInputAddContext<T = unknown> = TagFieldAddContext<T>;
 
 export interface TagInputProps<T extends object = object> {
   /** Tag collection — owned by the consumer (e.g. via `useListData`). */
@@ -52,7 +52,7 @@ export interface TagInputProps<T extends object = object> {
   /** Render function for each item in the collection. */
   children: CollectionChildren<T>;
   /** Fires when the user commits one or more new values from the text input. */
-  onAdd?: (values: string[], context: TagInputAddContext) => void;
+  onAdd?: (values: string[], context: TagInputAddContext<T>) => void;
   /** Fires when the user removes one or more tags. */
   onRemove?: (keys: Set<Key>) => void;
   /** Controlled value of the text input. */

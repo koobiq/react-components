@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { useListData } from '../index';
 import { TagInput } from '../TagInput';
+import type { TagInputAddContext } from '../TagInput';
 
 import { TagAutocomplete } from './index';
 
@@ -14,8 +15,7 @@ type TagItem = { id: string; name: string };
 type HarnessProps = {
   initialTags?: TagItem[];
   suggestions?: TagItem[];
-  onAdd?: (values: string[], ctx: { source: string }) => void;
-  onSelect?: (item: TagItem) => void;
+  onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
 };
 
 function Harness(props: HarnessProps) {
@@ -27,7 +27,6 @@ function Harness(props: HarnessProps) {
       { id: 'storybook', name: 'Storybook' },
     ],
     onAdd: userOnAdd,
-    onSelect: userOnSelect,
   } = props;
 
   const tags = useListData<TagItem>({
@@ -44,18 +43,18 @@ function Harness(props: HarnessProps) {
   };
 
   return (
-    <TagAutocomplete<TagItem>
-      onSelect={(item) => {
-        tags.append(newTag(item.name));
-        userOnSelect?.(item);
-      }}
-    >
+    <TagAutocomplete>
       <TagInput<TagItem>
         aria-label="Tags"
         slotProps={{ input: { 'data-testid': 'input' } }}
         items={tags.items}
         onAdd={(values, ctx) => {
-          tags.append(...values.map(newTag));
+          if (ctx.source === 'suggestion') {
+            tags.append(ctx.suggestion);
+          } else {
+            tags.append(...values.map(newTag));
+          }
+
           userOnAdd?.(values, ctx);
         }}
         onRemove={(keys) => tags.remove(...keys)}
@@ -207,16 +206,23 @@ describe('TagAutocomplete', () => {
     expect(queryListbox()).toBeInTheDocument();
   });
 
-  it('fires onSelect when a suggestion is clicked and keeps the popover open', async () => {
+  it('fires onAdd with source="suggestion" when a suggestion is clicked and keeps the popover open', async () => {
     const user = userEvent.setup();
-    const onSelect = vi.fn();
-    render(<Harness onSelect={onSelect} />);
+    const onAdd = vi.fn();
+    render(<Harness onAdd={onAdd} />);
 
     await user.click(getInput());
     const option = await screen.findByRole('option', { name: 'React' });
     await user.click(option);
 
-    expect(onSelect).toHaveBeenCalledWith({ id: 'react', name: 'React' });
+    expect(onAdd).toHaveBeenCalledWith(
+      ['React'],
+      expect.objectContaining({
+        source: 'suggestion',
+        suggestion: { id: 'react', name: 'React' },
+      })
+    );
+
     expect(queryListbox()).toBeInTheDocument();
   });
 
@@ -246,8 +252,8 @@ describe('TagAutocomplete', () => {
   describe('keyboard navigation', () => {
     it('ArrowDown from a closed-collection state focuses the first option', async () => {
       const user = userEvent.setup();
-      const onSelect = vi.fn();
-      render(<Harness onSelect={onSelect} />);
+      const onAdd = vi.fn();
+      render(<Harness onAdd={onAdd} />);
 
       await user.click(getInput());
       await waitFor(() => expect(queryListbox()).toBeInTheDocument());
@@ -260,7 +266,14 @@ describe('TagAutocomplete', () => {
       await user.keyboard('{Enter}');
 
       expect(getInput()).toHaveFocus();
-      expect(onSelect).toHaveBeenCalledWith({ id: 'react', name: 'React' });
+
+      expect(onAdd).toHaveBeenCalledWith(
+        ['React'],
+        expect.objectContaining({
+          source: 'suggestion',
+          suggestion: { id: 'react', name: 'React' },
+        })
+      );
     });
 
     it('updates active descendant while DOM focus stays on the input', async () => {
@@ -285,8 +298,8 @@ describe('TagAutocomplete', () => {
 
     it('walks ArrowDown across options and stops at the last', async () => {
       const user = userEvent.setup();
-      const onSelect = vi.fn();
-      render(<Harness onSelect={onSelect} />);
+      const onAdd = vi.fn();
+      render(<Harness onAdd={onAdd} />);
 
       await user.click(getInput());
       await waitFor(() => expect(queryListbox()).toBeInTheDocument());
@@ -295,32 +308,38 @@ describe('TagAutocomplete', () => {
         '{ArrowDown}{ArrowDown}{ArrowDown}{ArrowDown}{ArrowDown}{Enter}'
       );
 
-      expect(onSelect).toHaveBeenCalledWith({
-        id: 'storybook',
-        name: 'Storybook',
-      });
+      expect(onAdd).toHaveBeenCalledWith(
+        ['Storybook'],
+        expect.objectContaining({
+          source: 'suggestion',
+          suggestion: { id: 'storybook', name: 'Storybook' },
+        })
+      );
     });
 
     it('ArrowUp from nothing focuses the last option', async () => {
       const user = userEvent.setup();
-      const onSelect = vi.fn();
-      render(<Harness onSelect={onSelect} />);
+      const onAdd = vi.fn();
+      render(<Harness onAdd={onAdd} />);
 
       await user.click(getInput());
       await waitFor(() => expect(queryListbox()).toBeInTheDocument());
 
       await user.keyboard('{ArrowUp}{Enter}');
 
-      expect(onSelect).toHaveBeenCalledWith({
-        id: 'storybook',
-        name: 'Storybook',
-      });
+      expect(onAdd).toHaveBeenCalledWith(
+        ['Storybook'],
+        expect.objectContaining({
+          source: 'suggestion',
+          suggestion: { id: 'storybook', name: 'Storybook' },
+        })
+      );
     });
 
     it('ArrowUp from a closed-collection state focuses the last option', async () => {
       const user = userEvent.setup();
-      const onSelect = vi.fn();
-      render(<Harness onSelect={onSelect} />);
+      const onAdd = vi.fn();
+      render(<Harness onAdd={onAdd} />);
 
       await user.click(getInput());
       await waitFor(() => expect(queryListbox()).toBeInTheDocument());
@@ -332,10 +351,13 @@ describe('TagAutocomplete', () => {
       await waitFor(() => expect(queryListbox()).toBeInTheDocument());
       await user.keyboard('{Enter}');
 
-      expect(onSelect).toHaveBeenCalledWith({
-        id: 'storybook',
-        name: 'Storybook',
-      });
+      expect(onAdd).toHaveBeenCalledWith(
+        ['Storybook'],
+        expect.objectContaining({
+          source: 'suggestion',
+          suggestion: { id: 'storybook', name: 'Storybook' },
+        })
+      );
     });
 
     it('Enter on a focused option keeps the popover open', async () => {
@@ -353,22 +375,19 @@ describe('TagAutocomplete', () => {
     it('Enter without arrow-nav falls through to the existing tag-commit logic', async () => {
       const user = userEvent.setup();
       const onAdd = vi.fn();
-      const onSelect = vi.fn();
-      render(<Harness onAdd={onAdd} onSelect={onSelect} />);
+      render(<Harness onAdd={onAdd} />);
 
       await user.click(getInput());
       await user.type(getInput(), 'foo');
       await user.keyboard('{Enter}');
 
-      expect(onSelect).not.toHaveBeenCalled();
       expect(onAdd).toHaveBeenLastCalledWith(['foo'], { source: 'enter' });
     });
 
     it('ignores Enter while IME composition is active', async () => {
       const user = userEvent.setup();
       const onAdd = vi.fn();
-      const onSelect = vi.fn();
-      render(<Harness onAdd={onAdd} onSelect={onSelect} />);
+      render(<Harness onAdd={onAdd} />);
 
       await user.click(getInput());
       await user.type(getInput(), 'foo');
@@ -380,15 +399,13 @@ describe('TagAutocomplete', () => {
       });
 
       expect(onAdd).not.toHaveBeenCalled();
-      expect(onSelect).not.toHaveBeenCalled();
     });
   });
 
-  it('does not commit typed text as a tag when a suggestion is clicked', async () => {
+  it('routes a clicked suggestion through onAdd and does not commit the typed text', async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
-    const onSelect = vi.fn();
-    render(<Harness onAdd={onAdd} onSelect={onSelect} />);
+    render(<Harness onAdd={onAdd} />);
 
     await user.click(getInput());
     await user.type(getInput(), 'foo');
@@ -396,7 +413,14 @@ describe('TagAutocomplete', () => {
     const option = await screen.findByRole('option', { name: 'React' });
     await user.click(option);
 
-    expect(onSelect).toHaveBeenCalledTimes(1);
-    expect(onAdd).not.toHaveBeenCalled();
+    expect(onAdd).toHaveBeenCalledTimes(1);
+
+    expect(onAdd).toHaveBeenCalledWith(
+      ['React'],
+      expect.objectContaining({
+        source: 'suggestion',
+        suggestion: { id: 'react', name: 'React' },
+      })
+    );
   });
 });

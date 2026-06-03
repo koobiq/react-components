@@ -52,16 +52,20 @@ export const Base: Story = {
     };
 
     return (
-      <TagAutocomplete<TagItem>
-        onSelect={(item) => tags.append(createTag(item.name))}
-      >
+      <TagAutocomplete>
         <TagInput<TagItem>
           label="Tags"
           fullWidth
           items={tags.items}
           style={{ inlineSize: 360 }}
           placeholder="Type and press Enter"
-          onAdd={(values) => tags.append(...values.map(createTag))}
+          onAdd={(values, context) => {
+            if (context.source === 'suggestion') {
+              tags.append(context.suggestion);
+            } else {
+              tags.append(...values.map(createTag));
+            }
+          }}
           onRemove={(keys) => tags.remove(...keys)}
         >
           {(item) => (
@@ -70,6 +74,7 @@ export const Base: Story = {
             </TagInput.Tag>
           )}
         </TagInput>
+
         <TagAutocomplete.List<TagItem> items={suggestions.items}>
           {(item) => (
             <TagAutocomplete.Item key={item.id} textValue={item.name}>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { RefObject } from 'react';
+import type { MutableRefObject, RefObject } from 'react';
 
 import type { FocusStrategy, Key } from '@koobiq/react-core';
 import { useInteractOutside } from '@koobiq/react-core';
@@ -12,6 +12,12 @@ import type { ListState } from '@react-stately/list';
 import { useListState } from '@react-stately/list';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTriggerState } from '@react-stately/overlays';
+
+/** Handler invoked when a suggestion is picked. */
+export type TagAutocompleteSelectionHandler<T> = (
+  value: T,
+  textValue: string
+) => void;
 
 export type TagAutocompleteState<T extends object = object> = {
   /** Open/close state for the suggestions popover. */
@@ -34,6 +40,12 @@ export type TagAutocompleteState<T extends object = object> = {
   open: (focusStrategy?: FocusStrategy) => void;
   /** Closes the suggestions popover. */
   close: () => void;
+  /**
+   * Ref to a handler invoked when a suggestion is picked. The consuming field
+   * (e.g. `useTagField` inside `TagInput`) registers itself here so suggestion
+   * picks flow into the field's own `onAdd` channel.
+   */
+  onSelectionRef: MutableRefObject<TagAutocompleteSelectionHandler<T> | null>;
 };
 
 export type TagAutocompleteStateProps<T extends object> = {
@@ -45,19 +57,21 @@ export type TagAutocompleteStateProps<T extends object> = {
   defaultOpen?: boolean;
   /** Fires when the suggestions popover opens or closes. */
   onOpenChange?: (isOpen: boolean) => void;
-  /** Fires when a suggestion is picked. */
-  onSelect?: (item: T) => void;
 };
 
 export function useTagAutocompleteState<T extends object>(
   props: TagAutocompleteStateProps<T>
 ): TagAutocompleteState<T> {
-  const { collection, isOpen, defaultOpen, onOpenChange, onSelect } = props;
+  const { collection, isOpen, defaultOpen, onOpenChange } = props;
 
   const popoverRef = useRef<HTMLDivElement>(null);
   const anchorRef = useRef<HTMLDivElement>(null);
   const listBoxRef = useRef<HTMLUListElement>(null);
   const listBoxId = useId();
+
+  const onSelectionRef = useRef<TagAutocompleteSelectionHandler<T> | null>(
+    null
+  );
 
   const [focusStrategy, setFocusStrategy] = useState<
     FocusStrategy | undefined
@@ -101,13 +115,13 @@ export function useTagAutocompleteState<T extends object>(
 
   const onAction = useCallback(
     (key: Key) => {
-      const item = listState.collection.getItem(key);
+      const node = listState.collection.getItem(key);
 
-      if (item?.value != null) {
-        onSelect?.(item.value);
-      }
+      if (node?.value == null) return;
+
+      onSelectionRef.current?.(node.value, node.textValue ?? '');
     },
-    [listState.collection, onSelect]
+    [listState.collection]
   );
 
   return {
@@ -121,6 +135,7 @@ export function useTagAutocompleteState<T extends object>(
     focusStrategy,
     open,
     close,
+    onSelectionRef,
   };
 }
 

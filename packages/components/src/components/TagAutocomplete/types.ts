@@ -5,14 +5,9 @@ import type { AriaListBoxProps } from '@koobiq/react-primitives';
 import type { ListInnerProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
-export type TagAutocompleteProps<T extends object = any> = {
+export type TagAutocompleteProps = {
   /** The composed children — typically a `TagInput` and a `TagAutocomplete.List`. */
   children: ReactNode;
-  /**
-   * Fires when the user picks a suggestion. The popover stays open afterwards
-   * so the user can pick several in a row.
-   */
-  onSelect?: (item: T) => void;
   /** Controlled popover open state. */
   isOpen?: boolean;
   /** Uncontrolled initial popover open state. */

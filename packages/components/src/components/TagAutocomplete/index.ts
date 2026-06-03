@@ -8,8 +8,8 @@ import type { TagAutocompleteItemProps } from './TagAutocompleteItem';
 import { TagAutocompleteList } from './TagAutocompleteList';
 import type { TagAutocompleteListProps, TagAutocompleteProps } from './types';
 
-type TagAutocompleteComponent = (<T extends object = any>(
-  props: TagAutocompleteProps<T>
+type TagAutocompleteComponent = ((
+  props: TagAutocompleteProps
 ) => ReactElement) & {
   /** Popover with the suggestion listbox. */
   List: typeof TagAutocompleteList;

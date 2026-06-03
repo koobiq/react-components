@@ -14,14 +14,12 @@ import { TagAutocompleteContext } from './TagAutocompleteContext';
 import { TagAutocompleteListContext } from './TagAutocompleteListContext';
 import type { TagAutocompleteProps } from './types';
 
-export function TagAutocompleteRoot<T extends object>(
-  props: TagAutocompleteProps<T>
-) {
+export function TagAutocompleteRoot(props: TagAutocompleteProps) {
   const { children } = props;
 
   return (
     <CollectionBuilder content={children}>
-      {(collection: BaseCollection<T>) => (
+      {(collection: BaseCollection<object>) => (
         <TagAutocompleteInner props={props} collection={collection} />
       )}
     </CollectionBuilder>
@@ -29,7 +27,7 @@ export function TagAutocompleteRoot<T extends object>(
 }
 
 type TagAutocompleteInnerProps<T extends object> = {
-  props: TagAutocompleteProps<T>;
+  props: TagAutocompleteProps;
   collection: BaseCollection<T>;
 };
 
@@ -37,7 +35,7 @@ function TagAutocompleteInner<T extends object>(
   props: TagAutocompleteInnerProps<T>
 ) {
   const {
-    props: { children, isOpen, defaultOpen, onOpenChange, onSelect },
+    props: { children, isOpen, defaultOpen, onOpenChange },
     collection,
   } = props;
 
@@ -46,7 +44,6 @@ function TagAutocompleteInner<T extends object>(
     isOpen,
     defaultOpen,
     onOpenChange,
-    onSelect,
   });
 
   const anchorRefs = useMemo(() => [state.anchorRef], [state.anchorRef]);
