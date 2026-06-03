@@ -7,7 +7,10 @@ import {
   useHover,
 } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
-import type { ListState } from '@koobiq/react-primitives';
+import type {
+  ListState,
+  TagListItemFocusBehavior,
+} from '@koobiq/react-primitives';
 import { useTagListItem } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
@@ -26,6 +29,7 @@ type TagItemProps<T extends object> = {
   onRemove?: (keys: Set<Key>) => void;
   isDisabled?: boolean;
   collectionId?: string;
+  focusBehavior?: TagListItemFocusBehavior;
 };
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
@@ -38,6 +42,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     isDisabled: isDisabledProp,
     variant: groupVariant,
     collectionId,
+    focusBehavior,
   } = props;
 
   const itemProps = item.props as TagProps<T>;
@@ -57,6 +62,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     state,
     isDisabled: isDisabledProp,
     collectionId,
+    focusBehavior,
   });
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({

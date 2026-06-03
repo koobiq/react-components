@@ -29,6 +29,7 @@ import { FormContext } from '../components';
 import { removeDataAttributes } from '../utils';
 
 import type { TagAutocompleteState } from './useTagAutocomplete';
+import type { TagListItemFocusBehavior } from './useTagListItem';
 import type { TagListState } from './useTagListState';
 
 const DEFAULT_SPLIT_PATTERN = /,/;
@@ -94,6 +95,8 @@ export type TagFieldTagListProps<T extends object> = {
   isDisabled: boolean | undefined;
   tabIndex: -1;
   onRemove: ((keys: Set<Key>) => void) | undefined;
+  onMouseDownCapture: (event: MouseEvent<HTMLDivElement>) => void;
+  focusBehavior: TagListItemFocusBehavior;
   'aria-label': string;
 };
 
@@ -184,12 +187,9 @@ export function useTagField<T extends object>(
     (keys: Set<Key>) => {
       if (isDisabled || isReadOnly) return;
       onRemove?.(keys);
-
-      if (keys.size >= state.collection.size) {
-        inputRef.current?.focus({ preventScroll: true });
-      }
+      inputRef.current?.focus({ preventScroll: true });
     },
-    [isDisabled, isReadOnly, onRemove, state.collection.size, inputRef]
+    [isDisabled, isReadOnly, onRemove, inputRef]
   );
 
   const focusTagAt = useCallback(
@@ -308,7 +308,7 @@ export function useTagField<T extends object>(
   }, [autocompleteListState, autocompleteOnAction, isAutocompleteOpen]);
 
   const { keyboardProps: inputKeyboardProps } = useKeyboard({
-    isDisabled: isDisabled || isReadOnly,
+    isDisabled,
     onKeyDown: (event) => {
       if (event.nativeEvent.isComposing) {
         event.continuePropagation();
@@ -490,6 +490,21 @@ export function useTagField<T extends object>(
     [focusInput]
   );
 
+  const focusInputWhenTagIsClicked = useCallback(
+    (event: MouseEvent<HTMLDivElement>) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const row = target.closest('[role="row"]');
+      if (!row || !event.currentTarget.contains(row)) return;
+
+      event.preventDefault();
+      resetTagListFocus();
+      focusInput();
+    },
+    [focusInput, resetTagListFocus]
+  );
+
   const { validationBehavior: formValidationBehavior } =
     useSlottedContext(FormContext) || {};
 
@@ -540,6 +555,8 @@ export function useTagField<T extends object>(
     isDisabled,
     tabIndex: -1,
     onRemove: isReadOnly ? undefined : handleRemove,
+    onMouseDownCapture: focusInputWhenTagIsClicked,
+    focusBehavior: 'none',
     'aria-label': ariaLabel ?? 'Selected tags',
   } as const;
 

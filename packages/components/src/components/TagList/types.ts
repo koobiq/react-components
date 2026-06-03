@@ -13,7 +13,10 @@ import type {
   FocusStrategy,
   MultipleSelection,
 } from '@koobiq/react-core';
-import type { ListState } from '@koobiq/react-primitives';
+import type {
+  ListState,
+  TagListItemFocusBehavior,
+} from '@koobiq/react-primitives';
 
 export const tagListPropVariant = [
   'theme-fade',
@@ -76,6 +79,7 @@ export type TagListInnerProps<T extends object = object> = {
   isDisabled?: boolean;
   /** Ref to the root element. */
   tagListRef?: Ref<HTMLDivElement>;
+  focusBehavior?: TagListItemFocusBehavior;
 } & Omit<
   TagListProps<T>,
   // Collection / selection inputs are baked into `state` already.

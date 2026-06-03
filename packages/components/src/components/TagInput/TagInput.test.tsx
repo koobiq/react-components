@@ -280,6 +280,11 @@ describe('TagInput', () => {
 
       const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
       expect(lastCall?.[0].has('seed-0-a')).toBe(true);
+
+      await waitFor(() => {
+        expect(queryTag('a')).not.toBeInTheDocument();
+        expect(getInput()).toHaveFocus();
+      });
     });
 
     it('removes a focused tag via Delete', async () => {
@@ -293,7 +298,10 @@ describe('TagInput', () => {
         />
       );
 
-      await user.click(queryTag('two') as HTMLElement);
+      await user.click(getInput());
+      await user.keyboard('{Backspace}');
+      await user.keyboard('{ArrowLeft}');
+      await waitFor(() => expect(queryTag('two')).toHaveFocus());
       await user.keyboard('{Delete}');
 
       const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
@@ -374,9 +382,11 @@ describe('TagInput', () => {
 
       render(<Wrapper initialItems={initialItems} />);
 
-      const rows = screen.getAllByRole('row') as HTMLElement[];
-      await user.click(rows[0] as HTMLElement);
+      await user.click(getInput());
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
+      await waitFor(() => expect(screen.getAllByRole('row')[0]).toHaveFocus());
       await user.keyboard('{ArrowRight}');
+      const rows = screen.getAllByRole('row') as HTMLElement[];
       await waitFor(() => expect(rows[1]).toHaveFocus());
     });
   });
@@ -422,6 +432,17 @@ describe('TagInput', () => {
 
       fireEvent.mouseDown(canvas);
       expect(getInput()).toHaveFocus();
+    });
+
+    it('keeps focus in the input when a tag is clicked', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['one'])} />);
+
+      await user.click(getInput());
+      await user.click(queryTag('one') as HTMLElement);
+
+      expect(getInput()).toHaveFocus();
+      expect(queryTag('one')).not.toHaveFocus();
     });
 
     it('returns to the input when tabbing back into the field after a tag was focused', async () => {
@@ -480,7 +501,9 @@ describe('TagInput', () => {
 
       render(<Controlled />);
 
-      await user.click(queryTag('one') as HTMLElement);
+      await user.click(getInput());
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
+      await waitFor(() => expect(queryTag('one')).toHaveFocus());
       await user.keyboard('{Space}');
 
       expect(onSelectionChange).toHaveBeenCalled();
@@ -573,7 +596,9 @@ describe('TagInput', () => {
       render(<Wrapper initialItems={seed(['one', 'two'])} isReadOnly />);
 
       const firstTag = queryTag('one') as HTMLElement;
-      await user.click(firstTag);
+      await user.click(getInput());
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
+      await waitFor(() => expect(firstTag).toHaveFocus());
       await user.keyboard('{Space}');
       expect(firstTag).not.toHaveAttribute('aria-selected', 'true');
 

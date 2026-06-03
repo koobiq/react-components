@@ -56,6 +56,8 @@ export function isSpaceKey(key: string) {
   return key === ' ' || key === 'Space' || key === 'Spacebar';
 }
 
+export type TagListItemFocusBehavior = 'tag' | 'none';
+
 /**
  * Minimal shape `useTagListItem` reads from `item.props`. Renderers can use
  * a richer prop type (icons, slot props, etc.) — only `isDisabled` matters
@@ -71,6 +73,7 @@ export type UseTagListItemProps<T extends object> = {
   item: Node<T>;
   onRemove?: (keys: Set<Key>) => void;
   isDisabled?: boolean;
+  focusBehavior?: TagListItemFocusBehavior;
 };
 
 export function useTagListItem<T extends object>(
@@ -82,6 +85,7 @@ export function useTagListItem<T extends object>(
     onRemove,
     state,
     isDisabled: isDisabledProp,
+    focusBehavior = 'tag',
   } = props;
 
   const ref = useRef<HTMLDivElement>(null);
@@ -177,7 +181,9 @@ export function useTagListItem<T extends object>(
       return;
     }
 
-    focusTag();
+    if (focusBehavior === 'tag') {
+      focusTag();
+    }
 
     if (event.pointerType === 'keyboard') return;
 

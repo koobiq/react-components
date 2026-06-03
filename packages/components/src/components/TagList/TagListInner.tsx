@@ -17,6 +17,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
     autoFocus,
     tagListRef,
     escapeKeyBehavior,
+    focusBehavior,
     ...rootDOMProps
   } = props;
 
@@ -49,6 +50,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
           onRemove={onRemove}
           isDisabled={isDisabled}
           collectionId={collectionId}
+          focusBehavior={focusBehavior}
         />
       ))}
     </div>
