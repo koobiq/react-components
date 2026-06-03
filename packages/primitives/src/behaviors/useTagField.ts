@@ -445,11 +445,16 @@ export function useTagField<T extends object>(
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
-      if (isDisabled || isReadOnly || disableCommitOnBlur) return;
       const next = event.relatedTarget;
 
       if (next && innerRef.current?.contains(next)) return;
       if (next && popoverRef?.current?.contains(next)) return;
+
+      if (next) {
+        closeAutocomplete();
+      }
+
+      if (isDisabled || isReadOnly || disableCommitOnBlur) return;
 
       if (inputValueState.trim()) {
         addTagsFromInput(inputValueState, 'blur');
@@ -461,6 +466,7 @@ export function useTagField<T extends object>(
       disableCommitOnBlur,
       inputValueState,
       addTagsFromInput,
+      closeAutocomplete,
       popoverRef,
     ]
   );

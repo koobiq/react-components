@@ -158,6 +158,25 @@ describe('TagAutocomplete', () => {
     await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
   });
 
+  it('closes the popover when keyboard focus leaves the input', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <>
+        <Harness />
+        <button data-testid="outside">outside</button>
+      </>
+    );
+
+    await user.click(getInput());
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+    await user.tab();
+
+    expect(screen.getByTestId('outside')).toHaveFocus();
+    await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
+  });
+
   it('closes the popover on click on a non-focusable element outside', async () => {
     const user = userEvent.setup();
 
