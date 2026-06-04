@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import type { Key, Node as CollectionNode } from '@koobiq/react-core';
 import {
   clsx,
@@ -7,10 +9,7 @@ import {
   useHover,
 } from '@koobiq/react-core';
 import { IconXmarkS16 } from '@koobiq/react-icons';
-import type {
-  ListState,
-  TagListItemFocusBehavior,
-} from '@koobiq/react-primitives';
+import type { ListState } from '@koobiq/react-primitives';
 import { useTagListItem } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
@@ -29,7 +28,6 @@ type TagItemProps<T extends object> = {
   onRemove?: (keys: Set<Key>) => void;
   isDisabled?: boolean;
   collectionId?: string;
-  focusBehavior?: TagListItemFocusBehavior;
 };
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
@@ -42,28 +40,30 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     isDisabled: isDisabledProp,
     variant: groupVariant,
     collectionId,
-    focusBehavior,
   } = props;
 
   const itemProps = item.props as TagProps<T>;
   const variant = itemProps.variant ?? groupVariant;
+  const ref = useRef<HTMLDivElement>(null);
 
   const {
-    tagProps,
+    rowProps,
     isPressed,
     isSelected,
     isDisabled,
     gridCellProps,
     allowsRemoving,
     removeButtonProps: removeButtonPropsAria,
-  } = useTagListItem({
-    item,
-    onRemove,
+  } = useTagListItem(
+    {
+      key: item.key,
+      onRemove,
+      isDisabled: isDisabledProp,
+      collectionId,
+    },
     state,
-    isDisabled: isDisabledProp,
-    collectionId,
-    focusBehavior,
-  });
+    ref
+  );
 
   const { focusProps, isFocusVisible, isFocused } = useFocusRing({
     within: false,
@@ -80,7 +80,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
   } = itemProps;
 
   const rootProps = mergeProps(
-    tagProps,
+    rowProps,
     hoverProps,
     focusProps,
     slotProps?.root,

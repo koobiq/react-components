@@ -3,12 +3,18 @@ import type {
   ClipboardEvent,
   FocusEvent,
   HTMLAttributes,
-  MouseEvent,
+  PointerEvent,
   Ref,
   RefObject,
 } from 'react';
 
-import type { FocusStrategy, Key, ValidationResult } from '@koobiq/react-core';
+import type {
+  CollectionChildren,
+  FocusStrategy,
+  Key,
+  Selection,
+  ValidationResult,
+} from '@koobiq/react-core';
 import {
   mergeProps,
   useCollator,
@@ -29,8 +35,12 @@ import { FormContext } from '../components';
 import { removeDataAttributes } from '../utils';
 
 import type { TagAutocompleteState } from './useTagAutocomplete';
-import type { TagListItemFocusBehavior } from './useTagListItem';
+import {
+  isInteractiveTarget,
+  type TagListItemRemoveContext,
+} from './useTagListItem';
 import type { TagListState } from './useTagListState';
+import { useTagListState } from './useTagListState';
 
 const DEFAULT_SPLIT_PATTERN = /,/;
 
@@ -54,19 +64,26 @@ export type TagFieldAddSource =
   | 'blur'
   | 'suggestion';
 
-/**
- * Discriminated by `source`. When `source === 'suggestion'`, the picked
- * suggestion is guaranteed to be present, so consumers can use it directly
- * without `?` checks.
- */
 export type TagFieldAddContext<T = unknown> =
   | { source: Exclude<TagFieldAddSource, 'suggestion'> }
   | { source: 'suggestion'; suggestion: T };
 
-export interface AriaTagFieldProps<T = unknown> extends Omit<
+export type AriaTagFieldProps<T extends object> = Omit<
   AriaTextFieldProps<HTMLInputElement>,
   'value' | 'defaultValue' | 'onChange'
-> {
+> & {
+  /** Tag collection items. */
+  items?: Iterable<T>;
+  /** Render function for each item in the collection. */
+  children: CollectionChildren<T>;
+  /** Keys of tags rendered as disabled. */
+  disabledKeys?: Iterable<Key>;
+  /** Controlled set of selected tag keys. */
+  selectedKeys?: Selection;
+  /** Uncontrolled initial set of selected tag keys. */
+  defaultSelectedKeys?: Iterable<Key>;
+  /** Fires when the selected tag keys change. */
+  onSelectionChange?: (keys: Selection) => void;
   /** Fires when the user commits one or more new values from the text input. */
   onAdd?: (values: string[], context: TagFieldAddContext<T>) => void;
   /** Fires when the user removes one or more tags. */
@@ -91,7 +108,7 @@ export interface AriaTagFieldProps<T = unknown> extends Omit<
   isClearable?: boolean;
   /** Fires after the cleaner is pressed and the field is reset. */
   onClear?: () => void;
-}
+};
 
 export type TagFieldClearButtonProps = {
   isClearable: boolean;
@@ -104,9 +121,9 @@ export type TagFieldTagListProps<T extends object> = {
   state: TagListState<T>;
   isDisabled: boolean | undefined;
   tabIndex: -1;
-  onRemove: ((keys: Set<Key>) => void) | undefined;
-  onMouseDownCapture: (event: MouseEvent<HTMLDivElement>) => void;
-  focusBehavior: TagListItemFocusBehavior;
+  onRemove:
+    | ((keys: Set<Key>, context?: TagListItemRemoveContext) => void)
+    | undefined;
   'aria-label': string;
 };
 
@@ -115,16 +132,152 @@ export type TagFieldTagListContainerProps = HTMLAttributes<HTMLDivElement> & {
   role: 'presentation';
 };
 
-/**
- * Unified input state for `useTagField`. Always carries the selected-tag
- * list state, optionally carries the autocomplete state when the field is
- * driven by `useTagAutocompleteState`.
- */
-export type TagFieldState<T extends object> = {
-  tagListState: TagListState<T>;
-} & Partial<Omit<TagAutocompleteState<T>, 'tagListState'>>;
+export type TagFieldStateProps<T extends object> = AriaTagFieldProps<T>;
 
-export interface TagFieldAria<T extends object> extends ValidationResult {
+export type TagFieldState<T extends object> = TagListState<T> & {
+  /** Current input value. */
+  inputValue: string;
+  /** Initial input value. */
+  defaultInputValue: string;
+  /** Updates the input value. */
+  setInputValue: (value: string) => void;
+  /** Whether adding new values is currently allowed. */
+  allowsAdding: boolean;
+  /** Resolved disabled state. */
+  isDisabled: boolean | undefined;
+  /** Resolved read-only state. */
+  isReadOnly: boolean | undefined;
+  /** Adds raw values with the provided context and clears the input. */
+  addValues: (values: string[], context: TagFieldAddContext<T>) => boolean;
+  /** Splits and adds the current input value, or a provided raw value. */
+  addFromInput: (
+    source: Exclude<TagFieldAddSource, 'suggestion'>,
+    rawValue?: string
+  ) => boolean;
+  /** Whether the provided text should split the input into tags. */
+  isSeparator: (value: string) => boolean;
+  /** Removes the provided tag keys. */
+  remove: (keys: Set<Key>) => boolean;
+  /** Clears all tags and the input value. */
+  clear: () => boolean;
+};
+
+export function useTagFieldState<T extends object>(
+  props: TagFieldStateProps<T>
+): TagFieldState<T> {
+  const {
+    items,
+    children,
+    disabledKeys,
+    selectedKeys,
+    defaultSelectedKeys,
+    onSelectionChange,
+    inputValue: inputValueProp,
+    defaultInputValue: defaultInputValueProp,
+    onInputChange,
+    splitPattern = DEFAULT_SPLIT_PATTERN,
+    onAdd,
+    onRemove,
+    onClear,
+    isDisabled,
+    isReadOnly,
+  } = props;
+
+  const tagListState = useTagListState<T>({
+    items,
+    children,
+    disabledKeys,
+    selectedKeys,
+    defaultSelectedKeys,
+    onSelectionChange,
+    selectionMode: isReadOnly ? 'none' : 'multiple',
+  });
+
+  const [inputValue, setInputValue] = useControlledState<string>(
+    inputValueProp,
+    defaultInputValueProp ?? '',
+    onInputChange
+  );
+
+  const defaultInputValue = defaultInputValueProp ?? '';
+  const allowsAdding = Boolean(onAdd && !isDisabled && !isReadOnly);
+
+  const addValues = useCallback(
+    (values: string[], context: TagFieldAddContext<T>) => {
+      if (!allowsAdding || values.length === 0) return false;
+
+      onAdd?.(values, context);
+      setInputValue('');
+
+      return true;
+    },
+    [allowsAdding, onAdd, setInputValue]
+  );
+
+  const addFromInput = useCallback(
+    (
+      source: Exclude<TagFieldAddSource, 'suggestion'>,
+      rawValue = inputValue
+    ) => {
+      const candidates = splitInputValue(rawValue, splitPattern);
+
+      return addValues(candidates, { source });
+    },
+    [addValues, inputValue, splitPattern]
+  );
+
+  const isSeparator = useCallback(
+    (value: string) => testSplitPattern(splitPattern, value),
+    [splitPattern]
+  );
+
+  const remove = useCallback(
+    (keys: Set<Key>) => {
+      if (isDisabled || isReadOnly || !onRemove) return false;
+
+      onRemove(keys);
+
+      return true;
+    },
+    [isDisabled, isReadOnly, onRemove]
+  );
+
+  const clear = useCallback(() => {
+    if (isDisabled || isReadOnly) return false;
+
+    const allKeys = new Set<Key>(tagListState.collection.getKeys());
+    if (allKeys.size > 0) onRemove?.(allKeys);
+
+    setInputValue('');
+    onClear?.();
+
+    return true;
+  }, [
+    isDisabled,
+    isReadOnly,
+    onClear,
+    onRemove,
+    setInputValue,
+    tagListState.collection,
+  ]);
+
+  return {
+    ...tagListState,
+    inputValue,
+    defaultInputValue,
+    setInputValue,
+    allowsAdding,
+    isDisabled,
+    isReadOnly,
+    addValues,
+    addFromInput,
+    isSeparator,
+    remove,
+    clear,
+  };
+}
+
+export type TagFieldAria<T extends object> = ValidationResult & {
   /** Props for the label element. */
   labelProps: TextFieldAria<'input'>['labelProps'];
   /** Props for the input element. */
@@ -146,32 +299,35 @@ export interface TagFieldAria<T extends object> extends ValidationResult {
   isDisabled: boolean | undefined;
   isReadOnly: boolean | undefined;
   isRequired: boolean | undefined;
-}
+};
 
 export function useTagField<T extends object>(
   props: AriaTagFieldProps<T>,
-  fieldState: TagFieldState<T>,
+  state: TagFieldState<T> | TagAutocompleteState<T>,
   ref?: Ref<HTMLInputElement>
 ): TagFieldAria<T> {
   const {
-    onAdd,
-    onRemove,
-    splitPattern = DEFAULT_SPLIT_PATTERN,
     disableCommitOnBlur,
-    inputValue,
-    defaultInputValue,
-    onInputChange,
     isClearable,
-    onClear,
-    isDisabled,
-    isReadOnly,
     isRequired,
     validationBehavior: validationBehaviorProp,
     'aria-label': ariaLabel,
-    ...textFieldProps
   } = props;
 
-  const { tagListState: state, ...autocomplete } = fieldState;
+  const {
+    inputValue,
+    defaultInputValue,
+    setInputValue,
+    isDisabled,
+    isReadOnly,
+    allowsAdding,
+    collection,
+    selectionManager,
+    addFromInput,
+    isSeparator,
+    remove,
+    clear,
+  } = state;
 
   const {
     overlayState: autocompleteOverlayState,
@@ -180,63 +336,44 @@ export function useTagField<T extends object>(
     popoverRef,
     listBoxRef,
     listBoxId,
-    inputValue: autocompleteInputValue,
-    setInputValue: setAutocompleteInputValue,
     open: autocompleteOpen,
     close: autocompleteClose,
-  } = autocomplete;
+  } = state as Partial<TagAutocompleteState<T>>;
 
   const inputRef = useDOMRef<HTMLInputElement>(ref);
   const innerRef = useRef<HTMLDivElement>(null);
   const collator = useCollator({ usage: 'search', sensitivity: 'base' });
 
-  const [inputValueState, setInputValueState] = useControlledState<string>(
-    inputValue,
-    defaultInputValue ?? '',
-    onInputChange
-  );
-
-  const fieldInputValue = autocompleteInputValue ?? inputValueState;
-  const setFieldInputValue = setAutocompleteInputValue ?? setInputValueState;
-
-  const addTagsFromInput = useCallback(
-    (raw: string, source: Exclude<TagFieldAddSource, 'suggestion'>) => {
-      if (isDisabled || isReadOnly || !onAdd) return;
-      const candidates = splitInputValue(raw, splitPattern);
-      if (candidates.length === 0) return;
-      onAdd(candidates, { source });
-      setFieldInputValue('');
-    },
-    [isDisabled, isReadOnly, splitPattern, onAdd, setFieldInputValue]
-  );
-
   const handleRemove = useCallback(
-    (keys: Set<Key>) => {
-      if (isDisabled || isReadOnly) return;
-      onRemove?.(keys);
-      inputRef.current?.focus({ preventScroll: true });
+    (keys: Set<Key>, context?: TagListItemRemoveContext) => {
+      if (
+        remove(keys) &&
+        (context?.source === 'press' || keys.size >= collection.size)
+      ) {
+        inputRef.current?.focus({ preventScroll: true });
+      }
     },
-    [isDisabled, isReadOnly, onRemove, inputRef]
+    [collection, inputRef, remove]
   );
 
   const focusTagAt = useCallback(
     (position: 'first' | 'last') => {
       const key =
         position === 'first'
-          ? state.collection.getFirstKey()
-          : state.collection.getLastKey();
+          ? collection.getFirstKey()
+          : collection.getLastKey();
 
       if (key == null) return;
-      state.selectionManager.setFocused(true);
-      state.selectionManager.setFocusedKey(key);
+      selectionManager.setFocused(true);
+      selectionManager.setFocusedKey(key);
     },
-    [state.collection, state.selectionManager]
+    [collection, selectionManager]
   );
 
   const resetTagListFocus = useCallback(() => {
-    state.selectionManager.setFocused(false);
-    state.selectionManager.setFocusedKey(null);
-  }, [state.selectionManager]);
+    selectionManager.setFocused(false);
+    selectionManager.setFocusedKey(null);
+  }, [selectionManager]);
 
   const focusInput = useCallback(() => {
     inputRef.current?.focus();
@@ -254,21 +391,8 @@ export function useTagField<T extends object>(
   }, [autocompleteClose]);
 
   const handleClear = useCallback(() => {
-    if (isDisabled || isReadOnly) return;
-    const allKeys = new Set<Key>(state.collection.getKeys());
-    if (allKeys.size > 0) onRemove?.(allKeys);
-    setFieldInputValue('');
-    onClear?.();
-    focusInput();
-  }, [
-    onClear,
-    onRemove,
-    isDisabled,
-    isReadOnly,
-    focusInput,
-    setFieldInputValue,
-    state.collection,
-  ]);
+    if (clear()) focusInput();
+  }, [clear, focusInput]);
 
   const collectionState = autocompleteListState ?? state;
   const collectionRef = listBoxRef ?? innerRef;
@@ -283,11 +407,11 @@ export function useTagField<T extends object>(
         ref: collectionRef,
       }),
     [
-      collator,
       collectionRef,
       collectionState.collection,
       collectionState.disabledKeys,
       collectionState.selectionManager.disabledBehavior,
+      collator,
     ]
   );
 
@@ -357,9 +481,8 @@ export function useTagField<T extends object>(
           return;
         }
 
-        if (fieldInputValue.trim() && onAdd) {
+        if (inputValue.trim() && addFromInput('enter')) {
           event.preventDefault();
-          addTagsFromInput(fieldInputValue, 'enter');
 
           return;
         }
@@ -386,17 +509,18 @@ export function useTagField<T extends object>(
         return;
       }
 
-      if (event.key.length === 1 && testSplitPattern(splitPattern, event.key)) {
-        if (!onAdd) {
+      if (event.key.length === 1 && isSeparator(event.key)) {
+        if (!allowsAdding) {
           event.continuePropagation();
 
           return;
         }
 
-        if (fieldInputValue.trim()) {
-          addTagsFromInput(fieldInputValue, 'separator');
+        if (inputValue.trim()) {
+          addFromInput('separator');
         }
 
+        // Don't let a bare separator end up in the input either way.
         event.preventDefault();
 
         return;
@@ -406,9 +530,9 @@ export function useTagField<T extends object>(
       const { selectionStart, selectionEnd } = input;
 
       const isCaretAtStart =
-        selectionStart === 0 && selectionEnd === 0 && !fieldInputValue;
+        selectionStart === 0 && selectionEnd === 0 && !inputValue;
 
-      const hasTags = state.collection.size > 0;
+      const hasTags = collection.size > 0;
 
       if (
         isCaretAtStart &&
@@ -427,18 +551,19 @@ export function useTagField<T extends object>(
       }
 
       if (
-        !fieldInputValue &&
+        !inputValue &&
         hasTags &&
         (event.ctrlKey || event.metaKey) &&
         (event.key === 'a' || event.key === 'A')
       ) {
         event.preventDefault();
-        state.selectionManager.selectAll();
+        selectionManager.selectAll();
         focusTagAt('last');
 
         return;
       }
 
+      // Shift+Tab from empty input -> focus the first tag.
       if (isCaretAtStart && event.key === 'Tab' && event.shiftKey && hasTags) {
         event.preventDefault();
         focusTagAt('first');
@@ -452,22 +577,20 @@ export function useTagField<T extends object>(
 
   const handlePaste = useCallback(
     (event: ClipboardEvent<HTMLInputElement>) => {
-      if (isDisabled || isReadOnly) return;
       const text = event.clipboardData.getData('text/plain');
       const input = event.currentTarget;
       const selectionStart = input.selectionStart ?? input.value.length;
       const selectionEnd = input.selectionEnd ?? selectionStart;
       const nextValue = `${input.value.slice(0, selectionStart)}${text}${input.value.slice(selectionEnd)}`;
 
-      if (!text || !onAdd || !testSplitPattern(splitPattern, nextValue)) return;
+      if (!text || !allowsAdding || !isSeparator(nextValue)) {
+        return;
+      }
 
       event.preventDefault();
-      const candidates = splitInputValue(nextValue, splitPattern);
-      if (candidates.length === 0) return;
-      onAdd(candidates, { source: 'paste' });
-      setFieldInputValue('');
+      addFromInput('paste', nextValue);
     },
-    [isDisabled, isReadOnly, splitPattern, onAdd, setFieldInputValue]
+    [addFromInput, allowsAdding, isSeparator]
   );
 
   const handleBlur = useCallback(
@@ -483,17 +606,17 @@ export function useTagField<T extends object>(
 
       if (isDisabled || isReadOnly || disableCommitOnBlur) return;
 
-      if (fieldInputValue.trim()) {
-        addTagsFromInput(fieldInputValue, 'blur');
+      if (inputValue.trim()) {
+        addFromInput('blur');
       }
     },
     [
+      addFromInput,
+      closeAutocomplete,
+      disableCommitOnBlur,
+      inputValue,
       isDisabled,
       isReadOnly,
-      disableCommitOnBlur,
-      fieldInputValue,
-      addTagsFromInput,
-      closeAutocomplete,
       popoverRef,
     ]
   );
@@ -508,28 +631,34 @@ export function useTagField<T extends object>(
     [resetTagListFocus]
   );
 
-  const handleTagListContainerMouseDown = useCallback(
-    (event: MouseEvent<HTMLDivElement>) => {
-      if (event.target !== event.currentTarget) return;
-      event.preventDefault();
-      focusInput();
-    },
-    [focusInput]
-  );
-
-  const focusInputWhenTagIsClicked = useCallback(
-    (event: MouseEvent<HTMLDivElement>) => {
+  const handleTagListContainerPointerDown = useCallback(
+    (event: PointerEvent<HTMLDivElement>) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
 
-      const row = target.closest('[role="row"]');
-      if (!row || !event.currentTarget.contains(row)) return;
+      const isPlainPrimaryClick =
+        event.button === 0 &&
+        !event.altKey &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.shiftKey;
+
+      if (!isPlainPrimaryClick || inputRef.current?.contains(target)) return;
+
+      if (event.target !== event.currentTarget) {
+        const row = target.closest('[role="row"]');
+
+        if (!row || !event.currentTarget.contains(row)) return;
+        if (target !== row && isInteractiveTarget(target, row)) return;
+
+        event.stopPropagation();
+      }
 
       event.preventDefault();
       resetTagListFocus();
       focusInput();
     },
-    [focusInput, resetTagListFocus]
+    [focusInput, inputRef, resetTagListFocus]
   );
 
   const { validationBehavior: formValidationBehavior } =
@@ -547,13 +676,13 @@ export function useTagField<T extends object>(
   } = useTextField<'input'>(
     {
       ...removeDataAttributes({
-        ...textFieldProps,
+        ...props,
         isDisabled,
         isReadOnly,
         isRequired,
-        value: fieldInputValue,
+        value: inputValue,
         defaultValue: defaultInputValue,
-        onChange: setFieldInputValue,
+        onChange: setInputValue,
         validationBehavior,
         'aria-label': ariaLabel,
       }),
@@ -562,8 +691,8 @@ export function useTagField<T extends object>(
     inputRef
   );
 
-  const hasTags = state.collection.size > 0;
-  const hasInputValue = fieldInputValue !== '';
+  const hasTags = collection.size > 0;
+  const hasInputValue = inputValue !== '';
   const showCleaner = Boolean(isClearable);
 
   const cleanerIsHidden = Boolean(
@@ -582,15 +711,13 @@ export function useTagField<T extends object>(
     isDisabled,
     tabIndex: -1,
     onRemove: isReadOnly ? undefined : handleRemove,
-    onMouseDownCapture: focusInputWhenTagIsClicked,
-    focusBehavior: 'none',
     'aria-label': ariaLabel ?? 'Selected tags',
   } as const;
 
   const tagListContainerProps = {
     ref: innerRef,
     role: 'presentation',
-    onMouseDown: handleTagListContainerMouseDown,
+    onPointerDownCapture: handleTagListContainerPointerDown,
     onBlur: handleTagListContainerBlur,
   } as const;
 
@@ -635,7 +762,7 @@ export function useTagField<T extends object>(
     errorMessageProps,
     inputProps,
     inputRef,
-    inputValue: fieldInputValue,
+    inputValue,
     isDisabled,
     isReadOnly,
     isRequired,

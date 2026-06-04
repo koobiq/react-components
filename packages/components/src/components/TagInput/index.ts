@@ -1,2 +1,2 @@
-export { TagInput } from './TagInput';
+export * from './TagInput';
 export * from './types';

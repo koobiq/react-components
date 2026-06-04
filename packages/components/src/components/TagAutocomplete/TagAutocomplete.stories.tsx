@@ -53,7 +53,6 @@ export const Base: Story = {
     return (
       <TagAutocomplete<TagItem>
         label="Tags"
-        fullWidth
         items={tags.items}
         style={{ inlineSize: 360 }}
         placeholder="Type and press Enter"
@@ -65,18 +64,16 @@ export const Base: Story = {
           }
         }}
         onRemove={(keys) => tags.remove(...keys)}
-        list={{
-          items: suggestions.items,
-          renderItem: (item) => (
-            <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.ListItem>
-          ),
-          defaultFilter: (textValue, inputValue) =>
-            textValue
-              .toLocaleLowerCase()
-              .includes(inputValue.toLocaleLowerCase()),
-        }}
+        listItems={suggestions.items}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+        defaultFilter={(textValue, inputValue) =>
+          textValue.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())
+        }
+        fullWidth
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>

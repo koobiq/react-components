@@ -9,35 +9,33 @@ import {
   useTagAutocompleteState,
 } from '@koobiq/react-primitives';
 
-import { useForm } from '../Form';
-import type { ListInnerProps } from '../List';
 import { ListInner } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
-import { TagInputField } from '../TagInput/TagInput';
+import { TagInputInner } from '../TagInput';
+import { useTagInputResolvedProps } from '../TagInput/utils';
+import { Tag } from '../TagList/Tag';
 
 import s from './TagAutocomplete.module.css';
-import type {
-  TagAutocompleteComponent,
-  TagAutocompleteProps,
-  TagAutocompleteRef,
-} from './types';
+import { TagAutocompleteListItem } from './TagAutocompleteItem';
+import type { TagAutocompleteComponent, TagAutocompleteProps } from './types';
 
 const MIN_POPOVER_INLINE_SIZE = 200;
 
-type TagAutocompleteInnerProps<T extends object> = {
-  props: TagAutocompleteProps<T>;
-  inputRef?: Ref<TagAutocompleteRef>;
-};
-
-function TagAutocompleteInner<T extends object>(
-  rootProps: TagAutocompleteInnerProps<T>
+function TagAutocompleteRender<T extends object>(
+  props: TagAutocompleteProps<T>,
+  ref?: Ref<HTMLInputElement>
 ) {
-  const { props, inputRef } = rootProps;
-  const { list, isOpen, defaultOpen, onOpenChange, ...tagInputProps } = props;
+  const {
+    listItems,
+    renderListItem,
+    defaultFilter,
+    isOpen,
+    defaultOpen,
+    onOpenChange,
+    ...tagInputProps
+  } = props;
 
-  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
-  const isDisabled = tagInputProps.isDisabled ?? formIsDisabled;
-  const isReadOnly = tagInputProps.isReadOnly ?? formIsReadOnly;
+  const resolvedTagInputProps = useTagInputResolvedProps<T>(tagInputProps);
 
   const { ref: anchorRef, width: anchorWidth } =
     useElementSize<HTMLDivElement>();
@@ -45,105 +43,82 @@ function TagAutocompleteInner<T extends object>(
   const popoverRef = useRef<HTMLDivElement>(null);
   const listBoxRef = useRef<HTMLUListElement>(null);
 
-  const autocompleteProps = {
-    items: tagInputProps.items,
-    children: tagInputProps.children,
-    disabledKeys: tagInputProps.disabledKeys,
-    selectedKeys: tagInputProps.selectedKeys,
-    defaultSelectedKeys: tagInputProps.defaultSelectedKeys,
-    onSelectionChange: tagInputProps.onSelectionChange,
-    suggestionItems: list.items,
-    suggestionChildren: list.renderItem,
-    defaultFilter: list.defaultFilter,
-    inputValue: tagInputProps.inputValue,
-    defaultInputValue: tagInputProps.defaultInputValue,
-    onInputChange: tagInputProps.onInputChange,
-    onAdd: tagInputProps.onAdd,
-    isDisabled,
-    isReadOnly,
+  const tagInputInnerProps = {
+    ...resolvedTagInputProps,
+    slotProps: {
+      ...resolvedTagInputProps.slotProps,
+      group: mergeProps(resolvedTagInputProps.slotProps?.group, {
+        ref: anchorRef,
+      }),
+    },
+  };
+
+  const autocompleteState = useTagAutocompleteState<T>({
+    ...resolvedTagInputProps,
+    listItems,
+    renderListItem,
+    defaultFilter,
     isOpen,
     defaultOpen,
     onOpenChange,
-    anchorRef,
     popoverRef,
     listBoxRef,
-  };
-
-  const autocompleteState = useTagAutocompleteState<T>(autocompleteProps);
+  });
 
   const {
     tagFieldProps,
-    popoverProps: popoverPropsAria,
     listProps: listPropsAria,
-  } = useTagAutocomplete<T>(autocompleteProps, autocompleteState);
+    popoverProps: popoverPropsAria,
+  } = useTagAutocomplete<T, typeof tagInputInnerProps>(
+    { anchorRef, tagFieldProps: tagInputInnerProps },
+    autocompleteState
+  );
 
-  const popoverProps = mergeProps<any>(
+  const popoverProps = mergeProps(
     {
       offset: 4,
       hideArrow: true,
       maxBlockSize: 256,
       className: s.popover,
-      placement: 'bottom start',
+      placement: 'bottom start' as const,
       size: Math.max(anchorWidth, MIN_POPOVER_INLINE_SIZE),
       slotProps: {
         backdrop: { hidden: true },
         container: { className: s.container },
       },
     },
-    popoverPropsAria,
-    list.slotProps?.popover
+    popoverPropsAria
   );
 
-  const listProps = mergeProps<
-    [
-      ListInnerProps<T>,
-      typeof listPropsAria,
-      Omit<ListInnerProps<T>, 'state' | 'children' | 'listRef'> | undefined,
-    ]
-  >(
+  const listProps = mergeProps(
     {
-      isLoading: list.isLoading,
-      onLoadMore: list.onLoadMore,
-      loadingText: list.loadingText,
-      noItemsText: list.noItemsText,
       isPadded: true,
       className: s.list,
-      style: list.style,
-    } as ListInnerProps<T>,
-    listPropsAria,
-    list.slotProps?.list
+    },
+    listPropsAria
   );
 
   return (
     <>
-      <TagInputField
-        {...tagFieldProps}
-        inputRef={inputRef}
-        props={{
-          ...tagInputProps,
-          slotProps: {
-            ...tagInputProps.slotProps,
-            group: { ...tagInputProps.slotProps?.group, ref: anchorRef },
-          },
-        }}
-      />
-      <PopoverInner
-        {...popoverProps}
-        className={list.className ?? popoverProps.className}
-      >
+      <TagInputInner<T> {...tagFieldProps} inputRef={ref} />
+      <PopoverInner {...popoverProps}>
         <ListInner<T> {...listProps} />
       </PopoverInner>
     </>
   );
 }
 
-function TagAutocompleteRender<T extends object>(
-  props: TagAutocompleteProps<T>,
-  ref?: Ref<TagAutocompleteRef>
-) {
-  return <TagAutocompleteInner props={props} inputRef={ref} />;
-}
-
-export const TagAutocompleteRoot = forwardRef(
+const TagAutocompleteComponent = forwardRef(
   TagAutocompleteRender
 ) as TagAutocompleteComponent;
+
+type CompoundedComponent = typeof TagAutocompleteComponent & {
+  ListItem: typeof TagAutocompleteListItem;
+  Tag: typeof Tag;
+};
+
+export const TagAutocomplete = TagAutocompleteComponent as CompoundedComponent;
+
+TagAutocomplete.ListItem = TagAutocompleteListItem;
+
+TagAutocomplete.Tag = Tag;

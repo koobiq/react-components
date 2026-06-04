@@ -1,5 +1,6 @@
 'use client';
 
+import { forwardRef } from 'react';
 import type { Ref } from 'react';
 
 import { mergeProps } from '@koobiq/react-core';
@@ -8,13 +9,12 @@ import {
   DEFAULT_SLOT,
   FieldErrorContext,
   Provider,
-  createHideableComponent,
   type TagAutocompleteState,
+  type TagFieldState,
   useTagField,
-  useTagListState,
+  useTagFieldState,
 } from '@koobiq/react-primitives';
 
-import { useForm } from '../Form';
 import type {
   FormFieldProps,
   FormFieldInputProps,
@@ -30,19 +30,22 @@ import { TagListInner } from '../TagList/TagListInner';
 import { useFieldSizingFallback } from './hooks/useFieldSizingFallback';
 import s from './TagInput.module.css';
 import type { TagInputComponent, TagInputProps } from './types';
+import { useTagInputResolvedProps } from './utils';
 
-type TagInputFieldProps<T extends object> = {
-  props: TagInputProps<T>;
+export type TagInputInnerProps<T extends object> = {
+  state: TagFieldState<T> | TagAutocompleteState<T>;
   inputRef?: Ref<HTMLInputElement>;
-  state?: TagAutocompleteState<T> | null;
-};
+} & TagInputProps<T>;
 
-export function TagInputField<T extends object>(
-  fieldProps: TagInputFieldProps<T>
+/**
+ * An input component that allows users to enter, display, and manage
+ * multiple tags or keywords dynamically. It supports adding and removing
+ * tags.
+ */
+export function TagInputInner<T extends object>(
+  fieldProps: TagInputInnerProps<T>
 ) {
-  const { props, inputRef: forwardedInputRef, state } = fieldProps;
-
-  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+  const { state, inputRef: forwardedInputRef, ...props } = fieldProps;
 
   const {
     variant = 'filled',
@@ -60,27 +63,7 @@ export function TagInputField<T extends object>(
     'data-testid': dataTestid,
     slotProps,
     placeholder,
-    items,
-    children,
-    disabledKeys,
-    selectedKeys,
-    onSelectionChange,
-    defaultSelectedKeys,
-    ...tagFieldProps
   } = props;
-
-  const resolvedIsDisabled = isDisabledProp ?? formIsDisabled;
-  const resolvedIsReadOnly = isReadOnlyProp ?? formIsReadOnly;
-
-  const standaloneState = useTagListState<T>({
-    items: state ? undefined : items,
-    children: state ? undefined : children,
-    selectionMode: resolvedIsReadOnly ? 'none' : 'multiple',
-    selectedKeys,
-    defaultSelectedKeys,
-    onSelectionChange,
-    disabledKeys,
-  });
 
   const {
     inputValue,
@@ -100,14 +83,11 @@ export function TagInputField<T extends object>(
     tagListContainerProps: tagListContainerPropsAria,
   } = useTagField(
     {
-      ...tagFieldProps,
-      label,
-      errorMessage,
-      placeholder,
-      isDisabled: resolvedIsDisabled,
-      isReadOnly: resolvedIsReadOnly,
+      ...props,
+      isDisabled: isDisabledProp,
+      isReadOnly: isReadOnlyProp,
     },
-    state ?? { tagListState: standaloneState },
+    state,
     forwardedInputRef
   );
 
@@ -220,6 +200,7 @@ export function TagInputField<T extends object>(
             {({ focusProps }) => (
               <div {...tagListContainerProps}>
                 <TagListInner<T> {...tagListProps} />
+                {/* focusProps on the input only: tags don't drive the group ring. */}
                 <FormField.Input {...mergeProps(focusProps, inputProps)} />
               </div>
             )}
@@ -243,12 +224,14 @@ function TagInputRender<T extends object>(
   props: TagInputProps<T>,
   ref?: Ref<HTMLInputElement>
 ) {
-  return <TagInputField props={props} inputRef={ref} />;
+  const resolvedProps = useTagInputResolvedProps<T>(props);
+
+  const state = useTagFieldState<T>(resolvedProps);
+
+  return <TagInputInner<T> {...resolvedProps} state={state} inputRef={ref} />;
 }
 
-const TagInputComponent = createHideableComponent(
-  TagInputRender
-) as TagInputComponent;
+const TagInputComponent = forwardRef(TagInputRender) as TagInputComponent;
 
 type CompoundedComponent = typeof TagInputComponent & {
   Tag: typeof Tag;

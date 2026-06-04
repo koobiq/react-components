@@ -1,7 +1,7 @@
-import type { FocusEvent } from 'react';
-import { useEffect, useRef } from 'react';
+import type { FocusEvent, RefObject } from 'react';
+import { useEffect } from 'react';
 
-import type { DOMAttributes, Key, Node, PressEvent } from '@koobiq/react-core';
+import type { DOMAttributes, Key, PressEvent } from '@koobiq/react-core';
 import {
   filterDOMProps,
   isFocusable,
@@ -56,8 +56,6 @@ export function isSpaceKey(key: string) {
   return key === ' ' || key === 'Space' || key === 'Spacebar';
 }
 
-export type TagListItemFocusBehavior = 'tag' | 'none';
-
 /**
  * Minimal shape `useTagListItem` reads from `item.props`. Renderers can use
  * a richer prop type (icons, slot props, etc.) — only `isDisabled` matters
@@ -67,48 +65,63 @@ interface AriaTagListItemNodeProps {
   isDisabled?: boolean;
 }
 
-export type UseTagListItemProps<T extends object> = {
-  state: ListState<T>;
+export type TagListItemRemoveContext = {
+  source: 'keyboard' | 'press';
+};
+
+export type AriaTagListItemProps = {
+  /** The unique key for the tag. */
+  key: Key;
   collectionId?: string;
-  item: Node<T>;
-  onRemove?: (keys: Set<Key>) => void;
+  onRemove?: (keys: Set<Key>, context?: TagListItemRemoveContext) => void;
   isDisabled?: boolean;
-  focusBehavior?: TagListItemFocusBehavior;
+};
+
+export type TagListItemAria = {
+  /** Props for the tag row element. */
+  rowProps: DOMAttributes;
+  /** Props for the tag cell element. */
+  gridCellProps: DOMAttributes;
+  /** Props for the tag remove button. */
+  removeButtonProps: {
+    isDisabled: boolean | undefined;
+    tabIndex: -1;
+    id: string;
+    'aria-label': string;
+    'aria-labelledby': string;
+    onPress: () => void;
+  };
+  isPressed: boolean;
+  isSelected: boolean;
+  isDisabled: boolean | undefined;
+  allowsRemoving: boolean;
 };
 
 export function useTagListItem<T extends object>(
-  props: UseTagListItemProps<T>
-) {
-  const {
-    collectionId,
-    item,
-    onRemove,
-    state,
-    isDisabled: isDisabledProp,
-    focusBehavior = 'tag',
-  } = props;
+  props: AriaTagListItemProps,
+  state: ListState<T>,
+  ref: RefObject<HTMLDivElement | null>
+): TagListItemAria {
+  const { key, collectionId, onRemove, isDisabled: isDisabledProp } = props;
 
-  const ref = useRef<HTMLDivElement>(null);
   const rowId = useId();
   const removeButtonId = useId();
 
-  const itemProps = item.props as AriaTagListItemNodeProps;
+  const item = state.collection.getItem(key);
+  const itemProps = item?.props as AriaTagListItemNodeProps | undefined;
 
   const { selectionManager } = state;
 
-  const isSelected = selectionManager.isSelected(item.key);
+  const isSelected = selectionManager.isSelected(key);
 
   const isDisabled =
-    isDisabledProp ||
-    selectionManager.isDisabled(item.key) ||
-    itemProps.isDisabled;
+    isDisabledProp || selectionManager.isDisabled(key) || itemProps?.isDisabled;
 
   // The remove affordance stays visible on disabled tags — the button just
   // renders disabled (state propagated via `removeButtonProps.isDisabled`).
   const allowsRemoving = !!onRemove;
 
-  const allowsSelection =
-    !isDisabled && selectionManager.canSelectItem(item.key);
+  const allowsSelection = !isDisabled && selectionManager.canSelectItem(key);
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -141,28 +154,28 @@ export function useTagListItem<T extends object>(
     if (
       !isDisabled &&
       selectionManager.isFocused &&
-      selectionManager.focusedKey === item.key &&
+      selectionManager.focusedKey === key &&
       document.activeElement !== ref.current
     ) {
       ref.current?.focus();
     }
-  }, [isDisabled, item.key, selectionManager]);
+  }, [isDisabled, key, ref, selectionManager]);
 
   const focusTag = () => {
     if (isDisabled) return;
 
     selectionManager.setFocused(true);
-    selectionManager.setFocusedKey(item.key);
+    selectionManager.setFocusedKey(key);
     ref.current?.focus();
   };
 
   const toggleSelection = () => {
-    if (allowsSelection) selectionManager.toggleSelection(item.key);
+    if (allowsSelection) selectionManager.toggleSelection(key);
   };
 
   const getKeysToRemove = () => {
     if (!isSelected) {
-      return new Set([item.key]);
+      return new Set([key]);
     }
 
     const selectedKeys = new Set(
@@ -171,7 +184,7 @@ export function useTagListItem<T extends object>(
       )
     );
 
-    return selectedKeys.size ? selectedKeys : new Set([item.key]);
+    return selectedKeys.size ? selectedKeys : new Set([key]);
   };
 
   const handlePressStart = (event: PressEvent) => {
@@ -181,9 +194,7 @@ export function useTagListItem<T extends object>(
       return;
     }
 
-    if (focusBehavior === 'tag') {
-      focusTag();
-    }
+    focusTag();
 
     if (event.pointerType === 'keyboard') return;
 
@@ -223,7 +234,7 @@ export function useTagListItem<T extends object>(
 
         event.preventDefault();
 
-        onRemove?.(getKeysToRemove());
+        onRemove?.(getKeysToRemove(), { source: 'keyboard' });
 
         return;
       }
@@ -236,23 +247,22 @@ export function useTagListItem<T extends object>(
     if (event.target !== event.currentTarget || isDisabled) return;
 
     selectionManager.setFocused(true);
-    selectionManager.setFocusedKey(item.key);
+    selectionManager.setFocusedKey(key);
   };
 
-  const tagProps = mergeProps(
-    filterDOMProps(item.props, { global: true }),
+  const rowProps = mergeProps(
+    filterDOMProps(item?.props ?? {}, { global: true }),
     {
       ref,
       id: rowId,
       role: 'row',
-      tabIndex:
-        selectionManager.focusedKey === item.key && !isDisabled ? 0 : -1,
+      tabIndex: selectionManager.focusedKey === key && !isDisabled ? 0 : -1,
       'aria-disabled': isDisabled || undefined,
-      'aria-label': item['aria-label'] || item.textValue || undefined,
+      'aria-label': item?.['aria-label'] || item?.textValue || undefined,
       'aria-selected': allowsSelection ? isSelected : undefined,
       'aria-describedby': descProps['aria-describedby'],
       'data-collection': collectionId,
-      'data-key': item.key,
+      'data-key': key,
       onFocus: handleFocus,
     },
     pressProps,
@@ -266,15 +276,15 @@ export function useTagListItem<T extends object>(
 
   const removeButtonProps = {
     isDisabled,
-    tabIndex: -1,
+    tabIndex: -1 as const,
     id: removeButtonId,
     'aria-label': stringFormatter.format('removeButtonLabel'),
     'aria-labelledby': `${removeButtonId} ${rowId}`,
-    onPress: () => onRemove?.(new Set([item.key])),
+    onPress: () => onRemove?.(new Set([key]), { source: 'press' }),
   };
 
   return {
-    tagProps,
+    rowProps,
     isPressed,
     isSelected,
     isDisabled,

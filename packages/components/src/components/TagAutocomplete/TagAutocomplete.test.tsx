@@ -58,15 +58,13 @@ function Harness(props: HarnessProps) {
         userOnAdd?.(values, ctx);
       }}
       onRemove={(keys) => tags.remove(...keys)}
-      list={{
-        items: suggestions,
-        defaultFilter,
-        renderItem: (item) => (
-          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.ListItem>
-        ),
-      }}
+      listItems={suggestions}
+      renderListItem={(item) => (
+        <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+          {item.name}
+        </TagAutocomplete.ListItem>
+      )}
+      defaultFilter={defaultFilter}
     >
       {(item) => (
         <TagAutocomplete.Tag key={item.id} textValue={item.name}>
@@ -142,7 +140,7 @@ describe('TagAutocomplete', () => {
     expect(screen.queryByRole('option', { name: 'React' })).toBeNull();
   });
 
-  it('filters suggestions with list.defaultFilter', async () => {
+  it('filters suggestions with defaultFilter', async () => {
     const user = userEvent.setup();
 
     render(

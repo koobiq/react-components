@@ -4,7 +4,7 @@ import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
 import { useTagList } from '@koobiq/react-primitives';
 
 import { TagItem } from './components';
-import groupStyles from './TagList.module.css';
+import s from './TagList.module.css';
 import type { TagListInnerProps } from './types';
 
 export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
@@ -17,8 +17,10 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
     autoFocus,
     tagListRef,
     escapeKeyBehavior,
-    focusBehavior,
-    ...rootDOMProps
+    tabIndex,
+    style,
+    'data-testid': testId,
+    'aria-label': ariaLabel,
   } = props;
 
   const domRef = useDOMRef(tagListRef);
@@ -31,12 +33,15 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
 
   const rootProps = mergeProps(
     {
+      style,
       ref: domRef,
-      className: clsx(groupStyles.base, className),
+      'data-testid': testId,
+      'aria-label': ariaLabel,
+      className: clsx(s.base, className),
       'data-disabled': isDisabled || undefined,
     },
     gridProps,
-    rootDOMProps
+    { tabIndex }
   );
 
   return (
@@ -50,7 +55,6 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
           onRemove={onRemove}
           isDisabled={isDisabled}
           collectionId={collectionId}
-          focusBehavior={focusBehavior}
         />
       ))}
     </div>

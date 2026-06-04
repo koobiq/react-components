@@ -1,13 +1,7 @@
 import { createRef, useRef, useState } from 'react';
 
 import type { Key, Selection } from '@koobiq/react-core';
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -280,11 +274,7 @@ describe('TagInput', () => {
 
       const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
       expect(lastCall?.[0].has('seed-0-a')).toBe(true);
-
-      await waitFor(() => {
-        expect(queryTag('a')).not.toBeInTheDocument();
-        expect(getInput()).toHaveFocus();
-      });
+      expect(getInput()).toHaveFocus();
     });
 
     it('removes a focused tag via Delete', async () => {
@@ -306,7 +296,11 @@ describe('TagInput', () => {
 
       const lastCall = onRemove.mock.lastCall as [Set<Key>] | undefined;
       expect(lastCall?.[0].has('seed-1-two')).toBe(true);
-      await waitFor(() => expect(queryTag('two')).not.toBeInTheDocument());
+
+      await waitFor(() => {
+        expect(queryTag('two')).not.toBeInTheDocument();
+        expect(getInput()).not.toHaveFocus();
+      });
     });
 
     it('removes all selected tags via Ctrl+A → Backspace from input', async () => {
@@ -337,6 +331,21 @@ describe('TagInput', () => {
       );
 
       await user.click(button);
+
+      await waitFor(() => {
+        expect(queryTag('only')).not.toBeInTheDocument();
+        expect(getInput()).toHaveFocus();
+      });
+    });
+
+    it('returns focus to the input after the last tag is removed via keyboard', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper initialItems={seed(['only'])} />);
+
+      await user.click(getInput());
+      await user.keyboard('{Backspace}');
+      await waitFor(() => expect(queryTag('only')).toHaveFocus());
+      await user.keyboard('{Delete}');
 
       await waitFor(() => {
         expect(queryTag('only')).not.toBeInTheDocument();
@@ -385,8 +394,8 @@ describe('TagInput', () => {
       await user.click(getInput());
       await user.keyboard('{Shift>}{Tab}{/Shift}');
       await waitFor(() => expect(screen.getAllByRole('row')[0]).toHaveFocus());
-      await user.keyboard('{ArrowRight}');
       const rows = screen.getAllByRole('row') as HTMLElement[];
+      await user.keyboard('{ArrowRight}');
       await waitFor(() => expect(rows[1]).toHaveFocus());
     });
   });
@@ -422,7 +431,8 @@ describe('TagInput', () => {
       await waitFor(() => expect(queryTag('one')).toHaveFocus());
     });
 
-    it('focuses the input when the canvas between tags is clicked', () => {
+    it('focuses the input when the canvas between tags is clicked', async () => {
+      const user = userEvent.setup();
       const { container } = render(<Wrapper initialItems={seed(['one'])} />);
       expect(getInput()).not.toHaveFocus();
 
@@ -430,7 +440,7 @@ describe('TagInput', () => {
         '[role="presentation"]'
       ) as HTMLElement;
 
-      fireEvent.mouseDown(canvas);
+      await user.click(canvas);
       expect(getInput()).toHaveFocus();
     });
 

@@ -29,7 +29,7 @@ import { TagAutocomplete } from '@koobiq/react-components';
 ## List API
 
 `TagAutocomplete` receives combobox semantics and renders list items from
-`list.renderItem`:
+`renderListItem`:
 
 ```tsx
 <TagAutocomplete
@@ -37,14 +37,12 @@ import { TagAutocomplete } from '@koobiq/react-components';
   items={tags.items}
   onAdd={...}
   onRemove={...}
-  list={{
-    items: suggestions.items,
-    renderItem: (item) => (
-      <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-        {item.name}
-      </TagAutocomplete.ListItem>
-    ),
-  }}
+  listItems={suggestions.items}
+  renderListItem={(item) => (
+    <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+      {item.name}
+    </TagAutocomplete.ListItem>
+  )}
 >
   {(item) => (
     <TagAutocomplete.Tag key={item.id} textValue={item.name}>

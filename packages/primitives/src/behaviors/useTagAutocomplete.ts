@@ -3,14 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { RefObject } from 'react';
 
-import type {
-  CollectionChildren,
-  FocusStrategy,
-  Key,
-  Node,
-  Selection,
-} from '@koobiq/react-core';
-import { useControlledState, useInteractOutside } from '@koobiq/react-core';
+import type { FocusStrategy, Key, Node } from '@koobiq/react-core';
+import { useInteractOutside } from '@koobiq/react-core';
 import { listData } from '@react-aria/listbox';
 import { useId } from '@react-aria/utils';
 import type { ListState } from '@react-stately/list';
@@ -18,9 +12,8 @@ import { useListState } from '@react-stately/list';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 
-import type { TagFieldAddContext } from './useTagField';
-import { useTagListState } from './useTagListState';
-import type { TagListState } from './useTagListState';
+import type { TagFieldState, TagFieldStateProps } from './useTagField';
+import { useTagFieldState } from './useTagField';
 
 export type TagAutocompleteFilter = (
   textValue: string,
@@ -29,98 +22,55 @@ export type TagAutocompleteFilter = (
 
 const normalizeTextValue = (value: string) => value.trim().toLocaleLowerCase();
 
-export type TagAutocompleteState<T extends object = object> = {
-  /** Tag list state (selected tags). */
-  tagListState: TagListState<T>;
-  /** State for the filtered suggestions listbox. */
-  listState: ListState<T>;
-  /** Current text value inside the owning tag field. */
-  inputValue: string;
-  /** Updates the owning tag field text value. */
-  setInputValue: (value: string) => void;
-  /** Resolved disabled state for the owning field. */
-  isDisabled: boolean | undefined;
-  /** Resolved read-only state for the owning field. */
-  isReadOnly: boolean | undefined;
-  /** Open/close state for the suggestions popover. */
-  overlayState: OverlayTriggerState;
-  /** Fires when a suggestion is picked by mouse or keyboard. */
-  onAction: (key: Key) => void;
-  /** Ref to the popover container. */
-  popoverRef: RefObject<HTMLDivElement | null>;
-  /** Ref to the listbox element. */
-  listBoxRef: RefObject<HTMLUListElement | null>;
-  /** DOM id for the listbox element. */
-  listBoxId: string;
-  /** Which item should receive virtual focus when the listbox opens. */
-  focusStrategy: FocusStrategy | undefined;
-  /** Opens the suggestions popover and optionally focuses the first/last item. */
-  open: (focusStrategy?: FocusStrategy) => void;
-  /** Closes the suggestions popover. */
-  close: () => void;
-};
+export type TagAutocompleteState<T extends object = object> =
+  TagFieldState<T> & {
+    /** State for the filtered suggestions listbox. */
+    listState: ListState<T>;
+    /** Open/close state for the suggestions popover. */
+    overlayState: OverlayTriggerState;
+    /** Fires when a suggestion is picked by mouse or keyboard. */
+    onAction: (key: Key) => void;
+    /** Ref to the popover container. */
+    popoverRef: RefObject<HTMLDivElement | null>;
+    /** Ref to the listbox element. */
+    listBoxRef: RefObject<HTMLUListElement | null>;
+    /** DOM id for the listbox element. */
+    listBoxId: string;
+    /** Which item should receive virtual focus when the listbox opens. */
+    focusStrategy: FocusStrategy | undefined;
+    /** Opens the suggestions popover and optionally focuses the first/last item. */
+    open: (focusStrategy?: FocusStrategy) => void;
+    /** Closes the suggestions popover. */
+    close: () => void;
+  };
 
-export type TagAutocompleteStateProps<T extends object> = {
-  /** Tag collection items. */
-  items?: Iterable<T>;
-  /** Render function for each selected tag. */
-  children?: CollectionChildren<T>;
-  /** Keys of tags rendered as disabled. */
-  disabledKeys?: Iterable<Key>;
-  /** Controlled set of selected tag keys. */
-  selectedKeys?: Selection;
-  /** Uncontrolled initial set of selected tag keys. */
-  defaultSelectedKeys?: 'all' | Iterable<Key>;
-  /** Fires when the selected tag keys change. */
-  onSelectionChange?: (keys: Selection) => void;
-  /** Collection of autocomplete suggestions. */
-  suggestionItems?: Iterable<T>;
-  /** Render function for each suggestion. */
-  suggestionChildren: CollectionChildren<T>;
-  /** Filters suggestions by the current input value. */
-  defaultFilter?: TagAutocompleteFilter;
-  /** Controlled text input value. */
-  inputValue?: string;
-  /** Uncontrolled initial text input value. */
-  defaultInputValue?: string;
-  /** Fires whenever the text input value changes. */
-  onInputChange?: (value: string) => void;
-  /** Fires when a suggestion is committed as a tag. */
-  onAdd?: (values: string[], context: TagFieldAddContext<T>) => void;
-  /** Whether the owning field is disabled. */
-  isDisabled?: boolean;
-  /** Whether the owning field is read-only. */
-  isReadOnly?: boolean;
-  /** Controlled open state for the suggestions popover. */
-  isOpen?: boolean;
-  /** Uncontrolled initial open state for the suggestions popover. */
-  defaultOpen?: boolean;
-  /** Fires when the suggestions popover opens or closes. */
-  onOpenChange?: (isOpen: boolean) => void;
-  /** Ref to the field the popover anchors to. */
-  anchorRef: RefObject<HTMLDivElement | null>;
-  /** Ref to the popover container. */
-  popoverRef: RefObject<HTMLDivElement | null>;
-  /** Ref to the listbox element. */
-  listBoxRef: RefObject<HTMLUListElement | null>;
-};
+export type TagAutocompleteStateProps<T extends object> =
+  TagFieldStateProps<T> & {
+    /** Collection of autocomplete suggestions. */
+    listItems?: Iterable<T>;
+    /** Render function for each suggestion. */
+    renderListItem: TagFieldStateProps<T>['children'];
+    /** Filters suggestions by the current input value. */
+    defaultFilter?: TagAutocompleteFilter;
+    /** Controlled open state for the suggestions popover. */
+    isOpen?: boolean;
+    /** Uncontrolled initial open state for the suggestions popover. */
+    defaultOpen?: boolean;
+    /** Fires when the suggestions popover opens or closes. */
+    onOpenChange?: (isOpen: boolean) => void;
+    /** Ref to the popover container. */
+    popoverRef: RefObject<HTMLDivElement | null>;
+    /** Ref to the listbox element. */
+    listBoxRef: RefObject<HTMLUListElement | null>;
+  };
 
 export function useTagAutocompleteState<T extends object>(
   props: TagAutocompleteStateProps<T>
 ): TagAutocompleteState<T> {
   const {
-    items,
-    children,
-    disabledKeys,
-    selectedKeys,
-    defaultSelectedKeys,
-    onSelectionChange,
-    suggestionItems,
-    suggestionChildren,
+    listItems,
+    renderListItem,
     defaultFilter,
-    inputValue: inputValueProp,
-    defaultInputValue,
-    onInputChange,
     onAdd,
     isDisabled,
     isReadOnly,
@@ -133,29 +83,12 @@ export function useTagAutocompleteState<T extends object>(
 
   const listBoxId = useId();
 
-  const tagListState = useTagListState<T>({
-    items,
-    children,
-    disabledKeys,
-    selectedKeys,
-    defaultSelectedKeys,
-    onSelectionChange,
-    selectionMode: isReadOnly ? 'none' : 'multiple',
-  });
+  const tagFieldState = useTagFieldState(props);
 
-  const [inputValue, setInputValue] = useControlledState<string>(
-    inputValueProp,
-    defaultInputValue ?? '',
-    onInputChange
-  );
-
-  // Pre-compute normalized textValues of currently-selected tags so the
-  // filter can exclude already-picked items even when their keys don't
-  // match the suggestion's key (e.g. free-text tags vs preset suggestions).
   const selectedTextValues = useMemo(() => {
     const values = new Set<string>();
 
-    for (const item of tagListState.collection) {
+    for (const item of tagFieldState.collection) {
       const textValue = normalizeTextValue(item.textValue ?? '');
 
       if (textValue) {
@@ -164,27 +97,24 @@ export function useTagAutocompleteState<T extends object>(
     }
 
     return values;
-  }, [tagListState.collection]);
+  }, [tagFieldState.collection]);
 
   const filter = useCallback(
     (nodes: Iterable<Node<T>>): Iterable<Node<T>> => {
       const filtered: Node<T>[] = [];
 
       for (const node of nodes) {
-        // Exclude already-selected items by stable key.
-        if (tagListState.collection.getItem(node.key)) continue;
+        if (tagFieldState.collection.getItem(node.key)) continue;
 
-        // Exclude already-selected items by normalized textValue match.
         const normalizedTextValue = normalizeTextValue(node.textValue ?? '');
 
         if (normalizedTextValue && selectedTextValues.has(normalizedTextValue))
           continue;
 
-        // User-supplied filter by current input value.
         if (
-          inputValue &&
+          tagFieldState.inputValue &&
           defaultFilter &&
-          !defaultFilter(node.textValue ?? '', inputValue)
+          !defaultFilter(node.textValue ?? '', tagFieldState.inputValue)
         )
           continue;
 
@@ -193,25 +123,32 @@ export function useTagAutocompleteState<T extends object>(
 
       return filtered;
     },
-    [tagListState.collection, selectedTextValues, inputValue, defaultFilter]
+    [
+      defaultFilter,
+      selectedTextValues,
+      tagFieldState.collection,
+      tagFieldState.inputValue,
+    ]
   );
-
-  const listState = useListState<T>({
-    items: suggestionItems,
-    children: suggestionChildren,
-    selectionMode: 'none',
-    filter,
-  });
-
-  const [focusStrategy, setFocusStrategy] = useState<
-    FocusStrategy | undefined
-  >();
 
   const overlayState = useOverlayTriggerState({
     isOpen,
     defaultOpen,
     onOpenChange,
   });
+
+  const listState = useListState<T>({
+    items: listItems,
+    children: renderListItem,
+    selectionMode: 'none',
+    filter,
+  });
+
+  const { setInputValue } = tagFieldState;
+
+  const [focusStrategy, setFocusStrategy] = useState<
+    FocusStrategy | undefined
+  >();
 
   const {
     open: openOverlay,
@@ -257,12 +194,8 @@ export function useTagAutocompleteState<T extends object>(
   );
 
   return {
-    tagListState,
+    ...tagFieldState,
     listState,
-    inputValue,
-    setInputValue,
-    isDisabled,
-    isReadOnly,
     overlayState,
     onAction,
     popoverRef,
@@ -274,9 +207,12 @@ export function useTagAutocompleteState<T extends object>(
   };
 }
 
-export type TagAutocompleteAria<T extends object = object> = {
+export type TagAutocompleteAria<
+  T extends object = object,
+  P extends object = object,
+> = {
   /** Props to spread on `TagInputField`. */
-  tagFieldProps: {
+  tagFieldProps: P & {
     state: TagAutocompleteState<T>;
   };
   /** Props to spread on the suggestion popover. */
@@ -299,14 +235,29 @@ export type TagAutocompleteAria<T extends object = object> = {
   };
 };
 
-export function useTagAutocomplete<T extends object>(
-  props: TagAutocompleteStateProps<T>,
-  state: TagAutocompleteState<T>
-): TagAutocompleteAria<T> {
-  const { anchorRef, popoverRef, listBoxRef } = props;
+export type TagAutocompleteProps<P extends object = object> = {
+  /** Ref to the field the popover anchors to. */
+  anchorRef: RefObject<HTMLDivElement | null>;
+  /** Props to pass through to the rendered tag field. */
+  tagFieldProps: P;
+};
 
-  const { overlayState, listState, onAction, listBoxId, focusStrategy, close } =
-    state;
+export function useTagAutocomplete<T extends object, P extends object>(
+  props: TagAutocompleteProps<P>,
+  state: TagAutocompleteState<T>
+): TagAutocompleteAria<T, P> {
+  const { anchorRef, tagFieldProps } = props;
+
+  const {
+    overlayState,
+    listState,
+    onAction,
+    popoverRef,
+    listBoxRef,
+    listBoxId,
+    focusStrategy,
+    close,
+  } = state;
 
   useInteractOutside({
     ref: popoverRef,
@@ -327,6 +278,7 @@ export function useTagAutocomplete<T extends object>(
 
   return {
     tagFieldProps: {
+      ...tagFieldProps,
       state,
     },
     popoverProps: {
