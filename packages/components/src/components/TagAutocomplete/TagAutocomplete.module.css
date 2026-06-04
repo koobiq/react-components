@@ -1,5 +1,5 @@
 .popover {
-  padding: 0;
+  border-radius: var(--kbq-size-s);
 }
 
 .container {

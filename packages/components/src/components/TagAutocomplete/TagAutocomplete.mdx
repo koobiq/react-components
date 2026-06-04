@@ -13,8 +13,8 @@ import * as Stories from './TagAutocomplete.stories';
 
 <Status variant="draft" />
 
-A multi-tag entry with autocomplete suggestions. It behaves like a `TagInput`
-with a popover listbox while keeping free-form tag entry.
+A multi-tag entry with autocomplete suggestions. It behaves like `TagInput`
+for free-form values and adds a combobox popover for selecting known items.
 
 ## Import
 
@@ -26,18 +26,30 @@ import { TagAutocomplete } from '@koobiq/react-components';
 
 <Story of={Stories.Base} />
 
-## List API
+## Props
 
-`TagAutocomplete` receives combobox semantics and renders list items from
-`renderListItem`:
+<Props of={Stories.Base} />
+
+## Items
+
+The tag collection is **owned by the consumer**. `TagAutocomplete` renders
+selected tags from `items`, renders suggestions from `listItems`, and emits
+intent events through `onAdd` / `onRemove`.
+
+Use stable keys for both selected tags and suggestions:
 
 ```tsx
 <TagAutocomplete
-  label="Tags"
   items={tags.items}
-  onAdd={...}
-  onRemove={...}
-  listItems={suggestions.items}
+  onRemove={(keys) => tags.remove(...keys)}
+  onAdd={(values, context) => {
+    if (context.source === 'suggestion') {
+      tags.append(context.suggestion);
+    } else {
+      tags.append(...values.map(createTag));
+    }
+  }}
+  listItems={suggestions}
   renderListItem={(item) => (
     <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
       {item.name}
@@ -52,16 +64,114 @@ import { TagAutocomplete } from '@koobiq/react-components';
 </TagAutocomplete>
 ```
 
-`TagAutocomplete.ListItem` provides the suggestion key and `textValue` used for
-filtering, exclusion of already selected tags, and `onAdd` context.
+`TagAutocomplete.ListItem` provides the suggestion key and `textValue` used
+for filtering, exclusion of already selected tags, and the suggestion context.
 
-## Behaviour
+## Suggestions
 
-- Focusing the input opens the popover.
-- Pressing **Escape** or clicking outside closes it.
-- Picking a suggestion calls `onAdd` with `source: 'suggestion'`, clears the
-  input, and keeps the popover open.
+Suggestions open when the input receives focus. `defaultFilter(textValue,
+inputValue)` filters the popover list, while selected tags are excluded
+automatically by key and normalized `textValue`.
 
-## Props
+Selecting a suggestion calls `onAdd(values, context)` with
+`context.source === 'suggestion'` and exposes the original item as
+`context.suggestion`.
 
-<Props of={Stories.Base} />
+## Adding tags
+
+Free-form entry keeps the same behavior as `TagInput`: press <kbd>Enter</kbd>,
+type a split character, paste a delimited string, or blur the field with a
+non-empty input value. In those cases, `context.source` is `'enter'`,
+`'separator'`, `'paste'`, or `'blur'`.
+
+To also split on `;` or whitespace, pass a custom `splitPattern`.
+
+<Story of={Stories.SplitPattern} />
+
+## Preventing duplicates
+
+Suggestions that are already selected are hidden automatically. Free-form
+values are passed to `onAdd` as-is, so apply your own duplicate policy in the
+handler:
+
+```tsx
+onAdd={(values, context) => {
+  if (context.source === 'suggestion') {
+    tags.append(context.suggestion);
+
+    return;
+  }
+
+  const existing = new Set(tags.items.map((item) => item.name.toLowerCase()));
+  const fresh = values.filter((value) => !existing.has(value.toLowerCase()));
+
+  if (fresh.length === 0) return;
+  tags.append(...fresh.map(createTag));
+}}
+```
+
+<Story of={Stories.PreventDuplicates} />
+
+## Variant
+
+<Story of={Stories.Variant} />
+
+## Form field
+
+`TagAutocomplete` is a full form-field on par with `TagInput`. It accepts a
+visible or hidden `label`, a helper `caption`, `errorMessage`, `isInvalid`,
+`isRequired`, `fullWidth`, `labelPlacement`, and `labelAlign`.
+
+<Story of={Stories.FormField} />
+
+## Disabled
+
+When `isDisabled` is set, the input is disabled, tags render in a disabled
+state, and suggestions cannot be selected.
+
+<Story of={Stories.Disabled} />
+
+## Read-only
+
+When `isReadOnly` is set, the input remains focusable for navigation but no
+modifications are allowed. Typing is blocked, suggestions cannot be selected,
+and remove buttons are not rendered.
+
+<Story of={Stories.ReadOnly} />
+
+## Cleaner
+
+Enable the cleaner button with `isClearable`. Pressing it removes all tags,
+clears the text input, calls `onClear`, and returns focus to the input.
+
+<Story of={Stories.Clearable} />
+
+## Inside a Form
+
+When wrapped in a `<Form>`, `TagAutocomplete` inherits `isDisabled`,
+`isReadOnly`, `labelPlacement`, and `labelAlign` from the form context.
+
+<Story of={Stories.InsideForm} />
+
+## Accessibility
+
+- The text input uses `role="combobox"` with `aria-autocomplete="list"`.
+- When the popover is open, the input points to the listbox via
+  `aria-controls` and tracks the focused option with `aria-activedescendant`.
+- DOM focus stays on the input while arrow keys move virtual focus through
+  suggestions.
+- Selected tags keep the same grid semantics as `TagInput`.
+
+## Keyboard
+
+Inside the text input:
+
+| Key                  | Behavior                                                                         |
+| -------------------- | -------------------------------------------------------------------------------- |
+| <kbd>ArrowDown</kbd> | Open suggestions and move virtual focus to the first option.                     |
+| <kbd>ArrowUp</kbd>   | Open suggestions and move virtual focus to the last option.                      |
+| <kbd>Enter</kbd>     | Select the focused suggestion, or commit the current input value as a new tag.   |
+| <kbd>Escape</kbd>    | Close the suggestion popover.                                                    |
+| <kbd>Backspace</kbd> | If the input is empty and there are tags, focus the last tag.                    |
+| _split character_    | Commit and reset the input — same effect as <kbd>Enter</kbd> for free-form text. |
+| <kbd>Tab</kbd>       | Move focus to the cleaner button (if visible) or out of the field.               |
