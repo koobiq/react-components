@@ -458,7 +458,7 @@ describe('TagAutocomplete', () => {
       expect(queryListbox()).toBeInTheDocument();
     });
 
-    it('clears option focus after keyboard selection so Enter can commit a custom value', async () => {
+    it('clears option focus after keyboard selection while keeping list navigation available', async () => {
       const user = userEvent.setup();
       const onAdd = vi.fn();
       render(<Harness onAdd={onAdd} />);
@@ -483,6 +483,16 @@ describe('TagAutocomplete', () => {
       await user.keyboard('{Enter}');
 
       expect(onAdd).toHaveBeenLastCalledWith(['custom'], { source: 'enter' });
+
+      await user.keyboard('{ArrowDown}{Enter}');
+
+      expect(onAdd).toHaveBeenLastCalledWith(
+        ['TypeScript'],
+        expect.objectContaining({
+          source: 'suggestion',
+          suggestion: { id: 'typescript', name: 'TypeScript' },
+        })
+      );
     });
 
     it('Enter without arrow-nav falls through to the existing tag-commit logic', async () => {
