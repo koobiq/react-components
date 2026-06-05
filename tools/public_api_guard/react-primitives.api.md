@@ -16,7 +16,6 @@ import type { AriaCheckboxGroupItemProps as AriaCheckboxGroupItemProps_2 } from 
 import { AriaCheckboxGroupProps } from '@react-aria/checkbox';
 import { AriaCheckboxProps } from '@react-aria/checkbox';
 import { AriaCheckboxProps as AriaCheckboxProps_2 } from 'react-aria';
-import { AriaLabelingProps } from '@react-types/shared';
 import type { AriaLinkOptions } from '@react-aria/link';
 import type { AriaListBoxOptions } from '@react-aria/listbox';
 import type { AriaNumberFieldProps } from '@react-aria/numberfield';
@@ -46,6 +45,7 @@ import { CheckboxGroupState } from '@react-stately/checkbox';
 import { ClipboardEventHandler } from 'react';
 import { Collection } from 'react-aria-components';
 import { CollectionBase } from '@koobiq/react-core';
+import type { CollectionChildren } from '@koobiq/react-core';
 import { ComboBoxState } from '@react-stately/combobox';
 import { ComboBoxStateOptions } from '@react-stately/combobox';
 import type { ComponentPropsWithoutRef } from 'react';
@@ -61,15 +61,13 @@ import { DetailedHTMLProps } from 'react';
 import { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import { DOMAttributes as DOMAttributes_2 } from '@react-types/shared';
-import { DOMProps } from '@react-types/shared';
-import type { DOMProps as DOMProps_3 } from '@koobiq/react-core';
+import type { DOMProps as DOMProps_2 } from '@koobiq/react-core';
 import { DragEventHandler } from 'react';
 import { ElementType } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { FocusableElement } from '@react-types/shared';
 import { FocusableProps } from '@koobiq/react-core';
-import type { FocusEvent as FocusEvent_2 } from 'react';
 import { FocusEventHandler } from 'react';
 import type { FocusStrategy } from '@koobiq/react-core';
 import { FormEventHandler } from 'react';
@@ -77,8 +75,7 @@ import type { FormProps as FormProps_2 } from '@koobiq/react-core';
 import type { FormValidationState } from '@react-stately/form';
 import type { ForwardedRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
-import { GlobalDOMAttributes } from '@react-types/shared';
-import type { GlobalDOMAttributes as GlobalDOMAttributes_2 } from '@koobiq/react-core';
+import type { GlobalDOMAttributes } from '@koobiq/react-core';
 import type { HoverEvents } from '@koobiq/react-core';
 import type { HTMLAttributes } from 'react';
 import { HTMLInputAutoCompleteAttribute } from 'react';
@@ -113,6 +110,7 @@ import { RefAttributes } from 'react';
 import { RefObject } from 'react';
 import type { RenderProps as RenderProps_2 } from 'react-aria-components';
 import type { RouterOptions } from '@koobiq/react-core';
+import type { Selection as Selection_2 } from '@koobiq/react-core';
 import type { TextFieldAria } from '@react-aria/textfield';
 import { TextInputBase } from '@koobiq/react-core';
 import { ToggleEventHandler } from 'react';
@@ -169,17 +167,34 @@ export { AriaCheckboxGroupProps }
 export { AriaCheckboxProps }
 
 // @public (undocumented)
-export interface AriaTagFieldProps extends Omit<AriaTextFieldProps<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange'> {
-    defaultInputValue?: string;
-    disableCommitOnBlur?: boolean;
-    inputValue?: string;
-    isClearable?: boolean;
-    onAdd?: (values: string[], context: TagFieldAddContext) => void;
-    onClear?: () => void;
-    onInputChange?: (value: string) => void;
+export type AriaTagAutocompleteProps<T extends object> = TagAutocompleteStateProps<T>;
+
+// @public (undocumented)
+export type AriaTagFieldProps<T extends object> = Omit<AriaTextFieldProps<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange'> & {
+    items?: Iterable<T>;
+    children: CollectionChildren<T>;
+    disabledKeys?: Iterable<Key_2>;
+    selectedKeys?: Selection_2;
+    defaultSelectedKeys?: Iterable<Key_2>;
+    onSelectionChange?: (keys: Selection_2) => void;
+    onAdd?: (values: string[], context: TagFieldAddContext<T>) => void;
     onRemove?: (keys: Set<Key_2>) => void;
+    inputValue?: string;
+    defaultInputValue?: string;
+    onInputChange?: (value: string) => void;
     splitPattern?: RegExp;
-}
+    disableCommitOnBlur?: boolean;
+    isClearable?: boolean;
+    onClear?: () => void;
+};
+
+// @public (undocumented)
+export type AriaTagListItemProps = {
+    key: Key_2;
+    collectionId?: string;
+    onRemove?: (keys: Set<Key_2>, context?: TagListItemRemoveContext) => void;
+    isDisabled?: boolean;
+};
 
 // @public (undocumented)
 export type AriaTagListProps = {
@@ -300,10 +315,10 @@ export const Form: ForwardRefExoticComponent<FormProps & RefAttributes<HTMLFormE
 // @public (undocumented)
 export const FormContext: Context<ContextValue<FormProps, HTMLFormElement>>;
 
-// Warning: (ae-forgotten-export) The symbol "DOMProps_2" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "DOMProps" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export interface FormProps extends FormProps_2, DOMProps_2, GlobalDOMAttributes_2<HTMLFormElement> {
+export interface FormProps extends FormProps_2, DOMProps, GlobalDOMAttributes<HTMLFormElement> {
     validationBehavior?: 'aria' | 'native';
 }
 
@@ -528,31 +543,84 @@ export type SwitchRenderProps = {
 };
 
 // @public (undocumented)
-export type TagFieldAddContext = {
-    source: TagFieldAddSource;
+export type TagAutocompleteAria<T extends object = object> = {
+    tagFieldProps: TagFieldStateProps<T> & {
+        state: TagAutocompleteState<T>;
+        popoverRef: RefObject<HTMLDivElement | null>;
+        listBoxRef: RefObject<HTMLUListElement | null>;
+    };
+    popoverProps: {
+        state: OverlayTriggerState;
+        anchorRef: RefObject<HTMLDivElement | null>;
+        popoverRef: RefObject<HTMLDivElement | null>;
+        type: 'listbox';
+        isNonModal: true;
+    };
+    listProps: {
+        onAction: (key: Key_2) => void;
+        state: ListState<T>;
+        listRef: RefObject<HTMLUListElement | null>;
+        autoFocus: true | FocusStrategy;
+        shouldUseVirtualFocus: true;
+        'aria-label': string;
+        id: string;
+    };
+};
+
+// @public (undocumented)
+export type TagAutocompleteFilter = (textValue: string, inputValue: string) => boolean;
+
+// Warning: (ae-forgotten-export) The symbol "TagAutocompleteRefProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type TagAutocompleteProps<T extends object> = AriaTagAutocompleteProps<T> & TagAutocompleteRefProps;
+
+// @public (undocumented)
+export type TagAutocompleteState<T extends object = object> = TagFieldState<T> & {
+    listState: ListState<T>;
+    overlayState: OverlayTriggerState;
+    onAction: (key: Key_2) => void;
+    listBoxId: string;
+    focusStrategy: FocusStrategy | undefined;
+    open: (focusStrategy?: FocusStrategy) => void;
+    close: () => void;
+};
+
+// @public (undocumented)
+export type TagAutocompleteStateProps<T extends object> = TagFieldStateProps<T> & {
+    listItems?: Iterable<T>;
+    renderListItem: TagFieldStateProps<T>['children'];
+    defaultFilter?: TagAutocompleteFilter;
+    isOpen?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (isOpen: boolean) => void;
+    allowsEmptyCollection?: boolean;
+    disableCloseOnSelect?: boolean;
+};
+
+// @public (undocumented)
+export type TagFieldAddContext<T = unknown> = {
+    source: Exclude<TagFieldAddSource, 'suggestion'>;
+} | {
+    source: 'suggestion';
+    suggestion: T;
 };
 
 // @public
-export type TagFieldAddSource = 'enter' | 'separator' | 'paste' | 'blur';
+export type TagFieldAddSource = 'enter' | 'separator' | 'paste' | 'blur' | 'suggestion';
 
 // @public (undocumented)
-export interface TagFieldAria<T extends object> extends ValidationResult {
-    clearButtonProps: TagFieldClearButtonProps;
+export type TagFieldAria<T extends object> = ValidationResult & {
+    labelProps: TextFieldAria<'input'>['labelProps'];
+    inputProps: TextFieldAria<'input'>['inputProps'];
     descriptionProps: TextFieldAria<'input'>['descriptionProps'];
     errorMessageProps: TextFieldAria<'input'>['errorMessageProps'];
-    inputProps: TextFieldAria<'input'>['inputProps'];
+    clearButtonProps: TagFieldClearButtonProps;
+    tagListProps: TagFieldTagListProps<T>;
+    tagListContainerProps: TagFieldTagListContainerProps;
     inputRef: RefObject<HTMLInputElement | null>;
     inputValue: string;
-    // (undocumented)
-    isDisabled: boolean | undefined;
-    // (undocumented)
-    isReadOnly: boolean | undefined;
-    // (undocumented)
-    isRequired: boolean | undefined;
-    labelProps: TextFieldAria<'input'>['labelProps'];
-    tagListContainerProps: TagFieldTagListContainerProps;
-    tagListProps: TagFieldTagListProps<T>;
-}
+};
 
 // @public (undocumented)
 export type TagFieldClearButtonProps = {
@@ -561,6 +629,24 @@ export type TagFieldClearButtonProps = {
     isHidden: boolean;
     onPress: () => void;
 };
+
+// @public (undocumented)
+export type TagFieldState<T extends object> = TagListState<T> & {
+    inputValue: string;
+    defaultInputValue: string;
+    setInputValue: (value: string) => void;
+    allowsAdding: boolean;
+    isDisabled: boolean | undefined;
+    isReadOnly: boolean | undefined;
+    addValues: (values: string[], context: TagFieldAddContext<T>) => boolean;
+    addFromInput: (source: Exclude<TagFieldAddSource, 'suggestion'>, rawValue?: string) => boolean;
+    isSeparator: (value: string) => boolean;
+    remove: (keys: Set<Key_2>) => boolean;
+    clear: () => boolean;
+};
+
+// @public (undocumented)
+export type TagFieldStateProps<T extends object> = AriaTagFieldProps<T>;
 
 // @public (undocumented)
 export type TagFieldTagListContainerProps = HTMLAttributes<HTMLDivElement> & {
@@ -573,7 +659,7 @@ export type TagFieldTagListProps<T extends object> = {
     state: TagListState<T>;
     isDisabled: boolean | undefined;
     tabIndex: -1;
-    onRemove: ((keys: Set<Key_2>) => void) | undefined;
+    onRemove: ((keys: Set<Key_2>, context?: TagListItemRemoveContext) => void) | undefined;
     'aria-label': string;
 };
 
@@ -581,6 +667,29 @@ export type TagFieldTagListProps<T extends object> = {
 export type TagListAria = {
     gridProps: DOMAttributes;
     collectionId: string | undefined;
+};
+
+// @public (undocumented)
+export type TagListItemAria = {
+    rowProps: DOMAttributes;
+    gridCellProps: DOMAttributes;
+    removeButtonProps: {
+        isDisabled: boolean | undefined;
+        tabIndex: -1;
+        id: string;
+        'aria-label': string;
+        'aria-labelledby': string;
+        onPress: () => void;
+    };
+    isPressed: boolean;
+    isSelected: boolean;
+    isDisabled: boolean | undefined;
+    allowsRemoving: boolean;
+};
+
+// @public (undocumented)
+export type TagListItemRemoveContext = {
+    source: 'keyboard' | 'press';
 };
 
 // @public (undocumented)
@@ -1171,49 +1280,24 @@ export type UseSwitchProps = AriaSwitchProps & {
 export type UseSwitchReturn = ReturnType<typeof useSwitch>;
 
 // @public (undocumented)
-export function useTagField<T extends object>(props: AriaTagFieldProps, state: TagListState<T>, ref?: Ref<HTMLInputElement>): TagFieldAria<T>;
+export function useTagAutocomplete<T extends object>(props: TagAutocompleteProps<T>, state: TagAutocompleteState<T>): TagAutocompleteAria<T>;
+
+// @public (undocumented)
+export function useTagAutocompleteState<T extends object>(props: TagAutocompleteStateProps<T>): TagAutocompleteState<T>;
+
+// Warning: (ae-forgotten-export) The symbol "TagFieldAutocompleteProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export function useTagField<T extends object>(props: AriaTagFieldProps<T> & TagFieldAutocompleteProps, state: TagFieldState<T> | TagAutocompleteState<T>, ref?: Ref<HTMLInputElement>): TagFieldAria<T>;
+
+// @public (undocumented)
+export function useTagFieldState<T extends object>(props: TagFieldStateProps<T>): TagFieldState<T>;
 
 // @public
 export function useTagList<T extends object>(props: AriaTagListProps, state: ListState<T>, ref: RefObject<HTMLElement | null>): TagListAria;
 
 // @public (undocumented)
-export function useTagListItem<T extends object>(props: UseTagListItemProps<T>): {
-    tagProps: DOMAttributes<FocusableElement> & DOMProps & AriaLabelingProps & GlobalDOMAttributes<Element> & {
-        ref: RefObject<HTMLDivElement | null>;
-        id: string;
-        role: string;
-        tabIndex: number;
-        'aria-disabled': true | undefined;
-        'aria-label': string | undefined;
-        'aria-selected': boolean | undefined;
-        'aria-describedby': string | undefined;
-        'data-collection': string | undefined;
-        'data-key': Key_2;
-        onFocus: (event: FocusEvent_2<HTMLDivElement>) => void;
-    };
-    isPressed: boolean;
-    isSelected: boolean;
-    isDisabled: boolean | undefined;
-    gridCellProps: DOMAttributes<FocusableElement>;
-    allowsRemoving: boolean;
-    removeButtonProps: {
-        isDisabled: boolean | undefined;
-        tabIndex: number;
-        id: string;
-        'aria-label': string;
-        'aria-labelledby': string;
-        onPress: () => void | undefined;
-    };
-};
-
-// @public (undocumented)
-export type UseTagListItemProps<T extends object> = {
-    state: ListState<T>;
-    collectionId?: string;
-    item: Node_2<T>;
-    onRemove?: (keys: Set<Key_2>) => void;
-    isDisabled?: boolean;
-};
+export function useTagListItem<T extends object>(props: AriaTagListItemProps, state: ListState<T>, ref: RefObject<HTMLDivElement | null>): TagListItemAria;
 
 // @public
 export function useTagListState<T extends object>(props: AriaTagListStateProps<T>): TagListState<T>;
