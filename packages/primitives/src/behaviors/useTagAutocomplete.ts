@@ -39,6 +39,7 @@ const tagAutocompletePropKeys = [
   'defaultOpen',
   'onOpenChange',
   'allowsEmptyCollection',
+  'disableCloseOnSelect',
   'anchorRef',
   'popoverRef',
   'listBoxRef',
@@ -94,6 +95,11 @@ export type TagAutocompleteStateProps<T extends object> =
     onOpenChange?: (isOpen: boolean) => void;
     /** Whether the suggestions popover can be open when the collection is empty. */
     allowsEmptyCollection?: boolean;
+    /**
+     * Keep the popover open after a suggestion is committed. Useful for picking
+     * several tags in a row.
+     */
+    disableCloseOnSelect?: boolean;
   };
 
 export function useTagAutocompleteState<T extends object>(
@@ -110,6 +116,7 @@ export function useTagAutocompleteState<T extends object>(
     defaultOpen,
     onOpenChange,
     allowsEmptyCollection = false,
+    disableCloseOnSelect = false,
   } = props;
 
   const listBoxId = useId();
@@ -236,8 +243,14 @@ export function useTagAutocompleteState<T extends object>(
 
       setInputValue('');
       listState.selectionManager.setFocusedKey(null);
+
+      if (!disableCloseOnSelect) {
+        close();
+      }
     },
     [
+      close,
+      disableCloseOnSelect,
       isDisabled,
       isReadOnly,
       listState.collection,

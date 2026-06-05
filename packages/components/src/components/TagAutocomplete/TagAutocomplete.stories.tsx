@@ -139,7 +139,7 @@ type Story = StoryObj<TagAutocompleteProps<TagItem>>;
 
 export const Base: Story = {
   render: function Render(args) {
-    return <ExampleTagAutocomplete {...args} />;
+    return <ExampleTagAutocomplete disableCommitOnBlur {...args} />;
   },
 };
 
@@ -286,6 +286,19 @@ export const Clearable: Story = {
       <ExampleTagAutocomplete
         initialItems={[...defaultTags, { id: 'storybook', name: 'Storybook' }]}
         isClearable
+      />
+    );
+  },
+};
+
+export const MultiPick: Story = {
+  render: function Render() {
+    return (
+      <ExampleTagAutocomplete
+        initialItems={[]}
+        caption="Popover stays open after selection — pick several tags in a row"
+        placeholder="Pick multiple suggestions without closing the menu"
+        disableCloseOnSelect
       />
     );
   },

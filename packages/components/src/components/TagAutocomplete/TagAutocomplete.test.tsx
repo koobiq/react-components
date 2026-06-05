@@ -16,6 +16,7 @@ type HarnessProps = {
   suggestions?: TagItem[];
   isReadOnly?: boolean;
   allowsEmptyCollection?: boolean;
+  disableCloseOnSelect?: boolean;
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
   onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
 };
@@ -30,6 +31,7 @@ function Harness(props: HarnessProps) {
     ],
     isReadOnly,
     allowsEmptyCollection,
+    disableCloseOnSelect,
     defaultFilter,
     onAdd: userOnAdd,
   } = props;
@@ -65,6 +67,7 @@ function Harness(props: HarnessProps) {
       listItems={suggestions}
       isReadOnly={isReadOnly}
       allowsEmptyCollection={allowsEmptyCollection}
+      disableCloseOnSelect={disableCloseOnSelect}
       renderListItem={(item) => (
         <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
           {item.name}
@@ -317,7 +320,7 @@ describe('TagAutocomplete', () => {
     expect(queryListbox()).toBeInTheDocument();
   });
 
-  it('fires onAdd with source="suggestion" when a suggestion is clicked and keeps the popover open', async () => {
+  it('fires onAdd with source="suggestion" when a suggestion is clicked and closes the popover', async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
     render(<Harness onAdd={onAdd} />);
@@ -334,15 +337,15 @@ describe('TagAutocomplete', () => {
       })
     );
 
-    expect(queryListbox()).toBeInTheDocument();
+    await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
   });
 
-  it('closes the popover on outside click AFTER an option was selected', async () => {
+  it('closes the popover on outside click AFTER an option was selected with disableCloseOnSelect', async () => {
     const user = userEvent.setup();
 
     render(
       <>
-        <Harness />
+        <Harness disableCloseOnSelect />
         <div data-testid="bystander">bystander</div>
       </>
     );
@@ -471,7 +474,7 @@ describe('TagAutocomplete', () => {
       );
     });
 
-    it('Enter on a focused option keeps the popover open', async () => {
+    it('Enter on a focused option closes the popover', async () => {
       const user = userEvent.setup();
       render(<Harness />);
 
@@ -480,13 +483,13 @@ describe('TagAutocomplete', () => {
 
       await user.keyboard('{ArrowDown}{Enter}');
 
-      expect(queryListbox()).toBeInTheDocument();
+      await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
     });
 
     it('clears option focus after keyboard selection while keeping list navigation available', async () => {
       const user = userEvent.setup();
       const onAdd = vi.fn();
-      render(<Harness onAdd={onAdd} />);
+      render(<Harness onAdd={onAdd} disableCloseOnSelect />);
 
       await user.click(getInput());
       await waitFor(() => expect(queryListbox()).toBeInTheDocument());
@@ -599,5 +602,30 @@ describe('TagAutocomplete', () => {
         suggestion: { id: 'react', name: 'React' },
       })
     );
+  });
+
+  describe('disableCloseOnSelect', () => {
+    it('keeps the popover open after a suggestion click', async () => {
+      const user = userEvent.setup();
+      render(<Harness disableCloseOnSelect />);
+
+      await user.click(getInput());
+      const option = await screen.findByRole('option', { name: 'React' });
+      await user.click(option);
+
+      expect(queryListbox()).toBeInTheDocument();
+    });
+
+    it('keeps the popover open after Enter on a focused option', async () => {
+      const user = userEvent.setup();
+      render(<Harness disableCloseOnSelect />);
+
+      await user.click(getInput());
+      await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+      await user.keyboard('{ArrowDown}{Enter}');
+
+      expect(queryListbox()).toBeInTheDocument();
+    });
   });
 });
