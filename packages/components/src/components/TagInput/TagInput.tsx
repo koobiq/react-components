@@ -66,12 +66,14 @@ export function TagInputInner<T extends object>(
     style,
     label,
     caption,
+    endAddon,
     className,
     fullWidth,
     labelAlign,
     errorMessage,
     isLabelHidden,
     labelPlacement,
+    startAddon,
     'data-testid': dataTestId,
     slotProps,
     placeholder,
@@ -160,11 +162,15 @@ export function TagInputInner<T extends object>(
 
   const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
-      endAddon: clearButtonPropsAria.isClearable ? (
-        <FormFieldClearButton {...clearButtonProps} />
-      ) : undefined,
+      endAddon: (clearButtonPropsAria.isClearable || endAddon) && (
+        <>
+          <FormFieldClearButton {...clearButtonProps} />
+          {endAddon}
+        </>
+      ),
       variant,
       isDisabled,
+      startAddon,
       onMouseDown: (event) => {
         if (event.target !== event.currentTarget) return;
         event.preventDefault();

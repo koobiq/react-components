@@ -53,6 +53,10 @@ type TagInputBaseProps<T extends object> = Omit<
 export type TagInputProps<T extends object = object> = TagInputBaseProps<T> & {
   /** Helper text below the field. */
   caption?: ReactNode;
+  /** Addon placed before the tags/input content. */
+  startAddon?: ReactNode;
+  /** Addon placed after the tags/input content. */
+  endAddon?: ReactNode;
   /** Whether the label is visually hidden. */
   isLabelHidden?: boolean;
   /** Whether the field takes up the full width of its container. */

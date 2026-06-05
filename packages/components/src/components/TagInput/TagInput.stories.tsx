@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import type { Key, Selection } from '@koobiq/react-core';
 import { useTimeout } from '@koobiq/react-core';
+import { IconCircleInfo16, IconGridSquares16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
@@ -241,11 +242,47 @@ export const Clearable: Story = {
       <TagInput<TagItem>
         label="Tags"
         items={list.items}
-        placeholder="Type and press Enter"
+        placeholder="Add tag"
         style={{ inlineSize: m ? 360 : 240 }}
         onRemove={(keys) => list.remove(...keys)}
         onAdd={(values) => list.append(...values.map(createTag))}
         isClearable
+      >
+        {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+      </TagInput>
+    );
+  },
+};
+
+export const Addons: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'react', name: 'React' },
+        { id: 'typescript', name: 'TypeScript' },
+      ],
+    });
+
+    const tagCounter = useRef(0);
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagInput<TagItem>
+        label="Tags"
+        items={list.items}
+        placeholder="Add"
+        style={{ inlineSize: m ? 360 : 240 }}
+        startAddon={<IconGridSquares16 />}
+        endAddon={<IconCircleInfo16 />}
+        onRemove={(keys) => list.remove(...keys)}
+        onAdd={(values) => list.append(...values.map(createTag))}
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
       </TagInput>

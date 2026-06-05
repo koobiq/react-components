@@ -18,6 +18,10 @@
   --form-field-control-padding-block-end: var(--kbq-size-xxs);
 }
 
+.group:has(> [data-placement='start']) {
+  --form-field-control-padding-inline-start: var(--kbq-size-m);
+}
+
 .tagListContainer {
   flex: 1;
   display: flex;
@@ -35,6 +39,10 @@
 
 .tagList:empty + .input {
   padding-inline-start: var(--kbq-size-s);
+}
+
+.group:has(> [data-placement='start']) .tagList:empty + .input {
+  padding-inline-start: 0;
 }
 
 .input {

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import type { ReactNode } from 'react';
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -14,6 +15,8 @@ type TagItem = { id: string; name: string };
 type HarnessProps = {
   initialTags?: TagItem[];
   suggestions?: TagItem[];
+  startAddon?: ReactNode;
+  endAddon?: ReactNode;
   isReadOnly?: boolean;
   allowsEmptyCollection?: boolean;
   disableCloseOnSelect?: boolean;
@@ -29,6 +32,8 @@ function Harness(props: HarnessProps) {
       { id: 'typescript', name: 'TypeScript' },
       { id: 'storybook', name: 'Storybook' },
     ],
+    startAddon,
+    endAddon,
     isReadOnly,
     allowsEmptyCollection,
     disableCloseOnSelect,
@@ -52,6 +57,8 @@ function Harness(props: HarnessProps) {
   return (
     <TagAutocomplete<TagItem>
       aria-label="Tags"
+      startAddon={startAddon}
+      endAddon={endAddon}
       slotProps={{ input: { 'data-testid': 'input' } }}
       items={tags.items}
       onAdd={(values, ctx) => {
@@ -176,6 +183,18 @@ describe('TagAutocomplete', () => {
     expect(
       screen.getByRole('option', { name: 'Storybook' })
     ).toBeInTheDocument();
+  });
+
+  it('renders startAddon and endAddon', () => {
+    render(<Harness startAddon="start-addon" endAddon="end-addon" />);
+
+    expect(screen.getByTestId('field-addon-start')).toHaveTextContent(
+      'start-addon'
+    );
+
+    expect(screen.getByTestId('field-addon-end')).toHaveTextContent(
+      'end-addon'
+    );
   });
 
   it('excludes selected tags from the suggestions by key or textValue', async () => {

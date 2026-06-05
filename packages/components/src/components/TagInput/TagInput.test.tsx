@@ -63,6 +63,7 @@ function Wrapper(props: WrapperProps) {
 }
 
 const getInput = () => screen.getByTestId('input') as HTMLInputElement;
+const getRoot = () => screen.getByTestId('root');
 const getClearButton = () => screen.queryByLabelText('clear-button');
 
 const queryTag = (label: string): HTMLElement | null => {
@@ -90,6 +91,41 @@ describe('TagInput', () => {
     render(<Wrapper initialItems={seed(['one', 'two'])} />);
     expect(queryTag('one')).toBeInTheDocument();
     expect(queryTag('two')).toBeInTheDocument();
+  });
+
+  describe('addons', () => {
+    const getStartAddon = () => screen.getByTestId('field-addon-start');
+    const getEndAddon = () => screen.getByTestId('field-addon-end');
+
+    it('should render a startAddon', () => {
+      render(<Wrapper startAddon="addon" />);
+
+      expect(getRoot()).toHaveTextContent('addon');
+    });
+
+    it('should render an endAddon', () => {
+      render(<Wrapper endAddon="addon" />);
+
+      expect(getRoot()).toHaveTextContent('addon');
+    });
+
+    it('should render addons in an error state', () => {
+      render(
+        <Wrapper startAddon="start-addon" endAddon="end-addon" isInvalid />
+      );
+
+      expect(getStartAddon()).toHaveAttribute('data-invalid', 'true');
+      expect(getEndAddon()).toHaveAttribute('data-invalid', 'true');
+    });
+
+    it('should render addons in a disabled state', () => {
+      render(
+        <Wrapper startAddon="start-addon" endAddon="end-addon" isDisabled />
+      );
+
+      expect(getStartAddon()).toHaveAttribute('data-disabled', 'true');
+      expect(getEndAddon()).toHaveAttribute('data-disabled', 'true');
+    });
   });
 
   describe('onAdd', () => {

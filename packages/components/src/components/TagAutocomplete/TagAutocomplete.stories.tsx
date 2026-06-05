@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+import { IconCircleInfo16, IconGridSquares16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
@@ -286,6 +287,18 @@ export const Clearable: Story = {
       <ExampleTagAutocomplete
         initialItems={[...defaultTags, { id: 'storybook', name: 'Storybook' }]}
         isClearable
+      />
+    );
+  },
+};
+
+export const Addons: Story = {
+  render: function Render() {
+    return (
+      <ExampleTagAutocomplete
+        placeholder="Add"
+        startAddon={<IconGridSquares16 />}
+        endAddon={<IconCircleInfo16 />}
       />
     );
   },
