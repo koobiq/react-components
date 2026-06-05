@@ -92,6 +92,7 @@ function TagAutocompleteRender<T extends object>(
     {
       isPadded: true,
       className: s.list,
+      noItemsText: props.allowsEmptyCollection ? undefined : null,
     },
     listPropsAria
   );

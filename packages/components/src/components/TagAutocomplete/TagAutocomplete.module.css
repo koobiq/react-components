@@ -12,3 +12,7 @@
   overflow-y: auto;
   max-block-size: inherit;
 }
+
+.list:empty {
+  display: none;
+}

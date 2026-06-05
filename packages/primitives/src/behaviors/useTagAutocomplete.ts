@@ -38,6 +38,7 @@ const tagAutocompletePropKeys = [
   'isOpen',
   'defaultOpen',
   'onOpenChange',
+  'allowsEmptyCollection',
   'anchorRef',
   'popoverRef',
   'listBoxRef',
@@ -91,6 +92,8 @@ export type TagAutocompleteStateProps<T extends object> =
     defaultOpen?: boolean;
     /** Fires when the suggestions popover opens or closes. */
     onOpenChange?: (isOpen: boolean) => void;
+    /** Whether the suggestions popover can be open when the collection is empty. */
+    allowsEmptyCollection?: boolean;
   };
 
 export function useTagAutocompleteState<T extends object>(
@@ -106,6 +109,7 @@ export function useTagAutocompleteState<T extends object>(
     isOpen,
     defaultOpen,
     onOpenChange,
+    allowsEmptyCollection = false,
   } = props;
 
   const listBoxId = useId();
@@ -158,18 +162,29 @@ export function useTagAutocompleteState<T extends object>(
     ]
   );
 
-  const overlayState = useOverlayTriggerState({
-    isOpen,
-    defaultOpen,
-    onOpenChange,
-  });
-
   const listState = useListState<T>({
     items: listItems,
     children: renderListItem,
     selectionMode: 'none',
     filter,
   });
+
+  const overlayState = useOverlayTriggerState({
+    isOpen,
+    defaultOpen,
+    onOpenChange,
+  });
+
+  const canShowCollection =
+    allowsEmptyCollection || listState.collection.size > 0;
+
+  const visibleOverlayState = useMemo<OverlayTriggerState>(
+    () => ({
+      ...overlayState,
+      isOpen: overlayState.isOpen && canShowCollection,
+    }),
+    [canShowCollection, overlayState]
+  );
 
   const { setInputValue } = tagFieldState;
 
@@ -181,7 +196,7 @@ export function useTagAutocompleteState<T extends object>(
     open: openOverlay,
     close: closeOverlay,
     isOpen: isOverlayOpen,
-  } = overlayState;
+  } = visibleOverlayState;
 
   const open = useCallback(
     (focusStrategy?: FocusStrategy) => {
@@ -223,7 +238,7 @@ export function useTagAutocompleteState<T extends object>(
   return {
     ...tagFieldState,
     listState,
-    overlayState,
+    overlayState: visibleOverlayState,
     onAction,
     listBoxId,
     focusStrategy,

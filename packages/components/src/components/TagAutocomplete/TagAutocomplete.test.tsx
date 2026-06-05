@@ -14,6 +14,7 @@ type TagItem = { id: string; name: string };
 type HarnessProps = {
   initialTags?: TagItem[];
   suggestions?: TagItem[];
+  allowsEmptyCollection?: boolean;
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
   onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
 };
@@ -26,6 +27,7 @@ function Harness(props: HarnessProps) {
       { id: 'typescript', name: 'TypeScript' },
       { id: 'storybook', name: 'Storybook' },
     ],
+    allowsEmptyCollection,
     defaultFilter,
     onAdd: userOnAdd,
   } = props;
@@ -59,6 +61,7 @@ function Harness(props: HarnessProps) {
       }}
       onRemove={(keys) => tags.remove(...keys)}
       listItems={suggestions}
+      allowsEmptyCollection={allowsEmptyCollection}
       renderListItem={(item) => (
         <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
           {item.name}
@@ -105,6 +108,27 @@ describe('TagAutocomplete', () => {
     await user.click(getInput());
 
     await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+  });
+
+  it('does not render the popover when no suggestions are available', async () => {
+    const user = userEvent.setup();
+    render(<Harness suggestions={[]} />);
+
+    await user.click(getInput());
+
+    expect(queryListbox()).not.toBeInTheDocument();
+    expect(getInput()).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('allows rendering an empty popover when allowsEmptyCollection is true', async () => {
+    const user = userEvent.setup();
+    render(<Harness allowsEmptyCollection suggestions={[]} />);
+
+    await user.click(getInput());
+
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+    expect(screen.queryAllByRole('option')).toHaveLength(0);
+    expect(getInput()).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('renders the provided suggestion items', async () => {
@@ -161,6 +185,32 @@ describe('TagAutocomplete', () => {
     await waitFor(() =>
       expect(screen.queryByRole('option', { name: 'React' })).toBeNull()
     );
+  });
+
+  it('hides the popover when filtering leaves no suggestions', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Harness
+        defaultFilter={(textValue, inputValue) =>
+          textValue.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())
+        }
+      />
+    );
+
+    const input = getInput();
+
+    await user.click(input);
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+    await user.type(input, 'missing');
+
+    await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
+    expect(input).toHaveAttribute('aria-expanded', 'false');
+
+    await user.clear(input);
+
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
   });
 
   it('closes the popover on Escape', async () => {
