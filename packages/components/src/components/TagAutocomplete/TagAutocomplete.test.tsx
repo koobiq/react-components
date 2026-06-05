@@ -458,6 +458,33 @@ describe('TagAutocomplete', () => {
       expect(queryListbox()).toBeInTheDocument();
     });
 
+    it('clears option focus after keyboard selection so Enter can commit a custom value', async () => {
+      const user = userEvent.setup();
+      const onAdd = vi.fn();
+      render(<Harness onAdd={onAdd} />);
+
+      await user.click(getInput());
+      await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+      await user.keyboard('{ArrowDown}{Enter}');
+
+      expect(getInput()).toHaveFocus();
+      expect(getInput()).not.toHaveAttribute('aria-activedescendant');
+
+      expect(onAdd).toHaveBeenLastCalledWith(
+        ['React'],
+        expect.objectContaining({
+          source: 'suggestion',
+          suggestion: { id: 'react', name: 'React' },
+        })
+      );
+
+      await user.keyboard('custom');
+      await user.keyboard('{Enter}');
+
+      expect(onAdd).toHaveBeenLastCalledWith(['custom'], { source: 'enter' });
+    });
+
     it('Enter without arrow-nav falls through to the existing tag-commit logic', async () => {
       const user = userEvent.setup();
       const onAdd = vi.fn();

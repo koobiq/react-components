@@ -231,8 +231,17 @@ export function useTagAutocompleteState<T extends object>(
       });
 
       setInputValue('');
+      listState.selectionManager.setFocused(false);
+      listState.selectionManager.setFocusedKey(null);
     },
-    [isDisabled, isReadOnly, listState.collection, onAdd, setInputValue]
+    [
+      isDisabled,
+      isReadOnly,
+      listState.collection,
+      listState.selectionManager,
+      onAdd,
+      setInputValue,
+    ]
   );
 
   return {
