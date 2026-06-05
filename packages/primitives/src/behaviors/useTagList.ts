@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { RefObject } from 'react';
+import type { KeyboardEvent, RefObject } from 'react';
 
 import type {
   DOMAttributes,
@@ -78,12 +78,26 @@ export function useTagList<T extends object>(
     'data-collection'?: string;
   };
 
+  const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.defaultPrevented) return;
+
+    if (
+      event.key === 'ArrowDown' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight'
+    ) {
+      event.preventDefault();
+    }
+  };
+
   return {
     gridProps: mergeProps(
       {
         role: state.collection.size ? 'grid' : 'group',
       },
       listProps,
+      { onKeyDown },
       focusWithinProps
     ),
     collectionId,

@@ -495,6 +495,35 @@ describe('TagAutocomplete', () => {
       );
     });
 
+    it('prevents boundary tag arrow keys from scrolling and closing the popover', async () => {
+      const user = userEvent.setup();
+      render(<Harness initialTags={[{ id: 'react', name: 'React' }]} />);
+
+      await user.click(getInput());
+      await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+      await user.keyboard('{ArrowLeft}');
+
+      const tag = screen
+        .getByText('React')
+        .closest<HTMLElement>('[role="row"]');
+
+      expect(tag).not.toBeNull();
+      await waitFor(() => expect(tag).toHaveFocus());
+
+      expect(fireEvent.keyDown(tag as HTMLElement, { key: 'ArrowRight' })).toBe(
+        false
+      );
+
+      expect(queryListbox()).toBeInTheDocument();
+
+      expect(fireEvent.keyDown(tag as HTMLElement, { key: 'ArrowDown' })).toBe(
+        false
+      );
+
+      expect(queryListbox()).toBeInTheDocument();
+    });
+
     it('Enter without arrow-nav falls through to the existing tag-commit logic', async () => {
       const user = userEvent.setup();
       const onAdd = vi.fn();
