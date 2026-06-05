@@ -162,6 +162,11 @@ export type TagFieldState<T extends object> = TagListState<T> & {
   clear: () => boolean;
 };
 
+type TagFieldAutocompleteProps = {
+  popoverRef?: RefObject<HTMLDivElement | null>;
+  listBoxRef?: RefObject<HTMLUListElement | null>;
+};
+
 export function useTagFieldState<T extends object>(
   props: TagFieldStateProps<T>
 ): TagFieldState<T> {
@@ -296,13 +301,10 @@ export type TagFieldAria<T extends object> = ValidationResult & {
   inputRef: RefObject<HTMLInputElement | null>;
   /** Current input value. */
   inputValue: string;
-  isDisabled: boolean | undefined;
-  isReadOnly: boolean | undefined;
-  isRequired: boolean | undefined;
 };
 
 export function useTagField<T extends object>(
-  props: AriaTagFieldProps<T>,
+  props: AriaTagFieldProps<T> & TagFieldAutocompleteProps,
   state: TagFieldState<T> | TagAutocompleteState<T>,
   ref?: Ref<HTMLInputElement>
 ): TagFieldAria<T> {
@@ -312,14 +314,17 @@ export function useTagField<T extends object>(
     isRequired,
     validationBehavior: validationBehaviorProp,
     'aria-label': ariaLabel,
+    popoverRef,
+    listBoxRef,
+    isDisabled,
+    isReadOnly,
+    ...textFieldProps
   } = props;
 
   const {
     inputValue,
     defaultInputValue,
     setInputValue,
-    isDisabled,
-    isReadOnly,
     allowsAdding,
     collection,
     selectionManager,
@@ -333,8 +338,6 @@ export function useTagField<T extends object>(
     overlayState: autocompleteOverlayState,
     listState: autocompleteListState,
     onAction: autocompleteOnAction,
-    popoverRef,
-    listBoxRef,
     listBoxId,
     open: autocompleteOpen,
     close: autocompleteClose,
@@ -676,7 +679,7 @@ export function useTagField<T extends object>(
   } = useTextField<'input'>(
     {
       ...removeDataAttributes({
-        ...props,
+        ...textFieldProps,
         isDisabled,
         isReadOnly,
         isRequired,
@@ -763,9 +766,6 @@ export function useTagField<T extends object>(
     inputProps,
     inputRef,
     inputValue,
-    isDisabled,
-    isReadOnly,
-    isRequired,
     labelProps,
     tagListContainerProps,
     tagListProps,

@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef } from 'react';
-import type { Ref } from 'react';
+import type { Ref, RefObject } from 'react';
 
 import { mergeProps } from '@koobiq/react-core';
 import {
@@ -15,6 +15,7 @@ import {
   useTagFieldState,
 } from '@koobiq/react-primitives';
 
+import { useForm } from '../Form';
 import type {
   FormFieldProps,
   FormFieldInputProps,
@@ -30,11 +31,12 @@ import { TagListInner } from '../TagList/TagListInner';
 import { useFieldSizingFallback } from './hooks/useFieldSizingFallback';
 import s from './TagInput.module.css';
 import type { TagInputComponent, TagInputProps } from './types';
-import { useTagInputResolvedProps } from './utils';
 
 export type TagInputInnerProps<T extends object> = {
   state: TagFieldState<T> | TagAutocompleteState<T>;
   inputRef?: Ref<HTMLInputElement>;
+  popoverRef?: RefObject<HTMLDivElement | null>;
+  listBoxRef?: RefObject<HTMLUListElement | null>;
 } & TagInputProps<T>;
 
 /**
@@ -43,9 +45,21 @@ export type TagInputInnerProps<T extends object> = {
  * tags.
  */
 export function TagInputInner<T extends object>(
-  fieldProps: TagInputInnerProps<T>
+  inProps: TagInputInnerProps<T>
 ) {
-  const { state, inputRef: forwardedInputRef, ...props } = fieldProps;
+  const {
+    state,
+    inputRef: forwardedInputRef,
+    isRequired,
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
+    ...props
+  } = inProps;
+
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
   const {
     variant = 'filled',
@@ -58,20 +72,15 @@ export function TagInputInner<T extends object>(
     errorMessage,
     isLabelHidden,
     labelPlacement,
-    isDisabled: isDisabledProp,
-    isReadOnly: isReadOnlyProp,
-    'data-testid': dataTestid,
+    'data-testid': dataTestId,
     slotProps,
     placeholder,
   } = props;
 
   const {
-    inputValue,
     inputRef,
-    isDisabled,
-    isReadOnly,
-    isRequired,
     isInvalid,
+    inputValue,
     validationErrors,
     validationDetails,
     descriptionProps,
@@ -84,8 +93,8 @@ export function TagInputInner<T extends object>(
   } = useTagField(
     {
       ...props,
-      isDisabled: isDisabledProp,
-      isReadOnly: isReadOnlyProp,
+      isDisabled,
+      isReadOnly,
     },
     state,
     forwardedInputRef
@@ -104,7 +113,7 @@ export function TagInputInner<T extends object>(
       fullWidth,
       labelAlign,
       labelPlacement,
-      'data-testid': dataTestid,
+      'data-testid': dataTestId,
       'data-variant': variant,
       'data-invalid': isInvalid || undefined,
       'data-readonly': isReadOnly || undefined,
@@ -224,11 +233,9 @@ function TagInputRender<T extends object>(
   props: TagInputProps<T>,
   ref?: Ref<HTMLInputElement>
 ) {
-  const resolvedProps = useTagInputResolvedProps<T>(props);
+  const state = useTagFieldState<T>(props);
 
-  const state = useTagFieldState<T>(resolvedProps);
-
-  return <TagInputInner<T> {...resolvedProps} state={state} inputRef={ref} />;
+  return <TagInputInner<T> {...props} state={state} inputRef={ref} />;
 }
 
 const TagInputComponent = forwardRef(TagInputRender) as TagInputComponent;

@@ -22,6 +22,43 @@ export type TagAutocompleteFilter = (
 
 const normalizeTextValue = (value: string) => value.trim().toLocaleLowerCase();
 
+type TagAutocompleteRefProps = {
+  /** Ref to the field the popover anchors to. */
+  anchorRef: RefObject<HTMLDivElement | null>;
+  /** Ref to the popover container. */
+  popoverRef: RefObject<HTMLDivElement | null>;
+  /** Ref to the listbox element. */
+  listBoxRef: RefObject<HTMLUListElement | null>;
+};
+
+const tagAutocompletePropKeys = [
+  'listItems',
+  'renderListItem',
+  'defaultFilter',
+  'isOpen',
+  'defaultOpen',
+  'onOpenChange',
+  'anchorRef',
+  'popoverRef',
+  'listBoxRef',
+] as const;
+
+type TagAutocompletePropKey = (typeof tagAutocompletePropKeys)[number];
+
+function getTagFieldProps<T extends object>(
+  props: TagAutocompleteProps<T>
+): TagFieldStateProps<T> {
+  const tagFieldProps = { ...props };
+
+  for (const key of tagAutocompletePropKeys) {
+    delete (tagFieldProps as Partial<Record<TagAutocompletePropKey, unknown>>)[
+      key
+    ];
+  }
+
+  return tagFieldProps;
+}
+
 export type TagAutocompleteState<T extends object = object> =
   TagFieldState<T> & {
     /** State for the filtered suggestions listbox. */
@@ -30,10 +67,6 @@ export type TagAutocompleteState<T extends object = object> =
     overlayState: OverlayTriggerState;
     /** Fires when a suggestion is picked by mouse or keyboard. */
     onAction: (key: Key) => void;
-    /** Ref to the popover container. */
-    popoverRef: RefObject<HTMLDivElement | null>;
-    /** Ref to the listbox element. */
-    listBoxRef: RefObject<HTMLUListElement | null>;
     /** DOM id for the listbox element. */
     listBoxId: string;
     /** Which item should receive virtual focus when the listbox opens. */
@@ -58,10 +91,6 @@ export type TagAutocompleteStateProps<T extends object> =
     defaultOpen?: boolean;
     /** Fires when the suggestions popover opens or closes. */
     onOpenChange?: (isOpen: boolean) => void;
-    /** Ref to the popover container. */
-    popoverRef: RefObject<HTMLDivElement | null>;
-    /** Ref to the listbox element. */
-    listBoxRef: RefObject<HTMLUListElement | null>;
   };
 
 export function useTagAutocompleteState<T extends object>(
@@ -77,8 +106,6 @@ export function useTagAutocompleteState<T extends object>(
     isOpen,
     defaultOpen,
     onOpenChange,
-    popoverRef,
-    listBoxRef,
   } = props;
 
   const listBoxId = useId();
@@ -198,8 +225,6 @@ export function useTagAutocompleteState<T extends object>(
     listState,
     overlayState,
     onAction,
-    popoverRef,
-    listBoxRef,
     listBoxId,
     focusStrategy,
     open,
@@ -207,13 +232,12 @@ export function useTagAutocompleteState<T extends object>(
   };
 }
 
-export type TagAutocompleteAria<
-  T extends object = object,
-  P extends object = object,
-> = {
+export type TagAutocompleteAria<T extends object = object> = {
   /** Props to spread on `TagInputField`. */
-  tagFieldProps: P & {
+  tagFieldProps: TagFieldStateProps<T> & {
     state: TagAutocompleteState<T>;
+    popoverRef: RefObject<HTMLDivElement | null>;
+    listBoxRef: RefObject<HTMLUListElement | null>;
   };
   /** Props to spread on the suggestion popover. */
   popoverProps: {
@@ -235,29 +259,22 @@ export type TagAutocompleteAria<
   };
 };
 
-export type TagAutocompleteProps<P extends object = object> = {
-  /** Ref to the field the popover anchors to. */
-  anchorRef: RefObject<HTMLDivElement | null>;
-  /** Props to pass through to the rendered tag field. */
-  tagFieldProps: P;
-};
+export type AriaTagAutocompleteProps<T extends object> =
+  TagAutocompleteStateProps<T>;
 
-export function useTagAutocomplete<T extends object, P extends object>(
-  props: TagAutocompleteProps<P>,
+export type TagAutocompleteProps<T extends object> =
+  AriaTagAutocompleteProps<T> & TagAutocompleteRefProps;
+
+export function useTagAutocomplete<T extends object>(
+  props: TagAutocompleteProps<T>,
   state: TagAutocompleteState<T>
-): TagAutocompleteAria<T, P> {
-  const { anchorRef, tagFieldProps } = props;
+): TagAutocompleteAria<T> {
+  const { anchorRef, popoverRef, listBoxRef } = props;
 
-  const {
-    overlayState,
-    listState,
-    onAction,
-    popoverRef,
-    listBoxRef,
-    listBoxId,
-    focusStrategy,
-    close,
-  } = state;
+  const tagFieldProps = getTagFieldProps(props);
+
+  const { overlayState, listState, onAction, listBoxId, focusStrategy, close } =
+    state;
 
   useInteractOutside({
     ref: popoverRef,
@@ -280,6 +297,8 @@ export function useTagAutocomplete<T extends object, P extends object>(
     tagFieldProps: {
       ...tagFieldProps,
       state,
+      popoverRef,
+      listBoxRef,
     },
     popoverProps: {
       state: overlayState,

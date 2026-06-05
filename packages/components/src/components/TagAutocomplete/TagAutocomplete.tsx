@@ -12,7 +12,6 @@ import {
 import { ListInner } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 import { TagInputInner } from '../TagInput';
-import { useTagInputResolvedProps } from '../TagInput/utils';
 import { Tag } from '../TagList/Tag';
 
 import s from './TagAutocomplete.module.css';
@@ -26,16 +25,30 @@ function TagAutocompleteRender<T extends object>(
   ref?: Ref<HTMLInputElement>
 ) {
   const {
-    listItems,
-    renderListItem,
-    defaultFilter,
-    isOpen,
-    defaultOpen,
-    onOpenChange,
-    ...tagInputProps
+    caption,
+    isLabelHidden,
+    fullWidth,
+    variant,
+    labelPlacement,
+    labelAlign,
+    className,
+    style,
+    'data-testid': dataTestId,
+    slotProps,
+    ...tagAutocompleteProps
   } = props;
 
-  const resolvedTagInputProps = useTagInputResolvedProps<T>(tagInputProps);
+  const tagInputUIProps = {
+    caption,
+    isLabelHidden,
+    fullWidth,
+    variant,
+    labelPlacement,
+    labelAlign,
+    className,
+    style,
+    'data-testid': dataTestId,
+  };
 
   const { ref: anchorRef, width: anchorWidth } =
     useElementSize<HTMLDivElement>();
@@ -43,34 +56,19 @@ function TagAutocompleteRender<T extends object>(
   const popoverRef = useRef<HTMLDivElement>(null);
   const listBoxRef = useRef<HTMLUListElement>(null);
 
-  const tagInputInnerProps = {
-    ...resolvedTagInputProps,
-    slotProps: {
-      ...resolvedTagInputProps.slotProps,
-      group: mergeProps(resolvedTagInputProps.slotProps?.group, {
-        ref: anchorRef,
-      }),
-    },
-  };
-
-  const autocompleteState = useTagAutocompleteState<T>({
-    ...resolvedTagInputProps,
-    listItems,
-    renderListItem,
-    defaultFilter,
-    isOpen,
-    defaultOpen,
-    onOpenChange,
-    popoverRef,
-    listBoxRef,
-  });
+  const autocompleteState = useTagAutocompleteState<T>(tagAutocompleteProps);
 
   const {
     tagFieldProps,
     listProps: listPropsAria,
     popoverProps: popoverPropsAria,
-  } = useTagAutocomplete<T, typeof tagInputInnerProps>(
-    { anchorRef, tagFieldProps: tagInputInnerProps },
+  } = useTagAutocomplete<T>(
+    {
+      ...tagAutocompleteProps,
+      anchorRef,
+      popoverRef,
+      listBoxRef,
+    },
     autocompleteState
   );
 
@@ -100,7 +98,17 @@ function TagAutocompleteRender<T extends object>(
 
   return (
     <>
-      <TagInputInner<T> {...tagFieldProps} inputRef={ref} />
+      <TagInputInner<T>
+        {...tagFieldProps}
+        {...tagInputUIProps}
+        inputRef={ref}
+        slotProps={{
+          ...slotProps,
+          group: mergeProps(slotProps?.group, {
+            ref: anchorRef,
+          }),
+        }}
+      />
       <PopoverInner {...popoverProps}>
         <ListInner<T> {...listProps} />
       </PopoverInner>
