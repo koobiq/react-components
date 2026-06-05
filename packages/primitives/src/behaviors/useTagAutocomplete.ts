@@ -176,7 +176,9 @@ export function useTagAutocompleteState<T extends object>(
   });
 
   const canShowCollection =
-    allowsEmptyCollection || listState.collection.size > 0;
+    !isDisabled &&
+    !isReadOnly &&
+    (allowsEmptyCollection || listState.collection.size > 0);
 
   const visibleOverlayState = useMemo<OverlayTriggerState>(
     () => ({
@@ -200,10 +202,12 @@ export function useTagAutocompleteState<T extends object>(
 
   const open = useCallback(
     (focusStrategy?: FocusStrategy) => {
+      if (isDisabled || isReadOnly) return;
+
       setFocusStrategy(focusStrategy);
       openOverlay();
     },
-    [openOverlay]
+    [isDisabled, isReadOnly, openOverlay]
   );
 
   const close = useCallback(() => {

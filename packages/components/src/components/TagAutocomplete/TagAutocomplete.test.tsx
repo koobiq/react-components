@@ -14,6 +14,7 @@ type TagItem = { id: string; name: string };
 type HarnessProps = {
   initialTags?: TagItem[];
   suggestions?: TagItem[];
+  isReadOnly?: boolean;
   allowsEmptyCollection?: boolean;
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
   onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
@@ -27,6 +28,7 @@ function Harness(props: HarnessProps) {
       { id: 'typescript', name: 'TypeScript' },
       { id: 'storybook', name: 'Storybook' },
     ],
+    isReadOnly,
     allowsEmptyCollection,
     defaultFilter,
     onAdd: userOnAdd,
@@ -61,6 +63,7 @@ function Harness(props: HarnessProps) {
       }}
       onRemove={(keys) => tags.remove(...keys)}
       listItems={suggestions}
+      isReadOnly={isReadOnly}
       allowsEmptyCollection={allowsEmptyCollection}
       renderListItem={(item) => (
         <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
@@ -108,6 +111,28 @@ describe('TagAutocomplete', () => {
     await user.click(getInput());
 
     await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+  });
+
+  it('does not open the popover when read-only input is focused', async () => {
+    const user = userEvent.setup();
+    render(<Harness isReadOnly />);
+
+    await user.click(getInput());
+
+    expect(getInput()).toHaveFocus();
+    expect(queryListbox()).not.toBeInTheDocument();
+    expect(getInput()).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('does not open the popover from keyboard when read-only', async () => {
+    const user = userEvent.setup();
+    render(<Harness isReadOnly />);
+
+    await user.click(getInput());
+    await user.keyboard('{ArrowDown}');
+
+    expect(queryListbox()).not.toBeInTheDocument();
+    expect(getInput()).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('does not render the popover when no suggestions are available', async () => {
