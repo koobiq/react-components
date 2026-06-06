@@ -83,6 +83,46 @@ Selecting a suggestion calls `onAdd(values, context)` with
 `context.source === 'suggestion'` and exposes the original item as
 `context.suggestion`.
 
+## Server-side suggestions
+
+`listItems` can be driven by a server. `useAsyncList` loads results from its
+`load` function and re-fetches whenever `setFilterText` runs — wire it to
+`onInputChange`. **Omit `defaultFilter`** so the popover renders the server
+results as-is. Surface progress with `isLoading` through `endAddon`, and
+failures with `error` through `isInvalid` / `errorMessage`.
+
+```tsx
+const suggestions = useAsyncList({
+  async load({ signal, filterText }) {
+    if (!filterText) return { items: [] };
+
+    const res = await fetch(`/products?q=${filterText}`, { signal });
+
+    return { items: await res.json() }; // already filtered by the server
+  },
+});
+
+<TagAutocomplete
+  items={tags.items}
+  listItems={suggestions.items}
+  onInputChange={suggestions.setFilterText}
+  endAddon={suggestions.isLoading ? <ProgressSpinner /> : undefined}
+  renderListItem={renderListItem}
+  // no defaultFilter — the server already filtered
+>
+  {renderTag}
+</TagAutocomplete>;
+```
+
+<Story of={Stories.ServerSearch} />
+
+## Keeping the popover open
+
+By default the popover closes after a suggestion is committed. Pass
+`disableCloseOnSelect` to keep it open and pick several suggestions in a row.
+
+<Story of={Stories.MultiPick} />
+
 ## Adding tags
 
 Free-form entry keeps the same behavior as `TagInput`: press <kbd>Enter</kbd>,
