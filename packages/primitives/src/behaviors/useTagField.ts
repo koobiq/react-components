@@ -727,6 +727,11 @@ export function useTagField<T extends object>(
   const comboboxInputProps = autocompleteOverlayState
     ? {
         onFocus: () => openAutocomplete(),
+        // Reopen suggestions when typing resumes after a selection (or Escape)
+        // closed the popover — focus stays in the input, so `onFocus` won't fire.
+        onInput: () => {
+          if (!autocompleteOverlayState?.isOpen) openAutocomplete();
+        },
         role: 'combobox',
         'aria-expanded': autocompleteOverlayState.isOpen,
         'aria-controls': autocompleteOverlayState.isOpen

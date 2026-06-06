@@ -359,6 +359,29 @@ describe('TagAutocomplete', () => {
     await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
   });
 
+  it('reopens the suggestions when typing resumes after a selection closed the popover', async () => {
+    const user = userEvent.setup();
+    render(<Harness />);
+
+    await user.click(getInput());
+    const option = await screen.findByRole('option', { name: 'React' });
+    await user.click(option);
+
+    // Selecting a suggestion closes the popover (default close-on-select).
+    await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
+
+    // Focus stays in the input after the pick, so `onFocus` won't fire again —
+    // a raw input event must reopen the popover. (Isolated from focus on purpose.)
+    fireEvent.input(getInput(), { target: { value: 'x' } });
+
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+    // React is already selected, so only the remaining suggestions are shown.
+    expect(
+      await screen.findByRole('option', { name: 'TypeScript' })
+    ).toBeInTheDocument();
+  });
+
   it('closes the popover on outside click AFTER an option was selected with disableCloseOnSelect', async () => {
     const user = userEvent.setup();
 
