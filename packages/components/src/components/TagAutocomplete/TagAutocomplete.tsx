@@ -35,6 +35,10 @@ function TagAutocompleteRender<T extends object>(
     style,
     'data-testid': dataTestId,
     slotProps,
+    isLoading,
+    onLoadMore,
+    loadingText,
+    noItemsText,
     ...tagAutocompleteProps
   } = props;
 
@@ -90,9 +94,12 @@ function TagAutocompleteRender<T extends object>(
 
   const listProps = mergeProps(
     {
+      isLoading,
+      onLoadMore,
+      loadingText,
       isPadded: true,
       className: s.list,
-      noItemsText: props.allowsEmptyCollection ? undefined : null,
+      noItemsText: props.allowsEmptyCollection ? noItemsText : null,
     },
     listPropsAria
   );

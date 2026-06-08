@@ -20,6 +20,9 @@ type HarnessProps = {
   isReadOnly?: boolean;
   allowsEmptyCollection?: boolean;
   disableCloseOnSelect?: boolean;
+  isLoading?: boolean;
+  loadingText?: ReactNode;
+  onLoadMore?: () => void;
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
   onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
 };
@@ -37,6 +40,9 @@ function Harness(props: HarnessProps) {
     isReadOnly,
     allowsEmptyCollection,
     disableCloseOnSelect,
+    isLoading,
+    loadingText,
+    onLoadMore,
     defaultFilter,
     onAdd: userOnAdd,
   } = props;
@@ -75,6 +81,9 @@ function Harness(props: HarnessProps) {
       isReadOnly={isReadOnly}
       allowsEmptyCollection={allowsEmptyCollection}
       disableCloseOnSelect={disableCloseOnSelect}
+      isLoading={isLoading}
+      loadingText={loadingText}
+      onLoadMore={onLoadMore}
       renderListItem={(item) => (
         <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
           {item.name}
@@ -380,6 +389,24 @@ describe('TagAutocomplete', () => {
     expect(
       await screen.findByRole('option', { name: 'TypeScript' })
     ).toBeInTheDocument();
+  });
+
+  it('shows a loading indicator in the suggestions while isLoading', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Harness
+        suggestions={[]}
+        allowsEmptyCollection
+        isLoading
+        loadingText="Loading…"
+      />
+    );
+
+    await user.click(getInput());
+
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+    expect(screen.getByText('Loading…')).toBeInTheDocument();
   });
 
   it('closes the popover on outside click AFTER an option was selected with disableCloseOnSelect', async () => {

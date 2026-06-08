@@ -110,6 +110,15 @@ const suggestions = useAsyncList({
 
 <Story of={Stories.ServerSearch} />
 
+## Asynchronous loading
+
+Pair `listItems` with `isLoading` and `onLoadMore` to load suggestions page by
+page. The list shows a spinner while `isLoading` is `true` and calls `onLoadMore`
+as the user scrolls near the bottom. Set `allowsEmptyCollection` so the popover
+can open (and show the spinner) before the first page arrives.
+
+<Story of={Stories.AsynchronousLoading} />
+
 ## Keeping the popover open
 
 By default the popover closes after a suggestion is committed. Pass

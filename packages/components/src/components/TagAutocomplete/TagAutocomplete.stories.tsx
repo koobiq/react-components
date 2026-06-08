@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { IconCircleInfo16, IconGridSquares16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -707,6 +707,99 @@ export const ServerSearch: Story = {
         isInvalid={Boolean(suggestions.error)}
         errorMessage={suggestions.error ? 'Request failed!' : undefined}
         endAddon={suggestions.isLoading ? <ProgressSpinner /> : undefined}
+        onInputChange={suggestions.setFilterText}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            tags.append(context.suggestion);
+
+            return;
+          }
+
+          tags.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => tags.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.title}>
+            {item.title}
+          </TagAutocomplete.ListItem>
+        )}
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.title}>
+            {item.title}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
+export const AsynchronousLoading: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    type Product = { id: string; title: string };
+
+    const ITEMS_PER_PAGE = 20;
+
+    const tagCounter = useRef(0);
+
+    const tags = useListData<Product>({ initialItems: [] });
+
+    const [hasMore, setHasMore] = useState(false);
+
+    const suggestions = useAsyncList<Product, number>({
+      async load({ signal, cursor, filterText }) {
+        if (!filterText?.trim()) {
+          setHasMore(false);
+
+          return { items: [] };
+        }
+
+        const skip = cursor ?? 0;
+        const url = new URL('https://dummyjson.com/products/search');
+
+        url.searchParams.set('q', filterText);
+        url.searchParams.set('limit', String(ITEMS_PER_PAGE));
+        url.searchParams.set('skip', String(skip));
+
+        const res = await fetch(url.toString(), { signal });
+        const data = await res.json();
+        const products: { id: number; title: string }[] = data.products ?? [];
+
+        const items = products.map((product) => ({
+          id: String(product.id),
+          title: product.title,
+        }));
+
+        const nextSkip = skip + items.length;
+        const more = nextSkip < (data.total ?? 0);
+
+        setHasMore(more);
+
+        return { items, cursor: more ? nextSkip : undefined };
+      },
+    });
+
+    const createTag = (title: string): Product => {
+      tagCounter.current += 1;
+
+      return { id: `custom-${tagCounter.current}-${title}`, title };
+    };
+
+    return (
+      <TagAutocomplete<Product>
+        label="Products"
+        fullWidth
+        // Keep the empty popover hidden until the user has typed something.
+        allowsEmptyCollection={suggestions.filterText.trim() !== ''}
+        style={{ inlineSize: m ? 360 : 240 }}
+        placeholder="Search — scroll the list to load more"
+        caption="Paginated suggestions from dummyjson.com (infinite scroll)"
+        items={tags.items}
+        listItems={suggestions.items}
+        isLoading={hasMore}
+        onLoadMore={suggestions.loadMore}
         onInputChange={suggestions.setFilterText}
         onAdd={(values, context) => {
           if (context.source === 'suggestion') {
