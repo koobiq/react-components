@@ -1,4 +1,5 @@
-.base {
+/* [data-slot] bumps specificity to override Divider's own --divider-color */
+.base[data-slot='divider'] {
   --divider-color: var(--actions-panel-vertical-divider-color);
 
   block-size: var(--kbq-size-m);
