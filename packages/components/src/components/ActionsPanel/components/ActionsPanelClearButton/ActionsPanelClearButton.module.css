@@ -1,5 +1,7 @@
 .base {
+  display: flex;
   margin-inline-start: auto;
+  align-items: center;
 }
 
 .clearButton {
