@@ -35,9 +35,9 @@ export const ActionsPanelCounter = ({
       <Typography
         as="div"
         className={s.text}
-        ellipsis
         color="on-contrast"
         variant="text-normal-medium"
+        ellipsis
       >
         {isAll ? (
           t.format('all selected')

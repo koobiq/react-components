@@ -15,6 +15,7 @@ export const ActionsPanelAction = (props: ActionsPanelActionProps) => {
       ref={ref}
       data-slot="action"
       startIcon={icon}
+      variant="contrast-filled"
       className={clsx(s.base, className)}
       {...other}
     >

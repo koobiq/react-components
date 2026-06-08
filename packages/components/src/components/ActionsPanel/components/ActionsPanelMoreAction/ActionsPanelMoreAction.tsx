@@ -42,6 +42,7 @@ export const ActionsPanelMoreAction = (props: ActionsPanelMoreActionProps) => {
   }) => (
     <Button
       data-slot="more-action"
+      variant="contrast-filled"
       ref={mergeRefs(ref, controlRef)}
       aria-label={t.format('show more actions')}
       className={clsx(s.base, className)}

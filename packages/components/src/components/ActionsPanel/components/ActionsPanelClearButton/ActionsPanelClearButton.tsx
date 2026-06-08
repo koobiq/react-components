@@ -26,7 +26,9 @@ export const ActionsPanelClearButton = ({
     <div className={clsx(s.base, className)} {...other}>
       <ActionsPanelDivider />
       <Button
+        data-slot="clear-button"
         className={s.clearButton}
+        variant="contrast-filled"
         aria-label={t.format('clear selection')}
         onPress={onClearSelection}
         startIcon={<IconCircleXmark16 />}

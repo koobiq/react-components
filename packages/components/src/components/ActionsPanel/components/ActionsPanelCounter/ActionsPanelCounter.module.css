@@ -2,6 +2,12 @@
   order: -1;
   display: flex;
   align-items: center;
+
+  /* extra-counter */
+  .extraCounter {
+    margin-inline-start: var(--kbq-size-xs);
+    color: inherit;
+  }
 }
 
 .base[aria-hidden='true'] {
@@ -21,10 +27,4 @@
   text-align: start;
   min-inline-size: 1ch;
   display: inline-block;
-}
-
-/* extra-counter */
-.extraCounter {
-  margin-inline-start: var(--kbq-size-xs);
-  color: inherit;
 }
