@@ -1,5 +1,7 @@
 .base {
   order: -1;
+  display: flex;
+  align-items: center;
 }
 
 .base[aria-hidden='true'] {
