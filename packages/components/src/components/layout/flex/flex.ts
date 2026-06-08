@@ -22,7 +22,7 @@ export const flexPropGap = [
   'xxl',
   '3xl',
   '4xl',
-  '5l',
+  '5xl',
   '6xl',
   '7xl',
 ] as const;
