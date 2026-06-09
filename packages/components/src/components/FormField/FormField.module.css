@@ -17,3 +17,21 @@
 .side {
   flex-direction: row;
 }
+
+.base[data-label-placement='top'] [data-slot='form-field-label'] {
+  padding-block-end: var(--kbq-size-xs);
+}
+
+.base[data-label-placement='side'] [data-slot='form-field-label'] {
+  padding-block-start: var(--kbq-size-xs);
+  padding-inline-end: var(--kbq-size-l);
+}
+
+.base[data-label-align='start'] [data-slot='form-field-label'] {
+  text-align: start;
+}
+
+.base[data-label-align='end'] [data-slot='form-field-label'] {
+  text-align: end;
+  justify-content: flex-end;
+}

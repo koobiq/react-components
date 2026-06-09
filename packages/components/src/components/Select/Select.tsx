@@ -211,6 +211,7 @@ function SelectRender<T extends object>(
       type: 'listbox',
       maxBlockSize: 256,
       className: s.popover,
+      'data-slot': 'dropdown',
       anchorRef: containerRef,
       placement: 'bottom start',
       size: Math.max(width, 200),

@@ -13,10 +13,7 @@
   }
 }
 
-.clearButton {
-  margin-inline-end: calc(-1 * var(--kbq-size-xxs));
-}
-
+/* body */
 .body {
   inline-size: 100%;
   min-inline-size: fit-content;

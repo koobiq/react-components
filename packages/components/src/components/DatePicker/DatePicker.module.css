@@ -3,28 +3,28 @@
 }
 
 /* popover */
-.popover {
+.popover[data-slot='dropdown'] {
   border-radius: var(--kbq-size-s);
   opacity: 0;
   transform: translateY(-8px);
-}
 
-.popover[data-transition='entering'] {
-  opacity: 1;
-  transform: translateY(0);
-}
+  &[data-transition='entering'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-.popover[data-transition='entered'] {
-  opacity: 1;
-  transform: translateY(0);
-}
+  &[data-transition='entered'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-.popover[data-transition='exiting'] {
-  opacity: 0;
-  transform: translateY(-8px);
-}
+  &[data-transition='exiting'] {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 
-.popover[data-transition='exited'] {
-  opacity: 0;
-  transform: translateY(-8px);
+  &[data-transition='exited'] {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }

@@ -29,21 +29,3 @@
 
   @mixin typography text-normal;
 }
-
-[data-label-placement='top'] .base {
-  padding-block-end: var(--kbq-size-xs);
-}
-
-[data-label-placement='side'] .base {
-  padding-block-start: var(--kbq-size-xs);
-  padding-inline-end: var(--kbq-size-l);
-}
-
-[data-label-align='start'] .base {
-  text-align: start;
-}
-
-[data-label-align='end'] .base {
-  text-align: end;
-  justify-content: flex-end;
-}

@@ -33,46 +33,46 @@
   margin-block-start: var(--kbq-size-xxs);
 }
 
-/* list */
-.list {
-  inline-size: 100%;
-}
-
-.list:empty {
-  display: none;
+.clearButton {
+  margin-inline-end: var(--kbq-size-xxs);
 }
 
 /* popover */
-.popover {
+.popover[data-slot='dropdown'] {
   border-radius: var(--kbq-size-s);
   opacity: 0;
   transform: translateY(-8px);
+
+  /* list */
+  .list {
+    inline-size: 100%;
+  }
+
+  .list:empty {
+    display: none;
+  }
+
+  &[data-transition='entering'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &[data-transition='entered'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &[data-transition='exiting'] {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  &[data-transition='exited'] {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
 
-.popover:has(.list:only-child:empty) {
+.popover[data-slot='dropdown']:has(.list:only-child:empty) {
   opacity: 0;
-}
-
-.popover[data-transition='entering'] {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.popover[data-transition='entered'] {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.popover[data-transition='exiting'] {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-
-.popover[data-transition='exited'] {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-
-.clearButton {
-  margin-inline-end: var(--kbq-size-xxs);
 }
