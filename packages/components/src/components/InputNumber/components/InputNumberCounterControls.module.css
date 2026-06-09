@@ -2,16 +2,16 @@
   display: flex;
   flex-direction: column;
   margin-inline-end: calc(-1 * var(--kbq-size-s));
-}
 
-.counter {
-  inline-size: var(--kbq-size-3xl);
-}
+  .counter {
+    inline-size: var(--kbq-size-3xl);
+  }
 
-.increment > svg {
-  margin-block-end: calc(-1 * var(--kbq-size-3xs));
-}
+  .increment > svg {
+    margin-block-end: calc(-1 * var(--kbq-size-3xs));
+  }
 
-.decrement > svg {
-  margin-block-start: calc(-1 * var(--kbq-size-3xs));
+  .decrement > svg {
+    margin-block-start: calc(-1 * var(--kbq-size-3xs));
+  }
 }
