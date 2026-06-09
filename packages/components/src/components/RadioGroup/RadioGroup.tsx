@@ -96,7 +96,6 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         ...props,
         style,
         labelPlacement,
-        className,
         labelAlign,
         isDisabled,
         isInvalid,
@@ -106,6 +105,7 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         'data-size': size,
         'data-testid': testId,
         'data-orientation': orientation,
+        className: clsx(s.base, className),
       },
       slotProps?.root
     );

@@ -7,6 +7,7 @@ import type {
   RefObject,
 } from 'react';
 
+import type { DataAttributeProps } from '@koobiq/react-core';
 import type {
   OverlayTriggerState,
   ButtonOptions,
@@ -168,7 +169,8 @@ export type PopoverProps = {
     container?: ComponentPropsWithRef<'div'>;
     transition?: Partial<TransitionProps<HTMLElement>>;
   };
-} & PopoverDeprecatedProps;
+} & PopoverDeprecatedProps &
+  DataAttributeProps;
 
 export type PopoverInnerProps = {
   state: OverlayTriggerState;

@@ -13,12 +13,17 @@
   inline-size: 100%;
 }
 
-.resizable {
+.base[data-resizable='true'] {
   table-layout: fixed;
   inline-size: fit-content;
+
+  td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
-[data-divider='none'] {
+.base[data-divider='none'] {
   tbody td {
     &:first-child {
       border-start-start-radius: var(--kbq-size-s);
@@ -51,13 +56,13 @@
   }
 }
 
-[data-divider='row'] {
+.base[data-divider='row'] {
   tbody td {
     border-block-end: var(--table-border);
   }
 }
 
-[data-sticky-header='true'] {
+.base[data-sticky-header='true'] {
   overflow-block: auto;
 
   thead {
@@ -68,34 +73,48 @@
   }
 }
 
-[aria-multiselectable='true'] tbody {
-  tr {
-    &:is([data-selected='true'], [data-focus-visible='true']):has(
-        + :is([data-selected='true'], [data-focus-visible='true'])
-      ) {
-      border-end-start-radius: 0;
-      border-end-end-radius: 0;
+.base[aria-multiselectable='true'] {
+  tr[data-selected='true'] {
+    background-color: var(--kbq-background-contrast-less);
+  }
 
-      td:first-child {
+  tr[data-selected='true']:where([data-hovered='true']) {
+    background-color: var(--kbq-states-background-contrast-less-hover);
+  }
+
+  tr[data-selected='true']:where([data-pressed='true']) {
+    background-color: var(--kbq-states-background-contrast-less-active);
+  }
+
+  tbody {
+    tr {
+      &:is([data-selected='true'], [data-focus-visible='true']):has(
+          + :is([data-selected='true'], [data-focus-visible='true'])
+        ) {
         border-end-start-radius: 0;
-      }
-
-      td:last-child {
         border-end-end-radius: 0;
+
+        td:first-child {
+          border-end-start-radius: 0;
+        }
+
+        td:last-child {
+          border-end-end-radius: 0;
+        }
       }
-    }
 
-    &:is([data-selected='true'], [data-focus-visible='true'])
-      + :is([data-selected='true'], [data-focus-visible='true']) {
-      border-start-start-radius: 0;
-      border-start-end-radius: 0;
-
-      td:first-child {
+      &:is([data-selected='true'], [data-focus-visible='true'])
+        + :is([data-selected='true'], [data-focus-visible='true']) {
         border-start-start-radius: 0;
-      }
-
-      td:last-child {
         border-start-end-radius: 0;
+
+        td:first-child {
+          border-start-start-radius: 0;
+        }
+
+        td:last-child {
+          border-start-end-radius: 0;
+        }
       }
     }
   }

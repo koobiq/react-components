@@ -11,6 +11,15 @@
     transform var(--kbq-transition-slow),
     inline-size var(--kbq-transition-slow);
   transition-duration: var(--content-panel-transition-duration);
+
+  /* dialog */
+  .dialog {
+    border-radius: var(--kbq-size-l);
+    background-color: var(--kbq-background-card);
+    border: 1px solid var(--kbq-line-contrast-less);
+    overflow: unset;
+    block-size: inherit;
+  }
 }
 
 .resizable {
@@ -36,15 +45,6 @@ body[data-resizing='true'] .base {
 
 .base[data-transition='exited'] {
   transform: translate(var(--content-panel-start-position), 0);
-}
-
-/* dialog */
-.dialog {
-  border-radius: var(--kbq-size-l);
-  background-color: var(--kbq-background-card);
-  border: 1px solid var(--kbq-line-contrast-less);
-  overflow: unset;
-  block-size: inherit;
 }
 
 /* resizer */

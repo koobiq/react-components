@@ -61,9 +61,10 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
       size: 'auto',
       hideArrow: true,
       popoverRef: domRef,
+      'data-slot': 'menu',
       'data-testid': testId,
       anchorRef: anchorRef || controlRef,
-      className: clsx(s.popover, className),
+      className: clsx(s.base, className),
       slotProps: {
         container: { className: s.container },
       },

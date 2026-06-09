@@ -50,8 +50,3 @@
   outline-offset: -2px;
   outline: 2px solid var(--kbq-states-line-focus-theme);
 }
-
-[data-resizable='true'] .base {
-  text-overflow: ellipsis;
-  overflow: hidden;
-}

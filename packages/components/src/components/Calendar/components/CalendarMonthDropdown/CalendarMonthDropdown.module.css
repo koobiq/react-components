@@ -1,0 +1,3 @@
+.trigger[aria-expanded='true'] {
+  background-color: var(--button-bg-color-active);
+}

@@ -15,6 +15,12 @@
     block-size var(--kbq-transition-slow);
   will-change: margin-bottom, margin-top, block-size;
   transition-duration: var(--toast-transition-duration);
+
+  .closeIcon {
+    order: 1;
+    margin-block-start: var(--kbq-size-m);
+    margin-inline-end: var(--kbq-size-xxs);
+  }
 }
 
 .base[data-placement^='bottom'] {
@@ -41,12 +47,6 @@
   flex-direction: column;
   gap: var(--kbq-size-xxs);
   padding: var(--kbq-size-l) var(--kbq-size-s) var(--kbq-size-l) 0;
-}
-
-.closeIcon {
-  order: 1;
-  margin-block-start: var(--kbq-size-m);
-  margin-inline-end: var(--kbq-size-xxs);
 }
 
 .action {

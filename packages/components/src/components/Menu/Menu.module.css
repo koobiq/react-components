@@ -1,11 +1,11 @@
-.popover {
+.base[data-slot='menu'] {
   border-radius: var(--kbq-size-s);
   min-inline-size: 200px;
   max-inline-size: 640px;
-}
 
-.container {
-  flex-direction: column;
-  inline-size: 100%;
-  display: flex;
+  .container {
+    flex-direction: column;
+    inline-size: 100%;
+    display: flex;
+  }
 }

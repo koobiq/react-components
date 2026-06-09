@@ -1,7 +1,8 @@
-[data-label-placement='side'] .label {
+.base[data-label-placement='side'] .label[data-slot='form-field-label'] {
   padding-block-start: 0;
 }
 
+/* body */
 .body {
   inline-size: 100%;
 }
@@ -16,6 +17,7 @@
   margin-block-start: var(--kbq-size-xxs);
 }
 
+/* group */
 .group {
   display: flex;
   gap: var(--kbq-size-s);

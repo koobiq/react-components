@@ -73,13 +73,7 @@ function TableBase<T extends object>(props: TableBaseProps<T>) {
 
   const tableProps = mergeProps(
     {
-      className: clsx(
-        s.base,
-        fullWidth && s.fullWidth,
-        isResizable && s.resizable,
-        textNormal,
-        className
-      ),
+      className: clsx(s.base, fullWidth && s.fullWidth, textNormal, className),
       'data-divider': divider,
       'data-resizable': isResizable || undefined,
       'data-sticky-header': stickyHeader || undefined,

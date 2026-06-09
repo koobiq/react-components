@@ -9,6 +9,12 @@
   transition:
     opacity var(--kbq-transition-default),
     transform var(--kbq-transition-default);
+
+  /* dialog */
+  .dialog {
+    border-radius: inherit;
+    background-color: inherit;
+  }
 }
 
 .base[data-placement='top'][data-arrow='true'] {
@@ -69,12 +75,6 @@
 .underlay {
   inset: 0;
   position: fixed;
-}
-
-/* dialog */
-.dialog {
-  border-radius: inherit;
-  background-color: inherit;
 }
 
 /* transition */

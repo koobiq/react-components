@@ -27,6 +27,10 @@
     outline-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default),
     color var(--kbq-transition-default);
+
+  .cancelIcon {
+    margin-inline-end: var(--kbq-size-3xs);
+  }
 }
 
 .content {
@@ -43,13 +47,6 @@
   justify-content: center;
   color: var(--tag-icon-color);
   margin-inline-start: var(--kbq-size-3xs);
-}
-
-.cancelIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-inline-end: var(--kbq-size-3xs);
 }
 
 .theme-fade {
