@@ -9,7 +9,7 @@ import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primiti
 import type { ButtonOptions } from '@koobiq/react-primitives';
 import { ComponentPropsWithRef } from 'react';
 import { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
@@ -100,7 +100,7 @@ export type PopoverProps = {
         container?: ComponentPropsWithRef<'div'>;
         transition?: Partial<TransitionProps<HTMLElement>>;
     };
-} & PopoverDeprecatedProps;
+} & PopoverDeprecatedProps & DataAttributeProps;
 
 // @public (undocumented)
 export type PopoverPropSize = (typeof popoverPropSize)[number] | CSSProperties['inlineSize'];
@@ -116,7 +116,7 @@ export const popoverPropType: readonly ["dialog", "menu", "listbox", "tree", "gr
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Popover/types.d.ts:122:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Popover/types.d.ts:123:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
