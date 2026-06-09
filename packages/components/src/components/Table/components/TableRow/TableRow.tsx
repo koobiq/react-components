@@ -41,9 +41,6 @@ export function TableRow<T>({ item, children, state }: TableRowProps<T>) {
     <tr
       className={clsx(
         s.base,
-        isHovered && s.hovered,
-        isPressed && s.pressed,
-        isSelected && s.selected,
         isDisabled && s.disabled,
         isFocusVisible && s.focusVisible,
         className
