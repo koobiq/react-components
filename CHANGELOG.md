@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.34.1](https://github.com/koobiq/react-components/compare/0.34.0...0.34.1) (2026-06-09)
+
+
+### 🐞 Bug Fixes
+
+* **ActionsPanel:** correct styling of internal subcomponents (divider, badge, buttons) (DS-5174) ([#385](https://github.com/koobiq/react-components/issues/385)) ([9a36d4b](https://github.com/koobiq/react-components/commit/9a36d4b7c2b49b42c48cb21d6a7ab1fdb7f655f0))
+* **ActionsPanel:** fix selected counter position (DS-5126) ([#382](https://github.com/koobiq/react-components/issues/382)) ([370023e](https://github.com/koobiq/react-components/commit/370023eed68af61ef05b636c305c6399b27916ca))
+* **components:** stabilize nested component styles against CSS order (DS-5179) ([#386](https://github.com/koobiq/react-components/issues/386)) ([cdd57e8](https://github.com/koobiq/react-components/commit/cdd57e8698da0b4ed16e4192b8ea85be64d25d35))
+* **flex:** replace invalid 5l gap size with 5xl (DS-5171) ([#383](https://github.com/koobiq/react-components/issues/383)) ([ec9e6d5](https://github.com/koobiq/react-components/commit/ec9e6d55cf157330985d1ffd93103de7204573e6))
+
 ## [0.34.0](https://github.com/koobiq/react-components/compare/0.33.0...0.34.0) (2026-05-29)
 
 
