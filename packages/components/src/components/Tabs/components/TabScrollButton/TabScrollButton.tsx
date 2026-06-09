@@ -24,6 +24,7 @@ export const TabScrollButton = forwardRef<
       type="button"
       tabIndex={-1}
       variant="theme-contrast"
+      data-slot="scroll-button"
       className={clsx(s.base, s[dir], isInvisible && s.invisible, className)}
       ref={ref}
       {...other}

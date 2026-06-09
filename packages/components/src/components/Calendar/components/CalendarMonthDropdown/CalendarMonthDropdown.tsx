@@ -2,12 +2,7 @@
 
 import { useRef, useEffect, type ComponentPropsWithRef } from 'react';
 
-import {
-  clsx,
-  mergeProps,
-  useBoolean,
-  useDateFormatter,
-} from '@koobiq/react-core';
+import { mergeProps, useBoolean, useDateFormatter } from '@koobiq/react-core';
 import { IconChevronDown16 } from '@koobiq/react-icons';
 import { type CalendarState } from '@koobiq/react-primitives';
 
@@ -16,7 +11,8 @@ import { Button } from '../../../Button';
 import type { ItemProps } from '../../../Collections';
 import { Menu } from '../../../Menu';
 import type { PopoverProps } from '../../../Popover';
-import s from '../../Calendar.module.css';
+
+import s from './CalendarMonthDropdown.module.css';
 
 export type CalendarMonthDropdownProps = {
   state: CalendarState;
@@ -119,7 +115,7 @@ export function CalendarMonthDropdown({
       control={(props) => (
         <Button
           {...props}
-          className={clsx(isOpen && s.open)}
+          className={s.trigger}
           variant="contrast-transparent"
           isDisabled={state.isDisabled}
           endIcon={<IconChevronDown16 />}
@@ -127,7 +123,6 @@ export function CalendarMonthDropdown({
           {capitalizeFirstLetter(selectedMonthName).replace(/\.$/, '')}
         </Button>
       )}
-      className={s.popover}
       slotProps={{
         list: listProps,
         popover: popoverProps,

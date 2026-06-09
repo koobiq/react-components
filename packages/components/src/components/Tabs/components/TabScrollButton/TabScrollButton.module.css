@@ -1,4 +1,4 @@
-.base {
+.base[data-slot='scroll-button'] {
   --tabs-scroll-button-inline-size: var(--kbq-size-3xl);
 
   opacity: 1;
@@ -16,39 +16,39 @@
     pointer-events: none;
     inline-size: calc(1.75 * var(--tabs-scroll-button-inline-size));
   }
-}
 
-.prev {
-  inset-inline-start: 0;
-
-  &::after {
-    inset-block-start: 0;
+  &.prev {
     inset-inline-start: 0;
-    background: linear-gradient(
-      to right,
-      var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) var(--tabs-scroll-button-inline-size),
-      var(--kbq-background-transparent) 100%
-    );
+
+    &::after {
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      background: linear-gradient(
+        to right,
+        var(--kbq-background-bg) 0,
+        var(--kbq-background-bg) var(--tabs-scroll-button-inline-size),
+        var(--kbq-background-transparent) 100%
+      );
+    }
   }
-}
 
-.next {
-  inset-inline-end: 0;
-
-  &::after {
-    inset-block-start: 0;
+  &.next {
     inset-inline-end: 0;
-    background: linear-gradient(
-      to left,
-      var(--kbq-background-bg) 0,
-      var(--kbq-background-bg) var(--tabs-scroll-button-inline-size),
-      var(--kbq-background-transparent) 100%
-    );
-  }
-}
 
-.invisible {
-  opacity: 0;
-  visibility: hidden;
+    &::after {
+      inset-block-start: 0;
+      inset-inline-end: 0;
+      background: linear-gradient(
+        to left,
+        var(--kbq-background-bg) 0,
+        var(--kbq-background-bg) var(--tabs-scroll-button-inline-size),
+        var(--kbq-background-transparent) 100%
+      );
+    }
+  }
+
+  &.invisible {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
