@@ -2,7 +2,7 @@
 
 import { type ComponentPropsWithRef, useEffect, useRef } from 'react';
 
-import { clsx, mergeProps, useBoolean } from '@koobiq/react-core';
+import { mergeProps, useBoolean } from '@koobiq/react-core';
 import { IconChevronDown16 } from '@koobiq/react-icons';
 import { type CalendarState } from '@koobiq/react-primitives';
 
@@ -10,7 +10,8 @@ import { Button } from '../../../Button';
 import type { ItemProps } from '../../../Collections';
 import { Menu } from '../../../Menu';
 import type { PopoverProps } from '../../../Popover';
-import s from '../../Calendar.module.css';
+
+import s from './CalendarYearDropdown.module.css';
 
 export type CalendarYearDropdownProps = {
   state: CalendarState;
@@ -89,7 +90,7 @@ export function CalendarYearDropdown({
       control={(props) => (
         <Button
           {...props}
-          className={clsx(isOpen && s.open)}
+          className={s.trigger}
           variant="contrast-transparent"
           endIcon={<IconChevronDown16 />}
           isDisabled={state.isDisabled}
@@ -97,7 +98,6 @@ export function CalendarYearDropdown({
           {selectedYearName}
         </Button>
       )}
-      className={s.popover}
       items={years}
       selectionMode="single"
       disallowEmptySelection

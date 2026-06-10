@@ -135,6 +135,7 @@ export function DatePickerRender<T extends DateValue>(
       hideCloseButton: true,
       className: s.popover,
       placement: 'bottom start',
+      'data-slot': 'dropdown',
       slotProps: {
         dialog: dialogProps,
       },

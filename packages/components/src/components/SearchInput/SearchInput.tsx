@@ -125,7 +125,6 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
 
     const clearButtonProps = mergeProps(
       {
-        className: s.clearButton,
         isHidden: clearButtonIsHidden,
         isClearable: true,
       },

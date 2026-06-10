@@ -6,7 +6,6 @@ import {
 import { clsx, useLocalizedStringFormatter } from '@koobiq/react-core';
 
 import { Badge } from '../../../Badge';
-import { FlexBox } from '../../../FlexBox';
 import { Typography } from '../../../Typography';
 import intlMessages from '../../intl.json';
 import { ActionsPanelDivider } from '../ActionsPanelDivider';
@@ -32,13 +31,13 @@ export const ActionsPanelCounter = ({
   const isAll = selectedItemCount === 'all';
 
   return (
-    <FlexBox alignItems="center" className={clsx(s.base, className)} {...other}>
+    <div className={clsx(s.base, className)} {...other}>
       <Typography
         as="div"
         className={s.text}
-        ellipsis
         color="on-contrast"
         variant="text-normal-medium"
+        ellipsis
       >
         {isAll ? (
           t.format('all selected')
@@ -55,6 +54,6 @@ export const ActionsPanelCounter = ({
         )}
       </Typography>
       <ActionsPanelDivider />
-    </FlexBox>
+    </div>
   );
 };

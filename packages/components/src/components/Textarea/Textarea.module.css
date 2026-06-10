@@ -1,10 +1,16 @@
-.auto-size {
-  resize: none;
-}
+.base {
+  .group {
+    padding-inline: 0;
+  }
 
-.vertical-resize {
-  resize: block;
-  overflow: auto;
+  .auto-size {
+    resize: none;
+  }
+
+  .vertical-resize {
+    resize: block;
+    overflow: auto;
+  }
 }
 
 .body {
@@ -19,8 +25,4 @@
 .body > :first-child + * + * {
   margin: 0;
   margin-block-start: var(--kbq-size-xxs);
-}
-
-.group {
-  padding-inline: 0;
 }

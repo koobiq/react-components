@@ -1,7 +1,22 @@
 .base {
+  display: flex;
+  align-items: center;
   margin-inline-start: auto;
 }
 
-.clearButton {
+/* [data-slot] bumps specificity over Button's own rules */
+.clearButton[data-slot='clear-button'] {
   background-color: var(--kbq-background-transparent);
+
+  &[data-hovered='true']:not([data-loading='true']) {
+    background-color: var(--kbq-states-background-contrast-hover);
+  }
+
+  &[data-pressed='true']:not([data-loading='true']) {
+    background-color: var(--kbq-states-background-contrast-active);
+  }
+
+  &[data-disabled='true'] {
+    background-color: var(--kbq-states-background-disabled);
+  }
 }

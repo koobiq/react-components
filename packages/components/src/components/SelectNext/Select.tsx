@@ -254,6 +254,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       className: s.popover,
       anchorRef: containerRef,
       placement: 'bottom start',
+      'data-slot': 'dropdown',
       size: Math.max(width, 200),
       slotProps: {
         container: { className: s.container },

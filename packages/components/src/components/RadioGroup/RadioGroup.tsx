@@ -3,7 +3,7 @@
 import { forwardRef, type ComponentRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
-import { mergeProps } from '@koobiq/react-core';
+import { clsx, mergeProps } from '@koobiq/react-core';
 import { RadioGroup as RadioGroupPrimitive } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -14,7 +14,6 @@ import type {
   FormFieldCaptionProps,
 } from '../FormField';
 import { FormField } from '../FormField';
-import { flex } from '../layout';
 
 import { RadioGroupContext } from './index';
 import type { RadioGroupProps } from './index';
@@ -27,6 +26,7 @@ import s from './RadioGroup.module.css';
 export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
   (props, ref) => {
     const {
+      orientation = 'vertical',
       size = 'normal',
       label,
       children,
@@ -35,7 +35,6 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
       className,
       description,
       caption: captionProp,
-      orientation,
       isInvalid: isInvalidProp,
       isDisabled: isDisabledProp,
       isRequired: isRequiredProp,
@@ -97,7 +96,6 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         ...props,
         style,
         labelPlacement,
-        className,
         labelAlign,
         isDisabled,
         isInvalid,
@@ -107,17 +105,14 @@ export const RadioGroup = forwardRef<ComponentRef<'div'>, RadioGroupProps>(
         'data-size': size,
         'data-testid': testId,
         'data-orientation': orientation,
+        className: clsx(s.base, className),
       },
       slotProps?.root
     );
 
     const radioGroupProps = mergeProps(
       {
-        className: flex({
-          direction: orientation === 'horizontal' ? 'row' : 'column',
-          alignItems: orientation === 'horizontal' ? 'center' : 'flex-start',
-          gap: 's',
-        }),
+        className: clsx(s.group, s[orientation]),
       },
       slotProps?.radioGroup
     );

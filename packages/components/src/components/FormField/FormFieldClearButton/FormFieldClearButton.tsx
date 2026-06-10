@@ -26,6 +26,7 @@ export const FormFieldClearButton = forwardRef<
   return (
     <IconButton
       slot="clear-button"
+      data-slot="clear-button"
       aria-hidden={isHidden}
       tabIndex={isHidden ? -1 : undefined}
       className={clsx(s.base, className)}

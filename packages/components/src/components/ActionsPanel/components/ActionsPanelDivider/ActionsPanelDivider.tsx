@@ -12,6 +12,7 @@ export const ActionsPanelDivider = ({
   ...other
 }: ActionsPanelCounterProps) => (
   <Divider
+    data-slot="divider"
     orientation="vertical"
     className={clsx(s.base, className)}
     {...other}

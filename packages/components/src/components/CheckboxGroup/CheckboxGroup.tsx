@@ -21,7 +21,6 @@ import type {
   FormFieldLabelProps,
   FormFieldProps,
 } from '../FormField';
-import { flex } from '../layout';
 
 import s from './CheckboxGroup.module.css';
 import { CheckboxGroupContext } from './CheckboxGroupContext';
@@ -37,6 +36,7 @@ export const CheckboxGroup = forwardRef<
   CheckboxGroupProps
 >((props, ref) => {
   const {
+    orientation = 'vertical',
     size = 'normal',
     label,
     style,
@@ -46,7 +46,6 @@ export const CheckboxGroup = forwardRef<
     slotProps,
     isRequired,
     labelAlign,
-    orientation,
     errorMessage,
     isLabelHidden,
     labelPlacement,
@@ -111,11 +110,7 @@ export const CheckboxGroup = forwardRef<
 
   const checkboxGroupProps = mergeProps(
     {
-      className: flex({
-        direction: orientation === 'horizontal' ? 'row' : 'column',
-        alignItems: orientation === 'horizontal' ? 'center' : 'flex-start',
-        gap: 's',
-      }),
+      className: clsx(s.group, s[orientation]),
     },
     slotProps?.checkboxGroup
   );

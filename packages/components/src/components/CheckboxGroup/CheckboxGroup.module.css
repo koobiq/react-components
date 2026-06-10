@@ -1,5 +1,7 @@
-[data-label-placement='side'] .label {
-  padding-block-start: 0;
+.base[data-label-placement='side'] {
+  .label[data-slot='form-field-label'] {
+    padding-block-start: 0;
+  }
 }
 
 .body {
@@ -14,4 +16,20 @@
 .body > :first-child + * + * {
   margin: 0;
   margin-block-start: var(--kbq-size-xxs);
+}
+
+/* group */
+.group {
+  display: flex;
+  gap: var(--kbq-size-s);
+}
+
+.horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+.vertical {
+  flex-direction: column;
+  align-items: flex-start;
 }

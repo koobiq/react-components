@@ -1,15 +1,28 @@
-.base {
+/* [data-slot] bumps specificity over Button's own rules */
+.base[data-slot='action'] {
   flex-shrink: 0;
   margin-inline-start: var(--kbq-size-xxs);
   background-color: var(--kbq-background-transparent);
-}
 
-.base:first-child {
-  margin-inline-start: unset;
-}
+  &[data-hovered='true']:not([data-loading='true']) {
+    background-color: var(--kbq-states-background-contrast-hover);
+  }
 
-.base[aria-hidden='true'] {
-  visibility: hidden;
-  position: absolute;
-  inset-inline-start: -300vw;
+  &[data-pressed='true']:not([data-loading='true']) {
+    background-color: var(--kbq-states-background-contrast-active);
+  }
+
+  &[data-disabled='true'] {
+    background-color: var(--kbq-states-background-disabled);
+  }
+
+  &:first-child {
+    margin-inline-start: unset;
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    position: absolute;
+    inset-inline-start: -300vw;
+  }
 }

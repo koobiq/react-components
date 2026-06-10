@@ -3,7 +3,6 @@ import { useLocalizedStringFormatter, clsx } from '@koobiq/react-core';
 import { IconCircleXmark16 } from '@koobiq/react-icons';
 
 import { Button } from '../../../Button';
-import { FlexBox } from '../../../FlexBox';
 import intlMessages from '../../intl.json';
 import { ActionsPanelDivider } from '../ActionsPanelDivider';
 
@@ -24,15 +23,17 @@ export const ActionsPanelClearButton = ({
   const t = useLocalizedStringFormatter(intlMessages);
 
   return (
-    <FlexBox className={clsx(s.base, className)} alignItems="center" {...other}>
+    <div className={clsx(s.base, className)} {...other}>
       <ActionsPanelDivider />
       <Button
+        data-slot="clear-button"
         className={s.clearButton}
+        variant="contrast-filled"
         aria-label={t.format('clear selection')}
         onPress={onClearSelection}
         startIcon={<IconCircleXmark16 />}
         onlyIcon
       />
-    </FlexBox>
+    </div>
   );
 };

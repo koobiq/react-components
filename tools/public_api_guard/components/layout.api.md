@@ -32,7 +32,7 @@ export const flexPropFlex: readonly ["flex", "inline-flex"];
 export type FlexPropGap = (typeof flexPropGap)[number];
 
 // @public (undocumented)
-export const flexPropGap: readonly ["3xs", "xxs", "xs", "s", "m", "l", "xl", "xxl", "3xl", "4xl", "5l", "6xl", "7xl"];
+export const flexPropGap: readonly ["3xs", "xxs", "xs", "s", "m", "l", "xl", "xxl", "3xl", "4xl", "5xl", "6xl", "7xl"];
 
 // @public (undocumented)
 export type FlexPropJustifyContent = (typeof flexPropJustifyContent)[number];

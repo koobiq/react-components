@@ -11,13 +11,3 @@
   padding-block: var(--kbq-size-m);
   overflow-x: hidden;
 }
-
-/* button */
-.open {
-  background-color: var(--button-bg-color-active);
-}
-
-/* popover */
-.popover {
-  min-inline-size: 200px;
-}

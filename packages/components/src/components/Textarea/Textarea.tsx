@@ -3,7 +3,7 @@
 import { forwardRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
-import { mergeProps } from '@koobiq/react-core';
+import { clsx, mergeProps } from '@koobiq/react-core';
 import { TextField } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -11,6 +11,7 @@ import { FormField, type FormFieldProps } from '../FormField';
 
 import { TextareaContextConsumer } from './components';
 import type { TextareaProps, TextareaRef } from './index';
+import s from './Textarea.module.css';
 
 /**
  * Textarea is an input element that allows users to enter and edit multiline
@@ -37,6 +38,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
     expand,
     errorMessage,
     slotProps,
+    className,
     caption,
     label,
     ...other
@@ -93,6 +95,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
       errorMessage,
       labelPlacement,
       labelAlign,
+      className: clsx(s.base, className),
       'data-variant': variant,
     },
     other
