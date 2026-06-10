@@ -5,7 +5,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { useListData } from '../index';
+import { Form, useListData } from '../index';
 import type { TagInputAddContext } from '../TagInput';
 
 import { TagAutocomplete } from './index';
@@ -422,6 +422,21 @@ describe('TagAutocomplete', () => {
     await user.click(container);
 
     await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+  });
+
+  it('does not open the suggestions on click when disabled by a form', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Form isDisabled>
+        <Harness initialTags={[{ id: 'vite', name: 'Vite' }]} />
+      </Form>
+    );
+
+    const container = getInput().closest('[role="presentation"]')!;
+    await user.click(container);
+
+    expect(queryListbox()).toBeNull();
   });
 
   it('shows a loading indicator in the suggestions while isLoading', async () => {

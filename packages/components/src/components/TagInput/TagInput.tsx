@@ -51,15 +51,10 @@ export function TagInputInner<T extends object>(
     state,
     inputRef: forwardedInputRef,
     isRequired,
-    isDisabled: isDisabledProp,
-    isReadOnly: isReadOnlyProp,
+    isDisabled,
+    isReadOnly,
     ...props
   } = inProps;
-
-  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
-
-  const isDisabled = isDisabledProp ?? formIsDisabled;
-  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
   const {
     variant = 'filled',
@@ -239,9 +234,17 @@ function TagInputRender<T extends object>(
   props: TagInputProps<T>,
   ref?: Ref<HTMLInputElement>
 ) {
-  const state = useTagFieldState<T>(props);
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
 
-  return <TagInputInner<T> {...props} state={state} inputRef={ref} />;
+  const resolvedProps = {
+    ...props,
+    isDisabled: props.isDisabled ?? formIsDisabled,
+    isReadOnly: props.isReadOnly ?? formIsReadOnly,
+  };
+
+  const state = useTagFieldState<T>(resolvedProps);
+
+  return <TagInputInner<T> {...resolvedProps} state={state} inputRef={ref} />;
 }
 
 const TagInputComponent = forwardRef(TagInputRender) as TagInputComponent;

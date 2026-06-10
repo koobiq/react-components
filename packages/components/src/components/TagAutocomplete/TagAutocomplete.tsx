@@ -9,6 +9,7 @@ import {
   useTagAutocompleteState,
 } from '@koobiq/react-primitives';
 
+import { useForm } from '../Form';
 import { ListInner } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
 import { TagInputInner } from '../TagInput';
@@ -39,8 +40,18 @@ function TagAutocompleteRender<T extends object>(
     onLoadMore,
     loadingText,
     noItemsText,
-    ...tagAutocompleteProps
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
+    ...restProps
   } = props;
+
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const tagAutocompleteProps = {
+    ...restProps,
+    isDisabled: isDisabledProp ?? formIsDisabled,
+    isReadOnly: isReadOnlyProp ?? formIsReadOnly,
+  };
 
   const tagInputUIProps = {
     caption,
