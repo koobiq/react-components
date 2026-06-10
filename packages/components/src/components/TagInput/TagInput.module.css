@@ -55,14 +55,14 @@
 }
 
 .input[data-field-sizing-fallback] {
-  flex: 0 0 auto;
+  flex: 1 0 auto;
   inline-size: min(var(--kbq-autosize-inline-size), 100%);
   max-inline-size: 100%;
 }
 
 @supports (field-sizing: content) {
   .input {
-    flex: 0 0 auto;
+    flex: 1 0 auto;
     inline-size: auto;
     max-inline-size: 100%;
     field-sizing: content;

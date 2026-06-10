@@ -660,8 +660,9 @@ export function useTagField<T extends object>(
       event.preventDefault();
       resetTagListFocus();
       focusInput();
+      openAutocomplete();
     },
-    [focusInput, inputRef, resetTagListFocus]
+    [focusInput, inputRef, openAutocomplete, resetTagListFocus]
   );
 
   const { validationBehavior: formValidationBehavior } =
@@ -730,6 +731,9 @@ export function useTagField<T extends object>(
         // Reopen suggestions when typing resumes after a selection (or Escape)
         // closed the popover — focus stays in the input, so `onFocus` won't fire.
         onInput: () => {
+          if (!autocompleteOverlayState?.isOpen) openAutocomplete();
+        },
+        onClick: () => {
           if (!autocompleteOverlayState?.isOpen) openAutocomplete();
         },
         role: 'combobox',

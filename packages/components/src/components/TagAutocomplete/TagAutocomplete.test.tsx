@@ -391,6 +391,39 @@ describe('TagAutocomplete', () => {
     ).toBeInTheDocument();
   });
 
+  it('reopens the suggestions when the input is clicked after a selection closed the popover', async () => {
+    const user = userEvent.setup();
+    render(<Harness />);
+
+    await user.click(getInput());
+    const option = await screen.findByRole('option', { name: 'React' });
+    await user.click(option);
+
+    await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
+    expect(getInput()).toHaveFocus();
+
+    await user.click(getInput());
+
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+  });
+
+  it('reopens the suggestions when the click lands in the field but outside the text input', async () => {
+    const user = userEvent.setup();
+    render(<Harness initialTags={[{ id: 'vite', name: 'Vite' }]} />);
+
+    await user.click(getInput());
+    const option = await screen.findByRole('option', { name: 'React' });
+    await user.click(option);
+
+    await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
+    expect(getInput()).toHaveFocus();
+
+    const container = getInput().closest('[role="presentation"]')!;
+    await user.click(container);
+
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+  });
+
   it('shows a loading indicator in the suggestions while isLoading', async () => {
     const user = userEvent.setup();
 
