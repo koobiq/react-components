@@ -6,6 +6,7 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Form, useListData } from '../index';
+import { Provider } from '../Provider';
 import type { TagInputAddContext } from '../TagInput';
 
 import { TagAutocomplete } from './index';
@@ -520,6 +521,33 @@ describe('TagAutocomplete', () => {
 
     expect(screen.getByRole('listbox')).toHaveClass('custom-list');
     expect(document.querySelector('.custom-popover')).not.toBeNull();
+  });
+
+  it('should localize the suggestions aria-label (en-US by default)', async () => {
+    const user = userEvent.setup();
+    render(<Harness />);
+
+    await user.click(getInput());
+
+    expect(
+      await screen.findByRole('listbox', { name: 'Suggestions' })
+    ).toBeInTheDocument();
+  });
+
+  it('should localize the suggestions aria-label under ru-RU locale', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Provider locale="ru-RU">
+        <Harness />
+      </Provider>
+    );
+
+    await user.click(getInput());
+
+    expect(
+      await screen.findByRole('listbox', { name: 'Подсказки' })
+    ).toBeInTheDocument();
   });
 
   it('shows a loading indicator in the suggestions while isLoading', async () => {

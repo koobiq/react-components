@@ -21,6 +21,7 @@ import {
   useControlledState,
   useDOMRef,
   useKeyboard,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { getItemId } from '@react-aria/listbox';
 import {
@@ -32,6 +33,7 @@ import { useTextField } from '@react-aria/textfield';
 import { useSlottedContext } from 'react-aria-components';
 
 import { FormContext } from '../components';
+import intlMessages from '../intl/tag-field.json';
 import { removeDataAttributes } from '../utils';
 
 import type { TagAutocompleteState } from './useTagAutocomplete';
@@ -346,6 +348,7 @@ export function useTagField<T extends object>(
   const inputRef = useDOMRef<HTMLInputElement>(ref);
   const innerRef = useRef<HTMLDivElement>(null);
   const collator = useCollator({ usage: 'search', sensitivity: 'base' });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const handleRemove = useCallback(
     (keys: Set<Key>, context?: TagListItemRemoveContext) => {
@@ -715,7 +718,7 @@ export function useTagField<T extends object>(
     isDisabled,
     tabIndex: -1,
     onRemove: isReadOnly ? undefined : handleRemove,
-    'aria-label': ariaLabel ?? 'Selected tags',
+    'aria-label': ariaLabel ?? stringFormatter.format('tagListLabel'),
   } as const;
 
   const tagListContainerProps = {

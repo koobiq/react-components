@@ -15,16 +15,7 @@ import {
 } from '@koobiq/react-core';
 import type { ListState } from '@react-stately/list';
 
-const intlMessages = {
-  'en-US': {
-    removeButtonLabel: 'Remove',
-    removeDescription: 'Press Delete or Backspace to remove.',
-  },
-  'ru-RU': {
-    removeButtonLabel: 'Удалить',
-    removeDescription: 'Нажмите Delete или Backspace, чтобы удалить.',
-  },
-};
+import intlMessages from '../intl/tag-list-item.json';
 
 /** True if Ctrl (Windows/Linux) or Cmd (macOS) is held during the event. */
 export function isCommandModifier(event: {

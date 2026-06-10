@@ -4,13 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { RefObject } from 'react';
 
 import type { FocusStrategy, Key, Node } from '@koobiq/react-core';
-import { useInteractOutside } from '@koobiq/react-core';
+import {
+  useInteractOutside,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import { listData } from '@react-aria/listbox';
 import { useId } from '@react-aria/utils';
 import type { ListState } from '@react-stately/list';
 import { useListState } from '@react-stately/list';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTriggerState } from '@react-stately/overlays';
+
+import intlMessages from '../intl/tag-autocomplete.json';
 
 import type { TagFieldState, TagFieldStateProps } from './useTagField';
 import { useTagFieldState } from './useTagField';
@@ -311,6 +316,8 @@ export function useTagAutocomplete<T extends object>(
 ): TagAutocompleteAria<T> {
   const { anchorRef, popoverRef, listBoxRef } = props;
 
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
   const tagFieldProps = getTagFieldProps(props);
 
   const { overlayState, listState, onAction, listBoxId, focusStrategy, close } =
@@ -353,7 +360,7 @@ export function useTagAutocomplete<T extends object>(
       state: listState,
       listRef: listBoxRef,
       shouldUseVirtualFocus: true,
-      'aria-label': 'suggestions',
+      'aria-label': stringFormatter.format('suggestionsLabel'),
       autoFocus: focusStrategy || true,
     },
   };

@@ -7,6 +7,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { Form } from '../Form';
 import { useListData } from '../index';
+import { Provider } from '../Provider';
 
 import { TagInput } from './TagInput';
 import type { TagInputProps } from './types';
@@ -101,6 +102,21 @@ describe('TagInput', () => {
     render(<Wrapper initialItems={seed(['one', 'two'])} />);
     expect(queryTag('one')).toBeInTheDocument();
     expect(queryTag('two')).toBeInTheDocument();
+  });
+
+  it('should localize the tag list aria-label (en-US by default)', () => {
+    render(<Wrapper initialItems={seed(['one'])} />);
+    expect(screen.getByLabelText('Selected tags')).toBeInTheDocument();
+  });
+
+  it('should localize the tag list aria-label under ru-RU locale', () => {
+    render(
+      <Provider locale="ru-RU">
+        <Wrapper initialItems={seed(['one'])} />
+      </Provider>
+    );
+
+    expect(screen.getByLabelText('Выбранные теги')).toBeInTheDocument();
   });
 
   describe('addons', () => {
