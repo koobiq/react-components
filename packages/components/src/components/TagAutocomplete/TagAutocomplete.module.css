@@ -1,18 +1,20 @@
-.popover {
+/* popover */
+.popover[data-slot='dropdown'] {
   border-radius: var(--kbq-size-s);
-}
 
-.container {
-  display: flex;
-  flex-direction: column;
-  min-block-size: 0;
-}
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 0;
+  }
 
-.list {
-  overflow-y: auto;
-  max-block-size: inherit;
-}
+  /* list */
+  .list {
+    overflow-y: auto;
+    max-block-size: inherit;
+  }
 
-.list:empty {
-  display: none;
+  .list:empty {
+    display: none;
+  }
 }

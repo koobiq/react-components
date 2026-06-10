@@ -3,7 +3,7 @@
 import { forwardRef } from 'react';
 import type { Ref, RefObject } from 'react';
 
-import { mergeProps } from '@koobiq/react-core';
+import { clsx, mergeProps } from '@koobiq/react-core';
 import {
   ButtonContext,
   DEFAULT_SLOT,
@@ -116,7 +116,7 @@ export function TagInputInner<T extends object>(
       'data-readonly': isReadOnly || undefined,
       'data-disabled': isDisabled || undefined,
       'data-required': isRequired || undefined,
-      className,
+      className: clsx(s.base, className),
     },
     slotProps?.root
   );

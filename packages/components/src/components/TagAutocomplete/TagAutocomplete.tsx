@@ -93,6 +93,7 @@ function TagAutocompleteRender<T extends object>(
       hideArrow: true,
       maxBlockSize: 256,
       className: s.popover,
+      'data-slot': 'dropdown',
       placement: 'bottom start' as const,
       size: Math.max(anchorWidth, MIN_POPOVER_INLINE_SIZE),
       slotProps: {
