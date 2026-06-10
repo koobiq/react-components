@@ -387,6 +387,83 @@ export const PreventDuplicates: Story = {
   },
 };
 
+const CREATE_TAG_ID = 'create-tag';
+
+export const CreateOption: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const [inputValue, setInputValue] = useState('');
+
+    const list = useListData<TagItem>({
+      initialItems: [{ id: 'react', name: 'React' }],
+    });
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    const query = inputValue.trim();
+
+    const taken = [...technologySuggestions, ...list.items].some(
+      (item) => item.name.toLocaleLowerCase() === query.toLocaleLowerCase()
+    );
+
+    const listItems =
+      query && !taken
+        ? [{ id: CREATE_TAG_ID, name: query }, ...technologySuggestions]
+        : technologySuggestions;
+
+    return (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        fullWidth
+        style={{ inlineSize: m ? 360 : 240 }}
+        placeholder="Type a value that is not in the list"
+        caption="The first option offers to create the typed value"
+        items={list.items}
+        listItems={listItems}
+        inputValue={inputValue}
+        onInputChange={setInputValue}
+        defaultFilter={containsFilter}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            const { suggestion } = context;
+
+            if (suggestion.id === CREATE_TAG_ID) {
+              list.append(createTag(suggestion.name));
+
+              return;
+            }
+
+            list.append(suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.id === CREATE_TAG_ID ? `Create: ${item.name}` : item.name}
+          </TagAutocomplete.ListItem>
+        )}
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
 export const Disabled: Story = {
   render: function Render() {
     const { m } = useBreakpoints();
