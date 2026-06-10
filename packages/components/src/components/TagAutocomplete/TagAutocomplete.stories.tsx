@@ -1,6 +1,10 @@
 import { useRef, useState } from 'react';
 
-import { IconCircleInfo16, IconGridSquares16 } from '@koobiq/react-icons';
+import {
+  IconCircleInfo16,
+  IconGridSquares16,
+  IconStar16,
+} from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
@@ -592,6 +596,66 @@ export const Addons: Story = {
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
+export const CustomTags: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'react', name: 'React' },
+        { id: 'typescript', name: 'TypeScript' },
+      ],
+    });
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        fullWidth
+        style={{ inlineSize: m ? 360 : 240 }}
+        placeholder="Type or choose a tag"
+        caption="Each tag uses the warning-fade variant and a leading star icon"
+        items={list.items}
+        listItems={technologySuggestions}
+        defaultFilter={containsFilter}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+      >
+        {(item) => (
+          <TagAutocomplete.Tag
+            key={item.id}
+            icon={<IconStar16 />}
+            variant="warning-fade"
+            textValue={item.name}
+          >
             {item.name}
           </TagAutocomplete.Tag>
         )}
