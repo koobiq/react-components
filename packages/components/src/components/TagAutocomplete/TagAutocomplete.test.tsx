@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import type { ReactNode } from 'react';
+import { createRef, useRef } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -16,6 +16,9 @@ type TagItem = { id: string; name: string };
 type HarnessProps = {
   initialTags?: TagItem[];
   suggestions?: TagItem[];
+  className?: string;
+  style?: CSSProperties;
+  fieldRef?: Ref<HTMLInputElement>;
   startAddon?: ReactNode;
   endAddon?: ReactNode;
   isReadOnly?: boolean;
@@ -37,6 +40,9 @@ function Harness(props: HarnessProps) {
       { id: 'typescript', name: 'TypeScript' },
       { id: 'storybook', name: 'Storybook' },
     ],
+    className,
+    style,
+    fieldRef,
     startAddon,
     endAddon,
     isReadOnly,
@@ -65,7 +71,11 @@ function Harness(props: HarnessProps) {
 
   return (
     <TagAutocomplete<TagItem>
+      ref={fieldRef}
       aria-label="Tags"
+      data-testid="root"
+      className={className}
+      style={style}
       startAddon={startAddon}
       endAddon={endAddon}
       slotProps={{
@@ -116,6 +126,25 @@ const getInput = () => screen.getByTestId<HTMLInputElement>('input');
 const queryListbox = () => screen.queryByRole('listbox');
 
 describe('TagAutocomplete', () => {
+  it('should accept a ref', () => {
+    const ref = createRef<HTMLInputElement>();
+    render(<Harness fieldRef={ref} />);
+
+    expect(ref.current).toBe(getInput());
+  });
+
+  it('should merge a custom class name with the default ones', () => {
+    render(<Harness className="foo" />);
+
+    expect(screen.getByTestId('root')).toHaveClass('foo');
+  });
+
+  it('should apply custom styles', () => {
+    render(<Harness style={{ padding: 20 }} />);
+
+    expect(screen.getByTestId('root')).toHaveStyle({ padding: '20px' });
+  });
+
   it('does not render the popover until the input is focused', () => {
     render(<Harness />);
     expect(queryListbox()).toBeNull();

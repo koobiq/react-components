@@ -82,6 +82,16 @@ describe('TagInput', () => {
     expect(ref.current).toBe(getInput());
   });
 
+  it('should merge a custom class name with the default ones', () => {
+    render(<Wrapper className="foo" />);
+    expect(getRoot()).toHaveClass('foo');
+  });
+
+  it('should apply custom styles', () => {
+    render(<Wrapper style={{ padding: 20 }} />);
+    expect(getRoot()).toHaveStyle({ padding: '20px' });
+  });
+
   it('should render the label', () => {
     render(<Wrapper />);
     expect(screen.getByText('Tags')).toBeInTheDocument();

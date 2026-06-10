@@ -55,6 +55,25 @@ function RemovableTagList() {
 describe('TagList', () => {
   const getTag = () => screen.getByTestId(TAG_LIST_TEST_ID);
 
+  it('should accept a ref', () => {
+    const ref = createRef<HTMLDivElement>();
+    render(renderComponent({ ref }));
+
+    expect(ref.current).toBe(screen.getByLabelText('tag-list'));
+  });
+
+  it('should merge a custom class name with the default ones', () => {
+    render(renderComponent({ className: 'foo' }));
+
+    expect(screen.getByLabelText('tag-list')).toHaveClass('foo');
+  });
+
+  it('should apply custom styles', () => {
+    render(renderComponent({ style: { padding: 20 } }));
+
+    expect(screen.getByLabelText('tag-list')).toHaveStyle({ padding: '20px' });
+  });
+
   it('should detect nested focusable interaction targets', () => {
     const root = document.createElement('div');
     const button = document.createElement('button');
