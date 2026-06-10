@@ -197,11 +197,12 @@ export const FormField: Story = {
     const isEmpty = tags.items.length === 0;
 
     return (
-      <FlexBox direction="column" gap="m" style={{ inlineSize: m ? 360 : 240 }}>
+      <Form labelPlacement="side" style={{ inlineSize: m ? 480 : 240 }}>
         <TagAutocomplete<TagItem>
           label="Categories"
           fullWidth
           isRequired
+          style={{ inlineSize: '100%' }}
           placeholder="Add a category"
           caption="Choose a suggestion or press Enter"
           items={categories.items}
@@ -233,6 +234,7 @@ export const FormField: Story = {
           label="Tags"
           fullWidth
           isInvalid={isEmpty}
+          style={{ inlineSize: '100%' }}
           placeholder="Add at least one tag"
           caption={isEmpty ? undefined : 'Looks good'}
           errorMessage={isEmpty ? 'At least one tag is required' : undefined}
@@ -261,7 +263,10 @@ export const FormField: Story = {
             </TagAutocomplete.Tag>
           )}
         </TagAutocomplete>
-      </FlexBox>
+        <Form.Actions>
+          <Button>Submit</Button>
+        </Form.Actions>
+      </Form>
     );
   },
 };
@@ -887,69 +892,6 @@ export const AsynchronousLoading: Story = {
           </TagAutocomplete.Tag>
         )}
       </TagAutocomplete>
-    );
-  },
-};
-
-export const InsideForm: Story = {
-  render: function Render() {
-    const { m } = useBreakpoints();
-
-    const tagCounter = useRef(0);
-
-    const list = useListData<TagItem>({
-      initialItems: [
-        { id: 'react', name: 'React' },
-        { id: 'typescript', name: 'TypeScript' },
-      ],
-    });
-
-    const createTag = (name: string): TagItem => {
-      tagCounter.current += 1;
-
-      return { id: `tag-${tagCounter.current}-${name}`, name };
-    };
-
-    return (
-      <Form
-        labelPlacement="side"
-        style={{ inlineSize: m ? 360 : 240 }}
-        isDisabled
-      >
-        <TagAutocomplete<TagItem>
-          label="Tags"
-          fullWidth
-          placeholder="Form-wide disabled"
-          style={{ inlineSize: '100%' }}
-          items={list.items}
-          listItems={technologySuggestions}
-          defaultFilter={containsFilter}
-          onAdd={(values, context) => {
-            if (context.source === 'suggestion') {
-              list.append(context.suggestion);
-
-              return;
-            }
-
-            list.append(...values.map(createTag));
-          }}
-          onRemove={(keys) => list.remove(...keys)}
-          renderListItem={(item) => (
-            <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.ListItem>
-          )}
-        >
-          {(item) => (
-            <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.Tag>
-          )}
-        </TagAutocomplete>
-        <Form.Actions>
-          <Button>Submit</Button>
-        </Form.Actions>
-      </Form>
     );
   },
 };

@@ -64,7 +64,7 @@ Use stable keys for both selected tags and suggestions:
 </TagAutocomplete>
 ```
 
-`TagAutocomplete.ListItem` provides the suggestion key and `textValue` used
+The `TagAutocomplete.ListItem` provides the suggestion key and `textValue` used
 for filtering, exclusion of already selected tags, and the suggestion context.
 
 ## Suggestions
@@ -180,9 +180,9 @@ Customize how each tag looks through `TagAutocomplete.Tag`. For example, set a
 
 ## Form field
 
-`TagAutocomplete` is a full form-field on par with `TagInput`. It accepts a
-visible or hidden `label`, a helper `caption`, `errorMessage`, `isInvalid`,
-`isRequired`, `fullWidth`, `labelPlacement`, and `labelAlign`.
+The `TagAutocomplete` is a full form field on par with `TagInput`: label, caption,
+validation, and label placement work the same way. When wrapped in a `<Form>`,
+it also inherits the shared field settings from the form context.
 
 <Story of={Stories.FormField} />
 
@@ -207,13 +207,6 @@ Enable the cleaner button with `isClearable`. Pressing it removes all tags,
 clears the text input, calls `onClear`, and returns focus to the input.
 
 <Story of={Stories.Clearable} />
-
-## Inside a Form
-
-When wrapped in a `<Form>`, `TagAutocomplete` inherits `isDisabled`,
-`isReadOnly`, `labelPlacement`, and `labelAlign` from the form context.
-
-<Story of={Stories.InsideForm} />
 
 ## Accessibility
 
