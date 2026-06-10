@@ -9,6 +9,7 @@ import { Form, useListData } from '../index';
 import type { TagInputAddContext } from '../TagInput';
 
 import { TagAutocomplete } from './index';
+import type { TagAutocompleteProps } from './types';
 
 type TagItem = { id: string; name: string };
 
@@ -23,6 +24,7 @@ type HarnessProps = {
   isLoading?: boolean;
   loadingText?: ReactNode;
   onLoadMore?: () => void;
+  slotProps?: TagAutocompleteProps<TagItem>['slotProps'];
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
   onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
 };
@@ -43,6 +45,7 @@ function Harness(props: HarnessProps) {
     isLoading,
     loadingText,
     onLoadMore,
+    slotProps,
     defaultFilter,
     onAdd: userOnAdd,
   } = props;
@@ -65,7 +68,16 @@ function Harness(props: HarnessProps) {
       aria-label="Tags"
       startAddon={startAddon}
       endAddon={endAddon}
-      slotProps={{ input: { 'data-testid': 'input' } }}
+      slotProps={{
+        ...slotProps,
+        tagInput: {
+          ...slotProps?.tagInput,
+          slotProps: {
+            input: { 'data-testid': 'input' },
+            ...slotProps?.tagInput?.slotProps,
+          },
+        },
+      }}
       items={tags.items}
       onAdd={(values, ctx) => {
         if (ctx.source === 'suggestion') {
@@ -437,6 +449,48 @@ describe('TagAutocomplete', () => {
     await user.click(container);
 
     expect(queryListbox()).toBeNull();
+  });
+
+  it('passes slotProps through to the tag input', () => {
+    render(
+      <Harness
+        initialTags={[{ id: 'vite', name: 'Vite' }]}
+        slotProps={{
+          tagInput: {
+            'data-testid': 'tag-input',
+            slotProps: {
+              group: { 'data-testid': 'group' },
+              tagList: { 'data-testid': 'tag-list' },
+            },
+          },
+        }}
+      />
+    );
+
+    expect(screen.getByTestId('tag-input')).toBeInTheDocument();
+    expect(screen.getByTestId('group')).toBeInTheDocument();
+    expect(screen.getByTestId('tag-list')).toBeInTheDocument();
+    // The input slot is wired by the harness itself.
+    expect(getInput()).toBeInTheDocument();
+  });
+
+  it('passes slotProps to the suggestions popover and list', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Harness
+        slotProps={{
+          popover: { className: 'custom-popover' },
+          list: { className: 'custom-list' },
+        }}
+      />
+    );
+
+    await user.click(getInput());
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+
+    expect(screen.getByRole('listbox')).toHaveClass('custom-list');
+    expect(document.querySelector('.custom-popover')).not.toBeNull();
   });
 
   it('shows a loading indicator in the suggestions while isLoading', async () => {

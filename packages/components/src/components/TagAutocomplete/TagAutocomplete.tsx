@@ -87,6 +87,21 @@ function TagAutocompleteRender<T extends object>(
     autocompleteState
   );
 
+  const {
+    tagInput: tagInputSlot,
+    popover: popoverSlot,
+    list: listSlot,
+  } = slotProps ?? {};
+
+  const { slotProps: tagInputSlotProps, ...otherTagInputSlot } =
+    tagInputSlot ?? {};
+
+  const tagInputProps = mergeProps(
+    tagFieldProps,
+    tagInputUIProps,
+    otherTagInputSlot
+  );
+
   const popoverProps = mergeProps(
     {
       offset: 4,
@@ -101,7 +116,8 @@ function TagAutocompleteRender<T extends object>(
         container: { className: s.container },
       },
     },
-    popoverPropsAria
+    popoverPropsAria,
+    popoverSlot
   );
 
   const listProps = mergeProps(
@@ -113,18 +129,18 @@ function TagAutocompleteRender<T extends object>(
       className: s.list,
       noItemsText: props.allowsEmptyCollection ? noItemsText : null,
     },
-    listPropsAria
+    listPropsAria,
+    listSlot
   );
 
   return (
     <>
       <TagInputInner<T>
-        {...tagFieldProps}
-        {...tagInputUIProps}
+        {...tagInputProps}
         inputRef={ref}
         slotProps={{
-          ...slotProps,
-          group: mergeProps(slotProps?.group, {
+          ...tagInputSlotProps,
+          group: mergeProps(tagInputSlotProps?.group, {
             ref: anchorRef,
           }),
         }}
