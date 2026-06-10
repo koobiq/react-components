@@ -444,6 +444,59 @@ describe('TagList', () => {
     expect(getTag()).toHaveAttribute('data-selected', 'true');
   });
 
+  it('should clear selection on Escape by default', async () => {
+    const user = userEvent.setup();
+
+    render(renderComponent({ selectionMode: 'multiple' }));
+
+    await user.click(getTag());
+    await user.keyboard('{Space}');
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+
+    await user.keyboard('{Escape}');
+    expect(getTag()).not.toHaveAttribute('data-selected');
+  });
+
+  it('should apply defaultSelectedKeys initially', () => {
+    render(
+      renderComponent({
+        selectionMode: 'multiple',
+        defaultSelectedKeys: ['2'],
+      })
+    );
+
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+  });
+
+  it('should disable tags from disabledKeys', async () => {
+    const user = userEvent.setup();
+
+    render(
+      renderComponent({
+        selectionMode: 'multiple',
+        disabledKeys: ['2'],
+      })
+    );
+
+    expect(getTag()).toHaveAttribute('data-disabled', 'true');
+
+    await user.click(getTag());
+    await user.keyboard('{Space}');
+    expect(getTag()).not.toHaveAttribute('data-selected');
+  });
+
+  it('should render a custom tag icon', () => {
+    render(
+      <TagList aria-label="icons">
+        <TagList.Tag key="a" icon={<span data-testid="tag-icon" />}>
+          label
+        </TagList.Tag>
+      </TagList>
+    );
+
+    expect(screen.getByTestId('tag-icon')).toBeInTheDocument();
+  });
+
   it('should render role="group" when collection is empty', () => {
     render(
       <TagList aria-label="empty" items={[] as Iterable<{ id: string }>}>

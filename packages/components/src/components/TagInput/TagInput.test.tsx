@@ -728,6 +728,24 @@ describe('TagInput', () => {
 
       expect(getInput()).toBeDisabled();
     });
+
+    it('inherits isReadOnly from a parent Form', async () => {
+      const user = userEvent.setup();
+      const onAdd = vi.fn();
+
+      render(
+        <Form isReadOnly>
+          <Wrapper onAdd={onAdd} />
+        </Form>
+      );
+
+      expect(getInput()).toHaveAttribute('readonly');
+
+      await user.click(getInput());
+      await user.paste('one, two');
+
+      expect(onAdd).not.toHaveBeenCalled();
+    });
   });
 
   describe('onInputChange', () => {
@@ -740,6 +758,22 @@ describe('TagInput', () => {
 
       expect(onInputChange).toHaveBeenCalledWith('a');
       expect(onInputChange).toHaveBeenCalledWith('ab');
+    });
+  });
+
+  describe('input value', () => {
+    it('prefills the input from defaultInputValue', () => {
+      render(<Wrapper defaultInputValue="abc" />);
+      expect(getInput()).toHaveValue('abc');
+    });
+
+    it('keeps the input value controlled via inputValue', async () => {
+      const user = userEvent.setup();
+      render(<Wrapper inputValue="fixed" />);
+
+      await user.type(getInput(), 'x');
+
+      expect(getInput()).toHaveValue('fixed');
     });
   });
 

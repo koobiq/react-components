@@ -27,7 +27,12 @@ type HarnessProps = {
   disableCloseOnSelect?: boolean;
   isLoading?: boolean;
   loadingText?: ReactNode;
+  noItemsText?: ReactNode;
   onLoadMore?: () => void;
+  isClearable?: boolean;
+  onClear?: () => void;
+  defaultInputValue?: string;
+  onInputChange?: (value: string) => void;
   slotProps?: TagAutocompleteProps<TagItem>['slotProps'];
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
   onAdd?: (values: string[], ctx: TagInputAddContext<TagItem>) => void;
@@ -51,7 +56,12 @@ function Harness(props: HarnessProps) {
     disableCloseOnSelect,
     isLoading,
     loadingText,
+    noItemsText,
     onLoadMore,
+    isClearable,
+    onClear,
+    defaultInputValue,
+    onInputChange,
     slotProps,
     defaultFilter,
     onAdd: userOnAdd,
@@ -85,6 +95,7 @@ function Harness(props: HarnessProps) {
           ...slotProps?.tagInput,
           slotProps: {
             input: { 'data-testid': 'input' },
+            clearButton: { 'aria-label': 'clear-button' },
             ...slotProps?.tagInput?.slotProps,
           },
         },
@@ -106,7 +117,12 @@ function Harness(props: HarnessProps) {
       disableCloseOnSelect={disableCloseOnSelect}
       isLoading={isLoading}
       loadingText={loadingText}
+      noItemsText={noItemsText}
       onLoadMore={onLoadMore}
+      isClearable={isClearable}
+      onClear={onClear}
+      defaultInputValue={defaultInputValue}
+      onInputChange={onInputChange}
       renderListItem={(item) => (
         <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
           {item.name}
@@ -418,16 +434,12 @@ describe('TagAutocomplete', () => {
     const option = await screen.findByRole('option', { name: 'React' });
     await user.click(option);
 
-    // Selecting a suggestion closes the popover (default close-on-select).
     await waitFor(() => expect(queryListbox()).not.toBeInTheDocument());
 
-    // Focus stays in the input after the pick, so `onFocus` won't fire again —
-    // a raw input event must reopen the popover. (Isolated from focus on purpose.)
     fireEvent.input(getInput(), { target: { value: 'x' } });
 
     await waitFor(() => expect(queryListbox()).toBeInTheDocument());
 
-    // React is already selected, so only the remaining suggestions are shown.
     expect(
       await screen.findByRole('option', { name: 'TypeScript' })
     ).toBeInTheDocument();
@@ -500,7 +512,6 @@ describe('TagAutocomplete', () => {
     expect(screen.getByTestId('tag-input')).toBeInTheDocument();
     expect(screen.getByTestId('group')).toBeInTheDocument();
     expect(screen.getByTestId('tag-list')).toBeInTheDocument();
-    // The input slot is wired by the harness itself.
     expect(getInput()).toBeInTheDocument();
   });
 
@@ -566,6 +577,81 @@ describe('TagAutocomplete', () => {
 
     await waitFor(() => expect(queryListbox()).toBeInTheDocument());
     expect(screen.getByText('Loading…')).toBeInTheDocument();
+  });
+
+  it('shows noItemsText in the empty popover', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Harness
+        suggestions={[]}
+        allowsEmptyCollection
+        noItemsText="No suggestions"
+      />
+    );
+
+    await user.click(getInput());
+
+    expect(await screen.findByText('No suggestions')).toBeInTheDocument();
+  });
+
+  it('fires onInputChange as the user types', async () => {
+    const user = userEvent.setup();
+    const onInputChange = vi.fn();
+    render(<Harness onInputChange={onInputChange} />);
+
+    await user.type(getInput(), 'Re');
+
+    expect(onInputChange).toHaveBeenLastCalledWith('Re');
+  });
+
+  it('prefills the input from defaultInputValue', () => {
+    render(<Harness defaultInputValue="Rea" />);
+
+    expect(getInput()).toHaveValue('Rea');
+  });
+
+  it('clears tags and input via the cleaner and returns focus to the input', async () => {
+    const user = userEvent.setup();
+    const onClear = vi.fn();
+
+    render(
+      <Harness
+        initialTags={[{ id: 'vite', name: 'Vite' }]}
+        isClearable
+        onClear={onClear}
+      />
+    );
+
+    await user.type(getInput(), 'Re');
+    await user.click(screen.getByLabelText('clear-button'));
+
+    expect(onClear).toHaveBeenCalledTimes(1);
+    expect(getInput()).toHaveValue('');
+    expect(screen.queryByText('Vite')).toBeNull();
+    expect(getInput()).toHaveFocus();
+  });
+
+  it('returns a removed tag to the suggestions', async () => {
+    const user = userEvent.setup();
+
+    const { container } = render(
+      <Harness initialTags={[{ id: 'react', name: 'React' }]} />
+    );
+
+    await user.click(getInput());
+    await waitFor(() => expect(queryListbox()).toBeInTheDocument());
+    expect(screen.queryByRole('option', { name: 'React' })).toBeNull();
+
+    const removeButton = container.querySelector<HTMLButtonElement>(
+      'button[aria-label="Remove"]'
+    );
+
+    await user.click(removeButton!);
+
+    expect(
+      await screen.findByRole('option', { name: 'React' })
+    ).toBeInTheDocument();
   });
 
   it('closes the popover on outside click AFTER an option was selected with disableCloseOnSelect', async () => {
