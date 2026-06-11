@@ -44,7 +44,6 @@ const config: StorybookConfig = {
         alias: {
           '@koobiq/logger': toPath('packages/logger/src'),
           '@koobiq/react-core': toPath('packages/core/src'),
-          '@koobiq/react-icons': toPath('packages/icons/src'),
           '@koobiq/react-primitives': toPath('packages/primitives/src'),
           '@koobiq/react-components': toPath('packages/components/src'),
         },

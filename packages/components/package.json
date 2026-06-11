@@ -33,7 +33,7 @@
     "@koobiq/design-tokens": "^3.17.2",
     "@koobiq/logger": "workspace:*",
     "@koobiq/react-core": "workspace:*",
-    "@koobiq/react-icons": "workspace:*",
+    "@koobiq/react-icons": "^12.0.0",
     "@koobiq/react-primitives": "workspace:*",
     "@types/react-transition-group": "^4.4.12",
     "react-transition-group": "^4.4.5",
@@ -41,6 +41,7 @@
   },
   "peerDependencies": {
     "@koobiq/design-tokens": "^3.17.2",
+    "@koobiq/react-icons": "^12.0.0",
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"
   }

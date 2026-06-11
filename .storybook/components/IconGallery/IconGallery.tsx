@@ -3,8 +3,8 @@ import { Fragment, useState } from 'react';
 import { Typography, SearchInput } from '@koobiq/react-components';
 import { clsx, useDebounceCallback } from '@koobiq/react-core';
 import type { IconsManifest } from '@koobiq/react-icons';
+import iconsManifest from '@koobiq/react-icons/manifest.json';
 
-import iconsManifest from '../../../packages/icons/manifest.json';
 import { slugify } from '../../utils';
 
 import { IconDetails } from './IconDetails';

@@ -27,15 +27,14 @@
 │   │       ├── components/            # Koobiq primitives built on React Aria
 │   │       ├── behaviors/             # Koobiq behavior hooks built on React Aria
 │   │       └── index.ts               # Re-exports unmodified React Aria hooks/state/types + RAC components + Koobiq primitives and behavior hooks
-│   ├── components/                    # Koobiq React components (@koobiq/react-components)
-│   │   └── src/
-│   │       ├── components/            # All component source files
-│   │       ├── styles/                # CSS mixins, utility classes
-│   │       ├── utils/                 # Component-level helpers
-│   │       ├── types.ts
-│   │       ├── global.css
-│   │       └── index.ts
-│   └── icons/                         # A collection of React-icons (@koobiq/react-icons)
+│   └── components/                    # Koobiq React components (@koobiq/react-components)
+│       └── src/
+│           ├── components/            # All component source files
+│           ├── styles/                # CSS mixins, utility classes
+│           ├── utils/                 # Component-level helpers
+│           ├── types.ts
+│           ├── global.css
+│           └── index.ts
 ├── docs/                              # MDX documentation pages (rendered in Storybook)
 ├── .storybook/                        # Storybook configuration
 ├── tools/                             # Internal tooling

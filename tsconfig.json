@@ -28,8 +28,7 @@
     "paths": {
       "@koobiq/react-primitives": ["./packages/primitives/src"],
       "@koobiq/react-components": ["./packages/components/src"],
-      "@koobiq/react-core": ["./packages/core/src"],
-      "@koobiq/react-icons": ["./packages/icons/src"]
+      "@koobiq/react-core": ["./packages/core/src"]
     },
     "types": ["vite/client", "@testing-library/jest-dom/vitest", "node"]
   },
