@@ -3,7 +3,7 @@
 .base {
   @mixin typography text-normal;
 
-  color: var(--kbq-foreground-contrast);
+  color: var(--kbq-foreground-contrast-secondary);
   vertical-align: top;
   box-sizing: border-box;
 }
