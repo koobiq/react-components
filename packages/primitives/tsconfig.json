@@ -22,7 +22,6 @@
     "target": "es2019",
     "paths": {
       "@koobiq/react-core": ["../core/src/"],
-      "@koobiq/react-icons": ["../icons/src/"],
       "@koobiq/logger": ["../logger/src/"]
     },
     "types": ["vite/client", "@testing-library/jest-dom/vitest"]

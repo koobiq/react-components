@@ -21,7 +21,6 @@
     "strict": true,
     "target": "es2019",
     "paths": {
-      "@koobiq/react-icons": ["../icons/src/"],
       "@koobiq/react-core": ["../core/src/"],
       "@koobiq/react-primitives": ["../primitives/src/"],
       "@koobiq/logger": ["../logger/src/"]

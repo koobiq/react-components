@@ -54,7 +54,6 @@
   ],
   "packages": [
     { "dir": "primitives", "report": "react-primitives" },
-    { "dir": "icons", "report": "react-icons" },
     { "dir": "core", "report": "react-core" },
     { "dir": "logger", "report": "logger" }
   ]
