@@ -6,7 +6,7 @@
   "workspaces": ["packages/*", "templates/*"],
   "homepage": "https://react.koobiq.io/",
   "engines": {
-    "node": ">=20.19",
+    "node": "^24.0.0",
     "pnpm": ">=9.0.0"
   },
   "firstRelease": false,
