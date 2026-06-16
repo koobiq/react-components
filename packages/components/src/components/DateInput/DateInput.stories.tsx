@@ -4,8 +4,10 @@ import {
   now,
   today,
   parseDate,
+  parseDateTime,
   getLocalTimeZone,
   parseZonedDateTime,
+  type CalendarDateTime,
 } from '@internationalized/date';
 import { IconCalendarO16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -169,6 +171,47 @@ export const DateTime: Story = {
         value={value}
         onChange={(newValue) => setValue(newValue!)}
         label="Event date"
+      />
+    );
+  },
+};
+
+export const PasteDateTime: Story = {
+  name: 'Paste date and time',
+  render: function Render() {
+    const [value, setValue] = useState<CalendarDateTime | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    return (
+      <DateInput
+        hideTimeZone
+        hourCycle={24}
+        granularity="minute"
+        label="Date and time"
+        value={value}
+        onChange={(newValue) => {
+          setValue(newValue);
+          setError(null);
+        }}
+        isInvalid={Boolean(error)}
+        errorMessage={error}
+        caption="Paste ISO value: 2026-06-15T14:30"
+        slotProps={{
+          inputDate: {
+            onPaste: (event) => {
+              event.preventDefault();
+
+              const text = event.clipboardData.getData('text/plain').trim();
+
+              try {
+                setValue(parseDateTime(text));
+                setError(null);
+              } catch {
+                setError('Use date and time format: YYYY-MM-DDTHH:mm');
+              }
+            },
+          },
+        }}
       />
     );
   },
