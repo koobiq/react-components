@@ -9,6 +9,12 @@ import type {
 import { mergeProps, useFocusWithin, useLocale } from '@koobiq/react-core';
 import { ListKeyboardDelegate, useSelectableList } from '@react-aria/selection';
 import type { ListState } from '@react-stately/list';
+import type { MultipleSelectionManager } from '@react-stately/selection';
+
+const extendSelectionMethod: keyof MultipleSelectionManager = 'extendSelection';
+
+const noopExtendSelection: MultipleSelectionManager['extendSelection'] = () =>
+  undefined;
 
 export type AriaTagListProps = {
   /**
@@ -57,6 +63,24 @@ export function useTagList<T extends object>(
     ]
   );
 
+  // Let React Aria keep owning keyboard focus movement, but disable its
+  // range-selection branch for tags.
+  const selectionManagerWithoutRangeSelection = useMemo(
+    () =>
+      new Proxy(state.selectionManager, {
+        get(target, property) {
+          if (property === extendSelectionMethod) {
+            return noopExtendSelection;
+          }
+
+          const value = Reflect.get(target, property, target);
+
+          return typeof value === 'function' ? value.bind(target) : value;
+        },
+      }) as MultipleSelectionManager,
+    [state.selectionManager]
+  );
+
   const { listProps } = useSelectableList({
     keyboardDelegate,
     // Spec: arrow navigation in the tag list is not cyclic.
@@ -65,7 +89,7 @@ export function useTagList<T extends object>(
     autoFocus,
     collection: state.collection,
     disabledKeys: state.disabledKeys,
-    selectionManager: state.selectionManager,
+    selectionManager: selectionManagerWithoutRangeSelection,
     ref: ref as AriaRefObject<HTMLElement | null>,
   });
 
@@ -74,19 +98,36 @@ export function useTagList<T extends object>(
     onBlurWithin: () => state.selectionManager.clearSelection(),
   });
 
-  const { 'data-collection': collectionId } = listProps as {
+  const { onKeyDown: selectableKeyDown, ...selectableListProps } = listProps;
+
+  const { 'data-collection': collectionId } = selectableListProps as {
     'data-collection'?: string;
   };
+
+  const isArrowKey = (key: string) =>
+    key === 'ArrowDown' ||
+    key === 'ArrowUp' ||
+    key === 'ArrowLeft' ||
+    key === 'ArrowRight';
 
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.defaultPrevented) return;
 
     if (
-      event.key === 'ArrowDown' ||
-      event.key === 'ArrowUp' ||
-      event.key === 'ArrowLeft' ||
-      event.key === 'ArrowRight'
+      event.shiftKey &&
+      (event.metaKey || event.ctrlKey || event.altKey) &&
+      isArrowKey(event.key)
     ) {
+      event.preventDefault();
+
+      return;
+    }
+
+    selectableKeyDown?.(event);
+
+    // Keep the page from scrolling while arrow-navigating the tags — the
+    // collection only calls preventDefault when it actually moves focus.
+    if (isArrowKey(event.key)) {
       event.preventDefault();
     }
   };
@@ -96,7 +137,7 @@ export function useTagList<T extends object>(
       {
         role: state.collection.size ? 'grid' : 'group',
       },
-      listProps,
+      selectableListProps,
       { onKeyDown },
       focusWithinProps
     ),

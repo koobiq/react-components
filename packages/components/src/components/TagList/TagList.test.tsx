@@ -184,6 +184,53 @@ describe('TagList', () => {
     await waitFor(() => expect(getTag()).toHaveFocus());
   });
 
+  it('should move focus without extending selection on Shift+Arrow', async () => {
+    const user = userEvent.setup();
+    const onSelectionChange = vi.fn();
+
+    render(renderComponent({ selectionMode: 'multiple', onSelectionChange }));
+
+    await user.click(getTag());
+    await user.keyboard('{Space}');
+
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+
+    onSelectionChange.mockClear();
+
+    await user.keyboard('{Shift>}{ArrowRight}{/Shift}');
+
+    const thirdTag = screen.getByText('three').closest('[role="row"]');
+
+    await waitFor(() => expect(thirdTag).toHaveFocus());
+    expect(onSelectionChange).not.toHaveBeenCalled();
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+    expect(thirdTag).not.toHaveAttribute('data-selected');
+  });
+
+  it('should ignore Shift+modified arrow shortcuts', async () => {
+    const user = userEvent.setup();
+    const onSelectionChange = vi.fn();
+
+    render(renderComponent({ selectionMode: 'multiple', onSelectionChange }));
+
+    await user.click(getTag());
+    await user.keyboard('{Space}');
+
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+
+    onSelectionChange.mockClear();
+
+    await user.keyboard('{Shift>}{Meta>}{ArrowRight}{/Meta}{/Shift}');
+
+    expect(getTag()).toHaveFocus();
+    expect(onSelectionChange).not.toHaveBeenCalled();
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+
+    expect(
+      screen.getByText('three').closest('[role="row"]')
+    ).not.toHaveAttribute('data-selected');
+  });
+
   it('should not wrap focus past the last tag with ArrowRight', async () => {
     const user = userEvent.setup();
 
