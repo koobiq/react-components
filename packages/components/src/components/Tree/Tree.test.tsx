@@ -42,6 +42,18 @@ describe('Tree', () => {
     expect(screen.getByTestId('tree')).toHaveClass('kbq-Tree', 'tree-custom');
   });
 
+  it('should mark padded tree via isPadded', () => {
+    render(
+      <Tree aria-label="Files" data-testid="tree" isPadded>
+        <Tree.Item id="documents" textValue="Documents">
+          <Tree.ItemContent>Documents</Tree.ItemContent>
+        </Tree.Item>
+      </Tree>
+    );
+
+    expect(screen.getByTestId('tree')).toHaveAttribute('data-padded', 'true');
+  });
+
   it('should merge custom className with default Tree.Item class', () => {
     render(
       <Tree aria-label="Files">

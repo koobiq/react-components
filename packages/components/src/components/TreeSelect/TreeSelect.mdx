@@ -1,0 +1,66 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TreeSelect.stories';
+
+<Meta of={Stories} />
+
+# TreeSelect
+
+<Status variant="experimental" />
+
+Select with hierarchical tree data.
+
+## Import
+
+```tsx
+import { TreeSelect } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Content
+
+TreeSelect accepts hierarchical data through the `items` prop.
+
+### Static collection
+
+Use `TreeSelect.Item` when the tree structure is known in advance.
+
+<Story of={Stories.StaticCollection} />
+
+### Dynamic collection
+
+Use `items` when the tree data comes from an external source or changes over time.
+
+<Story of={Stories.DynamicCollection} />
+
+## Label
+
+Use `label` when the field should be presented as a regular form control.
+
+<Story of={Stories.WithLabel} />
+
+## Controlled selection
+
+Use `selectedKey` and `onSelectionChange` to control the selected node from the
+outside. The selected value is preserved when the tree is filtered.
+
+<Story of={Stories.Controlled} />
+
+## Disabled
+
+When `isDisabled` is enabled, the trigger cannot be focused or opened by the
+user.
+
+<Story of={Stories.Disabled} />
