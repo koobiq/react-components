@@ -218,7 +218,7 @@ export const ReadOnly: Story = {
   },
 };
 
-export const Clearable: Story = {
+export const HideClearButton: Story = {
   render: function Render() {
     const { m } = useBreakpoints();
 
@@ -246,7 +246,7 @@ export const Clearable: Story = {
         style={{ inlineSize: m ? 360 : 240 }}
         onRemove={(keys) => list.remove(...keys)}
         onAdd={(values) => list.append(...values.map(createTag))}
-        isClearable
+        hideClearButton
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
       </TagInput>

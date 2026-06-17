@@ -53,6 +53,7 @@ export function TagInputInner<T extends object>(
     isRequired,
     isDisabled,
     isReadOnly,
+    hideClearButton,
     ...props
   } = inProps;
 
@@ -92,6 +93,7 @@ export function TagInputInner<T extends object>(
       ...props,
       isDisabled,
       isReadOnly,
+      isClearable: !hideClearButton,
     },
     state,
     forwardedInputRef

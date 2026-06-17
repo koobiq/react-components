@@ -210,10 +210,11 @@ and remove buttons are not rendered.
 
 ## Cleaner
 
-Enable the cleaner button with `isClearable`. Pressing it removes all tags,
-clears the text input, calls `onClear`, and returns focus to the input.
+The cleaner button is shown by default. Pressing it removes all tags, clears
+the text input, calls `onClear`, and returns focus to the input. Pass
+`hideClearButton` to hide it.
 
-<Story of={Stories.Clearable} />
+<Story of={Stories.HideClearButton} />
 
 ## Accessibility
 

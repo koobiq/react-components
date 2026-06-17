@@ -110,8 +110,8 @@ red `Tooltip` by the control. See the story source for the full code.
 `onRemove(keys)` fires with the set of removed tag keys. Tags can be
 removed via the × button on each tag, by <kbd>Backspace</kbd> /
 
-<kbd>Delete</kbd> on a focused tag, or all at once with the cleaner button
-(`isClearable`).
+<kbd>Delete</kbd> on a focused tag, or all at once with the cleaner button that
+the field shows by default.
 
 ## Selection
 
@@ -165,10 +165,11 @@ tags are not rendered.
 
 ## Cleaner
 
-Enable the cleaner button with `isClearable`. Pressing it removes all tags,
-clears the text input, calls `onClear`, and returns focus to the input.
+The cleaner button is shown by default. Pressing it removes all tags, clears
+the text input, calls `onClear`, and returns focus to the input. Pass
+`hideClearButton` to hide it.
 
-<Story of={Stories.Clearable} />
+<Story of={Stories.HideClearButton} />
 
 ## Inside a Form
 

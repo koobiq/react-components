@@ -47,10 +47,16 @@ export type TagInputAddContext<T = unknown> = TagFieldAddContext<T>;
 
 type TagInputBaseProps<T extends object> = Omit<
   AriaTagFieldProps<T>,
-  'description' | 'validate' | 'validationState'
+  'description' | 'validate' | 'validationState' | 'isClearable'
 >;
 
 export type TagInputProps<T extends object = object> = TagInputBaseProps<T> & {
+  /**
+   * Whether to hide the cleaner button. By default a button that removes all
+   * tags and resets the input is rendered.
+   * @default false
+   */
+  hideClearButton?: boolean;
   /** Helper text below the field. */
   caption?: ReactNode;
   /** Addon placed before the tags/input content. */

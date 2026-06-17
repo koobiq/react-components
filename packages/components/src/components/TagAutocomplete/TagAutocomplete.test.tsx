@@ -29,7 +29,7 @@ type HarnessProps = {
   loadingText?: ReactNode;
   noItemsText?: ReactNode;
   onLoadMore?: () => void;
-  isClearable?: boolean;
+  hideClearButton?: boolean;
   onClear?: () => void;
   defaultInputValue?: string;
   onInputChange?: (value: string) => void;
@@ -58,7 +58,7 @@ function Harness(props: HarnessProps) {
     loadingText,
     noItemsText,
     onLoadMore,
-    isClearable,
+    hideClearButton,
     onClear,
     defaultInputValue,
     onInputChange,
@@ -119,7 +119,7 @@ function Harness(props: HarnessProps) {
       loadingText={loadingText}
       noItemsText={noItemsText}
       onLoadMore={onLoadMore}
-      isClearable={isClearable}
+      hideClearButton={hideClearButton}
       onClear={onClear}
       defaultInputValue={defaultInputValue}
       onInputChange={onInputChange}
@@ -616,11 +616,7 @@ describe('TagAutocomplete', () => {
     const onClear = vi.fn();
 
     render(
-      <Harness
-        initialTags={[{ id: 'vite', name: 'Vite' }]}
-        isClearable
-        onClear={onClear}
-      />
+      <Harness initialTags={[{ id: 'vite', name: 'Vite' }]} onClear={onClear} />
     );
 
     await user.type(getInput(), 'Re');

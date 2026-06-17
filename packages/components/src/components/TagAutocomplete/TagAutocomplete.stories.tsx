@@ -574,7 +574,7 @@ export const ReadOnly: Story = {
   },
 };
 
-export const Clearable: Story = {
+export const HideClearButton: Story = {
   render: function Render() {
     const { m } = useBreakpoints();
 
@@ -598,7 +598,7 @@ export const Clearable: Story = {
       <TagAutocomplete<TagItem>
         label="Tags"
         fullWidth
-        isClearable
+        hideClearButton
         style={{ inlineSize: m ? 360 : 240 }}
         placeholder="Type or choose a tag"
         items={list.items}

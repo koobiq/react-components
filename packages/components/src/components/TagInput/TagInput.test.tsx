@@ -778,18 +778,23 @@ describe('TagInput', () => {
   });
 
   describe('Cleaner', () => {
-    it('does not render when isClearable is false', () => {
+    it('renders by default when there are tags', () => {
       render(<Wrapper initialItems={seed(['a'])} />);
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('does not render when hideClearButton is set', () => {
+      render(<Wrapper initialItems={seed(['a'])} hideClearButton />);
       expect(getClearButton()).toBeNull();
     });
 
     it('is hidden when there are no tags and no input value', () => {
-      render(<Wrapper isClearable />);
+      render(<Wrapper />);
       expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('is visible when there are tags', () => {
-      render(<Wrapper initialItems={seed(['a'])} isClearable />);
+      render(<Wrapper initialItems={seed(['a'])} />);
       expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
     });
 
@@ -800,7 +805,6 @@ describe('TagInput', () => {
       render(
         <Wrapper
           initialItems={seed(['a', 'b'])}
-          isClearable
           onRemove={onRemove}
           onClear={onClear}
         />
@@ -822,7 +826,7 @@ describe('TagInput', () => {
     });
 
     it('is hidden when disabled even with tags', () => {
-      render(<Wrapper initialItems={seed(['a'])} isClearable isDisabled />);
+      render(<Wrapper initialItems={seed(['a'])} isDisabled />);
       expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
     });
   });

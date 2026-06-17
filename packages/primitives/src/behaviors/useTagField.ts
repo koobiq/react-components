@@ -113,6 +113,7 @@ export type AriaTagFieldProps<T extends object> = Omit<
 };
 
 export type TagFieldClearButtonProps = {
+  /** Whether the cleaner should render in the DOM. */
   isClearable: boolean;
   tabIndex: -1 | undefined;
   isHidden: boolean;

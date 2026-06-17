@@ -8,7 +8,7 @@ import type { TagInputProps, TagInputRef } from '../TagInput';
 
 type TagAutocompleteBaseProps<T extends object> = Omit<
   AriaTagAutocompleteProps<T>,
-  'description' | 'validate' | 'validationState'
+  'description' | 'validate' | 'validationState' | 'isClearable'
 >;
 
 export type TagAutocompleteProps<T extends object = object> =
