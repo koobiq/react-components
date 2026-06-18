@@ -16,6 +16,7 @@ import {
   useDOMRef,
   useElementSize,
   useFilter,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
@@ -49,6 +50,7 @@ import type { SearchInputProps } from '../SearchInput';
 import { Tree } from '../Tree';
 import { Typography } from '../Typography';
 
+import intlMessages from './intl';
 import s from './TreeSelect.module.css';
 import type {
   TreeSelectComponent,
@@ -137,10 +139,9 @@ function TreeSelectRender(
     onInputChange,
     isSearchable = true,
     searchPlaceholder,
-    searchAriaLabel = 'Search',
     placeholder,
     renderValue: renderValueProp,
-    noResultsText = 'Nothing found',
+    noResultsText,
     isLabelHidden,
     labelPlacement,
     labelAlign,
@@ -187,6 +188,8 @@ function TreeSelectRender(
 
   const { contains } = useFilter({ sensitivity: 'base' });
 
+  const t = useLocalizedStringFormatter(intlMessages);
+
   const collectionItems = useMemo(
     () => items ?? getStaticItems(children),
     [children, items]
@@ -230,16 +233,16 @@ function TreeSelectRender(
   const treeSelectState = useTreeSelectState(treeSelectProps);
 
   const {
-    labelProps: labelPropsAria,
-    triggerProps,
-    valueProps,
     treeProps,
-    popoverProps: popoverPropsAria,
+    valueProps,
+    triggerProps,
+    validationErrors,
     descriptionProps,
     errorMessageProps,
-    isInvalid: isInvalidState,
-    validationErrors,
     validationDetails,
+    isInvalid: isInvalidState,
+    labelProps: labelPropsAria,
+    popoverProps: popoverPropsAria,
   } = useTreeSelect(
     { ...treeSelectProps, triggerRef: controlRef },
     treeSelectState
@@ -269,10 +272,10 @@ function TreeSelectRender(
       labelPlacement,
       'data-testid': testId,
       'data-variant': variant,
-      'data-invalid': isInvalidState || undefined,
+      className: clsx(s.base, className),
       'data-disabled': isDisabled || undefined,
       'data-required': isRequired || undefined,
-      className: clsx(s.base, className),
+      'data-invalid': isInvalidState || undefined,
     },
     slotProps?.root
   );
@@ -285,10 +288,10 @@ function TreeSelectRender(
 
   const clearButtonProps = mergeProps(
     {
-      isHidden: clearButtonIsHidden,
       isClearable,
       onPress: handleClear,
       className: s.clearButton,
+      isHidden: clearButtonIsHidden,
     },
     slotProps?.clearButton
   );
@@ -380,7 +383,9 @@ function TreeSelectRender(
       isPadded: true,
       expandedKeys: inputValue ? new Set(expandedIds) : treeProps.expandedKeys,
       renderEmptyState: () => (
-        <Typography variant="text-normal">{noResultsText}</Typography>
+        <Typography variant="text-normal">
+          {noResultsText ?? t.format('nothing found')}
+        </Typography>
       ),
     },
     slotProps?.tree
@@ -388,7 +393,7 @@ function TreeSelectRender(
 
   const searchInputProps = mergeProps<(SearchInputProps | undefined)[]>(
     {
-      'aria-label': searchAriaLabel,
+      'aria-label': t.format('search'),
       isLabelHidden: true,
       isDisabled,
       placeholder: searchPlaceholder,

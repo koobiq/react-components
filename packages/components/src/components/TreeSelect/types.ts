@@ -87,8 +87,6 @@ export type TreeSelectProps = ExtendableProps<
     isSearchable?: boolean;
     /** Placeholder for the search field. */
     searchPlaceholder?: string;
-    /** Accessible label for the search field. */
-    searchAriaLabel?: string;
     /** Placeholder shown in the closed control when nothing is selected. */
     placeholder?: string | number;
     /**
@@ -111,7 +109,7 @@ export type TreeSelectProps = ExtendableProps<
     ) => ReactNode;
     /**
      * Content shown when no node matches the query.
-     * @default 'Nothing found'
+     * Defaults to a localized "Nothing found".
      */
     noResultsText?: ReactNode;
     /**
