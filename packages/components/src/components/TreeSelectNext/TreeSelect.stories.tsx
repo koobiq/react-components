@@ -70,7 +70,7 @@ export const Spike: Story = {
     return (
       <TreeSelect
         items={items}
-        // defaultSelectedKeys={new Set([9])}
+        defaultSelectedKeys={new Set([9])}
         caption="My caption"
         label="Project files"
         placeholder="My placeholder"

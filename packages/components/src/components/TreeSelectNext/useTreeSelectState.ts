@@ -10,7 +10,6 @@ import type {
   FocusableProps,
   Node,
 } from '@koobiq/react-core';
-import { useControlledState } from '@koobiq/react-core';
 import { useTreeState, useFormValidationState } from '@koobiq/react-primitives';
 import type { FormValidationState } from '@koobiq/react-primitives';
 import type { OverlayTriggerState } from '@react-stately/overlays';
@@ -49,17 +48,6 @@ export type TreeSelectState<T> = {
 export function useTreeSelectState<T extends object>(
   props: TreeSelectStateOptions<T>
 ): TreeSelectState<T> {
-  const [controlledValue, setControlledValue] = useControlledState<
-    Iterable<Key>
-  >(
-    props.selectedKeys ?? new Set([]),
-    props.defaultSelectedKeys,
-    props.onSelectionChange
-  );
-
-  // TODO: remove
-  console.log(controlledValue);
-
   const displayValue = props.selectedKeys
     ? Array.from(props.selectedKeys)[0]
     : undefined;
@@ -90,7 +78,7 @@ export function useTreeSelectState<T extends object>(
   }, [treeState.selectionManager.selectedKeys, treeState.collection]);
 
   const setSelectedKeys = (keys: Iterable<Key>) => {
-    setControlledValue(keys);
+    treeState.selectionManager.setSelectedKeys(keys);
     validationState.commitValidation();
   };
 
