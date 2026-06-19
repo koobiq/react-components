@@ -286,6 +286,7 @@ export function TreeSelectInner<T extends object>({
             props={
               {
                 ...treeProps,
+                ...treePropsAria,
                 'data-padded': true,
                 className: composeRenderProps(className, (className) =>
                   clsx('kbq-Tree', list, className)
@@ -293,7 +294,7 @@ export function TreeSelectInner<T extends object>({
               } as TreeProps<T>
             }
             treeRef={treeRef}
-            state={treePropsAria.state}
+            state={state}
           />
         </div>
       </PopoverInner>

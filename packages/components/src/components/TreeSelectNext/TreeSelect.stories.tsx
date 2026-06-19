@@ -75,6 +75,7 @@ export const Spike: Story = {
         label="Project files"
         placeholder="My placeholder"
         selectionMode="multiple"
+        isClearable
       >
         {function renderItem(item) {
           return (

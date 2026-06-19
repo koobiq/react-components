@@ -38,13 +38,13 @@ export interface TreeSelectStateOptions<T extends object>
 }
 
 export type TreeSelectState<T> = {
-  treeState: TreeState<T>;
-  validationState: FormValidationState;
   /** The value of the selected items. */
   readonly selectedItems: Node<T>[];
   /** Set the selected node id. */
   setSelectedKeys(keys: Iterable<Key>): void;
-} & OverlayTriggerState;
+} & TreeState<T> &
+  OverlayTriggerState &
+  FormValidationState;
 
 export function useTreeSelectState<T extends object>(
   props: TreeSelectStateOptions<T>
@@ -96,8 +96,8 @@ export function useTreeSelectState<T extends object>(
 
   return {
     ...overlayState,
-    treeState,
-    validationState,
+    ...treeState,
+    ...validationState,
     selectedItems,
     setSelectedKeys,
   };

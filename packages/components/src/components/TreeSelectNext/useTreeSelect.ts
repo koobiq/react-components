@@ -2,7 +2,6 @@ import type { HTMLAttributes, KeyboardEvent } from 'react';
 
 import { chain, mergeProps, useId } from '@koobiq/react-core';
 import type { RefObject, ValidationResult } from '@koobiq/react-core';
-import type { TreeState } from '@koobiq/react-primitives';
 import { useField } from '@react-aria/label';
 import { useOverlayTrigger } from '@react-aria/overlays';
 import type { TreeProps } from 'react-aria-components';
@@ -20,7 +19,7 @@ export type TreeSelectAria<T extends object> = {
   /** Props for the element representing the selected value. */
   valueProps: HTMLAttributes<HTMLElement>;
   /** Props for the popup tree. */
-  treeProps: Omit<TreeProps<T>, 'children' | 'items'> & { state: TreeState<T> };
+  treeProps: Omit<TreeProps<T>, 'children' | 'items'>;
   /** Props for the select description element, if any. */
   descriptionProps: HTMLAttributes<HTMLElement>;
   /** Props for the select error message element, if any. */
@@ -42,11 +41,9 @@ export function useTreeSelect<T extends object>(
   // TODO: work out
   console.log(ref);
 
-  const { validationState, treeState, isOpen, setOpen, open, close, toggle } =
-    state;
+  const { displayValidation, isOpen, setOpen, open, close, toggle } = state;
 
-  const { isInvalid, validationErrors, validationDetails } =
-    validationState.displayValidation;
+  const { isInvalid, validationErrors, validationDetails } = displayValidation;
 
   const { labelProps, errorMessageProps, descriptionProps, fieldProps } =
     useField({
@@ -120,6 +117,11 @@ export function useTreeSelect<T extends object>(
     onKeyUp: props.onKeyUp,
   });
 
+  const treeProps: TreeSelectAria<T>['treeProps'] = mergeProps(overlayProps, {
+    'aria-label': fieldProps['aria-label'],
+    'aria-labelledby': fieldProps['aria-labelledby'],
+  });
+
   // TODO: remove
   console.log(overlayProps);
 
@@ -130,9 +132,7 @@ export function useTreeSelect<T extends object>(
     triggerProps,
     errorMessageProps,
     descriptionProps,
-    treeProps: {
-      state: treeState,
-    },
+    treeProps,
     validationErrors,
     validationDetails,
   };
