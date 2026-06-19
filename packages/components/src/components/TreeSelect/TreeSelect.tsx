@@ -1,27 +1,19 @@
 'use client';
 
-import {
-  Children,
-  forwardRef,
-  isValidElement,
-  useCallback,
-  useMemo,
-} from 'react';
-import type { ReactElement, ReactNode, Ref } from 'react';
+import { forwardRef, useCallback } from 'react';
+import type { Ref } from 'react';
 
 import {
   clsx,
   mergeProps,
-  useControlledState,
   useDOMRef,
   useElementSize,
-  useFilter,
-  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   ButtonContext,
   Collection,
+  CollectionBuilder,
   DEFAULT_SLOT,
   FieldErrorContext,
   FormContext,
@@ -32,7 +24,6 @@ import {
   type AriaTreeSelectProps,
 } from '@koobiq/react-primitives';
 
-import { Divider } from '../Divider';
 import { useForm } from '../Form';
 import type {
   FormFieldCaptionProps,
@@ -45,78 +36,20 @@ import type {
 import { FormField, FormFieldClearButton } from '../FormField';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
-import { SearchInput } from '../SearchInput';
-import type { SearchInputProps } from '../SearchInput';
 import { Tree } from '../Tree';
-import { Typography } from '../Typography';
 
-import intlMessages from './intl';
 import s from './TreeSelect.module.css';
 import type {
   TreeSelectComponent,
-  TreeSelectItemProps,
-  TreeSelectNode,
   TreeSelectProps,
   TreeSelectRef,
 } from './types';
-import { filterTree, getNodeTextValue } from './utils';
-
-function isTreeSelectItemElement(
-  node: ReactNode
-): node is ReactElement<TreeSelectItemProps> {
-  return (
-    isValidElement<TreeSelectItemProps>(node) && node.type === TreeSelectItem
-  );
-}
-
-function getStaticItemLabel(children: ReactNode, fallback: string): ReactNode {
-  const labelChildren = Children.toArray(children).filter(
-    (child) =>
-      !isTreeSelectItemElement(child) &&
-      !(typeof child === 'string' && child.trim().length === 0)
-  );
-
-  if (labelChildren.length === 0) return fallback;
-
-  if (labelChildren.length === 1) {
-    const [label] = labelChildren;
-
-    return typeof label === 'string' ? label.trim() : label;
-  }
-
-  return labelChildren;
-}
-
-function getStaticItems(children: ReactNode): TreeSelectNode[] {
-  return Children.toArray(children).flatMap((child) => {
-    if (!isTreeSelectItemElement(child)) return [];
-
-    const { id, textValue, isDisabled, children: itemChildren } = child.props;
-
-    const nestedItems = getStaticItems(itemChildren);
-
-    return {
-      id,
-      textValue,
-      isDisabled,
-      label: getStaticItemLabel(itemChildren, textValue ?? id),
-      children: nestedItems.length ? nestedItems : undefined,
-    };
-  });
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function TreeSelectItem(_props: TreeSelectItemProps) {
-  return null;
-}
-
-TreeSelectItem.displayName = 'TreeSelect.Item';
 
 /**
  * Select with hierarchical tree data.
  */
-function TreeSelectRender(
-  props: Omit<TreeSelectProps, 'ref'>,
+function TreeSelectRender<T extends object>(
+  props: Omit<TreeSelectProps<T>, 'ref'>,
   ref: Ref<TreeSelectRef>
 ) {
   const {
@@ -134,14 +67,8 @@ function TreeSelectRender(
     isOpen,
     defaultOpen,
     onOpenChange,
-    inputValue: inputValueProp,
-    defaultInputValue = '',
-    onInputChange,
-    isSearchable = true,
-    searchPlaceholder,
     placeholder,
     renderValue: renderValueProp,
-    noResultsText,
     isLabelHidden,
     labelPlacement,
     labelAlign,
@@ -180,31 +107,8 @@ function TreeSelectRender(
   const validationBehavior =
     validationBehaviorProp ?? formValidationBehavior ?? 'aria';
 
-  const [inputValue, setInputValue] = useControlledState(
-    inputValueProp,
-    defaultInputValue,
-    onInputChange
-  );
-
-  const { contains } = useFilter({ sensitivity: 'base' });
-
-  const t = useLocalizedStringFormatter(intlMessages);
-
-  const collectionItems = useMemo(
-    () => items ?? getStaticItems(children),
-    [children, items]
-  );
-
-  const { items: visibleItems, expandedIds } = useMemo(
-    () =>
-      inputValue
-        ? filterTree(collectionItems, (text) => contains(text, inputValue))
-        : { items: collectionItems, expandedIds: [] as string[] },
-    [collectionItems, inputValue, contains]
-  );
-
-  const treeSelectProps: AriaTreeSelectProps = {
-    items: collectionItems,
+  const treeSelectProps: AriaTreeSelectProps<T> = {
+    items,
     label,
     'aria-label': ariaLabel,
     selectedKey,
@@ -327,11 +231,6 @@ function TreeSelectRender(
     slotProps?.group
   );
 
-  const renderDefaultValue: typeof renderValueProp = (node) =>
-    node ? node.label : null;
-
-  const renderValue = renderValueProp || renderDefaultValue;
-
   const controlProps = mergeProps<(FormFieldSelectProps | undefined)[]>(
     {
       ref: controlRef,
@@ -379,96 +278,77 @@ function TreeSelectRender(
     treeProps,
     {
       className: s.tree,
-      items: visibleItems,
+      items,
       isPadded: true,
-      expandedKeys: inputValue ? new Set(expandedIds) : treeProps.expandedKeys,
-      renderEmptyState: () => (
-        <Typography variant="text-normal">
-          {noResultsText ?? t.format('nothing found')}
-        </Typography>
-      ),
     },
     slotProps?.tree
   );
 
-  const searchInputProps = mergeProps<(SearchInputProps | undefined)[]>(
-    {
-      'aria-label': t.format('search'),
-      isLabelHidden: true,
-      isDisabled,
-      placeholder: searchPlaceholder,
-      value: inputValue,
-      onChange: setInputValue,
-      fullWidth: true,
-      variant: 'transparent',
-      className: s.search,
-    },
-    slotProps?.searchInput
-  );
-
   return (
-    <Provider
-      values={[
-        [
-          ButtonContext,
-          {
-            slots: {
-              [DEFAULT_SLOT]: {},
-              'clear-button': {},
-            },
-          },
-        ],
-      ]}
+    <CollectionBuilder
+      content={<Collection items={items}>{children}</Collection>}
     >
-      <FormField {...rootProps}>
-        <FormField.Label {...labelProps} />
-        <div className={s.body}>
-          <FormField.ControlGroup {...groupProps}>
-            <FormField.Select {...controlProps}>
-              {renderValue(treeSelectState.selectedNode, {
-                isInvalid: isInvalidState,
-                isDisabled,
-                isRequired,
-              })}
-            </FormField.Select>
-          </FormField.ControlGroup>
-          <FieldErrorContext.Provider value={validation}>
-            <FormField.Error {...errorProps} />
-          </FieldErrorContext.Provider>
-          <FormField.Caption {...captionProps} />
-        </div>
-        <PopoverInner {...popoverProps}>
-          <div className={s.content}>
-            {isSearchable && (
-              <>
-                <SearchInput {...searchInputProps} />
-                <Divider disablePaddings />
-              </>
-            )}
-            <Tree {...finalTreeProps}>
-              {function renderItem(node: TreeSelectNode) {
-                return (
-                  <Tree.Item id={node.id} textValue={getNodeTextValue(node)}>
-                    <Tree.ItemContent>{node.label}</Tree.ItemContent>
-                    {node.children ? (
-                      <Collection items={node.children}>
-                        {renderItem}
-                      </Collection>
-                    ) : null}
-                  </Tree.Item>
-                );
-              }}
-            </Tree>
-          </div>
-        </PopoverInner>
-      </FormField>
-    </Provider>
+      {(collection) => {
+        const renderDefaultValue: typeof renderValueProp = () => {
+          if (treeSelectState.selectedKey == null) return null;
+
+          return (
+            collection.getItem(treeSelectState.selectedKey)?.textValue ?? null
+          );
+        };
+
+        const renderValue = renderValueProp || renderDefaultValue;
+
+        return (
+          <Provider
+            values={[
+              [
+                ButtonContext,
+                {
+                  slots: {
+                    [DEFAULT_SLOT]: {},
+                    'clear-button': {},
+                  },
+                },
+              ],
+            ]}
+          >
+            <FormField {...rootProps}>
+              <FormField.Label {...labelProps} />
+              <div className={s.body}>
+                <FormField.ControlGroup {...groupProps}>
+                  <FormField.Select {...controlProps}>
+                    {renderValue(treeSelectState.selectedNode, {
+                      isInvalid: isInvalidState,
+                      isDisabled,
+                      isRequired,
+                    })}
+                  </FormField.Select>
+                </FormField.ControlGroup>
+                <FieldErrorContext.Provider value={validation}>
+                  <FormField.Error {...errorProps} />
+                </FieldErrorContext.Provider>
+                <FormField.Caption {...captionProps} />
+              </div>
+              <PopoverInner {...popoverProps}>
+                <div className={s.content}>
+                  <Tree {...finalTreeProps}>{children}</Tree>
+                </div>
+              </PopoverInner>
+            </FormField>
+          </Provider>
+        );
+      }}
+    </CollectionBuilder>
   );
 }
 
-const TreeSelectComponent = forwardRef(TreeSelectRender) as TreeSelectComponent;
+const TreeSelectComponent = forwardRef(
+  TreeSelectRender
+) as unknown as TreeSelectComponent;
 
 export const TreeSelect = TreeSelectComponent;
 
 TreeSelect.displayName = 'TreeSelect';
-TreeSelect.Item = TreeSelectItem;
+TreeSelect.Item = Tree.Item;
+TreeSelect.ItemContent = Tree.ItemContent;

@@ -1,18 +1,13 @@
 import type {
   ComponentRef,
   CSSProperties,
-  ForwardRefExoticComponent,
   ReactElement,
   ReactNode,
   Ref,
-  RefAttributes,
 } from 'react';
 
 import type { DataAttributeProps, ExtendableProps } from '@koobiq/react-core';
-import type {
-  AriaTreeSelectProps,
-  TreeSelectNode as PrimitiveTreeSelectNode,
-} from '@koobiq/react-primitives';
+import type { AriaTreeSelectProps } from '@koobiq/react-primitives';
 
 import type {
   FormFieldCaptionProps,
@@ -32,26 +27,13 @@ import {
 } from '../FormField';
 import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
-import type { SearchInputProps } from '../SearchInput';
-import type { TreeProps } from '../Tree';
+import type { Tree, TreeProps } from '../Tree';
 
-/** A single node of the {@link TreeSelectProps.items | TreeSelect data}. */
-export type TreeSelectNode = PrimitiveTreeSelectNode;
+export type TreeSelectItemProps = Parameters<typeof Tree.Item>[0];
 
-export type TreeSelectItemProps = {
-  /** Unique identifier of the node. */
-  id: string;
-  /** Text used for searching/filtering. */
-  textValue?: string;
-  /** If `true`, the node can't be selected. */
-  isDisabled?: boolean;
-  /** Rendered node label and nested `TreeSelect.Item` nodes. */
-  children?: ReactNode;
-};
+export type TreeSelectItemComponent = typeof Tree.Item;
 
-export type TreeSelectItemComponent = (
-  props: TreeSelectItemProps
-) => ReactElement | null;
+export type TreeSelectItemContentComponent = typeof Tree.ItemContent;
 
 export const treeSelectPropLabelPlacement = formFieldPropLabelPlacement;
 export type TreeSelectPropLabelPlacement = FormFieldPropLabelPlacement;
@@ -68,25 +50,12 @@ export type TreeSelectRenderValueState = {
   isRequired?: boolean;
 };
 
-export type TreeSelectProps = ExtendableProps<
+export type TreeSelectProps<T extends object = object> = ExtendableProps<
   {
-    /** Root nodes of the dynamic tree collection. */
-    items?: TreeSelectNode[];
-    /** Static tree collection. */
-    children?: ReactNode;
-    /** The search query (controlled). */
-    inputValue?: string;
-    /** The initial search query (uncontrolled). */
-    defaultInputValue?: string;
-    /** Handler called when the search query changes. */
-    onInputChange?: (value: string) => void;
-    /**
-     * Enables search input inside the dropdown.
-     * @default true
-     */
-    isSearchable?: boolean;
-    /** Placeholder for the search field. */
-    searchPlaceholder?: string;
+    /** Root nodes of the tree collection. */
+    items?: TreeProps<T>['items'];
+    /** Static or render-function tree collection. */
+    children?: TreeProps<T>['children'];
     /** Placeholder shown in the closed control when nothing is selected. */
     placeholder?: string | number;
     /**
@@ -104,14 +73,9 @@ export type TreeSelectProps = ExtendableProps<
     onClear?: () => void;
     /** A render function for displaying the selected value. */
     renderValue?: (
-      node: TreeSelectNode | null,
+      node: T | null,
       state: TreeSelectRenderValueState
     ) => ReactNode;
-    /**
-     * Content shown when no node matches the query.
-     * Defaults to a localized "Nothing found".
-     */
-    noResultsText?: ReactNode;
     /**
      * If `true`, the label is hidden. Be sure to add aria-label to the input element.
      */
@@ -146,9 +110,8 @@ export type TreeSelectProps = ExtendableProps<
       caption?: FormFieldCaptionProps;
       errorMessage?: FormFieldErrorProps;
       clearButton?: IconButtonProps;
-      searchInput?: SearchInputProps;
       tree?: Omit<
-        TreeProps<TreeSelectNode>,
+        TreeProps<T>,
         | 'children'
         | 'items'
         | 'selectionMode'
@@ -157,15 +120,16 @@ export type TreeSelectProps = ExtendableProps<
       >;
     };
   },
-  Omit<AriaTreeSelectProps, 'items'>
+  Omit<AriaTreeSelectProps<T>, 'children' | 'items'>
 > &
   DataAttributeProps;
 
-export type TreeSelectComponent = ForwardRefExoticComponent<
-  Omit<TreeSelectProps, 'ref'> & RefAttributes<TreeSelectRef>
-> &
-  ((props: TreeSelectProps) => ReactElement | null) & {
-    Item: TreeSelectItemComponent;
-  };
+export type TreeSelectComponent = (<T extends object>(
+  props: TreeSelectProps<T>
+) => ReactElement | null) & {
+  displayName?: string;
+  Item: TreeSelectItemComponent;
+  ItemContent: TreeSelectItemContentComponent;
+};
 
 export type TreeSelectRef = ComponentRef<'div'>;

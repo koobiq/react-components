@@ -1,4 +1,4 @@
-import { useTreeSelectState } from '@koobiq/react-primitives';
+import { Collection, useTreeSelectState } from '@koobiq/react-primitives';
 import {
   act,
   render,
@@ -13,26 +13,47 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { Provider } from '../Provider';
 
 import { TreeSelect } from './TreeSelect';
-import type { TreeSelectNode } from './types';
 
-const data: TreeSelectNode[] = [
+type FileItem = {
+  id: string;
+  name: string;
+  isDisabled?: boolean;
+  children?: FileItem[];
+};
+
+const data: FileItem[] = [
   {
     id: 'config',
-    label: 'config',
+    name: 'config',
     children: [
-      { id: 'config-app', label: 'app.js' },
-      { id: 'config-db', label: 'database.js' },
+      { id: 'config-app', name: 'app.js' },
+      { id: 'config-db', name: 'database.js' },
     ],
   },
-  { id: 'readme', label: 'README.md' },
+  { id: 'readme', name: 'README.md' },
 ];
 
+function renderItem(item: FileItem) {
+  return (
+    <TreeSelect.Item
+      key={item.id}
+      textValue={item.name}
+      isDisabled={item.isDisabled}
+    >
+      <TreeSelect.ItemContent>{item.name}</TreeSelect.ItemContent>
+      <Collection items={item.children}>{renderItem}</Collection>
+    </TreeSelect.Item>
+  );
+}
+
 function renderTreeSelect(
-  props: Partial<React.ComponentProps<typeof TreeSelect>> = {}
+  props: Partial<React.ComponentProps<typeof TreeSelect<FileItem>>> = {}
 ) {
   return render(
     <Provider>
-      <TreeSelect aria-label="Files" items={data} {...props} />
+      <TreeSelect aria-label="Files" items={data} {...props}>
+        {renderItem}
+      </TreeSelect>
     </Provider>
   );
 }
@@ -74,7 +95,6 @@ describe('TreeSelect', () => {
 
     const tree = await openTreeSelect(user);
 
-    // A child of the expanded "config" branch is visible from the start.
     expect(within(tree).getByText('app.js')).toBeInTheDocument();
   });
 
@@ -84,37 +104,12 @@ describe('TreeSelect', () => {
 
     const tree = await openTreeSelect(user);
 
-    // Collapsed by default → child hidden.
     expect(within(tree).queryByText('app.js')).not.toBeInTheDocument();
 
-    // Click the chevron (the only button inside the "config" row).
     const configRow = within(tree).getByText('config').closest('[role="row"]');
     await user.click(within(configRow as HTMLElement).getByRole('button'));
 
     expect(within(tree).getByText('app.js')).toBeInTheDocument();
-  });
-
-  it('filters the tree as you type', async () => {
-    const user = userEvent.setup();
-    renderTreeSelect();
-
-    await openTreeSelect(user);
-    await user.type(screen.getByRole('searchbox'), 'README');
-
-    const tree = screen.getByRole('treegrid');
-
-    expect(within(tree).getByText('README.md')).toBeInTheDocument();
-    expect(within(tree).queryByText('config')).not.toBeInTheDocument();
-  });
-
-  it('shows the no-results text when nothing matches', async () => {
-    const user = userEvent.setup();
-    renderTreeSelect({ noResultsText: 'No matches' });
-
-    await openTreeSelect(user);
-    await user.type(screen.getByRole('searchbox'), 'zzz');
-
-    expect(screen.getByText('No matches')).toBeInTheDocument();
   });
 
   it('selects a single node and reports the id', async () => {
@@ -145,39 +140,6 @@ describe('TreeSelect', () => {
     );
   });
 
-  it('keeps the selection when the selected node is filtered out — without warning', async () => {
-    const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
-    const user = userEvent.setup();
-    renderTreeSelect();
-
-    // Select a top-level leaf, then filter it out of the collection.
-    let tree = await openTreeSelect(user);
-    await user.click(within(tree).getByText('README.md'));
-
-    await waitFor(() =>
-      expect(screen.queryByRole('treegrid')).not.toBeInTheDocument()
-    );
-
-    tree = await openTreeSelect(user);
-    await user.type(screen.getByRole('searchbox'), 'config');
-    expect(within(tree).queryByText('README.md')).not.toBeInTheDocument();
-
-    // No controlled/uncontrolled or "key not in collection" complaints.
-    expect(errSpy).not.toHaveBeenCalled();
-    expect(warnSpy).not.toHaveBeenCalled();
-
-    // Clear the query → the node reappears and is still selected.
-    await user.clear(screen.getByRole('searchbox'));
-
-    expect(
-      within(tree).getByText('README.md').closest('[role="row"]')
-    ).toHaveAttribute('aria-selected', 'true');
-
-    vi.restoreAllMocks();
-  });
-
   it('respects a controlled selectedKey', async () => {
     const user = userEvent.setup();
     renderTreeSelect({ selectedKey: 'readme' });
@@ -202,13 +164,13 @@ describe('TreeSelect', () => {
           placeholder="Select file"
         >
           <TreeSelect.Item id="config" textValue="config">
-            config
+            <TreeSelect.ItemContent>config</TreeSelect.ItemContent>
             <TreeSelect.Item id="config-app" textValue="app.js">
-              app.js
+              <TreeSelect.ItemContent>app.js</TreeSelect.ItemContent>
             </TreeSelect.Item>
           </TreeSelect.Item>
           <TreeSelect.Item id="readme" textValue="README.md">
-            README.md
+            <TreeSelect.ItemContent>README.md</TreeSelect.ItemContent>
           </TreeSelect.Item>
         </TreeSelect>
       </Provider>
@@ -225,7 +187,7 @@ describe('TreeSelect', () => {
 
   it('keeps selection, expansion, and overlay state in useTreeSelectState', () => {
     const { result } = renderHook(() =>
-      useTreeSelectState({
+      useTreeSelectState<FileItem>({
         items: data,
         defaultSelectedKey: 'readme',
         defaultExpandedKeys: ['config'],
@@ -233,7 +195,7 @@ describe('TreeSelect', () => {
     );
 
     expect(result.current.selectedKey).toBe('readme');
-    expect(result.current.selectedNode?.label).toBe('README.md');
+    expect(result.current.selectedNode?.name).toBe('README.md');
     expect(result.current.selectedKeys).toEqual(new Set(['readme']));
     expect(result.current.expandedKeys).toEqual(new Set(['config']));
 
@@ -248,6 +210,6 @@ describe('TreeSelect', () => {
     });
 
     expect(result.current.selectedKey).toBe('config-app');
-    expect(result.current.selectedNode?.label).toBe('app.js');
+    expect(result.current.selectedNode?.name).toBe('app.js');
   });
 });

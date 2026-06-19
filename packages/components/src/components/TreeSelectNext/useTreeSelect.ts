@@ -1,0 +1,139 @@
+import type { HTMLAttributes, KeyboardEvent } from 'react';
+
+import { chain, mergeProps, useId } from '@koobiq/react-core';
+import type { RefObject, ValidationResult } from '@koobiq/react-core';
+import type { TreeState } from '@koobiq/react-primitives';
+import { useField } from '@react-aria/label';
+import { useOverlayTrigger } from '@react-aria/overlays';
+import type { TreeProps } from 'react-aria-components';
+
+import type {
+  TreeSelectState,
+  TreeSelectStateOptions,
+} from './useTreeSelectState';
+
+export type TreeSelectAria<T extends object> = {
+  /** Props for the label element. */
+  labelProps: HTMLAttributes<HTMLElement>;
+  /** Props for the popup trigger element. */
+  triggerProps: HTMLAttributes<HTMLElement>;
+  /** Props for the element representing the selected value. */
+  valueProps: HTMLAttributes<HTMLElement>;
+  /** Props for the popup tree. */
+  treeProps: Omit<TreeProps<T>, 'children' | 'items'> & { state: TreeState<T> };
+  /** Props for the select description element, if any. */
+  descriptionProps: HTMLAttributes<HTMLElement>;
+  /** Props for the select error message element, if any. */
+  errorMessageProps: HTMLAttributes<HTMLElement>;
+} & ValidationResult;
+
+export interface AriaTreeSelectOptions<
+  T extends object,
+> extends TreeSelectStateOptions<T> {
+  /** The ref for the trigger element. */
+  triggerRef: RefObject<HTMLElement | null>;
+}
+
+export function useTreeSelect<T extends object>(
+  props: AriaTreeSelectOptions<T>,
+  state: TreeSelectState<T>,
+  ref: RefObject<HTMLElement | null>
+): TreeSelectAria<T> {
+  // TODO: work out
+  console.log(ref);
+
+  const { validationState, treeState, isOpen, setOpen, open, close, toggle } =
+    state;
+
+  const { isInvalid, validationErrors, validationDetails } =
+    validationState.displayValidation;
+
+  const { labelProps, errorMessageProps, descriptionProps, fieldProps } =
+    useField({
+      ...props,
+      isInvalid,
+      labelElementType: 'span',
+      errorMessage: props.errorMessage || validationErrors,
+    });
+
+  const { triggerProps: overlayTriggerProps, overlayProps } = useOverlayTrigger(
+    { type: 'tree' },
+    {
+      isOpen,
+      setOpen,
+      open,
+      close,
+      toggle,
+    },
+    props.triggerRef
+  );
+
+  const valueId = useId();
+
+  const handleTriggerKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (props.isDisabled) return;
+
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+      case 'ArrowDown':
+        event.preventDefault();
+        state.open();
+        break;
+      case 'Escape':
+        state.close();
+        break;
+      default:
+        break;
+    }
+  };
+
+  const triggerProps = mergeProps(fieldProps, overlayTriggerProps, {
+    labelable: true,
+    'aria-haspopup': 'tree',
+    'aria-labelledby': [
+      fieldProps['aria-labelledby'],
+      fieldProps['aria-label'] ? overlayTriggerProps.id : null,
+      valueId,
+    ]
+      .filter(Boolean)
+      .join(' '),
+    onFocus() {
+      // event: FocusEvent<HTMLElement>
+      // if (state.isFocused) return;
+      //
+      // props.onFocus?.(event);
+      // state.setFocused(true);
+    },
+    onBlur() {
+      // event: FocusEvent<HTMLElement>
+      if (state.isOpen) return;
+
+      // props.onBlur?.(event);
+      // state.setFocused(false);
+    },
+    onKeyDown: chain(
+      overlayTriggerProps.onKeyDown,
+      handleTriggerKeyDown,
+      props.onKeyDown
+    ),
+    onKeyUp: props.onKeyUp,
+  });
+
+  // TODO: remove
+  console.log(overlayProps);
+
+  return {
+    isInvalid,
+    labelProps,
+    valueProps: { id: valueId },
+    triggerProps,
+    errorMessageProps,
+    descriptionProps,
+    treeProps: {
+      state: treeState,
+    },
+    validationErrors,
+    validationDetails,
+  };
+}

@@ -1,42 +1,63 @@
 import { useState } from 'react';
 
+import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 import { Typography } from '../Typography';
 
-import { TreeSelect, type TreeSelectNode, type TreeSelectProps } from './index';
+import { TreeSelect, type TreeSelectProps } from './index';
 
-const items: TreeSelectNode[] = [
+type FileItem = {
+  id: string;
+  name: string;
+  isDisabled?: boolean;
+  children?: FileItem[];
+};
+
+const items: FileItem[] = [
   {
     id: 'app',
-    label: 'app',
+    name: 'app',
     children: [
       {
         id: 'http',
-        label: 'Http',
-        children: [{ id: 'index-html', label: 'index.html' }],
+        name: 'Http',
+        children: [{ id: 'index-html', name: 'index.html' }],
       },
       {
         id: 'providers',
-        label: 'Providers',
+        name: 'Providers',
         children: [
-          { id: 'event-provider', label: 'EventServiceProvider.js' },
-          { id: 'route-provider', label: 'RouteServiceProvider.js' },
+          { id: 'event-provider', name: 'EventServiceProvider.js' },
+          { id: 'route-provider', name: 'RouteServiceProvider.js' },
         ],
       },
     ],
   },
   {
     id: 'config',
-    label: 'config',
+    name: 'config',
     children: [
-      { id: 'config-app', label: 'app.js' },
-      { id: 'config-database', label: 'database.js', isDisabled: true },
+      { id: 'config-app', name: 'app.js' },
+      { id: 'config-database', name: 'database.js', isDisabled: true },
     ],
   },
-  { id: 'readme', label: 'README.md' },
+  { id: 'readme', name: 'README.md' },
 ];
+
+function renderItem(item: FileItem) {
+  return (
+    <TreeSelect.Item
+      key={item.id}
+      textValue={item.name}
+      isDisabled={item.isDisabled}
+    >
+      <TreeSelect.ItemContent>{item.name}</TreeSelect.ItemContent>
+      <Collection items={item.children}>{renderItem}</Collection>
+    </TreeSelect.Item>
+  );
+}
 
 const meta = {
   title: 'Components/TreeSelect',
@@ -50,7 +71,10 @@ const meta = {
 
 export default meta;
 
-type TreeSelectStoryProps = Omit<TreeSelectProps, 'items'>;
+type TreeSelectStoryProps = Omit<
+  TreeSelectProps<FileItem>,
+  'children' | 'items'
+>;
 type Story = StoryObj<TreeSelectStoryProps>;
 
 export const Base: Story = {
@@ -59,11 +83,12 @@ export const Base: Story = {
       items={items}
       aria-label="Project files"
       placeholder="Select file"
-      searchPlaceholder="Filter files"
       defaultExpandedKeys={['app', 'config']}
       style={{ inlineSize: 320 }}
       {...args}
-    />
+    >
+      {renderItem}
+    </TreeSelect>
   ),
 };
 
@@ -73,52 +98,53 @@ export const StaticCollection: Story = {
     <TreeSelect
       label="Project files"
       placeholder="Select file"
-      searchPlaceholder="Filter files"
       defaultExpandedKeys={['app', 'config']}
       style={{ inlineSize: 320 }}
       {...args}
     >
       <TreeSelect.Item id="app" textValue="app">
-        app
+        <TreeSelect.ItemContent>app</TreeSelect.ItemContent>
         <TreeSelect.Item id="http" textValue="Http">
-          Http
+          <TreeSelect.ItemContent>Http</TreeSelect.ItemContent>
           <TreeSelect.Item id="index-html" textValue="index.html">
-            index.html
+            <TreeSelect.ItemContent>index.html</TreeSelect.ItemContent>
           </TreeSelect.Item>
         </TreeSelect.Item>
         <TreeSelect.Item id="providers" textValue="Providers">
-          Providers
+          <TreeSelect.ItemContent>Providers</TreeSelect.ItemContent>
           <TreeSelect.Item
             id="event-service-provider-js"
             textValue="EventServiceProvider.js"
           >
-            EventServiceProvider.js
+            <TreeSelect.ItemContent>
+              EventServiceProvider.js
+            </TreeSelect.ItemContent>
           </TreeSelect.Item>
         </TreeSelect.Item>
       </TreeSelect.Item>
       <TreeSelect.Item id="config" textValue="config">
-        config
+        <TreeSelect.ItemContent>config</TreeSelect.ItemContent>
         <TreeSelect.Item id="config-app-js" textValue="app.js">
-          app.js
+          <TreeSelect.ItemContent>app.js</TreeSelect.ItemContent>
         </TreeSelect.Item>
         <TreeSelect.Item id="database-js" textValue="database.js">
-          database.js
+          <TreeSelect.ItemContent>database.js</TreeSelect.ItemContent>
         </TreeSelect.Item>
       </TreeSelect.Item>
       <TreeSelect.Item id="public" textValue="public">
-        public
+        <TreeSelect.ItemContent>public</TreeSelect.ItemContent>
         <TreeSelect.Item id="logo-svg" textValue="logo.svg">
-          logo.svg
+          <TreeSelect.ItemContent>logo.svg</TreeSelect.ItemContent>
         </TreeSelect.Item>
       </TreeSelect.Item>
       <TreeSelect.Item id="env-file" textValue=".env">
-        .env
+        <TreeSelect.ItemContent>.env</TreeSelect.ItemContent>
       </TreeSelect.Item>
       <TreeSelect.Item id="gitignore-file" textValue=".gitignore">
-        .gitignore
+        <TreeSelect.ItemContent>.gitignore</TreeSelect.ItemContent>
       </TreeSelect.Item>
       <TreeSelect.Item id="readme-file" textValue="README.md">
-        README.md
+        <TreeSelect.ItemContent>README.md</TreeSelect.ItemContent>
       </TreeSelect.Item>
     </TreeSelect>
   ),
@@ -127,24 +153,24 @@ export const StaticCollection: Story = {
 export const DynamicCollection: Story = {
   name: 'Dynamic collection',
   render: function Render(args) {
-    const nodes: TreeSelectNode[] = [
+    const nodes: FileItem[] = [
       {
         id: 'infrastructure',
-        label: 'Infrastructure',
+        name: 'Infrastructure',
         children: [
-          { id: 'network', label: 'Network' },
-          { id: 'storage', label: 'Storage' },
+          { id: 'network', name: 'Network' },
+          { id: 'storage', name: 'Storage' },
         ],
       },
       {
         id: 'security',
-        label: 'Security',
+        name: 'Security',
         children: [
-          { id: 'firewall', label: 'Firewall' },
-          { id: 'identity', label: 'Identity' },
+          { id: 'firewall', name: 'Firewall' },
+          { id: 'identity', name: 'Identity' },
         ],
       },
-      { id: 'observability', label: 'Observability' },
+      { id: 'observability', name: 'Observability' },
     ];
 
     return (
@@ -152,11 +178,12 @@ export const DynamicCollection: Story = {
         items={nodes}
         label="Service area"
         placeholder="Select area"
-        searchPlaceholder="Filter areas"
         defaultExpandedKeys={['infrastructure', 'security']}
         style={{ inlineSize: 320 }}
         {...args}
-      />
+      >
+        {renderItem}
+      </TreeSelect>
     );
   },
 };
@@ -168,15 +195,15 @@ export const WithLabel: Story = {
       items={items}
       label="Project files"
       placeholder="Select file"
-      searchPlaceholder="Filter files"
       defaultExpandedKeys={['app', 'config']}
       style={{ inlineSize: 320 }}
       {...args}
-    />
+    >
+      {renderItem}
+    </TreeSelect>
   ),
 };
 
-/** The selection survives filtering: pick a node, then filter it out. */
 export const Controlled: Story = {
   name: 'Controlled selection',
   render: function Render(args) {
@@ -188,13 +215,16 @@ export const Controlled: Story = {
           items={items}
           label="Project files"
           placeholder="Select file"
-          searchPlaceholder="Filter files"
           defaultExpandedKeys={['app', 'config']}
           style={{ inlineSize: 320 }}
           {...args}
           selectedKey={selectedKey}
-          onSelectionChange={setSelectedKey}
-        />
+          onSelectionChange={(key) =>
+            setSelectedKey(key != null ? String(key) : null)
+          }
+        >
+          {renderItem}
+        </TreeSelect>
         <Typography variant="text-compact">
           Selected: {selectedKey ?? 'none'}
         </Typography>
@@ -209,11 +239,12 @@ export const Disabled: Story = {
       items={items}
       label="Project files"
       placeholder="Select file"
-      searchPlaceholder="Filter files"
       defaultExpandedKeys={['app', 'config']}
       style={{ inlineSize: 320 }}
       isDisabled
       {...args}
-    />
+    >
+      {renderItem}
+    </TreeSelect>
   ),
 };

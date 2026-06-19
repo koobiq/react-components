@@ -27,14 +27,10 @@ import { useOverlayTrigger } from '@react-aria/overlays';
 import type { OverlayTriggerState } from '@react-stately/overlays';
 import type { TreeProps } from 'react-aria-components';
 
-import type {
-  TreeSelectNode,
-  TreeSelectProps,
-  TreeSelectState,
-} from './useTreeSelectState';
+import type { TreeSelectProps, TreeSelectState } from './useTreeSelectState';
 
-export interface AriaTreeSelectProps
-  extends TreeSelectProps, DOMProps, AriaLabelingProps, FocusableProps {
+export interface AriaTreeSelectProps<T extends object = object>
+  extends TreeSelectProps<T>, DOMProps, AriaLabelingProps, FocusableProps {
   /** Visible label rendered above the control. */
   label?: ReactNode;
   /** If `true`, user input is required before form submission. */
@@ -45,7 +41,9 @@ export interface AriaTreeSelectProps
   errorMessage?: ReactNode;
 }
 
-export interface AriaTreeSelectOptions extends AriaTreeSelectProps {
+export interface AriaTreeSelectOptions<
+  T extends object = object,
+> extends AriaTreeSelectProps<T> {
   /** The ref for the trigger element. */
   triggerRef: RefObject<HTMLElement | null>;
 }
@@ -55,7 +53,7 @@ export type TreeSelectPopoverProps = {
   type: 'tree';
 };
 
-export type TreeSelectAria = {
+export type TreeSelectAria<T extends object = object> = {
   /** Props for the label element. */
   labelProps: HTMLAttributes<HTMLElement>;
   /** Props for the popup trigger element. */
@@ -63,7 +61,7 @@ export type TreeSelectAria = {
   /** Props for the element representing the selected value. */
   valueProps: HTMLAttributes<HTMLElement>;
   /** Props for the popup tree. */
-  treeProps: Omit<TreeProps<TreeSelectNode>, 'children' | 'items'>;
+  treeProps: Omit<TreeProps<T>, 'children' | 'items'>;
   /** Base props for the popover. */
   popoverProps: TreeSelectPopoverProps;
   /** Props for the select description element, if any. */
@@ -75,7 +73,16 @@ export type TreeSelectAria = {
 export function useTreeSelect(
   props: AriaTreeSelectOptions,
   state: TreeSelectState
-): TreeSelectAria {
+): TreeSelectAria;
+export function useTreeSelect<T extends object>(
+  props: AriaTreeSelectOptions<T>,
+  state: TreeSelectState<T>
+): TreeSelectAria<T>;
+
+export function useTreeSelect<T extends object>(
+  props: AriaTreeSelectOptions<T>,
+  state: TreeSelectState<T>
+): TreeSelectAria<T> {
   const { triggerRef } = props;
 
   const { isInvalid, validationErrors, validationDetails } =
@@ -159,7 +166,7 @@ export function useTreeSelect(
     }
   );
 
-  const treeProps: TreeSelectAria['treeProps'] = mergeProps(overlayProps, {
+  const treeProps: TreeSelectAria<T>['treeProps'] = mergeProps(overlayProps, {
     selectionMode: 'single' as const,
     selectedKeys: state.selectedKeys,
     expandedKeys: state.expandedKeys,

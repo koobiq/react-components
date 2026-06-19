@@ -31,7 +31,8 @@ import { TreeSelect } from '@koobiq/react-components';
 
 ## Content
 
-TreeSelect accepts hierarchical data through the `items` prop.
+TreeSelect accepts the same collection shape as `Tree`: either static
+`TreeSelect.Item` children or `items` with a render function.
 
 ### Static collection
 
@@ -41,7 +42,8 @@ Use `TreeSelect.Item` when the tree structure is known in advance.
 
 ### Dynamic collection
 
-Use `items` when the tree data comes from an external source or changes over time.
+Use `items` and `Collection` when the tree data comes from an external source or
+changes over time.
 
 <Story of={Stories.DynamicCollection} />
 
@@ -54,7 +56,7 @@ Use `label` when the field should be presented as a regular form control.
 ## Controlled selection
 
 Use `selectedKey` and `onSelectionChange` to control the selected node from the
-outside. The selected value is preserved when the tree is filtered.
+outside.
 
 <Story of={Stories.Controlled} />
 

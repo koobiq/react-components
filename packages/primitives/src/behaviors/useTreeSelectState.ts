@@ -1,6 +1,5 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
 
 import { useControlledState } from '@koobiq/react-core';
@@ -11,94 +10,99 @@ import type { OverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import type { OverlayTriggerProps } from '@react-types/overlays';
 
-export type TreeSelectNode = {
-  /** Unique identifier of the node. */
-  id: string;
-  /** Content rendered for the node. */
-  label: ReactNode;
-  /**
-   * Text used for searching/filtering.
-   * Falls back to `label` when `label` is a string.
-   */
-  textValue?: string;
-  /** If `true`, the node can't be selected. */
+type TreeSelectItemData = {
+  children?: Iterable<unknown>;
+  id?: Key;
   isDisabled?: boolean;
-  /** Child nodes. */
-  children?: TreeSelectNode[];
 };
 
-export interface TreeSelectProps
+export interface TreeSelectProps<T extends object = object>
   extends Validation<string | null>, OverlayTriggerProps {
   /** Root nodes of the tree. */
-  items: TreeSelectNode[];
+  items?: Iterable<T>;
   /** If `true`, the whole control is disabled. */
   isDisabled?: boolean;
   /** The id of the selected node (controlled). */
-  selectedKey?: string | null;
+  selectedKey?: Key | null;
   /** The id of the initially selected node (uncontrolled). */
-  defaultSelectedKey?: string | null;
+  defaultSelectedKey?: Key | null;
   /** Handler called when the selection changes. */
-  onSelectionChange?: (key: string | null) => void;
+  onSelectionChange?: (key: Key | null) => void;
   /** The ids of expanded nodes (controlled). */
   expandedKeys?: Selection;
   /** Ids of the nodes expanded by default (uncontrolled). */
-  defaultExpandedKeys?: Iterable<string>;
+  defaultExpandedKeys?: Iterable<Key>;
   /** Handler called when expanded keys change. */
   onExpandedChange?: (keys: Selection) => void;
 }
 
-export interface TreeSelectState
+export interface TreeSelectState<T extends object = object>
   extends OverlayTriggerState, FormValidationState {
   /** Whether the trigger is focused. */
   isFocused: boolean;
   /** Sets whether the trigger is focused. */
   setFocused(isFocused: boolean): void;
   /** The selected node id. */
-  selectedKey: string | null;
+  selectedKey: Key | null;
   /** The selected node as an object from the source tree. */
-  selectedNode: TreeSelectNode | null;
+  selectedNode: T | null;
   /** The selected key as a Tree-compatible selectedKeys collection. */
   selectedKeys: Set<Key>;
   /** Set the selected node id. */
-  setSelectedKey(key: string | null): void;
+  setSelectedKey(key: Key | null): void;
   /** Expanded tree node ids. */
   expandedKeys: Selection;
   /** Set expanded tree node ids. */
   setExpandedKeys(keys: Selection): void;
   /** Disabled tree node ids. */
-  disabledKeys: Set<string>;
+  disabledKeys: Set<Key>;
 }
 
-function collectNodeIds(
-  nodes: TreeSelectNode[],
-  predicate: (node: TreeSelectNode) => boolean
-): string[] {
-  return nodes.flatMap((node) => [
-    ...(predicate(node) ? [node.id] : []),
-    ...(node.children ? collectNodeIds(node.children, predicate) : []),
-  ]);
+function getItemChildren<T extends object>(item: T): T[] {
+  const children = (item as TreeSelectItemData).children;
+
+  return children ? Array.from(children as Iterable<T>) : [];
 }
 
-function findNodeById(
-  nodes: TreeSelectNode[],
-  id: string | null
-): TreeSelectNode | null {
+function getItemId<T extends object>(item: T): Key | null {
+  return (item as TreeSelectItemData).id ?? null;
+}
+
+function collectNodeIds<T extends object>(
+  nodes: Iterable<T> | undefined,
+  predicate: (node: T) => boolean
+): Key[] {
+  if (!nodes) return [];
+
+  return Array.from(nodes).flatMap((node) => {
+    const id = getItemId(node);
+
+    return [
+      ...(id != null && predicate(node) ? [id] : []),
+      ...collectNodeIds(getItemChildren(node), predicate),
+    ];
+  });
+}
+
+function findNodeById<T extends object>(
+  nodes: Iterable<T> | undefined,
+  id: Key | null
+): T | null {
   if (id == null) return null;
+  if (!nodes) return null;
 
   for (const node of nodes) {
-    if (node.id === id) return node;
+    if (getItemId(node) === id) return node;
 
-    if (node.children) {
-      const child = findNodeById(node.children, id);
+    const child = findNodeById(getItemChildren(node), id);
 
-      if (child) return child;
-    }
+    if (child) return child;
   }
 
   return null;
 }
 
-export function useTreeSelectState({
+export function useTreeSelectState<T extends object>({
   items,
   isDisabled,
   selectedKey: selectedKeyProp,
@@ -113,7 +117,7 @@ export function useTreeSelectState({
   defaultOpen,
   onOpenChange,
   ...validationProps
-}: TreeSelectProps): TreeSelectState {
+}: TreeSelectProps<T>): TreeSelectState<T> {
   const overlayState = useOverlayTriggerState({
     isOpen,
     defaultOpen,
@@ -123,8 +127,8 @@ export function useTreeSelectState({
   const [isFocused, setFocused] = useState(false);
 
   const [selectedKey, setSelectedKeyState] = useControlledState<
-    string | null,
-    string | null
+    Key | null,
+    Key | null
   >(selectedKeyProp, defaultSelectedKey, onSelectionChange);
 
   const [defaultExpandedKeySet] = useState(
@@ -141,7 +145,10 @@ export function useTreeSelectState({
       new Set(
         isDisabled
           ? collectNodeIds(items, () => true)
-          : collectNodeIds(items, (node) => node.isDisabled === true)
+          : collectNodeIds(
+              items,
+              (node) => (node as TreeSelectItemData).isDisabled === true
+            )
       ),
     [items, isDisabled]
   );
@@ -160,10 +167,10 @@ export function useTreeSelectState({
     ...validationProps,
     validate,
     validationBehavior,
-    value: selectedKey,
+    value: selectedKey != null ? String(selectedKey) : null,
   });
 
-  const setSelectedKey = (key: string | null) => {
+  const setSelectedKey = (key: Key | null) => {
     setSelectedKeyState(key);
     validationState.commitValidation();
   };
