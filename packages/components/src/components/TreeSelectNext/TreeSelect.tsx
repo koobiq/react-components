@@ -16,6 +16,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
+import { Divider } from '../Divider';
 import {
   FormField,
   type FormFieldCaptionProps,
@@ -281,7 +282,12 @@ export function TreeSelectInner<T extends object>({
             aria-label="search"
             value={inputValue}
             onChange={setInputValue}
+            fullWidth
+            isLabelHidden
+            variant="transparent"
+            className={s.search}
           />
+          <Divider disablePaddings />
           <TreeInner
             props={
               {
