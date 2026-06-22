@@ -29,6 +29,22 @@ import { TreeSelect } from '@koobiq/react-components';
 
 <Props of={Stories.Base} />
 
+## Content
+
+### Dynamic items
+
+TreeSelect accepts static and dynamic collections. The basic example above uses static items. Dynamic collections can be used when items come from an external data source or update over time.
+
+Pass an iterable collection using the `items` prop and return `TreeSelect.Item` elements from the render function. Nested collections can be rendered recursively using `Collection`.
+
+<Story of={Stories.Content} />
+
+### Disabled items
+
+TreeSelect supports marking items as disabled using the `disabledKeys` prop. Each key corresponds to an item key in the collection.
+
+<Story of={Stories.DisabledOptions} />
+
 ## Appearance
 
 ### Addons
@@ -63,3 +79,35 @@ Use `labelPlacement` and `labelAlign` props to set the position of the label.
 See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
 
 <Story of={Stories.LabelPlacementAlignment} />
+
+## Behavior
+
+### Single selection
+
+Set an initial uncontrolled value with `defaultValue`, or control the selected item using `value` and `onChange`. The selected key corresponds to the key of a `TreeSelect.Item`.
+
+<Story of={Stories.SingleSelection} />
+
+### Multiple selection
+
+Use `selectionMode="multiple"` to allow multiple selection. In this mode, `value`, `defaultValue`, and the value passed to `onChange` are arrays of keys.
+
+<Story of={Stories.MultipleSelection} />
+
+### Disabled
+
+When TreeSelect is disabled, it cannot be interacted with.
+
+<Story of={Stories.Disabled} />
+
+### Clear button
+
+Pass `isClearable` to show a clear button when a value is selected.
+
+<Story of={Stories.ClearButton} />
+
+### Open
+
+Use `defaultOpen` to set the initial uncontrolled open state. Use `isOpen` and `onOpenChange` to control it.
+
+<Story of={Stories.Open} />
