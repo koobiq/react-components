@@ -180,6 +180,29 @@ export const DisabledOptions: Story = {
   },
 };
 
+export const DropdownFooter: Story = {
+  render: function Render() {
+    return (
+      <TreeSelect
+        items={items}
+        label="Project files"
+        dropdownFooter="The text in the footer of the dropdown."
+        style={{ inlineSize: 280 }}
+        placeholder="Select a file"
+      >
+        {function renderItem(item) {
+          return (
+            <Tree.Item key={item.id} textValue={item.title}>
+              <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Collection items={item.test}>{renderItem}</Collection>
+            </Tree.Item>
+          );
+        }}
+      </TreeSelect>
+    );
+  },
+};
+
 export const Addons: Story = {
   render: function Render() {
     return (
@@ -373,6 +396,54 @@ export const MultipleSelection: Story = {
           }}
         </TreeSelect>
         <Typography>Selected: {value.join(', ') || 'none'}</Typography>
+      </FlexBox>
+    );
+  },
+};
+
+export const SelectedTagsOverflow: Story = {
+  render: function Render() {
+    const defaultValue = [1, 6, 9, 11, 12, 13];
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <TreeSelect
+          items={items}
+          label="Project files"
+          defaultValue={defaultValue}
+          selectionMode="multiple"
+          style={{ inlineSize: 240 }}
+          placeholder="Select files"
+          caption="selectedTagsOverflow = responsive (default)"
+        >
+          {function renderItem(item) {
+            return (
+              <Tree.Item key={item.id} textValue={item.title}>
+                <Tree.ItemContent>{item.title}</Tree.ItemContent>
+                <Collection items={item.test}>{renderItem}</Collection>
+              </Tree.Item>
+            );
+          }}
+        </TreeSelect>
+        <TreeSelect
+          items={items}
+          label="Project files"
+          defaultValue={defaultValue}
+          selectionMode="multiple"
+          selectedTagsOverflow="multiline"
+          style={{ inlineSize: 240 }}
+          placeholder="Select files"
+          caption="selectedTagsOverflow = multiline"
+        >
+          {function renderItem(item) {
+            return (
+              <Tree.Item key={item.id} textValue={item.title}>
+                <Tree.ItemContent>{item.title}</Tree.ItemContent>
+                <Collection items={item.test}>{renderItem}</Collection>
+              </Tree.Item>
+            );
+          }}
+        </TreeSelect>
       </FlexBox>
     );
   },

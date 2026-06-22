@@ -1,3 +1,5 @@
+import { createRef } from 'react';
+
 import { Collection, type SelectionMode } from '@koobiq/react-primitives';
 import { render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -23,6 +25,8 @@ const items: FileNode[] = [
 function TreeSelectFixture<M extends SelectionMode = 'single'>(
   props: Partial<TreeSelectProps<FileNode, M>> = {}
 ) {
+  const { slotProps, ...otherProps } = props;
+
   return (
     <Provider>
       <TreeSelect
@@ -30,11 +34,21 @@ function TreeSelectFixture<M extends SelectionMode = 'single'>(
         label="Files"
         data-testid="root"
         slotProps={{
-          control: { 'data-testid': 'control' },
-          clearButton: { 'aria-label': 'clear-button' },
-          popover: { 'data-testid': 'popover' },
+          ...slotProps,
+          control: {
+            'data-testid': 'control',
+            ...slotProps?.control,
+          },
+          clearButton: {
+            'aria-label': 'clear-button',
+            ...slotProps?.clearButton,
+          },
+          popover: {
+            'data-testid': 'popover',
+            ...slotProps?.popover,
+          },
         }}
-        {...props}
+        {...otherProps}
       >
         {function renderItem(item: FileNode) {
           return (
@@ -66,6 +80,14 @@ const queryPopover = () => screen.queryByTestId('popover');
 
 describe('TreeSelect', () => {
   describe('rendering', () => {
+    it('should forward the ref to the control', () => {
+      const ref = createRef<HTMLDivElement>();
+
+      renderTreeSelect({ ref });
+
+      expect(ref.current).toBe(getControl());
+    });
+
     it('should render the label and placeholder', () => {
       renderTreeSelect({ placeholder: 'Select a file' });
 
@@ -108,6 +130,20 @@ describe('TreeSelect', () => {
       );
 
       expect(getControl()).toHaveTextContent('README.md');
+    });
+
+    it('should render the dropdown footer with slot props', () => {
+      renderTreeSelect({
+        defaultOpen: true,
+        dropdownFooter: 'Footer content',
+        slotProps: {
+          dropdownFooter: {
+            className: 'custom-footer',
+          },
+        },
+      });
+
+      expect(screen.getByText('Footer content')).toHaveClass('custom-footer');
     });
   });
 
@@ -180,6 +216,18 @@ describe('TreeSelect', () => {
 
       expect(within(control).getByText('app')).toBeInTheDocument();
       expect(within(control).getByText('README.md')).toBeInTheDocument();
+    });
+
+    it('should apply selectedTagsOverflow in multiple mode', () => {
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        defaultValue: [1, 7],
+        selectedTagsOverflow: 'multiline',
+      });
+
+      expect(
+        getControl().querySelector('[data-limit-tags="multiline"]')
+      ).toBeInTheDocument();
     });
 
     it('should call onChange with keys in multiple mode', async () => {
@@ -296,6 +344,52 @@ describe('TreeSelect', () => {
       await userEvent.click(getControl());
 
       expect(onOpenChange).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('slot props', () => {
+    it('should pass props to the search input', async () => {
+      const onInputChange = vi.fn();
+      const onSlotChange = vi.fn();
+
+      renderTreeSelect({
+        defaultOpen: true,
+        onInputChange,
+        slotProps: {
+          'search-input': {
+            'aria-label': 'File search',
+            placeholder: 'Find a file',
+            onChange: onSlotChange,
+          },
+        },
+      });
+
+      const searchInput = screen.getByRole('searchbox', {
+        name: 'File search',
+      });
+
+      expect(searchInput).toHaveAttribute('placeholder', 'Find a file');
+
+      await userEvent.type(searchInput, 'r');
+
+      expect(onSlotChange).toHaveBeenCalledWith('r');
+      expect(onInputChange).toHaveBeenCalledWith('r');
+    });
+
+    it('should pass props to the tree', () => {
+      renderTreeSelect({
+        defaultOpen: true,
+        slotProps: {
+          tree: {
+            className: 'custom-tree',
+          },
+        },
+      });
+
+      expect(screen.getByRole('treegrid')).toHaveClass(
+        'kbq-Tree',
+        'custom-tree'
+      );
     });
   });
 });

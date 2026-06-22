@@ -1,11 +1,19 @@
-import { type CSSProperties, type ReactElement, type ReactNode } from 'react';
+import type {
+  ComponentRef,
+  CSSProperties,
+  ReactElement,
+  ReactNode,
+  Ref,
+} from 'react';
 
-import type { RefObject } from '@koobiq/react-core';
+import type { DataAttributeProps, RefObject } from '@koobiq/react-core';
 import type {
   SelectionMode,
+  TreeProps as AriaTreeProps,
   TreeSelectStateOptions,
 } from '@koobiq/react-primitives';
 
+import type { DropdownFooterProps } from '../DropdownFooter';
 import {
   type FormFieldCaptionProps,
   type FormFieldControlGroupProps,
@@ -22,6 +30,8 @@ import {
 } from '../FormField';
 import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
+import type { SearchInputProps } from '../SearchInput';
+import type { SelectedTagsPropOverflow } from '../SelectedTags';
 
 import type { TreeCollection } from './TreeInner';
 
@@ -43,6 +53,8 @@ export type TreeSelectProps<
   T extends object,
   M extends SelectionMode = 'single',
 > = {
+  /** Defines how selected tags are displayed when they exceed the available space. */
+  selectedTagsOverflow?: SelectedTagsPropOverflow;
   /** Whether the field can be emptied. */
   isClearable?: boolean;
   /** Handler called when the clear button is clicked. */
@@ -51,6 +63,8 @@ export type TreeSelectProps<
   startAddon?: ReactNode;
   /** Addon placed after the control. */
   endAddon?: ReactNode;
+  /** Content to display at the bottom of the dropdown. */
+  dropdownFooter?: ReactNode;
   /** The helper text content. */
   caption?: ReactNode;
   /**
@@ -80,6 +94,8 @@ export type TreeSelectProps<
   'data-testid'?: string | number;
   /** Inline styles. */
   style?: CSSProperties;
+  /** Ref to the control. */
+  ref?: Ref<HTMLDivElement>;
   /** The search query (controlled). */
   inputValue?: string;
   /** The initial search query (uncontrolled). */
@@ -96,6 +112,9 @@ export type TreeSelectProps<
     clearButton?: IconButtonProps;
     control?: FormFieldSelectProps;
     popover?: PopoverProps;
+    dropdownFooter?: DropdownFooterProps & DataAttributeProps;
+    tree?: Omit<AriaTreeProps<T>, 'children' | 'items'> & DataAttributeProps;
+    'search-input'?: SearchInputProps;
   };
 } & Omit<AriaTreeSelectProps<T, M>, 'description'>;
 
@@ -106,11 +125,13 @@ export type TreeSelectComponent = <
   props: TreeSelectProps<T, M>
 ) => ReactElement | null;
 
+export type TreeSelectRef = ComponentRef<'div'>;
+
 export type TreeSelectInnerProps<
   T extends object,
   M extends SelectionMode = 'single',
 > = {
   props: TreeSelectProps<T, M>;
   collection: TreeCollection<T>;
-  treeRef?: RefObject<HTMLDivElement | null>;
+  controlRef: RefObject<HTMLDivElement | null>;
 };

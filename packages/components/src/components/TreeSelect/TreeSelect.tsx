@@ -1,11 +1,12 @@
 'use client';
 
-import { forwardRef, useCallback, useRef, useState } from 'react';
+import { forwardRef, useCallback, useRef, useState, type Ref } from 'react';
 
 import {
   clsx,
   mergeProps,
   useControlledState,
+  useDOMRef,
   useElementSize,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
@@ -23,6 +24,7 @@ import {
 
 import { utilClasses } from '../../styles/utility';
 import { Divider } from '../Divider';
+import { DropdownFooter } from '../DropdownFooter';
 import {
   FormField,
   type FormFieldCaptionProps,
@@ -35,7 +37,7 @@ import {
 } from '../FormField';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
-import { SearchInput } from '../SearchInput';
+import { SearchInput, type SearchInputProps } from '../SearchInput';
 import { SelectedTags } from '../SelectedTags';
 import { Tree } from '../Tree';
 
@@ -46,6 +48,7 @@ import type {
   TreeSelectInnerProps,
   TreeSelectProps,
   TreeSelectComponent,
+  TreeSelectRef,
 } from './types';
 import { areSetsEqual } from './utils';
 
@@ -54,8 +57,9 @@ const { list } = utilClasses;
 export function TreeSelectInner<
   T extends object,
   M extends SelectionMode = 'single',
->({ props, collection }: TreeSelectInnerProps<T, M>) {
+>({ props, collection, controlRef }: TreeSelectInnerProps<T, M>) {
   const {
+    selectedTagsOverflow = 'responsive',
     defaultInputValue = '',
     labelAlign,
     placeholder,
@@ -64,6 +68,7 @@ export function TreeSelectInner<
     isClearable,
     startAddon,
     endAddon,
+    dropdownFooter,
     onInputChange,
     label,
     errorMessage,
@@ -84,7 +89,6 @@ export function TreeSelectInner<
   const t = useLocalizedStringFormatter(intlMessages);
 
   const { ref: triggerRef, width } = useElementSize();
-  const controlRef = useRef<HTMLDivElement>(null);
   const treeRef = useRef(null);
 
   const {
@@ -270,11 +274,38 @@ export function TreeSelectInner<
     slotProps?.popover
   );
 
+  const searchInputProps = mergeProps<(SearchInputProps | undefined)[]>(
+    {
+      placeholder: t.format('search'),
+      'aria-label': t.format('search'),
+      fullWidth: true,
+      isLabelHidden: true,
+      variant: 'transparent',
+      className: s.search,
+    },
+    slotProps?.['search-input'],
+    {
+      value: inputValue,
+      onChange: setInputValue,
+    }
+  );
+
+  const { className: treeClassName, ...treeSlotProps } = slotProps?.tree || {};
+
+  const innerTreeProps = {
+    ...mergeProps(treeProps, treePropsAria, treeSlotProps),
+    'data-padded': true,
+    className: composeRenderProps(treeClassName, (className) =>
+      clsx('kbq-Tree', list, s.tree, className)
+    ),
+  } as TreeProps<T>;
+
   const renderValue =
     selectionMode === 'multiple' ? (
       <SelectedTags
         state={state}
         states={{ isInvalid: isInvalidAria, isDisabled, isRequired }}
+        selectedTagsOverflow={selectedTagsOverflow}
       />
     ) : (
       state.selectedItems[0]?.textValue
@@ -296,31 +327,12 @@ export function TreeSelectInner<
       </div>
       <PopoverInner {...popoverProps}>
         <div className={s.content}>
-          <SearchInput
-            value={inputValue}
-            onChange={setInputValue}
-            placeholder={t.format('search')}
-            aria-label={t.format('search')}
-            fullWidth
-            isLabelHidden
-            variant="transparent"
-            className={s.search}
-          />
+          <SearchInput {...searchInputProps} />
           <Divider disablePaddings />
-          <TreeInner
-            props={
-              {
-                ...treeProps,
-                ...treePropsAria,
-                'data-padded': true,
-                className: composeRenderProps(className, (className) =>
-                  clsx('kbq-Tree', list, className)
-                ),
-              } as TreeProps<T>
-            }
-            treeRef={treeRef}
-            state={state}
-          />
+          <TreeInner props={innerTreeProps} treeRef={treeRef} state={state} />
+          <DropdownFooter {...slotProps?.dropdownFooter}>
+            {dropdownFooter}
+          </DropdownFooter>
         </div>
       </PopoverInner>
     </FormField>
@@ -328,15 +340,22 @@ export function TreeSelectInner<
 }
 
 function TreeSelectRender<T extends object, M extends SelectionMode = 'single'>(
-  props: TreeSelectProps<T, M>
+  props: Omit<TreeSelectProps<T, M>, 'ref'>,
+  ref: Ref<TreeSelectRef>
 ) {
+  const controlRef = useDOMRef<HTMLDivElement>(ref);
+
   return (
     <CollectionBuilder
       content={<Collection {...props} />}
       createCollection={() => new TreeCollection<T>()}
     >
       {(collection) => (
-        <TreeSelectInner props={props} collection={collection} />
+        <TreeSelectInner
+          props={props}
+          collection={collection}
+          controlRef={controlRef}
+        />
       )}
     </CollectionBuilder>
   );
