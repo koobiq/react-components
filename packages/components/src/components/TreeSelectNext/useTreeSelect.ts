@@ -1,6 +1,11 @@
 import type { HTMLAttributes, KeyboardEvent, FocusEvent } from 'react';
 
-import { chain, mergeProps, useId } from '@koobiq/react-core';
+import {
+  chain,
+  mergeProps,
+  setInteractionModality,
+  useId,
+} from '@koobiq/react-core';
 import type { RefObject, ValidationResult } from '@koobiq/react-core';
 import { useField } from '@react-aria/label';
 import { useOverlayTrigger } from '@react-aria/overlays';
@@ -123,7 +128,15 @@ export function useTreeSelect<T extends object>(
 
   return {
     isInvalid,
-    labelProps,
+    labelProps: {
+      ...labelProps,
+      onClick: () => {
+        if (props.isDisabled) return;
+
+        ref.current?.focus();
+        setInteractionModality('keyboard');
+      },
+    },
     valueProps: { id: valueId },
     triggerProps,
     errorMessageProps,
