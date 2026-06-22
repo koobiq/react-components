@@ -110,12 +110,10 @@ export function useTreeSelect<T extends object>(
   });
 
   const treeProps: TreeSelectAria<T>['treeProps'] = mergeProps(overlayProps, {
+    autoFocus: isOpen || undefined,
     'aria-label': fieldProps['aria-label'],
     'aria-labelledby': fieldProps['aria-labelledby'],
   });
-
-  // TODO: remove
-  console.log(overlayProps);
 
   return {
     isInvalid,
