@@ -4,56 +4,26 @@ import type {
   FocusEvent,
   HTMLAttributes,
   KeyboardEvent,
-  ReactNode,
   RefObject,
 } from 'react';
 
 import {
   chain,
-  filterDOMProps,
+  useId,
   mergeProps,
   setInteractionModality,
-  useId,
 } from '@koobiq/react-core';
-import type {
-  AriaLabelingProps,
-  DOMProps,
-  FocusableProps,
-  Selection,
-  ValidationResult,
-} from '@koobiq/react-core';
+import type { ValidationResult } from '@koobiq/react-core';
 import { useField } from '@react-aria/label';
 import { useOverlayTrigger } from '@react-aria/overlays';
-import type { OverlayTriggerState } from '@react-stately/overlays';
 import type { TreeProps } from 'react-aria-components';
 
-import type { TreeSelectProps, TreeSelectState } from './useTreeSelectState';
+import type {
+  TreeSelectState,
+  TreeSelectStateOptions,
+} from './useTreeSelectState';
 
-export interface AriaTreeSelectProps<T extends object = object>
-  extends TreeSelectProps<T>, DOMProps, AriaLabelingProps, FocusableProps {
-  /** Visible label rendered above the control. */
-  label?: ReactNode;
-  /** If `true`, user input is required before form submission. */
-  isRequired?: boolean;
-  /** The helper text content. */
-  caption?: ReactNode;
-  /** The error message content. */
-  errorMessage?: ReactNode;
-}
-
-export interface AriaTreeSelectOptions<
-  T extends object = object,
-> extends AriaTreeSelectProps<T> {
-  /** The ref for the trigger element. */
-  triggerRef: RefObject<HTMLElement | null>;
-}
-
-export type TreeSelectPopoverProps = {
-  state: OverlayTriggerState;
-  type: 'tree';
-};
-
-export type TreeSelectAria<T extends object = object> = {
+export type TreeSelectAria<T extends object> = {
   /** Props for the label element. */
   labelProps: HTMLAttributes<HTMLElement>;
   /** Props for the popup trigger element. */
@@ -62,57 +32,47 @@ export type TreeSelectAria<T extends object = object> = {
   valueProps: HTMLAttributes<HTMLElement>;
   /** Props for the popup tree. */
   treeProps: Omit<TreeProps<T>, 'children' | 'items'>;
-  /** Base props for the popover. */
-  popoverProps: TreeSelectPopoverProps;
   /** Props for the select description element, if any. */
   descriptionProps: HTMLAttributes<HTMLElement>;
   /** Props for the select error message element, if any. */
   errorMessageProps: HTMLAttributes<HTMLElement>;
 } & ValidationResult;
 
-export function useTreeSelect(
-  props: AriaTreeSelectOptions,
-  state: TreeSelectState
-): TreeSelectAria;
-export function useTreeSelect<T extends object>(
-  props: AriaTreeSelectOptions<T>,
-  state: TreeSelectState<T>
-): TreeSelectAria<T>;
+export type AriaTreeSelectOptions<T extends object> = TreeSelectStateOptions<T>;
+
+export type AriaTreeSelectProps<T extends object = object> =
+  TreeSelectStateOptions<T>;
 
 export function useTreeSelect<T extends object>(
   props: AriaTreeSelectOptions<T>,
-  state: TreeSelectState<T>
+  state: TreeSelectState<T>,
+  ref: RefObject<HTMLElement | null>
 ): TreeSelectAria<T> {
-  const { triggerRef } = props;
+  const { displayValidation, isOpen, setOpen, open, close, toggle } = state;
 
-  const { isInvalid, validationErrors, validationDetails } =
-    state.displayValidation;
+  const { isInvalid, validationErrors, validationDetails } = displayValidation;
 
-  const { labelProps, fieldProps, errorMessageProps, descriptionProps } =
+  const { labelProps, errorMessageProps, descriptionProps, fieldProps } =
     useField({
       ...props,
       isInvalid,
-      description: props.caption,
       labelElementType: 'span',
       errorMessage: props.errorMessage || validationErrors,
     });
 
   const { triggerProps: overlayTriggerProps, overlayProps } = useOverlayTrigger(
     { type: 'tree' },
-    state,
-    triggerRef
+    {
+      isOpen,
+      setOpen,
+      open,
+      close,
+      toggle,
+    },
+    ref
   );
 
   const valueId = useId();
-
-  const handleSelectionChange = (keys: Selection) => {
-    if (keys === 'all') return;
-
-    const [first] = keys;
-
-    state.setSelectedKey(first != null ? String(first) : null);
-    state.close();
-  };
 
   const handleTriggerKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (props.isDisabled) return;
@@ -132,50 +92,40 @@ export function useTreeSelect<T extends object>(
     }
   };
 
-  const triggerProps = mergeProps(
-    filterDOMProps(props, { labelable: true }),
-    fieldProps,
-    overlayTriggerProps,
-    {
-      'aria-haspopup': 'tree',
-      'aria-labelledby': [
-        fieldProps['aria-labelledby'],
-        fieldProps['aria-label'] ? overlayTriggerProps.id : null,
-        valueId,
-      ]
-        .filter(Boolean)
-        .join(' '),
-      onFocus(event: FocusEvent<HTMLElement>) {
-        if (state.isFocused) return;
+  const triggerProps = mergeProps(fieldProps, overlayTriggerProps, {
+    labelable: true,
+    'aria-haspopup': 'tree',
+    'aria-labelledby': [
+      fieldProps['aria-labelledby'],
+      fieldProps['aria-label'] ? overlayTriggerProps.id : null,
+      valueId,
+    ]
+      .filter(Boolean)
+      .join(' '),
+    onFocus(event: FocusEvent) {
+      if (state.isFocused) return;
 
-        props.onFocus?.(event);
-        state.setFocused(true);
-      },
-      onBlur(event: FocusEvent<HTMLElement>) {
-        if (state.isOpen) return;
+      props.onFocus?.(event);
+      state.setFocused(true);
+    },
+    onBlur(event: FocusEvent) {
+      if (state.isOpen) return;
 
-        props.onBlur?.(event);
-        state.setFocused(false);
-      },
-      onKeyDown: chain(
-        overlayTriggerProps.onKeyDown,
-        handleTriggerKeyDown,
-        props.onKeyDown
-      ),
-      onKeyUp: props.onKeyUp,
-    }
-  );
+      props.onBlur?.(event);
+      state.setFocused(false);
+    },
+    onKeyDown: chain(
+      overlayTriggerProps.onKeyDown,
+      handleTriggerKeyDown,
+      props.onKeyDown
+    ),
+    onKeyUp: props.onKeyUp,
+  });
 
   const treeProps: TreeSelectAria<T>['treeProps'] = mergeProps(overlayProps, {
-    selectionMode: 'single' as const,
-    selectedKeys: state.selectedKeys,
-    expandedKeys: state.expandedKeys,
-    disabledKeys: state.disabledKeys,
-    autoFocus: state.isOpen || undefined,
+    autoFocus: isOpen || undefined,
     'aria-label': fieldProps['aria-label'],
     'aria-labelledby': fieldProps['aria-labelledby'],
-    onExpandedChange: state.setExpandedKeys,
-    onSelectionChange: handleSelectionChange,
     onBlur(event: FocusEvent<HTMLElement>) {
       if (event.currentTarget.contains(event.relatedTarget as Node)) {
         return;
@@ -187,25 +137,21 @@ export function useTreeSelect<T extends object>(
   });
 
   return {
+    isInvalid,
     labelProps: {
       ...labelProps,
       onClick: () => {
         if (props.isDisabled) return;
 
-        triggerRef.current?.focus();
+        ref.current?.focus();
         setInteractionModality('keyboard');
       },
     },
-    triggerProps,
     valueProps: { id: valueId },
-    treeProps,
-    popoverProps: {
-      state,
-      type: 'tree',
-    },
-    descriptionProps,
+    triggerProps,
     errorMessageProps,
-    isInvalid,
+    descriptionProps,
+    treeProps,
     validationErrors,
     validationDetails,
   };

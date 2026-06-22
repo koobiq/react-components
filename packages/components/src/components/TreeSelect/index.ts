@@ -1,2 +1,2 @@
-export * from './TreeSelect';
 export * from './types';
+export * from './TreeSelect';

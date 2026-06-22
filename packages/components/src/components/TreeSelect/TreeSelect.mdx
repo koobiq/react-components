@@ -29,40 +29,37 @@ import { TreeSelect } from '@koobiq/react-components';
 
 <Props of={Stories.Base} />
 
-## Content
+## Appearance
 
-TreeSelect accepts the same collection shape as `Tree`: either static
-`TreeSelect.Item` children or `items` with a render function.
+### Addons
 
-### Static collection
+You can add extra content using the `startAddon` and `endAddon` props.
 
-Use `TreeSelect.Item` when the tree structure is known in advance.
+<Story of={Stories.Addons} />
 
-<Story of={Stories.StaticCollection} />
+### Invalid
 
-### Dynamic collection
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
 
-Use `items` and `Collection` when the tree data comes from an external source or
-changes over time.
+<Story of={Stories.Invalid} />
 
-<Story of={Stories.DynamicCollection} />
+### Required
 
-## Label
+To make a tree select required, add the `isRequired` prop.
+If the field has a label, a required indicator will appear next to it.
 
-Use `label` when the field should be presented as a regular form control.
+<Story of={Stories.Required} />
 
-<Story of={Stories.WithLabel} />
+### Full width
 
-## Controlled selection
+The `fullWidth` prop will make a tree select fit to its parent width.
 
-Use `selectedKey` and `onSelectionChange` to control the selected node from the
-outside.
+<Story of={Stories.FullWidth} />
 
-<Story of={Stories.Controlled} />
+### Label placement and alignment
 
-## Disabled
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
 
-When `isDisabled` is enabled, the trigger cannot be focused or opened by the
-user.
+See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
 
-<Story of={Stories.Disabled} />
+<Story of={Stories.LabelPlacementAlignment} />

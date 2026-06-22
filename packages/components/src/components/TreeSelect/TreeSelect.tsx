@@ -1,172 +1,166 @@
 'use client';
 
-import { forwardRef, useCallback } from 'react';
-import type { Ref } from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 
 import {
   clsx,
   mergeProps,
-  useDOMRef,
+  useControlledState,
   useElementSize,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
-  ButtonContext,
-  Collection,
   CollectionBuilder,
-  DEFAULT_SLOT,
+  Collection,
   FieldErrorContext,
-  FormContext,
-  Provider,
+  composeRenderProps,
   useTreeSelect,
   useTreeSelectState,
-  useSlottedContext,
-  type AriaTreeSelectProps,
+  type TreeProps,
 } from '@koobiq/react-primitives';
 
-import { useForm } from '../Form';
-import type {
-  FormFieldCaptionProps,
-  FormFieldControlGroupProps,
-  FormFieldErrorProps,
-  FormFieldLabelProps,
-  FormFieldProps,
-  FormFieldSelectProps,
+import { utilClasses } from '../../styles/utility';
+import { Divider } from '../Divider';
+import {
+  FormField,
+  type FormFieldCaptionProps,
+  FormFieldClearButton,
+  type FormFieldControlGroupProps,
+  type FormFieldErrorProps,
+  type FormFieldLabelProps,
+  type FormFieldProps,
+  type FormFieldSelectProps,
 } from '../FormField';
-import { FormField, FormFieldClearButton } from '../FormField';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
+import { SearchInput } from '../SearchInput';
+import { SelectedTags } from '../SelectedTags';
 import { Tree } from '../Tree';
 
+import intlMessages from './intl';
+import { TreeCollection, TreeInner } from './TreeInner';
 import s from './TreeSelect.module.css';
 import type {
-  TreeSelectComponent,
+  TreeSelectInnerProps,
   TreeSelectProps,
-  TreeSelectRef,
+  TreeSelectComponent,
 } from './types';
+import { areSetsEqual } from './utils';
 
-/**
- * Select with hierarchical tree data.
- */
-function TreeSelectRender<T extends object>(
-  props: Omit<TreeSelectProps<T>, 'ref'>,
-  ref: Ref<TreeSelectRef>
-) {
+const { list } = utilClasses;
+
+export function TreeSelectInner<T extends object>({
+  props,
+  collection,
+}: TreeSelectInnerProps<T>) {
   const {
-    items,
-    children,
-    label,
-    variant = 'filled',
-    'aria-label': ariaLabel,
-    selectedKey,
-    defaultSelectedKey = null,
-    onSelectionChange,
-    expandedKeys,
-    defaultExpandedKeys = [],
-    onExpandedChange,
-    isOpen,
-    defaultOpen,
-    onOpenChange,
-    placeholder,
-    renderValue: renderValueProp,
-    isLabelHidden,
-    labelPlacement,
+    defaultInputValue = '',
     labelAlign,
-    caption,
-    errorMessage,
-    isRequired,
-    isInvalid,
-    validationState,
-    validationBehavior: validationBehaviorProp,
-    validate,
-    isDisabled: isDisabledProp,
-    fullWidth,
-    className,
-    style,
+    placeholder,
+    labelPlacement,
+    onClear,
+    isClearable,
     startAddon,
     endAddon,
-    isClearable,
-    onClear,
-    slotProps,
+    onInputChange,
+    label,
+    errorMessage,
+    isLabelHidden,
+    isDisabled,
+    caption,
     'data-testid': testId,
-    onFocus,
-    onBlur,
-    onKeyDown,
-    onKeyUp,
+    slotProps,
+    fullWidth,
+    style,
+    className,
+    variant,
+    isRequired,
+    inputValue: inputValueProp,
+    ...treeProps
   } = props;
 
-  const controlRef = useDOMRef<TreeSelectRef>(ref);
+  const t = useLocalizedStringFormatter(intlMessages);
 
-  const { isDisabled: formIsDisabled } = useForm();
-
-  const isDisabled = isDisabledProp ?? formIsDisabled;
-
-  const { validationBehavior: formValidationBehavior } =
-    useSlottedContext(FormContext) || {};
-
-  const validationBehavior =
-    validationBehaviorProp ?? formValidationBehavior ?? 'aria';
-
-  const treeSelectProps: AriaTreeSelectProps<T> = {
-    items,
-    label,
-    'aria-label': ariaLabel,
-    selectedKey,
-    defaultSelectedKey,
-    onSelectionChange,
-    expandedKeys,
-    defaultExpandedKeys,
-    onExpandedChange,
-    isOpen,
-    defaultOpen,
-    onOpenChange,
-    isDisabled,
-    isRequired,
-    isInvalid,
-    validationState,
-    validationBehavior,
-    validate,
-    caption,
-    errorMessage,
-    onFocus,
-    onBlur,
-    onKeyDown,
-    onKeyUp,
-  };
-
-  const treeSelectState = useTreeSelectState(treeSelectProps);
+  const { ref: triggerRef, width } = useElementSize();
+  const controlRef = useRef<HTMLDivElement>(null);
+  const treeRef = useRef(null);
 
   const {
-    treeProps,
-    valueProps,
-    triggerProps,
-    validationErrors,
-    descriptionProps,
-    errorMessageProps,
-    validationDetails,
-    isInvalid: isInvalidState,
-    labelProps: labelPropsAria,
-    popoverProps: popoverPropsAria,
-  } = useTreeSelect(
-    { ...treeSelectProps, triggerRef: controlRef },
-    treeSelectState
+    selectionMode,
+    onExpandedChange,
+    disabledBehavior,
+    expandedKeys: propExpandedKeys,
+    defaultExpandedKeys: propDefaultExpandedKeys,
+  } = treeProps;
+
+  const [inputValue, setInputValue] = useControlledState(
+    inputValueProp,
+    defaultInputValue,
+    onInputChange
   );
 
+  /** ----- TreeInner ----- */
+  const [expandedKeys, setExpandedKeys] = useControlledState(
+    propExpandedKeys ? new Set(propExpandedKeys) : undefined,
+    propDefaultExpandedKeys ? new Set(propDefaultExpandedKeys) : new Set(),
+    onExpandedChange
+  );
+
+  const [lastCollection, setLastCollection] = useState(collection);
+  const [lastExpandedKeys, setLastExpandedKeys] = useState(expandedKeys);
+
+  const [flattenedCollection, setFlattenedCollection] = useState(() =>
+    collection.withExpandedKeys(lastExpandedKeys, expandedKeys)
+  );
+
+  if (
+    !areSetsEqual(lastExpandedKeys, expandedKeys) ||
+    collection !== lastCollection
+  ) {
+    setFlattenedCollection(
+      collection.withExpandedKeys(lastExpandedKeys, expandedKeys)
+    );
+
+    setLastCollection(collection);
+    setLastExpandedKeys(expandedKeys);
+  }
+  /** ----- ----- */
+
+  const state = useTreeSelectState({
+    ...props,
+    selectionMode,
+    expandedKeys,
+    onExpandedChange: setExpandedKeys,
+    collection: flattenedCollection,
+    children: undefined,
+    disabledBehavior,
+  });
+
+  const {
+    treeProps: treePropsAria,
+    isInvalid: isInvalidAria,
+    labelProps: labelPropsAria,
+    valueProps,
+    triggerProps,
+    descriptionProps,
+    errorMessageProps,
+    validationErrors,
+    validationDetails,
+  } = useTreeSelect(props, state, triggerRef);
+
   const validation = {
-    isInvalid: isInvalidState,
+    isInvalid: isInvalidAria,
     validationErrors,
     validationDetails,
   };
 
-  const { ref: containerRef, width } = useElementSize();
-
-  const clearButtonIsHidden =
-    isDisabled || !isClearable || treeSelectState.selectedKey == null;
+  const clearButtonIsHidden = isDisabled || !state.selectedItems.length;
 
   const handleClear = useCallback(() => {
-    treeSelectState.setSelectedKey(null);
+    state.setSelectedKeys(new Set([]));
     onClear?.();
-  }, [onClear, treeSelectState]);
+  }, [onClear, state]);
 
   const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
     {
@@ -179,7 +173,7 @@ function TreeSelectRender<T extends object>(
       className: clsx(s.base, className),
       'data-disabled': isDisabled || undefined,
       'data-required': isRequired || undefined,
-      'data-invalid': isInvalidState || undefined,
+      'data-invalid': isInvalidAria || undefined,
     },
     slotProps?.root
   );
@@ -188,6 +182,18 @@ function TreeSelectRender<T extends object>(
     { isHidden: isLabelHidden, isRequired, children: label },
     labelPropsAria,
     slotProps?.label
+  );
+
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    descriptionProps,
+    slotProps?.caption
+  );
+
+  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    errorMessageProps,
+    slotProps?.errorMessage
   );
 
   const clearButtonProps = mergeProps(
@@ -221,12 +227,12 @@ function TreeSelectRender<T extends object>(
 
         event.preventDefault();
         controlRef.current?.focus();
-        treeSelectState.open();
+        state.open();
       },
       variant,
-      isInvalid: isInvalidState,
+      isInvalid: isInvalidAria,
       isDisabled,
-      ref: containerRef,
+      ref: triggerRef,
     },
     slotProps?.group
   );
@@ -245,12 +251,13 @@ function TreeSelectRender<T extends object>(
     [PopoverInnerProps, PopoverProps | undefined]
   >(
     {
-      ...popoverPropsAria,
+      state,
       offset: 4,
+      type: 'tree',
       hideArrow: true,
-      maxBlockSize: 320,
+      maxBlockSize: 256,
       className: s.popover,
-      anchorRef: containerRef,
+      anchorRef: triggerRef,
       placement: 'bottom start',
       'data-slot': 'dropdown',
       size: Math.max(width, 200),
@@ -262,93 +269,85 @@ function TreeSelectRender<T extends object>(
     slotProps?.popover
   );
 
-  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
-    { children: caption },
-    descriptionProps,
-    slotProps?.caption
-  );
-
-  const errorProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
-    { children: errorMessage },
-    errorMessageProps,
-    slotProps?.errorMessage
-  );
-
-  const finalTreeProps = mergeProps(
-    treeProps,
-    {
-      className: s.tree,
-      items,
-      isPadded: true,
-    },
-    slotProps?.tree
-  );
+  const renderValue =
+    selectionMode === 'multiple' ? (
+      <SelectedTags
+        state={state}
+        states={{ isInvalid: isInvalidAria, isDisabled, isRequired }}
+      />
+    ) : (
+      state.selectedItems[0]?.textValue
+    );
 
   return (
+    <FormField {...rootProps}>
+      <FormField.Label {...labelProps} />
+      <div className={s.body}>
+        <FormField.ControlGroup {...groupProps}>
+          <FormField.Select {...controlProps}>
+            {state.selectedItems.length ? renderValue : undefined}
+          </FormField.Select>
+        </FormField.ControlGroup>
+        <FieldErrorContext.Provider value={validation}>
+          <FormField.Error {...errorProps} />
+        </FieldErrorContext.Provider>
+        <FormField.Caption {...captionProps} />
+      </div>
+      <PopoverInner {...popoverProps}>
+        <div className={s.content}>
+          <SearchInput
+            value={inputValue}
+            onChange={setInputValue}
+            placeholder={t.format('search')}
+            aria-label={t.format('search')}
+            fullWidth
+            isLabelHidden
+            variant="transparent"
+            className={s.search}
+          />
+          <Divider disablePaddings />
+          <TreeInner
+            props={
+              {
+                ...treeProps,
+                ...treePropsAria,
+                'data-padded': true,
+                className: composeRenderProps(className, (className) =>
+                  clsx('kbq-Tree', list, className)
+                ),
+              } as TreeProps<T>
+            }
+            treeRef={treeRef}
+            state={state}
+          />
+        </div>
+      </PopoverInner>
+    </FormField>
+  );
+}
+
+function TreeSelectRender<T extends object>(props: TreeSelectProps<T>) {
+  return (
     <CollectionBuilder
-      content={<Collection items={items}>{children}</Collection>}
+      content={<Collection {...props} />}
+      createCollection={() => new TreeCollection<T>()}
     >
-      {(collection) => {
-        const renderDefaultValue: typeof renderValueProp = () => {
-          if (treeSelectState.selectedKey == null) return null;
-
-          return (
-            collection.getItem(treeSelectState.selectedKey)?.textValue ?? null
-          );
-        };
-
-        const renderValue = renderValueProp || renderDefaultValue;
-
-        return (
-          <Provider
-            values={[
-              [
-                ButtonContext,
-                {
-                  slots: {
-                    [DEFAULT_SLOT]: {},
-                    'clear-button': {},
-                  },
-                },
-              ],
-            ]}
-          >
-            <FormField {...rootProps}>
-              <FormField.Label {...labelProps} />
-              <div className={s.body}>
-                <FormField.ControlGroup {...groupProps}>
-                  <FormField.Select {...controlProps}>
-                    {renderValue(treeSelectState.selectedNode, {
-                      isInvalid: isInvalidState,
-                      isDisabled,
-                      isRequired,
-                    })}
-                  </FormField.Select>
-                </FormField.ControlGroup>
-                <FieldErrorContext.Provider value={validation}>
-                  <FormField.Error {...errorProps} />
-                </FieldErrorContext.Provider>
-                <FormField.Caption {...captionProps} />
-              </div>
-              <PopoverInner {...popoverProps}>
-                <div className={s.content}>
-                  <Tree {...finalTreeProps}>{children}</Tree>
-                </div>
-              </PopoverInner>
-            </FormField>
-          </Provider>
-        );
-      }}
+      {(collection) => (
+        <TreeSelectInner props={props} collection={collection} />
+      )}
     </CollectionBuilder>
   );
 }
 
-const TreeSelectComponent = forwardRef(
-  TreeSelectRender
-) as unknown as TreeSelectComponent;
+const TreeSelectComponent = forwardRef(TreeSelectRender) as TreeSelectComponent;
 
-export const TreeSelect = TreeSelectComponent;
+type CompoundedComponent = typeof TreeSelectComponent & {
+  Item: typeof Tree.Item;
+  ItemContent: typeof Tree.ItemContent;
+};
 
-TreeSelect.displayName = 'TreeSelect';
+/** Select with hierarchical tree data. */
+export const TreeSelect = TreeSelectComponent as CompoundedComponent;
+
 TreeSelect.Item = Tree.Item;
 TreeSelect.ItemContent = Tree.ItemContent;

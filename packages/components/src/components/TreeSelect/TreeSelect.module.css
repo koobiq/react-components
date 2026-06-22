@@ -22,7 +22,6 @@
 
 .body {
   inline-size: 100%;
-  min-inline-size: fit-content;
 }
 
 .body > :first-child + * {
@@ -52,6 +51,13 @@
     display: flex;
     inline-size: 100%;
     flex-direction: column;
+
+    /* search-input */
+    .search {
+      padding-block: var(--kbq-size-xxs);
+      padding-inline: var(--kbq-size-3xs);
+      box-sizing: border-box;
+    }
 
     .tree {
       inline-size: 100%;
