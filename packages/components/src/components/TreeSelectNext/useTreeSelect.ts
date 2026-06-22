@@ -1,4 +1,4 @@
-import type { HTMLAttributes, KeyboardEvent } from 'react';
+import type { HTMLAttributes, KeyboardEvent, FocusEvent } from 'react';
 
 import { chain, mergeProps, useId } from '@koobiq/react-core';
 import type { RefObject, ValidationResult } from '@koobiq/react-core';
@@ -87,19 +87,17 @@ export function useTreeSelect<T extends object>(
     ]
       .filter(Boolean)
       .join(' '),
-    onFocus() {
-      // event: FocusEvent<HTMLElement>
-      // if (state.isFocused) return;
-      //
-      // props.onFocus?.(event);
-      // state.setFocused(true);
+    onFocus(event: FocusEvent) {
+      if (state.isFocused) return;
+
+      props.onFocus?.(event);
+      state.setFocused(true);
     },
-    onBlur() {
-      // event: FocusEvent<HTMLElement>
+    onBlur(event: FocusEvent) {
       if (state.isOpen) return;
 
-      // props.onBlur?.(event);
-      // state.setFocused(false);
+      props.onBlur?.(event);
+      state.setFocused(false);
     },
     onKeyDown: chain(
       overlayTriggerProps.onKeyDown,
@@ -113,6 +111,14 @@ export function useTreeSelect<T extends object>(
     autoFocus: isOpen || undefined,
     'aria-label': fieldProps['aria-label'],
     'aria-labelledby': fieldProps['aria-labelledby'],
+    onBlur(event: FocusEvent<HTMLElement>) {
+      if (event.currentTarget.contains(event.relatedTarget as Node)) {
+        return;
+      }
+
+      props.onBlur?.(event);
+      state.setFocused(false);
+    },
   });
 
   return {

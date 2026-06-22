@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import type {
   Key,
@@ -41,6 +41,10 @@ export type TreeSelectState<T> = {
   readonly selectedItems: Node<T>[];
   /** Set the selected node id. */
   setSelectedKeys(keys: Iterable<Key>): void;
+  /** Whether the select is currently focused. */
+  readonly isFocused: boolean;
+  /** Sets whether the select is focused. */
+  setFocused(isFocused: boolean): void;
 } & TreeState<T> &
   OverlayTriggerState &
   FormValidationState;
@@ -48,6 +52,8 @@ export type TreeSelectState<T> = {
 export function useTreeSelectState<T extends object>(
   props: TreeSelectStateOptions<T>
 ): TreeSelectState<T> {
+  const [isFocused, setFocused] = useState(false);
+
   const displayValue = props.selectedKeys
     ? Array.from(props.selectedKeys)[0]
     : undefined;
@@ -86,6 +92,8 @@ export function useTreeSelectState<T extends object>(
     ...overlayState,
     ...treeState,
     ...validationState,
+    isFocused,
+    setFocused,
     selectedItems,
     setSelectedKeys,
   };
