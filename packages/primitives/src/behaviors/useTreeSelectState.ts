@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
+import { useControlledState } from '@koobiq/react-core';
 import type {
   FocusableProps,
   HelpTextProps,
@@ -19,18 +20,48 @@ import { useOverlayTriggerState } from '@react-stately/overlays';
 import type { TreeProps, TreeState } from '@react-stately/tree';
 import { useTreeState } from '@react-stately/tree';
 
-export interface TreeSelectStateOptions<T extends object>
+export type SelectionMode = 'single' | 'multiple';
+
+/** The selection value, typed by the selection mode. */
+export type TreeSelectValueType<M extends SelectionMode> = M extends 'single'
+  ? Key | null
+  : readonly Key[];
+
+/** The value passed to `onChange`, typed by the selection mode. */
+export type TreeSelectChangeValueType<M extends SelectionMode> =
+  M extends 'single' ? Key | null : Key[];
+
+type TreeSelectValidationValueType<M extends SelectionMode> = M extends 'single'
+  ? Key
+  : Key[];
+
+export interface TreeSelectStateOptions<
+  T extends object,
+  M extends SelectionMode = 'single',
+>
   extends
-    TreeProps<T>,
+    Omit<
+      TreeProps<T>,
+      | 'selectionMode'
+      | 'selectedKeys'
+      | 'defaultSelectedKeys'
+      | 'onSelectionChange'
+      | 'disallowEmptySelection'
+    >,
     LabelableProps,
     InputBase,
     TextInputBase,
     HelpTextProps,
     FocusableProps,
-    Validation<string | null> {
-  selectedKeys?: Iterable<Key>;
-  defaultSelectedKeys?: Iterable<Key>;
-  onSelectionChange?: (keys: Iterable<Key>) => void;
+    Validation<TreeSelectValidationValueType<M>> {
+  /** Whether single or multiple selection is enabled. */
+  selectionMode?: M;
+  /** The selected key(s) (controlled). */
+  value?: TreeSelectValueType<M>;
+  /** The initial selected key(s) (uncontrolled). */
+  defaultValue?: TreeSelectValueType<M>;
+  /** Handler that is called when the selection changes. */
+  onChange?: (value: TreeSelectChangeValueType<M>) => void;
   /** Sets the open state of the menu. */
   isOpen?: boolean;
   /** Sets the default open state of the menu. */
@@ -39,8 +70,10 @@ export interface TreeSelectStateOptions<T extends object>
   onOpenChange?: (isOpen: boolean) => void;
 }
 
-export type TreeSelectProps<T extends object = object> =
-  TreeSelectStateOptions<T>;
+export type TreeSelectProps<
+  T extends object = object,
+  M extends SelectionMode = 'single',
+> = TreeSelectStateOptions<T, M>;
 
 export type TreeSelectState<T> = {
   /** The value of the selected items. */
@@ -55,10 +88,20 @@ export type TreeSelectState<T> = {
   OverlayTriggerState &
   FormValidationState;
 
-export function useTreeSelectState<T extends object>(
-  props: TreeSelectStateOptions<T>
-): TreeSelectState<T> {
-  const { selectionMode = 'single' } = props;
+const convertValue = (
+  value: Key | readonly Key[] | null | undefined
+): Iterable<Key> | undefined => {
+  if (value === undefined) return undefined;
+  if (value === null) return [];
+
+  return Array.isArray(value) ? value : [value as Key];
+};
+
+export function useTreeSelectState<
+  T extends object,
+  M extends SelectionMode = 'single',
+>(props: TreeSelectStateOptions<T, M>): TreeSelectState<T> {
+  const { selectionMode = 'single' as M } = props;
 
   const [isFocused, setFocused] = useState(false);
 
@@ -68,30 +111,71 @@ export function useTreeSelectState<T extends object>(
     onOpenChange: props.onOpenChange,
   });
 
-  const treeState = useTreeState({
-    ...props,
-    selectionMode,
-    onSelectionChange: (keys) => {
-      props.onSelectionChange?.(keys);
+  const defaultValue =
+    props.defaultValue !== undefined
+      ? props.defaultValue
+      : selectionMode === 'multiple'
+        ? []
+        : null;
 
-      if (selectionMode === 'single') {
-        overlayState.close();
-      }
-    },
-  });
+  const [controlledValue, setControlledValue] = useControlledState<
+    Key | readonly Key[] | null
+  >(
+    props.value,
+    defaultValue,
+    props.onChange as ((value: Key | readonly Key[] | null) => void) | undefined
+  );
 
+  // Only display the first selected key in single mode if the value is an array.
   const displayValue =
-    selectionMode === 'multiple'
-      ? [...treeState.selectionManager.selectedKeys]
-      : (treeState.selectionManager.firstSelectedKey ?? null);
+    selectionMode === 'single' && Array.isArray(controlledValue)
+      ? (controlledValue[0] ?? null)
+      : controlledValue;
+
+  const setValue = (value: Key | readonly Key[] | null) => {
+    if (selectionMode === 'single') {
+      const key = Array.isArray(value) ? (value[0] ?? null) : value;
+
+      setControlledValue(key as Key | null);
+    } else {
+      let keys: Key[] = [];
+
+      if (Array.isArray(value)) keys = [...value];
+      else if (value != null) keys = [value as Key];
+
+      setControlledValue(keys);
+    }
+  };
 
   const validationState = useFormValidationState({
     ...props,
     value:
       Array.isArray(displayValue) && displayValue.length === 0
         ? null
-        : (displayValue as any),
+        : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (displayValue as any),
   });
+
+  const treeState = useTreeState({
+    ...props,
+    selectionMode,
+    disallowEmptySelection: selectionMode === 'single',
+    selectedKeys: convertValue(displayValue),
+    onSelectionChange: (keys) => {
+      if (keys === 'all') return;
+
+      if (selectionMode === 'single') {
+        const key = keys.values().next().value ?? null;
+
+        setValue(key);
+        overlayState.close();
+      } else {
+        setValue([...keys]);
+      }
+
+      validationState.commitValidation();
+    },
+  } as TreeProps<T>);
 
   const selectedItems = useMemo(() => {
     return [...treeState.selectionManager.selectedKeys]
@@ -101,7 +185,6 @@ export function useTreeSelectState<T extends object>(
 
   const setSelectedKeys = (keys: Iterable<Key>) => {
     treeState.selectionManager.setSelectedKeys(keys);
-    validationState.commitValidation();
   };
 
   return {

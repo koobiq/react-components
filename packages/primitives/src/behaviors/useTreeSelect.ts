@@ -19,6 +19,7 @@ import { useOverlayTrigger } from '@react-aria/overlays';
 import type { TreeProps } from 'react-aria-components';
 
 import type {
+  SelectionMode,
   TreeSelectState,
   TreeSelectStateOptions,
 } from './useTreeSelectState';
@@ -38,13 +39,21 @@ export type TreeSelectAria<T extends object> = {
   errorMessageProps: HTMLAttributes<HTMLElement>;
 } & ValidationResult;
 
-export type AriaTreeSelectOptions<T extends object> = TreeSelectStateOptions<T>;
+export type AriaTreeSelectOptions<
+  T extends object,
+  M extends SelectionMode = 'single',
+> = TreeSelectStateOptions<T, M>;
 
-export type AriaTreeSelectProps<T extends object = object> =
-  TreeSelectStateOptions<T>;
+export type AriaTreeSelectProps<
+  T extends object = object,
+  M extends SelectionMode = 'single',
+> = TreeSelectStateOptions<T, M>;
 
-export function useTreeSelect<T extends object>(
-  props: AriaTreeSelectOptions<T>,
+export function useTreeSelect<
+  T extends object,
+  M extends SelectionMode = 'single',
+>(
+  props: AriaTreeSelectOptions<T, M>,
   state: TreeSelectState<T>,
   ref: RefObject<HTMLElement | null>
 ): TreeSelectAria<T> {

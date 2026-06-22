@@ -76,7 +76,7 @@ export const Base: Story = {
     return (
       <TreeSelect
         items={items}
-        defaultSelectedKeys={new Set([9])}
+        defaultValue={[9]}
         caption="My caption"
         label="Project files"
         placeholder="My placeholder"
@@ -103,9 +103,7 @@ export const Addons: Story = {
     return (
       <TreeSelect
         items={items}
-        // TODO:
-        // defaultValue={1}
-        defaultSelectedKeys={new Set([9])}
+        defaultValue={9}
         label="Project files"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"

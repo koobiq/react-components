@@ -1,7 +1,10 @@
 import { type CSSProperties, type ReactElement, type ReactNode } from 'react';
 
-import { type RefObject } from '@koobiq/react-core';
-import type { TreeSelectStateOptions } from '@koobiq/react-primitives';
+import type { RefObject } from '@koobiq/react-core';
+import type {
+  SelectionMode,
+  TreeSelectStateOptions,
+} from '@koobiq/react-primitives';
 
 import {
   type FormFieldCaptionProps,
@@ -31,9 +34,15 @@ export type TreeSelectPropLabelAlign = FormFieldPropLabelAlign;
 export const treeSelectPropVariant = formFieldControlGroupPropVariant;
 export type TreeSelectPropVariant = FormFieldControlGroupPropVariant;
 
-type AriaTreeSelectProps<T extends object> = TreeSelectStateOptions<T>;
+type AriaTreeSelectProps<
+  T extends object,
+  M extends SelectionMode = 'single',
+> = TreeSelectStateOptions<T, M>;
 
-export type TreeSelectProps<T extends object> = {
+export type TreeSelectProps<
+  T extends object,
+  M extends SelectionMode = 'single',
+> = {
   /** Whether the field can be emptied. */
   isClearable?: boolean;
   /** Handler called when the clear button is clicked. */
@@ -88,14 +97,20 @@ export type TreeSelectProps<T extends object> = {
     control?: FormFieldSelectProps;
     popover?: PopoverProps;
   };
-} & Omit<AriaTreeSelectProps<T>, 'description'>;
+} & Omit<AriaTreeSelectProps<T, M>, 'description'>;
 
-export type TreeSelectComponent = <T extends object>(
-  props: TreeSelectProps<T>
+export type TreeSelectComponent = <
+  T extends object,
+  M extends SelectionMode = 'single',
+>(
+  props: TreeSelectProps<T, M>
 ) => ReactElement | null;
 
-export type TreeSelectInnerProps<T extends object> = {
-  props: TreeSelectProps<T>;
+export type TreeSelectInnerProps<
+  T extends object,
+  M extends SelectionMode = 'single',
+> = {
+  props: TreeSelectProps<T, M>;
   collection: TreeCollection<T>;
   treeRef?: RefObject<HTMLDivElement | null>;
 };

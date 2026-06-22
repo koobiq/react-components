@@ -18,6 +18,7 @@ import {
   useTreeSelect,
   useTreeSelectState,
   type TreeProps,
+  type SelectionMode,
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
@@ -50,10 +51,10 @@ import { areSetsEqual } from './utils';
 
 const { list } = utilClasses;
 
-export function TreeSelectInner<T extends object>({
-  props,
-  collection,
-}: TreeSelectInnerProps<T>) {
+export function TreeSelectInner<
+  T extends object,
+  M extends SelectionMode = 'single',
+>({ props, collection }: TreeSelectInnerProps<T, M>) {
   const {
     defaultInputValue = '',
     labelAlign,
@@ -127,7 +128,7 @@ export function TreeSelectInner<T extends object>({
   }
   /** ----- ----- */
 
-  const state = useTreeSelectState({
+  const state = useTreeSelectState<T, M>({
     ...props,
     selectionMode,
     expandedKeys,
@@ -147,7 +148,7 @@ export function TreeSelectInner<T extends object>({
     errorMessageProps,
     validationErrors,
     validationDetails,
-  } = useTreeSelect(props, state, triggerRef);
+  } = useTreeSelect<T, M>(props, state, triggerRef);
 
   const validation = {
     isInvalid: isInvalidAria,
@@ -326,7 +327,9 @@ export function TreeSelectInner<T extends object>({
   );
 }
 
-function TreeSelectRender<T extends object>(props: TreeSelectProps<T>) {
+function TreeSelectRender<T extends object, M extends SelectionMode = 'single'>(
+  props: TreeSelectProps<T, M>
+) {
   return (
     <CollectionBuilder
       content={<Collection {...props} />}
