@@ -34,7 +34,7 @@ import { SelectedTags } from '../SelectedTags';
 
 import { TreeCollection, TreeInner } from './TreeInner';
 import s from './TreeSelect.module.css';
-import type { TestInnerProps, TreeSelectProps } from './types';
+import type { TreeSelectInnerProps, TreeSelectProps } from './types';
 import { useTreeSelect } from './useTreeSelect';
 import { useTreeSelectState } from './useTreeSelectState';
 
@@ -43,7 +43,7 @@ const { list } = utilClasses;
 export function TreeSelectInner<T extends object>({
   props,
   collection,
-}: TestInnerProps<T>) {
+}: TreeSelectInnerProps<T>) {
   const {
     labelAlign,
     placeholder,
@@ -135,7 +135,7 @@ export function TreeSelectInner<T extends object>({
     errorMessageProps,
     validationErrors,
     validationDetails,
-  } = useTreeSelect({ ...props, triggerRef }, state, treeRef);
+  } = useTreeSelect(props, state, triggerRef);
 
   const validation = {
     isInvalid: isInvalidAria,
@@ -146,7 +146,6 @@ export function TreeSelectInner<T extends object>({
   const clearButtonIsHidden = isDisabled || !state.selectedItems.length;
 
   const handleClear = useCallback(() => {
-    // TODO: check it up
     state.setSelectedKeys(new Set([]));
     onClear?.();
   }, [onClear, state]);

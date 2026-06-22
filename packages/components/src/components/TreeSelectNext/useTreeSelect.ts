@@ -26,21 +26,13 @@ export type TreeSelectAria<T extends object> = {
   errorMessageProps: HTMLAttributes<HTMLElement>;
 } & ValidationResult;
 
-export interface AriaTreeSelectOptions<
-  T extends object,
-> extends TreeSelectStateOptions<T> {
-  /** The ref for the trigger element. */
-  triggerRef: RefObject<HTMLElement | null>;
-}
+export type AriaTreeSelectOptions<T extends object> = TreeSelectStateOptions<T>;
 
 export function useTreeSelect<T extends object>(
   props: AriaTreeSelectOptions<T>,
   state: TreeSelectState<T>,
   ref: RefObject<HTMLElement | null>
 ): TreeSelectAria<T> {
-  // TODO: work out
-  console.log(ref);
-
   const { displayValidation, isOpen, setOpen, open, close, toggle } = state;
 
   const { isInvalid, validationErrors, validationDetails } = displayValidation;
@@ -62,7 +54,7 @@ export function useTreeSelect<T extends object>(
       close,
       toggle,
     },
-    props.triggerRef
+    ref
   );
 
   const valueId = useId();

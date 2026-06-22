@@ -90,7 +90,7 @@ export type TreeSelectProps<T extends object> = {
   };
 } & Omit<AriaTreeSelectProps<T>, 'description'>;
 
-export type TestInnerProps<T extends object> = {
+export type TreeSelectInnerProps<T extends object> = {
   props: TreeSelectProps<T>;
   collection: TreeCollection<T>;
   treeRef?: RefObject<HTMLDivElement | null>;
