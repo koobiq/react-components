@@ -22,7 +22,6 @@
 
 .body {
   inline-size: 100%;
-  min-inline-size: fit-content;
 }
 
 .body > :first-child + * {

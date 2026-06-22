@@ -30,6 +30,7 @@ import {
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 import { SearchInput } from '../SearchInput';
+import { SelectedTags } from '../SelectedTags';
 
 import { TreeCollection, TreeInner } from './TreeInner';
 import s from './TreeSelect.module.css';
@@ -258,9 +259,14 @@ export function TreeSelectInner<T extends object>({
   );
 
   const renderValue =
-    selectionMode === 'multiple'
-      ? state.selectedItems.map(({ textValue }) => textValue).join(', ')
-      : state.selectedItems[0]?.textValue;
+    selectionMode === 'multiple' ? (
+      <SelectedTags
+        state={state}
+        states={{ isInvalid: isInvalidAria, isDisabled, isRequired }}
+      />
+    ) : (
+      state.selectedItems[0]?.textValue
+    );
 
   return (
     <FormField {...rootProps}>
