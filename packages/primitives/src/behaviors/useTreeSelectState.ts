@@ -30,7 +30,7 @@ export interface TreeSelectStateOptions<T extends object>
     Validation<string | null> {
   selectedKeys?: Iterable<Key>;
   defaultSelectedKeys?: Iterable<Key>;
-  onSelectionChange?: (key: Iterable<Key>) => void;
+  onSelectionChange?: (keys: Iterable<Key>) => void;
   /** Sets the open state of the menu. */
   isOpen?: boolean;
   /** Sets the default open state of the menu. */
