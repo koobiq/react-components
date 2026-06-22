@@ -106,12 +106,14 @@ export function useTreeSelect<T extends object>(
       if (state.isFocused) return;
 
       props.onFocus?.(event);
+      props.onFocusChange?.(true);
       state.setFocused(true);
     },
     onBlur(event: FocusEvent) {
       if (state.isOpen) return;
 
       props.onBlur?.(event);
+      props.onFocusChange?.(false);
       state.setFocused(false);
     },
     onKeyDown: chain(
@@ -132,6 +134,7 @@ export function useTreeSelect<T extends object>(
       }
 
       props.onBlur?.(event);
+      props.onFocusChange?.(false);
       state.setFocused(false);
     },
   });

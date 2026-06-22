@@ -62,9 +62,28 @@ export function useTreeSelectState<T extends object>(
 
   const [isFocused, setFocused] = useState(false);
 
-  const displayValue = props.selectedKeys
-    ? Array.from(props.selectedKeys)[0]
-    : undefined;
+  const overlayState = useOverlayTriggerState({
+    isOpen: props.isOpen,
+    defaultOpen: props.defaultOpen,
+    onOpenChange: props.onOpenChange,
+  });
+
+  const treeState = useTreeState({
+    ...props,
+    selectionMode,
+    onSelectionChange: (keys) => {
+      props.onSelectionChange?.(keys);
+
+      if (selectionMode === 'single') {
+        overlayState.close();
+      }
+    },
+  });
+
+  const displayValue =
+    selectionMode === 'multiple'
+      ? [...treeState.selectionManager.selectedKeys]
+      : (treeState.selectionManager.firstSelectedKey ?? null);
 
   const validationState = useFormValidationState({
     ...props,
@@ -73,14 +92,6 @@ export function useTreeSelectState<T extends object>(
         ? null
         : (displayValue as any),
   });
-
-  const overlayState = useOverlayTriggerState({
-    isOpen: props.isOpen,
-    defaultOpen: props.defaultOpen,
-    onOpenChange: props.onOpenChange,
-  });
-
-  const treeState = useTreeState({ ...props, selectionMode });
 
   const selectedItems = useMemo(() => {
     return [...treeState.selectionManager.selectedKeys]
