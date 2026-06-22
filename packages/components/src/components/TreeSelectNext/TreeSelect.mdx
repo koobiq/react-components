@@ -28,3 +28,38 @@ import { TreeSelect } from '@koobiq/react-components';
 ## Props
 
 <Props of={Stories.Base} />
+
+## Appearance
+
+### Addons
+
+You can add extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+### Invalid
+
+The `isInvalid` prop toggles the error state. The `errorMessage` shows a message to explain the error to the user.
+
+<Story of={Stories.Invalid} />
+
+### Required
+
+To make a tree select required, add the `isRequired` prop.
+If the field has a label, a required indicator will appear next to it.
+
+<Story of={Stories.Required} />
+
+### Full width
+
+The `fullWidth` prop will make a tree select fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+### Label placement and alignment
+
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
+
+See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
+
+<Story of={Stories.LabelPlacementAlignment} />

@@ -52,6 +52,8 @@ export type TreeSelectState<T> = {
 export function useTreeSelectState<T extends object>(
   props: TreeSelectStateOptions<T>
 ): TreeSelectState<T> {
+  const { selectionMode = 'single' } = props;
+
   const [isFocused, setFocused] = useState(false);
 
   const displayValue = props.selectedKeys
@@ -75,7 +77,7 @@ export function useTreeSelectState<T extends object>(
   });
 
   // tree state
-  const treeState = useTreeState(props);
+  const treeState = useTreeState({ ...props, selectionMode });
 
   const selectedItems = useMemo(() => {
     return [...treeState.selectionManager.selectedKeys]

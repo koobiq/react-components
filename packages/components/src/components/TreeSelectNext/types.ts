@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode } from 'react';
+import { type CSSProperties, type ReactElement, type ReactNode } from 'react';
 
 import { type RefObject } from '@koobiq/react-core';
 
@@ -89,6 +89,10 @@ export type TreeSelectProps<T extends object> = {
     popover?: PopoverProps;
   };
 } & Omit<AriaTreeSelectProps<T>, 'description'>;
+
+export type TreeSelectComponent = <T extends object>(
+  props: TreeSelectProps<T>
+) => ReactElement | null;
 
 export type TreeSelectInnerProps<T extends object> = {
   props: TreeSelectProps<T>;

@@ -1,10 +1,11 @@
-import { useCallback, useRef, useState } from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 
 import {
   clsx,
   mergeProps,
   useControlledState,
   useElementSize,
+  useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
@@ -31,12 +32,19 @@ import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 import { SearchInput } from '../SearchInput';
 import { SelectedTags } from '../SelectedTags';
+import { Tree } from '../Tree';
 
+import intlMessages from './intl';
 import { TreeCollection, TreeInner } from './TreeInner';
 import s from './TreeSelect.module.css';
-import type { TreeSelectInnerProps, TreeSelectProps } from './types';
+import type {
+  TreeSelectInnerProps,
+  TreeSelectProps,
+  TreeSelectComponent,
+} from './types';
 import { useTreeSelect } from './useTreeSelect';
 import { useTreeSelectState } from './useTreeSelectState';
+import { areSetsEqual } from './utils';
 
 const { list } = utilClasses;
 
@@ -45,6 +53,7 @@ export function TreeSelectInner<T extends object>({
   collection,
 }: TreeSelectInnerProps<T>) {
   const {
+    defaultInputValue = '',
     labelAlign,
     placeholder,
     labelPlacement,
@@ -65,10 +74,11 @@ export function TreeSelectInner<T extends object>({
     className,
     variant,
     isRequired,
-    defaultInputValue = '',
     inputValue: inputValueProp,
     ...treeProps
   } = props;
+
+  const t = useLocalizedStringFormatter(intlMessages);
 
   const { ref: triggerRef, width } = useElementSize();
   const controlRef = useRef<HTMLDivElement>(null);
@@ -284,9 +294,10 @@ export function TreeSelectInner<T extends object>({
       <PopoverInner {...popoverProps}>
         <div className={s.content}>
           <SearchInput
-            aria-label="search"
             value={inputValue}
             onChange={setInputValue}
+            placeholder={t.format('search')}
+            aria-label={t.format('search')}
             fullWidth
             isLabelHidden
             variant="transparent"
@@ -313,7 +324,7 @@ export function TreeSelectInner<T extends object>({
   );
 }
 
-export function TreeSelect<T extends object>(props: TreeSelectProps<T>) {
+function TreeSelectRender<T extends object>(props: TreeSelectProps<T>) {
   return (
     <CollectionBuilder
       content={<Collection {...props} />}
@@ -326,12 +337,15 @@ export function TreeSelect<T extends object>(props: TreeSelectProps<T>) {
   );
 }
 
-function areSetsEqual<T>(a: Set<T>, b: Set<T>) {
-  if (a.size !== b.size) return false;
+const TreeSelectComponent = forwardRef(TreeSelectRender) as TreeSelectComponent;
 
-  for (const item of a) {
-    if (!b.has(item)) return false;
-  }
+type CompoundedComponent = typeof TreeSelectComponent & {
+  Item: typeof Tree.Item;
+  ItemContent: typeof Tree.ItemContent;
+};
 
-  return true;
-}
+/** Select with hierarchical tree data. */
+export const TreeSelect = TreeSelectComponent as CompoundedComponent;
+
+TreeSelect.Item = Tree.Item;
+TreeSelect.ItemContent = Tree.ItemContent;
