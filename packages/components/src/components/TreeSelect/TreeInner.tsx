@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 import {
@@ -10,12 +10,6 @@ import {
   filterDOMProps,
 } from '@koobiq/react-core';
 import type { Key, RefObject, Node } from '@koobiq/react-core';
-import type {
-  TreeProps,
-  TreeRenderProps,
-  TreeState,
-  CollectionNode,
-} from '@koobiq/react-primitives';
 import {
   useTree,
   Provider,
@@ -24,6 +18,17 @@ import {
   BaseCollection,
   useRenderProps,
 } from '@koobiq/react-primitives';
+import type {
+  TreeProps,
+  TreeRenderProps,
+  TreeState,
+  CollectionNode,
+  TreeSelectState,
+} from '@koobiq/react-primitives';
+
+type MutableCollectionNode<T> = {
+  -readonly [K in keyof CollectionNode<T>]: CollectionNode<T>[K];
+};
 
 export class TreeCollection<T> extends BaseCollection<T> {
   private expandedKeys: Set<Key> = new Set();
@@ -48,6 +53,75 @@ export class TreeCollection<T> extends BaseCollection<T> {
     collection.frozen = this.frozen;
 
     return collection;
+  }
+
+  /**
+   * Rebuild the collection keeping only `keys`, fixing up sibling/child links.
+   * Used for search: the visible set is matches plus their ancestors.
+   */
+  filterByKeys(keys: Set<Key>): TreeCollection<T> {
+    const filtered = new TreeCollection<T>();
+
+    const copyLevel = (
+      siblings: Iterable<Node<T>>,
+      parentKey: Key | null
+    ): [Key | null, Key | null] => {
+      let firstKey: Key | null = null;
+      let prev: MutableCollectionNode<T> | null = null;
+      let index = 0;
+
+      for (const node of siblings) {
+        // Only items are filtered by the visible set; structural children
+        // (e.g. the row content) ride along so kept rows keep their label.
+        if (node.type === 'item' && !keys.has(node.key)) continue;
+
+        const clone = (
+          node as CollectionNode<T>
+        ).clone() as MutableCollectionNode<T>;
+
+        clone.parentKey = parentKey;
+        clone.prevKey = prev?.key ?? null;
+        clone.nextKey = null;
+        clone.index = index;
+
+        index += 1;
+
+        const [firstChildKey, lastChildKey] = copyLevel(
+          this.getChildren(node.key),
+          clone.key
+        );
+
+        clone.firstChildKey = firstChildKey;
+        clone.lastChildKey = lastChildKey;
+
+        filtered.addNode(clone as CollectionNode<T>);
+
+        if (prev) prev.nextKey = clone.key;
+        if (firstKey == null) firstKey = clone.key;
+
+        prev = clone;
+      }
+
+      return [firstKey, prev?.key ?? null];
+    };
+
+    const roots: Node<T>[] = [];
+    let key = this.firstKey;
+
+    while (key != null) {
+      const node = this.getItem(key);
+
+      if (!node) break;
+
+      roots.push(node);
+      key = node.nextKey ?? null;
+    }
+
+    const [firstKey, lastKey] = copyLevel(roots, null);
+
+    filtered.commit(firstKey, lastKey);
+
+    return filtered;
   }
 
   private static cloneAncestorSections<T>(
@@ -284,4 +358,71 @@ export function TreeInner<T extends object>({
       </div>
     </FocusScope>
   );
+}
+
+/**
+ * Collect the keys to show for a search query: every node whose `textValue`
+ * matches, plus all of its ancestors (so the path stays visible). The
+ * ancestors are also returned as the keys to auto-expand.
+ */
+export function getFilteredKeys<T extends object>(
+  collection: BaseCollection<T>,
+  match: (textValue: string) => boolean
+): { visibleKeys: Set<Key>; autoExpandedKeys: Set<Key> } {
+  const visibleKeys = new Set<Key>();
+  const autoExpandedKeys = new Set<Key>();
+
+  for (const key of collection.getKeys()) {
+    const node = collection.getItem(key);
+
+    if (node?.type !== 'item' || !match(node.textValue)) continue;
+
+    visibleKeys.add(key);
+
+    let parentKey = node.parentKey ?? null;
+
+    while (parentKey != null) {
+      visibleKeys.add(parentKey);
+
+      if (autoExpandedKeys.has(parentKey)) break;
+
+      autoExpandedKeys.add(parentKey);
+      parentKey = collection.getItem(parentKey)?.parentKey ?? null;
+    }
+  }
+
+  return { visibleKeys, autoExpandedKeys };
+}
+
+/**
+ * A view of the tree state for rendering the popup: when `collection` is set
+ * (a filtered collection), the tree renders it with `expandedKeys`, while the
+ * selection state stays bound to the full collection — mirroring
+ * `UNSTABLE_useFilteredListState`.
+ */
+export function useFilteredTreeState<T extends object>(
+  state: TreeSelectState<T>,
+  collection: TreeCollection<T> | null,
+  expandedKeys: Set<Key> | null
+): TreeState<T> {
+  const selectionManager = collection
+    ? state.selectionManager.withCollection(collection)
+    : state.selectionManager;
+
+  useEffect(() => {
+    const { focusedKey } = selectionManager;
+
+    if (collection && focusedKey != null && !collection.getItem(focusedKey)) {
+      selectionManager.setFocusedKey(collection.getFirstKey());
+    }
+  }, [collection, selectionManager]);
+
+  if (!collection) return state;
+
+  return {
+    ...state,
+    collection,
+    selectionManager,
+    expandedKeys: expandedKeys ?? state.expandedKeys,
+  };
 }

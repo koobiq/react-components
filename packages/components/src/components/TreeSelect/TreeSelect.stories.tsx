@@ -80,10 +80,9 @@ export const Base: Story = {
   render: function Render() {
     return (
       <TreeSelect
-        defaultValue={[9]}
-        caption="My caption"
+        defaultValue={[3, 9]}
         label="Project files"
-        placeholder="My placeholder"
+        placeholder="Pick value"
         selectionMode="multiple"
         style={{ inlineSize: 320 }}
         isClearable
@@ -141,7 +140,7 @@ export const Content: Story = {
         items={items}
         caption="Dynamic collection"
         label="Project files"
-        style={{ inlineSize: 240 }}
+        style={{ inlineSize: 320 }}
         placeholder="Select a file"
       >
         {function renderItem(item) {
@@ -164,7 +163,7 @@ export const DisabledOptions: Story = {
         items={items}
         label="Project files"
         disabledKeys={[6, 9]}
-        style={{ inlineSize: 240 }}
+        style={{ inlineSize: 320 }}
         placeholder="Select a file"
       >
         {function renderItem(item) {
@@ -187,7 +186,7 @@ export const DropdownFooter: Story = {
         items={items}
         label="Project files"
         dropdownFooter="The text in the footer of the dropdown."
-        style={{ inlineSize: 280 }}
+        style={{ inlineSize: 320 }}
         placeholder="Select a file"
       >
         {function renderItem(item) {
@@ -210,7 +209,7 @@ export const Addons: Story = {
         items={items}
         defaultValue={9}
         label="Project files"
-        style={{ inlineSize: 200 }}
+        style={{ inlineSize: 320 }}
         placeholder="Select an option"
         startAddon={<IconCrosshairs16 />}
       >
@@ -233,7 +232,7 @@ export const Invalid: Story = {
       <TreeSelect
         items={items}
         label="Project files"
-        style={{ inlineSize: 200 }}
+        style={{ inlineSize: 320 }}
         placeholder="Select an option"
         errorMessage="This field is required"
         isInvalid
@@ -259,7 +258,7 @@ export const Required: Story = {
           items={items}
           caption="required"
           label="Project files"
-          style={{ inlineSize: 200 }}
+          style={{ inlineSize: 320 }}
           placeholder="Select an option"
           isRequired
         >
@@ -275,7 +274,7 @@ export const Required: Story = {
         <TreeSelect
           items={items}
           label="Project files"
-          style={{ inlineSize: 200 }}
+          style={{ inlineSize: 320 }}
           placeholder="Select an option"
           caption="required, without an indicator"
           slotProps={{ label: { isRequired: false } }}
@@ -328,6 +327,7 @@ export const LabelPlacementAlignment: Story = {
       labelAlign="end"
       labelPlacement="side"
       label="Project files"
+      style={{ inlineSize: 320 }}
       placeholder="Select an option"
     >
       {function renderItem(item) {
@@ -347,14 +347,14 @@ export const SingleSelection: Story = {
     const [value, setValue] = useState<Key | null>(9);
 
     return (
-      <FlexBox direction="column" gap="s">
+      <FlexBox direction="column" gap="s" style={{ inlineSize: 320 }}>
         <TreeSelect
           value={value}
           items={items}
           label="Project files"
           onChange={setValue}
-          style={{ inlineSize: 240 }}
           placeholder="Select a file"
+          fullWidth
         >
           {function renderItem(item) {
             return (
@@ -384,7 +384,7 @@ export const MultipleSelection: Story = {
           onChange={setValue}
           selectionMode="multiple"
           placeholder="Select files"
-          style={{ inlineSize: 'inherit' }}
+          fullWidth
         >
           {function renderItem(item) {
             return (
@@ -412,7 +412,7 @@ export const SelectedTagsOverflow: Story = {
           label="Project files"
           defaultValue={defaultValue}
           selectionMode="multiple"
-          style={{ inlineSize: 240 }}
+          style={{ inlineSize: 320 }}
           placeholder="Select files"
           caption="selectedTagsOverflow = responsive (default)"
         >
@@ -431,7 +431,7 @@ export const SelectedTagsOverflow: Story = {
           defaultValue={defaultValue}
           selectionMode="multiple"
           selectedTagsOverflow="multiline"
-          style={{ inlineSize: 240 }}
+          style={{ inlineSize: 320 }}
           placeholder="Select files"
           caption="selectedTagsOverflow = multiline"
         >
@@ -457,7 +457,7 @@ export const Disabled: Story = {
         defaultValue={9}
         caption="Disabled"
         label="Project files"
-        style={{ inlineSize: 240 }}
+        style={{ inlineSize: 320 }}
         placeholder="Select a file"
         isDisabled
       >
@@ -481,9 +481,32 @@ export const ClearButton: Story = {
         items={items}
         defaultValue={9}
         label="Project files"
-        style={{ inlineSize: 240 }}
+        style={{ inlineSize: 320 }}
         placeholder="Select a file"
         isClearable
+      >
+        {function renderItem(item) {
+          return (
+            <Tree.Item key={item.id} textValue={item.title}>
+              <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Collection items={item.test}>{renderItem}</Collection>
+            </Tree.Item>
+          );
+        }}
+      </TreeSelect>
+    );
+  },
+};
+
+export const Searchable: Story = {
+  render: function Render() {
+    return (
+      <TreeSelect
+        items={items}
+        label="Project files"
+        style={{ inlineSize: 320 }}
+        placeholder="Select a file"
+        isSearchable
       >
         {function renderItem(item) {
           return (
@@ -510,7 +533,7 @@ export const Open: Story = {
           onOpenChange={set}
           label="Project files"
           placeholder="Select a file"
-          style={{ inlineSize: 240 }}
+          style={{ inlineSize: 320 }}
           isLabelHidden
         >
           {function renderItem(item) {

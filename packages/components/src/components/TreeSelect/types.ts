@@ -96,12 +96,16 @@ export type TreeSelectProps<
   style?: CSSProperties;
   /** Ref to the control. */
   ref?: Ref<HTMLDivElement>;
+  /** Enables search input for filtering items in the list. */
+  isSearchable?: boolean;
   /** The search query (controlled). */
   inputValue?: string;
   /** The initial search query (uncontrolled). */
   defaultInputValue?: string;
   /** Handler called when the search query changes. */
   onInputChange?: (value: string) => void;
+  /** The filter function used to determine whether an item should be included in the search results. */
+  defaultFilter?: (textValue: string, inputValue: string) => boolean;
   /** The props used for each slot inside. */
   slotProps?: {
     root?: FormFieldProps;

@@ -1,6 +1,14 @@
 'use client';
 
-import { forwardRef, useCallback, useRef, useState, type Ref } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type Ref,
+  useMemo,
+} from 'react';
 
 import {
   clsx,
@@ -9,6 +17,8 @@ import {
   useDOMRef,
   useElementSize,
   useLocalizedStringFormatter,
+  useFilter,
+  type Key,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
@@ -42,7 +52,12 @@ import { SelectedTags } from '../SelectedTags';
 import { Tree } from '../Tree';
 
 import intlMessages from './intl';
-import { TreeCollection, TreeInner } from './TreeInner';
+import {
+  TreeCollection,
+  TreeInner,
+  getFilteredKeys,
+  useFilteredTreeState,
+} from './TreeInner';
 import s from './TreeSelect.module.css';
 import type {
   TreeSelectInnerProps,
@@ -66,10 +81,12 @@ export function TreeSelectInner<
     labelPlacement,
     onClear,
     isClearable,
+    isSearchable,
     startAddon,
     endAddon,
     dropdownFooter,
     onInputChange,
+    defaultFilter,
     label,
     errorMessage,
     isLabelHidden,
@@ -88,6 +105,10 @@ export function TreeSelectInner<
 
   const t = useLocalizedStringFormatter(intlMessages);
 
+  const { contains } = useFilter({ sensitivity: 'base' });
+
+  const filter = defaultFilter ?? contains;
+
   const { ref: triggerRef, width } = useElementSize();
   const treeRef = useRef(null);
 
@@ -103,6 +124,31 @@ export function TreeSelectInner<
     inputValueProp,
     defaultInputValue,
     onInputChange
+  );
+
+  const isFiltering = isSearchable && inputValue.trim().length > 0;
+
+  const { visibleKeys, autoExpandedKeys } = useMemo(
+    () =>
+      isFiltering
+        ? getFilteredKeys(collection, (textValue) =>
+            filter(textValue, inputValue)
+          )
+        : { visibleKeys: null, autoExpandedKeys: null },
+    [collection, inputValue, isFiltering, filter]
+  );
+
+  const filteredCollection = useMemo(
+    () =>
+      visibleKeys
+        ? collection
+            .filterByKeys(visibleKeys)
+            .withExpandedKeys(
+              new Set<Key>(),
+              autoExpandedKeys ?? new Set<Key>()
+            )
+        : null,
+    [collection, visibleKeys, autoExpandedKeys]
   );
 
   /** ----- TreeInner ----- */
@@ -141,6 +187,21 @@ export function TreeSelectInner<
     children: undefined,
     disabledBehavior,
   });
+
+  const filteredTreeState = useFilteredTreeState(
+    state,
+    filteredCollection,
+    autoExpandedKeys
+  );
+
+  // Reset the search query once the dropdown closes (uncontrolled only).
+  useEffect(() => {
+    if (state.isOpen || inputValueProp !== undefined || inputValue === '') {
+      return;
+    }
+
+    setInputValue('');
+  }, [state.isOpen, inputValueProp, inputValue, setInputValue]);
 
   const {
     treeProps: treePropsAria,
@@ -293,6 +354,7 @@ export function TreeSelectInner<
   const { className: treeClassName, ...treeSlotProps } = slotProps?.tree || {};
 
   const innerTreeProps = {
+    renderEmptyState: isFiltering ? () => t.format('nothing found') : undefined,
     ...mergeProps(treeProps, treePropsAria, treeSlotProps),
     'data-padded': true,
     className: composeRenderProps(treeClassName, (className) =>
@@ -327,9 +389,17 @@ export function TreeSelectInner<
       </div>
       <PopoverInner {...popoverProps}>
         <div className={s.content}>
-          <SearchInput {...searchInputProps} />
-          <Divider disablePaddings />
-          <TreeInner props={innerTreeProps} treeRef={treeRef} state={state} />
+          {isSearchable && (
+            <>
+              <SearchInput {...searchInputProps} />
+              <Divider disablePaddings />
+            </>
+          )}
+          <TreeInner
+            props={innerTreeProps}
+            treeRef={treeRef}
+            state={filteredTreeState}
+          />
           <DropdownFooter {...slotProps?.dropdownFooter}>
             {dropdownFooter}
           </DropdownFooter>

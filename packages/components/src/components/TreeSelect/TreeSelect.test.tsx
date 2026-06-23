@@ -354,6 +354,7 @@ describe('TreeSelect', () => {
 
       renderTreeSelect({
         defaultOpen: true,
+        isSearchable: true,
         onInputChange,
         slotProps: {
           'search-input': {
@@ -390,6 +391,103 @@ describe('TreeSelect', () => {
         'kbq-Tree',
         'custom-tree'
       );
+    });
+  });
+
+  describe('filtering', () => {
+    const renderSearchable = (props: Partial<TreeSelectProps<FileNode>> = {}) =>
+      renderTreeSelect({ defaultOpen: true, isSearchable: true, ...props });
+
+    const getSearchInput = () =>
+      screen.getByRole('searchbox', { name: 'Search' });
+
+    it('should not render the search input unless isSearchable', () => {
+      renderTreeSelect({ defaultOpen: true });
+
+      expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    });
+
+    it('should render the search input when isSearchable', () => {
+      renderSearchable();
+
+      expect(getSearchInput()).toBeInTheDocument();
+    });
+
+    it('should filter to matching items and keep their ancestors', async () => {
+      renderSearchable();
+
+      await userEvent.type(getSearchInput(), 'http');
+
+      expect(screen.getByTestId('item-1')).toBeInTheDocument();
+      expect(screen.getByTestId('item-2')).toBeInTheDocument();
+      expect(screen.queryByTestId('item-7')).not.toBeInTheDocument();
+    });
+
+    it('should restore all items when the query is cleared', async () => {
+      renderSearchable();
+
+      const searchInput = getSearchInput();
+
+      await userEvent.type(searchInput, 'readme');
+
+      expect(screen.queryByTestId('item-1')).not.toBeInTheDocument();
+      expect(screen.getByTestId('item-7')).toBeInTheDocument();
+
+      await userEvent.clear(searchInput);
+
+      expect(screen.getByTestId('item-1')).toBeInTheDocument();
+      expect(screen.getByTestId('item-7')).toBeInTheDocument();
+    });
+
+    it('should render the empty state when nothing matches', async () => {
+      renderSearchable();
+
+      await userEvent.type(getSearchInput(), 'zzz');
+
+      expect(screen.getByText('Nothing found')).toBeInTheDocument();
+    });
+
+    it('should select a filtered item', async () => {
+      const onChange = vi.fn();
+
+      renderSearchable({ onChange });
+
+      await userEvent.type(getSearchInput(), 'http');
+      await userEvent.click(screen.getByTestId('item-2'));
+
+      expect(onChange).toHaveBeenCalledWith(2);
+      expect(getControl()).toHaveTextContent('Http');
+    });
+
+    it('should use a custom defaultFilter', async () => {
+      const defaultFilter = vi.fn((textValue: string, inputValue: string) =>
+        textValue.startsWith(inputValue)
+      );
+
+      renderSearchable({ defaultFilter });
+
+      await userEvent.type(getSearchInput(), 'READ');
+
+      expect(defaultFilter).toHaveBeenCalled();
+      expect(screen.getByTestId('item-7')).toBeInTheDocument();
+      expect(screen.queryByTestId('item-1')).not.toBeInTheDocument();
+    });
+
+    it('should reset the search query after the dropdown closes', async () => {
+      const onInputChange = vi.fn();
+
+      renderSearchable({ onInputChange });
+
+      await userEvent.type(getSearchInput(), 'http');
+      await userEvent.click(screen.getByTestId('item-2'));
+
+      // closing clears the query and notifies via onInputChange
+      expect(onInputChange).toHaveBeenLastCalledWith('');
+
+      await userEvent.click(getControl());
+
+      expect(getSearchInput()).toHaveValue('');
+      expect(screen.getByTestId('item-7')).toBeInTheDocument();
     });
   });
 });

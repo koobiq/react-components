@@ -127,6 +127,19 @@ Pass `isClearable` to show a clear button when a value is selected.
 
 <Story of={Stories.ClearButton} />
 
+### Searchable
+
+Add the `isSearchable` prop to show a search input at the top of the dropdown.
+Users can type to filter the tree. Matching items stay visible with their parent
+items, and matching branches open automatically.
+
+Use `inputValue` and `onInputChange` to control the search query. Use
+`defaultInputValue` to set its initial value. By default, the search ignores case
+and matches text anywhere in an item. To change how items match, pass your own
+`defaultFilter` function.
+
+<Story of={Stories.Searchable} />
+
 ### Open
 
 Use `defaultOpen` to set the initial uncontrolled open state.
