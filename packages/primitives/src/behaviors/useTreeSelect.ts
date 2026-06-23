@@ -135,6 +135,11 @@ export function useTreeSelect<
 
   const treeProps: TreeSelectAria<T>['treeProps'] = mergeProps(overlayProps, {
     autoFocus: isOpen || undefined,
+    // In a select, Escape should dismiss the dropdown — not clear the
+    // selection. React Aria's default (`clearSelection`) wipes the selection
+    // and stops the event, so the popover never closes while items are
+    // selected.
+    escapeKeyBehavior: 'none' as const,
     'aria-label': fieldProps['aria-label'],
     'aria-labelledby': fieldProps['aria-labelledby'],
     onBlur(event: FocusEvent<HTMLElement>) {
