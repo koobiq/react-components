@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useMemo } from 'react';
 import type {
   FocusEvent,
   HTMLAttributes,
@@ -58,6 +59,32 @@ export function useTreeSelect<
   ref: RefObject<HTMLElement | null>
 ): TreeSelectAria<T> {
   const { displayValidation, isOpen, setOpen, open, close, toggle } = state;
+  const { collection, selectionManager } = state;
+
+  const visibleItems = useMemo(
+    () => [...collection].filter((item) => item.type === 'item'),
+    [collection]
+  );
+
+  const focusedKey = selectionManager.focusedKey;
+  const isTreeFocused = selectionManager.isFocused;
+
+  useEffect(() => {
+    if (
+      !isOpen ||
+      !isTreeFocused ||
+      focusedKey == null ||
+      visibleItems.some((item) => item.key === focusedKey)
+    ) {
+      return;
+    }
+
+    const firstVisibleKey =
+      visibleItems.find((item) => !selectionManager.isDisabled(item.key))
+        ?.key ?? null;
+
+    selectionManager.setFocusedKey(firstVisibleKey);
+  }, [focusedKey, isOpen, isTreeFocused, selectionManager, visibleItems]);
 
   const { isInvalid, validationErrors, validationDetails } = displayValidation;
 

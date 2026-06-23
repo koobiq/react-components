@@ -213,7 +213,7 @@ export function TreeSelectInner<
     errorMessageProps,
     validationErrors,
     validationDetails,
-  } = useTreeSelect<T, M>(props, state, triggerRef);
+  } = useTreeSelect<T, M>(props, filteredTreeState, triggerRef);
 
   const validation = {
     isInvalid: isInvalidAria,

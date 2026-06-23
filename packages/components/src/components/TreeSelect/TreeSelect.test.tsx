@@ -1,7 +1,7 @@
 import { createRef } from 'react';
 
 import { Collection, type SelectionMode } from '@koobiq/react-primitives';
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -345,6 +345,59 @@ describe('TreeSelect', () => {
 
       expect(onOpenChange).toHaveBeenCalledWith(true);
     });
+
+    it('should focus the first visible item when the selected item is collapsed', async () => {
+      renderTreeSelect({ defaultValue: 2, defaultOpen: true });
+
+      const parent = screen.getByTestId('item-1');
+
+      expect(screen.queryByTestId('item-2')).not.toBeInTheDocument();
+
+      await waitFor(() => expect(parent).toHaveFocus());
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      expect(screen.getByTestId('item-7')).toHaveFocus();
+    });
+
+    it('should close on Escape without clearing the selection in multiple mode', async () => {
+      const onChange = vi.fn();
+      const onOpenChange = vi.fn();
+
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        defaultOpen: true,
+        onChange,
+        onOpenChange,
+      });
+
+      await userEvent.click(screen.getByTestId('item-7'));
+      expect(onChange).toHaveBeenLastCalledWith([7]);
+
+      await userEvent.keyboard('{Escape}');
+
+      // Escape dismisses the dropdown and keeps the selection intact.
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
+      expect(onChange).not.toHaveBeenCalledWith([]);
+    });
+
+    it('should close on Escape when items are already selected in multiple mode', async () => {
+      const onChange = vi.fn();
+      const onOpenChange = vi.fn();
+
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        defaultValue: [1, 7],
+        defaultOpen: true,
+        onChange,
+        onOpenChange,
+      });
+
+      await userEvent.keyboard('{Escape}');
+
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
+      expect(onChange).not.toHaveBeenCalled();
+    });
   });
 
   describe('slot props', () => {
@@ -457,6 +510,20 @@ describe('TreeSelect', () => {
 
       expect(onChange).toHaveBeenCalledWith(2);
       expect(getControl()).toHaveTextContent('Http');
+    });
+
+    it('should navigate filtered items with the keyboard', async () => {
+      renderSearchable({ defaultValue: 7 });
+
+      await userEvent.type(getSearchInput(), 'http');
+
+      act(() => screen.getByRole('treegrid').focus());
+
+      await waitFor(() => expect(screen.getByTestId('item-1')).toHaveFocus());
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      expect(screen.getByTestId('item-2')).toHaveFocus();
     });
 
     it('should use a custom defaultFilter', async () => {

@@ -404,7 +404,7 @@ export function useFilteredTreeState<T extends object>(
   state: TreeSelectState<T>,
   collection: TreeCollection<T> | null,
   expandedKeys: Set<Key> | null
-): TreeState<T> {
+): TreeSelectState<T> {
   const selectionManager = collection
     ? state.selectionManager.withCollection(collection)
     : state.selectionManager;
