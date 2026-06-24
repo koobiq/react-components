@@ -25,7 +25,7 @@ const meta = {
     'TreeSelect.LoadMoreItem': TreeSelect.LoadMoreItem,
   },
   argTypes: {},
-  tags: ['status:new', 'date:2026-06-15'],
+  tags: ['status:new', 'date:2026-06-26'],
 } satisfies Meta<typeof TreeSelect>;
 
 export default meta;
