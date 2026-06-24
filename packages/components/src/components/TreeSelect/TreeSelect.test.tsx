@@ -96,6 +96,21 @@ describe('TreeSelect', () => {
       expect(getControl()).toHaveTextContent('Select a file');
     });
 
+    it('should forward aria-label to the tree when the label is hidden', async () => {
+      renderTreeSelect({
+        label: undefined,
+        isLabelHidden: true,
+        'aria-label': 'Project files',
+      });
+
+      await userEvent.click(getControl());
+
+      expect(screen.getByRole('treegrid')).toHaveAttribute(
+        'aria-label',
+        'Project files'
+      );
+    });
+
     it('should render the caption', () => {
       renderTreeSelect({ caption: 'Choose a project file' });
 

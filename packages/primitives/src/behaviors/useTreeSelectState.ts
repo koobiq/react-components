@@ -4,6 +4,8 @@ import { useMemo, useState } from 'react';
 
 import { useControlledState } from '@koobiq/react-core';
 import type {
+  AriaLabelingProps,
+  DOMProps,
   FocusableProps,
   HelpTextProps,
   InputBase,
@@ -49,6 +51,8 @@ export interface TreeSelectStateOptions<
       | 'disallowEmptySelection'
     >,
     LabelableProps,
+    AriaLabelingProps,
+    DOMProps,
     InputBase,
     TextInputBase,
     HelpTextProps,
