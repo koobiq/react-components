@@ -11,6 +11,7 @@ export type SwitchRenderProps = {
   isReadOnly?: boolean;
   isSelected?: boolean;
   isHovered?: boolean;
+  isLoading?: boolean;
   isFocused?: boolean;
   isDisabled?: boolean;
   isFocusVisible?: boolean;

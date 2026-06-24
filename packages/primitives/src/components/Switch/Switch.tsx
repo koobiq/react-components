@@ -14,7 +14,7 @@ import type { SwitchProps, SwitchRenderProps } from './index';
 
 export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
   (props, ref) => {
-    const { children, inputRef } = props;
+    const { children, inputRef, isLoading } = props;
 
     const domRef = useDOMRef<ComponentRef<'input'>>(inputRef);
 
@@ -44,6 +44,7 @@ export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
       isInvalid,
       isFocused,
       isPressed,
+      isLoading,
       isDisabled,
       isSelected,
       isReadOnly,
@@ -64,6 +65,7 @@ export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
         data-pressed={isPressed || undefined}
         data-focused={isFocused || undefined}
         data-invalid={isInvalid || undefined}
+        data-loading={isLoading || undefined}
         data-selected={isSelected || undefined}
         data-disabled={isDisabled || undefined}
         data-read-only={isReadOnly || undefined}
@@ -73,7 +75,12 @@ export const Switch = forwardRef<ComponentRef<'label'>, SwitchProps>(
         ref={ref}
       >
         <VisuallyHidden elementType="span">
-          <input {...inputProps} ref={domRef} />
+          <input
+            {...inputProps}
+            aria-busy={isLoading || undefined}
+            aria-disabled={isLoading || undefined}
+            ref={domRef}
+          />
         </VisuallyHidden>
         {renderProps.children}
       </label>

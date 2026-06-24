@@ -481,6 +481,7 @@ export type SwitchRenderProps = {
     isReadOnly?: boolean;
     isSelected?: boolean;
     isHovered?: boolean;
+    isLoading?: boolean;
     isFocused?: boolean;
     isDisabled?: boolean;
     isFocusVisible?: boolean;
@@ -1065,6 +1066,7 @@ export function useSwitch(props: UseSwitchProps, ref: RefObject<HTMLInputElement
 // @public (undocumented)
 export type UseSwitchProps = AriaSwitchProps & {
     isInvalid?: boolean;
+    isLoading?: boolean;
 } & PressEvents;
 
 // @public (undocumented)

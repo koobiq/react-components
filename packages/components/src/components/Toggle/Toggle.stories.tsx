@@ -73,6 +73,19 @@ export const Disabled: Story = {
   ),
 };
 
+export const Loading: Story = {
+  render: (args) => (
+    <FlexBox gap="l">
+      <Toggle {...args} isLoading>
+        Label
+      </Toggle>
+      <Toggle {...args} defaultSelected isLoading>
+        Label
+      </Toggle>
+    </FlexBox>
+  ),
+};
+
 export const DefaultValue: Story = {
   render: function Render(args) {
     return (
