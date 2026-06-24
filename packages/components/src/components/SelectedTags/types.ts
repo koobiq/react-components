@@ -19,6 +19,7 @@ export type SelectedTagsProps<T extends object> = {
   states: {
     isInvalid?: boolean;
     isDisabled?: boolean;
+    isReadOnly?: boolean;
     isRequired?: boolean;
   };
   selectedTagsOverflow?: SelectedTagsPropOverflow;

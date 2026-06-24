@@ -16,7 +16,7 @@ export function SelectedTagsResponsive<T extends object>({
   state,
   states,
 }: SelectedTagsProps<T>) {
-  const { isDisabled, isInvalid } = states;
+  const { isDisabled, isInvalid, isReadOnly } = states;
   const length = state?.selectedItems?.length || 0;
 
   const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems({
@@ -46,6 +46,7 @@ export function SelectedTagsResponsive<T extends object>({
             className={s.tag}
             ref={itemsRefs[i]}
             isDisabled={isDisabled}
+            isReadOnly={isReadOnly}
             aria-hidden={!visibleMap[i] || undefined}
             variant={isInvalid ? 'error-fade' : 'contrast-fade'}
             onRemove={() => {

@@ -5,6 +5,7 @@ import { act, render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { Form } from '../Form';
 import { Provider } from '../Provider';
 import { Tree } from '../Tree';
 
@@ -273,6 +274,108 @@ describe('TreeSelect', () => {
       await userEvent.click(item);
 
       expect(onChange).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('read only', () => {
+    it('should remain focusable but not open the dropdown', async () => {
+      const onOpenChange = vi.fn();
+
+      renderTreeSelect({ isReadOnly: true, onOpenChange });
+
+      await userEvent.click(getControl());
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+      expect(getControl()).toHaveAttribute('tabindex', '0');
+      expect(queryPopover()).not.toBeInTheDocument();
+      expect(onOpenChange).not.toHaveBeenCalled();
+    });
+
+    it('should not open the dropdown via keyboard', async () => {
+      const onOpenChange = vi.fn();
+
+      renderTreeSelect({ isReadOnly: true, onOpenChange });
+
+      act(() => getControl().focus());
+      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard('{ArrowDown}');
+
+      expect(queryPopover()).not.toBeInTheDocument();
+      expect(onOpenChange).not.toHaveBeenCalled();
+    });
+
+    it('should not change the selection', async () => {
+      const onChange = vi.fn();
+
+      renderTreeSelect({
+        defaultValue: 1,
+        defaultOpen: true,
+        isReadOnly: true,
+        onChange,
+      });
+
+      await userEvent.click(screen.getByTestId('item-7'));
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(getControl()).toHaveTextContent('app');
+    });
+
+    it.each(['responsive', 'multiline'] as const)(
+      'should hide clear and tag remove actions with %s overflow',
+      (selectedTagsOverflow) => {
+        renderTreeSelect({
+          selectionMode: 'multiple',
+          defaultValue: [1, 7],
+          selectedTagsOverflow,
+          isReadOnly: true,
+          isClearable: true,
+        });
+
+        expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+        expect(within(getControl()).queryAllByRole('button')).toHaveLength(0);
+      }
+    );
+
+    it('should update when the controlled value changes externally', () => {
+      const { rerender } = renderTreeSelect({ value: 1, isReadOnly: true });
+
+      rerender(<TreeSelectFixture value={7} isReadOnly />);
+
+      expect(getControl()).toHaveTextContent('README.md');
+    });
+
+    it('should inherit isReadOnly from Form', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Form isReadOnly>
+          <TreeSelectFixture defaultOpen onChange={onChange} />
+        </Form>
+      );
+
+      await userEvent.click(screen.getByTestId('item-7'));
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('should override Form isReadOnly with false', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Form isReadOnly>
+          <TreeSelectFixture
+            defaultOpen
+            isReadOnly={false}
+            onChange={onChange}
+          />
+        </Form>
+      );
+
+      await userEvent.click(screen.getByTestId('item-7'));
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
+      expect(onChange).toHaveBeenCalledWith(7);
     });
   });
 

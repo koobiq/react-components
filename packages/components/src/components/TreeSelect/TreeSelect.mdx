@@ -121,6 +121,14 @@ When TreeSelect is disabled, it cannot be interacted with.
 
 <Story of={Stories.Disabled} />
 
+### Read only
+
+The `isReadOnly` prop makes the selection immutable while keeping TreeSelect
+focusable. The dropdown cannot be opened, so the selected value is displayed but
+cannot be changed.
+
+<Story of={Stories.ReadOnly} />
+
 ### Clear button
 
 Pass `isClearable` to show a clear button when a value is selected.

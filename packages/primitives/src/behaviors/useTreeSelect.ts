@@ -111,7 +111,7 @@ export function useTreeSelect<
   const valueId = useId();
 
   const handleTriggerKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (props.isDisabled) return;
+    if (props.isDisabled || props.isReadOnly) return;
 
     switch (event.key) {
       case 'Enter':

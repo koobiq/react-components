@@ -11,7 +11,7 @@ export function SelectedTagsMultiline<T extends object>({
   state,
   states,
 }: SelectedTagsProps<T>) {
-  const { isDisabled, isInvalid } = states;
+  const { isDisabled, isInvalid, isReadOnly } = states;
   const t = useLocalizedStringFormatter(intlMessages);
 
   const { hasStartAddon } = useFormFieldControlGroup();
@@ -31,6 +31,7 @@ export function SelectedTagsMultiline<T extends object>({
             key={item.key}
             className={s.tag}
             isDisabled={isDisabled}
+            isReadOnly={isReadOnly}
             variant={isInvalid ? 'error-fade' : 'contrast-fade'}
             onRemove={() => {
               if (state.selectionManager.isSelected(item.key)) {

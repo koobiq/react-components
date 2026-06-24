@@ -162,7 +162,7 @@ export function useTreeSelectState<
     disallowEmptySelection: selectionMode === 'single',
     selectedKeys: convertValue(displayValue),
     onSelectionChange: (keys) => {
-      if (keys === 'all') return;
+      if (props.isReadOnly || keys === 'all') return;
 
       if (selectionMode === 'single') {
         const key = keys.values().next().value ?? null;
@@ -184,6 +184,8 @@ export function useTreeSelectState<
   }, [treeState.selectionManager.selectedKeys, treeState.collection]);
 
   const setSelectedKeys = (keys: Iterable<Key>) => {
+    if (props.isReadOnly) return;
+
     treeState.selectionManager.setSelectedKeys(keys);
   };
 
@@ -195,5 +197,15 @@ export function useTreeSelectState<
     setFocused,
     selectedItems,
     setSelectedKeys,
+    open() {
+      if (props.isReadOnly) return;
+
+      overlayState.open();
+    },
+    toggle() {
+      if (props.isReadOnly) return;
+
+      overlayState.toggle();
+    },
   };
 }

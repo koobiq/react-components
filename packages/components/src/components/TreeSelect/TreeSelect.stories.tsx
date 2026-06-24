@@ -474,6 +474,33 @@ export const Disabled: Story = {
   },
 };
 
+export const ReadOnly: Story = {
+  render: function Render() {
+    return (
+      <TreeSelect
+        items={items}
+        defaultValue={[1, 7]}
+        caption="Read only"
+        label="Project files"
+        selectionMode="multiple"
+        style={{ inlineSize: 320 }}
+        placeholder="Select files"
+        isClearable
+        isReadOnly
+      >
+        {function renderItem(item) {
+          return (
+            <Tree.Item key={item.id} textValue={item.title}>
+              <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Collection items={item.test}>{renderItem}</Collection>
+            </Tree.Item>
+          );
+        }}
+      </TreeSelect>
+    );
+  },
+};
+
 export const ClearButton: Story = {
   render: function Render() {
     return (

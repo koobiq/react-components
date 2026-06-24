@@ -36,6 +36,7 @@ type TagProps = ExtendableComponentPropsWithRef<
     children?: ReactNode;
     icon?: ReactNode;
     isDisabled?: boolean;
+    isReadOnly?: boolean;
     onRemove?: () => void;
   },
   'div'
@@ -50,6 +51,7 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
     className,
     style,
     isDisabled,
+    isReadOnly,
     children,
     onRemove,
     ...other
@@ -89,15 +91,17 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
     <div ref={ref} {...rootProps}>
       {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
       {isNotNil(children) && <span {...contentProps}>{children}</span>}
-      <IconButton
-        as="div"
-        size="l"
-        {...removeButtonProps}
-        tabIndex={undefined}
-        onPress={onRemove}
-      >
-        <IconXmarkS16 />
-      </IconButton>
+      {!isReadOnly && (
+        <IconButton
+          as="div"
+          size="l"
+          {...removeButtonProps}
+          tabIndex={undefined}
+          onPress={onRemove}
+        >
+          <IconXmarkS16 />
+        </IconButton>
+      )}
     </div>
   );
 });

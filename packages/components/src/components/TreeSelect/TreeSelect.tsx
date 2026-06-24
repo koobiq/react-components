@@ -35,6 +35,7 @@ import {
 import { utilClasses } from '../../styles/utility';
 import { Divider } from '../Divider';
 import { DropdownFooter } from '../DropdownFooter';
+import { useForm } from '../Form';
 import {
   FormField,
   type FormFieldCaptionProps,
@@ -91,6 +92,7 @@ export function TreeSelectInner<
     errorMessage,
     isLabelHidden,
     isDisabled,
+    isReadOnly: isReadOnlyProp,
     caption,
     'data-testid': testId,
     slotProps,
@@ -104,6 +106,8 @@ export function TreeSelectInner<
   } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
+  const { isReadOnly: formIsReadOnly } = useForm();
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
   const { contains } = useFilter({ sensitivity: 'base' });
 
@@ -180,6 +184,7 @@ export function TreeSelectInner<
 
   const state = useTreeSelectState<T, M>({
     ...props,
+    isReadOnly,
     selectionMode,
     expandedKeys,
     onExpandedChange: setExpandedKeys,
@@ -213,7 +218,11 @@ export function TreeSelectInner<
     errorMessageProps,
     validationErrors,
     validationDetails,
-  } = useTreeSelect<T, M>(props, filteredTreeState, triggerRef);
+  } = useTreeSelect<T, M>(
+    { ...props, isReadOnly },
+    filteredTreeState,
+    triggerRef
+  );
 
   const validation = {
     isInvalid: isInvalidAria,
@@ -221,12 +230,15 @@ export function TreeSelectInner<
     validationDetails,
   };
 
-  const clearButtonIsHidden = isDisabled || !state.selectedItems.length;
+  const clearButtonIsHidden =
+    isDisabled || isReadOnly || !state.selectedItems.length;
 
   const handleClear = useCallback(() => {
+    if (isReadOnly) return;
+
     state.setSelectedKeys(new Set([]));
     onClear?.();
-  }, [onClear, state]);
+  }, [isReadOnly, onClear, state]);
 
   const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
     {
@@ -238,6 +250,7 @@ export function TreeSelectInner<
       'data-variant': variant,
       className: clsx(s.base, className),
       'data-disabled': isDisabled || undefined,
+      'data-readonly': isReadOnly || undefined,
       'data-required': isRequired || undefined,
       'data-invalid': isInvalidAria || undefined,
     },
@@ -366,7 +379,12 @@ export function TreeSelectInner<
     selectionMode === 'multiple' ? (
       <SelectedTags
         state={state}
-        states={{ isInvalid: isInvalidAria, isDisabled, isRequired }}
+        states={{
+          isInvalid: isInvalidAria,
+          isDisabled,
+          isReadOnly,
+          isRequired,
+        }}
         selectedTagsOverflow={selectedTagsOverflow}
       />
     ) : (
