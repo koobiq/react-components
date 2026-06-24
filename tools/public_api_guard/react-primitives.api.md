@@ -96,6 +96,7 @@ import type { OverlayTriggerProps } from '@react-types/overlays';
 import { OverlayTriggerState } from '@react-stately/overlays';
 import { PointerEventHandler } from 'react';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import type { PressEvents } from '@koobiq/react-core';
 import { Provider } from 'react-aria-components';
 import type { RadioGroupState } from '@react-stately/radio';
 import type { ReactElement } from 'react';
@@ -1064,7 +1065,7 @@ export function useSwitch(props: UseSwitchProps, ref: RefObject<HTMLInputElement
 // @public (undocumented)
 export type UseSwitchProps = AriaSwitchProps & {
     isInvalid?: boolean;
-};
+} & PressEvents;
 
 // @public (undocumented)
 export type UseSwitchReturn = ReturnType<typeof useSwitch>;

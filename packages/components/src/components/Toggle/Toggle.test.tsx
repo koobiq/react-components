@@ -148,5 +148,25 @@ describe('Toggle', () => {
 
       expect(inputEl).not.toHaveAttribute('aria-invalid', 'true');
     });
+
+    it('should call onPress when pressed', async () => {
+      const onPress = vi.fn();
+
+      render(<Toggle {...baseProps} aria-label="input" onPress={onPress} />);
+
+      await userEvent.click(getRoot());
+
+      expect(onPress).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onClick when pressed', async () => {
+      const onClick = vi.fn();
+
+      render(<Toggle {...baseProps} aria-label="input" onClick={onClick} />);
+
+      await userEvent.click(getRoot());
+
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
   });
 });
