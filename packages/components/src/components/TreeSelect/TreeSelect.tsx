@@ -91,7 +91,7 @@ export function TreeSelectInner<
     label,
     errorMessage,
     isLabelHidden,
-    isDisabled,
+    isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
     caption,
     'data-testid': testId,
@@ -106,7 +106,8 @@ export function TreeSelectInner<
   } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
-  const { isReadOnly: formIsReadOnly } = useForm();
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+  const isDisabled = isDisabledProp ?? formIsDisabled;
   const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
   const { contains } = useFilter({ sensitivity: 'base' });
@@ -184,6 +185,7 @@ export function TreeSelectInner<
 
   const state = useTreeSelectState<T, M>({
     ...props,
+    isDisabled,
     isReadOnly,
     selectionMode,
     expandedKeys,
@@ -219,7 +221,7 @@ export function TreeSelectInner<
     validationErrors,
     validationDetails,
   } = useTreeSelect<T, M>(
-    { ...props, isReadOnly },
+    { ...props, isDisabled, isReadOnly },
     filteredTreeState,
     triggerRef
   );

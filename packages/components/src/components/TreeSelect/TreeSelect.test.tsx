@@ -161,6 +161,37 @@ describe('TreeSelect', () => {
       expect(queryPopover()).not.toBeInTheDocument();
     });
 
+    it('should inherit isDisabled from Form', async () => {
+      const onOpenChange = vi.fn();
+
+      render(
+        <Form isDisabled>
+          <TreeSelectFixture onOpenChange={onOpenChange} />
+        </Form>
+      );
+
+      await userEvent.click(getControl());
+
+      expect(getRoot()).toHaveAttribute('data-disabled', 'true');
+      expect(onOpenChange).not.toHaveBeenCalled();
+      expect(queryPopover()).not.toBeInTheDocument();
+    });
+
+    it('should override Form isDisabled with false', async () => {
+      const onOpenChange = vi.fn();
+
+      render(
+        <Form isDisabled>
+          <TreeSelectFixture isDisabled={false} onOpenChange={onOpenChange} />
+        </Form>
+      );
+
+      await userEvent.click(getControl());
+
+      expect(getRoot()).not.toHaveAttribute('data-disabled', 'true');
+      expect(onOpenChange).toHaveBeenCalledWith(true);
+    });
+
     it('should render the required state', () => {
       renderTreeSelect({ isRequired: true });
 
