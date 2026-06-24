@@ -38,6 +38,12 @@
   margin-inline-end: var(--kbq-size-xxs);
 }
 
+.empty {
+  color: var(--kbq-foreground-contrast-secondary);
+  padding-block: var(--kbq-size-xs);
+  padding-inline: var(--kbq-size-l);
+}
+
 .popover[data-slot='dropdown'] {
   border-radius: var(--kbq-size-s);
   opacity: 0;
@@ -61,6 +67,12 @@
 
     .tree {
       inline-size: 100%;
+
+      &[data-empty] {
+        min-block-size: auto;
+        align-items: normal;
+        justify-content: normal;
+      }
     }
   }
 

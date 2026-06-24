@@ -33,6 +33,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
+import { isPrimitiveNode } from '../../utils';
 import { Divider } from '../Divider';
 import { DropdownFooter } from '../DropdownFooter';
 import { useForm } from '../Form';
@@ -68,7 +69,7 @@ import type {
 } from './types';
 import { areSetsEqual } from './utils';
 
-const { list } = utilClasses;
+const { list, typography } = utilClasses;
 
 export function TreeSelectInner<
   T extends object,
@@ -86,6 +87,7 @@ export function TreeSelectInner<
     startAddon,
     endAddon,
     dropdownFooter,
+    noItemsText,
     onInputChange,
     defaultFilter,
     label,
@@ -369,7 +371,19 @@ export function TreeSelectInner<
   const { className: treeClassName, ...treeSlotProps } = slotProps?.tree || {};
 
   const innerTreeProps = {
-    renderEmptyState: isFiltering ? () => t.format('nothing found') : undefined,
+    renderEmptyState: () => {
+      const content =
+        noItemsText ?? t.format(isFiltering ? 'nothing found' : 'empty items');
+
+      return (
+        <div
+          className={clsx(s.empty, typography['text-normal'])}
+          style={isPrimitiveNode(content) ? undefined : { display: 'contents' }}
+        >
+          {content}
+        </div>
+      );
+    },
     ...mergeProps(treeProps, treePropsAria, treeSlotProps),
     'data-padded': true,
     className: composeRenderProps(treeClassName, (className) =>

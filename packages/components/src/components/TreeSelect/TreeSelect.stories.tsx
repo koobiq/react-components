@@ -683,3 +683,47 @@ export const AsyncLoading: Story = {
     );
   },
 };
+
+export const EmptyState: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m" direction="column">
+        <TreeSelect
+          items={[] as typeof items}
+          label="Project files"
+          caption="No options available"
+          placeholder="Select a file"
+          style={{ inlineSize: 320 }}
+          allowsEmptyCollection
+        >
+          {function renderItem(item) {
+            return (
+              <Tree.Item key={item.id} textValue={item.title}>
+                <Tree.ItemContent>{item.title}</Tree.ItemContent>
+                <Collection items={item.test}>{renderItem}</Collection>
+              </Tree.Item>
+            );
+          }}
+        </TreeSelect>
+        <TreeSelect
+          items={[] as typeof items}
+          label="Project files"
+          caption="No files in this project"
+          placeholder="Select a file"
+          style={{ inlineSize: 320 }}
+          noItemsText="No files in this project"
+          allowsEmptyCollection
+        >
+          {function renderItem(item) {
+            return (
+              <Tree.Item key={item.id} textValue={item.title}>
+                <Tree.ItemContent>{item.title}</Tree.ItemContent>
+                <Collection items={item.test}>{renderItem}</Collection>
+              </Tree.Item>
+            );
+          }}
+        </TreeSelect>
+      </FlexBox>
+    );
+  },
+};

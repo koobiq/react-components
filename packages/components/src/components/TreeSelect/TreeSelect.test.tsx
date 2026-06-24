@@ -613,6 +613,53 @@ describe('TreeSelect', () => {
     });
   });
 
+  describe('empty collection', () => {
+    it('should not open the dropdown when the collection is empty', async () => {
+      renderTreeSelect({ items: [] });
+
+      await userEvent.click(getControl());
+
+      expect(queryPopover()).not.toBeInTheDocument();
+    });
+
+    it('should open and show the empty state with allowsEmptyCollection', async () => {
+      renderTreeSelect({ items: [], allowsEmptyCollection: true });
+
+      await userEvent.click(getControl());
+
+      expect(queryPopover()).toBeInTheDocument();
+      expect(screen.getByText('No options available')).toBeInTheDocument();
+    });
+
+    it('should render a custom noItemsText for an empty collection', async () => {
+      renderTreeSelect({
+        items: [],
+        allowsEmptyCollection: true,
+        noItemsText: 'Nothing to pick',
+      });
+
+      await userEvent.click(getControl());
+
+      expect(screen.getByText('Nothing to pick')).toBeInTheDocument();
+    });
+
+    it('should render a custom noItemsText when the search has no matches', async () => {
+      renderTreeSelect({
+        defaultOpen: true,
+        isSearchable: true,
+        noItemsText: 'Nothing to pick',
+      });
+
+      await userEvent.type(
+        screen.getByRole('searchbox', { name: 'Search' }),
+        'zzz'
+      );
+
+      expect(screen.getByText('Nothing to pick')).toBeInTheDocument();
+      expect(screen.queryByText('Nothing found')).not.toBeInTheDocument();
+    });
+  });
+
   describe('slot props', () => {
     it('should pass props to the search input', async () => {
       const onInputChange = vi.fn();

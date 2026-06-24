@@ -163,3 +163,12 @@ in the children where more items should appear, and combine it with
 and `isLoading` to show the spinner while loading.
 
 <Story of={Stories.AsyncLoading} />
+
+### Empty state
+
+By default the dropdown does not open when the collection is empty. Pass
+`allowsEmptyCollection` to open it anyway and show an empty-state message. Use
+`noItemsText` to customize that message — it also overrides the default text
+shown when a search returns no matches.
+
+<Story of={Stories.EmptyState} />

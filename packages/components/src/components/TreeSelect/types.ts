@@ -69,6 +69,8 @@ export type TreeSelectProps<
   endAddon?: ReactNode;
   /** Content to display at the bottom of the dropdown. */
   dropdownFooter?: ReactNode;
+  /** Content to display when no items are available. */
+  noItemsText?: ReactNode;
   /** The helper text content. */
   caption?: ReactNode;
   /**

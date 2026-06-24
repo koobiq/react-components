@@ -72,6 +72,11 @@ export interface TreeSelectStateOptions<
   defaultOpen?: boolean;
   /** Method that is called when the open state of the menu changes. */
   onOpenChange?: (isOpen: boolean) => void;
+  /**
+   * Whether the menu should open when the collection is empty.
+   * @default false
+   */
+  allowsEmptyCollection?: boolean;
 }
 
 export type TreeSelectProps<
@@ -203,11 +208,19 @@ export function useTreeSelectState<
     setSelectedKeys,
     open() {
       if (props.isReadOnly) return;
+      if (!props.allowsEmptyCollection && treeState.collection.size === 0)
+        return;
 
       overlayState.open();
     },
     toggle() {
       if (props.isReadOnly) return;
+      if (
+        !overlayState.isOpen &&
+        !props.allowsEmptyCollection &&
+        treeState.collection.size === 0
+      )
+        return;
 
       overlayState.toggle();
     },
