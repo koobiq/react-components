@@ -31,7 +31,7 @@ import {
 import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
 import type { SearchInputProps } from '../SearchInput';
-import type { SelectedTagsPropOverflow } from '../SelectedTags';
+import { selectedTagsPropOverflow } from '../SelectedTags';
 
 import type { TreeCollection } from './TreeInner';
 
@@ -44,6 +44,10 @@ export type TreeSelectPropLabelAlign = FormFieldPropLabelAlign;
 export const treeSelectPropVariant = formFieldControlGroupPropVariant;
 export type TreeSelectPropVariant = FormFieldControlGroupPropVariant;
 
+export const treeSelectPropSelectedTagsOverflow = selectedTagsPropOverflow;
+export type TreeSelectPropSelectedTagsOverflow =
+  (typeof treeSelectPropSelectedTagsOverflow)[number];
+
 type AriaTreeSelectProps<
   T extends object,
   M extends SelectionMode = 'single',
@@ -54,7 +58,7 @@ export type TreeSelectProps<
   M extends SelectionMode = 'single',
 > = {
   /** Defines how selected tags are displayed when they exceed the available space. */
-  selectedTagsOverflow?: SelectedTagsPropOverflow;
+  selectedTagsOverflow?: TreeSelectPropSelectedTagsOverflow;
   /** Whether the field can be emptied. */
   isClearable?: boolean;
   /** Handler called when the clear button is clicked. */
@@ -120,7 +124,7 @@ export type TreeSelectProps<
     tree?: Omit<AriaTreeProps<T>, 'children' | 'items'> & DataAttributeProps;
     'search-input'?: SearchInputProps;
   };
-} & Omit<AriaTreeSelectProps<T, M>, 'description'>;
+} & Omit<AriaTreeSelectProps<T, M>, 'description' | 'validationState'>;
 
 export type TreeSelectComponent = <
   T extends object,
