@@ -154,3 +154,12 @@ Use `defaultOpen` to set the initial uncontrolled open state.
 Use `isOpen` and `onOpenChange` to control it.
 
 <Story of={Stories.Open} />
+
+### Async loading
+
+TreeSelect supports progressive loading with `TreeSelect.LoadMoreItem`. Place it
+in the children where more items should appear, and combine it with
+`useAsyncList` to fetch data on demand. Set `onLoadMore` to load the next page
+and `isLoading` to show the spinner while loading.
+
+<Story of={Stories.AsyncLoading} />

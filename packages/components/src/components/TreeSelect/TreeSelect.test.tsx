@@ -3,7 +3,7 @@ import { createRef } from 'react';
 import { Collection, type SelectionMode } from '@koobiq/react-primitives';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { Form } from '../Form';
 import { Provider } from '../Provider';
@@ -80,6 +80,26 @@ const getClearButton = () => screen.getByLabelText('clear-button');
 const queryPopover = () => screen.queryByTestId('popover');
 
 describe('TreeSelect', () => {
+  const originalIntersectionObserver = globalThis.IntersectionObserver;
+
+  beforeAll(() => {
+    // jsdom doesn't provide IntersectionObserver, but the load-more sentinel
+    // (Tree.LoadMoreItem) uses it.
+    globalThis.IntersectionObserver = class IntersectionObserverMock {
+      disconnect = vi.fn();
+
+      observe = vi.fn();
+
+      takeRecords = vi.fn(() => []);
+
+      unobserve = vi.fn();
+    } as unknown as typeof IntersectionObserver;
+  });
+
+  afterAll(() => {
+    globalThis.IntersectionObserver = originalIntersectionObserver;
+  });
+
   describe('rendering', () => {
     it('should forward the ref to the control', () => {
       const ref = createRef<HTMLDivElement>();
@@ -205,6 +225,50 @@ describe('TreeSelect', () => {
 
       expect(getRoot()).not.toHaveAttribute('data-disabled', 'true');
       expect(onOpenChange).toHaveBeenCalledWith(true);
+    });
+
+    it('should render a manually placed LoadMoreItem while loading', () => {
+      render(
+        <Provider>
+          <TreeSelect
+            aria-label="Files"
+            defaultOpen
+            slotProps={{ control: { 'data-testid': 'control' } }}
+          >
+            <TreeSelect.Item id="1" textValue="app">
+              <TreeSelect.ItemContent>app</TreeSelect.ItemContent>
+            </TreeSelect.Item>
+            <TreeSelect.LoadMoreItem isLoading onLoadMore={vi.fn()}>
+              Loading files
+            </TreeSelect.LoadMoreItem>
+          </TreeSelect>
+        </Provider>
+      );
+
+      // items still render alongside the loader
+      expect(screen.getByText('app')).toBeInTheDocument();
+      expect(screen.getByText('Loading files')).toBeInTheDocument();
+    });
+
+    it('should not show the LoadMoreItem content when not loading', () => {
+      render(
+        <Provider>
+          <TreeSelect
+            aria-label="Files"
+            defaultOpen
+            slotProps={{ control: { 'data-testid': 'control' } }}
+          >
+            <TreeSelect.Item id="1" textValue="app">
+              <TreeSelect.ItemContent>app</TreeSelect.ItemContent>
+            </TreeSelect.Item>
+            <TreeSelect.LoadMoreItem isLoading={false} onLoadMore={vi.fn()}>
+              Loading files
+            </TreeSelect.LoadMoreItem>
+          </TreeSelect>
+        </Provider>
+      );
+
+      expect(screen.queryByText('Loading files')).not.toBeInTheDocument();
     });
 
     it('should render the required state', () => {

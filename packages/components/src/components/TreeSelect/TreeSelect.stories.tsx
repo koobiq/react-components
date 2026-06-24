@@ -5,6 +5,7 @@ import { IconCrosshairs16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { useAsyncList } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Tree } from '../Tree';
@@ -21,6 +22,7 @@ const meta = {
   subcomponents: {
     'TreeSelect.Item': TreeSelect.Item,
     'TreeSelect.ItemContent': TreeSelect.ItemContent,
+    'TreeSelect.LoadMoreItem': TreeSelect.LoadMoreItem,
   },
   argTypes: {},
   tags: ['status:new', 'date:2026-06-15'],
@@ -574,6 +576,110 @@ export const Open: Story = {
         </TreeSelect>
         <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
       </FlexBox>
+    );
+  },
+};
+
+interface Product {
+  id: number;
+  title: string;
+  brand: string;
+}
+
+export const AsyncLoading: Story = {
+  render: function Render() {
+    const ITEMS_PER_PAGE = 5;
+
+    const smartphonesList = useAsyncList<Product>({
+      async load({ signal, cursor }) {
+        const skip = Number(cursor ?? 0);
+
+        const response = await fetch(
+          `https://dummyjson.com/products/category/smartphones?limit=${ITEMS_PER_PAGE}&skip=${skip}`,
+          { signal }
+        );
+
+        const data = await response.json();
+        const nextSkip = skip + ITEMS_PER_PAGE;
+
+        return {
+          items: data.products ?? [],
+          cursor: nextSkip < data.total ? String(nextSkip) : undefined,
+        };
+      },
+    });
+
+    const mobileAccessoriesList = useAsyncList<Product>({
+      async load({ signal, cursor }) {
+        const skip = Number(cursor ?? 0);
+
+        const response = await fetch(
+          `https://dummyjson.com/products/category/mobile-accessories?limit=${ITEMS_PER_PAGE}&skip=${skip}`,
+          { signal }
+        );
+
+        const data = await response.json();
+        const nextSkip = skip + ITEMS_PER_PAGE;
+
+        return {
+          items: data.products ?? [],
+          cursor: nextSkip < data.total ? String(nextSkip) : undefined,
+        };
+      },
+    });
+
+    return (
+      <TreeSelect
+        label="Products"
+        placeholder="Select a product"
+        selectionMode="multiple"
+        style={{ inlineSize: 320 }}
+      >
+        <TreeSelect.Item id="smartphones" textValue="Smartphones">
+          <TreeSelect.ItemContent>Smartphones</TreeSelect.ItemContent>
+          <Collection items={smartphonesList.items}>
+            {(item) => (
+              <TreeSelect.Item
+                id={`smartphone-${item.id}`}
+                textValue={`${item.brand} ${item.title}`}
+              >
+                <TreeSelect.ItemContent>
+                  <Typography style={{ width: '100%' }} ellipsis>
+                    {item.brand} {item.title}
+                  </Typography>
+                </TreeSelect.ItemContent>
+              </TreeSelect.Item>
+            )}
+          </Collection>
+          <TreeSelect.LoadMoreItem
+            scrollOffset={0}
+            onLoadMore={smartphonesList.loadMore}
+            isLoading={smartphonesList.loadingState === 'loadingMore'}
+          />
+        </TreeSelect.Item>
+        <TreeSelect.Item id="mobile-accessories" textValue="Mobile accessories">
+          <TreeSelect.ItemContent>Mobile accessories</TreeSelect.ItemContent>
+          <Collection items={mobileAccessoriesList.items}>
+            {(item) => (
+              <TreeSelect.Item
+                id={`mobile-accessory-${item.id}`}
+                textValue={`${item.brand} ${item.title}`}
+              >
+                <TreeSelect.ItemContent>
+                  <Typography style={{ width: '100%' }} ellipsis>
+                    {item.brand} {item.title}
+                  </Typography>
+                </TreeSelect.ItemContent>
+              </TreeSelect.Item>
+            )}
+          </Collection>
+          <TreeSelect.LoadMoreItem
+            scrollOffset={0}
+            onLoadMore={mobileAccessoriesList.loadMore}
+            isLoading={mobileAccessoriesList.loadingState === 'loadingMore'}
+          />
+        </TreeSelect.Item>
+      </TreeSelect>
     );
   },
 };
