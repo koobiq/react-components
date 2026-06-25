@@ -2,14 +2,16 @@
 
 import { createContext } from 'react';
 
-import type { EmptyStatePropSize, EmptyStatePropState } from './types';
+import type { EmptyStatePropAlign, EmptyStatePropSize } from './types';
 
 export type EmptyStateContextValue = {
   size: EmptyStatePropSize;
-  state: EmptyStatePropState;
+  isInvalid: boolean;
+  align: EmptyStatePropAlign;
 };
 
 export const EmptyStateContext = createContext<EmptyStateContextValue>({
   size: 'normal',
-  state: 'default',
+  isInvalid: false,
+  align: 'center',
 });

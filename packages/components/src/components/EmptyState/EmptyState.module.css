@@ -1,20 +1,29 @@
 .base {
   box-sizing: border-box;
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   align-items: center;
   inline-size: 100%;
   text-align: center;
 }
 
+/* align */
+.base[data-align='center'] {
+  justify-content: center;
+}
+
+.base[data-align='start'] {
+  justify-content: flex-start;
+}
+
+/* size */
 .base[data-size='big'] {
-  max-inline-size: 480px;
   padding-block: var(--kbq-size-5xl);
   padding-inline: var(--kbq-size-6xl);
 }
 
 .base[data-size='normal'],
 .base[data-size='compact'] {
-  max-inline-size: 320px;
   padding: var(--kbq-size-3xl);
 }

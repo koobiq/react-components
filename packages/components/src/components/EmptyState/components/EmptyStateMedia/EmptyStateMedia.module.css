@@ -4,6 +4,10 @@
   justify-content: center;
 }
 
+.base[data-invalid] {
+  color: var(--kbq-foreground-error);
+}
+
 .base[data-size='big'] {
   margin-block-end: var(--kbq-size-3xl);
 }

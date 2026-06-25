@@ -24,6 +24,8 @@ import { EmptyState } from '@koobiq/react-components';
 
 ## Anatomy
 
+The component is composed of four optional slots. Render only the ones you need.
+
 ```tsx
 <EmptyState>
   <EmptyState.Media />
@@ -33,6 +35,11 @@ import { EmptyState } from '@koobiq/react-components';
 </EmptyState>
 ```
 
+- `EmptyState.Media` — an illustration or icon.
+- `EmptyState.Title` — the heading.
+- `EmptyState.Content` — the supporting text.
+- `EmptyState.Actions` — buttons, links or pseudo-links.
+
 ## Usage
 
 <Story of={Stories.Base} />
@@ -40,3 +47,31 @@ import { EmptyState } from '@koobiq/react-components';
 ## Props
 
 <Props of={Stories.Base} />
+
+## Sizes
+
+Use the `size` prop to switch between `big`, `normal` (default) and `compact`.
+The size adjusts the typography, paddings and the max width of the content.
+
+<Story of={Stories.Sizes} />
+
+## Error state
+
+Set the `isInvalid` prop to paint the title, text and media with the error color —
+for example, when data failed to load.
+
+<Story of={Stories.Error} />
+
+## Alignment
+
+Use the `align` prop to align the content to the `start` or `center` (default)
+of the available block space.
+
+<Story of={Stories.Align} />
+
+## Text only
+
+Every slot is optional. Drop the media and actions for a minimal, text-only
+empty state.
+
+<Story of={Stories.TextOnly} />

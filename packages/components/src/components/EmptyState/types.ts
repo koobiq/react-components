@@ -6,9 +6,9 @@ export const emptyStatePropSize = ['big', 'normal', 'compact'] as const;
 
 export type EmptyStatePropSize = (typeof emptyStatePropSize)[number];
 
-export const emptyStatePropState = ['default', 'error'] as const;
+export const emptyStatePropAlign = ['start', 'center'] as const;
 
-export type EmptyStatePropState = (typeof emptyStatePropState)[number];
+export type EmptyStatePropAlign = (typeof emptyStatePropAlign)[number];
 
 export type EmptyStateBaseProps = {
   /**
@@ -17,9 +17,14 @@ export type EmptyStateBaseProps = {
    */
   size?: EmptyStatePropSize;
   /**
-   * The visual state of the component.
-   * @default 'default'
+   * Whether the EmptyState represents an invalid (error) state.
+   * Paints the title, text and media with the error color.
    */
-  state?: EmptyStatePropState;
+  isInvalid?: boolean;
+  /**
+   * The block alignment of the content within the available space.
+   * @default 'center'
+   */
+  align?: EmptyStatePropAlign;
 } & ComponentPropsWithRef<'div'> &
   DataAttributeProps;

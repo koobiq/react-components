@@ -7,10 +7,12 @@
 }
 
 .base[data-size='big'] {
+  max-inline-size: 480px;
   margin-block-start: var(--kbq-size-xl);
 }
 
 .base[data-size='normal'],
 .base[data-size='compact'] {
+  max-inline-size: 320px;
   margin-block-start: var(--kbq-size-s);
 }

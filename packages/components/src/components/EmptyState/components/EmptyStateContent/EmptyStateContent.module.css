@@ -5,18 +5,24 @@
   color: var(--kbq-foreground-contrast-secondary);
 }
 
-.base[data-state='error'] {
+.base[data-invalid] {
   color: var(--kbq-foreground-error);
 }
 
 .base[data-size='big'] {
   @mixin typography text-big;
+
+  max-inline-size: 480px;
 }
 
 .base[data-size='normal'] {
   @mixin typography text-normal;
+
+  max-inline-size: 320px;
 }
 
 .base[data-size='compact'] {
   @mixin typography text-compact;
+
+  max-inline-size: 320px;
 }

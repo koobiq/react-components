@@ -38,18 +38,28 @@ describe('EmptyState', () => {
     expect(screen.getByTestId('actions')).toHaveTextContent('Actions');
   });
 
-  it('should default to the "normal" size and "default" state', () => {
+  it('should default to the "normal" size, centered and non-error', () => {
     render(<EmptyState {...baseProps} />);
 
     const root = screen.getByTestId('empty-state');
 
     expect(root).toHaveAttribute('data-size', 'normal');
-    expect(root).toHaveAttribute('data-state', 'default');
+    expect(root).toHaveAttribute('data-align', 'center');
+    expect(root).not.toHaveAttribute('data-invalid');
   });
 
-  it('should propagate size and state to the subcomponents via context', () => {
+  it('should reflect the align prop', () => {
+    render(<EmptyState {...baseProps} align="start" />);
+
+    expect(screen.getByTestId('empty-state')).toHaveAttribute(
+      'data-align',
+      'start'
+    );
+  });
+
+  it('should propagate size and invalid state to the subcomponents via context', () => {
     render(
-      <EmptyState {...baseProps} size="big" state="error">
+      <EmptyState {...baseProps} size="big" isInvalid>
         <EmptyState.Title data-testid="title">Title</EmptyState.Title>
       </EmptyState>
     );
@@ -57,6 +67,6 @@ describe('EmptyState', () => {
     const title = screen.getByTestId('title');
 
     expect(title).toHaveAttribute('data-size', 'big');
-    expect(title).toHaveAttribute('data-state', 'error');
+    expect(title).toHaveAttribute('data-invalid');
   });
 });

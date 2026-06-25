@@ -19,13 +19,17 @@ const EmptyStateComponent = forwardRef<HTMLDivElement, EmptyStateBaseProps>(
   (props, ref) => {
     const {
       size = 'normal',
-      state = 'default',
+      isInvalid = false,
+      align = 'center',
       className,
       children,
       ...other
     } = props;
 
-    const contextValue = useMemo(() => ({ size, state }), [size, state]);
+    const contextValue = useMemo(
+      () => ({ size, isInvalid, align }),
+      [size, isInvalid, align]
+    );
 
     const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
       { className: clsx(s.base, className) },
@@ -34,7 +38,13 @@ const EmptyStateComponent = forwardRef<HTMLDivElement, EmptyStateBaseProps>(
 
     return (
       <EmptyStateContext.Provider value={contextValue}>
-        <div {...rootProps} ref={ref} data-size={size} data-state={state}>
+        <div
+          {...rootProps}
+          ref={ref}
+          data-size={size}
+          data-align={align}
+          data-invalid={isInvalid || undefined}
+        >
           {children}
         </div>
       </EmptyStateContext.Provider>

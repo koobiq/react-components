@@ -5,24 +5,27 @@
   color: var(--kbq-foreground-contrast);
 }
 
-.base[data-state='error'] {
+.base[data-invalid] {
   color: var(--kbq-foreground-error);
 }
 
 .base[data-size='big'] {
   @mixin typography headline;
 
+  max-inline-size: 480px;
   margin-block-end: var(--kbq-size-l);
 }
 
 .base[data-size='normal'] {
   @mixin typography subheading;
 
+  max-inline-size: 320px;
   margin-block-end: var(--kbq-size-xxs);
 }
 
 .base[data-size='compact'] {
   @mixin typography text-normal;
 
+  max-inline-size: 320px;
   margin-block-end: var(--kbq-size-xxs);
 }

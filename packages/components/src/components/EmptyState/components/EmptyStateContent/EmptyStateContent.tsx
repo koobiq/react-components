@@ -17,7 +17,7 @@ export const EmptyStateContent = forwardRef<
 >((props, ref) => {
   const { className, children, ...other } = props;
 
-  const { size, state } = useContext(EmptyStateContext);
+  const { size, isInvalid } = useContext(EmptyStateContext);
 
   const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
     { className: clsx(s.base, className) },
@@ -25,7 +25,12 @@ export const EmptyStateContent = forwardRef<
   );
 
   return (
-    <div {...rootProps} ref={ref} data-size={size} data-state={state}>
+    <div
+      {...rootProps}
+      ref={ref}
+      data-size={size}
+      data-invalid={isInvalid || undefined}
+    >
       {children}
     </div>
   );
