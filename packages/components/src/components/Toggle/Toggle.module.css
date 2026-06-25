@@ -161,17 +161,16 @@
   cursor: default;
 }
 
-.disabled:not(.selected),
-.loading:not(.selected),
-.loading:where(.disabled) {
+.loading:where(:not(.selected)),
+.disabled:where(:not(.selected), .loading) {
   --toggle-track-border-color: var(--kbq-states-line-disabled);
   --toggle-track-bg-color: var(--kbq-states-background-disabled);
   --toggle-thumb-bg-color: var(--kbq-states-icon-disabled);
   --toggle-color: var(--kbq-states-foreground-disabled);
 }
 
-.disabled:where(.selected):not(.loading),
-.loading:where(.selected):not(.disabled) {
+.disabled:where(.selected:not(.loading)),
+.loading:where(.selected:not(.disabled)) {
   opacity: var(--kbq-opacity-disabled);
 }
 
@@ -181,14 +180,13 @@
   position: absolute;
   pointer-events: none;
   border-radius: inherit;
-  background: linear-gradient(
-      135deg,
-      #0000000a 12px,
-      #ffffff1a 12px 22px,
-      #0000000a 22px 34px,
-      #ffffff1a 34px
-    )
-    repeat;
+  background-image: linear-gradient(
+    135deg,
+    #0000000a 12px,
+    #ffffff1a 12px 22px,
+    #0000000a 22px 34px,
+    #ffffff1a 34px
+  );
   background-size: 32px 32px;
   animation: toggle-progress 1s linear infinite;
 }
