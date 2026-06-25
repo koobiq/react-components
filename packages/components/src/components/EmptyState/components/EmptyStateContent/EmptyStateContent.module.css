@@ -1,0 +1,22 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  margin: 0;
+  color: var(--kbq-foreground-contrast-secondary);
+}
+
+.base[data-state='error'] {
+  color: var(--kbq-foreground-error);
+}
+
+.base[data-size='big'] {
+  @mixin typography text-big;
+}
+
+.base[data-size='normal'] {
+  @mixin typography text-normal;
+}
+
+.base[data-size='compact'] {
+  @mixin typography text-compact;
+}

@@ -1,0 +1,17 @@
+.base {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.base[data-size='big'] {
+  margin-block-end: var(--kbq-size-3xl);
+}
+
+.base[data-size='normal'] {
+  margin-block-end: var(--kbq-size-xl);
+}
+
+.base[data-size='compact'] {
+  margin-block-end: var(--kbq-size-m);
+}

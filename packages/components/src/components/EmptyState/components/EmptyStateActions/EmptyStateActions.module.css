@@ -1,0 +1,16 @@
+.base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kbq-size-s);
+}
+
+.base[data-size='big'] {
+  margin-block-start: var(--kbq-size-xl);
+}
+
+.base[data-size='normal'],
+.base[data-size='compact'] {
+  margin-block-start: var(--kbq-size-s);
+}

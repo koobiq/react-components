@@ -1,0 +1,42 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './EmptyState.stories';
+
+<Meta of={Stories} />
+
+# EmptyState
+
+<Status variant="draft" />
+
+EmptyState communicates that there is no data to display and, optionally,
+suggests the next action the user can take.
+
+## Import
+
+```tsx
+import { EmptyState } from '@koobiq/react-components';
+```
+
+## Anatomy
+
+```tsx
+<EmptyState>
+  <EmptyState.Media />
+  <EmptyState.Title />
+  <EmptyState.Content />
+  <EmptyState.Actions />
+</EmptyState>
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
