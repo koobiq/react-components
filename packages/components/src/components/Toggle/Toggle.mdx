@@ -89,8 +89,8 @@ Add content to the children of the Toggle component to add a description.
 
 ## Server Api
 
-This example shows a Toggle updating immediately while syncing with a server API,
-without blocking user interaction.
+This example shows a Toggle that updates optimistically and shows a loading state
+while syncing with a server API, reverting if the request fails.
 
 <Story of={Stories.ServerApi} />
 
