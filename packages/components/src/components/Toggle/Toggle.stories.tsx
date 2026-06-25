@@ -15,6 +15,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  tags: ['status:updated', 'date:2026-06-26'],
 } satisfies Meta<typeof Toggle>;
 
 export default meta;
