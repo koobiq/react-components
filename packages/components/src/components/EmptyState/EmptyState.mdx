@@ -11,7 +11,7 @@ import * as Stories from './EmptyState.stories';
 
 # EmptyState
 
-<Status variant="draft" />
+<Status variant="experimental" />
 
 EmptyState communicates that there is no data to display and, optionally,
 suggests the next action the user can take.
@@ -21,6 +21,14 @@ suggests the next action the user can take.
 ```tsx
 import { EmptyState } from '@koobiq/react-components';
 ```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
 
 ## Anatomy
 
@@ -40,27 +48,19 @@ The component is composed of four optional slots. Render only the ones you need.
 - `EmptyState.Content` — the supporting text.
 - `EmptyState.Actions` — buttons, links or pseudo-links.
 
-## Usage
-
-<Story of={Stories.Base} />
-
-## Props
-
-<Props of={Stories.Base} />
-
-## Sizes
+## Size
 
 Use the `size` prop to switch between `big`, `normal` (default) and `compact`.
 The size adjusts the typography, paddings and the max width of the content.
 
 <Story of={Stories.Sizes} />
 
-## Error state
+## Invalid
 
 Set the `isInvalid` prop to paint the title, text and media with the error color —
 for example, when data failed to load.
 
-<Story of={Stories.Error} />
+<Story of={Stories.Invalid} />
 
 ## Alignment
 

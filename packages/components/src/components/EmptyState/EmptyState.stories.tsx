@@ -1,8 +1,9 @@
-import { IconFileDocO48 } from '@koobiq/react-icons';
+import { IconBell16, IconTriangleExclamation16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { IconItem } from '../IconItem';
 import { Link } from '../Link';
 
 import { EmptyState } from './index';
@@ -30,7 +31,9 @@ export const Base: Story = {
   render: (args) => (
     <EmptyState {...args}>
       <EmptyState.Media>
-        <IconFileDocO48 />
+        <IconItem size="big" color="contrast" variant="fade">
+          <IconBell16 />
+        </IconItem>
       </EmptyState.Media>
       <EmptyState.Title>No documents yet</EmptyState.Title>
       <EmptyState.Content>
@@ -56,7 +59,9 @@ export const Sizes: Story = {
       {(['big', 'normal', 'compact'] as const).map((size) => (
         <EmptyState key={size} {...args} size={size}>
           <EmptyState.Media>
-            <IconFileDocO48 />
+            <IconItem size="big" color="contrast" variant="fade">
+              <IconBell16 />
+            </IconItem>
           </EmptyState.Media>
           <EmptyState.Title>No documents yet</EmptyState.Title>
           <EmptyState.Content>
@@ -71,11 +76,13 @@ export const Sizes: Story = {
   ),
 };
 
-export const Error: Story = {
+export const Invalid: Story = {
   render: (args) => (
     <EmptyState isInvalid {...args}>
       <EmptyState.Media>
-        <IconFileDocO48 />
+        <IconItem size="big" color="error" variant="fade">
+          <IconTriangleExclamation16 />
+        </IconItem>
       </EmptyState.Media>
       <EmptyState.Title>Failed to load documents</EmptyState.Title>
       <EmptyState.Content>
@@ -99,7 +106,9 @@ export const Align: Story = {
     >
       <EmptyState align="start" {...args}>
         <EmptyState.Media>
-          <IconFileDocO48 />
+          <IconItem size="big" color="contrast" variant="fade">
+            <IconBell16 />
+          </IconItem>
         </EmptyState.Media>
         <EmptyState.Title>No documents yet</EmptyState.Title>
         <EmptyState.Content>
