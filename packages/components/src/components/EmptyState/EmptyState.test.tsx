@@ -98,3 +98,89 @@ describe('EmptyState', () => {
     expect(screen.getByTestId('content').tagName).toBe('SPAN');
   });
 });
+
+describe('EmptyState subcomponents', () => {
+  it('should forward refs to the underlying elements', () => {
+    const mediaRef = createRef<HTMLDivElement>();
+    const titleRef = createRef<HTMLHeadingElement>();
+    const contentRef = createRef<HTMLParagraphElement>();
+    const actionsRef = createRef<HTMLDivElement>();
+
+    render(
+      <EmptyState>
+        <EmptyState.Media ref={mediaRef} data-testid="media" />
+        <EmptyState.Title ref={titleRef} data-testid="title">
+          Title
+        </EmptyState.Title>
+        <EmptyState.Content ref={contentRef} data-testid="content">
+          Content
+        </EmptyState.Content>
+        <EmptyState.Actions ref={actionsRef} data-testid="actions" />
+      </EmptyState>
+    );
+
+    expect(mediaRef.current).toBe(screen.getByTestId('media'));
+    expect(titleRef.current).toBe(screen.getByTestId('title'));
+    expect(contentRef.current).toBe(screen.getByTestId('content'));
+    expect(actionsRef.current).toBe(screen.getByTestId('actions'));
+  });
+
+  it('should merge a custom class name on each subcomponent', () => {
+    render(
+      <EmptyState>
+        <EmptyState.Media className="m" data-testid="media" />
+        <EmptyState.Title className="t" data-testid="title">
+          Title
+        </EmptyState.Title>
+        <EmptyState.Content className="c" data-testid="content">
+          Content
+        </EmptyState.Content>
+        <EmptyState.Actions className="a" data-testid="actions" />
+      </EmptyState>
+    );
+
+    expect(screen.getByTestId('media')).toHaveClass('m');
+    expect(screen.getByTestId('title')).toHaveClass('t');
+    expect(screen.getByTestId('content')).toHaveClass('c');
+    expect(screen.getByTestId('actions')).toHaveClass('a');
+  });
+
+  it('should propagate the size to every subcomponent', () => {
+    render(
+      <EmptyState size="compact">
+        <EmptyState.Media data-testid="media" />
+        <EmptyState.Title data-testid="title">Title</EmptyState.Title>
+        <EmptyState.Content data-testid="content">Content</EmptyState.Content>
+        <EmptyState.Actions data-testid="actions" />
+      </EmptyState>
+    );
+
+    for (const id of ['media', 'title', 'content', 'actions']) {
+      expect(screen.getByTestId(id)).toHaveAttribute('data-size', 'compact');
+    }
+  });
+
+  it('should propagate the align value to the media', () => {
+    render(
+      <EmptyState align="start">
+        <EmptyState.Media data-testid="media" />
+      </EmptyState>
+    );
+
+    expect(screen.getByTestId('media')).toHaveAttribute('data-align', 'start');
+  });
+
+  it('should mark media, title and content as invalid', () => {
+    render(
+      <EmptyState isInvalid>
+        <EmptyState.Media data-testid="media" />
+        <EmptyState.Title data-testid="title">Title</EmptyState.Title>
+        <EmptyState.Content data-testid="content">Content</EmptyState.Content>
+      </EmptyState>
+    );
+
+    expect(screen.getByTestId('media')).toHaveAttribute('data-invalid');
+    expect(screen.getByTestId('title')).toHaveAttribute('data-invalid');
+    expect(screen.getByTestId('content')).toHaveAttribute('data-invalid');
+  });
+});
