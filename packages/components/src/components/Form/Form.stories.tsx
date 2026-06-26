@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useRef, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -10,12 +10,14 @@ import { CheckboxGroup } from '../CheckboxGroup';
 import { DatePicker } from '../DatePicker';
 import { FlexBox } from '../FlexBox';
 import { FormField } from '../FormField';
+import { useListData } from '../index';
 import { Input } from '../Input';
 import { InputNumber } from '../InputNumber';
 import { spacing } from '../layout';
 import { Radio, RadioGroup } from '../RadioGroup';
 import { SearchInput } from '../SearchInput';
 import { Select } from '../Select';
+import { TagInput } from '../TagInput';
 import { Textarea } from '../Textarea';
 import { TimePicker } from '../TimePicker';
 import { TreeSelect } from '../TreeSelect';
@@ -427,6 +429,25 @@ export const FormFields: Story = {
   },
   name: 'All form fields',
   render: function Render() {
+    const tags = useListData<{ id: string; name: string }>({
+      initialItems: [{ id: 'react', name: 'React' }],
+    });
+
+    const tagCounter = useRef(1);
+
+    const addTags = (values: string[]) => {
+      tags.append(
+        ...values.map((name) => {
+          tagCounter.current += 1;
+
+          return {
+            id: `tag-${tagCounter.current}-${name}`,
+            name,
+          };
+        })
+      );
+    };
+
     return (
       <Form
         labelPlacement={{ xs: 'top', m: 'side' }}
@@ -439,6 +460,15 @@ export const FormFields: Story = {
           <Select.Item key="3">Option 3</Select.Item>
         </Select>
         <Input label="Input" placeholder="Type a word..." />
+        <TagInput<{ id: string; name: string }>
+          label="Tag input"
+          placeholder="Type and press Enter"
+          items={tags.items}
+          onAdd={addTags}
+          onRemove={(keys) => tags.remove(...keys)}
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
         <Textarea label="Textarea" placeholder="Type a word..." />
         <InputNumber label="InputNumber" placeholder="Type a number..." />
         <SearchInput label="SearchInput" placeholder="Type a word..." />
