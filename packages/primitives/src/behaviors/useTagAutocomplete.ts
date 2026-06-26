@@ -18,7 +18,7 @@ import { useOverlayTriggerState } from '@react-stately/overlays';
 import intlMessages from '../intl/tag-autocomplete.json';
 
 import type { TagFieldState, TagFieldStateProps } from './useTagField';
-import { useTagFieldState } from './useTagField';
+import { useTagFieldState } from './useTagFieldState';
 
 export type TagAutocompleteFilter = (
   textValue: string,
