@@ -1,5 +1,10 @@
 import { IconBell16, IconTriangleExclamation16 } from '@koobiq/react-icons';
+import emptyDark from '@koobiq/visuals/dark/empty_256.webp';
+import emptyDark2x from '@koobiq/visuals/dark/empty_256@2x.webp';
+import emptyLight from '@koobiq/visuals/light/empty_256.webp';
+import emptyLight2x from '@koobiq/visuals/light/empty_256@2x.webp';
 import type { Meta, StoryObj } from '@storybook/react';
+import { useDarkMode } from '@vueless/storybook-dark-mode';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
@@ -110,6 +115,36 @@ export const Align: Story = {
       </EmptyState.Content>
     </EmptyState>
   ),
+};
+
+export const WithIllustration: Story = {
+  render: function Render(args) {
+    const isDark = useDarkMode();
+
+    const src = isDark ? emptyDark : emptyLight;
+    const src2x = isDark ? emptyDark2x : emptyLight2x;
+
+    return (
+      <EmptyState size="big" {...args}>
+        <EmptyState.Media>
+          <img
+            src={src}
+            srcSet={`${src} 1x, ${src2x} 2x`}
+            width={256}
+            height={256}
+            alt="No documents"
+          />
+        </EmptyState.Media>
+        <EmptyState.Title>No documents yet</EmptyState.Title>
+        <EmptyState.Content>
+          Create your first document to get started, or import an existing one.
+        </EmptyState.Content>
+        <EmptyState.Actions>
+          <Button variant="contrast-filled">Create</Button>
+        </EmptyState.Actions>
+      </EmptyState>
+    );
+  },
 };
 
 export const TextOnly: Story = {
