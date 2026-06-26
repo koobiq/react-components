@@ -1,9 +1,8 @@
 'use client';
 
-import type { ComponentPropsWithRef } from 'react';
-import { forwardRef, useContext } from 'react';
+import { useContext } from 'react';
 
-import { clsx, mergeProps } from '@koobiq/react-core';
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { EmptyStateContext } from '../../EmptyStateContext';
 
@@ -11,29 +10,26 @@ import s from './EmptyStateMedia.module.css';
 import type { EmptyStateMediaProps } from './types';
 
 /** EmptyState.Media — the illustration or icon slot of the EmptyState. */
-export const EmptyStateMedia = forwardRef<HTMLDivElement, EmptyStateMediaProps>(
-  (props, ref) => {
-    const { className, children, ...other } = props;
+export const EmptyStateMedia = polymorphicForwardRef<
+  'div',
+  EmptyStateMediaProps
+>((props, ref) => {
+  const { as: Tag = 'div', className, children, ...other } = props;
 
-    const { size, align, isInvalid } = useContext(EmptyStateContext);
+  const { size, align, isInvalid } = useContext(EmptyStateContext);
 
-    const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
-      { className: clsx(s.base, s[size], isInvalid && s.invalid, className) },
-      other
-    );
-
-    return (
-      <div
-        {...rootProps}
-        ref={ref}
-        data-size={size}
-        data-align={align}
-        data-invalid={isInvalid || undefined}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <Tag
+      {...other}
+      ref={ref}
+      className={clsx(s.base, s[size], isInvalid && s.invalid, className)}
+      data-size={size}
+      data-align={align}
+      data-invalid={isInvalid || undefined}
+    >
+      {children}
+    </Tag>
+  );
+});
 
 EmptyStateMedia.displayName = 'EmptyState.Media';
