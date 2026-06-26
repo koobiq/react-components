@@ -22,7 +22,7 @@ const meta = {
   component: TagInput,
   subcomponents: { 'TagInput.Tag': TagInput.Tag },
   parameters: { layout: 'centered' },
-  tags: ['status:new', 'date:2026-05-25'],
+  tags: ['status:new', 'date:2026-06-26'],
 } satisfies Meta<typeof TagInput>;
 
 export default meta;

@@ -16,7 +16,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new', 'date:2026-05-22'],
+  tags: ['status:new', 'date:2026-06-26'],
 } satisfies Meta<typeof TagList>;
 
 export default meta;

@@ -73,309 +73,29 @@ export const Base: Story = {
     return (
       <TagAutocomplete<TagItem>
         label="Tags"
-        fullWidth
-        style={{ inlineSize: m ? 360 : 240 }}
+        items={list.items}
+        defaultFilter={containsFilter}
+        listItems={technologySuggestions}
         placeholder="Type or choose a tag"
-        disableCommitOnBlur
+        style={{ inlineSize: m ? 360 : 240 }}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
         {...args}
-        items={list.items}
-        listItems={technologySuggestions}
-        defaultFilter={containsFilter}
-        onAdd={(values, context) => {
-          if (context.source === 'suggestion') {
-            list.append(context.suggestion);
-
-            return;
-          }
-
-          list.append(...values.map(createTag));
-        }}
         onRemove={(keys) => list.remove(...keys)}
         renderListItem={(item) => (
           <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
             {item.name}
           </TagAutocomplete.ListItem>
         )}
-      >
-        {(item) => (
-          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.Tag>
-        )}
-      </TagAutocomplete>
-    );
-  },
-};
-
-export const Variant: Story = {
-  render: function Render() {
-    const { m } = useBreakpoints();
-
-    const tagCounter = useRef(0);
-
-    const list = useListData<TagItem>({
-      initialItems: [
-        { id: 'react', name: 'React' },
-        { id: 'typescript', name: 'TypeScript' },
-      ],
-    });
-
-    const createTag = (name: string): TagItem => {
-      tagCounter.current += 1;
-
-      return { id: `tag-${tagCounter.current}-${name}`, name };
-    };
-
-    return (
-      <FlexBox gap="m" direction="column" style={{ inlineSize: m ? 360 : 240 }}>
-        {tagInputPropVariant.map((variant) => (
-          <TagAutocomplete<TagItem>
-            key={variant}
-            variant={variant}
-            label={variant}
-            placeholder={`variant = ${variant}`}
-            items={list.items}
-            listItems={technologySuggestions}
-            defaultFilter={containsFilter}
-            onAdd={(values, context) => {
-              if (context.source === 'suggestion') {
-                list.append(context.suggestion);
-
-                return;
-              }
-
-              list.append(...values.map(createTag));
-            }}
-            onRemove={(keys) => list.remove(...keys)}
-            renderListItem={(item) => (
-              <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-                {item.name}
-              </TagAutocomplete.ListItem>
-            )}
-            fullWidth
-          >
-            {(item) => (
-              <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-                {item.name}
-              </TagAutocomplete.Tag>
-            )}
-          </TagAutocomplete>
-        ))}
-      </FlexBox>
-    );
-  },
-};
-
-export const FormField: Story = {
-  render: function Render() {
-    const { m } = useBreakpoints();
-
-    const categoryCounter = useRef(0);
-    const tagCounter = useRef(0);
-
-    const categories = useListData<TagItem>({
-      initialItems: [
-        { id: 'news', name: 'News' },
-        { id: 'sports', name: 'Sports' },
-      ],
-    });
-
-    const tags = useListData<TagItem>({ initialItems: [] });
-
-    const createCategory = (name: string): TagItem => {
-      categoryCounter.current += 1;
-
-      return { id: `category-${categoryCounter.current}-${name}`, name };
-    };
-
-    const createTag = (name: string): TagItem => {
-      tagCounter.current += 1;
-
-      return { id: `tag-${tagCounter.current}-${name}`, name };
-    };
-
-    const isEmpty = tags.items.length === 0;
-
-    return (
-      <Form labelPlacement="side" style={{ inlineSize: m ? 480 : 240 }}>
-        <TagAutocomplete<TagItem>
-          label="Categories"
-          fullWidth
-          isRequired
-          style={{ inlineSize: '100%' }}
-          placeholder="Add a category"
-          caption="Choose a suggestion or press Enter"
-          items={categories.items}
-          listItems={categorySuggestions}
-          defaultFilter={containsFilter}
-          onAdd={(values, context) => {
-            if (context.source === 'suggestion') {
-              categories.append(context.suggestion);
-
-              return;
-            }
-
-            categories.append(...values.map(createCategory));
-          }}
-          onRemove={(keys) => categories.remove(...keys)}
-          renderListItem={(item) => (
-            <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.ListItem>
-          )}
-        >
-          {(item) => (
-            <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.Tag>
-          )}
-        </TagAutocomplete>
-        <TagAutocomplete<TagItem>
-          label="Tags"
-          fullWidth
-          isInvalid={isEmpty}
-          style={{ inlineSize: '100%' }}
-          placeholder="Add at least one tag"
-          caption={isEmpty ? undefined : 'Looks good'}
-          errorMessage={isEmpty ? 'At least one tag is required' : undefined}
-          items={tags.items}
-          listItems={technologySuggestions}
-          defaultFilter={containsFilter}
-          onAdd={(values, context) => {
-            if (context.source === 'suggestion') {
-              tags.append(context.suggestion);
-
-              return;
-            }
-
-            tags.append(...values.map(createTag));
-          }}
-          onRemove={(keys) => tags.remove(...keys)}
-          renderListItem={(item) => (
-            <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.ListItem>
-          )}
-        >
-          {(item) => (
-            <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-              {item.name}
-            </TagAutocomplete.Tag>
-          )}
-        </TagAutocomplete>
-        <Form.Actions>
-          <Button>Submit</Button>
-        </Form.Actions>
-      </Form>
-    );
-  },
-};
-
-export const SplitPattern: Story = {
-  render: function Render() {
-    const { m } = useBreakpoints();
-
-    const tagCounter = useRef(0);
-
-    const list = useListData<TagItem>({ initialItems: [] });
-
-    const createTag = (name: string): TagItem => {
-      tagCounter.current += 1;
-
-      return { id: `tag-${tagCounter.current}-${name}`, name };
-    };
-
-    return (
-      <TagAutocomplete<TagItem>
-        label="Tags"
         fullWidth
-        style={{ inlineSize: m ? 360 : 240 }}
-        splitPattern={/[,;\s]/}
-        caption="Try pasting: foo, bar; baz qux"
-        placeholder="Use comma, semicolon or space"
-        items={list.items}
-        listItems={technologySuggestions}
-        defaultFilter={containsFilter}
-        onAdd={(values, context) => {
-          if (context.source === 'suggestion') {
-            list.append(context.suggestion);
-
-            return;
-          }
-
-          list.append(...values.map(createTag));
-        }}
-        onRemove={(keys) => list.remove(...keys)}
-        renderListItem={(item) => (
-          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.ListItem>
-        )}
-      >
-        {(item) => (
-          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.Tag>
-        )}
-      </TagAutocomplete>
-    );
-  },
-};
-
-export const PreventDuplicates: Story = {
-  render: function Render() {
-    const { m } = useBreakpoints();
-
-    const tagCounter = useRef(0);
-
-    const list = useListData<TagItem>({
-      initialItems: [
-        { id: 'react', name: 'React' },
-        { id: 'typescript', name: 'TypeScript' },
-      ],
-    });
-
-    const createTag = (name: string): TagItem => {
-      tagCounter.current += 1;
-
-      return { id: `tag-${tagCounter.current}-${name}`, name };
-    };
-
-    return (
-      <TagAutocomplete<TagItem>
-        label="Tags"
-        fullWidth
-        style={{ inlineSize: m ? 360 : 240 }}
-        caption="Free-form duplicates are ignored — suggestions are excluded automatically"
-        placeholder="Type React again or choose a suggestion"
-        items={list.items}
-        listItems={technologySuggestions}
-        defaultFilter={containsFilter}
-        onAdd={(values, context) => {
-          if (context.source === 'suggestion') {
-            list.append(context.suggestion);
-
-            return;
-          }
-
-          const existing = new Set(
-            list.items.map((item) => item.name.toLocaleLowerCase())
-          );
-
-          const fresh = values.filter(
-            (value) => !existing.has(value.toLocaleLowerCase())
-          );
-
-          if (fresh.length === 0) return;
-
-          list.append(...fresh.map(createTag));
-        }}
-        onRemove={(keys) => list.remove(...keys)}
-        renderListItem={(item) => (
-          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.ListItem>
-        )}
+        disableCommitOnBlur
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>
@@ -421,15 +141,14 @@ export const CreateOption: Story = {
     return (
       <TagAutocomplete<TagItem>
         label="Tags"
-        fullWidth
-        style={{ inlineSize: m ? 360 : 240 }}
-        placeholder="Type a value that is not in the list"
-        caption="The first option offers to create the typed value"
         items={list.items}
         listItems={listItems}
         inputValue={inputValue}
         onInputChange={setInputValue}
         defaultFilter={containsFilter}
+        style={{ inlineSize: m ? 360 : 240 }}
+        placeholder="Type a value that is not in the list"
+        caption="The first option offers to create the typed value"
         onAdd={(values, context) => {
           if (context.source === 'suggestion') {
             const { suggestion } = context;
@@ -453,6 +172,403 @@ export const CreateOption: Story = {
             {item.id === CREATE_TAG_ID ? `Create: ${item.name}` : item.name}
           </TagAutocomplete.ListItem>
         )}
+        fullWidth
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
+export const Addons: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'react', name: 'React' },
+        { id: 'typescript', name: 'TypeScript' },
+      ],
+    });
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        placeholder="Add"
+        items={list.items}
+        defaultFilter={containsFilter}
+        endAddon={<IconCircleInfo16 />}
+        listItems={technologySuggestions}
+        startAddon={<IconGridSquares16 />}
+        style={{ inlineSize: m ? 360 : 240 }}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+        fullWidth
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
+export const Variant: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'react', name: 'React' },
+        { id: 'typescript', name: 'TypeScript' },
+      ],
+    });
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <FlexBox gap="m" direction="column" style={{ inlineSize: m ? 360 : 240 }}>
+        {tagInputPropVariant.map((variant) => (
+          <TagAutocomplete<TagItem>
+            key={variant}
+            label={variant}
+            variant={variant}
+            items={list.items}
+            defaultFilter={containsFilter}
+            listItems={technologySuggestions}
+            placeholder={`variant = ${variant}`}
+            onAdd={(values, context) => {
+              if (context.source === 'suggestion') {
+                list.append(context.suggestion);
+
+                return;
+              }
+
+              list.append(...values.map(createTag));
+            }}
+            onRemove={(keys) => list.remove(...keys)}
+            renderListItem={(item) => (
+              <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+                {item.name}
+              </TagAutocomplete.ListItem>
+            )}
+            fullWidth
+          >
+            {(item) => (
+              <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+                {item.name}
+              </TagAutocomplete.Tag>
+            )}
+          </TagAutocomplete>
+        ))}
+      </FlexBox>
+    );
+  },
+};
+
+export const CustomTags: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'react', name: 'React' },
+        { id: 'typescript', name: 'TypeScript' },
+      ],
+    });
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        items={list.items}
+        defaultFilter={containsFilter}
+        listItems={technologySuggestions}
+        placeholder="Type or choose a tag"
+        style={{ inlineSize: m ? 360 : 240 }}
+        caption="Each tag uses the warning-fade variant and a leading star icon"
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+        fullWidth
+      >
+        {(item) => (
+          <TagAutocomplete.Tag
+            key={item.id}
+            icon={<IconStar16 />}
+            variant="warning-fade"
+            textValue={item.name}
+          >
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
+export const FormField: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const categoryCounter = useRef(0);
+    const tagCounter = useRef(0);
+
+    const categories = useListData<TagItem>({
+      initialItems: [
+        { id: 'news', name: 'News' },
+        { id: 'sports', name: 'Sports' },
+      ],
+    });
+
+    const tags = useListData<TagItem>({ initialItems: [] });
+
+    const createCategory = (name: string): TagItem => {
+      categoryCounter.current += 1;
+
+      return { id: `category-${categoryCounter.current}-${name}`, name };
+    };
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    const isEmpty = tags.items.length === 0;
+
+    return (
+      <Form labelPlacement="side" style={{ inlineSize: m ? 480 : 240 }}>
+        <TagAutocomplete<TagItem>
+          label="Categories"
+          items={categories.items}
+          placeholder="Add a category"
+          style={{ inlineSize: '100%' }}
+          defaultFilter={containsFilter}
+          listItems={categorySuggestions}
+          caption="Choose a suggestion or press Enter"
+          onAdd={(values, context) => {
+            if (context.source === 'suggestion') {
+              categories.append(context.suggestion);
+
+              return;
+            }
+
+            categories.append(...values.map(createCategory));
+          }}
+          onRemove={(keys) => categories.remove(...keys)}
+          renderListItem={(item) => (
+            <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+              {item.name}
+            </TagAutocomplete.ListItem>
+          )}
+          fullWidth
+          isRequired
+        >
+          {(item) => (
+            <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+              {item.name}
+            </TagAutocomplete.Tag>
+          )}
+        </TagAutocomplete>
+        <TagAutocomplete<TagItem>
+          label="Tags"
+          items={tags.items}
+          isInvalid={isEmpty}
+          style={{ inlineSize: '100%' }}
+          listItems={technologySuggestions}
+          placeholder="Add at least one tag"
+          caption={isEmpty ? undefined : 'Looks good'}
+          errorMessage={isEmpty ? 'At least one tag is required' : undefined}
+          defaultFilter={containsFilter}
+          onAdd={(values, context) => {
+            if (context.source === 'suggestion') {
+              tags.append(context.suggestion);
+
+              return;
+            }
+
+            tags.append(...values.map(createTag));
+          }}
+          onRemove={(keys) => tags.remove(...keys)}
+          renderListItem={(item) => (
+            <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+              {item.name}
+            </TagAutocomplete.ListItem>
+          )}
+          fullWidth
+        >
+          {(item) => (
+            <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+              {item.name}
+            </TagAutocomplete.Tag>
+          )}
+        </TagAutocomplete>
+        <Form.Actions>
+          <Button>Submit</Button>
+        </Form.Actions>
+      </Form>
+    );
+  },
+};
+
+export const SplitPattern: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const list = useListData<TagItem>({ initialItems: [] });
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        items={list.items}
+        splitPattern={/[,;\s]/}
+        defaultFilter={containsFilter}
+        listItems={technologySuggestions}
+        style={{ inlineSize: m ? 360 : 240 }}
+        caption="Try pasting: foo, bar; baz qux"
+        placeholder="Use comma, semicolon or space"
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+        fullWidth
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
+export const PreventDuplicates: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const list = useListData<TagItem>({
+      initialItems: [
+        { id: 'react', name: 'React' },
+        { id: 'typescript', name: 'TypeScript' },
+      ],
+    });
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        items={list.items}
+        defaultFilter={containsFilter}
+        listItems={technologySuggestions}
+        style={{ inlineSize: m ? 360 : 240 }}
+        placeholder="Type React again or choose a suggestion"
+        caption="Free-form duplicates are ignored — suggestions are excluded automatically"
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          const existing = new Set(
+            list.items.map((item) => item.name.toLocaleLowerCase())
+          );
+
+          const fresh = values.filter(
+            (value) => !existing.has(value.toLocaleLowerCase())
+          );
+
+          if (fresh.length === 0) return;
+
+          list.append(...fresh.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+        fullWidth
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>
@@ -486,13 +602,11 @@ export const Disabled: Story = {
     return (
       <TagAutocomplete<TagItem>
         label="Tags"
-        fullWidth
-        isDisabled
-        placeholder="Disabled"
-        style={{ inlineSize: m ? 360 : 240 }}
         items={list.items}
-        listItems={technologySuggestions}
+        placeholder="Disabled"
         defaultFilter={containsFilter}
+        listItems={technologySuggestions}
+        style={{ inlineSize: m ? 360 : 240 }}
         onAdd={(values, context) => {
           if (context.source === 'suggestion') {
             list.append(context.suggestion);
@@ -508,6 +622,8 @@ export const Disabled: Story = {
             {item.name}
           </TagAutocomplete.ListItem>
         )}
+        fullWidth
+        isDisabled
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>
@@ -541,13 +657,11 @@ export const ReadOnly: Story = {
     return (
       <TagAutocomplete<TagItem>
         label="Tags"
-        fullWidth
-        isReadOnly
-        placeholder="Read-only"
-        style={{ inlineSize: m ? 360 : 240 }}
         items={list.items}
-        listItems={technologySuggestions}
+        placeholder="Read-only"
         defaultFilter={containsFilter}
+        listItems={technologySuggestions}
+        style={{ inlineSize: m ? 360 : 240 }}
         onAdd={(values, context) => {
           if (context.source === 'suggestion') {
             list.append(context.suggestion);
@@ -563,6 +677,8 @@ export const ReadOnly: Story = {
             {item.name}
           </TagAutocomplete.ListItem>
         )}
+        fullWidth
+        isReadOnly
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>
@@ -597,147 +713,31 @@ export const HideClearButton: Story = {
     return (
       <TagAutocomplete<TagItem>
         label="Tags"
+        items={list.items}
+        defaultFilter={containsFilter}
+        placeholder="Type or choose a tag"
+        listItems={technologySuggestions}
+        style={{ inlineSize: m ? 360 : 240 }}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
         fullWidth
         hideClearButton
-        style={{ inlineSize: m ? 360 : 240 }}
-        placeholder="Type or choose a tag"
-        items={list.items}
-        listItems={technologySuggestions}
-        defaultFilter={containsFilter}
-        onAdd={(values, context) => {
-          if (context.source === 'suggestion') {
-            list.append(context.suggestion);
-
-            return;
-          }
-
-          list.append(...values.map(createTag));
-        }}
-        onRemove={(keys) => list.remove(...keys)}
-        renderListItem={(item) => (
-          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.ListItem>
-        )}
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.Tag>
-        )}
-      </TagAutocomplete>
-    );
-  },
-};
-
-export const Addons: Story = {
-  render: function Render() {
-    const { m } = useBreakpoints();
-
-    const tagCounter = useRef(0);
-
-    const list = useListData<TagItem>({
-      initialItems: [
-        { id: 'react', name: 'React' },
-        { id: 'typescript', name: 'TypeScript' },
-      ],
-    });
-
-    const createTag = (name: string): TagItem => {
-      tagCounter.current += 1;
-
-      return { id: `tag-${tagCounter.current}-${name}`, name };
-    };
-
-    return (
-      <TagAutocomplete<TagItem>
-        label="Tags"
-        fullWidth
-        style={{ inlineSize: m ? 360 : 240 }}
-        placeholder="Add"
-        startAddon={<IconGridSquares16 />}
-        endAddon={<IconCircleInfo16 />}
-        items={list.items}
-        listItems={technologySuggestions}
-        defaultFilter={containsFilter}
-        onAdd={(values, context) => {
-          if (context.source === 'suggestion') {
-            list.append(context.suggestion);
-
-            return;
-          }
-
-          list.append(...values.map(createTag));
-        }}
-        onRemove={(keys) => list.remove(...keys)}
-        renderListItem={(item) => (
-          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.ListItem>
-        )}
-      >
-        {(item) => (
-          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.Tag>
-        )}
-      </TagAutocomplete>
-    );
-  },
-};
-
-export const CustomTags: Story = {
-  render: function Render() {
-    const { m } = useBreakpoints();
-
-    const tagCounter = useRef(0);
-
-    const list = useListData<TagItem>({
-      initialItems: [
-        { id: 'react', name: 'React' },
-        { id: 'typescript', name: 'TypeScript' },
-      ],
-    });
-
-    const createTag = (name: string): TagItem => {
-      tagCounter.current += 1;
-
-      return { id: `tag-${tagCounter.current}-${name}`, name };
-    };
-
-    return (
-      <TagAutocomplete<TagItem>
-        label="Tags"
-        fullWidth
-        style={{ inlineSize: m ? 360 : 240 }}
-        placeholder="Type or choose a tag"
-        caption="Each tag uses the warning-fade variant and a leading star icon"
-        items={list.items}
-        listItems={technologySuggestions}
-        defaultFilter={containsFilter}
-        onAdd={(values, context) => {
-          if (context.source === 'suggestion') {
-            list.append(context.suggestion);
-
-            return;
-          }
-
-          list.append(...values.map(createTag));
-        }}
-        onRemove={(keys) => list.remove(...keys)}
-        renderListItem={(item) => (
-          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
-            {item.name}
-          </TagAutocomplete.ListItem>
-        )}
-      >
-        {(item) => (
-          <TagAutocomplete.Tag
-            key={item.id}
-            icon={<IconStar16 />}
-            variant="warning-fade"
-            textValue={item.name}
-          >
             {item.name}
           </TagAutocomplete.Tag>
         )}
@@ -763,14 +763,12 @@ export const MultiPick: Story = {
     return (
       <TagAutocomplete<TagItem>
         label="Tags"
-        fullWidth
-        disableCloseOnSelect
-        style={{ inlineSize: m ? 360 : 240 }}
-        caption="Popover stays open after selection — pick several tags in a row"
-        placeholder="Pick multiple suggestions without closing the menu"
         items={list.items}
-        listItems={technologySuggestions}
         defaultFilter={containsFilter}
+        listItems={technologySuggestions}
+        style={{ inlineSize: m ? 360 : 240 }}
+        placeholder="Pick multiple suggestions without closing the menu"
+        caption="Popover stays open after selection — pick several tags in a row"
         onAdd={(values, context) => {
           if (context.source === 'suggestion') {
             list.append(context.suggestion);
@@ -786,6 +784,8 @@ export const MultiPick: Story = {
             {item.name}
           </TagAutocomplete.ListItem>
         )}
+        fullWidth
+        disableCloseOnSelect
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.name}>
@@ -844,16 +844,15 @@ export const ServerSearch: Story = {
     return (
       <TagAutocomplete<Product>
         label="Products"
-        fullWidth
-        style={{ inlineSize: m ? 360 : 240 }}
-        placeholder="Search products on the server…"
-        caption="Suggestions are fetched from dummyjson.com as you type"
         items={tags.items}
         listItems={suggestions.items}
+        style={{ inlineSize: m ? 360 : 240 }}
         isInvalid={Boolean(suggestions.error)}
-        errorMessage={suggestions.error ? 'Request failed!' : undefined}
-        endAddon={suggestions.isLoading ? <ProgressSpinner /> : undefined}
         onInputChange={suggestions.setFilterText}
+        placeholder="Search products on the server…"
+        errorMessage={suggestions.error ? 'Request failed!' : undefined}
+        caption="Suggestions are fetched from dummyjson.com as you type"
+        endAddon={suggestions.isLoading ? <ProgressSpinner /> : undefined}
         onAdd={(values, context) => {
           if (context.source === 'suggestion') {
             tags.append(context.suggestion);
@@ -869,6 +868,7 @@ export const ServerSearch: Story = {
             {item.title}
           </TagAutocomplete.ListItem>
         )}
+        fullWidth
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.title}>
@@ -936,17 +936,16 @@ export const AsynchronousLoading: Story = {
     return (
       <TagAutocomplete<Product>
         label="Products"
-        fullWidth
+        items={tags.items}
+        isLoading={hasMore}
+        listItems={suggestions.items}
+        onLoadMore={suggestions.loadMore}
+        style={{ inlineSize: m ? 360 : 240 }}
+        onInputChange={suggestions.setFilterText}
+        placeholder="Search — scroll the list to load more"
         // Keep the empty popover hidden until the user has typed something.
         allowsEmptyCollection={suggestions.filterText.trim() !== ''}
-        style={{ inlineSize: m ? 360 : 240 }}
-        placeholder="Search — scroll the list to load more"
         caption="Paginated suggestions from dummyjson.com (infinite scroll)"
-        items={tags.items}
-        listItems={suggestions.items}
-        isLoading={hasMore}
-        onLoadMore={suggestions.loadMore}
-        onInputChange={suggestions.setFilterText}
         onAdd={(values, context) => {
           if (context.source === 'suggestion') {
             tags.append(context.suggestion);
@@ -962,6 +961,7 @@ export const AsynchronousLoading: Story = {
             {item.title}
           </TagAutocomplete.ListItem>
         )}
+        fullWidth
       >
         {(item) => (
           <TagAutocomplete.Tag key={item.id} textValue={item.title}>

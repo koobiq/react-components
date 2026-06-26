@@ -1,7 +1,7 @@
 import {
-  Props,
-  Story,
   Meta,
+  Story,
+  Props,
   Status,
 } from '../../../../../.storybook/components';
 
@@ -30,7 +30,9 @@ import { TagAutocomplete } from '@koobiq/react-components';
 
 <Props of={Stories.Base} />
 
-## Items
+## Content
+
+### Items
 
 The tag collection is **owned by the consumer**. `TagAutocomplete` renders
 selected tags from `items`, renders suggestions from `listItems`, and emits
@@ -67,7 +69,7 @@ Use stable keys for both selected tags and suggestions:
 The `TagAutocomplete.ListItem` provides the suggestion key and `textValue` used
 for filtering, exclusion of already selected tags, and the suggestion context.
 
-## Suggestions
+### Suggestions
 
 Suggestions open when the input receives focus. `defaultFilter(textValue,
 inputValue)` filters the popover list, while selected tags are excluded
@@ -77,7 +79,108 @@ Selecting a suggestion calls `onAdd(values, context)` with
 `context.source === 'suggestion'` and exposes the original item as
 `context.suggestion`.
 
-## Server-side suggestions
+### Create option
+
+Show a "Create" option in the list, so new values can be added with a mouse.
+Prepend an extra item built from the input value and handle it in `onAdd`:
+
+<Story of={Stories.CreateOption} />
+
+## Appearance
+
+### Addons
+
+You can add extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+### Variant
+
+<Story of={Stories.Variant} />
+
+### Custom tags
+
+Customize how each tag looks through `TagAutocomplete.Tag`. For example, set a
+`variant` and pass an `icon`:
+
+<Story of={Stories.CustomTags} />
+
+### Form field
+
+The `TagAutocomplete` is a full form field on par with `TagInput`: label, caption,
+validation, and label placement work the same way. When wrapped in a `<Form>`,
+it also inherits the shared field settings from the form context.
+
+<Story of={Stories.FormField} />
+
+## Behavior
+
+### Adding tags
+
+Free-form entry keeps the same behavior as `TagInput`: press <kbd>Enter</kbd>,
+type a split character, paste a delimited string, or blur the field with a
+non-empty input value. In those cases, `context.source` is `'enter'`,
+`'separator'`, `'paste'`, or `'blur'`.
+
+To also split on `;` or whitespace, pass a custom `splitPattern`.
+
+<Story of={Stories.SplitPattern} />
+
+### Preventing duplicates
+
+Suggestions that are already selected are hidden automatically. Free-form
+values are passed to `onAdd` as-is, so apply your own duplicate policy in the
+handler:
+
+```tsx
+onAdd={(values, context) => {
+  if (context.source === 'suggestion') {
+    tags.append(context.suggestion);
+
+    return;
+  }
+
+  const existing = new Set(tags.items.map((item) => item.name.toLowerCase()));
+  const fresh = values.filter((value) => !existing.has(value.toLowerCase()));
+
+  if (fresh.length === 0) return;
+  tags.append(...fresh.map(createTag));
+}}
+```
+
+<Story of={Stories.PreventDuplicates} />
+
+### Disabled
+
+When `isDisabled` is set, the input is disabled, tags render in a disabled
+state, and suggestions cannot be selected.
+
+<Story of={Stories.Disabled} />
+
+### Read-only
+
+When `isReadOnly` is set, the input remains focusable for navigation but no
+modifications are allowed. Typing is blocked, suggestions cannot be selected,
+and remove buttons are not rendered.
+
+<Story of={Stories.ReadOnly} />
+
+### Cleaner
+
+The cleaner button is shown by default. Pressing it removes all tags, clears
+the text input, calls `onClear`, and returns focus to the input. Pass
+`hideClearButton` to hide it.
+
+<Story of={Stories.HideClearButton} />
+
+### Keeping the popover open
+
+By default the popover closes after a suggestion is committed. Pass
+`disableCloseOnSelect` to keep it open and pick several suggestions in a row.
+
+<Story of={Stories.MultiPick} />
+
+### Server-side suggestions
 
 `listItems` can be driven by a server. `useAsyncList` loads results from its
 `load` function and re-fetches whenever `setFilterText` runs — wire it to
@@ -110,7 +213,7 @@ const suggestions = useAsyncList({
 
 <Story of={Stories.ServerSearch} />
 
-## Asynchronous loading
+### Asynchronous loading
 
 Pair `listItems` with `isLoading` and `onLoadMore` to load suggestions page by
 page. The list shows a spinner while `isLoading` is `true` and calls `onLoadMore`
@@ -118,103 +221,6 @@ as the user scrolls near the bottom. Set `allowsEmptyCollection` so the popover
 can open (and show the spinner) before the first page arrives.
 
 <Story of={Stories.AsynchronousLoading} />
-
-## Keeping the popover open
-
-By default the popover closes after a suggestion is committed. Pass
-`disableCloseOnSelect` to keep it open and pick several suggestions in a row.
-
-<Story of={Stories.MultiPick} />
-
-## Adding tags
-
-Free-form entry keeps the same behavior as `TagInput`: press <kbd>Enter</kbd>,
-type a split character, paste a delimited string, or blur the field with a
-non-empty input value. In those cases, `context.source` is `'enter'`,
-`'separator'`, `'paste'`, or `'blur'`.
-
-To also split on `;` or whitespace, pass a custom `splitPattern`.
-
-<Story of={Stories.SplitPattern} />
-
-## Preventing duplicates
-
-Suggestions that are already selected are hidden automatically. Free-form
-values are passed to `onAdd` as-is, so apply your own duplicate policy in the
-handler:
-
-```tsx
-onAdd={(values, context) => {
-  if (context.source === 'suggestion') {
-    tags.append(context.suggestion);
-
-    return;
-  }
-
-  const existing = new Set(tags.items.map((item) => item.name.toLowerCase()));
-  const fresh = values.filter((value) => !existing.has(value.toLowerCase()));
-
-  if (fresh.length === 0) return;
-  tags.append(...fresh.map(createTag));
-}}
-```
-
-<Story of={Stories.PreventDuplicates} />
-
-## Create option
-
-Show a "Create" option in the list, so new values can be added with a mouse.
-Prepend an extra item built from the input value and handle it in `onAdd`:
-
-<Story of={Stories.CreateOption} />
-
-## Variant
-
-<Story of={Stories.Variant} />
-
-## Addons
-
-You can add extra content using the `startAddon` and `endAddon` props.
-
-<Story of={Stories.Addons} />
-
-## Custom tags
-
-Customize how each tag looks through `TagAutocomplete.Tag`. For example, set a
-`variant` and pass an `icon`:
-
-<Story of={Stories.CustomTags} />
-
-## Form field
-
-The `TagAutocomplete` is a full form field on par with `TagInput`: label, caption,
-validation, and label placement work the same way. When wrapped in a `<Form>`,
-it also inherits the shared field settings from the form context.
-
-<Story of={Stories.FormField} />
-
-## Disabled
-
-When `isDisabled` is set, the input is disabled, tags render in a disabled
-state, and suggestions cannot be selected.
-
-<Story of={Stories.Disabled} />
-
-## Read-only
-
-When `isReadOnly` is set, the input remains focusable for navigation but no
-modifications are allowed. Typing is blocked, suggestions cannot be selected,
-and remove buttons are not rendered.
-
-<Story of={Stories.ReadOnly} />
-
-## Cleaner
-
-The cleaner button is shown by default. Pressing it removes all tags, clears
-the text input, calls `onClear`, and returns focus to the input. Pass
-`hideClearButton` to hide it.
-
-<Story of={Stories.HideClearButton} />
 
 ## Accessibility
 
