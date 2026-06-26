@@ -43,6 +43,7 @@
     "SkeletonTypography",
     "Table",
     "Tabs",
+    "TagAutocomplete",
     "TagGroup",
     "TagList",
     "TagInput",
