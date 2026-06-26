@@ -39,6 +39,7 @@ export type {
   CollectionElement,
   RouterOptions,
   SortDescriptor,
+  HelpTextProps,
   Selection,
   FocusStrategy,
 } from '@react-types/shared';

@@ -23,4 +23,4 @@ To get started with the library, read [the documentation](https://react.koobiq.i
 
 ## Browser Support
 
-[Check compatible browsers](https://browsersl.ist/#q=defaults+and+supports+es6-module%2C%0A++++chrome+%3E+105%2C%0A++++safari+%3E+15.4%2C%0A++++firefox+%3E+121%2C%0A++++opera+%3E+91%2C%0A++++edge+%3E+105)
+[Check compatible browsers](https://browsersl.ist/#q=baseline+widely+available)

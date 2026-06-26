@@ -333,6 +333,12 @@ export const rows: Rows = [
     planned: 'Q2 2026',
   },
   {
+    component: 'TreeSelect',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q2 2026',
+  },
+  {
     component: 'TagList',
     status: '✅ Done',
     stage: '🔵 experimental',

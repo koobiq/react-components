@@ -10,6 +10,7 @@ export { Item } from '@react-stately/collections';
 
 export * from '@react-stately/data';
 
+export * from '@react-aria/tree';
 export * from '@react-stately/tree';
 
 export * from '@react-aria/visually-hidden';
@@ -140,9 +141,11 @@ export {
   TreeStateContext,
   TreeLoadMoreItem,
   useContextProps,
+  useRenderProps,
   DEFAULT_SLOT,
   useSlottedContext,
   composeRenderProps,
+  CollectionRendererContext,
 } from 'react-aria-components';
 
 export * from './behaviors';
