@@ -51,6 +51,7 @@
     "Toggle",
     "Tooltip",
     "Tree",
+    "TreeSelect",
     "Typography"
   ],
   "packages": [

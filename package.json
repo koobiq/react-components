@@ -164,15 +164,7 @@
       "commit": true
     }
   },
-  "browserslist": [
-    "chrome >= 111",
-    "edge >= 111",
-    "firefox >= 113",
-    "safari >= 15.4",
-    "ios_saf >= 15.4",
-    "and_chr >= 111",
-    "opera >= 97"
-  ],
+  "browserslist": ["baseline widely available"],
   "packageManager": "pnpm@9.12.2",
   "pnpm": {
     "overrides": {

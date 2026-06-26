@@ -17,7 +17,7 @@ import type { ReactNode } from 'react';
 import type { TreeItemContentProps as TreeItemContentProps_2 } from '@koobiq/react-primitives';
 import type { TreeItemProps as TreeItemProps_2 } from '@koobiq/react-primitives';
 import { TreeLoadMoreItemProps as TreeLoadMoreItemProps_2 } from '@koobiq/react-primitives';
-import type { TreeProps } from '@koobiq/react-primitives';
+import type { TreeProps as TreeProps_2 } from '@koobiq/react-primitives';
 
 // Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
 //
@@ -67,7 +67,10 @@ export type TreeLoadMoreItemProps = Omit<TreeLoadMoreItemProps_2, 'children'> & 
     children?: ReactNode;
 };
 
-export { TreeProps }
+// @public (undocumented)
+export type TreeProps<T extends object> = TreeProps_2<T> & {
+    isPadded?: boolean;
+};
 
 // Warnings were encountered during analysis:
 //

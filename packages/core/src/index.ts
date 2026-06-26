@@ -38,6 +38,7 @@ export type {
   CollectionElement,
   RouterOptions,
   SortDescriptor,
+  HelpTextProps,
   Selection,
 } from '@react-types/shared';
 

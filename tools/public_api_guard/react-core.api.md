@@ -23,6 +23,7 @@ import type { ForwardRefExoticComponent } from 'react';
 import type { ForwardRefRenderFunction } from 'react';
 import { GlobalDOMAttributes } from '@react-types/shared';
 import { handleLinkClick } from '@react-aria/utils';
+import { HelpTextProps } from '@react-types/shared';
 import { HoverEvent } from '@react-types/shared';
 import { InputBase } from '@react-types/shared';
 import { ItemProps } from '@react-types/shared';
@@ -112,6 +113,8 @@ export { FormProps }
 export { GlobalDOMAttributes }
 
 export { handleLinkClick }
+
+export { HelpTextProps }
 
 export { HoverEvent }
 

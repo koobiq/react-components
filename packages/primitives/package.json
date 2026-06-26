@@ -62,6 +62,7 @@
     "@react-aria/toggle": "3.12.5",
     "@react-aria/toolbar": "3.0.0-beta.24",
     "@react-aria/tooltip": "3.9.2",
+    "@react-aria/tree": "^3.1.7",
     "@react-aria/visually-hidden": "3.8.31",
     "@react-stately/autocomplete": "3.0.0-beta.4",
     "@react-stately/calendar": "3.9.3",

@@ -1,7 +1,7 @@
 'use client';
 
 import { clsx } from '@koobiq/react-core';
-import type { TreeProps } from '@koobiq/react-primitives';
+import type { TreeProps as AriaTreeProps } from '@koobiq/react-primitives';
 import { Tree as AriaTree, composeRenderProps } from '@koobiq/react-primitives';
 
 import './Tree.css';
@@ -11,7 +11,10 @@ import { TreeItem, TreeItemContent, TreeLoadMoreItem } from './components';
 
 const { list } = utilClasses;
 
-export type { TreeProps };
+export type TreeProps<T extends object> = AriaTreeProps<T> & {
+  /** Whether the tree has outer padding. */
+  isPadded?: boolean;
+};
 
 /**
  * A tree provides users with a way to navigate nested hierarchical
@@ -19,11 +22,13 @@ export type { TreeProps };
  */
 export function TreeComponent<T extends object>({
   className,
+  isPadded,
   ...props
 }: TreeProps<T>) {
   return (
     <AriaTree
       {...props}
+      data-padded={isPadded || undefined}
       className={composeRenderProps(className, (className) =>
         clsx('kbq-Tree', list, className)
       )}
