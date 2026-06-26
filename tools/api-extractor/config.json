@@ -17,6 +17,7 @@
     "DateInput",
     "DatePicker",
     "Divider",
+    "EmptyState",
     "FlexBox",
     "Form",
     "FormField",
