@@ -84,3 +84,18 @@ Every slot is optional. Drop the media and actions for a minimal, text-only
 empty state.
 
 <Story of={Stories.TextOnly} />
+
+## Accessibility
+
+- If the empty state appears dynamically (e.g. after a search returns nothing),
+  add `role="status"` so screen readers announce it:
+
+  ```tsx
+  <EmptyState role="status">
+    <EmptyState.Title>Nothing found</EmptyState.Title>
+    <EmptyState.Content>Try a different search query.</EmptyState.Content>
+  </EmptyState>
+  ```
+
+- `EmptyState.Title` is an `h3` by default — use `as` to fit the page headings.
+- Add `alt` to illustrations, or `alt=""` if they are decorative.
