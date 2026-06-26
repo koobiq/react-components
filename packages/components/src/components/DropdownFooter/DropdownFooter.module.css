@@ -5,7 +5,6 @@
   border-block-start: var(--kbq-size-border-width) solid
     var(--kbq-line-contrast-less);
   color: var(--kbq-foreground-contrast-secondary);
-  min-block-size: 40px;
   display: flex;
   align-items: center;
   user-select: none;
