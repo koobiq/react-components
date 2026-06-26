@@ -10,6 +10,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { IconItem } from '../IconItem';
 import { Link } from '../Link';
+import { Typography } from '../Typography';
 
 import { EmptyState } from './index';
 
@@ -136,8 +137,10 @@ export const WithIllustration: Story = {
           />
         </EmptyState.Media>
         <EmptyState.Title>No documents yet</EmptyState.Title>
-        <EmptyState.Content>
-          Create your first document to get started, or import an existing one.
+        <EmptyState.Content style={{ whiteSpace: 'pre-line' }}>
+          {
+            'Create your first document to get started,\nor import an existing one.'
+          }
         </EmptyState.Content>
         <EmptyState.Actions>
           <Button variant="contrast-filled">Create</Button>
@@ -151,8 +154,10 @@ export const TextOnly: Story = {
   render: (args) => (
     <EmptyState {...args}>
       <EmptyState.Title>Nothing found</EmptyState.Title>
-      <EmptyState.Content>
-        Try changing the search query or{' '}
+      <EmptyState.Content style={{ whiteSpace: 'pre-line' }}>
+        <Typography as="span" color="inherit" variant="inherit" display="block">
+          Try changing the search query or
+        </Typography>
         <Link href="#" isPseudo>
           reset the filters
         </Link>
