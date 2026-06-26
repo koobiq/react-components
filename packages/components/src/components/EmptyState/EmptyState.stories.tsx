@@ -23,7 +23,7 @@ const meta = {
     'EmptyState.Content': EmptyState.Content,
     'EmptyState.Actions': EmptyState.Actions,
   },
-  tags: ['status:new', 'date:2026-06-25'],
+  tags: ['status:new', 'date:2026-06-26'],
   parameters: {
     layout: 'centered',
   },
