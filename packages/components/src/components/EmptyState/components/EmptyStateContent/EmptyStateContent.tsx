@@ -1,9 +1,8 @@
 'use client';
 
-import type { ComponentPropsWithRef } from 'react';
-import { forwardRef, useContext } from 'react';
+import { useContext } from 'react';
 
-import { clsx, mergeProps } from '@koobiq/react-core';
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { EmptyStateContext } from '../../EmptyStateContext';
 
@@ -11,28 +10,24 @@ import s from './EmptyStateContent.module.css';
 import type { EmptyStateContentProps } from './types';
 
 /** EmptyState.Content — the supporting text slot of the EmptyState. */
-export const EmptyStateContent = forwardRef<
-  HTMLDivElement,
+export const EmptyStateContent = polymorphicForwardRef<
+  'p',
   EmptyStateContentProps
 >((props, ref) => {
-  const { className, children, ...other } = props;
+  const { as: Tag = 'p', className, children, ...other } = props;
 
   const { size, isInvalid } = useContext(EmptyStateContext);
 
-  const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
-    { className: clsx(s.base, className) },
-    other
-  );
-
   return (
-    <div
-      {...rootProps}
+    <Tag
+      {...other}
       ref={ref}
+      className={clsx(s.base, className)}
       data-size={size}
       data-invalid={isInvalid || undefined}
     >
       {children}
-    </div>
+    </Tag>
   );
 });
 

@@ -69,4 +69,32 @@ describe('EmptyState', () => {
     expect(title).toHaveAttribute('data-size', 'big');
     expect(title).toHaveAttribute('data-invalid');
   });
+
+  it('should render Title as "h3" and Content as "p" by default', () => {
+    render(
+      <EmptyState {...baseProps}>
+        <EmptyState.Title data-testid="title">Title</EmptyState.Title>
+        <EmptyState.Content data-testid="content">Content</EmptyState.Content>
+      </EmptyState>
+    );
+
+    expect(screen.getByTestId('title').tagName).toBe('H3');
+    expect(screen.getByTestId('content').tagName).toBe('P');
+  });
+
+  it('should support the polymorphic "as" prop on Title and Content', () => {
+    render(
+      <EmptyState {...baseProps}>
+        <EmptyState.Title as="h1" data-testid="title">
+          Title
+        </EmptyState.Title>
+        <EmptyState.Content as="span" data-testid="content">
+          Content
+        </EmptyState.Content>
+      </EmptyState>
+    );
+
+    expect(screen.getByTestId('title').tagName).toBe('H1');
+    expect(screen.getByTestId('content').tagName).toBe('SPAN');
+  });
 });

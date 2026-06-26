@@ -98,24 +98,17 @@ export const Invalid: Story = {
 export const Align: Story = {
   parameters: { layout: 'padded' },
   render: (args) => (
-    <FlexBox
-      style={{
-        blockSize: 360,
-        border: '1px dashed var(--kbq-line-contrast-less)',
-      }}
-    >
-      <EmptyState align="start" {...args}>
-        <EmptyState.Media>
-          <IconItem size="big" color="contrast" variant="fade">
-            <IconBell16 />
-          </IconItem>
-        </EmptyState.Media>
-        <EmptyState.Title>No documents yet</EmptyState.Title>
-        <EmptyState.Content>
-          The content is aligned to the start of the available space.
-        </EmptyState.Content>
-      </EmptyState>
-    </FlexBox>
+    <EmptyState align="start" style={{ blockSize: 360 }} {...args}>
+      <EmptyState.Media>
+        <IconItem size="big" color="contrast" variant="fade">
+          <IconBell16 />
+        </IconItem>
+      </EmptyState.Media>
+      <EmptyState.Title>No documents yet</EmptyState.Title>
+      <EmptyState.Content>
+        The content is aligned to the start of the available space.
+      </EmptyState.Content>
+    </EmptyState>
   ),
 };
 

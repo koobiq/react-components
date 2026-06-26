@@ -1,9 +1,8 @@
 'use client';
 
-import type { ComponentPropsWithRef } from 'react';
-import { forwardRef, useContext } from 'react';
+import { useContext } from 'react';
 
-import { clsx, mergeProps } from '@koobiq/react-core';
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { EmptyStateContext } from '../../EmptyStateContext';
 
@@ -11,28 +10,25 @@ import s from './EmptyStateTitle.module.css';
 import type { EmptyStateTitleProps } from './types';
 
 /** EmptyState.Title — the heading slot of the EmptyState. */
-export const EmptyStateTitle = forwardRef<HTMLDivElement, EmptyStateTitleProps>(
-  (props, ref) => {
-    const { className, children, ...other } = props;
+export const EmptyStateTitle = polymorphicForwardRef<
+  'h3',
+  EmptyStateTitleProps
+>((props, ref) => {
+  const { as: Tag = 'h3', className, children, ...other } = props;
 
-    const { size, isInvalid } = useContext(EmptyStateContext);
+  const { size, isInvalid } = useContext(EmptyStateContext);
 
-    const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
-      { className: clsx(s.base, className) },
-      other
-    );
-
-    return (
-      <div
-        {...rootProps}
-        ref={ref}
-        data-size={size}
-        data-invalid={isInvalid || undefined}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <Tag
+      {...other}
+      ref={ref}
+      className={clsx(s.base, className)}
+      data-size={size}
+      data-invalid={isInvalid || undefined}
+    >
+      {children}
+    </Tag>
+  );
+});
 
 EmptyStateTitle.displayName = 'EmptyState.Title';
