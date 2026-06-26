@@ -36,7 +36,7 @@ const EmptyStateComponent = polymorphicForwardRef<'div', EmptyStateBaseProps>(
         <Tag
           {...other}
           ref={ref}
-          className={clsx(s.base, className)}
+          className={clsx(s.base, s[size], s[align], className)}
           data-size={size}
           data-align={align}
           data-invalid={isInvalid || undefined}

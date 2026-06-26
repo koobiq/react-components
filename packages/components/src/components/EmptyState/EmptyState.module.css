@@ -9,21 +9,21 @@
 }
 
 /* align */
-.base[data-align='center'] {
+.center {
   justify-content: center;
 }
 
-.base[data-align='start'] {
+.start {
   justify-content: flex-start;
 }
 
 /* size */
-.base[data-size='big'] {
+.big {
   padding-block: var(--kbq-size-5xl);
   padding-inline: var(--kbq-size-6xl);
 }
 
-.base[data-size='normal'],
-.base[data-size='compact'] {
+.normal,
+.compact {
   padding: var(--kbq-size-3xl);
 }

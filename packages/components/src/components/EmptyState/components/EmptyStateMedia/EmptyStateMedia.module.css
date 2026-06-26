@@ -4,18 +4,18 @@
   justify-content: center;
 }
 
-.base[data-invalid] {
+.invalid {
   color: var(--kbq-foreground-error);
 }
 
-.base[data-size='big'] {
-  margin-block-end: var(--kbq-size-3xl);
+.compact {
+  margin-block-end: var(--kbq-size-m);
 }
 
-.base[data-size='normal'] {
+.normal {
   margin-block-end: var(--kbq-size-xl);
 }
 
-.base[data-size='compact'] {
-  margin-block-end: var(--kbq-size-m);
+.big {
+  margin-block-end: var(--kbq-size-3xl);
 }

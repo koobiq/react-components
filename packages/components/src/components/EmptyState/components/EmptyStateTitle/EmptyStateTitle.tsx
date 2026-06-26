@@ -22,7 +22,7 @@ export const EmptyStateTitle = polymorphicForwardRef<
     <Tag
       {...other}
       ref={ref}
-      className={clsx(s.base, className)}
+      className={clsx(s.base, s[size], isInvalid && s.invalid, className)}
       data-size={size}
       data-invalid={isInvalid || undefined}
     >

@@ -20,7 +20,7 @@ export const EmptyStateActions = forwardRef<
   const { size } = useContext(EmptyStateContext);
 
   const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
-    { className: clsx(s.base, className) },
+    { className: clsx(s.base, s[size], className) },
     other
   );
 

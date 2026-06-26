@@ -18,7 +18,7 @@ export const EmptyStateMedia = forwardRef<HTMLDivElement, EmptyStateMediaProps>(
     const { size, align, isInvalid } = useContext(EmptyStateContext);
 
     const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
-      { className: clsx(s.base, className) },
+      { className: clsx(s.base, s[size], isInvalid && s.invalid, className) },
       other
     );
 
