@@ -57,6 +57,12 @@ describe('EmptyState', () => {
     );
   });
 
+  it('should support the polymorphic "as" prop on the root', () => {
+    render(<EmptyState {...baseProps} as="section" />);
+
+    expect(screen.getByTestId('empty-state').tagName).toBe('SECTION');
+  });
+
   it('should propagate size and invalid state to the subcomponents via context', () => {
     render(
       <EmptyState {...baseProps} size="big" isInvalid>

@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef } from 'react';
+import type { ElementType, ReactNode } from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
 
@@ -26,5 +26,13 @@ export type EmptyStateBaseProps = {
    * @default 'center'
    */
   align?: EmptyStatePropAlign;
-} & ComponentPropsWithRef<'div'> &
-  DataAttributeProps;
+  /**
+   * The HTML element to render as.
+   * @default 'div'
+   */
+  as?: ElementType;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** The content of the component. */
+  children?: ReactNode;
+} & DataAttributeProps;

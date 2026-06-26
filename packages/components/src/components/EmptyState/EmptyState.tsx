@@ -1,9 +1,8 @@
 'use client';
 
-import type { ComponentPropsWithRef } from 'react';
-import { forwardRef, useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { clsx, mergeProps } from '@koobiq/react-core';
+import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import {
   EmptyStateActions,
@@ -15,9 +14,10 @@ import s from './EmptyState.module.css';
 import { EmptyStateContext } from './EmptyStateContext';
 import type { EmptyStateBaseProps } from './types';
 
-const EmptyStateComponent = forwardRef<HTMLDivElement, EmptyStateBaseProps>(
+const EmptyStateComponent = polymorphicForwardRef<'div', EmptyStateBaseProps>(
   (props, ref) => {
     const {
+      as: Tag = 'div',
       size = 'normal',
       isInvalid = false,
       align = 'center',
@@ -31,22 +31,18 @@ const EmptyStateComponent = forwardRef<HTMLDivElement, EmptyStateBaseProps>(
       [size, isInvalid, align]
     );
 
-    const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
-      { className: clsx(s.base, className) },
-      other
-    );
-
     return (
       <EmptyStateContext.Provider value={contextValue}>
-        <div
-          {...rootProps}
+        <Tag
+          {...other}
           ref={ref}
+          className={clsx(s.base, className)}
           data-size={size}
           data-align={align}
           data-invalid={isInvalid || undefined}
         >
           {children}
-        </div>
+        </Tag>
       </EmptyStateContext.Provider>
     );
   }
