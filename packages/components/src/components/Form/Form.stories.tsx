@@ -18,6 +18,7 @@ import { SearchInput } from '../SearchInput';
 import { Select } from '../Select';
 import { Textarea } from '../Textarea';
 import { TimePicker } from '../TimePicker';
+import { TreeSelect } from '../TreeSelect';
 import { Typography } from '../Typography';
 
 import { Form, type FormProps } from './index';
@@ -460,6 +461,54 @@ export const FormFields: Story = {
           <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
           <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
         </Autocomplete>
+        <TreeSelect
+          label="TreeSelect"
+          placeholder="Pick value"
+          selectionMode="multiple"
+          isClearable
+        >
+          <TreeSelect.Item id={1} textValue="app">
+            <TreeSelect.ItemContent>app</TreeSelect.ItemContent>
+            <TreeSelect.Item id={2} textValue="Http">
+              <TreeSelect.ItemContent>Http</TreeSelect.ItemContent>
+              <TreeSelect.Item id={3} textValue="index.html">
+                <TreeSelect.ItemContent>index.html</TreeSelect.ItemContent>
+              </TreeSelect.Item>
+            </TreeSelect.Item>
+            <TreeSelect.Item id={4} textValue="Providers">
+              <TreeSelect.ItemContent>Providers</TreeSelect.ItemContent>
+              <TreeSelect.Item id={5} textValue="EventServiceProvider.js">
+                <TreeSelect.ItemContent>
+                  EventServiceProvider.js
+                </TreeSelect.ItemContent>
+              </TreeSelect.Item>
+            </TreeSelect.Item>
+          </TreeSelect.Item>
+          <TreeSelect.Item id={6} textValue="config">
+            <TreeSelect.ItemContent>config</TreeSelect.ItemContent>
+            <TreeSelect.Item id={7} textValue="app.js">
+              <TreeSelect.ItemContent>app.js</TreeSelect.ItemContent>
+            </TreeSelect.Item>
+            <TreeSelect.Item id={8} textValue="database.js">
+              <TreeSelect.ItemContent>database.js</TreeSelect.ItemContent>
+            </TreeSelect.Item>
+          </TreeSelect.Item>
+          <TreeSelect.Item id={9} textValue="public">
+            <TreeSelect.ItemContent>public</TreeSelect.ItemContent>
+            <TreeSelect.Item id={10} textValue="logo.svg">
+              <TreeSelect.ItemContent>logo.svg</TreeSelect.ItemContent>
+            </TreeSelect.Item>
+          </TreeSelect.Item>
+          <TreeSelect.Item id={11} textValue=".env">
+            <TreeSelect.ItemContent>.env</TreeSelect.ItemContent>
+          </TreeSelect.Item>
+          <TreeSelect.Item id={12} textValue=".gitignore">
+            <TreeSelect.ItemContent>.gitignore</TreeSelect.ItemContent>
+          </TreeSelect.Item>
+          <TreeSelect.Item id={13} textValue="README.md">
+            <TreeSelect.ItemContent>README.md</TreeSelect.ItemContent>
+          </TreeSelect.Item>
+        </TreeSelect>
         <CheckboxGroup label="CheckboxGroup" defaultValue={['one']}>
           <Checkbox value="one">One</Checkbox>
           <Checkbox value="two">Two</Checkbox>

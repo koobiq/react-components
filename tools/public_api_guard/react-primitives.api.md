@@ -16,6 +16,7 @@ import type { AriaCheckboxGroupItemProps as AriaCheckboxGroupItemProps_2 } from 
 import { AriaCheckboxGroupProps } from '@react-aria/checkbox';
 import { AriaCheckboxProps } from '@react-aria/checkbox';
 import { AriaCheckboxProps as AriaCheckboxProps_2 } from 'react-aria';
+import type { AriaLabelingProps } from '@koobiq/react-core';
 import type { AriaLinkOptions } from '@react-aria/link';
 import type { AriaListBoxOptions } from '@react-aria/listbox';
 import type { AriaNumberFieldProps } from '@react-aria/numberfield';
@@ -45,6 +46,7 @@ import { CheckboxGroupState } from '@react-stately/checkbox';
 import { ClipboardEventHandler } from 'react';
 import { Collection } from 'react-aria-components';
 import { CollectionBase } from '@koobiq/react-core';
+import { CollectionRendererContext } from 'react-aria-components';
 import { ComboBoxState } from '@react-stately/combobox';
 import { ComboBoxStateOptions } from '@react-stately/combobox';
 import type { ComponentPropsWithoutRef } from 'react';
@@ -60,7 +62,7 @@ import { DetailedHTMLProps } from 'react';
 import { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import { DOMAttributes as DOMAttributes_2 } from '@react-types/shared';
-import type { DOMProps as DOMProps_2 } from '@koobiq/react-core';
+import type { DOMProps } from '@koobiq/react-core';
 import { DragEventHandler } from 'react';
 import { ElementType } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
@@ -74,6 +76,7 @@ import type { FormValidationState } from '@react-stately/form';
 import type { ForwardedRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
 import type { GlobalDOMAttributes } from '@koobiq/react-core';
+import type { HelpTextProps } from '@koobiq/react-core';
 import type { HoverEvents } from '@koobiq/react-core';
 import type { HTMLAttributes } from 'react';
 import { HTMLInputAutoCompleteAttribute } from 'react';
@@ -83,6 +86,7 @@ import { InputEventHandler } from 'react';
 import { InputHTMLAttributes } from 'react';
 import { Item } from '@react-stately/collections';
 import type { Key } from 'react';
+import type { Key as Key_2 } from '@koobiq/react-core';
 import { KeyboardEventHandler } from 'react';
 import { LabelableProps } from '@koobiq/react-core';
 import { LabelHTMLAttributes } from 'react';
@@ -124,7 +128,9 @@ import { TreeLoadMoreItem } from 'react-aria-components';
 import { TreeLoadMoreItemProps } from 'react-aria-components';
 import { TreeLoadMoreItemRenderProps } from 'react-aria-components';
 import { TreeProps } from 'react-aria-components';
+import type { TreeProps as TreeProps_2 } from '@react-stately/tree';
 import { TreeRenderProps } from 'react-aria-components';
+import type { TreeState } from '@react-stately/tree';
 import { TreeStateContext } from 'react-aria-components';
 import { UIEventHandler } from 'react';
 import { useAutocomplete } from '@react-aria/autocomplete';
@@ -138,6 +144,7 @@ import { useContextProps } from 'react-aria-components';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useRadioGroup as useRadioGroup_2 } from '@react-aria/radio';
 import { useRadioGroupState as useRadioGroupState_2 } from '@react-stately/radio';
+import { useRenderProps } from 'react-aria-components';
 import { useSlottedContext } from 'react-aria-components';
 import { useToggleButtonGroup } from '@react-aria/button';
 import { useToggleButtonGroupItem } from '@react-aria/button';
@@ -164,6 +171,12 @@ export { AriaCheckboxProps }
 export { AriaToggleButtonGroupItemProps }
 
 export { AriaToggleButtonGroupProps }
+
+// @public (undocumented)
+export type AriaTreeSelectOptions<T extends object, M extends SelectionMode_2 = 'single'> = TreeSelectStateOptions<T, M>;
+
+// @public (undocumented)
+export type AriaTreeSelectProps<T extends object = object, M extends SelectionMode_2 = 'single'> = TreeSelectStateOptions<T, M>;
 
 export { AutocompleteAria }
 
@@ -240,6 +253,8 @@ export type CheckboxRenderProps = {
 
 export { Collection }
 
+export { CollectionRendererContext }
+
 export { ComboBoxState }
 
 export { ComboBoxStateOptions }
@@ -271,10 +286,10 @@ export const Form: ForwardRefExoticComponent<FormProps & RefAttributes<HTMLFormE
 // @public (undocumented)
 export const FormContext: Context<ContextValue<FormProps, HTMLFormElement>>;
 
-// Warning: (ae-forgotten-export) The symbol "DOMProps" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "DOMProps_2" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export interface FormProps extends FormProps_2, DOMProps, GlobalDOMAttributes<HTMLFormElement> {
+export interface FormProps extends FormProps_2, DOMProps_2, GlobalDOMAttributes<HTMLFormElement> {
     validationBehavior?: 'aria' | 'native';
 }
 
@@ -465,6 +480,10 @@ export type RadioRenderProps = {
 export function removeDataAttributes<T>(props: T): T;
 
 // @public (undocumented)
+type SelectionMode_2 = 'single' | 'multiple';
+export { SelectionMode_2 as SelectionMode }
+
+// @public (undocumented)
 export const Switch: ForwardRefExoticComponent<Omit<UseSwitchProps, "inputRef" | keyof RenderProps<SwitchRenderProps>> & RenderProps<SwitchRenderProps> & {
 inputRef?: RefObject<HTMLInputElement | null>;
 } & RefAttributes<HTMLLabelElement>>;
@@ -573,6 +592,47 @@ export { TreeLoadMoreItemRenderProps }
 export { TreeProps }
 
 export { TreeRenderProps }
+
+// @public (undocumented)
+export type TreeSelectAria<T extends object> = {
+    labelProps: HTMLAttributes<HTMLElement>;
+    triggerProps: HTMLAttributes<HTMLElement>;
+    valueProps: HTMLAttributes<HTMLElement>;
+    treeProps: Omit<TreeProps<T>, 'children' | 'items'>;
+    descriptionProps: HTMLAttributes<HTMLElement>;
+    errorMessageProps: HTMLAttributes<HTMLElement>;
+} & ValidationResult;
+
+// @public
+export type TreeSelectChangeValueType<M extends SelectionMode_2> = M extends 'single' ? Key_2 | null : Key_2[];
+
+// @public (undocumented)
+export type TreeSelectProps<T extends object = object, M extends SelectionMode_2 = 'single'> = TreeSelectStateOptions<T, M>;
+
+// @public (undocumented)
+export type TreeSelectState<T> = {
+    readonly selectedItems: Node_2<T>[];
+    setSelectedKeys(keys: Iterable<Key_2>): void;
+    readonly isFocused: boolean;
+    setFocused(isFocused: boolean): void;
+} & TreeState<T> & OverlayTriggerState & FormValidationState;
+
+// Warning: (ae-forgotten-export) The symbol "TreeSelectValidationValueType" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export interface TreeSelectStateOptions<T extends object, M extends SelectionMode_2 = 'single'> extends Omit<TreeProps_2<T>, 'selectionMode' | 'selectedKeys' | 'defaultSelectedKeys' | 'onSelectionChange' | 'disallowEmptySelection'>, LabelableProps, AriaLabelingProps, DOMProps, InputBase, TextInputBase, HelpTextProps, FocusableProps, Validation<TreeSelectValidationValueType<M>> {
+    allowsEmptyCollection?: boolean;
+    defaultOpen?: boolean;
+    defaultValue?: TreeSelectValueType<M>;
+    isOpen?: boolean;
+    onChange?: (value: TreeSelectChangeValueType<M>) => void;
+    onOpenChange?: (isOpen: boolean) => void;
+    selectionMode?: M;
+    value?: TreeSelectValueType<M>;
+}
+
+// @public
+export type TreeSelectValueType<M extends SelectionMode_2> = M extends 'single' ? Key_2 | null : readonly Key_2[];
 
 export { TreeStateContext }
 
@@ -733,6 +793,8 @@ export type UseRadioReturn = ReturnType<typeof useRadio>;
 
 // @public (undocumented)
 export type UseRadioState = RadioGroupState;
+
+export { useRenderProps }
 
 export { useSlottedContext }
 
@@ -1077,6 +1139,12 @@ export { useToggleButtonGroup }
 
 export { useToggleButtonGroupItem }
 
+// @public (undocumented)
+export function useTreeSelect<T extends object, M extends SelectionMode_2 = 'single'>(props: AriaTreeSelectOptions<T, M>, state: TreeSelectState<T>, ref: RefObject<HTMLElement | null>): TreeSelectAria<T>;
+
+// @public (undocumented)
+export function useTreeSelectState<T extends object, M extends SelectionMode_2 = 'single'>(props: TreeSelectStateOptions<T, M>): TreeSelectState<T>;
+
 
 export * from "@react-aria/breadcrumbs";
 export * from "@react-aria/collections";
@@ -1100,6 +1168,7 @@ export * from "@react-aria/toast";
 export * from "@react-aria/toggle";
 export * from "@react-aria/toolbar";
 export * from "@react-aria/tooltip";
+export * from "@react-aria/tree";
 export * from "@react-aria/visually-hidden";
 export * from "@react-stately/calendar";
 export * from "@react-stately/checkbox";

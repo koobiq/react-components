@@ -402,6 +402,9 @@ importers:
       '@react-aria/tooltip':
         specifier: 3.9.2
         version: 3.9.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/tree':
+        specifier: ^3.1.7
+        version: 3.1.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/visually-hidden':
         specifier: 3.8.31
         version: 3.8.31(react-dom@19.2.3(react@19.2.3))(react@19.2.3)

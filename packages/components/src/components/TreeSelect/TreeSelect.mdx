@@ -1,0 +1,174 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TreeSelect.stories';
+
+<Meta of={Stories} />
+
+# TreeSelect
+
+<Status variant="experimental" />
+
+Select with hierarchical tree data.
+
+## Import
+
+```tsx
+import { TreeSelect } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Content
+
+### Dynamic items
+
+TreeSelect accepts static and dynamic collections.
+The basic example above uses static items. Dynamic collections can be
+used when items come from an external data source or update over time.
+
+Pass an iterable collection using the `items` prop and return `TreeSelect.Item`
+elements from the render function. Nested collections can be rendered recursively using `Collection`.
+
+<Story of={Stories.Content} />
+
+### Disabled items
+
+TreeSelect supports marking items as disabled using the `disabledKeys` prop.
+Each key corresponds to an item key in the collection.
+
+<Story of={Stories.DisabledOptions} />
+
+### Dropdown footer
+
+Use `dropdownFooter` to show content below the tree.
+
+<Story of={Stories.DropdownFooter} />
+
+## Appearance
+
+### Addons
+
+You can add extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+### Invalid
+
+The `isInvalid` prop toggles the error state. The `errorMessage` shows
+a message to explain the error to the user.
+
+<Story of={Stories.Invalid} />
+
+### Required
+
+To make a tree select required, add the `isRequired` prop.
+If the field has a label, a required indicator will appear next to it.
+
+<Story of={Stories.Required} />
+
+### Full width
+
+The `fullWidth` prop will make a tree select fit to its parent width.
+
+<Story of={Stories.FullWidth} />
+
+### Label placement and alignment
+
+Use `labelPlacement` and `labelAlign` props to set the position of the label.
+
+See the [Form](?path=/docs/components-form--docs#visual-options) for a two-column layout with labels on the side and a shared label column.
+
+<Story of={Stories.LabelPlacementAlignment} />
+
+## Behavior
+
+### Single selection
+
+Set an initial uncontrolled value with `defaultValue`, or control the selected item
+using `value` and `onChange`. The selected key corresponds to the key of a `TreeSelect.Item`.
+
+<Story of={Stories.SingleSelection} />
+
+### Multiple selection
+
+Use `selectionMode="multiple"` to allow multiple selection. In this mode,
+`value`, `defaultValue`, and the value passed to `onChange` are arrays of keys.
+
+<Story of={Stories.MultipleSelection} />
+
+### Selected value tags
+
+In `selectionMode="multiple"`, selected values are displayed as tags.
+Use `selectedTagsOverflow="responsive"` to collapse overflowing tags into a summary,
+or `selectedTagsOverflow="multiline"` to wrap tags onto multiple lines.
+
+<Story of={Stories.SelectedTagsOverflow} />
+
+### Disabled
+
+When TreeSelect is disabled, it cannot be interacted with.
+
+<Story of={Stories.Disabled} />
+
+### Read only
+
+The `isReadOnly` prop makes the selection immutable while keeping TreeSelect
+focusable. The dropdown cannot be opened, so the selected value is displayed but
+cannot be changed.
+
+<Story of={Stories.ReadOnly} />
+
+### Clear button
+
+Pass `isClearable` to show a clear button when a value is selected.
+
+<Story of={Stories.ClearButton} />
+
+### Searchable
+
+Add the `isSearchable` prop to show a search input at the top of the dropdown.
+Users can type to filter the tree. Matching items stay visible with their parent
+items, and matching branches open automatically.
+
+Use `inputValue` and `onInputChange` to control the search query. Use
+`defaultInputValue` to set its initial value. By default, the search ignores case
+and matches text anywhere in an item. To change how items match, pass your own
+`defaultFilter` function.
+
+<Story of={Stories.Searchable} />
+
+### Open
+
+Use `defaultOpen` to set the initial uncontrolled open state.
+Use `isOpen` and `onOpenChange` to control it.
+
+<Story of={Stories.Open} />
+
+### Async loading
+
+TreeSelect supports progressive loading with `TreeSelect.LoadMoreItem`. Place it
+in the children where more items should appear, and combine it with
+`useAsyncList` to fetch data on demand. Set `onLoadMore` to load the next page
+and `isLoading` to show the spinner while loading.
+
+<Story of={Stories.AsyncLoading} />
+
+### Empty state
+
+By default the dropdown does not open when the collection is empty. Pass
+`allowsEmptyCollection` to open it anyway and show an empty-state message. Use
+`noItemsText` to customize that message — it also overrides the default text
+shown when a search returns no matches.
+
+<Story of={Stories.EmptyState} />
