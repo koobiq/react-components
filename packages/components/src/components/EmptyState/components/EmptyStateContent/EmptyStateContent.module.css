@@ -13,16 +13,23 @@
   @mixin typography text-compact;
 
   max-inline-size: 320px;
+  margin-block-end: var(--kbq-size-s);
 }
 
 .normal {
   @mixin typography text-normal;
 
   max-inline-size: 320px;
+  margin-block-end: var(--kbq-size-s);
 }
 
 .big {
   @mixin typography text-big;
 
   max-inline-size: 480px;
+  margin-block-end: var(--kbq-size-xl);
+}
+
+.base:last-child {
+  margin-block-end: 0;
 }

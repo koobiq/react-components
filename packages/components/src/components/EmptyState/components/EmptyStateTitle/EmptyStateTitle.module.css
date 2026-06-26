@@ -29,3 +29,7 @@
   max-inline-size: 480px;
   margin-block-end: var(--kbq-size-l);
 }
+
+.base:last-child {
+  margin-block-end: 0;
+}

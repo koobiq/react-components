@@ -9,10 +9,8 @@
 .compact,
 .normal {
   max-inline-size: 320px;
-  margin-block-start: var(--kbq-size-s);
 }
 
 .big {
   max-inline-size: 480px;
-  margin-block-start: var(--kbq-size-xl);
 }
