@@ -45,7 +45,7 @@ const meta = {
     'TagAutocomplete.Tag': TagAutocomplete.Tag,
   },
   parameters: { layout: 'centered' },
-  tags: ['status:new', 'date:2026-06-01'],
+  tags: ['status:new', 'date:2026-06-26'],
 } satisfies Meta<typeof TagAutocomplete>;
 
 export default meta;
