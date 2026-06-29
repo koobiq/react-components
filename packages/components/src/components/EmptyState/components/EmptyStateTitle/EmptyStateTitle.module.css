@@ -1,0 +1,35 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  margin: 0;
+  color: var(--kbq-foreground-contrast);
+}
+
+.invalid {
+  color: var(--kbq-foreground-error);
+}
+
+.compact {
+  @mixin typography text-normal;
+
+  max-inline-size: 320px;
+  margin-block-end: var(--kbq-size-xxs);
+}
+
+.normal {
+  @mixin typography subheading;
+
+  max-inline-size: 320px;
+  margin-block-end: var(--kbq-size-xxs);
+}
+
+.big {
+  @mixin typography headline;
+
+  max-inline-size: 480px;
+  margin-block-end: var(--kbq-size-l);
+}
+
+.base:last-child {
+  margin-block-end: 0;
+}

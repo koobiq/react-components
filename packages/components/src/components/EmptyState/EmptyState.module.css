@@ -1,0 +1,29 @@
+.base {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
+  text-align: center;
+}
+
+/* align */
+.center {
+  justify-content: center;
+}
+
+.start {
+  justify-content: flex-start;
+}
+
+/* size */
+.big {
+  padding-block: var(--kbq-size-5xl);
+  padding-inline: var(--kbq-size-6xl);
+}
+
+.normal,
+.compact {
+  padding: var(--kbq-size-3xl);
+}

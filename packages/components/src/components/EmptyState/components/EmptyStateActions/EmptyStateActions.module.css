@@ -1,0 +1,16 @@
+.base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kbq-size-s);
+}
+
+.compact,
+.normal {
+  max-inline-size: 320px;
+}
+
+.big {
+  max-inline-size: 480px;
+}

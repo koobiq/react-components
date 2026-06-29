@@ -53,6 +53,7 @@ export * from './Navbar';
 export * from './ActionsPanel';
 export * from './Tree';
 export * from './TreeSelect';
+export * from './EmptyState';
 export * from './layout';
 export {
   useListData,
