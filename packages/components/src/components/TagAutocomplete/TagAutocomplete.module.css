@@ -1,0 +1,46 @@
+/* popover */
+.popover[data-slot='dropdown'] {
+  border-radius: var(--kbq-size-s);
+  opacity: 0;
+  transform: translateY(-8px);
+
+  &[data-transition='entering'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &[data-transition='entered'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &[data-transition='exiting'] {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  &[data-transition='exited'] {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  &:has(.list:only-child:empty) {
+    opacity: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  /* list */
+  .list {
+    overflow-y: auto;
+    max-block-size: inherit;
+  }
+
+  .list:empty {
+    display: none;
+  }
+}

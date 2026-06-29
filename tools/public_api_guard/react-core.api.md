@@ -18,6 +18,7 @@ import type { ElementType } from 'react';
 import { filterDOMProps } from '@react-aria/utils';
 import { FocusableElement } from '@react-types/shared';
 import { FocusableProps } from '@react-types/shared';
+import { FocusStrategy } from '@react-types/shared';
 import { FormProps } from '@react-types/form';
 import type { ForwardRefExoticComponent } from 'react';
 import type { ForwardRefRenderFunction } from 'react';
@@ -48,6 +49,7 @@ import { Selection as Selection_2 } from '@react-types/shared';
 import type { SetStateAction } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { TextInputBase } from '@react-types/shared';
+import { useDescription } from '@react-aria/utils';
 import { useEffect } from 'react';
 import { useId } from '@react-aria/utils';
 import { useLinkProps } from '@react-aria/utils';
@@ -107,6 +109,8 @@ export { filterDOMProps }
 export { FocusableElement }
 
 export { FocusableProps }
+
+export { FocusStrategy }
 
 export { FormProps }
 
@@ -265,6 +269,8 @@ export type UseDebounceCallbackReturnValue<CB extends FunctionCallback> = [
 CB,
 () => void
 ];
+
+export { useDescription }
 
 // @public (undocumented)
 export function useDOMRef<T extends HTMLElement = HTMLElement>(ref?: RefObject_2<T | null> | Ref_2<T | null>): RefObject_2<T>;

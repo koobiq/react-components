@@ -10,15 +10,20 @@ import { useToggleState } from '@react-stately/toggle';
 
 export type UseSwitchProps = AriaSwitchProps & {
   isInvalid?: boolean;
+  /** Whether this switch is loading. */
+  isLoading?: boolean;
 } & PressEvents;
 
 export function useSwitch(
   props: UseSwitchProps,
   ref: RefObject<HTMLInputElement | null>
 ) {
-  const { isInvalid, isDisabled } = props;
+  const { isInvalid, isDisabled, isLoading } = props;
 
-  const state = useToggleState(props);
+  const state = useToggleState({
+    ...props,
+    isReadOnly: props.isReadOnly || isLoading,
+  });
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
 
@@ -27,10 +32,26 @@ export function useSwitch(
     inputProps: commonInputProps,
     isReadOnly,
     ...other
-  } = useSwitchReactAria(props, state, ref);
+  } = useSwitchReactAria(
+    isLoading
+      ? {
+          ...props,
+          onPress: undefined,
+          onPressStart: undefined,
+          onPressEnd: undefined,
+          onPressChange: undefined,
+          onPressUp: undefined,
+          onClick: undefined,
+          onKeyDown: undefined,
+          onKeyUp: undefined,
+        }
+      : props,
+    state,
+    ref
+  );
 
   const { hoverProps, isHovered } = useHover({
-    isDisabled: isDisabled || isReadOnly,
+    isDisabled: isDisabled || isReadOnly || isLoading,
   });
 
   const labelProps = mergeProps(hoverProps, commonLabelProps);

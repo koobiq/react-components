@@ -47,6 +47,13 @@ A toggle can be disabled by passing the `isDisabled` prop.
 
 <Story of={Stories.Disabled} />
 
+## Loading
+
+The `isLoading` prop shows a loading indicator and makes the Toggle non-interactive
+while an async operation is in progress.
+
+<Story of={Stories.Loading} />
+
 ## Value
 
 ### Default value
@@ -82,8 +89,8 @@ Add content to the children of the Toggle component to add a description.
 
 ## Server Api
 
-This example shows a Toggle updating immediately while syncing with a server API,
-without blocking user interaction.
+This example shows a Toggle that updates optimistically and shows a loading state
+while syncing with a server API, reverting if the request fails.
 
 <Story of={Stories.ServerApi} />
 

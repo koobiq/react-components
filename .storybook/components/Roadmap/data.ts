@@ -339,6 +339,24 @@ export const rows: Rows = [
     planned: 'Q2 2026',
   },
   {
+    component: 'TagList',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q2 2026',
+  },
+  {
+    component: 'TagInput',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q2 2026',
+  },
+  {
+    component: 'TagAutocomplete',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q2 2026',
+  },
+  {
     component: 'EmptyState',
     status: '✅ Done',
     stage: '🔵 experimental',

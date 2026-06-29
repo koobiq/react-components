@@ -18,6 +18,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
     const {
       size = 'normal',
       labelPlacement = 'end',
+      isLoading,
       disabled,
       isDisabled: isDisabledProp,
       checked,
@@ -72,6 +73,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
 
     const commonProps: SwitchProps = {
       isDisabled,
+      isLoading,
       isSelected,
       isInvalid,
       isReadOnly,
@@ -93,6 +95,7 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
           isHovered && s.hovered,
           isSelected && s.selected,
           isDisabled && s.disabled,
+          isLoading && s.loading,
           isFocusVisible && s.focusVisible,
           className
         ),
@@ -109,7 +112,9 @@ export const Toggle = forwardRef<ComponentRef<'label'>, ToggleProps>(
         {...commonProps}
         ref={ref}
       >
-        <span {...trackProps} />
+        <span {...trackProps}>
+          {isLoading && <span aria-hidden="true" className={s.loader} />}
+        </span>
         {isNotNil(children) && <span {...labelProps}>{children}</span>}
       </Switch>
     );

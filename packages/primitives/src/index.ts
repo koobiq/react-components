@@ -76,6 +76,8 @@ export * from '@react-stately/table';
 export * from '@react-aria/searchfield';
 export * from '@react-stately/searchfield';
 
+export * from '@react-aria/textfield';
+
 export * from '@react-aria/progress';
 
 export * from '@react-aria/combobox';

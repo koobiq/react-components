@@ -1,0 +1,213 @@
+import {
+  Props,
+  Story,
+  Meta,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TagInput.stories';
+
+<Meta of={Stories} />
+
+# TagInput
+
+<Status variant="experimental" />
+
+An input component that allows users to enter, display, and manage multiple
+tags or keywords dynamically. It supports adding and removing tags.
+
+## Import
+
+```tsx
+import { TagInput } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Items
+
+The tag collection is **owned by the consumer**. `TagInput` only renders
+items and emits intent events — assign each item a stable, unique `id` and
+manage the list externally. `useListData` from `@koobiq/react-components`
+is the most convenient option:
+
+```tsx
+const list = useListData({
+  initialItems: [{ id: 'react', name: 'React' }],
+  getKey: (item) => item.id,
+});
+
+<TagInput
+  items={list.items}
+  onAdd={(values) =>
+    list.append(...values.map((name) => ({ id: crypto.randomUUID(), name })))
+  }
+  onRemove={(keys) => list.remove(...keys)}
+>
+  {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+</TagInput>;
+```
+
+Because the consumer assigns ids, duplicate display values never collide
+— each tag has its own identity in the collection.
+
+## Adding tags
+
+`onAdd(values, context)` fires when the user commits new values from the
+text input. `context.source` tells how it happened — `'enter'`,
+`'separator'`, `'paste'`, or `'blur'`. Tags are committed when the user:
+
+- presses <kbd>Enter</kbd>;
+- types a character matching `splitPattern` (default `/,/`);
+- pastes a delimited string into the input (multiple values arrive in one
+  call);
+- moves focus out of the field while the input has a non-empty value
+  (commit-on-blur — enabled by default, opt out with `disableCommitOnBlur`).
+
+To also split on `;` or whitespace, pass a custom `splitPattern`.
+
+<Story of={Stories.SplitPattern} />
+
+## Preventing duplicates
+
+`TagInput` passes every committed value to `onAdd` as-is, even if it
+already exists in the collection. To keep the list unique, filter the
+values inside the handler:
+
+```tsx
+onAdd={(values) => {
+  const existing = new Set(list.items.map((item) => item.name.toLowerCase()));
+  const fresh = values.filter((value) => !existing.has(value.toLowerCase()));
+  if (fresh.length === 0) return;
+  list.append(...fresh.map(createTag));
+}}
+```
+
+The input is cleared after every commit, so a rejected duplicate just
+disappears. The same pattern works for case-insensitive matches, trimmed
+values, or any other policy.
+
+<Story of={Stories.PreventDuplicates} />
+
+## Validation
+
+`inputValue` and `onInputChange` make the text input controlled, so you can
+check every change. To reject a character, don't save the new value. The
+input then keeps what it had. Paste runs through the same handler, so it is
+filtered too. Show the error however you like. The example below flashes a
+red `Tooltip` by the control. See the story source for the full code.
+
+<Story of={Stories.Validation} />
+
+## Removing tags
+
+`onRemove(keys)` fires with the set of removed tag keys. Tags can be
+removed via the × button on each tag, by <kbd>Backspace</kbd> /
+
+<kbd>Delete</kbd> on a focused tag, or all at once with the cleaner button that
+the field shows by default.
+
+## Selection
+
+`selectedKeys`, `defaultSelectedKeys` and `onSelectionChange` expose the
+tag-list selection state. Useful for syncing with external state (e.g.
+showing the count of selected tags). Press <kbd>Space</kbd> on a focused
+tag or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd> to select.
+
+<Story of={Stories.WithSelection} />
+
+## Variant
+
+<Story of={Stories.Variant} />
+
+## Addons
+
+You can add extra content using the `startAddon` and `endAddon` props.
+
+<Story of={Stories.Addons} />
+
+## Form field
+
+`TagInput` is a full form-field on par with `Input`. It accepts a visible
+or hidden `label`, a helper `caption` below the control, and an
+`errorMessage` paired with `isInvalid`. Mark the field as required with
+`isRequired`, stretch it to the container with `fullWidth`, or change the
+label position via `labelPlacement` and `labelAlign`.
+
+Validation is driven from the outside: both `isInvalid` and `errorMessage`
+can be controlled by your own state. In the example below the second
+field stays invalid until at least one tag has been added — once a tag
+is committed, the error gives way to a helper caption.
+
+<Story of={Stories.FormField} />
+
+## Disabled
+
+When `isDisabled` is set, the input is disabled and every tag renders in a
+disabled state. The remove button on each tag stays visible but cannot be
+clicked, and the cleaner is hidden.
+
+<Story of={Stories.Disabled} />
+
+## Read-only
+
+When `isReadOnly` is set, the input is focusable for navigation but no
+modifications are allowed — typing is blocked and the remove buttons on
+tags are not rendered.
+
+<Story of={Stories.ReadOnly} />
+
+## Cleaner
+
+The cleaner button is shown by default. Pressing it removes all tags, clears
+the text input, calls `onClear`, and returns focus to the input. Pass
+`hideClearButton` to hide it.
+
+<Story of={Stories.HideClearButton} />
+
+## Inside a Form
+
+When wrapped in a `<Form>`, `TagInput` inherits `isDisabled`, `isReadOnly`,
+`labelPlacement` and `labelAlign` from the form context.
+
+<Story of={Stories.InsideForm} />
+
+## Autofill
+
+See the example when a tag input has its value autofilled by the browser.
+
+<Story of={Stories.Autofill} />
+
+## Accessibility
+
+- The root field renders a `<label>` linked to the inner `<input>`. Pass
+  either `label` or `aria-label` so the field has an accessible name.
+- The tag list inside the field uses `role="grid"` when there are tags,
+  `role="group"` otherwise. Each tag is a `role="row"` with one
+  `role="gridcell"`.
+- When `onRemove` is wired up, the remove button on each tag (and the
+  global cleaner) is announced with its localized `aria-label`.
+- Keyboard hints for tag removal (<kbd>Backspace</kbd> / <kbd>Delete</kbd>)
+  are exposed via `aria-describedby` on tags — only for keyboard /
+  assistive modalities, not for pointer users.
+
+## Keyboard
+
+Inside the text input:
+
+| Key                                             | Behavior                                                                          |
+| ----------------------------------------------- | --------------------------------------------------------------------------------- |
+| <kbd>Enter</kbd>                                | Commit the current input value as a new tag (if non-empty).                       |
+| _split character_                               | Commit and reset the input — same effect as <kbd>Enter</kbd>.                     |
+| <kbd>Backspace</kbd> / <kbd>ArrowLeft</kbd>     | If the input is empty and there are tags, focus the last tag.                     |
+| <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + <kbd>A</kbd> | If the input is empty and there are tags, select all tags and focus the last one. |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd>               | If the input is empty and there are tags, move focus to the first tag.            |
+| <kbd>Tab</kbd>                                  | Move focus to the cleaner button (if visible) or out of the field.                |
+
+Inside a focused tag — see [TagList keyboard](?path=/docs/components-taglist--docs#keyboard) for the full table (<kbd>Arrow</kbd> navigation, <kbd>Space</kbd> selection, <kbd>Delete</kbd> / <kbd>Backspace</kbd> removal, <kbd>Ctrl</kbd> + <kbd>A</kbd>, etc.).

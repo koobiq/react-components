@@ -9,6 +9,7 @@ export {
   useLinkProps,
   mergeRefs,
   useObjectRef,
+  useDescription,
 } from '@react-aria/utils';
 
 export type {
@@ -40,6 +41,7 @@ export type {
   SortDescriptor,
   HelpTextProps,
   Selection,
+  FocusStrategy,
 } from '@react-types/shared';
 
 export * from '@react-aria/i18n';

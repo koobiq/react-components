@@ -168,5 +168,61 @@ describe('Toggle', () => {
 
       expect(onClick).toHaveBeenCalledTimes(1);
     });
+
+    it('should set the data-loading attribute when isLoading prop sets true', () => {
+      const { rerender } = render(
+        <Toggle {...baseProps} aria-label="input" isLoading />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-loading', 'true');
+
+      rerender(<Toggle {...baseProps} aria-label="input" isLoading={false} />);
+
+      expect(getRoot()).not.toHaveAttribute('data-loading');
+    });
+
+    it('should expose aria-busy and aria-disabled (not read-only) when isLoading', () => {
+      render(<Toggle {...baseProps} aria-label="input" isLoading />);
+
+      const inputEl = screen.getByLabelText('input');
+
+      expect(inputEl).toHaveAttribute('aria-busy', 'true');
+      expect(inputEl).toHaveAttribute('aria-disabled', 'true');
+      expect(inputEl).not.toBeDisabled();
+      expect(inputEl).not.toHaveAttribute('aria-readonly', 'true');
+      expect(getRoot()).not.toHaveAttribute('data-read-only');
+    });
+
+    it('should not change checked state on click when isLoading', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Toggle
+          {...baseProps}
+          aria-label="input"
+          isLoading
+          onChange={onChange}
+        />
+      );
+
+      const inputEl = screen.getByLabelText('input');
+
+      await userEvent.click(getRoot());
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(inputEl).not.toBeChecked();
+    });
+
+    it('should not call onPress when isLoading', async () => {
+      const onPress = vi.fn();
+
+      render(
+        <Toggle {...baseProps} aria-label="input" isLoading onPress={onPress} />
+      );
+
+      await userEvent.click(getRoot());
+
+      expect(onPress).not.toHaveBeenCalled();
+    });
   });
 });

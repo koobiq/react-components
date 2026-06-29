@@ -1,0 +1,75 @@
+.body {
+  inline-size: 100%;
+}
+
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}
+
+.base {
+  /* group */
+  .group {
+    --form-field-control-padding-inline-start: var(--kbq-size-xxs);
+    --form-field-control-padding-block-start: var(--kbq-size-xxs);
+    --form-field-control-padding-block-end: var(--kbq-size-xxs);
+  }
+
+  .group:has(> [data-placement='start']) {
+    --form-field-control-padding-inline-start: var(--kbq-size-m);
+  }
+
+  .tagListContainer {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    min-inline-size: 0;
+    align-items: center;
+    gap: var(--kbq-size-xxs);
+    padding-block: var(--form-field-control-padding-block-start)
+      var(--form-field-control-padding-block-end);
+  }
+
+  /* tag list */
+  .tagList {
+    display: contents;
+  }
+
+  .tagList:empty + .input {
+    padding-inline-start: var(--kbq-size-s);
+  }
+
+  .group:has(> [data-placement='start']) .tagList:empty + .input {
+    padding-inline-start: 0;
+  }
+
+  /* input */
+  .input {
+    flex: 1;
+    padding-block: 0;
+    min-inline-size: 4rem;
+    block-size: var(--kbq-size-xxl);
+    padding-inline: var(--kbq-size-xxs);
+    box-sizing: border-box;
+  }
+
+  .input[data-field-sizing-fallback] {
+    flex: 1 0 auto;
+    inline-size: min(var(--kbq-autosize-inline-size), 100%);
+    max-inline-size: 100%;
+  }
+}
+
+@supports (field-sizing: content) {
+  .base .input {
+    flex: 1 0 auto;
+    inline-size: auto;
+    max-inline-size: 100%;
+    field-sizing: content;
+  }
+}
