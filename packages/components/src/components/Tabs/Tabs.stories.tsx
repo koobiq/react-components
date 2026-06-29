@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
+import type { Key } from '@koobiq/react-core';
 import {
   IconApple24,
   IconBsd24,
@@ -14,6 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
+import { useListData } from '../index';
 import { Input } from '../Input';
 import { spacing } from '../layout';
 import { Link } from '../Link';
@@ -29,7 +31,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['status:updated', 'date:2026-04-30'],
+  tags: ['status:updated', 'date:2026-06-29'],
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -92,6 +94,88 @@ export const Dynamic: Story = {
           </Tab>
         )}
       </Tabs>
+    );
+  },
+};
+
+export const Editable: Story = {
+  render: function Render() {
+    const [isVertical, { set: setVertical }] = useBoolean(false);
+    const [isUnderlined, { set: setUnderlined }] = useBoolean(false);
+
+    const list = useListData({
+      initialItems: [
+        { id: 'bruteforce', title: 'Bruteforce' },
+        { id: 'complex-attack', title: 'Complex Attack' },
+        { id: 'ddos', title: 'DDoS' },
+        { id: 'dos', title: 'DoS' },
+        { id: 'hips', title: 'HIPS Alert' },
+        { id: 'identity-theft', title: 'Identity Theft' },
+        { id: 'ids-ips', title: 'IDS/IPS Alert' },
+        { id: 'misc', title: 'Miscellaneous' },
+      ],
+    });
+
+    const [selectedKey, setSelectedKey] = useState<Key | undefined>(
+      list.items[0]?.id
+    );
+
+    const counter = useRef(0);
+
+    const removeTabs = (keys: Set<Key>) => {
+      if (selectedKey != null && keys.has(selectedKey)) {
+        const idx = list.items.findIndex((item) => item.id === selectedKey);
+        const next = list.items[idx + 1] ?? list.items[idx - 1];
+
+        setSelectedKey(next?.id);
+      }
+
+      list.remove(...keys);
+    };
+
+    const addTab = () => {
+      counter.current += 1;
+      const id = `new-${counter.current}`;
+
+      list.append({ id, title: `New tab ${counter.current}` });
+      setSelectedKey(id);
+    };
+
+    return (
+      <FlexBox direction="column" gap="l" alignItems="stretch">
+        <FlexBox gap="l" alignItems="center">
+          <Toggle isSelected={isVertical} onChange={setVertical}>
+            Vertical
+          </Toggle>
+          <Toggle isSelected={isUnderlined} onChange={setUnderlined}>
+            Underlined
+          </Toggle>
+        </FlexBox>
+        <Tabs
+          aria-label="Types of cyberattacks"
+          items={list.items}
+          orientation={isVertical ? 'vertical' : 'horizontal'}
+          isUnderlined={isUnderlined}
+          selectedKey={selectedKey}
+          onSelectionChange={setSelectedKey}
+          style={{
+            blockSize: isVertical && !isUnderlined ? 280 : undefined,
+          }}
+          onAdd={addTab}
+          onRemove={removeTabs}
+        >
+          {(item) => (
+            <Tab
+              startAddon={<IconBug16 />}
+              endAddon={<IconBug16 />}
+              key={item.id}
+              title={item.title}
+            >
+              {item.title} content
+            </Tab>
+          )}
+        </Tabs>
+      </FlexBox>
     );
   },
 };

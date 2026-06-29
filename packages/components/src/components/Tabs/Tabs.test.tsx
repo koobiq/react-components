@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -349,5 +349,90 @@ describe('Tabs', () => {
 
       expect(Number(scrollBox?.scrollLeft) < 100).toBeTruthy();
     });
+  });
+});
+
+describe('Tabs editable', () => {
+  const removeLabel = 'Remove tab';
+  const addLabel = 'Add tab';
+
+  it('does not render close buttons without onRemove', () => {
+    render(renderComponent({}));
+
+    expect(
+      screen.queryByRole('button', { name: removeLabel })
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders a close button on every tab when onRemove is provided', () => {
+    render(renderComponent({ onRemove: vi.fn() }));
+
+    expect(screen.getAllByRole('button', { name: removeLabel })).toHaveLength(
+      4
+    );
+  });
+
+  it('calls onRemove with the tab key when its close button is pressed', async () => {
+    const onRemove = vi.fn();
+
+    render(renderComponent({ onRemove }));
+
+    const tab = screen.getByTestId(TAB__TEST_ID);
+    const closeButton = within(tab).getByRole('button', { name: removeLabel });
+
+    await userEvent.click(closeButton);
+
+    expect(onRemove).toHaveBeenCalledTimes(1);
+
+    const keys = onRemove.mock.calls[0][0];
+
+    expect(keys).toBeInstanceOf(Set);
+    expect([...keys]).toEqual(['2']);
+  });
+
+  it('does not change selection when a close button is pressed', async () => {
+    const onSelectionChange = vi.fn();
+    const onRemove = vi.fn();
+
+    render(renderComponent({ onRemove, onSelectionChange, selectedKey: 1 }));
+
+    const tab = screen.getByTestId(TAB__TEST_ID);
+    const closeButton = within(tab).getByRole('button', { name: removeLabel });
+
+    await userEvent.click(closeButton);
+
+    expect(onRemove).toHaveBeenCalledTimes(1);
+    // pressing × must not activate the tab it belongs to
+    expect(onSelectionChange).not.toHaveBeenCalledWith('2');
+  });
+
+  it('removes the focused tab on Delete', async () => {
+    const onRemove = vi.fn();
+
+    render(renderComponent({ onRemove }));
+
+    act(() => screen.getByRole('tab', { name: 'tab-2' }).focus());
+    await userEvent.keyboard('{Delete}');
+
+    expect(onRemove).toHaveBeenCalledTimes(1);
+    expect([...onRemove.mock.calls[0][0]]).toEqual(['2']);
+  });
+
+  it('does not render the add button without onAdd', () => {
+    render(renderComponent({}));
+
+    expect(
+      screen.queryByRole('button', { name: addLabel })
+    ).not.toBeInTheDocument();
+  });
+
+  it('calls onAdd when the add button is pressed', async () => {
+    const onAdd = vi.fn();
+
+    render(renderComponent({ onAdd }));
+
+    await userEvent.click(screen.getByRole('button', { name: addLabel }));
+
+    expect(onAdd).toHaveBeenCalledTimes(1);
   });
 });

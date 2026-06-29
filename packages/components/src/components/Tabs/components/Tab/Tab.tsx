@@ -1,12 +1,14 @@
 'use client';
 
-import type { ElementType, Ref } from 'react';
+import type { ElementType, KeyboardEvent, Ref } from 'react';
 
 import { type Node, isNotNil, useFocusRing } from '@koobiq/react-core';
 import { useHover, mergeProps, clsx, useDOMRef } from '@koobiq/react-core';
+import { IconXmarkS16 } from '@koobiq/react-icons';
 import type { TabListState } from '@koobiq/react-primitives';
 import { useTab } from '@koobiq/react-primitives';
 
+import { IconButton, type IconButtonProps } from '../../../IconButton';
 import type { TabProps as TabItemProps } from '../../Tab';
 import s from '../../Tabs.module.css';
 
@@ -15,9 +17,22 @@ export type TabProps<T> = {
   state: TabListState<T>;
   innerRef: Ref<HTMLElement>;
   onFocused?: () => void;
+  isRemovable?: boolean;
+  onRemove?: () => void;
+  removeLabel?: string;
+  closeButtonProps?: IconButtonProps;
 };
 
-export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
+export function Tab<T>({
+  item,
+  state,
+  innerRef,
+  onFocused,
+  isRemovable = false,
+  onRemove,
+  removeLabel,
+  closeButtonProps,
+}: TabProps<T>) {
   const { key, rendered } = item;
 
   const domRef = useDOMRef<HTMLElement>(innerRef);
@@ -55,6 +70,15 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
 
   const Tag: ElementType = href ? 'a' : 'div';
 
+  const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (!isRemovable || isDisabled) return;
+
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      event.preventDefault();
+      onRemove?.();
+    }
+  };
+
   return (
     <Tag
       style={style}
@@ -72,8 +96,12 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       data-onlyicon={onlyIcon || undefined}
+      data-closable={isRemovable || undefined}
       data-focus-visible={isFocusVisible || undefined}
-      {...mergeProps(hoverProps, focusProps, tabProps, { onFocus: onFocused })}
+      {...mergeProps(hoverProps, focusProps, tabProps, {
+        onFocus: onFocused,
+        onKeyDown,
+      })}
       ref={domRef as any}
     >
       <div {...contentProps}>
@@ -83,6 +111,27 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
         )}
         {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}
       </div>
+      {isRemovable && (
+        <span
+          className={s.closeButton}
+          onPointerDown={(event) => event.stopPropagation()}
+        >
+          <IconButton
+            as="span"
+            size="l"
+            isCompact
+            tabIndex={-1}
+            variant="fade-contrast"
+            data-slot="close-button"
+            aria-label={removeLabel}
+            isDisabled={isDisabled}
+            onPress={() => onRemove?.()}
+            {...closeButtonProps}
+          >
+            <IconXmarkS16 />
+          </IconButton>
+        </span>
+      )}
     </Tag>
   );
 }
