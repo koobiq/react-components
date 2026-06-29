@@ -1,4 +1,4 @@
-import { startTransition, useOptimistic, useRef, useState } from 'react';
+import { useOptimistic, useState, useTransition } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -15,6 +15,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  tags: ['status:updated', 'date:2026-06-26'],
 } satisfies Meta<typeof Toggle>;
 
 export default meta;
@@ -67,6 +68,19 @@ export const Disabled: Story = {
         Label
       </Toggle>
       <Toggle {...args} isDisabled isInvalid defaultSelected>
+        Label
+      </Toggle>
+    </FlexBox>
+  ),
+};
+
+export const Loading: Story = {
+  render: (args) => (
+    <FlexBox gap="l">
+      <Toggle {...args} isLoading>
+        Label
+      </Toggle>
+      <Toggle {...args} defaultSelected isLoading>
         Label
       </Toggle>
     </FlexBox>
@@ -146,17 +160,22 @@ export const ServerApi: Story = {
       failed: 'VPN Connection Failed',
     } as const;
 
+    const [isConnected, setConnected] = useState(false);
+    const [statusCode, setStatusCode] = useState<VpnStatusCode>('disconnected');
+
+    const [optimisticConnected, setOptimisticConnected] =
+      useOptimistic(isConnected);
+
+    const [isPending, startTransition] = useTransition();
+
     type VpnStatusCode = keyof typeof vpnStatusMessage;
 
-    const fetchVpnConnection = async (
-      nextConnected: boolean,
-      signal: AbortSignal
-    ) => {
+    const fetchVpnConnection = async (nextConnected: boolean) => {
+      // connecting randomly fails to demonstrate the error state
+      const status = nextConnected && Math.random() < 0.5 ? 500 : 200;
+
       const response = await fetch(
-        'https://dummyjson.com/http/200?delay=2000',
-        {
-          signal,
-        }
+        `https://dummyjson.com/http/${status}?delay=2000`
       );
 
       if (!response.ok) {
@@ -166,44 +185,29 @@ export const ServerApi: Story = {
       return nextConnected;
     };
 
-    const abortControllerRef = useRef<AbortController | null>(null);
-    const [isConnected, setConnected] = useState(false);
-    const [statusCode, setStatusCode] = useState<VpnStatusCode>('disconnected');
-
-    const [optimisticConnected, setOptimisticConnected] =
-      useOptimistic(isConnected);
-
     const handleChange = (nextConnected: boolean) => {
-      abortControllerRef.current?.abort();
-
-      const abortController = new AbortController();
-      abortControllerRef.current = abortController;
-
       setStatusCode(nextConnected ? 'connecting' : 'disconnecting');
 
       startTransition(async () => {
         setOptimisticConnected(nextConnected);
 
         try {
-          const confirmedConnected = await fetchVpnConnection(
-            nextConnected,
-            abortController.signal
-          );
+          const confirmedConnected = await fetchVpnConnection(nextConnected);
 
           setConnected(confirmedConnected);
           setStatusCode(confirmedConnected ? 'connected' : 'disconnected');
-        } catch (error) {
-          if (error instanceof DOMException && error.name === 'AbortError') {
-            return;
-          }
-
+        } catch {
           setStatusCode('failed');
         }
       });
     };
 
     return (
-      <Toggle onChange={handleChange} isSelected={optimisticConnected}>
+      <Toggle
+        isLoading={isPending}
+        onChange={handleChange}
+        isSelected={optimisticConnected}
+      >
         {vpnStatusMessage[statusCode]}
       </Toggle>
     );
