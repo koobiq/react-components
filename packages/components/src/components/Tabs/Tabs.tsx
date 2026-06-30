@@ -59,6 +59,11 @@ export function TabsRender<T extends object>(
     next: false,
   });
 
+  const [horizontalOverflow, setHorizontalOverflow] = useState({
+    start: false,
+    end: false,
+  });
+
   const [verticalOverflow, setVerticalOverflow] = useState({
     start: false,
     end: false,
@@ -141,6 +146,23 @@ export function TabsRender<T extends object>(
     });
   };
 
+  /** Syncs the horizontal fade mask with the current scroll position. */
+  const updateHorizontalOverflow = () => {
+    if (!isHorizontal) return;
+
+    const el = scrollBoxRef.current;
+    if (!el) return;
+
+    const start = el.scrollLeft > 0;
+    const end = Math.ceil(el.scrollLeft + el.clientWidth) < el.scrollWidth;
+
+    setHorizontalOverflow((prevState) =>
+      prevState.start === start && prevState.end === end
+        ? prevState
+        : { start, end }
+    );
+  };
+
   /** Syncs the vertical fade mask with the current scroll position. */
   const updateVerticalOverflow = () => {
     if (isHorizontal) return;
@@ -158,9 +180,10 @@ export function TabsRender<T extends object>(
     );
   };
 
-  /** Syncs both scroll affordances: horizontal buttons and vertical fade. */
+  /** Syncs both scroll affordances: horizontal buttons and horizontal/vertical fade. */
   const updateScrollState = () => {
     updateScrollButtonsVisibility();
+    updateHorizontalOverflow();
     updateVerticalOverflow();
   };
 
@@ -286,6 +309,8 @@ export function TabsRender<T extends object>(
       ref: scrollBoxRef,
       className: s.scrollBox,
       onScroll: updateScrollState,
+      'data-overflow-inline-start': horizontalOverflow.start || undefined,
+      'data-overflow-inline-end': horizontalOverflow.end || undefined,
       'data-overflow-block-start': verticalOverflow.start || undefined,
       'data-overflow-block-end': verticalOverflow.end || undefined,
     },

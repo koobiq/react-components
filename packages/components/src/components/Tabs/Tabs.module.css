@@ -298,15 +298,12 @@
 /* editable: fade the content out under the close (×) button while it is shown */
 .tab[data-closable][data-hovered] .inner,
 .tab[data-closable][data-focus-visible] .inner {
-  --tabs-close-fade-size: var(--kbq-size-l);
-
-  /* shift the fade inward by the underlined indicator offset so it lines up with × in both variants */
-  --tabs-close-fade-inset: var(--tab-content-offset, 0px);
+  --mask-size: var(--kbq-size-l);
 
   mask-image: linear-gradient(
     to right,
-    #000 calc(100% - var(--tabs-close-fade-size) * 2),
-    transparent calc(100% - var(--tabs-close-fade-size))
+    #000 calc(100% - var(--mask-size) * 2),
+    transparent calc(100% - var(--mask-size))
   );
 }
 
@@ -321,9 +318,39 @@
   min-block-size: 0;
 }
 
+.scrollBox {
+  --mask-size: 32px;
+
+  &[data-overflow-inline-start='true'] {
+    mask-image: linear-gradient(
+      to right,
+      transparent var(--mask-size),
+      #000 calc(var(--mask-size) * 1.5)
+    );
+  }
+
+  &[data-overflow-inline-end='true'] {
+    mask-image: linear-gradient(
+      to right,
+      #000 calc(100% - var(--mask-size) * 1.5),
+      transparent calc(100% - var(--mask-size))
+    );
+  }
+
+  &[data-overflow-inline-start='true'][data-overflow-inline-end='true'] {
+    mask-image: linear-gradient(
+      to right,
+      transparent var(--mask-size),
+      #000 calc(var(--mask-size) * 1.5),
+      #000 calc(100% - var(--mask-size) * 1.5),
+      transparent calc(100% - var(--mask-size))
+    );
+  }
+}
+
 /* editable: full-width scroll box + vertical fade mask (shown only on the overflowing side) */
 .vertical[data-editable] .scrollBox {
-  --tabs-fade-size: var(--kbq-size-3xl);
+  --mask-size: var(--kbq-size-3xl);
 
   display: block;
   inline-size: 100%;
@@ -334,8 +361,8 @@
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      #000 var(--tabs-fade-size),
-      #000 calc(100% - var(--tabs-fade-size)),
+      #000 var(--mask-size),
+      #000 calc(100% - var(--mask-size)),
       transparent 100%
     );
   }
@@ -344,14 +371,14 @@
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      #000 var(--tabs-fade-size)
+      #000 var(--mask-size)
     );
   }
 
   &:not([data-overflow-block-start])[data-overflow-block-end] {
     mask-image: linear-gradient(
       to bottom,
-      #000 calc(100% - var(--tabs-fade-size)),
+      #000 calc(100% - var(--mask-size)),
       transparent 100%
     );
   }
