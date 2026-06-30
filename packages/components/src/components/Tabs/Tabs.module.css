@@ -30,7 +30,7 @@
     position: absolute;
     block-size: var(--kbq-size-border-width);
     background: var(--kbq-line-contrast-less);
-    z-index: var(--kbq-layer-absolute);
+    z-index: calc(var(--kbq-layer-absolute) + 3);
   }
 
   .tab,
@@ -89,6 +89,10 @@
   .addButton[data-hovered]::after {
     background-color: var(--kbq-line-contrast-fade);
   }
+
+  .closeButton {
+    inset-inline-end: 0;
+  }
 }
 
 .horizontal {
@@ -105,7 +109,7 @@
     flex-direction: row;
   }
 
-  .tab .content {
+  .tab .inner {
     justify-content: center;
   }
 }
@@ -124,19 +128,19 @@
 
   .tab {
     inline-size: 100%;
-    padding-block: var(--kbq-size-xxs);
+    border-block: var(--kbq-size-xxs) solid var(--kbq-background-transparent);
 
-    .content {
+    .inner {
       justify-content: flex-start;
     }
   }
 
   .tab:first-child {
-    padding-block-start: 0;
+    border-block-start: 0;
   }
 
   .tab:last-child {
-    padding-block-end: 0;
+    border-block-end: 0;
   }
 
   .label {
@@ -147,6 +151,10 @@
 }
 
 .stretched {
+  .scrollArea {
+    inline-size: 100%;
+  }
+
   .scrollBox {
     overflow: hidden;
   }
@@ -234,11 +242,8 @@
 
 .content {
   display: flex;
-  gap: var(--kbq-size-xxs);
   align-items: center;
-  overflow: hidden;
   inline-size: 100%;
-  white-space: nowrap;
   box-sizing: border-box;
   min-block-size: 32px;
   padding-inline: var(--kbq-size-m);
@@ -254,6 +259,18 @@
     color var(--kbq-transition-default);
 }
 
+/* inner content wrapper — holds addons + label, masked under the close (×) button */
+.inner {
+  display: flex;
+  flex: 1;
+  position: relative;
+  gap: var(--kbq-size-xxs);
+  overflow: hidden;
+  min-inline-size: 0;
+  align-items: center;
+  white-space: nowrap;
+}
+
 .addon {
   flex-shrink: 0;
   display: flex;
@@ -267,19 +284,30 @@
   position: absolute;
   visibility: hidden;
   inset-block-start: 50%;
-  inset-inline-end: var(--kbq-size-xs);
+  inset-inline-end: var(--kbq-size-m);
   transform: translateY(-50%);
   z-index: calc(var(--kbq-layer-absolute) + 1);
-  transition:
-    opacity var(--kbq-transition-default),
-    visibility var(--kbq-transition-default);
 }
 
 .tab[data-hovered] .closeButton,
-.tab[data-selected] .closeButton,
 .tab[data-focus-visible] .closeButton {
   opacity: 1;
   visibility: visible;
+}
+
+/* editable: fade the content out under the close (×) button while it is shown */
+.tab[data-closable][data-hovered] .inner,
+.tab[data-closable][data-focus-visible] .inner {
+  --tabs-close-fade-size: var(--kbq-size-l);
+
+  /* shift the fade inward by the underlined indicator offset so it lines up with × in both variants */
+  --tabs-close-fade-inset: var(--tab-content-offset, 0px);
+
+  mask-image: linear-gradient(
+    to right,
+    #000 calc(100% - var(--tabs-close-fade-size) * 2),
+    transparent calc(100% - var(--tabs-close-fade-size))
+  );
 }
 
 /* editable: vertical create mode (full-width add button below + sticky) */

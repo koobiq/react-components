@@ -4,7 +4,7 @@ import type { ElementType, KeyboardEvent, Ref } from 'react';
 
 import { type Node, isNotNil, useFocusRing } from '@koobiq/react-core';
 import { useHover, mergeProps, clsx, useDOMRef } from '@koobiq/react-core';
-import { IconXmarkS16 } from '@koobiq/react-icons';
+import { IconXmark16 } from '@koobiq/react-icons';
 import type { TabListState } from '@koobiq/react-primitives';
 import { useTab } from '@koobiq/react-primitives';
 
@@ -53,7 +53,7 @@ export function Tab<T>({
     Boolean(onlyIconProp) && (isNotNil(startAddon) || isNotNil(endAddon));
 
   const { hoverProps, isHovered } = useHover({
-    isDisabled: isDisabled || isSelected,
+    isDisabled: isDisabled,
   });
 
   const { isFocusVisible, focusProps } = useFocusRing();
@@ -105,11 +105,13 @@ export function Tab<T>({
       ref={domRef as any}
     >
       <div {...contentProps}>
-        {isNotNil(startAddon) && <div {...startAddonProps}>{startAddon}</div>}
-        {!onlyIcon && isNotNil(rendered) && (
-          <div {...labelProps}>{rendered}</div>
-        )}
-        {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}
+        <span className={s.inner}>
+          {isNotNil(startAddon) && <div {...startAddonProps}>{startAddon}</div>}
+          {!onlyIcon && isNotNil(rendered) && (
+            <div {...labelProps}>{rendered}</div>
+          )}
+          {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}
+        </span>
       </div>
       {isRemovable && (
         <span
@@ -128,7 +130,7 @@ export function Tab<T>({
             onPress={() => onRemove?.()}
             {...closeButtonProps}
           >
-            <IconXmarkS16 />
+            <IconXmark16 />
           </IconButton>
         </span>
       )}
