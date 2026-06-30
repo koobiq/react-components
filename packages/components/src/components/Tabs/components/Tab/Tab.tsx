@@ -16,12 +16,18 @@ import { useTab } from '@koobiq/react-primitives';
 import { IconButton, type IconButtonProps } from '../../../IconButton';
 import intlMessages from '../../intl.json';
 import type { TabProps as TabItemProps } from '../../Tab';
-import s from '../../Tabs.module.css';
+
+import s from './Tab.module.css';
+
+type TabOrientation = 'horizontal' | 'vertical';
 
 export type TabProps<T> = {
   item: Node<T>;
   state: TabListState<T>;
   innerRef: Ref<HTMLElement>;
+  orientation: TabOrientation;
+  isUnderlined?: boolean;
+  isStretched?: boolean;
   onFocused?: () => void;
   onRemove?: () => void;
   closeButtonProps?: IconButtonProps;
@@ -31,6 +37,9 @@ export function Tab<T>({
   item,
   state,
   innerRef,
+  orientation,
+  isUnderlined = false,
+  isStretched = false,
   onFocused,
   onRemove,
   closeButtonProps,
@@ -88,20 +97,22 @@ export function Tab<T>({
     <Tag
       style={style}
       className={clsx(
-        s.tab,
-        isHovered && s.hovered,
-        isDisabled && s.disabled,
-        isSelected && s.selected,
+        s.base,
+        !isUnderlined && s.default,
+        isUnderlined && s.underlined,
+        orientation && s[orientation],
+        isStretched && s.stretched,
         onlyIcon && s.onlyIcon,
-        isFocusVisible && s.focusVisible,
         className
       )}
       data-testid={dataTestId}
+      data-orientation={orientation}
       data-hovered={isHovered || undefined}
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       data-onlyicon={onlyIcon || undefined}
       data-closable={isRemovable || undefined}
+      data-underlined={isUnderlined || undefined}
       data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(hoverProps, focusProps, tabProps, {
         onFocus: onFocused,

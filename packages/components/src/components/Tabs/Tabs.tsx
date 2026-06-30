@@ -330,7 +330,6 @@ export function TabsRender<T extends object>(
       data-horizontal-scrollable={hasHScroll || undefined}
       className={clsx(
         s.container,
-        !isUnderlined && s.default,
         isStretched && s.stretched,
         isUnderlined && s.underlined,
         orientation && s[orientation],
@@ -363,6 +362,9 @@ export function TabsRender<T extends object>(
                   state={state}
                   key={item.key}
                   innerRef={itemsRefs[i]}
+                  orientation={orientation}
+                  isStretched={isStretched}
+                  isUnderlined={isUnderlined}
                   closeButtonProps={slotProps?.closeButton}
                   {...(onRemove &&
                     typeof onRemove === 'function' && {
@@ -379,6 +381,8 @@ export function TabsRender<T extends object>(
             aria-label={t.format('add')}
             onPress={() => onAdd?.()}
             {...slotProps?.addButton}
+            orientation={orientation}
+            isUnderlined={isUnderlined}
           />
         )}
       </div>

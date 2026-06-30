@@ -1,0 +1,89 @@
+.base {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+
+  &[data-focus-visible] .content {
+    outline-color: var(--kbq-states-line-focus-theme);
+  }
+
+  &[data-disabled] .content {
+    color: var(--kbq-states-foreground-disabled);
+    cursor: default;
+  }
+}
+
+.default {
+  &[data-hovered] .content {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &[data-pressed] .content {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+}
+
+.underlined {
+  --tab-content-offset: 0px;
+
+  min-inline-size: 32px;
+  box-sizing: content-box;
+  padding-block: var(--kbq-size-s);
+  border-inline: var(--kbq-size-xs) solid transparent;
+  border-inline-end: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inline-size: 100%;
+    block-size: 3px;
+    inset-block-end: 0;
+    inset-block-start: unset;
+    border-radius: 2px 2px 0 0;
+    background-color: transparent;
+    z-index: calc(var(--kbq-layer-absolute) + 1);
+  }
+
+  &[data-hovered]::after {
+    background-color: var(--kbq-line-contrast-fade);
+  }
+
+  .content {
+    padding-inline: var(--tab-content-offset);
+    margin-inline: calc(-1 * var(--tab-content-offset));
+    inline-size: calc(100% + calc(2 * var(--tab-content-offset)));
+  }
+}
+
+.vertical {
+  inline-size: 100%;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: 32px;
+  padding-inline: var(--kbq-size-m);
+  padding-block: var(--kbq-size-xs);
+  color: var(--kbq-foreground-contrast);
+  border-radius: var(--kbq-size-border-radius);
+  outline-offset: calc(-1 * var(--kbq-size-3xs));
+  outline: var(--kbq-size-3xs) solid;
+  outline-color: transparent;
+  transition:
+    outline-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default),
+    color var(--kbq-transition-default);
+}

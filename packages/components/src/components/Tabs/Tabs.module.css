@@ -1,4 +1,7 @@
-@import url('../../styles/mixins.css');
+.container {
+  display: flex;
+  gap: var(--kbq-size-m);
+}
 
 .base {
   display: flex;
@@ -10,312 +13,6 @@
   position: relative;
   flex: 0 1 auto;
   min-inline-size: 0;
-}
-
-/* container */
-.container {
-  display: flex;
-  gap: var(--kbq-size-m);
-}
-
-.default .tab {
-  min-inline-size: 40px;
-}
-
-.underlined {
-  .base::after {
-    content: '';
-    inset-inline: 0;
-    inset-block-end: 0;
-    position: absolute;
-    block-size: var(--kbq-size-border-width);
-    background: var(--kbq-line-contrast-less);
-    z-index: calc(var(--kbq-layer-absolute) + 3);
-  }
-
-  .tab,
-  .addButton {
-    --tab-content-offset: var(--kbq-size-m);
-
-    min-inline-size: 40px;
-    box-sizing: content-box;
-    padding-block: var(--kbq-size-s);
-    border-inline: var(--tab-content-offset) solid transparent;
-
-    .content {
-      padding-inline: var(--tab-content-offset);
-      margin-inline: calc(-1 * var(--tab-content-offset));
-      inline-size: calc(100% + calc(2 * var(--tab-content-offset)));
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      inline-size: 100%;
-      block-size: 3px;
-      inset-block-end: 0;
-      inset-block-start: unset;
-      border-radius: 2px 2px 0 0;
-      background-color: transparent;
-      z-index: calc(var(--kbq-layer-absolute) + 1);
-    }
-  }
-
-  .tab.onlyIcon,
-  .addButton {
-    --tab-content-offset: 0px;
-
-    min-inline-size: 32px;
-    border-inline: var(--kbq-size-xs) solid transparent;
-  }
-
-  .tab:first-child {
-    border-inline-start: 0;
-  }
-
-  .tab:last-child {
-    border-inline-end: 0;
-  }
-
-  .addButton {
-    border-inline-end: 0;
-  }
-
-  .tab.selected::after {
-    background-color: var(--kbq-line-contrast);
-  }
-
-  .tab.hovered::after,
-  .addButton[data-hovered]::after {
-    background-color: var(--kbq-line-contrast-fade);
-  }
-
-  .closeButton {
-    inset-inline-end: 0;
-  }
-}
-
-.horizontal {
-  flex-direction: column;
-
-  .scrollBox {
-    display: flex;
-    inline-size: 100%;
-    scrollbar-width: none;
-    overflow: auto hidden;
-  }
-
-  .tabList {
-    flex-direction: row;
-  }
-
-  .tab .inner {
-    justify-content: center;
-  }
-}
-
-.vertical {
-  .scrollBox {
-    display: inline-block;
-    inline-size: auto;
-    scrollbar-width: auto;
-    overflow: hidden auto;
-  }
-
-  .tabList {
-    flex-direction: column;
-  }
-
-  .tab {
-    inline-size: 100%;
-    border-block: var(--kbq-size-xxs) solid var(--kbq-background-transparent);
-
-    .inner {
-      justify-content: flex-start;
-    }
-  }
-
-  .tab:first-child {
-    border-block-start: 0;
-  }
-
-  .tab:last-child {
-    border-block-end: 0;
-  }
-
-  .label {
-    min-inline-size: 0;
-
-    @mixin ellipsis;
-  }
-}
-
-.stretched {
-  .scrollArea {
-    inline-size: 100%;
-  }
-
-  .scrollBox {
-    overflow: hidden;
-  }
-
-  .tab {
-    inline-size: 100%;
-  }
-
-  .label {
-    min-inline-size: 0;
-
-    @mixin ellipsis;
-  }
-}
-
-/* tab-list */
-.tabList {
-  flex-grow: 1;
-  display: flex;
-  position: relative;
-}
-
-/* tab */
-.tab {
-  display: flex;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  align-items: stretch;
-  text-decoration: none;
-  box-sizing: border-box;
-  justify-content: center;
-  transition: background-color var(--kbq-transition-default);
-
-  &::after {
-    transition: background-color var(--kbq-transition-default);
-  }
-}
-
-/* interactive surface — shared by tabs and the add (+) button */
-.default .tab[data-hovered] .content,
-.default .addButton[data-hovered] .content {
-  background-color: var(--kbq-states-background-transparent-hover);
-}
-
-.default .tab[data-selected] .content,
-.default .addButton[data-pressed] .content {
-  background-color: var(--kbq-states-background-transparent-active);
-}
-
-.tab[data-focus-visible] .content,
-.addButton[data-focus-visible] .content {
-  outline-color: var(--kbq-states-line-focus-theme);
-}
-
-.tab[data-disabled] .content,
-.addButton[data-disabled] .content {
-  color: var(--kbq-states-foreground-disabled);
-  cursor: default;
-}
-
-/* editable: add (+) button — native button reset, reuses .content + the surface above */
-.addButton {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  flex-shrink: 0;
-  appearance: none;
-  font: inherit;
-  color: inherit;
-  background: none;
-}
-
-.addButton .content {
-  justify-content: center;
-}
-
-.vertical .addButton {
-  inline-size: 100%;
-}
-
-.content {
-  display: flex;
-  align-items: center;
-  inline-size: 100%;
-  box-sizing: border-box;
-  min-block-size: 32px;
-  padding-inline: var(--kbq-size-m);
-  padding-block: var(--kbq-size-xs);
-  color: var(--kbq-foreground-contrast);
-  border-radius: var(--kbq-size-border-radius);
-  outline-offset: calc(-1 * var(--kbq-size-3xs));
-  outline: var(--kbq-size-3xs) solid;
-  outline-color: transparent;
-  transition:
-    outline-color var(--kbq-transition-default),
-    background-color var(--kbq-transition-default),
-    color var(--kbq-transition-default);
-}
-
-/* inner content wrapper — holds addons + label, masked under the close (×) button */
-.inner {
-  display: flex;
-  flex: 1;
-  position: relative;
-  gap: var(--kbq-size-xxs);
-  overflow: hidden;
-  min-inline-size: 0;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.addon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-}
-
-/* editable: close (×) button */
-.closeButton {
-  display: flex;
-  opacity: 0;
-  position: absolute;
-  visibility: hidden;
-  inset-block-start: 50%;
-  inset-inline-end: var(--kbq-size-m);
-  transform: translateY(-50%);
-  z-index: calc(var(--kbq-layer-absolute) + 1);
-}
-
-.tab[data-hovered] .closeButton,
-.tab[data-focus-visible] .closeButton {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* editable: fade the content out under the close (×) button while it is shown */
-.tab[data-closable][data-hovered] .inner,
-.tab[data-closable][data-focus-visible] .inner {
-  --mask-size: var(--kbq-size-l);
-
-  mask-image: linear-gradient(
-    to right,
-    #000 calc(100% - var(--mask-size) * 2),
-    transparent calc(100% - var(--mask-size))
-  );
-}
-
-/* editable: vertical create mode (full-width add button below + sticky) */
-.vertical .base {
-  flex-direction: column;
-  min-block-size: 0;
-}
-
-.vertical .scrollArea {
-  flex: 1 1 auto;
-  min-block-size: 0;
 }
 
 .scrollBox {
@@ -348,38 +45,103 @@
   }
 }
 
-/* editable: full-width scroll box + vertical fade mask (shown only on the overflowing side) */
-.vertical[data-editable] .scrollBox {
-  --mask-size: var(--kbq-size-3xl);
+.tabList {
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+}
 
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  scrollbar-width: none;
+.underlined {
+  .base::after {
+    content: '';
+    inset-inline: 0;
+    inset-block-end: 0;
+    position: absolute;
+    block-size: var(--kbq-size-border-width);
+    background: var(--kbq-line-contrast-less);
+    z-index: calc(var(--kbq-layer-absolute) + 3);
+  }
+}
 
-  &[data-overflow-block-start][data-overflow-block-end] {
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0,
-      #000 var(--mask-size),
-      #000 calc(100% - var(--mask-size)),
-      transparent 100%
-    );
+.horizontal {
+  flex-direction: column;
+
+  .scrollBox {
+    display: flex;
+    inline-size: 100%;
+    scrollbar-width: none;
+    overflow: auto hidden;
   }
 
-  &[data-overflow-block-start]:not([data-overflow-block-end]) {
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0,
-      #000 var(--mask-size)
-    );
+  .tabList {
+    flex-direction: row;
+  }
+}
+
+.vertical {
+  .base {
+    flex-direction: column;
+    min-block-size: 0;
   }
 
-  &:not([data-overflow-block-start])[data-overflow-block-end] {
-    mask-image: linear-gradient(
-      to bottom,
-      #000 calc(100% - var(--mask-size)),
-      transparent 100%
-    );
+  .scrollArea {
+    flex: 1 1 auto;
+    min-block-size: 0;
+  }
+
+  .scrollBox {
+    display: inline-block;
+    inline-size: auto;
+    scrollbar-width: auto;
+    overflow: hidden auto;
+  }
+
+  .tabList {
+    flex-direction: column;
+  }
+
+  &[data-editable] .scrollBox {
+    --mask-size: var(--kbq-size-3xl);
+
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    scrollbar-width: none;
+
+    &[data-overflow-block-start][data-overflow-block-end] {
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--mask-size),
+        #000 calc(100% - var(--mask-size)),
+        transparent 100%
+      );
+    }
+
+    &[data-overflow-block-start]:not([data-overflow-block-end]) {
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--mask-size)
+      );
+    }
+
+    &:not([data-overflow-block-start])[data-overflow-block-end] {
+      mask-image: linear-gradient(
+        to bottom,
+        #000 calc(100% - var(--mask-size)),
+        transparent 100%
+      );
+    }
+  }
+}
+
+.stretched {
+  .scrollArea {
+    inline-size: 100%;
+  }
+
+  .scrollBox {
+    overflow: hidden;
   }
 }

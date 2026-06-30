@@ -7,31 +7,51 @@ import {
   type ButtonBaseProps,
 } from '@koobiq/react-primitives';
 
-import s from '../../Tabs.module.css';
+import s from './TabAddButton.module.css';
+
+type TabAddButtonOrientation = 'horizontal' | 'vertical';
 
 export type TabAddButtonProps = Omit<ButtonBaseProps, 'className'> & {
   className?: string;
 };
 
+type TabAddButtonViewProps = TabAddButtonProps & {
+  orientation?: TabAddButtonOrientation;
+  isUnderlined?: boolean;
+};
+
 /**
  * The trailing add ("+") button for editable tabs. Built on the primitive
- * Button and styled with the shared tab surface, so it matches tabs in every
- * state (hover / focus / pressed / disabled).
+ * Button and styled with the tab surface states, so it matches tabs in every
+ * state.
  */
 export const TabAddButton = forwardRef<
   ComponentRef<'button'>,
-  TabAddButtonProps
->(({ className, ...other }, ref) => (
-  <ButtonPrimitive
-    ref={ref}
-    data-slot="add-button"
-    className={clsx(s.addButton, className)}
-    {...other}
-  >
-    <span className={s.content}>
-      <IconPlus16 />
-    </span>
-  </ButtonPrimitive>
-));
+  TabAddButtonViewProps
+>(
+  (
+    { className, orientation = 'horizontal', isUnderlined = false, ...other },
+    ref
+  ) => (
+    <ButtonPrimitive
+      ref={ref}
+      {...other}
+      data-slot="add-button"
+      data-orientation={orientation}
+      data-underlined={isUnderlined || undefined}
+      className={clsx(
+        s.base,
+        !isUnderlined && s.default,
+        isUnderlined && s.underlined,
+        orientation && s[orientation],
+        className
+      )}
+    >
+      <span className={s.content}>
+        <IconPlus16 />
+      </span>
+    </ButtonPrimitive>
+  )
+);
 
 TabAddButton.displayName = 'TabAddButton';
