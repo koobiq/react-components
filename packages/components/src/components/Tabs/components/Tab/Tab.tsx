@@ -2,13 +2,19 @@
 
 import type { ElementType, KeyboardEvent, Ref } from 'react';
 
-import { type Node, isNotNil, useFocusRing } from '@koobiq/react-core';
+import {
+  type Node,
+  isNotNil,
+  useFocusRing,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import { useHover, mergeProps, clsx, useDOMRef } from '@koobiq/react-core';
 import { IconXmark16 } from '@koobiq/react-icons';
 import type { TabListState } from '@koobiq/react-primitives';
 import { useTab } from '@koobiq/react-primitives';
 
 import { IconButton, type IconButtonProps } from '../../../IconButton';
+import intlMessages from '../../intl.json';
 import type { TabProps as TabItemProps } from '../../Tab';
 import s from '../../Tabs.module.css';
 
@@ -17,9 +23,7 @@ export type TabProps<T> = {
   state: TabListState<T>;
   innerRef: Ref<HTMLElement>;
   onFocused?: () => void;
-  isRemovable?: boolean;
   onRemove?: () => void;
-  removeLabel?: string;
   closeButtonProps?: IconButtonProps;
 };
 
@@ -28,12 +32,13 @@ export function Tab<T>({
   state,
   innerRef,
   onFocused,
-  isRemovable = false,
   onRemove,
-  removeLabel,
   closeButtonProps,
 }: TabProps<T>) {
   const { key, rendered } = item;
+  const t = useLocalizedStringFormatter(intlMessages);
+
+  const isRemovable = !!onRemove;
 
   const domRef = useDOMRef<HTMLElement>(innerRef);
   const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
@@ -125,7 +130,7 @@ export function Tab<T>({
             tabIndex={-1}
             variant="fade-contrast"
             data-slot="close-button"
-            aria-label={removeLabel}
+            aria-label={t.format('remove')}
             isDisabled={isDisabled}
             onPress={() => onRemove?.()}
             {...closeButtonProps}

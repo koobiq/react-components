@@ -338,10 +338,11 @@ export function TabsRender<T extends object>(
                   state={state}
                   key={item.key}
                   innerRef={itemsRefs[i]}
-                  isRemovable={isRemovable}
-                  removeLabel={t.format('remove')}
                   closeButtonProps={slotProps?.closeButton}
-                  onRemove={() => onRemove?.(new Set([item.key]))}
+                  {...(onRemove &&
+                    typeof onRemove === 'function' && {
+                      onRemove: () => onRemove?.(new Set([item.key])),
+                    })}
                   onFocused={() => scrollCorrection(orientation, i, 'auto')}
                 />
               ))}
