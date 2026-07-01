@@ -40,6 +40,7 @@ export function TabsRender<T extends object>(
     'data-testid': dataTestId,
     isUnderlined = false,
     isStretched: isStretchedProp = false,
+    isDisabled = false,
     onRemove,
     onAdd,
     style,
@@ -74,6 +75,10 @@ export function TabsRender<T extends object>(
   const isStretched = isHorizontal && isStretchedProp;
   const isRemovable = isNotNil(onRemove);
   const hasAddButton = isNotNil(onAdd);
+
+  const isAddButtonDisabled =
+    isDisabled || Boolean(slotProps?.addButton?.isDisabled);
+
   const selectedItemIdx = selectedItem?.index;
   const selectedTabProps = selectedItem?.props as TabItemProps<T> | undefined;
 
@@ -386,6 +391,7 @@ export function TabsRender<T extends object>(
             {...slotProps?.addButton}
             orientation={orientation}
             isUnderlined={isUnderlined}
+            isDisabled={isAddButtonDisabled}
           />
         )}
       </div>

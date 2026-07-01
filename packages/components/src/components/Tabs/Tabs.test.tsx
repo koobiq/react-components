@@ -493,4 +493,18 @@ describe('Tabs editable', () => {
 
     expect(onAdd).toHaveBeenCalledTimes(1);
   });
+
+  it('does not call onAdd when tabs are disabled', async () => {
+    const onAdd = vi.fn();
+
+    render(renderComponent({ isDisabled: true, onAdd }));
+
+    const addButton = screen.getByRole('button', { name: addLabel });
+
+    expect(addButton).toBeDisabled();
+
+    await userEvent.click(addButton);
+
+    expect(onAdd).not.toHaveBeenCalled();
+  });
 });
