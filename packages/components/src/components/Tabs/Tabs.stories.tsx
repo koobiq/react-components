@@ -167,10 +167,16 @@ export const Editable: Story = {
           isStretched={isStretched}
           isDisabled={isDisabled}
           selectedKey={selectedKey}
-          disabledKeys={['hips']}
           onSelectionChange={setSelectedKey}
           style={{
             blockSize: isVertical && !isUnderlined ? 280 : undefined,
+          }}
+          slotProps={{
+            tabs: {
+              style: {
+                inlineSize: isVertical && !isUnderlined ? 240 : undefined,
+              },
+            },
           }}
           onAdd={addTab}
           onRemove={removeTabs}
