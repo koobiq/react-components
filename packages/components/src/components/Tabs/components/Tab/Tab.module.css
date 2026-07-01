@@ -9,6 +9,7 @@
   text-decoration: none;
   box-sizing: border-box;
   justify-content: center;
+  min-inline-size: 40px;
   transition: background-color var(--kbq-transition-default);
 
   &::after {
@@ -43,8 +44,6 @@
 }
 
 .default {
-  min-inline-size: 40px;
-
   &[data-hovered] .content {
     background-color: var(--kbq-states-background-transparent-hover);
   }
@@ -52,12 +51,15 @@
   &[data-selected] .content {
     background-color: var(--kbq-states-background-transparent-active);
   }
+
+  &.onlyIcon .content {
+    padding-inline: var(--kbq-size-s);
+  }
 }
 
 .underlined {
   --tab-content-offset: var(--kbq-size-m);
 
-  min-inline-size: 40px;
   box-sizing: content-box;
   padding-block: var(--kbq-size-s);
   border-inline: var(--tab-content-offset) solid transparent;
@@ -93,7 +95,6 @@
   &.onlyIcon {
     --tab-content-offset: 0px;
 
-    min-inline-size: 32px;
     border-inline: var(--kbq-size-xs) solid transparent;
   }
 
@@ -143,6 +144,10 @@
 
     @mixin ellipsis;
   }
+}
+
+.onlyIcon {
+  min-inline-size: 32px;
 }
 
 .content {
