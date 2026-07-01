@@ -74,6 +74,7 @@
   }
 
   .tabList {
+    overflow: clip;
     flex-direction: row;
   }
 }
