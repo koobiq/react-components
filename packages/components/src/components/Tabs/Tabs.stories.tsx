@@ -102,6 +102,7 @@ export const Editable: Story = {
   render: function Render() {
     const [isVertical, { set: setVertical }] = useBoolean(false);
     const [isUnderlined, { set: setUnderlined }] = useBoolean(false);
+    const [isStretched, { set: setStretched }] = useBoolean(false);
 
     const list = useListData({
       initialItems: [
@@ -150,12 +151,16 @@ export const Editable: Story = {
           <Toggle isSelected={isUnderlined} onChange={setUnderlined}>
             Underlined
           </Toggle>
+          <Toggle isSelected={isStretched} onChange={setStretched}>
+            Stretched
+          </Toggle>
         </FlexBox>
         <Tabs
           aria-label="Types of cyberattacks"
           items={list.items}
           orientation={isVertical ? 'vertical' : 'horizontal'}
           isUnderlined={isUnderlined}
+          isStretched={isStretched}
           selectedKey={selectedKey}
           onSelectionChange={setSelectedKey}
           style={{

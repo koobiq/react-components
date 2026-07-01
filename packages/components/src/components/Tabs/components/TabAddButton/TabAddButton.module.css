@@ -38,20 +38,6 @@
   min-inline-size: 32px;
   box-sizing: content-box;
   padding-block: var(--kbq-size-s);
-  border-inline: var(--kbq-size-xs) solid transparent;
-  border-inline-end: 0;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inline-size: 100%;
-    block-size: 3px;
-    inset-block-end: 0;
-    inset-block-start: unset;
-    border-radius: 2px 2px 0 0;
-    background-color: transparent;
-    z-index: calc(var(--kbq-layer-absolute) + 1);
-  }
 
   &[data-hovered]::after {
     background-color: var(--kbq-line-contrast-fade);
@@ -75,7 +61,7 @@
   inline-size: 100%;
   box-sizing: border-box;
   min-block-size: 32px;
-  padding-inline: var(--kbq-size-m);
+  padding-inline: var(--kbq-size-s);
   padding-block: var(--kbq-size-xs);
   color: var(--kbq-foreground-contrast);
   border-radius: var(--kbq-size-border-radius);
