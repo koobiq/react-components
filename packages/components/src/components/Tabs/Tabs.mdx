@@ -42,16 +42,10 @@ You can render tabs dynamically by using `items` prop.
 
 ## Editable
 
-Provide `onRemove` to let users delete tabs and `onAdd` to let them create new ones.
-`Tabs` doesn't own the collection — you manage it (for example with `useListData`) and
-`Tabs` just calls these handlers:
+Editable tabs are controlled from outside. Keep the tab list in your app state,
+pass it to the `items` prop, and update it when `onAdd` or `onRemove` is called.
 
-- `onRemove(keys: Set<Key>)` follows the React Aria removable-collection convention
-  (`onRemove={(keys) => list.remove(...keys)}`). When provided, a close (×) button appears
-  on every tab; tabs can also be removed with `Delete` / `Backspace`.
-- `onAdd()` renders a trailing add ("+") button. In horizontal orientation it stays pinned
-  to the right while tabs scroll; in vertical orientation it becomes a full-width button
-  pinned to the bottom, and the scrollable area fades out at the edges that overflow.
+Tabs can be removed with the close button, <kbd>Delete</kbd> or <kbd>Backspace</kbd>.
 
 <Story of={Stories.Editable} />
 
