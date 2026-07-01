@@ -68,9 +68,11 @@
 }
 
 .underlined {
-  padding-block: var(--kbq-size-s);
+  --tab-content-offset: var(--kbq-size-m);
+
   box-sizing: content-box;
-  border-inline: var(--kbq-size-m) solid transparent;
+  padding-block: var(--kbq-size-s);
+  border-inline: var(--tab-content-offset) solid transparent;
 
   &::after {
     content: '';
@@ -93,6 +95,8 @@
   }
 
   &.onlyIcon {
+    --tab-content-offset: 0px;
+
     border-inline: var(--kbq-size-xs) solid transparent;
   }
 
@@ -105,7 +109,9 @@
   }
 
   .content {
-    padding: 0;
+    padding-inline: var(--tab-content-offset);
+    margin-inline: calc(-1 * var(--tab-content-offset));
+    inline-size: calc(100% + calc(2 * var(--tab-content-offset)));
   }
 
   .closeButton {
