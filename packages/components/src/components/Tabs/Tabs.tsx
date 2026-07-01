@@ -55,11 +55,6 @@ export function TabsRender<T extends object>(
 
   const [isMounted, setIsMounted] = useState(false);
 
-  const [scrollButtonsVisibility, setScrollButtonsVisibility] = useState({
-    prev: false,
-    next: false,
-  });
-
   const [horizontalOverflow, setHorizontalOverflow] = useState({
     start: false,
     end: false,
@@ -119,38 +114,6 @@ export function TabsRender<T extends object>(
     }
   };
 
-  /** Syncs prev/next button visibility with current scroll position. */
-  const updateScrollButtonsVisibility = () => {
-    if (!isHorizontal) return;
-
-    if (!isNotNil(selectedItemIdx)) return;
-
-    if (!itemsRefs[selectedItemIdx]) return;
-
-    const { scrollBoxMeta, tabsListMeta } = getTabsMeta(
-      tabListRef,
-      scrollBoxRef,
-      itemsRefs[selectedItemIdx]
-    );
-
-    if (!scrollBoxMeta || !tabsListMeta) return;
-
-    const { scrollLeft } = scrollBoxMeta;
-
-    const isPrevButtonActive = scrollLeft > 0;
-    const isNextButtonActive = tabsListMeta.right - scrollBoxMeta.right > 1;
-
-    setScrollButtonsVisibility((prevState) => {
-      const { prev, next } = prevState;
-
-      if (isPrevButtonActive !== prev || isNextButtonActive !== next) {
-        return { prev: isPrevButtonActive, next: isNextButtonActive };
-      }
-
-      return prevState;
-    });
-  };
-
   /** Syncs the horizontal fade mask with the current scroll position. */
   const updateHorizontalOverflow = () => {
     if (!isHorizontal) return;
@@ -185,9 +148,8 @@ export function TabsRender<T extends object>(
     );
   };
 
-  /** Syncs both scroll affordances: horizontal buttons and horizontal/vertical fade. */
+  /** Syncs horizontal/vertical overflow affordances with the current scroll position. */
   const updateScrollState = () => {
-    updateScrollButtonsVisibility();
     updateHorizontalOverflow();
     updateVerticalOverflow();
   };
@@ -258,7 +220,7 @@ export function TabsRender<T extends object>(
     }
   };
 
-  const [debouncedUpdateScrollButtonsActivity] = useDebounceCallback({
+  const [debouncedUpdateScrollState] = useDebounceCallback({
     callback: updateScrollState,
     delay: 100,
   });
@@ -270,7 +232,7 @@ export function TabsRender<T extends object>(
 
   useResizeObserverRefs(
     useMemo(() => [scrollBoxRef], [scrollBoxRef]),
-    () => debouncedUpdateScrollButtonsActivity()
+    () => debouncedUpdateScrollState()
   );
 
   const scrollPrev = () => {
@@ -352,13 +314,13 @@ export function TabsRender<T extends object>(
                 onPress={scrollPrev}
                 ref={scrollButtonRef}
                 aria-label={t.format('prev')}
-                isInvisible={!scrollButtonsVisibility.prev}
+                isInvisible={!activeHorizontalOverflow.start}
               />
               <TabScrollButton
                 dir="next"
                 onPress={scrollNext}
                 aria-label={t.format('next')}
-                isInvisible={!scrollButtonsVisibility.next}
+                isInvisible={!activeHorizontalOverflow.end}
               />
             </>
           )}
