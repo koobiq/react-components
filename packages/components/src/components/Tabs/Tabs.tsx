@@ -174,6 +174,8 @@ export function TabsRender<T extends object>(
     itemIdx = selectedItemIdx,
     behavior: ScrollBehavior = 'smooth'
   ) => {
+    if (!hasHorizontalOverflow && !hasVerticalOverflow) return;
+
     if (!isNotNil(itemIdx)) return;
 
     const selectedEl = itemsRefs[itemIdx];
@@ -256,11 +258,13 @@ export function TabsRender<T extends object>(
 
     updateScrollState();
 
-    if (isMounted) {
-      debouncedScrollCorrection(orientation);
-    } else {
+    if (!isMounted) {
       setIsMounted(true);
+
+      return;
     }
+
+    debouncedScrollCorrection(orientation);
   }, [selectedItemIdx, isMounted, orientation]);
 
   const tabsProps = mergeProps({ className: s.base }, slotProps?.tabs);

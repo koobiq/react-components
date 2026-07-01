@@ -309,10 +309,10 @@ describe('Tabs', () => {
       vi.useFakeTimers();
 
       try {
-        const { container } = render(
+        const { container, rerender } = render(
           renderComponent({
             orientation: 'vertical',
-            selectedKey: '4',
+            selectedKey: '1',
           })
         );
 
@@ -320,12 +320,20 @@ describe('Tabs', () => {
           `.${s.scrollBox}`
         ) as HTMLElement;
 
-        const selectedTab = screen.getByRole('tab', { selected: true });
-
         Object.defineProperty(scrollBox, 'scrollTop', {
           value: 0,
           configurable: true,
           writable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'clientHeight', {
+          value: 100,
+          configurable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'scrollHeight', {
+          value: 200,
+          configurable: true,
         });
 
         vi.spyOn(scrollBox, 'getBoundingClientRect').mockReturnValue({
@@ -334,6 +342,17 @@ describe('Tabs', () => {
           left: 0,
           right: 200,
         } as DOMRect);
+
+        fireEvent.scroll(scrollBox);
+
+        rerender(
+          renderComponent({
+            orientation: 'vertical',
+            selectedKey: '4',
+          })
+        );
+
+        const selectedTab = screen.getByRole('tab', { selected: true });
 
         vi.spyOn(selectedTab, 'getBoundingClientRect').mockReturnValue({
           top: 120,
@@ -347,6 +366,70 @@ describe('Tabs', () => {
         });
 
         expect(scrollBox.scrollTop).toBe(60);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it('should not correct scroll when there is no overflow', async () => {
+      vi.useFakeTimers();
+
+      try {
+        const { container, rerender } = render(
+          renderComponent({
+            orientation: 'vertical',
+            selectedKey: '1',
+          })
+        );
+
+        const scrollBox = container.querySelector(
+          `.${s.scrollBox}`
+        ) as HTMLElement;
+
+        Object.defineProperty(scrollBox, 'scrollTop', {
+          value: 0,
+          configurable: true,
+          writable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'clientHeight', {
+          value: 100,
+          configurable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'scrollHeight', {
+          value: 100,
+          configurable: true,
+        });
+
+        vi.spyOn(scrollBox, 'getBoundingClientRect').mockReturnValue({
+          top: 0,
+          bottom: 100,
+          left: 0,
+          right: 200,
+        } as DOMRect);
+
+        rerender(
+          renderComponent({
+            orientation: 'vertical',
+            selectedKey: '4',
+          })
+        );
+
+        const selectedTab = screen.getByRole('tab', { selected: true });
+
+        vi.spyOn(selectedTab, 'getBoundingClientRect').mockReturnValue({
+          top: 120,
+          bottom: 160,
+          left: 0,
+          right: 200,
+        } as DOMRect);
+
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(100);
+        });
+
+        expect(scrollBox.scrollTop).toBe(0);
       } finally {
         vi.useRealTimers();
       }
