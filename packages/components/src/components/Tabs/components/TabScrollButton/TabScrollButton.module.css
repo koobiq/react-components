@@ -1,11 +1,10 @@
 .base[data-slot='scroll-button'] {
-  --tabs-scroll-button-inline-size: var(--kbq-size-3xl);
+  --icon-button-size: 32px;
 
   opacity: 1;
   flex-shrink: 0;
   block-size: 100%;
   position: absolute;
-  inline-size: var(--tabs-scroll-button-inline-size);
   z-index: calc(var(--kbq-layer-absolute) + 2);
 
   &.prev {
