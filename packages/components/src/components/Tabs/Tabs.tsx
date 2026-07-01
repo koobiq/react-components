@@ -187,17 +187,19 @@ export function TabsRender<T extends object>(
     updateVerticalOverflow();
   };
 
-  const hasHScroll =
-    isHorizontal &&
-    tabListRef.current &&
-    scrollBoxRef.current &&
-    tabListRef.current?.clientWidth > scrollBoxRef.current?.clientWidth;
+  const hasHorizontalOverflow =
+    isHorizontal && (horizontalOverflow.start || horizontalOverflow.end);
 
-  const hasVScroll =
-    !isHorizontal &&
-    tabListRef.current &&
-    scrollBoxRef.current &&
-    tabListRef.current.clientHeight > scrollBoxRef.current.clientHeight;
+  const hasVerticalOverflow =
+    !isHorizontal && (verticalOverflow.start || verticalOverflow.end);
+
+  const activeHorizontalOverflow = isHorizontal
+    ? horizontalOverflow
+    : { start: false, end: false };
+
+  const activeVerticalOverflow = isHorizontal
+    ? { start: false, end: false }
+    : verticalOverflow;
 
   /** Adjusts the scroll position based on the selected tab's position and orientation. */
   const scrollCorrection = (
@@ -285,13 +287,14 @@ export function TabsRender<T extends object>(
   useEffect(() => {
     if (!isNotNil(selectedItemIdx)) return;
 
+    updateScrollState();
+
     if (isMounted) {
       debouncedScrollCorrection(orientation);
     } else {
-      updateScrollState();
       setIsMounted(true);
     }
-  }, [selectedItemIdx, isMounted]);
+  }, [selectedItemIdx, isMounted, orientation]);
 
   const tabsProps = mergeProps({ className: s.base }, slotProps?.tabs);
 
@@ -309,10 +312,10 @@ export function TabsRender<T extends object>(
       ref: scrollBoxRef,
       className: s.scrollBox,
       onScroll: updateScrollState,
-      'data-overflow-inline-start': horizontalOverflow.start || undefined,
-      'data-overflow-inline-end': horizontalOverflow.end || undefined,
-      'data-overflow-block-start': verticalOverflow.start || undefined,
-      'data-overflow-block-end': verticalOverflow.end || undefined,
+      'data-overflow-inline-start': activeHorizontalOverflow.start || undefined,
+      'data-overflow-inline-end': activeHorizontalOverflow.end || undefined,
+      'data-overflow-block-start': activeVerticalOverflow.start || undefined,
+      'data-overflow-block-end': activeVerticalOverflow.end || undefined,
     },
     slotProps?.scrollBox
   );
@@ -326,8 +329,8 @@ export function TabsRender<T extends object>(
       data-editable={isRemovable || hasAddButton || undefined}
       data-stretched={isStretched || undefined}
       data-underlined={isUnderlined || undefined}
-      data-vertical-scrollable={hasVScroll || undefined}
-      data-horizontal-scrollable={hasHScroll || undefined}
+      data-vertical-scrollable={hasVerticalOverflow || undefined}
+      data-horizontal-scrollable={hasHorizontalOverflow || undefined}
       className={clsx(
         s.container,
         isStretched && s.stretched,
@@ -338,7 +341,7 @@ export function TabsRender<T extends object>(
     >
       <div {...tabsProps}>
         <div className={s.scrollArea}>
-          {hasHScroll && (
+          {hasHorizontalOverflow && (
             <>
               <TabScrollButton
                 onPress={scrollPrev}

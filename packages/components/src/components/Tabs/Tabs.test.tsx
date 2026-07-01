@@ -190,59 +190,119 @@ describe('Tabs', () => {
     });
 
     it('should render the next button when tab-list > scroll-box', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
       Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
-      rerender(renderComponent({}));
+      if (scrollBox) fireEvent.scroll(scrollBox);
 
       expect(hasNextScrollButton(container)).toBe(true);
     });
 
     it('should NOT render the next button when tab-list <= scroll-box', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
-
-      Object.defineProperty(tabsList, 'clientWidth', {
-        value: 200,
-        configurable: true,
-      });
 
       Object.defineProperty(scrollBox, 'clientWidth', {
         value: 200,
         configurable: true,
       });
 
-      rerender(renderComponent({}));
+      Object.defineProperty(scrollBox, 'scrollWidth', {
+        value: 200,
+        configurable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
       expect(hasNextScrollButton(container)).toBe(false);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 199 });
-      Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 199 });
 
-      rerender(renderComponent({}));
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
       expect(hasNextScrollButton(container)).toBe(false);
     });
 
     it('should render next/prev buttons when content overflows and already scrolled', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
       Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
-      Object.defineProperty(scrollBox, 'scrollLeft', { value: 10 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
-      rerender(renderComponent({}));
+      Object.defineProperty(scrollBox, 'scrollLeft', {
+        value: 10,
+        configurable: true,
+        writable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
 
       expect(hasPrevScrollButton(container)).toBe(true);
       expect(hasNextScrollButton(container)).toBe(true);
+    });
+
+    it('should keep overflow attributes in sync when orientation changes', () => {
+      const { container, rerender } = render(renderComponent({}));
+
+      let root = container.firstElementChild;
+      let scrollBox = container.querySelector(`.${s.scrollBox}`);
+
+      Object.defineProperty(scrollBox, 'clientWidth', {
+        value: 200,
+        configurable: true,
+      });
+
+      Object.defineProperty(scrollBox, 'scrollWidth', {
+        value: 300,
+        configurable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
+      expect(root).toHaveAttribute('data-horizontal-scrollable', 'true');
+      expect(root).not.toHaveAttribute('data-vertical-scrollable');
+      expect(scrollBox).toHaveAttribute('data-overflow-inline-end', 'true');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-block-end');
+
+      rerender(renderComponent({ orientation: 'vertical' }));
+
+      root = container.firstElementChild;
+      scrollBox = container.querySelector(`.${s.scrollBox}`);
+
+      expect(root).not.toHaveAttribute('data-horizontal-scrollable');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-inline-end');
+
+      Object.defineProperty(scrollBox, 'clientHeight', {
+        value: 200,
+        configurable: true,
+      });
+
+      Object.defineProperty(scrollBox, 'scrollHeight', {
+        value: 300,
+        configurable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
+      expect(root).toHaveAttribute('data-vertical-scrollable', 'true');
+      expect(root).not.toHaveAttribute('data-horizontal-scrollable');
+      expect(scrollBox).toHaveAttribute('data-overflow-block-end', 'true');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-inline-end');
+
+      rerender(renderComponent({}));
+
+      root = container.firstElementChild;
+      scrollBox = container.querySelector(`.${s.scrollBox}`);
+
+      expect(root).not.toHaveAttribute('data-vertical-scrollable');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-block-end');
     });
 
     it('should scroll vertically when selected tab is out of view', async () => {
@@ -302,13 +362,12 @@ describe('Tabs', () => {
       vi.spyOn(global.Math, 'min').mockReturnValue(1);
 
       it('should scroll to right when clicking the next button', () => {
-        const { container, rerender } = render(renderComponent({}));
+        const { container } = render(renderComponent({}));
 
-        const tabsList = container.querySelector(`.${s.tabList}`);
         const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-        Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
         Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+        Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
         Object.defineProperty(scrollBox, 'scrollLeft', {
           value: 0,
@@ -316,7 +375,7 @@ describe('Tabs', () => {
           writable: true,
         });
 
-        rerender(renderComponent({}));
+        if (scrollBox) fireEvent.scroll(scrollBox);
 
         const nextScrollButton = findScrollButton(container, ariaLabelNextBtn);
 
@@ -327,13 +386,12 @@ describe('Tabs', () => {
     });
 
     it('should scroll to left when clicking the prev button', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
       Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
       Object.defineProperty(scrollBox, 'scrollLeft', {
         value: 100,
@@ -341,7 +399,7 @@ describe('Tabs', () => {
         writable: true,
       });
 
-      rerender(renderComponent({}));
+      if (scrollBox) fireEvent.scroll(scrollBox);
 
       const prevScrollButton = findScrollButton(container, ariaLabelPrevBtn);
 
