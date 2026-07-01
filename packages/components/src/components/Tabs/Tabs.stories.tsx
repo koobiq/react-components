@@ -176,12 +176,7 @@ export const Editable: Story = {
           onRemove={removeTabs}
         >
           {(item) => (
-            <Tab
-              startAddon={<IconBug16 />}
-              endAddon={<IconBug16 />}
-              key={item.id}
-              title={item.title}
-            >
+            <Tab startAddon={<IconBug16 />} key={item.id} title={item.title}>
               {item.title} content
             </Tab>
           )}

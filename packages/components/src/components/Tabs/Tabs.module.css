@@ -90,23 +90,11 @@
   }
 
   .scrollBox {
-    display: inline-block;
-    inline-size: auto;
-    scrollbar-width: auto;
-    overflow: hidden auto;
-  }
-
-  .tabList {
-    flex-direction: column;
-  }
-
-  &[data-editable] .scrollBox {
     --mask-size: var(--kbq-size-3xl);
 
-    display: block;
-    inline-size: 100%;
-    block-size: 100%;
-    scrollbar-width: none;
+    inline-size: auto;
+    display: inline-block;
+    overflow: hidden auto;
 
     &[data-overflow-block-start][data-overflow-block-end] {
       mask-image: linear-gradient(
@@ -133,6 +121,10 @@
         transparent 100%
       );
     }
+  }
+
+  .tabList {
+    flex-direction: column;
   }
 }
 
