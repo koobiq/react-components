@@ -12,6 +12,14 @@
   color: inherit;
   background: none;
 
+  &[data-hovered] .content {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &[data-pressed] .content {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
   &[data-focus-visible] .content {
     outline-color: var(--kbq-states-line-focus-theme);
   }
@@ -22,36 +30,16 @@
   }
 }
 
-.default {
-  &[data-hovered] .content {
-    background-color: var(--kbq-states-background-transparent-hover);
-  }
-
-  &[data-pressed] .content {
-    background-color: var(--kbq-states-background-transparent-active);
-  }
-}
-
 .underlined {
-  --tab-content-offset: 0px;
-
-  min-inline-size: 32px;
-  box-sizing: content-box;
   padding-block: var(--kbq-size-s);
-
-  &[data-hovered]::after {
-    background-color: var(--kbq-line-contrast-fade);
-  }
-
-  .content {
-    padding-inline: var(--tab-content-offset);
-    margin-inline: calc(-1 * var(--tab-content-offset));
-    inline-size: calc(100% + calc(2 * var(--tab-content-offset)));
-  }
 }
 
 .vertical {
   inline-size: 100%;
+
+  .content {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
 }
 
 .content {
