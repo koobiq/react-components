@@ -103,6 +103,7 @@ export const Editable: Story = {
     const [isVertical, { set: setVertical }] = useBoolean(false);
     const [isUnderlined, { set: setUnderlined }] = useBoolean(false);
     const [isStretched, { set: setStretched }] = useBoolean(false);
+    const [isDisabled, { set: setDisabled }] = useBoolean(false);
 
     const list = useListData({
       initialItems: [
@@ -154,6 +155,9 @@ export const Editable: Story = {
           <Toggle isSelected={isStretched} onChange={setStretched}>
             Stretched
           </Toggle>
+          <Toggle isSelected={isDisabled} onChange={setDisabled}>
+            Disabled
+          </Toggle>
         </FlexBox>
         <Tabs
           aria-label="Types of cyberattacks"
@@ -161,7 +165,9 @@ export const Editable: Story = {
           orientation={isVertical ? 'vertical' : 'horizontal'}
           isUnderlined={isUnderlined}
           isStretched={isStretched}
+          isDisabled={isDisabled}
           selectedKey={selectedKey}
+          disabledKeys={['hips']}
           onSelectionChange={setSelectedKey}
           style={{
             blockSize: isVertical && !isUnderlined ? 280 : undefined,
