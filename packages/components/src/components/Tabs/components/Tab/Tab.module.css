@@ -41,6 +41,16 @@
       transparent calc(100% - var(--mask-size))
     );
   }
+
+  .closeButton {
+    opacity: 0;
+    position: absolute;
+    visibility: hidden;
+    inset-block-start: 50%;
+    inset-inline-end: var(--kbq-size-m);
+    transform: translateY(-50%);
+    z-index: calc(var(--kbq-layer-absolute) + 1);
+  }
 }
 
 .default {
@@ -184,15 +194,4 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-}
-
-.closeButton {
-  display: flex;
-  opacity: 0;
-  position: absolute;
-  visibility: hidden;
-  inset-block-start: 50%;
-  inset-inline-end: var(--kbq-size-m);
-  transform: translateY(-50%);
-  z-index: calc(var(--kbq-layer-absolute) + 1);
 }

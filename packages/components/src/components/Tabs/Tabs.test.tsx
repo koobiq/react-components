@@ -354,9 +354,13 @@ describe('Tabs', () => {
 
     describe('scroll buttons behavior', () => {
       vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-        cb(0);
+        const id = window.setTimeout(() => cb(performance.now()), 0);
 
-        return 0;
+        return id;
+      });
+
+      vi.spyOn(window, 'cancelAnimationFrame').mockImplementation((id) => {
+        window.clearTimeout(id);
       });
 
       vi.spyOn(global.Math, 'min').mockReturnValue(1);

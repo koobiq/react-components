@@ -82,6 +82,9 @@ export function Tab<T>({
 
   const endAddonProps = mergeProps({ className: s.addon }, slotProps?.endAddon);
 
+  const { className: closeButtonClassName, ...closeButtonRestProps } =
+    closeButtonProps ?? {};
+
   const Tag: ElementType = href ? 'a' : 'div';
 
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
@@ -130,25 +133,22 @@ export function Tab<T>({
         </span>
       </div>
       {isRemovable && (
-        <span
-          className={s.closeButton}
-          onPointerDown={(event) => event.stopPropagation()}
+        <IconButton
+          as="span"
+          size="l"
+          tabIndex={-1}
+          variant="fade-contrast"
+          data-slot="close-button"
+          aria-label={t.format('remove')}
+          isDisabled={isDisabled}
+          onPress={() => onRemove?.()}
+          className={clsx(s.closeButton, closeButtonClassName)}
+          isCompact
+          preventFocusOnPress
+          {...closeButtonRestProps}
         >
-          <IconButton
-            as="span"
-            size="l"
-            isCompact
-            tabIndex={-1}
-            variant="fade-contrast"
-            data-slot="close-button"
-            aria-label={t.format('remove')}
-            isDisabled={isDisabled}
-            onPress={() => onRemove?.()}
-            {...closeButtonProps}
-          >
-            <IconXmark16 />
-          </IconButton>
-        </span>
+          <IconXmark16 />
+        </IconButton>
       )}
     </Tag>
   );
