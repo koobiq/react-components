@@ -31,8 +31,8 @@
     visibility: visible;
   }
 
-  &[data-closable][data-hovered] .inner,
-  &[data-closable][data-focus-visible] .inner {
+  &[data-allows-removing][data-hovered] .inner,
+  &[data-allows-removing][data-focus-visible] .inner {
     --mask-size: var(--kbq-size-l);
 
     mask-image: linear-gradient(

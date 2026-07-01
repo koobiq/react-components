@@ -47,7 +47,7 @@ export function Tab<T>({
   const { key, rendered } = item;
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const isRemovable = !!onRemove;
+  const allowsRemoving = !!onRemove;
 
   const domRef = useDOMRef<HTMLElement>(innerRef);
   const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
@@ -88,7 +88,7 @@ export function Tab<T>({
   const Tag: ElementType = href ? 'a' : 'div';
 
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (!isRemovable || isDisabled) return;
+    if (!allowsRemoving || isDisabled) return;
 
     if (event.key === 'Delete' || event.key === 'Backspace') {
       event.preventDefault();
@@ -114,7 +114,7 @@ export function Tab<T>({
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       data-onlyicon={onlyIcon || undefined}
-      data-closable={isRemovable || undefined}
+      data-allows-removing={allowsRemoving || undefined}
       data-underlined={isUnderlined || undefined}
       data-focus-visible={isFocusVisible || undefined}
       {...mergeProps(hoverProps, focusProps, tabProps, {
@@ -132,7 +132,7 @@ export function Tab<T>({
           {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}
         </span>
       </div>
-      {isRemovable && (
+      {allowsRemoving && (
         <IconButton
           as="span"
           size="l"
