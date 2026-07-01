@@ -76,14 +76,6 @@
     z-index: calc(var(--kbq-layer-absolute) + 1);
   }
 
-  &:first-child {
-    border-inline-start: 0;
-  }
-
-  &:last-child {
-    border-inline-end: 0;
-  }
-
   &[data-selected]::after {
     background-color: var(--kbq-line-contrast);
   }
@@ -96,6 +88,14 @@
     --tab-content-offset: 0px;
 
     border-inline: var(--kbq-size-xs) solid transparent;
+  }
+
+  &:first-child {
+    border-inline-start: 0;
+  }
+
+  &:last-child {
+    border-inline-end: 0;
   }
 
   .content {
