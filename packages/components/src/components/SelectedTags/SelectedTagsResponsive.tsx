@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 import {
   clsx,
   useHideOverflowItems,
@@ -7,14 +9,15 @@ import {
 import { useFormFieldControlGroup } from '../FormField';
 
 import intlMessages from './intl';
+import { SelectedTag } from './SelectedTag';
 import s from './SelectedTags.module.css';
-import { Tag } from './Tag';
-import type { SelectedTagsProps } from './types';
+import type { SelectedTagsProps, SelectedTagsRenderTagProps } from './types';
 import { getHiddenCount } from './utils';
 
 export function SelectedTagsResponsive<T extends object>({
   state,
   states,
+  renderTag,
 }: SelectedTagsProps<T>) {
   const { isDisabled, isInvalid, isReadOnly } = states;
   const length = state?.selectedItems?.length || 0;
@@ -40,24 +43,31 @@ export function SelectedTagsResponsive<T extends object>({
         data-limit-tags="responsive"
         aria-label={t.format('selected items')}
       >
-        {state.selectedItems?.map((item, i) => (
-          <Tag
-            key={item.key}
-            className={s.tag}
-            ref={itemsRefs[i]}
-            isDisabled={isDisabled}
-            isReadOnly={isReadOnly}
-            aria-hidden={!visibleMap[i] || undefined}
-            variant={isInvalid ? 'error-fade' : 'contrast-fade'}
-            onRemove={() => {
+        {state.selectedItems?.map((item, i) => {
+          const tagProps: SelectedTagsRenderTagProps = {
+            ref: itemsRefs[i],
+            className: s.tag,
+            isDisabled,
+            isReadOnly,
+            'aria-hidden': !visibleMap[i] || undefined,
+            variant: isInvalid ? 'error-fade' : 'contrast-fade',
+            onRemove: () => {
               if (state.selectionManager.isSelected(item.key)) {
                 state.selectionManager.toggleSelection(item.key);
               }
-            }}
-          >
-            {item.textValue}
-          </Tag>
-        ))}
+            },
+          };
+
+          return (
+            <Fragment key={item.key}>
+              {renderTag ? (
+                renderTag(item, tagProps)
+              ) : (
+                <SelectedTag {...tagProps}>{item.textValue}</SelectedTag>
+              )}
+            </Fragment>
+          );
+        })}
       </div>
       <div
         className={s.more}

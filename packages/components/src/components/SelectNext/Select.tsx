@@ -40,9 +40,9 @@ import { List } from '../List';
 import type { ListItemAddon } from '../List/components';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
+import { SelectedTags, SelectedTag } from '../SelectedTags';
 
 import {
-  TagGroup,
   SelectList,
   SelectOption,
   SelectSection,
@@ -96,6 +96,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     onClear,
     style,
     label,
+    renderTag,
   } = props;
 
   const { validationBehavior: formValidationBehavior } =
@@ -275,14 +276,17 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     slotProps?.errorMessage
   );
 
+  // renderTag is only consulted here; when renderValueProp is supplied, this
+  // function — and therefore renderTag — is never called (see `renderValue` below).
   const renderDefaultValue: typeof renderValueProp = (state, states) => {
     if (!state.selectedItems?.length) return null;
 
     if (selectionMode === 'multiple')
       return (
-        <TagGroup
+        <SelectedTags
           state={state}
           states={states}
+          renderTag={renderTag}
           selectedTagsOverflow={selectedTagsOverflow}
         />
       );
@@ -392,6 +396,7 @@ type CompoundedComponent = typeof SelectComponent & {
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
   ItemAddon: typeof ListItemAddon;
+  Tag: typeof SelectedTag;
 };
 
 /**
@@ -405,3 +410,4 @@ SelectNext.Section = SelectSection;
 SelectNext.Divider = Divider;
 SelectNext.ItemText = List.ItemText;
 SelectNext.ItemAddon = List.ItemAddon;
+SelectNext.Tag = SelectedTag;
