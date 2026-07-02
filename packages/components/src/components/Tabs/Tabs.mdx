@@ -40,6 +40,17 @@ You can render tabs dynamically by using `items` prop.
 
 <Story of={Stories.Dynamic} />
 
+## Editable
+
+Editable tabs are controlled from outside. Keep the tab list in your app state,
+pass it to the `items` prop, and update it when `onAdd` or `onRemove` is called.
+
+Tabs can be removed with the close button, <kbd>Delete</kbd> or <kbd>Backspace</kbd>.
+
+To see editable tabs in different states, open the [Editable Playground](?path=/story/components-tabs--editable-playground) story.
+
+<Story of={Stories.Editable} />
+
 ## Vertical
 
 Set the tabs to vertical by passing `orientation="vertical"` to `Tabs`.

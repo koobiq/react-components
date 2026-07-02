@@ -5,12 +5,17 @@
 ```ts
 
 import type { AriaTabListProps } from '@koobiq/react-primitives';
+import { ButtonBaseProps } from '@koobiq/react-primitives';
 import type { ComponentProps } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
+import type { ElementType } from 'react';
+import type { ExtendableProps } from '@koobiq/react-core';
 import type { ItemProps } from '@koobiq/react-core';
 import { JSX } from 'react/jsx-runtime';
+import type { Key } from '@koobiq/react-core';
+import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import type { Ref } from 'react';
@@ -53,11 +58,15 @@ export type TabsProps<T> = AriaTabListProps<T> & {
     className?: string;
     style?: CSSProperties;
     isStretched?: boolean;
+    onRemove?: (keys: Set<Key>) => void;
+    onAdd?: () => void;
     slotProps?: {
         tabs?: ComponentProps<'div'>;
         tabList?: ComponentProps<'div'>;
         tabPanel?: ComponentProps<'div'>;
         scrollBox?: ComponentProps<'div'>;
+        addButton?: TabAddButtonProps;
+        closeButton?: IconButtonProps;
         indicator?: ComponentProps<'span'>;
     };
     isUnderlined?: boolean;
@@ -69,6 +78,11 @@ export type TabsRef = ComponentRef<'div'>;
 
 // @public (undocumented)
 export function TabsRender<T extends object>(props: Omit<TabsProps<T>, 'ref'>, ref: Ref<TabsRef>): JSX.Element;
+
+// Warnings were encountered during analysis:
+//
+// packages/components/dist/components/Tabs/types.d.ts:28:9 - (ae-forgotten-export) The symbol "TabAddButtonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Tabs/types.d.ts:29:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

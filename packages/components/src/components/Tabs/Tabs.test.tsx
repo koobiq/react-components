@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -190,69 +190,129 @@ describe('Tabs', () => {
     });
 
     it('should render the next button when tab-list > scroll-box', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
       Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
-      rerender(renderComponent({}));
+      if (scrollBox) fireEvent.scroll(scrollBox);
 
       expect(hasNextScrollButton(container)).toBe(true);
     });
 
     it('should NOT render the next button when tab-list <= scroll-box', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
-
-      Object.defineProperty(tabsList, 'clientWidth', {
-        value: 200,
-        configurable: true,
-      });
 
       Object.defineProperty(scrollBox, 'clientWidth', {
         value: 200,
         configurable: true,
       });
 
-      rerender(renderComponent({}));
+      Object.defineProperty(scrollBox, 'scrollWidth', {
+        value: 200,
+        configurable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
       expect(hasNextScrollButton(container)).toBe(false);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 199 });
-      Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 199 });
 
-      rerender(renderComponent({}));
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
       expect(hasNextScrollButton(container)).toBe(false);
     });
 
     it('should render next/prev buttons when content overflows and already scrolled', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
       Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
-      Object.defineProperty(scrollBox, 'scrollLeft', { value: 10 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
-      rerender(renderComponent({}));
+      Object.defineProperty(scrollBox, 'scrollLeft', {
+        value: 10,
+        configurable: true,
+        writable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
 
       expect(hasPrevScrollButton(container)).toBe(true);
       expect(hasNextScrollButton(container)).toBe(true);
+    });
+
+    it('should keep overflow attributes in sync when orientation changes', () => {
+      const { container, rerender } = render(renderComponent({}));
+
+      let root = container.firstElementChild;
+      let scrollBox = container.querySelector(`.${s.scrollBox}`);
+
+      Object.defineProperty(scrollBox, 'clientWidth', {
+        value: 200,
+        configurable: true,
+      });
+
+      Object.defineProperty(scrollBox, 'scrollWidth', {
+        value: 300,
+        configurable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
+      expect(root).toHaveAttribute('data-horizontal-scrollable', 'true');
+      expect(root).not.toHaveAttribute('data-vertical-scrollable');
+      expect(scrollBox).toHaveAttribute('data-overflow-inline-end', 'true');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-block-end');
+
+      rerender(renderComponent({ orientation: 'vertical' }));
+
+      root = container.firstElementChild;
+      scrollBox = container.querySelector(`.${s.scrollBox}`);
+
+      expect(root).not.toHaveAttribute('data-horizontal-scrollable');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-inline-end');
+
+      Object.defineProperty(scrollBox, 'clientHeight', {
+        value: 200,
+        configurable: true,
+      });
+
+      Object.defineProperty(scrollBox, 'scrollHeight', {
+        value: 300,
+        configurable: true,
+      });
+
+      if (scrollBox) fireEvent.scroll(scrollBox);
+
+      expect(root).toHaveAttribute('data-vertical-scrollable', 'true');
+      expect(root).not.toHaveAttribute('data-horizontal-scrollable');
+      expect(scrollBox).toHaveAttribute('data-overflow-block-end', 'true');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-inline-end');
+
+      rerender(renderComponent({}));
+
+      root = container.firstElementChild;
+      scrollBox = container.querySelector(`.${s.scrollBox}`);
+
+      expect(root).not.toHaveAttribute('data-vertical-scrollable');
+      expect(scrollBox).not.toHaveAttribute('data-overflow-block-end');
     });
 
     it('should scroll vertically when selected tab is out of view', async () => {
       vi.useFakeTimers();
 
       try {
-        const { container } = render(
+        const { container, rerender } = render(
           renderComponent({
             orientation: 'vertical',
-            selectedKey: '4',
+            selectedKey: '1',
           })
         );
 
@@ -260,12 +320,20 @@ describe('Tabs', () => {
           `.${s.scrollBox}`
         ) as HTMLElement;
 
-        const selectedTab = screen.getByRole('tab', { selected: true });
-
         Object.defineProperty(scrollBox, 'scrollTop', {
           value: 0,
           configurable: true,
           writable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'clientHeight', {
+          value: 100,
+          configurable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'scrollHeight', {
+          value: 200,
+          configurable: true,
         });
 
         vi.spyOn(scrollBox, 'getBoundingClientRect').mockReturnValue({
@@ -274,6 +342,17 @@ describe('Tabs', () => {
           left: 0,
           right: 200,
         } as DOMRect);
+
+        fireEvent.scroll(scrollBox);
+
+        rerender(
+          renderComponent({
+            orientation: 'vertical',
+            selectedKey: '4',
+          })
+        );
+
+        const selectedTab = screen.getByRole('tab', { selected: true });
 
         vi.spyOn(selectedTab, 'getBoundingClientRect').mockReturnValue({
           top: 120,
@@ -292,23 +371,90 @@ describe('Tabs', () => {
       }
     });
 
+    it('should not correct scroll when there is no overflow', async () => {
+      vi.useFakeTimers();
+
+      try {
+        const { container, rerender } = render(
+          renderComponent({
+            orientation: 'vertical',
+            selectedKey: '1',
+          })
+        );
+
+        const scrollBox = container.querySelector(
+          `.${s.scrollBox}`
+        ) as HTMLElement;
+
+        Object.defineProperty(scrollBox, 'scrollTop', {
+          value: 0,
+          configurable: true,
+          writable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'clientHeight', {
+          value: 100,
+          configurable: true,
+        });
+
+        Object.defineProperty(scrollBox, 'scrollHeight', {
+          value: 100,
+          configurable: true,
+        });
+
+        vi.spyOn(scrollBox, 'getBoundingClientRect').mockReturnValue({
+          top: 0,
+          bottom: 100,
+          left: 0,
+          right: 200,
+        } as DOMRect);
+
+        rerender(
+          renderComponent({
+            orientation: 'vertical',
+            selectedKey: '4',
+          })
+        );
+
+        const selectedTab = screen.getByRole('tab', { selected: true });
+
+        vi.spyOn(selectedTab, 'getBoundingClientRect').mockReturnValue({
+          top: 120,
+          bottom: 160,
+          left: 0,
+          right: 200,
+        } as DOMRect);
+
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(100);
+        });
+
+        expect(scrollBox.scrollTop).toBe(0);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
     describe('scroll buttons behavior', () => {
       vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-        cb(0);
+        const id = window.setTimeout(() => cb(performance.now()), 0);
 
-        return 0;
+        return id;
+      });
+
+      vi.spyOn(window, 'cancelAnimationFrame').mockImplementation((id) => {
+        window.clearTimeout(id);
       });
 
       vi.spyOn(global.Math, 'min').mockReturnValue(1);
 
       it('should scroll to right when clicking the next button', () => {
-        const { container, rerender } = render(renderComponent({}));
+        const { container } = render(renderComponent({}));
 
-        const tabsList = container.querySelector(`.${s.tabList}`);
         const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-        Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
         Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+        Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
         Object.defineProperty(scrollBox, 'scrollLeft', {
           value: 0,
@@ -316,7 +462,7 @@ describe('Tabs', () => {
           writable: true,
         });
 
-        rerender(renderComponent({}));
+        if (scrollBox) fireEvent.scroll(scrollBox);
 
         const nextScrollButton = findScrollButton(container, ariaLabelNextBtn);
 
@@ -327,13 +473,12 @@ describe('Tabs', () => {
     });
 
     it('should scroll to left when clicking the prev button', () => {
-      const { container, rerender } = render(renderComponent({}));
+      const { container } = render(renderComponent({}));
 
-      const tabsList = container.querySelector(`.${s.tabList}`);
       const scrollBox = container.querySelector(`.${s.scrollBox}`);
 
-      Object.defineProperty(tabsList, 'clientWidth', { value: 300 });
       Object.defineProperty(scrollBox, 'clientWidth', { value: 200 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
 
       Object.defineProperty(scrollBox, 'scrollLeft', {
         value: 100,
@@ -341,7 +486,7 @@ describe('Tabs', () => {
         writable: true,
       });
 
-      rerender(renderComponent({}));
+      if (scrollBox) fireEvent.scroll(scrollBox);
 
       const prevScrollButton = findScrollButton(container, ariaLabelPrevBtn);
 
@@ -349,5 +494,104 @@ describe('Tabs', () => {
 
       expect(Number(scrollBox?.scrollLeft) < 100).toBeTruthy();
     });
+  });
+});
+
+describe('Tabs editable', () => {
+  const removeLabel = 'Remove tab';
+  const addLabel = 'Add tab';
+
+  it('does not render close buttons without onRemove', () => {
+    render(renderComponent({}));
+
+    expect(
+      screen.queryByRole('button', { name: removeLabel })
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders a close button on every tab when onRemove is provided', () => {
+    render(renderComponent({ onRemove: vi.fn() }));
+
+    expect(screen.getAllByRole('button', { name: removeLabel })).toHaveLength(
+      4
+    );
+  });
+
+  it('calls onRemove with the tab key when its close button is pressed', async () => {
+    const onRemove = vi.fn();
+
+    render(renderComponent({ onRemove }));
+
+    const tab = screen.getByTestId(TAB__TEST_ID);
+    const closeButton = within(tab).getByRole('button', { name: removeLabel });
+
+    await userEvent.click(closeButton);
+
+    expect(onRemove).toHaveBeenCalledTimes(1);
+
+    const keys = onRemove.mock.calls[0][0];
+
+    expect(keys).toBeInstanceOf(Set);
+    expect([...keys]).toEqual(['2']);
+  });
+
+  it('does not change selection when a close button is pressed', async () => {
+    const onSelectionChange = vi.fn();
+    const onRemove = vi.fn();
+
+    render(renderComponent({ onRemove, onSelectionChange, selectedKey: 1 }));
+
+    const tab = screen.getByTestId(TAB__TEST_ID);
+    const closeButton = within(tab).getByRole('button', { name: removeLabel });
+
+    await userEvent.click(closeButton);
+
+    expect(onRemove).toHaveBeenCalledTimes(1);
+    // pressing × must not activate the tab it belongs to
+    expect(onSelectionChange).not.toHaveBeenCalledWith('2');
+  });
+
+  it('removes the focused tab on Delete', async () => {
+    const onRemove = vi.fn();
+
+    render(renderComponent({ onRemove }));
+
+    act(() => screen.getByRole('tab', { name: 'tab-2' }).focus());
+    await userEvent.keyboard('{Delete}');
+
+    expect(onRemove).toHaveBeenCalledTimes(1);
+    expect([...onRemove.mock.calls[0][0]]).toEqual(['2']);
+  });
+
+  it('does not render the add button without onAdd', () => {
+    render(renderComponent({}));
+
+    expect(
+      screen.queryByRole('button', { name: addLabel })
+    ).not.toBeInTheDocument();
+  });
+
+  it('calls onAdd when the add button is pressed', async () => {
+    const onAdd = vi.fn();
+
+    render(renderComponent({ onAdd }));
+
+    await userEvent.click(screen.getByRole('button', { name: addLabel }));
+
+    expect(onAdd).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call onAdd when tabs are disabled', async () => {
+    const onAdd = vi.fn();
+
+    render(renderComponent({ isDisabled: true, onAdd }));
+
+    const addButton = screen.getByRole('button', { name: addLabel });
+
+    expect(addButton).toBeDisabled();
+
+    await userEvent.click(addButton);
+
+    expect(onAdd).not.toHaveBeenCalled();
   });
 });

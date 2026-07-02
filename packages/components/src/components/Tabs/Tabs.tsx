@@ -17,7 +17,12 @@ import { useTabList, useTabListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 
-import { Tab as TabInner, TabPanel, TabScrollButton } from './components';
+import {
+  Tab as TabInner,
+  TabAddButton,
+  TabPanel,
+  TabScrollButton,
+} from './components';
 import intlMessages from './intl.json';
 import type { TabProps as TabItemProps } from './Tab';
 import s from './Tabs.module.css';
@@ -35,6 +40,9 @@ export function TabsRender<T extends object>(
     'data-testid': dataTestId,
     isUnderlined = false,
     isStretched: isStretchedProp = false,
+    isDisabled = false,
+    onRemove,
+    onAdd,
     style,
     className,
     slotProps,
@@ -47,14 +55,25 @@ export function TabsRender<T extends object>(
 
   const [isMounted, setIsMounted] = useState(false);
 
-  const [scrollButtonsVisibility, setScrollButtonsVisibility] = useState({
-    prev: false,
-    next: false,
+  const [horizontalOverflow, setHorizontalOverflow] = useState({
+    start: false,
+    end: false,
+  });
+
+  const [verticalOverflow, setVerticalOverflow] = useState({
+    start: false,
+    end: false,
   });
 
   const orientation = isUnderlined ? 'horizontal' : orientationProp;
   const isHorizontal = orientation === 'horizontal';
   const isStretched = isHorizontal && isStretchedProp;
+  const isRemovable = isNotNil(onRemove);
+  const hasAddButton = isNotNil(onAdd);
+
+  const isAddButtonDisabled =
+    isDisabled || Boolean(slotProps?.addButton?.isDisabled);
+
   const selectedItemIdx = selectedItem?.index;
   const selectedTabProps = selectedItem?.props as TabItemProps<T> | undefined;
 
@@ -95,49 +114,59 @@ export function TabsRender<T extends object>(
     }
   };
 
-  /** Syncs prev/next button visibility with current scroll position. */
-  const updateScrollButtonsVisibility = () => {
+  /** Syncs the horizontal fade mask with the current scroll position. */
+  const updateHorizontalOverflow = () => {
     if (!isHorizontal) return;
 
-    if (!isNotNil(selectedItemIdx)) return;
+    const el = scrollBoxRef.current;
+    if (!el) return;
 
-    if (!itemsRefs[selectedItemIdx]) return;
+    const start = el.scrollLeft > 0;
+    const end = Math.ceil(el.scrollLeft + el.clientWidth) < el.scrollWidth;
 
-    const { scrollBoxMeta, tabsListMeta } = getTabsMeta(
-      tabListRef,
-      scrollBoxRef,
-      itemsRefs[selectedItemIdx]
+    setHorizontalOverflow((prevState) =>
+      prevState.start === start && prevState.end === end
+        ? prevState
+        : { start, end }
     );
-
-    if (!scrollBoxMeta || !tabsListMeta) return;
-
-    const { scrollLeft } = scrollBoxMeta;
-
-    const isPrevButtonActive = scrollLeft > 0;
-    const isNextButtonActive = tabsListMeta.right - scrollBoxMeta.right > 1;
-
-    setScrollButtonsVisibility((prevState) => {
-      const { prev, next } = prevState;
-
-      if (isPrevButtonActive !== prev || isNextButtonActive !== next) {
-        return { prev: isPrevButtonActive, next: isNextButtonActive };
-      }
-
-      return prevState;
-    });
   };
 
-  const hasHScroll =
-    isHorizontal &&
-    tabListRef.current &&
-    scrollBoxRef.current &&
-    tabListRef.current?.clientWidth > scrollBoxRef.current?.clientWidth;
+  /** Syncs the vertical fade mask with the current scroll position. */
+  const updateVerticalOverflow = () => {
+    if (isHorizontal) return;
 
-  const hasVScroll =
-    !isHorizontal &&
-    tabListRef.current &&
-    scrollBoxRef.current &&
-    tabListRef.current.clientHeight > scrollBoxRef.current.clientHeight;
+    const el = scrollBoxRef.current;
+    if (!el) return;
+
+    const start = el.scrollTop > 0;
+    const end = Math.ceil(el.scrollTop + el.clientHeight) < el.scrollHeight;
+
+    setVerticalOverflow((prevState) =>
+      prevState.start === start && prevState.end === end
+        ? prevState
+        : { start, end }
+    );
+  };
+
+  /** Syncs horizontal/vertical overflow affordances with the current scroll position. */
+  const updateScrollState = () => {
+    updateHorizontalOverflow();
+    updateVerticalOverflow();
+  };
+
+  const hasHorizontalOverflow =
+    isHorizontal && (horizontalOverflow.start || horizontalOverflow.end);
+
+  const hasVerticalOverflow =
+    !isHorizontal && (verticalOverflow.start || verticalOverflow.end);
+
+  const activeHorizontalOverflow = isHorizontal
+    ? horizontalOverflow
+    : { start: false, end: false };
+
+  const activeVerticalOverflow = isHorizontal
+    ? { start: false, end: false }
+    : verticalOverflow;
 
   /** Adjusts the scroll position based on the selected tab's position and orientation. */
   const scrollCorrection = (
@@ -145,6 +174,8 @@ export function TabsRender<T extends object>(
     itemIdx = selectedItemIdx,
     behavior: ScrollBehavior = 'smooth'
   ) => {
+    if (!hasHorizontalOverflow && !hasVerticalOverflow) return;
+
     if (!isNotNil(itemIdx)) return;
 
     const selectedEl = itemsRefs[itemIdx];
@@ -191,8 +222,8 @@ export function TabsRender<T extends object>(
     }
   };
 
-  const [debouncedUpdateScrollButtonsActivity] = useDebounceCallback({
-    callback: updateScrollButtonsVisibility,
+  const [debouncedUpdateScrollState] = useDebounceCallback({
+    callback: updateScrollState,
     delay: 100,
   });
 
@@ -203,7 +234,7 @@ export function TabsRender<T extends object>(
 
   useResizeObserverRefs(
     useMemo(() => [scrollBoxRef], [scrollBoxRef]),
-    () => debouncedUpdateScrollButtonsActivity()
+    () => debouncedUpdateScrollState()
   );
 
   const scrollPrev = () => {
@@ -225,13 +256,16 @@ export function TabsRender<T extends object>(
   useEffect(() => {
     if (!isNotNil(selectedItemIdx)) return;
 
-    if (isMounted) {
-      debouncedScrollCorrection(orientation);
-    } else {
-      updateScrollButtonsVisibility();
+    updateScrollState();
+
+    if (!isMounted) {
       setIsMounted(true);
+
+      return;
     }
-  }, [selectedItemIdx, isMounted]);
+
+    debouncedScrollCorrection(orientation);
+  }, [selectedItemIdx, isMounted, orientation]);
 
   const tabsProps = mergeProps({ className: s.base }, slotProps?.tabs);
 
@@ -248,7 +282,11 @@ export function TabsRender<T extends object>(
     {
       ref: scrollBoxRef,
       className: s.scrollBox,
-      onScroll: updateScrollButtonsVisibility,
+      onScroll: updateScrollState,
+      'data-overflow-inline-start': activeHorizontalOverflow.start || undefined,
+      'data-overflow-inline-end': activeHorizontalOverflow.end || undefined,
+      'data-overflow-block-start': activeVerticalOverflow.start || undefined,
+      'data-overflow-block-end': activeVerticalOverflow.end || undefined,
     },
     slotProps?.scrollBox
   );
@@ -259,13 +297,13 @@ export function TabsRender<T extends object>(
       style={style}
       data-testid={dataTestId}
       data-orientation={orientation}
+      data-editable={isRemovable || hasAddButton || undefined}
       data-stretched={isStretched || undefined}
       data-underlined={isUnderlined || undefined}
-      data-vertical-scrollable={hasVScroll || undefined}
-      data-horizontal-scrollable={hasHScroll || undefined}
+      data-vertical-scrollable={hasVerticalOverflow || undefined}
+      data-horizontal-scrollable={hasHorizontalOverflow || undefined}
       className={clsx(
         s.container,
-        !isUnderlined && s.default,
         isStretched && s.stretched,
         isUnderlined && s.underlined,
         orientation && s[orientation],
@@ -273,35 +311,55 @@ export function TabsRender<T extends object>(
       )}
     >
       <div {...tabsProps}>
-        {hasHScroll && (
-          <>
-            <TabScrollButton
-              onPress={scrollPrev}
-              ref={scrollButtonRef}
-              aria-label={t.format('prev')}
-              isInvisible={!scrollButtonsVisibility.prev}
-            />
-            <TabScrollButton
-              dir="next"
-              onPress={scrollNext}
-              aria-label={t.format('next')}
-              isInvisible={!scrollButtonsVisibility.next}
-            />
-          </>
-        )}
-        <div {...scrollBoxProps}>
-          <div {...tabsListProps}>
-            {[...state.collection].map((item, i) => (
-              <TabInner
-                item={item}
-                state={state}
-                key={item.key}
-                innerRef={itemsRefs[i]}
-                onFocused={() => scrollCorrection(orientation, i, 'auto')}
+        <div className={s.scrollArea}>
+          {hasHorizontalOverflow && (
+            <>
+              <TabScrollButton
+                onPress={scrollPrev}
+                ref={scrollButtonRef}
+                aria-label={t.format('prev')}
+                isInvisible={!activeHorizontalOverflow.start}
               />
-            ))}
+              <TabScrollButton
+                dir="next"
+                onPress={scrollNext}
+                aria-label={t.format('next')}
+                isInvisible={!activeHorizontalOverflow.end}
+              />
+            </>
+          )}
+          <div {...scrollBoxProps}>
+            <div {...tabsListProps}>
+              {[...state.collection].map((item, i) => (
+                <TabInner
+                  item={item}
+                  state={state}
+                  key={item.key}
+                  innerRef={itemsRefs[i]}
+                  orientation={orientation}
+                  isStretched={isStretched}
+                  isUnderlined={isUnderlined}
+                  closeButtonProps={slotProps?.closeButton}
+                  {...(onRemove &&
+                    typeof onRemove === 'function' && {
+                      onRemove: () => onRemove?.(new Set([item.key])),
+                    })}
+                  onFocused={() => scrollCorrection(orientation, i, 'auto')}
+                />
+              ))}
+            </div>
           </div>
         </div>
+        {hasAddButton && (
+          <TabAddButton
+            aria-label={t.format('add')}
+            onPress={() => onAdd?.()}
+            {...slotProps?.addButton}
+            orientation={orientation}
+            isUnderlined={isUnderlined}
+            isDisabled={isAddButtonDisabled}
+          />
+        )}
       </div>
       {hasSelectedTabPanel && (
         <TabPanel
