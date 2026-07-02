@@ -4,14 +4,14 @@ import { clsx } from '@koobiq/react-core';
 import { IconPlus16 } from '@koobiq/react-icons';
 import {
   Button as ButtonPrimitive,
-  type ButtonBaseProps,
+  type ButtonProps,
 } from '@koobiq/react-primitives';
 
 import s from './TabAddButton.module.css';
 
 type TabAddButtonOrientation = 'horizontal' | 'vertical';
 
-export type TabAddButtonProps = Omit<ButtonBaseProps, 'className'> & {
+export type TabAddButtonProps = Omit<ButtonProps, 'className'> & {
   className?: string;
 };
 
