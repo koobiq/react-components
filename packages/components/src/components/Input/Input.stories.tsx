@@ -2,10 +2,12 @@ import { useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
+  IconCheckS16,
   IconEye16,
   IconEyeSlash16,
   IconGlobe16,
   IconMagnifyingGlass16,
+  IconXmarkS16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -15,6 +17,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { IconButton } from '../IconButton';
+import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
 import { Input, inputPropVariant } from './index';
@@ -288,30 +291,144 @@ export const ControlledValue: Story = {
 
 export const Password: Story = {
   render: function Render(args) {
-    const [hiddenPassword, { toggle }] = useBoolean(true);
+    const passwordRuleStateColor = {
+      neutral: 'var(--kbq-foreground-contrast-tertiary)',
+      success: 'var(--kbq-foreground-success)',
+      error: 'var(--kbq-foreground-error)',
+    } as const;
+
+    type PasswordRuleState = keyof typeof passwordRuleStateColor;
+    type PasswordRule = {
+      id: string;
+      label: string;
+      test: (value: string) => boolean;
+    };
+
+    const disallowedPasswordCharacters =
+      /[^ !"#$%&'()*+,\-./\\:;<=>?@[\]^_`{|}~A-Za-z0-9]/;
+
+    const passwordRules: PasswordRule[] = [
+      {
+        id: 'length',
+        label: '8 to 15 characters',
+        test: (value) => value.length >= 8 && value.length <= 15,
+      },
+      {
+        id: 'uppercase',
+        label: 'Uppercase Latin letter',
+        test: (value) => /[A-Z]/.test(value),
+      },
+      {
+        id: 'lowercase',
+        label: 'Lowercase Latin letter',
+        test: (value) => /[a-z]/.test(value),
+      },
+      {
+        id: 'digit',
+        label: 'Number',
+        test: (value) => /\d/.test(value),
+      },
+      {
+        id: 'special',
+        label: 'Only Latin letters, numbers, spaces, and special characters',
+        test: (value) =>
+          value.length > 0 && !disallowedPasswordCharacters.test(value),
+      },
+      {
+        id: 'uppercase-count',
+        label: 'At least 5 uppercase letters',
+        test: (value) => (value.match(/[A-Z]/g)?.length ?? 0) >= 5,
+      },
+    ];
+
+    const [value, setValue] = useState('');
+    const [isInvalid, { on: showError, off: hideError }] = useBoolean(false);
+
+    const [isPasswordHidden, { toggle: togglePasswordVisibility }] =
+      useBoolean(true);
+
+    const [isEdited, { on: markEdited }] = useBoolean(false);
+
+    const hasValue = value !== '';
+    const isPasswordValid = passwordRules.every((rule) => rule.test(value));
+    const passwordType = isPasswordHidden ? 'password' : 'text';
+
+    const passwordVisibilityText = isPasswordHidden
+      ? 'Show password'
+      : 'Hide password';
+
+    const getPasswordRuleState = (isRulePassed: boolean): PasswordRuleState => {
+      if (!isEdited) return 'neutral';
+
+      return isRulePassed ? 'success' : 'error';
+    };
+
+    const renderPasswordRequirement = (rule: PasswordRule) => {
+      const isRulePassed = rule.test(value);
+      const state = getPasswordRuleState(isRulePassed);
+      const Icon = isEdited && isRulePassed ? IconCheckS16 : IconXmarkS16;
+
+      return (
+        <FlexBox key={rule.id} as="span" gap="xs" alignItems="center">
+          <Icon style={{ color: passwordRuleStateColor[state] }} />
+          {rule.label}
+        </FlexBox>
+      );
+    };
+
+    const handleChange = (nextValue: string) => {
+      markEdited();
+      hideError();
+      setValue(nextValue);
+    };
+
+    const handleBlur = () => {
+      if (hasValue && !isPasswordValid) {
+        showError();
+
+        return;
+      }
+
+      hideError();
+    };
 
     return (
       <Input
         label="Password"
+        value={value}
+        onChange={handleChange}
+        isInvalid={isInvalid}
         placeholder="Password"
-        defaultValue="p@ssw0rd"
-        {...(hiddenPassword && { type: 'password' })}
+        type={passwordType}
+        onBlur={handleBlur}
         endAddon={
-          <IconButton
-            onPress={toggle}
-            variant="fade-contrast"
-            style={{ marginInlineEnd: '-8px' }}
-            aria-label={hiddenPassword ? 'show password' : 'hide password'}
-            preventFocusOnPress
+          <Tooltip
+            control={(props) => (
+              <IconButton
+                {...props}
+                onPress={togglePasswordVisibility}
+                variant={isInvalid ? 'error' : 'fade-contrast'}
+                style={{ marginInlineEnd: '-8px' }}
+                aria-label={passwordVisibilityText}
+                preventFocusOnPress
+              >
+                <AnimatedIcon
+                  activeIndex={+isPasswordHidden}
+                  icons={[
+                    <IconEye16 key="eye" />,
+                    <IconEyeSlash16 key="eye-slash" />,
+                  ]}
+                />
+              </IconButton>
+            )}
           >
-            <AnimatedIcon
-              activeIndex={+hiddenPassword}
-              icons={[
-                <IconEye16 key="eye" />,
-                <IconEyeSlash16 key="eye-slash" />,
-              ]}
-            />
-          </IconButton>
+            {passwordVisibilityText}
+          </Tooltip>
+        }
+        caption={
+          <FlexBox as="span" direction="column" gap="xs">
+            {passwordRules.map(renderPasswordRequirement)}
+          </FlexBox>
         }
         {...args}
       />
