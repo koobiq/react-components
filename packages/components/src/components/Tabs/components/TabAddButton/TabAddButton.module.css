@@ -56,8 +56,5 @@
   outline-offset: calc(-1 * var(--kbq-size-3xs));
   outline: var(--kbq-size-3xs) solid;
   outline-color: transparent;
-  transition:
-    outline-color var(--kbq-transition-default),
-    background-color var(--kbq-transition-default),
-    color var(--kbq-transition-default);
+  transition: outline-color var(--kbq-transition-default);
 }

@@ -566,7 +566,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Email"
                   name="email"
-                  placeholder="Enter your email"
                   type="email"
                   autoComplete="email"
                 />
@@ -574,7 +573,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Password"
                   name="password"
-                  placeholder="Enter your password"
                   type="password"
                   autoComplete="current-password"
                 />
@@ -593,7 +591,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Name"
                   name="name"
-                  placeholder="Enter your name"
                   type="text"
                   autoComplete="name"
                 />
@@ -601,7 +598,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Email"
                   name="email"
-                  placeholder="Enter your email"
                   type="email"
                   autoComplete="email"
                 />
@@ -609,7 +605,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Password"
                   name="password"
-                  placeholder="Enter your password"
                   type="password"
                   autoComplete="new-password"
                 />
