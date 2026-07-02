@@ -94,6 +94,10 @@
     background-color: var(--kbq-line-contrast-fade);
   }
 
+  &[data-disabled]::after {
+    background-color: var(--kbq-states-line-disabled);
+  }
+
   &.onlyIcon {
     --tab-content-offset: 0px;
 
