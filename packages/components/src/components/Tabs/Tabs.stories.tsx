@@ -100,6 +100,65 @@ export const Dynamic: Story = {
 
 export const Editable: Story = {
   render: function Render() {
+    const list = useListData({
+      initialItems: [
+        { id: 'bruteforce', title: 'Bruteforce' },
+        { id: 'complex-attack', title: 'Complex Attack' },
+        { id: 'ddos', title: 'DDoS' },
+        { id: 'dos', title: 'DoS' },
+        { id: 'hips', title: 'HIPS Alert' },
+        { id: 'identity-theft', title: 'Identity Theft' },
+        { id: 'ids-ips', title: 'IDS/IPS Alert' },
+        { id: 'misc', title: 'Miscellaneous' },
+      ],
+    });
+
+    const [selectedKey, setSelectedKey] = useState<Key | undefined>(
+      list.items[0]?.id
+    );
+
+    const counter = useRef(0);
+
+    const removeTabs = (keys: Set<Key>) => {
+      if (selectedKey != null && keys.has(selectedKey)) {
+        const idx = list.items.findIndex((item) => item.id === selectedKey);
+        const next = list.items[idx + 1] ?? list.items[idx - 1];
+
+        setSelectedKey(next?.id);
+      }
+
+      list.remove(...keys);
+    };
+
+    const addTab = () => {
+      counter.current += 1;
+      const id = `new-${counter.current}`;
+
+      list.append({ id, title: `New tab ${counter.current}` });
+      setSelectedKey(id);
+    };
+
+    return (
+      <Tabs
+        onAdd={addTab}
+        items={list.items}
+        onRemove={removeTabs}
+        selectedKey={selectedKey}
+        aria-label="Types of cyberattacks"
+        onSelectionChange={setSelectedKey}
+      >
+        {(item) => (
+          <Tab startAddon={<IconBug16 />} key={item.id} title={item.title}>
+            {item.title} content
+          </Tab>
+        )}
+      </Tabs>
+    );
+  },
+};
+
+export const EditablePlayground: Story = {
+  render: function Render() {
     const [isVertical, { set: setVertical }] = useBoolean(false);
     const [isUnderlined, { set: setUnderlined }] = useBoolean(false);
     const [isStretched, { set: setStretched }] = useBoolean(false);
