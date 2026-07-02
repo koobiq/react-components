@@ -5,7 +5,8 @@
 ```ts
 
 import type { AriaTabListProps } from '@koobiq/react-primitives';
-import { ButtonBaseProps } from '@koobiq/react-primitives';
+import type { ButtonBaseProps } from '@koobiq/react-primitives';
+import { ButtonProps } from '@koobiq/react-primitives';
 import type { ComponentProps } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
