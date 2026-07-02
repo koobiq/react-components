@@ -100,16 +100,19 @@ export const Dynamic: Story = {
 
 export const Editable: Story = {
   render: function Render() {
+    const content =
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias delectus fugit maxime nulla odio sunt ullam vitae! A aut beatae consequatur deserunt dicta dignissimos distinctio doloribus eos expedita fuga, hic illo ipsam ipsum iste, laboriosam nam neque nesciunt odio optio possimus, praesentium quasi quia quisquam sequi voluptatum. Amet, architecto, nisi.';
+
     const list = useListData({
       initialItems: [
-        { id: 'bruteforce', title: 'Bruteforce' },
-        { id: 'complex-attack', title: 'Complex Attack' },
-        { id: 'ddos', title: 'DDoS' },
-        { id: 'dos', title: 'DoS' },
-        { id: 'hips', title: 'HIPS Alert' },
-        { id: 'identity-theft', title: 'Identity Theft' },
-        { id: 'ids-ips', title: 'IDS/IPS Alert' },
-        { id: 'misc', title: 'Miscellaneous' },
+        { id: 'bruteforce', title: 'Bruteforce', content },
+        { id: 'complex-attack', title: 'Complex Attack', content },
+        { id: 'ddos', title: 'DDoS', content },
+        { id: 'dos', title: 'DoS', content },
+        { id: 'hips', title: 'HIPS Alert', content },
+        { id: 'identity-theft', title: 'Identity Theft', content },
+        { id: 'ids-ips', title: 'IDS/IPS Alert', content },
+        { id: 'misc', title: 'Miscellaneous', content },
       ],
     });
 
@@ -134,7 +137,7 @@ export const Editable: Story = {
       counter.current += 1;
       const id = `new-${counter.current}`;
 
-      list.append({ id, title: `New tab ${counter.current}` });
+      list.append({ id, title: `New tab ${counter.current}`, content });
       setSelectedKey(id);
     };
 
@@ -149,7 +152,7 @@ export const Editable: Story = {
       >
         {(item) => (
           <Tab startAddon={<IconBug16 />} key={item.id} title={item.title}>
-            {item.title} content
+            {item.content}
           </Tab>
         )}
       </Tabs>
