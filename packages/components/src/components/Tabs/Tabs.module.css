@@ -128,6 +128,16 @@
   .tabList {
     flex-direction: column;
   }
+
+  [data-slot='add-button'] {
+    padding-block-start: var(--kbq-size-s);
+  }
+
+  &:has(.tabList:empty) {
+    [data-slot='add-button'] {
+      padding-block-start: 0;
+    }
+  }
 }
 
 .stretched {
