@@ -28,6 +28,7 @@ import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
 import type { SearchInputProps } from '../SearchInput';
 import type { SelectedTagsRenderTagProps as SelectNextRenderTagProps } from '../SelectedTags';
+import type { TagProps } from '../Tag';
 
 import type { SelectListProps } from './components';
 
@@ -46,7 +47,7 @@ export const selectNextPropLabelAlign = formFieldPropLabelAlign;
 export type SelectNextPropLabelAlign = FormFieldPropLabelAlign;
 
 export type { SelectNextRenderTagProps };
-export type { SelectedTagProps as SelectNextTagProps } from '../SelectedTags';
+export type SelectNextTagProps = TagProps;
 
 export type SelectNextProps<
   T extends object,

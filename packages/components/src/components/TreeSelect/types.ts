@@ -33,6 +33,7 @@ import type { PopoverProps } from '../Popover';
 import type { SearchInputProps } from '../SearchInput';
 import { selectedTagsPropOverflow } from '../SelectedTags';
 import type { SelectedTagsRenderTagProps as TreeSelectRenderTagProps } from '../SelectedTags';
+import type { TagProps } from '../Tag';
 
 import type { TreeCollection } from './TreeInner';
 
@@ -50,7 +51,7 @@ export type TreeSelectPropSelectedTagsOverflow =
   (typeof treeSelectPropSelectedTagsOverflow)[number];
 
 export type { TreeSelectRenderTagProps };
-export type { SelectedTagProps as TreeSelectTagProps } from '../SelectedTags';
+export type TreeSelectTagProps = TagProps;
 
 type AriaTreeSelectProps<
   T extends object,

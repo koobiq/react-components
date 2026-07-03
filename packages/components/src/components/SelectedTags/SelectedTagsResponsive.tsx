@@ -7,9 +7,9 @@ import {
 } from '@koobiq/react-core';
 
 import { useFormFieldControlGroup } from '../FormField';
+import { Tag } from '../Tag';
 
 import intlMessages from './intl';
-import { SelectedTag } from './SelectedTag';
 import s from './SelectedTags.module.css';
 import type { SelectedTagsProps, SelectedTagsRenderTagProps } from './types';
 import { getHiddenCount } from './utils';
@@ -44,18 +44,28 @@ export function SelectedTagsResponsive<T extends object>({
         aria-label={t.format('selected items')}
       >
         {state.selectedItems?.map((item, i) => {
+          const onRemove = () => {
+            if (state.selectionManager.isSelected(item.key)) {
+              state.selectionManager.toggleSelection(item.key);
+            }
+          };
+
           const tagProps: SelectedTagsRenderTagProps = {
             ref: itemsRefs[i],
             className: s.tag,
             isDisabled,
-            isReadOnly,
             'aria-hidden': !visibleMap[i] || undefined,
             variant: isInvalid ? 'error-fade' : 'contrast-fade',
-            onRemove: () => {
-              if (state.selectionManager.isSelected(item.key)) {
-                state.selectionManager.toggleSelection(item.key);
-              }
-            },
+            slotProps: !isReadOnly
+              ? {
+                  removeIcon: {
+                    as: 'div',
+                    isDisabled,
+                    tabIndex: undefined,
+                    onPress: onRemove,
+                  },
+                }
+              : undefined,
           };
 
           return (
@@ -63,7 +73,7 @@ export function SelectedTagsResponsive<T extends object>({
               {renderTag ? (
                 renderTag(item, tagProps)
               ) : (
-                <SelectedTag {...tagProps}>{item.textValue}</SelectedTag>
+                <Tag {...tagProps}>{item.textValue}</Tag>
               )}
             </Fragment>
           );

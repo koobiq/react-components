@@ -1,8 +1,8 @@
-import type { ComponentRef, ReactNode, Ref } from 'react';
+import type { ReactNode } from 'react';
 
 import type { Key, Node } from '@koobiq/react-core';
 
-import type { TagGroupPropVariant } from '../TagGroup';
+import type { TagProps } from '../Tag';
 
 export const selectedTagsPropOverflow = ['multiline', 'responsive'] as const;
 
@@ -19,14 +19,9 @@ export interface SelectedTagsSelectionState<T extends object> {
 }
 
 /** Props to spread onto a custom tag's root element; returned by the `renderTag` callback. */
-export type SelectedTagsRenderTagProps = {
-  ref?: Ref<ComponentRef<'div'>>;
-  className?: string;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
+export type SelectedTagsRenderTagProps = Omit<TagProps, 'children'> & {
   'aria-hidden'?: true;
-  variant: TagGroupPropVariant;
-  onRemove: () => void;
+  variant: NonNullable<TagProps['variant']>;
 };
 
 export type SelectedTagsProps<T extends object> = {

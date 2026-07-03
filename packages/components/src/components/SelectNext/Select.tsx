@@ -40,7 +40,8 @@ import { List } from '../List';
 import type { ListItemAddon } from '../List/components';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
-import { SelectedTags, SelectedTag } from '../SelectedTags';
+import { SelectedTags } from '../SelectedTags';
+import { Tag } from '../Tag';
 
 import {
   SelectList,
@@ -396,7 +397,7 @@ type CompoundedComponent = typeof SelectComponent & {
   Divider: typeof Divider;
   ItemText: typeof ListItemText;
   ItemAddon: typeof ListItemAddon;
-  Tag: typeof SelectedTag;
+  Tag: typeof Tag;
 };
 
 /**
@@ -410,4 +411,4 @@ SelectNext.Section = SelectSection;
 SelectNext.Divider = Divider;
 SelectNext.ItemText = List.ItemText;
 SelectNext.ItemAddon = List.ItemAddon;
-SelectNext.Tag = SelectedTag;
+SelectNext.Tag = Tag;
