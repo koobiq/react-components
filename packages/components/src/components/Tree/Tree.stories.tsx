@@ -32,7 +32,7 @@ const meta = {
     'Tree.LoadMoreItem': Tree.LoadMoreItem,
   },
   argTypes: {},
-  tags: ['status:new', 'date:2026-07-03'],
+  tags: ['status:updated', 'date:2026-07-03'],
 } satisfies Meta<typeof Tree>;
 
 export default meta;
