@@ -517,6 +517,32 @@ export const Controlled: Story = {
   },
 };
 
+export const KeyboardActivation: Story = {
+  render: function Render(args) {
+    return (
+      <Tabs
+        aria-label="Types of cyberattacks"
+        keyboardActivation="manual"
+        {...args}
+      >
+        <Tab key="brute-force" title="BruteForce">
+          A brute-force attack systematically guesses passwords or cryptographic
+          keys, often using automated tools to try vast combinations until
+          access is gained.
+        </Tab>
+        <Tab key="complex-attack" title="Complex Attack">
+          A denial-of-service attack floods a server or exploits resource-heavy
+          operations to exhaust CPU, memory, bandwidth, or connection limits.
+        </Tab>
+        <Tab key="ddos" title="DDoS">
+          Distributed Denial of Service (DDoS) uses a botnet of infected devices
+          to send massive, coordinated traffic to a victim.
+        </Tab>
+      </Tabs>
+    );
+  },
+};
+
 export const Links: Story = {
   render: function Render(args) {
     return (
