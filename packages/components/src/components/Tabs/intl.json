@@ -1,10 +1,14 @@
 {
   "ru-RU": {
     "next": "Следующие вкладки",
-    "prev": "Предыдущие вкладки"
+    "prev": "Предыдущие вкладки",
+    "add": "Добавить вкладку",
+    "remove": "Удалить вкладку"
   },
   "en-US": {
     "next": "Next tabs",
-    "prev": "Previous tabs"
+    "prev": "Previous tabs",
+    "add": "Add tab",
+    "remove": "Remove tab"
   }
 }

@@ -1,24 +1,53 @@
 'use client';
 
-import type { ElementType, Ref } from 'react';
+import type { ElementType, KeyboardEvent, Ref } from 'react';
 
-import { type Node, isNotNil, useFocusRing } from '@koobiq/react-core';
+import {
+  type Node,
+  isNotNil,
+  useFocusRing,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import { useHover, mergeProps, clsx, useDOMRef } from '@koobiq/react-core';
+import { IconXmark16 } from '@koobiq/react-icons';
 import type { TabListState } from '@koobiq/react-primitives';
 import { useTab } from '@koobiq/react-primitives';
 
+import { IconButton, type IconButtonProps } from '../../../IconButton';
+import intlMessages from '../../intl.json';
 import type { TabProps as TabItemProps } from '../../Tab';
-import s from '../../Tabs.module.css';
+
+import s from './Tab.module.css';
+
+type TabOrientation = 'horizontal' | 'vertical';
 
 export type TabProps<T> = {
   item: Node<T>;
   state: TabListState<T>;
   innerRef: Ref<HTMLElement>;
+  orientation: TabOrientation;
+  isUnderlined?: boolean;
+  isStretched?: boolean;
   onFocused?: () => void;
+  onRemove?: () => void;
+  closeButtonProps?: IconButtonProps;
 };
 
-export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
+export function Tab<T>({
+  item,
+  state,
+  innerRef,
+  orientation,
+  isUnderlined = false,
+  isStretched = false,
+  onFocused,
+  onRemove,
+  closeButtonProps,
+}: TabProps<T>) {
   const { key, rendered } = item;
+  const t = useLocalizedStringFormatter(intlMessages);
+
+  const allowsRemoving = !!onRemove;
 
   const domRef = useDOMRef<HTMLElement>(innerRef);
   const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
@@ -38,7 +67,7 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
     Boolean(onlyIconProp) && (isNotNil(startAddon) || isNotNil(endAddon));
 
   const { hoverProps, isHovered } = useHover({
-    isDisabled: isDisabled || isSelected,
+    isDisabled: isDisabled,
   });
 
   const { isFocusVisible, focusProps } = useFocusRing();
@@ -53,36 +82,74 @@ export function Tab<T>({ item, state, innerRef, onFocused }: TabProps<T>) {
 
   const endAddonProps = mergeProps({ className: s.addon }, slotProps?.endAddon);
 
+  const { className: closeButtonClassName, ...closeButtonRestProps } =
+    closeButtonProps ?? {};
+
   const Tag: ElementType = href ? 'a' : 'div';
+
+  const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (!allowsRemoving || isDisabled) return;
+
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      event.preventDefault();
+      onRemove?.();
+    }
+  };
 
   return (
     <Tag
       style={style}
       className={clsx(
-        s.tab,
-        isHovered && s.hovered,
-        isDisabled && s.disabled,
-        isSelected && s.selected,
+        s.base,
+        !isUnderlined && s.default,
+        isUnderlined && s.underlined,
+        orientation && s[orientation],
+        isStretched && s.stretched,
         onlyIcon && s.onlyIcon,
-        isFocusVisible && s.focusVisible,
         className
       )}
       data-testid={dataTestId}
+      data-orientation={orientation}
       data-hovered={isHovered || undefined}
       data-disabled={isDisabled || undefined}
       data-selected={isSelected || undefined}
       data-onlyicon={onlyIcon || undefined}
+      data-allows-removing={allowsRemoving || undefined}
+      data-underlined={isUnderlined || undefined}
       data-focus-visible={isFocusVisible || undefined}
-      {...mergeProps(hoverProps, focusProps, tabProps, { onFocus: onFocused })}
+      {...mergeProps(hoverProps, focusProps, tabProps, {
+        onFocus: onFocused,
+        onKeyDown,
+      })}
       ref={domRef as any}
     >
       <div {...contentProps}>
-        {isNotNil(startAddon) && <div {...startAddonProps}>{startAddon}</div>}
-        {!onlyIcon && isNotNil(rendered) && (
-          <div {...labelProps}>{rendered}</div>
-        )}
-        {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}
+        <span className={s.inner}>
+          {isNotNil(startAddon) && <div {...startAddonProps}>{startAddon}</div>}
+          {!onlyIcon && isNotNil(rendered) && (
+            <div {...labelProps}>{rendered}</div>
+          )}
+          {isNotNil(endAddon) && <div {...endAddonProps}>{endAddon}</div>}
+        </span>
       </div>
+      {allowsRemoving && (
+        <IconButton
+          as="span"
+          size="l"
+          tabIndex={-1}
+          variant="fade-contrast"
+          data-slot="close-button"
+          aria-label={t.format('remove')}
+          isDisabled={isDisabled}
+          onPress={() => onRemove?.()}
+          className={clsx(s.closeButton, closeButtonClassName)}
+          isCompact
+          preventFocusOnPress
+          {...closeButtonRestProps}
+        >
+          <IconXmark16 />
+        </IconButton>
+      )}
     </Tag>
   );
 }

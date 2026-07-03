@@ -1,0 +1,196 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  display: flex;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  align-items: stretch;
+  text-decoration: none;
+  box-sizing: border-box;
+  justify-content: center;
+  min-inline-size: 40px;
+  transition: background-color var(--kbq-transition-default);
+
+  &::after {
+    transition: background-color var(--kbq-transition-default);
+  }
+
+  &[data-focus-visible] .content {
+    outline-color: var(--kbq-states-line-focus-theme);
+  }
+
+  &[data-disabled] .content {
+    color: var(--kbq-states-foreground-disabled);
+    cursor: default;
+  }
+
+  &[data-selected] .closeButton,
+  &[data-hovered] .closeButton,
+  &[data-focus-visible] .closeButton {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &[data-allows-removing][data-selected] .inner,
+  &[data-allows-removing][data-hovered] .inner,
+  &[data-allows-removing][data-focus-visible] .inner {
+    --mask-size: var(--kbq-size-l);
+
+    mask-image: linear-gradient(
+      to right,
+      #000 calc(100% - var(--mask-size) * 2),
+      transparent calc(100% - var(--mask-size))
+    );
+  }
+
+  .closeButton {
+    opacity: 0;
+    position: absolute;
+    visibility: hidden;
+    inset-block-start: 50%;
+    inset-inline-end: var(--kbq-size-m);
+    transform: translateY(-50%);
+    z-index: calc(var(--kbq-layer-absolute) + 1);
+  }
+}
+
+.default {
+  &[data-hovered] .content {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &[data-selected] .content {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  &.onlyIcon .content {
+    padding-inline: var(--kbq-size-s);
+  }
+}
+
+.underlined {
+  --tab-content-offset: var(--kbq-size-m);
+
+  box-sizing: content-box;
+  padding-block: var(--kbq-size-s);
+  border-inline: var(--tab-content-offset) solid transparent;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inline-size: 100%;
+    block-size: 3px;
+    inset-block-end: 0;
+    inset-block-start: unset;
+    border-radius: 2px 2px 0 0;
+    background-color: transparent;
+    z-index: calc(var(--kbq-layer-absolute) + 1);
+  }
+
+  &[data-hovered]::after {
+    background-color: var(--kbq-line-contrast-fade);
+  }
+
+  &[data-selected]::after {
+    background-color: var(--kbq-line-contrast);
+  }
+
+  &[data-disabled][data-selected]::after {
+    background-color: var(--kbq-states-line-disabled);
+  }
+
+  &.onlyIcon {
+    --tab-content-offset: 0px;
+
+    border-inline: var(--kbq-size-xs) solid transparent;
+  }
+
+  &:first-child {
+    border-inline-start: 0;
+  }
+
+  .content {
+    padding-inline: var(--tab-content-offset);
+    margin-inline: calc(-1 * var(--tab-content-offset));
+    inline-size: calc(100% + calc(2 * var(--tab-content-offset)));
+  }
+
+  .closeButton {
+    inset-inline-end: 0;
+  }
+}
+
+.horizontal .inner {
+  justify-content: center;
+}
+
+.vertical {
+  inline-size: 100%;
+  border-block: var(--kbq-size-xxs) solid var(--kbq-background-transparent);
+
+  &:first-child {
+    border-block-start: 0;
+  }
+
+  &:last-child {
+    border-block-end: 0;
+  }
+
+  .inner {
+    justify-content: flex-start;
+  }
+
+  .label {
+    min-inline-size: 0;
+
+    @mixin ellipsis;
+  }
+}
+
+.stretched {
+  inline-size: 100%;
+
+  .label {
+    min-inline-size: 0;
+
+    @mixin ellipsis;
+  }
+}
+
+.onlyIcon {
+  min-inline-size: 32px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: 32px;
+  padding-inline: var(--kbq-size-m);
+  padding-block: var(--kbq-size-xs);
+  color: var(--kbq-foreground-contrast);
+  border-radius: var(--kbq-size-border-radius);
+  outline-offset: calc(-1 * var(--kbq-size-3xs));
+  outline: var(--kbq-size-3xs) solid;
+  outline-color: transparent;
+  transition: outline-color var(--kbq-transition-default);
+}
+
+.inner {
+  display: flex;
+  flex: 1;
+  position: relative;
+  gap: var(--kbq-size-xxs);
+  overflow: hidden;
+  min-inline-size: 0;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.addon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}

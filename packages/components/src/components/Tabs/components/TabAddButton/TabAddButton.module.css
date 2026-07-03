@@ -1,0 +1,60 @@
+.base {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+
+  &[data-hovered] .content {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &[data-pressed] .content {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  &[data-focus-visible] .content {
+    outline-color: var(--kbq-states-line-focus-theme);
+  }
+
+  &[data-disabled] .content {
+    color: var(--kbq-states-foreground-disabled);
+    cursor: default;
+  }
+}
+
+.underlined {
+  padding-block: var(--kbq-size-s);
+}
+
+.vertical {
+  inline-size: 100%;
+
+  .content {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: 32px;
+  padding-inline: var(--kbq-size-s);
+  padding-block: var(--kbq-size-xs);
+  color: var(--kbq-foreground-contrast);
+  border-radius: var(--kbq-size-border-radius);
+  outline-offset: calc(-1 * var(--kbq-size-3xs));
+  outline: var(--kbq-size-3xs) solid;
+  outline-color: transparent;
+  transition: outline-color var(--kbq-transition-default);
+}

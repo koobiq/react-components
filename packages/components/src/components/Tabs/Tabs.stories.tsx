@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
+import type { Key } from '@koobiq/react-core';
 import {
   IconApple24,
   IconBsd24,
@@ -14,6 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
+import { useListData } from '../index';
 import { Input } from '../Input';
 import { spacing } from '../layout';
 import { Link } from '../Link';
@@ -29,7 +31,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['status:updated', 'date:2026-04-30'],
+  tags: ['status:updated', 'date:2026-06-29'],
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -92,6 +94,162 @@ export const Dynamic: Story = {
           </Tab>
         )}
       </Tabs>
+    );
+  },
+};
+
+export const Editable: Story = {
+  render: function Render() {
+    const content =
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias delectus fugit maxime nulla odio sunt ullam vitae! A aut beatae consequatur deserunt dicta dignissimos distinctio doloribus eos expedita fuga, hic illo ipsam ipsum iste, laboriosam nam neque nesciunt odio optio possimus, praesentium quasi quia quisquam sequi voluptatum. Amet, architecto, nisi.';
+
+    const list = useListData({
+      initialItems: [
+        { id: 'bruteforce', title: 'Bruteforce', content },
+        { id: 'complex-attack', title: 'Complex Attack', content },
+        { id: 'ddos', title: 'DDoS', content },
+        { id: 'dos', title: 'DoS', content },
+        { id: 'hips', title: 'HIPS Alert', content },
+        { id: 'identity-theft', title: 'Identity Theft', content },
+        { id: 'ids-ips', title: 'IDS/IPS Alert', content },
+        { id: 'misc', title: 'Miscellaneous', content },
+      ],
+    });
+
+    const [selectedKey, setSelectedKey] = useState<Key | undefined>(
+      list.items[0]?.id
+    );
+
+    const counter = useRef(0);
+
+    const removeTabs = (keys: Set<Key>) => {
+      if (selectedKey != null && keys.has(selectedKey)) {
+        const idx = list.items.findIndex((item) => item.id === selectedKey);
+        const next = list.items[idx + 1] ?? list.items[idx - 1];
+
+        setSelectedKey(next?.id);
+      }
+
+      list.remove(...keys);
+    };
+
+    const addTab = () => {
+      counter.current += 1;
+      const id = `new-${counter.current}`;
+
+      list.append({ id, title: `New tab ${counter.current}`, content });
+      setSelectedKey(id);
+    };
+
+    return (
+      <Tabs
+        onAdd={addTab}
+        items={list.items}
+        onRemove={removeTabs}
+        selectedKey={selectedKey}
+        aria-label="Types of cyberattacks"
+        onSelectionChange={setSelectedKey}
+      >
+        {(item) => (
+          <Tab startAddon={<IconBug16 />} key={item.id} title={item.title}>
+            {item.content}
+          </Tab>
+        )}
+      </Tabs>
+    );
+  },
+};
+
+export const EditablePlayground: Story = {
+  render: function Render() {
+    const [isVertical, { set: setVertical }] = useBoolean(false);
+    const [isUnderlined, { set: setUnderlined }] = useBoolean(false);
+    const [isStretched, { set: setStretched }] = useBoolean(false);
+    const [isDisabled, { set: setDisabled }] = useBoolean(false);
+
+    const list = useListData({
+      initialItems: [
+        { id: 'bruteforce', title: 'Bruteforce' },
+        { id: 'complex-attack', title: 'Complex Attack' },
+        { id: 'ddos', title: 'DDoS' },
+        { id: 'dos', title: 'DoS' },
+        { id: 'hips', title: 'HIPS Alert' },
+        { id: 'identity-theft', title: 'Identity Theft' },
+        { id: 'ids-ips', title: 'IDS/IPS Alert' },
+        { id: 'misc', title: 'Miscellaneous' },
+      ],
+    });
+
+    const [selectedKey, setSelectedKey] = useState<Key | undefined>(
+      list.items[0]?.id
+    );
+
+    const counter = useRef(0);
+
+    const removeTabs = (keys: Set<Key>) => {
+      if (selectedKey != null && keys.has(selectedKey)) {
+        const idx = list.items.findIndex((item) => item.id === selectedKey);
+        const next = list.items[idx + 1] ?? list.items[idx - 1];
+
+        setSelectedKey(next?.id);
+      }
+
+      list.remove(...keys);
+    };
+
+    const addTab = () => {
+      counter.current += 1;
+      const id = `new-${counter.current}`;
+
+      list.append({ id, title: `New tab ${counter.current}` });
+      setSelectedKey(id);
+    };
+
+    return (
+      <FlexBox direction="column" gap="l" alignItems="stretch">
+        <FlexBox gap="l" alignItems="center">
+          <Toggle isSelected={isVertical} onChange={setVertical}>
+            Vertical
+          </Toggle>
+          <Toggle isSelected={isUnderlined} onChange={setUnderlined}>
+            Underlined
+          </Toggle>
+          <Toggle isSelected={isStretched} onChange={setStretched}>
+            Stretched
+          </Toggle>
+          <Toggle isSelected={isDisabled} onChange={setDisabled}>
+            Disabled
+          </Toggle>
+        </FlexBox>
+        <Tabs
+          aria-label="Types of cyberattacks"
+          items={list.items}
+          orientation={isVertical ? 'vertical' : 'horizontal'}
+          isUnderlined={isUnderlined}
+          isStretched={isStretched}
+          isDisabled={isDisabled}
+          selectedKey={selectedKey}
+          onSelectionChange={setSelectedKey}
+          style={{
+            blockSize: isVertical && !isUnderlined ? 280 : undefined,
+          }}
+          slotProps={{
+            tabs: {
+              style: {
+                inlineSize: isVertical && !isUnderlined ? 240 : undefined,
+              },
+            },
+          }}
+          onAdd={addTab}
+          onRemove={removeTabs}
+        >
+          {(item) => (
+            <Tab startAddon={<IconBug16 />} key={item.id} title={item.title}>
+              {item.title} content
+            </Tab>
+          )}
+        </Tabs>
+      </FlexBox>
     );
   },
 };
@@ -359,6 +517,32 @@ export const Controlled: Story = {
   },
 };
 
+export const KeyboardActivation: Story = {
+  render: function Render(args) {
+    return (
+      <Tabs
+        aria-label="Types of cyberattacks"
+        keyboardActivation="manual"
+        {...args}
+      >
+        <Tab key="brute-force" title="BruteForce">
+          A brute-force attack systematically guesses passwords or cryptographic
+          keys, often using automated tools to try vast combinations until
+          access is gained.
+        </Tab>
+        <Tab key="complex-attack" title="Complex Attack">
+          A denial-of-service attack floods a server or exploits resource-heavy
+          operations to exhaust CPU, memory, bandwidth, or connection limits.
+        </Tab>
+        <Tab key="ddos" title="DDoS">
+          Distributed Denial of Service (DDoS) uses a botnet of infected devices
+          to send massive, coordinated traffic to a victim.
+        </Tab>
+      </Tabs>
+    );
+  },
+};
+
 export const Links: Story = {
   render: function Render(args) {
     return (
@@ -408,7 +592,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Email"
                   name="email"
-                  placeholder="Enter your email"
                   type="email"
                   autoComplete="email"
                 />
@@ -416,7 +599,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Password"
                   name="password"
-                  placeholder="Enter your password"
                   type="password"
                   autoComplete="current-password"
                 />
@@ -435,7 +617,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Name"
                   name="name"
-                  placeholder="Enter your name"
                   type="text"
                   autoComplete="name"
                 />
@@ -443,7 +624,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Email"
                   name="email"
-                  placeholder="Enter your email"
                   type="email"
                   autoComplete="email"
                 />
@@ -451,7 +631,6 @@ export const WithForm: Story = {
                   {...requiredFieldProps}
                   label="Password"
                   name="password"
-                  placeholder="Enter your password"
                   type="password"
                   autoComplete="new-password"
                 />

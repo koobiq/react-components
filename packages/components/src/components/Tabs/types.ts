@@ -6,7 +6,12 @@ import type {
   Ref,
 } from 'react';
 
+import type { Key } from '@koobiq/react-core';
 import type { AriaTabListProps } from '@koobiq/react-primitives';
+
+import type { IconButtonProps } from '../IconButton';
+
+import type { TabAddButtonProps } from './components';
 
 export type TabsProps<T> = AriaTabListProps<T> & {
   /** Ref to the tabs. */
@@ -20,12 +25,18 @@ export type TabsProps<T> = AriaTabListProps<T> & {
    * @default false
    */
   isStretched?: boolean;
+  /** Handler that is called when a user deletes a tab. */
+  onRemove?: (keys: Set<Key>) => void;
+  /** Handler that is called when the add button is pressed. */
+  onAdd?: () => void;
   /** The props used for each slot inside. */
   slotProps?: {
     tabs?: ComponentProps<'div'>;
     tabList?: ComponentProps<'div'>;
     tabPanel?: ComponentProps<'div'>;
     scrollBox?: ComponentProps<'div'>;
+    addButton?: TabAddButtonProps;
+    closeButton?: IconButtonProps;
     /** @deprecated */
     indicator?: ComponentProps<'span'>;
   };
