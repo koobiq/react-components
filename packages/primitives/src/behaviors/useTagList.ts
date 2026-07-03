@@ -9,12 +9,8 @@ import type {
 import { mergeProps, useFocusWithin, useLocale } from '@koobiq/react-core';
 import { ListKeyboardDelegate, useSelectableList } from '@react-aria/selection';
 import type { ListState } from '@react-stately/list';
-import type { MultipleSelectionManager } from '@react-stately/selection';
 
-const extendSelectionMethod: keyof MultipleSelectionManager = 'extendSelection';
-
-const noopExtendSelection: MultipleSelectionManager['extendSelection'] = () =>
-  undefined;
+import { useTagListRangeSelection } from './useTagListRangeSelection';
 
 export type AriaTagListProps = {
   /**
@@ -63,23 +59,11 @@ export function useTagList<T extends object>(
     ]
   );
 
-  // Let React Aria keep owning keyboard focus movement, but disable its
-  // range-selection branch for tags.
-  const selectionManagerWithoutRangeSelection = useMemo(
-    () =>
-      new Proxy(state.selectionManager, {
-        get(target, property) {
-          if (property === extendSelectionMethod) {
-            return noopExtendSelection;
-          }
-
-          const value = Reflect.get(target, property, target);
-
-          return typeof value === 'function' ? value.bind(target) : value;
-        },
-      }) as MultipleSelectionManager,
-    [state.selectionManager]
-  );
+  const rangeSelection = useTagListRangeSelection({
+    state,
+    direction,
+    keyboardDelegate,
+  });
 
   const { listProps } = useSelectableList({
     keyboardDelegate,
@@ -89,13 +73,16 @@ export function useTagList<T extends object>(
     autoFocus,
     collection: state.collection,
     disabledKeys: state.disabledKeys,
-    selectionManager: selectionManagerWithoutRangeSelection,
+    selectionManager: state.selectionManager,
     ref: ref as AriaRefObject<HTMLElement | null>,
   });
 
   // Clear selection when focus leaves the group.
   const { focusWithinProps } = useFocusWithin({
-    onBlurWithin: () => state.selectionManager.clearSelection(),
+    onBlurWithin: () => {
+      rangeSelection.clearRangeSelection();
+      state.selectionManager.clearSelection();
+    },
   });
 
   const { onKeyDown: selectableKeyDown, ...selectableListProps } = listProps;
@@ -104,30 +91,21 @@ export function useTagList<T extends object>(
     'data-collection'?: string;
   };
 
-  const isArrowKey = (key: string) =>
-    key === 'ArrowDown' ||
-    key === 'ArrowUp' ||
-    key === 'ArrowLeft' ||
-    key === 'ArrowRight';
-
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.defaultPrevented) return;
 
-    if (
-      event.shiftKey &&
-      (event.metaKey || event.ctrlKey || event.altKey) &&
-      isArrowKey(event.key)
-    ) {
-      event.preventDefault();
-
-      return;
-    }
+    if (rangeSelection.onKeyDown(event)) return;
 
     selectableKeyDown?.(event);
 
     // Keep the page from scrolling while arrow-navigating the tags — the
     // collection only calls preventDefault when it actually moves focus.
-    if (isArrowKey(event.key)) {
+    if (
+      event.key === 'ArrowDown' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight'
+    ) {
       event.preventDefault();
     }
   };

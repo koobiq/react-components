@@ -16,6 +16,7 @@ import {
 import type { ListState } from '@react-stately/list';
 
 import intlMessages from '../intl/tag-list-item.json';
+import { addTagListRangeSelection } from '../utils';
 
 /** True if Ctrl (Windows/Linux) or Cmd (macOS) is held during the event. */
 export function isCommandModifier(event: {
@@ -164,6 +165,14 @@ export function useTagListItem<T extends object>(
     if (allowsSelection) selectionManager.toggleSelection(key);
   };
 
+  const extendSelectionFrom = (anchorKey: Key | null) => {
+    if (!allowsSelection || selectionManager.selectionMode !== 'multiple') {
+      return false;
+    }
+
+    return addTagListRangeSelection(state, anchorKey ?? key, key);
+  };
+
   const getKeysToRemove = () => {
     if (!isSelected) {
       return new Set([key]);
@@ -185,9 +194,19 @@ export function useTagListItem<T extends object>(
       return;
     }
 
+    const anchorKey = selectionManager.isFocused
+      ? selectionManager.focusedKey
+      : null;
+
     focusTag();
 
     if (event.pointerType === 'keyboard') return;
+
+    if (event.shiftKey) {
+      extendSelectionFrom(anchorKey);
+
+      return;
+    }
 
     if (isCommandModifier(event)) {
       toggleSelection();

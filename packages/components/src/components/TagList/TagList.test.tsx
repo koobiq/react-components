@@ -184,7 +184,7 @@ describe('TagList', () => {
     await waitFor(() => expect(getTag()).toHaveFocus());
   });
 
-  it('should move focus without extending selection on Shift+Arrow', async () => {
+  it('should extend selection and move focus on Shift+Arrow', async () => {
     const user = userEvent.setup();
     const onSelectionChange = vi.fn();
 
@@ -202,33 +202,102 @@ describe('TagList', () => {
     const thirdTag = screen.getByText('three').closest('[role="row"]');
 
     await waitFor(() => expect(thirdTag).toHaveFocus());
-    expect(onSelectionChange).not.toHaveBeenCalled();
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
     expect(getTag()).toHaveAttribute('data-selected', 'true');
-    expect(thirdTag).not.toHaveAttribute('data-selected');
+    expect(thirdTag).toHaveAttribute('data-selected', 'true');
   });
 
-  it('should ignore Shift+modified arrow shortcuts', async () => {
+  it('should start Shift+Arrow range from the focused tag', async () => {
     const user = userEvent.setup();
-    const onSelectionChange = vi.fn();
 
-    render(renderComponent({ selectionMode: 'multiple', onSelectionChange }));
+    render(renderComponent({ selectionMode: 'multiple' }));
 
     await user.click(getTag());
-    await user.keyboard('{Space}');
+    await user.keyboard('{Shift>}{ArrowRight}{/Shift}');
+
+    const thirdTag = screen.getByText('three').closest('[role="row"]');
+
+    await waitFor(() => expect(thirdTag).toHaveFocus());
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+    expect(thirdTag).toHaveAttribute('data-selected', 'true');
+  });
+
+  it('should shrink Shift+Arrow range when moving back toward the anchor', async () => {
+    const user = userEvent.setup();
+
+    render(renderComponent({ selectionMode: 'multiple' }));
+
+    await user.click(getTag());
+    await user.keyboard('{Shift>}{ArrowRight}{ArrowRight}{ArrowLeft}{/Shift}');
+
+    const thirdTag = screen.getByText('three').closest('[role="row"]');
+    const fourthTag = screen.getByText('four').closest('[role="row"]');
+
+    await waitFor(() => expect(thirdTag).toHaveFocus());
+    expect(getTag()).toHaveAttribute('data-selected', 'true');
+    expect(thirdTag).toHaveAttribute('data-selected', 'true');
+    expect(fourthTag).not.toHaveAttribute('data-selected');
+  });
+
+  it('should start a new Shift+Arrow range after selection is cleared', async () => {
+    const user = userEvent.setup();
+
+    render(renderComponent({ selectionMode: 'multiple' }));
+
+    await user.click(getTag());
+    await user.keyboard('{Shift>}{ArrowRight}{/Shift}');
+    await user.keyboard('{Escape}');
+    await user.keyboard('{Shift>}{ArrowRight}{/Shift}');
+
+    const thirdTag = screen.getByText('three').closest('[role="row"]');
+    const fourthTag = screen.getByText('four').closest('[role="row"]');
+
+    await waitFor(() => expect(fourthTag).toHaveFocus());
+    expect(getTag()).not.toHaveAttribute('data-selected');
+    expect(thirdTag).toHaveAttribute('data-selected', 'true');
+    expect(fourthTag).toHaveAttribute('data-selected', 'true');
+  });
+
+  it('should add range selection on Shift+Click', async () => {
+    const user = userEvent.setup();
+
+    render(renderComponent({ selectionMode: 'multiple' }));
+
+    const thirdTag = screen.getByText('three').closest('[role="row"]');
+    const fourthTag = screen.getByText('four').closest('[role="row"]');
+
+    await user.click(getTag());
+    await user.keyboard('{Shift>}');
+    await user.click(fourthTag as HTMLElement);
+    await user.keyboard('{/Shift}');
 
     expect(getTag()).toHaveAttribute('data-selected', 'true');
+    expect(thirdTag).toHaveAttribute('data-selected', 'true');
+    expect(fourthTag).toHaveAttribute('data-selected', 'true');
+  });
 
-    onSelectionChange.mockClear();
+  it('should not use a stale focused tag as a Shift+Click anchor', async () => {
+    const user = userEvent.setup();
 
-    await user.keyboard('{Shift>}{Meta>}{ArrowRight}{/Meta}{/Shift}');
+    render(
+      <>
+        {renderComponent({ selectionMode: 'multiple' })}
+        <button data-testid="outside">outside</button>
+      </>
+    );
 
-    expect(getTag()).toHaveFocus();
-    expect(onSelectionChange).not.toHaveBeenCalled();
-    expect(getTag()).toHaveAttribute('data-selected', 'true');
+    const thirdTag = screen.getByText('three').closest('[role="row"]');
+    const fourthTag = screen.getByText('four').closest('[role="row"]');
 
-    expect(
-      screen.getByText('three').closest('[role="row"]')
-    ).not.toHaveAttribute('data-selected');
+    await user.click(getTag());
+    await user.click(screen.getByTestId('outside'));
+    await user.keyboard('{Shift>}');
+    await user.click(fourthTag as HTMLElement);
+    await user.keyboard('{/Shift}');
+
+    expect(getTag()).not.toHaveAttribute('data-selected');
+    expect(thirdTag).not.toHaveAttribute('data-selected');
+    expect(fourthTag).toHaveAttribute('data-selected', 'true');
   });
 
   it('should not wrap focus past the last tag with ArrowRight', async () => {

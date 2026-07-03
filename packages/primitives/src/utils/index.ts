@@ -57,3 +57,5 @@ export function removeDataAttributes<T>(props: T): T {
 
   return filteredProps;
 }
+
+export * from './tagListSelection';

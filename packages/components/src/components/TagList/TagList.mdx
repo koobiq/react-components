@@ -33,7 +33,7 @@ import { TagList } from '@koobiq/react-components';
 ## Selection
 
 TagList keeps pointer selection explicit: a regular click only focuses a tag.
-To select tags, use <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + click, <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + <kbd>A</kbd>, or press <kbd>Space</kbd> while a tag is focused.
+To select tags, use <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + click, <kbd>Shift</kbd> + click, <kbd>Shift</kbd> + arrow keys, <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + <kbd>A</kbd>, or press <kbd>Space</kbd> while a tag is focused.
 
 <Story of={Stories.ModifierSelection} />
 
@@ -102,16 +102,19 @@ or automatically derived from the values passed to the `items` prop.
 
 ## Keyboard
 
-| Key                                             | Behavior                                                                                                        |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| <kbd>→</kbd> / <kbd>←</kbd>                     | Move focus to the next / previous tag (respects RTL direction).                                                 |
-| <kbd>Home</kbd> / <kbd>End</kbd>                | Move focus to the first / last tag.                                                                             |
-| <kbd>Space</kbd>                                | Toggle selection on the focused tag.                                                                            |
-| <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + click        | Toggle selection without clearing the previous one.                                                             |
-| <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + <kbd>A</kbd> | Select all tags.                                                                                                |
-| <kbd>Escape</kbd>                               | Clear selection. Override with `escapeKeyBehavior="none"`.                                                      |
-| <kbd>Backspace</kbd> / <kbd>Delete</kbd>        | Remove the focused tag, or every selected tag if the focused tag is part of the selection. Requires `onRemove`. |
-| <kbd>Tab</kbd>                                  | Move focus into / out of the group as a single tab stop.                                                        |
+| Key                                                                                    | Behavior                                                                                                        |
+| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| <kbd>→</kbd> / <kbd>←</kbd>                                                            | Move focus to the next / previous tag (respects RTL direction).                                                 |
+| <kbd>Home</kbd> / <kbd>End</kbd>                                                       | Move focus to the first / last tag.                                                                             |
+| <kbd>Shift</kbd> + <kbd>→</kbd> / <kbd>←</kbd>                                         | Move focus and extend the selected range to the next / previous tag.                                            |
+| <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Home</kbd> / <kbd>End</kbd> | Move focus and extend the selected range to the first / last tag.                                               |
+| <kbd>Space</kbd>                                                                       | Toggle selection on the focused tag.                                                                            |
+| <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + click                                               | Toggle selection without clearing the previous one.                                                             |
+| <kbd>Shift</kbd> + click                                                               | Add the range from the focused tag to the clicked tag to the selection.                                         |
+| <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + <kbd>A</kbd>                                        | Select all tags.                                                                                                |
+| <kbd>Escape</kbd>                                                                      | Clear selection. Override with `escapeKeyBehavior="none"`.                                                      |
+| <kbd>Backspace</kbd> / <kbd>Delete</kbd>                                               | Remove the focused tag, or every selected tag if the focused tag is part of the selection. Requires `onRemove`. |
+| <kbd>Tab</kbd>                                                                         | Move focus into / out of the group as a single tab stop.                                                        |
 
 ## CSS Variables
 
