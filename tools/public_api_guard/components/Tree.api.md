@@ -10,10 +10,13 @@ import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { ElementType } from 'react';
+import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
+import { ForwardRefExoticComponent } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
+import { RefAttributes } from 'react';
 import type { TreeItemContentProps as TreeItemContentProps_2 } from '@koobiq/react-primitives';
 import type { TreeItemProps as TreeItemProps_2 } from '@koobiq/react-primitives';
 import { TreeLoadMoreItemProps as TreeLoadMoreItemProps_2 } from '@koobiq/react-primitives';
@@ -35,6 +38,14 @@ export namespace TreeComponent {
     Item: typeof TreeItem;
     var // (undocumented)
     ItemContent: typeof TreeItemContent;
+    var // Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    ItemContentText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    var // Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    ItemContentAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
     var // (undocumented)
     LoadMoreItem: typeof TreeLoadMoreItem;
 }
@@ -57,7 +68,9 @@ export type TreeItemContentPropSlotProps = {
 };
 
 // @public (undocumented)
-export type TreeItemProps = Partial<TreeItemProps_2> & DataAttributeProps;
+export type TreeItemProps = Partial<TreeItemProps_2> & DataAttributeProps & {
+    align?: ItemPropAlign;
+};
 
 // @public (undocumented)
 export function TreeLoadMoreItem(props: TreeLoadMoreItemProps): JSX.Element;
@@ -74,6 +87,7 @@ export type TreeProps<T extends object> = TreeProps_2<T> & {
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/Tree/components/TreeItem/types.d.ts:9:5 - (ae-forgotten-export) The symbol "ItemPropAlign" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:6:5 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:7:5 - (ae-forgotten-export) The symbol "CheckboxProps" needs to be exported by the entry point index.d.ts
 
