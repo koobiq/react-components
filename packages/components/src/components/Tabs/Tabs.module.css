@@ -100,6 +100,10 @@
     inline-size: 100%;
     display: inline-block;
     overflow: hidden auto;
+    scrollbar-width: auto;
+    scrollbar-gutter: auto;
+    scrollbar-color: var(--kbq-scrollbar-thumb-default-background)
+      var(--kbq-background-transparent);
 
     &[data-overflow-block-start][data-overflow-block-end] {
       mask-image: linear-gradient(
