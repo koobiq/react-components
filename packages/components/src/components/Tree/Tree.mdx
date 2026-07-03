@@ -57,10 +57,13 @@ Use `selectionBehavior="toggle"` to render checkbox selection controls.
 
 ## Item content
 
-Tree items can be composed with helper components:
+The `Tree.ItemContent` can be composed with helper components:
 
 - `Tree.ItemContentText` for text and captions.
 - `Tree.ItemContentAddon` for icons, badges, or other secondary content.
+
+The `Tree.Item` also have layout props, such as `align`, which sets vertical alignment.
+Use `align="start"` for captions or multi-line content.
 
 <Story of={Stories.ItemContent} />
 
