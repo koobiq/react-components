@@ -3,11 +3,11 @@ import { Fragment } from 'react';
 import { clsx, useLocalizedStringFormatter } from '@koobiq/react-core';
 
 import { useFormFieldControlGroup } from '../FormField';
-import { Tag } from '../Tag';
+import { Tag, type TagProps } from '../Tag';
 
 import intlMessages from './intl';
 import s from './SelectedTags.module.css';
-import type { SelectedTagsProps, SelectedTagsRenderTagProps } from './types';
+import type { SelectedTagsProps } from './types';
 
 export function SelectedTagsMultiline<T extends object>({
   state,
@@ -36,7 +36,7 @@ export function SelectedTagsMultiline<T extends object>({
             }
           };
 
-          const tagProps: SelectedTagsRenderTagProps = {
+          const tagProps: TagProps = {
             className: s.tag,
             isDisabled,
             variant: isInvalid ? 'error-fade' : 'contrast-fade',

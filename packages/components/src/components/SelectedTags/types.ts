@@ -18,12 +18,6 @@ export interface SelectedTagsSelectionState<T extends object> {
   };
 }
 
-/** Props to spread onto a custom tag's root element; returned by the `renderTag` callback. */
-export type SelectedTagsRenderTagProps = Omit<TagProps, 'children'> & {
-  'aria-hidden'?: true;
-  variant: NonNullable<TagProps['variant']>;
-};
-
 export type SelectedTagsProps<T extends object> = {
   state: SelectedTagsSelectionState<T>;
   states: {
@@ -33,8 +27,5 @@ export type SelectedTagsProps<T extends object> = {
     isRequired?: boolean;
   };
   selectedTagsOverflow?: SelectedTagsPropOverflow;
-  renderTag?: (
-    item: Node<T>,
-    tagProps: SelectedTagsRenderTagProps
-  ) => ReactNode;
+  renderTag?: (item: Node<T>, tagProps: TagProps) => ReactNode;
 };
