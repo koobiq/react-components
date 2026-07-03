@@ -17,12 +17,14 @@ export function TreeItem({
   children,
   className,
   textValue,
+  align = 'center',
   ...props
 }: TreeItemProps) {
   return (
     <AriaTreeItem
       {...props}
       textValue={textValue ?? ''}
+      data-align={align}
       className={composeRenderProps(className, (className) =>
         clsx('kbq-TreeItem', listItem, textVariant['text-normal'], className)
       )}
