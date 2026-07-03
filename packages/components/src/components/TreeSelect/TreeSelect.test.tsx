@@ -341,49 +341,6 @@ describe('TreeSelect', () => {
       ).toBeInTheDocument();
     });
 
-    it('should use renderTag to customize selected tags in multiple mode', () => {
-      renderTreeSelect({
-        selectionMode: 'multiple',
-        defaultValue: [1, 7],
-        renderTag: (item, tagProps) => (
-          <div data-testid={`custom-tag-${item.key}`} {...tagProps}>
-            {item.textValue}
-          </div>
-        ),
-      });
-
-      const control = getControl();
-
-      expect(within(control).getByTestId('custom-tag-1')).toBeInTheDocument();
-      expect(within(control).getByTestId('custom-tag-7')).toBeInTheDocument();
-    });
-
-    it('should render TreeSelect.Tag inside renderTag and support removing via its button', async () => {
-      const onChange = vi.fn();
-
-      renderTreeSelect({
-        selectionMode: 'multiple',
-        defaultValue: [1, 7],
-        onChange,
-        renderTag: (item, tagProps) => (
-          <TreeSelect.Tag {...tagProps} data-testid={`tag-${item.key}`}>
-            {item.textValue}
-          </TreeSelect.Tag>
-        ),
-      });
-
-      expect(screen.getByTestId('tag-1')).toHaveTextContent('app');
-      expect(screen.getByTestId('tag-7')).toHaveTextContent('README.md');
-
-      await userEvent.click(
-        within(screen.getByTestId('tag-7')).getByRole('button', {
-          hidden: true,
-        })
-      );
-
-      expect(onChange).toHaveBeenCalledWith([1]);
-    });
-
     it('should call onChange with keys in multiple mode', async () => {
       const onChange = vi.fn();
 

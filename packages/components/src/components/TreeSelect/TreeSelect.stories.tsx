@@ -451,41 +451,6 @@ export const SelectedTagsOverflow: Story = {
   },
 };
 
-export const CustomTagRender: Story = {
-  render: function Render() {
-    const defaultValue = [1, 6];
-
-    return (
-      <TreeSelect
-        items={items}
-        label="Project files"
-        defaultValue={defaultValue}
-        selectionMode="multiple"
-        style={{ inlineSize: 320 }}
-        placeholder="Select files"
-        renderTag={(item, tagProps) => (
-          <TreeSelect.Tag
-            {...tagProps}
-            variant="warning-fade"
-            icon={<IconCrosshairs16 />}
-          >
-            {item.textValue}
-          </TreeSelect.Tag>
-        )}
-      >
-        {function renderItem(item) {
-          return (
-            <Tree.Item key={item.id} textValue={item.title}>
-              <Tree.ItemContent>{item.title}</Tree.ItemContent>
-              <Collection items={item.test}>{renderItem}</Collection>
-            </Tree.Item>
-          );
-        }}
-      </TreeSelect>
-    );
-  },
-};
-
 export const Disabled: Story = {
   render: function Render() {
     return (
