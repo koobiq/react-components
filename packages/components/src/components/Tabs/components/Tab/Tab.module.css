@@ -25,12 +25,14 @@
     cursor: default;
   }
 
+  &[data-selected] .closeButton,
   &[data-hovered] .closeButton,
   &[data-focus-visible] .closeButton {
     opacity: 1;
     visibility: visible;
   }
 
+  &[data-allows-removing][data-selected] .inner,
   &[data-allows-removing][data-hovered] .inner,
   &[data-allows-removing][data-focus-visible] .inner {
     --mask-size: var(--kbq-size-l);
