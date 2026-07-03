@@ -240,7 +240,10 @@ describe('Table', () => {
       isActive: false,
     });
 
-    expect(screen.getByTestId('sort-icon')).toBeInTheDocument();
+    const sortIcon = screen.getByTestId('sort-icon').parentElement;
+
+    expect(sortIcon).toHaveAttribute('data-slot', 'sort-icon');
+    expect(sortIcon).not.toHaveAttribute('data-sort-direction');
   });
 
   it('should pass active sort direction to renderSortIcon', () => {
@@ -271,5 +274,10 @@ describe('Table', () => {
       direction: 'ascending',
       isActive: true,
     });
+
+    expect(screen.getByTestId('sort-icon').parentElement).toHaveAttribute(
+      'data-sort-direction',
+      'ascending'
+    );
   });
 });

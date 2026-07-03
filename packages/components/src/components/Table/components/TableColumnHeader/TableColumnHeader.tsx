@@ -82,6 +82,8 @@ export function TableColumnHeader<T>({
   const columnSortIcon = allowsSorting && (
     <span
       aria-hidden="true"
+      data-slot="sort-icon"
+      data-sort-direction={direction || undefined}
       className={clsx(s.sortIcon, (isActive || isHovered) && s.active)}
     >
       {iconToRender}
