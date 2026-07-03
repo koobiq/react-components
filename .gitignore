@@ -5,6 +5,8 @@ dist
 .firebase
 .next
 
+.claude
+
 # Dotenv environment variables file
 .env
 
