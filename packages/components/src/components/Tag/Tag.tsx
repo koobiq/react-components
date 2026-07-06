@@ -58,7 +58,9 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
     {
       isDisabled,
       isCompact: true,
+      size: 'l',
       className: s.cancelIcon,
+      children: <IconXmarkS16 />,
       variant: matchTagVariantToIconButton[variant],
       'aria-label': t.format('remove'),
     },
@@ -70,11 +72,7 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
       <div {...bodyProps}>
         {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
         {isNotNil(children) && <span {...contentProps}>{children}</span>}
-        {allowsRemoving && (
-          <IconButton size="l" {...removeButtonProps}>
-            <IconXmarkS16 />
-          </IconButton>
-        )}
+        {allowsRemoving && <IconButton {...removeButtonProps} />}
       </div>
     </div>
   );
