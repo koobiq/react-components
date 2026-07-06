@@ -34,6 +34,7 @@ describe('Select', () => {
   const getRoot = () => screen.getByTestId('root');
   const getControl = () => screen.getByTestId('control');
   const getPopover = () => screen.getByTestId('popover');
+  const queryPopover = () => screen.queryByTestId('popover');
   const getClearButton = () => screen.queryByLabelText('clear-button');
   const getGroup = () => screen.getByTestId('group');
   const getOptions = () => screen.getAllByRole('option');
@@ -253,6 +254,11 @@ describe('Select', () => {
       expect(getRoot()).toHaveAttribute('data-disabled', 'true');
     });
 
+    it('check the isReadOnly prop', () => {
+      render(<Select {...baseProps} isReadOnly />);
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+    });
+
     it('check the isRequired prop', () => {
       render(<Select {...baseProps} isRequired />);
       expect(getRoot()).toHaveAttribute('data-required', 'true');
@@ -261,6 +267,215 @@ describe('Select', () => {
     it('check the isInvalid prop', () => {
       render(<Select {...baseProps} isInvalid />);
       expect(getRoot()).toHaveAttribute('data-invalid', 'true');
+    });
+  });
+
+  describe('read only', () => {
+    it('should remain focusable but not open the dropdown', async () => {
+      const onOpenChange = vi.fn();
+
+      render(
+        <Select {...baseProps} isReadOnly onOpenChange={onOpenChange}>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.tab();
+      await userEvent.click(getControl());
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+      expect(getControl()).toHaveFocus();
+      expect(queryPopover()).not.toBeInTheDocument();
+      expect(onOpenChange).not.toHaveBeenCalled();
+    });
+
+    it('should not open the dropdown via keyboard', async () => {
+      const onOpenChange = vi.fn();
+
+      render(
+        <Select {...baseProps} isReadOnly onOpenChange={onOpenChange}>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.tab();
+
+      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard(' ');
+      await userEvent.keyboard('{ArrowDown}');
+
+      expect(queryPopover()).not.toBeInTheDocument();
+      expect(onOpenChange).not.toHaveBeenCalled();
+    });
+
+    it('should not change the selection with closed keyboard selection shortcuts', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Select {...baseProps} defaultValue="2" isReadOnly onChange={onChange}>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.tab();
+
+      await userEvent.keyboard('{ArrowLeft}1');
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(getControl()).toHaveTextContent('2');
+    });
+
+    it('should not change the selection when an option is clicked', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          defaultOpen
+          defaultValue="1"
+          isReadOnly
+          onChange={onChange}
+        >
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.click(screen.getByRole('option', { name: '2' }));
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(getControl()).toHaveTextContent('1');
+    });
+
+    it('should render a disabled clear button', async () => {
+      const onChange = vi.fn();
+      const onClear = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          value="1"
+          onChange={onChange}
+          onClear={onClear}
+          isClearable
+          isReadOnly
+        >
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      const clearButton = getClearButton();
+
+      expect(clearButton).toBeInTheDocument();
+      expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
+      expect(clearButton).toBeDisabled();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(onClear).not.toHaveBeenCalled();
+      expect(getControl()).toHaveTextContent('1');
+    });
+
+    it('should update when the controlled value changes externally', () => {
+      const { rerender } = render(
+        <Select {...baseProps} value="1" isReadOnly>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      rerender(
+        <Select {...baseProps} value="2" isReadOnly>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      expect(getControl()).toHaveTextContent('2');
+    });
+
+    it('should pass isReadOnly to renderValue', () => {
+      render(
+        <Select
+          {...baseProps}
+          defaultValue="1"
+          isReadOnly
+          renderValue={(_, states) => (
+            <span data-testid="read-only-state">
+              {String(states.isReadOnly)}
+            </span>
+          )}
+        >
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+          <Select.Item id="3">3</Select.Item>
+        </Select>
+      );
+
+      expect(screen.getByTestId('read-only-state')).toHaveTextContent('true');
+    });
+
+    it('should inherit isReadOnly from Form', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Form isReadOnly>
+          <Select
+            {...baseProps}
+            defaultOpen
+            defaultValue="1"
+            onChange={onChange}
+          >
+            <Select.Item id="1">1</Select.Item>
+            <Select.Item id="2">2</Select.Item>
+            <Select.Item id="3">3</Select.Item>
+          </Select>
+        </Form>
+      );
+
+      await userEvent.click(screen.getByRole('option', { name: '2' }));
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+      expect(onChange).not.toHaveBeenCalled();
+      expect(getControl()).toHaveTextContent('1');
+    });
+
+    it('should override Form isReadOnly with false', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Form isReadOnly>
+          <Select
+            {...baseProps}
+            defaultOpen
+            defaultValue="1"
+            isReadOnly={false}
+            onChange={onChange}
+          >
+            <Select.Item id="1">1</Select.Item>
+            <Select.Item id="2">2</Select.Item>
+            <Select.Item id="3">3</Select.Item>
+          </Select>
+        </Form>
+      );
+
+      await userEvent.click(screen.getByRole('option', { name: '2' }));
+
+      expect(getRoot()).not.toHaveAttribute('data-readonly', 'true');
+      expect(onChange).toHaveBeenCalledWith('2');
+      expect(getControl()).toHaveTextContent('2');
     });
   });
 
@@ -338,7 +553,7 @@ describe('Select', () => {
       expect(onClear).toHaveBeenCalledTimes(1);
     });
 
-    it('should NOT render clear button when Select is disabled', async () => {
+    it('should render a disabled clear button when Select is disabled', async () => {
       const onClear = vi.fn();
 
       render(
@@ -355,7 +570,15 @@ describe('Select', () => {
         </Select>
       );
 
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      const clearButton = getClearButton();
+
+      expect(clearButton).toBeInTheDocument();
+      expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
+      expect(clearButton).toBeDisabled();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onClear).not.toHaveBeenCalled();
     });
   });
 
@@ -464,7 +687,7 @@ describe('Select', () => {
       );
 
       const input = getSearchInput();
-      input.focus();
+      await userEvent.click(input);
 
       const [opt1, opt2] = getOptions();
 
@@ -497,7 +720,7 @@ describe('Select', () => {
       );
 
       const input = getSearchInput();
-      input.focus();
+      await userEvent.click(input);
 
       await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
 

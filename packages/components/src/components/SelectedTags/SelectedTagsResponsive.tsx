@@ -53,15 +53,16 @@ export function SelectedTagsResponsive<T extends object>({
           const tagProps: TagProps = {
             ref: itemsRefs[i],
             className: s.tag,
-            isDisabled,
             'aria-hidden': !visibleMap[i] || undefined,
-            allowsRemoving: !isReadOnly,
+            allowsRemoving: true,
+            isDisabled,
             variant: isInvalid ? 'error-fade' : 'contrast-fade',
             slotProps: {
               removeIcon: {
                 as: 'div',
                 tabIndex: undefined,
                 onPress: onRemove,
+                isDisabled: isReadOnly || isDisabled,
               },
             },
           };

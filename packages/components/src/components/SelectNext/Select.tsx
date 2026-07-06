@@ -9,6 +9,8 @@ import {
   useControlledState,
   mergeProps,
   useElementSize,
+  type Key,
+  clsx,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
@@ -62,6 +64,9 @@ import {
 } from './index';
 import s from './Select.module.css';
 
+type SelectControlledValue = Key | readonly Key[] | null;
+type SelectControlledChangeValue = Key | Key[] | null;
+
 function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   state: inState,
   props,
@@ -94,6 +99,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     isRequired,
     onLoadMore,
     isDisabled,
+    isReadOnly,
     fullWidth,
     className,
     isLoading,
@@ -141,12 +147,14 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     setInputValue,
   ]);
 
-  const clearButtonIsHidden = isDisabled || !inState.selectedItems.length;
+  const clearButtonIsHidden = !inState.selectedItems.length;
 
   const handleClear = useCallback(() => {
+    if (isReadOnly) return;
+
     inState.selectionManager.setSelectedKeys(new Set());
     onClear?.();
-  }, [onClear, inState]);
+  }, [isReadOnly, onClear, inState]);
 
   const {
     menuProps,
@@ -177,8 +185,9 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     'data-testid': testId,
     'data-invalid': isInvalid || undefined,
     'data-disabled': isDisabled || undefined,
+    'data-readonly': isReadOnly || undefined,
     'data-required': isRequired || undefined,
-    className,
+    className: clsx(s.base, className),
     fullWidth,
     labelPlacement,
     labelAlign,
@@ -228,6 +237,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   const clearButtonProps = mergeProps(
     {
       isClearable,
+      isDisabled: isReadOnly || isDisabled,
       onPress: handleClear,
       className: s.clearButton,
       isHidden: clearButtonIsHidden,
@@ -249,8 +259,12 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       startAddon,
       onMouseDown: (e) => {
         if (e.currentTarget !== e.target || isDisabled) return;
+
         e.preventDefault();
         listBoxRef?.current?.focus();
+
+        if (isReadOnly) return;
+
         inState.open();
       },
       endAddon: (
@@ -353,7 +367,8 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
             <FormField.Select {...controlProps}>
               {renderValue(inState, {
                 isInvalid,
-                isDisabled: props.isDisabled,
+                isDisabled,
+                isReadOnly,
                 isRequired: props.isRequired,
               })}
             </FormField.Select>
@@ -385,22 +400,67 @@ function StandaloneSelect<
 }) {
   const props = { ...inProps, collection, children: null, items: null };
 
-  const { isDisabled: formIsDisabled } = useForm();
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
 
   const isDisabled = inProps?.isDisabled ?? formIsDisabled;
+  const isReadOnly = inProps?.isReadOnly ?? formIsReadOnly;
+
+  const defaultValue =
+    (inProps.defaultValue as SelectControlledValue | undefined) ??
+    (inProps.selectionMode === 'multiple' ? [] : null);
+
+  const [value, setValue] = useControlledState<
+    SelectControlledValue,
+    SelectControlledChangeValue
+  >(
+    inProps.value as SelectControlledValue | undefined,
+    defaultValue,
+    inProps.onChange as
+      | ((value: SelectControlledChangeValue) => void)
+      | undefined
+  );
+
+  const handleChange = useCallback(
+    (value: SelectControlledChangeValue) => {
+      if (isReadOnly) return;
+
+      setValue(value);
+    },
+    [isReadOnly, setValue]
+  );
 
   const state = useSelectState<T, M>(
     removeDataAttributes({
       ...props,
+      value,
+      onChange: handleChange,
       isDisabled,
     } as unknown as SelectStateOptions<T, M>)
   );
 
+  const selectState = isReadOnly
+    ? ({
+        ...state,
+        open() {
+          return undefined;
+        },
+        toggle() {
+          return undefined;
+        },
+        setValue() {
+          return undefined;
+        },
+        setSelectedKey() {
+          return undefined;
+        },
+      } satisfies SelectState<T, M>)
+    : state;
+
   return (
     <SelectInner
-      state={state}
+      state={selectState}
       listBoxRef={listBoxRef}
-      props={{ ...props, isDisabled }}
+      props={{ ...props, isDisabled, isReadOnly }}
     />
   );
 }

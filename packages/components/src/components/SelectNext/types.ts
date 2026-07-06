@@ -68,6 +68,8 @@ export type SelectNextProps<
     className?: string;
     /** Whether the field can be emptied. */
     isClearable?: boolean;
+    /** Whether the selection can be focused but not changed by the user. */
+    isReadOnly?: boolean;
     /** Addon placed before the children. */
     startAddon?: ReactNode;
     /** Addon placed after the children. */
@@ -108,6 +110,7 @@ export type SelectNextProps<
       states: {
         isInvalid?: boolean;
         isDisabled?: boolean;
+        isReadOnly?: boolean;
         isRequired?: boolean;
       }
     ) => ReactNode;
