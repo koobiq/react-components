@@ -1,15 +1,18 @@
+import { Fragment } from 'react';
+
 import { clsx, useLocalizedStringFormatter } from '@koobiq/react-core';
 
 import { useFormFieldControlGroup } from '../FormField';
+import { Tag, type TagProps } from '../Tag';
 
 import intlMessages from './intl';
 import s from './SelectedTags.module.css';
-import { Tag } from './Tag';
 import type { SelectedTagsProps } from './types';
 
 export function SelectedTagsMultiline<T extends object>({
   state,
   states,
+  renderTag,
 }: SelectedTagsProps<T>) {
   const { isDisabled, isInvalid, isReadOnly } = states;
   const t = useLocalizedStringFormatter(intlMessages);
@@ -26,22 +29,37 @@ export function SelectedTagsMultiline<T extends object>({
         data-limit-tags="multiline"
         aria-label={t.format('selected items')}
       >
-        {state.selectedItems?.map((item) => (
-          <Tag
-            key={item.key}
-            className={s.tag}
-            isDisabled={isDisabled}
-            isReadOnly={isReadOnly}
-            variant={isInvalid ? 'error-fade' : 'contrast-fade'}
-            onRemove={() => {
-              if (state.selectionManager.isSelected(item.key)) {
-                state.selectionManager.toggleSelection(item.key);
-              }
-            }}
-          >
-            {item.textValue}
-          </Tag>
-        ))}
+        {state.selectedItems?.map((item) => {
+          const onRemove = () => {
+            if (state.selectionManager.isSelected(item.key)) {
+              state.selectionManager.toggleSelection(item.key);
+            }
+          };
+
+          const tagProps: TagProps = {
+            isDisabled,
+            className: s.tag,
+            variant: isInvalid ? 'error-fade' : 'contrast-fade',
+            allowsRemoving: !isReadOnly,
+            slotProps: {
+              removeIcon: {
+                as: 'div',
+                tabIndex: undefined,
+                onPress: onRemove,
+              },
+            },
+          };
+
+          return (
+            <Fragment key={item.key}>
+              {renderTag ? (
+                renderTag(item, tagProps)
+              ) : (
+                <Tag {...tagProps}>{item.textValue}</Tag>
+              )}
+            </Fragment>
+          );
+        })}
       </div>
     </div>
   );

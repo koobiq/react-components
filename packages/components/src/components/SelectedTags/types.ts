@@ -1,4 +1,8 @@
+import type { ReactNode } from 'react';
+
 import type { Key, Node } from '@koobiq/react-core';
+
+import type { TagProps } from '../Tag';
 
 export const selectedTagsPropOverflow = ['multiline', 'responsive'] as const;
 
@@ -23,4 +27,5 @@ export type SelectedTagsProps<T extends object> = {
     isRequired?: boolean;
   };
   selectedTagsOverflow?: SelectedTagsPropOverflow;
+  renderTag?: (item: Node<T>, tagProps: TagProps) => ReactNode;
 };

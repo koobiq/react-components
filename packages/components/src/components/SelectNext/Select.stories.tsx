@@ -32,7 +32,7 @@ const meta = {
     'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-05-15'],
+  tags: ['status:updated', 'date:2026-07-02'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -441,6 +441,28 @@ export const SelectedTagsOverflow: Story = {
           {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
         </Select>
       </FlexBox>
+    );
+  },
+};
+
+export const CustomTagRender: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        selectionMode="multiple"
+        style={{ inlineSize: 260 }}
+        placeholder="Select an option"
+        defaultValue={[1, 2]}
+        renderTag={(item, tagProps) => (
+          <Select.Tag {...tagProps} variant="warning-fade" icon={<IconBug16 />}>
+            {item.textValue}
+          </Select.Tag>
+        )}
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
     );
   },
 };

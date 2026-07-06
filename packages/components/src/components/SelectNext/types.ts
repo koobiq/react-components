@@ -6,7 +6,7 @@ import type {
   Ref,
 } from 'react';
 
-import type { ExtendableProps } from '@koobiq/react-core';
+import type { ExtendableProps, Node } from '@koobiq/react-core';
 import type { AriaSelectProps, SelectState } from '@koobiq/react-primitives';
 import type { SelectionMode } from '@react-types/select';
 
@@ -27,6 +27,7 @@ import {
 import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
 import type { SearchInputProps } from '../SearchInput';
+import type { TagProps } from '../Tag';
 
 import type { SelectListProps } from './components';
 
@@ -44,6 +45,8 @@ export type SelectNextPropLabelPlacement = FormFieldPropLabelPlacement;
 export const selectNextPropLabelAlign = formFieldPropLabelAlign;
 export type SelectNextPropLabelAlign = FormFieldPropLabelAlign;
 
+export type SelectNextTagProps = TagProps;
+
 export type SelectNextProps<
   T extends object,
   M extends SelectionMode = 'single',
@@ -57,6 +60,8 @@ export type SelectNextProps<
      * @default 'responsive'
      */
     selectedTagsOverflow?: SelectNextPropSelectedTagsOverflow;
+    /** Custom renderer for selected tags in multiple selection mode. */
+    renderTag?: (item: Node<T>, tagProps: TagProps) => ReactNode;
     /** Handler that is called when the clear button is clicked. */
     onClear?: () => void;
     /** Sets the CSS [`className`](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. */

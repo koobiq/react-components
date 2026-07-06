@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 import {
   clsx,
   useHideOverflowItems,
@@ -5,16 +7,17 @@ import {
 } from '@koobiq/react-core';
 
 import { useFormFieldControlGroup } from '../FormField';
+import { Tag, type TagProps } from '../Tag';
 
 import intlMessages from './intl';
 import s from './SelectedTags.module.css';
-import { Tag } from './Tag';
 import type { SelectedTagsProps } from './types';
 import { getHiddenCount } from './utils';
 
 export function SelectedTagsResponsive<T extends object>({
   state,
   states,
+  renderTag,
 }: SelectedTagsProps<T>) {
   const { isDisabled, isInvalid, isReadOnly } = states;
   const length = state?.selectedItems?.length || 0;
@@ -40,24 +43,39 @@ export function SelectedTagsResponsive<T extends object>({
         data-limit-tags="responsive"
         aria-label={t.format('selected items')}
       >
-        {state.selectedItems?.map((item, i) => (
-          <Tag
-            key={item.key}
-            className={s.tag}
-            ref={itemsRefs[i]}
-            isDisabled={isDisabled}
-            isReadOnly={isReadOnly}
-            aria-hidden={!visibleMap[i] || undefined}
-            variant={isInvalid ? 'error-fade' : 'contrast-fade'}
-            onRemove={() => {
-              if (state.selectionManager.isSelected(item.key)) {
-                state.selectionManager.toggleSelection(item.key);
-              }
-            }}
-          >
-            {item.textValue}
-          </Tag>
-        ))}
+        {state.selectedItems?.map((item, i) => {
+          const onRemove = () => {
+            if (state.selectionManager.isSelected(item.key)) {
+              state.selectionManager.toggleSelection(item.key);
+            }
+          };
+
+          const tagProps: TagProps = {
+            ref: itemsRefs[i],
+            className: s.tag,
+            isDisabled,
+            'aria-hidden': !visibleMap[i] || undefined,
+            allowsRemoving: !isReadOnly,
+            variant: isInvalid ? 'error-fade' : 'contrast-fade',
+            slotProps: {
+              removeIcon: {
+                as: 'div',
+                tabIndex: undefined,
+                onPress: onRemove,
+              },
+            },
+          };
+
+          return (
+            <Fragment key={item.key}>
+              {renderTag ? (
+                renderTag(item, tagProps)
+              ) : (
+                <Tag {...tagProps}>{item.textValue}</Tag>
+              )}
+            </Fragment>
+          );
+        })}
       </div>
       <div
         className={s.more}
