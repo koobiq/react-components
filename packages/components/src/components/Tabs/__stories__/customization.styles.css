@@ -1,0 +1,7 @@
+.my-tab {
+  padding-block: 0;
+}
+
+.my-tab:not([data-selected]) > * {
+  color: var(--kbq-foreground-contrast-secondary);
+}
