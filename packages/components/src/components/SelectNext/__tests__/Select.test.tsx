@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -550,6 +550,40 @@ describe('Select', () => {
       expect(onInputChange.mock.calls.at(-1)?.[0]).toBe('t');
     });
 
+    it('should support list slotProps for search, divider and footer', async () => {
+      render(
+        <Select
+          {...baseProps}
+          defaultOpen
+          isSearchable
+          slotProps={{
+            ...baseProps.slotProps,
+            list: {
+              dropdownFooter: 'List footer',
+              slotProps: {
+                divider: { className: 'list-divider' },
+                dropdownFooter: { className: 'list-footer' },
+                'search-input': {
+                  'aria-label': 'List search',
+                  placeholder: 'Find',
+                },
+              },
+            },
+          }}
+        >
+          <Select.Item id="1">One</Select.Item>
+          <Select.Item id="2">Two</Select.Item>
+        </Select>
+      );
+
+      expect(
+        screen.getByRole('searchbox', { name: 'List search' })
+      ).toHaveAttribute('placeholder', 'Find');
+
+      expect(document.querySelector('.list-divider')).toBeInTheDocument();
+      expect(screen.getByText('List footer')).toHaveClass('list-footer');
+    });
+
     it('should show noItemsText when search matches nothing', async () => {
       render(
         <Select {...baseProps} defaultOpen isSearchable noItemsText="empty">
@@ -581,6 +615,62 @@ describe('Select', () => {
 
       await userEvent.clear(input);
       expect(getOptions()).toHaveLength(3);
+    });
+
+    it('should reset search query and call onInputChange after dropdown closes', async () => {
+      const onInputChange = vi.fn((v) => v);
+
+      render(
+        <Select
+          {...baseProps}
+          defaultOpen
+          isSearchable
+          onInputChange={onInputChange}
+        >
+          <Select.Item id="apple">Apple</Select.Item>
+          <Select.Item id="banana">Banana</Select.Item>
+          <Select.Item id="apricot">Apricot</Select.Item>
+        </Select>
+      );
+
+      await userEvent.type(getSearchInput(), 'ap');
+
+      expect(getOptions()).toHaveLength(2);
+
+      await userEvent.click(screen.getByRole('option', { name: 'Apple' }));
+
+      await waitFor(() => {
+        expect(onInputChange).toHaveBeenLastCalledWith('');
+      });
+
+      await userEvent.click(getControl());
+
+      expect(getSearchInput()).toHaveValue('');
+      expect(getOptions()).toHaveLength(3);
+    });
+
+    it('should preserve defaultInputValue before the first open', async () => {
+      const onInputChange = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          isSearchable
+          defaultInputValue="ap"
+          onInputChange={onInputChange}
+        >
+          <Select.Item id="apple">Apple</Select.Item>
+          <Select.Item id="banana">Banana</Select.Item>
+          <Select.Item id="apricot">Apricot</Select.Item>
+        </Select>
+      );
+
+      expect(onInputChange).not.toHaveBeenCalled();
+
+      await userEvent.click(getControl());
+
+      expect(getSearchInput()).toHaveValue('ap');
+      expect(getOptions()).toHaveLength(2);
     });
 
     it('should use defaultFilter when provided', async () => {
@@ -643,6 +733,36 @@ describe('Select', () => {
       expect(options).toHaveLength(2);
       expect(options[0]).toHaveTextContent('Apple');
       expect(options[1]).toHaveTextContent('Apricot');
+    });
+
+    it('should not reset controlled inputValue after dropdown closes', async () => {
+      const onInputChange = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          defaultOpen
+          isSearchable
+          inputValue="ap"
+          onInputChange={onInputChange}
+        >
+          <Select.Item id="apple">Apple</Select.Item>
+          <Select.Item id="banana">Banana</Select.Item>
+          <Select.Item id="apricot">Apricot</Select.Item>
+        </Select>
+      );
+
+      expect(getSearchInput()).toHaveValue('ap');
+      expect(getOptions()).toHaveLength(2);
+
+      await userEvent.click(screen.getByRole('option', { name: 'Apple' }));
+
+      expect(onInputChange).not.toHaveBeenCalledWith('');
+
+      await userEvent.click(getControl());
+
+      expect(getSearchInput()).toHaveValue('ap');
+      expect(getOptions()).toHaveLength(2);
     });
 
     describe('defaultFilter', () => {
