@@ -23,6 +23,7 @@ const textNormalMedium = utilClasses.typography['text-normal-medium'];
 export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
   const {
     variant = 'theme-fade',
+    allowsRemoving,
     icon,
     className,
     style,
@@ -34,13 +35,16 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
 
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const rootProps = mergeProps(other, slotProps?.root, {
-    ref,
-    style,
-    className: clsx(s.base, s[variant], textNormalMedium, className),
-    'data-variant': variant,
-    'data-disabled': isDisabled || undefined,
-  });
+  const rootProps = mergeProps(
+    {
+      ref,
+      style,
+      'data-variant': variant,
+      'data-disabled': isDisabled || undefined,
+      className: clsx(s.base, s[variant], textNormalMedium, className),
+    },
+    other
+  );
 
   const bodyProps = mergeProps({ className: s.body }, slotProps?.body);
 
@@ -48,24 +52,25 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
 
   const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
-  const removeButtonProps = isNotNil(slotProps?.removeIcon)
-    ? mergeProps<[TagRemoveButtonProps, TagRemoveButtonProps]>(
-        {
-          isCompact: true,
-          className: s.cancelIcon,
-          variant: matchTagVariantToIconButton[variant],
-          'aria-label': t.format('remove'),
-        },
-        slotProps.removeIcon
-      )
-    : undefined;
+  const removeButtonProps = mergeProps<
+    [TagRemoveButtonProps, TagRemoveButtonProps | undefined]
+  >(
+    {
+      isDisabled,
+      isCompact: true,
+      className: s.cancelIcon,
+      variant: matchTagVariantToIconButton[variant],
+      'aria-label': t.format('remove'),
+    },
+    slotProps?.removeIcon
+  );
 
   return (
     <div {...rootProps}>
       <div {...bodyProps}>
         {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
         {isNotNil(children) && <span {...contentProps}>{children}</span>}
-        {removeButtonProps && (
+        {allowsRemoving && (
           <IconButton size="l" {...removeButtonProps}>
             <IconXmarkS16 />
           </IconButton>

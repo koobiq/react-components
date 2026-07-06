@@ -55,17 +55,15 @@ export function SelectedTagsResponsive<T extends object>({
             className: s.tag,
             isDisabled,
             'aria-hidden': !visibleMap[i] || undefined,
+            allowsRemoving: !isReadOnly,
             variant: isInvalid ? 'error-fade' : 'contrast-fade',
-            slotProps: !isReadOnly
-              ? {
-                  removeIcon: {
-                    as: 'div',
-                    isDisabled,
-                    tabIndex: undefined,
-                    onPress: onRemove,
-                  },
-                }
-              : undefined,
+            slotProps: {
+              removeIcon: {
+                as: 'div',
+                tabIndex: undefined,
+                onPress: onRemove,
+              },
+            },
           };
 
           return (

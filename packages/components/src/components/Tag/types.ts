@@ -19,7 +19,6 @@ export type TagPropVariant = (typeof tagPropVariant)[number];
 export type TagRemoveButtonProps = IconButtonProps<ElementType>;
 
 export type TagSlotProps = {
-  root?: ComponentPropsWithRef<'div'>;
   body?: ComponentPropsWithRef<'div'>;
   icon?: ComponentPropsWithRef<'span'>;
   content?: ComponentPropsWithRef<'span'>;
@@ -42,4 +41,6 @@ export type TagProps = Omit<ComponentPropsWithRef<'div'>, 'children'> & {
   style?: CSSProperties;
   /** Rendered contents of the tag. */
   children?: ReactNode;
+  /** Whether the tag can be removed. */
+  allowsRemoving?: boolean;
 };

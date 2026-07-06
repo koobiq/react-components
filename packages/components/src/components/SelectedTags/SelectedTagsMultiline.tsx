@@ -37,19 +37,17 @@ export function SelectedTagsMultiline<T extends object>({
           };
 
           const tagProps: TagProps = {
-            className: s.tag,
             isDisabled,
+            className: s.tag,
             variant: isInvalid ? 'error-fade' : 'contrast-fade',
-            slotProps: !isReadOnly
-              ? {
-                  removeIcon: {
-                    as: 'div',
-                    isDisabled,
-                    tabIndex: undefined,
-                    onPress: onRemove,
-                  },
-                }
-              : undefined,
+            allowsRemoving: !isReadOnly,
+            slotProps: {
+              removeIcon: {
+                as: 'div',
+                tabIndex: undefined,
+                onPress: onRemove,
+              },
+            },
           };
 
           return (
