@@ -1,9 +1,15 @@
 'use client';
 
 import type { Ref, RefObject } from 'react';
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useEffect } from 'react';
 
-import { useDOMRef, mergeProps, useElementSize } from '@koobiq/react-core';
+import {
+  useDOMRef,
+  usePrevious,
+  useControlledState,
+  mergeProps,
+  useElementSize,
+} from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
   useSelect,
@@ -82,7 +88,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     loadingText,
     isClearable,
     noItemsText,
-    inputValue,
+    inputValue: inputValueProp,
     labelAlign,
     startAddon,
     isRequired,
@@ -105,6 +111,35 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
 
   const validationBehavior =
     props.validationBehavior ?? formValidationBehavior ?? 'aria';
+
+  const [inputValue, setInputValue] = useControlledState(
+    inputValueProp,
+    defaultInputValue ?? '',
+    onInputChange
+  );
+
+  const wasOpen = usePrevious(inState.isOpen);
+
+  useEffect(() => {
+    if (
+      wasOpen !== true ||
+      !isSearchable ||
+      inState.isOpen ||
+      inputValueProp !== undefined ||
+      inputValue === ''
+    ) {
+      return;
+    }
+
+    setInputValue('');
+  }, [
+    wasOpen,
+    inState.isOpen,
+    inputValueProp,
+    inputValue,
+    isSearchable,
+    setInputValue,
+  ]);
 
   const clearButtonIsHidden = isDisabled || !inState.selectedItems.length;
 
@@ -176,7 +211,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       isSearchable,
       defaultFilter,
       state: inState,
-      onInputChange,
+      onInputChange: setInputValue,
       className: s.list,
       defaultInputValue,
     },
