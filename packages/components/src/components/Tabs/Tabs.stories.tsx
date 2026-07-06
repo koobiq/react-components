@@ -7,15 +7,18 @@ import {
   IconBsd24,
   IconBug16,
   IconCircleInfo16,
+  IconHouse16,
   IconUbuntu24,
+  IconUser16,
   IconWindows24,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
+import './__stories__/customization.styles.css';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
-import { useListData } from '../index';
+import { BreadcrumbItem, Breadcrumbs, useListData } from '../index';
 import { Input } from '../Input';
 import { spacing } from '../layout';
 import { Link } from '../Link';
@@ -794,6 +797,60 @@ export const VerticalScrolling: Story = {
           </Tab>
         )}
       </Tabs>
+    );
+  },
+};
+
+export const Customization: Story = {
+  render: function Render() {
+    const tabs = [
+      { key: '0', title: 'Phishing' },
+      {
+        key: '1',
+        title: 'Ransomware',
+      },
+      { key: '2', title: 'DDoS' },
+      { key: '3', title: 'Supply-chain attack' },
+      { key: '4', title: 'Zero-day (CVE-0)' },
+      { key: '5', title: 'Insider threats' },
+      { key: '6', title: 'Credential stuffing' },
+      { key: '7', title: 'IoT botnets' },
+      { key: '8', title: 'Self-propagating worms' },
+      { key: '9', title: 'Social engineering' },
+      { key: '10', title: 'Watering-hole attack' },
+      { key: '11', title: 'Man-in-the-Middle (MitM)' },
+      { key: '12', title: 'SQL/NoSQL injection' },
+      { key: '13', title: 'Cross-Site Scripting (XSS)' },
+      { key: '14', title: 'Kernel-level rootkits' },
+      { key: '15', title: 'Cryptojacking' },
+      { key: '16', title: 'Malvertising' },
+      { key: '17', title: 'Business Email Compromise (BEC)' },
+      { key: '18', title: 'Typosquatting and lookalike domains' },
+      { key: '19', title: 'Brute force and rate limits' },
+    ];
+
+    return (
+      <FlexBox direction="column" gap="xs" alignItems="stretch">
+        <Breadcrumbs size="compact">
+          <BreadcrumbItem startAddon={<IconHouse16 />} />
+          <BreadcrumbItem startAddon={<IconUser16 />}>
+            Application List
+          </BreadcrumbItem>
+          <BreadcrumbItem>Application</BreadcrumbItem>
+        </Breadcrumbs>
+        <Tabs
+          items={tabs}
+          defaultSelectedKey="1"
+          aria-label="Threat intelligence"
+          isUnderlined
+        >
+          {({ key, title }) => (
+            <Tab key={key} title={title} className="my-tab">
+              {`${title} — brief overview of the attack scenario and typical indicators of compromise. Vector: network, email, supply chain, user action. Impact: data access, encryption, downtime. Mitigation: MFA, least privilege, segmentation, WAF, training.`}
+            </Tab>
+          )}
+        </Tabs>
+      </FlexBox>
     );
   },
 };
