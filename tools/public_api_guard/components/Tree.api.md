@@ -57,6 +57,9 @@ export function TreeItem(input: TreeItemProps): JSX.Element;
 export function TreeItemContent(props: TreeItemContentProps): JSX.Element;
 
 // @public (undocumented)
+export type TreeItemContentAddon = ListItemAddonProps;
+
+// @public (undocumented)
 export type TreeItemContentProps = TreeItemContentProps_2 & {
     slotProps?: TreeItemContentPropSlotProps;
 } & DataAttributeProps;
@@ -68,8 +71,17 @@ export type TreeItemContentPropSlotProps = {
 };
 
 // @public (undocumented)
+export type TreeItemContentText = ListItemTextProps;
+
+// @public (undocumented)
+export type TreeItemPropAlign = (typeof treeItemPropAlign)[number];
+
+// @public (undocumented)
+export const treeItemPropAlign: readonly ["start", "center"];
+
+// @public (undocumented)
 export type TreeItemProps = Partial<TreeItemProps_2> & DataAttributeProps & {
-    align?: ItemPropAlign;
+    align?: TreeItemPropAlign;
 };
 
 // @public (undocumented)
@@ -87,7 +99,6 @@ export type TreeProps<T extends object> = TreeProps_2<T> & {
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Tree/components/TreeItem/types.d.ts:9:5 - (ae-forgotten-export) The symbol "ItemPropAlign" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:6:5 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:7:5 - (ae-forgotten-export) The symbol "CheckboxProps" needs to be exported by the entry point index.d.ts
 

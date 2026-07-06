@@ -22,9 +22,9 @@ export function TreeItem({
 }: TreeItemProps) {
   return (
     <AriaTreeItem
+      data-align={align}
       {...props}
       textValue={textValue ?? ''}
-      data-align={align}
       className={composeRenderProps(className, (className) =>
         clsx('kbq-TreeItem', listItem, textVariant['text-normal'], className)
       )}
