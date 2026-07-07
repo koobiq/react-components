@@ -9,7 +9,6 @@ import {
   useControlledState,
   mergeProps,
   useElementSize,
-  type Key,
   clsx,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
@@ -31,7 +30,7 @@ import type {
   BaseCollection,
   SelectStateOptions,
 } from '@koobiq/react-primitives';
-import type { SelectionMode } from '@react-types/select';
+import type { SelectionMode, ChangeValueType } from '@react-types/select';
 
 import { Divider } from '../Divider';
 import { useForm } from '../Form';
@@ -63,9 +62,6 @@ import {
   type SelectNextComponent,
 } from './index';
 import s from './Select.module.css';
-
-type SelectControlledValue = Key | readonly Key[] | null;
-type SelectControlledChangeValue = Key | Key[] | null;
 
 function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   state: inState,
@@ -405,23 +401,26 @@ function StandaloneSelect<
   const isDisabled = inProps?.isDisabled ?? formIsDisabled;
   const isReadOnly = inProps?.isReadOnly ?? formIsReadOnly;
 
-  const defaultValue =
-    (inProps.defaultValue as SelectControlledValue | undefined) ??
-    (inProps.selectionMode === 'multiple' ? [] : null);
+  const {
+    value: valueProp,
+    defaultValue: defaultValueProp,
+    onChange,
+  } = inProps as SelectNextProps<T, SelectionMode>;
 
-  const [value, setValue] = useControlledState<
-    SelectControlledValue,
-    SelectControlledChangeValue
-  >(
-    inProps.value as SelectControlledValue | undefined,
+  const defaultValue =
+    defaultValueProp ?? (inProps.selectionMode === 'multiple' ? [] : null);
+
+  // useSelectState has no isReadOnly support, so the value is lifted here and
+  // always passed down as controlled — selection updates can then be dropped
+  // in handleChange before they reach the state.
+  const [value, setValue] = useControlledState(
+    valueProp,
     defaultValue,
-    inProps.onChange as
-      | ((value: SelectControlledChangeValue) => void)
-      | undefined
+    onChange
   );
 
   const handleChange = useCallback(
-    (value: SelectControlledChangeValue) => {
+    (value: ChangeValueType<SelectionMode>) => {
       if (isReadOnly) return;
 
       setValue(value);
@@ -445,12 +444,6 @@ function StandaloneSelect<
           return undefined;
         },
         toggle() {
-          return undefined;
-        },
-        setValue() {
-          return undefined;
-        },
-        setSelectedKey() {
           return undefined;
         },
       } satisfies SelectState<T, M>)

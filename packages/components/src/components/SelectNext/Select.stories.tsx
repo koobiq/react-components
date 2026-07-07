@@ -406,7 +406,6 @@ export const MultipleSelection: Story = {
           selectionMode="multiple"
           placeholder="Select an option"
           style={{ inlineSize: 'inherit' }}
-          isDisabled
         >
           {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
         </Select>
