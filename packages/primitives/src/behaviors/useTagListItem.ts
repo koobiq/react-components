@@ -167,10 +167,10 @@ export function useTagListItem<T extends object>(
 
   const extendSelectionFrom = (anchorKey: Key | null) => {
     if (!allowsSelection || selectionManager.selectionMode !== 'multiple') {
-      return false;
+      return;
     }
 
-    return addTagListRangeSelection(state, anchorKey ?? key, key);
+    addTagListRangeSelection(state, anchorKey ?? key, key);
   };
 
   const getKeysToRemove = () => {
