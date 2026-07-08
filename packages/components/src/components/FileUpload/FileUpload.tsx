@@ -23,10 +23,12 @@ import { DropZone } from '@koobiq/react-primitives';
 
 import { formatFileSize } from '../../utils';
 
-import { FileUploadDropzone } from './components/Dropzone';
-import { FileUploadItemComponent } from './components/Item';
-import { FileUploadList } from './components/List';
-import { FileUploadTrigger } from './components/Trigger';
+import {
+  FileUploadDropzone,
+  FileUploadItemComponent,
+  FileUploadList,
+  FileUploadTrigger,
+} from './components';
 import s from './FileUpload.module.css';
 import { FileUploadContext } from './FileUploadContext';
 import type { FileUploadContextValue } from './FileUploadContext';

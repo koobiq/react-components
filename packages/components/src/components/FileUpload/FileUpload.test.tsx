@@ -1,7 +1,7 @@
 import { createRef, useState } from 'react';
 
 import type { DropItem } from '@koobiq/react-primitives';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -138,6 +138,97 @@ describe('FileUpload', () => {
         screen.getByRole('button', { name: /remove third\.txt/i })
       ).toHaveFocus();
     });
+  });
+
+  it('moves focus to the previous file after removing the last one', async () => {
+    const user = userEvent.setup();
+
+    renderComponent({
+      allowsMultiple: true,
+      defaultValue: [
+        makeItem('first.txt'),
+        makeItem('second.txt'),
+        makeItem('third.txt'),
+      ],
+    });
+
+    await user.click(
+      screen.getByRole('button', { name: /remove third\.txt/i })
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /remove second\.txt/i })
+      ).toHaveFocus();
+    });
+  });
+
+  it('removes a file with the Delete key when the remove button is focused', () => {
+    const onRemove = vi.fn();
+
+    renderComponent({
+      onRemove,
+      defaultValue: [makeItem('remove-me.txt')],
+    });
+
+    const button = screen.getByRole('button', { name: /remove/i });
+
+    button.focus();
+    fireEvent.keyDown(button, { key: 'Delete' });
+
+    expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();
+    expect(onRemove).toHaveBeenCalledTimes(1);
+  });
+
+  it('removes a file with the Backspace key when the remove button is focused', () => {
+    const onRemove = vi.fn();
+
+    renderComponent({
+      onRemove,
+      defaultValue: [makeItem('remove-me.txt')],
+    });
+
+    const button = screen.getByRole('button', { name: /remove/i });
+
+    button.focus();
+    fireEvent.keyDown(button, { key: 'Backspace' });
+
+    expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();
+    expect(onRemove).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows a determinate spinner and marks the row invalid/loading', () => {
+    renderComponent({
+      defaultValue: [
+        { ...makeItem('loading.txt'), isLoading: true, progress: 42 },
+      ],
+    });
+
+    const progress = screen.getByRole('progressbar');
+
+    expect(progress).toHaveAttribute('aria-valuenow', '42');
+    expect(screen.getByRole('listitem')).toHaveAttribute('data-loading');
+  });
+
+  it('shows an indeterminate spinner when progress is not set', () => {
+    renderComponent({
+      defaultValue: [{ ...makeItem('loading.txt'), isLoading: true }],
+    });
+
+    expect(screen.getByRole('progressbar')).not.toHaveAttribute(
+      'aria-valuenow'
+    );
+  });
+
+  it('marks the row invalid when errorMessage is set', () => {
+    renderComponent({
+      defaultValue: [
+        { ...makeItem('bad.txt'), errorMessage: 'Something went wrong' },
+      ],
+    });
+
+    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+    expect(screen.getByRole('listitem')).toHaveAttribute('data-invalid');
   });
 
   it('supports controlled value with onChange', async () => {

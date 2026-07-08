@@ -13,6 +13,7 @@ import {
 import { IconFileO16, IconFolder16, IconXmarkS16 } from '@koobiq/react-icons';
 
 import { IconButton } from '../../../IconButton';
+import { ProgressSpinner } from '../../../ProgressSpinner';
 import { useFileUploadContext } from '../../FileUploadContext';
 import type { FileUploadItemProps } from '../../types';
 import { getItemName, getItemSize } from '../../utils';
@@ -57,6 +58,17 @@ export const FileUploadItemComponent = forwardRef<
   const defaultIcon =
     item.type === 'folder' ? <IconFolder16 /> : <IconFileO16 />;
 
+  const icon = isLoading ? (
+    <ProgressSpinner
+      size="compact"
+      value={item.progress}
+      aria-label={messages.uploadingLabel}
+      isIndeterminate={item.progress === undefined}
+    />
+  ) : (
+    (item.icon ?? defaultIcon)
+  );
+
   return (
     <li
       {...mergeProps(other, hoverProps, focusProps)}
@@ -70,8 +82,8 @@ export const FileUploadItemComponent = forwardRef<
       data-focus-visible={isFocusVisible || undefined}
       className={clsx(s.base, className)}
     >
-      <span className={s.icon} aria-hidden="true">
-        {item.icon ?? defaultIcon}
+      <span className={s.icon} aria-hidden={isLoading ? undefined : true}>
+        {icon}
       </span>
       <span className={s.content}>
         {children ?? (
@@ -93,6 +105,12 @@ export const FileUploadItemComponent = forwardRef<
         aria-label={`${messages.removeButtonLabel} ${name}`.trim()}
         ref={getItemRef(item.id)}
         onPress={() => removeItem(item.id)}
+        onKeyDown={(event) => {
+          if (event.key === 'Delete' || event.key === 'Backspace') {
+            event.preventDefault();
+            removeItem(item.id);
+          }
+        }}
       >
         <IconXmarkS16 />
       </IconButton>

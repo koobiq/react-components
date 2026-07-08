@@ -1,6 +1,8 @@
 @import url('../../../../styles/mixins.css');
 
 .base {
+  --item-outline-color: transparent;
+
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -9,15 +11,30 @@
   color: var(--kbq-foreground-contrast);
   border-radius: var(--kbq-size-xxs);
   padding-inline: var(--kbq-size-xs);
-  transition: background-color var(--kbq-transition-default);
+  box-shadow: inset 0 0 0 1px var(--item-outline-color);
+  transition:
+    background-color var(--kbq-transition-default),
+    box-shadow var(--kbq-transition-default);
 }
 
 .base[data-hovered] {
   background-color: var(--kbq-states-background-contrast-fade-hover);
 }
 
+.base[data-focus-visible] {
+  --item-outline-color: var(--kbq-states-line-focus-theme);
+}
+
 .base[data-invalid] {
   color: var(--kbq-foreground-error);
+}
+
+.base[data-invalid][data-hovered] {
+  background-color: var(--kbq-states-background-error-fade-hover);
+}
+
+.base[data-invalid][data-focus-visible] {
+  --item-outline-color: var(--kbq-states-line-focus-error);
 }
 
 .base[data-disabled] {

@@ -157,6 +157,63 @@ export const Validation: Story = {
   },
 };
 
+const UPLOAD_TICK = 400;
+
+/** Stand-in for a real network upload — FileUpload never uploads anything itself. */
+function simulateUpload(onProgress: (progress: number) => void) {
+  let progress = 0;
+
+  const interval = window.setInterval(() => {
+    progress += 20;
+    onProgress(progress);
+
+    if (progress >= 100) {
+      window.clearInterval(interval);
+    }
+  }, UPLOAD_TICK);
+}
+
+export const UploadProgress: Story = {
+  render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItem[]>([]);
+
+    return (
+      <FileUpload
+        allowsMultiple
+        aria-label="Upload files"
+        value={items}
+        onChange={setItems}
+        onAdd={(added, all) => {
+          setItems(
+            all.map((item) =>
+              added.some(({ id }) => id === item.id)
+                ? { ...item, isLoading: true, progress: 0 }
+                : item
+            )
+          );
+
+          added.forEach((item) => {
+            simulateUpload((progress) => {
+              setItems((prev) =>
+                prev.map((current) =>
+                  current.id === item.id
+                    ? {
+                        ...current,
+                        isLoading: progress < 100,
+                        progress: progress < 100 ? progress : undefined,
+                      }
+                    : current
+                )
+              );
+            });
+          });
+        }}
+        {...args}
+      />
+    );
+  },
+};
+
 export const Disabled: Story = {
   render: (args) => (
     <FileUpload

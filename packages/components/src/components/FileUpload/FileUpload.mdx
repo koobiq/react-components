@@ -90,6 +90,15 @@ started by your app proceeds.
 
 <Story of={Stories.Controlled} />
 
+## Progress
+
+Set `isLoading` on an item to show a spinner in place of its icon — determinate
+(an arc) when you also set `progress` (`0`–`100`), indeterminate otherwise. The
+remove button stays available while an item is loading. This is an abstract
+example of wiring `FileUpload` up to a real upload happening in your app.
+
+<Story of={Stories.UploadProgress} />
+
 ## Validation
 
 `FileUpload` doesn't validate files itself. Check `file.type`, `file.size`, or
@@ -122,6 +131,9 @@ Replace the dropzone's text while keeping the browse trigger.
   screen-reader users can trigger an equivalent of drag-and-drop (paste)
   without a pointer.
 - Each remove button's `aria-label` includes the file name.
+- Removing a file with the button, <kbd>Delete</kbd>, or <kbd>Backspace</kbd>
+  moves focus to the next item's remove button, the previous one if the last
+  item was removed, or the browse link if the list is now empty.
 - All visible strings and the file-size units are localized through the
   active `<Provider locale=...>`.
 
@@ -129,7 +141,5 @@ Replace the dropzone's text while keeping the browse trigger.
 
 Planned for upcoming stages, not yet implemented:
 
-- Per-item states (hover / focus / invalid / progress) and keyboard-driven
-  removal.
 - `compact` size, custom row icons and long-name truncation with a tooltip.
 - Folder and mixed file/folder selection (`allowed`, `directoryMode`).
