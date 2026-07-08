@@ -6,38 +6,38 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  gap: var(--kbq-size-xxs);
-  block-size: var(--kbq-size-3xl);
+  gap: var(--kbq-size-s);
+  min-block-size: var(--kbq-size-4xl);
   color: var(--kbq-foreground-contrast);
-  border-radius: var(--kbq-size-xxs);
-  padding-inline: var(--kbq-size-xs);
+  border-radius: var(--kbq-size-xs);
+  padding-inline: var(--kbq-size-m) var(--kbq-size-s);
   box-shadow: inset 0 0 0 1px var(--item-outline-color);
   transition:
     background-color var(--kbq-transition-default),
     box-shadow var(--kbq-transition-default);
 }
 
-.base[data-hovered] {
+li.base[data-hovered] {
   background-color: var(--kbq-states-background-contrast-fade-hover);
 }
 
-.base[data-focus-visible] {
+li.base[data-focus-visible] {
   --item-outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.base[data-invalid] {
+li.base[data-invalid] {
   color: var(--kbq-foreground-error);
 }
 
-.base[data-invalid][data-hovered] {
-  background-color: var(--kbq-states-background-error-fade-hover);
+li.base[data-invalid][data-hovered] {
+  background-color: var(--kbq-states-background-error-less-hover);
 }
 
-.base[data-invalid][data-focus-visible] {
+li.base[data-invalid][data-focus-visible] {
   --item-outline-color: var(--kbq-states-line-focus-error);
 }
 
-.base[data-disabled] {
+li.base[data-disabled] {
   color: var(--kbq-states-foreground-disabled);
 }
 
@@ -48,30 +48,35 @@
   color: var(--kbq-icon-contrast-fade);
 }
 
+li.base[data-invalid] .icon {
+  color: var(--kbq-icon-error);
+}
+
+li.base[data-disabled] .icon {
+  color: var(--kbq-states-icon-disabled);
+}
+
 .content {
   display: flex;
   flex: 1 1 auto;
   min-inline-size: 0;
   align-items: center;
-  gap: var(--kbq-size-xs);
-  justify-content: space-between;
+  gap: var(--kbq-size-s);
 }
 
 .name {
   @mixin ellipsis;
 
+  flex: 1 1 auto;
   min-inline-size: 0;
 }
 
 .size {
   flex: none;
+  inline-size: var(--kbq-size-7xl);
+  text-align: start;
   white-space: nowrap;
   color: var(--kbq-foreground-contrast-secondary);
-}
-
-.error {
-  flex: none;
-  color: var(--kbq-foreground-error);
 }
 
 .remove {

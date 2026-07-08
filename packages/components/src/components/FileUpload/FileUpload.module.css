@@ -3,13 +3,46 @@
   inline-size: 100%;
   box-sizing: border-box;
   flex-direction: column;
-  gap: var(--kbq-size-xxs);
+  background-color: var(--kbq-background-bg);
+  border: var(--kbq-size-border-width) dashed var(--kbq-line-contrast-fade);
+  border-radius: var(--kbq-size-s);
+  transition:
+    border-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default);
 }
 
-.default {
-  /* no root-level overrides — density differences live in the sub-component CSS */
+.base[data-drop-target] {
+  border-color: var(--kbq-line-theme-fade);
+  background-color: var(--kbq-background-theme-fade);
 }
 
-.compact {
-  /* no root-level overrides — density differences live in the sub-component CSS */
+.base[data-disabled] {
+  border-color: var(--kbq-states-line-disabled);
+  background-color: var(--kbq-states-background-disabled);
+  pointer-events: none;
+}
+
+.base:not([data-multiple]) {
+  min-block-size: 44px;
+}
+
+.base:not([data-multiple], [data-empty]) {
+  justify-content: center;
+}
+
+.base:not([data-multiple])[data-empty] {
+  padding-block: calc(var(--kbq-size-m) - var(--kbq-size-border-width));
+  padding-inline: calc(var(--kbq-size-l) - var(--kbq-size-border-width));
+}
+
+.base[data-multiple][data-empty].default {
+  align-items: center;
+  justify-content: center;
+  min-block-size: 192px;
+  min-inline-size: 320px;
+}
+
+.base[data-multiple][data-empty].compact {
+  padding-block: calc(var(--kbq-size-m) - var(--kbq-size-border-width));
+  padding-inline: calc(var(--kbq-size-l) - var(--kbq-size-border-width));
 }

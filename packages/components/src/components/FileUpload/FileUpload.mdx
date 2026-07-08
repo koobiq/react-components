@@ -33,8 +33,9 @@ import { FileUpload } from '@koobiq/react-components';
 
 ## Anatomy
 
-With no children, `FileUpload` renders its default layout. Pass children to
-compose it explicitly from its parts instead:
+`FileUpload` is a single dashed container whose border and background reflect the
+drag-over and disabled states. With no children it renders its default layout;
+pass children to compose it explicitly from its parts instead:
 
 ```tsx
 <FileUpload>
@@ -45,11 +46,15 @@ compose it explicitly from its parts instead:
 </FileUpload>
 ```
 
-- `FileUpload.Dropzone` — the drop area with the empty state and browse link.
+- `FileUpload.Dropzone` — the caption strip with the browse link (the empty
+  single/compact state, and the "add more" footer once the list has items).
 - `FileUpload.Trigger` — opens the native file dialog.
 - `FileUpload.List` — the list of selected files. With no children it renders
   a `FileUpload.Item` for every item from context.
 - `FileUpload.Item` — a single row: icon, name, size and a remove button.
+
+The empty multiple state (in the `default` size) is rendered with `EmptyState` —
+a big upload icon, a title and the browse link.
 
 <Story of={Stories.Composition} />
 
@@ -71,9 +76,10 @@ appended to the end of the list, and an "add more" strip stays visible below it.
 
 ## Compact
 
-Set `size="compact"` when adding files plays a secondary role in the form. Only
-the empty drop zone changes — it collapses to a narrow strip. Once a file is
-selected it looks the same as the default size.
+In multiple mode, set `size="compact"` when adding files plays a secondary role in
+the form. Only the empty drop zone changes — it collapses to a narrow strip
+instead of the tall `EmptyState` box. Once files are selected it looks the same as
+the default size.
 
 <Story of={Stories.CompactEmpty} />
 
@@ -113,8 +119,9 @@ example of wiring `FileUpload` up to a real upload happening in your app.
 
 `FileUpload` doesn't validate files itself. Check `file.type`, `file.size`, or
 any custom rule in a controlled `onChange`, then set `errorMessage` on the
-invalid item to show the error. `accept` only filters the system dialog, so
-check dropped files the same way.
+invalid item — the row (name, size, icon and remove button) is painted with the
+error colour. `accept` only filters the system dialog, so check dropped files
+the same way.
 
 <Story of={Stories.Validation} />
 

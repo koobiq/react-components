@@ -21,11 +21,13 @@ import {
 } from '@koobiq/react-core';
 import { DropZone } from '@koobiq/react-primitives';
 
+import { utilClasses } from '../../styles/utility';
 import { formatFileSize } from '../../utils';
 
 import {
   FileUploadDropzone,
-  FileUploadItemComponent,
+  FileUploadEmptyLayout,
+  FileUploadItem,
   FileUploadList,
   FileUploadTrigger,
 } from './components';
@@ -34,13 +36,15 @@ import { FileUploadContext } from './FileUploadContext';
 import type { FileUploadContextValue } from './FileUploadContext';
 import intlMessages from './intl';
 import type {
-  FileUploadItem,
+  FileUploadFile,
   FileUploadProps,
   FileUploadMessages,
 } from './types';
 import { readDroppedFiles, createFileUploadItem } from './utils';
 
-const EMPTY_ITEMS: FileUploadItem[] = [];
+const EMPTY_ITEMS: FileUploadFile[] = [];
+
+const textNormal = utilClasses.typography['text-normal'];
 
 type PendingFocus = { type: 'item'; id: Key } | { type: 'trigger' } | null;
 
@@ -67,7 +71,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
-  const [items, setItems] = useControlledState<FileUploadItem[]>(
+  const [items, setItems] = useControlledState<FileUploadFile[]>(
     value,
     defaultValue ?? EMPTY_ITEMS,
     onChange
@@ -86,6 +90,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
       or: stringFormatter.format('or'),
       addMore: stringFormatter.format('addMore'),
       dropHere: stringFormatter.format('dropHere'),
+      dropTitle: stringFormatter.format('dropTitle'),
       browseFile: stringFormatter.format('browseFile'),
       browseFiles: stringFormatter.format('browseFiles'),
       browseFolder: stringFormatter.format('browseFolder'),
@@ -210,6 +215,31 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
 
   const isEmpty = items.length === 0;
 
+  const renderDefault = () => {
+    if (!allowsMultiple) {
+      return isEmpty ? (
+        <FileUploadDropzone />
+      ) : (
+        <FileUploadItem as="div" item={items[0]} />
+      );
+    }
+
+    if (!isEmpty) {
+      return (
+        <>
+          <FileUploadList />
+          <FileUploadDropzone />
+        </>
+      );
+    }
+
+    return size === 'compact' ? (
+      <FileUploadDropzone />
+    ) : (
+      <FileUploadEmptyLayout />
+    );
+  };
+
   return (
     <FileUploadContext.Provider value={contextValue}>
       <DropZone
@@ -221,7 +251,8 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
         data-testid={testId}
         data-empty={isEmpty || undefined}
         data-multiple={allowsMultiple || undefined}
-        className={clsx(s.base, s[size], className)}
+        data-drop-target={isDropTarget || undefined}
+        className={clsx(s.base, s[size], textNormal, className)}
         getDropOperation={() => 'copy'}
         onDropEnter={onDropTarget}
         onDropExit={offDropTarget}
@@ -235,12 +266,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
           }
         }}
       >
-        {children ?? (
-          <>
-            {!isEmpty && <FileUploadList />}
-            {(isEmpty || allowsMultiple) && <FileUploadDropzone />}
-          </>
-        )}
+        {children ?? renderDefault()}
       </DropZone>
     </FileUploadContext.Provider>
   );
@@ -252,7 +278,7 @@ type CompoundedComponent = typeof FileUploadComponent & {
   Dropzone: typeof FileUploadDropzone;
   Trigger: typeof FileUploadTrigger;
   List: typeof FileUploadList;
-  Item: typeof FileUploadItemComponent;
+  Item: typeof FileUploadItem;
 };
 
 /**
@@ -266,6 +292,6 @@ export const FileUpload = FileUploadComponent as CompoundedComponent;
 FileUpload.Dropzone = FileUploadDropzone;
 FileUpload.Trigger = FileUploadTrigger;
 FileUpload.List = FileUploadList;
-FileUpload.Item = FileUploadItemComponent;
+FileUpload.Item = FileUploadItem;
 
 FileUpload.displayName = 'FileUpload';

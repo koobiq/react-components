@@ -1,6 +1,7 @@
 export default {
   'ru-RU': {
     dropHere: 'Перетащите сюда',
+    dropTitle: 'Перетащите файлы сюда',
     or: 'или',
     browseFile: 'выберите файл',
     browseFiles: 'выберите файлы',
@@ -17,6 +18,7 @@ export default {
   },
   'en-US': {
     dropHere: 'Drop files here',
+    dropTitle: 'Drop files here',
     or: 'or',
     browseFile: 'select a file',
     browseFiles: 'select files',

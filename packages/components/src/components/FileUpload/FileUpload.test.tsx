@@ -8,7 +8,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { Provider } from '../Provider';
 
 import { FileUpload } from './index';
-import type { FileUploadItem, FileUploadProps } from './index';
+import type { FileUploadFile, FileUploadProps } from './index';
 import { readDroppedFiles } from './utils';
 
 const ROOT_TEST_ID = 'file-upload';
@@ -16,7 +16,7 @@ const ROOT_TEST_ID = 'file-upload';
 const makeFile = (name: string, content = 'stub') =>
   new File([content], name, { type: 'text/plain' });
 
-const makeItem = (name: string, size?: number): FileUploadItem => ({
+const makeItem = (name: string, size?: number): FileUploadFile => ({
   id: name,
   size,
   file: makeFile(name),
@@ -199,6 +199,7 @@ describe('FileUpload', () => {
 
   it('shows a determinate spinner and marks the row invalid/loading', () => {
     renderComponent({
+      allowsMultiple: true,
       defaultValue: [
         { ...makeItem('loading.txt'), isLoading: true, progress: 42 },
       ],
@@ -222,12 +223,12 @@ describe('FileUpload', () => {
 
   it('marks the row invalid when errorMessage is set', () => {
     renderComponent({
+      allowsMultiple: true,
       defaultValue: [
         { ...makeItem('bad.txt'), errorMessage: 'Something went wrong' },
       ],
     });
 
-    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     expect(screen.getByRole('listitem')).toHaveAttribute('data-invalid');
   });
 
@@ -236,7 +237,7 @@ describe('FileUpload', () => {
     const onChange = vi.fn();
 
     function Controlled() {
-      const [items, setItems] = useState<FileUploadItem[]>([]);
+      const [items, setItems] = useState<FileUploadFile[]>([]);
 
       return (
         <FileUpload
@@ -364,6 +365,21 @@ describe('FileUpload', () => {
 
     expect(dropzone).toHaveAttribute('data-size', 'compact');
     expect(dropzone).toHaveAttribute('data-variant', 'add-more');
+  });
+
+  it('renders the single selected file as a row, not a list', () => {
+    renderComponent({ defaultValue: [makeItem('single.txt')] });
+
+    expect(screen.getByText('single.txt')).toBeInTheDocument();
+    // single mode is one strip — no <ul> list and no browse link once selected
+    expect(screen.queryByRole('list')).not.toBeInTheDocument();
+    expect(screen.queryByText('select a file')).not.toBeInTheDocument();
+  });
+
+  it('renders the EmptyState title in the multiple empty default state', () => {
+    renderComponent({ allowsMultiple: true });
+
+    expect(screen.getByText('Drop files here')).toBeInTheDocument();
   });
 
   it('localizes strings via the Provider locale', () => {

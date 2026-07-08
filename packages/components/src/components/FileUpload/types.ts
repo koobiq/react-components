@@ -28,7 +28,7 @@ export type FileUploadPropDirectoryMode =
  * `File`. The consumer drives `isLoading`/`progress`/`errorMessage` from the
  * outside — `FileUpload` never uploads anything itself.
  */
-export type FileUploadItem = {
+export type FileUploadFile = {
   /** Stable unique key, generated when a file is added. */
   id: Key;
   /** The native File — the source of `name`/`size`/`type` by default. */
@@ -54,6 +54,7 @@ export type FileUploadItem = {
 /** Localizable strings used by `FileUpload` (aria labels, size units, captions). */
 export type FileUploadMessages = {
   dropHere: string;
+  dropTitle: string;
   or: string;
   browseFile: string;
   browseFiles: string;
@@ -93,18 +94,18 @@ type FileUploadBaseProps = {
    */
   directoryMode?: FileUploadPropDirectoryMode;
   /** The selected files (controlled). */
-  value?: FileUploadItem[];
+  value?: FileUploadFile[];
   /** The initial selected files (uncontrolled). */
-  defaultValue?: FileUploadItem[];
+  defaultValue?: FileUploadFile[];
   /** Handler called whenever the list changes (add or remove). */
-  onChange?: (items: FileUploadItem[]) => void;
+  onChange?: (items: FileUploadFile[]) => void;
   /** Handler called when files are added. */
-  onAdd?: (added: FileUploadItem[], all: FileUploadItem[]) => void;
+  onAdd?: (added: FileUploadFile[], all: FileUploadFile[]) => void;
   /** Handler called when a file is removed. */
   onRemove?: (
-    removed: FileUploadItem,
+    removed: FileUploadFile,
     index: number,
-    all: FileUploadItem[]
+    all: FileUploadFile[]
   ) => void;
   /**
    * The layout size.
@@ -169,7 +170,7 @@ export type FileUploadTriggerProps = {
 export type FileUploadItemProps = ExtendableProps<
   FileUploadSlotBaseProps<'li'> & {
     /** The item to render. */
-    item: FileUploadItem;
+    item: FileUploadFile;
   },
   object
 >;

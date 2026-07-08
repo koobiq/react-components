@@ -6,7 +6,7 @@ import type { RefObject } from 'react';
 import type { Key } from '@koobiq/react-core';
 
 import type {
-  FileUploadItem,
+  FileUploadFile,
   FileUploadMessages,
   FileUploadPropSize,
   FileUploadPropAllowed,
@@ -15,7 +15,7 @@ import type {
 
 export type FileUploadContextValue = {
   /** The current list of selected files. */
-  items: FileUploadItem[];
+  items: FileUploadFile[];
   allowsMultiple: boolean;
   accept?: string[];
   allowed: FileUploadPropAllowed;

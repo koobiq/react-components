@@ -42,7 +42,7 @@ export const FileUploadDropzone = forwardRef<
       data-multiple={allowsMultiple || undefined}
       data-drop-target={isDropTarget || undefined}
       data-variant={isAddMore ? 'add-more' : 'empty'}
-      className={clsx(s.base, isAddMore ? s.addMore : s.empty, className)}
+      className={clsx(s.base, isAddMore && s.addMore, className)}
     >
       {children ?? (
         <>

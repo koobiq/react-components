@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { FileUpload } from './FileUpload';
-import type { FileUploadItem } from './types';
+import type { FileUploadFile } from './types';
 
 const meta = {
   title: 'Components/FileUpload',
@@ -31,7 +31,7 @@ export default meta;
 
 type Story = StoryObj<typeof FileUpload>;
 
-const makeItem = (name: string, size: number): FileUploadItem => ({
+const makeItem = (name: string, size: number): FileUploadFile => ({
   id: name,
   size,
   file: new File(['stub'], name),
@@ -41,7 +41,6 @@ export const Base: Story = {
   render: (args) => (
     <FileUpload
       aria-label="Upload a file"
-      size="compact"
       onChange={(items) => console.log(items)}
       {...args}
     />
@@ -88,7 +87,10 @@ export const MultipleEmpty: Story = {
   ),
 };
 
-/** A long list scrolls within a capped height; the drop strip stays visible. */
+/**
+ * The list grows with its content by default; cap `FileUpload.List` to make it
+ * scroll while the footer drop strip stays visible.
+ */
 export const Scrollable: Story = {
   name: 'Multiple (scrollable list)',
   render: (args) => (
@@ -100,14 +102,22 @@ export const Scrollable: Story = {
         makeItem(`document_${index + 1}.pdf`, 148909 * (index + 1))
       )}
       {...args}
-    />
+    >
+      <FileUpload.List style={{ maxBlockSize: 240 }} />
+      <FileUpload.Dropzone />
+    </FileUpload>
   ),
 };
 
-/** The empty compact drop zone collapses to a narrow strip. */
+/** In compact size the empty drop zone collapses to a narrow strip. */
 export const CompactEmpty: Story = {
   render: (args) => (
-    <FileUpload aria-label="Upload a file" size="compact" {...args} />
+    <FileUpload
+      allowsMultiple
+      aria-label="Upload files"
+      size="compact"
+      {...args}
+    />
   ),
 };
 
@@ -115,7 +125,8 @@ export const CompactEmpty: Story = {
 export const Compact: Story = {
   render: (args) => (
     <FileUpload
-      aria-label="Upload a file"
+      allowsMultiple
+      aria-label="Upload files"
       size="compact"
       defaultValue={[makeItem('project_report_2023.docx', 148909)]}
       {...args}
@@ -125,7 +136,7 @@ export const Compact: Story = {
 
 export const Controlled: Story = {
   render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItem[]>([
+    const [items, setItems] = useState<FileUploadFile[]>([
       makeItem('notes_january.docx', 148909),
     ]);
 
@@ -143,7 +154,7 @@ export const Controlled: Story = {
 
 const MAX_SIZE = 150_000; // 150 KB — arbitrary demo limit, compared against the file's real byte size
 
-const makeOversizedItem = (name: string): FileUploadItem => ({
+const makeOversizedItem = (name: string): FileUploadFile => ({
   id: name,
   file: new File([new Uint8Array(MAX_SIZE + 1)], name),
   errorMessage: 'File is too large (max 150 KB)',
@@ -151,7 +162,7 @@ const makeOversizedItem = (name: string): FileUploadItem => ({
 
 export const Validation: Story = {
   render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItem[]>([
+    const [items, setItems] = useState<FileUploadFile[]>([
       makeOversizedItem('presentation.pptx'),
     ]);
 
@@ -194,7 +205,7 @@ function simulateUpload(onProgress: (progress: number) => void) {
 
 export const UploadProgress: Story = {
   render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItem[]>([]);
+    const [items, setItems] = useState<FileUploadFile[]>([]);
 
     return (
       <FileUpload

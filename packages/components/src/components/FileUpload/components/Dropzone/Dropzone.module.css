@@ -2,49 +2,29 @@
   display: flex;
   box-sizing: border-box;
   align-items: center;
-  gap: var(--kbq-size-xs);
+  gap: var(--kbq-size-s);
   color: var(--kbq-foreground-contrast-secondary);
-  border-radius: var(--kbq-size-xs);
-  border: 1px dashed var(--kbq-line-contrast-fade);
-  transition: border-color var(--kbq-transition-default);
 }
 
-.empty {
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  min-block-size: 120px;
-  padding: var(--kbq-size-l);
-}
-
-/* In multiple mode the empty drop area is taller (spec ~192px). */
-.empty[data-multiple] {
-  min-block-size: 192px;
-}
-
-/* Compact collapses the empty state to a narrow strip regardless of multiple. */
-.empty[data-size='compact'] {
-  flex-direction: row;
-  justify-content: flex-start;
-  text-align: start;
-  min-block-size: auto;
-  padding-block: var(--kbq-size-xs);
-  padding-inline: var(--kbq-size-l);
-}
-
-.add-more,
 .addMore {
-  justify-content: flex-start;
-  min-block-size: auto;
-  padding-block: var(--kbq-size-xs);
+  margin: calc(var(--kbq-size-border-width) * -1);
+  padding-block: var(--kbq-size-m);
   padding-inline: var(--kbq-size-l);
+  border-block-start: var(--kbq-size-border-width) dashed
+    var(--kbq-line-contrast-fade);
+}
+
+.addMore[data-drop-target] {
+  border-block-start-color: var(--kbq-line-theme-fade);
+}
+
+.addMore[data-disabled] {
+  border-block-start-color: var(--kbq-states-line-disabled);
 }
 
 .icon {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: var(--kbq-size-xl);
   color: var(--kbq-icon-contrast-fade);
 }
 
@@ -52,18 +32,10 @@
   color: var(--kbq-foreground-contrast-secondary);
 }
 
-.base[data-drop-target] {
-  color: var(--kbq-foreground-theme);
-  border-color: var(--kbq-states-line-focus-theme);
-  background-color: var(--kbq-background-theme-fade);
+.base[data-disabled] .icon {
+  color: var(--kbq-states-icon-disabled);
 }
 
-.base[data-drop-target] .icon,
-.base[data-drop-target] .text {
-  color: var(--kbq-foreground-theme);
-}
-
-.base[data-disabled] {
-  opacity: 0.5;
-  pointer-events: none;
+.base[data-disabled] .text {
+  color: var(--kbq-states-foreground-disabled);
 }

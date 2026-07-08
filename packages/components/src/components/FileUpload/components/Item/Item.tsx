@@ -1,16 +1,18 @@
 'use client';
 
-import { forwardRef } from 'react';
-
 import {
   clsx,
   isNotNil,
-  useDOMRef,
   mergeProps,
   useHover,
   useFocusRing,
+  polymorphicForwardRef,
 } from '@koobiq/react-core';
-import { IconFileO16, IconFolder16, IconXmarkS16 } from '@koobiq/react-icons';
+import {
+  IconFileO16,
+  IconFolder16,
+  IconCircleXmark16,
+} from '@koobiq/react-icons';
 
 import { IconButton } from '../../../IconButton';
 import { ProgressSpinner } from '../../../ProgressSpinner';
@@ -21,101 +23,97 @@ import { getItemName, getItemSize } from '../../utils';
 import s from './Item.module.css';
 
 /** A single row in the file list: icon, name, size, and a remove button. */
-export const FileUploadItemComponent = forwardRef<
-  HTMLLIElement,
-  FileUploadItemProps
->((props, ref) => {
-  const {
-    item,
-    children,
-    className,
-    style,
-    'data-testid': testId,
-    ...other
-  } = props;
+export const FileUploadItem = polymorphicForwardRef<'li', FileUploadItemProps>(
+  (props, ref) => {
+    const {
+      item,
+      as: Tag = 'li',
+      children,
+      className,
+      style,
+      'data-testid': testId,
+      ...other
+    } = props;
 
-  const domRef = useDOMRef<HTMLLIElement>(ref);
+    const {
+      messages,
+      formatSize,
+      removeItem,
+      getItemRef,
+      showFileSize,
+      isDisabled: groupDisabled,
+    } = useFileUploadContext();
 
-  const {
-    messages,
-    formatSize,
-    removeItem,
-    getItemRef,
-    showFileSize,
-    isDisabled: groupDisabled,
-  } = useFileUploadContext();
+    const isDisabled = groupDisabled || item.isDisabled || false;
+    const isInvalid = isNotNil(item.errorMessage);
+    const isLoading = item.isLoading || false;
 
-  const isDisabled = groupDisabled || item.isDisabled || false;
-  const isInvalid = isNotNil(item.errorMessage);
-  const isLoading = item.isLoading || false;
+    const { hoverProps, isHovered } = useHover({ isDisabled });
+    const { focusProps, isFocusVisible } = useFocusRing({ within: true });
 
-  const { hoverProps, isHovered } = useHover({ isDisabled });
-  const { focusProps, isFocusVisible } = useFocusRing({ within: true });
+    const name = getItemName(item);
+    const size = getItemSize(item);
 
-  const name = getItemName(item);
-  const size = getItemSize(item);
+    const defaultIcon =
+      item.type === 'folder' ? <IconFolder16 /> : <IconFileO16 />;
 
-  const defaultIcon =
-    item.type === 'folder' ? <IconFolder16 /> : <IconFileO16 />;
+    const icon = isLoading ? (
+      <ProgressSpinner
+        size="compact"
+        value={item.progress}
+        aria-label={messages.uploadingLabel}
+        isIndeterminate={item.progress === undefined}
+      />
+    ) : (
+      (item.icon ?? defaultIcon)
+    );
 
-  const icon = isLoading ? (
-    <ProgressSpinner
-      size="compact"
-      value={item.progress}
-      aria-label={messages.uploadingLabel}
-      isIndeterminate={item.progress === undefined}
-    />
-  ) : (
-    (item.icon ?? defaultIcon)
-  );
-
-  return (
-    <li
-      {...mergeProps(other, hoverProps, focusProps)}
-      ref={domRef}
-      style={style}
-      data-testid={testId}
-      data-loading={isLoading || undefined}
-      data-invalid={isInvalid || undefined}
-      data-hovered={isHovered || undefined}
-      data-disabled={isDisabled || undefined}
-      data-focus-visible={isFocusVisible || undefined}
-      className={clsx(s.base, className)}
-    >
-      <span className={s.icon} aria-hidden={isLoading ? undefined : true}>
-        {icon}
-      </span>
-      <span className={s.content}>
-        {children ?? (
-          <>
-            <span className={s.name}>{name}</span>
-            {showFileSize && isNotNil(size) && (
-              <span className={s.size}>{formatSize(size)}</span>
-            )}
-          </>
-        )}
-      </span>
-      {isInvalid && <span className={s.error}>{item.errorMessage}</span>}
-      <IconButton
-        size="l"
-        isCompact
-        className={s.remove}
-        isDisabled={isDisabled}
-        variant={isInvalid ? 'error' : 'theme'}
-        aria-label={`${messages.removeButtonLabel} ${name}`.trim()}
-        ref={getItemRef(item.id)}
-        onPress={() => removeItem(item.id)}
-        onKeyDown={(event) => {
-          if (event.key === 'Delete' || event.key === 'Backspace') {
-            event.preventDefault();
-            removeItem(item.id);
-          }
-        }}
+    return (
+      <Tag
+        {...mergeProps(other, hoverProps, focusProps)}
+        ref={ref}
+        style={style}
+        data-testid={testId}
+        data-loading={isLoading || undefined}
+        data-invalid={isInvalid || undefined}
+        data-hovered={isHovered || undefined}
+        data-disabled={isDisabled || undefined}
+        data-focus-visible={isFocusVisible || undefined}
+        className={clsx(s.base, className)}
       >
-        <IconXmarkS16 />
-      </IconButton>
-    </li>
-  );
-});
+        <span className={s.icon} aria-hidden={isLoading ? undefined : true}>
+          {icon}
+        </span>
+        <span className={s.content}>
+          {children ?? (
+            <>
+              <span className={s.name}>{name}</span>
+              {showFileSize && isNotNil(size) && (
+                <span className={s.size}>{formatSize(size)}</span>
+              )}
+            </>
+          )}
+        </span>
+        <IconButton
+          size="l"
+          className={s.remove}
+          isDisabled={isDisabled}
+          variant={isInvalid ? 'error' : 'fade-contrast'}
+          aria-label={`${messages.removeButtonLabel} ${name}`.trim()}
+          ref={getItemRef(item.id)}
+          onPress={() => removeItem(item.id)}
+          onKeyDown={(event) => {
+            if (event.key === 'Delete' || event.key === 'Backspace') {
+              event.preventDefault();
+              removeItem(item.id);
+            }
+          }}
+        >
+          <IconCircleXmark16 />
+        </IconButton>
+      </Tag>
+    );
+  }
+);
 
-FileUploadItemComponent.displayName = 'FileUpload.Item';
+FileUploadItem.displayName = 'FileUpload.Item';

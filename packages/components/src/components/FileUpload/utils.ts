@@ -2,26 +2,26 @@ import { isFileDropItem } from '@koobiq/react-primitives';
 import type { DropItem } from '@koobiq/react-primitives';
 
 import type {
-  FileUploadItem,
+  FileUploadFile,
   FileUploadMessages,
   FileUploadPropAllowed,
 } from './types';
 
 let uid = 0;
 
-/** Wraps a native `File` into a `FileUploadItem` with a unique id. */
-export const createFileUploadItem = (file: File): FileUploadItem => {
+/** Wraps a native `File` into a `FileUploadFile` with a unique id. */
+export const createFileUploadItem = (file: File): FileUploadFile => {
   uid += 1;
 
   return { id: `kbq-file-upload-${uid}`, file };
 };
 
 /** The name to display for an item (explicit override, then the file name). */
-export const getItemName = (item: FileUploadItem): string =>
+export const getItemName = (item: FileUploadFile): string =>
   item.name ?? item.file?.name ?? '';
 
 /** The size in bytes to display for an item (override, then the file size). */
-export const getItemSize = (item: FileUploadItem): number | undefined =>
+export const getItemSize = (item: FileUploadFile): number | undefined =>
   item.size ?? item.file?.size;
 
 /** Extracts native files from React Aria drop items (non-file items ignored). */

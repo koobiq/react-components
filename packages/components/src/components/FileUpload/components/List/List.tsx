@@ -6,7 +6,7 @@ import { clsx, useDOMRef } from '@koobiq/react-core';
 
 import { useFileUploadContext } from '../../FileUploadContext';
 import type { FileUploadListProps } from '../../types';
-import { FileUploadItemComponent } from '../Item';
+import { FileUploadItem } from '../Item';
 
 import s from './List.module.css';
 
@@ -37,9 +37,7 @@ export const FileUploadList = forwardRef<HTMLUListElement, FileUploadListProps>(
         className={clsx(s.base, className)}
       >
         {children ??
-          items.map((item) => (
-            <FileUploadItemComponent key={item.id} item={item} />
-          ))}
+          items.map((item) => <FileUploadItem key={item.id} item={item} />)}
       </ul>
     );
   }
