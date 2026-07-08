@@ -1,0 +1,62 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--kbq-size-xxs);
+  block-size: var(--kbq-size-3xl);
+  color: var(--kbq-foreground-contrast);
+  border-radius: var(--kbq-size-xxs);
+  padding-inline: var(--kbq-size-xs);
+  transition: background-color var(--kbq-transition-default);
+}
+
+.base[data-hovered] {
+  background-color: var(--kbq-states-background-contrast-fade-hover);
+}
+
+.base[data-invalid] {
+  color: var(--kbq-foreground-error);
+}
+
+.base[data-disabled] {
+  color: var(--kbq-states-foreground-disabled);
+}
+
+.icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  color: var(--kbq-icon-contrast-fade);
+}
+
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  align-items: center;
+  gap: var(--kbq-size-xs);
+  justify-content: space-between;
+}
+
+.name {
+  @mixin ellipsis;
+
+  min-inline-size: 0;
+}
+
+.size {
+  flex: none;
+  white-space: nowrap;
+  color: var(--kbq-foreground-contrast-secondary);
+}
+
+.error {
+  flex: none;
+  color: var(--kbq-foreground-error);
+}
+
+.remove {
+  flex: none;
+}

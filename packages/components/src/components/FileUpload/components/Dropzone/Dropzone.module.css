@@ -1,0 +1,59 @@
+.base {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  gap: var(--kbq-size-xs);
+  color: var(--kbq-foreground-contrast-secondary);
+  border-radius: var(--kbq-size-xs);
+  border: 1px dashed var(--kbq-line-contrast-fade);
+  transition: border-color var(--kbq-transition-default);
+}
+
+.empty {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  min-block-size: 120px;
+  padding: var(--kbq-size-l);
+}
+
+/* In multiple mode the empty drop area is taller (spec ~192px). */
+.empty[data-multiple] {
+  min-block-size: 192px;
+}
+
+.add-more,
+.addMore {
+  justify-content: flex-start;
+  min-block-size: auto;
+  padding-block: var(--kbq-size-xs);
+  padding-inline: var(--kbq-size-l);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--kbq-size-xl);
+  color: var(--kbq-icon-contrast-fade);
+}
+
+.text {
+  color: var(--kbq-foreground-contrast-secondary);
+}
+
+.base[data-drop-target] {
+  color: var(--kbq-foreground-theme);
+  border-color: var(--kbq-states-line-focus-theme);
+  background-color: var(--kbq-background-theme-fade);
+}
+
+.base[data-drop-target] .icon,
+.base[data-drop-target] .text {
+  color: var(--kbq-foreground-theme);
+}
+
+.base[data-disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}

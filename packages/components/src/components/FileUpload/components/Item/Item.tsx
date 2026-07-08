@@ -1,0 +1,87 @@
+'use client';
+
+import {
+  clsx,
+  isNotNil,
+  mergeProps,
+  useHover,
+  useFocusRing,
+} from '@koobiq/react-core';
+import { IconFileO16, IconFolder16, IconXmarkS16 } from '@koobiq/react-icons';
+
+import { IconButton } from '../../../IconButton';
+import { useFileUploadContext } from '../../FileUploadContext';
+import type { FileUploadItemProps } from '../../types';
+import { getItemName, getItemSize } from '../../utils';
+
+import s from './Item.module.css';
+
+/** A single row in the file list: icon, name, size, and a remove button. */
+export const FileUploadItemComponent = (props: FileUploadItemProps) => {
+  const { item, children, className, style, 'data-testid': testId } = props;
+
+  const {
+    messages,
+    formatSize,
+    removeItem,
+    showFileSize,
+    registerItemRef,
+    isDisabled: groupDisabled,
+  } = useFileUploadContext();
+
+  const isDisabled = groupDisabled || item.isDisabled || false;
+  const isInvalid = isNotNil(item.errorMessage);
+  const isLoading = item.isLoading || false;
+
+  const { hoverProps, isHovered } = useHover({ isDisabled });
+  const { focusProps, isFocusVisible } = useFocusRing({ within: true });
+
+  const name = getItemName(item);
+  const size = getItemSize(item);
+
+  const defaultIcon =
+    item.type === 'folder' ? <IconFolder16 /> : <IconFileO16 />;
+
+  return (
+    <li
+      {...mergeProps(hoverProps, focusProps)}
+      style={style}
+      data-testid={testId}
+      data-loading={isLoading || undefined}
+      data-invalid={isInvalid || undefined}
+      data-hovered={isHovered || undefined}
+      data-disabled={isDisabled || undefined}
+      data-focus-visible={isFocusVisible || undefined}
+      className={clsx(s.base, className)}
+    >
+      <span className={s.icon} aria-hidden="true">
+        {item.icon ?? defaultIcon}
+      </span>
+      <span className={s.content}>
+        {children ?? (
+          <>
+            <span className={s.name}>{name}</span>
+            {showFileSize && isNotNil(size) && (
+              <span className={s.size}>{formatSize(size)}</span>
+            )}
+          </>
+        )}
+      </span>
+      {isInvalid && <span className={s.error}>{item.errorMessage}</span>}
+      <IconButton
+        size="l"
+        isCompact
+        className={s.remove}
+        isDisabled={isDisabled}
+        variant={isInvalid ? 'error' : 'theme'}
+        aria-label={`${messages.removeButtonLabel} ${name}`.trim()}
+        ref={(element) => registerItemRef(item.id, element)}
+        onPress={() => removeItem(item.id)}
+      >
+        <IconXmarkS16 />
+      </IconButton>
+    </li>
+  );
+};
+
+FileUploadItemComponent.displayName = 'FileUpload.Item';

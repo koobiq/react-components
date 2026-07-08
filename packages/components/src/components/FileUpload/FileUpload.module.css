@@ -1,0 +1,15 @@
+.base {
+  display: flex;
+  inline-size: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: var(--kbq-size-xxs);
+}
+
+.default {
+  /* default layout */
+}
+
+.compact {
+  /* compact layout is refined in a later stage */
+}
