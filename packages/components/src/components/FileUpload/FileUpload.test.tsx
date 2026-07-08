@@ -229,6 +229,22 @@ describe('FileUpload', () => {
     expect(screen.queryByText('a.txt')).not.toBeInTheDocument();
   });
 
+  it('forwards a ref on FileUpload.Item to its root element', () => {
+    const ref = createRef<HTMLLIElement>();
+    const item = makeItem('ref-item.txt');
+
+    render(
+      <FileUpload aria-label="upload">
+        <FileUpload.List>
+          <FileUpload.Item ref={ref} item={item} data-testid="item" />
+        </FileUpload.List>
+      </FileUpload>
+    );
+
+    expect(ref.current).toBe(screen.getByTestId('item'));
+    expect(ref.current?.tagName).toBe('LI');
+  });
+
   it('localizes strings via the Provider locale', () => {
     render(
       <Provider locale="ru-RU">

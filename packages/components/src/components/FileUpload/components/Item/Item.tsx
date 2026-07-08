@@ -1,8 +1,11 @@
 'use client';
 
+import { forwardRef } from 'react';
+
 import {
   clsx,
   isNotNil,
+  useDOMRef,
   mergeProps,
   useHover,
   useFocusRing,
@@ -17,8 +20,20 @@ import { getItemName, getItemSize } from '../../utils';
 import s from './Item.module.css';
 
 /** A single row in the file list: icon, name, size, and a remove button. */
-export const FileUploadItemComponent = (props: FileUploadItemProps) => {
-  const { item, children, className, style, 'data-testid': testId } = props;
+export const FileUploadItemComponent = forwardRef<
+  HTMLLIElement,
+  FileUploadItemProps
+>((props, ref) => {
+  const {
+    item,
+    children,
+    className,
+    style,
+    'data-testid': testId,
+    ...other
+  } = props;
+
+  const domRef = useDOMRef<HTMLLIElement>(ref);
 
   const {
     messages,
@@ -44,7 +59,8 @@ export const FileUploadItemComponent = (props: FileUploadItemProps) => {
 
   return (
     <li
-      {...mergeProps(hoverProps, focusProps)}
+      {...mergeProps(other, hoverProps, focusProps)}
+      ref={domRef}
       style={style}
       data-testid={testId}
       data-loading={isLoading || undefined}
@@ -82,6 +98,6 @@ export const FileUploadItemComponent = (props: FileUploadItemProps) => {
       </IconButton>
     </li>
   );
-};
+});
 
 FileUploadItemComponent.displayName = 'FileUpload.Item';

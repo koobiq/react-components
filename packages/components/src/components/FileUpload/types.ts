@@ -166,15 +166,10 @@ export type FileUploadTriggerProps = {
   'data-testid'?: string | number;
 };
 
-export type FileUploadItemProps = {
-  /** The item to render. */
-  item: FileUploadItem;
-  /** Custom content, overrides the default name rendering. */
-  children?: ReactNode;
-  /** Additional CSS-classes. */
-  className?: string;
-  /** Inline styles. */
-  style?: CSSProperties;
-  /** Unique identifier for testing purposes. */
-  'data-testid'?: string | number;
-};
+export type FileUploadItemProps = ExtendableProps<
+  FileUploadSlotBaseProps<'li'> & {
+    /** The item to render. */
+    item: FileUploadItem;
+  },
+  object
+>;
