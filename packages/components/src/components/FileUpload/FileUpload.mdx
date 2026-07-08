@@ -1,0 +1,126 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './FileUpload.stories';
+
+<Meta of={Stories} />
+
+# FileUpload
+
+<Status variant="draft" />
+
+FileUpload lets users pick, display and manage a list of files. It never
+uploads anything itself — the consumer drives loading, progress and error
+state from the outside through the controlled `value`.
+
+## Import
+
+```tsx
+import { FileUpload } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Anatomy
+
+With no children, `FileUpload` renders its default layout. Pass children to
+compose it explicitly from its parts instead:
+
+```tsx
+<FileUpload>
+  <FileUpload.List />
+  <FileUpload.Dropzone>
+    Drop files here or <FileUpload.Trigger />
+  </FileUpload.Dropzone>
+</FileUpload>
+```
+
+- `FileUpload.Dropzone` — the drop area with the empty state and browse link.
+- `FileUpload.Trigger` — opens the native file dialog.
+- `FileUpload.List` — the list of selected files. With no children it renders
+  a `FileUpload.Item` for every item from context.
+- `FileUpload.Item` — a single row: icon, name, size and a remove button.
+
+<Story of={Stories.Composition} />
+
+## Single file
+
+By default `FileUpload` accepts a single file. Selecting a new file replaces
+the current one.
+
+<Story of={Stories.SingleWithSelectedFile} />
+
+## Multiple files
+
+Set `allowsMultiple` to let users select more than one file. New files are
+appended to the end of the list, and an "add more" strip stays visible below it.
+
+<Story of={Stories.Multiple} />
+
+<Story of={Stories.MultipleEmpty} />
+
+## Drag and drop
+
+The whole component is a drop target — drop files anywhere on it, including
+onto the list and the "add more" strip. Dropped items that aren't files (e.g.
+plain text) are ignored.
+
+## Scrolling
+
+The list scrolls once it grows past its height cap. Override the cap with
+`style` or `className` on `FileUpload.List`.
+
+<Story of={Stories.Scrollable} />
+
+## Controlled
+
+Pass `value` and `onChange` to own the list from the outside — for example to
+update `isLoading` / `progress` / `errorMessage` on an item as an upload
+started by your app proceeds.
+
+<Story of={Stories.Controlled} />
+
+## File size
+
+Set `showFileSize` to show each file's size (defaults to on when
+`allowsMultiple`). Sizes are formatted for the active locale.
+
+## Custom content
+
+Replace the dropzone's text while keeping the browse trigger.
+
+<Story of={Stories.CustomContent} />
+
+## Disabled
+
+<Story of={Stories.Disabled} />
+
+## Accessibility
+
+- `FileUpload.Trigger` opens the native OS file dialog, so file (and folder)
+  pickers behave exactly as users expect from their platform.
+- The drop zone exposes a visually-hidden button so keyboard and
+  screen-reader users can trigger an equivalent of drag-and-drop (paste)
+  without a pointer.
+- Each remove button's `aria-label` includes the file name.
+- All visible strings and the file-size units are localized through the
+  active `<Provider locale=...>`.
+
+## Roadmap
+
+Planned for upcoming stages, not yet implemented:
+
+- Per-item states (hover / focus / invalid / progress) and keyboard-driven
+  removal.
+- `compact` size, custom row icons and long-name truncation with a tooltip.
+- Folder and mixed file/folder selection (`allowed`, `directoryMode`).

@@ -39,7 +39,7 @@ export type FileUploadItem = {
   size?: number;
   /** Whether the entry represents a folder (affects the default icon). */
   type?: 'file' | 'folder';
-  /** Show the loading spinner (spec "Загрузка/Progress"). Consumer-driven. */
+  /** Show the loading spinner (spec "Loading/Progress"). Consumer-driven. */
   isLoading?: boolean;
   /** Determinate progress `0..100`; `undefined` while loading = indeterminate. */
   progress?: number;

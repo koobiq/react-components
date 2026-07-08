@@ -152,8 +152,7 @@ export const Composition: Story = {
     >
       <FileUpload.List />
       <FileUpload.Dropzone>
-        Перетащите сюда или{' '}
-        <FileUpload.Trigger>выберите файлы</FileUpload.Trigger>
+        Drop files here or <FileUpload.Trigger>select files</FileUpload.Trigger>
       </FileUpload.Dropzone>
     </FileUpload>
   ),
@@ -161,15 +160,15 @@ export const Composition: Story = {
 
 /**
  * Custom dropzone content: replace the text and keep the browse trigger and the
- * drag hint (spec "Кастомный контент в загрузчике").
+ * drag hint (spec "Custom content in the uploader").
  */
 export const CustomContent: Story = {
   render: (args) => (
     <FileUpload allowsMultiple aria-label="Upload files" {...args}>
       <FileUpload.Dropzone>
-        <strong>Перетащите сюда ZIP-архивы с паролем</strong>
+        <strong>Drop password-protected ZIP archives here</strong>
         <span>
-          или <FileUpload.Trigger>выберите файлы</FileUpload.Trigger>
+          or <FileUpload.Trigger>select files</FileUpload.Trigger>
         </span>
       </FileUpload.Dropzone>
     </FileUpload>

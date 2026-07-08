@@ -3,7 +3,6 @@
 import {
   useRef,
   useMemo,
-  useState,
   forwardRef,
   useCallback,
   useLayoutEffect,
@@ -14,6 +13,8 @@ import type { Key } from '@koobiq/react-core';
 import {
   clsx,
   useDOMRef,
+  useBoolean,
+  useKeyedRefs,
   useControlledState,
   useNumberFormatter,
   useLocalizedStringFormatter,
@@ -70,7 +71,8 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
     onChange
   );
 
-  const [isDropTarget, setIsDropTarget] = useState(false);
+  const [isDropTarget, { on: onDropTarget, off: offDropTarget }] =
+    useBoolean(false);
 
   const showFileSize = showFileSizeProp ?? allowsMultiple;
 
@@ -97,20 +99,9 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
     [stringFormatter]
   );
 
-  const itemRefs = useRef(new Map<Key, HTMLElement>());
+  const getItemRef = useKeyedRefs<HTMLButtonElement>();
   const triggerRef = useRef<HTMLElement | null>(null);
   const pendingFocus = useRef<PendingFocus>(null);
-
-  const registerItemRef = useCallback(
-    (id: Key, element: HTMLElement | null) => {
-      if (element) {
-        itemRefs.current.set(id, element);
-      } else {
-        itemRefs.current.delete(id);
-      }
-    },
-    []
-  );
 
   const setTriggerRef = useCallback((element: HTMLElement | null) => {
     triggerRef.current = element;
@@ -172,7 +163,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
     pendingFocus.current = null;
 
     if (pending.type === 'item') {
-      itemRefs.current.get(pending.id)?.focus();
+      getItemRef(pending.id).current?.focus();
     } else {
       triggerRef.current?.focus();
     }
@@ -191,7 +182,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
       allowsMultiple,
       addFiles,
       removeItem,
-      registerItemRef,
+      getItemRef,
       setTriggerRef,
       messages,
       formatSize,
@@ -208,7 +199,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
       allowsMultiple,
       addFiles,
       removeItem,
-      registerItemRef,
+      getItemRef,
       setTriggerRef,
       messages,
       formatSize,
@@ -230,10 +221,10 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
         data-multiple={allowsMultiple || undefined}
         className={clsx(s.base, s[size], className)}
         getDropOperation={() => 'copy'}
-        onDropEnter={() => setIsDropTarget(true)}
-        onDropExit={() => setIsDropTarget(false)}
+        onDropEnter={onDropTarget}
+        onDropExit={offDropTarget}
         onDrop={async (event) => {
-          setIsDropTarget(false);
+          offDropTarget();
 
           const files = await readDroppedFiles(event.items);
 

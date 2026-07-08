@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext } from 'react';
+import type { RefObject } from 'react';
 
 import type { Key } from '@koobiq/react-core';
 
@@ -28,8 +29,8 @@ export type FileUploadContextValue = {
   addFiles: (files: File[]) => void;
   /** Remove the item with the given id and restore focus. */
   removeItem: (id: Key) => void;
-  /** Register the remove-button element of an item for focus restoration. */
-  registerItemRef: (id: Key, element: HTMLElement | null) => void;
+  /** The remove-button ref of an item, used to restore focus after removal. */
+  getItemRef: (id: Key) => RefObject<HTMLButtonElement | null>;
   /** Register the browse-link element for focus restoration. */
   setTriggerRef: (element: HTMLElement | null) => void;
   /** Resolved localized strings. */

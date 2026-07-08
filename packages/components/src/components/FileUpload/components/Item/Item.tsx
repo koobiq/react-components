@@ -24,8 +24,8 @@ export const FileUploadItemComponent = (props: FileUploadItemProps) => {
     messages,
     formatSize,
     removeItem,
+    getItemRef,
     showFileSize,
-    registerItemRef,
     isDisabled: groupDisabled,
   } = useFileUploadContext();
 
@@ -75,7 +75,7 @@ export const FileUploadItemComponent = (props: FileUploadItemProps) => {
         isDisabled={isDisabled}
         variant={isInvalid ? 'error' : 'theme'}
         aria-label={`${messages.removeButtonLabel} ${name}`.trim()}
-        ref={(element) => registerItemRef(item.id, element)}
+        ref={getItemRef(item.id)}
         onPress={() => removeItem(item.id)}
       >
         <IconXmarkS16 />
