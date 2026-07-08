@@ -122,6 +122,41 @@ export const Controlled: Story = {
   },
 };
 
+const MAX_SIZE = 150_000; // 150 KB — arbitrary demo limit, compared against the file's real byte size
+
+const makeOversizedItem = (name: string): FileUploadItem => ({
+  id: name,
+  file: new File([new Uint8Array(MAX_SIZE + 1)], name),
+  errorMessage: 'File is too large (max 150 KB)',
+});
+
+export const Validation: Story = {
+  render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItem[]>([
+      makeOversizedItem('presentation.pptx'),
+    ]);
+
+    return (
+      <FileUpload
+        allowsMultiple
+        showFileSize
+        aria-label="Upload files"
+        value={items}
+        onChange={(next) => {
+          setItems(
+            next.map((item) =>
+              item.file.size > MAX_SIZE
+                ? { ...item, errorMessage: 'File is too large (max 150 KB)' }
+                : item
+            )
+          );
+        }}
+        {...args}
+      />
+    );
+  },
+};
+
 export const Disabled: Story = {
   render: (args) => (
     <FileUpload

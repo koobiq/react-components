@@ -90,6 +90,15 @@ started by your app proceeds.
 
 <Story of={Stories.Controlled} />
 
+## Validation
+
+`FileUpload` doesn't validate files itself. Check `file.type`, `file.size`, or
+any custom rule in a controlled `onChange`, then set `errorMessage` on the
+invalid item to show the error. `accept` only filters the system dialog, so
+check dropped files the same way.
+
+<Story of={Stories.Validation} />
+
 ## File size
 
 Set `showFileSize` to show each file's size (defaults to on when
