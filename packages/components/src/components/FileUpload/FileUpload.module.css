@@ -1,48 +1,89 @@
 .base {
+  --file-upload-container-border-color: var(--kbq-line-contrast-fade);
+  --file-upload-container-background: var(--kbq-background-bg);
+  --file-upload-dropzone-icon-color: var(--kbq-icon-contrast-fade);
+  --file-upload-upload-icon-color: var(--kbq-icon-contrast);
+  --file-upload-left-icon-color: var(--kbq-icon-contrast-fade);
+  --file-upload-text-color: var(--kbq-foreground-contrast);
+  --file-upload-file-size-color: var(--kbq-foreground-contrast-secondary);
+  --file-upload-footer-border-color: var(--file-upload-container-border-color);
+  --file-upload-border-width: var(--kbq-size-border-width);
+  --file-upload-border-radius: var(--kbq-size-s);
+  --file-upload-single-min-block-size: 44px;
+  --file-upload-single-padding-block: var(--kbq-size-m);
+  --file-upload-single-padding-inline: var(--kbq-size-l);
+  --file-upload-list-min-block-size: 120px;
+  --file-upload-list-max-block-size: unset;
+  --file-upload-multiple-min-block-size: 192px;
+  --file-upload-multiple-min-inline-size: 320px;
+  --file-upload-grid-cell-padding-inline: var(--kbq-size-s);
+  --file-upload-grid-cell-gap: var(--kbq-size-s);
+  --file-upload-file-size-inline-size: var(--kbq-size-7xl);
+  --file-upload-compact-padding-block: 11px;
+  --file-upload-compact-padding-inline: 15px;
+
   display: flex;
   inline-size: 100%;
   box-sizing: border-box;
   flex-direction: column;
-  background-color: var(--kbq-background-bg);
-  border: var(--kbq-size-border-width) dashed var(--kbq-line-contrast-fade);
-  border-radius: var(--kbq-size-s);
+  background-color: var(--file-upload-container-background);
+  border: var(--file-upload-border-width) dashed
+    var(--file-upload-container-border-color);
+  border-radius: var(--file-upload-border-radius);
   transition:
     border-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
 }
 
 .base[data-drop-target] {
-  border-color: var(--kbq-line-theme-fade);
-  background-color: var(--kbq-background-theme-fade);
+  --file-upload-container-border-color: var(--kbq-line-theme-fade);
+  --file-upload-container-background: var(--kbq-background-theme-fade);
+  --file-upload-footer-border-color: var(--kbq-line-theme-fade);
+}
+
+.base[data-invalid]:not([data-disabled], [data-multiple]) {
+  --file-upload-container-border-color: var(--kbq-line-error);
+  --file-upload-container-background: var(--kbq-background-error-less);
+  --file-upload-dropzone-icon-color: var(--kbq-icon-error);
+  --file-upload-left-icon-color: var(--kbq-icon-error);
+  --file-upload-text-color: var(--kbq-foreground-error);
+  --file-upload-file-size-color: var(--kbq-foreground-error);
 }
 
 .base[data-disabled] {
-  border-color: var(--kbq-states-line-disabled);
-  background-color: var(--kbq-states-background-disabled);
+  --file-upload-container-border-color: var(--kbq-states-line-disabled);
+  --file-upload-container-background: var(--kbq-states-background-disabled);
+  --file-upload-dropzone-icon-color: var(--kbq-states-icon-disabled);
+  --file-upload-upload-icon-color: var(--kbq-states-icon-disabled);
+  --file-upload-left-icon-color: var(--kbq-states-icon-disabled);
+  --file-upload-text-color: var(--kbq-states-foreground-disabled);
+  --file-upload-file-size-color: var(--kbq-states-foreground-disabled);
+  --file-upload-footer-border-color: var(--kbq-states-line-disabled);
+
   pointer-events: none;
 }
 
 .base:not([data-multiple]) {
-  min-block-size: 44px;
-}
-
-.base:not([data-multiple], [data-empty]) {
-  justify-content: center;
+  min-block-size: var(--file-upload-single-min-block-size);
 }
 
 .base:not([data-multiple])[data-empty] {
-  padding-block: calc(var(--kbq-size-m) - var(--kbq-size-border-width));
-  padding-inline: calc(var(--kbq-size-l) - var(--kbq-size-border-width));
+  padding-block: calc(
+    var(--file-upload-single-padding-block) - var(--file-upload-border-width)
+  );
+  padding-inline: calc(
+    var(--file-upload-single-padding-inline) - var(--file-upload-border-width)
+  );
 }
 
 .base[data-multiple][data-empty].default {
   align-items: center;
   justify-content: center;
-  min-block-size: 192px;
-  min-inline-size: 320px;
+  min-block-size: var(--file-upload-multiple-min-block-size);
+  min-inline-size: var(--file-upload-multiple-min-inline-size);
 }
 
 .base[data-multiple][data-empty].compact {
-  padding-block: calc(var(--kbq-size-m) - var(--kbq-size-border-width));
-  padding-inline: calc(var(--kbq-size-l) - var(--kbq-size-border-width));
+  padding-block: var(--file-upload-compact-padding-block);
+  padding-inline: var(--file-upload-compact-padding-inline);
 }

@@ -214,6 +214,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
   );
 
   const isEmpty = items.length === 0;
+  const isInvalid = items.some((item) => item.errorMessage);
 
   const renderDefault = () => {
     if (!allowsMultiple) {
@@ -250,6 +251,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
         data-size={size}
         data-testid={testId}
         data-empty={isEmpty || undefined}
+        data-invalid={isInvalid || undefined}
         data-multiple={allowsMultiple || undefined}
         data-drop-target={isDropTarget || undefined}
         className={clsx(s.base, s[size], textNormal, className)}

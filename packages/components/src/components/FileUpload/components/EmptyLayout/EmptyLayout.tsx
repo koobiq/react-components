@@ -1,11 +1,12 @@
 'use client';
 
-import { IconArrowUpFromBracket16 } from '@koobiq/react-icons';
+import { IconCloudArrowUpO24 } from '@koobiq/react-icons';
 
 import { EmptyState } from '../../../EmptyState';
-import { IconItem } from '../../../IconItem';
 import { useFileUploadContext } from '../../FileUploadContext';
 import { FileUploadTrigger } from '../Trigger';
+
+import s from './EmptyLayout.module.css';
 
 /**
  * The default multiple-empty layout: an `EmptyState` with a big upload icon, a
@@ -16,14 +17,14 @@ export const FileUploadEmptyLayout = () => {
   const { messages } = useFileUploadContext();
 
   return (
-    <EmptyState size="normal">
-      <EmptyState.Media>
-        <IconItem size="big" color="contrast">
-          <IconArrowUpFromBracket16 />
-        </IconItem>
+    <EmptyState size="normal" className={s.base}>
+      <EmptyState.Media className={s.media}>
+        <IconCloudArrowUpO24 />
       </EmptyState.Media>
-      <EmptyState.Title>{messages.dropTitle}</EmptyState.Title>
-      <EmptyState.Content>
+      <EmptyState.Title className={s.title}>
+        {messages.dropTitle}
+      </EmptyState.Title>
+      <EmptyState.Content className={s.content}>
         {messages.or} <FileUploadTrigger />
       </EmptyState.Content>
     </EmptyState>

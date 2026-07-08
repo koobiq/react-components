@@ -6,38 +6,47 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  gap: var(--kbq-size-s);
-  min-block-size: var(--kbq-size-4xl);
-  color: var(--kbq-foreground-contrast);
+  min-inline-size: 0;
+  gap: var(--file-upload-grid-cell-gap, var(--kbq-size-s));
+  min-block-size: 40px;
+  color: var(--file-upload-text-color, var(--kbq-foreground-contrast));
   border-radius: var(--kbq-size-xs);
-  padding-inline: var(--kbq-size-m) var(--kbq-size-s);
+  padding-inline: var(--kbq-size-m) 0;
   box-shadow: inset 0 0 0 1px var(--item-outline-color);
   transition:
     background-color var(--kbq-transition-default),
     box-shadow var(--kbq-transition-default);
 }
 
-li.base[data-hovered] {
+.base:not([data-multiple]) {
+  min-block-size: var(--file-upload-single-min-block-size, 44px);
+  padding-inline-start: calc(
+    var(--file-upload-single-padding-inline, var(--kbq-size-l)) -
+      var(--file-upload-border-width, var(--kbq-size-border-width))
+  );
+}
+
+.base[data-multiple][data-hovered] {
   background-color: var(--kbq-states-background-contrast-fade-hover);
 }
 
-li.base[data-focus-visible] {
+.base[data-multiple][data-focus-visible] {
   --item-outline-color: var(--kbq-states-line-focus-theme);
 }
 
-li.base[data-invalid] {
+.base[data-invalid] {
   color: var(--kbq-foreground-error);
 }
 
-li.base[data-invalid][data-hovered] {
+.base[data-invalid][data-multiple][data-hovered] {
   background-color: var(--kbq-states-background-error-less-hover);
 }
 
-li.base[data-invalid][data-focus-visible] {
+.base[data-invalid][data-multiple][data-focus-visible] {
   --item-outline-color: var(--kbq-states-line-focus-error);
 }
 
-li.base[data-disabled] {
+.base[data-disabled] {
   color: var(--kbq-states-foreground-disabled);
 }
 
@@ -45,14 +54,14 @@ li.base[data-disabled] {
   display: flex;
   flex: none;
   align-items: center;
-  color: var(--kbq-icon-contrast-fade);
+  color: var(--file-upload-left-icon-color, var(--kbq-icon-contrast-fade));
 }
 
-li.base[data-invalid] .icon {
+.base[data-invalid] .icon {
   color: var(--kbq-icon-error);
 }
 
-li.base[data-disabled] .icon {
+.base[data-disabled] .icon {
   color: var(--kbq-states-icon-disabled);
 }
 
@@ -73,12 +82,18 @@ li.base[data-disabled] .icon {
 
 .size {
   flex: none;
-  inline-size: var(--kbq-size-7xl);
+  inline-size: var(--file-upload-file-size-inline-size, var(--kbq-size-7xl));
   text-align: start;
   white-space: nowrap;
-  color: var(--kbq-foreground-contrast-secondary);
+  color: var(
+    --file-upload-file-size-color,
+    var(--kbq-foreground-contrast-secondary)
+  );
 }
 
 .remove {
   flex: none;
+  inline-size: 40px;
+  block-size: 40px;
+  padding: 12px;
 }

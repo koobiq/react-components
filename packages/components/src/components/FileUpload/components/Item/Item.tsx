@@ -41,6 +41,7 @@ export const FileUploadItem = polymorphicForwardRef<'li', FileUploadItemProps>(
       removeItem,
       getItemRef,
       showFileSize,
+      allowsMultiple,
       isDisabled: groupDisabled,
     } = useFileUploadContext();
 
@@ -76,6 +77,7 @@ export const FileUploadItem = polymorphicForwardRef<'li', FileUploadItemProps>(
         data-testid={testId}
         data-loading={isLoading || undefined}
         data-invalid={isInvalid || undefined}
+        data-multiple={allowsMultiple || undefined}
         data-hovered={isHovered || undefined}
         data-disabled={isDisabled || undefined}
         data-focus-visible={isFocusVisible || undefined}

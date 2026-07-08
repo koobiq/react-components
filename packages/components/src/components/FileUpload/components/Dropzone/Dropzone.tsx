@@ -46,11 +46,9 @@ export const FileUploadDropzone = forwardRef<
     >
       {children ?? (
         <>
-          {!isAddMore && (
-            <span className={s.icon} aria-hidden="true">
-              <IconArrowUpFromBracket16 />
-            </span>
-          )}
+          <span className={s.icon} aria-hidden="true">
+            <IconArrowUpFromBracket16 />
+          </span>
           <span className={s.text}>
             {isAddMore
               ? messages.addMore

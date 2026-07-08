@@ -4,10 +4,18 @@
   box-sizing: border-box;
   list-style: none;
   min-inline-size: 0;
-  min-block-size: 120px;
+  inline-size: 100%;
+  min-block-size: var(--file-upload-list-min-block-size, 120px);
+  max-block-size: var(--file-upload-list-max-block-size, unset);
   flex-direction: column;
   overflow-y: auto;
-  padding-inline: calc(var(--kbq-size-xxs) - var(--kbq-size-border-width));
-  padding-block: calc(var(--kbq-size-xxs) - var(--kbq-size-border-width))
+  padding-inline: calc(
+    var(--kbq-size-xxs) -
+      var(--file-upload-border-width, var(--kbq-size-border-width))
+  );
+  padding-block: calc(
+      var(--kbq-size-xxs) -
+        var(--file-upload-border-width, var(--kbq-size-border-width))
+    )
     var(--kbq-size-xxl);
 }
