@@ -7,9 +7,9 @@
 }
 
 .default {
-  /* default layout */
+  /* no root-level overrides — density differences live in the sub-component CSS */
 }
 
 .compact {
-  /* compact layout is refined in a later stage */
+  /* no root-level overrides — density differences live in the sub-component CSS */
 }

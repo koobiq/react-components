@@ -104,6 +104,25 @@ export const Scrollable: Story = {
   ),
 };
 
+/** The empty compact drop zone collapses to a narrow strip. */
+export const CompactEmpty: Story = {
+  render: (args) => (
+    <FileUpload aria-label="Upload a file" size="compact" {...args} />
+  ),
+};
+
+/** Once populated, compact looks identical to the default size. */
+export const Compact: Story = {
+  render: (args) => (
+    <FileUpload
+      aria-label="Upload a file"
+      size="compact"
+      defaultValue={[makeItem('project_report_2023.docx', 148909)]}
+      {...args}
+    />
+  ),
+};
+
 export const Controlled: Story = {
   render: function Render(args) {
     const [items, setItems] = useState<FileUploadItem[]>([

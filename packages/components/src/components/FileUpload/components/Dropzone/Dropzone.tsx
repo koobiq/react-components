@@ -25,7 +25,7 @@ export const FileUploadDropzone = forwardRef<
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
 
-  const { items, messages, isDisabled, isDropTarget, allowsMultiple } =
+  const { items, size, messages, isDisabled, isDropTarget, allowsMultiple } =
     useFileUploadContext();
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
@@ -37,6 +37,7 @@ export const FileUploadDropzone = forwardRef<
       ref={domRef}
       style={style}
       data-testid={testId}
+      data-size={size}
       data-disabled={isDisabled || undefined}
       data-multiple={allowsMultiple || undefined}
       data-drop-target={isDropTarget || undefined}

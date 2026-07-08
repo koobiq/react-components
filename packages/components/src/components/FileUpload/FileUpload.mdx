@@ -69,6 +69,16 @@ appended to the end of the list, and an "add more" strip stays visible below it.
 
 <Story of={Stories.MultipleEmpty} />
 
+## Compact
+
+Set `size="compact"` when adding files plays a secondary role in the form. Only
+the empty drop zone changes — it collapses to a narrow strip. Once a file is
+selected it looks the same as the default size.
+
+<Story of={Stories.CompactEmpty} />
+
+<Story of={Stories.Compact} />
+
 ## Drag and drop
 
 The whole component is a drop target — drop files anywhere on it, including
@@ -141,5 +151,5 @@ Replace the dropzone's text while keeping the browse trigger.
 
 Planned for upcoming stages, not yet implemented:
 
-- `compact` size, custom row icons and long-name truncation with a tooltip.
+- Custom row icons and long-name truncation with a tooltip.
 - Folder and mixed file/folder selection (`allowed`, `directoryMode`).

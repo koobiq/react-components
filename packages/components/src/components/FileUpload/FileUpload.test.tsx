@@ -336,6 +336,36 @@ describe('FileUpload', () => {
     expect(ref.current?.tagName).toBe('LI');
   });
 
+  it('applies data-size to the dropzone when empty', () => {
+    render(
+      <FileUpload aria-label="upload" size="compact">
+        <FileUpload.Dropzone data-testid="dropzone" />
+      </FileUpload>
+    );
+
+    expect(screen.getByTestId('dropzone')).toHaveAttribute(
+      'data-size',
+      'compact'
+    );
+  });
+
+  it('keeps data-size on the dropzone once populated', () => {
+    render(
+      <FileUpload
+        aria-label="upload"
+        size="compact"
+        defaultValue={[makeItem('a.txt')]}
+      >
+        <FileUpload.Dropzone data-testid="dropzone" />
+      </FileUpload>
+    );
+
+    const dropzone = screen.getByTestId('dropzone');
+
+    expect(dropzone).toHaveAttribute('data-size', 'compact');
+    expect(dropzone).toHaveAttribute('data-variant', 'add-more');
+  });
+
   it('localizes strings via the Provider locale', () => {
     render(
       <Provider locale="ru-RU">

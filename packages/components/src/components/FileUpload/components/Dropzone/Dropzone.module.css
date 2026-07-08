@@ -22,6 +22,16 @@
   min-block-size: 192px;
 }
 
+/* Compact collapses the empty state to a narrow strip regardless of multiple. */
+.empty[data-size='compact'] {
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: start;
+  min-block-size: auto;
+  padding-block: var(--kbq-size-xs);
+  padding-inline: var(--kbq-size-l);
+}
+
 .add-more,
 .addMore {
   justify-content: flex-start;
