@@ -17,10 +17,12 @@ export function TreeItem({
   children,
   className,
   textValue,
+  align = 'center',
   ...props
 }: TreeItemProps) {
   return (
     <AriaTreeItem
+      data-align={align}
       {...props}
       textValue={textValue ?? ''}
       className={composeRenderProps(className, (className) =>

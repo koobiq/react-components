@@ -37,6 +37,8 @@ Use these components to build hierarchical navigation, selection, and lazy loadi
 - `Tree` — Root container for hierarchical items.
 - `Tree.Item` — Defines a node in the tree (leaf or branch).
 - `Tree.ItemContent` — Customizes row content (text, icons, slots).
+- `Tree.ItemContentText` — Displays text and an optional caption in an item.
+- `Tree.ItemContentAddon` — Displays an icon, badge, or other secondary content in an item.
 - `Tree.LoadMoreItem` — Triggers and displays async loading state for additional items.
 
 ## Content
@@ -53,12 +55,23 @@ Use `selectionBehavior="toggle"` to render checkbox selection controls.
 
 <Story of={Stories.MultipleSelection} />
 
-## Slots
+## Item content
 
-Use `Tree.ItemContent` to customize item layout.
-For example, you can add icons, typography, badges, and slot-specific props for chevron and checkbox controls.
+The `Tree.ItemContent` can be composed with helper components:
 
-<Story of={Stories.Slots} />
+- `Tree.ItemContentText` for text and captions.
+- `Tree.ItemContentAddon` for icons, badges, or other secondary content.
+
+The `Tree.Item` also has layout props, such as `align`, which sets vertical alignment.
+Use `align="start"` for captions or multi-line content.
+
+<Story of={Stories.ItemContent} />
+
+## Item actions
+
+Add an extra action to an item, revealed on hover or focus.
+
+<Story of={Stories.ItemActions} />
 
 ## Empty state
 
@@ -92,7 +105,3 @@ Tree supports progressive loading with `Tree.LoadMoreItem`.
 Combine it with `useAsyncList` to fetch nested data on demand.
 
 <Story of={Stories.AsyncLoading} />
-
-## Other examples
-
-<Story of={Stories.Examples} />

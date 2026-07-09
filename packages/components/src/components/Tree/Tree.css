@@ -49,6 +49,13 @@
   }
 }
 
+.kbq-TreeItem:has([data-slot='list-item-addon']) {
+  [data-slot='chevron'],
+  [data-slot='checkbox'] {
+    margin-inline-end: var(--kbq-size-s);
+  }
+}
+
 .kbq-TreeLoader {
   display: flex;
   align-items: center;

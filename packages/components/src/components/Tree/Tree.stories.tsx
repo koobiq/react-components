@@ -1,11 +1,16 @@
 import { useState } from 'react';
 
-import { IconEllipsisVertical16, IconFolder16 } from '@koobiq/react-icons';
+import {
+  IconCircle16,
+  IconEllipsisVertical16,
+  IconFolder16,
+} from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { FlexBox, useAsyncList } from '../../index';
+import { useAsyncList } from '../../index';
 import type { Selection } from '../../index';
+import { Badge } from '../Badge';
 import { IconButton } from '../IconButton';
 import { spacing } from '../layout';
 import { Menu } from '../Menu';
@@ -22,10 +27,12 @@ const meta = {
   subcomponents: {
     'Tree.Item': Tree.Item,
     'Tree.ItemContent': Tree.ItemContent,
+    'Tree.ItemContentText': Tree.ItemContentText,
+    'Tree.ItemContentAddon': Tree.ItemContentAddon,
     'Tree.LoadMoreItem': Tree.LoadMoreItem,
   },
   argTypes: {},
-  tags: ['status:new', 'date:2026-03-02'],
+  tags: ['status:updated', 'date:2026-07-03'],
 } satisfies Meta<typeof Tree>;
 
 export default meta;
@@ -222,7 +229,95 @@ export const Content: Story = {
   },
 };
 
-export const Slots: Story = {
+export const ItemContent: Story = {
+  name: 'Item content',
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render() {
+    const longText =
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A at cupiditate dolor itaque molestias quasi quisquam quo. Deleniti ducimus fugit nulla repudiandae tenetur. Aliquid autem corporis culpa debitis exercitationem inventore labore nihil officia recusandae veniam. Beatae, doloribus, suscipit. Aut beatae consectetur consequuntur cum hic, obcaecati quia sunt temporibus unde vel!';
+
+    return (
+      <Tree
+        aria-label="Project files"
+        selectionMode="multiple"
+        defaultExpandedKeys={['app']}
+      >
+        <Tree.Item id="app" textValue="app">
+          <Tree.ItemContent>
+            <Tree.ItemContentAddon>
+              <IconFolder16 />
+            </Tree.ItemContentAddon>
+            <Tree.ItemContentText>app</Tree.ItemContentText>
+          </Tree.ItemContent>
+          <Tree.Item id="index-html" textValue="index.html" align="start">
+            <Tree.ItemContent>
+              <Tree.ItemContentText caption="Entry point">
+                index.html
+              </Tree.ItemContentText>
+            </Tree.ItemContent>
+          </Tree.Item>
+        </Tree.Item>
+        <Tree.Item id="gitignore-file" textValue=".gitignore" align="start">
+          <Tree.ItemContent>
+            <Tree.ItemContentAddon>
+              <IconCircle16 />
+            </Tree.ItemContentAddon>
+            <Tree.ItemContentText caption="Project documentation">
+              .gitignore
+            </Tree.ItemContentText>
+            <Tree.ItemContentAddon>
+              <Badge size="compact">Badge</Badge>
+            </Tree.ItemContentAddon>
+          </Tree.ItemContent>
+        </Tree.Item>
+        <Tree.Item id="readme" textValue="README.md" align="start">
+          <Tree.ItemContent>
+            <Tree.ItemContentAddon>
+              <IconCircle16 />
+            </Tree.ItemContentAddon>
+            <Tree.ItemContentText caption="Project documentation">
+              README.md
+            </Tree.ItemContentText>
+          </Tree.ItemContent>
+        </Tree.Item>
+
+        <Tree.Item id="lorem-1" textValue={longText} align="start">
+          <Tree.ItemContent>
+            <Tree.ItemContentAddon>
+              <IconCircle16 />
+            </Tree.ItemContentAddon>
+            <Tree.ItemContentText
+              caption={longText}
+              slotProps={{
+                caption: { ellipsis: true },
+              }}
+            >
+              {longText}
+            </Tree.ItemContentText>
+          </Tree.ItemContent>
+        </Tree.Item>
+        <Tree.Item id="lorem-2" textValue={longText} align="start">
+          <Tree.ItemContent>
+            <Tree.ItemContentAddon>
+              <IconCircle16 />
+            </Tree.ItemContentAddon>
+            <Tree.ItemContentText caption={longText}>
+              {longText}
+            </Tree.ItemContentText>
+            <Tree.ItemContentAddon>
+              <Badge size="compact">Badge</Badge>
+            </Tree.ItemContentAddon>
+          </Tree.ItemContent>
+        </Tree.Item>
+      </Tree>
+    );
+  },
+};
+
+export const ItemActions: Story = {
+  name: 'Item actions',
   parameters: {
     layout: 'padded',
   },
@@ -240,22 +335,28 @@ export const Slots: Story = {
         <Tree.ItemContent>
           {({ isHovered, isFocusVisibleWithin }) => (
             <>
-              {type === 'directory' && <IconFolder16 />}
-              {title}
+              {type === 'directory' && (
+                <Tree.ItemContentAddon>
+                  <IconFolder16 />
+                </Tree.ItemContentAddon>
+              )}
+              <Tree.ItemContentText>{title}</Tree.ItemContentText>
               {(isHovered || isFocusVisibleWithin || isMenuOpen) && (
                 <Menu
                   onOpenChange={setIsMenuOpen}
                   control={(props) => (
-                    <IconButton
-                      {...props}
-                      size="l"
-                      variant="fade-contrast"
-                      aria-label="More actions"
-                      className={spacing({ mis: 'auto' })}
-                      isCompact
-                    >
-                      <IconEllipsisVertical16 />
-                    </IconButton>
+                    <Tree.ItemContentAddon>
+                      <IconButton
+                        {...props}
+                        size="l"
+                        variant="fade-contrast"
+                        aria-label="More actions"
+                        className={spacing({ mis: 'auto' })}
+                        isCompact
+                      >
+                        <IconEllipsisVertical16 />
+                      </IconButton>
+                    </Tree.ItemContentAddon>
                   )}
                 >
                   <Menu.Item key="edit">Edit</Menu.Item>
@@ -546,108 +647,4 @@ export const AsyncLoading: Story = {
       </Tree>
     );
   },
-};
-
-export const Examples: Story = {
-  parameters: {
-    layout: 'padded',
-  },
-  render: (args) => (
-    <Tree
-      aria-label="Project files"
-      selectionMode="single"
-      defaultExpandedKeys={['long-folder-1']}
-      {...args}
-    >
-      <Tree.Item id="app" textValue="app">
-        <Tree.ItemContent>app</Tree.ItemContent>
-        <Tree.Item id="http" textValue="Http">
-          <Tree.ItemContent>Http</Tree.ItemContent>
-          <Tree.Item id="index-html" textValue="index.html">
-            <Tree.ItemContent>index.html</Tree.ItemContent>
-          </Tree.Item>
-        </Tree.Item>
-        <Tree.Item id="providers" textValue="Providers">
-          <Tree.ItemContent>Providers</Tree.ItemContent>
-          <Tree.Item
-            id="event-service-provider-js"
-            textValue="EventServiceProvider.js"
-          >
-            <Tree.ItemContent>EventServiceProvider.js</Tree.ItemContent>
-          </Tree.Item>
-        </Tree.Item>
-      </Tree.Item>
-      <Tree.Item id="config" textValue="config">
-        <Tree.ItemContent>config</Tree.ItemContent>
-        <Tree.Item id="config-app-js" textValue="app.js">
-          <Tree.ItemContent>app.js</Tree.ItemContent>
-        </Tree.Item>
-        <Tree.Item id="database-js" textValue="database.js">
-          <Tree.ItemContent>database.js</Tree.ItemContent>
-        </Tree.Item>
-      </Tree.Item>
-      <Tree.Item
-        id="long-folder-1"
-        textValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
-            asperiores delectus doloremque fugiat illo laudantium nesciunt
-            omnis. Aliquam, earum, velit?"
-      >
-        <Tree.ItemContent>
-          <Typography ellipsis>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
-            asperiores delectus doloremque fugiat illo laudantium nesciunt
-            omnis. Aliquam, earum, velit?
-          </Typography>
-        </Tree.ItemContent>
-        <Tree.Item
-          id="long-file-1"
-          textValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
-          asperiores delectus doloremque fugiat illo laudantium nesciunt omnis.
-          Aliquam, earum, velit?"
-        >
-          <Tree.ItemContent>
-            <Typography ellipsis>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus asperiores delectus doloremque fugiat illo laudantium
-              nesciunt omnis. Aliquam, earum, velit?
-            </Typography>
-          </Tree.ItemContent>
-        </Tree.Item>
-      </Tree.Item>
-      <Tree.Item id="env-file" textValue=".env">
-        <Tree.ItemContent>.env</Tree.ItemContent>
-      </Tree.Item>
-      <Tree.Item id="gitignore-file" textValue=".gitignore">
-        <Tree.ItemContent>.gitignore</Tree.ItemContent>
-      </Tree.Item>
-      <Tree.Item id="readme-file" textValue="README.md">
-        <Tree.ItemContent>README.md</Tree.ItemContent>
-      </Tree.Item>
-      <Tree.Item
-        style={{ alignItems: 'flex-start' }}
-        id="long-file-2"
-        textValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus asperiores delectus doloremque fugiat illo laudantium nesciunt omnis. Aliquam, earum, velit?"
-      >
-        <Tree.ItemContent>
-          <FlexBox gap="3xs" direction="column" style={{ minWidth: 0 }}>
-            <Typography style={{ width: '100%' }} ellipsis>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus asperiores delectus doloremque fugiat illo laudantium
-              nesciunt omnis. Aliquam, earum, velit?
-            </Typography>
-            <Typography
-              style={{ width: '100%' }}
-              color="contrast-secondary"
-              variant="text-compact"
-              ellipsis
-            >
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus asperiores delectus doloremque fugiat illo laudantium
-              nesciunt omnis. Aliquam, earum, velit?
-            </Typography>
-          </FlexBox>
-        </Tree.ItemContent>
-      </Tree.Item>
-    </Tree>
-  ),
 };
