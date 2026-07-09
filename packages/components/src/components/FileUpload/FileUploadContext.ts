@@ -6,7 +6,6 @@ import type { RefObject } from 'react';
 import type { Key } from '@koobiq/react-core';
 
 import type {
-  FileUploadFile,
   FileUploadMessages,
   FileUploadPropSize,
   FileUploadPropAllowed,
@@ -14,20 +13,16 @@ import type {
 } from './types';
 
 export type FileUploadContextValue = {
-  /** The current list of selected files. */
-  items: FileUploadFile[];
   allowsMultiple: boolean;
   accept?: string[];
   allowed: FileUploadPropAllowed;
   directoryMode: FileUploadPropDirectoryMode;
   size: FileUploadPropSize;
-  showFileSize: boolean;
   isDisabled: boolean;
-  /** Whether a drag is currently over the drop zone. */
   isDropTarget: boolean;
-  /** Wrap the given native files into items and add them to the list. */
+  /** Add the given native files. The consumer decides how they affect `items`. */
   addFiles: (files: File[]) => void;
-  /** Remove the item with the given id and restore focus. */
+  /** Request removing the item with the given id and restore focus after rerender. */
   removeItem: (id: Key) => void;
   /** The remove-button ref of an item, used to restore focus after removal. */
   getItemRef: (id: Key) => RefObject<HTMLButtonElement | null>;
@@ -39,9 +34,19 @@ export type FileUploadContextValue = {
   formatSize: (bytes: number) => string;
 };
 
+export type FileUploadItemContextValue = {
+  id: Key;
+  nameText?: string;
+  isDisabled: boolean;
+  isInvalid: boolean;
+};
+
 export const FileUploadContext = createContext<FileUploadContextValue | null>(
   null
 );
+
+export const FileUploadItemContext =
+  createContext<FileUploadItemContextValue | null>(null);
 
 export const useFileUploadContext = (): FileUploadContextValue => {
   const context = useContext(FileUploadContext);
@@ -49,6 +54,18 @@ export const useFileUploadContext = (): FileUploadContextValue => {
   if (context === null) {
     throw new Error(
       'FileUpload: compound components must be rendered inside a <FileUpload>.'
+    );
+  }
+
+  return context;
+};
+
+export const useFileUploadItemContext = (): FileUploadItemContextValue => {
+  const context = useContext(FileUploadItemContext);
+
+  if (context === null) {
+    throw new Error(
+      'FileUpload: item parts must be rendered inside a <FileUpload.Item>.'
     );
   }
 

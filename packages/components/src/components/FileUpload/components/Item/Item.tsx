@@ -1,121 +1,234 @@
 'use client';
 
+import { forwardRef } from 'react';
+import type { ForwardedRef } from 'react';
+
 import {
   clsx,
-  isNotNil,
+  mergeRefs,
   mergeProps,
   useHover,
   useFocusRing,
-  polymorphicForwardRef,
 } from '@koobiq/react-core';
-import {
-  IconFileO16,
-  IconFolder16,
-  IconCircleXmark16,
-} from '@koobiq/react-icons';
+import { IconFileO16, IconCircleXmark16 } from '@koobiq/react-icons';
+import { CollectionNode, createLeafComponent } from '@koobiq/react-primitives';
+import type { Node } from '@react-types/shared';
 
 import { IconButton } from '../../../IconButton';
-import { ProgressSpinner } from '../../../ProgressSpinner';
-import { useFileUploadContext } from '../../FileUploadContext';
-import type { FileUploadItemProps } from '../../types';
-import { getItemName, getItemSize } from '../../utils';
+import {
+  FileUploadItemContext,
+  useFileUploadContext,
+  useFileUploadItemContext,
+} from '../../FileUploadContext';
+import type {
+  FileUploadItemProps,
+  FileUploadItemIconProps,
+  FileUploadItemNameProps,
+  FileUploadItemSizeProps,
+  FileUploadItemContentProps,
+  FileUploadRemoveButtonProps,
+} from '../../types';
 
 import s from './Item.module.css';
 
-/** A single row in the file list: icon, name, size, and a remove button. */
-export const FileUploadItem = polymorphicForwardRef<'li', FileUploadItemProps>(
-  (props, ref) => {
+class FileUploadItemNode extends CollectionNode<unknown> {
+  static readonly type = 'item';
+}
+
+/** A single row in the file collection. */
+export const FileUploadItem = createLeafComponent(
+  FileUploadItemNode,
+  function FileUploadItem(
+    props: FileUploadItemProps,
+    ref: ForwardedRef<HTMLLIElement>,
+    node: Node<unknown>
+  ) {
     const {
-      item,
-      as: Tag = 'li',
       children,
       className,
       style,
+      isDisabled: isDisabledProp,
+      isInvalid: isInvalidProp,
       'data-testid': testId,
       ...other
     } = props;
 
-    const {
-      messages,
-      formatSize,
-      removeItem,
-      getItemRef,
-      showFileSize,
-      allowsMultiple,
-      isDisabled: groupDisabled,
-    } = useFileUploadContext();
+    const { allowsMultiple, isDisabled: groupDisabled } =
+      useFileUploadContext();
 
-    const isDisabled = groupDisabled || item.isDisabled || false;
-    const isInvalid = isNotNil(item.errorMessage);
-    const isLoading = item.isLoading || false;
+    const isDisabled = groupDisabled || isDisabledProp || false;
+    const isInvalid = isInvalidProp || false;
+    delete other.id;
+    delete other.textValue;
 
     const { hoverProps, isHovered } = useHover({ isDisabled });
     const { focusProps, isFocusVisible } = useFocusRing({ within: true });
 
-    const name = getItemName(item);
-    const size = getItemSize(item);
-
-    const defaultIcon =
-      item.type === 'folder' ? <IconFolder16 /> : <IconFileO16 />;
-
-    const icon = isLoading ? (
-      <ProgressSpinner
-        size="compact"
-        value={item.progress}
-        aria-label={messages.uploadingLabel}
-        isIndeterminate={item.progress === undefined}
-      />
-    ) : (
-      (item.icon ?? defaultIcon)
-    );
+    const contextValue = {
+      id: node.key,
+      nameText: node.textValue,
+      isDisabled,
+      isInvalid,
+    };
 
     return (
-      <Tag
-        {...mergeProps(other, hoverProps, focusProps)}
-        ref={ref}
-        style={style}
-        data-testid={testId}
-        data-loading={isLoading || undefined}
-        data-invalid={isInvalid || undefined}
-        data-multiple={allowsMultiple || undefined}
-        data-hovered={isHovered || undefined}
-        data-disabled={isDisabled || undefined}
-        data-focus-visible={isFocusVisible || undefined}
-        className={clsx(s.base, className)}
-      >
-        <span className={s.icon} aria-hidden={isLoading ? undefined : true}>
-          {icon}
-        </span>
-        <span className={s.content}>
-          {children ?? (
-            <>
-              <span className={s.name}>{name}</span>
-              {showFileSize && isNotNil(size) && (
-                <span className={s.size}>{formatSize(size)}</span>
-              )}
-            </>
-          )}
-        </span>
-        <IconButton
-          size="l"
-          className={s.remove}
-          isDisabled={isDisabled}
-          variant={isInvalid ? 'error' : 'fade-contrast'}
-          aria-label={`${messages.removeButtonLabel} ${name}`.trim()}
-          ref={getItemRef(item.id)}
-          onPress={() => removeItem(item.id)}
-          onKeyDown={(event) => {
-            if (event.key === 'Delete' || event.key === 'Backspace') {
-              event.preventDefault();
-              removeItem(item.id);
-            }
-          }}
+      <FileUploadItemContext.Provider value={contextValue}>
+        <li
+          {...mergeProps(other, hoverProps, focusProps)}
+          ref={ref}
+          style={style}
+          data-testid={testId}
+          data-invalid={isInvalid || undefined}
+          data-multiple={allowsMultiple || undefined}
+          data-hovered={isHovered || undefined}
+          data-disabled={isDisabled || undefined}
+          data-focus-visible={isFocusVisible || undefined}
+          className={clsx(s.base, className)}
         >
-          <IconCircleXmark16 />
-        </IconButton>
-      </Tag>
+          {children}
+        </li>
+      </FileUploadItemContext.Provider>
     );
   }
 );
 
-FileUploadItem.displayName = 'FileUpload.Item';
+export const FileUploadItemIcon = forwardRef<
+  HTMLSpanElement,
+  FileUploadItemIconProps
+>((props, ref) => {
+  const {
+    children,
+    className,
+    style,
+    'aria-hidden': ariaHidden,
+    'data-testid': testId,
+    ...other
+  } = props;
+
+  return (
+    <span
+      {...other}
+      ref={ref}
+      style={style}
+      data-testid={testId}
+      className={clsx(s.icon, className)}
+      aria-hidden={ariaHidden ?? (children == null ? true : undefined)}
+    >
+      {children ?? <IconFileO16 />}
+    </span>
+  );
+});
+
+export const FileUploadItemContent = forwardRef<
+  HTMLSpanElement,
+  FileUploadItemContentProps
+>((props, ref) => {
+  const { children, className, style, 'data-testid': testId, ...other } = props;
+
+  return (
+    <span
+      {...other}
+      ref={ref}
+      style={style}
+      data-testid={testId}
+      className={clsx(s.content, className)}
+    >
+      {children}
+    </span>
+  );
+});
+
+export const FileUploadItemName = forwardRef<
+  HTMLSpanElement,
+  FileUploadItemNameProps
+>((props, ref) => {
+  const { children, className, style, 'data-testid': testId, ...other } = props;
+
+  return (
+    <span
+      {...other}
+      ref={ref}
+      style={style}
+      data-testid={testId}
+      className={clsx(s.name, className)}
+    >
+      {children}
+    </span>
+  );
+});
+
+export const FileUploadItemSize = forwardRef<
+  HTMLSpanElement,
+  FileUploadItemSizeProps
+>((props, ref) => {
+  const { children, className, style, 'data-testid': testId, ...other } = props;
+  const { formatSize } = useFileUploadContext();
+
+  if (children === undefined || children === null) return null;
+
+  return (
+    <span
+      {...other}
+      ref={ref}
+      style={style}
+      data-testid={testId}
+      className={clsx(s.size, className)}
+    >
+      {typeof children === 'number' ? formatSize(children) : children}
+    </span>
+  );
+});
+
+export const FileUploadRemoveButton = forwardRef<
+  HTMLButtonElement,
+  FileUploadRemoveButtonProps
+>((props, ref) => {
+  const {
+    className,
+    onPress,
+    onKeyDown,
+    'aria-label': ariaLabel,
+    ...other
+  } = props;
+
+  const { messages, removeItem, getItemRef } = useFileUploadContext();
+  const { id, nameText, isDisabled, isInvalid } = useFileUploadItemContext();
+
+  const removeLabel =
+    ariaLabel ?? `${messages.removeButtonLabel} ${nameText ?? ''}`.trim();
+
+  return (
+    <IconButton
+      {...other}
+      size="l"
+      className={clsx(s.remove, className)}
+      isDisabled={isDisabled}
+      variant={isInvalid ? 'error' : 'fade-contrast'}
+      aria-label={removeLabel}
+      ref={mergeRefs(ref, getItemRef(id))}
+      onPress={(event) => {
+        onPress?.(event);
+        removeItem(id);
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+
+        if (event.defaultPrevented) return;
+
+        if (event.key === 'Delete' || event.key === 'Backspace') {
+          event.preventDefault();
+          removeItem(id);
+        }
+      }}
+    >
+      <IconCircleXmark16 />
+    </IconButton>
+  );
+});
+
+(FileUploadItem as { displayName?: string }).displayName = 'FileUpload.Item';
+FileUploadItemIcon.displayName = 'FileUpload.ItemIcon';
+FileUploadItemContent.displayName = 'FileUpload.ItemContent';
+FileUploadItemName.displayName = 'FileUpload.ItemName';
+FileUploadItemSize.displayName = 'FileUpload.ItemSize';
+FileUploadRemoveButton.displayName = 'FileUpload.RemoveButton';

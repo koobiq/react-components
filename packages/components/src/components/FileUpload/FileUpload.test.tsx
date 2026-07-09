@@ -1,40 +1,136 @@
 import { createRef, useState } from 'react';
+import type { ReactNode } from 'react';
 
+import type { Key } from '@koobiq/react-core';
 import type { DropItem } from '@koobiq/react-primitives';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { ProgressSpinner } from '../ProgressSpinner';
 import { Provider } from '../Provider';
 
 import { FileUpload } from './index';
-import type { FileUploadFile, FileUploadProps } from './index';
+import type { FileUploadProps } from './index';
 import { readDroppedFiles } from './utils';
 
 const ROOT_TEST_ID = 'file-upload';
 
+type FileUploadItemData = {
+  id: Key;
+  name?: ReactNode;
+  size?: number;
+  isLoading?: boolean;
+  progress?: number;
+  errorMessage?: ReactNode;
+  isDisabled?: boolean;
+};
+
 const makeFile = (name: string, content = 'stub') =>
   new File([content], name, { type: 'text/plain' });
 
-const makeItem = (name: string, size?: number): FileUploadFile => ({
+const makeItem = (name: string, size?: number): FileUploadItemData => ({
   id: name,
+  name,
   size,
-  file: makeFile(name),
 });
+
+const toItem = (file: File): FileUploadItemData => ({
+  id: file.name,
+  name: file.name,
+  size: file.size,
+});
+
+const renderItem = (item: FileUploadItemData) => (
+  <FileUpload.Item
+    id={item.id}
+    textValue={String(item.name ?? '')}
+    isDisabled={item.isDisabled}
+    isInvalid={Boolean(item.errorMessage)}
+    data-loading={item.isLoading || undefined}
+  >
+    <FileUpload.ItemIcon>
+      {item.isLoading ? (
+        <ProgressSpinner aria-label="Uploading" value={item.progress} />
+      ) : undefined}
+    </FileUpload.ItemIcon>
+    <FileUpload.ItemContent>
+      <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+      {item.size !== undefined && (
+        <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+      )}
+      {item.errorMessage}
+    </FileUpload.ItemContent>
+    <FileUpload.RemoveButton />
+  </FileUpload.Item>
+);
 
 const getFileInput = () =>
   document.querySelector('input[type="file"]') as HTMLInputElement;
 
-const renderComponent = (props: FileUploadProps = {}) =>
-  render(
-    <FileUpload aria-label="upload" data-testid={ROOT_TEST_ID} {...props} />
+type TestFileUploadProps = Omit<
+  FileUploadProps<FileUploadItemData>,
+  'items' | 'children' | 'onAdd' | 'onRemove'
+> & {
+  initialItems?: FileUploadItemData[];
+  onAdd?: (files: File[]) => void;
+  onRemove?: (id: Key) => void;
+};
+
+function TestFileUpload(props: TestFileUploadProps) {
+  const {
+    onAdd,
+    onRemove,
+    initialItems = [],
+    allowsMultiple = false,
+    ...other
+  } = props;
+
+  const [items, setItems] = useState<FileUploadItemData[]>(initialItems);
+
+  return (
+    <FileUpload
+      aria-label="upload"
+      data-testid={ROOT_TEST_ID}
+      items={items}
+      allowsMultiple={allowsMultiple}
+      onAdd={(files) => {
+        onAdd?.(files);
+
+        setItems((prev) =>
+          allowsMultiple
+            ? [...prev, ...files.map(toItem)]
+            : files.slice(0, 1).map(toItem)
+        );
+      }}
+      onRemove={(id) => {
+        onRemove?.(id);
+        setItems((prev) => prev.filter((item) => item.id !== id));
+      }}
+      {...other}
+    >
+      {renderItem}
+    </FileUpload>
   );
+}
+
+const renderComponent = (props: TestFileUploadProps = {}) =>
+  render(<TestFileUpload {...props} />);
 
 describe('FileUpload', () => {
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
 
-    renderComponent({ ref });
+    render(
+      <FileUpload
+        aria-label="upload"
+        data-testid={ROOT_TEST_ID}
+        items={[]}
+        ref={ref}
+      >
+        {renderItem}
+      </FileUpload>
+    );
 
     expect(ref.current).toBe(screen.getByTestId(ROOT_TEST_ID));
   });
@@ -57,22 +153,23 @@ describe('FileUpload', () => {
     expect(screen.getByText('select a file')).toBeInTheDocument();
   });
 
-  it('adds the selected file to the list (single)', async () => {
+  it('calls onAdd with selected files and renders the external item update', async () => {
     const user = userEvent.setup();
+    const onAdd = vi.fn();
+    const file = makeFile('hello.txt');
 
-    renderComponent();
+    renderComponent({ onAdd });
 
-    await user.upload(getFileInput(), makeFile('hello.txt'));
+    await user.upload(getFileInput(), file);
 
+    expect(onAdd).toHaveBeenCalledWith([file]);
     expect(screen.getByText('hello.txt')).toBeInTheDocument();
-    // in single mode the browse link is hidden once a file is selected
     expect(screen.queryByText('select a file')).not.toBeInTheDocument();
   });
 
-  it('shows the file size when showFileSize is set', () => {
+  it('formats file size in item rows', () => {
     renderComponent({
-      showFileSize: true,
-      defaultValue: [makeItem('report.pdf', 148909)],
+      initialItems: [makeItem('report.pdf', 148909)],
     });
 
     expect(screen.getByText('145.42 KB')).toBeInTheDocument();
@@ -90,25 +187,25 @@ describe('FileUpload', () => {
     expect(screen.getByText('b.txt')).toBeInTheDocument();
   });
 
-  it('removes a file via the remove button and calls onRemove', async () => {
+  it('removes a file via the remove button and calls onRemove with the item id', async () => {
     const user = userEvent.setup();
     const onRemove = vi.fn();
 
     renderComponent({
       onRemove,
-      defaultValue: [makeItem('remove-me.txt')],
+      initialItems: [makeItem('remove-me.txt')],
     });
 
     await user.click(screen.getByRole('button', { name: /remove/i }));
 
     expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();
-    expect(onRemove).toHaveBeenCalledTimes(1);
+    expect(onRemove).toHaveBeenCalledWith('remove-me.txt');
   });
 
   it('restores focus to the browse link after removing the last file', async () => {
     const user = userEvent.setup();
 
-    renderComponent({ defaultValue: [makeItem('only.txt')] });
+    renderComponent({ initialItems: [makeItem('only.txt')] });
 
     await user.click(screen.getByRole('button', { name: /remove/i }));
 
@@ -122,7 +219,7 @@ describe('FileUpload', () => {
 
     renderComponent({
       allowsMultiple: true,
-      defaultValue: [
+      initialItems: [
         makeItem('first.txt'),
         makeItem('second.txt'),
         makeItem('third.txt'),
@@ -145,7 +242,7 @@ describe('FileUpload', () => {
 
     renderComponent({
       allowsMultiple: true,
-      defaultValue: [
+      initialItems: [
         makeItem('first.txt'),
         makeItem('second.txt'),
         makeItem('third.txt'),
@@ -168,7 +265,7 @@ describe('FileUpload', () => {
 
     renderComponent({
       onRemove,
-      defaultValue: [makeItem('remove-me.txt')],
+      initialItems: [makeItem('remove-me.txt')],
     });
 
     const button = screen.getByRole('button', { name: /remove/i });
@@ -177,7 +274,7 @@ describe('FileUpload', () => {
     fireEvent.keyDown(button, { key: 'Delete' });
 
     expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();
-    expect(onRemove).toHaveBeenCalledTimes(1);
+    expect(onRemove).toHaveBeenCalledWith('remove-me.txt');
   });
 
   it('removes a file with the Backspace key when the remove button is focused', () => {
@@ -185,7 +282,7 @@ describe('FileUpload', () => {
 
     renderComponent({
       onRemove,
-      defaultValue: [makeItem('remove-me.txt')],
+      initialItems: [makeItem('remove-me.txt')],
     });
 
     const button = screen.getByRole('button', { name: /remove/i });
@@ -194,13 +291,13 @@ describe('FileUpload', () => {
     fireEvent.keyDown(button, { key: 'Backspace' });
 
     expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();
-    expect(onRemove).toHaveBeenCalledTimes(1);
+    expect(onRemove).toHaveBeenCalledWith('remove-me.txt');
   });
 
-  it('shows a determinate spinner and marks the row invalid/loading', () => {
+  it('shows a determinate spinner and marks the row loading', () => {
     renderComponent({
       allowsMultiple: true,
-      defaultValue: [
+      initialItems: [
         { ...makeItem('loading.txt'), isLoading: true, progress: 42 },
       ],
     });
@@ -213,7 +310,7 @@ describe('FileUpload', () => {
 
   it('shows an indeterminate spinner when progress is not set', () => {
     renderComponent({
-      defaultValue: [{ ...makeItem('loading.txt'), isLoading: true }],
+      initialItems: [{ ...makeItem('loading.txt'), isLoading: true }],
     });
 
     expect(screen.getByRole('progressbar')).not.toHaveAttribute(
@@ -224,7 +321,7 @@ describe('FileUpload', () => {
   it('marks the row invalid when errorMessage is set', () => {
     renderComponent({
       allowsMultiple: true,
-      defaultValue: [
+      initialItems: [
         { ...makeItem('bad.txt'), errorMessage: 'Something went wrong' },
       ],
     });
@@ -238,46 +335,19 @@ describe('FileUpload', () => {
     expect(screen.getByTestId(ROOT_TEST_ID)).toHaveAttribute('data-invalid');
   });
 
-  it('supports controlled value with onChange', async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
+  it('does not infer root invalid state from item data', () => {
+    renderComponent({
+      initialItems: [
+        { ...makeItem('bad.txt'), errorMessage: 'Something went wrong' },
+      ],
+    });
 
-    function Controlled() {
-      const [items, setItems] = useState<FileUploadFile[]>([]);
-
-      return (
-        <FileUpload
-          allowsMultiple
-          aria-label="upload"
-          value={items}
-          onChange={(next) => {
-            onChange(next);
-            setItems(next);
-          }}
-        />
-      );
-    }
-
-    render(<Controlled />);
-
-    await user.upload(getFileInput(), [makeFile('controlled.txt')]);
-
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(screen.getByText('controlled.txt')).toBeInTheDocument();
+    expect(screen.getByTestId(ROOT_TEST_ID)).not.toHaveAttribute(
+      'data-invalid'
+    );
   });
 
-  it('calls onAdd when files are added', async () => {
-    const user = userEvent.setup();
-    const onAdd = vi.fn();
-
-    renderComponent({ onAdd });
-
-    await user.upload(getFileInput(), makeFile('added.txt'));
-
-    expect(onAdd).toHaveBeenCalledTimes(1);
-  });
-
-  it('does not add files when disabled', async () => {
+  it('does not call onAdd when disabled', async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
 
@@ -303,39 +373,70 @@ describe('FileUpload', () => {
     expect(clickSpy).toHaveBeenCalled();
   });
 
-  it('supports explicit compound composition (uncontrolled)', async () => {
+  it('supports custom collection item rendering', async () => {
     const user = userEvent.setup();
 
-    render(
-      <FileUpload
-        allowsMultiple
-        aria-label="upload"
-        defaultValue={[makeItem('a.txt')]}
-      >
-        <FileUpload.List />
-        <FileUpload.Dropzone>
-          <FileUpload.Trigger>browse</FileUpload.Trigger>
-        </FileUpload.Dropzone>
-      </FileUpload>
-    );
+    function CustomRender() {
+      const [items, setItems] = useState<FileUploadItemData[]>([
+        makeItem('a.txt'),
+      ]);
+
+      return (
+        <FileUpload
+          allowsMultiple
+          aria-label="upload"
+          items={items}
+          onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+          onRemove={(id) =>
+            setItems((prev) => prev.filter((item) => item.id !== id))
+          }
+          renderAddMore={() => (
+            <FileUpload.AddMore>
+              <FileUpload.Trigger>browse</FileUpload.Trigger>
+            </FileUpload.AddMore>
+          )}
+        >
+          {(item) => (
+            <FileUpload.Item id={item.id} textValue={String(item.name ?? '')}>
+              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+              <FileUpload.RemoveButton />
+            </FileUpload.Item>
+          )}
+        </FileUpload>
+      );
+    }
+
+    render(<CustomRender />);
 
     expect(screen.getByText('a.txt')).toBeInTheDocument();
     expect(screen.getByText('browse')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /remove/i }));
+    await user.click(screen.getByRole('button', { name: /remove a\.txt/i }));
 
     expect(screen.queryByText('a.txt')).not.toBeInTheDocument();
   });
 
+  it('supports static FileUpload.Item children without items', () => {
+    render(
+      <FileUpload aria-label="upload">
+        <FileUpload.Item id="static.txt" textValue="static.txt">
+          <FileUpload.ItemName>static.txt</FileUpload.ItemName>
+          <FileUpload.RemoveButton />
+        </FileUpload.Item>
+      </FileUpload>
+    );
+
+    expect(screen.getByText('static.txt')).toBeInTheDocument();
+  });
+
   it('forwards a ref on FileUpload.Item to its root element', () => {
     const ref = createRef<HTMLLIElement>();
-    const item = makeItem('ref-item.txt');
 
     render(
       <FileUpload aria-label="upload">
-        <FileUpload.List>
-          <FileUpload.Item ref={ref} item={item} data-testid="item" />
-        </FileUpload.List>
+        <FileUpload.Item id="ref-item.txt" ref={ref} data-testid="item">
+          <FileUpload.ItemName>ref-item.txt</FileUpload.ItemName>
+        </FileUpload.Item>
       </FileUpload>
     );
 
@@ -343,42 +444,44 @@ describe('FileUpload', () => {
     expect(ref.current?.tagName).toBe('LI');
   });
 
-  it('applies data-size to the dropzone when empty', () => {
+  it('applies data-size to the empty state', () => {
     render(
-      <FileUpload aria-label="upload" size="compact">
-        <FileUpload.Dropzone data-testid="dropzone" />
+      <FileUpload
+        aria-label="upload"
+        size="compact"
+        items={[]}
+        renderEmptyState={() => <FileUpload.Empty data-testid="empty" />}
+      >
+        {renderItem}
       </FileUpload>
     );
 
-    expect(screen.getByTestId('dropzone')).toHaveAttribute(
+    expect(screen.getByTestId('empty')).toHaveAttribute('data-size', 'compact');
+  });
+
+  it('keeps data-size on add-more once populated', () => {
+    render(
+      <FileUpload
+        aria-label="upload"
+        size="compact"
+        allowsMultiple
+        items={[makeItem('a.txt')]}
+        renderAddMore={() => <FileUpload.AddMore data-testid="add-more" />}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    expect(screen.getByTestId('add-more')).toHaveAttribute(
       'data-size',
       'compact'
     );
   });
 
-  it('keeps data-size on the dropzone once populated', () => {
-    render(
-      <FileUpload
-        aria-label="upload"
-        size="compact"
-        defaultValue={[makeItem('a.txt')]}
-      >
-        <FileUpload.Dropzone data-testid="dropzone" />
-      </FileUpload>
-    );
-
-    const dropzone = screen.getByTestId('dropzone');
-
-    expect(dropzone).toHaveAttribute('data-size', 'compact');
-    expect(dropzone).toHaveAttribute('data-variant', 'add-more');
-  });
-
-  it('renders the single selected file as a row, not a list', () => {
-    renderComponent({ defaultValue: [makeItem('single.txt')] });
+  it('renders the single selected file and hides the empty trigger', () => {
+    renderComponent({ initialItems: [makeItem('single.txt')] });
 
     expect(screen.getByText('single.txt')).toBeInTheDocument();
-    // single mode is one strip — no <ul> list and no browse link once selected
-    expect(screen.queryByRole('list')).not.toBeInTheDocument();
     expect(screen.queryByText('select a file')).not.toBeInTheDocument();
   });
 
@@ -388,10 +491,47 @@ describe('FileUpload', () => {
     expect(screen.getByText('Drag here')).toBeInTheDocument();
   });
 
+  it('fills missing empty-state slots during partial customization', () => {
+    render(
+      <FileUpload
+        aria-label="upload"
+        allowsMultiple
+        items={[]}
+        renderEmptyState={() => (
+          <FileUpload.Empty>
+            <FileUpload.EmptyIcon data-testid="custom-icon">
+              icon
+            </FileUpload.EmptyIcon>
+          </FileUpload.Empty>
+        )}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
+    expect(screen.getByText('Drag here')).toBeInTheDocument();
+    expect(screen.getByText('select files')).toBeInTheDocument();
+  });
+
+  it('formats numeric ItemSize children using the current locale', () => {
+    render(
+      <FileUpload aria-label="upload">
+        <FileUpload.Item id="size.txt" textValue="size.txt">
+          <FileUpload.ItemSize>{148909}</FileUpload.ItemSize>
+        </FileUpload.Item>
+      </FileUpload>
+    );
+
+    expect(screen.getByText('145.42 KB')).toBeInTheDocument();
+  });
+
   it('localizes strings via the Provider locale', () => {
     render(
       <Provider locale="ru-RU">
-        <FileUpload aria-label="upload" />
+        <FileUpload aria-label="upload" items={[]}>
+          {renderItem}
+        </FileUpload>
       </Provider>
     );
 

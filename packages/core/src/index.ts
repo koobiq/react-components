@@ -16,6 +16,7 @@ export type {
   Key,
   Node,
   ItemProps,
+  Collection,
   PressEvent,
   HoverEvent,
   Validation,

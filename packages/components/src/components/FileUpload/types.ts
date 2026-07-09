@@ -3,10 +3,15 @@ import type {
   ReactNode,
   ComponentRef,
   CSSProperties,
+  ReactElement,
+  RefAttributes,
   ComponentPropsWithRef,
+  ForwardRefExoticComponent,
 } from 'react';
 
 import type { Key, ExtendableProps } from '@koobiq/react-core';
+
+import type { IconButtonProps } from '../IconButton';
 
 export const fileUploadPropSize = ['default', 'compact'] as const;
 
@@ -20,36 +25,6 @@ export const fileUploadPropDirectoryMode = ['as-item', 'contents'] as const;
 
 export type FileUploadPropDirectoryMode =
   (typeof fileUploadPropDirectoryMode)[number];
-
-/**
- * A single entry in the file upload list.
- *
- * The component owns `id`/`file` and derives display values from the native
- * `File`. The consumer drives `isLoading`/`progress`/`errorMessage` from the
- * outside — `FileUpload` never uploads anything itself.
- */
-export type FileUploadFile = {
-  /** Stable unique key, generated when a file is added. */
-  id: Key;
-  /** The native File — the source of `name`/`size`/`type` by default. */
-  file: File;
-  /** Overrides the displayed name (defaults to `file.name`). */
-  name?: string;
-  /** Overrides the displayed size in bytes (defaults to `file.size`). */
-  size?: number;
-  /** Whether the entry represents a folder (affects the default icon). */
-  type?: 'file' | 'folder';
-  /** Show the loading spinner (spec "Loading/Progress"). Consumer-driven. */
-  isLoading?: boolean;
-  /** Determinate progress `0..100`; `undefined` while loading = indeterminate. */
-  progress?: number;
-  /** Per-item error message — puts the row into the Invalid state. */
-  errorMessage?: ReactNode;
-  /** Custom icon for the row (e.g. an image thumbnail). */
-  icon?: ReactNode;
-  /** Whether this row is disabled. */
-  isDisabled?: boolean;
-};
 
 /** Localizable strings used by `FileUpload` (aria labels, size units, captions). */
 export type FileUploadMessages = {
@@ -75,7 +50,19 @@ type FileUploadDOMProps = Omit<
   'children' | 'defaultValue' | 'onChange' | 'ref'
 >;
 
-type FileUploadBaseProps = {
+type FileUploadBaseProps<T extends object> = {
+  /** The contents of the collection. */
+  children: ReactNode | ((item: T) => ReactNode);
+  /** Item objects in the collection. */
+  items?: Iterable<T>;
+  /** Handler called when native files are added via picker or drop. */
+  onAdd?: (files: File[]) => void;
+  /** Handler called when a remove button requests item removal. */
+  onRemove?: (id: Key) => void;
+  /** Custom empty state. */
+  renderEmptyState?: () => ReactNode;
+  /** Custom add-more footer shown after items in multiple mode. */
+  renderAddMore?: () => ReactNode;
   /**
    * Whether more than one file can be selected.
    * @default false
@@ -93,33 +80,15 @@ type FileUploadBaseProps = {
    * @default 'as-item'
    */
   directoryMode?: FileUploadPropDirectoryMode;
-  /** The selected files (controlled). */
-  value?: FileUploadFile[];
-  /** The initial selected files (uncontrolled). */
-  defaultValue?: FileUploadFile[];
-  /** Handler called whenever the list changes (add or remove). */
-  onChange?: (items: FileUploadFile[]) => void;
-  /** Handler called when files are added. */
-  onAdd?: (added: FileUploadFile[], all: FileUploadFile[]) => void;
-  /** Handler called when a file is removed. */
-  onRemove?: (
-    removed: FileUploadFile,
-    index: number,
-    all: FileUploadFile[]
-  ) => void;
   /**
    * The layout size.
    * @default 'default'
    */
   size?: FileUploadPropSize;
-  /** Whether to show the file size in the list (defaults to `allowsMultiple`). */
-  showFileSize?: boolean;
   /** Whether the whole component is disabled. */
   isDisabled?: boolean;
   /** Whether the whole component is in the invalid state. */
   isInvalid?: boolean;
-  /** Composition of `FileUpload.*` parts. Falls back to the default layout. */
-  children?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */
@@ -130,8 +99,8 @@ type FileUploadBaseProps = {
   ref?: Ref<HTMLDivElement>;
 };
 
-export type FileUploadProps = ExtendableProps<
-  FileUploadBaseProps,
+export type FileUploadProps<T extends object = object> = ExtendableProps<
+  FileUploadBaseProps<T>,
   FileUploadDOMProps
 >;
 
@@ -148,13 +117,28 @@ type FileUploadSlotBaseProps<T extends keyof HTMLElementTagNameMap> = {
   'data-testid'?: string | number;
 } & Omit<ComponentPropsWithRef<T>, 'children'>;
 
-export type FileUploadDropzoneProps = ExtendableProps<
+export type FileUploadEmptyProps = ExtendableProps<
   FileUploadSlotBaseProps<'div'>,
   object
 >;
 
-export type FileUploadListProps = ExtendableProps<
-  FileUploadSlotBaseProps<'ul'>,
+export type FileUploadEmptyIconProps = ExtendableProps<
+  FileUploadSlotBaseProps<'span'>,
+  object
+>;
+
+export type FileUploadEmptyTitleProps = ExtendableProps<
+  FileUploadSlotBaseProps<'span'>,
+  object
+>;
+
+export type FileUploadEmptyDescriptionProps = ExtendableProps<
+  FileUploadSlotBaseProps<'span'>,
+  object
+>;
+
+export type FileUploadAddMoreProps = ExtendableProps<
+  FileUploadSlotBaseProps<'div'>,
   object
 >;
 
@@ -170,9 +154,81 @@ export type FileUploadTriggerProps = {
 };
 
 export type FileUploadItemProps = ExtendableProps<
-  FileUploadSlotBaseProps<'li'> & {
-    /** The item to render. */
-    item: FileUploadFile;
+  Omit<FileUploadSlotBaseProps<'li'>, 'id'> & {
+    /** Stable unique key of this item. */
+    id?: Key;
+    /** Text used by collection accessibility and the remove button label. */
+    textValue?: string;
+    /** Whether this row is disabled. */
+    isDisabled?: boolean;
+    /** Whether this row is invalid. */
+    isInvalid?: boolean;
   },
   object
 >;
+
+export type FileUploadItemIconProps = ExtendableProps<
+  FileUploadSlotBaseProps<'span'>,
+  object
+>;
+
+export type FileUploadItemContentProps = ExtendableProps<
+  FileUploadSlotBaseProps<'span'>,
+  object
+>;
+
+export type FileUploadItemNameProps = ExtendableProps<
+  FileUploadSlotBaseProps<'span'>,
+  object
+>;
+
+export type FileUploadItemSizeProps = ExtendableProps<
+  Omit<FileUploadSlotBaseProps<'span'>, 'children'> & {
+    children?: ReactNode | number;
+  },
+  object
+>;
+
+export type FileUploadRemoveButtonProps = Omit<IconButtonProps, 'children'>;
+
+export type FileUploadComponent = (<T extends object = object>(
+  props: FileUploadProps<T> & { ref?: Ref<FileUploadRef> }
+) => ReactElement | null) & {
+  displayName?: string;
+  Empty: ForwardRefExoticComponent<
+    FileUploadEmptyProps & RefAttributes<HTMLDivElement>
+  >;
+  EmptyIcon: ForwardRefExoticComponent<
+    FileUploadEmptyIconProps & RefAttributes<HTMLSpanElement>
+  >;
+  EmptyTitle: ForwardRefExoticComponent<
+    FileUploadEmptyTitleProps & RefAttributes<HTMLSpanElement>
+  >;
+  EmptyDescription: ForwardRefExoticComponent<
+    FileUploadEmptyDescriptionProps & RefAttributes<HTMLSpanElement>
+  >;
+  AddMore: ForwardRefExoticComponent<
+    FileUploadAddMoreProps & RefAttributes<HTMLDivElement>
+  >;
+  Trigger: ForwardRefExoticComponent<
+    FileUploadTriggerProps & RefAttributes<HTMLInputElement>
+  >;
+  Item: (
+    props: FileUploadItemProps & RefAttributes<HTMLLIElement>
+  ) => ReactElement | null;
+  ItemIcon: ForwardRefExoticComponent<
+    FileUploadItemIconProps & RefAttributes<HTMLSpanElement>
+  >;
+  ItemContent: ForwardRefExoticComponent<
+    FileUploadItemContentProps & RefAttributes<HTMLSpanElement>
+  >;
+  ItemName: ForwardRefExoticComponent<
+    FileUploadItemNameProps & RefAttributes<HTMLSpanElement>
+  >;
+  ItemSize: ForwardRefExoticComponent<
+    FileUploadItemSizeProps & RefAttributes<HTMLSpanElement>
+  >;
+  RemoveButton: ForwardRefExoticComponent<
+    FileUploadRemoveButtonProps & RefAttributes<HTMLButtonElement>
+  >;
+};

@@ -1,87 +1,112 @@
 'use client';
 
+import type { Ref } from 'react';
 import {
   useRef,
   useMemo,
   forwardRef,
   useCallback,
+  useContext,
   useLayoutEffect,
 } from 'react';
-import type { Ref } from 'react';
 
-import type { Key } from '@koobiq/react-core';
+import type {
+  Key,
+  Node,
+  Collection as AriaCollection,
+} from '@koobiq/react-core';
 import {
   clsx,
   useDOMRef,
   useBoolean,
   useKeyedRefs,
-  useControlledState,
   useNumberFormatter,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { DropZone } from '@koobiq/react-primitives';
+import {
+  DropZone,
+  Collection,
+  CollectionBuilder,
+  CollectionRendererContext,
+} from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../styles/utility';
 import { formatFileSize } from '../../utils';
 
 import {
-  FileUploadDropzone,
-  FileUploadEmptyLayout,
+  FileUploadAddMore,
+  FileUploadEmpty,
+  FileUploadEmptyIcon,
+  FileUploadEmptyTitle,
   FileUploadItem,
-  FileUploadList,
+  FileUploadItemContent,
+  FileUploadItemIcon,
+  FileUploadItemName,
+  FileUploadItemSize,
+  FileUploadRemoveButton,
   FileUploadTrigger,
+  FileUploadEmptyDescription,
 } from './components';
 import s from './FileUpload.module.css';
-import { FileUploadContext } from './FileUploadContext';
 import type { FileUploadContextValue } from './FileUploadContext';
+import { FileUploadContext } from './FileUploadContext';
 import intlMessages from './intl';
 import type {
-  FileUploadFile,
-  FileUploadProps,
+  FileUploadComponent,
   FileUploadMessages,
+  FileUploadProps,
 } from './types';
-import { readDroppedFiles, createFileUploadItem } from './utils';
-
-const EMPTY_ITEMS: FileUploadFile[] = [];
+import { readDroppedFiles } from './utils';
 
 const textNormal = utilClasses.typography['text-normal'];
 
 type PendingFocus = { type: 'item'; id: Key } | { type: 'trigger' } | null;
 
-function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
+type FileUploadInnerProps<T extends object> = {
+  props: Omit<FileUploadProps<T>, 'ref' | 'items' | 'children'>;
+  collection: AriaCollection<Node<T>>;
+  rootRef?: Ref<HTMLDivElement>;
+};
+
+const getCollectionKeys = <T extends object>(
+  collection: AriaCollection<Node<T>>
+): Key[] => Array.from(collection, (node) => node.key);
+
+function FileUploadInner<T extends object>({
+  props,
+  rootRef,
+  collection,
+}: FileUploadInnerProps<T>) {
   const {
+    isInvalid: isInvalidProp = false,
+    directoryMode = 'as-item',
+    allowsMultiple = false,
+    isDisabled = false,
+    allowed = 'file',
+    size = 'default',
     accept,
     onAdd,
     style,
-    value,
-    onChange,
     onRemove,
-    children,
     className,
-    size = 'default',
-    allowed = 'file',
-    defaultValue,
-    isDisabled = false,
-    isInvalid: isInvalidProp = false,
-    allowsMultiple = false,
+    renderAddMore,
+    renderEmptyState,
     'data-testid': testId,
-    showFileSize: showFileSizeProp,
-    directoryMode = 'as-item',
     ...other
   } = props;
 
-  const domRef = useDOMRef<HTMLDivElement>(ref);
-
-  const [items, setItems] = useControlledState<FileUploadFile[]>(
-    value,
-    defaultValue ?? EMPTY_ITEMS,
-    onChange
-  );
+  const domRef = useDOMRef<HTMLDivElement>(rootRef);
+  const { CollectionRoot } = useContext(CollectionRendererContext);
 
   const [isDropTarget, { on: onDropTarget, off: offDropTarget }] =
     useBoolean(false);
 
-  const showFileSize = showFileSizeProp ?? allowsMultiple;
+  const isEmpty = collection.size === 0;
+
+  const collectionKeys = useMemo(
+    () => getCollectionKeys(collection),
+    [collection]
+  );
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const numberFormatter = useNumberFormatter({ maximumFractionDigits: 2 });
@@ -134,33 +159,28 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
     (files: File[]) => {
       if (isDisabled || files.length === 0) return;
 
-      const added = files.map(createFileUploadItem);
-      const next = allowsMultiple ? [...items, ...added] : added.slice(0, 1);
-
-      setItems(next);
-      onAdd?.(allowsMultiple ? added : next, next);
+      onAdd?.(allowsMultiple ? files : files.slice(0, 1));
     },
-    [isDisabled, allowsMultiple, items, setItems, onAdd]
+    [isDisabled, allowsMultiple, onAdd]
   );
 
   const removeItem = useCallback(
     (id: Key) => {
-      const index = items.findIndex((item) => item.id === id);
+      if (isDisabled) return;
+
+      const index = collectionKeys.indexOf(id);
 
       if (index < 0) return;
 
-      const removed = items[index];
-      const next = items.filter((item) => item.id !== id);
-      const neighbor = items[index + 1] ?? items[index - 1];
+      const neighbor = collectionKeys[index + 1] ?? collectionKeys[index - 1];
 
       pendingFocus.current = neighbor
-        ? { type: 'item', id: neighbor.id }
+        ? { type: 'item', id: neighbor }
         : { type: 'trigger' };
 
-      setItems(next);
-      onRemove?.(removed, index, next);
+      onRemove?.(id);
     },
-    [items, setItems, onRemove]
+    [isDisabled, collectionKeys, onRemove]
   );
 
   useLayoutEffect(() => {
@@ -175,16 +195,14 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
     } else {
       triggerRef.current?.focus();
     }
-  }, [items]);
+  }, [collectionKeys, getItemRef]);
 
   const contextValue = useMemo<FileUploadContextValue>(
     () => ({
-      items,
       accept,
       allowed,
       size,
       directoryMode,
-      showFileSize,
       isDisabled,
       isDropTarget,
       allowsMultiple,
@@ -196,12 +214,10 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
       formatSize,
     }),
     [
-      items,
       accept,
       allowed,
       size,
       directoryMode,
-      showFileSize,
       isDisabled,
       isDropTarget,
       allowsMultiple,
@@ -214,40 +230,6 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
     ]
   );
 
-  const isEmpty = items.length === 0;
-
-  // Component-level invalid paints the container. In single mode the one file's
-  // error is the field's error, so it reddens the container too; in multiple
-  // mode per-item errors stay on their own rows and don't touch the container.
-  const isInvalid =
-    isInvalidProp ||
-    (!allowsMultiple && items.some((item) => item.errorMessage));
-
-  const renderDefault = () => {
-    if (!allowsMultiple) {
-      return isEmpty ? (
-        <FileUploadDropzone />
-      ) : (
-        <FileUploadItem as="div" item={items[0]} />
-      );
-    }
-
-    if (!isEmpty) {
-      return (
-        <>
-          <FileUploadList />
-          <FileUploadDropzone />
-        </>
-      );
-    }
-
-    return size === 'compact' ? (
-      <FileUploadDropzone />
-    ) : (
-      <FileUploadEmptyLayout />
-    );
-  };
-
   return (
     <FileUploadContext.Provider value={contextValue}>
       <DropZone
@@ -258,7 +240,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
         data-size={size}
         data-testid={testId}
         data-empty={isEmpty || undefined}
-        data-invalid={isInvalid || undefined}
+        data-invalid={isInvalidProp || undefined}
         data-multiple={allowsMultiple || undefined}
         data-drop-target={isDropTarget || undefined}
         className={clsx(s.base, s[size], textNormal, className)}
@@ -270,37 +252,70 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
 
           const files = await readDroppedFiles(event.items);
 
-          if (files.length > 0) {
-            addFiles(files);
-          }
+          addFiles(files);
         }}
       >
-        {children ?? renderDefault()}
+        {isEmpty ? (
+          (renderEmptyState?.() ?? <FileUploadEmpty />)
+        ) : (
+          <>
+            <ul className={s.list} data-multiple={allowsMultiple || undefined}>
+              <CollectionRoot collection={collection} />
+            </ul>
+            {allowsMultiple && (renderAddMore?.() ?? <FileUploadAddMore />)}
+          </>
+        )}
       </DropZone>
     </FileUploadContext.Provider>
   );
 }
 
-const FileUploadComponent = forwardRef(FileUploadRender);
+function FileUploadRender<T extends object = object>(
+  props: Omit<FileUploadProps<T>, 'ref'>,
+  ref?: Ref<HTMLDivElement>
+) {
+  const { items, children, allowsMultiple = false, ...other } = props;
 
-type CompoundedComponent = typeof FileUploadComponent & {
-  Dropzone: typeof FileUploadDropzone;
-  Trigger: typeof FileUploadTrigger;
-  List: typeof FileUploadList;
-  Item: typeof FileUploadItem;
-};
+  return (
+    <CollectionBuilder
+      content={<Collection items={items}>{children}</Collection>}
+    >
+      {(collection) => (
+        <FileUploadInner
+          rootRef={ref}
+          collection={collection}
+          props={{
+            ...other,
+            allowsMultiple,
+          }}
+        />
+      )}
+    </CollectionBuilder>
+  );
+}
+
+const FileUploadComponent = forwardRef(
+  FileUploadRender
+) as unknown as FileUploadComponent;
 
 /**
- * `FileUpload` lets users pick, display and manage a list of files. It handles
- * selection (system dialog and drag-and-drop), the file list and removal, but
- * never uploads anything: the consumer drives loading/error state from the
- * outside via the controlled `value`.
+ * `FileUpload` lets users pick, display and remove files. It handles
+ * selection (system dialog and drag-and-drop), collection rendering and remove
+ * intent, but the consumer owns the item data.
  */
-export const FileUpload = FileUploadComponent as CompoundedComponent;
+export const FileUpload = FileUploadComponent;
 
-FileUpload.Dropzone = FileUploadDropzone;
+FileUpload.Empty = FileUploadEmpty;
+FileUpload.EmptyIcon = FileUploadEmptyIcon;
+FileUpload.EmptyTitle = FileUploadEmptyTitle;
+FileUpload.EmptyDescription = FileUploadEmptyDescription;
+FileUpload.AddMore = FileUploadAddMore;
 FileUpload.Trigger = FileUploadTrigger;
-FileUpload.List = FileUploadList;
 FileUpload.Item = FileUploadItem;
+FileUpload.ItemIcon = FileUploadItemIcon;
+FileUpload.ItemContent = FileUploadItemContent;
+FileUpload.ItemName = FileUploadItemName;
+FileUpload.ItemSize = FileUploadItemSize;
+FileUpload.RemoveButton = FileUploadRemoveButton;
 
 FileUpload.displayName = 'FileUpload';
