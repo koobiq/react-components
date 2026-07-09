@@ -1,18 +1,18 @@
 .base {
   padding-block: 0;
-  padding-inline: 23px;
+  padding-inline: var(--kbq-size-xxl);
 
   .media {
     margin-block-end: var(--kbq-size-m);
-    color: var(--file-upload-upload-icon-color, var(--kbq-icon-contrast));
+    color: var(--file-upload-upload-icon-color);
   }
 
   .title {
     margin-block-end: var(--kbq-size-xs);
-    color: var(--file-upload-text-color, var(--kbq-foreground-contrast));
+    color: var(--file-upload-text-color);
   }
 
   .content {
-    color: var(--file-upload-text-color, var(--kbq-foreground-contrast));
+    color: var(--file-upload-text-color);
   }
 }

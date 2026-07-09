@@ -1,21 +1,18 @@
 .base {
   margin: 0;
   display: flex;
-  box-sizing: border-box;
+  overflow-y: auto;
   list-style: none;
   min-inline-size: 0;
   inline-size: 100%;
-  min-block-size: var(--file-upload-list-min-block-size, 120px);
-  max-block-size: var(--file-upload-list-max-block-size, unset);
+  box-sizing: border-box;
   flex-direction: column;
-  overflow-y: auto;
-  padding-inline: calc(
-    var(--kbq-size-xxs) -
-      var(--file-upload-border-width, var(--kbq-size-border-width))
-  );
-  padding-block: calc(
-      var(--kbq-size-xxs) -
-        var(--file-upload-border-width, var(--kbq-size-border-width))
-    )
-    var(--kbq-size-xxl);
+  padding-inline: 0;
+  scrollbar-width: auto;
+  scrollbar-gutter: auto;
+  scrollbar-color: var(--kbq-scrollbar-thumb-default-background)
+    var(--kbq-background-transparent);
+  padding-block: var(--kbq-size-xxs) var(--kbq-size-xxl);
+  min-block-size: var(--file-upload-list-min-block-size);
+  max-block-size: var(--file-upload-list-max-block-size);
 }

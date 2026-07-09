@@ -19,20 +19,30 @@
   --file-upload-grid-cell-padding-inline: var(--kbq-size-s);
   --file-upload-grid-cell-gap: var(--kbq-size-s);
   --file-upload-file-size-inline-size: var(--kbq-size-7xl);
-  --file-upload-compact-padding-block: 11px;
-  --file-upload-compact-padding-inline: 15px;
+  --file-upload-compact-padding-block: var(--kbq-size-m);
+  --file-upload-compact-padding-inline: var(--kbq-size-l);
 
   display: flex;
   inline-size: 100%;
+  position: relative;
   box-sizing: border-box;
   flex-direction: column;
+  justify-content: center;
   background-color: var(--file-upload-container-background);
-  border: var(--file-upload-border-width) dashed
-    var(--file-upload-container-border-color);
   border-radius: var(--file-upload-border-radius);
   transition:
     border-color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
+
+  &::after {
+    content: '';
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    border: var(--file-upload-border-width) dashed
+      var(--file-upload-container-border-color);
+  }
 }
 
 .base[data-drop-target] {
@@ -68,12 +78,8 @@
 }
 
 .base:not([data-multiple])[data-empty] {
-  padding-block: calc(
-    var(--file-upload-single-padding-block) - var(--file-upload-border-width)
-  );
-  padding-inline: calc(
-    var(--file-upload-single-padding-inline) - var(--file-upload-border-width)
-  );
+  padding-block: var(--file-upload-single-padding-block);
+  padding-inline: var(--file-upload-single-padding-inline);
 }
 
 .base[data-multiple][data-empty].default {

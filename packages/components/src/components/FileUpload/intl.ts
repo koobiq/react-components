@@ -1,7 +1,7 @@
 export default {
   'ru-RU': {
     dropHere: 'Перетащите сюда',
-    dropTitle: 'Перетащите файлы сюда',
+    dropTitle: 'Перетащите сюда',
     or: 'или',
     browseFile: 'выберите файл',
     browseFiles: 'выберите файлы',
@@ -17,8 +17,8 @@ export default {
     terabytes: 'ТБ',
   },
   'en-US': {
-    dropHere: 'Drop files here',
-    dropTitle: 'Drop files here',
+    dropHere: 'Drag here',
+    dropTitle: 'Drag here',
     or: 'or',
     browseFile: 'select a file',
     browseFiles: 'select files',

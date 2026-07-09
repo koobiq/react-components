@@ -379,7 +379,7 @@ describe('FileUpload', () => {
   it('renders the EmptyState title in the multiple empty default state', () => {
     renderComponent({ allowsMultiple: true });
 
-    expect(screen.getByText('Drop files here')).toBeInTheDocument();
+    expect(screen.getByText('Drag here')).toBeInTheDocument();
   });
 
   it('localizes strings via the Provider locale', () => {
