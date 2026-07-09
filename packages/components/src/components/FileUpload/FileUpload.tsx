@@ -62,6 +62,7 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
     allowed = 'file',
     defaultValue,
     isDisabled = false,
+    isInvalid: isInvalidProp = false,
     allowsMultiple = false,
     'data-testid': testId,
     showFileSize: showFileSizeProp,
@@ -214,7 +215,13 @@ function FileUploadRender(props: FileUploadProps, ref?: Ref<HTMLDivElement>) {
   );
 
   const isEmpty = items.length === 0;
-  const isInvalid = items.some((item) => item.errorMessage);
+
+  // Component-level invalid paints the container. In single mode the one file's
+  // error is the field's error, so it reddens the container too; in multiple
+  // mode per-item errors stay on their own rows and don't touch the container.
+  const isInvalid =
+    isInvalidProp ||
+    (!allowsMultiple && items.some((item) => item.errorMessage));
 
   const renderDefault = () => {
     if (!allowsMultiple) {

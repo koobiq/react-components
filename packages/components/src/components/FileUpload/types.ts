@@ -116,6 +116,8 @@ type FileUploadBaseProps = {
   showFileSize?: boolean;
   /** Whether the whole component is disabled. */
   isDisabled?: boolean;
+  /** Whether the whole component is in the invalid state. */
+  isInvalid?: boolean;
   /** Composition of `FileUpload.*` parts. Falls back to the default layout. */
   children?: ReactNode;
   /** Additional CSS-classes. */

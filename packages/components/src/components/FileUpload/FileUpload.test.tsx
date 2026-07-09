@@ -232,6 +232,12 @@ describe('FileUpload', () => {
     expect(screen.getByRole('listitem')).toHaveAttribute('data-invalid');
   });
 
+  it('marks the root invalid when the isInvalid prop is set', () => {
+    renderComponent({ isInvalid: true });
+
+    expect(screen.getByTestId(ROOT_TEST_ID)).toHaveAttribute('data-invalid');
+  });
+
   it('supports controlled value with onChange', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();

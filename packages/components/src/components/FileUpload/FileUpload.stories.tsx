@@ -51,56 +51,44 @@ export const SingleWithSelectedFile: Story = {
   render: (args) => (
     <FileUpload
       aria-label="Upload a file"
-      showFileSize
       defaultValue={[makeItem('project_report_2023.docx', 148909)]}
+      showFileSize
       {...args}
     />
   ),
 };
 
-/**
- * In multiple mode the whole component is an active drop zone: drag files onto
- * it (or the "add more" strip) and they are appended to the list.
- */
 export const Multiple: Story = {
   render: (args) => (
     <FileUpload
-      allowsMultiple
       aria-label="Upload files"
       defaultValue={[
         makeItem('First.ext', 148909),
         makeItem('Second.ext', 148909),
         makeItem('Third.ext', 148909),
       ]}
+      allowsMultiple
       {...args}
     />
   ),
 };
 
-/**
- * The empty multiple state is a large drop area. Drop files anywhere on it or
- * use the browse link.
- */
 export const MultipleEmpty: Story = {
   render: (args) => (
-    <FileUpload allowsMultiple aria-label="Upload files" {...args} />
+    <FileUpload aria-label="Upload files" allowsMultiple {...args} />
   ),
 };
 
-/**
- * The list grows with its content by default; cap `FileUpload.List` to make it
- * scroll while the footer drop strip stays visible.
- */
 export const Scrollable: Story = {
   name: 'Multiple (scrollable list)',
   render: (args) => (
     <FileUpload
-      allowsMultiple
-      showFileSize
       aria-label="Upload files"
       defaultValue={Array.from({ length: 8 }, (_, index) =>
         makeItem(`document_${index + 1}.pdf`, 148909 * (index + 1))
       )}
+      allowsMultiple
+      showFileSize
       {...args}
     >
       <FileUpload.List style={{ maxBlockSize: 240 }} />
@@ -109,26 +97,24 @@ export const Scrollable: Story = {
   ),
 };
 
-/** In compact size the empty drop zone collapses to a narrow strip. */
 export const CompactEmpty: Story = {
   render: (args) => (
     <FileUpload
-      allowsMultiple
       aria-label="Upload files"
       size="compact"
+      allowsMultiple
       {...args}
     />
   ),
 };
 
-/** Once populated, compact looks identical to the default size. */
 export const Compact: Story = {
   render: (args) => (
     <FileUpload
-      allowsMultiple
       aria-label="Upload files"
       size="compact"
       defaultValue={[makeItem('project_report_2023.docx', 148909)]}
+      allowsMultiple
       {...args}
     />
   ),
@@ -142,34 +128,30 @@ export const Controlled: Story = {
 
     return (
       <FileUpload
-        allowsMultiple
         aria-label="Upload files"
         value={items}
         onChange={setItems}
+        allowsMultiple
         {...args}
       />
     );
   },
 };
 
-const MAX_SIZE = 150_000; // 150 KB — arbitrary demo limit, compared against the file's real byte size
-
-const makeOversizedItem = (name: string): FileUploadFile => ({
-  id: name,
-  file: new File([new Uint8Array(MAX_SIZE + 1)], name),
-  errorMessage: 'File is too large (max 150 KB)',
-});
-
 export const Validation: Story = {
   render: function Render(args) {
+    const MAX_SIZE = 150_000; // 150 KB — arbitrary demo limit, compared against the file's real byte size
+
     const [items, setItems] = useState<FileUploadFile[]>([
-      makeOversizedItem('presentation.pptx'),
+      {
+        id: 'presentation.pptx',
+        file: new File([new Uint8Array(MAX_SIZE + 1)], 'presentation.pptx'),
+        errorMessage: 'File is too large (max 150 KB)',
+      },
     ]);
 
     return (
       <FileUpload
-        allowsMultiple
-        showFileSize
         aria-label="Upload files"
         value={items}
         onChange={(next) => {
@@ -181,35 +163,34 @@ export const Validation: Story = {
             )
           );
         }}
+        allowsMultiple
+        showFileSize
         {...args}
       />
     );
   },
 };
 
-const UPLOAD_TICK = 400;
-
-/** Stand-in for a real network upload — FileUpload never uploads anything itself. */
-function simulateUpload(onProgress: (progress: number) => void) {
-  let progress = 0;
-
-  const interval = window.setInterval(() => {
-    progress += 20;
-    onProgress(progress);
-
-    if (progress >= 100) {
-      window.clearInterval(interval);
-    }
-  }, UPLOAD_TICK);
-}
-
 export const UploadProgress: Story = {
   render: function Render(args) {
     const [items, setItems] = useState<FileUploadFile[]>([]);
 
+    /** Stand-in for a real network upload — FileUpload never uploads anything itself. */
+    function simulateUpload(onProgress: (progress: number) => void) {
+      let progress = 0;
+
+      const interval = window.setInterval(() => {
+        progress += 20;
+        onProgress(progress);
+
+        if (progress >= 100) {
+          window.clearInterval(interval);
+        }
+      }, 400);
+    }
+
     return (
       <FileUpload
-        allowsMultiple
         aria-label="Upload files"
         value={items}
         onChange={setItems}
@@ -238,6 +219,7 @@ export const UploadProgress: Story = {
             });
           });
         }}
+        allowsMultiple
         {...args}
       />
     );
@@ -246,47 +228,43 @@ export const UploadProgress: Story = {
 
 export const Disabled: Story = {
   render: (args) => (
-    <FileUpload
-      isDisabled
-      aria-label="Upload files"
-      defaultValue={[makeItem('image_gallery.zip', 148909)]}
-      {...args}
-    />
+    <FileUpload aria-label="Upload files" isDisabled allowsMultiple {...args} />
   ),
 };
 
-/**
- * The same result as the default layout, but assembled explicitly from the
- * compound parts — this is the customization surface.
- */
+export const Invalid: Story = {
+  render: (args) => (
+    <FileUpload aria-label="Upload a file" isInvalid allowsMultiple {...args} />
+  ),
+};
+
 export const Composition: Story = {
   name: 'Composition (compound parts)',
   render: (args) => (
     <FileUpload
-      allowsMultiple
-      showFileSize
       aria-label="Upload files"
       defaultValue={[
         makeItem('README.txt', 148909),
         makeItem('image.webp', 148909),
       ]}
+      allowsMultiple
+      showFileSize
       {...args}
     >
       <FileUpload.List />
       <FileUpload.Dropzone>
-        Drop files here or <FileUpload.Trigger>select files</FileUpload.Trigger>
+        <span>
+          Drop files here or{' '}
+          <FileUpload.Trigger>select files</FileUpload.Trigger>
+        </span>
       </FileUpload.Dropzone>
     </FileUpload>
   ),
 };
 
-/**
- * Custom dropzone content: replace the text and keep the browse trigger and the
- * drag hint (spec "Custom content in the uploader").
- */
 export const CustomContent: Story = {
   render: (args) => (
-    <FileUpload allowsMultiple aria-label="Upload files" {...args}>
+    <FileUpload aria-label="Upload files" allowsMultiple {...args}>
       <FileUpload.Dropzone>
         <strong>Drop password-protected ZIP archives here</strong>
         <span>

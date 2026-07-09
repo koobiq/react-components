@@ -5,6 +5,7 @@
   --file-upload-upload-icon-color: var(--kbq-icon-contrast);
   --file-upload-left-icon-color: var(--kbq-icon-contrast-fade);
   --file-upload-text-color: var(--kbq-foreground-contrast);
+  --file-upload-caption-color: var(--file-upload-text-color);
   --file-upload-file-size-color: var(--kbq-foreground-contrast-secondary);
   --file-upload-footer-border-color: var(--file-upload-container-border-color);
   --file-upload-border-width: var(--kbq-size-border-width);
@@ -51,10 +52,15 @@
   --file-upload-footer-border-color: var(--kbq-line-theme-fade);
 }
 
-.base[data-invalid]:not([data-disabled], [data-multiple]) {
+.base[data-invalid]:not([data-disabled]) {
   --file-upload-container-border-color: var(--kbq-line-error);
   --file-upload-container-background: var(--kbq-background-error-less);
   --file-upload-dropzone-icon-color: var(--kbq-icon-error);
+  --file-upload-upload-icon-color: var(--kbq-icon-error);
+  --file-upload-caption-color: var(--kbq-foreground-error);
+}
+
+.base[data-invalid]:not([data-disabled], [data-multiple]) {
   --file-upload-left-icon-color: var(--kbq-icon-error);
   --file-upload-text-color: var(--kbq-foreground-error);
   --file-upload-file-size-color: var(--kbq-foreground-error);

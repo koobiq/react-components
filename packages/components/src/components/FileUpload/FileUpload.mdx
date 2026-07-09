@@ -13,9 +13,9 @@ import * as Stories from './FileUpload.stories';
 
 <Status variant="draft" />
 
-FileUpload lets users pick, display and manage a list of files. It never
-uploads anything itself — the consumer drives loading, progress and error
-state from the outside through the controlled `value`.
+FileUpload lets users choose files, see them in a list, and remove them. It
+doesn't upload anything on its own — your app does the actual upload and tells
+FileUpload what to show (progress or an error).
 
 ## Import
 
@@ -33,9 +33,8 @@ import { FileUpload } from '@koobiq/react-components';
 
 ## Anatomy
 
-`FileUpload` is a single dashed container whose border and background reflect the
-drag-over and disabled states. With no children it renders its default layout;
-pass children to compose it explicitly from its parts instead:
+By default FileUpload renders a ready-made layout. To customize it, build it
+from these parts:
 
 ```tsx
 <FileUpload>
@@ -46,29 +45,24 @@ pass children to compose it explicitly from its parts instead:
 </FileUpload>
 ```
 
-- `FileUpload.Dropzone` — the caption strip with the browse link (the empty
-  single/compact state, and the "add more" footer once the list has items).
-- `FileUpload.Trigger` — opens the native file dialog.
-- `FileUpload.List` — the list of selected files. With no children it renders
-  a `FileUpload.Item` for every item from context.
-- `FileUpload.Item` — a single row: icon, name, size and a remove button.
-
-The empty multiple state (in the `default` size) is rendered with `EmptyState` —
-a big upload icon, a title and the browse link.
+- `FileUpload.Dropzone` — the drop area with the browse link.
+- `FileUpload.Trigger` — the link that opens the file picker.
+- `FileUpload.List` — the list of chosen files.
+- `FileUpload.Item` — one file: icon, name, size, and a remove button.
 
 <Story of={Stories.Composition} />
 
 ## Single file
 
-By default `FileUpload` accepts a single file. Selecting a new file replaces
-the current one.
+By default FileUpload takes one file. Choosing a new file replaces the current
+one.
 
 <Story of={Stories.SingleWithSelectedFile} />
 
 ## Multiple files
 
-Set `allowsMultiple` to let users select more than one file. New files are
-appended to the end of the list, and an "add more" strip stays visible below it.
+Add `allowsMultiple` so users can pick several files. New files are added to
+the end of the list, with an "add more" area below it.
 
 <Story of={Stories.Multiple} />
 
@@ -76,10 +70,9 @@ appended to the end of the list, and an "add more" strip stays visible below it.
 
 ## Compact
 
-In multiple mode, set `size="compact"` when adding files plays a secondary role in
-the form. Only the empty drop zone changes — it collapses to a narrow strip
-instead of the tall `EmptyState` box. Once files are selected it looks the same as
-the default size.
+Use `size="compact"` in multiple mode when uploading is a minor part of the
+form. The empty state shrinks to a small strip. Once files are added, it looks
+the same as the default size.
 
 <Story of={Stories.CompactEmpty} />
 
@@ -87,76 +80,78 @@ the default size.
 
 ## Drag and drop
 
-The whole component is a drop target — drop files anywhere on it, including
-onto the list and the "add more" strip. Dropped items that aren't files (e.g.
-plain text) are ignored.
+Users can drag files straight onto the component. Anything that isn't a file
+(like dragged text) is ignored.
 
 ## Scrolling
 
-The list scrolls once it grows past its height cap. Override the cap with
-`style` or `className` on `FileUpload.List`.
+Long lists scroll. Set a max height on `FileUpload.List` to choose when.
 
 <Story of={Stories.Scrollable} />
 
 ## Controlled
 
-Pass `value` and `onChange` to own the list from the outside — for example to
-update `isLoading` / `progress` / `errorMessage` on an item as an upload
-started by your app proceeds.
+Pass `value` and `onChange` to control the list yourself. Do this when your app
+needs to update a file — for example to show its upload progress or an error.
 
 <Story of={Stories.Controlled} />
 
 ## Progress
 
-Set `isLoading` on an item to show a spinner in place of its icon — determinate
-(an arc) when you also set `progress` (`0`–`100`), indeterminate otherwise. The
-remove button stays available while an item is loading. This is an abstract
-example of wiring `FileUpload` up to a real upload happening in your app.
+While a file uploads, set `isLoading` on it to show a spinner. Add `progress`
+(`0`–`100`) to show how far it's got, or leave it out for an endless spinner.
+Users can still remove the file while it loads.
 
 <Story of={Stories.UploadProgress} />
 
 ## Validation
 
-`FileUpload` doesn't validate files itself. Check `file.type`, `file.size`, or
-any custom rule in a controlled `onChange`, then set `errorMessage` on the
-invalid item — the row (name, size, icon and remove button) is painted with the
-error colour. `accept` only filters the system dialog, so check dropped files
-the same way.
+FileUpload doesn't check files for you. Validate them in `onChange` — by size,
+type, or any rule — then set `errorMessage` on any file that fails. That file
+turns red. `accept` only filters the system file picker, so still check dropped
+files yourself.
 
 <Story of={Stories.Validation} />
 
 ## File size
 
-Set `showFileSize` to show each file's size (defaults to on when
-`allowsMultiple`). Sizes are formatted for the active locale.
+Set `showFileSize` to show each file's size (on by default with
+`allowsMultiple`). Sizes follow the app's language.
 
 ## Custom content
 
-Replace the dropzone's text while keeping the browse trigger.
+Replace the dropzone text while keeping the browse link.
 
 <Story of={Stories.CustomContent} />
 
 ## Disabled
 
+Add `isDisabled` to turn the whole component off.
+
 <Story of={Stories.Disabled} />
+
+## Invalid
+
+Add `isInvalid` to mark the whole component as invalid — for example when its
+form field has an error. The container turns red. This is separate from a
+single file's `errorMessage`.
+
+<Story of={Stories.Invalid} />
 
 ## Accessibility
 
-- `FileUpload.Trigger` opens the native OS file dialog, so file (and folder)
-  pickers behave exactly as users expect from their platform.
-- The drop zone exposes a visually-hidden button so keyboard and
-  screen-reader users can trigger an equivalent of drag-and-drop (paste)
-  without a pointer.
-- Each remove button's `aria-label` includes the file name.
-- Removing a file with the button, <kbd>Delete</kbd>, or <kbd>Backspace</kbd>
-  moves focus to the next item's remove button, the previous one if the last
-  item was removed, or the browse link if the list is now empty.
-- All visible strings and the file-size units are localized through the
-  active `<Provider locale=...>`.
+- The browse link opens your system's file picker.
+- Keyboard and screen-reader users get a hidden button to add files without a
+  mouse.
+- Each remove button says which file it removes.
+- After removing a file with the button, <kbd>Delete</kbd>, or
+  <kbd>Backspace</kbd>, focus moves to the next file — or to the browse link if
+  the list is now empty.
+- All text and size units follow the app's language.
 
 ## Roadmap
 
-Planned for upcoming stages, not yet implemented:
+Planned for later, not built yet:
 
-- Custom row icons and long-name truncation with a tooltip.
-- Folder and mixed file/folder selection (`allowed`, `directoryMode`).
+- Custom file icons and shortened long names with a tooltip.
+- Folder and mixed file/folder selection.
