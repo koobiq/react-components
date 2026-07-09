@@ -1,0 +1,13 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--kbq-overlay-z-index, 1000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100vw;
+  block-size: 100vh;
+  padding: var(--kbq-size-xl);
+  border: 2px dashed var(--kbq-line-contrast, var(--kbq-line-contrast-fade));
+  background-color: var(--kbq-background-overlay, rgb(0 0 0 / 40%));
+}

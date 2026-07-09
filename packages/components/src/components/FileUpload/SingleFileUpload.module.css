@@ -1,0 +1,7 @@
+/* Single upload only tunes the shared drop-area via custom properties. The
+   container padding matches the Angular single container (12px/16px minus the
+   1px dashed border → 11px/15px). */
+.dropArea {
+  --fileupload-drop-padding-block: calc(var(--kbq-size-m) - 1px);
+  --fileupload-drop-padding-inline: calc(var(--kbq-size-l) - 1px);
+}

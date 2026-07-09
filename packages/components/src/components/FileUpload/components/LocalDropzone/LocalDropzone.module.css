@@ -1,0 +1,15 @@
+.host {
+  position: relative;
+}
+
+.overlay {
+  z-index: var(--kbq-overlay-z-index, 1000);
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  padding: var(--kbq-size-s);
+  border: 2px dashed var(--kbq-line-contrast, var(--kbq-line-contrast-fade));
+  border-radius: var(--kbq-size-s);
+  background-color: var(--kbq-background-overlay, rgb(0 0 0 / 40%));
+}

@@ -18,6 +18,7 @@
     "DatePicker",
     "Divider",
     "EmptyState",
+    "FileUpload",
     "FlexBox",
     "Form",
     "FormField",

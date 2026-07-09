@@ -1,0 +1,1 @@
+export * from './useFileUploadLocale.js';

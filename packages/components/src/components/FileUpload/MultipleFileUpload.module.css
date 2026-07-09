@@ -1,0 +1,73 @@
+/* Multiple upload tunes the shared drop-area via custom properties (order-safe).
+   Spacing values mirror the Angular multiple container geometry. */
+.dropArea {
+  --fileupload-drop-direction: column;
+  --fileupload-drop-align: stretch;
+  --fileupload-drop-justify: flex-start;
+  --fileupload-drop-min-block-size: 120px;
+  --fileupload-drop-padding-block: 0;
+  --fileupload-drop-padding-inline: 0;
+}
+
+/* Default-size empty state: a centered 320×192 drop target, matching the
+   Angular "big" empty container. */
+.dropArea[data-size='default'][data-empty] {
+  --fileupload-drop-align: center;
+  --fileupload-drop-justify: center;
+  --fileupload-drop-min-block-size: 192px;
+
+  min-inline-size: 320px;
+}
+
+.compact {
+  --fileupload-drop-direction: row;
+  --fileupload-drop-align: center;
+  --fileupload-drop-justify: flex-start;
+  --fileupload-drop-min-block-size: auto;
+  --fileupload-drop-padding-block: 11px;
+  --fileupload-drop-padding-inline: 15px;
+}
+
+.emptyState {
+  inline-size: 100%;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kbq-size-xs);
+  min-block-size: 120px;
+
+  /* Uncapped by default (the list grows with its content, matching the Angular
+     `--kbq-file-upload-size-multiple-max-height: unset`). Set the custom property
+     to cap the height and enable scrolling. */
+  max-block-size: var(--fileupload-list-max-block-size, none);
+  margin: 0;
+  padding: 0;
+
+  /* Angular list padding-top: xxs minus the container border width. */
+  padding-block-start: calc(var(--kbq-size-xxs) - 1px);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.listItem {
+  display: flex;
+  inline-size: 100%;
+  padding-inline: calc(var(--kbq-size-xxs) - 1px);
+}
+
+/* Footer dropzone below the list, separated by the dashed divider. */
+.footer {
+  justify-content: flex-start;
+  padding-block: var(--kbq-size-m);
+  padding-inline: var(--kbq-size-l);
+  border-block-start: 1px dashed var(--kbq-line-contrast-fade);
+}
