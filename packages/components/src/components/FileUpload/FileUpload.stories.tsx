@@ -5,6 +5,8 @@ import type { Key } from '@koobiq/react-core';
 import { IconBoxArchive24 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Button } from '../Button';
+import { spacing } from '../layout';
 import { Link } from '../Link';
 import { ProgressSpinner } from '../ProgressSpinner';
 
@@ -552,11 +554,15 @@ export const Invalid: Story = {
 
 export const CustomContent: Story = {
   render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
+
     return (
       <FileUpload
         aria-label="Upload files"
-        items={[]}
+        items={items}
         allowsMultiple
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
         renderEmptyState={() => (
           <FileUpload.Empty>
             <FileUpload.EmptyIcon>
@@ -566,7 +572,11 @@ export const CustomContent: Story = {
               Drop password-protected ZIP archives here
             </FileUpload.EmptyTitle>
             <FileUpload.EmptyDescription>
-              or <FileUpload.Trigger>select files</FileUpload.Trigger>
+              <FileUpload.Trigger>
+                <Button className={spacing({ mbs: 'xxs' })}>
+                  Select files
+                </Button>
+              </FileUpload.Trigger>
             </FileUpload.EmptyDescription>
           </FileUpload.Empty>
         )}

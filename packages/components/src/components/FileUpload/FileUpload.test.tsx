@@ -7,6 +7,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { Button } from '../Button';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Provider } from '../Provider';
 
@@ -371,6 +372,160 @@ describe('FileUpload', () => {
     await user.click(screen.getByText('select a file'));
 
     expect(clickSpy).toHaveBeenCalled();
+  });
+
+  it('supports rendering a custom trigger', async () => {
+    const user = userEvent.setup();
+    const onPress = vi.fn();
+    const triggerRef = createRef<HTMLButtonElement>();
+
+    render(
+      <FileUpload
+        aria-label="upload"
+        items={[]}
+        renderEmptyState={() => (
+          <FileUpload.Empty>
+            <FileUpload.Trigger>
+              <Button ref={triggerRef} onPress={onPress}>
+                Choose a file
+              </Button>
+            </FileUpload.Trigger>
+          </FileUpload.Empty>
+        )}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    const clickSpy = vi
+      .spyOn(getFileInput(), 'click')
+      .mockImplementation(() => undefined);
+
+    await user.click(screen.getByRole('button', { name: 'Choose a file' }));
+
+    expect(clickSpy).toHaveBeenCalled();
+    expect(onPress).toHaveBeenCalled();
+
+    expect(triggerRef.current).toBe(
+      screen.getByRole('button', { name: 'Choose a file' })
+    );
+  });
+
+  it('passes the disabled state to a custom trigger', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <FileUpload
+        isDisabled
+        aria-label="upload"
+        items={[]}
+        renderEmptyState={() => (
+          <FileUpload.Empty>
+            <FileUpload.Trigger>
+              <Button>Choose a file</Button>
+            </FileUpload.Trigger>
+          </FileUpload.Empty>
+        )}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    const clickSpy = vi
+      .spyOn(getFileInput(), 'click')
+      .mockImplementation(() => undefined);
+
+    const trigger = screen.getByRole('button', { name: 'Choose a file' });
+
+    expect(trigger).toHaveAttribute('data-disabled');
+
+    await user.click(trigger);
+
+    expect(clickSpy).not.toHaveBeenCalled();
+  });
+
+  it('restores focus to a custom trigger after removing the last file', async () => {
+    const user = userEvent.setup();
+
+    function CustomTriggerFileUpload() {
+      const [items, setItems] = useState<FileUploadItemData[]>([
+        makeItem('only.txt'),
+      ]);
+
+      return (
+        <FileUpload
+          aria-label="upload"
+          items={items}
+          onRemove={(id) =>
+            setItems((current) => current.filter((item) => item.id !== id))
+          }
+          renderEmptyState={() => (
+            <FileUpload.Empty>
+              <FileUpload.Trigger>
+                <Button>Choose another file</Button>
+              </FileUpload.Trigger>
+            </FileUpload.Empty>
+          )}
+        >
+          {renderItem}
+        </FileUpload>
+      );
+    }
+
+    render(<CustomTriggerFileUpload />);
+
+    await user.click(screen.getByRole('button', { name: /remove only\.txt/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Choose another file' })
+      ).toHaveFocus();
+    });
+  });
+
+  it('restores focus to a custom trigger in multiple mode', async () => {
+    const user = userEvent.setup();
+
+    function CustomMultipleTriggerFileUpload() {
+      const [items, setItems] = useState<FileUploadItemData[]>([
+        makeItem('only.txt'),
+      ]);
+
+      const trigger = (
+        <FileUpload.Trigger>
+          <Button>Choose files</Button>
+        </FileUpload.Trigger>
+      );
+
+      return (
+        <FileUpload
+          allowsMultiple
+          aria-label="upload"
+          items={items}
+          onRemove={(id) =>
+            setItems((current) => current.filter((item) => item.id !== id))
+          }
+          renderEmptyState={() => (
+            <FileUpload.Empty>{trigger}</FileUpload.Empty>
+          )}
+          renderAddMore={() => (
+            <FileUpload.AddMore>{trigger}</FileUpload.AddMore>
+          )}
+        >
+          {renderItem}
+        </FileUpload>
+      );
+    }
+
+    render(<CustomMultipleTriggerFileUpload />);
+
+    await user.click(screen.getByRole('button', { name: /remove only\.txt/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Choose files' })
+      ).toHaveFocus();
+    });
   });
 
   it('supports custom collection item rendering', async () => {

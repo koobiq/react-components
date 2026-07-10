@@ -153,7 +153,10 @@ export type FileUploadAddMoreProps = ExtendableProps<
 >;
 
 export type FileUploadTriggerProps = {
-  /** The visible label of the browse link. Defaults to a localized string. */
+  /**
+   * The visible label of the default browse link, or a custom pressable
+   * component. Defaults to a localized string rendered as a link.
+   */
   children?: ReactNode;
   /** Additional CSS-classes. */
   className?: string;
