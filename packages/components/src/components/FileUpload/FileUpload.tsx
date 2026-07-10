@@ -89,6 +89,7 @@ function FileUploadInner<T extends object>({
     style,
     onRemove,
     className,
+    slotProps,
     renderAddMore,
     renderEmptyState,
     'data-testid': testId,
@@ -230,6 +231,8 @@ function FileUploadInner<T extends object>({
     ]
   );
 
+  const { className: listClassName, ...listProps } = slotProps?.list ?? {};
+
   return (
     <FileUploadContext.Provider value={contextValue}>
       <DropZone
@@ -256,13 +259,22 @@ function FileUploadInner<T extends object>({
         }}
       >
         {isEmpty ? (
-          (renderEmptyState?.() ?? <FileUploadEmpty />)
+          renderEmptyState ? (
+            renderEmptyState()
+          ) : (
+            <FileUploadEmpty />
+          )
         ) : (
           <>
-            <ul className={s.list} data-multiple={allowsMultiple || undefined}>
+            <ul
+              {...listProps}
+              className={clsx(s.list, listClassName)}
+              data-multiple={allowsMultiple || undefined}
+            >
               <CollectionRoot collection={collection} />
             </ul>
-            {allowsMultiple && (renderAddMore?.() ?? <FileUploadAddMore />)}
+            {allowsMultiple &&
+              (renderAddMore ? renderAddMore() : <FileUploadAddMore />)}
           </>
         )}
       </DropZone>
@@ -294,16 +306,29 @@ function FileUploadRender<T extends object = object>(
   );
 }
 
-const FileUploadComponent = forwardRef(
-  FileUploadRender
-) as unknown as FileUploadComponent;
+const FileUploadComponent = forwardRef(FileUploadRender) as FileUploadComponent;
+
+type CompoundedComponent = typeof FileUploadComponent & {
+  Empty: typeof FileUploadEmpty;
+  EmptyIcon: typeof FileUploadEmptyIcon;
+  EmptyTitle: typeof FileUploadEmptyTitle;
+  EmptyDescription: typeof FileUploadEmptyDescription;
+  AddMore: typeof FileUploadAddMore;
+  Trigger: typeof FileUploadTrigger;
+  Item: typeof FileUploadItem;
+  ItemIcon: typeof FileUploadItemIcon;
+  ItemContent: typeof FileUploadItemContent;
+  ItemName: typeof FileUploadItemName;
+  ItemSize: typeof FileUploadItemSize;
+  RemoveButton: typeof FileUploadRemoveButton;
+};
 
 /**
  * `FileUpload` lets users pick, display and remove files. It handles
  * selection (system dialog and drag-and-drop), collection rendering and remove
  * intent, but the consumer owns the item data.
  */
-export const FileUpload = FileUploadComponent;
+export const FileUpload = FileUploadComponent as CompoundedComponent;
 
 FileUpload.Empty = FileUploadEmpty;
 FileUpload.EmptyIcon = FileUploadEmptyIcon;
@@ -317,5 +342,3 @@ FileUpload.ItemContent = FileUploadItemContent;
 FileUpload.ItemName = FileUploadItemName;
 FileUpload.ItemSize = FileUploadItemSize;
 FileUpload.RemoveButton = FileUploadRemoveButton;
-
-FileUpload.displayName = 'FileUpload';

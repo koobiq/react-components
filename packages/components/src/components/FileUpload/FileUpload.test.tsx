@@ -478,6 +478,28 @@ describe('FileUpload', () => {
     );
   });
 
+  it('applies list slot props to the collection element', () => {
+    render(
+      <FileUpload
+        aria-label="upload"
+        allowsMultiple
+        items={[makeItem('a.txt')]}
+        slotProps={{
+          list: {
+            className: 'custom-list',
+            style: { maxBlockSize: 240 },
+            'data-testid': 'list',
+          },
+        }}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    expect(screen.getByTestId('list')).toHaveClass('custom-list');
+    expect(screen.getByTestId('list')).toHaveStyle({ maxBlockSize: '240px' });
+  });
+
   it('renders the single selected file and hides the empty trigger', () => {
     renderComponent({ initialItems: [makeItem('single.txt')] });
 
@@ -491,7 +513,7 @@ describe('FileUpload', () => {
     expect(screen.getByText('Drag here')).toBeInTheDocument();
   });
 
-  it('fills missing empty-state slots during partial customization', () => {
+  it('renders custom empty-state children without filling missing parts', () => {
     render(
       <FileUpload
         aria-label="upload"
@@ -510,8 +532,49 @@ describe('FileUpload', () => {
     );
 
     expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
-    expect(screen.getByText('Drag here')).toBeInTheDocument();
-    expect(screen.getByText('select files')).toBeInTheDocument();
+    expect(screen.queryByText('Drag here')).not.toBeInTheDocument();
+    expect(screen.queryByText('select files')).not.toBeInTheDocument();
+  });
+
+  it('supports a fully custom empty state', () => {
+    render(
+      <FileUpload
+        aria-label="upload"
+        items={[]}
+        renderEmptyState={() => <div>Nothing uploaded</div>}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    expect(screen.getByText('Nothing uploaded')).toBeInTheDocument();
+    expect(screen.queryByText('select a file')).not.toBeInTheDocument();
+  });
+
+  it('hides the empty state when renderEmptyState returns null', () => {
+    render(
+      <FileUpload aria-label="upload" items={[]} renderEmptyState={() => null}>
+        {renderItem}
+      </FileUpload>
+    );
+
+    expect(screen.queryByText('select a file')).not.toBeInTheDocument();
+  });
+
+  it('hides add-more when renderAddMore returns null', () => {
+    render(
+      <FileUpload
+        aria-label="upload"
+        allowsMultiple
+        items={[makeItem('a.txt')]}
+        renderAddMore={() => null}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    expect(screen.getByText('a.txt')).toBeInTheDocument();
+    expect(screen.queryByText('Drop more or')).not.toBeInTheDocument();
   });
 
   it('formats numeric ItemSize children using the current locale', () => {

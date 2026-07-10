@@ -4,12 +4,14 @@ import type {
   ComponentRef,
   CSSProperties,
   ReactElement,
-  RefAttributes,
   ComponentPropsWithRef,
-  ForwardRefExoticComponent,
 } from 'react';
 
-import type { Key, ExtendableProps } from '@koobiq/react-core';
+import type {
+  Key,
+  ExtendableProps,
+  DataAttributeProps,
+} from '@koobiq/react-core';
 
 import type { IconButtonProps } from '../IconButton';
 
@@ -50,6 +52,9 @@ type FileUploadDOMProps = Omit<
   'children' | 'defaultValue' | 'onChange' | 'ref'
 >;
 
+type FileUploadListSlotProps = Omit<ComponentPropsWithRef<'ul'>, 'children'> &
+  DataAttributeProps;
+
 type FileUploadBaseProps<T extends object> = {
   /** The contents of the collection. */
   children: ReactNode | ((item: T) => ReactNode);
@@ -59,9 +64,9 @@ type FileUploadBaseProps<T extends object> = {
   onAdd?: (files: File[]) => void;
   /** Handler called when a remove button requests item removal. */
   onRemove?: (id: Key) => void;
-  /** Custom empty state. */
+  /** Custom empty state renderer. Return `null` to hide the empty state. */
   renderEmptyState?: () => ReactNode;
-  /** Custom add-more footer shown after items in multiple mode. */
+  /** Custom add-more renderer shown after items. Return `null` to hide it. */
   renderAddMore?: () => ReactNode;
   /**
    * Whether more than one file can be selected.
@@ -93,6 +98,11 @@ type FileUploadBaseProps<T extends object> = {
   className?: string;
   /** Inline styles. */
   style?: CSSProperties;
+  /** Props applied to internal parts of FileUpload. */
+  slotProps?: {
+    /** Props applied to the collection list element. */
+    list?: FileUploadListSlotProps;
+  };
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
   /** Ref to the root element. */
@@ -191,44 +201,6 @@ export type FileUploadItemSizeProps = ExtendableProps<
 
 export type FileUploadRemoveButtonProps = Omit<IconButtonProps, 'children'>;
 
-export type FileUploadComponent = (<T extends object = object>(
+export type FileUploadComponent = <T extends object = object>(
   props: FileUploadProps<T> & { ref?: Ref<FileUploadRef> }
-) => ReactElement | null) & {
-  displayName?: string;
-  Empty: ForwardRefExoticComponent<
-    FileUploadEmptyProps & RefAttributes<HTMLDivElement>
-  >;
-  EmptyIcon: ForwardRefExoticComponent<
-    FileUploadEmptyIconProps & RefAttributes<HTMLSpanElement>
-  >;
-  EmptyTitle: ForwardRefExoticComponent<
-    FileUploadEmptyTitleProps & RefAttributes<HTMLSpanElement>
-  >;
-  EmptyDescription: ForwardRefExoticComponent<
-    FileUploadEmptyDescriptionProps & RefAttributes<HTMLSpanElement>
-  >;
-  AddMore: ForwardRefExoticComponent<
-    FileUploadAddMoreProps & RefAttributes<HTMLDivElement>
-  >;
-  Trigger: ForwardRefExoticComponent<
-    FileUploadTriggerProps & RefAttributes<HTMLInputElement>
-  >;
-  Item: (
-    props: FileUploadItemProps & RefAttributes<HTMLLIElement>
-  ) => ReactElement | null;
-  ItemIcon: ForwardRefExoticComponent<
-    FileUploadItemIconProps & RefAttributes<HTMLSpanElement>
-  >;
-  ItemContent: ForwardRefExoticComponent<
-    FileUploadItemContentProps & RefAttributes<HTMLSpanElement>
-  >;
-  ItemName: ForwardRefExoticComponent<
-    FileUploadItemNameProps & RefAttributes<HTMLSpanElement>
-  >;
-  ItemSize: ForwardRefExoticComponent<
-    FileUploadItemSizeProps & RefAttributes<HTMLSpanElement>
-  >;
-  RemoveButton: ForwardRefExoticComponent<
-    FileUploadRemoveButtonProps & RefAttributes<HTMLButtonElement>
-  >;
-};
+) => ReactElement | null;

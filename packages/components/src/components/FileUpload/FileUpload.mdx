@@ -13,9 +13,8 @@ import * as Stories from './FileUpload.stories';
 
 <Status variant="draft" />
 
-FileUpload lets users choose files, see them in a collection, and request
-removal. It doesn't upload anything or own item data on its own — your app keeps
-the items and updates them from `onAdd` and `onRemove`.
+FileUpload lets users select, display, and remove files. It reports user actions
+but does not upload or store files.
 
 ## Import
 
@@ -33,156 +32,81 @@ import { FileUpload } from '@koobiq/react-components';
 
 ## Data model
 
-FileUpload follows the React Aria Collection Components API used by
-Breadcrumbs: pass item objects to `items`, and render them with static children
-or a `children(item)` function. FileUpload handles the file picker,
-drag-and-drop, empty state, add-more area, and focus restoration. Your app owns
-the collection:
-
-```tsx
-<FileUpload
-  items={items}
-  onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
-  onRemove={(id) => setItems((prev) => prev.filter((item) => item.id !== id))}
->
-  {(item) => (
-    <FileUpload.Item id={item.id} textValue={item.name}>
-      <FileUpload.ItemIcon />
-      <FileUpload.ItemContent>
-        <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-        <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-      </FileUpload.ItemContent>
-      <FileUpload.RemoveButton />
-    </FileUpload.Item>
-  )}
-</FileUpload>
-```
-
-## Anatomy
-
-Customize the default UI with compound parts:
-
-```tsx
-<FileUpload
-  items={items}
-  onAdd={handleAdd}
-  onRemove={handleRemove}
-  renderEmptyState={() => (
-    <FileUpload.Empty>
-      <FileUpload.EmptyIcon />
-      <FileUpload.EmptyTitle>Upload evidence files</FileUpload.EmptyTitle>
-      <FileUpload.EmptyDescription>
-        Drag files here or <FileUpload.Trigger>select files</FileUpload.Trigger>
-      </FileUpload.EmptyDescription>
-    </FileUpload.Empty>
-  )}
-  renderAddMore={() => (
-    <FileUpload.AddMore>
-      Add more files or <FileUpload.Trigger>select files</FileUpload.Trigger>
-    </FileUpload.AddMore>
-  )}
->
-  {(item) => (
-    <FileUpload.Item id={item.id} textValue={item.name}>
-      <FileUpload.ItemIcon />
-      <FileUpload.ItemContent>
-        <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-        <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-      </FileUpload.ItemContent>
-      <FileUpload.RemoveButton />
-    </FileUpload.Item>
-  )}
-</FileUpload>
-```
-
-Replace only the part you need. For example, pass just `EmptyIcon` and FileUpload
-will fill the default title and description.
-
-<Story of={Stories.CustomContent} />
+Pass `items` and a render function for a dynamic collection. Pass
+`FileUpload.Item` elements as children for a static collection.
 
 ## Single file
 
-By default, FileUpload takes one file. In `onAdd`, replace your current item with
-the first file from the received array.
+FileUpload accepts one file by default.
 
 <Story of={Stories.SingleWithSelectedFile} />
 
 ## Multiple files
 
-Add `allowsMultiple` so users can pick several files. Append files in `onAdd`
-and remove by id in `onRemove`.
+Use `allowsMultiple` to add several files.
 
 <Story of={Stories.Multiple} />
 
+An empty collection shows the default drop area.
+
 <Story of={Stories.MultipleEmpty} />
+
+## Server file
+
+Render server files as download links. Newly selected files can use the same
+collection.
+
+<Story of={Stories.ServerFile} />
+
+## Customization
+
+Use `renderEmptyState` and `renderAddMore` to replace the default areas. Custom
+`FileUpload.Empty` children are rendered as provided.
+
+<Story of={Stories.CustomContent} />
 
 ## Compact
 
-Use `size="compact"` in multiple mode when uploading is a minor part of the
-form. The empty state shrinks to a small strip. Once files are added, it looks
-the same as the default size.
+Use `size="compact"` for a smaller empty state.
 
 <Story of={Stories.CompactEmpty} />
+
+The populated state keeps the standard item layout.
 
 <Story of={Stories.Compact} />
 
 ## Scrolling
 
-Long lists scroll. Set `--file-upload-list-max-block-size` on FileUpload to
-choose when.
+Use `slotProps` to limit the list height.
 
 <Story of={Stories.Scrollable} />
 
-## External state
-
-The item model is app-owned. Use it to show upload progress, validation errors,
-icons, or any extra metadata.
-
-<Story of={Stories.ExternalState} />
-
 ## Progress
 
-While a file uploads, render your loading state in the item row. `ItemIcon`
-shows the default file icon when no children are passed, and custom content when
-you provide it.
+Render upload progress inside the item row.
 
 <Story of={Stories.UploadProgress} />
 
 ## Validation
 
-FileUpload doesn't check files for you. Validate them in `onAdd` — by size,
-type, or any rule — then set your item state. `accept` only filters the system
-file picker, so still check dropped files yourself.
+Validate files in `onAdd`. The `accept` prop filters the picker but not dropped
+files.
 
 <Story of={Stories.Validation} />
 
 ## Disabled
 
-Add `isDisabled` to turn the whole component off.
+Use `isDisabled` to disable the whole component.
 
 <Story of={Stories.Disabled} />
 
 ## Invalid
 
-Add `isInvalid` to mark the whole component as invalid — for example when its
-form field has an error. The container turns red. This is separate from a
-single file row's invalid state.
+Use `isInvalid` for a container-level validation error.
 
 <Story of={Stories.Invalid} />
 
 ## Accessibility
 
-- The browse link opens your system's file picker.
-- Keyboard and screen-reader users get a hidden button to add files without a
-  mouse.
-- Each remove button says which file it removes.
-- After removing a file with the button, <kbd>Delete</kbd>, or
-  <kbd>Backspace</kbd>, focus moves to the next file — or to the browse link if
-  the list is now empty.
-- All text and size units follow the app's language.
-
-## Roadmap
-
-Planned for later, not built yet:
-
-- Folder and mixed file/folder selection beyond the picker affordance.
+Provide an accessible label for FileUpload and `textValue` for each item. After
+removal, focus moves to the next file or the browse trigger.

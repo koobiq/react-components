@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import type { ReactNode, CSSProperties } from 'react';
+import type { ReactNode } from 'react';
 
 import type { Key } from '@koobiq/react-core';
 import { IconBoxArchive24 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Link } from '../Link';
 import { ProgressSpinner } from '../ProgressSpinner';
 
 import { FileUpload } from './FileUpload';
@@ -50,6 +51,7 @@ type FileUploadItemData = {
   progress?: number;
   errorMessage?: ReactNode;
   isDisabled?: boolean;
+  downloadUrl?: string;
 };
 
 type Story = StoryObj<FileUploadProps<FileUploadItemData>>;
@@ -161,6 +163,55 @@ export const Multiple: Story = {
   },
 };
 
+export const ServerFile: Story = {
+  render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItemData[]>([
+      {
+        id: 'security-scan-report.json',
+        name: 'security-scan-report.json',
+        size: 74,
+        downloadUrl: '/files/security-scan-report.json',
+      },
+    ]);
+
+    return (
+      <FileUpload
+        aria-label="Upload files"
+        items={items}
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        allowsMultiple
+        {...args}
+      >
+        {(item) => (
+          <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.ItemIcon />
+            <FileUpload.ItemContent>
+              <FileUpload.ItemName>
+                {item.downloadUrl ? (
+                  <Link
+                    href={item.downloadUrl}
+                    download={item.name}
+                    variant="inherit"
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  item.name
+                )}
+              </FileUpload.ItemName>
+              {item.size !== undefined && (
+                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+              )}
+            </FileUpload.ItemContent>
+            <FileUpload.RemoveButton />
+          </FileUpload.Item>
+        )}
+      </FileUpload>
+    );
+  },
+};
+
 export const MultipleEmpty: Story = {
   render: function Render(args) {
     const [items, setItems] = useState<FileUploadItemData[]>([]);
@@ -209,12 +260,7 @@ export const Scrollable: Story = {
       <FileUpload
         aria-label="Upload files"
         items={items}
-        // TODO: slotProps
-        style={
-          {
-            '--file-upload-list-max-block-size': '240px',
-          } as CSSProperties
-        }
+        slotProps={{ list: { style: { maxBlockSize: 240 } } }}
         onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
         allowsMultiple
@@ -291,43 +337,6 @@ export const Compact: Story = {
         aria-label="Upload files"
         onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        allowsMultiple
-        {...args}
-      >
-        {(item) => (
-          <FileUpload.Item
-            id={item.id}
-            textValue={item.name}
-            isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
-          >
-            <FileUpload.ItemIcon />
-            <FileUpload.ItemContent>
-              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
-            </FileUpload.ItemContent>
-            <FileUpload.RemoveButton />
-          </FileUpload.Item>
-        )}
-      </FileUpload>
-    );
-  },
-};
-
-export const ExternalState: Story = {
-  render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      makeItem('notes_january.docx', 148909),
-    ]);
-
-    return (
-      <FileUpload
-        items={items}
-        aria-label="Upload files"
-        onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         allowsMultiple
         {...args}
       >

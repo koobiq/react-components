@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Children,
-  cloneElement,
-  createContext,
-  forwardRef,
-  isValidElement,
-  useContext,
-} from 'react';
-import type { ReactNode, ReactElement } from 'react';
+import { createContext, forwardRef, useContext } from 'react';
 
 import { clsx, useDOMRef } from '@koobiq/react-core';
 import {
@@ -32,45 +24,6 @@ type EmptyVariant = 'large' | 'compact';
 
 const EmptyVariantContext = createContext<EmptyVariant>('compact');
 
-type EmptySlots = {
-  icon?: ReactElement;
-  title?: ReactElement;
-  description?: ReactElement;
-  rest: ReactNode[];
-};
-
-const isSlot = (child: ReactNode, slot: unknown): child is ReactElement =>
-  isValidElement(child) && child.type === slot;
-
-const getSlots = (children: ReactNode): EmptySlots => {
-  const slots: EmptySlots = { rest: [] };
-
-  Children.forEach(children, (child) => {
-    if (isSlot(child, FileUploadEmptyIcon)) {
-      slots.icon ??= child;
-    } else if (isSlot(child, FileUploadEmptyTitle)) {
-      slots.title ??= child;
-    } else if (isSlot(child, FileUploadEmptyDescription)) {
-      slots.description ??= child;
-    } else {
-      slots.rest.push(child);
-    }
-  });
-
-  return slots;
-};
-
-const withClassName = (
-  child: ReactElement,
-  className: string
-): ReactElement => {
-  const props = child.props as { className?: string };
-
-  return cloneElement(child, {
-    className: clsx(className, props.className),
-  } as object);
-};
-
 export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
   (props, ref) => {
     const {
@@ -87,15 +40,16 @@ export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
     const variant: EmptyVariant =
       allowsMultiple && size === 'default' ? 'large' : 'compact';
 
-    const slots = getSlots(children);
-
-    const icon = slots.icon ?? <FileUploadEmptyIcon />;
-
-    const title =
-      slots.title ??
-      (variant === 'large' ? <FileUploadEmptyTitle /> : undefined);
-
-    const description = slots.description ?? <FileUploadEmptyDescription />;
+    const content =
+      children === undefined ? (
+        <>
+          <FileUploadEmptyIcon />
+          {variant === 'large' && <FileUploadEmptyTitle />}
+          <FileUploadEmptyDescription />
+        </>
+      ) : (
+        children
+      );
 
     if (variant === 'large') {
       return (
@@ -112,10 +66,7 @@ export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
         >
           <EmptyVariantContext.Provider value={variant}>
             <EmptyState size="normal" className={s.large}>
-              {withClassName(icon, s.icon)}
-              {title && withClassName(title, s.title)}
-              {withClassName(description, s.description)}
-              {slots.rest}
+              {content}
             </EmptyState>
           </EmptyVariantContext.Provider>
         </div>
@@ -135,12 +86,7 @@ export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
         className={clsx(s.empty, s.compact, className)}
       >
         <EmptyVariantContext.Provider value={variant}>
-          {withClassName(icon, s.icon)}
-          <span className={s.compactText}>
-            {title && withClassName(title, s.title)}
-            {withClassName(description, s.description)}
-            {slots.rest}
-          </span>
+          {content}
         </EmptyVariantContext.Provider>
       </div>
     );
@@ -170,7 +116,7 @@ export const FileUploadEmptyIcon = forwardRef<
         ref={ref}
         style={style}
         data-testid={testId}
-        className={className}
+        className={clsx(s.icon, className)}
       >
         {content}
       </EmptyState.Media>
@@ -183,7 +129,7 @@ export const FileUploadEmptyIcon = forwardRef<
       ref={ref}
       style={style}
       data-testid={testId}
-      className={className}
+      className={clsx(s.icon, className)}
       aria-hidden="true"
     >
       {content}
@@ -208,7 +154,7 @@ export const FileUploadEmptyTitle = forwardRef<
         ref={ref}
         style={style}
         data-testid={testId}
-        className={className}
+        className={clsx(s.title, className)}
       >
         {content}
       </EmptyState.Title>
@@ -221,7 +167,7 @@ export const FileUploadEmptyTitle = forwardRef<
       ref={ref}
       style={style}
       data-testid={testId}
-      className={className}
+      className={clsx(s.title, className)}
     >
       {content}
     </span>
@@ -256,7 +202,7 @@ export const FileUploadEmptyDescription = forwardRef<
         ref={ref}
         style={style}
         data-testid={testId}
-        className={className}
+        className={clsx(s.description, className)}
       >
         {content}
       </EmptyState.Content>
@@ -269,7 +215,7 @@ export const FileUploadEmptyDescription = forwardRef<
       ref={ref}
       style={style}
       data-testid={testId}
-      className={className}
+      className={clsx(s.description, className)}
     >
       {content}
     </span>

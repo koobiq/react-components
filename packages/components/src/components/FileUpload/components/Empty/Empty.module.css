@@ -32,13 +32,6 @@
   color: var(--file-upload-caption-color);
 }
 
-.compactText {
-  display: flex;
-  min-inline-size: 0;
-  align-items: center;
-  gap: var(--kbq-size-xxs);
-}
-
 .compact .icon {
   flex: none;
   display: flex;
@@ -49,11 +42,13 @@
 .compact .title {
   @mixin ellipsis;
 
+  min-inline-size: 0;
   color: var(--file-upload-caption-color);
 }
 
 .compact .description {
   @mixin ellipsis;
 
+  min-inline-size: 0;
   color: var(--file-upload-caption-color);
 }

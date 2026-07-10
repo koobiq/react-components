@@ -14,7 +14,6 @@
   --file-upload-single-padding-block: var(--kbq-size-m);
   --file-upload-single-padding-inline: var(--kbq-size-l);
   --file-upload-list-min-block-size: 120px;
-  --file-upload-list-max-block-size: unset;
   --file-upload-multiple-min-block-size: 192px;
   --file-upload-multiple-min-inline-size: 320px;
   --file-upload-grid-cell-padding-inline: var(--kbq-size-s);
@@ -126,5 +125,4 @@
     var(--kbq-background-transparent);
   padding-block: var(--kbq-size-xxs) var(--kbq-size-xxl);
   min-block-size: var(--file-upload-list-min-block-size);
-  max-block-size: var(--file-upload-list-max-block-size);
 }
