@@ -54,6 +54,7 @@ export * from './ActionsPanel';
 export * from './Tree';
 export * from './TreeSelect';
 export * from './EmptyState';
+export * from './Flag';
 export * from './layout';
 export {
   useListData,

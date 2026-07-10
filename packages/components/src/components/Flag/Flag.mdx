@@ -1,0 +1,128 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Flag.stories';
+
+<Meta of={Stories} />
+
+# Flag
+
+<Status variant="experimental" />
+
+Flag shows a small country flag inside a product UI (inline with text, in lists, options, selects).
+
+It is a thin presentational wrapper: it decorates a flag graphic you provide and does **not** ship
+or resolve any flag data. Flag graphics are expected to come from
+[`country-flag-icons`](https://www.npmjs.com/package/country-flag-icons) (full ISO 3166-1, redrawn
+for small sizes) or any custom source.
+
+## Import
+
+```tsx
+import { Flag } from '@koobiq/react-components';
+```
+
+## Usage
+
+Provide the flag graphic as `children` — an inline `<svg>` is the recommended path (no extra
+requests, no base64), but an `<img>` also works. `country-flag-icons` exposes ready-made React flag
+components:
+
+```tsx
+import { DE } from 'country-flag-icons/react/3x2';
+
+<Flag label="Germany">
+  <DE />
+</Flag>;
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Shape
+
+Use the `shape` prop: `rectangle` (default), `square`, or `circle`. `square` and `circle` expect a
+1:1 source; `circle` additionally clips the graphic to a circle.
+
+<Story of={Stories.Shape} />
+
+## Shadow
+
+A thin inset hairline separates the flag from the background. It is on by default (`shadow="inset"`)
+and adapts to the theme (dark hairline in the light theme, lighter in the dark theme). Turn it off
+with `shadow="none"`.
+
+<Story of={Stories.Shadow} />
+
+## Sizing
+
+The flag follows text size — its default height is `1em`. Control it with `font-size`, `width`, or
+`height` in CSS. There are no size presets.
+
+<Story of={Stories.Sizes} />
+
+## Aspect ratio
+
+The default box ratio is 3:2. Other ratios (e.g. 4:3) and non-country sources are supported **without
+a prop** by overriding the `--kbq-flag-aspect-ratio` CSS variable.
+
+```tsx
+<Flag style={{ '--kbq-flag-aspect-ratio': '4 / 3' }}>{/* … */}</Flag>
+```
+
+<Story of={Stories.AspectRatio} />
+
+## Missing flag
+
+The library ships no flag data, so guard the country code (e.g. with `hasFlag` from
+`country-flag-icons`) and render a neutral placeholder with the `empty` prop when a flag is missing —
+the layout never breaks and no broken graphic is shown.
+
+<Story of={Stories.Fallback} />
+
+## Accessibility
+
+A flag must never be a silent, meaning-bearing graphic.
+
+- When the flag carries meaning and has **no adjacent text**, pass a `label`. The host exposes
+  `role="img"` with the accessible name.
+- When adjacent visible text already names the country, mark the flag `decorative`. It is hidden from
+  assistive technology (`aria-hidden`) to avoid duplication.
+
+<Story of={Stories.Accessibility} />
+
+## Flag is not a language
+
+A flag represents a country, not a language. Use a globe icon (not a flag) for language selection.
+
+<Story of={Stories.NotForLanguage} />
+
+## Custom look
+
+Stylized, decorative treatments (rounded corners, drop shadow, "folds" gradient) are your own CSS
+plus the exposed variables — not a library prop. Round the corners with `--kbq-flag-border-radius`
+and add a shadow/gradient in your own styles.
+
+<Story of={Stories.Custom} />
+
+## Flags in a Select
+
+<Story of={Stories.FlagsInSelect} />
+
+## CSS variables
+
+Everything visual that isn't a discrete state is an overridable CSS variable:
+
+| Variable                      | Default                                 | Purpose                                         |
+| ----------------------------- | --------------------------------------- | ----------------------------------------------- |
+| `--kbq-flag-aspect-ratio`     | `3 / 2`                                 | Box ratio. `square`/`circle` set it to `1 / 1`. |
+| `--kbq-flag-border-radius`    | `0`                                     | Corner radius (rounded / stylized look).        |
+| `--kbq-flag-shadow-color`     | `var(--kbq-line-contrast-fade)`         | Inset hairline color; theme-adaptive.           |
+| `--kbq-flag-empty-background` | `var(--kbq-states-background-disabled)` | Placeholder fill.                               |
