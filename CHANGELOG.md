@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.35.0](https://github.com/koobiq/react-components/compare/0.34.1...0.35.0) (2026-07-10)
+
+
+### 🚀 Features
+
+* **components:** add `EmptyState` component (DS-4777) ([#400](https://github.com/koobiq/react-components/issues/400)) ([3cb8147](https://github.com/koobiq/react-components/commit/3cb8147052732508680e52d24c184c7f0a896337))
+* **components:** add `TagAutocomplete` (DS-5069) ([#376](https://github.com/koobiq/react-components/issues/376)) ([f329d98](https://github.com/koobiq/react-components/commit/f329d98b07a9f4a6921a90f46bb20ff4269608c9))
+* **components:** add `TreeSelect` component (DS-4835) ([#396](https://github.com/koobiq/react-components/issues/396)) ([35674f9](https://github.com/koobiq/react-components/commit/35674f99090cbd70353ec6fe2aaab4464d376456))
+* **components:** update @koobiq/react-icons to v12 (package moved to koobiq/icons repo) (DS-5178) ([#388](https://github.com/koobiq/react-components/issues/388)) ([f60599a](https://github.com/koobiq/react-components/commit/f60599a4a94cb8f7d8f623bda036d418e5c4dbfe))
+* **components:** use secondary contrast color for form field labels (DS-5139) ([#387](https://github.com/koobiq/react-components/issues/387)) ([74b82c8](https://github.com/koobiq/react-components/commit/74b82c87b5936f84667408b8d6f08460e1d7350b))
+* **SelectNext:** add `renderTag` prop (DS-5070) ([#409](https://github.com/koobiq/react-components/issues/409)) ([71fb902](https://github.com/koobiq/react-components/commit/71fb9022244eee48bd35c3309bceaa35d393685d))
+* **Table:** add data attributes to sort icon wrapper (DS-5214) ([#411](https://github.com/koobiq/react-components/issues/411)) ([1965380](https://github.com/koobiq/react-components/commit/196538026833fef15b8e80bee44d5aa7fcc42ea4))
+* **Tabs:** support editable tabs — add and remove tabs (DS-5230) ([#406](https://github.com/koobiq/react-components/issues/406)) ([e326c39](https://github.com/koobiq/react-components/commit/e326c397e9147aa9674a3119b9b8b37da990db92))
+* **TagList:** support Shift range selection (DS-5148) ([#410](https://github.com/koobiq/react-components/issues/410)) ([278e076](https://github.com/koobiq/react-components/commit/278e076af3a1b508b255fc8da43a01c0526e4ddb))
+* **Toggle:** add `isLoading` prop (DS-5193) ([#398](https://github.com/koobiq/react-components/issues/398)) ([658b20f](https://github.com/koobiq/react-components/commit/658b20fe76298678f626515745f964dec7d5c80b))
+* **Tree:** add `Tree.ItemContentText`, `Tree.ItemContentAddon`, and item alignment (DS-5222) ([#412](https://github.com/koobiq/react-components/issues/412)) ([dd872b8](https://github.com/koobiq/react-components/commit/dd872b80ab8611c24e5f475adcec54cce4f681f8))
+* update browser target to Baseline Widely Available (DS-5049) ([#399](https://github.com/koobiq/react-components/issues/399)) ([ce47a0e](https://github.com/koobiq/react-components/commit/ce47a0e4305cbaffd90078188e64c1e0dd6f61d2))
+
+
+### 🐞 Bug Fixes
+
+* **components:** remove fixed minimum height for dropdown-footer (DS-5226) ([#401](https://github.com/koobiq/react-components/issues/401)) ([050441c](https://github.com/koobiq/react-components/commit/050441cd327644c143dddcca901d885a153a8527))
+* **SelectNext:** reset search-input on dropdown close (DS-5217) ([#414](https://github.com/koobiq/react-components/issues/414)) ([72f124f](https://github.com/koobiq/react-components/commit/72f124fc86045af5d30eecd08a0716f3c9355127))
+* **Toggle:** add support for press event types (onPress, onClick) (DS-5223) ([#397](https://github.com/koobiq/react-components/issues/397)) ([7d9b1ed](https://github.com/koobiq/react-components/commit/7d9b1edbf76ca32de2b63a837e0616bf9e7c6e87))
+
 ## [0.34.1](https://github.com/koobiq/react-components/compare/0.34.0...0.34.1) (2026-06-09)
 
 
