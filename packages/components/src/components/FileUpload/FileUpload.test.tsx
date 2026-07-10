@@ -154,6 +154,22 @@ describe('FileUpload', () => {
     expect(screen.getByText('select a file')).toBeInTheDocument();
   });
 
+  it('keeps the dropzone container out of the tab order', () => {
+    renderComponent();
+
+    expect(
+      screen.getByTestId(ROOT_TEST_ID).querySelector('button')
+    ).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('renders separate file and folder browse links in mixed mode', () => {
+    renderComponent({ allowed: 'mixed', allowsMultiple: true });
+
+    expect(screen.getByText('select files')).toBeInTheDocument();
+    expect(screen.getByText('a folder')).toBeInTheDocument();
+    expect(document.querySelectorAll('input[type="file"]')).toHaveLength(2);
+  });
+
   it('calls onAdd with selected files and renders the external item update', async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
@@ -773,6 +789,17 @@ const dropText = (): DropItem =>
     getText: async () => 'hello',
   }) as unknown as DropItem;
 
+const dropDirectory = (name: string, entries: DropItem[]): DropItem =>
+  ({
+    kind: 'directory',
+    name,
+    getEntries: async function* getEntries() {
+      for (const entry of entries) {
+        yield entry;
+      }
+    },
+  }) as unknown as DropItem;
+
 describe('readDroppedFiles', () => {
   it('extracts native files and ignores non-file drop items', async () => {
     const files = await readDroppedFiles([
@@ -788,5 +815,37 @@ describe('readDroppedFiles', () => {
     const files = await readDroppedFiles([dropText()]);
 
     expect(files).toEqual([]);
+  });
+
+  it('expands a dropped folder into its files', async () => {
+    const files = await readDroppedFiles([
+      dropDirectory('folder', [dropFile('a.txt'), dropFile('b.txt')]),
+    ]);
+
+    expect(files.map((file) => file.name)).toEqual(['a.txt', 'b.txt']);
+  });
+
+  it('expands nested folders recursively and keeps order', async () => {
+    const files = await readDroppedFiles([
+      dropFile('root.txt'),
+      dropDirectory('outer', [
+        dropFile('a.txt'),
+        dropDirectory('inner', [dropFile('b.txt')]),
+      ]),
+    ]);
+
+    expect(files.map((file) => file.name)).toEqual([
+      'root.txt',
+      'a.txt',
+      'b.txt',
+    ]);
+  });
+
+  it('ignores non-file entries inside a dropped folder', async () => {
+    const files = await readDroppedFiles([
+      dropDirectory('folder', [dropFile('a.txt'), dropText()]),
+    ]);
+
+    expect(files.map((file) => file.name)).toEqual(['a.txt']);
   });
 });

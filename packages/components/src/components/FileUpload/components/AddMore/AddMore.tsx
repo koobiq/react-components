@@ -17,10 +17,23 @@ export const FileUploadAddMore = forwardRef<
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
 
-  const { size, messages, isDisabled, isDropTarget, allowsMultiple } =
+  const { size, messages, allowed, isDisabled, isDropTarget, allowsMultiple } =
     useFileUploadContext();
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
+
+  const triggers =
+    allowed === 'mixed' ? (
+      <>
+        <FileUploadTrigger acceptDirectory={false} />
+        {` ${messages.or} `}
+        <FileUploadTrigger acceptDirectory>
+          {messages.browseFolderMixed}
+        </FileUploadTrigger>
+      </>
+    ) : (
+      <FileUploadTrigger />
+    );
 
   return (
     <div
@@ -40,7 +53,7 @@ export const FileUploadAddMore = forwardRef<
             <IconArrowUpFromBracket16 />
           </span>
           <span className={s.text}>
-            {messages.addMore} <FileUploadTrigger />
+            {messages.addMore} {triggers}
           </span>
         </>
       )}

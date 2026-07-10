@@ -9,14 +9,12 @@ import type {
   FileUploadMessages,
   FileUploadPropSize,
   FileUploadPropAllowed,
-  FileUploadPropDirectoryMode,
 } from './types';
 
 export type FileUploadContextValue = {
   allowsMultiple: boolean;
   accept?: string[];
   allowed: FileUploadPropAllowed;
-  directoryMode: FileUploadPropDirectoryMode;
   size: FileUploadPropSize;
   isDisabled: boolean;
   isDropTarget: boolean;

@@ -179,18 +179,31 @@ export const FileUploadEmptyDescription = forwardRef<
   FileUploadEmptyDescriptionProps
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
-  const { messages } = useFileUploadContext();
+  const { messages, allowed } = useFileUploadContext();
   const variant = useContext(EmptyVariantContext);
+
+  const triggers =
+    allowed === 'mixed' ? (
+      <>
+        <FileUploadTrigger acceptDirectory={false} />
+        {` ${messages.or} `}
+        <FileUploadTrigger acceptDirectory>
+          {messages.browseFolderMixed}
+        </FileUploadTrigger>
+      </>
+    ) : (
+      <FileUploadTrigger />
+    );
 
   const content =
     children ??
     (variant === 'large' ? (
       <>
-        {messages.or} <FileUploadTrigger />
+        {messages.or} {triggers}
       </>
     ) : (
       <>
-        {messages.dropHere} {messages.or} <FileUploadTrigger />
+        {messages.dropHere} {messages.or} {triggers}
       </>
     ));
 

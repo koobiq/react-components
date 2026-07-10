@@ -79,7 +79,6 @@ function FileUploadInner<T extends object>({
 }: FileUploadInnerProps<T>) {
   const {
     isInvalid: isInvalidProp = false,
-    directoryMode = 'as-item',
     allowsMultiple = false,
     isDisabled = false,
     allowed = 'file',
@@ -98,6 +97,14 @@ function FileUploadInner<T extends object>({
 
   const domRef = useDOMRef<HTMLDivElement>(rootRef);
   const { CollectionRoot } = useContext(CollectionRendererContext);
+
+  useLayoutEffect(() => {
+    // RAC `DropZone` renders a visually-hidden <button> (its first child) for
+    // keyboard drag-and-drop, which makes the container a tab stop. Koobiq's
+    // keyboard model keeps the container out of the tab order — browse links
+    // and remove buttons are the tab stops — so opt that button out.
+    domRef.current?.querySelector('button')?.setAttribute('tabindex', '-1');
+  });
 
   const [isDropTarget, { on: onDropTarget, off: offDropTarget }] =
     useBoolean(false);
@@ -122,6 +129,7 @@ function FileUploadInner<T extends object>({
       browseFiles: stringFormatter.format('browseFiles'),
       browseFolder: stringFormatter.format('browseFolder'),
       browseFilesOrFolder: stringFormatter.format('browseFilesOrFolder'),
+      browseFolderMixed: stringFormatter.format('browseFolderMixed'),
       removeButtonLabel: stringFormatter.format('removeButtonLabel'),
       uploadingLabel: stringFormatter.format('uploadingLabel'),
       bytes: stringFormatter.format('bytes'),
@@ -203,7 +211,6 @@ function FileUploadInner<T extends object>({
       accept,
       allowed,
       size,
-      directoryMode,
       isDisabled,
       isDropTarget,
       allowsMultiple,
@@ -218,7 +225,6 @@ function FileUploadInner<T extends object>({
       accept,
       allowed,
       size,
-      directoryMode,
       isDisabled,
       isDropTarget,
       allowsMultiple,

@@ -90,11 +90,9 @@ export const Base: Story = {
   },
 };
 
-export const SingleWithSelectedFile: Story = {
+export const Single: Story = {
   render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      makeItem('project_report_2023.docx', 148909),
-    ]);
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
 
     return (
       <FileUpload
@@ -128,102 +126,14 @@ export const SingleWithSelectedFile: Story = {
 
 export const Multiple: Story = {
   render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      makeItem('First.ext', 148909),
-      makeItem('Second.ext', 148909),
-      makeItem('Third.ext', 148909),
-    ]);
-
-    return (
-      <FileUpload
-        items={items}
-        aria-label="Upload files"
-        onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
-        allowsMultiple
-        {...args}
-      >
-        {(item) => (
-          <FileUpload.Item
-            id={item.id}
-            textValue={item.name}
-            isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
-          >
-            <FileUpload.ItemIcon />
-            <FileUpload.ItemContent>
-              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
-            </FileUpload.ItemContent>
-            <FileUpload.RemoveButton />
-          </FileUpload.Item>
-        )}
-      </FileUpload>
-    );
-  },
-};
-
-export const ServerFile: Story = {
-  render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      {
-        id: 'security-scan-report.json',
-        name: 'security-scan-report.json',
-        size: 74,
-        downloadUrl: '/files/security-scan-report.json',
-      },
-    ]);
-
-    return (
-      <FileUpload
-        aria-label="Upload files"
-        items={items}
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
-        onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        allowsMultiple
-        {...args}
-      >
-        {(item) => (
-          <FileUpload.Item id={item.id} textValue={item.name}>
-            <FileUpload.ItemIcon />
-            <FileUpload.ItemContent>
-              <FileUpload.ItemName>
-                {item.downloadUrl ? (
-                  <Link
-                    href={item.downloadUrl}
-                    download={item.name}
-                    variant="inherit"
-                  >
-                    {item.name}
-                  </Link>
-                ) : (
-                  item.name
-                )}
-              </FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
-            </FileUpload.ItemContent>
-            <FileUpload.RemoveButton />
-          </FileUpload.Item>
-        )}
-      </FileUpload>
-    );
-  },
-};
-
-export const MultipleEmpty: Story = {
-  render: function Render(args) {
     const [items, setItems] = useState<FileUploadItemData[]>([]);
 
     return (
       <FileUpload
         items={items}
         aria-label="Upload files"
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         allowsMultiple
         {...args}
       >
@@ -249,56 +159,16 @@ export const MultipleEmpty: Story = {
   },
 };
 
-export const Scrollable: Story = {
-  name: 'Multiple (scrollable list)',
-  render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>(
-      Array.from({ length: 8 }, (_, index) =>
-        makeItem(`document_${index + 1}.pdf`, 148909 * (index + 1))
-      )
-    );
-
-    return (
-      <FileUpload
-        aria-label="Upload files"
-        items={items}
-        slotProps={{ list: { style: { maxBlockSize: 240 } } }}
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
-        onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        allowsMultiple
-        {...args}
-      >
-        {(item) => (
-          <FileUpload.Item
-            id={item.id}
-            textValue={item.name}
-            isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
-          >
-            <FileUpload.ItemIcon />
-            <FileUpload.ItemContent>
-              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
-            </FileUpload.ItemContent>
-            <FileUpload.RemoveButton />
-          </FileUpload.Item>
-        )}
-      </FileUpload>
-    );
-  },
-};
-
-export const CompactEmpty: Story = {
+export const Allowed: Story = {
+  name: 'Selecting a folder or files',
   render: function Render(args) {
     const [items, setItems] = useState<FileUploadItemData[]>([]);
 
     return (
       <FileUpload
         items={items}
-        size="compact"
-        aria-label="Upload files"
+        aria-label="Upload files or a folder"
+        allowed="mixed"
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
         onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         allowsMultiple
@@ -328,17 +198,15 @@ export const CompactEmpty: Story = {
 
 export const Compact: Story = {
   render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      makeItem('project_report_2023.docx', 148909),
-    ]);
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
 
     return (
       <FileUpload
         items={items}
         size="compact"
         aria-label="Upload files"
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         allowsMultiple
         {...args}
       >
@@ -364,29 +232,20 @@ export const Compact: Story = {
   },
 };
 
-export const Validation: Story = {
+export const Scrollable: Story = {
   render: function Render(args) {
-    const MAX_SIZE = 150_000;
-
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      {
-        ...makeItem('presentation.pptx', MAX_SIZE + 1),
-        errorMessage: 'File is too large (max 150 KB)',
-      },
-    ]);
-
-    const validate = (item: FileUploadItemData): FileUploadItemData =>
-      item.size && item.size > MAX_SIZE
-        ? { ...item, errorMessage: 'File is too large (max 150 KB)' }
-        : item;
+    const [items, setItems] = useState<FileUploadItemData[]>(
+      Array.from({ length: 8 }, (_, index) =>
+        makeItem(`document_${index + 1}.pdf`, 148909 * (index + 1))
+      )
+    );
 
     return (
       <FileUpload
         aria-label="Upload files"
         items={items}
-        onAdd={(files) =>
-          setItems((prev) => [...prev, ...files.map(toItem).map(validate)])
-        }
+        slotProps={{ list: { style: { maxBlockSize: 240 } } }}
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
         allowsMultiple
         {...args}
@@ -488,6 +347,55 @@ export const UploadProgress: Story = {
   },
 };
 
+export const Validation: Story = {
+  render: function Render(args) {
+    const MAX_SIZE = 150_000;
+
+    const [items, setItems] = useState<FileUploadItemData[]>([
+      {
+        ...makeItem('presentation.pptx', MAX_SIZE + 1),
+        errorMessage: 'File is too large (max 150 KB)',
+      },
+    ]);
+
+    const validate = (item: FileUploadItemData): FileUploadItemData =>
+      item.size && item.size > MAX_SIZE
+        ? { ...item, errorMessage: 'File is too large (max 150 KB)' }
+        : item;
+
+    return (
+      <FileUpload
+        aria-label="Upload files"
+        items={items}
+        onAdd={(files) =>
+          setItems((prev) => [...prev, ...files.map(toItem).map(validate)])
+        }
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        allowsMultiple
+        {...args}
+      >
+        {(item) => (
+          <FileUpload.Item
+            id={item.id}
+            textValue={item.name}
+            isDisabled={item.isDisabled}
+            isInvalid={Boolean(item.errorMessage)}
+          >
+            <FileUpload.ItemIcon />
+            <FileUpload.ItemContent>
+              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+              {item.size !== undefined && (
+                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+              )}
+            </FileUpload.ItemContent>
+            <FileUpload.RemoveButton />
+          </FileUpload.Item>
+        )}
+      </FileUpload>
+    );
+  },
+};
+
 export const Disabled: Story = {
   render: function Render(args) {
     return (
@@ -540,6 +448,55 @@ export const Invalid: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+              {item.size !== undefined && (
+                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+              )}
+            </FileUpload.ItemContent>
+            <FileUpload.RemoveButton />
+          </FileUpload.Item>
+        )}
+      </FileUpload>
+    );
+  },
+};
+
+export const ServerFile: Story = {
+  render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItemData[]>([
+      {
+        id: 'security-scan-report.json',
+        name: 'security-scan-report.json',
+        size: 74,
+        downloadUrl: '/files/security-scan-report.json',
+      },
+    ]);
+
+    return (
+      <FileUpload
+        aria-label="Upload files"
+        items={items}
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        allowsMultiple
+        {...args}
+      >
+        {(item) => (
+          <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.ItemIcon />
+            <FileUpload.ItemContent>
+              <FileUpload.ItemName>
+                {item.downloadUrl ? (
+                  <Link
+                    href={item.downloadUrl}
+                    download={item.name}
+                    variant="inherit"
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  item.name
+                )}
+              </FileUpload.ItemName>
               {item.size !== undefined && (
                 <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
               )}

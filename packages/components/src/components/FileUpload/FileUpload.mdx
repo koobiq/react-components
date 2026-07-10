@@ -39,7 +39,7 @@ Pass `items` and a render function for a dynamic collection. Pass
 
 FileUpload accepts one file by default.
 
-<Story of={Stories.SingleWithSelectedFile} />
+<Story of={Stories.Single} />
 
 ## Multiple files
 
@@ -47,31 +47,15 @@ Use `allowsMultiple` to add several files.
 
 <Story of={Stories.Multiple} />
 
-An empty collection shows the default drop area.
+## Selecting a folder or files
 
-<Story of={Stories.MultipleEmpty} />
+The component can be configured to allow selecting only files, only folders, or files and folders.
 
-## Server file
-
-Render server files as download links. Newly selected files can use the same
-collection.
-
-<Story of={Stories.ServerFile} />
-
-## Customization
-
-Use `renderEmptyState` and `renderAddMore` to replace the default areas. Custom
-`FileUpload.Empty` children are rendered as provided.
-
-<Story of={Stories.CustomContent} />
+<Story of={Stories.Allowed} />
 
 ## Compact
 
 Use `size="compact"` for a smaller empty state.
-
-<Story of={Stories.CompactEmpty} />
-
-The populated state keeps the standard item layout.
 
 <Story of={Stories.Compact} />
 
@@ -105,6 +89,20 @@ Use `isDisabled` to disable the whole component.
 Use `isInvalid` for a container-level validation error.
 
 <Story of={Stories.Invalid} />
+
+## Server file
+
+Render server files as download links. Newly selected files can use the same
+collection.
+
+<Story of={Stories.ServerFile} />
+
+## Customization
+
+Use `renderEmptyState` and `renderAddMore` to replace the default areas. Custom
+`FileUpload.Empty` children are rendered as provided.
+
+<Story of={Stories.CustomContent} />
 
 ## Accessibility
 

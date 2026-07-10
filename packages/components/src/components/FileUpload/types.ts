@@ -23,11 +23,6 @@ export const fileUploadPropAllowed = ['file', 'folder', 'mixed'] as const;
 
 export type FileUploadPropAllowed = (typeof fileUploadPropAllowed)[number];
 
-export const fileUploadPropDirectoryMode = ['as-item', 'contents'] as const;
-
-export type FileUploadPropDirectoryMode =
-  (typeof fileUploadPropDirectoryMode)[number];
-
 /** Localizable strings used by `FileUpload` (aria labels, size units, captions). */
 export type FileUploadMessages = {
   dropHere: string;
@@ -37,6 +32,7 @@ export type FileUploadMessages = {
   browseFiles: string;
   browseFolder: string;
   browseFilesOrFolder: string;
+  browseFolderMixed: string;
   addMore: string;
   removeButtonLabel: string;
   uploadingLabel: string;
@@ -80,11 +76,6 @@ type FileUploadBaseProps<T extends object> = {
    * @default 'file'
    */
   allowed?: FileUploadPropAllowed;
-  /**
-   * When a folder is selected, add it as a single item or expand its contents.
-   * @default 'as-item'
-   */
-  directoryMode?: FileUploadPropDirectoryMode;
   /**
    * The layout size.
    * @default 'default'
@@ -158,6 +149,11 @@ export type FileUploadTriggerProps = {
    * component. Defaults to a localized string rendered as a link.
    */
   children?: ReactNode;
+  /**
+   * Open the folder picker (`webkitdirectory`) instead of the file picker.
+   * @default allowed === 'folder'
+   */
+  acceptDirectory?: boolean;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

@@ -45,11 +45,6 @@
   }
 }
 
-.base[data-focus-visible] {
-  outline: 2px solid var(--kbq-states-line-focus-theme);
-  outline-offset: -1px;
-}
-
 .base[data-drop-target] {
   --file-upload-container-border-color: var(--kbq-line-theme-fade);
   --file-upload-container-background: var(--kbq-background-theme-fade);

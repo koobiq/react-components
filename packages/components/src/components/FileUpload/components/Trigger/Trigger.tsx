@@ -24,7 +24,13 @@ export const FileUploadTrigger = forwardRef<
   HTMLInputElement,
   FileUploadTriggerProps
 >((props, ref) => {
-  const { children, className, style, 'data-testid': testId } = props;
+  const {
+    children,
+    className,
+    style,
+    acceptDirectory,
+    'data-testid': testId,
+  } = props;
 
   const {
     accept,
@@ -36,8 +42,17 @@ export const FileUploadTrigger = forwardRef<
     setTriggerRef,
   } = useFileUploadContext();
 
+  const isDirectory = acceptDirectory ?? allowed === 'folder';
+
   const label =
-    children ?? resolveBrowseText(allowed, allowsMultiple, messages);
+    children ??
+    (acceptDirectory === undefined
+      ? resolveBrowseText(allowed, allowsMultiple, messages)
+      : isDirectory
+        ? messages.browseFolder
+        : allowsMultiple
+          ? messages.browseFiles
+          : messages.browseFile);
 
   const customTrigger = isValidElement<CustomTriggerProps>(children)
     ? cloneElement(children, {
@@ -51,7 +66,7 @@ export const FileUploadTrigger = forwardRef<
       ref={ref}
       acceptedFileTypes={accept}
       allowsMultiple={allowsMultiple}
-      acceptDirectory={allowed === 'folder'}
+      acceptDirectory={isDirectory}
       onSelect={(files) => {
         if (files) {
           addFiles(Array.from(files));
