@@ -134,7 +134,6 @@ export {
   Tree,
   Provider,
   TreeItem,
-  DropZone,
   TreeContext,
   Collection,
   FileTrigger,

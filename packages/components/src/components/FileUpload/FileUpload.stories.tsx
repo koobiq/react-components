@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import type { Key } from '@koobiq/react-core';
+import { type Key, useBoolean } from '@koobiq/react-core';
 import { IconBoxArchive24 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -9,6 +9,8 @@ import { Button } from '../Button';
 import { spacing } from '../layout';
 import { Link } from '../Link';
 import { ProgressSpinner } from '../ProgressSpinner';
+import { Toggle } from '../Toggle';
+import { Typography } from '../Typography';
 
 import { FileUpload } from './FileUpload';
 import type { FileUploadProps } from './types';
@@ -456,6 +458,54 @@ export const Invalid: Story = {
           </FileUpload.Item>
         )}
       </FileUpload>
+    );
+  },
+};
+
+export const DropzoneTarget: Story = {
+  name: 'Drop zone target',
+  render: function Render(args) {
+    const dropTargetRef = useRef<HTMLDivElement>(null);
+    const [isFullscreen, { set: setFullscreen }] = useBoolean(false);
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
+
+    return (
+      <div ref={dropTargetRef} className={spacing({ p: 'm' })}>
+        <Toggle
+          isSelected={isFullscreen}
+          onChange={setFullscreen}
+          className={spacing({ mbe: 'm' })}
+        >
+          Activate fullscreen dropzone
+        </Toggle>
+        <Typography style={{ marginBlockEnd: '1em' }}>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum iure
+          molestiae perferendis provident quod repudiandae. Ab fugiat itaque
+          nihil officia.
+        </Typography>
+        <FileUpload
+          items={items}
+          aria-label="Upload files"
+          dropzoneTarget={isFullscreen ? 'fullscreen' : dropTargetRef}
+          onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+          onRemove={(id) => setItems((prev) => removeById(prev, id))}
+          allowsMultiple
+          {...args}
+        >
+          {(item) => (
+            <FileUpload.Item id={item.id} textValue={item.name}>
+              <FileUpload.ItemIcon />
+              <FileUpload.ItemContent>
+                <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+                {item.size !== undefined && (
+                  <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+                )}
+              </FileUpload.ItemContent>
+              <FileUpload.RemoveButton />
+            </FileUpload.Item>
+          )}
+        </FileUpload>
+      </div>
     );
   },
 };

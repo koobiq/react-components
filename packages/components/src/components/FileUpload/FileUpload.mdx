@@ -90,6 +90,14 @@ Use `isInvalid` for a container-level validation error.
 
 <Story of={Stories.Invalid} />
 
+## Drop zone target
+
+By default, the drop area is inside the component.
+Pass an element ref to `dropzoneTarget` to use another container,
+or `"fullscreen"` to make the whole screen the drop area.
+
+<Story of={Stories.DropzoneTarget} />
+
 ## Server file
 
 Render server files as download links. Newly selected files can use the same

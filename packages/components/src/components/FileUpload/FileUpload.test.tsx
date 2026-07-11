@@ -2,7 +2,6 @@ import { createRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
 import type { Key } from '@koobiq/react-core';
-import type { DropItem } from '@koobiq/react-primitives';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -11,9 +10,9 @@ import { Button } from '../Button';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Provider } from '../Provider';
 
+import { readDroppedFiles } from './hooks';
 import { FileUpload } from './index';
 import type { FileUploadProps } from './index';
-import { readDroppedFiles } from './utils';
 
 const ROOT_TEST_ID = 'file-upload';
 
@@ -68,6 +67,8 @@ const renderItem = (item: FileUploadItemData) => (
 
 const getFileInput = () =>
   document.querySelector('input[type="file"]') as HTMLInputElement;
+
+const getDropOverlay = () => document.querySelector('[data-slot="overlay"]');
 
 type TestFileUploadProps = Omit<
   FileUploadProps<FileUploadItemData>,
@@ -154,12 +155,13 @@ describe('FileUpload', () => {
     expect(screen.getByText('select a file')).toBeInTheDocument();
   });
 
-  it('keeps the dropzone container out of the tab order', () => {
+  it('does not add a hidden drop button or a root tab stop', () => {
     renderComponent();
 
-    expect(
-      screen.getByTestId(ROOT_TEST_ID).querySelector('button')
-    ).toHaveAttribute('tabindex', '-1');
+    const root = screen.getByTestId(ROOT_TEST_ID);
+
+    expect(root).not.toHaveAttribute('tabindex');
+    expect(root.querySelector('button')).not.toBeInTheDocument();
   });
 
   it('renders separate file and folder browse links in mixed mode', () => {
@@ -182,6 +184,263 @@ describe('FileUpload', () => {
     expect(onAdd).toHaveBeenCalledWith([file]);
     expect(screen.getByText('hello.txt')).toBeInTheDocument();
     expect(screen.queryByText('select a file')).not.toBeInTheDocument();
+  });
+
+  it('uses the root as the default drop target', () => {
+    renderComponent();
+
+    const root = screen.getByTestId(ROOT_TEST_ID);
+    const child = screen.getByText('select a file');
+    const dataTransfer = createDataTransfer([dropFile('a.txt')]);
+
+    fireEvent.dragEnter(root, { dataTransfer });
+    fireEvent.dragEnter(child, { dataTransfer });
+    fireEvent.dragLeave(child, { dataTransfer });
+
+    expect(root).toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).not.toBeInTheDocument();
+
+    fireEvent.dragLeave(root, { dataTransfer });
+
+    expect(root).not.toHaveAttribute('data-drop-target');
+  });
+
+  it('uses an external element as the only drop target', async () => {
+    const targetRef = createRef<HTMLDivElement>();
+    const onAdd = vi.fn();
+
+    render(
+      <>
+        <div ref={targetRef} data-testid="external-target" />
+        <TestFileUpload dropzoneTarget={targetRef} onAdd={onAdd} />
+      </>
+    );
+
+    const root = screen.getByTestId(ROOT_TEST_ID);
+    const target = screen.getByTestId('external-target');
+    const file = makeFile('external.txt');
+    const dataTransfer = createDataTransfer([dropFile(file)]);
+
+    vi.spyOn(target, 'getBoundingClientRect').mockReturnValue({
+      top: 10,
+      left: 20,
+      width: 300,
+      height: 200,
+    } as DOMRect);
+
+    fireEvent.dragEnter(root, { dataTransfer });
+
+    expect(root).not.toHaveAttribute('data-drop-target');
+    expect(target).not.toHaveAttribute('data-drop-target');
+
+    fireEvent.dragEnter(target, { dataTransfer });
+
+    expect(target).toHaveAttribute('data-drop-target');
+    expect(root).not.toHaveAttribute('data-drop-target');
+
+    expect(getDropOverlay()).toHaveStyle({
+      top: '10px',
+      left: '20px',
+      width: '300px',
+      height: '200px',
+    });
+
+    expect(getDropOverlay()).not.toHaveAttribute('data-fullscreen');
+
+    fireEvent.drop(target, { dataTransfer });
+
+    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([file]));
+    expect(target).not.toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).not.toBeInTheDocument();
+  });
+
+  it('renders non-interactive empty content in the external drop overlay', () => {
+    const targetRef = createRef<HTMLDivElement>();
+
+    render(
+      <>
+        <div ref={targetRef} data-testid="external-target" />
+        <FileUpload
+          aria-label="upload"
+          items={[makeItem('existing.txt')]}
+          dropzoneTarget={targetRef}
+        >
+          {renderItem}
+        </FileUpload>
+      </>
+    );
+
+    fireEvent.dragEnter(screen.getByTestId('external-target'), {
+      dataTransfer: createDataTransfer([dropFile('a.txt')]),
+    });
+
+    expect(getDropOverlay()).toHaveTextContent('Drag here');
+
+    expect(
+      getDropOverlay()?.querySelector('input[type="file"]')
+    ).not.toBeInTheDocument();
+  });
+
+  it('covers the viewport in fullscreen mode', () => {
+    const dataTransfer = createDataTransfer([dropFile('a.txt')]);
+
+    renderComponent({ dropzoneTarget: 'fullscreen' });
+
+    fireEvent.dragEnter(document.documentElement, { dataTransfer });
+
+    expect(document.documentElement).toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).toHaveAttribute('data-fullscreen');
+
+    expect(getDropOverlay()).toHaveStyle({
+      top: '0px',
+      left: '0px',
+      width: `${window.innerWidth}px`,
+      height: `${window.innerHeight}px`,
+    });
+
+    fireEvent.dragLeave(document.documentElement, { dataTransfer });
+
+    expect(document.documentElement).not.toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).not.toBeInTheDocument();
+  });
+
+  it('moves native listeners when the external target changes', () => {
+    const firstTargetRef = createRef<HTMLDivElement>();
+    const secondTargetRef = createRef<HTMLDivElement>();
+
+    const { rerender } = render(
+      <>
+        <div ref={firstTargetRef} data-testid="first-target" />
+        <div ref={secondTargetRef} data-testid="second-target" />
+        <TestFileUpload dropzoneTarget={firstTargetRef} />
+      </>
+    );
+
+    const firstTarget = screen.getByTestId('first-target');
+    const secondTarget = screen.getByTestId('second-target');
+    const dataTransfer = createDataTransfer([dropFile('a.txt')]);
+
+    fireEvent.dragEnter(firstTarget, { dataTransfer });
+    expect(firstTarget).toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).toBeInTheDocument();
+
+    rerender(
+      <>
+        <div ref={firstTargetRef} data-testid="first-target" />
+        <div ref={secondTargetRef} data-testid="second-target" />
+        <TestFileUpload dropzoneTarget={secondTargetRef} />
+      </>
+    );
+
+    expect(firstTarget).not.toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).not.toBeInTheDocument();
+
+    fireEvent.dragEnter(secondTarget, { dataTransfer });
+    expect(secondTarget).toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).toBeInTheDocument();
+  });
+
+  it('limits dropped files in single mode and keeps all in multiple mode', async () => {
+    const singleOnAdd = vi.fn();
+    const multipleOnAdd = vi.fn();
+    const first = makeFile('first.txt');
+    const second = makeFile('second.txt');
+
+    const { unmount } = renderComponent({ onAdd: singleOnAdd });
+    let root = screen.getByTestId(ROOT_TEST_ID);
+    let dataTransfer = createDataTransfer([dropFile(first), dropFile(second)]);
+
+    fireEvent.drop(root, { dataTransfer });
+
+    await waitFor(() => expect(singleOnAdd).toHaveBeenCalledWith([first]));
+
+    unmount();
+    renderComponent({ allowsMultiple: true, onAdd: multipleOnAdd });
+    root = screen.getByTestId(ROOT_TEST_ID);
+    dataTransfer = createDataTransfer([dropFile(first), dropFile(second)]);
+
+    fireEvent.drop(root, { dataTransfer });
+
+    await waitFor(() =>
+      expect(multipleOnAdd).toHaveBeenCalledWith([first, second])
+    );
+  });
+
+  it('adds files from a dropped nested folder', async () => {
+    const onAdd = vi.fn();
+    const first = makeFile('a.txt');
+    const second = makeFile('b.txt');
+
+    renderComponent({ allowsMultiple: true, onAdd });
+
+    const dataTransfer = createDataTransfer([
+      dropDirectory('outer', [
+        fileEntry(first),
+        directoryEntry('inner', [fileEntry(second)]),
+      ]),
+    ]);
+
+    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), { dataTransfer });
+
+    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([first, second]));
+  });
+
+  it('ignores disabled and non-file drags', () => {
+    const onAdd = vi.fn();
+    const { rerender } = render(<TestFileUpload isDisabled onAdd={onAdd} />);
+    const root = screen.getByTestId(ROOT_TEST_ID);
+    const fileTransfer = createDataTransfer([dropFile('disabled.txt')]);
+
+    fireEvent.dragEnter(root, { dataTransfer: fileTransfer });
+    fireEvent.drop(root, { dataTransfer: fileTransfer });
+
+    expect(root).not.toHaveAttribute('data-drop-target');
+    expect(onAdd).not.toHaveBeenCalled();
+
+    rerender(<TestFileUpload onAdd={onAdd} />);
+
+    const textTransfer = createDataTransfer([dropText()]);
+
+    fireEvent.dragEnter(root, { dataTransfer: textTransfer });
+    fireEvent.drop(root, { dataTransfer: textTransfer });
+
+    expect(root).not.toHaveAttribute('data-drop-target');
+    expect(onAdd).not.toHaveBeenCalled();
+  });
+
+  it('clears the active target when the drag is cancelled', () => {
+    renderComponent();
+
+    const root = screen.getByTestId(ROOT_TEST_ID);
+    const dataTransfer = createDataTransfer([dropFile('a.txt')]);
+
+    fireEvent.dragEnter(root, { dataTransfer });
+    expect(root).toHaveAttribute('data-drop-target');
+
+    fireEvent.dragEnd(window);
+    expect(root).not.toHaveAttribute('data-drop-target');
+  });
+
+  it('cleans an external target on unmount', () => {
+    const targetRef = createRef<HTMLDivElement>();
+
+    const { unmount } = render(
+      <>
+        <div ref={targetRef} data-testid="external-target" />
+        <TestFileUpload dropzoneTarget={targetRef} />
+      </>
+    );
+
+    const target = screen.getByTestId('external-target');
+    const dataTransfer = createDataTransfer([dropFile('a.txt')]);
+
+    fireEvent.dragEnter(target, { dataTransfer });
+    expect(target).toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).toBeInTheDocument();
+
+    unmount();
+    expect(target).not.toHaveAttribute('data-drop-target');
+    expect(getDropOverlay()).not.toBeInTheDocument();
   });
 
   it('formats file size in item rows', () => {
@@ -773,66 +1032,130 @@ describe('FileUpload', () => {
   });
 });
 
-const dropFile = (name: string): DropItem =>
+const fileEntry = (file: File): FileSystemFileEntry =>
+  ({
+    name: file.name,
+    isFile: true,
+    isDirectory: false,
+    file: (resolve: FileCallback) => resolve(file),
+  }) as unknown as FileSystemFileEntry;
+
+const directoryEntry = (
+  name: string,
+  entries: FileSystemEntry[],
+  batchSize = entries.length || 1
+): FileSystemDirectoryEntry =>
+  ({
+    name,
+    isFile: false,
+    isDirectory: true,
+    createReader: () => {
+      let offset = 0;
+
+      return {
+        readEntries: (resolve: FileSystemEntriesCallback) => {
+          const batch = entries.slice(offset, offset + batchSize);
+
+          offset += batch.length;
+          resolve(batch);
+        },
+      };
+    },
+  }) as unknown as FileSystemDirectoryEntry;
+
+const dropFile = (value: string | File): DataTransferItem => {
+  const file = typeof value === 'string' ? makeFile(value) : value;
+
+  return {
+    kind: 'file',
+    type: file.type,
+    getAsFile: () => file,
+    getAsString: () => undefined,
+    webkitGetAsEntry: () => fileEntry(file),
+  } as DataTransferItem;
+};
+
+const dropText = (): DataTransferItem =>
+  ({
+    kind: 'string',
+    type: 'text/plain',
+    getAsFile: () => null,
+    getAsString: () => undefined,
+    webkitGetAsEntry: () => null,
+  }) as DataTransferItem;
+
+const dropDirectory = (
+  name: string,
+  entries: FileSystemEntry[],
+  batchSize?: number
+): DataTransferItem =>
   ({
     kind: 'file',
-    type: 'text/plain',
-    name,
-    getFile: async () => makeFile(name),
-    getText: async () => '',
-  }) as unknown as DropItem;
+    type: '',
+    getAsFile: () => null,
+    getAsString: () => undefined,
+    webkitGetAsEntry: () => directoryEntry(name, entries, batchSize),
+  }) as DataTransferItem;
 
-const dropText = (): DropItem =>
-  ({
-    kind: 'text',
-    types: new Set(['text/plain']),
-    getText: async () => 'hello',
-  }) as unknown as DropItem;
+const createDataTransfer = (
+  items: DataTransferItem[],
+  fallbackFiles = items.flatMap((item) => {
+    const file = item.getAsFile();
 
-const dropDirectory = (name: string, entries: DropItem[]): DropItem =>
+    return file ? [file] : [];
+  })
+): DataTransfer =>
   ({
-    kind: 'directory',
-    name,
-    getEntries: async function* getEntries() {
-      for (const entry of entries) {
-        yield entry;
-      }
-    },
-  }) as unknown as DropItem;
+    items,
+    files: fallbackFiles,
+    types: items.some((item) => item.kind === 'file')
+      ? ['Files']
+      : ['text/plain'],
+    dropEffect: 'none',
+  }) as unknown as DataTransfer;
 
 describe('readDroppedFiles', () => {
   it('extracts native files and ignores non-file drop items', async () => {
-    const files = await readDroppedFiles([
-      dropFile('a.txt'),
-      dropText(),
-      dropFile('b.txt'),
-    ]);
+    const files = await readDroppedFiles(
+      createDataTransfer([dropFile('a.txt'), dropText(), dropFile('b.txt')])
+    );
 
     expect(files.map((file) => file.name)).toEqual(['a.txt', 'b.txt']);
   });
 
   it('returns an empty array when there are no files', async () => {
-    const files = await readDroppedFiles([dropText()]);
+    const files = await readDroppedFiles(createDataTransfer([dropText()]));
 
     expect(files).toEqual([]);
   });
 
   it('expands a dropped folder into its files', async () => {
-    const files = await readDroppedFiles([
-      dropDirectory('folder', [dropFile('a.txt'), dropFile('b.txt')]),
-    ]);
+    const files = await readDroppedFiles(
+      createDataTransfer([
+        dropDirectory('folder', [
+          fileEntry(makeFile('a.txt')),
+          fileEntry(makeFile('b.txt')),
+        ]),
+      ])
+    );
 
     expect(files.map((file) => file.name)).toEqual(['a.txt', 'b.txt']);
   });
 
   it('expands nested folders recursively and keeps order', async () => {
-    const files = await readDroppedFiles([
-      dropFile('root.txt'),
-      dropDirectory('outer', [
-        dropFile('a.txt'),
-        dropDirectory('inner', [dropFile('b.txt')]),
-      ]),
-    ]);
+    const files = await readDroppedFiles(
+      createDataTransfer([
+        dropFile('root.txt'),
+        dropDirectory(
+          'outer',
+          [
+            fileEntry(makeFile('a.txt')),
+            directoryEntry('inner', [fileEntry(makeFile('b.txt'))]),
+          ],
+          1
+        ),
+      ])
+    );
 
     expect(files.map((file) => file.name)).toEqual([
       'root.txt',
@@ -842,10 +1165,22 @@ describe('readDroppedFiles', () => {
   });
 
   it('ignores non-file entries inside a dropped folder', async () => {
-    const files = await readDroppedFiles([
-      dropDirectory('folder', [dropFile('a.txt'), dropText()]),
-    ]);
+    const files = await readDroppedFiles(
+      createDataTransfer([
+        dropDirectory('folder', [
+          fileEntry(makeFile('a.txt')),
+          { isFile: false, isDirectory: false } as FileSystemEntry,
+        ]),
+      ])
+    );
 
     expect(files.map((file) => file.name)).toEqual(['a.txt']);
+  });
+
+  it('falls back to DataTransfer.files when items are unavailable', async () => {
+    const fallbackFiles = [makeFile('a.txt'), makeFile('b.txt')];
+    const files = await readDroppedFiles(createDataTransfer([], fallbackFiles));
+
+    expect(files).toEqual(fallbackFiles);
   });
 });

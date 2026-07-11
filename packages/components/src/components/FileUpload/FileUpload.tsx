@@ -18,13 +18,11 @@ import type {
 import {
   clsx,
   useDOMRef,
-  useBoolean,
   useKeyedRefs,
   useNumberFormatter,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import {
-  DropZone,
   Collection,
   CollectionBuilder,
   CollectionRendererContext,
@@ -47,16 +45,17 @@ import {
   FileUploadTrigger,
   FileUploadEmptyDescription,
 } from './components';
+import { FileUploadDropTargetOverlay } from './components/DropTargetOverlay';
 import s from './FileUpload.module.css';
 import type { FileUploadContextValue } from './FileUploadContext';
 import { FileUploadContext } from './FileUploadContext';
+import { useFileDropTarget } from './hooks';
 import intlMessages from './intl';
 import type {
   FileUploadComponent,
   FileUploadMessages,
   FileUploadProps,
 } from './types';
-import { readDroppedFiles } from './utils';
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -89,6 +88,7 @@ function FileUploadInner<T extends object>({
     onRemove,
     className,
     slotProps,
+    dropzoneTarget,
     renderAddMore,
     renderEmptyState,
     'data-testid': testId,
@@ -97,17 +97,6 @@ function FileUploadInner<T extends object>({
 
   const domRef = useDOMRef<HTMLDivElement>(rootRef);
   const { CollectionRoot } = useContext(CollectionRendererContext);
-
-  useLayoutEffect(() => {
-    // RAC `DropZone` renders a visually-hidden <button> (its first child) for
-    // keyboard drag-and-drop, which makes the container a tab stop. Koobiq's
-    // keyboard model keeps the container out of the tab order — browse links
-    // and remove buttons are the tab stops — so opt that button out.
-    domRef.current?.querySelector('button')?.setAttribute('tabindex', '-1');
-  });
-
-  const [isDropTarget, { on: onDropTarget, off: offDropTarget }] =
-    useBoolean(false);
 
   const isEmpty = collection.size === 0;
 
@@ -172,6 +161,13 @@ function FileUploadInner<T extends object>({
     },
     [isDisabled, allowsMultiple, onAdd]
   );
+
+  const isDropTarget = useFileDropTarget({
+    rootRef: domRef,
+    dropzoneTarget,
+    isDisabled,
+    onDrop: addFiles,
+  });
 
   const removeItem = useCallback(
     (id: Key) => {
@@ -238,31 +234,26 @@ function FileUploadInner<T extends object>({
   );
 
   const { className: listClassName, ...listProps } = slotProps?.list ?? {};
+  const isFullscreen = dropzoneTarget === 'fullscreen';
+
+  const overlayTarget =
+    dropzoneTarget === 'fullscreen'
+      ? (domRef.current?.ownerDocument.documentElement ?? null)
+      : (dropzoneTarget?.current ?? null);
 
   return (
     <FileUploadContext.Provider value={contextValue}>
-      <DropZone
+      <div
         {...other}
         ref={domRef}
         style={style}
-        isDisabled={isDisabled}
         data-size={size}
         data-testid={testId}
         data-empty={isEmpty || undefined}
+        data-disabled={isDisabled || undefined}
         data-invalid={isInvalidProp || undefined}
         data-multiple={allowsMultiple || undefined}
-        data-drop-target={isDropTarget || undefined}
         className={clsx(s.base, s[size], textNormal, className)}
-        getDropOperation={() => 'copy'}
-        onDropEnter={onDropTarget}
-        onDropExit={offDropTarget}
-        onDrop={async (event) => {
-          offDropTarget();
-
-          const files = await readDroppedFiles(event.items);
-
-          addFiles(files);
-        }}
       >
         {isEmpty ? (
           renderEmptyState ? (
@@ -283,7 +274,18 @@ function FileUploadInner<T extends object>({
               (renderAddMore ? renderAddMore() : <FileUploadAddMore />)}
           </>
         )}
-      </DropZone>
+      </div>
+      {overlayTarget && isDropTarget && (
+        <FileUploadDropTargetOverlay
+          target={overlayTarget}
+          isFullscreen={isFullscreen}
+        >
+          <FileUploadEmpty>
+            <FileUploadEmptyIcon />
+            <FileUploadEmptyTitle />
+          </FileUploadEmpty>
+        </FileUploadDropTargetOverlay>
+      )}
     </FileUploadContext.Provider>
   );
 }
