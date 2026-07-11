@@ -1,0 +1,22 @@
+{
+  "en-US": {
+    "remove": "Remove",
+    "dropzoneTitle": "Drag here"
+  },
+  "ru-RU": {
+    "remove": "Удалить",
+    "dropzoneTitle": "Перетащите сюда"
+  },
+  "pt-BR": {
+    "remove": "Remover",
+    "dropzoneTitle": "Carregar arquivos"
+  },
+  "es-LA": {
+    "remove": "Eliminar",
+    "dropzoneTitle": "Cargue los archivos"
+  },
+  "tk-TM": {
+    "remove": "Aýyrmak",
+    "dropzoneTitle": "Faýl ýükläň"
+  }
+}

@@ -1,0 +1,116 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kbq-size-xs);
+  inline-size: 100%;
+}
+
+.dropArea {
+  display: flex;
+  flex-direction: var(--fileupload-drop-direction, row);
+  align-items: var(--fileupload-drop-align, center);
+  justify-content: var(--fileupload-drop-justify, flex-start);
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: var(--fileupload-drop-min-block-size, 44px);
+
+  /* Container padding subtracts the border width so the dashed border never
+     shifts the content (mirrors the Angular `calc(padding - border-width)`). */
+  padding-block: var(
+    --fileupload-drop-padding-block,
+    calc(var(--kbq-size-m) - 1px)
+  );
+  padding-inline: var(
+    --fileupload-drop-padding-inline,
+    calc(var(--kbq-size-l) - 1px)
+  );
+  border: 1px dashed var(--kbq-line-contrast-fade);
+  border-radius: var(--kbq-size-s);
+  background-color: var(--kbq-background-bg);
+  transition:
+    border-color 100ms ease-in-out,
+    background-color 100ms ease-in-out;
+}
+
+.dropArea[data-invalid] {
+  border-color: var(--kbq-line-error, var(--kbq-foreground-error));
+  background-color: var(--kbq-background-error-less);
+}
+
+.dropArea[data-dragover] {
+  border-color: var(--kbq-line-theme-fade);
+  background-color: var(--kbq-background-theme-fade);
+}
+
+.dropArea[data-disabled] {
+  cursor: not-allowed;
+  border-color: var(--kbq-states-line-disabled);
+  background-color: var(--kbq-states-background-disabled);
+}
+
+.dropArea[data-disabled] .dropzone,
+.dropArea[data-disabled] .caption,
+.dropArea[data-disabled] .captionText {
+  color: var(--kbq-states-foreground-disabled);
+}
+
+.dropArea[data-disabled] .dropzoneIcon {
+  color: var(--kbq-states-icon-disabled);
+}
+
+.dropzone {
+  display: flex;
+  align-items: baseline;
+  gap: var(--kbq-size-s);
+  color: var(--kbq-foreground-contrast);
+}
+
+.dropzoneIcon {
+  flex-shrink: 0;
+  color: var(
+    --kbq-icon-contrast-fade,
+    var(--kbq-foreground-contrast-secondary)
+  );
+}
+
+.caption {
+  color: var(--kbq-foreground-contrast);
+}
+
+.captionText {
+  color: var(--kbq-foreground-contrast);
+}
+
+.browseLink {
+  cursor: pointer;
+  color: var(--kbq-foreground-theme, var(--kbq-foreground-contrast));
+  text-decoration: none;
+}
+
+.browseLink:hover {
+  text-decoration: underline;
+}
+
+.browseLink:has(input:focus-visible) {
+  border-radius: var(--kbq-size-xxs);
+  outline: 2px solid var(--kbq-states-focus-color, currentColor);
+  outline-offset: 2px;
+  text-decoration: underline;
+}
+
+.browseLinkDisabled {
+  cursor: not-allowed;
+  color: var(--kbq-states-foreground-disabled);
+}
+
+.browseLinkDisabled:hover {
+  text-decoration: none;
+}
+
+.hint {
+  color: var(--kbq-foreground-contrast-secondary);
+}
+
+.error {
+  color: var(--kbq-foreground-error);
+}

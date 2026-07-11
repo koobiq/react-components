@@ -1,0 +1,284 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './FileUpload.stories';
+
+<Meta of={Stories} />
+
+# FileUpload
+
+<Status variant="experimental" />
+
+Allows the user to upload files to the product. It ships as two components:
+`SingleFileUpload` (holds at most one file) and `MultipleFileUpload` (an ordered
+list of files). Files can be dragged into the upload area or picked through the
+system dialog; dropped folders are expanded recursively and each file is stamped
+with its `fullPath`.
+
+Validation is **external**: the component never filters, dedupes, or limits
+files, and `accept` is only forwarded to the native input as a browse hint — it
+is _not_ enforced on drop. Use the shipped helpers (`maxFileSize`,
+`isCorrectExtension`) in your `onChange`.
+
+## Import
+
+```tsx
+import { SingleFileUpload, MultipleFileUpload } from '@koobiq/react-components';
+```
+
+## Usage
+
+Selecting or dropping a file replaces the current one; removing it clears the
+value. A custom `icon` can mark the selected file (for example, for images), and
+`showFileSize={false}` hides the size for the single uploader.
+
+<Story of={Stories.Overview} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Multiple upload
+
+Multiple files can be dragged into the upload area or selected via the system
+dialog. Files are appended in selection order (duplicates allowed) and removed by
+index; the list exposes native `list` / `listitem` semantics.
+
+<Story of={Stories.Multiple} />
+<Story of={Stories.MultipleWithFiles} />
+
+### Compact variant
+
+For the multiple uploader, a compact view is available when it is empty.
+
+<Story of={Stories.MultipleCompact} />
+
+## File size
+
+When uploading multiple files, their size is always shown in the list. For the
+single uploader, displaying the file size is configured separately via
+`showFileSize` (on by default). Sizes are formatted with SI units, matching the
+Angular `KbqDataSizePipe`.
+
+<Story of={Stories.SingleWithSize} />
+
+## Icon for selected file
+
+Selected files can be given a custom icon — a static `icon` for the single
+uploader, or a per-row `renderFileIcon` for the multiple one.
+
+<Story of={Stories.MultipleCustomIcon} />
+
+## Selecting folders or files
+
+`allowed` selects the browse links and captions: `file` (default), `folder`
+(`webkitdirectory`), or `mixed` (both a file and a folder link).
+
+<Story of={Stories.AllowedTypes} />
+
+## Disabled state
+
+In the disabled state the component does not receive focus and drag-and-drop
+does not work.
+
+<Story of={Stories.MultipleDisabled} />
+
+## Error
+
+Ship `isInvalid` + `errorMessage`, and optionally a `shouldShowError` predicate
+(`showErrorOnTouched` (default), `showErrorOnSubmit`, `showErrorRequiredOnSubmit`,
+`showErrorOnDirty`). In the multiple uploader, mark the offending rows with the
+item `hasError` flag — the invalid items are highlighted and the error message is
+shown below the control.
+
+<Story of={Stories.MultipleError} />
+<Story of={Stories.MultipleErrorFilled} />
+
+## Height of the selected items list
+
+By default the list grows with the number of files. To cap it — after which the
+list scrolls — set the `--fileupload-list-max-block-size` custom property via
+`slotProps.dropArea`.
+
+<Story of={Stories.MultipleMaxHeight} />
+
+You can also give the uploader a fixed height via `slotProps.dropArea`.
+
+<Story of={Stories.MultipleFixedHeight} />
+
+## Full-screen file uploader
+
+Set `fullScreenDropzone` (a boolean, or a `DropzoneData` object to configure the
+title/caption/size). While active, the inline drop area is disabled and a
+full-viewport overlay opens whenever a file is dragged over the document;
+dropping adds the files and closes the overlay.
+
+<Story of={Stories.FullScreenDropzone} />
+
+## Upload area
+
+The drop area does not have to be the whole screen or the uploader itself — it
+can be a separate region of the page. Give the upload a `dropTargetRef` and
+connect a `LocalDropzone` to it; dragging over the host opens an overlay
+positioned over it and routes the drop into the connected component.
+
+```tsx
+const target = useRef<FileUploadDropTarget>(null);
+
+<MultipleFileUpload dropTargetRef={target} />
+<LocalDropzone connectedTo={target}>
+  <YourHostRegion />
+</LocalDropzone>;
+```
+
+<Story of={Stories.ConnectedLocalDropzone} />
+
+## Localization
+
+Captions ship for `en-US`, `ru-RU`, `pt-BR`, `es-LA` and `tk-TM`. Wrapping a
+subtree in an `I18nProvider` changes the language for every uploader inside it at
+once.
+
+<Story of={Stories.LocalizedProvider} />
+
+To override only specific labels for a single instance, pass `localeConfig`
+(highest precedence); the rest follow the active language.
+
+<Story of={Stories.LocalizedConfig} />
+
+## Progress
+
+While an item's `loading` flag is set, its icon is replaced by a progress
+indicator bound to `progress` (0–100). Drive progress by updating the value
+**immutably**.
+
+<Story of={Stories.Loading} />
+
+Use `progressMode="indeterminate"` when the progress is unknown.
+
+<Story of={Stories.IndeterminateLoading} />
+
+Because `loading` / `progress` / `hasError` are plain fields, you can model
+post-upload processing — for example, flag a file as errored once a background
+check completes.
+
+<Story of={Stories.Processing} />
+
+## Forms
+
+The controlled `value` / `onChange` / `onBlur` API plugs into any form library.
+Feed the field's validity into `isInvalid` / `errorMessage` and gate visibility
+with `shouldShowError`.
+
+### Native controlled form
+
+<Story of={Stories.NativeForm} />
+
+### React Hook Form
+
+```tsx
+import { Controller, useForm } from 'react-hook-form';
+import { SingleFileUpload, type FileItem } from '@koobiq/react-components';
+
+const { control } = useForm<{ file: FileItem | null }>();
+
+<Controller
+  name="file"
+  control={control}
+  rules={{ required: 'A file is required' }}
+  render={({ field, fieldState, formState }) => (
+    <SingleFileUpload
+      value={field.value ?? null}
+      onChange={field.onChange}
+      onBlur={field.onBlur}
+      isInvalid={fieldState.invalid}
+      errorMessage={fieldState.error?.message}
+      shouldShowError={() => fieldState.isTouched || formState.isSubmitted}
+    />
+  )}
+/>;
+```
+
+### Formik
+
+```tsx
+import { useField } from 'formik';
+import { MultipleFileUpload, type FileItem } from '@koobiq/react-components';
+
+const [field, meta, helpers] = useField<FileItem[]>('files');
+
+<MultipleFileUpload
+  value={field.value}
+  onChange={helpers.setValue}
+  onBlur={() => helpers.setTouched(true)}
+  isInvalid={Boolean(meta.error)}
+  errorMessage={meta.error}
+  shouldShowError={() => meta.touched}
+/>;
+```
+
+## Validation
+
+Validation is the app's responsibility. Run a validator in `onChange` and feed
+the result into `isInvalid` / `errorMessage`. The shipped helpers (`maxFileSize`,
+`isCorrectExtension`) mirror the Angular `FileValidators`.
+
+### Required
+
+<Story of={Stories.SingleRequired} />
+<Story of={Stories.MultipleRequired} />
+
+### File size
+
+<Story of={Stories.SingleSizeValidation} />
+<Story of={Stories.MultipleSizeValidation} />
+
+### File type or extension
+
+<Story of={Stories.SingleExtensionValidation} />
+<Story of={Stories.MultipleExtensionValidation} />
+
+### Mixed: required and extension
+
+<Story of={Stories.SingleMixedValidation} />
+<Story of={Stories.MultipleMixedValidation} />
+
+### Asynchronous
+
+Await a server-side check and set the error when it resolves; keep the item in
+its `loading` state while the check runs.
+
+<Story of={Stories.SingleAsyncValidation} />
+
+## Primitives
+
+Build a fully custom uploader from the exported primitives — `useFileList`
+(list state), `useFileDrop` (drag-and-drop), and `FileInput` (the browse link).
+
+<Story of={Stories.Primitives} />
+
+## Migrating from Angular `kbq-file-upload`
+
+- The deprecated `fileQueueChange` / `fileQueueChanged` events are **dropped** —
+  use `onChange` (plus `onFilesAdded` / `onFileRemoved`).
+- `accept` is **not** enforced on drop (it never was); validate in `onChange`.
+- `allowed` defaults to `'file'` (the Angular JSDoc said `mixed`, but the code
+  default was always `File`).
+- `KbqFileItem.loading` / `progress` were RxJS `BehaviorSubject`s; in React they
+  are plain `boolean` / `number` fields — update them immutably to re-render.
+
+## Accessibility
+
+- The hidden native file input is tab-reachable; browse links are `<label>`s
+  tied to it, so activating a link opens the dialog.
+- Remove a focused file with <kbd>Backspace</kbd> or <kbd>Delete</kbd>; after the
+  list empties, focus returns to the input.
+- The truncated file name exposes its full value in a tooltip and via
+  `aria-label`.
+- `MultipleFileUpload` rows use `list` / `listitem` roles.
+- When `isDisabled`, the control is not focusable and ignores keyboard and
+  drag-and-drop.
