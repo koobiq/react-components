@@ -36,16 +36,7 @@
   content: none;
 }
 
-/*
- * `square`/`circle` require a 1:1 box. Set `aspect-ratio` directly (not via
- * `--kbq-flag-aspect-ratio`) so a consumer overriding that variable can't
- * accidentally distort the circle.
- */
-.base[data-shape='square'],
-.base[data-shape='circle'] {
-  aspect-ratio: 1 / 1;
-}
-
+/* `circle` only clips the corners; its 1:1 ratio comes from the component. */
 .base[data-shape='circle'] {
   border-radius: 50%;
 }

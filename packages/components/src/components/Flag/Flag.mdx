@@ -48,8 +48,9 @@ import { DE } from 'country-flag-icons/react/3x2';
 
 ## Shape
 
-Use the `shape` prop: `rectangle` (default), `square`, or `circle`. `square` and `circle` expect a
-1:1 source; `circle` additionally clips the graphic to a circle.
+The `shape` prop controls the corner treatment: `rectangle` (default) or `circle`. `circle` clips the
+flag to a circle and defaults its ratio to `1 / 1`. For a sharp-cornered square, use
+`aspectRatio="1 / 1"` (see below).
 
 <Story of={Stories.Shape} />
 
@@ -74,12 +75,7 @@ any CSS length), or override the `--kbq-flag-size` variable to size a whole cont
 
 ## Aspect ratio
 
-The default box ratio is 3:2. Other ratios (e.g. 4:3) and non-country sources are supported **without
-a prop** by overriding the `--kbq-flag-aspect-ratio` CSS variable.
-
-```tsx
-<Flag style={{ '--kbq-flag-aspect-ratio': '4 / 3' }}>{/* … */}</Flag>
-```
+Set the box ratio with the `aspectRatio` prop.
 
 <Story of={Stories.AspectRatio} />
 
@@ -87,7 +83,7 @@ a prop** by overriding the `--kbq-flag-aspect-ratio` CSS variable.
 
 The library ships no flag data, so guard the country code (e.g. with `hasFlag` from
 `country-flag-icons`) and render a neutral placeholder when a flag is missing —
-the layout never breaks and no broken graphic is shown.the layout never breaks and no broken graphic is shown.
+the layout never breaks and no broken graphic is shown.
 
 <Story of={Stories.Fallback} />
 
@@ -124,10 +120,10 @@ and add a shadow/gradient in your own styles.
 
 Everything visual that isn't a discrete state is an overridable CSS variable:
 
-| Variable                      | Default                                 | Purpose                                          |
-| ----------------------------- | --------------------------------------- | ------------------------------------------------ |
-| `--kbq-flag-size`             | `1em`                                   | Flag height (also settable via the `size` prop). |
-| `--kbq-flag-aspect-ratio`     | `3 / 2`                                 | Box ratio (`square`/`circle` force `1 / 1`).     |
-| `--kbq-flag-border-radius`    | `0`                                     | Corner radius (rounded / stylized look).         |
-| `--kbq-flag-shadow-color`     | `var(--kbq-line-contrast-fade)`         | Inset hairline color; theme-adaptive.            |
-| `--kbq-flag-empty-background` | `var(--kbq-states-background-disabled)` | Placeholder fill.                                |
+| Variable                      | Default                                 | Purpose                                               |
+| ----------------------------- | --------------------------------------- | ----------------------------------------------------- |
+| `--kbq-flag-size`             | `1em`                                   | Flag height (also settable via the `size` prop).      |
+| `--kbq-flag-aspect-ratio`     | `3 / 2`                                 | Box ratio (also settable via the `aspectRatio` prop). |
+| `--kbq-flag-border-radius`    | `0`                                     | Corner radius (rounded / stylized look).              |
+| `--kbq-flag-shadow-color`     | `var(--kbq-line-contrast-fade)`         | Inset hairline color; theme-adaptive.                 |
+| `--kbq-flag-empty-background` | `var(--kbq-states-background-disabled)` | Placeholder fill.                                     |

@@ -2,7 +2,7 @@
 
 import type { ComponentPropsWithRef, CSSProperties, ElementType } from 'react';
 
-import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
+import { clsx, isNumber, polymorphicForwardRef } from '@koobiq/react-core';
 
 import s from './Flag.module.css';
 import type { FlagBaseProps } from './index';
@@ -22,26 +22,28 @@ export const Flag = polymorphicForwardRef<'span', FlagBaseProps>(
       shape = 'rectangle',
       hideShadow = false,
       size,
+      // `circle` needs a 1:1 box; an explicit `aspectRatio` still wins.
+      aspectRatio = shape === 'circle' ? '1 / 1' : undefined,
       style,
       className,
       children,
       ...other
     } = props;
 
-    const sizeStyle =
-      size !== undefined
-        ? ({
-            ...style,
-            '--kbq-flag-size': typeof size === 'number' ? `${size}px` : size,
-          } as CSSProperties)
-        : style;
+    const flagStyle = {
+      ...style,
+      ...(size !== undefined && {
+        '--kbq-flag-size': isNumber(size) ? `${size}px` : size,
+      }),
+      ...(aspectRatio && { '--kbq-flag-aspect-ratio': aspectRatio }),
+    } as CSSProperties;
 
     return (
       <Tag
         data-shape={shape}
         data-hide-shadow={hideShadow || undefined}
         className={clsx(s.base, className)}
-        style={sizeStyle}
+        style={flagStyle}
         {...other}
         ref={ref}
       >

@@ -92,6 +92,40 @@ describe('Flag', () => {
     });
   });
 
+  describe('check the aspectRatio prop', () => {
+    it('should not set --kbq-flag-aspect-ratio by default', () => {
+      render(<Flag {...baseProps} />);
+
+      expect(getRoot().style.getPropertyValue('--kbq-flag-aspect-ratio')).toBe(
+        ''
+      );
+    });
+
+    it('should set --kbq-flag-aspect-ratio from a string', () => {
+      render(<Flag {...baseProps} aspectRatio="4 / 3" />);
+
+      expect(getRoot().style.getPropertyValue('--kbq-flag-aspect-ratio')).toBe(
+        '4 / 3'
+      );
+    });
+
+    it('should default the ratio to 1 / 1 for a circle', () => {
+      render(<Flag {...baseProps} shape="circle" />);
+
+      expect(getRoot().style.getPropertyValue('--kbq-flag-aspect-ratio')).toBe(
+        '1 / 1'
+      );
+    });
+
+    it('should let an explicit aspectRatio override the circle default', () => {
+      render(<Flag {...baseProps} shape="circle" aspectRatio="4 / 3" />);
+
+      expect(getRoot().style.getPropertyValue('--kbq-flag-aspect-ratio')).toBe(
+        '4 / 3'
+      );
+    });
+  });
+
   describe('accessibility attributes', () => {
     it('should forward role and aria-label for a meaningful flag', () => {
       render(<Flag {...baseProps} role="img" aria-label="Germany" />);
