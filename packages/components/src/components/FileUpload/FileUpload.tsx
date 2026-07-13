@@ -56,6 +56,7 @@ import type {
   FileUploadMessages,
   FileUploadProps,
 } from './types';
+import { prepareFileUploadFiles } from './utils';
 
 const textNormal = utilClasses.typography['text-normal'];
 
@@ -157,14 +158,25 @@ function FileUploadInner<T extends object>({
     (files: File[]) => {
       if (isDisabled || files.length === 0) return;
 
-      onAdd?.(allowsMultiple ? files : files.slice(0, 1));
+      const preparedFiles = prepareFileUploadFiles(files, {
+        accept,
+        allowed,
+        allowsMultiple,
+      });
+
+      if (preparedFiles.length > 0) onAdd?.(preparedFiles);
     },
-    [isDisabled, allowsMultiple, onAdd]
+    [accept, allowed, isDisabled, allowsMultiple, onAdd]
   );
 
+  const isFullscreen = dropzoneTarget === 'fullscreen';
+
+  const dropRef =
+    dropzoneTarget && dropzoneTarget !== 'fullscreen' ? dropzoneTarget : domRef;
+
   const isDropTarget = useFileDropTarget({
-    rootRef: domRef,
-    dropzoneTarget,
+    ref: dropRef,
+    isFullscreen,
     isDisabled,
     onDrop: addFiles,
   });
@@ -234,12 +246,10 @@ function FileUploadInner<T extends object>({
   );
 
   const { className: listClassName, ...listProps } = slotProps?.list ?? {};
-  const isFullscreen = dropzoneTarget === 'fullscreen';
 
-  const overlayTarget =
-    dropzoneTarget === 'fullscreen'
-      ? (domRef.current?.ownerDocument.documentElement ?? null)
-      : (dropzoneTarget?.current ?? null);
+  const overlayTarget = isFullscreen
+    ? (domRef.current?.ownerDocument.documentElement ?? null)
+    : (dropzoneTarget?.current ?? null);
 
   return (
     <FileUploadContext.Provider value={contextValue}>

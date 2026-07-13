@@ -184,6 +184,7 @@ export const FileUploadRemoveButton = forwardRef<
   FileUploadRemoveButtonProps
 >((props, ref) => {
   const {
+    children,
     className,
     onPress,
     onKeyDown,
@@ -221,7 +222,7 @@ export const FileUploadRemoveButton = forwardRef<
         }
       }}
     >
-      <IconCircleXmark16 />
+      {children ?? <IconCircleXmark16 />}
     </IconButton>
   );
 });

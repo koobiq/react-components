@@ -2,18 +2,22 @@ import { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
 import { type Key, useBoolean } from '@koobiq/react-core';
-import { IconBoxArchive24 } from '@koobiq/react-icons';
+import {
+  IconFolder16,
+  IconBoxArchive24,
+  IconCircleCheck16,
+} from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '../Button';
+import { Form } from '../Form';
 import { spacing } from '../layout';
-import { Link } from '../Link';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Toggle } from '../Toggle';
 import { Typography } from '../Typography';
 
 import { FileUpload } from './FileUpload';
-import type { FileUploadProps } from './types';
+import type { FileUploadFile, FileUploadProps } from './types';
 
 const meta = {
   title: 'Components/FileUpload',
@@ -52,10 +56,13 @@ type FileUploadItemData = {
   name?: string;
   size?: number;
   isLoading?: boolean;
+  isUploaded?: boolean;
   progress?: number;
   errorMessage?: ReactNode;
   isDisabled?: boolean;
-  downloadUrl?: string;
+  kind?: 'file' | 'folder';
+  file?: FileUploadFile;
+  files?: FileUploadFile[];
 };
 
 type Story = StoryObj<FileUploadProps<FileUploadItemData>>;
@@ -66,10 +73,12 @@ const makeItem = (name: string, size: number): FileUploadItemData => ({
   size,
 });
 
-const toItem = (file: File): FileUploadItemData => ({
-  id: `${file.name}-${file.lastModified}-${file.size}`,
+const toItem = (file: FileUploadFile): FileUploadItemData => ({
+  id: crypto.randomUUID(),
+  kind: 'file',
   name: file.name,
   size: file.size,
+  file,
 });
 
 const removeById = (items: FileUploadItemData[], id: Key) =>
@@ -100,7 +109,7 @@ export const Single: Story = {
       <FileUpload
         items={items}
         aria-label="Upload a file"
-        onAdd={(files) => setItems(files.slice(0, 1).map(toItem))}
+        onAdd={(files) => setItems(files.map(toItem))}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
         {...args}
       >
@@ -114,9 +123,7 @@ export const Single: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -149,9 +156,106 @@ export const Multiple: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+            </FileUpload.ItemContent>
+            <FileUpload.RemoveButton />
+          </FileUpload.Item>
+        )}
+      </FileUpload>
+    );
+  },
+};
+
+export const Images: Story = {
+  render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
+
+    return (
+      <FileUpload
+        items={items}
+        accept={[
+          'image/png',
+          'image/jpeg',
+          'image/gif',
+          'image/webp',
+          'image/svg+xml',
+        ]}
+        aria-label="Upload images"
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+        renderEmptyState={() => (
+          <FileUpload.Empty>
+            <FileUpload.EmptyIcon />
+            <FileUpload.EmptyTitle>Upload images</FileUpload.EmptyTitle>
+            <FileUpload.EmptyDescription>
+              Drag images here or{' '}
+              <FileUpload.Trigger>select images</FileUpload.Trigger>.
+              <Typography as="span" variant="inherit" display="inline-block">
+                Accepts PNG, JPG, GIF, WebP, and SVG.
+              </Typography>
+            </FileUpload.EmptyDescription>
+          </FileUpload.Empty>
+        )}
+        allowsMultiple
+        {...args}
+      >
+        {(item) => (
+          <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.ItemIcon />
+            <FileUpload.ItemContent>
+              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+            </FileUpload.ItemContent>
+            <FileUpload.RemoveButton />
+          </FileUpload.Item>
+        )}
+      </FileUpload>
+    );
+  },
+};
+
+export const WithoutDuplicates: Story = {
+  render: function Render(args) {
+    const getFileFingerprint = (file: File) =>
+      `${file.name}-${file.lastModified}-${file.size}`;
+
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
+
+    return (
+      <FileUpload
+        items={items}
+        aria-label="Upload files"
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        onAdd={(files) =>
+          setItems((prev) => {
+            const fingerprints = new Set(
+              prev.flatMap((item) =>
+                item.file ? [getFileFingerprint(item.file)] : []
+              )
+            );
+
+            const added = files.flatMap((file) => {
+              const fingerprint = getFileFingerprint(file);
+
+              if (fingerprints.has(fingerprint)) return [];
+
+              fingerprints.add(fingerprint);
+
+              return [toItem(file)];
+            });
+
+            return [...prev, ...added];
+          })
+        }
+        allowsMultiple
+        {...args}
+      >
+        {(item) => (
+          <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.ItemIcon />
+            <FileUpload.ItemContent>
+              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -164,15 +268,44 @@ export const Multiple: Story = {
 export const Allowed: Story = {
   name: 'Selecting a folder or files',
   render: function Render(args) {
+    const toGroupedItems = (files: FileUploadFile[]): FileUploadItemData[] => {
+      const folders = new Map<string, FileUploadFile[]>();
+      const items: FileUploadItemData[] = [];
+
+      files.forEach((file) => {
+        const folderName = file.relativePath.split('/')[0];
+
+        if (folderName) {
+          folders.set(folderName, [...(folders.get(folderName) ?? []), file]);
+        } else {
+          items.push(toItem(file));
+        }
+      });
+
+      folders.forEach((folderFiles, name) => {
+        items.push({
+          id: crypto.randomUUID(),
+          kind: 'folder',
+          name,
+          files: folderFiles,
+          size: folderFiles.reduce((total, file) => total + file.size, 0),
+        });
+      });
+
+      return items;
+    };
+
     const [items, setItems] = useState<FileUploadItemData[]>([]);
 
     return (
       <FileUpload
         items={items}
-        aria-label="Upload files or a folder"
         allowed="mixed"
+        aria-label="Upload files or a folder"
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+        onAdd={(files) =>
+          setItems((prev) => [...prev, ...toGroupedItems(files)])
+        }
         allowsMultiple
         {...args}
       >
@@ -183,12 +316,12 @@ export const Allowed: Story = {
             isDisabled={item.isDisabled}
             isInvalid={Boolean(item.errorMessage)}
           >
-            <FileUpload.ItemIcon />
+            <FileUpload.ItemIcon>
+              {item.kind === 'folder' ? <IconFolder16 /> : undefined}
+            </FileUpload.ItemIcon>
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -222,9 +355,7 @@ export const Compact: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -262,9 +393,7 @@ export const Scrollable: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -337,9 +466,7 @@ export const UploadProgress: Story = {
             </FileUpload.ItemIcon>
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -386,9 +513,7 @@ export const Validation: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -450,9 +575,7 @@ export const Invalid: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -497,9 +620,7 @@ export const DropzoneTarget: Story = {
               <FileUpload.ItemIcon />
               <FileUpload.ItemContent>
                 <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-                {item.size !== undefined && (
-                  <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-                )}
+                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
               </FileUpload.ItemContent>
               <FileUpload.RemoveButton />
             </FileUpload.Item>
@@ -512,49 +633,98 @@ export const DropzoneTarget: Story = {
 
 export const ServerFile: Story = {
   render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      {
-        id: 'security-scan-report.json',
-        name: 'security-scan-report.json',
-        size: 74,
-        downloadUrl: '/files/security-scan-report.json',
-      },
-    ]);
+    // Mock POST /api/files.
+    const uploadFilesToServer = async (formData: FormData) => {
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      return formData.getAll('files');
+    };
+
+    const [isUploading, setUploading] = useState(false);
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
 
     return (
-      <FileUpload
-        aria-label="Upload files"
-        items={items}
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
-        onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        allowsMultiple
-        {...args}
+      <Form
+        onSubmit={async (event) => {
+          event.preventDefault();
+
+          const localFiles = items.flatMap((item) =>
+            item.file && !item.isUploaded
+              ? [{ id: item.id, file: item.file }]
+              : []
+          );
+
+          if (localFiles.length === 0) return;
+
+          const formData = new FormData();
+
+          localFiles.forEach(({ file }) =>
+            formData.append('files', file, file.name)
+          );
+
+          const uploadingIds = new Set(localFiles.map(({ id }) => id));
+
+          setItems((current) =>
+            current.map((item) =>
+              uploadingIds.has(item.id) ? { ...item, isLoading: true } : item
+            )
+          );
+
+          setUploading(true);
+
+          try {
+            await uploadFilesToServer(formData);
+
+            setItems((current) =>
+              current.map((item) =>
+                uploadingIds.has(item.id)
+                  ? { ...item, isLoading: false, isUploaded: true }
+                  : item
+              )
+            );
+          } finally {
+            setUploading(false);
+          }
+        }}
       >
-        {(item) => (
-          <FileUpload.Item id={item.id} textValue={item.name}>
-            <FileUpload.ItemIcon />
-            <FileUpload.ItemContent>
-              <FileUpload.ItemName>
-                {item.downloadUrl ? (
-                  <Link
-                    href={item.downloadUrl}
-                    download={item.name}
-                    variant="inherit"
-                  >
-                    {item.name}
-                  </Link>
-                ) : (
-                  item.name
-                )}
-              </FileUpload.ItemName>
-              {item.size !== undefined && (
+        <FileUpload
+          aria-label="Upload files"
+          items={items}
+          onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
+          onRemove={(id) => setItems((prev) => removeById(prev, id))}
+          allowsMultiple
+          {...args}
+        >
+          {(item) => (
+            <FileUpload.Item id={item.id} textValue={item.name}>
+              <FileUpload.ItemIcon>
+                {item.isLoading ? (
+                  <ProgressSpinner aria-label="Uploading" />
+                ) : item.isUploaded ? (
+                  <IconCircleCheck16
+                    aria-label="Uploaded"
+                    style={{ color: 'var(--kbq-icon-success)' }}
+                  />
+                ) : undefined}
+              </FileUpload.ItemIcon>
+              <FileUpload.ItemContent>
+                <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
                 <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
-            </FileUpload.ItemContent>
-            <FileUpload.RemoveButton />
-          </FileUpload.Item>
-        )}
-      </FileUpload>
+              </FileUpload.ItemContent>
+              <FileUpload.RemoveButton />
+            </FileUpload.Item>
+          )}
+        </FileUpload>
+        <Form.Actions>
+          <Button
+            type="submit"
+            isLoading={isUploading}
+            isDisabled={!items.some((item) => item.file && !item.isUploaded)}
+          >
+            Upload files
+          </Button>
+        </Form.Actions>
+      </Form>
     );
   },
 };
@@ -599,9 +769,7 @@ export const CustomContent: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              {item.size !== undefined && (
-                <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-              )}
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>

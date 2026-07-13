@@ -48,6 +48,11 @@ export type FileUploadMessages = {
   terabytes: string;
 };
 
+/** A native file with its path relative to the selected or dropped directory. */
+export interface FileUploadFile extends File {
+  readonly relativePath: string;
+}
+
 export type FileUploadProps<T extends object = object> =
   ExtendableComponentPropsWithRef<
     {
@@ -56,7 +61,7 @@ export type FileUploadProps<T extends object = object> =
       /** Item objects in the collection. */
       items?: Iterable<T>;
       /** Handler called when native files are added via picker or drop. */
-      onAdd?: (files: File[]) => void;
+      onAdd?: (files: FileUploadFile[]) => void;
       /** Handler called when a remove button requests item removal. */
       onRemove?: (id: Key) => void;
       /** Where files can be dropped: a target element ref or 'fullscreen'. Defaults to the FileUpload root. */
@@ -70,10 +75,10 @@ export type FileUploadProps<T extends object = object> =
        * @default false
        */
       allowsMultiple?: boolean;
-      /** Accepted file types (mime types or extensions). */
+      /** Accepted file types (mime types or extensions) for picker and drop. */
       accept?: string[];
       /**
-       * Which kind of items can be selected.
+       * Which kind of items can be selected or dropped.
        * @default 'file'
        */
       allowed?: FileUploadPropAllowed;
@@ -176,7 +181,7 @@ export type FileUploadItemSizeProps = ExtendableComponentPropsWithRef<
   'span'
 >;
 
-export type FileUploadRemoveButtonProps = Omit<IconButtonProps, 'children'>;
+export type FileUploadRemoveButtonProps = IconButtonProps;
 
 export type FileUploadComponent = <T extends object = object>(
   props: FileUploadProps<T>

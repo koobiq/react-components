@@ -172,6 +172,32 @@ describe('FileUpload', () => {
     expect(document.querySelectorAll('input[type="file"]')).toHaveLength(2);
   });
 
+  it('allows the folder picker to return every file in single mode', () => {
+    renderComponent({ allowed: 'folder' });
+
+    const input = getFileInput();
+
+    expect(input).toHaveAttribute('webkitdirectory');
+    expect(input).toHaveAttribute('multiple');
+  });
+
+  it('normalizes the folder picker path to relativePath', async () => {
+    const user = userEvent.setup();
+    const onAdd = vi.fn();
+    const file = makeFile('nested.txt');
+
+    Object.defineProperty(file, 'webkitRelativePath', {
+      value: 'folder/nested.txt',
+    });
+
+    renderComponent({ allowed: 'folder', onAdd });
+
+    await user.upload(getFileInput(), file);
+
+    expect(onAdd).toHaveBeenCalledWith([file]);
+    expect(file).toHaveProperty('relativePath', 'folder/nested.txt');
+  });
+
   it('calls onAdd with selected files and renders the external item update', async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
@@ -182,8 +208,31 @@ describe('FileUpload', () => {
     await user.upload(getFileInput(), file);
 
     expect(onAdd).toHaveBeenCalledWith([file]);
+    expect(file).toHaveProperty('relativePath', '');
+
+    expect(
+      Object.prototype.propertyIsEnumerable.call(file, 'relativePath')
+    ).toBe(false);
+
     expect(screen.getByText('hello.txt')).toBeInTheDocument();
     expect(screen.queryByText('select a file')).not.toBeInTheDocument();
+  });
+
+  it('applies accept to files selected in the picker', async () => {
+    const user = userEvent.setup({ applyAccept: false });
+    const onAdd = vi.fn();
+    const image = new File(['image'], 'image.png', { type: 'image/png' });
+    const text = makeFile('notes.txt');
+
+    renderComponent({
+      accept: ['image/*'],
+      allowsMultiple: true,
+      onAdd,
+    });
+
+    await user.upload(getFileInput(), [image, text]);
+
+    expect(onAdd).toHaveBeenCalledWith([image]);
   });
 
   it('uses the root as the default drop target', () => {
@@ -371,7 +420,7 @@ describe('FileUpload', () => {
     const first = makeFile('a.txt');
     const second = makeFile('b.txt');
 
-    renderComponent({ allowsMultiple: true, onAdd });
+    renderComponent({ allowed: 'folder', allowsMultiple: true, onAdd });
 
     const dataTransfer = createDataTransfer([
       dropDirectory('outer', [
@@ -383,6 +432,71 @@ describe('FileUpload', () => {
     fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), { dataTransfer });
 
     await waitFor(() => expect(onAdd).toHaveBeenCalledWith([first, second]));
+    expect(first).toHaveProperty('relativePath', 'outer/a.txt');
+    expect(second).toHaveProperty('relativePath', 'outer/inner/b.txt');
+  });
+
+  it('applies allowed mode to dropped files and folders', async () => {
+    const looseFile = makeFile('loose.txt');
+    const folderFile = makeFile('nested.txt');
+
+    const dataTransfer = createDataTransfer([
+      dropFile(looseFile),
+      dropDirectory('folder', [fileEntry(folderFile)]),
+    ]);
+
+    const onAdd = vi.fn();
+
+    const { unmount } = renderComponent({
+      allowed: 'file',
+      allowsMultiple: true,
+      onAdd,
+    });
+
+    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), { dataTransfer });
+    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([looseFile]));
+
+    unmount();
+    onAdd.mockClear();
+
+    renderComponent({ allowed: 'folder', allowsMultiple: true, onAdd });
+    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), { dataTransfer });
+
+    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([folderFile]));
+  });
+
+  it('keeps every file from the first folder in single mode', async () => {
+    const onAdd = vi.fn();
+    const first = makeFile('a.txt');
+    const second = makeFile('b.txt');
+
+    renderComponent({ allowed: 'folder', onAdd });
+
+    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), {
+      dataTransfer: createDataTransfer([
+        dropDirectory('folder', [fileEntry(first), fileEntry(second)]),
+      ]),
+    });
+
+    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([first, second]));
+  });
+
+  it('applies accept to dropped files', async () => {
+    const onAdd = vi.fn();
+    const image = new File(['image'], 'image.png', { type: 'image/png' });
+    const text = makeFile('notes.txt');
+
+    renderComponent({
+      accept: ['image/*'],
+      allowsMultiple: true,
+      onAdd,
+    });
+
+    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), {
+      dataTransfer: createDataTransfer([dropFile(image), dropFile(text)]),
+    });
+
+    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([image]));
   });
 
   it('ignores disabled and non-file drags', () => {
@@ -476,6 +590,21 @@ describe('FileUpload', () => {
 
     expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();
     expect(onRemove).toHaveBeenCalledWith('remove-me.txt');
+  });
+
+  it('renders a custom remove button icon', () => {
+    render(
+      <FileUpload aria-label="upload">
+        <FileUpload.Item id="custom-icon.txt" textValue="custom-icon.txt">
+          <FileUpload.ItemName>custom-icon.txt</FileUpload.ItemName>
+          <FileUpload.RemoveButton>
+            <span data-testid="custom-remove-icon" />
+          </FileUpload.RemoveButton>
+        </FileUpload.Item>
+      </FileUpload>
+    );
+
+    expect(screen.getByTestId('custom-remove-icon')).toBeInTheDocument();
   });
 
   it('restores focus to the browse link after removing the last file', async () => {
@@ -1140,6 +1269,11 @@ describe('readDroppedFiles', () => {
     );
 
     expect(files.map((file) => file.name)).toEqual(['a.txt', 'b.txt']);
+
+    expect(files.map((file) => file.relativePath)).toEqual([
+      'folder/a.txt',
+      'folder/b.txt',
+    ]);
   });
 
   it('expands nested folders recursively and keeps order', async () => {
@@ -1161,6 +1295,12 @@ describe('readDroppedFiles', () => {
       'root.txt',
       'a.txt',
       'b.txt',
+    ]);
+
+    expect(files.map((file) => file.relativePath)).toEqual([
+      '',
+      'outer/a.txt',
+      'outer/inner/b.txt',
     ]);
   });
 

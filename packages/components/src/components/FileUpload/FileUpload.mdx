@@ -47,9 +47,22 @@ Use `allowsMultiple` to add several files.
 
 <Story of={Stories.Multiple} />
 
+## Accepted file types
+
+Use `accept` to restrict selectable and dropped file types.
+
+<Story of={Stories.Images} />
+
+## Duplicate files
+
+Filter duplicate files in `onAdd` when the collection requires it.
+
+<Story of={Stories.WithoutDuplicates} />
+
 ## Selecting a folder or files
 
-The component can be configured to allow selecting only files, only folders, or files and folders.
+Use `allowed` to accept files, folders, or both. Folder files include their
+`relativePath` and can be grouped into one collection item.
 
 <Story of={Stories.Allowed} />
 
@@ -73,8 +86,7 @@ Render upload progress inside the item row.
 
 ## Validation
 
-Validate files in `onAdd`. The `accept` prop filters the picker but not dropped
-files.
+Validate files in `onAdd`.
 
 <Story of={Stories.Validation} />
 
@@ -100,8 +112,7 @@ or `"fullscreen"` to make the whole screen the drop area.
 
 ## Server file
 
-Render server files as download links. Newly selected files can use the same
-collection.
+Keep the native `File` in local items and append it to `FormData` on submit.
 
 <Story of={Stories.ServerFile} />
 

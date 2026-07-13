@@ -65,7 +65,7 @@ export const FileUploadTrigger = forwardRef<
     <FileTrigger
       ref={ref}
       acceptedFileTypes={accept}
-      allowsMultiple={allowsMultiple}
+      allowsMultiple={allowsMultiple || isDirectory}
       acceptDirectory={isDirectory}
       onSelect={(files) => {
         if (files) {

@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 
+import { useBoolean } from '@koobiq/react-core';
+
+import type { FileUploadFile } from '../types';
+import { setFileRelativePath } from '../utils';
+
 type UseFileDropTargetOptions = {
-  rootRef: RefObject<HTMLElement | null>;
-  dropzoneTarget?: 'fullscreen' | RefObject<HTMLElement | null>;
+  ref: RefObject<HTMLElement | null>;
+  isFullscreen?: boolean;
   isDisabled: boolean;
-  onDrop: (files: File[]) => void;
+  onDrop: (files: FileUploadFile[]) => void;
 };
 
 const readFileEntry = (entry: FileSystemFileEntry): Promise<File> =>
@@ -16,14 +21,29 @@ const readDirectoryBatch = (
 ): Promise<FileSystemEntry[]> =>
   new Promise((resolve, reject) => reader.readEntries(resolve, reject));
 
-const readDroppedEntry = async (entry: FileSystemEntry): Promise<File[]> => {
+const readDroppedEntry = async (
+  entry: FileSystemEntry,
+  directoryPath?: string
+): Promise<FileUploadFile[]> => {
   if (entry.isFile) {
-    return [await readFileEntry(entry as FileSystemFileEntry)];
+    const file = await readFileEntry(entry as FileSystemFileEntry);
+
+    return [
+      setFileRelativePath(
+        file,
+        directoryPath ? `${directoryPath}/${entry.name}` : ''
+      ),
+    ];
   }
 
   if (!entry.isDirectory) return [];
 
   const reader = (entry as FileSystemDirectoryEntry).createReader();
+
+  const nextDirectoryPath = directoryPath
+    ? `${directoryPath}/${entry.name}`
+    : entry.name;
+
   const entries: FileSystemEntry[] = [];
 
   while (true) {
@@ -34,7 +54,9 @@ const readDroppedEntry = async (entry: FileSystemEntry): Promise<File[]> => {
     entries.push(...batch);
   }
 
-  const groups = await Promise.all(entries.map(readDroppedEntry));
+  const groups = await Promise.all(
+    entries.map((child) => readDroppedEntry(child, nextDirectoryPath))
+  );
 
   return groups.flat();
 };
@@ -45,12 +67,12 @@ const readDroppedEntry = async (entry: FileSystemEntry): Promise<File[]> => {
  */
 export const readDroppedFiles = async (
   dataTransfer: DataTransfer
-): Promise<File[]> => {
+): Promise<FileUploadFile[]> => {
   const items = Array.from(dataTransfer.items);
 
   const groups = await Promise.all(
     items.map((item) => {
-      if (item.kind !== 'file') return Promise.resolve<File[]>([]);
+      if (item.kind !== 'file') return Promise.resolve<FileUploadFile[]>([]);
 
       const entry = item.webkitGetAsEntry?.();
 
@@ -58,13 +80,17 @@ export const readDroppedFiles = async (
 
       const file = item.getAsFile();
 
-      return Promise.resolve(file ? [file] : []);
+      return Promise.resolve(file ? [setFileRelativePath(file, '')] : []);
     })
   );
 
   const files = groups.flat();
 
-  return files.length > 0 ? files : Array.from(dataTransfer.files);
+  return files.length > 0
+    ? files
+    : Array.from(dataTransfer.files, (file) =>
+        setFileRelativePath(file, file.webkitRelativePath ?? '')
+      );
 };
 
 const isFileDrag = (dataTransfer: DataTransfer | null): boolean => {
@@ -78,12 +104,12 @@ const isFileDrag = (dataTransfer: DataTransfer | null): boolean => {
 };
 
 export const useFileDropTarget = ({
-  rootRef,
-  dropzoneTarget,
+  ref,
+  isFullscreen,
   isDisabled,
   onDrop,
 }: UseFileDropTargetOptions): boolean => {
-  const [isDropTarget, setIsDropTarget] = useState(false);
+  const [isDropTarget, { set: setIsDropTarget }] = useBoolean(false);
   const activeTargetRef = useRef<HTMLElement | null>(null);
   const dragDepthRef = useRef(0);
 
@@ -99,12 +125,9 @@ export const useFileDropTarget = ({
 
     if (isDisabled) return;
 
-    const target =
-      dropzoneTarget === 'fullscreen'
-        ? (rootRef.current?.ownerDocument ?? document).documentElement
-        : dropzoneTarget
-          ? dropzoneTarget.current
-          : rootRef.current;
+    const target = isFullscreen
+      ? (ref.current?.ownerDocument ?? document).documentElement
+      : ref.current;
 
     if (!target) return;
 
@@ -177,7 +200,7 @@ export const useFileDropTarget = ({
         dragDepthRef.current = 0;
       }
     };
-  }, [dropzoneTarget, isDisabled, onDrop, reset, rootRef]);
+  }, [ref, isFullscreen, isDisabled, onDrop, reset]);
 
   return isDropTarget;
 };
