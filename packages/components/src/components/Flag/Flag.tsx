@@ -1,6 +1,6 @@
 'use client';
 
-import type { AriaAttributes, ComponentPropsWithRef, ElementType } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, ElementType } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
@@ -9,39 +9,39 @@ import type { FlagBaseProps } from './index';
 
 /**
  * Flag is a thin presentational wrapper that decorates a country flag graphic
- * provided by the consumer (inline `svg` or `img`). It holds no flag data.
+ * provided by the consumer (inline `svg`, `img` or SVG component). It holds no flag data.
+ *
+ * Flag adds no ARIA semantics on its own. Supply them via standard attributes:
+ * `role="img"` + `aria-label` / `aria-labelledby` for a meaningful flag, or
+ * `aria-hidden` for a decorative one.
  */
 export const Flag = polymorphicForwardRef<'span', FlagBaseProps>(
   (props, ref) => {
     const {
       as: Tag = 'span',
       shape = 'rectangle',
-      shadow = 'inset',
-      empty = false,
-      decorative = false,
-      label,
+      hideShadow = false,
+      size,
+      style,
       className,
       children,
       ...other
     } = props;
 
-    // Accessibility contract:
-    // - decorative → hidden from assistive tech, no role/label.
-    // - label provided → labelled mode (`role="img"` + accessible name).
-    // - Neither → neutral, the projected graphic / surrounding text carries meaning.
-    const a11yProps: AriaAttributes & { role?: string } = decorative
-      ? { 'aria-hidden': true }
-      : label
-        ? { role: 'img', 'aria-label': label }
-        : {};
+    const sizeStyle =
+      size !== undefined
+        ? ({
+            ...style,
+            '--kbq-flag-size': typeof size === 'number' ? `${size}px` : size,
+          } as CSSProperties)
+        : style;
 
     return (
       <Tag
         data-shape={shape}
-        data-shadow={shadow}
-        data-empty={empty || undefined}
+        data-hide-shadow={hideShadow || undefined}
         className={clsx(s.base, className)}
-        {...a11yProps}
+        style={sizeStyle}
         {...other}
         ref={ref}
       >

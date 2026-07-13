@@ -49,56 +49,66 @@ describe('Flag', () => {
     });
   });
 
-  describe('check the shadow prop', () => {
-    it('should default to the inset shadow', () => {
+  describe('check the hideShadow prop', () => {
+    it('should show the shadow by default', () => {
       render(<Flag {...baseProps} />);
 
-      expect(getRoot()).toHaveAttribute('data-shadow', 'inset');
+      expect(getRoot()).not.toHaveAttribute('data-hide-shadow');
     });
 
-    it('should apply the shadow as a "none"', () => {
-      render(<Flag {...baseProps} shadow="none" />);
+    it('should set data-hide-shadow when hideShadow is true', () => {
+      render(<Flag {...baseProps} hideShadow />);
 
-      expect(getRoot()).toHaveAttribute('data-shadow', 'none');
+      expect(getRoot()).toHaveAttribute('data-hide-shadow', 'true');
     });
   });
 
-  describe('check the empty prop', () => {
-    it('should not set data-empty by default', () => {
+  describe('check the size prop', () => {
+    it('should not set --kbq-flag-size by default', () => {
       render(<Flag {...baseProps} />);
 
-      expect(getRoot()).not.toHaveAttribute('data-empty');
+      expect(getRoot().style.getPropertyValue('--kbq-flag-size')).toBe('');
     });
 
-    it('should set data-empty when empty is true', () => {
-      render(<Flag {...baseProps} empty />);
+    it('should set --kbq-flag-size in pixels for a number', () => {
+      render(<Flag {...baseProps} size={24} />);
 
-      expect(getRoot()).toHaveAttribute('data-empty', 'true');
+      expect(getRoot().style.getPropertyValue('--kbq-flag-size')).toBe('24px');
+    });
+
+    it('should set --kbq-flag-size verbatim for a string', () => {
+      render(<Flag {...baseProps} size="2rem" />);
+
+      expect(getRoot().style.getPropertyValue('--kbq-flag-size')).toBe('2rem');
+    });
+
+    it('should merge with the consumer style', () => {
+      render(<Flag {...baseProps} size={24} style={{ color: 'red' }} />);
+
+      const flag = getRoot();
+
+      expect(flag.style.getPropertyValue('--kbq-flag-size')).toBe('24px');
+      expect(flag.style.color).toBe('red');
     });
   });
 
-  describe('check the accessibility contract', () => {
-    it('should be labelled with role="img" when the label is provided', () => {
-      render(<Flag {...baseProps} label="Germany" />);
+  describe('accessibility attributes', () => {
+    it('should forward role and aria-label for a meaningful flag', () => {
+      render(<Flag {...baseProps} role="img" aria-label="Germany" />);
 
       const flag = getRoot();
 
       expect(flag).toHaveAttribute('role', 'img');
       expect(flag).toHaveAttribute('aria-label', 'Germany');
-      expect(flag).not.toHaveAttribute('aria-hidden');
     });
 
-    it('should be hidden from assistive tech when decorative', () => {
-      render(<Flag {...baseProps} decorative label="Germany" />);
+    it('should forward aria-hidden for a decorative flag', () => {
+      render(<Flag {...baseProps} aria-hidden="true" />);
 
-      const flag = getRoot();
-
-      expect(flag).toHaveAttribute('aria-hidden', 'true');
-      expect(flag).not.toHaveAttribute('role');
-      expect(flag).not.toHaveAttribute('aria-label');
+      expect(getRoot()).toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('should be neutral with neither label nor decorative', () => {
+    it('should add no role or aria attributes by default', () => {
       render(<Flag {...baseProps} />);
 
       const flag = getRoot();

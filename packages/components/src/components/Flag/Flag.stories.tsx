@@ -3,20 +3,19 @@ import { type CSSProperties } from 'react';
 import { IconGlobe16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import { hasFlag } from 'country-flag-icons';
-import * as flags1x1 from 'country-flag-icons/react/1x1';
-import * as flags3x2 from 'country-flag-icons/react/3x2';
+import { DE as DE1x1 } from 'country-flag-icons/react/1x1';
+import { BR, DE, FR, JP, NP, US } from 'country-flag-icons/react/3x2';
 
 import { FlexBox } from '../FlexBox';
 import { SelectNext as Select } from '../SelectNext';
 import { Typography } from '../Typography';
 
 import s from './Flag.stories.module.css';
-import {
-  Flag,
-  type FlagProps,
-  flagPropShape,
-  flagPropShadow,
-} from './index.js';
+import { Flag, type FlagProps, flagPropShape } from './index.js';
+
+// These small maps let examples look up a flag by ISO code.
+const flags3x2 = { BR, DE, FR, JP, NP, US };
+const flags1x1 = { DE: DE1x1 };
 
 const meta = {
   title: 'Components/Flag',
@@ -27,10 +26,6 @@ const meta = {
   argTypes: {
     shape: {
       options: flagPropShape,
-      control: { type: 'inline-radio' },
-    },
-    shadow: {
-      options: flagPropShadow,
       control: { type: 'inline-radio' },
     },
   },
@@ -53,11 +48,7 @@ export const Shape: Story = {
     <FlexBox gap="l" alignItems="center">
       {flagPropShape.map((shape) => (
         <FlexBox key={shape} gap="xs" direction="column" alignItems="center">
-          <Flag
-            {...args}
-            shape={shape}
-            style={{ fontSize: 32 } as CSSProperties}
-          >
+          <Flag {...args} shape={shape} size={32}>
             <flags1x1.DE />
           </Flag>
           <Typography variant="text-compact">{shape}</Typography>
@@ -70,16 +61,19 @@ export const Shape: Story = {
 export const Shadow: Story = {
   render: (args) => (
     <FlexBox gap="l" alignItems="center">
-      {flagPropShadow.map((shadow) => (
-        <FlexBox key={shadow} gap="xs" direction="column" alignItems="center">
-          <Flag
-            {...args}
-            shadow={shadow}
-            style={{ fontSize: 32 } as CSSProperties}
-          >
+      {[false, true].map((hideShadow) => (
+        <FlexBox
+          key={String(hideShadow)}
+          gap="xs"
+          direction="column"
+          alignItems="center"
+        >
+          <Flag {...args} hideShadow={hideShadow} size={32}>
             <flags3x2.JP />
           </Flag>
-          <Typography variant="text-compact">shadow = {shadow}</Typography>
+          <Typography variant="text-compact">
+            hideShadow = {String(hideShadow)}
+          </Typography>
         </FlexBox>
       ))}
     </FlexBox>
@@ -88,12 +82,7 @@ export const Shadow: Story = {
 
 export const Empty: Story = {
   render: (args) => (
-    <Flag
-      {...args}
-      empty
-      label="Unknown"
-      style={{ fontSize: 32 } as CSSProperties}
-    />
+    <Flag {...args} role="img" aria-label="Unknown" size={32} />
   ),
 };
 
@@ -112,9 +101,9 @@ export const Fallback: Story = {
           <FlexBox key={code} gap="xs" direction="column" alignItems="center">
             <Flag
               {...args}
-              empty={!known}
-              label={known ? code : 'Unknown country'}
-              style={{ fontSize: 32 } as CSSProperties}
+              role="img"
+              aria-label={known ? code : 'Unknown country'}
+              size={32}
             >
               {known ? <FlagIcon /> : null}
             </Flag>
@@ -127,39 +116,39 @@ export const Fallback: Story = {
 };
 
 /**
- * When the flag carries meaning and has no adjacent text, pass a `label`
- * (`role="img"`). When adjacent text already names the country, mark the flag
- * `decorative` so it is hidden from assistive tech.
+ * Flag adds no ARIA semantics on its own — supply them with standard attributes:
+ * `role="img"` + `aria-label` for a meaningful flag with no adjacent text,
+ * `aria-labelledby` when visible text names it, or `aria-hidden` when it is
+ * purely decorative.
  */
 export const Accessibility: Story = {
   render: (args) => (
-    <FlexBox gap="l" direction="row" alignItems="center">
-      <Flag {...args} label="Germany" style={{ fontSize: 18 } as CSSProperties}>
+    <FlexBox gap="l" direction="row">
+      {/* Meaningful flag, no adjacent text. */}
+      <Flag {...args} role="img" aria-label="Germany" size={18}>
         <flags3x2.DE />
       </Flag>
-      <Typography>
-        <Flag {...args} decorative style={{ fontSize: 18 } as CSSProperties}>
+
+      {/* Decorative flag beside visible text. */}
+      <FlexBox gap="xs" alignItems="center">
+        <Flag {...args} role="img" aria-hidden="true" size={18}>
           <flags3x2.DE />
-        </Flag>{' '}
-        Germany
-      </Typography>
+        </Flag>
+        <Typography>Germany</Typography>
+      </FlexBox>
     </FlexBox>
   ),
 };
 
 /**
- * The flag follows text size — control it with `font-size` / `width` / `height`.
+ * Set an explicit height with the `size` prop (a number is pixels, a string is
+ * any CSS length). Omit it and the flag defaults to `1em`, tracking the text.
  */
 export const Sizes: Story = {
   render: (args) => (
     <FlexBox gap="l" alignItems="center">
       {[16, 24, 32, 48].map((size) => (
-        <Flag
-          key={size}
-          {...args}
-          label="Germany"
-          style={{ fontSize: size } as CSSProperties}
-        >
+        <Flag key={size} {...args} role="img" aria-label="Germany" size={size}>
           <flags3x2.DE />
         </Flag>
       ))}
@@ -175,10 +164,10 @@ export const AspectRatio: Story = {
   render: (args) => (
     <Flag
       {...args}
-      label="Nepal"
-      style={
-        { fontSize: 48, '--kbq-flag-aspect-ratio': '4 / 3' } as CSSProperties
-      }
+      role="img"
+      aria-label="Nepal"
+      size={48}
+      style={{ '--kbq-flag-aspect-ratio': '4 / 3' } as CSSProperties}
     >
       <flags3x2.NP />
     </Flag>
@@ -193,12 +182,13 @@ export const Custom: Story = {
   render: (args) => (
     <Flag
       {...args}
-      shadow="none"
-      label="Brazil"
+      hideShadow
+      role="img"
+      aria-label="Brazil"
       className={s.stylized}
+      size={64}
       style={
         {
-          fontSize: 64,
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
           '--kbq-flag-border-radius': 'var(--kbq-size-xs)',
         } as CSSProperties
@@ -256,7 +246,7 @@ const CountryOption = ({ code, name }: { code: string; name: string }) => {
 
   return (
     <FlexBox gap="xs" alignItems="center">
-      <Flag decorative>
+      <Flag aria-hidden="true">
         <FlagIcon />
       </Flag>
       {name}

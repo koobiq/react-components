@@ -9,7 +9,7 @@
   position: relative;
   overflow: hidden;
   vertical-align: middle;
-  block-size: 1em;
+  block-size: var(--kbq-flag-size, 1em);
   aspect-ratio: var(--kbq-flag-aspect-ratio);
   border-radius: var(--kbq-flag-border-radius);
 }
@@ -22,25 +22,35 @@
   object-fit: cover;
 }
 
-/* Inset hairline separating the flag from the background. */
-.base[data-shadow='inset']::after {
+/* Inset hairline separating the flag from the background (shown by default). */
+.base::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 0 0 1px var(--kbq-flag-shadow-color);
+  border: 1px solid var(--kbq-flag-shadow-color);
   pointer-events: none;
 }
 
+.base[data-hide-shadow]::after {
+  content: none;
+}
+
+/*
+ * `square`/`circle` require a 1:1 box. Set `aspect-ratio` directly (not via
+ * `--kbq-flag-aspect-ratio`) so a consumer overriding that variable can't
+ * accidentally distort the circle.
+ */
 .base[data-shape='square'],
 .base[data-shape='circle'] {
-  --kbq-flag-aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1;
 }
 
 .base[data-shape='circle'] {
   border-radius: 50%;
 }
 
-.base[data-empty] {
+/* No projected graphic → neutral placeholder (e.g. unknown/invalid country). */
+.base:empty {
   background-color: var(--kbq-flag-empty-background);
 }
