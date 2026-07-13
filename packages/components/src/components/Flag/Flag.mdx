@@ -28,9 +28,10 @@ import { Flag } from '@koobiq/react-components';
 
 ## Usage
 
-Provide the flag graphic as `children` — an inline `<svg>` is the recommended path (no extra
-requests, no base64), but an `<img>` also works. `country-flag-icons` exposes ready-made React flag
-components:
+Provide the flag graphic as `children`. The recommended path is a ready-made React flag component
+from [`country-flag-icons`](https://www.npmjs.com/package/country-flag-icons) — no extra requests, no
+base64, and it renders an inline `<svg>` under the hood. A raw inline `<svg>` or an `<img>` also
+works.
 
 ```tsx
 import { DE } from 'country-flag-icons/react/3x2';
