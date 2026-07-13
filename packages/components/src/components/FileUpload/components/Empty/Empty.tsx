@@ -1,12 +1,9 @@
 'use client';
 
-import { createContext, forwardRef, useContext } from 'react';
+import { forwardRef } from 'react';
 
 import { clsx, useDOMRef } from '@koobiq/react-core';
-import {
-  IconCloudArrowUpO24,
-  IconArrowUpFromBracket16,
-} from '@koobiq/react-icons';
+import { IconCloudArrowUpO24 } from '@koobiq/react-icons';
 
 import { EmptyState } from '../../../EmptyState';
 import { useFileUploadContext } from '../../FileUploadContext';
@@ -16,13 +13,9 @@ import type {
   FileUploadEmptyTitleProps,
   FileUploadEmptyDescriptionProps,
 } from '../../types';
-import { FileUploadTrigger } from '../Trigger';
+import { FileUploadTriggers } from '../Trigger';
 
 import s from './Empty.module.css';
-
-type EmptyVariant = 'large' | 'compact';
-
-const EmptyVariantContext = createContext<EmptyVariant>('compact');
 
 export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
   (props, ref) => {
@@ -37,42 +30,6 @@ export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
     const { size, isDisabled, allowsMultiple } = useFileUploadContext();
     const domRef = useDOMRef<HTMLDivElement>(ref);
 
-    const variant: EmptyVariant =
-      allowsMultiple && size === 'default' ? 'large' : 'compact';
-
-    const content =
-      children === undefined ? (
-        <>
-          <FileUploadEmptyIcon />
-          {variant === 'large' && <FileUploadEmptyTitle />}
-          <FileUploadEmptyDescription />
-        </>
-      ) : (
-        children
-      );
-
-    if (variant === 'large') {
-      return (
-        <div
-          {...other}
-          ref={domRef}
-          style={style}
-          data-size={size}
-          data-testid={testId}
-          data-disabled={isDisabled || undefined}
-          data-multiple={allowsMultiple || undefined}
-          data-variant={variant}
-          className={clsx(s.empty, className)}
-        >
-          <EmptyVariantContext.Provider value={variant}>
-            <EmptyState size="normal" className={s.large}>
-              {content}
-            </EmptyState>
-          </EmptyVariantContext.Provider>
-        </div>
-      );
-    }
-
     return (
       <div
         {...other}
@@ -82,12 +39,17 @@ export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
         data-testid={testId}
         data-disabled={isDisabled || undefined}
         data-multiple={allowsMultiple || undefined}
-        data-variant={variant}
-        className={clsx(s.empty, s.compact, className)}
+        className={clsx(s.empty, className)}
       >
-        <EmptyVariantContext.Provider value={variant}>
-          {content}
-        </EmptyVariantContext.Provider>
+        <EmptyState size="normal" className={s.large}>
+          {children ?? (
+            <>
+              <FileUploadEmptyIcon />
+              <FileUploadEmptyTitle />
+              <FileUploadEmptyDescription />
+            </>
+          )}
+        </EmptyState>
       </div>
     );
   }
@@ -98,42 +60,18 @@ export const FileUploadEmptyIcon = forwardRef<
   FileUploadEmptyIconProps
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
-  const variant = useContext(EmptyVariantContext);
-
-  const content =
-    children ??
-    (variant === 'large' ? (
-      <IconCloudArrowUpO24 />
-    ) : (
-      <IconArrowUpFromBracket16 />
-    ));
-
-  if (variant === 'large') {
-    return (
-      <EmptyState.Media
-        as="span"
-        {...other}
-        ref={ref}
-        style={style}
-        data-testid={testId}
-        className={clsx(s.icon, className)}
-      >
-        {content}
-      </EmptyState.Media>
-    );
-  }
 
   return (
-    <span
+    <EmptyState.Media
+      as="span"
       {...other}
       ref={ref}
       style={style}
       data-testid={testId}
       className={clsx(s.icon, className)}
-      aria-hidden="true"
     >
-      {content}
-    </span>
+      {children ?? <IconCloudArrowUpO24 />}
+    </EmptyState.Media>
   );
 });
 
@@ -143,34 +81,18 @@ export const FileUploadEmptyTitle = forwardRef<
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
   const { messages } = useFileUploadContext();
-  const variant = useContext(EmptyVariantContext);
-  const content = children ?? messages.dropTitle;
-
-  if (variant === 'large') {
-    return (
-      <EmptyState.Title
-        as="span"
-        {...other}
-        ref={ref}
-        style={style}
-        data-testid={testId}
-        className={clsx(s.title, className)}
-      >
-        {content}
-      </EmptyState.Title>
-    );
-  }
 
   return (
-    <span
+    <EmptyState.Title
+      as="span"
       {...other}
       ref={ref}
       style={style}
       data-testid={testId}
       className={clsx(s.title, className)}
     >
-      {content}
-    </span>
+      {children ?? messages.emptyTitle}
+    </EmptyState.Title>
   );
 });
 
@@ -179,59 +101,23 @@ export const FileUploadEmptyDescription = forwardRef<
   FileUploadEmptyDescriptionProps
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
-  const { messages, allowed } = useFileUploadContext();
-  const variant = useContext(EmptyVariantContext);
-
-  const triggers =
-    allowed === 'mixed' ? (
-      <>
-        <FileUploadTrigger acceptDirectory={false} />
-        {` ${messages.or} `}
-        <FileUploadTrigger acceptDirectory>
-          {messages.browseFolderMixed}
-        </FileUploadTrigger>
-      </>
-    ) : (
-      <FileUploadTrigger />
-    );
-
-  const content =
-    children ??
-    (variant === 'large' ? (
-      <>
-        {messages.or} {triggers}
-      </>
-    ) : (
-      <>
-        {messages.dropHere} {messages.or} {triggers}
-      </>
-    ));
-
-  if (variant === 'large') {
-    return (
-      <EmptyState.Content
-        as="span"
-        {...other}
-        ref={ref}
-        style={style}
-        data-testid={testId}
-        className={clsx(s.description, className)}
-      >
-        {content}
-      </EmptyState.Content>
-    );
-  }
+  const { messages } = useFileUploadContext();
 
   return (
-    <span
+    <EmptyState.Content
+      as="span"
       {...other}
       ref={ref}
       style={style}
       data-testid={testId}
       className={clsx(s.description, className)}
     >
-      {content}
-    </span>
+      {children ?? (
+        <>
+          {messages.alternativeSeparator} <FileUploadTriggers />
+        </>
+      )}
+    </EmptyState.Content>
   );
 });
 

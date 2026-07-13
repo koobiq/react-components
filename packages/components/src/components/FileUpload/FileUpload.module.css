@@ -87,14 +87,17 @@
   padding-inline: var(--file-upload-single-padding-inline);
 }
 
-.base[data-multiple][data-empty].default {
+.base[data-multiple].default {
+  min-block-size: var(--file-upload-multiple-min-block-size);
+}
+
+.base[data-multiple][data-empty]:not([data-list-empty]).default {
   align-items: center;
   justify-content: center;
-  min-block-size: var(--file-upload-multiple-min-block-size);
   min-inline-size: var(--file-upload-multiple-min-inline-size);
 }
 
-.base[data-multiple][data-empty].compact {
+.base[data-multiple][data-list-empty] {
   padding-block: var(--file-upload-compact-padding-block);
   padding-inline: var(--file-upload-compact-padding-inline);
 }
@@ -120,4 +123,8 @@
     var(--kbq-background-transparent);
   padding-block: var(--kbq-size-xxs) var(--kbq-size-xxl);
   min-block-size: var(--file-upload-list-min-block-size);
+}
+
+.base[data-multiple].default:not([data-empty]) .list {
+  flex: 1 1 auto;
 }

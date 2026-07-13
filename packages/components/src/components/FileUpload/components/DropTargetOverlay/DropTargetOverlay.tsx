@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useLayoutEffect, useState } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import { forwardRef, useCallback, useLayoutEffect, useState } from 'react';
+import type { CSSProperties, ReactNode, ComponentPropsWithoutRef } from 'react';
 
+import { clsx } from '@koobiq/react-core';
 import { Overlay } from '@koobiq/react-primitives';
 
 import s from './DropTargetOverlay.module.css';
@@ -11,7 +12,7 @@ type FileUploadDropTargetOverlayProps = {
   children: ReactNode;
   target: HTMLElement;
   isFullscreen?: boolean;
-};
+} & ComponentPropsWithoutRef<'div'>;
 
 const getTargetStyle = (target: HTMLElement): CSSProperties => {
   const targetWindow = target.ownerDocument.defaultView;
@@ -34,17 +35,25 @@ const getTargetStyle = (target: HTMLElement): CSSProperties => {
   return { top, left, width, height };
 };
 
-export const FileUploadDropTargetOverlay = ({
-  children,
-  target,
-  isFullscreen,
-}: FileUploadDropTargetOverlayProps) => {
-  const [style, setStyle] = useState<CSSProperties>(() =>
+export const FileUploadDropTargetOverlay = forwardRef<
+  HTMLDivElement,
+  FileUploadDropTargetOverlayProps
+>((props, ref) => {
+  const {
+    children,
+    target,
+    isFullscreen,
+    className,
+    style: styleProp,
+    ...other
+  } = props;
+
+  const [targetStyle, setTargetStyle] = useState<CSSProperties>(() =>
     getTargetStyle(target)
   );
 
   const updatePosition = useCallback(() => {
-    setStyle(getTargetStyle(target));
+    setTargetStyle(getTargetStyle(target));
   }, [target]);
 
   useLayoutEffect(() => {
@@ -71,8 +80,10 @@ export const FileUploadDropTargetOverlay = ({
   return (
     <Overlay disableFocusManagement>
       <div
-        style={style}
-        className={s.overlay}
+        {...other}
+        ref={ref}
+        style={{ ...styleProp, ...targetStyle }}
+        className={clsx(s.overlay, className)}
         data-slot="overlay"
         data-fullscreen={isFullscreen || undefined}
       >
@@ -80,4 +91,6 @@ export const FileUploadDropTargetOverlay = ({
       </div>
     </Overlay>
   );
-};
+});
+
+FileUploadDropTargetOverlay.displayName = 'FileUploadDropTargetOverlay';

@@ -6,7 +6,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { Button } from '../Button';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Provider } from '../Provider';
 
@@ -305,6 +304,7 @@ describe('FileUpload', () => {
 
   it('renders non-interactive empty content in the external drop overlay', () => {
     const targetRef = createRef<HTMLDivElement>();
+    const overlayRef = createRef<HTMLDivElement>();
 
     render(
       <>
@@ -313,6 +313,14 @@ describe('FileUpload', () => {
           aria-label="upload"
           items={[makeItem('existing.txt')]}
           dropzoneTarget={targetRef}
+          messages={{ dropOverlayTitle: 'Drop files now' }}
+          slotProps={{
+            dropOverlay: {
+              ref: overlayRef,
+              className: 'custom-overlay',
+              id: 'drop-overlay',
+            },
+          }}
         >
           {renderItem}
         </FileUpload>
@@ -323,7 +331,15 @@ describe('FileUpload', () => {
       dataTransfer: createDataTransfer([dropFile('a.txt')]),
     });
 
-    expect(getDropOverlay()).toHaveTextContent('Drag here');
+    expect(document.getElementById('drop-overlay')).toHaveTextContent(
+      'Drop files now'
+    );
+
+    expect(document.getElementById('drop-overlay')).toHaveClass(
+      'custom-overlay'
+    );
+
+    expect(overlayRef.current).toBe(document.getElementById('drop-overlay'));
 
     expect(
       getDropOverlay()?.querySelector('input[type="file"]')
@@ -778,21 +794,18 @@ describe('FileUpload', () => {
     expect(clickSpy).toHaveBeenCalled();
   });
 
-  it('supports rendering a custom trigger', async () => {
+  it('supports a custom browse link label', async () => {
     const user = userEvent.setup();
-    const onPress = vi.fn();
-    const triggerRef = createRef<HTMLButtonElement>();
 
     render(
       <FileUpload
+        allowsMultiple
         aria-label="upload"
         items={[]}
         renderEmptyState={() => (
           <FileUpload.Empty>
             <FileUpload.Trigger>
-              <Button ref={triggerRef} onPress={onPress}>
-                Choose a file
-              </Button>
+              <span>Choose files</span>
             </FileUpload.Trigger>
           </FileUpload.Empty>
         )}
@@ -805,41 +818,25 @@ describe('FileUpload', () => {
       .spyOn(getFileInput(), 'click')
       .mockImplementation(() => undefined);
 
-    await user.click(screen.getByRole('button', { name: 'Choose a file' }));
+    const triggerContent = screen.getByText('Choose files');
+
+    expect(triggerContent.closest('a')).toBeInTheDocument();
+
+    await user.click(triggerContent);
 
     expect(clickSpy).toHaveBeenCalled();
-    expect(onPress).toHaveBeenCalled();
-
-    expect(triggerRef.current).toBe(
-      screen.getByRole('button', { name: 'Choose a file' })
-    );
   });
 
-  it('passes the disabled state to a custom trigger', async () => {
+  it('passes the disabled state to the browse link', async () => {
     const user = userEvent.setup();
 
-    render(
-      <FileUpload
-        isDisabled
-        aria-label="upload"
-        items={[]}
-        renderEmptyState={() => (
-          <FileUpload.Empty>
-            <FileUpload.Trigger>
-              <Button>Choose a file</Button>
-            </FileUpload.Trigger>
-          </FileUpload.Empty>
-        )}
-      >
-        {renderItem}
-      </FileUpload>
-    );
+    renderComponent({ isDisabled: true });
 
     const clickSpy = vi
       .spyOn(getFileInput(), 'click')
       .mockImplementation(() => undefined);
 
-    const trigger = screen.getByRole('button', { name: 'Choose a file' });
+    const trigger = screen.getByText('select a file');
 
     expect(trigger).toHaveAttribute('data-disabled');
 
@@ -848,58 +845,13 @@ describe('FileUpload', () => {
     expect(clickSpy).not.toHaveBeenCalled();
   });
 
-  it('restores focus to a custom trigger after removing the last file', async () => {
+  it('restores focus to the browse link in multiple mode', async () => {
     const user = userEvent.setup();
 
-    function CustomTriggerFileUpload() {
+    function MultipleFileUpload() {
       const [items, setItems] = useState<FileUploadItemData[]>([
         makeItem('only.txt'),
       ]);
-
-      return (
-        <FileUpload
-          aria-label="upload"
-          items={items}
-          onRemove={(id) =>
-            setItems((current) => current.filter((item) => item.id !== id))
-          }
-          renderEmptyState={() => (
-            <FileUpload.Empty>
-              <FileUpload.Trigger>
-                <Button>Choose another file</Button>
-              </FileUpload.Trigger>
-            </FileUpload.Empty>
-          )}
-        >
-          {renderItem}
-        </FileUpload>
-      );
-    }
-
-    render(<CustomTriggerFileUpload />);
-
-    await user.click(screen.getByRole('button', { name: /remove only\.txt/i }));
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole('button', { name: 'Choose another file' })
-      ).toHaveFocus();
-    });
-  });
-
-  it('restores focus to a custom trigger in multiple mode', async () => {
-    const user = userEvent.setup();
-
-    function CustomMultipleTriggerFileUpload() {
-      const [items, setItems] = useState<FileUploadItemData[]>([
-        makeItem('only.txt'),
-      ]);
-
-      const trigger = (
-        <FileUpload.Trigger>
-          <Button>Choose files</Button>
-        </FileUpload.Trigger>
-      );
 
       return (
         <FileUpload
@@ -909,26 +861,18 @@ describe('FileUpload', () => {
           onRemove={(id) =>
             setItems((current) => current.filter((item) => item.id !== id))
           }
-          renderEmptyState={() => (
-            <FileUpload.Empty>{trigger}</FileUpload.Empty>
-          )}
-          renderAddMore={() => (
-            <FileUpload.AddMore>{trigger}</FileUpload.AddMore>
-          )}
         >
           {renderItem}
         </FileUpload>
       );
     }
 
-    render(<CustomMultipleTriggerFileUpload />);
+    render(<MultipleFileUpload />);
 
     await user.click(screen.getByRole('button', { name: /remove only\.txt/i }));
 
     await waitFor(() => {
-      expect(
-        screen.getByRole('button', { name: 'Choose files' })
-      ).toHaveFocus();
+      expect(screen.getByText('select files')).toHaveFocus();
     });
   });
 
@@ -949,11 +893,6 @@ describe('FileUpload', () => {
           onRemove={(id) =>
             setItems((prev) => prev.filter((item) => item.id !== id))
           }
-          renderAddMore={() => (
-            <FileUpload.AddMore>
-              <FileUpload.Trigger>browse</FileUpload.Trigger>
-            </FileUpload.AddMore>
-          )}
         >
           {(item) => (
             <FileUpload.Item id={item.id} textValue={String(item.name ?? '')}>
@@ -968,7 +907,7 @@ describe('FileUpload', () => {
     render(<CustomRender />);
 
     expect(screen.getByText('a.txt')).toBeInTheDocument();
-    expect(screen.getByText('browse')).toBeInTheDocument();
+    expect(screen.getByText('Drop more or')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /remove a\.txt/i }));
 
@@ -1003,38 +942,99 @@ describe('FileUpload', () => {
     expect(ref.current?.tagName).toBe('LI');
   });
 
-  it('applies data-size to the empty state', () => {
+  it('uses the compact list empty state without calling renderEmptyState', () => {
+    const renderEmptyState = vi.fn(() => <div>large empty</div>);
+    const listEmptyRef = createRef<HTMLDivElement>();
+
     render(
       <FileUpload
         aria-label="upload"
         size="compact"
+        allowsMultiple
         items={[]}
-        renderEmptyState={() => <FileUpload.Empty data-testid="empty" />}
+        renderEmptyState={renderEmptyState}
+        slotProps={{
+          listEmpty: {
+            ref: listEmptyRef,
+            id: 'list-empty',
+            className: 'custom-list-empty',
+          },
+        }}
       >
         {renderItem}
       </FileUpload>
     );
 
-    expect(screen.getByTestId('empty')).toHaveAttribute('data-size', 'compact');
+    expect(renderEmptyState).not.toHaveBeenCalled();
+
+    expect(document.getElementById('list-empty')).toHaveAttribute(
+      'data-size',
+      'compact'
+    );
+
+    expect(document.getElementById('list-empty')).toHaveClass(
+      'custom-list-empty'
+    );
+
+    expect(listEmptyRef.current).toBe(document.getElementById('list-empty'));
+    expect(screen.queryByText('large empty')).not.toBeInTheDocument();
   });
 
-  it('keeps data-size on add-more once populated', () => {
+  it('uses the list empty state for an external drop target', () => {
+    const targetRef = createRef<HTMLDivElement>();
+    const renderEmptyState = vi.fn(() => <div>large empty</div>);
+
+    render(
+      <>
+        <div ref={targetRef} />
+        <FileUpload
+          allowsMultiple
+          aria-label="upload"
+          dropzoneTarget={targetRef}
+          items={[]}
+          renderEmptyState={renderEmptyState}
+        >
+          {renderItem}
+        </FileUpload>
+      </>
+    );
+
+    expect(renderEmptyState).not.toHaveBeenCalled();
+    expect(screen.getByText('select files')).toBeInTheDocument();
+    expect(screen.queryByText('large empty')).not.toBeInTheDocument();
+  });
+
+  it('applies add-more slot props once populated', () => {
+    const ref = createRef<HTMLDivElement>();
+
     render(
       <FileUpload
         aria-label="upload"
         size="compact"
         allowsMultiple
         items={[makeItem('a.txt')]}
-        renderAddMore={() => <FileUpload.AddMore data-testid="add-more" />}
+        slotProps={{
+          addMore: {
+            ref,
+            className: 'custom-add-more',
+            id: 'add-more',
+            children: 'replacement content',
+          },
+        }}
       >
         {renderItem}
       </FileUpload>
     );
 
-    expect(screen.getByTestId('add-more')).toHaveAttribute(
+    expect(document.getElementById('add-more')).toHaveAttribute(
       'data-size',
       'compact'
     );
+
+    expect(document.getElementById('add-more')).toHaveClass('custom-add-more');
+    expect(ref.current).toBe(document.getElementById('add-more'));
+    expect(screen.getByText('Drop more or')).toBeInTheDocument();
+    expect(screen.queryByText('replacement content')).not.toBeInTheDocument();
   });
 
   it('applies list slot props to the collection element', () => {
@@ -1047,7 +1047,7 @@ describe('FileUpload', () => {
           list: {
             className: 'custom-list',
             style: { maxBlockSize: 240 },
-            'data-testid': 'list',
+            id: 'list',
           },
         }}
       >
@@ -1055,8 +1055,11 @@ describe('FileUpload', () => {
       </FileUpload>
     );
 
-    expect(screen.getByTestId('list')).toHaveClass('custom-list');
-    expect(screen.getByTestId('list')).toHaveStyle({ maxBlockSize: '240px' });
+    expect(document.getElementById('list')).toHaveClass('custom-list');
+
+    expect(document.getElementById('list')).toHaveStyle({
+      maxBlockSize: '240px',
+    });
   });
 
   it('renders the single selected file and hides the empty trigger', () => {
@@ -1099,6 +1102,7 @@ describe('FileUpload', () => {
     render(
       <FileUpload
         aria-label="upload"
+        allowsMultiple
         items={[]}
         renderEmptyState={() => <div>Nothing uploaded</div>}
       >
@@ -1112,7 +1116,12 @@ describe('FileUpload', () => {
 
   it('hides the empty state when renderEmptyState returns null', () => {
     render(
-      <FileUpload aria-label="upload" items={[]} renderEmptyState={() => null}>
+      <FileUpload
+        allowsMultiple
+        aria-label="upload"
+        items={[]}
+        renderEmptyState={() => null}
+      >
         {renderItem}
       </FileUpload>
     );
@@ -1120,20 +1129,40 @@ describe('FileUpload', () => {
     expect(screen.queryByText('select a file')).not.toBeInTheDocument();
   });
 
-  it('hides add-more when renderAddMore returns null', () => {
+  it('overrides localized messages without replacing the remaining strings', () => {
     render(
       <FileUpload
         aria-label="upload"
         allowsMultiple
         items={[makeItem('a.txt')]}
-        renderAddMore={() => null}
+        messages={{
+          addMoreText: 'Add another file',
+          alternativeSeparator: 'otherwise',
+        }}
       >
         {renderItem}
       </FileUpload>
     );
 
-    expect(screen.getByText('a.txt')).toBeInTheDocument();
-    expect(screen.queryByText('Drop more or')).not.toBeInTheDocument();
+    expect(screen.getByText('Add another file otherwise')).toBeInTheDocument();
+    expect(screen.getByText('select files')).toBeInTheDocument();
+  });
+
+  it('uses message overrides in the list empty state', () => {
+    renderComponent({
+      messages: {
+        listEmptyText: 'Drop a document here',
+        browseFile: 'choose a document',
+      },
+    });
+
+    const trigger = screen.getByText('choose a document');
+
+    expect(trigger).toBeInTheDocument();
+
+    expect(trigger.parentElement).toHaveTextContent(
+      'Drop a document here or choose a document'
+    );
   });
 
   it('formats numeric ItemSize children using the current locale', () => {

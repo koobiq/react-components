@@ -1,6 +1,6 @@
 'use client';
 
-import type { Ref } from 'react';
+import type { Ref, ReactNode } from 'react';
 import {
   useRef,
   useMemo,
@@ -41,6 +41,7 @@ import {
   FileUploadItemIcon,
   FileUploadItemName,
   FileUploadItemSize,
+  FileUploadListEmpty,
   FileUploadRemoveButton,
   FileUploadTrigger,
   FileUploadEmptyDescription,
@@ -90,7 +91,7 @@ function FileUploadInner<T extends object>({
     className,
     slotProps,
     dropzoneTarget,
-    renderAddMore,
+    messages: messageOverrides,
     renderEmptyState,
     'data-testid': testId,
     ...other
@@ -109,27 +110,28 @@ function FileUploadInner<T extends object>({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const numberFormatter = useNumberFormatter({ maximumFractionDigits: 2 });
 
-  const messages = useMemo<FileUploadMessages>(
-    () => ({
-      or: stringFormatter.format('or'),
-      addMore: stringFormatter.format('addMore'),
-      dropHere: stringFormatter.format('dropHere'),
-      dropTitle: stringFormatter.format('dropTitle'),
+  const messages = useMemo<FileUploadMessages>(() => {
+    const localizedMessages = {
+      emptyTitle: stringFormatter.format('emptyTitle'),
+      listEmptyText: stringFormatter.format('listEmptyText'),
+      dropOverlayTitle: stringFormatter.format('dropOverlayTitle'),
+      addMoreText: stringFormatter.format('addMoreText'),
+      alternativeSeparator: stringFormatter.format('alternativeSeparator'),
       browseFile: stringFormatter.format('browseFile'),
       browseFiles: stringFormatter.format('browseFiles'),
       browseFolder: stringFormatter.format('browseFolder'),
       browseFilesOrFolder: stringFormatter.format('browseFilesOrFolder'),
       browseFolderMixed: stringFormatter.format('browseFolderMixed'),
       removeButtonLabel: stringFormatter.format('removeButtonLabel'),
-      uploadingLabel: stringFormatter.format('uploadingLabel'),
-      bytes: stringFormatter.format('bytes'),
-      kilobytes: stringFormatter.format('kilobytes'),
-      megabytes: stringFormatter.format('megabytes'),
-      gigabytes: stringFormatter.format('gigabytes'),
-      terabytes: stringFormatter.format('terabytes'),
-    }),
-    [stringFormatter]
-  );
+      bytesUnit: stringFormatter.format('bytesUnit'),
+      kilobytesUnit: stringFormatter.format('kilobytesUnit'),
+      megabytesUnit: stringFormatter.format('megabytesUnit'),
+      gigabytesUnit: stringFormatter.format('gigabytesUnit'),
+      terabytesUnit: stringFormatter.format('terabytesUnit'),
+    };
+
+    return { ...localizedMessages, ...messageOverrides };
+  }, [stringFormatter, messageOverrides]);
 
   const getItemRef = useKeyedRefs<HTMLButtonElement>();
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -144,11 +146,11 @@ function FileUploadInner<T extends object>({
       formatFileSize(bytes, {
         formatNumber: (fileSize) => numberFormatter.format(fileSize),
         unitLabels: {
-          B: messages.bytes,
-          KB: messages.kilobytes,
-          MB: messages.megabytes,
-          GB: messages.gigabytes,
-          TB: messages.terabytes,
+          B: messages.bytesUnit,
+          KB: messages.kilobytesUnit,
+          MB: messages.megabytesUnit,
+          GB: messages.gigabytesUnit,
+          TB: messages.terabytesUnit,
         },
       }),
     [numberFormatter, messages]
@@ -247,9 +249,36 @@ function FileUploadInner<T extends object>({
 
   const { className: listClassName, ...listProps } = slotProps?.list ?? {};
 
+  const showsLargeEmpty =
+    isEmpty &&
+    allowsMultiple &&
+    size === 'default' &&
+    dropzoneTarget === undefined;
+
   const overlayTarget = isFullscreen
     ? (domRef.current?.ownerDocument.documentElement ?? null)
     : (dropzoneTarget?.current ?? null);
+
+  let uploadContent: ReactNode;
+
+  if (!isEmpty) {
+    uploadContent = (
+      <>
+        <ul
+          {...listProps}
+          className={clsx(s.list, listClassName)}
+          data-multiple={allowsMultiple || undefined}
+        >
+          <CollectionRoot collection={collection} />
+        </ul>
+        {allowsMultiple && <FileUploadAddMore {...slotProps?.addMore} />}
+      </>
+    );
+  } else if (showsLargeEmpty) {
+    uploadContent = renderEmptyState ? renderEmptyState() : <FileUploadEmpty />;
+  } else {
+    uploadContent = <FileUploadListEmpty {...slotProps?.listEmpty} />;
+  }
 
   return (
     <FileUploadContext.Provider value={contextValue}>
@@ -260,39 +289,25 @@ function FileUploadInner<T extends object>({
         data-size={size}
         data-testid={testId}
         data-empty={isEmpty || undefined}
+        data-list-empty={(isEmpty && !showsLargeEmpty) || undefined}
         data-disabled={isDisabled || undefined}
         data-invalid={isInvalidProp || undefined}
         data-multiple={allowsMultiple || undefined}
         className={clsx(s.base, s[size], textNormal, className)}
       >
-        {isEmpty ? (
-          renderEmptyState ? (
-            renderEmptyState()
-          ) : (
-            <FileUploadEmpty />
-          )
-        ) : (
-          <>
-            <ul
-              {...listProps}
-              className={clsx(s.list, listClassName)}
-              data-multiple={allowsMultiple || undefined}
-            >
-              <CollectionRoot collection={collection} />
-            </ul>
-            {allowsMultiple &&
-              (renderAddMore ? renderAddMore() : <FileUploadAddMore />)}
-          </>
-        )}
+        {uploadContent}
       </div>
       {overlayTarget && isDropTarget && (
         <FileUploadDropTargetOverlay
+          {...slotProps?.dropOverlay}
           target={overlayTarget}
           isFullscreen={isFullscreen}
         >
           <FileUploadEmpty>
             <FileUploadEmptyIcon />
-            <FileUploadEmptyTitle />
+            <FileUploadEmptyTitle>
+              {messages.dropOverlayTitle}
+            </FileUploadEmptyTitle>
           </FileUploadEmpty>
         </FileUploadDropTargetOverlay>
       )}
@@ -331,7 +346,6 @@ type CompoundedComponent = typeof FileUploadComponent & {
   EmptyIcon: typeof FileUploadEmptyIcon;
   EmptyTitle: typeof FileUploadEmptyTitle;
   EmptyDescription: typeof FileUploadEmptyDescription;
-  AddMore: typeof FileUploadAddMore;
   Trigger: typeof FileUploadTrigger;
   Item: typeof FileUploadItem;
   ItemIcon: typeof FileUploadItemIcon;
@@ -352,7 +366,6 @@ FileUpload.Empty = FileUploadEmpty;
 FileUpload.EmptyIcon = FileUploadEmptyIcon;
 FileUpload.EmptyTitle = FileUploadEmptyTitle;
 FileUpload.EmptyDescription = FileUploadEmptyDescription;
-FileUpload.AddMore = FileUploadAddMore;
 FileUpload.Trigger = FileUploadTrigger;
 FileUpload.Item = FileUploadItem;
 FileUpload.ItemIcon = FileUploadItemIcon;

@@ -118,8 +118,9 @@ Keep the native `File` in local items and append it to `FormData` on submit.
 
 ## Customization
 
-Use `renderEmptyState` and `renderAddMore` to replace the default areas. Custom
-`FileUpload.Empty` children are rendered as provided.
+Use `messages` to change standard text. Use `slotProps` for the list, compact
+empty state, add-more area, and drop overlay. Use `renderEmptyState` to replace
+the large empty state.
 
 <Story of={Stories.CustomContent} />
 

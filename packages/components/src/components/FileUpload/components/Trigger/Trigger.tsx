@@ -1,9 +1,7 @@
 'use client';
 
-import type { Ref } from 'react';
-import { cloneElement, forwardRef, isValidElement } from 'react';
+import { forwardRef } from 'react';
 
-import { mergeRefs } from '@koobiq/react-core';
 import { FileTrigger } from '@koobiq/react-primitives';
 
 import { Link } from '../../../Link';
@@ -11,14 +9,9 @@ import { useFileUploadContext } from '../../FileUploadContext';
 import type { FileUploadTriggerProps } from '../../types';
 import { resolveBrowseText } from '../../utils';
 
-type CustomTriggerProps = {
-  ref?: Ref<HTMLElement>;
-  isDisabled?: boolean;
-};
-
 /**
- * Opens the system file dialog. Renders a browse link by default and accepts a
- * custom pressable child. The ref points to the underlying hidden file input.
+ * Opens the system file dialog. The ref points to the underlying hidden file
+ * input.
  */
 export const FileUploadTrigger = forwardRef<
   HTMLInputElement,
@@ -44,22 +37,19 @@ export const FileUploadTrigger = forwardRef<
 
   const isDirectory = acceptDirectory ?? allowed === 'folder';
 
-  const label =
-    children ??
-    (acceptDirectory === undefined
-      ? resolveBrowseText(allowed, allowsMultiple, messages)
-      : isDirectory
-        ? messages.browseFolder
-        : allowsMultiple
-          ? messages.browseFiles
-          : messages.browseFile);
+  let defaultContent = resolveBrowseText(allowed, allowsMultiple, messages);
 
-  const customTrigger = isValidElement<CustomTriggerProps>(children)
-    ? cloneElement(children, {
-        ref: mergeRefs(children.props.ref, setTriggerRef),
-        isDisabled: children.props.isDisabled || isDisabled,
-      })
-    : null;
+  if (acceptDirectory !== undefined) {
+    if (isDirectory) {
+      defaultContent = messages.browseFolder;
+    } else if (allowsMultiple) {
+      defaultContent = messages.browseFiles;
+    } else {
+      defaultContent = messages.browseFile;
+    }
+  }
+
+  const content = children ?? defaultContent;
 
   return (
     <FileTrigger
@@ -73,20 +63,34 @@ export const FileUploadTrigger = forwardRef<
         }
       }}
     >
-      {customTrigger ?? (
-        <Link
-          isPseudo
-          style={style}
-          ref={setTriggerRef}
-          className={className}
-          isDisabled={isDisabled}
-          data-testid={testId}
-        >
-          {label}
-        </Link>
-      )}
+      <Link
+        isPseudo
+        style={style}
+        ref={setTriggerRef}
+        className={className}
+        isDisabled={isDisabled}
+        data-testid={testId}
+      >
+        {content}
+      </Link>
     </FileTrigger>
   );
 });
+
+export const FileUploadTriggers = () => {
+  const { allowed, messages } = useFileUploadContext();
+
+  if (allowed !== 'mixed') return <FileUploadTrigger />;
+
+  return (
+    <>
+      <FileUploadTrigger acceptDirectory={false} />
+      {` ${messages.alternativeSeparator} `}
+      <FileUploadTrigger acceptDirectory>
+        {messages.browseFolderMixed}
+      </FileUploadTrigger>
+    </>
+  );
+};
 
 FileUploadTrigger.displayName = 'FileUpload.Trigger';

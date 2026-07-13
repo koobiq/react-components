@@ -30,22 +30,22 @@ export type FileUploadPropDropzoneTarget =
 
 /** Localizable strings used by `FileUpload` (aria labels, size units, captions). */
 export type FileUploadMessages = {
-  dropHere: string;
-  dropTitle: string;
-  or: string;
+  emptyTitle: string;
+  listEmptyText: string;
+  dropOverlayTitle: string;
+  addMoreText: string;
+  alternativeSeparator: string;
   browseFile: string;
   browseFiles: string;
   browseFolder: string;
   browseFilesOrFolder: string;
   browseFolderMixed: string;
-  addMore: string;
   removeButtonLabel: string;
-  uploadingLabel: string;
-  bytes: string;
-  kilobytes: string;
-  megabytes: string;
-  gigabytes: string;
-  terabytes: string;
+  bytesUnit: string;
+  kilobytesUnit: string;
+  megabytesUnit: string;
+  gigabytesUnit: string;
+  terabytesUnit: string;
 };
 
 /** A native file with its path relative to the selected or dropped directory. */
@@ -66,10 +66,10 @@ export type FileUploadProps<T extends object = object> =
       onRemove?: (id: Key) => void;
       /** Where files can be dropped: a target element ref or 'fullscreen'. Defaults to the FileUpload root. */
       dropzoneTarget?: FileUploadPropDropzoneTarget;
-      /** Custom empty state renderer. Return `null` to hide the empty state. */
+      /** Custom large empty state renderer. Return `null` to hide the empty state. */
       renderEmptyState?: () => ReactNode;
-      /** Custom add-more renderer shown after items. Return `null` to hide it. */
-      renderAddMore?: () => ReactNode;
+      /** Overrides localized text used by FileUpload. */
+      messages?: Partial<FileUploadMessages>;
       /**
        * Whether more than one file can be selected.
        * @default false
@@ -93,7 +93,10 @@ export type FileUploadProps<T extends object = object> =
       isInvalid?: boolean;
       /** Props applied to internal parts of FileUpload. */
       slotProps?: {
-        list?: ComponentPropsWithRef<'ul'> & DataAttributeProps;
+        list?: ComponentPropsWithRef<'ul'>;
+        listEmpty?: ComponentPropsWithRef<'div'>;
+        dropOverlay?: ComponentPropsWithRef<'div'>;
+        addMore?: ComponentPropsWithRef<'div'>;
       };
       /** Unique identifier for testing purposes. */
       'data-testid'?: string | number;
@@ -123,15 +126,9 @@ export type FileUploadEmptyDescriptionProps = ExtendableComponentPropsWithRef<
   'span'
 >;
 
-export type FileUploadAddMoreProps = ExtendableComponentPropsWithRef<
-  DataAttributeProps,
-  'div'
->;
-
 export type FileUploadTriggerProps = {
   /**
-   * The visible label of the default browse link, or a custom pressable
-   * component. Defaults to a localized string rendered as a link.
+   * The contents of the browse link.
    */
   children?: ReactNode;
   /**

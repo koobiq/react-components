@@ -27,7 +27,6 @@ const meta = {
     'FileUpload.EmptyIcon': FileUpload.EmptyIcon,
     'FileUpload.EmptyTitle': FileUpload.EmptyTitle,
     'FileUpload.EmptyDescription': FileUpload.EmptyDescription,
-    'FileUpload.AddMore': FileUpload.AddMore,
     'FileUpload.Item': FileUpload.Item,
     'FileUpload.ItemIcon': FileUpload.ItemIcon,
     'FileUpload.ItemContent': FileUpload.ItemContent,
@@ -738,6 +737,11 @@ export const CustomContent: Story = {
         aria-label="Upload files"
         items={items}
         allowsMultiple
+        messages={{
+          emptyTitle: 'Drop password-protected ZIP archives here',
+          browseFiles: 'select files',
+          addMoreText: 'Drop more ZIP archives',
+        }}
         onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
         renderEmptyState={() => (
@@ -745,16 +749,8 @@ export const CustomContent: Story = {
             <FileUpload.EmptyIcon>
               <IconBoxArchive24 />
             </FileUpload.EmptyIcon>
-            <FileUpload.EmptyTitle>
-              Drop password-protected ZIP archives here
-            </FileUpload.EmptyTitle>
-            <FileUpload.EmptyDescription>
-              <FileUpload.Trigger>
-                <Button className={spacing({ mbs: 'xxs' })}>
-                  Select files
-                </Button>
-              </FileUpload.Trigger>
-            </FileUpload.EmptyDescription>
+            <FileUpload.EmptyTitle />
+            <FileUpload.EmptyDescription />
           </FileUpload.Empty>
         )}
         {...args}

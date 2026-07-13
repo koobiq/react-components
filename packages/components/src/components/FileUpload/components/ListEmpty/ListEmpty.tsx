@@ -9,9 +9,9 @@ import { IconArrowUpFromBracket16 } from '@koobiq/react-icons';
 import { useFileUploadContext } from '../../FileUploadContext';
 import { FileUploadTriggers } from '../Trigger';
 
-import s from './AddMore.module.css';
+import s from './ListEmpty.module.css';
 
-export const FileUploadAddMore = forwardRef<
+export const FileUploadListEmpty = forwardRef<
   HTMLDivElement,
   ComponentPropsWithRef<'div'>
 >((props, ref) => {
@@ -36,12 +36,12 @@ export const FileUploadAddMore = forwardRef<
       <span className={s.icon} aria-hidden="true">
         <IconArrowUpFromBracket16 />
       </span>
-      <span className={s.text}>
-        {messages.addMoreText} {messages.alternativeSeparator}{' '}
+      <span className={s.description}>
+        {messages.listEmptyText} {messages.alternativeSeparator}{' '}
         <FileUploadTriggers />
       </span>
     </div>
   );
 });
 
-FileUploadAddMore.displayName = 'FileUploadAddMore';
+FileUploadListEmpty.displayName = 'FileUploadListEmpty';
