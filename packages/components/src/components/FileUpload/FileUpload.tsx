@@ -17,6 +17,7 @@ import type {
 } from '@koobiq/react-core';
 import {
   clsx,
+  mergeProps,
   useDOMRef,
   useKeyedRefs,
   useNumberFormatter,
@@ -24,15 +25,26 @@ import {
 } from '@koobiq/react-core';
 import {
   Collection,
+  Provider,
+  TextContext,
+  DEFAULT_SLOT,
   CollectionBuilder,
+  FieldErrorContext,
   CollectionRendererContext,
 } from '@koobiq/react-primitives';
 
-import { utilClasses } from '../../styles/utility';
 import { formatFileSize } from '../../utils';
+import type {
+  FormFieldProps,
+  FormFieldErrorProps,
+  FormFieldLabelProps,
+  FormFieldCaptionProps,
+} from '../FormField';
+import { FormField } from '../FormField';
 
 import {
   FileUploadAddMore,
+  FileUploadControl,
   FileUploadEmpty,
   FileUploadEmptyIcon,
   FileUploadEmptyTitle,
@@ -50,7 +62,7 @@ import { FileUploadDropTargetOverlay } from './components/DropTargetOverlay';
 import s from './FileUpload.module.css';
 import type { FileUploadContextValue } from './FileUploadContext';
 import { FileUploadContext } from './FileUploadContext';
-import { useFileDropTarget } from './hooks';
+import { useFileDropTarget, useFileUploadField } from './hooks';
 import intlMessages from './intl';
 import type {
   FileUploadComponent,
@@ -58,8 +70,6 @@ import type {
   FileUploadProps,
 } from './types';
 import { prepareFileUploadFiles } from './utils';
-
-const textNormal = utilClasses.typography['text-normal'];
 
 type PendingFocus = { type: 'item'; id: Key } | { type: 'trigger' } | null;
 
@@ -91,6 +101,20 @@ function FileUploadInner<T extends object>({
     className,
     slotProps,
     dropzoneTarget,
+    label,
+    caption,
+    errorMessage,
+    isLabelHidden,
+    isRequired = false,
+    labelPlacement,
+    labelAlign,
+    id,
+    role,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
+    'aria-details': ariaDetails,
+    'aria-errormessage': ariaErrorMessage,
     messages: messageOverrides,
     renderEmptyState,
     'data-testid': testId,
@@ -98,6 +122,7 @@ function FileUploadInner<T extends object>({
   } = props;
 
   const domRef = useDOMRef<HTMLDivElement>(rootRef);
+  const controlRef = useRef<HTMLDivElement>(null);
   const { CollectionRoot } = useContext(CollectionRendererContext);
 
   const isEmpty = collection.size === 0;
@@ -109,6 +134,42 @@ function FileUploadInner<T extends object>({
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const numberFormatter = useNumberFormatter({ maximumFractionDigits: 2 });
+
+  const field = useFileUploadField({
+    id,
+    role,
+    label,
+    caption,
+    hasErrorMessage: errorMessage != null,
+    isDisabled,
+    isInvalid: isInvalidProp,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
+    'aria-details': ariaDetails,
+    'aria-errormessage': ariaErrorMessage,
+  });
+
+  const labelProps = mergeProps<(FormFieldLabelProps<'span'> | undefined)[]>(
+    {
+      as: 'span',
+      children: label,
+      isHidden: isLabelHidden,
+      isRequired,
+    },
+    slotProps?.label,
+    field.labelProps
+  );
+
+  const captionProps = mergeProps<(FormFieldCaptionProps | undefined)[]>(
+    { children: caption },
+    slotProps?.caption
+  );
+
+  const errorMessageProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
+    { children: errorMessage },
+    slotProps?.errorMessage
+  );
 
   const messages = useMemo<FileUploadMessages>(() => {
     const localizedMessages = {
@@ -174,7 +235,9 @@ function FileUploadInner<T extends object>({
   const isFullscreen = dropzoneTarget === 'fullscreen';
 
   const dropRef =
-    dropzoneTarget && dropzoneTarget !== 'fullscreen' ? dropzoneTarget : domRef;
+    dropzoneTarget && dropzoneTarget !== 'fullscreen'
+      ? dropzoneTarget
+      : controlRef;
 
   const isDropTarget = useFileDropTarget({
     ref: dropRef,
@@ -255,6 +318,23 @@ function FileUploadInner<T extends object>({
     size === 'default' &&
     dropzoneTarget === undefined;
 
+  const rootProps = mergeProps<(FormFieldProps | undefined)[]>(other, {
+    ref: domRef,
+    fullWidth: true,
+    style,
+    labelPlacement,
+    labelAlign,
+    'data-size': size,
+    'data-empty': isEmpty || undefined,
+    'data-list-empty': (isEmpty && !showsLargeEmpty) || undefined,
+    'data-disabled': isDisabled || undefined,
+    'data-invalid': isInvalidProp || undefined,
+    'data-multiple': allowsMultiple || undefined,
+    'data-required': isRequired || undefined,
+    'data-testid': testId,
+    className: clsx(s.base, className),
+  });
+
   const overlayTarget = isFullscreen
     ? (domRef.current?.ownerDocument.documentElement ?? null)
     : (dropzoneTarget?.current ?? null);
@@ -264,13 +344,14 @@ function FileUploadInner<T extends object>({
   if (!isEmpty) {
     uploadContent = (
       <>
-        <ul
+        <div
           {...listProps}
           className={clsx(s.list, listClassName)}
           data-multiple={allowsMultiple || undefined}
+          data-size={size}
         >
           <CollectionRoot collection={collection} />
-        </ul>
+        </div>
         {allowsMultiple && <FileUploadAddMore {...slotProps?.addMore} />}
       </>
     );
@@ -282,21 +363,32 @@ function FileUploadInner<T extends object>({
 
   return (
     <FileUploadContext.Provider value={contextValue}>
-      <div
-        {...other}
-        ref={domRef}
-        style={style}
-        data-size={size}
-        data-testid={testId}
-        data-empty={isEmpty || undefined}
-        data-list-empty={(isEmpty && !showsLargeEmpty) || undefined}
-        data-disabled={isDisabled || undefined}
-        data-invalid={isInvalidProp || undefined}
-        data-multiple={allowsMultiple || undefined}
-        className={clsx(s.base, s[size], textNormal, className)}
-      >
-        {uploadContent}
-      </div>
+      <FormField {...rootProps}>
+        <FormField.Label {...labelProps} />
+        <div className={s.body}>
+          <FileUploadControl {...field.controlProps} ref={controlRef}>
+            {uploadContent}
+          </FileUploadControl>
+          <Provider
+            values={[
+              [
+                TextContext,
+                {
+                  slots: {
+                    [DEFAULT_SLOT]: {},
+                    description: field.descriptionProps,
+                    errorMessage: field.errorMessageProps,
+                  },
+                },
+              ],
+              [FieldErrorContext, field.validation],
+            ]}
+          >
+            <FormField.Error {...errorMessageProps} />
+            <FormField.Caption {...captionProps} />
+          </Provider>
+        </div>
+      </FormField>
       {overlayTarget && isDropTarget && (
         <FileUploadDropTargetOverlay
           {...slotProps?.dropOverlay}

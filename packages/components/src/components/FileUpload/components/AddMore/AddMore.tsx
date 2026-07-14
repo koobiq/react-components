@@ -17,8 +17,7 @@ export const FileUploadAddMore = forwardRef<
 >((props, ref) => {
   const { className, style, ...other } = props;
 
-  const { size, messages, isDisabled, isDropTarget, allowsMultiple } =
-    useFileUploadContext();
+  const { size, messages, isDisabled, allowsMultiple } = useFileUploadContext();
 
   const domRef = useDOMRef<HTMLDivElement>(ref);
 
@@ -30,7 +29,6 @@ export const FileUploadAddMore = forwardRef<
       data-size={size}
       data-disabled={isDisabled || undefined}
       data-multiple={allowsMultiple || undefined}
-      data-drop-target={isDropTarget || undefined}
       className={clsx(s.base, className)}
     >
       <span className={s.icon} aria-hidden="true">

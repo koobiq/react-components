@@ -35,6 +35,12 @@ import { FileUpload } from '@koobiq/react-components';
 Pass `items` and a render function for a dynamic collection. Pass
 `FileUpload.Item` elements as children for a static collection.
 
+## Label and help text
+
+Use `label` and `caption` to describe the field.
+
+<Story of={Stories.WithLabel} />
+
 ## Single file
 
 FileUpload accepts one file by default.
@@ -86,7 +92,7 @@ Render upload progress inside the item row.
 
 ## Validation
 
-Validate files in `onAdd`.
+Validate files in `onAdd` and report errors below the list.
 
 <Story of={Stories.Validation} />
 
@@ -98,7 +104,7 @@ Use `isDisabled` to disable the whole component.
 
 ## Invalid
 
-Use `isInvalid` for a container-level validation error.
+Use `isInvalid` with `errorMessage` for a field-level validation error.
 
 <Story of={Stories.Invalid} />
 
@@ -118,13 +124,14 @@ Keep the native `File` in local items and append it to `FormData` on submit.
 
 ## Customization
 
-Use `messages` to change standard text. Use `slotProps` for the list, compact
-empty state, add-more area, and drop overlay. Use `renderEmptyState` to replace
-the large empty state.
+Use `messages` to change standard text. Use `slotProps` for field text, the
+list, compact empty state, add-more area, and drop overlay. Use
+`renderEmptyState` to replace the large empty state.
 
 <Story of={Stories.CustomContent} />
 
 ## Accessibility
 
-Provide an accessible label for FileUpload and `textValue` for each item. After
+Provide `label`, `aria-label`, or `aria-labelledby` and a `textValue` for each
+item. Label, caption, and error text are associated with the upload area. After
 removal, focus moves to the next file or the browse trigger.

@@ -67,6 +67,8 @@ const renderItem = (item: FileUploadItemData) => (
 const getFileInput = () =>
   document.querySelector('input[type="file"]') as HTMLInputElement;
 
+const getDropTarget = () => screen.getByRole('group', { name: 'upload' });
+
 const getDropOverlay = () => document.querySelector('[data-slot="overlay"]');
 
 type TestFileUploadProps = Omit<
@@ -134,6 +136,7 @@ describe('FileUpload', () => {
     );
 
     expect(ref.current).toBe(screen.getByTestId(ROOT_TEST_ID));
+    expect(ref.current).toHaveAttribute('data-slot', 'form-field');
   });
 
   it('should merge a custom class name with the default ones', () => {
@@ -146,6 +149,118 @@ describe('FileUpload', () => {
     renderComponent({ style: { padding: 20 } });
 
     expect(screen.getByTestId(ROOT_TEST_ID)).toHaveStyle({ padding: '20px' });
+  });
+
+  it('connects the label, caption and error message to the upload control', () => {
+    render(
+      <FileUpload
+        label="Evidence"
+        caption="PNG or PDF, up to 10 MB"
+        errorMessage="Select at least one file"
+        isInvalid
+        items={[]}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    const control = screen.getByRole('group', { name: /Evidence/ });
+    const label = screen.getByText('Evidence');
+    const caption = screen.getByText('PNG or PDF, up to 10 MB');
+    const error = screen.getByText('Select at least one file');
+
+    expect(label).toHaveAttribute('id');
+    expect(caption).toHaveAttribute('id');
+    expect(error).toHaveAttribute('id');
+    expect(label.id).not.toBe('');
+    expect(caption.id).not.toBe('');
+    expect(error.id).not.toBe('');
+    expect(control).toHaveAttribute('aria-labelledby', label.id);
+    expect(control).toHaveAttribute('aria-invalid', 'true');
+    expect(control).toHaveAttribute('aria-describedby');
+    expect(control.getAttribute('aria-describedby')).toContain(caption.id);
+    expect(control.getAttribute('aria-describedby')).toContain(error.id);
+  });
+
+  it('does not display the field error while valid', () => {
+    render(
+      <FileUpload label="Evidence" errorMessage="Select a file" items={[]}>
+        {renderItem}
+      </FileUpload>
+    );
+
+    const control = screen.getByRole('group', { name: 'Evidence' });
+
+    expect(screen.queryByText('Select a file')).not.toBeInTheDocument();
+    expect(control).not.toHaveAttribute('aria-invalid');
+    expect(control).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('supports field layout and slot props', () => {
+    const labelRef = createRef<HTMLSpanElement>();
+    const captionRef = createRef<HTMLParagraphElement>();
+    const errorRef = createRef<HTMLParagraphElement>();
+
+    render(
+      <FileUpload
+        label="Evidence"
+        caption="Caption"
+        errorMessage="Error"
+        isInvalid
+        isRequired
+        isLabelHidden
+        labelPlacement="side"
+        labelAlign="end"
+        items={[]}
+        data-testid={ROOT_TEST_ID}
+        slotProps={{
+          label: { ref: labelRef, className: 'custom-label' },
+          caption: { ref: captionRef, className: 'custom-caption' },
+          errorMessage: { ref: errorRef, className: 'custom-error' },
+        }}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    const root = screen.getByTestId(ROOT_TEST_ID);
+
+    expect(root).toHaveAttribute('data-label-placement', 'side');
+    expect(root).toHaveAttribute('data-label-align', 'end');
+    expect(root).toHaveAttribute('data-required');
+    expect(labelRef.current).toHaveClass('custom-label');
+    expect(labelRef.current).toHaveTextContent('Evidence *');
+    expect(captionRef.current).toHaveClass('custom-caption');
+    expect(errorRef.current).toHaveClass('custom-error');
+  });
+
+  it('does not include the label, caption or error in the drop target', () => {
+    render(
+      <FileUpload
+        label="Evidence"
+        caption="Caption"
+        errorMessage="Error"
+        isInvalid
+        items={[]}
+      >
+        {renderItem}
+      </FileUpload>
+    );
+
+    const control = screen.getByRole('group', { name: 'Evidence' });
+    const dataTransfer = createDataTransfer([dropFile('a.txt')]);
+
+    for (const element of [
+      screen.getByText('Evidence'),
+      screen.getByText('Caption'),
+      screen.getByText('Error'),
+    ]) {
+      fireEvent.dragEnter(element, { dataTransfer });
+      expect(control).not.toHaveAttribute('data-drop-target');
+    }
+
+    fireEvent.dragEnter(control, { dataTransfer });
+    expect(control).toHaveAttribute('data-drop-target');
   });
 
   it('renders the browse link when empty', () => {
@@ -234,23 +349,25 @@ describe('FileUpload', () => {
     expect(onAdd).toHaveBeenCalledWith([image]);
   });
 
-  it('uses the root as the default drop target', () => {
+  it('uses the upload control as the default drop target', () => {
     renderComponent();
 
     const root = screen.getByTestId(ROOT_TEST_ID);
+    const dropTarget = getDropTarget();
     const child = screen.getByText('select a file');
     const dataTransfer = createDataTransfer([dropFile('a.txt')]);
 
-    fireEvent.dragEnter(root, { dataTransfer });
+    fireEvent.dragEnter(dropTarget, { dataTransfer });
     fireEvent.dragEnter(child, { dataTransfer });
     fireEvent.dragLeave(child, { dataTransfer });
 
-    expect(root).toHaveAttribute('data-drop-target');
+    expect(dropTarget).toHaveAttribute('data-drop-target');
+    expect(root).not.toHaveAttribute('data-drop-target');
     expect(getDropOverlay()).not.toBeInTheDocument();
 
-    fireEvent.dragLeave(root, { dataTransfer });
+    fireEvent.dragLeave(dropTarget, { dataTransfer });
 
-    expect(root).not.toHaveAttribute('data-drop-target');
+    expect(dropTarget).not.toHaveAttribute('data-drop-target');
   });
 
   it('uses an external element as the only drop target', async () => {
@@ -412,19 +529,19 @@ describe('FileUpload', () => {
     const second = makeFile('second.txt');
 
     const { unmount } = renderComponent({ onAdd: singleOnAdd });
-    let root = screen.getByTestId(ROOT_TEST_ID);
+    let dropTarget = getDropTarget();
     let dataTransfer = createDataTransfer([dropFile(first), dropFile(second)]);
 
-    fireEvent.drop(root, { dataTransfer });
+    fireEvent.drop(dropTarget, { dataTransfer });
 
     await waitFor(() => expect(singleOnAdd).toHaveBeenCalledWith([first]));
 
     unmount();
     renderComponent({ allowsMultiple: true, onAdd: multipleOnAdd });
-    root = screen.getByTestId(ROOT_TEST_ID);
+    dropTarget = getDropTarget();
     dataTransfer = createDataTransfer([dropFile(first), dropFile(second)]);
 
-    fireEvent.drop(root, { dataTransfer });
+    fireEvent.drop(dropTarget, { dataTransfer });
 
     await waitFor(() =>
       expect(multipleOnAdd).toHaveBeenCalledWith([first, second])
@@ -445,7 +562,7 @@ describe('FileUpload', () => {
       ]),
     ]);
 
-    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), { dataTransfer });
+    fireEvent.drop(getDropTarget(), { dataTransfer });
 
     await waitFor(() => expect(onAdd).toHaveBeenCalledWith([first, second]));
     expect(first).toHaveProperty('relativePath', 'outer/a.txt');
@@ -469,14 +586,14 @@ describe('FileUpload', () => {
       onAdd,
     });
 
-    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), { dataTransfer });
+    fireEvent.drop(getDropTarget(), { dataTransfer });
     await waitFor(() => expect(onAdd).toHaveBeenCalledWith([looseFile]));
 
     unmount();
     onAdd.mockClear();
 
     renderComponent({ allowed: 'folder', allowsMultiple: true, onAdd });
-    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), { dataTransfer });
+    fireEvent.drop(getDropTarget(), { dataTransfer });
 
     await waitFor(() => expect(onAdd).toHaveBeenCalledWith([folderFile]));
   });
@@ -488,7 +605,7 @@ describe('FileUpload', () => {
 
     renderComponent({ allowed: 'folder', onAdd });
 
-    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), {
+    fireEvent.drop(getDropTarget(), {
       dataTransfer: createDataTransfer([
         dropDirectory('folder', [fileEntry(first), fileEntry(second)]),
       ]),
@@ -508,7 +625,7 @@ describe('FileUpload', () => {
       onAdd,
     });
 
-    fireEvent.drop(screen.getByTestId(ROOT_TEST_ID), {
+    fireEvent.drop(getDropTarget(), {
       dataTransfer: createDataTransfer([dropFile(image), dropFile(text)]),
     });
 
@@ -519,21 +636,25 @@ describe('FileUpload', () => {
     const onAdd = vi.fn();
     const { rerender } = render(<TestFileUpload isDisabled onAdd={onAdd} />);
     const root = screen.getByTestId(ROOT_TEST_ID);
+    let dropTarget = getDropTarget();
     const fileTransfer = createDataTransfer([dropFile('disabled.txt')]);
 
-    fireEvent.dragEnter(root, { dataTransfer: fileTransfer });
-    fireEvent.drop(root, { dataTransfer: fileTransfer });
+    fireEvent.dragEnter(dropTarget, { dataTransfer: fileTransfer });
+    fireEvent.drop(dropTarget, { dataTransfer: fileTransfer });
 
+    expect(dropTarget).not.toHaveAttribute('data-drop-target');
     expect(root).not.toHaveAttribute('data-drop-target');
     expect(onAdd).not.toHaveBeenCalled();
 
     rerender(<TestFileUpload onAdd={onAdd} />);
+    dropTarget = getDropTarget();
 
     const textTransfer = createDataTransfer([dropText()]);
 
-    fireEvent.dragEnter(root, { dataTransfer: textTransfer });
-    fireEvent.drop(root, { dataTransfer: textTransfer });
+    fireEvent.dragEnter(dropTarget, { dataTransfer: textTransfer });
+    fireEvent.drop(dropTarget, { dataTransfer: textTransfer });
 
+    expect(dropTarget).not.toHaveAttribute('data-drop-target');
     expect(root).not.toHaveAttribute('data-drop-target');
     expect(onAdd).not.toHaveBeenCalled();
   });
@@ -541,14 +662,14 @@ describe('FileUpload', () => {
   it('clears the active target when the drag is cancelled', () => {
     renderComponent();
 
-    const root = screen.getByTestId(ROOT_TEST_ID);
+    const dropTarget = getDropTarget();
     const dataTransfer = createDataTransfer([dropFile('a.txt')]);
 
-    fireEvent.dragEnter(root, { dataTransfer });
-    expect(root).toHaveAttribute('data-drop-target');
+    fireEvent.dragEnter(dropTarget, { dataTransfer });
+    expect(dropTarget).toHaveAttribute('data-drop-target');
 
     fireEvent.dragEnd(window);
-    expect(root).not.toHaveAttribute('data-drop-target');
+    expect(dropTarget).not.toHaveAttribute('data-drop-target');
   });
 
   it('cleans an external target on unmount', () => {
@@ -726,7 +847,7 @@ describe('FileUpload', () => {
     const progress = screen.getByRole('progressbar');
 
     expect(progress).toHaveAttribute('aria-valuenow', '42');
-    expect(screen.getByRole('listitem')).toHaveAttribute('data-loading');
+    expect(progress.closest('[data-loading]')).toHaveAttribute('data-loading');
   });
 
   it('shows an indeterminate spinner when progress is not set', () => {
@@ -747,7 +868,9 @@ describe('FileUpload', () => {
       ],
     });
 
-    expect(screen.getByRole('listitem')).toHaveAttribute('data-invalid');
+    expect(
+      screen.getByText('bad.txt').closest('[data-invalid]')
+    ).toHaveAttribute('data-invalid');
   });
 
   it('marks the root invalid when the isInvalid prop is set', () => {
@@ -928,7 +1051,7 @@ describe('FileUpload', () => {
   });
 
   it('forwards a ref on FileUpload.Item to its root element', () => {
-    const ref = createRef<HTMLLIElement>();
+    const ref = createRef<HTMLDivElement>();
 
     render(
       <FileUpload aria-label="upload">
@@ -939,7 +1062,8 @@ describe('FileUpload', () => {
     );
 
     expect(ref.current).toBe(screen.getByTestId('item'));
-    expect(ref.current?.tagName).toBe('LI');
+    expect(ref.current?.tagName).toBe('DIV');
+    expect(ref.current).not.toHaveAttribute('role');
   });
 
   it('uses the compact list empty state without calling renderEmptyState', () => {

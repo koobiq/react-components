@@ -40,7 +40,7 @@ export const FileUploadItem = createLeafComponent(
   FileUploadItemNode,
   function FileUploadItem(
     props: FileUploadItemProps,
-    ref: ForwardedRef<HTMLLIElement>,
+    ref: ForwardedRef<HTMLDivElement>,
     node: Node<unknown>
   ) {
     const {
@@ -73,7 +73,7 @@ export const FileUploadItem = createLeafComponent(
 
     return (
       <FileUploadItemContext.Provider value={contextValue}>
-        <li
+        <div
           {...mergeProps(other, hoverProps, focusProps)}
           ref={ref}
           style={style}
@@ -86,7 +86,7 @@ export const FileUploadItem = createLeafComponent(
           className={clsx(s.base, className)}
         >
           {children}
-        </li>
+        </div>
       </FileUploadItemContext.Provider>
     );
   }

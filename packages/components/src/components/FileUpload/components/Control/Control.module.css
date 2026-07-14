@@ -1,0 +1,23 @@
+.base {
+  display: flex;
+  inline-size: 100%;
+  position: relative;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--file-upload-container-background);
+  border-radius: var(--file-upload-border-radius);
+  transition:
+    border-color var(--kbq-transition-default),
+    background-color var(--kbq-transition-default);
+
+  &::after {
+    content: '';
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    border: var(--file-upload-border-width) dashed
+      var(--file-upload-container-border-color);
+  }
+}

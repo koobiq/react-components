@@ -13,11 +13,30 @@ import type {
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
 
+import type {
+  FormFieldErrorProps,
+  FormFieldLabelProps,
+  FormFieldCaptionProps,
+  FormFieldPropLabelAlign,
+  FormFieldPropLabelPlacement,
+} from '../FormField';
+import {
+  formFieldPropLabelAlign,
+  formFieldPropLabelPlacement,
+} from '../FormField';
 import type { IconButtonProps } from '../IconButton';
 
 export const fileUploadPropSize = ['default', 'compact'] as const;
 
 export type FileUploadPropSize = (typeof fileUploadPropSize)[number];
+
+export const fileUploadPropLabelPlacement = formFieldPropLabelPlacement;
+
+export type FileUploadPropLabelPlacement = FormFieldPropLabelPlacement;
+
+export const fileUploadPropLabelAlign = formFieldPropLabelAlign;
+
+export type FileUploadPropLabelAlign = FormFieldPropLabelAlign;
 
 export const fileUploadPropAllowed = ['file', 'folder', 'mixed'] as const;
 
@@ -70,6 +89,26 @@ export type FileUploadProps<T extends object = object> =
       renderEmptyState?: () => ReactNode;
       /** Overrides localized text used by FileUpload. */
       messages?: Partial<FileUploadMessages>;
+      /** The field label. */
+      label?: ReactNode;
+      /** Helper text displayed below the upload area. */
+      caption?: ReactNode;
+      /** Validation error displayed when `isInvalid` is true. */
+      errorMessage?: ReactNode;
+      /** Whether the label is visually hidden. */
+      isLabelHidden?: boolean;
+      /** Whether the field is marked as required. */
+      isRequired?: boolean;
+      /**
+       * The label's position relative to the upload area.
+       * @default 'top'
+       */
+      labelPlacement?: FileUploadPropLabelPlacement;
+      /**
+       * The label's horizontal alignment.
+       * @default 'start'
+       */
+      labelAlign?: FileUploadPropLabelAlign;
       /**
        * Whether more than one file can be selected.
        * @default false
@@ -93,10 +132,13 @@ export type FileUploadProps<T extends object = object> =
       isInvalid?: boolean;
       /** Props applied to internal parts of FileUpload. */
       slotProps?: {
-        list?: ComponentPropsWithRef<'ul'>;
+        list?: ComponentPropsWithRef<'div'>;
         listEmpty?: ComponentPropsWithRef<'div'>;
         dropOverlay?: ComponentPropsWithRef<'div'>;
         addMore?: ComponentPropsWithRef<'div'>;
+        label?: FormFieldLabelProps<'span'>;
+        caption?: FormFieldCaptionProps;
+        errorMessage?: Omit<FormFieldErrorProps, 'children'>;
       };
       /** Unique identifier for testing purposes. */
       'data-testid'?: string | number;
@@ -155,7 +197,7 @@ export type FileUploadItemProps = ExtendableComponentPropsWithRef<
     /** Whether this row is invalid. */
     isInvalid?: boolean;
   } & DataAttributeProps,
-  'li'
+  'div'
 >;
 
 export type FileUploadItemIconProps = ExtendableComponentPropsWithRef<

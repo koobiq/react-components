@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
 import { type Key, useBoolean } from '@koobiq/react-core';
@@ -100,6 +100,34 @@ export const Base: Story = {
   },
 };
 
+export const WithLabel: Story = {
+  render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
+
+    return (
+      <FileUpload
+        label="Evidence"
+        caption="Attach the files required for the investigation."
+        items={items}
+        onAdd={(files) => setItems(files.map(toItem))}
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        {...args}
+      >
+        {(item) => (
+          <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.ItemIcon />
+            <FileUpload.ItemContent>
+              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
+            </FileUpload.ItemContent>
+            <FileUpload.RemoveButton />
+          </FileUpload.Item>
+        )}
+      </FileUpload>
+    );
+  },
+};
+
 export const Single: Story = {
   render: function Render(args) {
     const [items, setItems] = useState<FileUploadItemData[]>([]);
@@ -180,6 +208,7 @@ export const Images: Story = {
           'image/svg+xml',
         ]}
         aria-label="Upload images"
+        caption="Accepts PNG, JPG, GIF, WebP, and SVG"
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
         onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         renderEmptyState={() => (
@@ -188,10 +217,7 @@ export const Images: Story = {
             <FileUpload.EmptyTitle>Upload images</FileUpload.EmptyTitle>
             <FileUpload.EmptyDescription>
               Drag images here or{' '}
-              <FileUpload.Trigger>select images</FileUpload.Trigger>.
-              <Typography as="span" variant="inherit" display="inline-block">
-                Accepts PNG, JPG, GIF, WebP, and SVG.
-              </Typography>
+              <FileUpload.Trigger>select images</FileUpload.Trigger>
             </FileUpload.EmptyDescription>
           </FileUpload.Empty>
         )}
@@ -478,23 +504,37 @@ export const UploadProgress: Story = {
 export const Validation: Story = {
   render: function Render(args) {
     const MAX_SIZE = 150_000;
+    const SIZE_ERROR = 'The file size limit has been exceeded';
 
     const [items, setItems] = useState<FileUploadItemData[]>([
       {
-        ...makeItem('presentation.pptx', MAX_SIZE + 1),
-        errorMessage: 'File is too large (max 150 KB)',
+        ...makeItem('file1.txt', MAX_SIZE + 1),
+        errorMessage: SIZE_ERROR,
       },
     ]);
 
     const validate = (item: FileUploadItemData): FileUploadItemData =>
       item.size && item.size > MAX_SIZE
-        ? { ...item, errorMessage: 'File is too large (max 150 KB)' }
+        ? { ...item, errorMessage: SIZE_ERROR }
         : item;
+
+    const invalidItems = items.filter((item) => item.errorMessage);
 
     return (
       <FileUpload
         aria-label="Upload files"
         items={items}
+        isInvalid={invalidItems.length > 0}
+        errorMessage={
+          invalidItems.length > 0
+            ? invalidItems.map((item, index) => (
+                <Fragment key={item.id}>
+                  {index > 0 && <br />}
+                  {item.name} — {item.errorMessage}
+                </Fragment>
+              ))
+            : undefined
+        }
         onAdd={(files) =>
           setItems((prev) => [...prev, ...files.map(toItem).map(validate)])
         }
@@ -558,7 +598,7 @@ export const Invalid: Story = {
   render: function Render(args) {
     return (
       <FileUpload
-        aria-label="Upload a file"
+        errorMessage="Select at least one file."
         items={[]}
         isInvalid
         allowsMultiple
