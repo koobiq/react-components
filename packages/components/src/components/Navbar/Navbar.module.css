@@ -34,7 +34,7 @@
     border-block-width: var(--kbq-size-s) 7px;
   }
 
-  .item& {
+  &.item {
     @mixin typography subheading;
 
     padding: var(--kbq-size-xxs);
