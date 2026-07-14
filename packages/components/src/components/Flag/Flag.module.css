@@ -1,0 +1,47 @@
+.base {
+  /* Public, overridable knobs (see the component docs). */
+  --kbq-flag-aspect-ratio: 3 / 2;
+  --kbq-flag-border-radius: 0;
+  --kbq-flag-shadow-color: var(--kbq-line-contrast-fade);
+  --kbq-flag-empty-background: var(--kbq-states-background-disabled);
+
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  vertical-align: middle;
+  block-size: var(--kbq-flag-size, 1em);
+  aspect-ratio: var(--kbq-flag-aspect-ratio);
+  border-radius: var(--kbq-flag-border-radius);
+}
+
+/* The projected flag graphic fills the box (descendant selector supports wrapped graphics). */
+.base :is(svg, img) {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* Inset hairline separating the flag from the background (shown by default). */
+.base::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--kbq-flag-shadow-color);
+  pointer-events: none;
+}
+
+.base[data-hide-shadow]::after {
+  content: none;
+}
+
+/* `circle` only clips the corners; its 1:1 ratio comes from the component. */
+.base[data-shape='circle'] {
+  border-radius: 50%;
+}
+
+/* No projected graphic → neutral placeholder (e.g. unknown/invalid country). */
+.base:empty {
+  background-color: var(--kbq-flag-empty-background);
+}
