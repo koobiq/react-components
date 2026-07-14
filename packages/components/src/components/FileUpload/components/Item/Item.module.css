@@ -88,6 +88,7 @@
   @mixin ellipsis;
 
   flex: 1 1 auto;
+  position: relative;
   min-inline-size: 0;
 }
 

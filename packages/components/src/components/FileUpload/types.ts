@@ -67,6 +67,12 @@ export type FileUploadMessages = {
   terabytesUnit: string;
 };
 
+export type FileUploadListSlotProps = {
+  emptyState?: ComponentPropsWithRef<'div'>;
+  fileList?: ComponentPropsWithRef<'div'>;
+  addMore?: ComponentPropsWithRef<'div'>;
+};
+
 /** A native file with its path relative to the selected or dropped directory. */
 export interface FileUploadFile extends File {
   readonly relativePath: string;
@@ -132,10 +138,8 @@ export type FileUploadProps<T extends object = object> =
       isInvalid?: boolean;
       /** Props applied to internal parts of FileUpload. */
       slotProps?: {
-        list?: ComponentPropsWithRef<'div'>;
-        listEmpty?: ComponentPropsWithRef<'div'>;
+        list?: FileUploadListSlotProps;
         dropOverlay?: ComponentPropsWithRef<'div'>;
-        addMore?: ComponentPropsWithRef<'div'>;
         label?: FormFieldLabelProps<'span'>;
         caption?: FormFieldCaptionProps;
         errorMessage?: Omit<FormFieldErrorProps, 'children'>;

@@ -37,7 +37,8 @@ Pass `items` and a render function for a dynamic collection. Pass
 
 ## Long file names
 
-Truncated item names show their full text in a tooltip.
+Long item names are truncated in the middle, keeping the end of the name and
+its extension visible. Their full text is shown in a tooltip.
 
 <Story of={Stories.LongFileName} />
 
@@ -130,8 +131,8 @@ Keep the native `File` in local items and append it to `FormData` on submit.
 
 ## Customization
 
-Use `messages` to change standard text. Use `slotProps` for field text, the
-list, compact empty state, add-more area, and drop overlay. Use
+Use `messages` to change standard text. Use `slotProps` for field text, list
+parts, and the drop overlay. Use
 `renderEmptyState` to replace the large empty state.
 
 <Story of={Stories.CustomContent} />

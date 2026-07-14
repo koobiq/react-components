@@ -1,6 +1,6 @@
 'use client';
 
-import type { Ref, ReactNode } from 'react';
+import type { Ref } from 'react';
 import {
   useRef,
   useMemo,
@@ -43,8 +43,6 @@ import type {
 import { FormField } from '../FormField';
 
 import {
-  FileUploadAddMore,
-  FileUploadControl,
   FileUploadEmpty,
   FileUploadEmptyIcon,
   FileUploadEmptyTitle,
@@ -53,7 +51,7 @@ import {
   FileUploadItemIcon,
   FileUploadItemName,
   FileUploadItemSize,
-  FileUploadListEmpty,
+  FileUploadList,
   FileUploadRemoveButton,
   FileUploadTrigger,
   FileUploadEmptyDescription,
@@ -69,7 +67,7 @@ import type {
   FileUploadMessages,
   FileUploadProps,
 } from './types';
-import { prepareFileUploadFiles } from './utils';
+import { getCollectionKeys, prepareFileUploadFiles } from './utils';
 
 type PendingFocus = { type: 'item'; id: Key } | { type: 'trigger' } | null;
 
@@ -78,10 +76,6 @@ type FileUploadInnerProps<T extends object> = {
   collection: AriaCollection<Node<T>>;
   rootRef?: Ref<HTMLDivElement>;
 };
-
-const getCollectionKeys = <T extends object>(
-  collection: AriaCollection<Node<T>>
-): Key[] => Array.from(collection, (node) => node.key);
 
 function FileUploadInner<T extends object>({
   props,
@@ -310,8 +304,6 @@ function FileUploadInner<T extends object>({
     ]
   );
 
-  const { className: listClassName, ...listProps } = slotProps?.list ?? {};
-
   const showsLargeEmpty =
     isEmpty &&
     allowsMultiple &&
@@ -339,36 +331,23 @@ function FileUploadInner<T extends object>({
     ? (domRef.current?.ownerDocument.documentElement ?? null)
     : (dropzoneTarget?.current ?? null);
 
-  let uploadContent: ReactNode;
-
-  if (!isEmpty) {
-    uploadContent = (
-      <>
-        <div
-          {...listProps}
-          className={clsx(s.list, listClassName)}
-          data-multiple={allowsMultiple || undefined}
-          data-size={size}
-        >
-          <CollectionRoot collection={collection} />
-        </div>
-        {allowsMultiple && <FileUploadAddMore {...slotProps?.addMore} />}
-      </>
-    );
-  } else if (showsLargeEmpty) {
-    uploadContent = renderEmptyState ? renderEmptyState() : <FileUploadEmpty />;
-  } else {
-    uploadContent = <FileUploadListEmpty {...slotProps?.listEmpty} />;
-  }
-
   return (
     <FileUploadContext.Provider value={contextValue}>
       <FormField {...rootProps}>
         <FormField.Label {...labelProps} />
         <div className={s.body}>
-          <FileUploadControl {...field.controlProps} ref={controlRef}>
-            {uploadContent}
-          </FileUploadControl>
+          <FileUploadList
+            {...field.controlProps}
+            ref={controlRef}
+            slots={slotProps?.list}
+            size={size}
+            isEmpty={isEmpty}
+            allowsMultiple={allowsMultiple}
+            showsLargeEmpty={showsLargeEmpty}
+            renderEmptyState={renderEmptyState}
+          >
+            <CollectionRoot collection={collection} />
+          </FileUploadList>
           <Provider
             values={[
               [

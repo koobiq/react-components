@@ -1,4 +1,10 @@
 import type {
+  Key,
+  Node,
+  Collection as AriaCollection,
+} from '@koobiq/react-core';
+
+import type {
   FileUploadFile,
   FileUploadMessages,
   FileUploadPropAllowed,
@@ -12,6 +18,10 @@ type PrepareFilesOptions = {
 
 const normalizeRelativePath = (path: string): string =>
   path.replaceAll('\\', '/').replace(/^\/+/, '');
+
+export const getCollectionKeys = <T extends object>(
+  collection: AriaCollection<Node<T>>
+): Key[] => Array.from(collection, (node) => node.key);
 
 export const setFileRelativePath = (
   file: File,

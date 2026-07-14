@@ -9,9 +9,9 @@ import { IconArrowUpFromBracket16 } from '@koobiq/react-icons';
 import { useFileUploadContext } from '../../FileUploadContext';
 import { FileUploadTriggers } from '../Trigger';
 
-import s from './AddMore.module.css';
+import s from './ListAddMore.module.css';
 
-export const FileUploadAddMore = forwardRef<
+export const FileUploadListAddMore = forwardRef<
   HTMLDivElement,
   ComponentPropsWithRef<'div'>
 >((props, ref) => {
@@ -42,4 +42,4 @@ export const FileUploadAddMore = forwardRef<
   );
 });
 
-FileUploadAddMore.displayName = 'FileUploadAddMore';
+FileUploadListAddMore.displayName = 'FileUploadListAddMore';

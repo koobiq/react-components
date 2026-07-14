@@ -1066,27 +1066,34 @@ describe('FileUpload', () => {
 
     vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
+      font: '',
+      measureText: (value: string) => ({ width: value.length * 8 }),
+    } as CanvasRenderingContext2D);
+
     const renderUpload = () => (
       <FileUpload aria-label="upload">
         <FileUpload.Item id={fileName} textValue={fileName}>
-          <FileUpload.ItemName>{fileName}</FileUpload.ItemName>
+          <FileUpload.ItemName data-testid="item-name">
+            {fileName}
+          </FileUpload.ItemName>
         </FileUpload.Item>
       </FileUpload>
     );
 
     const { rerender } = render(renderUpload());
-    const name = screen.getByText(fileName);
+    const name = screen.getByTestId('item-name');
 
     Object.defineProperties(name, {
       clientWidth: { configurable: true, value: 100 },
-      scrollWidth: { configurable: true, value: 240 },
       clientHeight: { configurable: true, value: 20 },
-      scrollHeight: { configurable: true, value: 20 },
     });
 
     rerender(renderUpload());
 
     expect(name).toHaveAttribute('data-overflowing');
+    expect(name.firstChild?.textContent).toBe('a-ver….json');
+
     fireEvent.pointerMove(name, { pointerType: 'mouse' });
     fireEvent.mouseMove(name);
     await user.hover(name);
@@ -1122,10 +1129,12 @@ describe('FileUpload', () => {
         items={[]}
         renderEmptyState={renderEmptyState}
         slotProps={{
-          listEmpty: {
-            ref: listEmptyRef,
-            id: 'list-empty',
-            className: 'custom-list-empty',
+          list: {
+            emptyState: {
+              ref: listEmptyRef,
+              id: 'list-empty',
+              className: 'custom-list-empty',
+            },
           },
         }}
       >
@@ -1182,11 +1191,13 @@ describe('FileUpload', () => {
         allowsMultiple
         items={[makeItem('a.txt')]}
         slotProps={{
-          addMore: {
-            ref,
-            className: 'custom-add-more',
-            id: 'add-more',
-            children: 'replacement content',
+          list: {
+            addMore: {
+              ref,
+              className: 'custom-add-more',
+              id: 'add-more',
+              children: 'replacement content',
+            },
           },
         }}
       >
@@ -1213,9 +1224,11 @@ describe('FileUpload', () => {
         items={[makeItem('a.txt')]}
         slotProps={{
           list: {
-            className: 'custom-list',
-            style: { maxBlockSize: 240 },
-            id: 'list',
+            fileList: {
+              className: 'custom-list',
+              style: { maxBlockSize: 240 },
+              id: 'list',
+            },
           },
         }}
       >

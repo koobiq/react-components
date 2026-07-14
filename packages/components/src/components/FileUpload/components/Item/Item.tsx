@@ -23,6 +23,7 @@ import {
   useFileUploadContext,
   useFileUploadItemContext,
 } from '../../FileUploadContext';
+import { useMiddleEllipsis } from '../../hooks';
 import type {
   FileUploadItemProps,
   FileUploadItemIconProps,
@@ -149,13 +150,24 @@ export const FileUploadItemName = forwardRef<
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
   const { nameText, rootRef } = useFileUploadItemContext();
+  const fileName = typeof children === 'string' ? children : undefined;
 
-  const { ref: overflowRef, isOverflowX } =
-    useElementOverflow<HTMLSpanElement>();
+  const middleEllipsis = useMiddleEllipsis<HTMLSpanElement>(fileName ?? '');
+  const elementOverflow = useElementOverflow<HTMLSpanElement>();
+
+  let displayedName = children;
+  let isOverflowing = elementOverflow.isOverflowX;
+  let overflowRef = elementOverflow.ref;
+
+  if (fileName !== undefined) {
+    displayedName = middleEllipsis.text;
+    isOverflowing = middleEllipsis.isOverflow;
+    overflowRef = middleEllipsis.ref;
+  }
 
   return (
     <Tooltip
-      isDisabled={!isOverflowX}
+      isDisabled={!isOverflowing}
       placement="end"
       anchorRef={rootRef}
       control={({ ref: tooltipRef, ...tooltipProps }) => (
@@ -168,10 +180,10 @@ export const FileUploadItemName = forwardRef<
           }}
           style={style}
           data-testid={testId}
-          data-overflowing={isOverflowX || undefined}
+          data-overflowing={isOverflowing || undefined}
           className={clsx(s.name, className)}
         >
-          {children}
+          {displayedName}
         </span>
       )}
     >

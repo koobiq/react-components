@@ -85,16 +85,25 @@ const removeById = (items: FileUploadItemData[], id: Key) =>
 
 export const Base: Story = {
   render: function Render(args) {
+    const [items, setItems] = useState<FileUploadItemData[]>([]);
+
     return (
-      <FileUpload aria-label="Upload a file" {...args}>
-        <FileUpload.Item id="my-file" textValue="Secret.txt">
-          <FileUpload.ItemIcon />
-          <FileUpload.ItemContent>
-            <FileUpload.ItemName>Secret.txt</FileUpload.ItemName>
-            <FileUpload.ItemSize>{10000}</FileUpload.ItemSize>
-          </FileUpload.ItemContent>
-          <FileUpload.RemoveButton />
-        </FileUpload.Item>
+      <FileUpload
+        items={items}
+        aria-label="Upload a file"
+        onAdd={(files) => setItems(files.map(toItem))}
+        onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        {...args}
+      >
+        {(item) => (
+          <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.ItemIcon />
+            <FileUpload.ItemContent>
+              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
+            </FileUpload.ItemContent>
+            <FileUpload.RemoveButton />
+          </FileUpload.Item>
+        )}
       </FileUpload>
     );
   },
@@ -170,7 +179,6 @@ export const Single: Story = {
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
             </FileUpload.ItemContent>
             <FileUpload.RemoveButton />
           </FileUpload.Item>
@@ -422,7 +430,9 @@ export const Scrollable: Story = {
       <FileUpload
         aria-label="Upload files"
         items={items}
-        slotProps={{ list: { style: { maxBlockSize: 240 } } }}
+        slotProps={{
+          list: { fileList: { style: { maxBlockSize: 240 } } },
+        }}
         onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
         allowsMultiple
