@@ -276,6 +276,14 @@ export { useDescription }
 export function useDOMRef<T extends HTMLElement = HTMLElement>(ref?: RefObject_2<T | null> | Ref_2<T | null>): RefObject_2<T>;
 
 // @public
+export function useElementOverflow<T extends HTMLElement = HTMLElement>(): {
+    ref: RefObject_2<T | null>;
+    isOverflow: boolean;
+    isOverflowX: boolean;
+    isOverflowY: boolean;
+};
+
+// @public
 export function useElementSize<T extends HTMLElement = any>(options?: ResizeObserverOptions): {
     ref: RefObject_2<T | null>;
     width: number;

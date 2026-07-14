@@ -1,0 +1,42 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './useElementOverflow.stories';
+
+<Meta of={Stories} />
+
+# useElementOverflow
+
+<Status variant="experimental" />
+
+Detects whether an element's content exceeds its visible bounds and updates when the element size changes.
+
+## Import
+
+```tsx
+import { useElementOverflow } from '@koobiq/react-core';
+```
+
+## Definition
+
+```ts
+export function useElementOverflow<T extends HTMLElement = HTMLElement>(): {
+  ref: React.RefObject<T | null>;
+  isOverflow: boolean;
+  isOverflowX: boolean;
+  isOverflowY: boolean;
+};
+```
+
+`isOverflow` is `true` when the content overflows on either axis.
+
+## Horizontal overflow
+
+Use `isOverflowX` for single-line content that is clipped horizontally.
+
+<Story of={Stories.Base} />
+
+## Vertical overflow
+
+Use `isOverflowY` to show an expand control when fixed-height content is clipped.
+
+<Story of={Stories.VerticalOverflow} />
