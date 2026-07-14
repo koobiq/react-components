@@ -12,6 +12,7 @@ export * from './useIsFirstRender';
 export * from './useEventListener';
 export * from './useResizeObserver';
 export * from './useElementSize';
+export * from './useElementOverflow';
 export * from './useRefs';
 export * from './useDebounceCallback';
 export * from './useResizeObserverRefs';

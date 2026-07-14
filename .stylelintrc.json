@@ -7,6 +7,12 @@
   "plugins": ["stylelint-order", "stylelint-plugin-logical-css"],
   "rules": {
     "selector-class-pattern": null,
+    "selector-disallowed-list": [
+      ["/[^\\s>+~,(]&/"],
+      {
+        "message": "Place the nesting selector (&) at the beginning of a compound selector"
+      }
+    ],
     "number-max-precision": null,
     "no-descending-specificity": null,
     "media-query-no-invalid": null,
