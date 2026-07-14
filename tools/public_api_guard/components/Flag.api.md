@@ -18,7 +18,7 @@ export type FlagBaseProps = {
     shape?: FlagPropShape;
     hideShadow?: boolean;
     size?: number | string;
-    aspectRatio?: FlagPropAspectRatio | (string & {});
+    aspectRatio?: FlagPropAspectRatio | CSSProperties['aspectRatio'];
     children?: ReactNode;
     className?: string;
     style?: CSSProperties;
