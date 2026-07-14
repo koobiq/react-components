@@ -12,9 +12,13 @@ export type FlagBaseProps = {
   /**
    * The corner treatment of the flag. `circle` clips it to a circle (its
    * aspect ratio defaults to `1 / 1`).
+   * @default 'rectangle'
    */
   shape?: FlagPropShape;
-  /** Hides the inset hairline that separates the flag from the background. */
+  /**
+   * Hides the inset hairline that separates the flag from the background.
+   * @default false
+   */
   hideShadow?: boolean;
   /**
    * The size of the flag (its height). A `number` is treated as pixels, a
@@ -27,7 +31,7 @@ export type FlagBaseProps = {
    * `aspect-ratio` value works (e.g. `4 / 3`).
    * @default '3 / 2' (`'1 / 1'` when `shape="circle"`)
    */
-  aspectRatio?: FlagPropAspectRatio | (string & {});
+  aspectRatio?: FlagPropAspectRatio | CSSProperties['aspectRatio'];
   /** The projected flag graphic (inline `svg` or `img`). */
   children?: ReactNode;
   /** Additional CSS-classes. */
