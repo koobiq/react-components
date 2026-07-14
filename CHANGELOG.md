@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.35.1](https://github.com/koobiq/react-components/compare/0.35.0...0.35.1) (2026-07-14)
+
+
+### 🐞 Bug Fixes
+
+* **Navbar:** make nested selector compatible with Sass (DS-5329) ([#418](https://github.com/koobiq/react-components/issues/418)) ([99d99f0](https://github.com/koobiq/react-components/commit/99d99f0ea7bd600ec3e8eb4a4016271629c645bc))
+
 ## [0.35.0](https://github.com/koobiq/react-components/compare/0.34.1...0.35.0) (2026-07-10)
 
 
