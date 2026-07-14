@@ -100,6 +100,26 @@ export const Base: Story = {
   },
 };
 
+export const LongFileName: Story = {
+  render: function Render(args) {
+    const name =
+      'incident-response-evidence-security-scan-report-for-production-environment.json';
+
+    return (
+      <FileUpload aria-label="Upload a file" {...args}>
+        <FileUpload.Item id={name} textValue={name}>
+          <FileUpload.ItemIcon />
+          <FileUpload.ItemContent>
+            <FileUpload.ItemName>{name}</FileUpload.ItemName>
+            <FileUpload.ItemSize>{10000}</FileUpload.ItemSize>
+          </FileUpload.ItemContent>
+          <FileUpload.RemoveButton />
+        </FileUpload.Item>
+      </FileUpload>
+    );
+  },
+};
+
 export const WithLabel: Story = {
   render: function Render(args) {
     const [items, setItems] = useState<FileUploadItemData[]>([]);

@@ -4,14 +4,14 @@ import { formatFileSize } from './formatFileSize';
 
 describe('formatFileSize', () => {
   it('formats bytes below 1 KB in bytes', () => {
-    expect(formatFileSize(512)).toBe('512 B');
+    expect(formatFileSize(512)).toBe('512\u00a0B');
   });
 
   it('scales to the largest unit that keeps the value >= 1', () => {
-    expect(formatFileSize(1024)).toBe('1 KB');
-    expect(formatFileSize(1024 * 1024)).toBe('1 MB');
-    expect(formatFileSize(1024 ** 3)).toBe('1 GB');
-    expect(formatFileSize(1024 ** 4)).toBe('1 TB');
+    expect(formatFileSize(1024)).toBe('1\u00a0KB');
+    expect(formatFileSize(1024 * 1024)).toBe('1\u00a0MB');
+    expect(formatFileSize(1024 ** 3)).toBe('1\u00a0GB');
+    expect(formatFileSize(1024 ** 4)).toBe('1\u00a0TB');
   });
 
   it('caps at the largest known unit', () => {
@@ -20,13 +20,13 @@ describe('formatFileSize', () => {
 
   it('rounds to two fraction digits by default', () => {
     // 148909 B / 1024 = 145.4189 -> 145.42
-    expect(formatFileSize(148909)).toBe('145.42 KB');
+    expect(formatFileSize(148909)).toBe('145.42\u00a0KB');
   });
 
   it('treats invalid or negative input as 0 bytes', () => {
-    expect(formatFileSize(0)).toBe('0 B');
-    expect(formatFileSize(-100)).toBe('0 B');
-    expect(formatFileSize(Number.NaN)).toBe('0 B');
+    expect(formatFileSize(0)).toBe('0\u00a0B');
+    expect(formatFileSize(-100)).toBe('0\u00a0B');
+    expect(formatFileSize(Number.NaN)).toBe('0\u00a0B');
   });
 
   it('uses custom unit labels', () => {
@@ -34,7 +34,7 @@ describe('formatFileSize', () => {
       formatFileSize(1024, {
         unitLabels: { KB: 'КБ' },
       })
-    ).toBe('1 КБ');
+    ).toBe('1\u00a0КБ');
   });
 
   it('uses a custom number formatter', () => {
@@ -42,6 +42,6 @@ describe('formatFileSize', () => {
       formatFileSize(1536, {
         formatNumber: (value) => value.toFixed(1),
       })
-    ).toBe('1.5 KB');
+    ).toBe('1.5\u00a0KB');
   });
 });

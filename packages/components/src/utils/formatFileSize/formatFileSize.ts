@@ -34,8 +34,7 @@ const BASE = 1024;
  *
  * The number is scaled to the largest unit that keeps the value `>= 1` (base
  * 1024) and formatted with the provided locale-aware formatter. The value and
- * unit are joined with a single space; render them in a `white-space: nowrap`
- * container so they never wrap apart.
+ * unit are joined with a non-breaking space so they never wrap apart.
  */
 export function formatFileSize(
   bytes: number,
@@ -60,5 +59,5 @@ export function formatFileSize(
     ? formatNumber(value)
     : new Intl.NumberFormat(undefined, { maximumFractionDigits }).format(value);
 
-  return `${formatted} ${labels[fileSizeUnit[exponent]]}`;
+  return `${formatted}\u00a0${labels[fileSizeUnit[exponent]]}`;
 }

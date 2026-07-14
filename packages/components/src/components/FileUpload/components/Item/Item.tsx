@@ -1,20 +1,23 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import type { ForwardedRef } from 'react';
 
 import {
   clsx,
   mergeRefs,
   mergeProps,
+  setRef,
   useHover,
   useFocusRing,
+  useElementOverflow,
 } from '@koobiq/react-core';
 import { IconFileO16, IconCircleXmark16 } from '@koobiq/react-icons';
 import { CollectionNode, createLeafComponent } from '@koobiq/react-primitives';
 import type { Node } from '@react-types/shared';
 
 import { IconButton } from '../../../IconButton';
+import { Tooltip } from '../../../Tooltip';
 import {
   FileUploadItemContext,
   useFileUploadContext,
@@ -63,19 +66,21 @@ export const FileUploadItem = createLeafComponent(
 
     const { hoverProps, isHovered } = useHover({ isDisabled });
     const { focusProps, isFocusVisible } = useFocusRing({ within: true });
+    const rootRef = useRef<HTMLDivElement>(null);
 
     const contextValue = {
       id: node.key,
       nameText: node.textValue,
       isDisabled,
       isInvalid,
+      rootRef,
     };
 
     return (
       <FileUploadItemContext.Provider value={contextValue}>
         <div
           {...mergeProps(other, hoverProps, focusProps)}
-          ref={ref}
+          ref={mergeRefs(ref, rootRef)}
           style={style}
           data-testid={testId}
           data-invalid={isInvalid || undefined}
@@ -143,17 +148,35 @@ export const FileUploadItemName = forwardRef<
   FileUploadItemNameProps
 >((props, ref) => {
   const { children, className, style, 'data-testid': testId, ...other } = props;
+  const { nameText, rootRef } = useFileUploadItemContext();
+
+  const { ref: overflowRef, isOverflowX } =
+    useElementOverflow<HTMLSpanElement>();
 
   return (
-    <span
-      {...other}
-      ref={ref}
-      style={style}
-      data-testid={testId}
-      className={clsx(s.name, className)}
+    <Tooltip
+      isDisabled={!isOverflowX}
+      placement="end"
+      anchorRef={rootRef}
+      control={({ ref: tooltipRef, ...tooltipProps }) => (
+        <span
+          {...mergeProps(other, tooltipProps)}
+          ref={(element) => {
+            setRef(ref, element);
+            setRef(overflowRef, element);
+            setRef(tooltipRef, element);
+          }}
+          style={style}
+          data-testid={testId}
+          data-overflowing={isOverflowX || undefined}
+          className={clsx(s.name, className)}
+        >
+          {children}
+        </span>
+      )}
     >
-      {children}
-    </span>
+      {nameText ?? children}
+    </Tooltip>
   );
 });
 

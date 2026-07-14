@@ -37,6 +37,7 @@ export type FileUploadItemContextValue = {
   nameText?: string;
   isDisabled: boolean;
   isInvalid: boolean;
+  rootRef: RefObject<HTMLDivElement | null>;
 };
 
 export const FileUploadContext = createContext<FileUploadContextValue | null>(

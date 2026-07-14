@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import type { Key } from '@koobiq/react-core';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Provider } from '../Provider';
@@ -121,6 +121,8 @@ const renderComponent = (props: TestFileUploadProps = {}) =>
   render(<TestFileUpload {...props} />);
 
 describe('FileUpload', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
 
@@ -699,7 +701,9 @@ describe('FileUpload', () => {
       initialItems: [makeItem('report.pdf', 148909)],
     });
 
-    expect(screen.getByText('145.42 KB')).toBeInTheDocument();
+    expect(
+      screen.getByText('145.42\u00a0KB', { normalizer: (value) => value })
+    ).toBeInTheDocument();
   });
 
   it('appends files in multiple mode', async () => {
@@ -1050,6 +1054,46 @@ describe('FileUpload', () => {
     expect(screen.getByText('static.txt')).toBeInTheDocument();
   });
 
+  it('shows the full item name in a tooltip when it overflows', async () => {
+    const user = userEvent.setup({ delay: 0 });
+    const fileName = 'a-very-long-security-scan-report.json';
+
+    class ResizeObserverMock {
+      observe = vi.fn();
+      unobserve = vi.fn();
+      disconnect = vi.fn();
+    }
+
+    vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+
+    const renderUpload = () => (
+      <FileUpload aria-label="upload">
+        <FileUpload.Item id={fileName} textValue={fileName}>
+          <FileUpload.ItemName>{fileName}</FileUpload.ItemName>
+        </FileUpload.Item>
+      </FileUpload>
+    );
+
+    const { rerender } = render(renderUpload());
+    const name = screen.getByText(fileName);
+
+    Object.defineProperties(name, {
+      clientWidth: { configurable: true, value: 100 },
+      scrollWidth: { configurable: true, value: 240 },
+      clientHeight: { configurable: true, value: 20 },
+      scrollHeight: { configurable: true, value: 20 },
+    });
+
+    rerender(renderUpload());
+
+    expect(name).toHaveAttribute('data-overflowing');
+    fireEvent.pointerMove(name, { pointerType: 'mouse' });
+    fireEvent.mouseMove(name);
+    await user.hover(name);
+
+    expect(await screen.findByRole('tooltip')).toHaveTextContent(fileName);
+  });
+
   it('forwards a ref on FileUpload.Item to its root element', () => {
     const ref = createRef<HTMLDivElement>();
 
@@ -1298,7 +1342,9 @@ describe('FileUpload', () => {
       </FileUpload>
     );
 
-    expect(screen.getByText('145.42 KB')).toBeInTheDocument();
+    expect(
+      screen.getByText('145.42\u00a0KB', { normalizer: (value) => value })
+    ).toBeInTheDocument();
   });
 
   it('localizes strings via the Provider locale', () => {
