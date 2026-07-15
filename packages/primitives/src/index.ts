@@ -137,8 +137,6 @@ export {
   TreeContext,
   Collection,
   FileTrigger,
-  isFileDropItem,
-  isTextDropItem,
   TreeItemContent,
   ButtonContext,
   TreeStateContext,
@@ -146,22 +144,12 @@ export {
   useContextProps,
   useRenderProps,
   DEFAULT_SLOT,
-  isDirectoryDropItem,
   useSlottedContext,
   composeRenderProps,
   CollectionRendererContext,
 } from 'react-aria-components';
 
-export type {
-  DropItem,
-  FileDropItem,
-  TextDropItem,
-  DropZoneProps,
-  DropOperation,
-  FileTriggerProps,
-  DirectoryDropItem,
-  DropZoneRenderProps,
-} from 'react-aria-components';
+export type { FileTriggerProps } from 'react-aria-components';
 
 export * from './behaviors';
 export * from './components';
