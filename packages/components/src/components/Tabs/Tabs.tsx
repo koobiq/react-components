@@ -23,6 +23,7 @@ import {
   TabPanel,
   TabScrollButton,
 } from './components';
+import { useDragScroll } from './hooks';
 import intlMessages from './intl.json';
 import type { TabProps as TabItemProps } from './Tab';
 import s from './Tabs.module.css';
@@ -107,6 +108,8 @@ export function TabsRender<T extends object>(
     const el = scrollBoxRef.current;
     if (!el) return;
 
+    cancelInertia();
+
     if (orientation === 'horizontal') {
       el.scrollTo({ left: value, behavior });
     } else {
@@ -159,6 +162,10 @@ export function TabsRender<T extends object>(
 
   const hasVerticalOverflow =
     !isHorizontal && (verticalOverflow.start || verticalOverflow.end);
+
+  const { isDragging, cancelInertia, dragScrollProps } = useDragScroll(
+    hasHorizontalOverflow
+  );
 
   const activeHorizontalOverflow = isHorizontal
     ? horizontalOverflow
@@ -280,9 +287,11 @@ export function TabsRender<T extends object>(
 
   const scrollBoxProps = mergeProps(
     {
+      ...dragScrollProps,
       ref: scrollBoxRef,
       className: s.scrollBox,
       onScroll: updateScrollState,
+      'data-dragging': isDragging || undefined,
       'data-overflow-inline-start': activeHorizontalOverflow.start || undefined,
       'data-overflow-inline-end': activeHorizontalOverflow.end || undefined,
       'data-overflow-block-start': activeVerticalOverflow.start || undefined,
@@ -339,6 +348,7 @@ export function TabsRender<T extends object>(
                   orientation={orientation}
                   isStretched={isStretched}
                   isUnderlined={isUnderlined}
+                  shouldSelectOnPressUp={hasHorizontalOverflow}
                   closeButtonProps={slotProps?.closeButton}
                   {...(onRemove &&
                     typeof onRemove === 'function' && {
