@@ -1,0 +1,130 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Flag.stories';
+
+<Meta of={Stories} />
+
+# Flag
+
+<Status variant="experimental" />
+
+Flag shows a small country flag inside a product UI (inline with text, in lists, options, selects).
+
+It is a thin presentational wrapper: it decorates a flag graphic you provide and does **not** ship
+or resolve any flag data. Flag graphics are expected to come from
+[`country-flag-icons`](https://www.npmjs.com/package/country-flag-icons) (full ISO 3166-1, redrawn
+for small sizes) or any custom source.
+
+## Import
+
+```tsx
+import { Flag } from '@koobiq/react-components';
+```
+
+## Usage
+
+Provide the flag graphic as `children`. The recommended path is a ready-made React flag component
+from [`country-flag-icons`](https://www.npmjs.com/package/country-flag-icons) — no extra requests, no
+base64, and it renders an inline `<svg>` under the hood. A raw inline `<svg>` or an `<img>` also
+works.
+
+```tsx
+import { DE } from 'country-flag-icons/react/3x2';
+
+<Flag role="img" aria-label="Germany">
+  <DE />
+</Flag>;
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Shape
+
+The `shape` prop controls the corner treatment: `rectangle` (default) or `circle`. `circle` clips the
+flag to a circle and defaults its ratio to `1 / 1`. For a sharp-cornered square, use
+`aspectRatio="1 / 1"` (see below).
+
+<Story of={Stories.Shape} />
+
+## Shadow
+
+A thin inset hairline separates the flag from the background. It is on by default and adapts to the theme (dark hairline in the light theme, lighter in the dark theme).
+
+<Story of={Stories.Shadow} />
+
+## Sizing
+
+By default the flag's height is `1em`, so it tracks the surrounding text — inline, in lists, and in
+options you set nothing. For an explicit height use the `size` prop (a number is pixels, a string is
+any CSS length), or override the `--kbq-flag-size` variable to size a whole context at once.
+
+```tsx
+<Flag size={24} /> // 24px
+<Flag size="2rem" /> // any CSS length
+```
+
+<Story of={Stories.Sizes} />
+
+## Aspect ratio
+
+Set the box ratio with the `aspectRatio` prop.
+
+<Story of={Stories.AspectRatio} />
+
+## Missing flag
+
+The library ships no flag data, so guard the country code (e.g. with `hasFlag` from
+`country-flag-icons`) and render a neutral placeholder when a flag is missing —
+the layout never breaks and no broken graphic is shown.
+
+<Story of={Stories.Fallback} />
+
+## Accessibility
+
+A flag must never be a silent, meaning-bearing graphic. Flag adds no ARIA semantics on its own —
+supply them with standard attributes:
+
+- When the flag carries meaning and has **no adjacent text**, pass a `aria-label` and `role="img"`.
+- When adjacent visible text already names the country, mark the flag with `aria-hidden="true"`. It is hidden from
+  assistive technology to avoid duplication.
+
+<Story of={Stories.Accessibility} />
+
+## Flag is not a language
+
+A flag represents a country, not a language. Use a globe icon (not a flag) for language selection.
+
+<Story of={Stories.NotForLanguage} />
+
+## Custom look
+
+Stylized, decorative treatments (rounded corners, drop shadow, "folds" gradient) are your own CSS
+plus the exposed variables — not a library prop. Round the corners with `--kbq-flag-border-radius`
+and add a shadow/gradient in your own styles.
+
+<Story of={Stories.Custom} />
+
+## Flags in a Select
+
+<Story of={Stories.FlagsInSelect} />
+
+## CSS variables
+
+Everything visual that isn't a discrete state is an overridable CSS variable:
+
+| Variable                      | Default                                 | Purpose                                               |
+| ----------------------------- | --------------------------------------- | ----------------------------------------------------- |
+| `--kbq-flag-size`             | `1em`                                   | Flag height (also settable via the `size` prop).      |
+| `--kbq-flag-aspect-ratio`     | `3 / 2`                                 | Box ratio (also settable via the `aspectRatio` prop). |
+| `--kbq-flag-border-radius`    | `0`                                     | Corner radius (rounded / stylized look).              |
+| `--kbq-flag-shadow-color`     | `var(--kbq-line-contrast-fade)`         | Inset hairline color; theme-adaptive.                 |
+| `--kbq-flag-empty-background` | `var(--kbq-states-background-disabled)` | Placeholder fill.                                     |

@@ -76,6 +76,7 @@
     "bumpp": "^10.1.0",
     "chalk": "^4.1.2",
     "commit-and-tag-version": "^12.5.0",
+    "country-flag-icons": "^1.6.20",
     "dotenv": "^16.4.7",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^9.1.2",
