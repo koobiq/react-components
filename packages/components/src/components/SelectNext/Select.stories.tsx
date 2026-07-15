@@ -32,7 +32,7 @@ const meta = {
     'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-07-02'],
+  tags: ['status:updated', 'date:2026-07-06'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -474,10 +474,32 @@ export const Disabled: Story = {
         items={options}
         caption="disabled"
         label="Attack type"
+        defaultValue={[1]}
         selectionMode="multiple"
         style={{ inlineSize: 200 }}
         placeholder="Select an option"
         isDisabled
+        isClearable
+      >
+        {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const ReadOnly: Story = {
+  render: function Render() {
+    return (
+      <Select
+        items={options}
+        caption="read only"
+        defaultValue={[1]}
+        label="Attack type"
+        selectionMode="multiple"
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        isClearable
+        isReadOnly
       >
         {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>

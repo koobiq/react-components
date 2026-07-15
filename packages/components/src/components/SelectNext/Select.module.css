@@ -1,3 +1,9 @@
+.base[data-readonly] {
+  .chevron {
+    color: var(--kbq-states-icon-disabled);
+  }
+}
+
 /* addons */
 .addon {
   pointer-events: none;

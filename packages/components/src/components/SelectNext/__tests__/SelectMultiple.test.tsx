@@ -84,6 +84,83 @@ describe('Select_multiple', () => {
     expect(onChange).toBeCalledTimes(0);
   });
 
+  it('should not update selection when an item is clicked in read-only state', async () => {
+    const onChange = vi.fn();
+
+    render(
+      renderComponent({
+        value: [1, 3],
+        onChange,
+        isReadOnly: true,
+      })
+    );
+
+    await userEvent.click(screen.getByTestId('option-2'));
+
+    const selectedItems = screen.getByLabelText('Selected items');
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(selectedItems).toHaveTextContent('1');
+    expect(selectedItems).toHaveTextContent('3');
+    expect(selectedItems).not.toHaveTextContent('2');
+  });
+
+  it('should render a disabled clear button in read-only state', async () => {
+    const onChange = vi.fn();
+    const onClear = vi.fn();
+
+    render(
+      renderComponent({
+        value: [1, 3],
+        onChange,
+        onClear,
+        isClearable: true,
+        isReadOnly: true,
+        slotProps: {
+          clearButton: {
+            'aria-label': 'clear-button',
+          },
+        },
+      })
+    );
+
+    const clearButton = screen.getByLabelText('clear-button');
+
+    expect(clearButton).toBeInTheDocument();
+    expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
+    expect(clearButton).toBeDisabled();
+
+    await userEvent.click(clearButton);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onClear).not.toHaveBeenCalled();
+  });
+
+  it.each(['responsive', 'multiline'] as const)(
+    'should render disabled tag remove actions with %s overflow in read-only state',
+    (selectedTagsOverflow) => {
+      render(
+        renderComponent({
+          value: [1, 3],
+          defaultOpen: false,
+          isReadOnly: true,
+          selectedTagsOverflow,
+        })
+      );
+
+      const removeButtons = within(
+        screen.getByLabelText('Selected items')
+      ).getAllByRole('button', { hidden: true });
+
+      expect(removeButtons).toHaveLength(2);
+
+      removeButtons.forEach((button) => {
+        expect(button).toHaveAttribute('aria-disabled', 'true');
+        expect(button).toHaveAttribute('data-disabled', 'true');
+      });
+    }
+  );
+
   it('should render default tags with the selected item text when renderTag is not provided', () => {
     render(renderComponent({ value: [1, 3] }));
 
@@ -97,8 +174,13 @@ describe('Select_multiple', () => {
     render(
       renderComponent({
         value: [1, 3],
-        renderTag: (item, tagProps) => (
-          <div data-testid={`custom-tag-${item.key}`} {...tagProps}>
+        renderTag: (item, { className, ref, 'aria-hidden': ariaHidden }) => (
+          <div
+            ref={ref}
+            className={className}
+            aria-hidden={ariaHidden}
+            data-testid={`custom-tag-${item.key}`}
+          >
             {item.key}
           </div>
         ),

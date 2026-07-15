@@ -163,6 +163,14 @@ When the select component is disabled, it cannot be interacted with.
 
 <Story of={Stories.Disabled} />
 
+### Read only
+
+The `isReadOnly` prop makes the selection immutable while keeping Select
+focusable. The dropdown cannot be opened, so the selected value is displayed but
+cannot be changed.
+
+<Story of={Stories.ReadOnly} />
+
 ### Clear button
 
 If you pass the `isClearable` prop to the select, it will have a clear
