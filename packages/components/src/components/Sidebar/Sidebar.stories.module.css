@@ -1,0 +1,48 @@
+.layout {
+  display: flex;
+  block-size: 320px;
+  inline-size: 640px;
+  border: 1px solid var(--kbq-line-contrast-less);
+  border-radius: var(--kbq-size-s);
+  overflow: hidden;
+}
+
+.sidebar {
+  background-color: var(--kbq-background-bg-tertiary);
+  flex: none;
+}
+
+.main {
+  flex: 1 1 auto;
+  padding: var(--kbq-size-l);
+}
+
+/* `flex: none` keeps the panel at its open width while the sidebar shrinks, so
+   the content is clipped from the edge instead of reflowing. */
+.panel {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--kbq-size-xs);
+  padding: var(--kbq-size-s);
+  inline-size: 240px;
+}
+
+.compact {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--kbq-size-xs);
+  padding: var(--kbq-size-xs);
+  align-items: center;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--kbq-size-s);
+  padding: var(--kbq-size-xs) var(--kbq-size-s);
+  border-radius: var(--kbq-size-xxs);
+  color: var(--kbq-foreground-contrast);
+  white-space: nowrap;
+}

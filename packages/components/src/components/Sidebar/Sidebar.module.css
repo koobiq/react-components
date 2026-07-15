@@ -1,0 +1,36 @@
+.base {
+  --sidebar-size: 240px;
+  --sidebar-closed-size: var(--kbq-size-3xl);
+  --sidebar-open-duration: 200ms;
+  --sidebar-close-duration: 100ms;
+
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  block-size: 100%;
+
+  /* The token supplies the easing; the duration is overridden per phase below. */
+  transition: inline-size var(--kbq-transition-slow);
+  transition-duration: var(--sidebar-close-duration);
+}
+
+/* Anchors the content to its edge while the inline size animates.
+   `start` is the flexbox default and needs no rule. */
+.base[data-placement='end'] {
+  justify-content: flex-end;
+}
+
+/* animation */
+.base[data-transition='entering'] {
+  transition-duration: var(--sidebar-open-duration);
+}
+
+.base[data-transition='entering'],
+.base[data-transition='entered'] {
+  inline-size: var(--sidebar-size);
+}
+
+.base[data-transition='exiting'],
+.base[data-transition='exited'] {
+  inline-size: var(--sidebar-closed-size);
+}

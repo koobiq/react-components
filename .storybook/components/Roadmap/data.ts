@@ -362,4 +362,10 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q2 2026',
   },
+  {
+    component: 'Sidebar',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
 ];
