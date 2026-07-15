@@ -16,9 +16,8 @@ import * as Stories from './Sidebar.stories';
 Sidebar is a low-level layout box for a side area that toggles between an open and a closed state,
 animating its inline size between the two.
 
-It is **not** an overlay: there is no backdrop, no focus trap, and the content stays mounted while
-closed. Where the box sits is up to your layout — Sidebar only owns its own inline size. It holds no
-state beyond open/closed and persists nothing.
+It is not an overlay and does not position itself. Sidebar only controls its inline size and
+open/closed state.
 
 ## Import
 
@@ -28,19 +27,11 @@ import { Sidebar } from '@koobiq/react-components';
 
 ## Usage
 
-Pass a function as `children` to render a different tree per state. It receives the current state
-plus the `open`, `close` and `toggle` actions, so the control that collapses the sidebar lives in
-your content.
+Pass a function as `children` to render content based on the current state.
 
 ```tsx
-<Sidebar isOpen={isOpen} onOpenChange={setIsOpen}>
-  {({ isOpen, open, close }) =>
-    isOpen ? (
-      <ExpandedContent onCollapse={close} />
-    ) : (
-      <CompactContent onExpand={open} />
-    )
-  }
+<Sidebar>
+  {({ isOpen, toggle }) => <Content isOpen={isOpen} onToggle={toggle} />}
 </Sidebar>
 ```
 
@@ -52,107 +43,56 @@ your content.
 
 ## Open state
 
-Sidebar works controlled and uncontrolled. Without `isOpen` it owns its state, and `defaultOpen` sets
-the initial one — it is **closed by default**.
-
-<Story of={Stories.Uncontrolled} />
-
-Pass `isOpen` together with `onOpenChange` to own the state yourself.
+The Sidebar is closed by default. Use `defaultOpen` for an uncontrolled sidebar, or pass `isOpen` and
+`onOpenChange` to control it.
 
 <Story of={Stories.Controlled} />
 
-## Content and the state swap
-
-The render function is optional — plain children work too and are simply clipped by the box as it
-collapses.
-
-<Story of={Stories.StaticContent} />
-
-One detail worth knowing: **the open content is kept for the whole collapse** and is swapped for the
-closed content only once the animation has finished. Otherwise the compact content would appear
-instantly inside a box that is still at its full width, and you would see it jump. On expand the
-swap is immediate — the open content is there from the first frame, while the box is still growing.
-
-This means the render function's `isOpen` stays `true` for the duration of the collapse, even though
-the `isOpen` prop is already `false`. It reports what is on screen, not what has been requested.
-
 ## Sizing
 
-`size` and `closedSize` set the inline size of each state, in pixels.
+The `size` and `closedSize` props accept numbers in pixels or CSS inline-size values.
 
 ```tsx
 <Sidebar size={320} closedSize={56} />
+<Sidebar size="50%" closedSize="25%" />
+<Sidebar size="clamp(240px, 50%, 320px)" closedSize={32} />
 ```
 
-<Story of={Stories.Sizing} />
+<Story of={Stories.Size} />
 
 ## Placement
 
-`placement` anchors the content to its edge while the inline size animates, so a right-hand sidebar
-collapses toward the right. It also picks the keyboard shortcut (see below). It does **not** position
-the box — that is your layout's job.
+The `placement` anchors the content to its edge while the inline size animates, so a right-hand sidebar
+collapses toward the right. It does not position the box.
 
 <Story of={Stories.Placement} />
 
-By default the content shrinks along with the box, which is usually what you want (labels ellipsize,
-icons stay put). To have the content hold its width and be clipped from the edge instead — which is
-what makes the anchoring visible — give it `flex-shrink: 0` or a fixed inline size.
-
 ## Keyboard
 
-| Key | Action                                |
-| --- | ------------------------------------- |
-| `[` | Toggles a `placement="start"` sidebar |
-| `]` | Toggles a `placement="end"` sidebar   |
+Press `[` to toggle a `start` sidebar or `]` to toggle an `end` sidebar. Set
+`keyboardShortcut` to use another key combination, or pass `null` to disable it.
 
-The shortcut is bound on `window`, so it works regardless of focus, and it is ignored while the user
-is typing or holding a modifier. It matches the physical key, so it also works on non-Latin layouts.
+```tsx
+<Sidebar keyboardShortcut={{ code: 'KeyB' }} />
+<Sidebar keyboardShortcut={{ code: 'KeyO', metaKey: true }} />
+<Sidebar keyboardShortcut={null} />
+```
 
-Set `disableKeyboardShortcut` to turn it off. Note the shortcut assumes at most one sidebar per
-`placement` on a page — two would both toggle on the same key.
-
-## Transition
-
-Expanding takes 200ms and collapsing 100ms. Reach the underlying transition through
-`slotProps.transition`; its `onEntered` and `onExited` fire once the animation has finished.
-
-<Story of={Stories.CustomTransition} />
+<Story of={Stories.Keyboard} />
 
 ## Accessibility
 
-A sidebar is a box that changes size and carries no semantics of its own, so Sidebar adds no `role`
-and no ARIA attributes. Supply them yourself:
+A Sidebar has no ARIA role by default:
 
-- Use `as="nav"` / `as="aside"` (or pass `role`) and give the region an accessible name with
-  `aria-label`, so it becomes a landmark.
+- Use `as="nav"` or `as="aside"` and add an accessible name.
 - Mark the toggle control you render with `aria-expanded` and `aria-controls` pointing at the
   sidebar's `id`.
 
-## Persisting the state
-
-Sidebar persists nothing. Keep the state where the rest of your app state lives and drive the
-component with `isOpen`:
-
-```tsx
-const [isOpen, setIsOpen] = useState(
-  () => localStorage.getItem('sidebar') === 'open'
-);
-
-const handleOpenChange = (open: boolean) => {
-  setIsOpen(open);
-  localStorage.setItem('sidebar', open ? 'open' : 'closed');
-};
-
-<Sidebar isOpen={isOpen} onOpenChange={handleOpenChange}>
-  {/* … */}
-</Sidebar>;
-```
-
 ## CSS variables
 
-| Variable                   | Default               | Purpose                                                    |
-| -------------------------- | --------------------- | ---------------------------------------------------------- |
-| `--sidebar-size`           | `240px`               | Inline size while open (also settable via `size`).         |
-| `--sidebar-closed-size`    | `var(--kbq-size-3xl)` | Inline size while closed (also settable via `closedSize`). |
-| `--sidebar-open-duration`  | `200ms`               | Duration of the expand animation.                          |
-| `--sidebar-close-duration` | `100ms`               | Duration of the collapse animation.                        |
+| Variable                   | Default | Purpose                                                    |
+| -------------------------- | ------- | ---------------------------------------------------------- |
+| `--sidebar-size`           | `240px` | Inline size while open (also settable via `size`).         |
+| `--sidebar-closed-size`    | `32px`  | Inline size while closed (also settable via `closedSize`). |
+| `--sidebar-open-duration`  | `200ms` | Duration of the expand animation.                          |
+| `--sidebar-close-duration` | `100ms` | Duration of the collapse animation.                        |

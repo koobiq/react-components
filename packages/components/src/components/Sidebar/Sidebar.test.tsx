@@ -215,13 +215,26 @@ describe('Sidebar', () => {
       );
     });
 
-    it('should set the size variables in pixels', () => {
+    it('should set numeric size variables in pixels', () => {
       render(<Sidebar {...baseProps} size={320} closedSize={56} />);
 
       expect(getRoot().style.getPropertyValue('--sidebar-size')).toBe('320px');
 
       expect(getRoot().style.getPropertyValue('--sidebar-closed-size')).toBe(
         '56px'
+      );
+    });
+
+    it.each([
+      ['auto', '32px'],
+      ['50%', '25%'],
+    ])('should pass CSS size values through: %s and %s', (size, closedSize) => {
+      render(<Sidebar {...baseProps} size={size} closedSize={closedSize} />);
+
+      expect(getRoot().style.getPropertyValue('--sidebar-size')).toBe(size);
+
+      expect(getRoot().style.getPropertyValue('--sidebar-closed-size')).toBe(
+        closedSize
       );
     });
   });
@@ -297,7 +310,51 @@ describe('Sidebar', () => {
       expect(onOpenChange).toHaveBeenCalledWith(true);
     });
 
-    it.each(['ctrlKey', 'metaKey', 'altKey'] as const)(
+    it('should use a custom key', () => {
+      const onOpenChange = vi.fn();
+
+      render(
+        <Sidebar
+          {...baseProps}
+          keyboardShortcut={{ code: 'KeyB' }}
+          onOpenChange={onOpenChange}
+        />
+      );
+
+      fireEvent.keyDown(window, { code: 'BracketLeft' });
+      expect(onOpenChange).not.toHaveBeenCalled();
+
+      fireEvent.keyDown(window, { code: 'KeyB' });
+      expect(onOpenChange).toHaveBeenCalledWith(true);
+    });
+
+    it('should match custom modifiers exactly and prevent the default action', () => {
+      const onOpenChange = vi.fn();
+
+      render(
+        <Sidebar
+          {...baseProps}
+          keyboardShortcut={{ code: 'KeyO', metaKey: true }}
+          onOpenChange={onOpenChange}
+        />
+      );
+
+      fireEvent.keyDown(window, { code: 'KeyO' });
+      expect(onOpenChange).not.toHaveBeenCalled();
+
+      const event = new KeyboardEvent('keydown', {
+        code: 'KeyO',
+        metaKey: true,
+        cancelable: true,
+      });
+
+      window.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(onOpenChange).toHaveBeenCalledWith(true);
+    });
+
+    it.each(['ctrlKey', 'metaKey', 'altKey', 'shiftKey'] as const)(
       'should ignore the shortcut when %s is held',
       (modifier) => {
         const onOpenChange = vi.fn();
@@ -348,13 +405,13 @@ describe('Sidebar', () => {
       expect(onOpenChange).not.toHaveBeenCalled();
     });
 
-    it('should not listen when disableKeyboardShortcut is set', () => {
+    it('should not listen when keyboardShortcut is null', () => {
       const onOpenChange = vi.fn();
 
       render(
         <Sidebar
           {...baseProps}
-          disableKeyboardShortcut
+          keyboardShortcut={null}
           onOpenChange={onOpenChange}
         />
       );

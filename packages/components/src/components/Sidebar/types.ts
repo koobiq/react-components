@@ -6,6 +6,17 @@ export const sidebarPropPlacement = ['start', 'end'] as const;
 
 export type SidebarPropPlacement = (typeof sidebarPropPlacement)[number];
 
+export type SidebarPropSize = CSSProperties['inlineSize'];
+
+export type SidebarPropKeyboardShortcut = {
+  /** The physical key code, for example `KeyB` or `KeyO`. */
+  code: string;
+  altKey?: boolean;
+  ctrlKey?: boolean;
+  metaKey?: boolean;
+  shiftKey?: boolean;
+};
+
 export type SidebarRenderProps = {
   /** Whether the sidebar is currently showing its open content. */
   isOpen: boolean;
@@ -38,27 +49,30 @@ export type SidebarBaseProps = {
   /** Handler that is called when the sidebar's open state changes. */
   onOpenChange?: (isOpen: boolean) => void;
   /**
-   * The inline size of the sidebar while it is open, in pixels.
+   * The inline size of the sidebar while it is open. Numbers are treated as
+   * pixels; strings are passed through as CSS values.
    * @default 240
    */
-  size?: number;
+  size?: SidebarPropSize;
   /**
-   * The inline size of the sidebar while it is closed, in pixels.
+   * The inline size of the sidebar while it is closed. Numbers are treated as
+   * pixels; strings are passed through as CSS values.
    * @default 32
    */
-  closedSize?: number;
+  closedSize?: SidebarPropSize;
   /**
    * The side the sidebar is placed on. Anchors the content to that edge while
-   * the inline size animates, and picks the keyboard shortcut: `start` is
-   * toggled by `[`, `end` by `]`.
+   * the inline size animates, and picks the default keyboard shortcut: `start`
+   * is toggled by `[`, `end` by `]`.
    * @default 'start'
    */
   placement?: SidebarPropPlacement;
   /**
-   * If `true`, the `[` / `]` keyboard shortcut is disabled.
-   * @default false
+   * The keyboard shortcut that toggles the sidebar. By default, it is selected
+   * from `placement`. Set to `null` to disable the keyboard shortcut.
+   * @example { code: 'KeyO', metaKey: true }
    */
-  disableKeyboardShortcut?: boolean;
+  keyboardShortcut?: SidebarPropKeyboardShortcut | null;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

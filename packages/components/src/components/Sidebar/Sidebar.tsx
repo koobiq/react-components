@@ -15,19 +15,15 @@ import { Transition } from 'react-transition-group';
 import { TRANSITION_TIMEOUT } from './constants';
 import type { SidebarBaseProps } from './index';
 import s from './Sidebar.module.css';
-import { isEditableTarget, normalizeSize } from './utils';
+import {
+  isEditableTarget,
+  matchesKeyboardShortcut,
+  normalizeSize,
+} from './utils';
 
 /**
  * Sidebar is a low-level layout box for a side area that toggles between an open
  * and a closed state, animating its inline size between the two.
- *
- * It renders arbitrary content — pass a function as `children` to render a
- * different tree per state. It is not an overlay: no backdrop, no focus trap, and
- * the content stays mounted while closed.
- *
- * Sidebar adds no ARIA semantics on its own. Supply them via standard attributes
- * (`as="nav"`, `role`, `aria-label`), and mark the toggle control you render with
- * `aria-expanded` and `aria-controls`.
  */
 export const Sidebar = polymorphicForwardRef<'div', SidebarBaseProps>(
   (props, ref) => {
@@ -39,7 +35,7 @@ export const Sidebar = polymorphicForwardRef<'div', SidebarBaseProps>(
       size,
       closedSize,
       placement = 'start',
-      disableKeyboardShortcut = false,
+      keyboardShortcut,
       slotProps,
       style,
       className,
@@ -61,16 +57,18 @@ export const Sidebar = polymorphicForwardRef<'div', SidebarBaseProps>(
 
     useEventListener({
       eventName: 'keydown',
-      active: !disableKeyboardShortcut,
+      active: keyboardShortcut !== null,
       handler: (event) => {
-        // Matched by `code`, not `key`: on non-Latin layouts (e.g. ЙЦУКЕН) the
-        // bracket keys produce other characters and `key` would never match.
-        const code = placement === 'end' ? 'BracketRight' : 'BracketLeft';
+        if (keyboardShortcut === null) return;
 
-        if (event.code !== code) return;
-        if (event.ctrlKey || event.metaKey || event.altKey) return;
+        const shortcut = keyboardShortcut ?? {
+          code: placement === 'end' ? 'BracketRight' : 'BracketLeft',
+        };
+
+        if (!matchesKeyboardShortcut(event, shortcut)) return;
         if (isEditableTarget(event.target)) return;
 
+        event.preventDefault();
         toggle();
       },
     });

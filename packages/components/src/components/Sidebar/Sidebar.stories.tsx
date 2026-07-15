@@ -1,19 +1,28 @@
-import { useState } from 'react';
+import type { CSSProperties } from 'react';
 
+import { useBoolean } from '@koobiq/react-core';
 import {
-  IconChevronDoubleLeftS16,
-  IconChevronDoubleRightS16,
   IconCloud16,
   IconDashboard16,
   IconDatabase16,
+  IconChevronDoubleLeftS16,
+  IconChevronDoubleRightS16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { IconButton } from '../IconButton';
+import { Button } from '../Button';
+import { FlexBox } from '../FlexBox';
+import { Grid } from '../Grid';
+import { spacing } from '../layout';
+import { List } from '../List';
 import { Typography } from '../Typography';
 
-import { Sidebar, type SidebarProps, sidebarPropPlacement } from './index.js';
-import s from './Sidebar.stories.module.css';
+import {
+  Sidebar,
+  type SidebarProps,
+  type SidebarRenderProps,
+  sidebarPropPlacement,
+} from './index';
 
 const items = [
   { icon: <IconDashboard16 />, label: 'Dashboard' },
@@ -24,9 +33,6 @@ const items = [
 const meta = {
   title: 'Components/Sidebar',
   component: Sidebar,
-  parameters: {
-    layout: 'centered',
-  },
   argTypes: {
     placement: {
       options: sidebarPropPlacement,
@@ -39,46 +45,77 @@ const meta = {
 export default meta;
 type Story = StoryObj<SidebarProps>;
 
-const Panel = ({ onCollapse }: { onCollapse: () => void }) => (
-  <div className={s.panel}>
-    <IconButton
-      variant="fade-contrast"
-      aria-label="Collapse"
-      onPress={onCollapse}
-    >
-      <IconChevronDoubleLeftS16 />
-    </IconButton>
-    {items.map(({ icon, label }) => (
-      <div key={label} className={s.item}>
-        {icon}
-        <Typography variant="text-normal">{label}</Typography>
-      </div>
-    ))}
-  </div>
-);
+const containerStyle = {
+  display: 'flex',
+  blockSize: 320,
+  border: '1px solid var(--kbq-line-contrast-less)',
+} as CSSProperties;
 
-const Compact = ({ onExpand }: { onExpand: () => void }) => (
-  <div className={s.compact}>
-    <IconButton variant="fade-contrast" aria-label="Expand" onPress={onExpand}>
-      <IconChevronDoubleRightS16 />
-    </IconButton>
-    {items.map(({ icon, label }) => (
-      <div key={label} className={s.item} title={label}>
-        {icon}
-      </div>
-    ))}
+const sidebarStyle = {
+  backgroundColor: 'var(--kbq-background-bg-tertiary)',
+  flex: 'none',
+} as CSSProperties;
+
+const listStyle = {
+  flex: 'none',
+  inlineSize: '100%',
+} as CSSProperties;
+
+const contentStyle = {
+  display: 'flex',
+  gap: 'var(--kbq-size-xs)',
+  flexDirection: 'column',
+  alignItems: 'start',
+  padding: 'var(--kbq-size-m)',
+  flex: '1 1 auto',
+  minInlineSize: 0,
+} as CSSProperties;
+
+const Content = ({
+  isOpen,
+  toggle,
+  placement = 'start',
+}: Pick<SidebarRenderProps, 'isOpen' | 'toggle'> & {
+  placement?: SidebarProps['placement'];
+}) => (
+  <div style={{ display: 'flex', flexDirection: 'column', inlineSize: '100%' }}>
+    <List aria-label="Navigation" style={listStyle} isPadded>
+      {items.map(({ icon, label }) => (
+        <List.Item key={label} textValue={label} style={{ paddingInline: 8 }}>
+          <List.ItemAddon>{icon}</List.ItemAddon>
+          {isOpen && <List.ItemText>{label}</List.ItemText>}
+        </List.Item>
+      ))}
+    </List>
+
+    <Button
+      onlyIcon={!isOpen}
+      onPress={toggle}
+      variant="fade-contrast-filled"
+      startIcon={
+        !isOpen ? (
+          placement === 'start' ? (
+            <IconChevronDoubleRightS16 />
+          ) : (
+            <IconChevronDoubleLeftS16 />
+          )
+        ) : undefined
+      }
+      className={spacing({ m: 'xxs' })}
+      style={{ marginBlockStart: 'auto' }}
+    >
+      {isOpen ? 'Close' : 'Open'}
+    </Button>
   </div>
 );
 
 export const Base: Story = {
   render: (args) => (
-    <div className={s.layout}>
-      <Sidebar {...args} className={s.sidebar} defaultOpen>
-        {({ isOpen, open, close }) =>
-          isOpen ? <Panel onCollapse={close} /> : <Compact onExpand={open} />
-        }
+    <div style={containerStyle}>
+      <Sidebar {...args} closedSize={40} style={sidebarStyle}>
+        {({ isOpen, toggle }) => <Content isOpen={isOpen} toggle={toggle} />}
       </Sidebar>
-      <div className={s.main}>
+      <div style={contentStyle}>
         <Typography variant="text-normal">
           Press <kbd>[</kbd> to toggle the sidebar.
         </Typography>
@@ -87,158 +124,141 @@ export const Base: Story = {
   ),
 };
 
-/**
- * Without `isOpen` the sidebar owns its state. `defaultOpen` sets the initial one —
- * it is closed by default.
- */
-export const Uncontrolled: Story = {
-  render: (args) => (
-    <div className={s.layout}>
-      <Sidebar {...args} className={s.sidebar}>
-        {({ isOpen, open, close }) =>
-          isOpen ? <Panel onCollapse={close} /> : <Compact onExpand={open} />
-        }
-      </Sidebar>
-      <div className={s.main} />
-    </div>
-  ),
-};
-
-/**
- * Pass `isOpen` and `onOpenChange` to own the state. Note `onOpenChange` fires
- * immediately, while the render function keeps reporting the open state until the
- * collapse animation has finished.
- */
 export const Controlled: Story = {
   render: function Render(args) {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, { toggle }] = useBoolean(true);
 
     return (
-      <div className={s.layout}>
+      <div style={containerStyle}>
         <Sidebar
-          {...args}
-          className={s.sidebar}
+          closedSize={40}
           isOpen={isOpen}
-          onOpenChange={setIsOpen}
+          style={sidebarStyle}
+          onOpenChange={toggle}
+          {...args}
         >
-          {({ isOpen: isOpenState, open, close }) =>
-            isOpenState ? (
-              <Panel onCollapse={close} />
-            ) : (
-              <Compact onExpand={open} />
-            )
-          }
+          {({ isOpen, toggle }) => <Content isOpen={isOpen} toggle={toggle} />}
         </Sidebar>
-        <div className={s.main}>
-          <Typography variant="text-normal">
-            The sidebar is {isOpen ? 'open' : 'closed'}.
-          </Typography>
+        <div style={contentStyle}>
+          <Typography>The sidebar is {isOpen ? 'open' : 'closed'}.</Typography>
+          <Button aria-label={isOpen ? 'Close' : 'Open'} onPress={toggle}>
+            {isOpen ? 'Close' : 'Open'}
+          </Button>
         </div>
       </div>
     );
   },
 };
 
-/**
- * The render function is optional. Plain children stay mounted in both states and
- * are simply clipped by the box as it collapses.
- */
-export const StaticContent: Story = {
-  render: (args) => (
-    <div className={s.layout}>
-      <Sidebar {...args} className={s.sidebar} defaultOpen closedSize={56}>
-        <div className={s.panel}>
-          {items.map(({ icon, label }) => (
-            <div key={label} className={s.item}>
-              {icon}
-              <Typography variant="text-normal">{label}</Typography>
-            </div>
-          ))}
-        </div>
-      </Sidebar>
-      <div className={s.main}>
-        <Typography variant="text-normal">Press [ to toggle.</Typography>
-      </div>
-    </div>
-  ),
+export const Size: Story = {
+  render: function Render() {
+    const sizeExamples: Array<{
+      label: string;
+      size: SidebarProps['size'];
+      closedSize: SidebarProps['closedSize'];
+    }> = [
+      { label: 'Pixels: 320px → 56px', size: 320, closedSize: 56 },
+      { label: 'Percentages: 50% → 25%', size: '50%', closedSize: '25%' },
+      {
+        label: 'Clamp: min 240px, preferred 50%, max 320px',
+        size: 'clamp(240px, 50%, 320px)',
+        closedSize: 32,
+      },
+    ];
+
+    return (
+      <Grid gap="l">
+        {sizeExamples.map(({ label, size, closedSize }) => (
+          <Grid key={label} gap="xs">
+            <Typography variant="text-normal">{label}</Typography>
+            <FlexBox
+              style={{
+                blockSize: 160,
+                inlineSize: '100%',
+                border: '1px solid var(--kbq-line-contrast-less)',
+                overflow: 'hidden',
+              }}
+            >
+              <Sidebar
+                defaultOpen
+                size={size}
+                style={sidebarStyle}
+                keyboardShortcut={null}
+                closedSize={closedSize}
+              >
+                <Typography style={{ padding: 'var(--kbq-size-l)' }}>
+                  Sidebar
+                </Typography>
+              </Sidebar>
+              <FlexBox style={{ flex: '1 1 auto', minInlineSize: 0 }}>
+                <Typography style={{ padding: 'var(--kbq-size-l)' }}>
+                  Content
+                </Typography>
+              </FlexBox>
+            </FlexBox>
+          </Grid>
+        ))}
+      </Grid>
+    );
+  },
 };
 
-/** `size` and `closedSize` set the inline size of each state, in pixels. */
-export const Sizing: Story = {
-  render: (args) => (
-    <div className={s.layout}>
-      <Sidebar
-        {...args}
-        className={s.sidebar}
-        defaultOpen
-        size={320}
-        closedSize={56}
-      >
-        {({ isOpen, open, close }) =>
-          isOpen ? <Panel onCollapse={close} /> : <Compact onExpand={open} />
-        }
-      </Sidebar>
-      <div className={s.main} />
-    </div>
-  ),
-};
-
-/**
- * `placement` anchors the content to its edge while the inline size animates, and
- * picks the shortcut: `[` toggles the `start` sidebar, `]` the `end` one.
- */
 export const Placement: Story = {
-  render: (args) => (
-    <div className={s.layout}>
-      <Sidebar {...args} className={s.sidebar} placement="start" defaultOpen>
-        {({ isOpen, open, close }) =>
-          isOpen ? <Panel onCollapse={close} /> : <Compact onExpand={open} />
-        }
+  render: () => (
+    <div style={containerStyle}>
+      <Sidebar
+        size="25%"
+        closedSize={40}
+        placement="start"
+        style={sidebarStyle}
+        defaultOpen
+      >
+        {({ isOpen, toggle }) => (
+          <Content isOpen={isOpen} toggle={toggle} placement="start" />
+        )}
       </Sidebar>
-      <div className={s.main}>
+      <div
+        style={{
+          flex: '1 1 auto',
+          minInlineSize: 0,
+          padding: 'var(--kbq-size-l)',
+        }}
+      >
         <Typography variant="text-normal">
           <kbd>[</kbd> toggles the left sidebar, <kbd>]</kbd> the right one.
         </Typography>
       </div>
-      <Sidebar {...args} className={s.sidebar} placement="end" defaultOpen>
-        {({ isOpen, open, close }) =>
-          isOpen ? <Panel onCollapse={close} /> : <Compact onExpand={open} />
-        }
+      <Sidebar
+        size="25%"
+        closedSize={40}
+        placement="end"
+        style={sidebarStyle}
+        defaultOpen
+      >
+        {({ isOpen, toggle }) => (
+          <Content isOpen={isOpen} toggle={toggle} placement="end" />
+        )}
       </Sidebar>
     </div>
   ),
 };
 
-/**
- * `slotProps.transition` reaches the underlying transition. Its `onEntered` and
- * `onExited` fire once the animation has finished — that is the equivalent of the
- * Angular `stateChanged` output.
- */
-export const CustomTransition: Story = {
-  render: function Render(args) {
-    const [log, setLog] = useState<string>('—');
-
-    return (
-      <div className={s.layout}>
-        <Sidebar
-          {...args}
-          className={s.sidebar}
-          defaultOpen
-          slotProps={{
-            transition: {
-              onEntered: () => setLog('entered'),
-              onExited: () => setLog('exited'),
-            },
-          }}
-        >
-          {({ isOpen, open, close }) =>
-            isOpen ? <Panel onCollapse={close} /> : <Compact onExpand={open} />
-          }
-        </Sidebar>
-        <div className={s.main}>
-          <Typography variant="text-normal">Last transition: {log}</Typography>
-        </div>
+export const Keyboard: Story = {
+  render: (args) => (
+    <div style={containerStyle}>
+      <Sidebar
+        closedSize={40}
+        style={sidebarStyle}
+        keyboardShortcut={{ code: 'KeyB' }}
+        {...args}
+      >
+        {({ isOpen, toggle }) => <Content isOpen={isOpen} toggle={toggle} />}
+      </Sidebar>
+      <div style={contentStyle}>
+        <Typography variant="text-normal">
+          Press <kbd>B</kbd> to toggle the sidebar.
+        </Typography>
       </div>
-    );
-  },
+    </div>
+  ),
 };

@@ -26,11 +26,7 @@ export const css: UserConfig['css'] = {
       const prefix = 'kbq';
       const parts = [prefix];
 
-      // A dot would make the generated name parse as a compound selector
-      // (`.a.b`) and never match the element, e.g. `Flag.stories.module.css`.
-      const fileName = path
-        .basename(filename, '.module.css')
-        .replace(/\./g, '-');
+      const fileName = path.basename(filename, '.module.css');
 
       parts.push(fileName.toLowerCase());
 

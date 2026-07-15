@@ -1,4 +1,19 @@
-export const normalizeSize = (value: number) => `${value}px`;
+import { isNumber } from '@koobiq/react-core';
+
+import type { SidebarPropKeyboardShortcut, SidebarPropSize } from './types';
+
+export const normalizeSize = (value: SidebarPropSize) =>
+  isNumber(value) ? `${value}px` : value;
+
+export const matchesKeyboardShortcut = (
+  event: KeyboardEvent,
+  shortcut: SidebarPropKeyboardShortcut
+) =>
+  event.code === shortcut.code &&
+  event.altKey === Boolean(shortcut.altKey) &&
+  event.ctrlKey === Boolean(shortcut.ctrlKey) &&
+  event.metaKey === Boolean(shortcut.metaKey) &&
+  event.shiftKey === Boolean(shortcut.shiftKey);
 
 /**
  * Whether the event target is somewhere the user types, so a printable-character
