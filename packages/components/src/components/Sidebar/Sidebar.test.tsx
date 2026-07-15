@@ -41,7 +41,10 @@ describe('Sidebar', () => {
   it('should merge the consumer style with the component variables', () => {
     render(<Sidebar {...baseProps} size={240} style={{ color: 'red' }} />);
 
-    expect(getRoot().style.getPropertyValue('--sidebar-size')).toBe('240px');
+    expect(getRoot().style.getPropertyValue('--kbq-sidebar-size')).toBe(
+      '240px'
+    );
+
     expect(getRoot().style.color).toBe('red');
   });
 
@@ -208,21 +211,23 @@ describe('Sidebar', () => {
     it('should set no size variables by default', () => {
       render(<Sidebar {...baseProps} />);
 
-      expect(getRoot().style.getPropertyValue('--sidebar-size')).toBe('');
+      expect(getRoot().style.getPropertyValue('--kbq-sidebar-size')).toBe('');
 
-      expect(getRoot().style.getPropertyValue('--sidebar-closed-size')).toBe(
-        ''
-      );
+      expect(
+        getRoot().style.getPropertyValue('--kbq-sidebar-closed-size')
+      ).toBe('');
     });
 
     it('should set numeric size variables in pixels', () => {
       render(<Sidebar {...baseProps} size={320} closedSize={56} />);
 
-      expect(getRoot().style.getPropertyValue('--sidebar-size')).toBe('320px');
-
-      expect(getRoot().style.getPropertyValue('--sidebar-closed-size')).toBe(
-        '56px'
+      expect(getRoot().style.getPropertyValue('--kbq-sidebar-size')).toBe(
+        '320px'
       );
+
+      expect(
+        getRoot().style.getPropertyValue('--kbq-sidebar-closed-size')
+      ).toBe('56px');
     });
 
     it.each([
@@ -231,11 +236,11 @@ describe('Sidebar', () => {
     ])('should pass CSS size values through: %s and %s', (size, closedSize) => {
       render(<Sidebar {...baseProps} size={size} closedSize={closedSize} />);
 
-      expect(getRoot().style.getPropertyValue('--sidebar-size')).toBe(size);
+      expect(getRoot().style.getPropertyValue('--kbq-sidebar-size')).toBe(size);
 
-      expect(getRoot().style.getPropertyValue('--sidebar-closed-size')).toBe(
-        closedSize
-      );
+      expect(
+        getRoot().style.getPropertyValue('--kbq-sidebar-closed-size')
+      ).toBe(closedSize);
     });
   });
 

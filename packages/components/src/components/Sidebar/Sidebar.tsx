@@ -75,12 +75,12 @@ export const Sidebar = polymorphicForwardRef<'div', SidebarBaseProps>(
 
     const sidebarStyle = {
       ...style,
-      ...(size !== undefined && { '--sidebar-size': normalizeSize(size) }),
+      ...(size !== undefined && { '--kbq-sidebar-size': normalizeSize(size) }),
       ...(closedSize !== undefined && {
-        '--sidebar-closed-size': normalizeSize(closedSize),
+        '--kbq-sidebar-closed-size': normalizeSize(closedSize),
       }),
-      '--sidebar-open-duration': `${TRANSITION_TIMEOUT.enter}ms`,
-      '--sidebar-close-duration': `${TRANSITION_TIMEOUT.exit}ms`,
+      '--kbq-sidebar-open-duration': `${TRANSITION_TIMEOUT.enter}ms`,
+      '--kbq-sidebar-close-duration': `${TRANSITION_TIMEOUT.exit}ms`,
     } as CSSProperties;
 
     const transitionProps = {
