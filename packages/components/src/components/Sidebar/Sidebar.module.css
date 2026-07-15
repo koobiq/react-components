@@ -1,8 +1,8 @@
 .base {
-  --sidebar-size: 240px;
-  --sidebar-closed-size: 32px;
-  --sidebar-open-duration: 200ms;
-  --sidebar-close-duration: 100ms;
+  --kbq-sidebar-size: 240px;
+  --kbq-sidebar-closed-size: 32px;
+  --kbq-sidebar-open-duration: 200ms;
+  --kbq-sidebar-close-duration: 100ms;
 
   display: flex;
   overflow: hidden;
@@ -10,7 +10,7 @@
   block-size: 100%;
   interpolate-size: allow-keywords; /* Kept for future intrinsic-size transition support. */
   transition: inline-size var(--kbq-transition-slow);
-  transition-duration: var(--sidebar-close-duration);
+  transition-duration: var(--kbq-sidebar-close-duration);
 }
 
 .base[data-placement='end'] {
@@ -19,15 +19,15 @@
 
 /* animation */
 .base[data-transition='entering'] {
-  transition-duration: var(--sidebar-open-duration);
+  transition-duration: var(--kbq-sidebar-open-duration);
 }
 
 .base[data-transition='entering'],
 .base[data-transition='entered'] {
-  inline-size: var(--sidebar-size);
+  inline-size: var(--kbq-sidebar-size);
 }
 
 .base[data-transition='exiting'],
 .base[data-transition='exited'] {
-  inline-size: var(--sidebar-closed-size);
+  inline-size: var(--kbq-sidebar-closed-size);
 }
