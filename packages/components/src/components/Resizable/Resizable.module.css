@@ -1,0 +1,40 @@
+.base {
+  --kbq-resizable-handle-size: var(--kbq-size-l);
+
+  position: relative;
+  box-sizing: border-box;
+}
+
+.handle {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  touch-action: none;
+  background: transparent;
+}
+
+.handle[data-direction-x='0'] {
+  cursor: ns-resize;
+}
+
+.handle[data-direction-y='0'] {
+  cursor: ew-resize;
+}
+
+.handle:is(
+  [data-direction-x='-1'][data-direction-y='-1'],
+  [data-direction-x='1'][data-direction-y='1']
+) {
+  cursor: nwse-resize;
+}
+
+.handle:is(
+  [data-direction-x='1'][data-direction-y='-1'],
+  [data-direction-x='-1'][data-direction-y='1']
+) {
+  cursor: nesw-resize;
+}
+
+.handle[data-disabled] {
+  cursor: default;
+}

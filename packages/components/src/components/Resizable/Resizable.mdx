@@ -1,0 +1,81 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Resizable.stories';
+
+<Meta of={Stories} />
+
+# Resizable
+
+<Status variant="experimental" />
+
+Resizable changes an element's width and height using one or more composed handles.
+The element stays in place while its size changes.
+
+## Import
+
+```tsx
+import { Resizable } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## State
+
+Use `defaultSize` for uncontrolled state, or combine `size` and `onResize` to control the size.
+All values are measured in CSS pixels.
+
+<Story of={Stories.Uncontrolled} />
+
+### Intrinsic size
+
+When both `size` and `defaultSize` are omitted, Resizable preserves its natural CSS size.
+The measured size is fixed in pixels only after the first resize interaction.
+
+<Story of={Stories.IntrinsicSize} />
+
+## Direction
+
+`Resizable.Handle` accepts a physical `[x, y]` direction. Each axis supports `-1`, `0`, and `1`:
+
+- `x`: `-1` resizes from the left, `0` disables horizontal resizing, and `1` resizes from the right.
+- `y`: `-1` resizes from the top, `0` disables vertical resizing, and `1` resizes from the bottom.
+- `[0, 0]` is not a valid direction.
+
+The direction remains physical in right-to-left layouts.
+
+<Story of={Stories.SingleDirection} />
+
+## Constraints
+
+Use `minSize` and `maxSize` to constrain either dimension independently. The default minimum is zero,
+and dimensions without a maximum are unbounded. If a minimum exceeds a maximum, the minimum wins.
+
+## Keyboard interaction
+
+Handles are focusable. Use the arrow keys to resize by one pixel, or hold <kbd>Shift</kbd> to resize
+by ten pixels. Edge handles expose the ARIA separator pattern; corner handles expose an accessible
+two-dimensional resize control.
+
+## Disabled
+
+Set `isDisabled` to remove all handles from the tab order and disable resize interactions.
+
+<Story of={Stories.Disabled} />
+
+## Styling handles
+
+Handles provide positioning, hit areas, cursors, and state attributes, but no visible grip or line.
+Use `className` and the `data-direction-x`, `data-direction-y`, `data-focus-visible`, `data-resizing`,
+and `data-disabled` attributes to provide an application-specific indicator. The hit area can be
+adjusted with the `--kbq-resizable-handle-size` custom property on Resizable.

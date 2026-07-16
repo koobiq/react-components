@@ -38,6 +38,7 @@
     "ProgressSpinner",
     "Provider",
     "RadioGroup",
+    "Resizable",
     "SearchInput",
     "Select",
     "SidePanel",
