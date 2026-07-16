@@ -18,10 +18,32 @@ import type { ReactNode } from 'react';
 export const Navbar: CompoundedComponent;
 
 // @public (undocumented)
+export type NavbarAppItemProps = DistributiveOmit<NavbarItemProps, 'isMenu' | 'badge'>;
+
+// @public (undocumented)
+export type NavbarBodyProps = ComponentPropsWithRef<'ul'>;
+
+// @public (undocumented)
 export const NavbarComponent: {
     (input: NavbarProps): JSX.Element;
     displayName: string;
 };
+
+// @public (undocumented)
+export type NavbarFooterProps = ComponentPropsWithRef<'footer'>;
+
+// @public (undocumented)
+export type NavbarHeaderProps = ComponentPropsWithRef<'header'>;
+
+// @public (undocumented)
+export type NavbarItemProps = {
+    isActive?: boolean;
+    isMenu?: boolean;
+    className?: string;
+    icon?: ReactNode;
+    badge?: ReactNode;
+    children?: ReactNode;
+} & LinkBaseProps;
 
 // @public (undocumented)
 export type NavbarProps = {

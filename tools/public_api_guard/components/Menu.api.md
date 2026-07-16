@@ -8,6 +8,7 @@ import type { AriaDialogProps } from '@koobiq/react-primitives';
 import type { AriaMenuProps } from '@koobiq/react-primitives';
 import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primitives';
 import type { ButtonOptions } from '@koobiq/react-primitives';
+import type { ComponentProps } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
@@ -34,6 +35,34 @@ export const Menu: CompoundedComponent;
 
 // @public (undocumented)
 export type MenuComponent = <T>(props: MenuProps<T>) => ReactElement | null;
+
+// @public (undocumented)
+export type MenuControlProps = ComponentProps<typeof Pressable>;
+
+// Warning: (ae-forgotten-export) The symbol "DividerProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type MenuDividerProps = DividerProps;
+
+// Warning: (ae-forgotten-export) The symbol "HeaderProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type MenuHeaderProps = HeaderProps;
+
+// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type MenuItemAddonProps = ListItemAddonProps;
+
+// Warning: (ae-forgotten-export) The symbol "ItemProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type MenuItemProps<T> = ItemProps<T>;
+
+// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type MenuItemTextProps = ListItemTextProps;
 
 // @public (undocumented)
 export type MenuPropControl = (props: Omit<ButtonOptions, 'elementType'> & {
@@ -71,10 +100,15 @@ export type MenuProps<T> = ExtendableProps<{
 // @public (undocumented)
 export type MenuRef = ComponentRef<'div'>;
 
+// Warning: (ae-forgotten-export) The symbol "SectionProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type MenuSectionProps<T> = SectionProps<T>;
+
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Menu/types.d.ts:47:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Menu/types.d.ts:48:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Menu/types.d.ts:57:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Menu/types.d.ts:58:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

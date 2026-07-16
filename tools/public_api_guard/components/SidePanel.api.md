@@ -27,6 +27,9 @@ export const SidePanel: CompoundedComponent;
 
 // Warning: (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
 //
+// @public (undocumented)
+export type SidePanelBodyProps = DialogBodyProps;
+
 // @public @deprecated (undocumented)
 export const SidePanelContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
@@ -35,10 +38,16 @@ export const SidePanelContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "
 // @public @deprecated (undocumented)
 export const SidePanelFooter: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
+// @public (undocumented)
+export type SidePanelFooterProps = DialogFooterProps;
+
 // Warning: (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
 //
 // @public @deprecated (undocumented)
 export const SidePanelHeader: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
+
+// @public (undocumented)
+export type SidePanelHeaderProps = DialogHeaderProps;
 
 // @public (undocumented)
 export type SidePanelPropContent = ReactNode | ((props: {
@@ -98,8 +107,8 @@ export type SidePanelRef = ComponentRef<'div'>;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/SidePanel/types.d.ts:89:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SidePanel/types.d.ts:90:9 - (ae-forgotten-export) The symbol "BackdropProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SidePanel/types.d.ts:92:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SidePanel/types.d.ts:93:9 - (ae-forgotten-export) The symbol "BackdropProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

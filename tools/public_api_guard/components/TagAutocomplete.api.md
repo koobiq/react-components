@@ -45,6 +45,11 @@ export type TagAutocompleteComponent = <T extends object = object>(props: TagAut
     ref?: Ref<TagAutocompleteRef>;
 }) => ReactElement | null;
 
+// Warning: (ae-forgotten-export) The symbol "ItemProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type TagAutocompleteListItemProps<T extends object = object> = ItemProps<T>;
+
 // Warning: (ae-forgotten-export) The symbol "TagAutocompleteBaseProps" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "TagInputProps" needs to be exported by the entry point index.d.ts
 //
@@ -66,10 +71,15 @@ export type TagAutocompleteProps<T extends object = object> = TagAutocompleteBas
 // @public (undocumented)
 export type TagAutocompleteRef = TagInputRef;
 
+// Warning: (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type TagAutocompleteTagProps<T extends object = object> = TagProps<T>;
+
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TagAutocomplete/types.d.ts:24:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TagAutocomplete/types.d.ts:26:9 - (ae-forgotten-export) The symbol "ListInnerProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagAutocomplete/types.d.ts:26:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagAutocomplete/types.d.ts:28:9 - (ae-forgotten-export) The symbol "ListInnerProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

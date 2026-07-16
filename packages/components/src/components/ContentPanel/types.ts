@@ -8,7 +8,16 @@ import type {
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-import type { DialogProps } from '../Dialog';
+import type {
+  DialogBodyProps,
+  DialogFooterProps,
+  DialogHeaderProps,
+  DialogProps,
+} from '../Dialog';
+
+export type ContentPanelHeaderProps = DialogHeaderProps;
+export type ContentPanelBodyProps = DialogBodyProps;
+export type ContentPanelFooterProps = DialogFooterProps;
 
 export type ContentPanelSize = number | `${number}` | `${number}%`;
 

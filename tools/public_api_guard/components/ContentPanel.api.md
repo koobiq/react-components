@@ -27,6 +27,11 @@ import { TransitionProps } from 'react-transition-group/Transition';
 // @public
 export const ContentPanel: CompoundedComponent;
 
+// Warning: (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type ContentPanelBodyProps = DialogBodyProps;
+
 // @public (undocumented)
 export const ContentPanelContainer: ForwardRefExoticComponent<Omit<ContentPanelContainerProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
@@ -50,6 +55,16 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<{
 
 // @public (undocumented)
 export type ContentPanelContainerRef = ComponentRef<'div'>;
+
+// Warning: (ae-forgotten-export) The symbol "DialogFooterProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type ContentPanelFooterProps = DialogFooterProps;
+
+// Warning: (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type ContentPanelHeaderProps = DialogHeaderProps;
 
 // Warning: (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
 //
