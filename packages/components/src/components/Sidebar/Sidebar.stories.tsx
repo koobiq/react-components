@@ -126,7 +126,7 @@ export const Base: Story = {
 
 export const Controlled: Story = {
   render: function Render(args) {
-    const [isOpen, { toggle }] = useBoolean(true);
+    const [isOpen, { toggle, set }] = useBoolean(true);
 
     return (
       <div style={containerStyle}>
@@ -134,7 +134,7 @@ export const Controlled: Story = {
           closedSize={40}
           isOpen={isOpen}
           style={sidebarStyle}
-          onOpenChange={toggle}
+          onOpenChange={set}
           {...args}
         >
           {({ isOpen, toggle }) => <Content isOpen={isOpen} toggle={toggle} />}

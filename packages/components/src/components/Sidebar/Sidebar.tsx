@@ -59,7 +59,7 @@ export const Sidebar = polymorphicForwardRef<'div', SidebarBaseProps>(
       eventName: 'keydown',
       active: keyboardShortcut !== null,
       handler: (event) => {
-        if (keyboardShortcut === null) return;
+        if (keyboardShortcut === null || event.repeat) return;
 
         const shortcut = keyboardShortcut ?? {
           code: placement === 'end' ? 'BracketRight' : 'BracketLeft',

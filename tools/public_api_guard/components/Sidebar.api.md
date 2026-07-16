@@ -8,7 +8,6 @@ import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { ElementType } from 'react';
 import { PolyForwardComponent } from '@koobiq/react-core';
-import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
@@ -33,7 +32,7 @@ export type SidebarBaseProps = {
 };
 
 // @public (undocumented)
-export type SidebarPropContent = ReactNode | ((props: SidebarRenderProps) => ReactElement);
+export type SidebarPropContent = ReactNode | ((props: SidebarRenderProps) => ReactNode);
 
 // @public (undocumented)
 export type SidebarPropKeyboardShortcut = {

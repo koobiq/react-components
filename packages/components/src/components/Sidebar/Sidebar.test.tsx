@@ -73,6 +73,12 @@ describe('Sidebar', () => {
       expect(screen.getByTestId('static')).toBeInTheDocument();
     });
 
+    it('should render a ReactNode returned by the render function', () => {
+      render(<Sidebar {...baseProps}>{() => 'render content'}</Sidebar>);
+
+      expect(getRoot()).toHaveTextContent('render content');
+    });
+
     it('should pass the state and the actions to the render function', () => {
       const children = vi.fn().mockReturnValue(null);
 
@@ -331,6 +337,17 @@ describe('Sidebar', () => {
 
       fireEvent.keyDown(window, { code: 'KeyB' });
       expect(onOpenChange).toHaveBeenCalledWith(true);
+    });
+
+    it('should ignore repeated keydown events', () => {
+      const onOpenChange = vi.fn();
+
+      render(<Sidebar {...baseProps} onOpenChange={onOpenChange} />);
+
+      fireEvent.keyDown(window, { code: 'BracketLeft' });
+      fireEvent.keyDown(window, { code: 'BracketLeft', repeat: true });
+
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
     });
 
     it('should match custom modifiers exactly and prevent the default action', () => {

@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactElement, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type { TransitionProps } from 'react-transition-group/Transition';
 
@@ -30,7 +30,7 @@ export type SidebarRenderProps = {
 
 export type SidebarPropContent =
   | ReactNode
-  | ((props: SidebarRenderProps) => ReactElement);
+  | ((props: SidebarRenderProps) => ReactNode);
 
 export type SidebarBaseProps = {
   /**
