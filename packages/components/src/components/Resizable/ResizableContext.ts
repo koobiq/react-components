@@ -1,25 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import type { ResizableHandleDirection, ResizableSize } from './types';
-import type { ResizableBounds } from './utils';
-
-export type ResizableMoveEvent = {
-  deltaX: number;
-  deltaY: number;
-  pointerType: string;
-  shiftKey: boolean;
-};
-
-export type ResizableContextValue = {
-  rootId: string;
-  size: ResizableSize;
-  bounds: ResizableBounds;
-  isDisabled: boolean;
-  activeDirection: string | null;
-  onMoveStart: (direction: ResizableHandleDirection) => void;
-  onMove: (event: ResizableMoveEvent) => void;
-  onMoveEnd: () => void;
-};
+import type { ResizableContextValue } from './hooks';
 
 export const ResizableContext = createContext<ResizableContextValue | null>(
   null
