@@ -26,6 +26,16 @@ import { Resizable } from '@koobiq/react-components';
 
 <Story of={Stories.Base} />
 
+Both `Resizable` and `Resizable.Handle` render a `div` by default. Use the `as` prop
+to render another element while preserving its native props and ref type.
+
+```tsx
+<Resizable as="section">
+  <Content />
+  <Resizable.Handle as="button" type="button" direction={[1, 1]} />
+</Resizable>
+```
+
 ## Props
 
 <Props of={Stories.Base} />

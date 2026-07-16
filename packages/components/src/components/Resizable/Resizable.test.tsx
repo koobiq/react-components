@@ -136,6 +136,33 @@ describe('Resizable', () => {
     expect(onKeyDown).toHaveBeenCalledOnce();
   });
 
+  it('supports polymorphic root and handle elements with typed refs', () => {
+    const rootRef = createRef<HTMLElement>();
+    const handleRef = createRef<HTMLButtonElement>();
+
+    render(
+      <Resizable
+        ref={rootRef}
+        as="section"
+        data-testid="resizable"
+        defaultSize={{ width: 300, height: 200 }}
+      >
+        <Resizable.Handle
+          ref={handleRef}
+          as="button"
+          type="button"
+          data-testid="handle"
+          direction={[1, 0]}
+        />
+      </Resizable>
+    );
+
+    expect(getRoot().tagName).toBe('SECTION');
+    expect(getHandle().tagName).toBe('BUTTON');
+    expect(rootRef.current).toBe(getRoot());
+    expect(handleRef.current).toBe(getHandle());
+  });
+
   it.each(resizableHandleDirections)(
     'resizes in direction [%s, %s] from the drag snapshot',
     (x, y) => {

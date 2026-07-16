@@ -4,9 +4,12 @@
 
 ```ts
 
+import type { AsProps } from '@koobiq/react-core';
 import type { ComponentPropsWithRef } from 'react';
-import { ForwardRefExoticComponent } from 'react';
-import { RefAttributes } from 'react';
+import type { CSSProperties } from 'react';
+import { ElementType } from 'react';
+import { PolyForwardComponent } from '@koobiq/react-core';
+import type { ReactNode } from 'react';
 
 // Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
 //
@@ -14,18 +17,7 @@ import { RefAttributes } from 'react';
 export const Resizable: CompoundedComponent;
 
 // @public (undocumented)
-export type ResizableHandleDirection = (typeof resizableHandleDirections)[number];
-
-// @public (undocumented)
-export const resizableHandleDirections: readonly [readonly [-1, -1], readonly [0, -1], readonly [1, -1], readonly [-1, 0], readonly [1, 0], readonly [-1, 1], readonly [0, 1], readonly [1, 1]];
-
-// @public (undocumented)
-export type ResizableHandleProps = ComponentPropsWithRef<'div'> & {
-    direction: ResizableHandleDirection;
-};
-
-// @public (undocumented)
-export type ResizableProps = Omit<ComponentPropsWithRef<'div'>, 'onResize'> & {
+export type ResizableBaseProps = {
     size?: ResizableSize;
     defaultSize?: ResizableSize;
     minSize?: ResizableSizeConstraints;
@@ -34,7 +26,33 @@ export type ResizableProps = Omit<ComponentPropsWithRef<'div'>, 'onResize'> & {
     onResize?: (size: ResizableSize) => void;
     onResizeStart?: (size: ResizableSize) => void;
     onResizeEnd?: (size: ResizableSize) => void;
+    id?: string;
+    className?: string;
+    style?: CSSProperties;
+    children?: ReactNode;
 };
+
+// @public (undocumented)
+export type ResizableHandleBaseProps = {
+    direction: ResizableHandleDirection;
+    'aria-label'?: string;
+    tabIndex?: number;
+    className?: string;
+    style?: CSSProperties;
+    children?: ReactNode;
+};
+
+// @public (undocumented)
+export type ResizableHandleDirection = (typeof resizableHandleDirections)[number];
+
+// @public (undocumented)
+export const resizableHandleDirections: readonly [readonly [-1, -1], readonly [0, -1], readonly [1, -1], readonly [-1, 0], readonly [1, 0], readonly [-1, 1], readonly [0, 1], readonly [1, 1]];
+
+// @public (undocumented)
+export type ResizableHandleProps<As extends ElementType = 'div'> = AsProps<As, ResizableHandleBaseProps, ComponentPropsWithRef<As>>;
+
+// @public (undocumented)
+export type ResizableProps<As extends ElementType = 'div'> = AsProps<As, ResizableBaseProps, ComponentPropsWithRef<As>>;
 
 // @public (undocumented)
 export type ResizableSize = {

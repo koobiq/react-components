@@ -1,18 +1,17 @@
 'use client';
 
-import { forwardRef } from 'react';
-
-import { clsx, mergeRefs } from '@koobiq/react-core';
+import { clsx, mergeRefs, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { useResizable, useResizableState } from './hooks';
 import s from './Resizable.module.css';
 import { ResizableContext } from './ResizableContext';
 import { ResizableHandle } from './ResizableHandle';
-import type { ResizableProps } from './types';
+import type { ResizableBaseProps } from './types';
 
-const ResizableComponent = forwardRef<HTMLDivElement, ResizableProps>(
+const ResizableComponent = polymorphicForwardRef<'div', ResizableBaseProps>(
   (props, forwardedRef) => {
     const {
+      as: Tag = 'div',
       size: sizeProp,
       defaultSize: defaultSizeProp,
       minSize,
@@ -46,7 +45,7 @@ const ResizableComponent = forwardRef<HTMLDivElement, ResizableProps>(
         ...behaviorProps
       },
       contextValue,
-    } = useResizable<HTMLDivElement>(
+    } = useResizable<HTMLElement>(
       {
         id,
         minSize,
@@ -56,7 +55,7 @@ const ResizableComponent = forwardRef<HTMLDivElement, ResizableProps>(
 
     return (
       <ResizableContext.Provider value={contextValue}>
-        <div
+        <Tag
           {...other}
           {...behaviorProps}
           ref={mergeRefs(targetRef, forwardedRef)}
@@ -64,7 +63,7 @@ const ResizableComponent = forwardRef<HTMLDivElement, ResizableProps>(
           style={{ ...styleProp, ...resizableStyle }}
         >
           {children}
-        </div>
+        </Tag>
       </ResizableContext.Provider>
     );
   }

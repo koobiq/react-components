@@ -5,10 +5,13 @@ import { useCallback, useId, useMemo } from 'react';
 
 import { useElementSize } from '@koobiq/react-core';
 
-import type { ResizableHandleDirection, ResizableProps } from '../types';
-import { clampResizableSize } from '../utils';
-
-import type { ResizableMoveEvent, ResizableState } from './useResizableState';
+import type {
+  ResizableHandleDirection,
+  ResizableMoveEvent,
+  ResizableSizeConstraints,
+} from './types';
+import type { ResizableState } from './useResizableState';
+import { clampResizableSize } from './utils';
 
 export type ResizableContextValue = {
   rootId: string;
@@ -21,7 +24,10 @@ export type ResizableContextValue = {
   onMoveEnd: () => void;
 };
 
-export type UseResizableProps = Pick<ResizableProps, 'id' | 'minSize'>;
+export type UseResizableProps = {
+  id?: string;
+  minSize?: ResizableSizeConstraints;
+};
 
 /** Provides DOM props and observed sizing for a resizable target element. */
 export const useResizable = <T extends HTMLElement = HTMLElement>(

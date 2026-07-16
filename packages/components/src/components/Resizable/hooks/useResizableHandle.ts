@@ -7,18 +7,18 @@ import {
   useMove,
 } from '@koobiq/react-core';
 
-import intlMessages from '../intl.json';
-import type { ResizableHandleProps } from '../types';
-import { getDirectionKey } from '../utils';
-
+import intlMessages from './intl.json';
+import type { ResizableHandleDirection } from './types';
 import type { ResizableContextValue } from './useResizable';
+import { getDirectionKey } from './utils';
 
 const UNBOUNDED_ARIA_MAX = Number.MAX_SAFE_INTEGER;
 
-export type UseResizableHandleProps = Pick<
-  ResizableHandleProps,
-  'direction' | 'aria-label' | 'tabIndex'
->;
+export type UseResizableHandleProps = {
+  direction: ResizableHandleDirection;
+  'aria-label'?: string;
+  tabIndex?: number;
+};
 
 /** Provides interaction and accessibility props for a resize handle. */
 export const useResizableHandle = (

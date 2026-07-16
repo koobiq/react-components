@@ -6,22 +6,16 @@ import { useControlledState } from '@koobiq/react-core';
 
 import type {
   ResizableHandleDirection,
-  ResizableProps,
+  ResizableMoveEvent,
   ResizableSize,
-} from '../types';
+  ResizableSizeConstraints,
+} from './types';
 import {
   clampResizableSize,
   getDirectionKey,
   getResizableBounds,
   normalizeResizableSize,
-} from '../utils';
-
-export type ResizableMoveEvent = {
-  deltaX: number;
-  deltaY: number;
-  pointerType: string;
-  shiftKey: boolean;
-};
+} from './utils';
 
 export type ResizableState = {
   size: ResizableSize | null;
@@ -36,17 +30,16 @@ export type ResizableState = {
   endResize: () => void;
 };
 
-export type UseResizableStateProps = Pick<
-  ResizableProps,
-  | 'size'
-  | 'defaultSize'
-  | 'minSize'
-  | 'maxSize'
-  | 'isDisabled'
-  | 'onResize'
-  | 'onResizeStart'
-  | 'onResizeEnd'
->;
+export type UseResizableStateProps = {
+  size?: ResizableSize;
+  defaultSize?: ResizableSize;
+  minSize?: ResizableSizeConstraints;
+  maxSize?: ResizableSizeConstraints;
+  isDisabled?: boolean;
+  onResize?: (size: ResizableSize) => void;
+  onResizeStart?: (size: ResizableSize) => void;
+  onResizeEnd?: (size: ResizableSize) => void;
+};
 
 /** Provides state and calculations for a resizable element. */
 export const useResizableState = (

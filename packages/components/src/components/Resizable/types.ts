@@ -1,29 +1,26 @@
-import type { ComponentPropsWithRef } from 'react';
+import type {
+  ComponentPropsWithRef,
+  CSSProperties,
+  ElementType,
+  ReactNode,
+} from 'react';
 
-export type ResizableSize = {
-  /** Width in CSS pixels. */
-  width: number;
-  /** Height in CSS pixels. */
-  height: number;
-};
+import type { AsProps } from '@koobiq/react-core';
 
-export type ResizableSizeConstraints = Partial<ResizableSize>;
+import type {
+  ResizableHandleDirection,
+  ResizableSize,
+  ResizableSizeConstraints,
+} from './hooks';
 
-export const resizableHandleDirections = [
-  [-1, -1],
-  [0, -1],
-  [1, -1],
-  [-1, 0],
-  [1, 0],
-  [-1, 1],
-  [0, 1],
-  [1, 1],
-] as const;
+export { resizableHandleDirections } from './hooks';
+export type {
+  ResizableHandleDirection,
+  ResizableSize,
+  ResizableSizeConstraints,
+} from './hooks';
 
-export type ResizableHandleDirection =
-  (typeof resizableHandleDirections)[number];
-
-export type ResizableProps = Omit<ComponentPropsWithRef<'div'>, 'onResize'> & {
+export type ResizableBaseProps = {
   /** The controlled size of the element, in CSS pixels. */
   size?: ResizableSize;
   /** The initial size of the element when uncontrolled, in CSS pixels. */
@@ -40,12 +37,42 @@ export type ResizableProps = Omit<ComponentPropsWithRef<'div'>, 'onResize'> & {
   onResizeStart?: (size: ResizableSize) => void;
   /** Handler called when a resize interaction ends. */
   onResizeEnd?: (size: ResizableSize) => void;
+  /** The id of the resizable target. */
+  id?: string;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
+  /** The content of the component. */
+  children?: ReactNode;
 };
 
-export type ResizableHandleProps = ComponentPropsWithRef<'div'> & {
+export type ResizableProps<As extends ElementType = 'div'> = AsProps<
+  As,
+  ResizableBaseProps,
+  ComponentPropsWithRef<As>
+>;
+
+export type ResizableHandleBaseProps = {
   /**
    * Physical resize direction: `-1` means left/up, `0` disables the axis,
    * and `1` means right/down.
    */
   direction: ResizableHandleDirection;
+  /** The accessible name of the handle. */
+  'aria-label'?: string;
+  /** Overrides the handle's position in the tab order. */
+  tabIndex?: number;
+  /** Additional CSS-classes. */
+  className?: string;
+  /** Inline styles. */
+  style?: CSSProperties;
+  /** The content of the handle. */
+  children?: ReactNode;
 };
+
+export type ResizableHandleProps<As extends ElementType = 'div'> = AsProps<
+  As,
+  ResizableHandleBaseProps,
+  ComponentPropsWithRef<As>
+>;
