@@ -5,8 +5,8 @@
 ```ts
 
 import type { AriaTableColumnResizeProps } from '@koobiq/react-primitives';
-import type { CellProps as CellProps_2 } from '@koobiq/react-primitives';
-import type { ColumnProps as ColumnProps_2 } from '@koobiq/react-primitives';
+import type { CellProps } from '@koobiq/react-primitives';
+import type { ColumnProps } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
@@ -16,9 +16,9 @@ import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import type { Ref } from 'react';
-import type { RowProps as RowProps_2 } from '@koobiq/react-primitives';
-import type { TableBodyProps as TableBodyProps_3 } from '@koobiq/react-primitives';
-import type { TableHeaderProps as TableHeaderProps_3 } from '@koobiq/react-primitives';
+import type { RowProps } from '@koobiq/react-primitives';
+import type { TableBodyProps as TableBodyProps_2 } from '@koobiq/react-primitives';
+import type { TableHeaderProps as TableHeaderProps_2 } from '@koobiq/react-primitives';
 import type { TableStateProps } from '@koobiq/react-primitives';
 
 // Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
@@ -26,20 +26,26 @@ import type { TableStateProps } from '@koobiq/react-primitives';
 // @public
 export const Table: CompoundedComponent;
 
-// Warning: (ae-forgotten-export) The symbol "TableBodyProps_2" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type TableBodyProps<T> = TableBodyProps_2<T>;
 
-// Warning: (ae-forgotten-export) The symbol "CellProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type TableCellProps = CellProps;
+export type TableCellProps = CellProps & {
+    className?: string;
+    style?: CSSProperties;
+    'data-testid'?: string | number;
+    align?: CellPropAlign;
+    valign?: CellPropVerticalAlign;
+};
 
-// Warning: (ae-forgotten-export) The symbol "ColumnProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type TableColumnProps<T> = ColumnProps<T>;
+export type TableColumnProps<T> = ColumnProps<T> & {
+    className?: string;
+    style?: CSSProperties;
+    'data-testid'?: string | number;
+    align?: ColumnPropAlign;
+    valign?: ColumnPropVerticalAlign;
+};
 
 // @public (undocumented)
 export type TableComponent = <T>(props: TableProps<T>) => ReactElement | null;
@@ -49,8 +55,6 @@ export type TableComponent = <T>(props: TableProps<T>) => ReactElement | null;
 // @public (undocumented)
 export const TableContainer: PolyForwardComponent<"div", TableContainerBaseProps, ElementType>;
 
-// Warning: (ae-forgotten-export) The symbol "TableHeaderProps_2" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type TableHeaderProps<T> = TableHeaderProps_2<T>;
 
@@ -87,14 +91,20 @@ export type TableProps<T> = Pick<TableStateProps<T>, 'selectionBehavior' | 'sele
 // @public (undocumented)
 export type TableRef = ComponentRef<'table'>;
 
-// Warning: (ae-forgotten-export) The symbol "RowProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type TableRowProps<T> = RowProps<T>;
+export type TableRowProps<T> = RowProps<T> & {
+    className?: string;
+    style?: CSSProperties;
+    'data-testid'?: string | number;
+};
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Table/types.d.ts:41:5 - (ae-forgotten-export) The symbol "TablePropSortIconRender" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Collections/Cell.d.ts:18:5 - (ae-forgotten-export) The symbol "CellPropAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Collections/Cell.d.ts:23:5 - (ae-forgotten-export) The symbol "CellPropVerticalAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Collections/Column.d.ts:18:5 - (ae-forgotten-export) The symbol "ColumnPropAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Collections/Column.d.ts:23:5 - (ae-forgotten-export) The symbol "ColumnPropVerticalAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Table/types.d.ts:35:5 - (ae-forgotten-export) The symbol "TablePropSortIconRender" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

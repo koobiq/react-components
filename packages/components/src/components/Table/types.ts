@@ -13,20 +13,6 @@ import type {
 } from '@koobiq/react-primitives';
 import type { Key } from '@react-types/shared';
 
-import type {
-  CellProps,
-  ColumnProps,
-  RowProps,
-  TableBodyProps as CollectionTableBodyProps,
-  TableHeaderProps as CollectionTableHeaderProps,
-} from '../Collections';
-
-export type TableHeaderProps<T> = CollectionTableHeaderProps<T>;
-export type TableBodyProps<T> = CollectionTableBodyProps<T>;
-export type TableColumnProps<T> = ColumnProps<T>;
-export type TableRowProps<T> = RowProps<T>;
-export type TableCellProps = CellProps;
-
 export const tablePropDivider = ['none', 'row'] as const;
 
 export type TablePropDivider = (typeof tablePropDivider)[number];
