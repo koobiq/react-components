@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { clsx } from '@koobiq/react-core';
+import { clsx, useElementSize } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Typography } from '../Typography';
@@ -110,6 +110,61 @@ export const SingleDirection: Story = {
       <Resizable.Handle className={handleClassName} direction={[1, 0]} />
     </Resizable>
   ),
+};
+
+export const NestedPanels: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: function Render(args) {
+    const {
+      ref: workspaceRef,
+      width: workspaceWidth,
+      height: workspaceHeight,
+    } = useElementSize<HTMLDivElement>({ box: 'border-box' });
+
+    return (
+      <div ref={workspaceRef} className={s.workspace}>
+        <section className={clsx(s.workspaceSection, s.workspaceContent)}>
+          <Typography variant="text-big-strong">Content</Typography>
+        </section>
+
+        <Resizable
+          {...args}
+          as="aside"
+          className={s.workspaceSidebar}
+          minSize={{ width: 0 }}
+          maxSize={{ width: workspaceWidth }}
+        >
+          <Resizable.Handle
+            aria-label="Resize sidebar"
+            className={s.panelHandle}
+            direction={[-1, 0]}
+          />
+
+          <Resizable
+            as="section"
+            className={clsx(s.workspaceSection, s.workspaceFilters)}
+            minSize={{ height: 0 }}
+            maxSize={{ height: workspaceHeight }}
+          >
+            <div className={s.workspaceFiltersContent}>
+              <Typography variant="text-big-strong">Filters</Typography>
+            </div>
+            <Resizable.Handle
+              aria-label="Resize filters"
+              className={s.panelHandle}
+              direction={[0, 1]}
+            />
+          </Resizable>
+
+          <section className={clsx(s.workspaceSection, s.workspaceData)}>
+            <Typography variant="text-big-strong">Data</Typography>
+          </section>
+        </Resizable>
+      </div>
+    );
+  },
 };
 
 export const Disabled: Story = {

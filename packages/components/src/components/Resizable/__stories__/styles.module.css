@@ -33,3 +33,119 @@
   min-block-size: 480px;
   padding: var(--kbq-size-3xl);
 }
+
+.workspace {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: 520px;
+  overflow: hidden;
+  background-color: var(--kbq-background-card);
+}
+
+.workspace::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border: 1px solid var(--kbq-line-contrast-less);
+  content: '';
+  pointer-events: none;
+}
+
+.workspaceSection {
+  display: flex;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.workspaceContent {
+  flex: 1;
+}
+
+.workspaceSidebar {
+  flex: none;
+  display: flex;
+  inline-size: 50%;
+  block-size: 100%;
+  min-inline-size: 0;
+  min-block-size: 100%;
+  max-block-size: 100%;
+  flex-direction: column;
+  background-color: var(--kbq-background-card);
+}
+
+.workspaceFilters {
+  flex: none;
+  inline-size: 100%;
+  block-size: 50%;
+  min-inline-size: 100%;
+  max-inline-size: 100%;
+  overflow: visible;
+}
+
+.workspaceFiltersContent {
+  display: flex;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 0;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.workspaceData {
+  flex: 1;
+  min-block-size: 0;
+}
+
+.panelHandle::after {
+  position: absolute;
+  background-color: var(--kbq-line-contrast-less);
+  content: '';
+  pointer-events: none;
+  transition: background-color var(--kbq-transition-slow);
+}
+
+.panelHandle {
+  outline: none;
+}
+
+.panelHandle[data-direction-y='0']::after {
+  inset-block: 0;
+  inset-inline-start: 50%;
+  inline-size: 1px;
+  transform: translateX(-50%);
+}
+
+.panelHandle[data-direction-x='0']::after {
+  inset-block-start: 50%;
+  inset-inline: 0;
+  block-size: 1px;
+  transform: translateY(-50%);
+}
+
+.panelHandle[data-direction-y='0']:is(
+    :hover,
+    [data-focus-visible],
+    [data-resizing]
+  )::after {
+  inline-size: 2px;
+  min-inline-size: 2px;
+  background-color: var(--kbq-background-theme);
+}
+
+.panelHandle[data-direction-x='0']:is(
+    :hover,
+    [data-focus-visible],
+    [data-resizing]
+  )::after {
+  block-size: 2px;
+  min-block-size: 2px;
+  background-color: var(--kbq-background-theme);
+}

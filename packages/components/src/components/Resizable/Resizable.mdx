@@ -71,6 +71,13 @@ The direction remains physical in right-to-left layouts.
 Use `minSize` and `maxSize` to constrain either dimension independently. The default minimum is zero,
 and dimensions without a maximum are unbounded. If a minimum exceeds a maximum, the minimum wins.
 
+## Nested panels
+
+Resizable components can be nested to build layouts with independently adjustable regions. In this
+example, the outer handle changes the sidebar width and the inner handle changes the filters height.
+
+<Story of={Stories.NestedPanels} />
+
 ## Keyboard interaction
 
 Handles are focusable. Use the arrow keys to resize by one pixel, or hold <kbd>Shift</kbd> to resize
