@@ -429,14 +429,26 @@ describe('Resizable', () => {
     expect(getHandle()).toHaveAttribute('aria-label', 'Изменить высоту');
   });
 
-  it('positions handles using physical coordinates', () => {
+  it('exposes physical direction through data attributes', () => {
     renderResizable([-1, 1]);
 
-    expect(getHandle().style.left).toBe('0px');
-    expect(getHandle().style.bottom).toBe('0px');
-    expect(getHandle().style.transform).toBe('translate(-50%, 50%)');
+    expect(getHandle()).not.toHaveAttribute('style');
     expect(getHandle()).toHaveAttribute('data-direction-x', '-1');
     expect(getHandle()).toHaveAttribute('data-direction-y', '1');
+  });
+
+  it('preserves custom handle positioning styles', () => {
+    render(
+      <Resizable defaultSize={{ width: 300, height: 200 }}>
+        <Resizable.Handle
+          data-testid="handle"
+          direction={[1, 0]}
+          style={{ transform: 'translateX(100%)' }}
+        />
+      </Resizable>
+    );
+
+    expect(getHandle()).toHaveStyle({ transform: 'translateX(100%)' });
   });
 
   it('throws when a handle is rendered without Resizable', () => {

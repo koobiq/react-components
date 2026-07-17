@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { clsx, useElementSize } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
 import s from './__stories__/styles.module.css';
@@ -109,6 +110,67 @@ export const SingleDirection: Story = {
       <Typography>Resize from the right edge</Typography>
       <Resizable.Handle className={handleClassName} direction={[1, 0]} />
     </Resizable>
+  ),
+};
+
+export const CustomHandle: Story = {
+  render: (args) => (
+    <>
+      <style>{`
+        .custom-resizable-handle {
+          --kbq-resizable-handle-transform: translate(100%, 0px);
+
+          outline: none;
+        }
+
+        .custom-resizable-handle::after {
+          position: absolute;
+          inset-block-start: 50%;
+          inset-inline-start: 50%;
+          inline-size: var(--kbq-size-xxs);
+          block-size: var(--kbq-size-7xl);
+          border-radius: var(--kbq-size-xxs);
+          background-color: var(--kbq-line-contrast-less);
+          content: '';
+          opacity: 0;
+          pointer-events: none;
+          transform: translate(-50%, -50%);
+          transition: opacity var(--kbq-transition-default);
+        }
+
+        .custom-resizable-handle:is(
+          :hover,
+          [data-focus-visible],
+          [data-resizing]
+        )::after {
+          opacity: 1;
+        }
+      `}</style>
+
+      <Resizable
+        {...args}
+        className={s.content}
+        defaultSize={{ width: 360, height: 240 }}
+        minSize={{ width: 200 }}
+        maxSize={{ width: 600 }}
+      >
+        <Typography>Hover over the right edge</Typography>
+        <Tooltip
+          placement="end"
+          shouldCloseOnPress={false}
+          control={(controlProps) => (
+            <Resizable.Handle
+              {...controlProps}
+              aria-label="Resize"
+              className="custom-resizable-handle"
+              direction={[1, 0]}
+            />
+          )}
+        >
+          Resize
+        </Tooltip>
+      </Resizable>
+    </>
   ),
 };
 

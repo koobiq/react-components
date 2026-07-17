@@ -6,7 +6,6 @@ import { isResizableHandleDirection, useResizableHandle } from './hooks';
 import s from './Resizable.module.css';
 import { useResizableContext } from './ResizableContext';
 import type { ResizableHandleBaseProps } from './types';
-import { getHandlePositionStyle } from './utils';
 
 /** A draggable handle that changes the size of its parent Resizable. */
 export const ResizableHandle = polymorphicForwardRef<
@@ -45,7 +44,7 @@ export const ResizableHandle = polymorphicForwardRef<
       {...mergeProps(other, handleProps)}
       ref={ref}
       className={clsx(s.handle, className)}
-      style={{ ...styleProp, ...getHandlePositionStyle(direction) }}
+      style={styleProp}
     />
   );
 });

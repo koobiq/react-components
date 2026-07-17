@@ -71,6 +71,15 @@ The direction remains physical in right-to-left layouts.
 Use `minSize` and `maxSize` to constrain either dimension independently. The default minimum is zero,
 and dimensions without a maximum are unbounded. If a minimum exceeds a maximum, the minimum wins.
 
+## Custom handle
+
+Handles can be styled without changing their hit area or resize behavior. This example adds a small
+indicator outside the right edge and composes the handle with a tooltip. See
+[Styling handles](#styling-handles) for available state attributes and [CSS Variables](#css-variables)
+for geometry customization.
+
+<Story of={Stories.CustomHandle} />
+
 ## Nested panels
 
 Resizable components can be nested to build layouts with independently adjustable regions. In this
@@ -94,5 +103,18 @@ Set `isDisabled` to remove all handles from the tab order and disable resize int
 
 Handles provide positioning, hit areas, cursors, and state attributes, but no visible grip or line.
 Use `className` and the `data-direction-x`, `data-direction-y`, `data-focus-visible`, `data-resizing`,
-and `data-disabled` attributes to provide an application-specific indicator. The hit area can be
-adjusted with the `--kbq-resizable-handle-size` custom property on Resizable.
+and `data-disabled` attributes to provide an application-specific indicator.
+
+## CSS Variables
+
+Use CSS variables to customize the handle geometry without inline styles.
+
+| Variable                           |
+| ---------------------------------- |
+| `--kbq-resizable-handle-width`     |
+| `--kbq-resizable-handle-height`    |
+| `--kbq-resizable-handle-top`       |
+| `--kbq-resizable-handle-right`     |
+| `--kbq-resizable-handle-bottom`    |
+| `--kbq-resizable-handle-left`      |
+| `--kbq-resizable-handle-transform` |
