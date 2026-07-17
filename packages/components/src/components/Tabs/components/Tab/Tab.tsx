@@ -28,6 +28,7 @@ export type TabProps<T> = {
   orientation: TabOrientation;
   isUnderlined?: boolean;
   isStretched?: boolean;
+  shouldSelectOnPressUp?: boolean;
   onFocused?: () => void;
   onRemove?: () => void;
   closeButtonProps?: IconButtonProps;
@@ -40,6 +41,7 @@ export function Tab<T>({
   orientation,
   isUnderlined = false,
   isStretched = false,
+  shouldSelectOnPressUp = false,
   onFocused,
   onRemove,
   closeButtonProps,
@@ -50,7 +52,12 @@ export function Tab<T>({
   const allowsRemoving = !!onRemove;
 
   const domRef = useDOMRef<HTMLElement>(innerRef);
-  const { tabProps, isSelected, isDisabled } = useTab({ key }, state, domRef);
+
+  const { tabProps, isSelected, isDisabled } = useTab(
+    { key, shouldSelectOnPressUp },
+    state,
+    domRef
+  );
 
   const {
     href,
