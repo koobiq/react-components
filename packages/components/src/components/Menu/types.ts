@@ -1,4 +1,5 @@
 import type {
+  ComponentProps,
   ComponentPropsWithRef,
   ComponentRef,
   ElementType,
@@ -9,11 +10,27 @@ import type {
   ReactNode,
 } from 'react';
 
-import type { ExtendableProps } from '@koobiq/react-core';
+import type { ExtendableProps, Pressable } from '@koobiq/react-core';
 import type { ButtonOptions, AriaMenuProps } from '@koobiq/react-primitives';
 
+import type {
+  DividerProps,
+  HeaderProps,
+  ItemProps,
+  SectionProps,
+} from '../Collections';
 import type { DropdownFooterProps } from '../DropdownFooter';
+import type { ListItemTextProps } from '../List';
+import type { ListItemAddonProps } from '../List/components';
 import type { PopoverProps, PopoverPropPlacement } from '../Popover';
+
+export type MenuItemProps<T> = ItemProps<T>;
+export type MenuSectionProps<T> = SectionProps<T>;
+export type MenuHeaderProps = HeaderProps;
+export type MenuDividerProps = DividerProps;
+export type MenuItemTextProps = ListItemTextProps;
+export type MenuItemAddonProps = ListItemAddonProps;
+export type MenuControlProps = ComponentProps<typeof Pressable>;
 
 export type MenuPropControl = (
   props: Omit<ButtonOptions, 'elementType'> & {

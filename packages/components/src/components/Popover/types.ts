@@ -14,7 +14,16 @@ import type {
 } from '@koobiq/react-primitives';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-import type { DialogProps } from '../Dialog';
+import type {
+  DialogBodyProps,
+  DialogFooterProps,
+  DialogHeaderProps,
+  DialogProps,
+} from '../Dialog';
+
+export type PopoverHeaderProps = DialogHeaderProps;
+export type PopoverBodyProps = DialogBodyProps;
+export type PopoverFooterProps = DialogFooterProps;
 
 export type PopoverPropContent =
   | ReactNode

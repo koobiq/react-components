@@ -30,6 +30,15 @@ export const Accordion: CompoundedComponent;
 export const AccordionComponent: ForwardRefExoticComponent<Omit<AccordionProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
 // @public (undocumented)
+export type AccordionDetailsProps = ExtendableComponentPropsWithRef<{
+    children?: ReactNode;
+    unmountOnExit?: boolean;
+    slotProps?: {
+        transition?: Partial<TransitionProps<HTMLElement>>;
+    };
+}, 'div'>;
+
+// @public (undocumented)
 export const AccordionGroup: ForwardRefExoticComponent<Omit<AccordionGroupProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
 // @public (undocumented)
@@ -53,6 +62,23 @@ export type AccordionRef = ComponentRef<'div'>;
 
 // @public (undocumented)
 export const AccordionStateContext: Context<DisclosureState>;
+
+// @public (undocumented)
+export type AccordionSummaryProps = {
+    children?: ReactNode;
+    className?: string;
+    expandIcon?: (isExpanded: boolean) => ReactElement;
+    expandIconPlacement?: AccordionSummaryPropExpandIconPlacement;
+    hideExpandIcon?: boolean;
+    slotProps?: {
+        trigger?: Omit<ButtonProps, 'children'>;
+        expandIcon?: ComponentPropsWithRef<'span'>;
+    };
+};
+
+// Warnings were encountered during analysis:
+//
+// packages/components/dist/components/Accordion/components/AccordionSummary/types.d.ts:17:5 - (ae-forgotten-export) The symbol "AccordionSummaryPropExpandIconPlacement" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

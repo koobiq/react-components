@@ -1,0 +1,98 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Sidebar.stories';
+
+<Meta of={Stories} />
+
+# Sidebar
+
+<Status variant="experimental" />
+
+Sidebar is a low-level layout box for a side area that toggles between an open and a closed state,
+animating its inline size between the two.
+
+It is not an overlay and does not position itself. Sidebar only controls its inline size and
+open/closed state.
+
+## Import
+
+```tsx
+import { Sidebar } from '@koobiq/react-components';
+```
+
+## Usage
+
+Pass a function as `children` to render content based on the current state.
+
+```tsx
+<Sidebar>
+  {({ isOpen, toggle }) => <Content isOpen={isOpen} onToggle={toggle} />}
+</Sidebar>
+```
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Open state
+
+The Sidebar is closed by default. Use `defaultOpen` for an uncontrolled sidebar, or pass `isOpen` and
+`onOpenChange` to control it.
+
+<Story of={Stories.Controlled} />
+
+## Sizing
+
+The `size` and `closedSize` props accept numbers in pixels or CSS inline-size values.
+
+```tsx
+<Sidebar size={320} closedSize={56} />
+<Sidebar size="50%" closedSize="25%" />
+<Sidebar size="clamp(240px, 50%, 320px)" closedSize={32} />
+```
+
+<Story of={Stories.Size} />
+
+## Placement
+
+The `placement` anchors the content to its edge while the inline size animates, so a right-hand sidebar
+collapses toward the right. It does not position the box.
+
+<Story of={Stories.Placement} />
+
+## Keyboard
+
+Press `[` to toggle a `start` sidebar or `]` to toggle an `end` sidebar. Set
+`keyboardShortcut` to use another key combination, or pass `null` to disable it.
+
+```tsx
+<Sidebar keyboardShortcut={{ code: 'KeyB' }} />
+<Sidebar keyboardShortcut={{ code: 'KeyO', metaKey: true }} />
+<Sidebar keyboardShortcut={null} />
+```
+
+<Story of={Stories.Keyboard} />
+
+## Accessibility
+
+A Sidebar has no ARIA role by default:
+
+- Use `as="nav"` or `as="aside"` and add an accessible name.
+- Mark the toggle control you render with `aria-expanded` and `aria-controls` pointing at the
+  sidebar's `id`.
+
+## CSS variables
+
+| Variable                       | Default | Purpose                                                    |
+| ------------------------------ | ------- | ---------------------------------------------------------- |
+| `--kbq-sidebar-size`           | `240px` | Inline size while open (also settable via `size`).         |
+| `--kbq-sidebar-closed-size`    | `32px`  | Inline size while closed (also settable via `closedSize`). |
+| `--kbq-sidebar-open-duration`  | `200ms` | Duration of the expand animation.                          |
+| `--kbq-sidebar-close-duration` | `100ms` | Duration of the collapse animation.                        |

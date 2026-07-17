@@ -5,8 +5,8 @@
 ```ts
 
 import type { AriaTableColumnResizeProps } from '@koobiq/react-primitives';
-import type { CellProps as CellProps_2 } from '@koobiq/react-primitives';
-import type { ColumnProps as ColumnProps_2 } from '@koobiq/react-primitives';
+import type { CellProps } from '@koobiq/react-primitives';
+import type { ColumnProps } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
@@ -16,7 +16,7 @@ import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import type { Ref } from 'react';
-import type { RowProps as RowProps_2 } from '@koobiq/react-primitives';
+import type { RowProps } from '@koobiq/react-primitives';
 import type { TableBodyProps as TableBodyProps_2 } from '@koobiq/react-primitives';
 import type { TableHeaderProps as TableHeaderProps_2 } from '@koobiq/react-primitives';
 import type { TableStateProps } from '@koobiq/react-primitives';
@@ -27,12 +27,36 @@ import type { TableStateProps } from '@koobiq/react-primitives';
 export const Table: CompoundedComponent;
 
 // @public (undocumented)
+export type TableBodyProps<T> = TableBodyProps_2<T>;
+
+// @public (undocumented)
+export type TableCellProps = CellProps & {
+    className?: string;
+    style?: CSSProperties;
+    'data-testid'?: string | number;
+    align?: CellPropAlign;
+    valign?: CellPropVerticalAlign;
+};
+
+// @public (undocumented)
+export type TableColumnProps<T> = ColumnProps<T> & {
+    className?: string;
+    style?: CSSProperties;
+    'data-testid'?: string | number;
+    align?: ColumnPropAlign;
+    valign?: ColumnPropVerticalAlign;
+};
+
+// @public (undocumented)
 export type TableComponent = <T>(props: TableProps<T>) => ReactElement | null;
 
 // Warning: (ae-forgotten-export) The symbol "TableContainerBaseProps" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
 export const TableContainer: PolyForwardComponent<"div", TableContainerBaseProps, ElementType>;
+
+// @public (undocumented)
+export type TableHeaderProps<T> = TableHeaderProps_2<T>;
 
 // @public (undocumented)
 export type TablePropChildren<T> = TableStateProps<T>['children'];
@@ -67,8 +91,19 @@ export type TableProps<T> = Pick<TableStateProps<T>, 'selectionBehavior' | 'sele
 // @public (undocumented)
 export type TableRef = ComponentRef<'table'>;
 
+// @public (undocumented)
+export type TableRowProps<T> = RowProps<T> & {
+    className?: string;
+    style?: CSSProperties;
+    'data-testid'?: string | number;
+};
+
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/Collections/Cell.d.ts:18:5 - (ae-forgotten-export) The symbol "CellPropAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Collections/Cell.d.ts:23:5 - (ae-forgotten-export) The symbol "CellPropVerticalAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Collections/Column.d.ts:18:5 - (ae-forgotten-export) The symbol "ColumnPropAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Collections/Column.d.ts:23:5 - (ae-forgotten-export) The symbol "ColumnPropVerticalAlign" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Table/types.d.ts:35:5 - (ae-forgotten-export) The symbol "TablePropSortIconRender" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

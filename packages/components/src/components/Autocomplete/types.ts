@@ -9,6 +9,7 @@ import type {
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { AriaComboBoxProps } from '@koobiq/react-primitives';
 
+import type { ItemProps, SectionProps } from '../Collections';
 import type { DropdownFooterProps } from '../DropdownFooter';
 import {
   formFieldControlGroupPropVariant,
@@ -27,7 +28,8 @@ import type {
   FormFieldProps,
 } from '../FormField';
 import type { IconButtonProps } from '../IconButton';
-import type { ListInnerProps } from '../List';
+import type { ListInnerProps, ListItemTextProps } from '../List';
+import type { ListItemAddonProps } from '../List/components';
 import type { PopoverProps } from '../Popover';
 
 export const autocompletePropLabelPlacement = formFieldPropLabelPlacement;
@@ -38,6 +40,12 @@ export type AutocompletePropLabelAlign = FormFieldPropLabelAlign;
 
 export const autocompletePropVariant = formFieldControlGroupPropVariant;
 export type AutocompleteInputPropVariant = FormFieldControlGroupPropVariant;
+
+export type AutocompleteItemProps<T extends object = object> = ItemProps<T>;
+export type AutocompleteSectionProps<T extends object = object> =
+  SectionProps<T>;
+export type AutocompleteItemTextProps = ListItemTextProps;
+export type AutocompleteItemAddonProps = ListItemAddonProps;
 
 export type AutocompleteProps<T extends object = object> = {
   /** Additional CSS-classes. */

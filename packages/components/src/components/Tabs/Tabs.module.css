@@ -70,6 +70,17 @@
 .horizontal {
   flex-direction: column;
 
+  &[data-horizontal-scrollable] {
+    .scrollBox {
+      cursor: grab;
+
+      &[data-dragging] {
+        cursor: grabbing;
+        user-select: none;
+      }
+    }
+  }
+
   .scrollBox {
     display: flex;
     inline-size: 100%;

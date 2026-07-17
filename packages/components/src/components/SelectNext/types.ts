@@ -10,6 +10,7 @@ import type { ExtendableProps, Node } from '@koobiq/react-core';
 import type { AriaSelectProps, SelectState } from '@koobiq/react-primitives';
 import type { SelectionMode } from '@react-types/select';
 
+import type { DividerProps } from '../Divider';
 import type { DropdownFooterProps } from '../DropdownFooter';
 import type {
   FormFieldLabelProps,
@@ -25,11 +26,17 @@ import {
   formFieldPropLabelPlacement,
 } from '../FormField';
 import type { IconButtonProps } from '../IconButton';
+import type { ListItemTextProps } from '../List';
+import type { ListItemAddonProps } from '../List/components';
 import type { PopoverProps } from '../Popover';
 import type { SearchInputProps } from '../SearchInput';
 import type { TagProps } from '../Tag';
 
-import type { SelectListProps } from './components';
+import type {
+  SelectListProps,
+  SelectOptionProps,
+  SelectSectionProps,
+} from './components';
 
 export const selectNextPropSelectedTagsOverflow = [
   'multiline',
@@ -46,6 +53,14 @@ export const selectNextPropLabelAlign = formFieldPropLabelAlign;
 export type SelectNextPropLabelAlign = FormFieldPropLabelAlign;
 
 export type SelectNextTagProps = TagProps;
+
+export type SelectNextItemProps<T extends object = object> =
+  SelectOptionProps<T>;
+export type SelectNextSectionProps<T extends object = object> =
+  SelectSectionProps<T>;
+export type SelectNextDividerProps = DividerProps;
+export type SelectNextItemTextProps = ListItemTextProps;
+export type SelectNextItemAddonProps = ListItemAddonProps;
 
 export type SelectNextProps<
   T extends object,

@@ -4,6 +4,7 @@
 
 ```ts
 
+import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import { Context } from 'react';
 import type { ElementType } from 'react';
@@ -17,6 +18,16 @@ import { RefAttributes } from 'react';
 // @public
 export const Form: CompoundedComponent;
 
+// Warning: (ae-forgotten-export) The symbol "FormActions" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type FormActionsProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof FormActions<As>>;
+
+// Warning: (ae-forgotten-export) The symbol "FormCaption" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type FormCaptionProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof FormCaption<As>>;
+
 // @public (undocumented)
 export const FormContext: Context<FormContextProps>;
 
@@ -27,6 +38,11 @@ export type FormContextProps = {
     isDisabled?: boolean;
     isReadOnly?: boolean;
 };
+
+// Warning: (ae-forgotten-export) The symbol "FormGroup" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type FormGroupProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof FormGroup<As>>;
 
 // @public (undocumented)
 export type FormPropLabelInlineSize = (typeof formPropLabelInlineSize)[number];

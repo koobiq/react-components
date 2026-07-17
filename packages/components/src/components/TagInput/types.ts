@@ -30,6 +30,9 @@ import {
 } from '../FormField';
 import type { IconButtonProps } from '../IconButton';
 import type { TagListInnerProps } from '../TagList';
+import type { TagProps } from '../TagList/Tag';
+
+export type TagInputTagProps<T extends object = object> = TagProps<T>;
 
 export const tagInputPropVariant = formFieldControlGroupPropVariant;
 export type TagInputPropVariant = FormFieldControlGroupPropVariant;

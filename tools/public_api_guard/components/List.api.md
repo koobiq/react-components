@@ -31,6 +31,11 @@ export const List: CompoundedComponent;
 // @public (undocumented)
 export type ListComponent = <T>(props: ListProps<T>) => ReactElement | null;
 
+// Warning: (ae-forgotten-export) The symbol "DividerProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type ListDividerProps = DividerProps;
+
 // @public (undocumented)
 export function ListInner<T extends object>(props: ListInnerProps<T>): JSX.Element;
 
@@ -51,6 +56,14 @@ export namespace ListItem {
     var // (undocumented)
     getCollectionNode: unknown;
 }
+
+// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps_2" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type ListItemAddonProps = ListItemAddonProps_2;
+
+// @public (undocumented)
+export type ListItemProps<T> = ItemProps<T>;
 
 // @public (undocumented)
 export const ListItemText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
@@ -99,6 +112,9 @@ export namespace ListSection {
     var // (undocumented)
     getCollectionNode: unknown;
 }
+
+// @public (undocumented)
+export type ListSectionProps<T> = SectionProps<T>;
 
 // Warnings were encountered during analysis:
 //
