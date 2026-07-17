@@ -90,6 +90,20 @@ describe('FileSizeFormatter', () => {
     expect(() => formatter.format(1550, { precision: 101 })).not.toThrow();
   });
 
+  it('falls back to the configured precision when a per-call override is non-finite', () => {
+    const formatter = new FileSizeFormatter('en-US', {
+      defaultPrecision: 1,
+    });
+
+    expect(formatter.format(1550, { precision: Number.NaN })).toBe(
+      '1.6\u00a0KB'
+    );
+
+    expect(
+      formatter.format(1550, { precision: Number.POSITIVE_INFINITY })
+    ).toBe('1.6\u00a0KB');
+  });
+
   it('does not treat "rue" as Russian', () => {
     const formatter = new FileSizeFormatter('rue');
 

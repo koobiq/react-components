@@ -113,8 +113,8 @@ const isPrecisionInRange = (precision: number): boolean =>
   precision >= MIN_PRECISION &&
   precision <= MAX_PRECISION;
 
-const clampPrecision = (precision: number): number => {
-  if (!Number.isFinite(precision)) return DEFAULT_PRECISION;
+const clampPrecision = (precision: number, fallback: number): number => {
+  if (!Number.isFinite(precision)) return fallback;
 
   return Math.min(
     Math.max(Math.trunc(precision), MIN_PRECISION),
@@ -219,7 +219,7 @@ export class FileSizeFormatter {
       once.warn(FILE_SIZE_FORMATTER_ERROR_PRECISION_RANGE);
     }
 
-    return clampPrecision(precision);
+    return clampPrecision(precision, fallback);
   }
 
   private getNumberFormatter(precision: number): Intl.NumberFormat {
