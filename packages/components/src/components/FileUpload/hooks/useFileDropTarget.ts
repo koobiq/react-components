@@ -118,7 +118,7 @@ export const useFileDropTarget = ({
     activeTargetRef.current = null;
     dragDepthRef.current = 0;
     setIsDropTarget(false);
-  }, []);
+  }, [setIsDropTarget]);
 
   useEffect(() => {
     reset();

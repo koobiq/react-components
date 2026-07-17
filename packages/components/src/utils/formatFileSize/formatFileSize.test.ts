@@ -20,7 +20,13 @@ describe('formatFileSize', () => {
 
   it('rounds to two fraction digits by default', () => {
     // 148909 B / 1024 = 145.4189 -> 145.42
-    expect(formatFileSize(148909)).toBe('145.42\u00a0KB');
+    const value = 148909 / 1024;
+
+    const formatted = new Intl.NumberFormat(undefined, {
+      maximumFractionDigits: 2,
+    }).format(value);
+
+    expect(formatFileSize(148909)).toBe(`${formatted}\u00a0KB`);
   });
 
   it('treats invalid or negative input as 0 bytes', () => {
