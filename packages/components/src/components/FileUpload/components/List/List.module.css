@@ -1,5 +1,6 @@
 .base {
   display: flex;
+  overflow: hidden;
   inline-size: 100%;
   position: relative;
   box-sizing: border-box;
