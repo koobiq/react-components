@@ -661,6 +661,27 @@ describe('FileUpload', () => {
     ).toBeInTheDocument();
   });
 
+  it('validates accept by file extension independently of MIME type', async () => {
+    const accepted = makeSizedFile('image.PNG', 1, '');
+    const rejected = makeSizedFile('image.jpg', 1, 'image/png');
+
+    renderComponent({
+      accept: ['.png'],
+      allowsMultiple: true,
+      initialItems: [toItem(accepted), toItem(rejected)],
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('image.PNG').closest('[data-multiple]')
+      ).not.toHaveAttribute('data-invalid');
+
+      expect(
+        screen.getByText('image.jpg').closest('[data-multiple]')
+      ).toHaveAttribute('data-invalid');
+    });
+  });
+
   it('allows a file at maxFileSize and rejects a larger file', async () => {
     const exact = makeSizedFile('exact.bin', 10);
 

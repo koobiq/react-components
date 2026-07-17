@@ -65,20 +65,6 @@ type FileUploadItemData = {
 
 type Story = StoryObj<FileUploadProps<FileUploadItemData>>;
 
-const imageFileTypes = [
-  '.png',
-  '.jpg',
-  '.jpeg',
-  '.gif',
-  '.webp',
-  '.svg',
-  'image/png',
-  'image/jpeg',
-  'image/gif',
-  'image/webp',
-  'image/svg+xml',
-];
-
 const makeFile = (
   name: string,
   size: number,
@@ -522,7 +508,19 @@ export const Validation: Story = {
       <FileUpload
         aria-label="Upload images"
         items={items}
-        accept={imageFileTypes}
+        accept={[
+          '.png',
+          '.jpg',
+          '.jpeg',
+          '.gif',
+          '.webp',
+          '.svg',
+          'image/png',
+          'image/jpeg',
+          'image/gif',
+          'image/webp',
+          'image/svg+xml',
+        ]}
         maxFileSize={MAX_SIZE}
         caption="Accepts PNG, JPG, GIF, WebP, and SVG up to 150 KB"
         validate={(file) =>
