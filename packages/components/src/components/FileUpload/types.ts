@@ -9,6 +9,7 @@ import type {
 
 import type {
   Key,
+  Validation,
   DataAttributeProps,
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
@@ -60,6 +61,8 @@ export type FileUploadMessages = {
   browseFilesOrFolder: string;
   browseFolderMixed: string;
   removeButtonLabel: string;
+  unsupportedFileType: string;
+  fileSizeLimitExceeded: string;
   bytesUnit: string;
   kilobytesUnit: string;
   megabytesUnit: string;
@@ -78,6 +81,10 @@ export interface FileUploadFile extends File {
   readonly relativePath: string;
 }
 
+export type FileUploadValidate = NonNullable<
+  Validation<FileUploadFile>['validate']
+>;
+
 export type FileUploadProps<T extends object = object> =
   ExtendableComponentPropsWithRef<
     {
@@ -87,6 +94,8 @@ export type FileUploadProps<T extends object = object> =
       items?: Iterable<T>;
       /** Handler called when native files are added via picker or drop. */
       onAdd?: (files: FileUploadFile[]) => void;
+      /** Validates native files associated with `FileUpload.Item`. */
+      validate?: FileUploadValidate;
       /** Handler called when a remove button requests item removal. */
       onRemove?: (id: Key) => void;
       /** Where files can be dropped: a target element ref or 'fullscreen'. Defaults to the FileUpload root. */
@@ -100,7 +109,7 @@ export type FileUploadProps<T extends object = object> =
       /** Helper text displayed below the upload area. */
       caption?: ReactNode;
       /** Validation error displayed when `isInvalid` is true. */
-      errorMessage?: ReactNode;
+      errorMessage?: FormFieldErrorProps['children'];
       /** Whether the label is visually hidden. */
       isLabelHidden?: boolean;
       /** Whether the field is marked as required. */
@@ -120,8 +129,10 @@ export type FileUploadProps<T extends object = object> =
        * @default false
        */
       allowsMultiple?: boolean;
-      /** Accepted file types (mime types or extensions) for picker and drop. */
+      /** File type specifiers used by the picker and item validation. */
       accept?: string[];
+      /** Maximum allowed size of an individual file, in bytes. */
+      maxFileSize?: number;
       /**
        * Which kind of items can be selected or dropped.
        * @default 'file'
@@ -200,6 +211,8 @@ export type FileUploadItemProps = ExtendableComponentPropsWithRef<
     isDisabled?: boolean;
     /** Whether this row is invalid. */
     isInvalid?: boolean;
+    /** Native file used for automatic item validation. */
+    file?: FileUploadFile;
   } & DataAttributeProps,
   'div'
 >;

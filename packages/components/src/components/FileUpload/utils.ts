@@ -11,7 +11,6 @@ import type {
 } from './types';
 
 type PrepareFilesOptions = {
-  accept?: string[];
   allowed: FileUploadPropAllowed;
   allowsMultiple: boolean;
 };
@@ -44,7 +43,7 @@ export const setFileRelativePath = (
 const getRootDirectory = (file: FileUploadFile): string | undefined =>
   file.relativePath.split('/').filter(Boolean)[0];
 
-const isAcceptedFile = (file: File, accept?: string[]): boolean => {
+export const isAcceptedFile = (file: File, accept?: string[]): boolean => {
   const values = accept
     ?.map((value) => value.trim().toLowerCase())
     .filter(Boolean);
@@ -63,10 +62,10 @@ const isAcceptedFile = (file: File, accept?: string[]): boolean => {
   });
 };
 
-/** Applies the same file constraints to picker and drop results. */
+/** Normalizes files and applies selection-mode constraints. */
 export const prepareFileUploadFiles = (
   files: File[],
-  { accept, allowed, allowsMultiple }: PrepareFilesOptions
+  { allowed, allowsMultiple }: PrepareFilesOptions
 ): FileUploadFile[] => {
   const normalized = files.map((file) =>
     setFileRelativePath(
@@ -84,7 +83,7 @@ export const prepareFileUploadFiles = (
       allowed === 'mixed' ||
       (allowed === 'folder' ? isDirectoryFile : !isDirectoryFile);
 
-    return isAllowed && isAcceptedFile(file, accept);
+    return isAllowed;
   });
 
   if (allowsMultiple || filtered.length === 0) return filtered;

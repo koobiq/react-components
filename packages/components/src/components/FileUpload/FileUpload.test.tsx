@@ -1,7 +1,7 @@
 import { createRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import type { Key } from '@koobiq/react-core';
+import type { Key, ValidationResult } from '@koobiq/react-core';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -11,7 +11,7 @@ import { Provider } from '../Provider';
 
 import { readDroppedFiles } from './hooks';
 import { FileUpload } from './index';
-import type { FileUploadProps } from './index';
+import type { FileUploadFile, FileUploadProps } from './index';
 
 const ROOT_TEST_ID = 'file-upload';
 
@@ -23,10 +23,14 @@ type FileUploadItemData = {
   progress?: number;
   errorMessage?: ReactNode;
   isDisabled?: boolean;
+  file?: FileUploadFile;
 };
 
 const makeFile = (name: string, content = 'stub') =>
   new File([content], name, { type: 'text/plain' });
+
+const makeSizedFile = (name: string, size: number, type = 'text/plain') =>
+  new File([new Uint8Array(size)], name, { type }) as FileUploadFile;
 
 const makeItem = (name: string, size?: number): FileUploadItemData => ({
   id: name,
@@ -34,10 +38,11 @@ const makeItem = (name: string, size?: number): FileUploadItemData => ({
   size,
 });
 
-const toItem = (file: File): FileUploadItemData => ({
+const toItem = (file: FileUploadFile): FileUploadItemData => ({
   id: file.name,
   name: file.name,
   size: file.size,
+  file,
 });
 
 const renderItem = (item: FileUploadItemData) => (
@@ -46,6 +51,7 @@ const renderItem = (item: FileUploadItemData) => (
     textValue={String(item.name ?? '')}
     isDisabled={item.isDisabled}
     isInvalid={Boolean(item.errorMessage)}
+    file={item.file}
     data-loading={item.isLoading || undefined}
   >
     <FileUpload.ItemIcon>
@@ -334,7 +340,7 @@ describe('FileUpload', () => {
     expect(screen.queryByText('select a file')).not.toBeInTheDocument();
   });
 
-  it('applies accept to files selected in the picker', async () => {
+  it('passes picker files to onAdd regardless of accept', async () => {
     const user = userEvent.setup({ applyAccept: false });
     const onAdd = vi.fn();
     const image = new File(['image'], 'image.png', { type: 'image/png' });
@@ -348,7 +354,7 @@ describe('FileUpload', () => {
 
     await user.upload(getFileInput(), [image, text]);
 
-    expect(onAdd).toHaveBeenCalledWith([image]);
+    expect(onAdd).toHaveBeenCalledWith([image, text]);
   });
 
   it('uses the upload control as the default drop target', () => {
@@ -616,7 +622,7 @@ describe('FileUpload', () => {
     await waitFor(() => expect(onAdd).toHaveBeenCalledWith([first, second]));
   });
 
-  it('applies accept to dropped files', async () => {
+  it('passes dropped files to onAdd regardless of accept', async () => {
     const onAdd = vi.fn();
     const image = new File(['image'], 'image.png', { type: 'image/png' });
     const text = makeFile('notes.txt');
@@ -631,7 +637,215 @@ describe('FileUpload', () => {
       dataTransfer: createDataTransfer([dropFile(image), dropFile(text)]),
     });
 
-    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([image]));
+    await waitFor(() => expect(onAdd).toHaveBeenCalledWith([image, text]));
+  });
+
+  it('validates an item associated with a native file', async () => {
+    const file = makeFile('notes.txt') as FileUploadFile;
+
+    renderComponent({
+      accept: ['image/*'],
+      initialItems: [toItem(file)],
+    });
+
+    const item = screen.getByText('notes.txt').closest('[data-invalid]');
+    const control = getDropTarget();
+
+    await waitFor(() => {
+      expect(item).toHaveAttribute('data-invalid');
+      expect(control).toHaveAttribute('aria-invalid', 'true');
+    });
+
+    expect(
+      screen.getByText('notes.txt — Unsupported file type')
+    ).toBeInTheDocument();
+  });
+
+  it('allows a file at maxFileSize and rejects a larger file', async () => {
+    const exact = makeSizedFile('exact.bin', 10);
+
+    const { unmount } = renderComponent({
+      initialItems: [toItem(exact)],
+      maxFileSize: exact.size,
+    });
+
+    expect(getDropTarget()).not.toHaveAttribute('aria-invalid');
+
+    expect(
+      screen.queryByText(/The file size limit has been exceeded/)
+    ).not.toBeInTheDocument();
+
+    unmount();
+
+    const oversized = makeSizedFile('oversized.bin', 11);
+
+    renderComponent({
+      initialItems: [toItem(oversized)],
+      maxFileSize: 10,
+    });
+
+    await waitFor(() => {
+      expect(getDropTarget()).toHaveAttribute('aria-invalid', 'true');
+    });
+
+    expect(
+      screen.getByText('oversized.bin — The file size limit has been exceeded')
+    ).toBeInTheDocument();
+  });
+
+  it('combines standard and custom validation errors in order', async () => {
+    const file = makeSizedFile('notes.txt', 11);
+
+    renderComponent({
+      accept: ['image/*'],
+      maxFileSize: 10,
+      validate: () => 'Custom validation failed',
+      initialItems: [toItem(file)],
+    });
+
+    expect(
+      await screen.findByText(
+        'notes.txt — Unsupported file type notes.txt — The file size limit has been exceeded notes.txt — Custom validation failed'
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('allows text and JSX to replace automatic validation errors', async () => {
+    const file = makeSizedFile('notes.txt', 11);
+    const initialItems = [toItem(file)];
+
+    const { unmount } = renderComponent({
+      accept: ['image/*'],
+      initialItems,
+      errorMessage: 'Custom text error',
+    });
+
+    expect(await screen.findByText('Custom text error')).toBeInTheDocument();
+
+    expect(
+      screen.queryByText('notes.txt — Unsupported file type')
+    ).not.toBeInTheDocument();
+
+    unmount();
+
+    renderComponent({
+      accept: ['image/*'],
+      initialItems,
+      errorMessage: <strong>Custom JSX error</strong>,
+    });
+
+    const customJSXError = await screen.findByText('Custom JSX error');
+
+    expect(customJSXError.tagName).toBe('STRONG');
+
+    expect(
+      screen.queryByText('notes.txt — Unsupported file type')
+    ).not.toBeInTheDocument();
+  });
+
+  it('passes the validation result to an errorMessage function', async () => {
+    const file = makeSizedFile('notes.txt', 11);
+    const automaticError = 'notes.txt — Unsupported file type';
+
+    const renderError = vi.fn(({ validationErrors }: ValidationResult) => (
+      <span>Upload failed: {validationErrors.join(', ')}</span>
+    ));
+
+    renderComponent({
+      accept: ['image/*'],
+      initialItems: [toItem(file)],
+      errorMessage: renderError,
+    });
+
+    expect(
+      await screen.findByText(`Upload failed: ${automaticError}`)
+    ).toBeInTheDocument();
+
+    expect(renderError).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        isInvalid: true,
+        validationErrors: [automaticError],
+      })
+    );
+  });
+
+  it('allows hiding automatic errors without clearing the invalid state', async () => {
+    const file = makeSizedFile('notes.txt', 11);
+
+    renderComponent({
+      accept: ['image/*'],
+      initialItems: [toItem(file)],
+      errorMessage: null,
+    });
+
+    await waitFor(() => {
+      expect(getDropTarget()).toHaveAttribute('aria-invalid', 'true');
+    });
+
+    expect(
+      screen.queryByText('notes.txt — Unsupported file type')
+    ).not.toBeInTheDocument();
+  });
+
+  it('uses a custom file size validation message', async () => {
+    const file = makeSizedFile('large.bin', 11);
+
+    renderComponent({
+      initialItems: [toItem(file)],
+      maxFileSize: 10,
+      messages: { fileSizeLimitExceeded: 'File is too large' },
+    });
+
+    expect(
+      await screen.findByText('large.bin — File is too large')
+    ).toBeInTheDocument();
+  });
+
+  it('does not validate an item without a native file', () => {
+    const validate = vi.fn(() => 'Invalid file');
+
+    renderComponent({
+      accept: ['image/*'],
+      maxFileSize: 0,
+      validate,
+      initialItems: [makeItem('server-file.txt', 100)],
+    });
+
+    expect(validate).not.toHaveBeenCalled();
+    expect(getDropTarget()).not.toHaveAttribute('aria-invalid');
+    expect(screen.queryByText(/Invalid file/)).not.toBeInTheDocument();
+  });
+
+  it('shows custom validation errors and clears them after removal', async () => {
+    const user = userEvent.setup();
+    const file = makeFile('large.txt') as FileUploadFile;
+
+    renderComponent({
+      initialItems: [toItem(file)],
+      validate: () => ['File is too large', 'File is blocked'],
+    });
+
+    const control = getDropTarget();
+
+    await waitFor(() => {
+      expect(control).toHaveAttribute('aria-invalid', 'true');
+    });
+
+    expect(
+      screen.getByText(
+        'large.txt — File is too large large.txt — File is blocked'
+      )
+    ).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole('button', { name: /remove large\.txt/i })
+    );
+
+    await waitFor(() => {
+      expect(getDropTarget()).not.toHaveAttribute('aria-invalid');
+    });
+
+    expect(screen.queryByText(/File is too large/)).not.toBeInTheDocument();
   });
 
   it('ignores disabled and non-file drags', () => {

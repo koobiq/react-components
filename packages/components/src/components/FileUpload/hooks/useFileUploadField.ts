@@ -21,11 +21,15 @@ type UseFileUploadFieldOptions = FileUploadFieldDOMProps & {
   hasErrorMessage: boolean;
   isDisabled: boolean;
   isInvalid: boolean;
+  validationErrors?: string[];
 };
 
-const getValidationResult = (isInvalid: boolean): ValidationResult => ({
+const getValidationResult = (
+  isInvalid: boolean,
+  validationErrors: string[]
+): ValidationResult => ({
   isInvalid,
-  validationErrors: [],
+  validationErrors,
   validationDetails: {
     badInput: false,
     customError: isInvalid,
@@ -49,6 +53,7 @@ export const useFileUploadField = ({
   hasErrorMessage,
   isDisabled,
   isInvalid,
+  validationErrors = [],
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
   'aria-describedby': ariaDescribedBy,
@@ -68,7 +73,10 @@ export const useFileUploadField = ({
       'aria-describedby': ariaDescribedBy,
     });
 
-  const validation = useMemo(() => getValidationResult(isInvalid), [isInvalid]);
+  const validation = useMemo(
+    () => getValidationResult(isInvalid, validationErrors),
+    [isInvalid, validationErrors]
+  );
 
   return {
     validation,

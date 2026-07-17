@@ -1,5 +1,4 @@
-import { Fragment, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import { useRef, useState } from 'react';
 
 import { type Key, useBoolean } from '@koobiq/react-core';
 import {
@@ -10,6 +9,7 @@ import {
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '../Button';
+import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { spacing } from '../layout';
 import { ProgressSpinner } from '../ProgressSpinner';
@@ -57,7 +57,6 @@ type FileUploadItemData = {
   isLoading?: boolean;
   isUploaded?: boolean;
   progress?: number;
-  errorMessage?: ReactNode;
   isDisabled?: boolean;
   kind?: 'file' | 'folder';
   file?: FileUploadFile;
@@ -66,11 +65,28 @@ type FileUploadItemData = {
 
 type Story = StoryObj<FileUploadProps<FileUploadItemData>>;
 
-const makeItem = (name: string, size: number): FileUploadItemData => ({
-  id: name,
-  name,
-  size,
-});
+const imageFileTypes = [
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.gif',
+  '.webp',
+  '.svg',
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/webp',
+  'image/svg+xml',
+];
+
+const makeFile = (
+  name: string,
+  size: number,
+  type = 'application/octet-stream'
+): FileUploadFile =>
+  Object.assign(new File([new Uint8Array(size)], name, { type }), {
+    relativePath: '',
+  });
 
 const toItem = (file: FileUploadFile): FileUploadItemData => ({
   id: crypto.randomUUID(),
@@ -79,6 +95,12 @@ const toItem = (file: FileUploadFile): FileUploadItemData => ({
   size: file.size,
   file,
 });
+
+const makeItem = (
+  name: string,
+  size: number,
+  type?: string
+): FileUploadItemData => toItem(makeFile(name, size, type));
 
 const removeById = (items: FileUploadItemData[], id: Key) =>
   items.filter((item) => item.id !== id);
@@ -96,7 +118,7 @@ export const Base: Story = {
         {...args}
       >
         {(item) => (
-          <FileUpload.Item id={item.id} textValue={item.name}>
+          <FileUpload.Item id={item.id} textValue={item.name} file={item.file}>
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
@@ -114,13 +136,15 @@ export const LongFileName: Story = {
     const name =
       'incident-response-evidence-security-scan-report-for-production-environment.json';
 
+    const file = makeFile(name, 10000, 'application/json');
+
     return (
       <FileUpload aria-label="Upload a file" {...args}>
-        <FileUpload.Item id={name} textValue={name}>
+        <FileUpload.Item id={name} textValue={name} file={file}>
           <FileUpload.ItemIcon />
           <FileUpload.ItemContent>
             <FileUpload.ItemName>{name}</FileUpload.ItemName>
-            <FileUpload.ItemSize>{10000}</FileUpload.ItemSize>
+            <FileUpload.ItemSize>{file.size}</FileUpload.ItemSize>
           </FileUpload.ItemContent>
           <FileUpload.RemoveButton />
         </FileUpload.Item>
@@ -143,7 +167,7 @@ export const WithLabel: Story = {
         {...args}
       >
         {(item) => (
-          <FileUpload.Item id={item.id} textValue={item.name}>
+          <FileUpload.Item id={item.id} textValue={item.name} file={item.file}>
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
@@ -173,8 +197,8 @@ export const Single: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
@@ -205,55 +229,9 @@ export const Multiple: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
-            <FileUpload.ItemIcon />
-            <FileUpload.ItemContent>
-              <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
-              <FileUpload.ItemSize>{item.size}</FileUpload.ItemSize>
-            </FileUpload.ItemContent>
-            <FileUpload.RemoveButton />
-          </FileUpload.Item>
-        )}
-      </FileUpload>
-    );
-  },
-};
-
-export const Images: Story = {
-  render: function Render(args) {
-    const [items, setItems] = useState<FileUploadItemData[]>([]);
-
-    return (
-      <FileUpload
-        items={items}
-        accept={[
-          'image/png',
-          'image/jpeg',
-          'image/gif',
-          'image/webp',
-          'image/svg+xml',
-        ]}
-        aria-label="Upload images"
-        caption="Accepts PNG, JPG, GIF, WebP, and SVG"
-        onRemove={(id) => setItems((prev) => removeById(prev, id))}
-        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
-        renderEmptyState={() => (
-          <FileUpload.Empty>
-            <FileUpload.EmptyIcon />
-            <FileUpload.EmptyTitle>Upload images</FileUpload.EmptyTitle>
-            <FileUpload.EmptyDescription>
-              Drag images here or{' '}
-              <FileUpload.Trigger>select images</FileUpload.Trigger>
-            </FileUpload.EmptyDescription>
-          </FileUpload.Empty>
-        )}
-        allowsMultiple
-        {...args}
-      >
-        {(item) => (
-          <FileUpload.Item id={item.id} textValue={item.name}>
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
@@ -304,7 +282,7 @@ export const WithoutDuplicates: Story = {
         {...args}
       >
         {(item) => (
-          <FileUpload.Item id={item.id} textValue={item.name}>
+          <FileUpload.Item id={item.id} textValue={item.name} file={item.file}>
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
               <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
@@ -366,8 +344,8 @@ export const Allowed: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon>
               {item.kind === 'folder' ? <IconFolder16 /> : undefined}
@@ -402,8 +380,8 @@ export const Compact: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
@@ -442,8 +420,8 @@ export const Scrollable: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
@@ -509,11 +487,7 @@ export const UploadProgress: Story = {
         {...args}
       >
         {(item) => (
-          <FileUpload.Item
-            id={item.id}
-            textValue={item.name}
-            isInvalid={Boolean(item.errorMessage)}
-          >
+          <FileUpload.Item id={item.id} textValue={item.name} file={item.file}>
             <FileUpload.ItemIcon>
               {item.isLoading ? (
                 <ProgressSpinner aria-label="Uploading" value={item.progress} />
@@ -533,42 +507,46 @@ export const UploadProgress: Story = {
 
 export const Validation: Story = {
   render: function Render(args) {
-    const MAX_SIZE = 150_000;
-    const SIZE_ERROR = 'The file size limit has been exceeded';
+    const MAX_SIZE = 150 * 1024;
 
-    const [items, setItems] = useState<FileUploadItemData[]>([
-      {
-        ...makeItem('file1.txt', MAX_SIZE + 1),
-        errorMessage: SIZE_ERROR,
-      },
-    ]);
-
-    const validate = (item: FileUploadItemData): FileUploadItemData =>
-      item.size && item.size > MAX_SIZE
-        ? { ...item, errorMessage: SIZE_ERROR }
-        : item;
-
-    const invalidItems = items.filter((item) => item.errorMessage);
+    const [items, setItems] = useState<FileUploadItemData[]>(() =>
+      [
+        makeFile('notes.txt', 1000, 'text/plain'),
+        makeFile('large-image.png', MAX_SIZE + 1, 'image/png'),
+        makeFile('empty-image.png', 0, 'image/png'),
+        makeFile('valid-image.png', 1000, 'image/png'),
+      ].map(toItem)
+    );
 
     return (
       <FileUpload
-        aria-label="Upload files"
+        aria-label="Upload images"
         items={items}
-        isInvalid={invalidItems.length > 0}
-        errorMessage={
-          invalidItems.length > 0
-            ? invalidItems.map((item, index) => (
-                <Fragment key={item.id}>
-                  {index > 0 && <br />}
-                  {item.name} — {item.errorMessage}
-                </Fragment>
-              ))
-            : undefined
+        accept={imageFileTypes}
+        maxFileSize={MAX_SIZE}
+        caption="Accepts PNG, JPG, GIF, WebP, and SVG up to 150 KB"
+        validate={(file) =>
+          file.size === 0 ? 'Empty files are not allowed' : null
         }
-        onAdd={(files) =>
-          setItems((prev) => [...prev, ...files.map(toItem).map(validate)])
-        }
+        errorMessage={({ validationErrors }) => (
+          <FlexBox as="span" direction="column" gap="xxs">
+            {validationErrors.map((error, index) => (
+              <span key={`${error}-${index}`}>{error}</span>
+            ))}
+          </FlexBox>
+        )}
+        onAdd={(files) => setItems((prev) => [...prev, ...files.map(toItem)])}
         onRemove={(id) => setItems((prev) => removeById(prev, id))}
+        renderEmptyState={() => (
+          <FileUpload.Empty>
+            <FileUpload.EmptyIcon />
+            <FileUpload.EmptyTitle>Upload images</FileUpload.EmptyTitle>
+            <FileUpload.EmptyDescription>
+              Drag images here or{' '}
+              <FileUpload.Trigger>select images</FileUpload.Trigger>
+            </FileUpload.EmptyDescription>
+          </FileUpload.Empty>
+        )}
         allowsMultiple
         {...args}
       >
@@ -576,8 +554,8 @@ export const Validation: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
@@ -606,8 +584,8 @@ export const Disabled: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
@@ -638,8 +616,8 @@ export const Invalid: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>
@@ -685,7 +663,11 @@ export const DropzoneTarget: Story = {
           {...args}
         >
           {(item) => (
-            <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.Item
+              id={item.id}
+              textValue={item.name}
+              file={item.file}
+            >
               <FileUpload.ItemIcon />
               <FileUpload.ItemContent>
                 <FileUpload.ItemName>{item.name}</FileUpload.ItemName>
@@ -765,7 +747,11 @@ export const ServerFile: Story = {
           {...args}
         >
           {(item) => (
-            <FileUpload.Item id={item.id} textValue={item.name}>
+            <FileUpload.Item
+              id={item.id}
+              textValue={item.name}
+              file={item.file}
+            >
               <FileUpload.ItemIcon>
                 {item.isLoading ? (
                   <ProgressSpinner aria-label="Uploading" />
@@ -829,8 +815,8 @@ export const CustomContent: Story = {
           <FileUpload.Item
             id={item.id}
             textValue={item.name}
+            file={item.file}
             isDisabled={item.isDisabled}
-            isInvalid={Boolean(item.errorMessage)}
           >
             <FileUpload.ItemIcon />
             <FileUpload.ItemContent>

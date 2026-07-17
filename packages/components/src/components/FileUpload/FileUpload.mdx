@@ -33,7 +33,8 @@ import { FileUpload } from '@koobiq/react-components';
 ## Data model
 
 Pass `items` and a render function for a dynamic collection. Pass
-`FileUpload.Item` elements as children for a static collection.
+`FileUpload.Item` elements as children for a static collection. Keep the native
+file on each item and pass it to `FileUpload.Item` to enable validation.
 
 ## Long file names
 
@@ -59,12 +60,6 @@ FileUpload accepts one file by default.
 Use `allowsMultiple` to add several files.
 
 <Story of={Stories.Multiple} />
-
-## Accepted file types
-
-Use `accept` to restrict selectable and dropped file types.
-
-<Story of={Stories.Images} />
 
 ## Duplicate files
 
@@ -99,7 +94,11 @@ Render upload progress inside the item row.
 
 ## Validation
 
-Validate files in `onAdd` and report errors below the list.
+Use `accept` and `maxFileSize` for standard checks, and `validate` for custom
+synchronous checks. Invalid files remain in the collection.
+
+Pass text or JSX to `errorMessage` to replace generated errors. Pass a function
+to format the `ValidationResult`, or `null` to hide the error text.
 
 <Story of={Stories.Validation} />
 

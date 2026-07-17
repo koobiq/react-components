@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useRef } from 'react';
+import { forwardRef, useLayoutEffect, useMemo, useRef } from 'react';
 import type { ForwardedRef } from 'react';
 
 import {
@@ -32,12 +32,21 @@ import type {
   FileUploadItemContentProps,
   FileUploadRemoveButtonProps,
 } from '../../types';
+import { isAcceptedFile } from '../../utils';
 
 import s from './Item.module.css';
 
 class FileUploadItemNode extends CollectionNode<unknown> {
   static readonly type = 'item';
 }
+
+const toValidationErrors = (
+  result: string | string[] | true | null | undefined
+): string[] => {
+  if (!result || result === true) return [];
+
+  return Array.isArray(result) ? result : [result];
+};
 
 /** A single row in the file collection. */
 export const FileUploadItem = createLeafComponent(
@@ -51,19 +60,68 @@ export const FileUploadItem = createLeafComponent(
       children,
       className,
       style,
+      file,
       isDisabled: isDisabledProp,
       isInvalid: isInvalidProp,
       'data-testid': testId,
       ...other
     } = props;
 
-    const { allowsMultiple, isDisabled: groupDisabled } =
-      useFileUploadContext();
+    const {
+      accept,
+      maxFileSize,
+      validate,
+      messages,
+      allowsMultiple,
+      isDisabled: groupDisabled,
+      registerItemValidation,
+      unregisterItemValidation,
+    } = useFileUploadContext();
+
+    const validationErrors = useMemo(() => {
+      if (!file) return [];
+
+      const errors: string[] = [];
+
+      if (!isAcceptedFile(file, accept)) {
+        errors.push(messages.unsupportedFileType);
+      }
+
+      if (maxFileSize !== undefined && file.size > maxFileSize) {
+        errors.push(messages.fileSizeLimitExceeded);
+      }
+
+      return [...errors, ...toValidationErrors(validate?.(file))];
+    }, [
+      file,
+      accept,
+      maxFileSize,
+      validate,
+      messages.unsupportedFileType,
+      messages.fileSizeLimitExceeded,
+    ]);
 
     const isDisabled = groupDisabled || isDisabledProp || false;
-    const isInvalid = isInvalidProp || false;
+    const isInvalid = Boolean(isInvalidProp || validationErrors.length > 0);
     delete other.id;
     delete other.textValue;
+
+    useLayoutEffect(() => {
+      registerItemValidation(
+        node.key,
+        node.textValue || file?.name || '',
+        validationErrors
+      );
+
+      return () => unregisterItemValidation(node.key);
+    }, [
+      file,
+      node.key,
+      node.textValue,
+      validationErrors,
+      registerItemValidation,
+      unregisterItemValidation,
+    ]);
 
     const { hoverProps, isHovered } = useHover({ isDisabled });
     const { focusProps, isFocusVisible } = useFocusRing({ within: true });

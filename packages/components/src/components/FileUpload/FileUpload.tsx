@@ -3,6 +3,7 @@
 import type { Ref } from 'react';
 import {
   useRef,
+  useState,
   useMemo,
   forwardRef,
   useCallback,
@@ -71,6 +72,11 @@ import { getCollectionKeys, prepareFileUploadFiles } from './utils';
 
 type PendingFocus = { type: 'item'; id: Key } | { type: 'trigger' } | null;
 
+type ItemValidation = {
+  name: string;
+  errors: string[];
+};
+
 type FileUploadInnerProps<T extends object> = {
   props: Omit<FileUploadProps<T>, 'ref' | 'items' | 'children'>;
   collection: AriaCollection<Node<T>>;
@@ -89,6 +95,8 @@ function FileUploadInner<T extends object>({
     allowed = 'file',
     size = 'default',
     accept,
+    maxFileSize,
+    validate,
     onAdd,
     style,
     onRemove,
@@ -129,14 +137,99 @@ function FileUploadInner<T extends object>({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const numberFormatter = useNumberFormatter({ maximumFractionDigits: 2 });
 
+  const messages = useMemo<FileUploadMessages>(() => {
+    const localizedMessages = {
+      emptyTitle: stringFormatter.format('emptyTitle'),
+      listEmptyText: stringFormatter.format('listEmptyText'),
+      dropOverlayTitle: stringFormatter.format('dropOverlayTitle'),
+      addMoreText: stringFormatter.format('addMoreText'),
+      alternativeSeparator: stringFormatter.format('alternativeSeparator'),
+      browseFile: stringFormatter.format('browseFile'),
+      browseFiles: stringFormatter.format('browseFiles'),
+      browseFolder: stringFormatter.format('browseFolder'),
+      browseFilesOrFolder: stringFormatter.format('browseFilesOrFolder'),
+      browseFolderMixed: stringFormatter.format('browseFolderMixed'),
+      removeButtonLabel: stringFormatter.format('removeButtonLabel'),
+      unsupportedFileType: stringFormatter.format('unsupportedFileType'),
+      fileSizeLimitExceeded: stringFormatter.format('fileSizeLimitExceeded'),
+      bytesUnit: stringFormatter.format('bytesUnit'),
+      kilobytesUnit: stringFormatter.format('kilobytesUnit'),
+      megabytesUnit: stringFormatter.format('megabytesUnit'),
+      gigabytesUnit: stringFormatter.format('gigabytesUnit'),
+      terabytesUnit: stringFormatter.format('terabytesUnit'),
+    };
+
+    return { ...localizedMessages, ...messageOverrides };
+  }, [stringFormatter, messageOverrides]);
+
+  const getItemRef = useKeyedRefs<HTMLButtonElement>();
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const pendingFocus = useRef<PendingFocus>(null);
+
+  const [itemValidations, setItemValidations] = useState<
+    Map<Key, ItemValidation>
+  >(new Map());
+
+  const unregisterItemValidation = useCallback((id: Key) => {
+    setItemValidations((current) => {
+      if (!current.has(id)) return current;
+
+      const next = new Map(current);
+      next.delete(id);
+
+      return next;
+    });
+  }, []);
+
+  const registerItemValidation = useCallback(
+    (id: Key, name: string, errors: string[]) => {
+      if (errors.length === 0) {
+        unregisterItemValidation(id);
+
+        return;
+      }
+
+      setItemValidations((current) => {
+        const previous = current.get(id);
+
+        const isUnchanged =
+          previous?.name === name &&
+          previous.errors.length === errors.length &&
+          previous.errors.every((error, index) => error === errors[index]);
+
+        if (isUnchanged) return current;
+
+        return new Map(current).set(id, { name, errors });
+      });
+    },
+    [unregisterItemValidation]
+  );
+
+  const validationErrors = useMemo(
+    () =>
+      collectionKeys.flatMap((id) => {
+        const validation = itemValidations.get(id);
+
+        if (!validation) return [];
+
+        return validation.errors.map((error) =>
+          validation.name ? `${validation.name} — ${error}` : error
+        );
+      }),
+    [collectionKeys, itemValidations]
+  );
+
+  const isInvalid = isInvalidProp || validationErrors.length > 0;
+
   const field = useFileUploadField({
     id,
     role,
     label,
     caption,
-    hasErrorMessage: errorMessage != null,
+    hasErrorMessage: errorMessage != null || validationErrors.length > 0,
     isDisabled,
-    isInvalid: isInvalidProp,
+    isInvalid,
+    validationErrors,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
@@ -160,37 +253,18 @@ function FileUploadInner<T extends object>({
     slotProps?.caption
   );
 
+  let errorMessageChildren = errorMessage;
+
+  if (errorMessage === null) {
+    // RAC falls back to validationErrors for null children. An empty element
+    // keeps the error relationship while intentionally rendering no text.
+    errorMessageChildren = <></>;
+  }
+
   const errorMessageProps = mergeProps<(FormFieldErrorProps | undefined)[]>(
-    { children: errorMessage },
+    { children: errorMessageChildren },
     slotProps?.errorMessage
   );
-
-  const messages = useMemo<FileUploadMessages>(() => {
-    const localizedMessages = {
-      emptyTitle: stringFormatter.format('emptyTitle'),
-      listEmptyText: stringFormatter.format('listEmptyText'),
-      dropOverlayTitle: stringFormatter.format('dropOverlayTitle'),
-      addMoreText: stringFormatter.format('addMoreText'),
-      alternativeSeparator: stringFormatter.format('alternativeSeparator'),
-      browseFile: stringFormatter.format('browseFile'),
-      browseFiles: stringFormatter.format('browseFiles'),
-      browseFolder: stringFormatter.format('browseFolder'),
-      browseFilesOrFolder: stringFormatter.format('browseFilesOrFolder'),
-      browseFolderMixed: stringFormatter.format('browseFolderMixed'),
-      removeButtonLabel: stringFormatter.format('removeButtonLabel'),
-      bytesUnit: stringFormatter.format('bytesUnit'),
-      kilobytesUnit: stringFormatter.format('kilobytesUnit'),
-      megabytesUnit: stringFormatter.format('megabytesUnit'),
-      gigabytesUnit: stringFormatter.format('gigabytesUnit'),
-      terabytesUnit: stringFormatter.format('terabytesUnit'),
-    };
-
-    return { ...localizedMessages, ...messageOverrides };
-  }, [stringFormatter, messageOverrides]);
-
-  const getItemRef = useKeyedRefs<HTMLButtonElement>();
-  const triggerRef = useRef<HTMLElement | null>(null);
-  const pendingFocus = useRef<PendingFocus>(null);
 
   const setTriggerRef = useCallback((element: HTMLElement | null) => {
     triggerRef.current = element;
@@ -216,14 +290,13 @@ function FileUploadInner<T extends object>({
       if (isDisabled || files.length === 0) return;
 
       const preparedFiles = prepareFileUploadFiles(files, {
-        accept,
         allowed,
         allowsMultiple,
       });
 
       if (preparedFiles.length > 0) onAdd?.(preparedFiles);
     },
-    [accept, allowed, isDisabled, allowsMultiple, onAdd]
+    [allowed, isDisabled, allowsMultiple, onAdd]
   );
 
   const isFullscreen = dropzoneTarget === 'fullscreen';
@@ -276,6 +349,8 @@ function FileUploadInner<T extends object>({
   const contextValue = useMemo<FileUploadContextValue>(
     () => ({
       accept,
+      maxFileSize,
+      validate,
       allowed,
       size,
       isDisabled,
@@ -285,11 +360,15 @@ function FileUploadInner<T extends object>({
       removeItem,
       getItemRef,
       setTriggerRef,
+      registerItemValidation,
+      unregisterItemValidation,
       messages,
       formatSize,
     }),
     [
       accept,
+      maxFileSize,
+      validate,
       allowed,
       size,
       isDisabled,
@@ -299,6 +378,8 @@ function FileUploadInner<T extends object>({
       removeItem,
       getItemRef,
       setTriggerRef,
+      registerItemValidation,
+      unregisterItemValidation,
       messages,
       formatSize,
     ]
@@ -320,7 +401,7 @@ function FileUploadInner<T extends object>({
     'data-empty': isEmpty || undefined,
     'data-list-empty': (isEmpty && !showsLargeEmpty) || undefined,
     'data-disabled': isDisabled || undefined,
-    'data-invalid': isInvalidProp || undefined,
+    'data-invalid': isInvalid || undefined,
     'data-multiple': allowsMultiple || undefined,
     'data-required': isRequired || undefined,
     'data-testid': testId,

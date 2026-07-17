@@ -6,6 +6,7 @@ import type { RefObject } from 'react';
 import type { Key } from '@koobiq/react-core';
 
 import type {
+  FileUploadValidate,
   FileUploadMessages,
   FileUploadPropSize,
   FileUploadPropAllowed,
@@ -14,6 +15,8 @@ import type {
 export type FileUploadContextValue = {
   allowsMultiple: boolean;
   accept?: string[];
+  maxFileSize?: number;
+  validate?: FileUploadValidate;
   allowed: FileUploadPropAllowed;
   size: FileUploadPropSize;
   isDisabled: boolean;
@@ -26,6 +29,10 @@ export type FileUploadContextValue = {
   getItemRef: (id: Key) => RefObject<HTMLButtonElement | null>;
   /** Register the browse-link element for focus restoration. */
   setTriggerRef: (element: HTMLElement | null) => void;
+  /** Register validation errors produced by a rendered item. */
+  registerItemValidation: (id: Key, name: string, errors: string[]) => void;
+  /** Remove validation errors when an item is no longer rendered. */
+  unregisterItemValidation: (id: Key) => void;
   /** Resolved localized strings. */
   messages: FileUploadMessages;
   /** Locale-aware file-size formatter. */
