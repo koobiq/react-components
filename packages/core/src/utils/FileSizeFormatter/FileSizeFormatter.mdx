@@ -1,0 +1,92 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './FileSizeFormatter.stories';
+
+<Meta of={Stories} />
+
+# FileSizeFormatter
+
+<Status variant="experimental" />
+
+Formats byte values using SI and IEC measurement systems.
+
+## Import
+
+```tsx
+import { FileSizeFormatter } from '@koobiq/react-core';
+```
+
+## Usage
+
+Create one formatter for a locale and reuse it.
+
+```tsx
+const formatter = new FileSizeFormatter('en-US');
+
+formatter.format(1500);
+// 1.5 KB
+```
+
+SI is used by default: `1 KB = 1000 bytes`. Use IEC for binary units, where
+`1 KiB = 1024 bytes`.
+
+```tsx
+const formatter = new FileSizeFormatter('en-US', {
+  defaultUnitSystem: 'IEC',
+});
+
+formatter.format(1536);
+// 1.5 KiB
+```
+
+<Story of={Stories.Base} />
+
+## Hook
+
+Use `useFileSizeFormatter` inside components. It reads the current locale from
+context and memoizes the formatter, so it's only recreated when the locale or
+`config` changes.
+
+```tsx
+import { useFileSizeFormatter } from '@koobiq/react-core';
+
+function FileSize({ bytes }: { bytes: number }) {
+  const formatter = useFileSizeFormatter();
+
+  return <span>{formatter.format(bytes)}</span>;
+}
+```
+
+Pass a `config` to switch measurement systems, change precision, or override
+unit labels:
+
+```tsx
+const formatter = useFileSizeFormatter({
+  defaultUnitSystem: 'IEC',
+  defaultPrecision: 1,
+});
+```
+
+## Precision
+
+The default maximum precision is two fraction digits. Override it for the
+formatter or an individual value.
+
+```tsx
+const formatter = new FileSizeFormatter('en-US', {
+  defaultPrecision: 1,
+});
+
+formatter.format(1550);
+// 1.6 KB
+
+formatter.format(1550, { precision: 2 });
+// 1.55 KB
+```
+
+## Localization
+
+The locale controls number formatting and unit abbreviations. A non-breaking
+space is always used between the value and unit.
+
+<Story of={Stories.Localization} />

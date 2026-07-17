@@ -104,6 +104,50 @@ export type ExtendableComponentPropsWithRef<Props, Element extends ElementType> 
 // @public (undocumented)
 export type ExtendableProps<OverrideProps = Record<string, unknown>, ExtendedProps = Record<string, unknown>> = Merge<ExtendedProps, OverrideProps>;
 
+// @public (undocumented)
+export const FILE_SIZE_FORMATTER_ERROR_PRECISION_RANGE = "FileSizeFormatter: \"precision\" must be an integer between 0 and 100.";
+
+// @public
+export type FileSizeFormatOptions = {
+    precision?: number;
+    unitSystem?: FileSizeMeasurementSystem;
+};
+
+// @public
+export class FileSizeFormatter {
+    constructor(locale?: string, config?: FileSizeFormatterConfig);
+    format(value: number, options?: FileSizeFormatOptions): string;
+}
+
+// @public
+export type FileSizeFormatterConfig = {
+    defaultUnitSystem?: FileSizeMeasurementSystem;
+    defaultPrecision?: number;
+    unitSystems?: Partial<Record<FileSizeMeasurementSystem, Partial<FileSizeUnitSystem>>>;
+};
+
+// @public
+export type FileSizeMeasurementSystem = (typeof fileSizeMeasurementSystem)[number];
+
+// @public
+export const fileSizeMeasurementSystem: readonly ["SI", "IEC"];
+
+// @public
+export type FileSizeUnitAbbreviations = readonly [
+string,
+string,
+string,
+string,
+string
+];
+
+// @public
+export type FileSizeUnitSystem = {
+    abbreviations: FileSizeUnitAbbreviations;
+    base: number;
+    power: number;
+};
+
 export { filterDOMProps }
 
 export { FocusableElement }
@@ -306,6 +350,9 @@ export function useEventListener<K extends keyof DocumentEventMap>(input: UseEve
 
 // @public (undocumented)
 export function useEventListener(input: UseEventListener<string, (event: Event | CustomEvent) => void, RefObject_2<Document | HTMLElement | Window> | undefined>): void;
+
+// @public
+export function useFileSizeFormatter(config?: FileSizeFormatterConfig): FileSizeFormatter;
 
 // @public
 export function useHideOverflowItems<Item extends HTMLElement = HTMLDivElement, Parent extends HTMLElement = HTMLDivElement>(input: UseHideOverflowItemsProps): {
