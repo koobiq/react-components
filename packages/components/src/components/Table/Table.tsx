@@ -1,7 +1,7 @@
 'use client';
 
 import type { ComponentRef, Ref } from 'react';
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useMemo } from 'react';
 
 import { once } from '@koobiq/logger';
 import { clsx, useDOMRef, mergeProps } from '@koobiq/react-core';
@@ -9,6 +9,8 @@ import type { Node } from '@koobiq/react-core';
 import {
   useTable,
   useTableState,
+  TableCollection,
+  LegacyCollectionBuilder,
   useTableColumnResizeState,
 } from '@koobiq/react-primitives';
 import type {
@@ -44,6 +46,40 @@ type ResizableTableProps<T> = TableProps<T> & {
   state: TableState<T>;
   tableRef?: Ref<HTMLTableElement>;
 };
+
+function useLegacyTableCollection<T extends object>(
+  props: TableProps<T>,
+  showSelectionCheckboxes: boolean
+) {
+  const { children, selectionMode = 'none' } = props;
+
+  const context = useMemo(
+    () => ({
+      showSelectionCheckboxes,
+      showDragButtons: false,
+      selectionMode,
+      columns: [] as Node<T>[],
+    }),
+    [children, selectionMode, showSelectionCheckboxes]
+  );
+
+  const builder = useMemo(() => new LegacyCollectionBuilder<T>(), [context]);
+
+  return useMemo(() => {
+    // The legacy builder's public types only describe generic Item/Section
+    // collections, while Table uses compatible Row/Cell collection elements.
+    const nodes = builder.build(
+      { children } as Parameters<typeof builder.build>[0],
+      context
+    );
+
+    return new TableCollection(
+      nodes as ConstructorParameters<typeof TableCollection<T>>[0],
+      null,
+      context
+    );
+  }, [builder, children, context]);
+}
 
 function TableBase<T extends object>(props: TableBaseProps<T>) {
   const {
@@ -175,10 +211,15 @@ function TableRender<T extends object>(
 ) {
   const { selectionMode, selectionBehavior, isResizable } = props;
 
+  const showSelectionCheckboxes =
+    selectionMode === 'multiple' && selectionBehavior !== 'replace';
+
+  const collection = useLegacyTableCollection(props, showSelectionCheckboxes);
+
   const state = useTableState({
     ...props,
-    showSelectionCheckboxes:
-      selectionMode === 'multiple' && selectionBehavior !== 'replace',
+    collection,
+    showSelectionCheckboxes,
   });
 
   return isResizable ? (
