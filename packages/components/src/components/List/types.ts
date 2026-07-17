@@ -10,7 +10,15 @@ import type {
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { AriaListBoxProps } from '@koobiq/react-primitives';
 
+import type { DividerProps, ItemProps, SectionProps } from '../Collections';
 import type { TypographyProps } from '../Typography';
+
+import type { ListItemAddonProps as ListItemAddonBaseProps } from './components';
+
+export type ListItemProps<T> = ItemProps<T>;
+export type ListSectionProps<T> = SectionProps<T>;
+export type ListDividerProps = DividerProps;
+export type ListItemAddonProps = ListItemAddonBaseProps;
 
 export type ListProps<T> = ExtendableProps<
   {

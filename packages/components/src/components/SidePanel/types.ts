@@ -8,7 +8,16 @@ import type {
 import type { ButtonOptions } from '@koobiq/react-primitives';
 
 import type { BackdropProps } from '../Backdrop';
-import type { DialogProps } from '../Dialog';
+import type {
+  DialogBodyProps,
+  DialogFooterProps,
+  DialogHeaderProps,
+  DialogProps,
+} from '../Dialog';
+
+export type SidePanelHeaderProps = DialogHeaderProps;
+export type SidePanelBodyProps = DialogBodyProps;
+export type SidePanelFooterProps = DialogFooterProps;
 
 export const sidePanelPropSize = ['small', 'medium', 'large'] as const;
 

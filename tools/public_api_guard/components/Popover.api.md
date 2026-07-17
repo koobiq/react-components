@@ -30,6 +30,9 @@ export const Popover: CompoundedComponent;
 
 // Warning: (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
 //
+// @public (undocumented)
+export type PopoverBodyProps = DialogBodyProps;
+
 // @public @deprecated (undocumented)
 export const PopoverContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
@@ -38,10 +41,16 @@ export const PopoverContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "re
 // @public @deprecated (undocumented)
 export const PopoverFooter: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
+// @public (undocumented)
+export type PopoverFooterProps = DialogFooterProps;
+
 // Warning: (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
 //
 // @public @deprecated (undocumented)
 export const PopoverHeader: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
+
+// @public (undocumented)
+export type PopoverHeaderProps = DialogHeaderProps;
 
 // @public (undocumented)
 export type PopoverInnerProps = {
@@ -116,7 +125,7 @@ export const popoverPropType: readonly ["dialog", "menu", "listbox", "tree", "gr
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Popover/types.d.ts:123:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Popover/types.d.ts:126:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

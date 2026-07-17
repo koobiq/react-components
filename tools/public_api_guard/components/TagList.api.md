@@ -51,6 +51,11 @@ export const tagListPropVariant: readonly ["theme-fade", "contrast-fade", "error
 // @public (undocumented)
 export type TagListRef = ComponentRef<'div'>;
 
+// Warning: (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type TagListTagProps<T extends object = object> = TagProps<T>;
+
 // (No @packageDocumentation comment for this package)
 
 ```

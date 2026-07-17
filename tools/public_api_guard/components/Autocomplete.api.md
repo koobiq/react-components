@@ -45,6 +45,21 @@ export type AutocompleteComponent = <T extends object = object>(props: Autocompl
 // @public (undocumented)
 export type AutocompleteInputPropVariant = FormFieldControlGroupPropVariant;
 
+// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type AutocompleteItemAddonProps = ListItemAddonProps;
+
+// Warning: (ae-forgotten-export) The symbol "ItemProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type AutocompleteItemProps<T extends object = object> = ItemProps<T>;
+
+// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type AutocompleteItemTextProps = ListItemTextProps;
+
 // Warning: (ae-forgotten-export) The symbol "FormFieldPropLabelAlign" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
@@ -107,18 +122,23 @@ export type AutocompleteRef = ComponentRef<'input'>;
 // @public (undocumented)
 export function AutocompleteRender<T extends object = object>(props: Omit<AutocompleteProps<T>, 'ref'>, ref: Ref<AutocompleteRef>): JSX.Element;
 
+// Warning: (ae-forgotten-export) The symbol "SectionProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type AutocompleteSectionProps<T extends object = object> = SectionProps<T>;
+
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Autocomplete/types.d.ts:53:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:54:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:55:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:56:9 - (ae-forgotten-export) The symbol "FormFieldInputProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:57:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:58:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:59:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:60:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:61:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Autocomplete/types.d.ts:62:9 - (ae-forgotten-export) The symbol "ListInnerProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:59:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:60:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:61:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:62:9 - (ae-forgotten-export) The symbol "FormFieldInputProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:63:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:64:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:65:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:66:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:67:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/types.d.ts:68:9 - (ae-forgotten-export) The symbol "ListInnerProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

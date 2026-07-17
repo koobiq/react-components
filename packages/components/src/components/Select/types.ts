@@ -13,6 +13,7 @@ import type {
   useMultiSelectState,
 } from '@koobiq/react-primitives';
 
+import type { DividerProps, ItemProps, SectionProps } from '../Collections';
 import type {
   FormFieldLabelProps,
   FormFieldErrorProps,
@@ -27,6 +28,7 @@ import {
   formFieldPropLabelPlacement,
 } from '../FormField';
 import type { IconButtonProps } from '../IconButton';
+import type { ListItemTextProps } from '../List';
 import type { PopoverProps } from '../Popover';
 
 import type { SelectListProps } from './components';
@@ -44,6 +46,11 @@ export type SelectPropLabelPlacement = FormFieldPropLabelPlacement;
 
 export const selectPropLabelAlign = formFieldPropLabelAlign;
 export type SelectPropLabelAlign = FormFieldPropLabelAlign;
+
+export type SelectItemProps<T> = ItemProps<T>;
+export type SelectSectionProps<T> = SectionProps<T>;
+export type SelectDividerProps = DividerProps;
+export type SelectItemTextProps = ListItemTextProps;
 
 export type SelectProps<T> = ExtendableProps<
   {

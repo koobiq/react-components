@@ -5,6 +5,9 @@ import type { AriaTagAutocompleteProps } from '@koobiq/react-primitives';
 import type { ListInnerProps } from '../List';
 import type { PopoverProps } from '../Popover';
 import type { TagInputProps, TagInputRef } from '../TagInput';
+import type { TagProps } from '../TagList/Tag';
+
+export type TagAutocompleteTagProps<T extends object = object> = TagProps<T>;
 
 type TagAutocompleteBaseProps<T extends object> = Omit<
   AriaTagAutocompleteProps<T>,
