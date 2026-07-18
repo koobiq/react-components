@@ -27,6 +27,9 @@ export const Modal: CompoundedComponent;
 
 // Warning: (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
 //
+// @public (undocumented)
+export type ModalBodyProps = DialogBodyProps;
+
 // @public @deprecated (undocumented)
 export const ModalContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
@@ -35,10 +38,16 @@ export const ModalContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"
 // @public @deprecated (undocumented)
 export const ModalFooter: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
+// @public (undocumented)
+export type ModalFooterProps = DialogFooterProps;
+
 // Warning: (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
 //
 // @public @deprecated (undocumented)
 export const ModalHeader: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
+
+// @public (undocumented)
+export type ModalHeaderProps = DialogHeaderProps;
 
 // @public (undocumented)
 export type ModalPropContent = ReactNode | ((props: {
@@ -86,8 +95,8 @@ export type ModalRef = ComponentRef<'div'>;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Modal/types.d.ts:76:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Modal/types.d.ts:77:9 - (ae-forgotten-export) The symbol "BackdropProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Modal/types.d.ts:79:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Modal/types.d.ts:80:9 - (ae-forgotten-export) The symbol "BackdropProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

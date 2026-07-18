@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import { createRef, useMemo, useState } from 'react';
 
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -89,6 +89,252 @@ describe('Table', () => {
     const firstElement = container.firstChild;
 
     expect(firstElement).toHaveStyle({ padding: '20px' });
+  });
+
+  it('should invalidate dynamic rows when Table.Body props change', () => {
+    const rows = [{ id: 1, name: 'home' }];
+    const renderRow = vi.fn();
+
+    const ConditionalTable = ({
+      isHighlighted,
+    }: {
+      isHighlighted: boolean;
+    }) => (
+      <Table aria-label="Conditional row class">
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+        </Table.Header>
+        <Table.Body items={rows}>
+          {(item) => {
+            renderRow();
+
+            return (
+              <Table.Row
+                className={isHighlighted ? 'highlighted' : undefined}
+                data-testid="row"
+              >
+                <Table.Cell>{item.name}</Table.Cell>
+              </Table.Row>
+            );
+          }}
+        </Table.Body>
+      </Table>
+    );
+
+    const { rerender } = render(<ConditionalTable isHighlighted={false} />);
+
+    expect(screen.getByTestId('row')).not.toHaveClass('highlighted');
+    expect(renderRow).toHaveBeenCalledTimes(1);
+
+    rerender(<ConditionalTable isHighlighted={false} />);
+
+    expect(renderRow).toHaveBeenCalledTimes(2);
+
+    rerender(<ConditionalTable isHighlighted />);
+
+    expect(screen.getByTestId('row')).toHaveClass('highlighted');
+    expect(renderRow).toHaveBeenCalledTimes(3);
+
+    rerender(<ConditionalTable isHighlighted={false} />);
+
+    expect(screen.getByTestId('row')).not.toHaveClass('highlighted');
+    expect(renderRow).toHaveBeenCalledTimes(4);
+  });
+
+  it('should invalidate dynamic columns when Table.Header props change', () => {
+    const columns = [{ key: 'name', name: 'Name' }];
+    const rows = [{ id: 1, name: 'home' }];
+
+    const ConditionalTable = ({
+      isHighlighted,
+    }: {
+      isHighlighted: boolean;
+    }) => (
+      <Table aria-label="Conditional column class">
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column
+              key={column.key}
+              className={isHighlighted ? 'highlighted' : undefined}
+            >
+              {column.name}
+            </Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {(item) => (
+            <Table.Row>
+              <Table.Cell>{item.name}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+
+    const { rerender } = render(<ConditionalTable isHighlighted={false} />);
+    const column = screen.getByRole('columnheader');
+
+    expect(column).not.toHaveClass('highlighted');
+
+    rerender(<ConditionalTable isHighlighted />);
+
+    expect(column).toHaveClass('highlighted');
+
+    rerender(<ConditionalTable isHighlighted={false} />);
+
+    expect(column).not.toHaveClass('highlighted');
+  });
+
+  it('should preserve selection when rebuilding the collection', async () => {
+    const rows = [{ id: 1, name: 'home' }];
+
+    const SelectableTable = ({ isHighlighted }: { isHighlighted: boolean }) => (
+      <Table aria-label="Selectable table" selectionMode="single">
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+        </Table.Header>
+        <Table.Body items={rows}>
+          {(item) => (
+            <Table.Row
+              className={isHighlighted ? 'highlighted' : undefined}
+              data-testid="selectable-row"
+            >
+              <Table.Cell>{item.name}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+
+    const { rerender } = render(<SelectableTable isHighlighted={false} />);
+    const row = screen.getByTestId('selectable-row');
+
+    await userEvent.click(row);
+
+    expect(row).toHaveAttribute('data-selected', 'true');
+
+    rerender(<SelectableTable isHighlighted />);
+
+    expect(screen.getByTestId('selectable-row')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+
+    expect(screen.getByTestId('selectable-row')).toHaveClass('highlighted');
+  });
+
+  it('should preserve sorting when rebuilding the collection', async () => {
+    type Row = { id: number; name: string };
+
+    const rows: Row[] = [
+      { id: 1, name: 'Beta' },
+      { id: 2, name: 'Alpha' },
+    ];
+
+    const SortableTable = ({ isHighlighted }: { isHighlighted: boolean }) => {
+      const [sortDescriptor, setSortDescriptor] =
+        useState<TableProps<Row>['sortDescriptor']>();
+
+      const sortedRows = useMemo(() => {
+        if (!sortDescriptor) return rows;
+
+        const direction = sortDescriptor.direction === 'ascending' ? 1 : -1;
+
+        return [...rows].sort(
+          (a, b) => a.name.localeCompare(b.name) * direction
+        );
+      }, [sortDescriptor]);
+
+      return (
+        <Table
+          aria-label="Sortable collection"
+          sortDescriptor={sortDescriptor}
+          onSortChange={(descriptor) => setSortDescriptor(descriptor)}
+        >
+          <Table.Header>
+            <Table.Column key="name" allowsSorting>
+              Name
+            </Table.Column>
+          </Table.Header>
+          <Table.Body items={sortedRows}>
+            {(item) => (
+              <Table.Row className={isHighlighted ? 'highlighted' : undefined}>
+                <Table.Cell>{item.name}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      );
+    };
+
+    const getRowNames = () =>
+      screen
+        .getAllByRole('row')
+        .slice(1)
+        .map((row) => row.textContent);
+
+    const { rerender } = render(<SortableTable isHighlighted={false} />);
+
+    await userEvent.click(screen.getByRole('columnheader', { name: 'Name' }));
+
+    expect(getRowNames()).toEqual(['Alpha', 'Beta']);
+
+    rerender(<SortableTable isHighlighted />);
+
+    expect(getRowNames()).toEqual(['Alpha', 'Beta']);
+    expect(screen.getAllByRole('row')[1]).toHaveClass('highlighted');
+
+    await userEvent.click(screen.getByRole('columnheader', { name: 'Name' }));
+
+    expect(getRowNames()).toEqual(['Beta', 'Alpha']);
+  });
+
+  it('should preserve resized column width when rebuilding the collection', async () => {
+    const columns = [{ key: 'name', name: 'Name' }];
+    const rows = [{ id: 1, name: 'Alpha' }];
+
+    const ResizableTable = ({ isHighlighted }: { isHighlighted: boolean }) => (
+      <Table aria-label="Resizable collection" isResizable>
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column
+              key={column.key}
+              allowsResizing
+              defaultWidth={200}
+              className={isHighlighted ? 'highlighted' : undefined}
+            >
+              {column.name}
+            </Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {(item) => (
+            <Table.Row>
+              <Table.Cell>{item.name}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+
+    const { rerender } = render(<ResizableTable isHighlighted={false} />);
+    const initialWidth = screen.getByRole('columnheader').style.inlineSize;
+    const resizer = screen.getByRole('slider');
+
+    resizer.focus();
+    await userEvent.keyboard('{Enter}{ArrowRight}{Enter}');
+
+    const resizedWidth = screen.getByRole('columnheader').style.inlineSize;
+
+    expect(resizedWidth).not.toBe(initialWidth);
+
+    rerender(<ResizableTable isHighlighted />);
+
+    expect(screen.getByRole('columnheader').style.inlineSize).toBe(
+      resizedWidth
+    );
+
+    expect(screen.getByRole('columnheader')).toHaveClass('highlighted');
   });
 
   it('should accept a ref', () => {

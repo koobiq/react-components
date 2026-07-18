@@ -15,6 +15,10 @@ import type {
 } from '@koobiq/react-core';
 import type { ListState } from '@koobiq/react-primitives';
 
+import type { TagProps } from './Tag';
+
+export type TagListTagProps<T extends object = object> = TagProps<T>;
+
 export const tagListPropVariant = [
   'theme-fade',
   'contrast-fade',

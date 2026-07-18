@@ -1,0 +1,33 @@
+.base {
+  --kbq-sidebar-size: 240px;
+  --kbq-sidebar-closed-size: 32px;
+  --kbq-sidebar-open-duration: 200ms;
+  --kbq-sidebar-close-duration: 100ms;
+
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  block-size: 100%;
+  interpolate-size: allow-keywords; /* Kept for future intrinsic-size transition support. */
+  transition: inline-size var(--kbq-transition-slow);
+  transition-duration: var(--kbq-sidebar-close-duration);
+}
+
+.base[data-placement='end'] {
+  justify-content: flex-end;
+}
+
+/* animation */
+.base[data-transition='entering'] {
+  transition-duration: var(--kbq-sidebar-open-duration);
+}
+
+.base[data-transition='entering'],
+.base[data-transition='entered'] {
+  inline-size: var(--kbq-sidebar-size);
+}
+
+.base[data-transition='exiting'],
+.base[data-transition='exited'] {
+  inline-size: var(--kbq-sidebar-closed-size);
+}

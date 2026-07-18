@@ -32,8 +32,17 @@ import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
 import type { SearchInputProps } from '../SearchInput';
 import { selectedTagsPropOverflow } from '../SelectedTags';
+import type {
+  TreeItemContentProps,
+  TreeItemProps,
+  TreeLoadMoreItemProps,
+} from '../Tree';
 
 import type { TreeCollection } from './TreeInner';
+
+export type TreeSelectItemProps = TreeItemProps;
+export type TreeSelectItemContentProps = TreeItemContentProps;
+export type TreeSelectLoadMoreItemProps = TreeLoadMoreItemProps;
 
 export const treeSelectPropLabelPlacement = formFieldPropLabelPlacement;
 export type TreeSelectPropLabelPlacement = FormFieldPropLabelPlacement;

@@ -11,7 +11,7 @@ import {
 import type { StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Date formatter',
+  title: 'Utilities/DateFormatter',
   parameters: {
     layout: 'padded',
   },
@@ -41,7 +41,7 @@ function FormatsTable({
 
   return (
     <TableContainer>
-      <Table aria-label="Date formatter">
+      <Table aria-label="Date formatter" divider="row" fullWidth>
         <Table.Header>
           <Table.Column>Name</Table.Column>
           <Table.Column>Value</Table.Column>
@@ -71,7 +71,7 @@ function DurationShortestTable({
 
   return (
     <TableContainer>
-      <Table aria-label="Date formatter">
+      <Table aria-label="Date formatter" divider="row" fullWidth>
         <Table.Header>
           <Table.Column>Name</Table.Column>
           <Table.Column>Seconds</Table.Column>

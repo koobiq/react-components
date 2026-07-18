@@ -94,6 +94,7 @@ import type { Key as Key_2 } from '@koobiq/react-core';
 import { KeyboardEventHandler } from 'react';
 import { LabelableProps } from '@koobiq/react-core';
 import { LabelHTMLAttributes } from 'react';
+import { CollectionBuilder as LegacyCollectionBuilder } from '@react-stately/collections';
 import type { ListProps } from '@react-stately/list';
 import type { ListState } from '@react-stately/list';
 import type { MenuTriggerState } from '@react-stately/menu';
@@ -417,6 +418,8 @@ export const LabelContext: Context<ContextValue_2<LabelProps, HTMLElement>>;
 
 // @public (undocumented)
 export type LabelProps<As extends ElementType = 'label'> = ComponentPropsWithRef<typeof Label<As>>;
+
+export { LegacyCollectionBuilder }
 
 // @public
 export const Link: PolyForwardComponent<"a", LinkBaseProps, ElementType>;

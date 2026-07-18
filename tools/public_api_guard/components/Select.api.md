@@ -40,6 +40,21 @@ export const Select: CompoundedComponent;
 // @public (undocumented)
 export type SelectComponent = <T>(props: SelectProps<T>) => ReactElement | null;
 
+// Warning: (ae-forgotten-export) The symbol "DividerProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type SelectDividerProps = DividerProps;
+
+// Warning: (ae-forgotten-export) The symbol "ItemProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type SelectItemProps<T> = ItemProps<T>;
+
+// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type SelectItemTextProps = ListItemTextProps;
+
 // Warning: (ae-forgotten-export) The symbol "FormFieldPropLabelAlign" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
@@ -108,16 +123,21 @@ export const selectPropSelectedTagsOverflow: readonly ["multiline", "responsive"
 // @public (undocumented)
 export type SelectRef = ComponentRef<'div'>;
 
+// Warning: (ae-forgotten-export) The symbol "SectionProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type SelectSectionProps<T> = SectionProps<T>;
+
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Select/types.d.ts:88:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Select/types.d.ts:89:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Select/types.d.ts:90:9 - (ae-forgotten-export) The symbol "SelectListProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Select/types.d.ts:91:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Select/types.d.ts:92:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Select/types.d.ts:93:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Select/types.d.ts:94:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Select/types.d.ts:95:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:94:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:95:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:96:9 - (ae-forgotten-export) The symbol "SelectListProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:97:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:98:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:99:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:100:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/types.d.ts:101:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

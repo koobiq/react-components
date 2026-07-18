@@ -31,5 +31,5 @@ export const FormCaption = polymorphicForwardRef<'div', FormCaptionBaseProps>(
   )
 );
 
-export type FormCationProps<As extends ElementType = 'div'> =
+export type FormCaptionProps<As extends ElementType = 'div'> =
   ComponentPropsWithRef<typeof FormCaption<As>>;

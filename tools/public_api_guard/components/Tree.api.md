@@ -60,6 +60,9 @@ export function TreeItemContent(props: TreeItemContentProps): JSX.Element;
 export type TreeItemContentAddon = ListItemAddonProps;
 
 // @public (undocumented)
+export type TreeItemContentAddonProps = ListItemAddonProps;
+
+// @public (undocumented)
 export type TreeItemContentProps = TreeItemContentProps_2 & {
     slotProps?: TreeItemContentPropSlotProps;
 } & DataAttributeProps;
@@ -72,6 +75,9 @@ export type TreeItemContentPropSlotProps = {
 
 // @public (undocumented)
 export type TreeItemContentText = ListItemTextProps;
+
+// @public (undocumented)
+export type TreeItemContentTextProps = ListItemTextProps;
 
 // @public (undocumented)
 export type TreeItemPropAlign = (typeof treeItemPropAlign)[number];

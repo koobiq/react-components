@@ -6,7 +6,10 @@ export {
   type AriaToggleButtonGroupItemProps,
 } from '@react-aria/button';
 
-export { Item } from '@react-stately/collections';
+export {
+  Item,
+  CollectionBuilder as LegacyCollectionBuilder,
+} from '@react-stately/collections';
 
 export * from '@react-stately/data';
 

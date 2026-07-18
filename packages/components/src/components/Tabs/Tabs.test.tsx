@@ -170,6 +170,29 @@ describe('Tabs', () => {
     const hasNextScrollButton = (container: HTMLElement) =>
       !!findScrollButton(container, ariaLabelNextBtn);
 
+    const firePointerEvent = (
+      element: Element,
+      type: string,
+      {
+        pointerId,
+        pointerType,
+        ...eventInit
+      }: MouseEventInit & { pointerId: number; pointerType: string }
+    ) => {
+      const event = new MouseEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        ...eventInit,
+      });
+
+      Object.defineProperties(event, {
+        pointerId: { value: pointerId },
+        pointerType: { value: pointerType },
+      });
+
+      fireEvent(element, event);
+    };
+
     // Mock scrollTo method (jsdom doesn't support scrolling)
     Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
       value(options?: ScrollToOptions | number, y?: number) {
@@ -493,6 +516,248 @@ describe('Tabs', () => {
       if (prevScrollButton) fireEvent.click(prevScrollButton);
 
       expect(Number(scrollBox?.scrollLeft) < 100).toBeTruthy();
+    });
+
+    it('should drag horizontal tabs with the primary mouse button', () => {
+      const { container } = render(renderComponent({}));
+
+      const scrollBox = container.querySelector(
+        `.${s.scrollBox}`
+      ) as HTMLElement;
+
+      Object.defineProperty(scrollBox, 'scrollLeft', {
+        value: 100,
+        configurable: true,
+        writable: true,
+      });
+
+      Object.defineProperty(scrollBox, 'clientWidth', { value: 100 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
+      fireEvent.scroll(scrollBox);
+
+      firePointerEvent(scrollBox, 'pointerdown', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        button: 0,
+        clientX: 100,
+      });
+
+      firePointerEvent(scrollBox, 'pointermove', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        clientX: 60,
+      });
+
+      expect(scrollBox.scrollLeft).toBe(140);
+      expect(scrollBox).toHaveAttribute('data-dragging', 'true');
+
+      firePointerEvent(scrollBox, 'pointercancel', {
+        pointerId: 1,
+        pointerType: 'mouse',
+      });
+
+      expect(scrollBox).not.toHaveAttribute('data-dragging');
+    });
+
+    it('should not drag non-overflowing, vertical, or touch tabs', () => {
+      const { container, rerender } = render(
+        renderComponent({ orientation: 'vertical' })
+      );
+
+      let scrollBox = container.querySelector(`.${s.scrollBox}`) as HTMLElement;
+
+      Object.defineProperty(scrollBox, 'scrollLeft', {
+        value: 100,
+        configurable: true,
+        writable: true,
+      });
+
+      firePointerEvent(scrollBox, 'pointerdown', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        button: 0,
+        clientX: 100,
+      });
+
+      firePointerEvent(scrollBox, 'pointermove', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        clientX: 60,
+      });
+
+      expect(scrollBox.scrollLeft).toBe(100);
+
+      scrollBox.scrollLeft = 0;
+      rerender(renderComponent({}));
+
+      scrollBox = container.querySelector(`.${s.scrollBox}`) as HTMLElement;
+
+      firePointerEvent(scrollBox, 'pointerdown', {
+        pointerId: 2,
+        pointerType: 'mouse',
+        button: 0,
+        clientX: 100,
+      });
+
+      firePointerEvent(scrollBox, 'pointermove', {
+        pointerId: 2,
+        pointerType: 'mouse',
+        clientX: 60,
+      });
+
+      expect(scrollBox.scrollLeft).toBe(0);
+
+      Object.defineProperty(scrollBox, 'clientWidth', { value: 100 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
+      scrollBox.scrollLeft = 100;
+      fireEvent.scroll(scrollBox);
+
+      firePointerEvent(scrollBox, 'pointerdown', {
+        pointerId: 3,
+        pointerType: 'touch',
+        button: 0,
+        clientX: 100,
+      });
+
+      firePointerEvent(scrollBox, 'pointermove', {
+        pointerId: 3,
+        pointerType: 'touch',
+        clientX: 60,
+      });
+
+      expect(scrollBox.scrollLeft).toBe(100);
+    });
+
+    it('should not select a tab when its pointer interaction becomes a drag', () => {
+      const onSelectionChange = vi.fn();
+
+      const { container } = render(
+        renderComponent({ selectedKey: 1, onSelectionChange })
+      );
+
+      const scrollBox = container.querySelector(
+        `.${s.scrollBox}`
+      ) as HTMLElement;
+
+      const tab = screen.getByTestId(TAB__TEST_ID);
+
+      Object.defineProperty(scrollBox, 'clientWidth', { value: 100 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
+      fireEvent.scroll(scrollBox);
+
+      firePointerEvent(tab, 'pointerdown', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        button: 0,
+        clientX: 100,
+      });
+
+      // React Aria uses mouse events as a PointerEvent fallback in JSDOM.
+      fireEvent.mouseDown(tab, { button: 0, clientX: 100 });
+
+      expect(onSelectionChange).not.toHaveBeenCalled();
+
+      firePointerEvent(scrollBox, 'pointermove', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        clientX: 60,
+      });
+
+      firePointerEvent(scrollBox, 'pointerup', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        button: 0,
+        clientX: 60,
+      });
+
+      fireEvent.mouseUp(scrollBox, { button: 0, clientX: 60 });
+      fireEvent.click(tab);
+
+      expect(onSelectionChange).not.toHaveBeenCalled();
+    });
+
+    it('should select an overflowed tab when a mouse press is released without dragging', () => {
+      const onSelectionChange = vi.fn();
+
+      const { container } = render(
+        renderComponent({ selectedKey: 1, onSelectionChange })
+      );
+
+      const scrollBox = container.querySelector(
+        `.${s.scrollBox}`
+      ) as HTMLElement;
+
+      const tab = screen.getByTestId(TAB__TEST_ID);
+
+      Object.defineProperty(scrollBox, 'clientWidth', { value: 100 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
+      fireEvent.scroll(scrollBox);
+
+      fireEvent.mouseDown(tab, { button: 0 });
+
+      expect(onSelectionChange).not.toHaveBeenCalled();
+
+      fireEvent.mouseUp(tab, { button: 0 });
+      fireEvent.click(tab);
+
+      expect(onSelectionChange).toHaveBeenCalledOnce();
+      expect(onSelectionChange).toHaveBeenCalledWith('2');
+    });
+
+    it('should keep scrolling with inertia after mouse release', () => {
+      let frameCallback: FrameRequestCallback | undefined;
+
+      const requestAnimationFrameSpy = vi
+        .spyOn(window, 'requestAnimationFrame')
+        .mockImplementation((callback) => {
+          frameCallback = callback;
+
+          return 1;
+        });
+
+      const { container } = render(renderComponent({}));
+
+      const scrollBox = container.querySelector(
+        `.${s.scrollBox}`
+      ) as HTMLElement;
+
+      Object.defineProperty(scrollBox, 'scrollLeft', {
+        value: 100,
+        configurable: true,
+        writable: true,
+      });
+
+      Object.defineProperty(scrollBox, 'clientWidth', { value: 100 });
+      Object.defineProperty(scrollBox, 'scrollWidth', { value: 300 });
+      fireEvent.scroll(scrollBox);
+
+      firePointerEvent(scrollBox, 'pointerdown', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        button: 0,
+        clientX: 100,
+      });
+
+      firePointerEvent(scrollBox, 'pointermove', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        clientX: 60,
+      });
+
+      firePointerEvent(scrollBox, 'pointerup', {
+        pointerId: 1,
+        pointerType: 'mouse',
+        button: 0,
+        clientX: 60,
+      });
+
+      const scrollLeftAfterDrag = scrollBox.scrollLeft;
+
+      act(() => frameCallback?.(16));
+
+      expect(scrollBox.scrollLeft).toBeGreaterThan(scrollLeftAfterDrag);
+
+      requestAnimationFrameSpy.mockRestore();
     });
   });
 });
