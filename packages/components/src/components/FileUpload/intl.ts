@@ -13,11 +13,6 @@ export default {
     removeButtonLabel: 'Удалить',
     unsupportedFileType: 'Неподдерживаемый тип файла',
     fileSizeLimitExceeded: 'Превышен допустимый размер файла',
-    bytesUnit: 'Б',
-    kilobytesUnit: 'КБ',
-    megabytesUnit: 'МБ',
-    gigabytesUnit: 'ГБ',
-    terabytesUnit: 'ТБ',
   },
   'en-US': {
     emptyTitle: 'Drag here',
@@ -33,10 +28,5 @@ export default {
     removeButtonLabel: 'Remove',
     unsupportedFileType: 'Unsupported file type',
     fileSizeLimitExceeded: 'The file size limit has been exceeded',
-    bytesUnit: 'B',
-    kilobytesUnit: 'KB',
-    megabytesUnit: 'MB',
-    gigabytesUnit: 'GB',
-    terabytesUnit: 'TB',
   },
 } as unknown as Record<string, Record<string, string>>;

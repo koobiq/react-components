@@ -937,7 +937,7 @@ describe('FileUpload', () => {
     });
 
     expect(
-      screen.getByText('145.42\u00a0KB', { normalizer: (value) => value })
+      screen.getByText('148.91\u00a0KB', { normalizer: (value) => value })
     ).toBeInTheDocument();
   });
 
@@ -1583,15 +1583,52 @@ describe('FileUpload', () => {
 
   it('formats numeric ItemSize children using the current locale', () => {
     render(
-      <FileUpload aria-label="upload">
-        <FileUpload.Item id="size.txt" textValue="size.txt">
-          <FileUpload.ItemSize>{148909}</FileUpload.ItemSize>
-        </FileUpload.Item>
-      </FileUpload>
+      <Provider locale="ru-RU">
+        <FileUpload aria-label="upload">
+          <FileUpload.Item id="size.txt" textValue="size.txt">
+            <FileUpload.ItemSize>{148909}</FileUpload.ItemSize>
+          </FileUpload.Item>
+        </FileUpload>
+      </Provider>
     );
 
     expect(
-      screen.getByText('145.42\u00a0KB', { normalizer: (value) => value })
+      screen.getByText('148,91\u00a0КБ', { normalizer: (value) => value })
+    ).toBeInTheDocument();
+  });
+
+  it('renders nothing for a non-finite numeric ItemSize without throwing', () => {
+    expect(() =>
+      render(
+        <FileUpload aria-label="upload">
+          <FileUpload.Item id="size.txt" textValue="size.txt">
+            <FileUpload.ItemSize data-testid="size">
+              {Number(undefined)}
+            </FileUpload.ItemSize>
+          </FileUpload.Item>
+        </FileUpload>
+      )
+    ).not.toThrow();
+
+    expect(screen.queryByTestId('size')).not.toBeInTheDocument();
+  });
+
+  it('formats sizes with the IEC unit system via fileSizeFormat', () => {
+    render(
+      <Provider locale="en-US">
+        <FileUpload
+          aria-label="upload"
+          fileSizeFormat={{ defaultUnitSystem: 'IEC' }}
+        >
+          <FileUpload.Item id="size.txt" textValue="size.txt">
+            <FileUpload.ItemSize>{1024}</FileUpload.ItemSize>
+          </FileUpload.Item>
+        </FileUpload>
+      </Provider>
+    );
+
+    expect(
+      screen.getByText('1 KiB', { normalizer: (value) => value })
     ).toBeInTheDocument();
   });
 

@@ -21,7 +21,7 @@ import {
   mergeProps,
   useDOMRef,
   useKeyedRefs,
-  useNumberFormatter,
+  useFileSizeFormatter,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import {
@@ -34,7 +34,6 @@ import {
   CollectionRendererContext,
 } from '@koobiq/react-primitives';
 
-import { formatFileSize } from '../../utils';
 import type {
   FormFieldProps,
   FormFieldErrorProps,
@@ -118,6 +117,7 @@ function FileUploadInner<T extends object>({
     'aria-details': ariaDetails,
     'aria-errormessage': ariaErrorMessage,
     messages: messageOverrides,
+    fileSizeFormat,
     renderEmptyState,
     'data-testid': testId,
     ...other
@@ -135,7 +135,6 @@ function FileUploadInner<T extends object>({
   );
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const numberFormatter = useNumberFormatter({ maximumFractionDigits: 2 });
 
   const messages = useMemo<FileUploadMessages>(() => {
     const localizedMessages = {
@@ -152,15 +151,12 @@ function FileUploadInner<T extends object>({
       removeButtonLabel: stringFormatter.format('removeButtonLabel'),
       unsupportedFileType: stringFormatter.format('unsupportedFileType'),
       fileSizeLimitExceeded: stringFormatter.format('fileSizeLimitExceeded'),
-      bytesUnit: stringFormatter.format('bytesUnit'),
-      kilobytesUnit: stringFormatter.format('kilobytesUnit'),
-      megabytesUnit: stringFormatter.format('megabytesUnit'),
-      gigabytesUnit: stringFormatter.format('gigabytesUnit'),
-      terabytesUnit: stringFormatter.format('terabytesUnit'),
     };
 
     return { ...localizedMessages, ...messageOverrides };
   }, [stringFormatter, messageOverrides]);
+
+  const fileSizeFormatter = useFileSizeFormatter(fileSizeFormat);
 
   const getItemRef = useKeyedRefs<HTMLButtonElement>();
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -271,18 +267,8 @@ function FileUploadInner<T extends object>({
   }, []);
 
   const formatSize = useCallback(
-    (bytes: number) =>
-      formatFileSize(bytes, {
-        formatNumber: (fileSize) => numberFormatter.format(fileSize),
-        unitLabels: {
-          B: messages.bytesUnit,
-          KB: messages.kilobytesUnit,
-          MB: messages.megabytesUnit,
-          GB: messages.gigabytesUnit,
-          TB: messages.terabytesUnit,
-        },
-      }),
-    [numberFormatter, messages]
+    (bytes: number) => fileSizeFormatter.format(bytes),
+    [fileSizeFormatter]
   );
 
   const addFiles = useCallback(

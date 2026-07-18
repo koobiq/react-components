@@ -11,6 +11,7 @@ import type {
   Key,
   Validation,
   DataAttributeProps,
+  FileSizeFormatterConfig,
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
 
@@ -48,7 +49,7 @@ export type FileUploadPropDropzoneTarget =
   | 'fullscreen'
   | RefObject<HTMLElement | null>;
 
-/** Localizable strings used by `FileUpload` (aria labels, size units, captions). */
+/** Localizable strings used by `FileUpload`. */
 export type FileUploadMessages = {
   emptyTitle: string;
   listEmptyText: string;
@@ -63,11 +64,6 @@ export type FileUploadMessages = {
   removeButtonLabel: string;
   unsupportedFileType: string;
   fileSizeLimitExceeded: string;
-  bytesUnit: string;
-  kilobytesUnit: string;
-  megabytesUnit: string;
-  gigabytesUnit: string;
-  terabytesUnit: string;
 };
 
 export type FileUploadListSlotProps = {
@@ -104,6 +100,8 @@ export type FileUploadProps<T extends object = object> =
       renderEmptyState?: () => ReactNode;
       /** Overrides localized text used by FileUpload. */
       messages?: Partial<FileUploadMessages>;
+      /** Configures how file sizes are formatted (unit system, precision, unit labels). */
+      fileSizeFormat?: FileSizeFormatterConfig;
       /** The field label. */
       label?: ReactNode;
       /** Helper text displayed below the upload area. */

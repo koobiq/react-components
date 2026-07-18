@@ -259,6 +259,10 @@ export const FileUploadItemSize = forwardRef<
 
   if (children === undefined || children === null) return null;
 
+  // A non-finite numeric size (NaN/Infinity, e.g. from `Number(undefined)`)
+  // would make the formatter throw during render, so skip it instead.
+  if (typeof children === 'number' && !Number.isFinite(children)) return null;
+
   return (
     <span
       {...other}
