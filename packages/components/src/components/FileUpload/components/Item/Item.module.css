@@ -1,0 +1,111 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  display: flex;
+  outline: none;
+  align-items: center;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  position: relative;
+  min-block-size: 40px;
+  border-radius: var(--kbq-size-xs);
+  padding-inline: var(--kbq-size-m) 0;
+  color: var(--file-upload-text-color);
+  gap: var(--file-upload-grid-cell-gap);
+  border-inline: var(--kbq-size-xxs) solid var(--kbq-background-transparent);
+  transition:
+    background-color var(--kbq-transition-default),
+    box-shadow var(--kbq-transition-default);
+
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+    inset: 0;
+  }
+}
+
+.base:not([data-multiple]) {
+  border: none;
+  min-block-size: var(--file-upload-single-min-block-size, 44px);
+  padding-inline-start: var(--file-upload-single-padding-inline);
+}
+
+.base[data-multiple] {
+  cursor: pointer;
+}
+
+.base[data-multiple][data-hovered]::after {
+  background-color: var(--kbq-states-background-transparent-hover);
+}
+
+.base[data-invalid] {
+  color: var(--kbq-foreground-error);
+
+  .icon {
+    color: var(--kbq-icon-error);
+  }
+
+  .size {
+    color: var(--kbq-foreground-error-secondary);
+  }
+
+  .remove[data-focus-visible] {
+    --icon-button-outline-color: var(--kbq-states-line-focus-error);
+  }
+}
+
+.base[data-invalid][data-multiple][data-hovered]::after {
+  background-color: var(--kbq-states-background-error-less-hover);
+}
+
+.base[data-disabled] {
+  cursor: default;
+  color: var(--kbq-states-foreground-disabled);
+
+  .icon {
+    color: var(--kbq-states-icon-disabled);
+  }
+}
+
+.icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  color: var(--file-upload-left-icon-color);
+}
+
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  align-items: center;
+  gap: var(--kbq-size-s);
+}
+
+.name {
+  @mixin ellipsis;
+
+  flex: 1 1 auto;
+  position: relative;
+  min-inline-size: 0;
+}
+
+.size {
+  flex: none;
+  text-align: start;
+  white-space: nowrap;
+  color: var(--file-upload-file-size-color);
+  inline-size: var(--file-upload-file-size-inline-size);
+}
+
+.remove {
+  flex: none;
+  block-size: var(--kbq-size-4xl);
+  inline-size: var(--kbq-size-4xl);
+
+  & > * {
+    margin: auto;
+  }
+}

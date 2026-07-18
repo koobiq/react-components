@@ -56,6 +56,7 @@ export * from './TreeSelect';
 export * from './EmptyState';
 export * from './Flag';
 export * from './Sidebar';
+export * from './FileUpload';
 export * from './layout';
 export {
   useListData,

@@ -1,0 +1,20 @@
+.base {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--file-upload-grid-cell-gap);
+  color: var(--file-upload-caption-color);
+}
+
+.icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  color: var(--file-upload-dropzone-icon-color);
+}
+
+.description {
+  min-inline-size: 0;
+  color: var(--file-upload-caption-color);
+}

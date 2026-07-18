@@ -1,0 +1,24 @@
+.base {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  min-inline-size: 0;
+  gap: var(--file-upload-grid-cell-gap);
+  padding-block: var(--kbq-size-m);
+  padding-inline: var(--kbq-size-l);
+  color: var(--file-upload-caption-color);
+  border-block-start: var(--file-upload-border-width) dashed
+    var(--file-upload-footer-border-color);
+}
+
+.icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  color: var(--file-upload-dropzone-icon-color);
+}
+
+.text {
+  min-inline-size: 0;
+  color: var(--file-upload-caption-color);
+}

@@ -139,6 +139,7 @@ export {
   TreeItem,
   TreeContext,
   Collection,
+  FileTrigger,
   TreeItemContent,
   ButtonContext,
   TreeStateContext,
@@ -150,6 +151,8 @@ export {
   composeRenderProps,
   CollectionRendererContext,
 } from 'react-aria-components';
+
+export type { FileTriggerProps } from 'react-aria-components';
 
 export * from './behaviors';
 export * from './components';

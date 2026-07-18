@@ -1,0 +1,28 @@
+.overlay {
+  z-index: var(--kbq-layer-modal);
+  display: flex;
+  position: fixed;
+  overflow: hidden;
+  align-items: center;
+  box-sizing: border-box;
+  justify-content: center;
+  pointer-events: none;
+  color: var(--file-upload-text-color);
+  border-radius: var(--kbq-size-s);
+  background-color: var(--kbq-background-overlay-theme);
+  border: var(--kbq-size-border-width) dashed var(--kbq-line-theme-fade);
+}
+
+.overlay[data-fullscreen] {
+  border-radius: 0;
+  border: none;
+
+  &::after {
+    content: '';
+    inset: var(--kbq-size-s);
+    position: absolute;
+    pointer-events: none;
+    border: var(--kbq-size-border-width) dashed var(--kbq-line-theme-fade);
+    border-radius: var(--kbq-size-s);
+  }
+}

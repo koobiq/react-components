@@ -1,0 +1,143 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './FileUpload.stories';
+
+<Meta of={Stories} />
+
+# FileUpload
+
+<Status variant="draft" />
+
+FileUpload lets users select, display, and remove files. It reports user actions
+but does not upload or store files.
+
+## Import
+
+```tsx
+import { FileUpload } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Data model
+
+Pass `items` and a render function for a dynamic collection. Pass
+`FileUpload.Item` elements as children for a static collection. Keep the native
+file on each item and pass it to `FileUpload.Item` to enable validation.
+
+## Long file names
+
+Long item names are truncated in the middle, keeping the end of the name and
+its extension visible. Their full text is shown in a tooltip.
+
+<Story of={Stories.LongFileName} />
+
+## Label and help text
+
+Use `label` and `caption` to describe the field.
+
+<Story of={Stories.WithLabel} />
+
+## Single file
+
+FileUpload accepts one file by default.
+
+<Story of={Stories.Single} />
+
+## Multiple files
+
+Use `allowsMultiple` to add several files.
+
+<Story of={Stories.Multiple} />
+
+## Duplicate files
+
+Filter duplicate files in `onAdd` when the collection requires it.
+
+<Story of={Stories.WithoutDuplicates} />
+
+## Selecting a folder or files
+
+Use `allowed` to accept files, folders, or both. Folder files include their
+`relativePath` and can be grouped into one collection item.
+
+<Story of={Stories.Allowed} />
+
+## Compact
+
+Use `size="compact"` for a smaller empty state.
+
+<Story of={Stories.Compact} />
+
+## Scrolling
+
+Use `slotProps` to limit the list height.
+
+<Story of={Stories.Scrollable} />
+
+## Progress
+
+Render upload progress inside the item row.
+
+<Story of={Stories.UploadProgress} />
+
+## Validation
+
+Use `accept` and `maxFileSize` for standard checks, and `validate` for custom
+synchronous checks. Invalid files remain in the collection.
+
+Pass text or JSX to `errorMessage` to replace generated errors. Pass a function
+to format the `ValidationResult`, or `null` to hide the error text.
+
+<Story of={Stories.Validation} />
+
+## Disabled
+
+Use `isDisabled` to disable the whole component.
+
+<Story of={Stories.Disabled} />
+
+## Invalid
+
+Use `isInvalid` with `errorMessage` for a field-level validation error.
+
+<Story of={Stories.Invalid} />
+
+## Drop zone target
+
+By default, the drop area is inside the component.
+Pass an element ref to `dropzoneTarget` to use another container,
+or `"fullscreen"` to make the whole screen the drop area.
+
+<Story of={Stories.DropzoneTarget} />
+
+## Server file
+
+Keep the native `File` in local items and append it to `FormData` on submit.
+
+<Story of={Stories.ServerFile} />
+
+## Customization
+
+Use `messages` to change standard text. Use `slotProps` for field text, list
+parts, and the drop overlay. Use
+`renderEmptyState` to replace the large empty state.
+
+<Story of={Stories.CustomContent} />
+
+## Accessibility
+
+Provide `label`, `aria-label`, or `aria-labelledby` and a `textValue` for each
+item. Label, caption, and error text are associated with the upload area. After
+removal, focus moves to the next file or the browse trigger.

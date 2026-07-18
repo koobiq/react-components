@@ -68,6 +68,8 @@ import { DragEventHandler } from 'react';
 import { ElementType } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
+import { FileTrigger } from 'react-aria-components';
+import { FileTriggerProps } from 'react-aria-components';
 import { FocusableElement } from '@react-types/shared';
 import { FocusableProps } from '@koobiq/react-core';
 import { FocusEventHandler } from 'react';
@@ -324,6 +326,10 @@ export type FieldErrorProps<As extends ElementType = 'p'> = ComponentPropsWithRe
 
 // @public (undocumented)
 export type FieldErrorRenderProps = ValidationResult;
+
+export { FileTrigger }
+
+export { FileTriggerProps }
 
 // @public
 export const Form: ForwardRefExoticComponent<FormProps & RefAttributes<HTMLFormElement>>;

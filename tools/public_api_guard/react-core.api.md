@@ -7,6 +7,7 @@
 import { AriaLabelingProps } from '@react-types/shared';
 import { AsyncLoadable } from '@react-types/shared';
 import { chain } from '@react-aria/utils';
+import { Collection } from '@react-types/shared';
 import { CollectionBase } from '@react-types/shared';
 import { CollectionChildren } from '@react-types/shared';
 import { CollectionElement } from '@react-types/shared';
@@ -76,6 +77,8 @@ export { chain }
 //
 // @public (undocumented)
 export function clsx(...classNames: ClassName[]): string;
+
+export { Collection }
 
 export { CollectionBase }
 

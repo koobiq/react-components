@@ -1,0 +1,103 @@
+.base {
+  --file-upload-container-border-color: var(--kbq-line-contrast-fade);
+  --file-upload-container-background: var(--kbq-background-bg);
+  --file-upload-dropzone-icon-color: var(--kbq-icon-contrast-fade);
+  --file-upload-upload-icon-color: var(--kbq-icon-contrast);
+  --file-upload-left-icon-color: var(--kbq-icon-contrast-fade);
+  --file-upload-text-color: var(--kbq-foreground-contrast);
+  --file-upload-caption-color: var(--file-upload-text-color);
+  --file-upload-file-size-color: var(--kbq-foreground-contrast-secondary);
+  --file-upload-footer-border-color: var(--file-upload-container-border-color);
+  --file-upload-border-width: var(--kbq-size-border-width);
+  --file-upload-border-radius: var(--kbq-size-s);
+  --file-upload-single-min-block-size: 44px;
+  --file-upload-single-padding-block: var(--kbq-size-m);
+  --file-upload-single-padding-inline: var(--kbq-size-l);
+  --file-upload-list-min-block-size: 120px;
+  --file-upload-multiple-min-block-size: 192px;
+  --file-upload-multiple-min-inline-size: 320px;
+  --file-upload-grid-cell-padding-inline: var(--kbq-size-s);
+  --file-upload-grid-cell-gap: var(--kbq-size-s);
+  --file-upload-file-size-inline-size: var(--kbq-size-7xl);
+  --file-upload-compact-padding-block: var(--kbq-size-m);
+  --file-upload-compact-padding-inline: var(--kbq-size-l);
+
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+
+.base[data-invalid][data-empty]:not([data-disabled]) {
+  --file-upload-container-border-color: var(--kbq-line-error);
+  --file-upload-container-background: var(--kbq-background-error-less);
+  --file-upload-dropzone-icon-color: var(--kbq-icon-error);
+  --file-upload-upload-icon-color: var(--kbq-icon-error);
+  --file-upload-caption-color: var(--kbq-foreground-error);
+}
+
+.base[data-invalid][data-empty]:not([data-disabled], [data-multiple]) {
+  --file-upload-left-icon-color: var(--kbq-icon-error);
+  --file-upload-text-color: var(--kbq-foreground-error);
+  --file-upload-file-size-color: var(--kbq-foreground-error);
+}
+
+.base[data-disabled] {
+  --file-upload-container-border-color: var(--kbq-states-line-disabled);
+  --file-upload-container-background: var(--kbq-states-background-disabled);
+  --file-upload-dropzone-icon-color: var(--kbq-states-icon-disabled);
+  --file-upload-upload-icon-color: var(--kbq-states-icon-disabled);
+  --file-upload-left-icon-color: var(--kbq-states-icon-disabled);
+  --file-upload-text-color: var(--kbq-states-foreground-disabled);
+  --file-upload-file-size-color: var(--kbq-states-foreground-disabled);
+  --file-upload-footer-border-color: var(--kbq-states-line-disabled);
+}
+
+.base:not([data-disabled], [data-invalid][data-empty])
+  [data-slot='file-upload-control'][data-drop-target] {
+  --file-upload-container-border-color: var(--kbq-line-theme-fade);
+  --file-upload-container-background: var(--kbq-background-theme-fade);
+  --file-upload-footer-border-color: var(--kbq-line-theme-fade);
+}
+
+.base[data-disabled] [data-slot='file-upload-control'] {
+  pointer-events: none;
+}
+
+.base:not([data-multiple]) [data-slot='file-upload-control'] {
+  min-block-size: var(--file-upload-single-min-block-size);
+}
+
+.base:not([data-multiple])[data-empty] [data-slot='file-upload-control'] {
+  padding-block: var(--file-upload-single-padding-block);
+  padding-inline: var(--file-upload-single-padding-inline);
+}
+
+.base[data-multiple]:not([data-list-empty]) [data-slot='file-upload-control'] {
+  min-block-size: var(--file-upload-multiple-min-block-size);
+}
+
+.base[data-multiple][data-empty]:not([data-list-empty])[data-size='default']
+  [data-slot='file-upload-control'] {
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--file-upload-multiple-min-inline-size);
+}
+
+.base[data-multiple][data-list-empty] [data-slot='file-upload-control'] {
+  padding-block: var(--file-upload-compact-padding-block);
+  padding-inline: var(--file-upload-compact-padding-inline);
+}
+
+.body {
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}

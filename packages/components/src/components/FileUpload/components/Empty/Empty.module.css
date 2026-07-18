@@ -1,0 +1,22 @@
+.empty {
+  color: var(--file-upload-caption-color);
+}
+
+.large {
+  padding-block: 0;
+  padding-inline: var(--kbq-size-xxl);
+
+  .icon {
+    margin-block-end: var(--kbq-size-m);
+    color: var(--file-upload-upload-icon-color);
+  }
+
+  .title {
+    margin-block-end: var(--kbq-size-xs);
+    color: var(--file-upload-text-color);
+  }
+
+  .description {
+    color: var(--file-upload-text-color);
+  }
+}
