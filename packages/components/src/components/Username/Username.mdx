@@ -1,0 +1,196 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Username.stories';
+
+<Meta of={Stories} />
+
+# Username
+
+<Status variant="experimental" />
+
+Username is used when an interface needs to reference an internal system user.
+It presents a set of identifying attributes — full name, login, and site — in a consistent layout.
+
+## Import
+
+```tsx
+import {
+  Username,
+  UsernamePrimary,
+  UsernameSecondary,
+  UsernameSecondaryHint,
+} from '@koobiq/react-components';
+```
+
+## Usage
+
+Pass a `userInfo` object to render the default template automatically.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Mode
+
+The `mode` prop controls the layout of the name parts.
+
+- `inline` — displays primary and secondary on one line. Both parts have ellipsis. This is the default.
+- `stacked` — displays primary and secondary on separate lines.
+- `text` — renders as inline text with no ellipsis, suitable for use inside a paragraph.
+
+<Story of={Stories.Mode} />
+
+## Type
+
+The `type` prop sets the visual color style.
+
+- `default` — primary text in contrast color, secondary in secondary-contrast color.
+- `error` — all parts in error color.
+- `accented` — same colors as `default`, but primary text uses bold weight. Use for typographic emphasis without introducing color.
+- `inherit` — all parts inherit color from the parent element.
+
+<Story of={Stories.Type} />
+
+## Compact
+
+When `isCompact` is `true`, primary and secondary are collapsed into a single line:
+the full name (or login if no full name is available) is shown, followed by the site in parentheses.
+
+<Story of={Stories.Compact} />
+
+## Login only
+
+When `firstName` or `lastName` is absent from `userInfo`, the component falls back to showing
+the `login` value as the primary content.
+
+<Story of={Stories.OnlyLogin} />
+
+## With site
+
+The optional `site` field renders as a hint after the login.
+
+<Story of={Stories.WithSite} />
+
+## Custom view
+
+Provide `children` to take full control of the output.
+The default template is skipped entirely; `mode` and `type` still apply to the root element.
+
+Use `UsernamePrimary`, `UsernameSecondary`, and `UsernameSecondaryHint` to keep the same visual
+style as the default template.
+
+<Story of={Stories.CustomView} />
+
+## As link
+
+Use `type="inherit"` when placing `Username` inside a link so it inherits the link's color.
+
+<Story of={Stories.AsLink} />
+
+## Name format
+
+The `fullNameFormat` prop controls how the full name is assembled from `userInfo`.
+
+| Character | Field        | Behavior                                          |
+| --------- | ------------ | ------------------------------------------------- |
+| `l`       | `lastName`   | Full value, or initial + `.` when followed by `.` |
+| `f`       | `firstName`  | Full value, or initial + `.` when followed by `.` |
+| `m`       | `middleName` | Full value, or initial + `.` when followed by `.` |
+| `.`       | —            | Separator marker — not emitted literally          |
+
+The default format `'lf.m.'` produces `"Root M. A."` for a user with
+`lastName: 'Root'`, `firstName: 'Maxwell'`, `middleName: 'Alan'`.
+
+Empty fields are silently skipped without leaving stray punctuation.
+
+Use the exported `formatUsername` utility to get the same string in non-JSX contexts:
+
+```tsx
+import { formatUsername } from '@koobiq/react-components';
+
+const name = formatUsername(
+  { firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' },
+  'lf.m.'
+);
+// → "Root M. A."
+```
+
+## Custom formatter
+
+The `formatter` prop lets you swap the name-formatting function.
+Pass `formatUsernameCustom` (or any function with the same signature) to use a different format style.
+
+`formatUsernameCustom` uses a richer format string where character case determines full vs initial output,
+and non-field characters pass through literally:
+
+| Character | Field        | Output                                       |
+| --------- | ------------ | -------------------------------------------- |
+| `L`       | `lastName`   | Full value                                   |
+| `l`       | `lastName`   | First character only                         |
+| `F`       | `firstName`  | Full value                                   |
+| `f`       | `firstName`  | First character only                         |
+| `M`       | `middleName` | Full value                                   |
+| `m`       | `middleName` | First character only                         |
+| any other | —            | Emitted literally (spaces, dots, separators) |
+
+The default format for `formatUsernameCustom` is `'L f. m.'`, which produces the same
+`"Root M. A."` output as the default formatter but with literal dots and spaces from the
+format string rather than token-joining.
+
+<Story of={Stories.CustomFormatter} />
+
+```tsx
+import { formatUsernameCustom } from '@koobiq/react-components';
+
+<Username
+  userInfo={user}
+  formatter={formatUsernameCustom}
+  fullNameFormat="F L"
+/>;
+// Primary renders: "Maxwell Root"
+```
+
+A custom `mapping` can be passed by wrapping the function:
+
+```tsx
+<Username
+  userInfo={user}
+  formatter={(info, fmt) => formatUsernameCustom(info, fmt, myMapping)}
+  fullNameFormat="F L"
+/>
+```
+
+## buildUsernameText
+
+`buildUsernameText` assembles a plain-text string that mirrors what `Username` renders.
+Use it for `aria-label` values or search/filter logic.
+
+It takes a pre-formatted `name` string (the output of `formatUsername` or `formatUsernameCustom`)
+plus optional `login` and `site`. By default `site` is wrapped in parentheses.
+
+```tsx
+import { buildUsernameText, formatUsername } from '@koobiq/react-components';
+
+const name = formatUsername(userInfo, 'lf.m.');
+buildUsernameText({ name, login: userInfo.login, site: userInfo.site });
+// → "Root M. A. mroot (corp)"
+```
+
+Use `formatLogin` and `formatSite` options to customise how those segments appear:
+
+```tsx
+// Remove parentheses from site (useful for search comparisons)
+buildUsernameText({ name, login, site }, { formatSite: (s) => s });
+// → "Root M. A. mroot corp"
+
+// Wrap login in brackets
+buildUsernameText({ name, login, site }, { formatLogin: (l) => `[${l}]` });
+// → "Root M. A. [mroot] (corp)"
+```
