@@ -1,0 +1,94 @@
+@import url('../../styles/mixins.css');
+
+/* ── Root ─────────────────────────────────────────────────────── */
+
+.base {
+  --username-color-primary: ;
+  --username-color-secondary: ;
+  --username-color-hint: ;
+
+  @mixin typography text-normal;
+
+  display: inline-flex;
+  max-inline-size: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Mode modifiers ───────────────────────────────────────────── */
+
+.stacked {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.inline {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--kbq-size-xxs);
+}
+
+.text {
+  display: inline;
+}
+
+/* ── Type modifiers — populate custom properties ─────────────── */
+
+.default {
+  --username-color-primary: var(--kbq-foreground-contrast);
+  --username-color-secondary: var(--kbq-foreground-contrast-secondary);
+  --username-color-hint: var(--kbq-foreground-contrast-secondary);
+}
+
+.error {
+  --username-color-primary: var(--kbq-foreground-error);
+  --username-color-secondary: var(--kbq-foreground-error);
+  --username-color-hint: var(--kbq-foreground-error);
+}
+
+.accented {
+  --username-color-primary: var(--kbq-foreground-contrast);
+  --username-color-secondary: var(--kbq-foreground-contrast-secondary);
+  --username-color-hint: var(--kbq-foreground-contrast-secondary);
+}
+
+.inherit {
+  --username-color-primary: inherit;
+  --username-color-secondary: inherit;
+  --username-color-hint: inherit;
+
+  font: inherit;
+  display: inherit;
+}
+
+/* ── Sub-element classes ─────────────────────────────────────── */
+
+.primary {
+  @mixin ellipsis;
+
+  color: var(--username-color-primary);
+}
+
+.secondary {
+  @mixin ellipsis;
+
+  color: var(--username-color-secondary);
+}
+
+.secondaryHint {
+  color: var(--username-color-hint);
+}
+
+/* accented type: primary uses bold weight */
+
+.accented .primary {
+  @mixin typography text-normal-strong;
+}
+
+/* text mode: remove ellipsis so content flows as prose */
+
+.text .primary,
+.text .secondary {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: unset;
+}

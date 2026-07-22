@@ -58,6 +58,7 @@ export * from './Flag';
 export * from './Sidebar';
 export * from './Resizable';
 export * from './FileUpload';
+export * from './Username';
 export * from './layout';
 export {
   useListData,
