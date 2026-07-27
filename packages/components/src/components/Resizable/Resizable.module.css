@@ -1,0 +1,89 @@
+.base {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.handle {
+  --resizable-handle-width: var(--kbq-size-l);
+  --resizable-handle-height: var(--kbq-size-l);
+  --resizable-handle-top: auto;
+  --resizable-handle-right: auto;
+  --resizable-handle-bottom: auto;
+  --resizable-handle-left: auto;
+  --resizable-handle-translate-x: 0;
+  --resizable-handle-translate-y: 0;
+
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  inline-size: var(--kbq-resizable-handle-width, var(--resizable-handle-width));
+  block-size: var(
+    --kbq-resizable-handle-height,
+    var(--resizable-handle-height)
+  );
+  inset: var(--kbq-resizable-handle-top, var(--resizable-handle-top))
+    var(--kbq-resizable-handle-right, var(--resizable-handle-right))
+    var(--kbq-resizable-handle-bottom, var(--resizable-handle-bottom))
+    var(--kbq-resizable-handle-left, var(--resizable-handle-left));
+  touch-action: none;
+  background: transparent;
+  transform: var(
+    --kbq-resizable-handle-transform,
+    translate(
+      var(--resizable-handle-translate-x),
+      var(--resizable-handle-translate-y)
+    )
+  );
+}
+
+.handle[data-direction-x='-1'] {
+  --resizable-handle-left: 0;
+  --resizable-handle-translate-x: -50%;
+}
+
+.handle[data-direction-x='0'] {
+  --resizable-handle-width: 100%;
+  --resizable-handle-left: 0;
+
+  cursor: ns-resize;
+}
+
+.handle[data-direction-x='1'] {
+  --resizable-handle-right: 0;
+  --resizable-handle-translate-x: 50%;
+}
+
+.handle[data-direction-y='-1'] {
+  --resizable-handle-top: 0;
+  --resizable-handle-translate-y: -50%;
+}
+
+.handle[data-direction-y='0'] {
+  --resizable-handle-height: 100%;
+  --resizable-handle-top: 0;
+
+  cursor: ew-resize;
+}
+
+.handle[data-direction-y='1'] {
+  --resizable-handle-bottom: 0;
+  --resizable-handle-translate-y: 50%;
+}
+
+.handle:is(
+  [data-direction-x='-1'][data-direction-y='-1'],
+  [data-direction-x='1'][data-direction-y='1']
+) {
+  cursor: nwse-resize;
+}
+
+.handle:is(
+  [data-direction-x='1'][data-direction-y='-1'],
+  [data-direction-x='-1'][data-direction-y='1']
+) {
+  cursor: nesw-resize;
+}
+
+.handle[data-disabled] {
+  cursor: default;
+}
