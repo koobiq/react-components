@@ -97,21 +97,22 @@ describe('Username', () => {
       expect(screen.getByText('(corp)', { exact: false })).toBeInTheDocument();
     });
 
-    it('should not render Primary when firstName is missing', () => {
+    it('should render login in Primary when firstName is missing', () => {
       render(<Username userInfo={{ lastName: 'Root', login: 'mroot' }} />);
       const primary = document.querySelector('[class*="primary"]');
-      expect(primary).toBeNull();
+      expect(primary?.textContent).toContain('mroot');
     });
 
-    it('should not render Primary when lastName is missing', () => {
+    it('should render login in Primary when lastName is missing', () => {
       render(<Username userInfo={{ firstName: 'Maxwell', login: 'mroot' }} />);
       const primary = document.querySelector('[class*="primary"]');
-      expect(primary).toBeNull();
+      expect(primary?.textContent).toContain('mroot');
     });
 
     it('should render login as primary content when full name is absent', () => {
       render(<Username userInfo={{ login: 'mroot' }} />);
-      expect(screen.getByText('mroot')).toBeInTheDocument();
+      const primary = document.querySelector('[class*="primary"]');
+      expect(primary?.textContent).toContain('mroot');
     });
   });
 
@@ -132,6 +133,11 @@ describe('Username', () => {
       render(<Username userInfo={fullProfile} isCompact />);
       const primary = document.querySelector('[class*="primary"]');
       expect(primary?.textContent).toContain('(corp)');
+    });
+
+    it('should not render site when neither full name nor login is available in compact mode', () => {
+      render(<Username {...baseProps} userInfo={{ site: 'corp' }} isCompact />);
+      expect(screen.queryByText('(corp)', { exact: false })).toBeNull();
     });
   });
 

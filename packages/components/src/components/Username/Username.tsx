@@ -55,13 +55,14 @@ export const Username = forwardRef<ComponentRef<'span'>, UsernameBaseProps>(
 
     const hasFullName = Boolean(userInfo?.firstName && userInfo?.lastName);
     const name = hasFullName ? formatter(userInfo, fullNameFormat) : '';
+    const hasContent = hasFullName || isNotNil(userInfo?.login);
 
     if (isCompact) {
       return (
-        <span data-compact {...rootProps}>
+        <span data-compact={isCompact || undefined} {...rootProps}>
           <UsernamePrimary>
             {hasFullName ? name : userInfo?.login}
-            {isNotNil(userInfo?.site) && (
+            {hasContent && isNotNil(userInfo?.site) && (
               <UsernameSecondaryHint> ({userInfo!.site})</UsernameSecondaryHint>
             )}
           </UsernamePrimary>
@@ -69,16 +70,34 @@ export const Username = forwardRef<ComponentRef<'span'>, UsernameBaseProps>(
       );
     }
 
+    if (hasFullName) {
+      return (
+        <span {...rootProps}>
+          <UsernamePrimary>{name}</UsernamePrimary>
+          {isNotNil(userInfo?.login) && (
+            <UsernameSecondary>
+              {userInfo!.login}
+              {isNotNil(userInfo?.site) && (
+                <UsernameSecondaryHint>
+                  {' '}
+                  ({userInfo!.site})
+                </UsernameSecondaryHint>
+              )}
+            </UsernameSecondary>
+          )}
+        </span>
+      );
+    }
+
     return (
       <span {...rootProps}>
-        {hasFullName && <UsernamePrimary>{name}</UsernamePrimary>}
         {isNotNil(userInfo?.login) && (
-          <UsernameSecondary>
+          <UsernamePrimary>
             {userInfo!.login}
             {isNotNil(userInfo?.site) && (
               <UsernameSecondaryHint> ({userInfo!.site})</UsernameSecondaryHint>
             )}
-          </UsernameSecondary>
+          </UsernamePrimary>
         )}
       </span>
     );

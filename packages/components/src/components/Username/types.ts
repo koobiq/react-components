@@ -19,7 +19,10 @@ export type UsernameUserInfo = {
   site?: string;
 };
 
-export type UsernameBaseProps = {
+export type UsernameBaseProps = Omit<
+  ComponentPropsWithRef<'span'>,
+  'children'
+> & {
   /** User profile data. Not required when children (custom view) is provided. */
   userInfo?: UsernameUserInfo;
   /**
@@ -54,8 +57,6 @@ export type UsernameBaseProps = {
   ) => string;
   /** When provided, entirely replaces the auto-rendered template. */
   children?: ReactNode;
-  /** Additional CSS classes. */
-  className?: string;
 };
 
 export type UsernamePrimaryProps = ComponentPropsWithRef<'span'>;

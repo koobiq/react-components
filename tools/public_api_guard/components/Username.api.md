@@ -31,10 +31,10 @@ export function formatUsername(userInfo: UsernameUserInfo | undefined, format?: 
 export function formatUsernameCustom(userInfo: UsernameUserInfo | undefined, format?: string, mapping?: UsernameFormatMapping): string;
 
 // @public
-export const Username: ForwardRefExoticComponent<UsernameBaseProps & RefAttributes<HTMLSpanElement>>;
+export const Username: ForwardRefExoticComponent<Omit<UsernameBaseProps, "ref"> & RefAttributes<HTMLSpanElement>>;
 
 // @public (undocumented)
-export type UsernameBaseProps = {
+export type UsernameBaseProps = Omit<ComponentPropsWithRef<'span'>, 'children'> & {
     userInfo?: UsernameUserInfo;
     mode?: UsernamePropMode;
     type?: UsernamePropType;
@@ -42,7 +42,6 @@ export type UsernameBaseProps = {
     fullNameFormat?: string;
     formatter?: (userInfo: UsernameUserInfo | undefined, format: string) => string;
     children?: ReactNode;
-    className?: string;
 };
 
 // @public
