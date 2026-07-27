@@ -368,4 +368,10 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
+  {
+    component: 'FileUpload',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
 ];
