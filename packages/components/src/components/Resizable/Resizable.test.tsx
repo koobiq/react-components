@@ -2,6 +2,7 @@ import { createRef, type ComponentProps } from 'react';
 
 import type * as ReactCore from '@koobiq/react-core';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Provider } from '../Provider';
@@ -363,6 +364,8 @@ describe('Resizable', () => {
     const onResize = vi.fn();
     renderResizable([1, 0], { isDisabled: true, onResize });
 
+    fireEvent.mouseEnter(getHandle());
+    fireEvent.focus(getHandle());
     fireEvent.keyDown(getHandle(), { key: 'ArrowRight' });
     drag(20, 0);
 
@@ -371,6 +374,25 @@ describe('Resizable', () => {
     expect(getHandle()).toHaveAttribute('data-disabled', 'true');
     expect(getHandle()).toHaveAttribute('aria-disabled', 'true');
     expect(getHandle()).toHaveAttribute('tabindex', '-1');
+    expect(getHandle()).not.toHaveAttribute('data-hovered');
+    expect(getHandle()).not.toHaveAttribute('data-focused');
+  });
+
+  it('exposes hover and focus states', async () => {
+    const user = userEvent.setup();
+
+    renderResizable([1, 0]);
+
+    await user.hover(getHandle());
+    expect(getHandle()).toHaveAttribute('data-hovered', 'true');
+
+    await user.tab();
+    expect(getHandle()).toHaveAttribute('data-focused', 'true');
+
+    await user.unhover(getHandle());
+    await user.tab();
+    expect(getHandle()).not.toHaveAttribute('data-hovered');
+    expect(getHandle()).not.toHaveAttribute('data-focused');
   });
 
   it('exposes separator semantics for edge handles', () => {
@@ -386,6 +408,7 @@ describe('Resizable', () => {
     expect(getHandle()).toHaveAttribute('aria-valuemax', '500');
     expect(getHandle()).toHaveAttribute('aria-controls', getRoot().id);
     expect(getHandle()).toHaveAttribute('aria-label', 'Resize width');
+    expect(getHandle()).not.toHaveAttribute('aria-keyshortcuts');
   });
 
   it('exposes button semantics for corner handles and allows a custom label', () => {
@@ -411,6 +434,7 @@ describe('Resizable', () => {
     );
 
     expect(getHandle()).not.toHaveAttribute('aria-valuenow');
+    expect(getHandle()).not.toHaveAttribute('aria-orientation');
     expect(getHandle()).toHaveAttribute('aria-controls', getRoot().id);
   });
 

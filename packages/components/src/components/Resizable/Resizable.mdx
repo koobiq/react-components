@@ -80,13 +80,6 @@ for geometry customization.
 
 <Story of={Stories.CustomHandle} />
 
-## Nested panels
-
-Resizable components can be nested to build layouts with independently adjustable regions. In this
-example, the outer handle changes the sidebar width and the inner handle changes the filters height.
-
-<Story of={Stories.NestedPanels} />
-
 ## Keyboard interaction
 
 Handles are focusable. Use the arrow keys to resize by one pixel, or hold <kbd>Shift</kbd> to resize
@@ -102,8 +95,9 @@ Set `isDisabled` to remove all handles from the tab order and disable resize int
 ## Styling handles
 
 Handles provide positioning, hit areas, cursors, and state attributes, but no visible grip or line.
-Use `className` and the `data-direction-x`, `data-direction-y`, `data-focus-visible`, `data-resizing`,
-and `data-disabled` attributes to provide an application-specific indicator.
+Use `className` and the `data-direction-x`, `data-direction-y`, `data-hovered`, `data-focused`,
+`data-focus-visible`, `data-resizing`, and `data-disabled` attributes to provide an
+application-specific indicator.
 
 ## CSS Variables
 
