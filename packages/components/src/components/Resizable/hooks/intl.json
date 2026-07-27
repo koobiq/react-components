@@ -1,0 +1,12 @@
+{
+  "ru-RU": {
+    "resize": "Изменить размер",
+    "resize width": "Изменить ширину",
+    "resize height": "Изменить высоту"
+  },
+  "en-US": {
+    "resize": "Resize",
+    "resize width": "Resize width",
+    "resize height": "Resize height"
+  }
+}
