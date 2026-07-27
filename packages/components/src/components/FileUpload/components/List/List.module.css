@@ -37,8 +37,11 @@
 }
 
 .list[data-multiple] {
+  display: grid;
   flex: 1 1 auto;
   overflow-y: auto;
+  align-content: start;
+  grid-template-columns: max-content minmax(0, 1fr) max-content max-content;
   scrollbar-width: auto;
   scrollbar-gutter: auto;
   scrollbar-color: var(--kbq-scrollbar-thumb-default-background)
