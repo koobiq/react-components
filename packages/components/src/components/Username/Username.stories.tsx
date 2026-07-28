@@ -1,12 +1,19 @@
+import { useState, type ReactNode } from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 import { Link } from '../Link';
+import { SearchInput } from '../SearchInput';
+import { Typography } from '../Typography';
 
 import {
   Username,
   type UsernameProps,
+  type UsernameUserInfo,
+  formatUsername,
   formatUsernameCustom,
+  buildUsernameText,
   usernamePropMode,
   usernamePropType,
 } from './index.js';
@@ -40,14 +47,13 @@ export const Mode: Story = {
     <FlexBox direction="column" gap="l">
       {usernamePropMode.map((mode) => (
         <FlexBox key={mode} direction="column" gap="xs">
-          <span
-            style={{
-              color: 'var(--kbq-foreground-contrast-secondary)',
-              fontSize: '12px',
-            }}
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
           >
             mode = {mode}
-          </span>
+          </Typography>
           <Username {...args} mode={mode} userInfo={defaultUserInfo} />
         </FlexBox>
       ))}
@@ -60,18 +66,18 @@ export const Type: Story = {
     <FlexBox direction="column" gap="l">
       {usernamePropType.map((type) => (
         <FlexBox key={type} direction="column" gap="xs">
-          <span
-            style={{
-              color: 'var(--kbq-foreground-contrast-secondary)',
-              fontSize: '12px',
-            }}
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
           >
             type = {type}
-          </span>
+          </Typography>
+
           {type === 'inherit' ? (
-            <span style={{ color: 'var(--kbq-foreground-theme)' }}>
+            <Typography as="span" color="theme-secondary">
               <Username {...args} type={type} userInfo={defaultUserInfo} />
-            </span>
+            </Typography>
           ) : (
             <Username {...args} type={type} userInfo={defaultUserInfo} />
           )}
@@ -85,25 +91,15 @@ export const Compact: Story = {
   render: (args) => (
     <FlexBox direction="column" gap="l">
       <FlexBox direction="column" gap="xs">
-        <span
-          style={{
-            color: 'var(--kbq-foreground-contrast-secondary)',
-            fontSize: '12px',
-          }}
-        >
+        <Typography as="span" variant="text-compact" color="contrast-secondary">
           isCompact = false
-        </span>
+        </Typography>
         <Username {...args} userInfo={defaultUserInfo} />
       </FlexBox>
       <FlexBox direction="column" gap="xs">
-        <span
-          style={{
-            color: 'var(--kbq-foreground-contrast-secondary)',
-            fontSize: '12px',
-          }}
-        >
+        <Typography as="span" variant="text-compact" color="contrast-secondary">
           isCompact = true
-        </span>
+        </Typography>
         <Username {...args} userInfo={defaultUserInfo} isCompact />
       </FlexBox>
     </FlexBox>
@@ -120,28 +116,18 @@ export const WithSite: Story = {
   render: (args) => (
     <FlexBox direction="column" gap="l">
       <FlexBox direction="column" gap="xs">
-        <span
-          style={{
-            color: 'var(--kbq-foreground-contrast-secondary)',
-            fontSize: '12px',
-          }}
-        >
+        <Typography as="span" variant="text-compact" color="contrast-secondary">
           non-compact with site
-        </span>
+        </Typography>
         <Username
           {...args}
           userInfo={{ ...defaultUserInfo, site: 'example.com' }}
         />
       </FlexBox>
       <FlexBox direction="column" gap="xs">
-        <span
-          style={{
-            color: 'var(--kbq-foreground-contrast-secondary)',
-            fontSize: '12px',
-          }}
-        >
+        <Typography as="span" variant="text-compact" color="contrast-secondary">
           compact with site
-        </span>
+        </Typography>
         <Username
           {...args}
           userInfo={{ ...defaultUserInfo, site: 'example.com' }}
@@ -172,29 +158,103 @@ export const AsLink: Story = {
   ),
 };
 
+const searchUsers: UsernameUserInfo[] = [
+  {
+    firstName: 'Maxwell',
+    middleName: 'Alan',
+    lastName: 'Root',
+    login: 'mroot',
+    site: 'corp',
+  },
+  { firstName: 'Jane', lastName: 'Smith', login: 'jsmith', site: 'corp' },
+  { firstName: 'Bob', lastName: 'Johnson', login: 'bjohnson' },
+  { login: 'ghost', site: 'external' },
+];
+
+function highlightMatch(text: string, query: string): ReactNode {
+  if (!query) return text;
+  const index = text.toLowerCase().indexOf(query.toLowerCase());
+  if (index === -1) return text;
+
+  return (
+    <>
+      {text.slice(0, index)}
+      <mark style={{ background: 'var(--kbq-states-theme-transparent-hover)' }}>
+        {text.slice(index, index + query.length)}
+      </mark>
+      {text.slice(index + query.length)}
+    </>
+  );
+}
+
+export const SearchAndHighlight: Story = {
+  render: (args) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [query, setQuery] = useState('');
+
+    const filtered = searchUsers.filter((user) => {
+      const name = formatUsername(user, 'lf.m.');
+
+      return buildUsernameText({ name, login: user.login, site: user.site })
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    });
+
+    return (
+      <FlexBox direction="column" gap="m" style={{ minInlineSize: 280 }}>
+        <SearchInput
+          value={query}
+          onChange={setQuery}
+          placeholder="Search users..."
+        />
+        <FlexBox direction="column" gap="xs">
+          {filtered.map((user) => {
+            const name = formatUsername(user, 'lf.m.');
+
+            return (
+              <Username
+                key={user.login ?? user.firstName}
+                {...args}
+                userInfo={user}
+              >
+                {name && (
+                  <Username.Primary>
+                    {highlightMatch(name, query)}
+                  </Username.Primary>
+                )}
+                {user.login && (
+                  <Username.Secondary>
+                    {highlightMatch(user.login, query)}
+                    {user.site && (
+                      <Username.SecondaryHint>
+                        {' '}
+                        ({highlightMatch(user.site, query)})
+                      </Username.SecondaryHint>
+                    )}
+                  </Username.Secondary>
+                )}
+              </Username>
+            );
+          })}
+        </FlexBox>
+      </FlexBox>
+    );
+  },
+};
+
 export const CustomFormatter: Story = {
   render: (args) => (
     <FlexBox direction="column" gap="l">
       <FlexBox direction="column" gap="xs">
-        <span
-          style={{
-            color: 'var(--kbq-foreground-contrast-secondary)',
-            fontSize: '12px',
-          }}
-        >
+        <Typography as="span" variant="text-compact" color="contrast-secondary">
           formatUsername (default) — format: &apos;lf.m.&apos;
-        </span>
+        </Typography>
         <Username {...args} userInfo={defaultUserInfo} />
       </FlexBox>
       <FlexBox direction="column" gap="xs">
-        <span
-          style={{
-            color: 'var(--kbq-foreground-contrast-secondary)',
-            fontSize: '12px',
-          }}
-        >
+        <Typography as="span" variant="text-compact" color="contrast-secondary">
           formatUsernameCustom — format: &apos;L f. m.&apos;
-        </span>
+        </Typography>
         <Username
           {...args}
           userInfo={defaultUserInfo}
@@ -203,14 +263,9 @@ export const CustomFormatter: Story = {
         />
       </FlexBox>
       <FlexBox direction="column" gap="xs">
-        <span
-          style={{
-            color: 'var(--kbq-foreground-contrast-secondary)',
-            fontSize: '12px',
-          }}
-        >
+        <Typography as="span" variant="text-compact" color="contrast-secondary">
           formatUsernameCustom — format: &apos;F L&apos;
-        </span>
+        </Typography>
         <Username
           {...args}
           userInfo={defaultUserInfo}
