@@ -2,12 +2,15 @@
 
 import { forwardRef } from 'react';
 
+import { clsx } from '@koobiq/react-core';
 import { FileTrigger } from '@koobiq/react-primitives';
 
 import { Link } from '../../../Link';
 import { useFileUploadContext } from '../../FileUploadContext';
 import type { FileUploadTriggerProps } from '../../types';
 import { resolveBrowseText } from '../../utils';
+
+import s from './Trigger.module.css';
 
 /**
  * Opens the system file dialog. The ref points to the underlying hidden file
@@ -67,7 +70,7 @@ export const FileUploadTrigger = forwardRef<
         isPseudo
         style={style}
         ref={setTriggerRef}
-        className={className}
+        className={clsx(s.base, className)}
         isDisabled={isDisabled}
         data-testid={testId}
       >

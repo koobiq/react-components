@@ -1156,6 +1156,24 @@ describe('FileUpload', () => {
     expect(clickSpy).toHaveBeenCalled();
   });
 
+  it('opens the file dialog when the browse link is activated with Enter', async () => {
+    const user = userEvent.setup();
+
+    renderComponent();
+
+    const trigger = screen.getByText('select a file');
+
+    const clickSpy = vi
+      .spyOn(getFileInput(), 'click')
+      .mockImplementation(() => undefined);
+
+    await user.tab();
+    await user.keyboard('{Enter}');
+
+    expect(trigger).toHaveFocus();
+    expect(clickSpy).toHaveBeenCalledOnce();
+  });
+
   it('supports a custom browse link label', async () => {
     const user = userEvent.setup();
 
