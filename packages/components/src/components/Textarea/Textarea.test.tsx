@@ -2,7 +2,7 @@ import { createRef } from 'react';
 
 import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, expectTypeOf, vi } from 'vitest';
 
 import { Form } from '../Form';
 
@@ -21,6 +21,10 @@ describe('Textarea', () => {
 
   const getRoot = () => screen.getByTestId('root');
   const getTextarea = () => screen.getByTestId('textarea');
+
+  it('should not expose the isClearable prop', () => {
+    expectTypeOf<TextareaProps>().not.toHaveProperty('isClearable');
+  });
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLTextAreaElement>();
