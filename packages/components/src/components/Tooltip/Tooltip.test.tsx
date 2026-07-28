@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
@@ -67,6 +67,84 @@ describe('Tooltip', () => {
     rerender(<Tooltip {...baseProps} hideArrow={false} isOpen />);
 
     expect(getRoot()).toHaveAttribute('data-arrow', 'true');
+  });
+
+  it('should align the arrow for a compound placement', async () => {
+    const getBoundingClientRect = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.dataset.testid === 'root') {
+          return {
+            bottom: 64,
+            height: 64,
+            left: 0,
+            right: 200,
+            top: 0,
+            width: 200,
+            x: 0,
+            y: 0,
+          } as DOMRect;
+        }
+
+        if (this.tagName === 'BUTTON') {
+          return {
+            bottom: 32,
+            height: 32,
+            left: 0,
+            right: 100,
+            top: 0,
+            width: 100,
+            x: 0,
+            y: 0,
+          } as DOMRect;
+        }
+
+        return {
+          bottom: 0,
+          height: 0,
+          left: 0,
+          right: 0,
+          top: 0,
+          width: 0,
+          x: 0,
+          y: 0,
+        } as DOMRect;
+      });
+
+    const { rerender } = render(
+      <Tooltip
+        {...baseProps}
+        isOpen
+        hideArrow={false}
+        placement="top start"
+        control={(props) => <button {...props} />}
+      />
+    );
+
+    await waitFor(() => {
+      expect(getRoot().querySelector('[role="presentation"]')).toHaveStyle({
+        left: '16px',
+      });
+    });
+
+    rerender(
+      <Tooltip
+        {...baseProps}
+        isOpen
+        hideArrow={false}
+        placement="top start"
+        arrowBoundaryOffset={24}
+        control={(props) => <button {...props} />}
+      />
+    );
+
+    await waitFor(() => {
+      expect(getRoot().querySelector('[role="presentation"]')).toHaveStyle({
+        left: '24px',
+      });
+    });
+
+    getBoundingClientRect.mockRestore();
   });
 
   it('should apply the focus trap', async () => {

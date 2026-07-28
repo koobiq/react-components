@@ -1,7 +1,13 @@
 import type { ComponentRef, CSSProperties, FC } from 'react';
 import { useRef } from 'react';
 
-import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
+import {
+  clsx,
+  useLocale,
+  mergeProps,
+  useBoolean,
+  useDOMRef,
+} from '@koobiq/react-core';
 import {
   Overlay,
   useOverlayTrigger,
@@ -10,6 +16,7 @@ import {
 import { Transition } from 'react-transition-group';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
+import { useOverlayArrowStyle } from '../../hooks/useOverlayArrowStyle';
 import { Dialog } from '../Dialog';
 
 import s from './Popover.module.css';
@@ -48,6 +55,8 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
   const domRef = useDOMRef<ComponentRef<'div'>>(popoverRef);
 
   const controlRef = useRef<HTMLButtonElement | null>(null);
+  const targetRef = anchorRef || controlRef;
+  const { direction } = useLocale();
 
   const openState = state.isOpen;
 
@@ -75,15 +84,25 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
       maxHeight: maxBlockSize,
       placement: placementProp,
       shouldCloseOnInteractOutside,
-      triggerRef: anchorRef || controlRef,
+      triggerRef: targetRef,
       isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
     },
     { ...state, isOpen: openState || opened }
   );
 
+  const arrowStyle = useOverlayArrowStyle({
+    direction,
+    placement: placementProp,
+    arrowBoundaryOffset,
+    arrowStyle: arrowPropsCommon.style,
+    isEnabled: showArrow,
+    overlayRef: domRef,
+    targetRef,
+  });
+
   const arrowProps = mergeProps(
     { className: s.arrow },
-    arrowPropsCommon,
+    { ...arrowPropsCommon, style: arrowStyle },
     slotProps?.arrow
   );
 
