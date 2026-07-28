@@ -1,4 +1,4 @@
-.overlay {
+.base {
   z-index: var(--kbq-layer-modal);
   display: flex;
   position: fixed;
@@ -13,7 +13,7 @@
   border: var(--kbq-size-border-width) dashed var(--kbq-line-theme-fade);
 }
 
-.overlay[data-fullscreen] {
+.base[data-fullscreen] {
   border-radius: 0;
   border: none;
 

@@ -34,7 +34,7 @@ import type {
 } from '../../types';
 import { isAcceptedFile } from '../../utils';
 
-import s from './Item.module.css';
+import s from './FileUploadItem.module.css';
 
 class FileUploadItemNode extends CollectionNode<unknown> {
   static readonly type = 'item';

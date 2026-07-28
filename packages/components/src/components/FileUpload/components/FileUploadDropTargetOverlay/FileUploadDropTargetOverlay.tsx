@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode, ComponentPropsWithoutRef } from 'react';
 import { clsx } from '@koobiq/react-core';
 import { Overlay } from '@koobiq/react-primitives';
 
-import s from './DropTargetOverlay.module.css';
+import s from './FileUploadDropTargetOverlay.module.css';
 
 type FileUploadDropTargetOverlayProps = {
   children: ReactNode;
@@ -83,7 +83,7 @@ export const FileUploadDropTargetOverlay = forwardRef<
         {...other}
         ref={ref}
         style={{ ...styleProp, ...targetStyle }}
-        className={clsx(s.overlay, className)}
+        className={clsx(s.base, className)}
         data-slot="overlay"
         data-fullscreen={isFullscreen || undefined}
       >

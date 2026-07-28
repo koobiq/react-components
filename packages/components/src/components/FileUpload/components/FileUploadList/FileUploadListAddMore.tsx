@@ -7,11 +7,11 @@ import { clsx, useDOMRef } from '@koobiq/react-core';
 import { IconArrowUpFromBracket16 } from '@koobiq/react-icons';
 
 import { useFileUploadContext } from '../../FileUploadContext';
-import { FileUploadTriggers } from '../Trigger';
+import { FileUploadTriggers } from '../FileUploadTrigger';
 
-import s from './ListEmpty.module.css';
+import s from './FileUploadListAddMore.module.css';
 
-export const FileUploadListEmpty = forwardRef<
+export const FileUploadListAddMore = forwardRef<
   HTMLDivElement,
   ComponentPropsWithRef<'div'>
 >((props, ref) => {
@@ -34,12 +34,12 @@ export const FileUploadListEmpty = forwardRef<
       <span className={s.icon} aria-hidden="true">
         <IconArrowUpFromBracket16 />
       </span>
-      <span className={s.description}>
-        {messages.listEmptyText} {messages.alternativeSeparator}{' '}
+      <span className={s.text}>
+        {messages.addMoreText} {messages.alternativeSeparator}{' '}
         <FileUploadTriggers />
       </span>
     </div>
   );
 });
 
-FileUploadListEmpty.displayName = 'FileUploadListEmpty';
+FileUploadListAddMore.displayName = 'FileUploadListAddMore';

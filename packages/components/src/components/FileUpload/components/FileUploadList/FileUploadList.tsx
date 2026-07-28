@@ -7,11 +7,11 @@ import { clsx } from '@koobiq/react-core';
 
 import { utilClasses } from '../../../../styles/utility';
 import type { FileUploadListSlotProps, FileUploadPropSize } from '../../types';
-import { FileUploadEmpty } from '../Empty';
+import { FileUploadEmpty } from '../FileUploadEmpty';
 
-import s from './List.module.css';
-import { FileUploadListAddMore } from './ListAddMore';
-import { FileUploadListEmpty } from './ListEmpty';
+import s from './FileUploadList.module.css';
+import { FileUploadListAddMore } from './FileUploadListAddMore';
+import { FileUploadListEmpty } from './FileUploadListEmpty';
 
 type FileUploadListProps = Omit<ComponentPropsWithRef<'div'>, 'children'> & {
   children: ReactNode;

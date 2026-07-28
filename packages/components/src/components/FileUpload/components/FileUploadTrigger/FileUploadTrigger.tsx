@@ -10,7 +10,7 @@ import { useFileUploadContext } from '../../FileUploadContext';
 import type { FileUploadTriggerProps } from '../../types';
 import { resolveBrowseText } from '../../utils';
 
-import s from './Trigger.module.css';
+import s from './FileUploadTrigger.module.css';
 
 /**
  * Opens the system file dialog. The ref points to the underlying hidden file

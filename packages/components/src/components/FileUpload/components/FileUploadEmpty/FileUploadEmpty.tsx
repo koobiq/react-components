@@ -13,9 +13,9 @@ import type {
   FileUploadEmptyTitleProps,
   FileUploadEmptyDescriptionProps,
 } from '../../types';
-import { FileUploadTriggers } from '../Trigger';
+import { FileUploadTriggers } from '../FileUploadTrigger';
 
-import s from './Empty.module.css';
+import s from './FileUploadEmpty.module.css';
 
 export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
   (props, ref) => {
@@ -39,7 +39,7 @@ export const FileUploadEmpty = forwardRef<HTMLDivElement, FileUploadEmptyProps>(
         data-testid={testId}
         data-disabled={isDisabled || undefined}
         data-multiple={allowsMultiple || undefined}
-        className={clsx(s.empty, className)}
+        className={clsx(s.base, className)}
       >
         <EmptyState size="normal" className={s.large}>
           {children ?? (

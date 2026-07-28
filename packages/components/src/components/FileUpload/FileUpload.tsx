@@ -56,7 +56,7 @@ import {
   FileUploadTrigger,
   FileUploadEmptyDescription,
 } from './components';
-import { FileUploadDropTargetOverlay } from './components/DropTargetOverlay';
+import { FileUploadDropTargetOverlay } from './components/FileUploadDropTargetOverlay';
 import s from './FileUpload.module.css';
 import type { FileUploadContextValue } from './FileUploadContext';
 import { FileUploadContext } from './FileUploadContext';
