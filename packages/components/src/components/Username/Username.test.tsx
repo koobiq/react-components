@@ -5,7 +5,6 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   Username,
-  UsernamePrimary,
   buildUsernameText,
   formatUsername,
   formatUsernameCustom,
@@ -167,7 +166,7 @@ describe('Username', () => {
     it('should render children instead of the default template', () => {
       render(
         <Username {...baseProps}>
-          <UsernamePrimary>Custom Name</UsernamePrimary>
+          <Username.Primary>Custom Name</Username.Primary>
         </Username>
       );
 
@@ -177,7 +176,7 @@ describe('Username', () => {
     it('should not render auto-generated content when children are provided', () => {
       render(
         <Username {...baseProps} userInfo={fullProfile}>
-          <UsernamePrimary>Custom</UsernamePrimary>
+          <Username.Primary>Custom</Username.Primary>
         </Username>
       );
 
@@ -188,7 +187,7 @@ describe('Username', () => {
     it('should still apply data attributes to the root span in custom view', () => {
       render(
         <Username {...baseProps} mode="stacked" type="error">
-          <UsernamePrimary>Custom</UsernamePrimary>
+          <Username.Primary>Custom</Username.Primary>
         </Username>
       );
 

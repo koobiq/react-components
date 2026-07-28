@@ -20,7 +20,7 @@ import { formatUsername } from './utils';
  * Supports different layout modes and visual styles.
  * Provide `children` to take full control of the rendered content.
  */
-export const Username = forwardRef<ComponentRef<'span'>, UsernameBaseProps>(
+const UsernameComponent = forwardRef<ComponentRef<'span'>, UsernameBaseProps>(
   (props, ref) => {
     const {
       userInfo,
@@ -34,76 +34,70 @@ export const Username = forwardRef<ComponentRef<'span'>, UsernameBaseProps>(
       ...other
     } = props;
 
-    const rootClassName = clsx(s.base, s[mode], s[type], className);
-
     const rootProps = {
       'data-mode': mode,
       'data-type': type,
-      className: rootClassName,
+      'data-compact': isCompact || undefined,
+      className: clsx(s.base, s[mode], s[type], className),
       ref,
       ...other,
     };
 
-    // When children are provided, render as a custom view (overrides default template).
     if (isNotNil(children)) {
-      return (
-        <span data-compact={isCompact || undefined} {...rootProps}>
-          {children}
-        </span>
-      );
+      return <span {...rootProps}>{children}</span>;
     }
 
     const hasFullName = Boolean(userInfo?.firstName && userInfo?.lastName);
     const name = hasFullName ? formatter(userInfo, fullNameFormat) : '';
-    const hasContent = hasFullName || isNotNil(userInfo?.login);
+    const primaryText = hasFullName ? name : userInfo?.login;
 
-    if (isCompact) {
-      return (
-        <span data-compact={isCompact || undefined} {...rootProps}>
-          <UsernamePrimary>
-            {hasFullName ? name : userInfo?.login}
-            {hasContent && isNotNil(userInfo?.site) && (
-              <UsernameSecondaryHint> ({userInfo!.site})</UsernameSecondaryHint>
-            )}
-          </UsernamePrimary>
-        </span>
-      );
-    }
+    const secondaryText =
+      !isCompact && hasFullName ? userInfo?.login : undefined;
 
-    if (hasFullName) {
-      return (
-        <span {...rootProps}>
-          <UsernamePrimary>{name}</UsernamePrimary>
-          {isNotNil(userInfo?.login) && (
-            <UsernameSecondary>
-              {userInfo!.login}
-              {isNotNil(userInfo?.site) && (
-                <UsernameSecondaryHint>
-                  {' '}
-                  ({userInfo!.site})
-                </UsernameSecondaryHint>
-              )}
-            </UsernameSecondary>
-          )}
-        </span>
-      );
-    }
+    const showSiteInSecondary = isNotNil(userInfo?.site && secondaryText);
+
+    const primaryHoldsLogin = isCompact
+      ? isNotNil(primaryText)
+      : isNotNil(userInfo?.login) && !hasFullName;
+
+    const showSiteInPrimary =
+      isNotNil(userInfo?.site) && !showSiteInSecondary && primaryHoldsLogin;
+
+    const hint = userInfo?.site ? (
+      <UsernameSecondaryHint> ({userInfo.site})</UsernameSecondaryHint>
+    ) : null;
 
     return (
       <span {...rootProps}>
-        {isNotNil(userInfo?.login) && (
+        {primaryText && (
           <UsernamePrimary>
-            {userInfo!.login}
-            {isNotNil(userInfo?.site) && (
-              <UsernameSecondaryHint> ({userInfo!.site})</UsernameSecondaryHint>
-            )}
+            {primaryText}
+            {showSiteInPrimary && hint}
           </UsernamePrimary>
+        )}
+        {secondaryText && (
+          <UsernameSecondary>
+            {secondaryText}
+            {showSiteInSecondary && hint}
+          </UsernameSecondary>
         )}
       </span>
     );
   }
 );
 
-Username.displayName = 'Username';
+UsernameComponent.displayName = 'Username';
 
-export type UsernameProps = ComponentPropsWithRef<typeof Username>;
+type CompoundedComponent = typeof UsernameComponent & {
+  Primary: typeof UsernamePrimary;
+  Secondary: typeof UsernameSecondary;
+  SecondaryHint: typeof UsernameSecondaryHint;
+};
+
+export const Username = UsernameComponent as CompoundedComponent;
+
+Username.Primary = UsernamePrimary;
+Username.Secondary = UsernameSecondary;
+Username.SecondaryHint = UsernameSecondaryHint;
+
+export type UsernameProps = ComponentPropsWithRef<typeof UsernameComponent>;

@@ -129,19 +129,8 @@ export type BuildUsernameTextOptions = {
 };
 
 /**
- * Builds a plain-text string from a pre-formatted name plus optional login and site,
- * mirroring the text rendered by `Username`.
- *
- * Pass the result of `formatUsername` or `formatUsernameCustom` as `name`.
- * Use `formatLogin`/`formatSite` options to customise how those segments appear.
- * @example
- * const name = formatUsername(userInfo, 'lf.m.');
- * buildUsernameText({ name, login: userInfo.login, site: userInfo.site });
- * // → "Root M. A. mroot (corp)"
- * @example
- * // Strip parentheses from site (useful for search/filter comparisons)
- * buildUsernameText({ name, login, site }, { formatSite: (s) => s });
- * // → "Root M. A. mroot corp"
+ * Returns the same user information that `Username` displays, but as a plain string.
+ * Useful for `aria-label` values and search/filter logic.
  */
 export function buildUsernameText(
   data: { name: string; login?: string; site?: string },

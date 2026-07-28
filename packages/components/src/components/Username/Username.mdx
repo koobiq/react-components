@@ -169,8 +169,8 @@ A custom `mapping` can be passed by wrapping the function:
 
 ## buildUsernameText
 
-`buildUsernameText` assembles a plain-text string that mirrors what `Username` renders.
-Use it for `aria-label` values or search/filter logic.
+Use `buildUsernameText` when you need the same user information that `Username` displays, but as a plain string —
+for example, as an `aria-label` on a button or as a value to match against in search and filter logic.
 
 It takes a pre-formatted `name` string (the output of `formatUsername` or `formatUsernameCustom`)
 plus optional `login` and `site`. By default `site` is wrapped in parentheses.

@@ -5,9 +5,6 @@ import { Link } from '../Link';
 
 import {
   Username,
-  UsernamePrimary,
-  UsernameSecondary,
-  UsernameSecondaryHint,
   type UsernameProps,
   formatUsernameCustom,
   usernamePropMode,
@@ -29,20 +26,13 @@ const meta = {
     layout: 'centered',
   },
   tags: ['status:new', 'date:2026-07-22'],
-  args: {
-    userInfo: defaultUserInfo,
-  },
-  argTypes: {
-    mode: { control: { type: 'select' }, options: usernamePropMode },
-    type: { control: { type: 'select' }, options: usernamePropType },
-  },
 } satisfies Meta<typeof Username>;
 
 export default meta;
 type Story = StoryObj<UsernameProps>;
 
 export const Base: Story = {
-  render: (args) => <Username {...args} />,
+  render: (args) => <Username {...args} userInfo={defaultUserInfo} />,
 };
 
 export const Mode: Story = {
@@ -58,7 +48,7 @@ export const Mode: Story = {
           >
             mode = {mode}
           </span>
-          <Username {...args} mode={mode} />
+          <Username {...args} mode={mode} userInfo={defaultUserInfo} />
         </FlexBox>
       ))}
     </FlexBox>
@@ -80,10 +70,10 @@ export const Type: Story = {
           </span>
           {type === 'inherit' ? (
             <span style={{ color: 'var(--kbq-foreground-theme)' }}>
-              <Username {...args} type={type} />
+              <Username {...args} type={type} userInfo={defaultUserInfo} />
             </span>
           ) : (
-            <Username {...args} type={type} />
+            <Username {...args} type={type} userInfo={defaultUserInfo} />
           )}
         </FlexBox>
       ))}
@@ -103,7 +93,7 @@ export const Compact: Story = {
         >
           isCompact = false
         </span>
-        <Username {...args} isCompact={false} />
+        <Username {...args} userInfo={defaultUserInfo} />
       </FlexBox>
       <FlexBox direction="column" gap="xs">
         <span
@@ -114,7 +104,7 @@ export const Compact: Story = {
         >
           isCompact = true
         </span>
-        <Username {...args} isCompact />
+        <Username {...args} userInfo={defaultUserInfo} isCompact />
       </FlexBox>
     </FlexBox>
   ),
@@ -164,12 +154,12 @@ export const WithSite: Story = {
 
 export const CustomView: Story = {
   render: (args) => (
-    <Username {...args}>
-      <UsernamePrimary>Root M. A.</UsernamePrimary>
-      <UsernameSecondary>
+    <Username {...args} userInfo={defaultUserInfo}>
+      <Username.Primary>Root M. A.</Username.Primary>
+      <Username.Secondary>
         [mroot]
-        <UsernameSecondaryHint> (corp)</UsernameSecondaryHint>
-      </UsernameSecondary>
+        <Username.SecondaryHint> (corp)</Username.SecondaryHint>
+      </Username.Secondary>
     </Username>
   ),
 };
@@ -177,7 +167,7 @@ export const CustomView: Story = {
 export const AsLink: Story = {
   render: (args) => (
     <Link href="#">
-      <Username {...args} type="inherit" />
+      <Username {...args} type="inherit" userInfo={defaultUserInfo} />
     </Link>
   ),
 };
@@ -194,7 +184,7 @@ export const CustomFormatter: Story = {
         >
           formatUsername (default) — format: &apos;lf.m.&apos;
         </span>
-        <Username {...args} />
+        <Username {...args} userInfo={defaultUserInfo} />
       </FlexBox>
       <FlexBox direction="column" gap="xs">
         <span
@@ -207,6 +197,7 @@ export const CustomFormatter: Story = {
         </span>
         <Username
           {...args}
+          userInfo={defaultUserInfo}
           formatter={formatUsernameCustom}
           fullNameFormat="L f. m."
         />
@@ -222,6 +213,7 @@ export const CustomFormatter: Story = {
         </span>
         <Username
           {...args}
+          userInfo={defaultUserInfo}
           formatter={formatUsernameCustom}
           fullNameFormat="F L"
         />
