@@ -56,7 +56,14 @@ export function ToastRegionRender(
 
   const getNodeRef = useKeyedRefs<HTMLDivElement>();
 
-  const portalContainer = getContainer ? getContainer() : document.body;
+  let portalContainer: HTMLElement | null = null;
+
+  if (getContainer) {
+    portalContainer = getContainer();
+  } else if (isBrowser) {
+    portalContainer = document.body;
+  }
+
   if (!portalContainer || !isBrowser || !isMounted) return null;
 
   const regionProps = mergeProps(

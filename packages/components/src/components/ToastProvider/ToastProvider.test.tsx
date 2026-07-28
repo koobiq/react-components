@@ -2,6 +2,7 @@ import { createRef } from 'react';
 
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { renderToString } from 'react-dom/server';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { toast, ToastProvider } from '../index';
@@ -40,6 +41,26 @@ describe('ToastProvider', () => {
   const user = userEvent.setup({ delay: null });
 
   describe('ToastRegion', () => {
+    it('should render without browser globals', () => {
+      const documentDescriptor = Object.getOwnPropertyDescriptor(
+        globalThis,
+        'document'
+      );
+
+      Object.defineProperty(globalThis, 'document', {
+        configurable: true,
+        value: undefined,
+      });
+
+      try {
+        expect(() => renderToString(<ToastProvider />)).not.toThrow();
+      } finally {
+        if (documentDescriptor) {
+          Object.defineProperty(globalThis, 'document', documentDescriptor);
+        }
+      }
+    });
+
     it('should merge a custom class name with the default ones', async () => {
       const className = 'foo';
 
