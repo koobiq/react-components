@@ -57,6 +57,7 @@ export * from './EmptyState';
 export * from './Flag';
 export * from './Sidebar';
 export * from './Resizable';
+export * from './FileUpload';
 export * from './layout';
 export {
   useListData,

@@ -1,0 +1,3 @@
+.base[data-focus-visible]:not(:focus-visible) {
+  outline-color: transparent;
+}
