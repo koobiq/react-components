@@ -6,6 +6,10 @@
   color: var(--kbq-toast-icon-color);
 }
 
+.info {
+  --kbq-toast-icon-color: var(--kbq-icon-contrast);
+}
+
 .error {
   --kbq-toast-icon-color: var(--kbq-icon-error);
 }
