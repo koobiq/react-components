@@ -205,19 +205,10 @@ export const SplitButton: Story = {
           gap: var(--kbq-size-3xl) var(--kbq-size-6xl);
         }
 
-        .split-button-demo__group {
-          --kbq-button-group-divider-color: var(--kbq-background-transparent);
-        }
-
         .split-button-demo__group
           > [data-slot='button']:not(:last-child) {
-          border-inline-end: 0;
-          background-clip: border-box;
-        }
-
-        .split-button-demo__group
-          > [data-slot='button']:not(:last-child)::before {
-          inset-inline-end: 0;
+          margin-inline-end: 0;
+          box-shadow: none;
         }
 
         .split-button-demo__group[data-variant='contrast-filled'] {
@@ -235,38 +226,30 @@ export const SplitButton: Story = {
           --split-button-divider-color: var(--kbq-line-theme-fade);
         }
 
-        .split-button-demo__group
-          > [data-slot='button']:last-child
-          > span::before {
-          content: '';
-          position: absolute;
-          pointer-events: none;
-          inset-inline-start: 0;
-          inset-block-start: calc(
-            var(--kbq-size-s) - var(--kbq-size-border-width)
+        .split-button-demo__group > [data-slot='button']:last-child {
+          background-image: linear-gradient(
+            var(--split-button-divider-color),
+            var(--split-button-divider-color)
           );
-          inline-size: var(--kbq-size-border-width);
-          block-size: var(--kbq-size-l);
-          background-color: var(--split-button-divider-color);
+          background-repeat: no-repeat;
+          background-position: 0 50%;
+          background-size: var(--kbq-size-border-width) var(--kbq-size-l);
         }
 
         .split-button-demo__group
-          > [data-slot='button']:last-child[aria-expanded='true']
-          > span::before,
+          > [data-slot='button']:last-child[aria-expanded='true'],
         .split-button-demo__group
           > [data-slot='button']:last-child:is(
             :hover,
             :focus-visible
-          )
-          > span::before,
+          ),
         .split-button-demo__group
           > [data-slot='button']:not(:last-child):is(
             :hover,
             :focus-visible
           )
-          + [data-slot='button']:last-child
-          > span::before {
-          display: none;
+          + [data-slot='button']:last-child {
+          background-image: none;
         }
       `}</style>
         <div className="split-button-demo">

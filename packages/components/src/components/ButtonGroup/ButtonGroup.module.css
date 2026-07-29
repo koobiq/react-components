@@ -3,9 +3,16 @@
 
   display: inline-flex;
   align-items: stretch;
+
+  & > [data-slot='button']:not(:last-child) {
+    box-shadow: var(--button-group-divider-shadow);
+  }
 }
 
 .horizontal {
+  --button-group-divider-shadow: var(--kbq-size-border-width) 0 0
+    var(--kbq-button-group-divider-color, var(--button-group-divider-color));
+
   flex-direction: row;
 
   & > [data-slot='button'] {
@@ -21,25 +28,19 @@
     &:not(:last-child) {
       border-start-end-radius: 0;
       border-end-end-radius: 0;
-      background-clip: padding-box;
-      border-inline-end: var(--kbq-size-border-width) solid
-        var(--kbq-button-group-divider-color, var(--button-group-divider-color));
+      margin-inline-end: var(--kbq-size-border-width);
 
       &::before {
         border-inline-end-width: 0;
-        inset-inline-end: calc(-1 * var(--kbq-size-border-width));
       }
-    }
-
-    &:not(:last-child)[data-onlyicon] {
-      inline-size: calc(
-        var(--button-block-size) + var(--kbq-size-border-width)
-      );
     }
   }
 }
 
 .vertical {
+  --button-group-divider-shadow: 0 var(--kbq-size-border-width) 0
+    var(--kbq-button-group-divider-color, var(--button-group-divider-color));
+
   flex-direction: column;
 
   & > [data-slot='button'] {
@@ -55,14 +56,10 @@
     &:not(:last-child) {
       border-end-start-radius: 0;
       border-end-end-radius: 0;
-      background-clip: padding-box;
-      border-block-end: var(--kbq-size-border-width) solid
-        var(--kbq-button-group-divider-color, var(--button-group-divider-color));
-      block-size: calc(var(--button-block-size) + var(--kbq-size-border-width));
+      margin-block-end: var(--kbq-size-border-width);
 
       &::before {
         border-block-end-width: 0;
-        inset-block-end: calc(-1 * var(--kbq-size-border-width));
       }
     }
   }
