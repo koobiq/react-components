@@ -87,7 +87,7 @@ describe('Username', () => {
 
     it('should set data-compact when isCompact is true', () => {
       render(<Username {...baseProps} isCompact userInfo={fullProfile} />);
-      expect(getRoot()).toHaveAttribute('data-compact');
+      expect(getRoot()).toHaveAttribute('data-compact', 'true');
     });
   });
 
