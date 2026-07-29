@@ -45,20 +45,46 @@ export type UsernameFormatOptions = {
   join?: 'concat' | 'space';
 };
 
-function formatUsernameEngine(
+/**
+ * Formats user profile data into a display name string using a format pattern.
+ *
+ * By default, format characters `l` = lastName, `f` = firstName, `m` = middleName.
+ * A letter followed by `.` produces an initial + period (e.g. `f.` → "M.").
+ * Empty fields are silently skipped without leaving stray punctuation.
+ * This default behavior is relied on by existing callers and must not change.
+ *
+ * `options` exposes the underlying parser's knobs so callers can compose a
+ * different format style without a separate function. For example, to get
+ * a parser where uppercase letters emit the full field value, lowercase
+ * letters emit just the initial, and any other character (spaces, dots,
+ * slashes, …) is emitted literally:
+ * @example
+ * formatUsername({ firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' }, 'lf.m.')
+ * // → "Root M. A."
+ * @example
+ * formatUsername({ firstName: 'Maxwell', lastName: 'Root' }, 'F L', {
+ *   mapping: { F: 'firstName', f: 'firstName', L: 'lastName', l: 'lastName' },
+ *   literalPassthrough: true,
+ *   caseDeterminesForm: true,
+ *   uppercaseInitial: false,
+ *   join: 'concat',
+ * })
+ * // → "Maxwell Root"
+ */
+export function formatUsername(
   userInfo: UsernameUserInfo | undefined,
-  format: string,
-  options: Required<UsernameFormatOptions>
+  format = 'lf.m.',
+  options?: UsernameFormatOptions
 ): string {
   if (!userInfo) return '';
 
   const {
-    mapping,
-    literalPassthrough,
-    caseDeterminesForm,
-    uppercaseInitial,
-    join,
-  } = options;
+    mapping = legacyMapping,
+    literalPassthrough = false,
+    caseDeterminesForm = false,
+    uppercaseInitial = true,
+    join = 'space',
+  } = options ?? {};
 
   const tokens: string[] = [];
   let literal = '';
@@ -104,47 +130,6 @@ function formatUsernameEngine(
   flushLiteral();
 
   return join === 'space' ? tokens.join(' ') : tokens.join('').trim();
-}
-
-/**
- * Formats user profile data into a display name string using a format pattern.
- *
- * By default, format characters `l` = lastName, `f` = firstName, `m` = middleName.
- * A letter followed by `.` produces an initial + period (e.g. `f.` → "M.").
- * Empty fields are silently skipped without leaving stray punctuation.
- * This default behavior is relied on by existing callers and must not change.
- *
- * `options` exposes the underlying parser's knobs so callers can compose a
- * different format style without a separate function. For example, to get
- * a parser where uppercase letters emit the full field value, lowercase
- * letters emit just the initial, and any other character (spaces, dots,
- * slashes, …) is emitted literally:
- * @example
- * formatUsername({ firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' }, 'lf.m.')
- * // → "Root M. A."
- * @example
- * formatUsername({ firstName: 'Maxwell', lastName: 'Root' }, 'F L', {
- *   mapping: { F: 'firstName', f: 'firstName', L: 'lastName', l: 'lastName' },
- *   literalPassthrough: true,
- *   caseDeterminesForm: true,
- *   uppercaseInitial: false,
- *   join: 'concat',
- * })
- * // → "Maxwell Root"
- */
-export function formatUsername(
-  userInfo: UsernameUserInfo | undefined,
-  format = 'lf.m.',
-  options?: UsernameFormatOptions
-): string {
-  return formatUsernameEngine(userInfo, format, {
-    mapping: legacyMapping,
-    literalPassthrough: false,
-    caseDeterminesForm: false,
-    uppercaseInitial: true,
-    join: 'space',
-    ...options,
-  });
 }
 
 export type BuildUsernameTextOptions = {
