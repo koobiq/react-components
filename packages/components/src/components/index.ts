@@ -5,6 +5,7 @@ export * from './FormField';
 export * from './IconItem';
 export * from './Alert';
 export * from './Button';
+export * from './ButtonGroup';
 export * from './IconButton';
 export * from './Typography';
 export * from './Checkbox';

@@ -1,0 +1,94 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ButtonGroup.stories';
+
+<Meta of={Stories} />
+
+# ButtonGroup
+
+<Status variant="experimental" />
+
+The ButtonGroup joins buttons that belong together.
+
+## Import
+
+```tsx
+import { ButtonGroup, Button } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Variant
+
+The `variant` prop sets the look of every button in the group and wins over the
+`variant` set on a button.
+
+<Story of={Stories.Variant} />
+
+## Content
+
+A button in the group can hold a label, an icon, or both. Add a caret with
+`endIcon` to make it a menu button.
+
+<Story of={Stories.Content} />
+
+Buttons with different content can go into one group.
+
+<Story of={Stories.MixedContent} />
+
+## Only icon
+
+<Story of={Stories.OnlyIcon} />
+
+## Orientation
+
+Use the `orientation` prop to stack the buttons in a column. Only icon buttons
+can go into a vertical group. Groups with no fill and no border have no divider
+between the buttons.
+
+<Story of={Stories.Orientation} />
+
+## Disabled
+
+The `isDisabled` prop disables every button in the group. A button can also be
+disabled on its own.
+
+<Story of={Stories.Disabled} />
+
+## Loading
+
+Use the `isLoading` prop on a button to show a loader and block clicks.
+
+<Story of={Stories.Loading} />
+
+## Root tag
+
+Use the `as` prop to redefine the HTML-tag of the component to your own.
+
+<Story of={Stories.RootTag} />
+
+## Accessibility
+
+The group is rendered with `role="group"`. Every button keeps its own tab stop,
+so <kbd>Tab</kbd> steps through the group button by button. Give icon-only
+buttons an `aria-label`, and label the group itself with `aria-label` when the
+surrounding content doesn't already name it.
+
+## CSS Variables
+
+Use CSS variables to customize the button group.
+
+| Variable                           |
+| ---------------------------------- |
+| `--kbq-button-group-divider-color` |
