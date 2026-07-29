@@ -7,10 +7,12 @@ import {
   IconPlus16,
   IconTriangleExclamation16,
 } from '@koobiq/react-icons';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button, buttonPropVariant } from '../Button';
+import { Button, buttonPropVariant, type ButtonPropVariant } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Menu } from '../Menu';
+import { Typography } from '../Typography';
 
 import { ButtonGroup, type ButtonGroupProps } from './index';
 
@@ -178,4 +180,129 @@ export const RootTag: Story = {
       <Button>Delete</Button>
     </ButtonGroup>
   ),
+};
+
+export const SplitButton: Story = {
+  render: () => {
+    const splitButtonVariants: {
+      label: string;
+      variant: ButtonPropVariant;
+    }[] = [
+      { label: 'Filled Contrast', variant: 'contrast-filled' },
+      { label: 'Filled Fade Contrast', variant: 'fade-contrast-filled' },
+      { label: 'Outline Fade Theme', variant: 'fade-theme-outline' },
+      { label: 'Outline Fade Contrast', variant: 'fade-contrast-outline' },
+      { label: 'Transparent Theme', variant: 'theme-transparent' },
+      { label: 'Transparent Contrast', variant: 'contrast-transparent' },
+    ];
+
+    return (
+      <>
+        <style>{`
+        .split-button-demo {
+          display: grid;
+          grid-template-columns: repeat(2, max-content);
+          gap: var(--kbq-size-3xl) var(--kbq-size-6xl);
+        }
+
+        .split-button-demo__group {
+          --kbq-button-group-divider-color: var(--kbq-background-transparent);
+        }
+
+        .split-button-demo__group
+          > [data-slot='button']:not(:last-child) {
+          border-inline-end: 0;
+          background-clip: border-box;
+        }
+
+        .split-button-demo__group
+          > [data-slot='button']:not(:last-child)::before {
+          inset-inline-end: 0;
+        }
+
+        .split-button-demo__group[data-variant='contrast-filled'] {
+          --split-button-divider-color: var(--kbq-line-on-contrast-fade);
+        }
+
+        .split-button-demo__group[data-variant='fade-contrast-filled'],
+        .split-button-demo__group[data-variant='fade-contrast-outline'],
+        .split-button-demo__group[data-variant='contrast-transparent'] {
+          --split-button-divider-color: var(--kbq-line-contrast-fade);
+        }
+
+        .split-button-demo__group[data-variant='fade-theme-outline'],
+        .split-button-demo__group[data-variant='theme-transparent'] {
+          --split-button-divider-color: var(--kbq-line-theme-fade);
+        }
+
+        .split-button-demo__group
+          > [data-slot='button']:last-child
+          > span::before {
+          content: '';
+          position: absolute;
+          pointer-events: none;
+          inset-inline-start: 0;
+          inset-block-start: calc(
+            var(--kbq-size-s) - var(--kbq-size-border-width)
+          );
+          inline-size: var(--kbq-size-border-width);
+          block-size: var(--kbq-size-l);
+          background-color: var(--split-button-divider-color);
+        }
+
+        .split-button-demo__group
+          > [data-slot='button']:last-child[aria-expanded='true']
+          > span::before,
+        .split-button-demo__group
+          > [data-slot='button']:last-child:is(
+            :hover,
+            :focus-visible
+          )
+          > span::before,
+        .split-button-demo__group
+          > [data-slot='button']:not(:last-child):is(
+            :hover,
+            :focus-visible
+          )
+          + [data-slot='button']:last-child
+          > span::before {
+          display: none;
+        }
+      `}</style>
+        <div className="split-button-demo">
+          {splitButtonVariants.map(({ label, variant }) => (
+            <FlexBox
+              key={variant}
+              gap="s"
+              direction="column"
+              alignItems="flex-start"
+            >
+              <Typography>{label}</Typography>
+              <ButtonGroup
+                className="split-button-demo__group"
+                variant={variant}
+                aria-label={`${label} split action`}
+              >
+                <Button startIcon={<IconPlus16 />}>Split Button</Button>
+                <Menu
+                  placement="bottom end"
+                  control={(props) => (
+                    <Button
+                      {...props}
+                      onlyIcon
+                      aria-label={`More ${label} actions`}
+                      startIcon={<IconChevronDown16 />}
+                    />
+                  )}
+                >
+                  <Menu.Item key="template">Create from template</Menu.Item>
+                  <Menu.Item key="import">Import</Menu.Item>
+                </Menu>
+              </ButtonGroup>
+            </FlexBox>
+          ))}
+        </div>
+      </>
+    );
+  },
 };
