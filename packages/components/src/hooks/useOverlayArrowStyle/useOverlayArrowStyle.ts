@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react';
-import { useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
+
+import { useIsomorphicEffect } from '@koobiq/react-core';
 
 type Direction = 'ltr' | 'rtl';
 
@@ -136,7 +138,10 @@ export const useOverlayArrowStyle = ({
 }: UseOverlayArrowStyleOptions): CSSProperties | undefined => {
   const [overrideStyle, setOverrideStyle] = useState<CSSProperties>();
 
-  useLayoutEffect(() => {
+  // React Aria recalculates the arrow offset every time it repositions the
+  // overlay, so its value is the signal to measure the elements again. The
+  // `arrowStyle` object is recreated on every render and can't be a dependency.
+  useIsomorphicEffect(() => {
     if (!isEnabled || !hasOverlayArrowAlignment(placement)) {
       setOverrideStyle((currentStyle) =>
         currentStyle === undefined ? currentStyle : undefined
@@ -158,7 +163,16 @@ export const useOverlayArrowStyle = ({
         ? currentStyle
         : nextOverride
     );
-  });
+  }, [
+    isEnabled,
+    placement,
+    direction,
+    arrowBoundaryOffset,
+    arrowStyle?.left,
+    arrowStyle?.top,
+    overlayRef,
+    targetRef,
+  ]);
 
   return overrideStyle ? { ...arrowStyle, ...overrideStyle } : arrowStyle;
 };
