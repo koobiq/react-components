@@ -25,10 +25,7 @@ export type BuildUsernameTextOptions = {
 };
 
 // @public
-export function formatUsername(userInfo: UsernameUserInfo | undefined, format?: string): string;
-
-// @public
-export function formatUsernameCustom(userInfo: UsernameUserInfo | undefined, format?: string, mapping?: UsernameFormatMapping): string;
+export function formatUsername(userInfo: UsernameUserInfo | undefined, format?: string, options?: UsernameFormatOptions): string;
 
 // Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
 //
@@ -48,6 +45,15 @@ export type UsernameBaseProps = Omit<ComponentPropsWithRef<'span'>, 'children'> 
 
 // @public
 export type UsernameFormatMapping = Record<string, keyof UsernameUserInfo | undefined>;
+
+// @public (undocumented)
+export type UsernameFormatOptions = {
+    mapping?: UsernameFormatMapping;
+    literalPassthrough?: boolean;
+    caseDeterminesForm?: boolean;
+    uppercaseInitial?: boolean;
+    join?: 'concat' | 'space';
+};
 
 // @public (undocumented)
 export const UsernamePrimary: ForwardRefExoticComponent<Omit<DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, "ref"> & RefAttributes<HTMLSpanElement>>;

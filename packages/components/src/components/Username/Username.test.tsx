@@ -7,10 +7,27 @@ import {
   Username,
   buildUsernameText,
   formatUsername,
-  formatUsernameCustom,
   usernamePropMode,
   usernamePropType,
 } from './index.js';
+
+const extendedMapping = {
+  F: 'firstName',
+  f: 'firstName',
+  M: 'middleName',
+  m: 'middleName',
+  L: 'lastName',
+  l: 'lastName',
+} as const;
+
+const formatUsernameExtended: typeof formatUsername = (userInfo, format) =>
+  formatUsername(userInfo, format, {
+    mapping: extendedMapping,
+    literalPassthrough: true,
+    caseDeterminesForm: true,
+    uppercaseInitial: false,
+    join: 'concat',
+  });
 
 const fullProfile = {
   firstName: 'Maxwell',
@@ -153,7 +170,7 @@ describe('Username', () => {
       render(
         <Username
           userInfo={fullProfile}
-          formatter={formatUsernameCustom}
+          formatter={formatUsernameExtended}
           fullNameFormat="F L"
         />
       );
@@ -230,51 +247,74 @@ describe('formatUsername', () => {
   });
 });
 
-describe('formatUsernameCustom', () => {
+describe('formatUsername (extended)', () => {
+  const extendedOptions = {
+    mapping: extendedMapping,
+    literalPassthrough: true,
+    caseDeterminesForm: true,
+    uppercaseInitial: false,
+    join: 'concat',
+  } as const;
+
   it('should return an empty string when userInfo is undefined', () => {
-    expect(formatUsernameCustom(undefined)).toBe('');
+    expect(formatUsername(undefined, undefined, extendedOptions)).toBe('');
   });
 
   it('should format "L f. m." correctly with all three name parts present', () => {
     expect(
-      formatUsernameCustom(
+      formatUsername(
         { firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' },
-        'L f. m.'
+        'L f. m.',
+        extendedOptions
       )
     ).toBe('Root M. A.');
   });
 
   it('should emit the full value for uppercase keys', () => {
     expect(
-      formatUsernameCustom({ firstName: 'Maxwell', lastName: 'Root' }, 'F L')
+      formatUsername(
+        { firstName: 'Maxwell', lastName: 'Root' },
+        'F L',
+        extendedOptions
+      )
     ).toBe('Maxwell Root');
   });
 
   it('should emit only the initial for lowercase keys', () => {
     expect(
-      formatUsernameCustom({ firstName: 'Maxwell', lastName: 'Root' }, 'f l')
+      formatUsername(
+        { firstName: 'Maxwell', lastName: 'Root' },
+        'f l',
+        extendedOptions
+      )
     ).toBe('M R');
   });
 
   it('should emit non-field characters literally', () => {
     expect(
-      formatUsernameCustom({ firstName: 'Maxwell', lastName: 'Root' }, 'L, F')
+      formatUsername(
+        { firstName: 'Maxwell', lastName: 'Root' },
+        'L, F',
+        extendedOptions
+      )
     ).toBe('Root, Maxwell');
   });
 
   it('should silently drop an empty field key while preserving surrounding literals', () => {
     expect(
-      formatUsernameCustom(
+      formatUsername(
         { firstName: 'Maxwell', lastName: 'Root' },
-        'L f. m.'
+        'L f. m.',
+        extendedOptions
       )
     ).toBe('Root M. .');
   });
 
   it('should accept a custom mapping', () => {
     expect(
-      formatUsernameCustom({ firstName: 'Maxwell', lastName: 'Root' }, 'A', {
-        A: 'firstName',
+      formatUsername({ firstName: 'Maxwell', lastName: 'Root' }, 'A', {
+        ...extendedOptions,
+        mapping: { A: 'firstName' },
       })
     ).toBe('Maxwell');
   });

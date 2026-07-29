@@ -12,11 +12,31 @@ import {
   type UsernameProps,
   type UsernameUserInfo,
   formatUsername,
-  formatUsernameCustom,
   buildUsernameText,
   usernamePropMode,
   usernamePropType,
 } from './index.js';
+
+const extendedMapping = {
+  F: 'firstName',
+  f: 'firstName',
+  M: 'middleName',
+  m: 'middleName',
+  L: 'lastName',
+  l: 'lastName',
+} as const;
+
+const formatUsernameExtended = (
+  userInfo: UsernameUserInfo | undefined,
+  format: string
+) =>
+  formatUsername(userInfo, format, {
+    mapping: extendedMapping,
+    literalPassthrough: true,
+    caseDeterminesForm: true,
+    uppercaseInitial: false,
+    join: 'concat',
+  });
 
 const defaultUserInfo = {
   firstName: 'Maxwell',
@@ -253,23 +273,23 @@ export const CustomFormatter: Story = {
       </FlexBox>
       <FlexBox direction="column" gap="xs">
         <Typography as="span" variant="text-compact" color="contrast-secondary">
-          formatUsernameCustom — format: &apos;L f. m.&apos;
+          formatUsername (extended) — format: &apos;L f. m.&apos;
         </Typography>
         <Username
           {...args}
           userInfo={defaultUserInfo}
-          formatter={formatUsernameCustom}
+          formatter={formatUsernameExtended}
           fullNameFormat="L f. m."
         />
       </FlexBox>
       <FlexBox direction="column" gap="xs">
         <Typography as="span" variant="text-compact" color="contrast-secondary">
-          formatUsernameCustom — format: &apos;F L&apos;
+          formatUsername (extended) — format: &apos;F L&apos;
         </Typography>
         <Username
           {...args}
           userInfo={defaultUserInfo}
-          formatter={formatUsernameCustom}
+          formatter={formatUsernameExtended}
           fullNameFormat="F L"
         />
       </FlexBox>

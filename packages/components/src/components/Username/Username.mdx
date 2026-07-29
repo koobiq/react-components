@@ -124,47 +124,54 @@ const name = formatUsername(
 
 ## Custom formatter
 
-The `formatter` prop lets you swap the name-formatting function.
-Pass `formatUsernameCustom` (or any function with the same signature) to use a different format style.
+The `formatter` prop lets you swap the name-formatting function. `formatUsername` also
+accepts a third `UsernameFormatOptions` argument exposing the parser's underlying knobs, so
+you can compose a different format style without a separate function — wrap it in a
+two-argument function to match the `formatter` signature:
 
-`formatUsernameCustom` uses a richer format string where character case determines full vs initial output,
-and non-field characters pass through literally:
+| Option               | Default                                              | Meaning                                                                              |
+| -------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `mapping`            | `{ l: 'lastName', f: 'firstName', m: 'middleName' }` | Format characters bound to `UsernameUserInfo` fields                                 |
+| `literalPassthrough` | `false`                                              | Emit characters absent from `mapping` literally instead of dropping them             |
+| `caseDeterminesForm` | `false`                                              | Full-vs-initial is decided by the letter's own case rather than a trailing `.`       |
+| `uppercaseInitial`   | `true`                                               | Uppercase the first letter of a rendered initial                                     |
+| `join`               | `'space'`                                            | `'space'` joins tokens with a single space; `'concat'` preserves literals as written |
 
-| Character | Field        | Output                                       |
-| --------- | ------------ | -------------------------------------------- |
-| `L`       | `lastName`   | Full value                                   |
-| `l`       | `lastName`   | First character only                         |
-| `F`       | `firstName`  | Full value                                   |
-| `f`       | `firstName`  | First character only                         |
-| `M`       | `middleName` | Full value                                   |
-| `m`       | `middleName` | First character only                         |
-| any other | —            | Emitted literally (spaces, dots, separators) |
-
-The default format for `formatUsernameCustom` is `'L f. m.'`, which produces the same
-`"Root M. A."` output as the default formatter but with literal dots and spaces from the
-format string rather than token-joining.
+For example, a parser where uppercase letters emit the full field value, lowercase letters
+emit just the initial, and non-field characters (spaces, dots, separators) pass through
+literally:
 
 <Story of={Stories.CustomFormatter} />
 
 ```tsx
-import { formatUsernameCustom } from '@koobiq/react-components';
+import {
+  formatUsername,
+  type UsernameUserInfo,
+} from '@koobiq/react-components';
 
-<Username
-  userInfo={user}
-  formatter={formatUsernameCustom}
-  fullNameFormat="F L"
-/>;
+const extendedMapping = {
+  F: 'firstName',
+  f: 'firstName',
+  M: 'middleName',
+  m: 'middleName',
+  L: 'lastName',
+  l: 'lastName',
+} as const;
+
+const formatExtended = (
+  userInfo: UsernameUserInfo | undefined,
+  format: string
+) =>
+  formatUsername(userInfo, format, {
+    mapping: extendedMapping,
+    literalPassthrough: true,
+    caseDeterminesForm: true,
+    uppercaseInitial: false,
+    join: 'concat',
+  });
+
+<Username userInfo={user} formatter={formatExtended} fullNameFormat="F L" />;
 // Primary renders: "Maxwell Root"
-```
-
-A custom `mapping` can be passed by wrapping the function:
-
-```tsx
-<Username
-  userInfo={user}
-  formatter={(info, fmt) => formatUsernameCustom(info, fmt, myMapping)}
-  fullNameFormat="F L"
-/>
 ```
 
 ## buildUsernameText
@@ -172,7 +179,7 @@ A custom `mapping` can be passed by wrapping the function:
 Use `buildUsernameText` when you need the same user information that `Username` displays, but as a plain string —
 for example, as an `aria-label` on a button or as a value to match against in search and filter logic.
 
-It takes a pre-formatted `name` string (the output of `formatUsername` or `formatUsernameCustom`)
+It takes a pre-formatted `name` string (the output of `formatUsername`)
 plus optional `login` and `site`. By default `site` is wrapped in parentheses.
 
 ```tsx

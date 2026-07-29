@@ -48,7 +48,9 @@ export type UsernameBaseProps = Omit<
   fullNameFormat?: string;
   /**
    * Function used to format the full name from `userInfo`.
-   * Accepts `formatUsername` (default) or `formatUsernameCustom`.
+   * Defaults to `formatUsername`. To use a different format style, wrap
+   * `formatUsername` with its `UsernameFormatOptions` (e.g. `mapping`,
+   * `caseDeterminesForm`) bound.
    * Signature: `(userInfo, format) => string`
    */
   formatter?: (

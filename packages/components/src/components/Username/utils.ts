@@ -1,6 +1,6 @@
 import type { UsernameUserInfo } from './types';
 
-const fieldMap: Record<string, keyof UsernameUserInfo> = {
+const legacyMapping: Record<string, keyof UsernameUserInfo> = {
   l: 'lastName',
   f: 'firstName',
   m: 'middleName',
@@ -8,111 +8,143 @@ const fieldMap: Record<string, keyof UsernameUserInfo> = {
 
 /**
  * Maps format-string characters to `UsernameUserInfo` field names.
- * Used by `formatUsernameCustom`. Characters absent from the mapping
- * (or mapped to `undefined`) are emitted as literals.
+ * Characters absent from the mapping (or mapped to `undefined`) are
+ * handled per `literalPassthrough`.
  */
 export type UsernameFormatMapping = Record<
   string,
   keyof UsernameUserInfo | undefined
 >;
 
-const defaultCustomMapping: UsernameFormatMapping = {
-  F: 'firstName',
-  f: 'firstName',
-  M: 'middleName',
-  m: 'middleName',
-  L: 'lastName',
-  l: 'lastName',
+export type UsernameFormatOptions = {
+  /**
+   * Field mapping used to resolve format characters.
+   * @default { l: 'lastName', f: 'firstName', m: 'middleName' }
+   */
+  mapping?: UsernameFormatMapping;
+  /**
+   * Emit characters absent from `mapping` literally instead of dropping them.
+   * @default false
+   */
+  literalPassthrough?: boolean;
+  /**
+   * Full-vs-initial is decided by the letter's own case rather than a trailing `.`.
+   * @default false
+   */
+  caseDeterminesForm?: boolean;
+  /**
+   * Uppercase the first letter of a rendered initial.
+   * @default true
+   */
+  uppercaseInitial?: boolean;
+  /**
+   * `'space'` joins non-empty tokens with a single space (legacy behavior);
+   * `'concat'` preserves literal characters as written in `format`.
+   * @default 'space'
+   */
+  join?: 'concat' | 'space';
 };
 
-/**
- * Formats user profile data into a display name string using a format pattern.
- *
- * Format characters: `l` = lastName, `f` = firstName, `m` = middleName.
- * A letter followed by `.` produces an initial + period (e.g. `f.` → "M.").
- * Empty fields are silently skipped without leaving stray punctuation.
- * @example
- * formatUsername({ firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' }, 'lf.m.')
- * // → "Root M. A."
- */
-export function formatUsername(
+function formatUsernameEngine(
   userInfo: UsernameUserInfo | undefined,
-  format = 'lf.m.'
+  format: string,
+  options: Required<UsernameFormatOptions>
 ): string {
   if (!userInfo) return '';
 
+  const {
+    mapping,
+    literalPassthrough,
+    caseDeterminesForm,
+    uppercaseInitial,
+    join,
+  } = options;
+
   const tokens: string[] = [];
+  let literal = '';
   let i = 0;
+
+  const flushLiteral = () => {
+    if (literal) {
+      tokens.push(literal);
+      literal = '';
+    }
+  };
 
   while (i < format.length) {
     const char = format[i];
-    const fieldKey = fieldMap[char];
-
-    if (fieldKey) {
-      const value = userInfo[fieldKey]?.trim() ?? '';
-      const takesInitial = format[i + 1] === '.';
-
-      if (value) {
-        tokens.push(takesInitial ? `${value[0].toUpperCase()}.` : value);
-      }
-
-      // consume the trailing '.' whether the field had a value
-      if (takesInitial) i += 1;
-    }
-
-    // standalone '.' is only a separator marker — never emitted literally
-    i += 1;
-  }
-
-  return tokens.join(' ');
-}
-
-/**
- * Formats user profile data into a display name string using a richer format pattern.
- *
- * - Uppercase letters (`L`, `F`, `M`) → full field value.
- * - Lowercase letters (`l`, `f`, `m`) → first character (initial) only.
- * - All other characters are emitted literally (spaces, dots, slashes, etc.).
- * - Empty fields are silently dropped; surrounding literal characters still emit.
- *
- * Default format `'L f. m.'` produces `"Root M. A."` for
- * `{ firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' }`.
- *
- * Pass a custom `mapping` to bind format keys to different `UsernameUserInfo` fields.
- * @example
- * formatUsernameCustom({ firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' }, 'L f. m.')
- * // → "Root M. A."
- */
-export function formatUsernameCustom(
-  userInfo: UsernameUserInfo | undefined,
-  format = 'L f. m.',
-  mapping: UsernameFormatMapping = defaultCustomMapping
-): string {
-  if (!userInfo) return '';
-
-  let result = '';
-
-  for (const char of format) {
-    if (!(char in mapping)) {
-      result += char;
-      continue;
-    }
-
     const fieldKey = mapping[char];
 
     if (!fieldKey) {
-      result += char;
+      if (literalPassthrough) literal += char;
+      i += 1;
       continue;
     }
+
+    const isInitial = caseDeterminesForm
+      ? char === char.toLowerCase()
+      : format[i + 1] === '.';
 
     const value = userInfo[fieldKey]?.trim() ?? '';
 
     if (value) {
-      result += char === char.toLowerCase() ? value[0] : value;
+      flushLiteral();
+      const initial = uppercaseInitial ? value[0].toUpperCase() : value[0];
+
+      tokens.push(
+        isInitial ? `${initial}${caseDeterminesForm ? '' : '.'}` : value
+      );
     }
+
+    // legacy mode consumes the trailing '.' marker whether or not the field had a value
+    if (!caseDeterminesForm && isInitial) i += 1;
+    i += 1;
   }
 
-  return result.trim();
+  flushLiteral();
+
+  return join === 'space' ? tokens.join(' ') : tokens.join('').trim();
+}
+
+/**
+ * Formats user profile data into a display name string using a format pattern.
+ *
+ * By default, format characters `l` = lastName, `f` = firstName, `m` = middleName.
+ * A letter followed by `.` produces an initial + period (e.g. `f.` → "M.").
+ * Empty fields are silently skipped without leaving stray punctuation.
+ * This default behavior is relied on by existing callers and must not change.
+ *
+ * `options` exposes the underlying parser's knobs so callers can compose a
+ * different format style without a separate function. For example, to get
+ * a parser where uppercase letters emit the full field value, lowercase
+ * letters emit just the initial, and any other character (spaces, dots,
+ * slashes, …) is emitted literally:
+ * @example
+ * formatUsername({ firstName: 'Maxwell', middleName: 'Alan', lastName: 'Root' }, 'lf.m.')
+ * // → "Root M. A."
+ * @example
+ * formatUsername({ firstName: 'Maxwell', lastName: 'Root' }, 'F L', {
+ *   mapping: { F: 'firstName', f: 'firstName', L: 'lastName', l: 'lastName' },
+ *   literalPassthrough: true,
+ *   caseDeterminesForm: true,
+ *   uppercaseInitial: false,
+ *   join: 'concat',
+ * })
+ * // → "Maxwell Root"
+ */
+export function formatUsername(
+  userInfo: UsernameUserInfo | undefined,
+  format = 'lf.m.',
+  options?: UsernameFormatOptions
+): string {
+  return formatUsernameEngine(userInfo, format, {
+    mapping: legacyMapping,
+    literalPassthrough: false,
+    caseDeterminesForm: false,
+    uppercaseInitial: true,
+    join: 'space',
+    ...options,
+  });
 }
 
 export type BuildUsernameTextOptions = {
