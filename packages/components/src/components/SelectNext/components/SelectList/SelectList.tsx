@@ -13,6 +13,7 @@ import {
 } from '@koobiq/react-core';
 import {
   useListBox,
+  getItemCount,
   useAutocomplete,
   useAutocompleteState,
   // eslint-disable-next-line camelcase
@@ -68,6 +69,8 @@ export type SelectListProps<
   loadingText?: ReactNode;
   /** Enables search input for filtering items in the list. */
   isSearchable?: boolean;
+  /** The minimum number of options required for the search input to be rendered. */
+  minOptionsThreshold?: number;
   dropdownFooter?: ReactNode;
   /** The props used for each slot inside. */
   slotProps?: {
@@ -96,6 +99,7 @@ export function SelectList<
     state: inState,
     defaultInputValue,
     dropdownFooter,
+    minOptionsThreshold = 0,
     noItemsText: noItemsTextProp,
     loadingText: loadingTextProp,
   } = props;
@@ -115,17 +119,23 @@ export function SelectList<
     onInputChange
   );
 
+  // The count comes from the unfiltered collection, so that narrowing the results
+  // below the threshold doesn't unmount the search input while the user types.
+  const isSearchVisible =
+    Boolean(isSearchable) &&
+    getItemCount(inState.collection) >= minOptionsThreshold;
+
   const noItemsText = (() => {
     if (noItemsTextProp !== undefined) return noItemsTextProp;
 
-    const hasQuery = isSearchable && filterText.trim().length > 0;
+    const hasQuery = isSearchVisible && filterText.trim().length > 0;
 
     return hasQuery ? t.format('nothing found') : t.format('empty items');
   })();
 
   const autocompleteState = useAutocompleteState({
-    inputValue: isSearchable ? filterText : '',
-    onInputChange: isSearchable ? setFilterText : () => {},
+    inputValue: isSearchVisible ? filterText : '',
+    onInputChange: isSearchVisible ? setFilterText : () => {},
   });
 
   const {
@@ -146,13 +156,13 @@ export function SelectList<
 
   const state = UNSTABLE_useFilteredListState(
     inState,
-    isSearchable ? filterFn : null
+    isSearchVisible ? filterFn : null
   );
 
   const isEmpty = state.collection.size === 0;
 
   const { listBoxProps } = useListBox(
-    mergeProps(props, isSearchable ? collectionProps : null),
+    mergeProps(props, isSearchVisible ? collectionProps : null),
     state,
     domRef
   );
@@ -195,7 +205,7 @@ export function SelectList<
 
   return (
     <div {...rootProps}>
-      {isSearchable && (
+      {isSearchVisible && (
         <>
           <SearchInput ref={inputRef} {...searchInputProps} />
           <Divider disablePaddings {...slotProps?.divider} />

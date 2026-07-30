@@ -8,6 +8,7 @@ export {
 
 export {
   Item,
+  getItemCount,
   CollectionBuilder as LegacyCollectionBuilder,
 } from '@react-stately/collections';
 
