@@ -1,6 +1,6 @@
 import {
   IconBoxArchive16,
-  IconChevronDown16,
+  IconChevronDownS16,
   IconClock16,
   IconEllipsisVertical16,
   IconMinus16,
@@ -61,17 +61,17 @@ export const Content: Story = {
       <ButtonGroup variant="fade-contrast-filled">
         <Button
           startIcon={<IconBoxArchive16 />}
-          endIcon={<IconChevronDown16 />}
+          endIcon={<IconChevronDownS16 />}
         >
           Archive
         </Button>
         <Button
           startIcon={<IconTriangleExclamation16 />}
-          endIcon={<IconChevronDown16 />}
+          endIcon={<IconChevronDownS16 />}
         >
           Report
         </Button>
-        <Button startIcon={<IconClock16 />} endIcon={<IconChevronDown16 />}>
+        <Button startIcon={<IconClock16 />} endIcon={<IconChevronDownS16 />}>
           Snooze
         </Button>
       </ButtonGroup>
@@ -105,10 +105,10 @@ export const Content: Story = {
 export const MixedContent: Story = {
   render: () => (
     <ButtonGroup variant="fade-contrast-filled">
-      <Button startIcon={<IconBoxArchive16 />} endIcon={<IconChevronDown16 />}>
+      <Button startIcon={<IconBoxArchive16 />} endIcon={<IconChevronDownS16 />}>
         Archive
       </Button>
-      <Button endIcon={<IconChevronDown16 />}>Report</Button>
+      <Button endIcon={<IconChevronDownS16 />}>Report</Button>
       <Button>Snooze</Button>
       <Button
         startIcon={<IconEllipsisVertical16 />}
@@ -221,7 +221,7 @@ export const SplitButton: Story = {
                     {...props}
                     onlyIcon
                     aria-label={`More ${label} actions`}
-                    startIcon={<IconChevronDown16 />}
+                    startIcon={<IconChevronDownS16 />}
                   />
                 )}
               >
