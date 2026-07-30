@@ -5,9 +5,7 @@
 ```ts
 
 import { ComponentPropsWithRef } from 'react';
-import { DetailedHTMLProps } from 'react';
 import { ForwardRefExoticComponent } from 'react';
-import { HTMLAttributes } from 'react';
 import type { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 
@@ -56,10 +54,9 @@ export type UsernameFormatOptions = {
 };
 
 // @public (undocumented)
-export const UsernamePrimary: ForwardRefExoticComponent<Omit<DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, "ref"> & RefAttributes<HTMLSpanElement>>;
-
-// @public (undocumented)
-export type UsernamePrimaryProps = ComponentPropsWithRef<'span'>;
+export type UsernamePrimaryProps = Omit<ComponentPropsWithRef<'span'>, 'children'> & {
+    children?: ReactNode;
+};
 
 // @public (undocumented)
 export type UsernamePropMode = (typeof usernamePropMode)[number];
@@ -79,16 +76,14 @@ export type UsernamePropType = (typeof usernamePropType)[number];
 export const usernamePropType: readonly ["default", "error", "accented", "inherit"];
 
 // @public (undocumented)
-export const UsernameSecondary: ForwardRefExoticComponent<Omit<DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, "ref"> & RefAttributes<HTMLSpanElement>>;
+export type UsernameSecondaryHintProps = Omit<ComponentPropsWithRef<'span'>, 'children'> & {
+    children?: ReactNode;
+};
 
 // @public (undocumented)
-export const UsernameSecondaryHint: ForwardRefExoticComponent<Omit<DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, "ref"> & RefAttributes<HTMLSpanElement>>;
-
-// @public (undocumented)
-export type UsernameSecondaryHintProps = ComponentPropsWithRef<'span'>;
-
-// @public (undocumented)
-export type UsernameSecondaryProps = ComponentPropsWithRef<'span'>;
+export type UsernameSecondaryProps = Omit<ComponentPropsWithRef<'span'>, 'children'> & {
+    children?: ReactNode;
+};
 
 // @public (undocumented)
 export type UsernameUserInfo = {
