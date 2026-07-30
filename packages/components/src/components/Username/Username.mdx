@@ -19,12 +19,7 @@ It presents a set of identifying attributes — full name, login, and site — i
 ## Import
 
 ```tsx
-import {
-  Username,
-  UsernamePrimary,
-  UsernameSecondary,
-  UsernameSecondaryHint,
-} from '@koobiq/react-components';
+import { Username } from '@koobiq/react-components';
 ```
 
 ## Usage
@@ -83,7 +78,7 @@ The optional `site` field renders as a hint after the login.
 Provide `children` to take full control of the output.
 The default template is skipped entirely; `mode` and `type` still apply to the root element.
 
-Use `UsernamePrimary`, `UsernameSecondary`, and `UsernameSecondaryHint` to keep the same visual
+Use `Username.Primary`, `Username.Secondary`, and `Username.SecondaryHint` to keep the same visual
 style as the default template.
 
 <Story of={Stories.CustomView} />

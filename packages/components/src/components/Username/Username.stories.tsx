@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -17,38 +17,14 @@ import {
   usernamePropType,
 } from './index.js';
 
-const extendedMapping = {
-  F: 'firstName',
-  f: 'firstName',
-  M: 'middleName',
-  m: 'middleName',
-  L: 'lastName',
-  l: 'lastName',
-} as const;
-
-const formatUsernameExtended = (
-  userInfo: UsernameUserInfo | undefined,
-  format: string
-) =>
-  formatUsername(userInfo, format, {
-    mapping: extendedMapping,
-    literalPassthrough: true,
-    caseDeterminesForm: true,
-    uppercaseInitial: false,
-    join: 'concat',
-  });
-
-const defaultUserInfo = {
-  firstName: 'Maxwell',
-  middleName: 'Alan',
-  lastName: 'Root',
-  login: 'mroot',
-  site: 'corp',
-};
-
 const meta = {
   title: 'Components/Username',
   component: Username,
+  subcomponents: {
+    'Username.Primary': Username.Primary,
+    'Username.Secondary': Username.Secondary,
+    'Username.SecondaryHint': Username.SecondaryHint,
+  },
   parameters: {
     layout: 'centered',
   },
@@ -59,71 +35,119 @@ export default meta;
 type Story = StoryObj<UsernameProps>;
 
 export const Base: Story = {
-  render: (args) => <Username {...args} userInfo={defaultUserInfo} />,
+  render: (args) => {
+    const userInfo: UsernameUserInfo = {
+      firstName: 'Maxwell',
+      middleName: 'Alan',
+      lastName: 'Root',
+      login: 'mroot',
+      site: 'corp',
+    };
+
+    return <Username {...args} userInfo={userInfo} />;
+  },
 };
 
 export const Mode: Story = {
-  render: (args) => (
-    <FlexBox direction="column" gap="l">
-      {usernamePropMode.map((mode) => (
-        <FlexBox key={mode} direction="column" gap="xs">
-          <Typography
-            as="span"
-            variant="text-compact"
-            color="contrast-secondary"
-          >
-            mode = {mode}
-          </Typography>
-          <Username {...args} mode={mode} userInfo={defaultUserInfo} />
-        </FlexBox>
-      ))}
-    </FlexBox>
-  ),
+  render: (args) => {
+    const userInfo: UsernameUserInfo = {
+      firstName: 'Maxwell',
+      middleName: 'Alan',
+      lastName: 'Root',
+      login: 'mroot',
+      site: 'corp',
+    };
+
+    return (
+      <FlexBox direction="column" gap="l">
+        {usernamePropMode.map((mode) => (
+          <FlexBox key={mode} direction="column" gap="xs">
+            <Typography
+              as="span"
+              variant="text-compact"
+              color="contrast-secondary"
+            >
+              mode = {mode}
+            </Typography>
+            <Username {...args} mode={mode} userInfo={userInfo} />
+          </FlexBox>
+        ))}
+      </FlexBox>
+    );
+  },
 };
 
 export const Type: Story = {
-  render: (args) => (
-    <FlexBox direction="column" gap="l">
-      {usernamePropType.map((type) => (
-        <FlexBox key={type} direction="column" gap="xs">
+  render: (args) => {
+    const userInfo: UsernameUserInfo = {
+      firstName: 'Maxwell',
+      middleName: 'Alan',
+      lastName: 'Root',
+      login: 'mroot',
+      site: 'corp',
+    };
+
+    return (
+      <FlexBox direction="column" gap="l">
+        {usernamePropType.map((type) => (
+          <FlexBox key={type} direction="column" gap="xs">
+            <Typography
+              as="span"
+              variant="text-compact"
+              color="contrast-secondary"
+            >
+              type = {type}
+            </Typography>
+
+            {type === 'inherit' ? (
+              <Typography as="span" color="theme-secondary">
+                <Username {...args} type={type} userInfo={userInfo} />
+              </Typography>
+            ) : (
+              <Username {...args} type={type} userInfo={userInfo} />
+            )}
+          </FlexBox>
+        ))}
+      </FlexBox>
+    );
+  },
+};
+
+export const Compact: Story = {
+  render: (args) => {
+    const userInfo: UsernameUserInfo = {
+      firstName: 'Maxwell',
+      middleName: 'Alan',
+      lastName: 'Root',
+      login: 'mroot',
+      site: 'corp',
+    };
+
+    return (
+      <FlexBox direction="column" gap="l">
+        <FlexBox direction="column" gap="xs">
           <Typography
             as="span"
             variant="text-compact"
             color="contrast-secondary"
           >
-            type = {type}
+            isCompact = false
           </Typography>
-
-          {type === 'inherit' ? (
-            <Typography as="span" color="theme-secondary">
-              <Username {...args} type={type} userInfo={defaultUserInfo} />
-            </Typography>
-          ) : (
-            <Username {...args} type={type} userInfo={defaultUserInfo} />
-          )}
+          <Username {...args} userInfo={userInfo} />
         </FlexBox>
-      ))}
-    </FlexBox>
-  ),
-};
-
-export const Compact: Story = {
-  render: (args) => (
-    <FlexBox direction="column" gap="l">
-      <FlexBox direction="column" gap="xs">
-        <Typography as="span" variant="text-compact" color="contrast-secondary">
-          isCompact = false
-        </Typography>
-        <Username {...args} userInfo={defaultUserInfo} />
+        <FlexBox direction="column" gap="xs">
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
+          >
+            isCompact = true
+          </Typography>
+          <Username {...args} userInfo={userInfo} isCompact />
+        </FlexBox>
       </FlexBox>
-      <FlexBox direction="column" gap="xs">
-        <Typography as="span" variant="text-compact" color="contrast-secondary">
-          isCompact = true
-        </Typography>
-        <Username {...args} userInfo={defaultUserInfo} isCompact />
-      </FlexBox>
-    </FlexBox>
-  ),
+    );
+  },
 };
 
 export const OnlyLogin: Story = {
@@ -133,34 +157,45 @@ export const OnlyLogin: Story = {
 };
 
 export const WithSite: Story = {
-  render: (args) => (
-    <FlexBox direction="column" gap="l">
-      <FlexBox direction="column" gap="xs">
-        <Typography as="span" variant="text-compact" color="contrast-secondary">
-          non-compact with site
-        </Typography>
-        <Username
-          {...args}
-          userInfo={{ ...defaultUserInfo, site: 'example.com' }}
-        />
+  render: (args) => {
+    const userInfo: UsernameUserInfo = {
+      firstName: 'Maxwell',
+      middleName: 'Alan',
+      lastName: 'Root',
+      login: 'mroot',
+      site: 'example.com',
+    };
+
+    return (
+      <FlexBox direction="column" gap="l">
+        <FlexBox direction="column" gap="xs">
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
+          >
+            non-compact with site
+          </Typography>
+          <Username {...args} userInfo={userInfo} />
+        </FlexBox>
+        <FlexBox direction="column" gap="xs">
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
+          >
+            compact with site
+          </Typography>
+          <Username {...args} userInfo={userInfo} isCompact />
+        </FlexBox>
       </FlexBox>
-      <FlexBox direction="column" gap="xs">
-        <Typography as="span" variant="text-compact" color="contrast-secondary">
-          compact with site
-        </Typography>
-        <Username
-          {...args}
-          userInfo={{ ...defaultUserInfo, site: 'example.com' }}
-          isCompact
-        />
-      </FlexBox>
-    </FlexBox>
-  ),
+    );
+  },
 };
 
 export const CustomView: Story = {
   render: (args) => (
-    <Username {...args} userInfo={defaultUserInfo}>
+    <Username {...args}>
       <Username.Primary>Root M. A.</Username.Primary>
       <Username.Secondary>
         [mroot]
@@ -171,46 +206,39 @@ export const CustomView: Story = {
 };
 
 export const AsLink: Story = {
-  render: (args) => (
-    <Link href="#">
-      <Username {...args} type="inherit" userInfo={defaultUserInfo} />
-    </Link>
-  ),
+  render: (args) => {
+    const userInfo: UsernameUserInfo = {
+      firstName: 'Maxwell',
+      middleName: 'Alan',
+      lastName: 'Root',
+      login: 'mroot',
+      site: 'corp',
+    };
+
+    return (
+      <Link href="#">
+        <Username {...args} type="inherit" userInfo={userInfo} />
+      </Link>
+    );
+  },
 };
 
-const searchUsers: UsernameUserInfo[] = [
-  {
-    firstName: 'Maxwell',
-    middleName: 'Alan',
-    lastName: 'Root',
-    login: 'mroot',
-    site: 'corp',
-  },
-  { firstName: 'Jane', lastName: 'Smith', login: 'jsmith', site: 'corp' },
-  { firstName: 'Bob', lastName: 'Johnson', login: 'bjohnson' },
-  { login: 'ghost', site: 'external' },
-];
-
-function highlightMatch(text: string, query: string): ReactNode {
-  if (!query) return text;
-  const index = text.toLowerCase().indexOf(query.toLowerCase());
-  if (index === -1) return text;
-
-  return (
-    <>
-      {text.slice(0, index)}
-      <mark style={{ background: 'var(--kbq-states-theme-transparent-hover)' }}>
-        {text.slice(index, index + query.length)}
-      </mark>
-      {text.slice(index + query.length)}
-    </>
-  );
-}
-
 export const SearchAndHighlight: Story = {
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+  render: function Render(args) {
     const [query, setQuery] = useState('');
+
+    const searchUsers: UsernameUserInfo[] = [
+      {
+        firstName: 'Maxwell',
+        middleName: 'Alan',
+        lastName: 'Root',
+        login: 'mroot',
+        site: 'corp',
+      },
+      { firstName: 'Jane', lastName: 'Smith', login: 'jsmith', site: 'corp' },
+      { firstName: 'Bob', lastName: 'Johnson', login: 'bjohnson' },
+      { login: 'ghost', site: 'external' },
+    ];
 
     const filtered = searchUsers.filter((user) => {
       const name = formatUsername(user, 'lf.m.');
@@ -228,34 +256,13 @@ export const SearchAndHighlight: Story = {
           placeholder="Search users..."
         />
         <FlexBox direction="column" gap="xs">
-          {filtered.map((user) => {
-            const name = formatUsername(user, 'lf.m.');
-
-            return (
-              <Username
-                key={user.login ?? user.firstName}
-                {...args}
-                userInfo={user}
-              >
-                {name && (
-                  <Username.Primary>
-                    {highlightMatch(name, query)}
-                  </Username.Primary>
-                )}
-                {user.login && (
-                  <Username.Secondary>
-                    {highlightMatch(user.login, query)}
-                    {user.site && (
-                      <Username.SecondaryHint>
-                        {' '}
-                        ({highlightMatch(user.site, query)})
-                      </Username.SecondaryHint>
-                    )}
-                  </Username.Secondary>
-                )}
-              </Username>
-            );
-          })}
+          {filtered.map((user) => (
+            <Username
+              key={user.login ?? user.firstName}
+              {...args}
+              userInfo={user}
+            />
+          ))}
         </FlexBox>
       </FlexBox>
     );
@@ -263,36 +270,79 @@ export const SearchAndHighlight: Story = {
 };
 
 export const CustomFormatter: Story = {
-  render: (args) => (
-    <FlexBox direction="column" gap="l">
-      <FlexBox direction="column" gap="xs">
-        <Typography as="span" variant="text-compact" color="contrast-secondary">
-          formatUsername (default) — format: &apos;lf.m.&apos;
-        </Typography>
-        <Username {...args} userInfo={defaultUserInfo} />
+  render: (args) => {
+    const userInfo: UsernameUserInfo = {
+      firstName: 'Maxwell',
+      middleName: 'Alan',
+      lastName: 'Root',
+      login: 'mroot',
+      site: 'corp',
+    };
+
+    const extendedMapping = {
+      F: 'firstName',
+      f: 'firstName',
+      M: 'middleName',
+      m: 'middleName',
+      L: 'lastName',
+      l: 'lastName',
+    } as const;
+
+    const formatUsernameExtended = (
+      info: UsernameUserInfo | undefined,
+      format: string
+    ) =>
+      formatUsername(info, format, {
+        mapping: extendedMapping,
+        literalPassthrough: true,
+        caseDeterminesForm: true,
+        uppercaseInitial: false,
+        join: 'concat',
+      });
+
+    return (
+      <FlexBox direction="column" gap="l">
+        <FlexBox direction="column" gap="xs">
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
+          >
+            formatUsername (default) — format: &apos;lf.m.&apos;
+          </Typography>
+          <Username {...args} userInfo={userInfo} />
+        </FlexBox>
+        <FlexBox direction="column" gap="xs">
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
+          >
+            formatUsername (extended) — format: &apos;L f. m.&apos;
+          </Typography>
+          <Username
+            {...args}
+            userInfo={userInfo}
+            formatter={formatUsernameExtended}
+            fullNameFormat="L f. m."
+          />
+        </FlexBox>
+        <FlexBox direction="column" gap="xs">
+          <Typography
+            as="span"
+            variant="text-compact"
+            color="contrast-secondary"
+          >
+            formatUsername (extended) — format: &apos;F L&apos;
+          </Typography>
+          <Username
+            {...args}
+            userInfo={userInfo}
+            formatter={formatUsernameExtended}
+            fullNameFormat="F L"
+          />
+        </FlexBox>
       </FlexBox>
-      <FlexBox direction="column" gap="xs">
-        <Typography as="span" variant="text-compact" color="contrast-secondary">
-          formatUsername (extended) — format: &apos;L f. m.&apos;
-        </Typography>
-        <Username
-          {...args}
-          userInfo={defaultUserInfo}
-          formatter={formatUsernameExtended}
-          fullNameFormat="L f. m."
-        />
-      </FlexBox>
-      <FlexBox direction="column" gap="xs">
-        <Typography as="span" variant="text-compact" color="contrast-secondary">
-          formatUsername (extended) — format: &apos;F L&apos;
-        </Typography>
-        <Username
-          {...args}
-          userInfo={defaultUserInfo}
-          formatter={formatUsernameExtended}
-          fullNameFormat="F L"
-        />
-      </FlexBox>
-    </FlexBox>
-  ),
+    );
+  },
 };

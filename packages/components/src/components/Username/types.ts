@@ -61,6 +61,26 @@ export type UsernameBaseProps = Omit<
   children?: ReactNode;
 };
 
-export type UsernamePrimaryProps = ComponentPropsWithRef<'span'>;
-export type UsernameSecondaryProps = ComponentPropsWithRef<'span'>;
-export type UsernameSecondaryHintProps = ComponentPropsWithRef<'span'>;
+export type UsernamePrimaryProps = Omit<
+  ComponentPropsWithRef<'span'>,
+  'children'
+> & {
+  /** Primary line content. Usually the formatted full name, or the login when no name is available. */
+  children?: ReactNode;
+};
+
+export type UsernameSecondaryProps = Omit<
+  ComponentPropsWithRef<'span'>,
+  'children'
+> & {
+  /** Secondary line content. Usually the login. */
+  children?: ReactNode;
+};
+
+export type UsernameSecondaryHintProps = Omit<
+  ComponentPropsWithRef<'span'>,
+  'children'
+> & {
+  /** Hint content appended after the secondary line. Usually the site. */
+  children?: ReactNode;
+};
