@@ -119,6 +119,15 @@ packages/components/src/components/Button/
 
 Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or `intl.json`, and `__tests__/`. Follow nearby component patterns before adding new structure.
 
+### Storybook Stories
+
+- Keep each story self-contained: build any data or helper logic it needs inline inside that story's own `render`, not in shared module-level constants. The docs "Source" panel only extracts a single `export const StoryName` block, so anything defined outside it never appears there.
+- Don't pass a prop that has no effect in that story's context (e.g. `userInfo` alongside `children`, since `children` short-circuits it) and don't pass a value equal to the prop's documented `@default` (e.g. `isCompact={false}`) — both are just noise in Source.
+- Don't hand-write `argTypes` for props that already have an `as const` union type — Storybook infers the `select` control and its options automatically.
+- If a story's `render` needs hooks (`useState`, …), write it as a named function expression, `render: function Render(args) { ... }`, instead of an arrow function, so `react-hooks/rules-of-hooks` recognizes it as a component without an eslint-disable comment.
+- For compound components, add a `subcomponents` field to `meta` (see [Compound Components](#compound-components)) so the Props table documents every slot.
+- Avoid `import * as NS` for large third-party packages in stories (icon sets, etc.) — use named imports so the Storybook bundle and startup stay fast.
+
 ### Styling Approach
 
 - CSS Modules. Class names are hashed and not part of the public API — don't target them externally; use `data-*` attributes and public props instead.
@@ -138,6 +147,9 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
   ```
 
 - All boolean props default to `false`. If `true` would be the natural default, invert the name (e.g. `hideArrow` instead of `showArrow={true}`).
+- Prefer passing through real ARIA attributes (`role`, `aria-label`, `aria-labelledby`, `aria-hidden`) over inventing custom semantic props like `label`/`decorative` — it matches patterns consumers already know, and avoids clashing with props that mean something else elsewhere in the library (e.g. `label` usually means visible text).
+- Don't add a prop for state that's already derivable from other props (e.g. an `isEmpty` prop when emptiness is derivable from `children` and can be styled via the CSS `:empty` pseudo-class).
+- Document every optional prop's default with an explicit `@default` JSDoc tag, even when the default is `false`/`undefined`.
 - Deprecated props warn via `deprecate()` (from `@koobiq/logger`) guarded by `process.env.NODE_ENV !== 'production'`:
 
   ```tsx
@@ -145,6 +157,39 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
     deprecate('Button: "disabled" is deprecated. Use "isDisabled" instead.');
   }
   ```
+
+### Compound Components
+
+For components with slots (`Tabs.Tab`, `Tree.Item`, `TreeSelect.Item`, …), attach the sub-parts to the root component instead of exporting them standalone:
+
+```tsx
+export const Component = ComponentImpl as CompoundedComponent;
+Component.Slot = ComponentSlot;
+```
+
+- Export the sub-parts' **prop types** from the component's `index.ts`, but not the components themselves — consumers reach them via `Component.Slot`, not a separate `ComponentSlot` import. This keeps one source of truth for the public API.
+- A prop type that gets spread (`{...other}`) onto a real DOM node must extend that element's native props (`ComponentPropsWithRef<'span'>`, etc.), not a hand-rolled subset — otherwise `aria-*`/`data-*`/event props are unusable in TypeScript even though they work at runtime.
+- Register slots under `subcomponents` in the story's `meta`, keyed by dot-path, so the docs Props table documents each slot's API:
+
+  ```ts
+  subcomponents: {
+    'Component.Slot': Component.Slot,
+  },
+  ```
+
+- Reference the dot-path form (`Component.Slot`) in MDX prose and import examples — never the internal component name.
+
+## Public API (api-extractor)
+
+The public surface of every component is locked by [API Extractor](https://api-extractor.com/) reports in `tools/public_api_guard/components/*.api.md`, checked in CI via `pnpm check-api`.
+
+When adding a **new component** to the public API:
+
+1. Add its name to the `components` array in `tools/api-extractor/config.json`.
+2. Run `pnpm build && pnpm approve-api` to regenerate its `.api.md` report.
+3. Commit the updated `config.json` and `.api.md` files alongside the component.
+
+Any change to an existing component's exported types/signatures needs the same `pnpm build && pnpm approve-api` step — otherwise `pnpm check-api` fails in CI.
 
 ## Coding Conventions
 
@@ -154,6 +199,8 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
 - Every component `.tsx` starts with `'use client'` (Next.js RSC).
 - Keep files focused. When the main file grows, split helpers, hooks, sub-components, and translations into separate files (`utils.ts`, `intl.ts`, nested `components/`) as already done in complex components.
 - Public exports go through the component's local `index.ts`, then `packages/components/src/components/index.ts`.
+- When a render has many conditional branches, compute the values to render first (e.g. `primary`, `secondary`, `hint`), then render them once in unified markup — keep branch/selection logic separate from JSX.
+- Every exported utility needs its intended usage scenario documented in the component's MDX — a signature alone doesn't explain why or when to reach for it, especially if the component itself doesn't call it internally.
 
 ## Git Commit Convention
 
