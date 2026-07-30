@@ -16,6 +16,8 @@ import { Typography } from '../Typography';
 
 import { ButtonGroup, type ButtonGroupProps } from './index';
 
+import './__stories__/styles.css';
+
 const meta = {
   title: 'Components/ButtonGroup',
   component: ButtonGroup,
@@ -197,95 +199,39 @@ export const SplitButton: Story = {
     ];
 
     return (
-      <>
-        <style>{`
-        .split-button-demo {
-          display: grid;
-          grid-template-columns: repeat(2, max-content);
-          gap: var(--kbq-size-3xl) var(--kbq-size-6xl);
-        }
-
-        .split-button-demo__group
-          > [data-slot='button']:not(:last-child) {
-          margin-inline-end: 0;
-          box-shadow: none;
-        }
-
-        .split-button-demo__group[data-variant='contrast-filled'] {
-          --split-button-divider-color: var(--kbq-line-on-contrast-fade);
-        }
-
-        .split-button-demo__group[data-variant='fade-contrast-filled'],
-        .split-button-demo__group[data-variant='fade-contrast-outline'],
-        .split-button-demo__group[data-variant='contrast-transparent'] {
-          --split-button-divider-color: var(--kbq-line-contrast-fade);
-        }
-
-        .split-button-demo__group[data-variant='fade-theme-outline'],
-        .split-button-demo__group[data-variant='theme-transparent'] {
-          --split-button-divider-color: var(--kbq-line-theme-fade);
-        }
-
-        .split-button-demo__group > [data-slot='button']:last-child {
-          background-image: linear-gradient(
-            var(--split-button-divider-color),
-            var(--split-button-divider-color)
-          );
-          background-repeat: no-repeat;
-          background-position: 0 50%;
-          background-size: var(--kbq-size-border-width) var(--kbq-size-l);
-        }
-
-        .split-button-demo__group
-          > [data-slot='button']:last-child[aria-expanded='true'],
-        .split-button-demo__group
-          > [data-slot='button']:last-child:is(
-            :hover,
-            :focus-visible
-          ),
-        .split-button-demo__group
-          > [data-slot='button']:not(:last-child):is(
-            :hover,
-            :focus-visible
-          )
-          + [data-slot='button']:last-child {
-          background-image: none;
-        }
-      `}</style>
-        <div className="split-button-demo">
-          {splitButtonVariants.map(({ label, variant }) => (
-            <FlexBox
-              key={variant}
-              gap="s"
-              direction="column"
-              alignItems="flex-start"
+      <div className="split-button-demo">
+        {splitButtonVariants.map(({ label, variant }) => (
+          <FlexBox
+            key={variant}
+            gap="s"
+            direction="column"
+            alignItems="flex-start"
+          >
+            <Typography>{label}</Typography>
+            <ButtonGroup
+              className="split-button-demo__group"
+              variant={variant}
+              aria-label={`${label} split action`}
             >
-              <Typography>{label}</Typography>
-              <ButtonGroup
-                className="split-button-demo__group"
-                variant={variant}
-                aria-label={`${label} split action`}
+              <Button startIcon={<IconPlus16 />}>Split Button</Button>
+              <Menu
+                placement="bottom end"
+                control={(props) => (
+                  <Button
+                    {...props}
+                    onlyIcon
+                    aria-label={`More ${label} actions`}
+                    startIcon={<IconChevronDown16 />}
+                  />
+                )}
               >
-                <Button startIcon={<IconPlus16 />}>Split Button</Button>
-                <Menu
-                  placement="bottom end"
-                  control={(props) => (
-                    <Button
-                      {...props}
-                      onlyIcon
-                      aria-label={`More ${label} actions`}
-                      startIcon={<IconChevronDown16 />}
-                    />
-                  )}
-                >
-                  <Menu.Item key="template">Create from template</Menu.Item>
-                  <Menu.Item key="import">Import</Menu.Item>
-                </Menu>
-              </ButtonGroup>
-            </FlexBox>
-          ))}
-        </div>
-      </>
+                <Menu.Item key="template">Create from template</Menu.Item>
+                <Menu.Item key="import">Import</Menu.Item>
+              </Menu>
+            </ButtonGroup>
+          </FlexBox>
+        ))}
+      </div>
     );
   },
 };

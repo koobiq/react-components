@@ -34,7 +34,13 @@ export const ButtonGroup = polymorphicForwardRef<'div', ButtonGroupBaseProps>(
           data-variant={variant}
           data-orientation={orientation}
           data-disabled={isDisabled || undefined}
-          className={clsx(s.base, s[orientation], s[variant], className)}
+          className={clsx(
+            s.base,
+            s[variant],
+            s[orientation],
+            isDisabled && s.disabled,
+            className
+          )}
           {...other}
           ref={ref}
         >

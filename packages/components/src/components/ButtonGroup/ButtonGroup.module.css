@@ -1,17 +1,15 @@
 .base {
-  --button-group-divider-color: var(--kbq-background-transparent);
-
   display: inline-flex;
   align-items: stretch;
 
   & > [data-slot='button']:not(:last-child) {
-    box-shadow: var(--button-group-divider-shadow);
+    box-shadow: var(--button-group-divider);
   }
 }
 
 .horizontal {
-  --button-group-divider-shadow: var(--kbq-size-border-width) 0 0
-    var(--kbq-button-group-divider-color, var(--button-group-divider-color));
+  --button-group-divider: var(--kbq-size-border-width) 0 0
+    var(--button-group-divider-color);
 
   flex-direction: row;
 
@@ -38,8 +36,8 @@
 }
 
 .vertical {
-  --button-group-divider-shadow: 0 var(--kbq-size-border-width) 0
-    var(--kbq-button-group-divider-color, var(--button-group-divider-color));
+  --button-group-divider: 0 var(--kbq-size-border-width) 0
+    var(--button-group-divider-color);
 
   flex-direction: column;
 
@@ -87,4 +85,8 @@
 
 .theme-transparent {
   --button-group-divider-color: var(--kbq-background-transparent);
+}
+
+.disabled:is(.fade-contrast-outline, .fade-theme-outline) {
+  --button-group-divider-color: var(--kbq-states-line-disabled);
 }
