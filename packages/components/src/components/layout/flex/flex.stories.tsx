@@ -12,7 +12,7 @@ import {
   flexPropOrder,
   type FlexProps,
   flexPropWrap,
-} from './flex';
+} from './index';
 
 const meta = {
   title: 'Mixins/flex',

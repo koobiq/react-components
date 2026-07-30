@@ -5,7 +5,7 @@ import type { ComponentPropsWithRef, ElementType } from 'react';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { getResponsiveValue } from '../../utils';
-import { flex as flexBox } from '../layout';
+import { getFlexClassNames } from '../layout/flex/classNames';
 import { useMatchedBreakpoints } from '../Provider';
 
 import type { FlexBoxBaseProps } from './index';
@@ -45,7 +45,7 @@ export const FlexBox = polymorphicForwardRef<'div', FlexBoxBaseProps>(
     const direction = getResponsiveValue(directionProp, breakpoints);
     const justifyContent = getResponsiveValue(justifyContentProp, breakpoints);
 
-    const flexCn = flexBox({
+    const flexCn = getFlexClassNames({
       gap,
       flex,
       wrap,
