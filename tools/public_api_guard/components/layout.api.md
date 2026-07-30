@@ -4,7 +4,7 @@
 
 ```ts
 
-// @public (undocumented)
+// @public
 export const flex: FlexParams;
 
 // @public (undocumented)
