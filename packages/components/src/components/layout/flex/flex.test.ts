@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { flex } from './flex';
+import s from './flex.module.css';
 
 describe('flex', () => {
   it('should generate classes for every flex property', () => {
@@ -21,15 +22,15 @@ describe('flex', () => {
       )
     ).toBe(
       [
-        'kbq-flex',
-        'kbq-flex-flex_inline-flex',
-        'kbq-flex-wrap_wrap-reverse',
-        'kbq-flex-order_-1',
-        'kbq-flex-gap_row_l',
-        'kbq-flex-gap_column_xl',
-        'kbq-flex-direction_column-reverse',
-        'kbq-flex-alignItems_center',
-        'kbq-flex-justifyContent_space-between',
+        s.base,
+        s['flex_inline-flex'],
+        s['wrap_wrap-reverse'],
+        s['order_-1'],
+        s.gap_row_l,
+        s.gap_column_xl,
+        s['direction_column-reverse'],
+        s.alignItems_center,
+        s['justifyContent_space-between'],
         'custom-class',
       ].join(' ')
     );
@@ -37,7 +38,7 @@ describe('flex', () => {
 
   it('should use gap as the row and column gap fallback', () => {
     expect(flex({ gap: 'm' })).toBe(
-      ['kbq-flex', 'kbq-flex-gap_row_m', 'kbq-flex-gap_column_m'].join(' ')
+      [s.base, s.gap_row_m, s.gap_column_m].join(' ')
     );
   });
 });

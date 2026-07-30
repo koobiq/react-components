@@ -5,6 +5,7 @@ import { describe, it, expect } from 'vitest';
 
 import { BreakpointsContext, type BreakpointsContextType } from '../Provider';
 
+import s from './FlexBox.module.css';
 import { FlexBox } from './index';
 import type { FlexBoxProps } from './index';
 
@@ -46,14 +47,14 @@ describe('FlexBox', () => {
     );
 
     expect(screen.getByTestId('flex-box')).toHaveClass(
-      'kbq-flex',
-      'kbq-flex-flex_inline-flex',
-      'kbq-flex-wrap_wrap-reverse',
-      'kbq-flex-gap_row_l',
-      'kbq-flex-gap_column_xl',
-      'kbq-flex-direction_column-reverse',
-      'kbq-flex-alignItems_center',
-      'kbq-flex-justifyContent_space-between'
+      s.base,
+      s['flex_inline-flex'],
+      s['wrap_wrap-reverse'],
+      s.gap_row_l,
+      s.gap_column_xl,
+      s['direction_column-reverse'],
+      s.alignItems_center,
+      s['justifyContent_space-between']
     );
   });
 
@@ -74,9 +75,9 @@ describe('FlexBox', () => {
     );
 
     expect(screen.getByTestId('flex-box')).toHaveClass(
-      'kbq-flex-gap_row_m',
-      'kbq-flex-gap_column_m',
-      'kbq-flex-direction_row'
+      s.gap_row_m,
+      s.gap_column_m,
+      s.direction_row
     );
   });
 });
