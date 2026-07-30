@@ -59,7 +59,8 @@
     "Tooltip",
     "Tree",
     "TreeSelect",
-    "Typography"
+    "Typography",
+    "Username"
   ],
   "packages": [
     { "dir": "primitives", "report": "react-primitives" },
