@@ -1,0 +1,40 @@
+.base {
+  --kbq-top-bar-background: var(--kbq-background-bg);
+  --kbq-top-bar-padding-block: var(--kbq-size-m);
+  --kbq-top-bar-padding-inline: var(--kbq-size-xxl);
+  --kbq-top-bar-border-radius: 0;
+
+  /* The minimum distance between the start and the end containers. */
+  --kbq-top-bar-gap: 80px;
+
+  /* Above the page content, below modals and toasts. */
+  --kbq-top-bar-z-index: calc(var(--kbq-layer-modal) - 1);
+  --kbq-top-bar-shadow: var(--kbq-shadow-overflow-normal-bottom);
+  --kbq-top-bar-container-start-gap: 0;
+  --kbq-top-bar-container-end-gap: var(--kbq-size-s);
+
+  /* Roughly three characters plus an ellipsis. */
+  --kbq-top-bar-title-min-inline-size: 4ch;
+
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  gap: var(--kbq-top-bar-gap);
+  padding-block: var(--kbq-top-bar-padding-block);
+  padding-inline: var(--kbq-top-bar-padding-inline);
+  border-radius: var(--kbq-top-bar-border-radius);
+  background: var(--kbq-top-bar-background);
+  transition: box-shadow var(--kbq-transition-slow);
+}
+
+/* position */
+.base[data-position='sticky'] {
+  position: sticky;
+  z-index: var(--kbq-top-bar-z-index);
+  inset-block-start: 0;
+}
+
+/* shadow */
+.base[data-shadow='true'] {
+  box-shadow: var(--kbq-top-bar-shadow);
+}

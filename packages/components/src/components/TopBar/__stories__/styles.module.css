@@ -1,0 +1,6 @@
+/* Keeps a collapsed action measurable while taking it out of the layout. */
+.hiddenAction[aria-hidden='true'] {
+  visibility: hidden;
+  position: absolute;
+  inset-inline-start: -300vw;
+}
