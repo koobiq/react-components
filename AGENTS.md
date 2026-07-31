@@ -121,12 +121,10 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
 
 ### Storybook Stories
 
-- Keep each story self-contained: build any data or helper logic it needs inline inside that story's own `render`, not in shared module-level constants. The docs "Source" panel only extracts a single `export const StoryName` block, so anything defined outside it never appears there.
-- Don't pass a prop that has no effect in that story's context (e.g. `userInfo` alongside `children`, since `children` short-circuits it) and don't pass a value equal to the prop's documented `@default` (e.g. `isCompact={false}`) — both are just noise in Source.
-- Don't hand-write `argTypes` for props that already have an `as const` union type — Storybook infers the `select` control and its options automatically.
-- If a story's `render` needs hooks (`useState`, …), write it as a named function expression, `render: function Render(args) { ... }`, instead of an arrow function, so `react-hooks/rules-of-hooks` recognizes it as a component without an eslint-disable comment.
-- For compound components, add a `subcomponents` field to `meta` (see [Compound Components](#compound-components)) so the Props table documents every slot.
-- Avoid `import * as NS` for large third-party packages in stories (icon sets, etc.) — use named imports so the Storybook bundle and startup stay fast.
+- Define story data and helpers inside `render` so they appear in the Source panel.
+- Don't add `argTypes` for props inferred from component types.
+- If `render` uses hooks, use a named function: `render: function Render(args) { ... }`.
+- Add every slot of a compound component to `meta.subcomponents`.
 
 ### Styling Approach
 
@@ -139,6 +137,7 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
 
 ### Prop System
 
+- Prefer standard ARIA attributes and existing prop names to keep component APIs consistent and familiar.
 - Props with a fixed set of allowed values are exported as `as const` arrays plus a derived union type:
 
   ```ts
@@ -147,9 +146,6 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
   ```
 
 - All boolean props default to `false`. If `true` would be the natural default, invert the name (e.g. `hideArrow` instead of `showArrow={true}`).
-- Prefer passing through real ARIA attributes (`role`, `aria-label`, `aria-labelledby`, `aria-hidden`) over inventing custom semantic props like `label`/`decorative` — it matches patterns consumers already know, and avoids clashing with props that mean something else elsewhere in the library (e.g. `label` usually means visible text).
-- Don't add a prop for state that's already derivable from other props (e.g. an `isEmpty` prop when emptiness is derivable from `children` and can be styled via the CSS `:empty` pseudo-class).
-- Document every optional prop's default with an explicit `@default` JSDoc tag, even when the default is `false`/`undefined`.
 - Deprecated props warn via `deprecate()` (from `@koobiq/logger`) guarded by `process.env.NODE_ENV !== 'production'`:
 
   ```tsx
@@ -160,24 +156,29 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
 
 ### Compound Components
 
-For components with slots (`Tabs.Tab`, `Tree.Item`, `TreeSelect.Item`, …), attach the sub-parts to the root component instead of exporting them standalone:
+Group related components under one public API. Consumers import the root component and access its slots as properties, for example `Component.Slot`.
 
 ```tsx
-export const Component = ComponentImpl as CompoundedComponent;
+export type ComponentProps = ComponentPropsWithRef<'div'>;
+export type ComponentSlotProps = ComponentPropsWithRef<'span'>;
+
+const ComponentRoot = forwardRef<HTMLDivElement, ComponentProps>(
+  (props, ref) => <div ref={ref} {...props} />
+);
+
+const ComponentSlot = forwardRef<HTMLSpanElement, ComponentSlotProps>(
+  (props, ref) => <span ref={ref} {...props} />
+);
+
+type CompoundedComponent = typeof ComponentRoot & {
+  Slot: typeof ComponentSlot;
+};
+
+export const Component = ComponentRoot as CompoundedComponent;
 Component.Slot = ComponentSlot;
 ```
 
-- Export the sub-parts' **prop types** from the component's `index.ts`, but not the components themselves — consumers reach them via `Component.Slot`, not a separate `ComponentSlot` import. This keeps one source of truth for the public API.
-- A prop type that gets spread (`{...other}`) onto a real DOM node must extend that element's native props (`ComponentPropsWithRef<'span'>`, etc.), not a hand-rolled subset — otherwise `aria-*`/`data-*`/event props are unusable in TypeScript even though they work at runtime.
-- Register slots under `subcomponents` in the story's `meta`, keyed by dot-path, so the docs Props table documents each slot's API:
-
-  ```ts
-  subcomponents: {
-    'Component.Slot': Component.Slot,
-  },
-  ```
-
-- Reference the dot-path form (`Component.Slot`) in MDX prose and import examples — never the internal component name.
+Export the root component and all prop types publicly. Expose slot components only through the root component.
 
 ## Public API (api-extractor)
 
@@ -199,8 +200,6 @@ Any change to an existing component's exported types/signatures needs the same `
 - Every component `.tsx` starts with `'use client'` (Next.js RSC).
 - Keep files focused. When the main file grows, split helpers, hooks, sub-components, and translations into separate files (`utils.ts`, `intl.ts`, nested `components/`) as already done in complex components.
 - Public exports go through the component's local `index.ts`, then `packages/components/src/components/index.ts`.
-- When a render has many conditional branches, compute the values to render first (e.g. `primary`, `secondary`, `hint`), then render them once in unified markup — keep branch/selection logic separate from JSX.
-- Every exported utility needs its intended usage scenario documented in the component's MDX — a signature alone doesn't explain why or when to reach for it, especially if the component itself doesn't call it internally.
 
 ## Git Commit Convention
 
