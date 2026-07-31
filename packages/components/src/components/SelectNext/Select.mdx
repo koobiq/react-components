@@ -186,6 +186,14 @@ with `defaultInputValue`, and the `onInputChange` callback is called whenever th
 
 <Story of={Stories.Searchable} />
 
+### Minimum options for search
+
+Short lists don't need a search input. The `minOptionsThreshold` prop shows the search only when
+there are at least that many options. It works together with `isSearchable`. The default is `0`,
+so the search is always shown.
+
+<Story of={Stories.SearchableMinOptionsThreshold} />
+
 ### Open
 
 #### Default open

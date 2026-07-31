@@ -42,6 +42,8 @@ describe('Select', () => {
   const getSearchInput = () =>
     screen.getByRole('searchbox', { name: 'Search' }) as HTMLInputElement;
 
+  const querySearchInput = () => screen.queryByRole('searchbox');
+
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
     render(<Select {...baseProps} ref={ref} />);
@@ -1052,6 +1054,107 @@ describe('Select', () => {
         await userEvent.type(input, 'o');
 
         expect(getPopover()).toHaveTextContent('empty');
+      });
+    });
+
+    describe('minOptionsThreshold', () => {
+      it('should not render search input when there are fewer options than the threshold', () => {
+        render(
+          <Select
+            {...baseProps}
+            defaultOpen
+            isSearchable
+            minOptionsThreshold={5}
+          >
+            <Select.Item id="apple">Apple</Select.Item>
+            <Select.Item id="banana">Banana</Select.Item>
+            <Select.Item id="apricot">Apricot</Select.Item>
+          </Select>
+        );
+
+        expect(querySearchInput()).not.toBeInTheDocument();
+        expect(getOptions()).toHaveLength(3);
+      });
+
+      it('should render search input when the option count reaches the threshold', () => {
+        render(
+          <Select
+            {...baseProps}
+            defaultOpen
+            isSearchable
+            minOptionsThreshold={3}
+          >
+            <Select.Item id="apple">Apple</Select.Item>
+            <Select.Item id="banana">Banana</Select.Item>
+            <Select.Item id="apricot">Apricot</Select.Item>
+          </Select>
+        );
+
+        expect(getSearchInput()).toBeInTheDocument();
+      });
+
+      it('should render search input by default regardless of the option count', () => {
+        render(
+          <Select {...baseProps} defaultOpen isSearchable>
+            <Select.Item id="apple">Apple</Select.Item>
+          </Select>
+        );
+
+        expect(getSearchInput()).toBeInTheDocument();
+      });
+
+      it('should not render search input without isSearchable', () => {
+        render(
+          <Select {...baseProps} defaultOpen minOptionsThreshold={0}>
+            <Select.Item id="apple">Apple</Select.Item>
+            <Select.Item id="banana">Banana</Select.Item>
+            <Select.Item id="apricot">Apricot</Select.Item>
+          </Select>
+        );
+
+        expect(querySearchInput()).not.toBeInTheDocument();
+      });
+
+      it('should keep search input when filtering narrows options below the threshold', async () => {
+        render(
+          <Select
+            {...baseProps}
+            defaultOpen
+            isSearchable
+            minOptionsThreshold={3}
+          >
+            <Select.Item id="apple">Apple</Select.Item>
+            <Select.Item id="banana">Banana</Select.Item>
+            <Select.Item id="apricot">Apricot</Select.Item>
+          </Select>
+        );
+
+        await userEvent.type(getSearchInput(), 'ban');
+
+        expect(getSearchInput()).toHaveValue('ban');
+        expect(getOptions()).toHaveLength(1);
+      });
+
+      it('should count options nested in sections', () => {
+        render(
+          <Select
+            {...baseProps}
+            defaultOpen
+            isSearchable
+            minOptionsThreshold={4}
+          >
+            <Select.Section title="Fruits">
+              <Select.Item id="apple">Apple</Select.Item>
+              <Select.Item id="banana">Banana</Select.Item>
+            </Select.Section>
+            <Select.Section title="Berries">
+              <Select.Item id="cherry">Cherry</Select.Item>
+              <Select.Item id="currant">Currant</Select.Item>
+            </Select.Section>
+          </Select>
+        );
+
+        expect(getSearchInput()).toBeInTheDocument();
       });
     });
   });
