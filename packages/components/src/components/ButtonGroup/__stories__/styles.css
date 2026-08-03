@@ -1,0 +1,45 @@
+.split-button-demo {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: var(--kbq-size-3xl) var(--kbq-size-6xl);
+}
+
+.split-button-demo__group > [data-slot='button']:not(:last-child) {
+  margin-inline-end: 0;
+  box-shadow: none;
+}
+
+.split-button-demo__group[data-variant='contrast-filled'] {
+  --split-button-divider-color: var(--kbq-line-on-contrast-fade);
+}
+
+.split-button-demo__group[data-variant='fade-contrast-filled'],
+.split-button-demo__group[data-variant='fade-contrast-outline'],
+.split-button-demo__group[data-variant='contrast-transparent'] {
+  --split-button-divider-color: var(--kbq-line-contrast-fade);
+}
+
+.split-button-demo__group[data-variant='fade-theme-outline'],
+.split-button-demo__group[data-variant='theme-transparent'] {
+  --split-button-divider-color: var(--kbq-line-theme-fade);
+}
+
+.split-button-demo__group > [data-slot='button']:last-child {
+  background-image: linear-gradient(
+    var(--split-button-divider-color),
+    var(--split-button-divider-color)
+  );
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+  background-size: var(--kbq-size-border-width) var(--kbq-size-l);
+}
+
+.split-button-demo__group
+  > [data-slot='button']:last-child[aria-expanded='true'],
+.split-button-demo__group
+  > [data-slot='button']:last-child:is(:hover, :focus-visible),
+.split-button-demo__group
+  > [data-slot='button']:not(:last-child):is(:hover, :focus-visible)
+  + [data-slot='button']:last-child {
+  background-image: none;
+}

@@ -37,7 +37,7 @@ export type ButtonProps<As extends ElementType = 'button'> = ComponentPropsWithR
 export type ButtonPropVariant = (typeof buttonPropVariant)[number];
 
 // @public (undocumented)
-export const buttonPropVariant: readonly ["contrast-filled", "contrast-transparent", "fade-contrast-filled", "fade-contrast-outline", "fade-theme-outline", "theme-transparent"];
+export const buttonPropVariant: readonly ["contrast-filled", "fade-contrast-filled", "fade-contrast-outline", "fade-theme-outline", "contrast-transparent", "theme-transparent"];
 
 // (No @packageDocumentation comment for this package)
 

@@ -5,10 +5,10 @@ import type { ButtonBaseProps as ButtonBasePrimitiveProps } from '@koobiq/react-
 
 export const buttonPropVariant = [
   'contrast-filled',
-  'contrast-transparent',
   'fade-contrast-filled',
   'fade-contrast-outline',
   'fade-theme-outline',
+  'contrast-transparent',
   'theme-transparent',
 ] as const;
 

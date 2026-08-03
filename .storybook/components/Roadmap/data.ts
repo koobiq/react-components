@@ -374,4 +374,10 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
+  {
+    component: 'ButtonGroup',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
 ];
