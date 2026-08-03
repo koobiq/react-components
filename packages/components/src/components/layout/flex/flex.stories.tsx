@@ -10,9 +10,9 @@ import {
   flexPropGap,
   flexPropJustifyContent,
   flexPropOrder,
-  type FlexProps,
   flexPropWrap,
 } from './index';
+import type { FlexProps } from './index';
 
 const meta = {
   title: 'Mixins/flex',
