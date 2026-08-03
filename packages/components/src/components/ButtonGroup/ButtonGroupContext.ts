@@ -2,11 +2,11 @@
 
 import { createContext, useContext } from 'react';
 
-import type { ButtonPropVariant } from '../Button';
+import type { ButtonGroupPropVariant } from './types';
 
 export type ButtonGroupContextProps = {
   /** The variant applied to every nested button, overriding their own `variant`. */
-  variant?: ButtonPropVariant;
+  variant?: ButtonGroupPropVariant;
   /** If `true`, every nested button is disabled. */
   isDisabled?: boolean;
 };

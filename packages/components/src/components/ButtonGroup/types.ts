@@ -1,11 +1,15 @@
 import type { CSSProperties, ReactNode } from 'react';
 
-import type { ButtonPropVariant } from '../Button';
+import { buttonPropVariant } from '../Button/types.js';
 
 export const buttonGroupPropOrientation = ['horizontal', 'vertical'] as const;
 
 export type ButtonGroupPropOrientation =
   (typeof buttonGroupPropOrientation)[number];
+
+export const buttonGroupPropVariant = buttonPropVariant;
+
+export type ButtonGroupPropVariant = (typeof buttonGroupPropVariant)[number];
 
 export type ButtonGroupBaseProps = {
   /** The content of the component. */
@@ -19,7 +23,7 @@ export type ButtonGroupBaseProps = {
    * The variant applied to every nested button, overriding their own `variant`.
    * @default 'fade-contrast-outline'
    */
-  variant?: ButtonPropVariant;
+  variant?: ButtonGroupPropVariant;
   /** If `true`, every nested button is disabled. */
   isDisabled?: boolean;
   /** Additional CSS-classes. */

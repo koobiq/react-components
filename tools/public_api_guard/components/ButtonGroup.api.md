@@ -18,7 +18,7 @@ export const ButtonGroup: PolyForwardComponent<"div", ButtonGroupBaseProps, Elem
 export type ButtonGroupBaseProps = {
     children?: ReactNode;
     orientation?: ButtonGroupPropOrientation;
-    variant?: ButtonPropVariant;
+    variant?: ButtonGroupPropVariant;
     isDisabled?: boolean;
     className?: string;
     style?: CSSProperties;
@@ -30,7 +30,7 @@ export const ButtonGroupContext: Context<ButtonGroupContextProps>;
 
 // @public (undocumented)
 export type ButtonGroupContextProps = {
-    variant?: ButtonPropVariant;
+    variant?: ButtonGroupPropVariant;
     isDisabled?: boolean;
 };
 
@@ -44,11 +44,13 @@ export const buttonGroupPropOrientation: readonly ["horizontal", "vertical"];
 export type ButtonGroupProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof ButtonGroup<As>>;
 
 // @public (undocumented)
-export function useButtonGroupContext(): ButtonGroupContextProps;
+export type ButtonGroupPropVariant = (typeof buttonGroupPropVariant)[number];
 
-// Warnings were encountered during analysis:
-//
-// packages/components/dist/components/ButtonGroup/types.d.ts:17:5 - (ae-forgotten-export) The symbol "ButtonPropVariant" needs to be exported by the entry point index.d.ts
+// @public (undocumented)
+export const buttonGroupPropVariant: readonly ["contrast-filled", "fade-contrast-filled", "fade-contrast-outline", "fade-theme-outline", "contrast-transparent", "theme-transparent"];
+
+// @public (undocumented)
+export function useButtonGroupContext(): ButtonGroupContextProps;
 
 // (No @packageDocumentation comment for this package)
 

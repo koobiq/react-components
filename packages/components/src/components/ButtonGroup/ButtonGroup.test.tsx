@@ -3,9 +3,13 @@ import { createRef } from 'react';
 import { screen, render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { Button, buttonPropVariant } from '../Button';
+import { Button } from '../Button';
 
-import { ButtonGroup, buttonGroupPropOrientation } from './index.js';
+import {
+  ButtonGroup,
+  buttonGroupPropOrientation,
+  buttonGroupPropVariant,
+} from './index.js';
 
 describe('ButtonGroup', () => {
   const baseProps = { 'data-testid': 'button-group' };
@@ -91,7 +95,7 @@ describe('ButtonGroup', () => {
       );
     });
 
-    it.each(buttonPropVariant)(
+    it.each(buttonGroupPropVariant)(
       'should pass the "%s" variant to the nested buttons',
       (variant) => {
         render(

@@ -9,12 +9,17 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button, buttonPropVariant, type ButtonPropVariant } from '../Button';
+import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Menu } from '../Menu';
 import { Typography } from '../Typography';
 
-import { ButtonGroup, type ButtonGroupProps } from './index';
+import {
+  ButtonGroup,
+  type ButtonGroupProps,
+  type ButtonGroupPropVariant,
+  buttonGroupPropVariant,
+} from './index';
 
 import './__stories__/styles.css';
 
@@ -44,7 +49,7 @@ export const Base: Story = {
 export const Variant: Story = {
   render: () => (
     <FlexBox gap="l" direction="column" alignItems="flex-start">
-      {buttonPropVariant.map((variant) => (
+      {buttonGroupPropVariant.map((variant) => (
         <ButtonGroup key={variant} variant={variant}>
           <Button startIcon={<IconPlus16 />}>Archive</Button>
           <Button startIcon={<IconPlus16 />}>Snooze</Button>
@@ -122,7 +127,7 @@ export const MixedContent: Story = {
 export const OnlyIcon: Story = {
   render: () => (
     <FlexBox gap="l" direction="column" alignItems="flex-start">
-      {buttonPropVariant.map((variant) => (
+      {buttonGroupPropVariant.map((variant) => (
         <ButtonGroup key={variant} variant={variant}>
           <Button startIcon={<IconMinus16 />} aria-label="Decrease" onlyIcon />
           <Button startIcon={<IconPlus16 />} aria-label="Increase" onlyIcon />
@@ -135,7 +140,7 @@ export const OnlyIcon: Story = {
 export const Orientation: Story = {
   render: () => (
     <FlexBox gap="l" alignItems="flex-start">
-      {buttonPropVariant.map((variant) => (
+      {buttonGroupPropVariant.map((variant) => (
         <ButtonGroup key={variant} variant={variant} orientation="vertical">
           <Button startIcon={<IconPlus16 />} aria-label="Increase" onlyIcon />
           <Button startIcon={<IconMinus16 />} aria-label="Decrease" onlyIcon />
@@ -188,7 +193,7 @@ export const SplitButton: Story = {
   render: () => {
     const splitButtonVariants: {
       label: string;
-      variant: ButtonPropVariant;
+      variant: ButtonGroupPropVariant;
     }[] = [
       { label: 'Filled Contrast', variant: 'contrast-filled' },
       { label: 'Filled Fade Contrast', variant: 'fade-contrast-filled' },
