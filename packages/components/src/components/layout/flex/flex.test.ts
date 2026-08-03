@@ -41,4 +41,8 @@ describe('flex', () => {
       [s.base, s.gap_row_m, s.gap_column_m].join(' ')
     );
   });
+
+  it('should generate class for zero order', () => {
+    expect(flex({ order: 0 })).toBe([s.base, s.order_0].join(' '));
+  });
 });
