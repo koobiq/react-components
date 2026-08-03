@@ -1,4 +1,6 @@
 .base {
+  --flex-row-gap: 0;
+  --flex-column-gap: 0;
   --flex-type: flex;
   --flex-wrap: nowrap;
   --flex-direction: row;
