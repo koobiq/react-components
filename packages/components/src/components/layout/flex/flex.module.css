@@ -1,5 +1,6 @@
 .base {
-  --flex-gap: 0;
+  --flex-row-gap: 0;
+  --flex-column-gap: 0;
   --flex-order: 0;
   --flex-type: flex;
   --flex-wrap: nowrap;

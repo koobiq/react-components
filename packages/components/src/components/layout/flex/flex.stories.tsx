@@ -63,6 +63,22 @@ const meta = {
         type: { summary: 'FlexPropGap' },
       },
     },
+    colGap: {
+      description: 'column-gap',
+      options: flexPropGap,
+      control: { type: 'select' },
+      table: {
+        type: { summary: 'FlexPropGap' },
+      },
+    },
+    rowGap: {
+      description: 'row-gap',
+      options: flexPropGap,
+      control: { type: 'select' },
+      table: {
+        type: { summary: 'FlexPropGap' },
+      },
+    },
     order: {
       options: flexPropOrder,
       control: { type: 'select' },
