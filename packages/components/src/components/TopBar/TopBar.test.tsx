@@ -88,6 +88,14 @@ describe('TopBar', () => {
         expect(getRoot()).toHaveAttribute('data-position', position);
       }
     );
+
+    it('should not allow data-position to override position', () => {
+      render(
+        <TopBar {...baseProps} position="sticky" data-position="static" />
+      );
+
+      expect(getRoot()).toHaveAttribute('data-position', 'sticky');
+    });
   });
 
   describe('check the hasShadow prop', () => {
@@ -101,6 +109,12 @@ describe('TopBar', () => {
       render(<TopBar {...baseProps} hasShadow />);
 
       expect(getRoot()).toHaveAttribute('data-shadow', 'true');
+    });
+
+    it('should not allow data-shadow to override hasShadow', () => {
+      render(<TopBar {...baseProps} data-shadow="true" />);
+
+      expect(getRoot()).not.toHaveAttribute('data-shadow');
     });
   });
 });
@@ -144,6 +158,14 @@ describe('TopBar.Container', () => {
       expect(getRoot()).toHaveAttribute('data-placement', placement);
     }
   );
+
+  it('should not allow data-placement to override placement', () => {
+    render(
+      <TopBar.Container {...baseProps} placement="end" data-placement="start" />
+    );
+
+    expect(getRoot()).toHaveAttribute('data-placement', 'end');
+  });
 
   describe('check the isToolbar prop', () => {
     it('should add no toolbar semantics by default', () => {

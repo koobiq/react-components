@@ -6,15 +6,29 @@
 
 import type { AriaLabelingProps } from '@koobiq/react-core';
 import type { ComponentPropsWithRef } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
+import { DetailedHTMLProps } from 'react';
 import type { ElementType } from 'react';
+import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
-import type { ReactNode } from 'react';
+import { PolymorphicWithRef } from '@koobiq/react-core';
+import { ReactNode } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const TopBar: CompoundedComponent;
+export const TopBar: Omit<ForwardRefExoticComponent<Merge<DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>, {
+position?: TopBarPropPosition;
+hasShadow?: boolean;
+as?: ElementType;
+className?: string;
+children?: ReactNode;
+} & DataAttributeProps & {
+as?: "header" | undefined;
+}>>, never> & PolymorphicWithRef<"header", TopBarBaseProps, ElementType> & {
+    Container: PolyForwardComponent<"div", TopBarContainerBaseProps, ElementType>;
+    Title: PolyForwardComponent<"h1", TopBarTitleBaseProps, ElementType>;
+};
 
 // @public (undocumented)
 export type TopBarBaseProps = {
@@ -52,10 +66,8 @@ export type TopBarPropPosition = (typeof topBarPropPosition)[number];
 // @public (undocumented)
 export const topBarPropPosition: readonly ["static", "sticky"];
 
-// Warning: (ae-forgotten-export) The symbol "TopBarComponent" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type TopBarProps<As extends ElementType = 'header'> = ComponentPropsWithRef<typeof TopBarComponent<As>>;
+export type TopBarProps<As extends ElementType = 'header'> = ComponentPropsWithRef<typeof TopBar<As>>;
 
 // @public
 export const TopBarTitle: PolyForwardComponent<"h1", TopBarTitleBaseProps, ElementType>;

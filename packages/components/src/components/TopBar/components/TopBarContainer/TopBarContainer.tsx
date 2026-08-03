@@ -41,13 +41,13 @@ export const TopBarContainer = polymorphicForwardRef<
   );
 
   const rootProps = mergeProps(
+    other,
     {
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
       'data-placement': placement,
       className: clsx(s.base, className),
     },
-    other,
     isToolbar ? toolbarProps : {}
   );
 

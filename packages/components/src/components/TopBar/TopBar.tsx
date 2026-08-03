@@ -21,10 +21,10 @@ const TopBarComponent = polymorphicForwardRef<'header', TopBarBaseProps>(
 
     return (
       <Tag
+        {...other}
         data-position={position}
         data-shadow={hasShadow || undefined}
         className={clsx(s.base, className)}
-        {...other}
         ref={ref}
       >
         {children}
@@ -35,19 +35,14 @@ const TopBarComponent = polymorphicForwardRef<'header', TopBarBaseProps>(
 
 TopBarComponent.displayName = 'TopBar';
 
-type CompoundedComponent = typeof TopBarComponent & {
-  Container: typeof TopBarContainer;
-  Title: typeof TopBarTitle;
-};
-
 /**
  * TopBar is the bar at the top of a page. It holds the page title or the
  * breadcrumbs on the start side and the page actions on the end side.
  */
-export const TopBar = TopBarComponent as CompoundedComponent;
-
-TopBar.Container = TopBarContainer;
-TopBar.Title = TopBarTitle;
+export const TopBar = Object.assign(TopBarComponent, {
+  Container: TopBarContainer,
+  Title: TopBarTitle,
+});
 
 export type TopBarProps<As extends ElementType = 'header'> =
-  ComponentPropsWithRef<typeof TopBarComponent<As>>;
+  ComponentPropsWithRef<typeof TopBar<As>>;
