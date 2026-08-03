@@ -32,7 +32,7 @@ const meta = {
     'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-07-06'],
+  tags: ['status:updated', 'date:2026-07-30'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -538,6 +538,35 @@ export const Searchable: Story = {
       >
         {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
+    );
+  },
+};
+
+export const SearchableMinOptionsThreshold: Story = {
+  render: function Render() {
+    return (
+      <FlexBox gap="m">
+        <Select
+          items={options}
+          label="11 options"
+          minOptionsThreshold={10}
+          style={{ inlineSize: 200 }}
+          placeholder="Select an option"
+          isSearchable
+        >
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+        </Select>
+        <Select
+          label="3 options"
+          minOptionsThreshold={10}
+          items={options.slice(0, 3)}
+          style={{ inlineSize: 200 }}
+          placeholder="Select an option"
+          isSearchable
+        >
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+        </Select>
+      </FlexBox>
     );
   },
 };

@@ -1,7 +1,6 @@
 .base {
   --flex-row-gap: 0;
   --flex-column-gap: 0;
-  --flex-order: 0;
   --flex-type: flex;
   --flex-wrap: nowrap;
   --flex-direction: row;
@@ -9,7 +8,6 @@
   --flex-justify-content: flex-start;
 
   gap: var(--flex-row-gap) var(--flex-column-gap);
-  order: var(--flex-order);
   display: var(--flex-type);
   align-items: var(--flex-align-items);
   justify-content: var(--flex-justify-content);
@@ -94,18 +92,6 @@
 
 .direction_column-reverse {
   --flex-direction: column-reverse;
-}
-
-.order_-1 {
-  --flex-order: -1;
-}
-
-.order_0 {
-  --flex-order: 0;
-}
-
-.order_1 {
-  --flex-order: 1;
 }
 
 /* column-gap */

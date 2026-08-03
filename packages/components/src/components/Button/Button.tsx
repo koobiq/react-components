@@ -7,6 +7,8 @@ import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import type { ButtonBaseProps as ButtonPrimitiveProps } from '@koobiq/react-primitives';
 import { Button as ButtonPrimitive } from '@koobiq/react-primitives';
 
+import { useButtonGroupContext } from '../ButtonGroup';
+
 import s from './Button.module.css';
 import type { ButtonBaseProps } from './types.js';
 
@@ -15,7 +17,7 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
   (props, ref) => {
     const {
       as: Tag = 'button',
-      variant = 'contrast-filled',
+      variant: variantProp,
       onlyIcon,
       fullWidth,
       isLoading: isLoadingProp,
@@ -29,8 +31,15 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
       ...other
     } = props;
 
+    const group = useButtonGroupContext();
+
     const isLoading = isLoadingProp ?? progress;
-    const isDisabled = isDisabledProp ?? disabled;
+
+    // Inside a group the group's variant wins, so the group looks like one control.
+    const variant = group.variant ?? variantProp ?? 'contrast-filled';
+
+    // The group wins when it disables, but a single button can still disable itself.
+    const isDisabled = (isDisabledProp ?? disabled) || group.isDisabled;
 
     if (process.env.NODE_ENV !== 'production' && 'progress' in props) {
       deprecate(

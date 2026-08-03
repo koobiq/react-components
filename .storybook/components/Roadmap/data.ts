@@ -375,6 +375,12 @@ export const rows: Rows = [
     planned: 'Q3 2026',
   },
   {
+    component: 'ButtonGroup',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
     component: 'TopBar',
     status: '✅ Done',
     stage: '🔵 experimental',

@@ -137,6 +137,12 @@ export type SelectNextProps<
     dropdownFooter?: ReactNode;
     /** Enables search input for filtering items in the list. */
     isSearchable?: boolean;
+    /**
+     * The minimum number of options required for the search input to be rendered.
+     * Used together with `isSearchable`.
+     * @default 0
+     */
+    minOptionsThreshold?: number;
     /** The value of the Select search input (controlled). */
     inputValue?: string;
     /** The default value of the Select search input (uncontrolled). */

@@ -79,6 +79,7 @@ import type { FormProps as FormProps_2 } from '@koobiq/react-core';
 import type { FormValidationState } from '@react-stately/form';
 import type { ForwardedRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
+import { getItemCount } from '@react-stately/collections';
 import type { GlobalDOMAttributes } from '@koobiq/react-core';
 import type { HelpTextProps } from '@koobiq/react-core';
 import type { HoverEvents } from '@koobiq/react-core';
@@ -343,6 +344,8 @@ export const FormContext: Context<ContextValue<FormProps, HTMLFormElement>>;
 export interface FormProps extends FormProps_2, DOMProps_2, GlobalDOMAttributes<HTMLFormElement> {
     validationBehavior?: 'aria' | 'native';
 }
+
+export { getItemCount }
 
 // @public (undocumented)
 export const Group: ForwardRefExoticComponent<Omit<GroupProps, "ref"> & RefAttributes<HTMLDivElement>>;

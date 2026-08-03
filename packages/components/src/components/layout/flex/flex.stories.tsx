@@ -10,9 +10,9 @@ import {
   flexPropGap,
   flexPropJustifyContent,
   flexPropOrder,
-  type FlexProps,
   flexPropWrap,
-} from './flex';
+} from './index';
+import type { FlexProps } from './index';
 
 const meta = {
   title: 'Mixins/flex',
@@ -57,6 +57,22 @@ const meta = {
       },
     },
     gap: {
+      options: flexPropGap,
+      control: { type: 'select' },
+      table: {
+        type: { summary: 'FlexPropGap' },
+      },
+    },
+    colGap: {
+      description: 'column-gap',
+      options: flexPropGap,
+      control: { type: 'select' },
+      table: {
+        type: { summary: 'FlexPropGap' },
+      },
+    },
+    rowGap: {
+      description: 'row-gap',
       options: flexPropGap,
       control: { type: 'select' },
       table: {

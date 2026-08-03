@@ -119,6 +119,13 @@ packages/components/src/components/Button/
 
 Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or `intl.json`, and `__tests__/`. Follow nearby component patterns before adding new structure.
 
+### Storybook Stories
+
+- Define story data and helpers inside `render` so they appear in the Source panel.
+- Don't add `argTypes` for props inferred from component types.
+- If `render` uses hooks, use a named function: `render: function Render(args) { ... }`.
+- Add every slot of a compound component to `meta.subcomponents`.
+
 ### Styling Approach
 
 - CSS Modules. Class names are hashed and not part of the public API — don't target them externally; use `data-*` attributes and public props instead.
@@ -130,6 +137,7 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
 
 ### Prop System
 
+- Prefer standard ARIA attributes and existing prop names to keep component APIs consistent and familiar.
 - Props with a fixed set of allowed values are exported as `as const` arrays plus a derived union type:
 
   ```ts
@@ -145,6 +153,44 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
     deprecate('Button: "disabled" is deprecated. Use "isDisabled" instead.');
   }
   ```
+
+### Compound Components
+
+Group related components under one public API. Consumers import the root component and access its slots as properties, for example `Component.Slot`.
+
+```tsx
+export type ComponentProps = ComponentPropsWithRef<'div'>;
+export type ComponentSlotProps = ComponentPropsWithRef<'span'>;
+
+const ComponentRoot = forwardRef<HTMLDivElement, ComponentProps>(
+  (props, ref) => <div ref={ref} {...props} />
+);
+
+const ComponentSlot = forwardRef<HTMLSpanElement, ComponentSlotProps>(
+  (props, ref) => <span ref={ref} {...props} />
+);
+
+type CompoundedComponent = typeof ComponentRoot & {
+  Slot: typeof ComponentSlot;
+};
+
+export const Component = ComponentRoot as CompoundedComponent;
+Component.Slot = ComponentSlot;
+```
+
+Export the root component and all prop types publicly. Expose slot components only through the root component.
+
+## Public API (api-extractor)
+
+The public surface of every component is locked by [API Extractor](https://api-extractor.com/) reports in `tools/public_api_guard/components/*.api.md`, checked in CI via `pnpm check-api`.
+
+When adding a **new component** to the public API:
+
+1. Add its name to the `components` array in `tools/api-extractor/config.json`.
+2. Run `pnpm build && pnpm approve-api` to regenerate its `.api.md` report.
+3. Commit the updated `config.json` and `.api.md` files alongside the component.
+
+Any change to an existing component's exported types/signatures needs the same `pnpm build && pnpm approve-api` step — otherwise `pnpm check-api` fails in CI.
 
 ## Coding Conventions
 
