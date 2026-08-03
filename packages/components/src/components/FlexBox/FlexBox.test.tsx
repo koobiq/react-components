@@ -1,8 +1,11 @@
 import { createRef } from 'react';
 
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
+import { BreakpointsContext, type BreakpointsContextType } from '../Provider';
+
+import s from './FlexBox.module.css';
 import { FlexBox } from './index';
 import type { FlexBoxProps } from './index';
 
@@ -26,5 +29,55 @@ describe('FlexBox', () => {
     const { container } = render(<FlexBox ref={ref} />);
     const flexBox = container.querySelector('div');
     expect(ref.current).toBe(flexBox);
+  });
+
+  it('should apply flex classes from props', () => {
+    render(
+      <FlexBox
+        data-testid="flex-box"
+        flex="inline-flex"
+        wrap="wrap-reverse"
+        gap="m"
+        rowGap="l"
+        colGap="xl"
+        direction="column-reverse"
+        alignItems="center"
+        justifyContent="space-between"
+      />
+    );
+
+    expect(screen.getByTestId('flex-box')).toHaveClass(
+      s.base,
+      s['flex_inline-flex'],
+      s['wrap_wrap-reverse'],
+      s.gap_row_l,
+      s.gap_column_xl,
+      s['direction_column-reverse'],
+      s.alignItems_center,
+      s['justifyContent_space-between']
+    );
+  });
+
+  it('should apply flex classes from responsive props', () => {
+    const breakpoints = {
+      xs: true,
+      l: true,
+    } as BreakpointsContextType;
+
+    render(
+      <BreakpointsContext.Provider value={breakpoints}>
+        <FlexBox
+          data-testid="flex-box"
+          gap={{ xs: 's', l: 'm' }}
+          direction={{ xs: 'column', l: 'row' }}
+        />
+      </BreakpointsContext.Provider>
+    );
+
+    expect(screen.getByTestId('flex-box')).toHaveClass(
+      s.gap_row_m,
+      s.gap_column_m,
+      s.direction_row
+    );
   });
 });

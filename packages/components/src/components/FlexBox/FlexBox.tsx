@@ -5,9 +5,9 @@ import type { ComponentPropsWithRef, ElementType } from 'react';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
 import { getResponsiveValue } from '../../utils';
-import { flex as flexBox } from '../layout';
 import { useMatchedBreakpoints } from '../Provider';
 
+import s from './FlexBox.module.css';
 import type { FlexBoxBaseProps } from './index';
 
 /**
@@ -38,26 +38,29 @@ export const FlexBox = polymorphicForwardRef<'div', FlexBoxBaseProps>(
 
     const flex = getResponsiveValue(flexProp, breakpoints);
     const gap = getResponsiveValue(gapProp, breakpoints);
-    const colGap = getResponsiveValue(colGapProp, breakpoints);
-    const rowGap = getResponsiveValue(rowGapProp, breakpoints);
+    const colGap = getResponsiveValue(colGapProp, breakpoints) ?? gap;
+    const rowGap = getResponsiveValue(rowGapProp, breakpoints) ?? gap;
     const wrap = getResponsiveValue(wrapProp, breakpoints);
     const alignItems = getResponsiveValue(alignItemsProp, breakpoints);
     const direction = getResponsiveValue(directionProp, breakpoints);
     const justifyContent = getResponsiveValue(justifyContentProp, breakpoints);
 
-    const flexCn = flexBox({
-      gap,
-      flex,
-      wrap,
-      colGap,
-      rowGap,
-      direction,
-      alignItems,
-      justifyContent,
-    });
-
     return (
-      <Tag className={clsx(flexCn, className)} {...other} ref={ref}>
+      <Tag
+        className={clsx(
+          s.base,
+          flex && s[`flex_${flex}`],
+          wrap && s[`wrap_${wrap}`],
+          rowGap && s[`gap_row_${rowGap}`],
+          colGap && s[`gap_column_${colGap}`],
+          direction && s[`direction_${direction}`],
+          alignItems && s[`alignItems_${alignItems}`],
+          justifyContent && s[`justifyContent_${justifyContent}`],
+          className
+        )}
+        {...other}
+        ref={ref}
+      >
         {children}
       </Tag>
     );
