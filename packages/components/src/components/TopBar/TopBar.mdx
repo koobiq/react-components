@@ -26,12 +26,6 @@ import { TopBar } from '@koobiq/react-components';
 
 <Story of={Stories.Base} />
 
-## Props
-
-<Props of={Stories.Base} />
-
-## Anatomy
-
 The bar holds one container per side. Render only the ones you need.
 
 ```tsx
@@ -40,7 +34,7 @@ The bar holds one container per side. Render only the ones you need.
     <TopBar.Title>Dashboards</TopBar.Title>
   </TopBar.Container>
 
-  <TopBar.Container placement="end" isToolbar aria-label="Page actions">
+  <TopBar.Container placement="end" aria-label="Page actions" isToolbar>
     <Button>Create dashboard</Button>
   </TopBar.Container>
 </TopBar>
@@ -50,7 +44,12 @@ The bar holds one container per side. Render only the ones you need.
   `placement="end"` sticks to the opposite edge.
 - `TopBar.Title` — the page heading. It renders an `h1` and cuts long text with an ellipsis.
 
-TopBar keeps at least `--kbq-top-bar-gap` (80px) between the two sides.
+By default, TopBar keeps at least `80px` between the two sides. Use `--kbq-top-bar-gap` to override
+it.
+
+## Props
+
+<Props of={Stories.Base} />
 
 ## Logo and counter
 
@@ -78,42 +77,39 @@ position yourself and pass the result in.
 
 ## Breadcrumbs
 
-Put `Breadcrumbs` in the start container. They collapse on their own — you do not need to add any
-logic around them.
+Put [Breadcrumbs](?path=/docs/components-breadcrumbs--docs) in the start container. They collapse on
+their own — you do not need to add any logic around them.
 
 <Story of={Stories.WithBreadcrumbs} />
 
 ## Collapsing actions
 
-Collapsing the actions into a "…" menu is not built into TopBar. Build it with `useHideOverflowItems`
-and a `Menu`, so you stay in control of which action collapses first.
+Use [useHideOverflowItems](?path=/docs/hooks-usehideoverflowitems--docs) and a `Menu` to collapse
+overflowing actions under a "…" button.
 
-<Story of={Stories.CollapsedActions} />
+<Story of={Stories.CollapsingActions} />
 
-## Shrinking
-
-The start side gives up its space first and the actions keep their size, so a button label never
-turns into an unreadable stub:
-
-1. The title is cut with an ellipsis down to `--kbq-top-bar-title-min-inline-size`. Breadcrumbs
-   collapse their middle items, then everything but the last one.
-2. Once the start side has nothing left to give, the bar runs out of room. That is the point to
-   collapse the actions into a "…" menu — see [Collapsing actions](#collapsing-actions).
+The example reserves `160px` for the logo and collapsed Breadcrumbs. The `busy` value also includes
+the container gap and TopBar inline padding, so Breadcrumbs collapse before the actions.
 
 ## CSS variables
 
-| Variable                              | Default                                    | Purpose                                             |
-| ------------------------------------- | ------------------------------------------ | --------------------------------------------------- |
-| `--kbq-top-bar-background`            | `var(--kbq-background-bg)`                 | Background of the bar.                              |
-| `--kbq-top-bar-padding-block`         | `var(--kbq-size-m)`                        | Block padding.                                      |
-| `--kbq-top-bar-padding-inline`        | `var(--kbq-size-xxl)`                      | Inline padding.                                     |
-| `--kbq-top-bar-border-radius`         | `0`                                        | Border radius.                                      |
-| `--kbq-top-bar-gap`                   | `80px`                                     | Minimum distance between the two sides.             |
-| `--kbq-top-bar-z-index`               | `calc(var(--kbq-layer-modal) - 1)`         | Stack order while `sticky`.                         |
-| `--kbq-top-bar-shadow`                | `var(--kbq-shadow-overflow-normal-bottom)` | Shadow shown by `hasShadow`.                        |
-| `--kbq-top-bar-container-start-gap`   | `0`                                        | Gap between items in the start container.           |
-| `--kbq-top-bar-container-end-gap`     | `var(--kbq-size-s)`                        | Gap between items in the end container.             |
-| `--kbq-top-bar-title-min-inline-size` | `4ch`                                      | Smallest width of the title before the end shrinks. |
+These optional variables override the component's internal values.
+
+| Variable                                        | Purpose                                             |
+| ----------------------------------------------- | --------------------------------------------------- |
+| `--kbq-top-bar-background`                      | Background of the bar.                              |
+| `--kbq-top-bar-padding-block`                   | Block padding.                                      |
+| `--kbq-top-bar-padding-inline`                  | Inline padding.                                     |
+| `--kbq-top-bar-border-radius`                   | Border radius.                                      |
+| `--kbq-top-bar-min-block-size`                  | Minimum block size of the bar.                      |
+| `--kbq-top-bar-gap`                             | Minimum distance between the two sides.             |
+| `--kbq-top-bar-z-index`                         | Stack order while `sticky`.                         |
+| `--kbq-top-bar-shadow`                          | Shadow shown by `hasShadow`.                        |
+| `--kbq-top-bar-container-start-gap`             | Gap between items in the start container.           |
+| `--kbq-top-bar-container-start-min-inline-size` | Width the start container keeps for itself.         |
+| `--kbq-top-bar-container-end-gap`               | Gap between items in the end container.             |
+| `--kbq-top-bar-title-min-inline-size`           | Smallest width of the title before the end shrinks. |
 
 ## Accessibility
 

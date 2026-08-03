@@ -1,6 +1,10 @@
-import { type CSSProperties, type SVGProps, useState } from 'react';
+import { type CSSProperties, type SVGProps, useEffect, useState } from 'react';
 
-import { mergeRefs, useHideOverflowItems } from '@koobiq/react-core';
+import {
+  mergeProps,
+  mergeRefs,
+  useHideOverflowItems,
+} from '@koobiq/react-core';
 import {
   IconArrowsRotate16,
   IconBug16,
@@ -20,9 +24,9 @@ import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
 import { spacing } from '../layout';
 import { Menu } from '../Menu';
+import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
-import s from './__stories__/styles.module.css';
 import { TopBar, type TopBarProps, topBarPropPosition } from './index.js';
 
 const meta = {
@@ -145,7 +149,7 @@ export const WithLogoAndCounter: Story = {
           10
         </Typography>
       </TopBar.Container>
-      <TopBar.Container placement="end" isToolbar aria-label="Page actions">
+      <TopBar.Container placement="end" aria-label="Page actions" isToolbar>
         <Button startIcon={<IconPlus16 />}>Create dashboard</Button>
       </TopBar.Container>
     </TopBar>
@@ -211,7 +215,7 @@ export const Shadow: Story = {
           <TopBar.Container placement="start">
             <TopBar.Title>Dashboards</TopBar.Title>
           </TopBar.Container>
-          <TopBar.Container placement="end" isToolbar aria-label="Page actions">
+          <TopBar.Container placement="end" aria-label="Page actions" isToolbar>
             <Button startIcon={<IconPlus16 />}>Create dashboard</Button>
           </TopBar.Container>
         </TopBar>
@@ -225,14 +229,21 @@ export const WithBreadcrumbs: Story = {
   render: (args) => (
     <TopBar {...args}>
       <TopBar.Container placement="start">
-        <IconButton
-          as="a"
-          href="#"
-          aria-label="Go to the home page"
-          className={spacing({ mie: 'l' })}
+        <Tooltip
+          control={(controlProps) => (
+            <IconButton
+              {...controlProps}
+              as="a"
+              href="#"
+              aria-label="Go to the home page"
+              className={spacing({ mie: 'l' })}
+            >
+              <AppIcon />
+            </IconButton>
+          )}
         >
-          <AppIcon />
-        </IconButton>
+          Go to the home page
+        </Tooltip>
         <Breadcrumbs size="big">
           <BreadcrumbItem href="#">Main</BreadcrumbItem>
           <BreadcrumbItem href="#">Section</BreadcrumbItem>
@@ -240,21 +251,43 @@ export const WithBreadcrumbs: Story = {
           <BreadcrumbItem>Pipeline</BreadcrumbItem>
         </Breadcrumbs>
       </TopBar.Container>
-      <TopBar.Container placement="end" isToolbar aria-label="Page actions">
-        <IconButton variant="theme-contrast" aria-label="Search">
-          <IconMagnifyingGlass16 />
-        </IconButton>
-        <IconButton variant="theme-contrast" aria-label="Filter">
-          <IconFilter16 />
-        </IconButton>
+      <TopBar.Container placement="end" aria-label="Page actions" isToolbar>
+        <Tooltip
+          control={(controlProps) => (
+            <IconButton
+              {...controlProps}
+              variant="theme-contrast"
+              aria-label="Search"
+            >
+              <IconMagnifyingGlass16 />
+            </IconButton>
+          )}
+        >
+          Search
+        </Tooltip>
+        <Tooltip
+          control={(controlProps) => (
+            <IconButton
+              {...controlProps}
+              variant="theme-contrast"
+              aria-label="Filter"
+            >
+              <IconFilter16 />
+            </IconButton>
+          )}
+        >
+          Filter
+        </Tooltip>
         <Button variant="fade-contrast-filled">Share</Button>
       </TopBar.Container>
     </TopBar>
   ),
 };
 
-export const CollapsedActions: Story = {
+export const CollapsingActions: Story = {
   render: function Render(args) {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const actions = [
       { key: 'refresh', label: 'Refresh', icon: <IconArrowsRotate16 /> },
       { key: 'view', label: 'Change view', icon: <IconList16 /> },
@@ -264,41 +297,67 @@ export const CollapsedActions: Story = {
       { key: 'report', label: 'Report a bug', icon: <IconBug16 /> },
     ];
 
-    /**
-     * Everything on the bar that the actions may not use: its padding, the gap
-     * between the two sides, and the room the breadcrumbs keep once they are fully
-     * collapsed. The actions start moving into the "…" menu below this.
-     */
-    const RESERVED_SPACE = 250;
+    // Space for the logo and fully collapsed breadcrumbs.
+    const START_RESERVE = 160;
+
+    // 160px start reserve + 80px gap + 24px padding on each side.
+    const BUSY_SPACE = 288;
+
+    // Keep hidden actions measurable.
+    const collapsedStyle: CSSProperties = {
+      visibility: 'hidden',
+      position: 'absolute',
+      insetInlineStart: '-300vw',
+    };
 
     const moreIndex = actions.length;
 
-    // `parentRef` goes on the bar, not on the actions container: the bar keeps
-    // its width when an action is hidden, so hiding one cannot trigger hiding
-    // the next. `busy` is the part of that width the actions may not use.
+    // Measure the bar so hiding an action does not change the available width.
+    // Use margins because the hook includes them in each action's width.
     const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems<
       HTMLButtonElement,
       HTMLElement
     >({
       length: actions.length + 1,
       moreIndex,
-      busy: RESERVED_SPACE,
+      busy: BUSY_SPACE,
     });
 
     const collapsedActions = actions.filter((_, index) => !visibleMap[index]);
+    const isMoreVisible = visibleMap[moreIndex];
+
+    useEffect(() => {
+      if (!isMoreVisible) setIsMenuOpen(false);
+    }, [isMoreVisible]);
 
     return (
-      <TopBar {...args} ref={parentRef}>
+      <TopBar
+        {...args}
+        ref={parentRef}
+        style={
+          {
+            '--kbq-top-bar-container-start-min-inline-size': `${START_RESERVE}px`,
+            '--kbq-top-bar-container-end-gap': 0,
+          } as CSSProperties
+        }
+      >
         <TopBar.Container placement="start">
-          <IconButton
-            as="a"
-            href="#"
-            variant="fade-contrast"
-            aria-label="Go to the home page"
-            className={spacing({ mie: 'l' })}
+          <Tooltip
+            control={(controlProps) => (
+              <IconButton
+                {...controlProps}
+                as="a"
+                href="#"
+                variant="fade-contrast"
+                aria-label="Go to the home page"
+                className={spacing({ mie: 'l' })}
+              >
+                <AppIcon />
+              </IconButton>
+            )}
           >
-            <AppIcon />
-          </IconButton>
+            Go to the home page
+          </Tooltip>
           <Breadcrumbs size="big">
             <BreadcrumbItem href="#">Main</BreadcrumbItem>
             <BreadcrumbItem href="#">Section</BreadcrumbItem>
@@ -306,26 +365,36 @@ export const CollapsedActions: Story = {
             <BreadcrumbItem>Pipeline</BreadcrumbItem>
           </Breadcrumbs>
         </TopBar.Container>
-        <TopBar.Container placement="end" isToolbar aria-label="Page actions">
+        <TopBar.Container placement="end" aria-label="Page actions" isToolbar>
           {actions.map((action, index) => (
-            <IconButton
+            <Tooltip
               key={action.key}
-              ref={itemsRefs[index]}
-              variant="theme-contrast"
-              className={s.hiddenAction}
-              aria-label={action.label}
-              aria-hidden={!visibleMap[index] || undefined}
+              control={(controlProps) => (
+                <IconButton
+                  {...mergeProps(controlProps, { ref: itemsRefs[index] })}
+                  variant="theme-contrast"
+                  className={spacing({ mis: 's' })}
+                  style={visibleMap[index] ? undefined : collapsedStyle}
+                  aria-label={action.label}
+                  aria-hidden={!visibleMap[index] || undefined}
+                >
+                  {action.icon}
+                </IconButton>
+              )}
             >
-              {action.icon}
-            </IconButton>
+              {action.label}
+            </Tooltip>
           ))}
           <Menu
+            isOpen={isMenuOpen}
+            onOpenChange={setIsMenuOpen}
             control={({ ref, ...controlProps }) => (
               <IconButton
                 {...controlProps}
                 ref={mergeRefs(ref, itemsRefs[moreIndex])}
                 variant="theme-contrast"
-                className={s.hiddenAction}
+                className={spacing({ mis: 's' })}
+                style={visibleMap[moreIndex] ? undefined : collapsedStyle}
                 aria-label="More actions"
                 aria-hidden={!visibleMap[moreIndex] || undefined}
               >
@@ -335,7 +404,7 @@ export const CollapsedActions: Story = {
             placement="bottom end"
           >
             {collapsedActions.map((action) => (
-              <Menu.Item key={action.key}>
+              <Menu.Item key={action.key} textValue={action.label}>
                 <Menu.ItemAddon>{action.icon}</Menu.ItemAddon>
                 <Menu.ItemText>{action.label}</Menu.ItemText>
               </Menu.Item>

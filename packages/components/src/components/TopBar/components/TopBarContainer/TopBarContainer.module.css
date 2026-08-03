@@ -4,23 +4,26 @@
   min-inline-size: 0;
 }
 
-/* placement */
-
-/* The start side gives up all the space: the title is cut and the breadcrumbs
-   collapse, while the actions keep their size. Once the start side has nothing
-   left to give, collapse the actions yourself — see the docs. */
 .base[data-placement='start'] {
   flex: 1 1 auto;
-  gap: var(--kbq-top-bar-container-start-gap);
+  gap: var(
+    --kbq-top-bar-container-start-gap,
+    var(--top-bar-container-start-gap)
+  );
+  min-inline-size: var(
+    --kbq-top-bar-container-start-min-inline-size,
+    var(--top-bar-container-start-min-inline-size)
+  );
+  overflow: clip;
+  overflow-clip-margin: var(--kbq-size-xxs);
 }
 
 .base[data-placement='end'] {
   flex: 0 0 auto;
   justify-content: flex-end;
-  gap: var(--kbq-top-bar-container-end-gap);
+  gap: var(--kbq-top-bar-container-end-gap, var(--top-bar-container-end-gap));
 }
 
-/* Keeps the container at the end edge when there is no start container. */
 .base[data-placement='end']:first-child {
   margin-inline-start: auto;
 }
