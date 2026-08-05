@@ -574,7 +574,7 @@ export const SearchableMinOptionsThreshold: Story = {
 
 export const ServerSearch: Story = {
   render: function Render() {
-    type Person = { name: string; isPinned?: boolean };
+    type Person = { name: string; isRetained?: boolean };
     type PeopleResponse = { next: string | null; results: Person[] };
 
     const savedNames = ['Luke Skywalker'];
@@ -592,7 +592,7 @@ export const ServerSearch: Story = {
 
         const selectedItems = selectedNames.map((name) => ({
           name,
-          isPinned: true,
+          isRetained: true,
         }));
 
         const url =
@@ -623,8 +623,8 @@ export const ServerSearch: Story = {
     const value = list.selectedKeys === 'all' ? [] : [...list.selectedKeys];
     const selectedSet = new Set(value.map(String));
 
-    const pinnedSet = new Set(
-      list.items.filter(({ isPinned }) => isPinned).map(({ name }) => name)
+    const retainedSet = new Set(
+      list.items.filter(({ isRetained }) => isRetained).map(({ name }) => name)
     );
 
     return (
@@ -651,10 +651,10 @@ export const ServerSearch: Story = {
           }
         }}
         defaultFilter={(textValue, inputValue) => {
-          if (pinnedSet.has(textValue)) {
-            return (
-              selectedSet.has(textValue) && contains(textValue, inputValue)
-            );
+          if (retainedSet.has(textValue)) {
+            return selectedSet.has(textValue)
+              ? contains(textValue, inputValue)
+              : inputValue === '';
           }
 
           return list.loadingState !== 'filtering';
