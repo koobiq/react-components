@@ -599,30 +599,38 @@ export const ServerSearch: Story = {
           cursor ??
           `https://swapi.py4e.com/api/people/?search=${encodeURIComponent(filterText ?? '')}`;
 
-        const response = await fetch(url, { signal });
+        try {
+          const response = await fetch(url, { signal });
 
-        if (!response.ok) {
-          throw new Error(`Failed to load people: ${response.status}`);
+          if (!response.ok) {
+            throw new Error(`Failed to load people: ${response.status}`);
+          }
+
+          const data: PeopleResponse = await response.json();
+
+          const results = data.results.filter(
+            ({ name }) => !selectedSet.has(name)
+          );
+
+          setHasMore(data.next != null);
+
+          return {
+            items: cursor == null ? [...selectedItems, ...results] : results,
+            cursor: data.next ?? undefined,
+          };
+        } catch (error) {
+          if (!signal.aborted) setHasMore(false);
+
+          throw error;
         }
-
-        const data: PeopleResponse = await response.json();
-
-        const results = data.results.filter(
-          ({ name }) => !selectedSet.has(name)
-        );
-
-        setHasMore(data.next != null);
-
-        return {
-          items: cursor == null ? [...selectedItems, ...results] : results,
-          cursor: data.next ?? undefined,
-        };
       },
     });
 
     const value = list.selectedKeys === 'all' ? [] : [...list.selectedKeys];
     const selectedSet = new Set(value.map(String));
 
+    // Retained items are client-side copies, not the selection source of truth.
+    // A deselected copy may remain until the next server response replaces it.
     const retainedSet = new Set(
       list.items.filter(({ isRetained }) => isRetained).map(({ name }) => name)
     );
@@ -659,6 +667,7 @@ export const ServerSearch: Story = {
 
           return list.loadingState !== 'filtering';
         }}
+        noItemsText={list.error ? 'Failed to load characters' : undefined}
         isLoading={list.isLoading || hasMore}
         onLoadMore={list.loadMore}
         selectionMode="multiple"
