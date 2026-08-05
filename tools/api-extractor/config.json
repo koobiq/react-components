@@ -58,6 +58,7 @@
     "ToastProvider",
     "Toggle",
     "Tooltip",
+    "TopBar",
     "Tree",
     "TreeSelect",
     "Typography",

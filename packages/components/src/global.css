@@ -2,6 +2,7 @@
   /* layer */
   --kbq-layer-default: 0;
   --kbq-layer-absolute: 1;
+  --kbq-layer-topbar: 950;
   --kbq-layer-modal: 1000;
   --kbq-layer-toast: 1100;
 

@@ -1,0 +1,121 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TopBar.stories';
+
+<Meta of={Stories} />
+
+# TopBar
+
+<Status variant="experimental" />
+
+TopBar is the bar at the top of a page. It shows the page title or the breadcrumbs on the start side
+and the page actions on the end side.
+
+## Import
+
+```tsx
+import { TopBar } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+The bar holds one container per side. Render only the ones you need.
+
+```tsx
+<TopBar>
+  <TopBar.Container placement="start">
+    <TopBar.Title>Dashboards</TopBar.Title>
+  </TopBar.Container>
+
+  <TopBar.Container placement="end" aria-label="Page actions" isToolbar>
+    <Button>Create dashboard</Button>
+  </TopBar.Container>
+</TopBar>
+```
+
+- `TopBar.Container` — one side of the bar. `placement="start"` grows and shrinks first,
+  `placement="end"` sticks to the opposite edge.
+- `TopBar.Title` — the page heading. It renders an `h1` and cuts long text with an ellipsis.
+
+By default, TopBar keeps at least `80px` between the two sides. Use `--kbq-top-bar-gap` to override
+it.
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Logo and counter
+
+A logo and an object counter are plain content of the start container — TopBar has no slots for them.
+
+<Story of={Stories.WithLogoAndCounter} />
+
+## Position
+
+Use `position` to choose how the bar sits on the page:
+
+- `sticky` (default) — the bar pins to the top of the nearest scrolling ancestor.
+- `static` — the bar stays in the flow.
+
+The bar always stays in the flow, so the page content never needs a top offset.
+
+<Story of={Stories.Position} />
+
+## Shadow
+
+The `hasShadow` prop only paints the bottom shadow. TopBar never listens to scrolling — watch the scroll
+position yourself and pass the result in.
+
+<Story of={Stories.Shadow} />
+
+## Breadcrumbs
+
+Put [Breadcrumbs](?path=/docs/components-breadcrumbs--docs) in the start container. They collapse on
+their own — you do not need to add any logic around them.
+
+<Story of={Stories.WithBreadcrumbs} />
+
+## Collapsing actions
+
+Use [useHideOverflowItems](?path=/docs/hooks-usehideoverflowitems--docs) and a `Menu` to collapse
+overflowing actions under a "…" button.
+
+<Story of={Stories.CollapsingActions} />
+
+The example reserves `160px` for the logo and collapsed Breadcrumbs. The `busy` value also includes
+the container gap and TopBar inline padding, so Breadcrumbs collapse before the actions.
+
+## CSS variables
+
+These optional variables override the component's internal values.
+
+| Variable                                        | Purpose                                             |
+| ----------------------------------------------- | --------------------------------------------------- |
+| `--kbq-top-bar-background`                      | Background of the bar.                              |
+| `--kbq-top-bar-padding-block`                   | Block padding.                                      |
+| `--kbq-top-bar-padding-inline`                  | Inline padding.                                     |
+| `--kbq-top-bar-border-radius`                   | Border radius.                                      |
+| `--kbq-top-bar-min-block-size`                  | Minimum block size of the bar.                      |
+| `--kbq-top-bar-gap`                             | Minimum distance between the two sides.             |
+| `--kbq-top-bar-z-index`                         | Stack order while `sticky`.                         |
+| `--kbq-top-bar-shadow`                          | Shadow shown by `hasShadow`.                        |
+| `--kbq-top-bar-container-start-gap`             | Gap between items in the start container.           |
+| `--kbq-top-bar-container-start-min-inline-size` | Width the start container keeps for itself.         |
+| `--kbq-top-bar-container-end-gap`               | Gap between items in the end container.             |
+| `--kbq-top-bar-title-min-inline-size`           | Smallest width of the title before the end shrinks. |
+
+## Accessibility
+
+- TopBar renders a `header`. Use `as` when the bar is not the banner of the page.
+- `TopBar.Title` renders an `h1`. Use `as` to fit the heading order of your page.
+- Set `isToolbar` on the container with the actions. It adds `role="toolbar"` and lets the user move
+  between the actions with the arrow keys, so the whole group takes one Tab stop.
+- Give a toolbar container an `aria-label`, for example `aria-label="Page actions"`.
+- Give icon-only actions an `aria-label`.
