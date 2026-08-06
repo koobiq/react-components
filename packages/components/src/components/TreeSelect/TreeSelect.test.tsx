@@ -6,6 +6,7 @@ import { userEvent } from '@testing-library/user-event';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { Form } from '../Form';
+import { Popover } from '../Popover';
 import { Provider } from '../Provider';
 import { Tree } from '../Tree';
 
@@ -490,6 +491,18 @@ describe('TreeSelect', () => {
   });
 
   describe('clear button', () => {
+    it('should not throw on render in a popover', () => {
+      expect(() => {
+        render(
+          <Popover defaultOpen>
+            <Popover.Body>
+              <TreeSelectFixture isClearable />
+            </Popover.Body>
+          </Popover>
+        );
+      }).not.toThrow();
+    });
+
     it('should be visible only when a value is selected', () => {
       const { rerender } = renderTreeSelect({ value: null, isClearable: true });
 
