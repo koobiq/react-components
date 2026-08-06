@@ -13,6 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { useAsyncList, useFilter } from '../index';
 import { Typography } from '../Typography';
 
 import type { SelectNextProps as SelectProps } from './index.js';
@@ -567,6 +568,116 @@ export const SearchableMinOptionsThreshold: Story = {
           {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
         </Select>
       </FlexBox>
+    );
+  },
+};
+
+export const ServerSearch: Story = {
+  render: function Render() {
+    type Person = { name: string; isRetained?: boolean };
+    type PeopleResponse = { next: string | null; results: Person[] };
+
+    const savedNames = ['Luke Skywalker'];
+    const [hasMore, setHasMore] = useState(true);
+    const { contains } = useFilter({ sensitivity: 'base' });
+
+    const list = useAsyncList<Person>({
+      getKey: ({ name }) => name,
+      initialSelectedKeys: savedNames,
+      async load({ signal, filterText, cursor, selectedKeys }) {
+        const selectedNames =
+          selectedKeys === 'all' ? [] : [...selectedKeys].map(String);
+
+        const selectedSet = new Set(selectedNames);
+
+        const selectedItems = selectedNames.map((name) => ({
+          name,
+          isRetained: true,
+        }));
+
+        const url =
+          cursor ??
+          `https://swapi.py4e.com/api/people/?search=${encodeURIComponent(filterText ?? '')}`;
+
+        try {
+          const response = await fetch(url, { signal });
+
+          if (!response.ok) {
+            throw new Error(`Failed to load people: ${response.status}`);
+          }
+
+          const data: PeopleResponse = await response.json();
+
+          const results = data.results.filter(
+            ({ name }) => !selectedSet.has(name)
+          );
+
+          setHasMore(data.next != null);
+
+          return {
+            items: cursor == null ? [...selectedItems, ...results] : results,
+            cursor: data.next ?? undefined,
+          };
+        } catch (error) {
+          if (!signal.aborted) setHasMore(false);
+
+          throw error;
+        }
+      },
+    });
+
+    const value = list.selectedKeys === 'all' ? [] : [...list.selectedKeys];
+    const selectedSet = new Set(value.map(String));
+
+    // Retained items are client-side copies, not the selection source of truth.
+    // A deselected copy may remain until the next server response replaces it.
+    const retainedSet = new Set(
+      list.items.filter(({ isRetained }) => isRetained).map(({ name }) => name)
+    );
+
+    return (
+      <Select
+        value={value}
+        label="Characters"
+        onChange={(keys) => list.setSelectedKeys(new Set(keys))}
+        items={list.items}
+        inputValue={list.filterText}
+        onInputChange={list.setFilterText}
+        onOpenChange={(isOpen) => {
+          if (isOpen) return;
+
+          if (list.filterText) {
+            list.setFilterText('');
+
+            return;
+          }
+
+          if (list.selectedKeys !== 'all') {
+            [...list.selectedKeys]
+              .reverse()
+              .forEach((key) => list.move(key, 0));
+          }
+        }}
+        defaultFilter={(textValue, inputValue) => {
+          if (retainedSet.has(textValue)) {
+            return selectedSet.has(textValue)
+              ? contains(textValue, inputValue)
+              : inputValue === '';
+          }
+
+          return list.loadingState !== 'filtering';
+        }}
+        noItemsText={list.error ? 'Failed to load characters' : undefined}
+        isLoading={list.isLoading || hasMore}
+        onLoadMore={list.loadMore}
+        selectionMode="multiple"
+        style={{ inlineSize: 240 }}
+        placeholder="Select an option"
+        isSearchable
+        isClearable
+      >
+        {(item) => <Select.Item id={item.name}>{item.name}</Select.Item>}
+      </Select>
     );
   },
 };

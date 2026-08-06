@@ -194,6 +194,18 @@ so the search is always shown.
 
 <Story of={Stories.SearchableMinOptionsThreshold} />
 
+### Server search
+
+This example shows how to implement server search in SelectNext with `useAsyncList`. It manages the
+loading state, provides an `AbortSignal` for cancelling outdated requests, and supports pagination
+through `loadMore`.
+
+Selected options are kept between requests and pinned at the top of the list. During search, the
+pinned options are filtered locally, while the rest of the options are displayed exactly as
+returned by the server.
+
+<Story of={Stories.ServerSearch} />
+
 ### Open
 
 #### Default open
