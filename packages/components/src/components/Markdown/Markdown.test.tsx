@@ -1,11 +1,18 @@
 import { createRef } from 'react';
 
 import { render, screen } from '@testing-library/react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
 import { Markdown } from './index.js';
 
 describe('Markdown', () => {
+  it('should render on the server', () => {
+    const html = renderToStaticMarkup(<Markdown># Heading</Markdown>);
+
+    expect(html).toContain('<h1>Heading</h1>');
+  });
+
   it('should accept the ref', () => {
     const ref = createRef<HTMLDivElement>();
     const { container } = render(<Markdown ref={ref}># Heading</Markdown>);
@@ -59,16 +66,6 @@ describe('Markdown', () => {
     expect(link).toHaveAttribute('href', 'https://www.koobiq.io');
   });
 
-  it('should apply markedOptions to the parser', () => {
-    const { container } = render(
-      <Markdown markedOptions={{ breaks: true }}>
-        {'First line\nSecond line'}
-      </Markdown>
-    );
-
-    expect(container.querySelector('br')).toBeInTheDocument();
-  });
-
   it('should re-render when children change', () => {
     const { rerender } = render(<Markdown># First</Markdown>);
     expect(screen.getByRole('heading', { name: 'First' })).toBeInTheDocument();
@@ -81,52 +78,24 @@ describe('Markdown', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should sanitize a raw script tag', () => {
+  it('should not render raw HTML', () => {
     const { container } = render(
       <Markdown>{'<script>window.xssTriggered = true;</script>'}</Markdown>
     );
 
     expect(container.querySelector('script')).not.toBeInTheDocument();
-  });
 
-  it('should strip event handler attributes from raw HTML', () => {
-    const { container } = render(
-      <Markdown>
-        {'<img src="x" onerror="window.xssTriggered = true" />'}
-      </Markdown>
+    expect(container).toHaveTextContent(
+      '<script>window.xssTriggered = true;</script>'
     );
-
-    const img = container.querySelector('img');
-    expect(img).not.toHaveAttribute('onerror');
   });
 
-  it('should not crash and should ignore a dangerouslySetInnerHTML prop', () => {
-    expect(() =>
-      render(
-        // eslint-disable-next-line react/no-danger-with-children -- verifying the runtime guard strips this prop for untyped callers
-        <Markdown
-          // @ts-expect-error MarkdownProps excludes dangerouslySetInnerHTML; verifying the runtime guard for untyped callers.
-          dangerouslySetInnerHTML={{
-            __html: '<script>window.xssTriggered = true;</script>',
-          }}
-        >
-          # Heading
-        </Markdown>
-      )
-    ).not.toThrow();
-
-    expect(
-      screen.getByRole('heading', { name: 'Heading' })
-    ).toBeInTheDocument();
-  });
-
-  it('should keep the language class on a fenced code block alongside the injected class', () => {
+  it('should keep the language class on a fenced code block', () => {
     const { container } = render(
       <Markdown>{'```js\nconst a = 1;\n```'}</Markdown>
     );
 
     const code = container.querySelector('pre > code');
     expect(code).toHaveClass('language-js');
-    expect(code?.className.split(' ').length).toBeGreaterThan(1);
   });
 });

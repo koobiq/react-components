@@ -174,14 +174,6 @@ export const LineBreak: Story = {
   render: () => <Markdown>{'First line  \nSecond line'}</Markdown>,
 };
 
-export const LineBreakWithMarkedOptions: Story = {
-  render: () => (
-    <Markdown markedOptions={{ breaks: true }}>
-      {'First line\nSecond line'}
-    </Markdown>
-  ),
-};
-
 export const Article: Story = {
   render: () => (
     <Markdown>

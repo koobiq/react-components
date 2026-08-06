@@ -12,20 +12,20 @@
   margin-block-end: 0;
 }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
+.markdownOutput h1,
+.markdownOutput h2,
+.markdownOutput h3,
+.markdownOutput h4,
+.markdownOutput h5,
+.markdownOutput h6 {
   color: var(--kbq-foreground-contrast);
 }
 
-:is(.h1, .h2, .h3, .h4, .h5, .h6) + :is(.h1, .h2, .h3, .h4, .h5, .h6) {
+.markdownOutput :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
   margin-block-start: 0;
 }
 
-.h1 {
+.markdownOutput h1 {
   margin-block: var(--kbq-markdown-h1-size-margin-top)
     var(--kbq-markdown-h1-size-margin-bottom);
   font-size: var(--kbq-md-typography-md-h1-font-size);
@@ -34,7 +34,7 @@
   letter-spacing: var(--kbq-md-typography-md-h1-letter-spacing);
 }
 
-.h2 {
+.markdownOutput h2 {
   margin-block: var(--kbq-markdown-h2-size-margin-top)
     var(--kbq-markdown-h2-size-margin-bottom);
   font-size: var(--kbq-md-typography-md-h2-font-size);
@@ -43,7 +43,7 @@
   letter-spacing: var(--kbq-md-typography-md-h2-letter-spacing);
 }
 
-.h3 {
+.markdownOutput h3 {
   margin-block: var(--kbq-markdown-h3-size-margin-top)
     var(--kbq-markdown-h3-size-margin-bottom);
   font-size: var(--kbq-md-typography-md-h3-font-size);
@@ -52,7 +52,7 @@
   letter-spacing: var(--kbq-md-typography-md-h3-letter-spacing);
 }
 
-.h4 {
+.markdownOutput h4 {
   margin-block: var(--kbq-markdown-h4-size-margin-top)
     var(--kbq-markdown-h4-size-margin-bottom);
   font-size: var(--kbq-md-typography-md-h4-font-size);
@@ -61,7 +61,7 @@
   letter-spacing: var(--kbq-md-typography-md-h4-letter-spacing);
 }
 
-.h5 {
+.markdownOutput h5 {
   margin-block: var(--kbq-markdown-h5-size-margin-top)
     var(--kbq-markdown-h5-size-margin-bottom);
   font-size: var(--kbq-md-typography-md-h5-font-size);
@@ -70,7 +70,7 @@
   letter-spacing: var(--kbq-md-typography-md-h5-letter-spacing);
 }
 
-.h6 {
+.markdownOutput h6 {
   margin-block: var(--kbq-markdown-h6-size-margin-top)
     var(--kbq-markdown-h6-size-margin-bottom);
   font-size: var(--kbq-md-typography-md-h6-font-size);
@@ -80,7 +80,7 @@
   text-transform: var(--kbq-md-typography-md-h6-text-transform);
 }
 
-.p {
+.markdownOutput p {
   margin-block: var(--kbq-markdown-p-size-margin-top)
     var(--kbq-markdown-p-size-margin-bottom);
   color: var(--kbq-foreground-contrast);
@@ -89,8 +89,8 @@
   letter-spacing: var(--kbq-md-typography-md-body-letter-spacing);
 }
 
-.ul,
-.ol {
+.markdownOutput ul,
+.markdownOutput ol {
   margin-block: var(--kbq-markdown-list-size-margin-top)
     var(--kbq-markdown-list-size-margin-bottom);
   color: var(--kbq-foreground-contrast);
@@ -98,19 +98,19 @@
   line-height: var(--kbq-md-typography-md-body-line-height);
 }
 
-.p + .ul,
-.p + .ol {
+.markdownOutput p + ul,
+.markdownOutput p + ol {
   margin-block-start: var(--kbq-markdown-list-size-margin-top-after-paragraph);
 }
 
-.ul {
+.markdownOutput ul {
   position: relative;
   list-style: none;
   padding-inline: var(--kbq-size-xxl) 0;
   padding-block: 0;
 }
 
-.ul > .li::before {
+.markdownOutput ul > li::before {
   content: '—';
   display: block;
   position: absolute;
@@ -119,30 +119,30 @@
   text-align: start;
 }
 
-.ol {
+.markdownOutput ol {
   list-style: none;
   padding: 0;
   counter-reset: li;
 }
 
-.ol > .li {
+.markdownOutput ol > li {
   counter-increment: li;
 }
 
-.ol > .li::before {
+.markdownOutput ol > li::before {
   content: counter(li) '.';
   padding-inline-end: var(--kbq-markdown-list-size-ol-number-padding-right);
 }
 
-.ol > .li > * {
+.markdownOutput ol > li > * {
   display: inline-block;
 }
 
-.li {
+.markdownOutput li {
   margin-block-end: var(--kbq-markdown-list-size-item-margin-bottom);
 }
 
-.blockquote {
+.markdownOutput blockquote {
   margin-block: var(--kbq-markdown-blockquote-size-margin-top)
     var(--kbq-markdown-blockquote-size-margin-bottom);
   margin-inline: 0;
@@ -153,11 +153,11 @@
   background: var(--kbq-markdown-blockquote-background);
 }
 
-.blockquote > .p {
+.markdownOutput blockquote > p {
   margin-block: 0;
 }
 
-.pre {
+.markdownOutput pre {
   position: relative;
   overflow-x: auto;
   margin-block: var(--kbq-markdown-code-size-multiline-margin-top)
@@ -168,35 +168,35 @@
   background-color: var(--kbq-markdown-code-background);
 }
 
-.code {
+.markdownOutput code {
   border-radius: var(--kbq-markdown-code-size-border-radius);
   font-family: var(--kbq-md-typography-md-inline-code-font-family);
   font-size: var(--kbq-md-typography-md-inline-code-font-size);
   line-height: var(--kbq-md-typography-md-inline-code-line-height);
 }
 
-.code:not(.pre > .code) {
+.markdownOutput code:not(pre > code) {
   white-space: nowrap;
   padding: var(--kbq-markdown-code-size-inline-padding);
 }
 
-.code:not(.pre > .code, .a .code) {
+.markdownOutput code:not(pre > code, a code) {
   color: var(--kbq-markdown-code-text);
   background-color: var(--kbq-markdown-code-background);
 }
 
-.a .code {
+.markdownOutput a code {
   background-color: var(--kbq-markdown-code-background);
   font-weight: var(--kbq-md-typography-md-inline-code-as-link-font-weight);
 }
 
-.img {
+.markdownOutput img {
   max-inline-size: 100%;
   margin-block: var(--kbq-markdown-image-size-margin-top)
     var(--kbq-markdown-image-size-margin-bottom);
 }
 
-.img + em {
+.markdownOutput img + em {
   display: block;
   margin-block: var(--kbq-markdown-image-size-caption-margin-top)
     var(--kbq-markdown-image-size-caption-margin-bottom);
@@ -205,7 +205,7 @@
   line-height: var(--kbq-md-typography-md-caption-line-height);
 }
 
-.hr {
+.markdownOutput hr {
   block-size: 0;
   margin-block: var(--kbq-markdown-hr-size-margin-vertical);
   border: none;
@@ -213,7 +213,7 @@
     var(--kbq-markdown-hr-color);
 }
 
-.table {
+.markdownOutput table {
   max-inline-size: 100%;
   overflow-x: auto;
   display: table;
@@ -222,14 +222,14 @@
   color: var(--kbq-markdown-table-body);
 }
 
-.table .td,
-.table .th {
+.markdownOutput table td,
+.markdownOutput table th {
   padding: var(--kbq-markdown-table-size-padding);
   font-weight: 400;
   vertical-align: top;
 }
 
-.thead {
+.markdownOutput thead {
   border-block-end: var(--kbq-markdown-table-size-border-width) solid
     var(--kbq-markdown-table-border);
   text-align: start;
@@ -238,28 +238,28 @@
   line-height: var(--kbq-md-typography-md-table-header-line-height);
 }
 
-.thead .th:first-child {
+.markdownOutput thead th:first-child {
   padding-inline-start: 0;
 }
 
-.thead .th:last-child {
+.markdownOutput thead th:last-child {
   padding-inline-end: 0;
 }
 
-.tbody {
+.markdownOutput tbody {
   font-size: var(--kbq-md-typography-md-table-cell-font-size);
   line-height: var(--kbq-md-typography-md-table-cell-line-height);
 }
 
-.tbody .td:first-child {
+.markdownOutput tbody td:first-child {
   padding-inline-start: 0;
 }
 
-.tbody .td:last-child {
+.markdownOutput tbody td:last-child {
   padding-inline-end: 0;
 }
 
-.a {
+.markdownOutput a {
   color: var(--kbq-foreground-theme);
   text-decoration-line: underline;
   text-decoration-color: var(--kbq-line-theme-less);
@@ -272,23 +272,23 @@
     text-decoration-color var(--kbq-transition-default);
 }
 
-.a:hover {
+.markdownOutput a:hover {
   color: var(--kbq-states-foreground-theme-hover);
 }
 
-.a:active {
+.markdownOutput a:active {
   color: var(--kbq-states-foreground-theme-active);
 }
 
-.a:focus-visible {
+.markdownOutput a:focus-visible {
   outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.a:visited {
+.markdownOutput a:visited {
   color: var(--kbq-foreground-visited);
   text-decoration-color: var(--kbq-line-visited);
 }
 
-.a:has(.code) {
+.markdownOutput a:has(code) {
   text-decoration-line: none;
 }

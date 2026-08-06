@@ -15,13 +15,6 @@ import * as Stories from './Markdown.stories';
 
 `Markdown` renders a Markdown string as HTML.
 
-For the component to work, install the [`marked`](https://www.npmjs.com/package/marked) and
-[`dompurify`](https://www.npmjs.com/package/dompurify) peer dependencies:
-
-```bash
-npm install marked dompurify
-```
-
 ## Import
 
 ```tsx
@@ -87,10 +80,6 @@ Pass the Markdown text as `children`.
 To create a line break, add two trailing spaces at the end of the line.
 
 <Story of={Stories.LineBreak} />
-
-Alternatively, pass `{ breaks: true }` via `markedOptions` and use a plain `\n` in the text.
-
-<Story of={Stories.LineBreakWithMarkedOptions} />
 
 ## Large article
 

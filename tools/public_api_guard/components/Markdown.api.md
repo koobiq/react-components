@@ -6,7 +6,6 @@
 
 import type { ComponentPropsWithoutRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
-import type { MarkedOptions } from 'marked';
 import { RefAttributes } from 'react';
 
 // @public
@@ -15,7 +14,6 @@ export const Markdown: ForwardRefExoticComponent<MarkdownProps & RefAttributes<H
 // @public (undocumented)
 export interface MarkdownProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children' | 'dangerouslySetInnerHTML'> {
     children: string;
-    markedOptions?: MarkedOptions;
 }
 
 // (No @packageDocumentation comment for this package)
