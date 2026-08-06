@@ -22,9 +22,12 @@ import {
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
+  ButtonContext,
   CollectionBuilder,
   Collection,
+  DEFAULT_SLOT,
   FieldErrorContext,
+  Provider,
   composeRenderProps,
   useTreeSelect,
   useTreeSelectState,
@@ -408,38 +411,52 @@ export function TreeSelectInner<
     );
 
   return (
-    <FormField {...rootProps}>
-      <FormField.Label {...labelProps} />
-      <div className={s.body}>
-        <FormField.ControlGroup {...groupProps}>
-          <FormField.Select {...controlProps}>
-            {state.selectedItems.length ? renderValue : undefined}
-          </FormField.Select>
-        </FormField.ControlGroup>
-        <FieldErrorContext.Provider value={validation}>
-          <FormField.Error {...errorProps} />
-        </FieldErrorContext.Provider>
-        <FormField.Caption {...captionProps} />
-      </div>
-      <PopoverInner {...popoverProps}>
-        <div className={s.content}>
-          {isSearchable && (
-            <>
-              <SearchInput {...searchInputProps} />
-              <Divider disablePaddings />
-            </>
-          )}
-          <TreeInner
-            props={innerTreeProps}
-            treeRef={treeRef}
-            state={filteredTreeState}
-          />
-          <DropdownFooter {...slotProps?.dropdownFooter}>
-            {dropdownFooter}
-          </DropdownFooter>
+    <Provider
+      values={[
+        [
+          ButtonContext,
+          {
+            slots: {
+              [DEFAULT_SLOT]: {},
+              'clear-button': {},
+            },
+          },
+        ],
+      ]}
+    >
+      <FormField {...rootProps}>
+        <FormField.Label {...labelProps} />
+        <div className={s.body}>
+          <FormField.ControlGroup {...groupProps}>
+            <FormField.Select {...controlProps}>
+              {state.selectedItems.length ? renderValue : undefined}
+            </FormField.Select>
+          </FormField.ControlGroup>
+          <FieldErrorContext.Provider value={validation}>
+            <FormField.Error {...errorProps} />
+          </FieldErrorContext.Provider>
+          <FormField.Caption {...captionProps} />
         </div>
-      </PopoverInner>
-    </FormField>
+        <PopoverInner {...popoverProps}>
+          <div className={s.content}>
+            {isSearchable && (
+              <>
+                <SearchInput {...searchInputProps} />
+                <Divider disablePaddings />
+              </>
+            )}
+            <TreeInner
+              props={innerTreeProps}
+              treeRef={treeRef}
+              state={filteredTreeState}
+            />
+            <DropdownFooter {...slotProps?.dropdownFooter}>
+              {dropdownFooter}
+            </DropdownFooter>
+          </div>
+        </PopoverInner>
+      </FormField>
+    </Provider>
   );
 }
 
