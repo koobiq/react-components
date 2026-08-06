@@ -281,6 +281,26 @@ describe('ToastQueue', () => {
     expect(onClose2).toHaveBeenCalledTimes(1);
   });
 
+  it('should survive a toast queued from an onClose handler on clear', () => {
+    const q = createQueue();
+
+    const onClose = vi.fn(() => {
+      q.add('from onClose');
+    });
+
+    q.add('t', { timeout: 5000, onClose });
+    q.clear();
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    expect(q.visibleToasts.map(({ content }) => content)).toEqual([
+      'from onClose',
+    ]);
+
+    expect((q as any).timedCount).toBe(0);
+    expect((q as any).tickId).toBeNull();
+  });
+
   it('should survive a toast queued from an onClose handler', () => {
     const q = createQueue();
 

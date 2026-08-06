@@ -192,13 +192,16 @@ export class ToastQueue<T> {
   }
 
   clear(): void {
-    for (const toast of this.queue) toast.onClose?.();
+    const cleared = this.queue;
 
     this.queue = [];
     this.timedCount = 0;
 
+    // detached first: a handler may queue another toast, which stays
+    for (const toast of cleared) toast.onClose?.();
+
+    // stops the ticker unless a handler queued a timed toast
     this.updateVisibleToasts('clear');
-    this.stopTicker();
   }
 
   private updateVisibleToasts(action: ToastAction) {
