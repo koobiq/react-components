@@ -2,7 +2,7 @@ import { createRef } from 'react';
 
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { IconButton } from '../IconButton';
 
@@ -12,6 +12,10 @@ import s from './Tooltip.module.css';
 describe('Tooltip', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   const onOpenChange = vi.fn();
@@ -70,9 +74,8 @@ describe('Tooltip', () => {
   });
 
   it('should align the arrow for a compound placement', async () => {
-    const getBoundingClientRect = vi
-      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
-      .mockImplementation(function (this: HTMLElement) {
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+      function (this: HTMLElement) {
         if (this.dataset.testid === 'root') {
           return {
             bottom: 64,
@@ -109,7 +112,8 @@ describe('Tooltip', () => {
           x: 0,
           y: 0,
         } as DOMRect;
-      });
+      }
+    );
 
     const { rerender } = render(
       <Tooltip
@@ -143,8 +147,6 @@ describe('Tooltip', () => {
         left: '24px',
       });
     });
-
-    getBoundingClientRect.mockRestore();
   });
 
   it('should apply the focus trap', async () => {
