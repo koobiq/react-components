@@ -136,7 +136,7 @@ export type PopoverProps = {
   isNonModal?: boolean;
   /**
    * The minimum distance the arrow's edge should be from the edge of the overlay element.
-   * @default 0
+   * @default 20
    */
   arrowBoundaryOffset?: number;
   /**

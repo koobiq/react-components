@@ -19,7 +19,7 @@ import { TooltipTriggerProps } from 'react-aria';
 import type { TooltipTriggerProps as TooltipTriggerProps_2 } from '@koobiq/react-primitives';
 
 // @public
-export const Tooltip: ForwardRefExoticComponent<Omit<TooltipTriggerProps, "children" | "style" | "className" | "id" | "placement" | `data-${string}` | "variant" | "offset" | "control" | "portalContainer" | "anchorRef" | "hideArrow" | "arrowBoundaryOffset" | "crossOffset" | "delay" | "closeDelay" | keyof {
+export const Tooltip: ForwardRefExoticComponent<Omit<TooltipTriggerProps, "children" | "style" | "className" | "id" | "placement" | `data-${string}` | "variant" | "offset" | "control" | "portalContainer" | "arrowBoundaryOffset" | "anchorRef" | "hideArrow" | "crossOffset" | "delay" | "closeDelay" | keyof {
 open?: boolean;
 disabled?: boolean;
 }> & {

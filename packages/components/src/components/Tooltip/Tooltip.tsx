@@ -6,6 +6,7 @@ import { deprecate } from '@koobiq/logger';
 import {
   clsx,
   useDOMRef,
+  useLocale,
   mergeProps,
   useBoolean,
   useMultiRef,
@@ -20,6 +21,7 @@ import {
 } from '@koobiq/react-primitives';
 import { Transition } from 'react-transition-group';
 
+import { useOverlayArrowStyle } from '../../hooks/useOverlayArrowStyle';
 import { utilClasses } from '../../styles/utility';
 
 import s from './Tooltip.module.css';
@@ -83,6 +85,8 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   const domRef = useDOMRef<ComponentRef<'div'>>(ref);
   const controlRef = useRef<FocusableElement>(null);
   const controlRefCallback = useMultiRef([controlRef]);
+  const targetRef = anchorRef || controlRef;
+  const { direction } = useLocale();
 
   const { triggerProps, tooltipProps: tooltipTriggerProps } = useTooltipTrigger(
     {
@@ -111,10 +115,20 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     arrowBoundaryOffset,
     placement: placementProp,
     onClose: () => state.close(true),
-    targetRef: anchorRef || controlRef,
+    targetRef,
   });
 
   const { tooltipProps: tooltipCommonProps } = useTooltip(overlayProps, state);
+
+  const arrowStyle = useOverlayArrowStyle({
+    direction,
+    placement: placementProp,
+    arrowBoundaryOffset,
+    arrowStyle: arrowProps.style,
+    isEnabled: showArrow,
+    overlayRef: domRef,
+    targetRef,
+  });
 
   const tooltipProps = mergeProps(
     {
@@ -157,6 +171,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
               {showArrow && (
                 <div
                   {...arrowProps}
+                  style={arrowStyle}
                   className={s.arrow}
                   data-placement={placement}
                 />
