@@ -46,9 +46,19 @@ type MarkdownClassMap = Record<string, string>;
 const injectClass = (html: string, tag: string, className: string): string => {
   if (!className) return html;
 
+  // Captures existing attributes (e.g. fenced code blocks emit `<code class="language-js">`)
+  // so an existing class attribute is merged into rather than duplicated.
   return html.replaceAll(
-    new RegExp(`<${tag}(?=[\\s/>])`, 'g'),
-    `<${tag} class="${className}"`
+    new RegExp(`<${tag}(?=[\\s/>])([^>]*)>`, 'g'),
+    (_match, attrs: string) => {
+      const classMatch = attrs.match(/\sclass="([^"]*)"/);
+
+      if (classMatch) {
+        return `<${tag}${attrs.replace(classMatch[0], ` class="${classMatch[1]} ${className}"`)}>`;
+      }
+
+      return `<${tag} class="${className}"${attrs}>`;
+    }
   );
 };
 
@@ -79,6 +89,9 @@ const parseMarkdownToHtml = (
 export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(
   (props, ref) => {
     const { children, markedOptions, className, ...other } = props;
+    // Defensive: MarkdownProps already excludes this, but strip it at runtime
+    // too, since passing it alongside the output div's own JSX child throws.
+    delete (other as Record<string, unknown>).dangerouslySetInnerHTML;
     const { isBrowser } = useSsr();
 
     const classedHtml = useMemo(

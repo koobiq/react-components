@@ -99,4 +99,34 @@ describe('Markdown', () => {
     const img = container.querySelector('img');
     expect(img).not.toHaveAttribute('onerror');
   });
+
+  it('should not crash and should ignore a dangerouslySetInnerHTML prop', () => {
+    expect(() =>
+      render(
+        // eslint-disable-next-line react/no-danger-with-children -- verifying the runtime guard strips this prop for untyped callers
+        <Markdown
+          // @ts-expect-error MarkdownProps excludes dangerouslySetInnerHTML; verifying the runtime guard for untyped callers.
+          dangerouslySetInnerHTML={{
+            __html: '<script>window.xssTriggered = true;</script>',
+          }}
+        >
+          # Heading
+        </Markdown>
+      )
+    ).not.toThrow();
+
+    expect(
+      screen.getByRole('heading', { name: 'Heading' })
+    ).toBeInTheDocument();
+  });
+
+  it('should keep the language class on a fenced code block alongside the injected class', () => {
+    const { container } = render(
+      <Markdown>{'```js\nconst a = 1;\n```'}</Markdown>
+    );
+
+    const code = container.querySelector('pre > code');
+    expect(code).toHaveClass('language-js');
+    expect(code?.className.split(' ').length).toBeGreaterThan(1);
+  });
 });

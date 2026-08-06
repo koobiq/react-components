@@ -13,7 +13,7 @@ import { RefAttributes } from 'react';
 export const Markdown: ForwardRefExoticComponent<MarkdownProps & RefAttributes<HTMLDivElement>>;
 
 // @public (undocumented)
-export interface MarkdownProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children'> {
+export interface MarkdownProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children' | 'dangerouslySetInnerHTML'> {
     children: string;
     markedOptions?: MarkedOptions;
 }

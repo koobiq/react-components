@@ -4,7 +4,7 @@ import type { MarkedOptions } from 'marked';
 
 export interface MarkdownProps extends Omit<
   ComponentPropsWithoutRef<'div'>,
-  'children'
+  'children' | 'dangerouslySetInnerHTML'
 > {
   /** Markdown text to convert into HTML. */
   children: string;
