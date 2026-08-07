@@ -1,0 +1,5 @@
+.search {
+  box-sizing: border-box;
+  padding-block: var(--kbq-size-xxs);
+  padding-inline: var(--kbq-size-3xs);
+}

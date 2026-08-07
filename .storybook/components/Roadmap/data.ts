@@ -386,4 +386,10 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
+  {
+    component: 'DropdownMenu',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
 ];

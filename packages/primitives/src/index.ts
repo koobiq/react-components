@@ -155,6 +155,38 @@ export {
 
 export type { FileTriggerProps } from 'react-aria-components';
 
+/**
+ * RAC menu primitives.
+ *
+ * `SeparatorProps`, `MenuTriggerProps` and `SubmenuTriggerProps` are
+ * intentionally not re-exported: the same names already come from
+ * `@react-aria/separator` and `@react-stately/menu` above, and a named export
+ * would silently shadow them.
+ */
+export {
+  Menu,
+  Header,
+  Popover,
+  MenuItem,
+  Separator,
+  MenuSection,
+  MenuTrigger,
+  Autocomplete,
+  SubmenuTrigger,
+  FieldInputContext,
+} from 'react-aria-components';
+
+export type {
+  MenuProps,
+  HeaderProps,
+  PopoverProps,
+  MenuItemProps,
+  MenuSectionProps,
+  AutocompleteProps,
+  PopoverRenderProps,
+  MenuItemRenderProps,
+} from 'react-aria-components';
+
 export * from './behaviors';
 export * from './components';
 export { removeDataAttributes } from './utils';

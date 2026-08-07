@@ -1,0 +1,30 @@
+@import url('../../../../styles/mixins.css');
+
+.popover {
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex-direction: column;
+  min-inline-size: 200px;
+  max-inline-size: 640px;
+  border-radius: var(--kbq-size-s);
+  box-shadow: var(--kbq-shadow-overlay);
+  background-color: var(--kbq-background-bg);
+}
+
+/*
+ * No enter/exit animation on purpose. React Aria unmounts the popover only
+ * after every animation on it resolves, and swallows failures, so any
+ * keyframes here leave the closed popover in the DOM with its focus scope.
+ * A fade has to come from somewhere other than this element.
+ */
+
+.menu {
+  inline-size: 100%;
+}
+
+.empty {
+  color: var(--kbq-foreground-contrast-secondary);
+  padding-block: var(--kbq-size-xs);
+  padding-inline: var(--kbq-size-m);
+}
