@@ -27,6 +27,16 @@ export interface QueuedToast<T> extends ToastOptions {
   key: string;
   /** Remaining ms until the toast becomes eligible for auto-close. */
   ttl?: number;
+  /**
+   * When the ttl ran out. Tells a late tick how long the toast has been due.
+   * @internal
+   */
+  expiredAt?: number;
+  /**
+   * When the toast was queued. Keeps a tick from counting down time before that.
+   * @internal
+   */
+  addedAt?: number;
 }
 
 export interface ToastState<T> {
@@ -53,6 +63,9 @@ export class ToastQueue<T> {
   visibleToasts: QueuedToast<T>[] = [];
 
   private isPaused = false;
+
+  /** When the current pause started. */
+  private pausedAt = 0;
 
   private tickId: ReturnType<typeof setInterval> | null = null;
 
@@ -81,6 +94,11 @@ export class ToastQueue<T> {
     return () => this.subscriptions.delete(fn);
   }
 
+  /** Catches up right after the tab is back, before stale toasts are painted. */
+  private onVisibilityChange = () => {
+    if (document.visibilityState === 'visible') this.onTick();
+  };
+
   /** Starts the ticker. */
   private startTicker(): void {
     if (this.tickId != null) return;
@@ -88,6 +106,7 @@ export class ToastQueue<T> {
 
     this.lastTickAt = Date.now();
     this.tickId = setInterval(this.onTick, CHECK_INTERVAL);
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
   }
 
   /** Stops the ticker. */
@@ -96,6 +115,7 @@ export class ToastQueue<T> {
 
     clearInterval(this.tickId);
     this.tickId = null;
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
 
     this.lastTickAt = 0;
     this.nextCloseAllowedAt = 0;
@@ -111,6 +131,7 @@ export class ToastQueue<T> {
       content,
       key: toastKey,
       ttl: timeout > 0 ? timeout : undefined,
+      addedAt: Date.now(),
     };
 
     this.queue.unshift(toast);
@@ -134,33 +155,53 @@ export class ToastQueue<T> {
    */
   close(key: string): void {
     this.removeToast(key);
-    this.nextCloseAllowedAt = Date.now() + DELAY;
+
+    // while paused the gap starts counting from the resume, not from now
+    this.nextCloseAllowedAt =
+      (this.isPaused ? this.pausedAt : Date.now()) + DELAY;
   }
 
   /** Pauses all auto-close logic (e.g. hover/focus). */
   pauseAll(): void {
+    if (this.isPaused) return;
+
     this.isPaused = true;
+    this.pausedAt = Date.now();
   }
 
-  /** Resumes auto-close logic. */
+  /** Resumes auto-close logic, moving pending slots past the pause. */
   resumeAll(): void {
     if (!this.isPaused) return;
 
+    const now = Date.now();
+    const pausedFor = Math.max(0, now - this.pausedAt);
+
     this.isPaused = false;
+    this.pausedAt = 0;
+
+    // addedAt stays put: the pause is already excluded by lastTickAt below
+    for (const toast of this.queue) {
+      if (toast.expiredAt != null) toast.expiredAt += pausedFor;
+    }
+
+    if (this.nextCloseAllowedAt > 0) this.nextCloseAllowedAt += pausedFor;
 
     if (this.tickId != null) {
-      this.lastTickAt = Date.now();
+      this.lastTickAt = now;
     }
   }
 
   clear(): void {
-    for (const toast of this.queue) toast.onClose?.();
+    const cleared = this.queue;
 
     this.queue = [];
     this.timedCount = 0;
 
+    // detached first: a handler may queue another toast, which stays
+    for (const toast of cleared) toast.onClose?.();
+
+    // stops the ticker unless a handler queued a timed toast
     this.updateVisibleToasts('clear');
-    this.stopTicker();
   }
 
   private updateVisibleToasts(action: ToastAction) {
@@ -176,20 +217,24 @@ export class ToastQueue<T> {
     }
   }
 
-  private removeToast(key: string): void {
+  /** Drops a toast from the queue without notifying subscribers. */
+  private deleteToast(key: string): void {
     const index = this.queue.findIndex((t) => t.key === key);
 
-    if (index >= 0) {
-      const toast = this.queue[index];
+    if (index < 0) return;
 
-      if (toast.ttl != null) {
-        this.timedCount -= 1;
-      }
+    const [toast] = this.queue.splice(index, 1);
 
-      toast.onClose?.();
-      this.queue.splice(index, 1);
+    if (toast.ttl != null) {
+      this.timedCount -= 1;
     }
 
+    // called last: the handler may queue another toast
+    toast.onClose?.();
+  }
+
+  private removeToast(key: string): void {
+    this.deleteToast(key);
     this.updateVisibleToasts('remove');
   }
 
@@ -206,32 +251,91 @@ export class ToastQueue<T> {
     return undefined;
   }
 
-  private onTick = () => {
-    if (this.isPaused || this.queue.length === 0) return;
+  /**
+   * A system clock moved backwards leaves every timestamp ahead of `now`, which
+   * would stall the countdown and every pending slot until wall time catches
+   * up. Move them back by the same jump instead.
+   */
+  private rebaseOnClockJump(now: number): void {
+    const jump = this.lastTickAt ? this.lastTickAt - now : 0;
 
-    const now = Date.now();
+    if (jump <= 0) return;
 
-    const delta = this.lastTickAt
+    for (const toast of this.queue) {
+      if (toast.addedAt != null) toast.addedAt -= jump;
+      if (toast.expiredAt != null) toast.expiredAt -= jump;
+    }
+
+    if (this.nextCloseAllowedAt > 0) this.nextCloseAllowedAt -= jump;
+
+    this.lastTickAt = now;
+  }
+
+  /** Real time passed since the previous tick. */
+  private takeElapsed(now: number): number {
+    const elapsed = this.lastTickAt
       ? Math.max(0, now - this.lastTickAt)
       : CHECK_INTERVAL;
 
     this.lastTickAt = now;
 
-    // all timed toasts tick simultaneously
-    for (const t of this.queue) {
-      if (t.ttl != null) {
-        t.ttl = Math.max(0, t.ttl - delta);
-      }
+    return elapsed;
+  }
+
+  /** Counts timed toasts down and marks the ones that ran out. */
+  private countDown(now: number, elapsed: number): void {
+    for (const toast of this.queue) {
+      if (toast.ttl == null || toast.ttl === 0) continue;
+
+      // a toast queued mid-tick has only lived through part of it,
+      // and a system clock moved backwards must not add time back
+      const step = Math.max(0, Math.min(elapsed, now - (toast.addedAt ?? now)));
+      const remaining = Math.max(0, toast.ttl - step);
+
+      // the ttl can run out inside a long tick
+      if (remaining === 0) toast.expiredAt = now - (step - toast.ttl);
+
+      toast.ttl = remaining;
     }
+  }
 
-    // enforce delay between closes
-    if (now < this.nextCloseAllowedAt) return;
-
-    // close only the head timed toast, if it has expired
+  /**
+   * Closes the oldest expired toast if its slot has come, then books the next
+   * slot DELAY later. Slots follow the expiry, not the tick, so a late tick
+   * still closes what it slept through.
+   */
+  private closeHeadIfDue(now: number): boolean {
     const head = this.getHeadTimedToast();
-    if (!head || (head.ttl ?? 0) > 0) return;
 
-    this.removeToast(head.key);
-    this.nextCloseAllowedAt = this.timedCount > 0 ? now + DELAY : 0;
+    if (!head || head.ttl !== 0) return false;
+
+    const dueAt = Math.max(head.expiredAt ?? now, this.nextCloseAllowedAt);
+
+    if (now < dueAt) return false;
+
+    this.deleteToast(head.key);
+    this.nextCloseAllowedAt = this.timedCount > 0 ? dueAt + DELAY : 0;
+
+    return true;
+  }
+
+  /**
+   * Hidden tabs get throttled ticks (~1/s, ~1/min after a while). One close per
+   * tick would leave expired toasts on screen for minutes, so a tick closes
+   * every slot it covers.
+   */
+  private onTick = () => {
+    if (this.isPaused || this.queue.length === 0) return;
+
+    const now = Date.now();
+
+    this.rebaseOnClockJump(now);
+    this.countDown(now, this.takeElapsed(now));
+
+    let closed = 0;
+
+    while (this.closeHeadIfDue(now)) closed += 1;
+
+    if (closed > 0) this.updateVisibleToasts('remove');
   };
 }

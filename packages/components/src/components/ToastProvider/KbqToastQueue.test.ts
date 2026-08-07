@@ -1,20 +1,32 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ToastQueue, DELAY } from './KbqToastQueue';
+import { ToastQueue, DELAY, CHECK_INTERVAL } from './KbqToastQueue';
 
 describe('ToastQueue', () => {
+  let queues: ToastQueue<string>[];
+
+  const createQueue = () => {
+    const queue = new ToastQueue<string>();
+
+    queues.push(queue);
+
+    return queue;
+  };
+
   beforeEach(() => {
+    queues = [];
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2025-01-01T00:00:00.000Z'));
   });
 
   afterEach(() => {
+    queues.forEach((queue) => queue.clear());
     vi.useRealTimers();
     vi.restoreAllMocks();
   });
 
   it('should close toasts FIFO, while TTLs tick in parallel and delay the next close', () => {
-    const q = new ToastQueue<string>();
+    const q = createQueue();
 
     const onClose1 = vi.fn();
     const onClose2 = vi.fn();
@@ -65,7 +77,7 @@ describe('ToastQueue', () => {
   });
 
   it('should start the delay after manual close before the next auto-close', () => {
-    const q = new ToastQueue<string>();
+    const q = createQueue();
 
     const onClose1 = vi.fn();
     const onClose2 = vi.fn();
@@ -90,7 +102,7 @@ describe('ToastQueue', () => {
   });
 
   it('should freeze auto-close on pauseAll and continue correctly on resumeAll (no huge delta)', () => {
-    const q = new ToastQueue<string>();
+    const q = createQueue();
     const onClose = vi.fn();
 
     q.add('t', { timeout: 5000, onClose });
@@ -111,8 +123,234 @@ describe('ToastQueue', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  /** Throttled background tab: the clock moves on, the ticker gets one tick. */
+  const starveTicker = (ms: number) => {
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + ms);
+    vi.advanceTimersByTime(CHECK_INTERVAL);
+  };
+
+  it('should catch up on a delayed tick (throttled background tab)', () => {
+    const q = createQueue();
+    const onClose = Array.from({ length: 5 }, () => vi.fn());
+
+    onClose.forEach((fn, i) => q.add(`t${i}`, { timeout: 5000, onClose: fn }));
+
+    // 30s covers the 5s ttl and all four 2s gaps
+    starveTicker(30000);
+
+    onClose.forEach((fn) => expect(fn).toHaveBeenCalledTimes(1));
+    expect(q.visibleToasts).toHaveLength(0);
+  });
+
+  it('should close no more than the delayed tick is owed', () => {
+    const q = createQueue();
+    const onClose = Array.from({ length: 5 }, () => vi.fn());
+
+    onClose.forEach((fn, i) => q.add(`t${i}`, { timeout: 5000, onClose: fn }));
+
+    // due 3s ago: two slots have passed, the third is still 1s away
+    starveTicker(8000);
+
+    expect(q.visibleToasts).toHaveLength(3);
+  });
+
+  it('should count a delayed tick down from when each toast was added', () => {
+    const q = createQueue();
+
+    for (let i = 0; i < 5; i += 1) q.add(`first ${i}`, { timeout: 5000 });
+
+    // a second burst arrives while the ticker is still starved
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 20000);
+    for (let i = 0; i < 5; i += 1) q.add(`second ${i}`, { timeout: 5000 });
+
+    // at 30s: the first burst is due since 5s (5 slots), the second since 25s (3)
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 10000);
+    vi.advanceTimersByTime(CHECK_INTERVAL);
+
+    expect(q.visibleToasts).toHaveLength(2);
+  });
+
+  it('should not count a toast down for time before it was added', () => {
+    const q = createQueue();
+
+    // queued 2s before a tick that covers 30s, so it keeps 3s of its ttl
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 28000);
+    q.add('late', { timeout: 5000 });
+
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 2000);
+    vi.advanceTimersByTime(CHECK_INTERVAL);
+
+    expect(q.visibleToasts).toHaveLength(1);
+    expect(q.visibleToasts[0].ttl).toBe(3000);
+  });
+
+  it('should catch up as soon as the tab becomes visible', () => {
+    const q = createQueue();
+    const onClose = Array.from({ length: 5 }, () => vi.fn());
+
+    onClose.forEach((fn, i) => q.add(`t${i}`, { timeout: 5000, onClose: fn }));
+
+    // hidden long enough for every toast to expire, no tick yet
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 30000);
+    document.dispatchEvent(new Event('visibilitychange'));
+
+    expect(q.visibleToasts).toHaveLength(0);
+  });
+
+  it('should keep the gap between closes across a pause', () => {
+    const q = createQueue();
+    const onClose = Array.from({ length: 3 }, () => vi.fn());
+
+    onClose.forEach((fn, i) => q.add(`t${i}`, { timeout: 5000, onClose: fn }));
+
+    // the first one closes, the rest are waiting for their slots
+    vi.advanceTimersByTime(5000);
+    expect(onClose[0]).toHaveBeenCalledTimes(1);
+
+    // hovering the region for a minute must not dump the rest at once
+    q.pauseAll();
+    vi.advanceTimersByTime(60000);
+    q.resumeAll();
+
+    expect(onClose[1]).toHaveBeenCalledTimes(0);
+
+    vi.advanceTimersByTime(DELAY - 1);
+    expect(onClose[1]).toHaveBeenCalledTimes(0);
+
+    vi.advanceTimersByTime(1);
+    expect(onClose[1]).toHaveBeenCalledTimes(1);
+    expect(onClose[2]).toHaveBeenCalledTimes(0);
+
+    vi.advanceTimersByTime(DELAY);
+    expect(onClose[2]).toHaveBeenCalledTimes(1);
+  });
+
+  it('should keep counting down after the system clock moves backwards', () => {
+    const q = createQueue();
+    const onClose = vi.fn();
+
+    q.add('t', { timeout: 5000, onClose });
+
+    // an hour back, right after the toast was queued
+    let clock = Date.now() - 3600000;
+
+    vi.spyOn(Date, 'now').mockImplementation(() => clock);
+
+    const tick = (times: number) => {
+      for (let i = 0; i < times; i += 1) {
+        clock += CHECK_INTERVAL;
+        vi.advanceTimersByTime(CHECK_INTERVAL);
+      }
+    };
+
+    // the jump itself buys no time, but the ttl keeps running from there
+    tick(50);
+    expect(onClose).toHaveBeenCalledTimes(0);
+
+    tick(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not grow the ttl when the system clock moves backwards', () => {
+    const q = createQueue();
+
+    q.add('t', { timeout: 5000 });
+
+    // NTP correction, manual clock change, waking from sleep
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() - 10000);
+    vi.advanceTimersByTime(CHECK_INTERVAL);
+
+    expect(q.visibleToasts[0].ttl).toBe(5000);
+  });
+
+  it('should give a toast added while paused its full ttl after the resume', () => {
+    const q = createQueue();
+    const onClose = vi.fn();
+
+    vi.advanceTimersByTime(1000);
+    q.pauseAll();
+
+    vi.advanceTimersByTime(10000);
+    q.add('t', { timeout: 5000, onClose });
+
+    vi.advanceTimersByTime(10000);
+    q.resumeAll();
+
+    vi.advanceTimersByTime(4999);
+    expect(onClose).toHaveBeenCalledTimes(0);
+
+    vi.advanceTimersByTime(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('should start the delay from the resume for a close made while paused', () => {
+    const q = createQueue();
+    const onClose1 = vi.fn();
+    const onClose2 = vi.fn();
+
+    const k1 = q.add('t1', { timeout: 5000, onClose: onClose1 });
+
+    q.add('t2', { timeout: 5000, onClose: onClose2 });
+
+    // hovered, then closed by hand halfway through the pause
+    q.pauseAll();
+    vi.advanceTimersByTime(10000);
+    q.close(k1);
+    vi.advanceTimersByTime(10000);
+    q.resumeAll();
+
+    // t2 still needs its 5s, and the manual close must not add the pause on top
+    vi.advanceTimersByTime(4999);
+    expect(onClose2).toHaveBeenCalledTimes(0);
+
+    vi.advanceTimersByTime(1);
+    expect(onClose2).toHaveBeenCalledTimes(1);
+  });
+
+  it('should survive a toast queued from an onClose handler on clear', () => {
+    const q = createQueue();
+
+    const onClose = vi.fn(() => {
+      q.add('from onClose');
+    });
+
+    q.add('t', { timeout: 5000, onClose });
+    q.clear();
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    expect(q.visibleToasts.map(({ content }) => content)).toEqual([
+      'from onClose',
+    ]);
+
+    expect((q as any).timedCount).toBe(0);
+    expect((q as any).tickId).toBeNull();
+  });
+
+  it('should survive a toast queued from an onClose handler', () => {
+    const q = createQueue();
+
+    // the handler runs while the queue is being drained
+    const onClose = vi.fn(() => {
+      q.add('from onClose');
+    });
+
+    q.add('t', { timeout: 5000, onClose });
+
+    vi.advanceTimersByTime(5000);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    expect(q.visibleToasts.map(({ content }) => content)).toEqual([
+      'from onClose',
+    ]);
+
+    expect((q as any).timedCount).toBe(0);
+    expect((q as any).tickId).toBeNull();
+  });
+
   it('should stop ticker when no timed toasts remain', () => {
-    const q = new ToastQueue<string>();
+    const q = createQueue();
     const onClose = vi.fn();
 
     q.add('t', { timeout: 5000, onClose });
