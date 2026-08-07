@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { once } from '@koobiq/logger';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -424,7 +425,7 @@ describe('DropdownMenu', () => {
               </DropdownMenu.ItemText>
               <DropdownMenu.ItemAddon>⌘C</DropdownMenu.ItemAddon>
             </DropdownMenu.Item>
-            <DropdownMenu.Item id="cut">
+            <DropdownMenu.Item id="cut" textValue="Cut">
               <DropdownMenu.ItemText>Cut</DropdownMenu.ItemText>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
@@ -440,20 +441,38 @@ describe('DropdownMenu', () => {
       expect(getItems()[0]).toHaveTextContent('⌘C');
     });
 
-    it('should derive textValue from ItemText for typeahead', async () => {
-      renderComposed();
-      await open();
-      await userEvent.keyboard('cu');
-
-      expect(getItems()[1]).toHaveFocus();
-    });
-
-    it('should keep an explicit textValue over the derived one', async () => {
+    it('should support typeahead through an explicit textValue', async () => {
       renderComposed('Duplicate');
       await open();
       await userEvent.keyboard('du');
 
       expect(getItems()[0]).toHaveFocus();
+    });
+
+    it('should warn when composed content comes without a textValue', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      once.clear();
+      renderComposed();
+      await open();
+
+      expect(warn).toHaveBeenCalledWith(
+        expect.stringContaining('DropdownMenu.Item')
+      );
+
+      warn.mockRestore();
+    });
+
+    it('should not warn when a textValue is given', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      once.clear();
+      renderComposed('Copy');
+      await open();
+
+      expect(warn).not.toHaveBeenCalled();
+
+      warn.mockRestore();
     });
   });
 

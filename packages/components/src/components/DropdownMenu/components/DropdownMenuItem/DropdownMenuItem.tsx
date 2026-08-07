@@ -1,5 +1,6 @@
 'use client';
 
+import { once } from '@koobiq/logger';
 import { clsx } from '@koobiq/react-core';
 import { IconChevronRightS16 } from '@koobiq/react-icons';
 import {
@@ -9,7 +10,6 @@ import {
 
 import { utilClasses } from '../../../../styles/utility';
 import { ListItemAddon } from '../../../List/components';
-import { getItemTextValue } from '../../utils';
 
 import s from './DropdownMenuItem.module.css';
 import type { DropdownMenuItemProps } from './types';
@@ -25,17 +25,24 @@ export function DropdownMenuItem<T extends object = object>({
   align = 'center',
   ...props
 }: DropdownMenuItemProps<T>) {
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    !textValue &&
+    !props['aria-label'] &&
+    typeof children !== 'string'
+  ) {
+    once.warn(
+      'DropdownMenu.Item: add a `textValue` prop when the content is not plain text, otherwise search and typeahead cannot match the item.'
+    );
+  }
+
   return (
     <AriaMenuItem
       data-align={align}
       {...props}
-      textValue={
-        textValue ??
-        (typeof children === 'function'
-          ? undefined
-          : getItemTextValue(children)) ??
-        ''
-      }
+      // The chevron wrapper below turns `children` into a render function,
+      // so React Aria can no longer read plain text out of it on its own.
+      textValue={textValue ?? (typeof children === 'string' ? children : '')}
       className={composeRenderProps(className, (className) =>
         clsx(s.base, listItem, textVariant['text-normal'], className)
       )}

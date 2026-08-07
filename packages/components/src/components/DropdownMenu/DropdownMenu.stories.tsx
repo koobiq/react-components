@@ -19,6 +19,7 @@ import type { Selection } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
+import { SelectNext as Select } from '../SelectNext';
 import { Typography } from '../Typography';
 
 import avatar from './__stories__/avatar.webp';
@@ -98,7 +99,7 @@ export const ItemContent: Story = {
         <Button>Edit</Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onAction={(key) => alert(key)}>
-        <DropdownMenu.Item id="copy" align="start">
+        <DropdownMenu.Item id="copy" align="start" textValue="Copy">
           <DropdownMenu.ItemAddon>
             <IconFileMultipleO16 />
           </DropdownMenu.ItemAddon>
@@ -111,7 +112,7 @@ export const ItemContent: Story = {
             </Typography>
           </DropdownMenu.ItemAddon>
         </DropdownMenu.Item>
-        <DropdownMenu.Item id="cut" align="start">
+        <DropdownMenu.Item id="cut" align="start" textValue="Cut">
           <DropdownMenu.ItemAddon>
             <IconScissors16 />
           </DropdownMenu.ItemAddon>
@@ -124,7 +125,7 @@ export const ItemContent: Story = {
             </Typography>
           </DropdownMenu.ItemAddon>
         </DropdownMenu.Item>
-        <DropdownMenu.Item id="delete" align="start">
+        <DropdownMenu.Item id="delete" align="start" textValue="Delete">
           <DropdownMenu.ItemAddon>
             <IconTrash16 />
           </DropdownMenu.ItemAddon>
@@ -345,39 +346,39 @@ export const Separators: Story = {
             </FlexBox>
           </DropdownMenu.Header>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item id="dashboard">
+          <DropdownMenu.Item id="dashboard" textValue="Dashboard">
             <DropdownMenu.ItemAddon>
               <IconDashboard16 />
             </DropdownMenu.ItemAddon>
             <DropdownMenu.ItemText>Dashboard</DropdownMenu.ItemText>
           </DropdownMenu.Item>
-          <DropdownMenu.Item id="notifications">
+          <DropdownMenu.Item id="notifications" textValue="Notifications">
             <DropdownMenu.ItemAddon>
               <IconBell16 />
             </DropdownMenu.ItemAddon>
             <DropdownMenu.ItemText>Notifications</DropdownMenu.ItemText>
           </DropdownMenu.Item>
-          <DropdownMenu.Item id="create-team">
+          <DropdownMenu.Item id="create-team" textValue="Create team">
             <DropdownMenu.ItemAddon>
               <IconPlus16 />
             </DropdownMenu.ItemAddon>
             <DropdownMenu.ItemText>Create team</DropdownMenu.ItemText>
           </DropdownMenu.Item>
-          <DropdownMenu.Item id="settings">
+          <DropdownMenu.Item id="settings" textValue="Settings">
             <DropdownMenu.ItemAddon>
               <IconGear16 />
             </DropdownMenu.ItemAddon>
             <DropdownMenu.ItemText>Settings</DropdownMenu.ItemText>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item id="support">
+          <DropdownMenu.Item id="support" textValue="Contact support">
             <DropdownMenu.ItemAddon>
               <IconMessage16 />
             </DropdownMenu.ItemAddon>
             <DropdownMenu.ItemText>Contact support</DropdownMenu.ItemText>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item id="logout">
+          <DropdownMenu.Item id="logout" textValue="Log out">
             <DropdownMenu.ItemAddon>
               <IconArrowRightToBracket16 />
             </DropdownMenu.ItemAddon>
@@ -506,18 +507,18 @@ export const Placement: Story = {
 
     return (
       <FlexBox gap="m" alignItems="center" direction="column">
-        <select
+        <Select
           value={placement}
-          onChange={(e) =>
-            setPlacement(e.target.value as DropdownMenuPropPlacement)
-          }
+          label="Placement"
+          style={{ inlineSize: 200 }}
+          onChange={(value) => setPlacement(value as DropdownMenuPropPlacement)}
         >
           {dropdownMenuPropPlacement.map((item) => (
-            <option key={item} value={item}>
+            <Select.Item key={item} id={item}>
               {item}
-            </option>
+            </Select.Item>
           ))}
-        </select>
+        </Select>
         <DropdownMenu {...args}>
           <DropdownMenu.Trigger>
             <Button>Actions</Button>

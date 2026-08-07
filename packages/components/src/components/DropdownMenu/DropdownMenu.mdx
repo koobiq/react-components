@@ -78,10 +78,11 @@ and `DropdownMenu.ItemText` for the label and its `caption`.
 
 <Story of={Stories.ItemContent} />
 
-When an item has composed children rather than plain text, its text value is taken
-from the first `DropdownMenu.ItemText`. Pass `textValue` explicitly when that text
-is not what typeahead and search should match on, and `aria-label` when the item
-needs a shorter accessible name than the sum of its slots.
+An item with composed children rather than plain text needs an explicit `textValue`:
+it is what typeahead and search match on. Without it the item is unreachable by
+keyboard and disappears on the first keystroke in a searchable menu, so the
+component warns about it in development. Add `aria-label` when the item needs a
+shorter accessible name than the sum of its slots.
 
 ## Selection
 
