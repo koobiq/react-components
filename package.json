@@ -95,7 +95,7 @@
     "nano-staged": "^1.0.2",
     "postcss-lightningcss": "^1.1.0",
     "postcss-mixins": "^11.0.3",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.68.0",
