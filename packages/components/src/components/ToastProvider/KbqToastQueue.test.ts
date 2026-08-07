@@ -225,6 +225,32 @@ describe('ToastQueue', () => {
     expect(onClose[2]).toHaveBeenCalledTimes(1);
   });
 
+  it('should keep counting down after the system clock moves backwards', () => {
+    const q = createQueue();
+    const onClose = vi.fn();
+
+    q.add('t', { timeout: 5000, onClose });
+
+    // an hour back, right after the toast was queued
+    let clock = Date.now() - 3600000;
+
+    vi.spyOn(Date, 'now').mockImplementation(() => clock);
+
+    const tick = (times: number) => {
+      for (let i = 0; i < times; i += 1) {
+        clock += CHECK_INTERVAL;
+        vi.advanceTimersByTime(CHECK_INTERVAL);
+      }
+    };
+
+    // the jump itself buys no time, but the ttl keeps running from there
+    tick(50);
+    expect(onClose).toHaveBeenCalledTimes(0);
+
+    tick(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
   it('should not grow the ttl when the system clock moves backwards', () => {
     const q = createQueue();
 

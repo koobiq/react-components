@@ -251,6 +251,26 @@ export class ToastQueue<T> {
     return undefined;
   }
 
+  /**
+   * A system clock moved backwards leaves every timestamp ahead of `now`, which
+   * would stall the countdown and every pending slot until wall time catches
+   * up. Move them back by the same jump instead.
+   */
+  private rebaseOnClockJump(now: number): void {
+    const jump = this.lastTickAt ? this.lastTickAt - now : 0;
+
+    if (jump <= 0) return;
+
+    for (const toast of this.queue) {
+      if (toast.addedAt != null) toast.addedAt -= jump;
+      if (toast.expiredAt != null) toast.expiredAt -= jump;
+    }
+
+    if (this.nextCloseAllowedAt > 0) this.nextCloseAllowedAt -= jump;
+
+    this.lastTickAt = now;
+  }
+
   /** Real time passed since the previous tick. */
   private takeElapsed(now: number): number {
     const elapsed = this.lastTickAt
@@ -309,6 +329,7 @@ export class ToastQueue<T> {
 
     const now = Date.now();
 
+    this.rebaseOnClockJump(now);
     this.countDown(now, this.takeElapsed(now));
 
     let closed = 0;
