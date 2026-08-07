@@ -22,7 +22,10 @@ export default defineConfig({
   plugins: [tsconfigPaths(), react(), preserveDirectives()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: path.resolve(__dirname, 'src/index.ts'),
+        markdown: path.resolve(__dirname, 'src/markdown.ts'),
+      },
       fileName: (_, entryName: string) => `${entryName}.js`,
       formats: ['es'],
       cssFileName: 'style',
