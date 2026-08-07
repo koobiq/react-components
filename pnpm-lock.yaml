@@ -187,6 +187,12 @@ importers:
       react-hook-form:
         specifier: ^7.68.0
         version: 7.68.0(react@19.2.3)
+      react-markdown:
+        specifier: ^10.1.0
+        version: 10.1.0(@types/react@19.2.7)(react@19.2.3)
+      remark-gfm:
+        specifier: ^4.0.1
+        version: 4.0.1
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -214,6 +220,9 @@ importers:
       stylelint-prettier:
         specifier: ^5.0.3
         version: 5.0.3(prettier@3.8.3)(stylelint@16.26.1(typescript@6.0.3))
+      ts-dedent:
+        specifier: ^2.2.0
+        version: 2.2.0
       tsx:
         specifier: ^4.19.3
         version: 4.19.3

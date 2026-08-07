@@ -16,7 +16,12 @@ describe('Markdown', () => {
   it('should accept the ref', () => {
     const ref = createRef<HTMLDivElement>();
     const { container } = render(<Markdown ref={ref}># Heading</Markdown>);
+
     expect(ref.current).toBe(container.firstElementChild);
+
+    expect(ref.current?.firstElementChild).toBe(
+      screen.getByRole('heading', { name: 'Heading' })
+    );
   });
 
   it('should accept a custom class', () => {

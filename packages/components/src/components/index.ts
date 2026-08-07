@@ -27,7 +27,6 @@ export * from './SidePanel';
 export * from './Popover';
 export * from './Tooltip';
 export * from './List';
-export * from './Markdown';
 export * from './AnimatedIcon';
 export * from './Select';
 export * from './SelectNext';

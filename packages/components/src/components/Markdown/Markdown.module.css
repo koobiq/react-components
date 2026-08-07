@@ -1,116 +1,104 @@
-.markdown {
+@import url('../../styles/mixins.css');
+
+.base {
   display: block;
   color: var(--kbq-foreground-contrast);
   background: var(--kbq-markdown-bg, transparent);
 }
 
-.markdownOutput > :first-child {
+.base > :first-child {
   margin-block-start: 0;
 }
 
-.markdownOutput > :last-child {
+.base > :last-child {
   margin-block-end: 0;
 }
 
-.markdownOutput h1,
-.markdownOutput h2,
-.markdownOutput h3,
-.markdownOutput h4,
-.markdownOutput h5,
-.markdownOutput h6 {
+.base h1,
+.base h2,
+.base h3,
+.base h4,
+.base h5,
+.base h6 {
   color: var(--kbq-foreground-contrast);
 }
 
-.markdownOutput :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+.base :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
   margin-block-start: 0;
 }
 
-.markdownOutput h1 {
+.base h1 {
   margin-block: var(--kbq-markdown-h1-size-margin-top)
     var(--kbq-markdown-h1-size-margin-bottom);
-  font-size: var(--kbq-md-typography-md-h1-font-size);
-  line-height: var(--kbq-md-typography-md-h1-line-height);
-  font-weight: var(--kbq-md-typography-md-h1-font-weight);
-  letter-spacing: var(--kbq-md-typography-md-h1-letter-spacing);
+
+  @mixin markdown-typography h1;
 }
 
-.markdownOutput h2 {
+.base h2 {
   margin-block: var(--kbq-markdown-h2-size-margin-top)
     var(--kbq-markdown-h2-size-margin-bottom);
-  font-size: var(--kbq-md-typography-md-h2-font-size);
-  line-height: var(--kbq-md-typography-md-h2-line-height);
-  font-weight: var(--kbq-md-typography-md-h2-font-weight);
-  letter-spacing: var(--kbq-md-typography-md-h2-letter-spacing);
+
+  @mixin markdown-typography h2;
 }
 
-.markdownOutput h3 {
+.base h3 {
   margin-block: var(--kbq-markdown-h3-size-margin-top)
     var(--kbq-markdown-h3-size-margin-bottom);
-  font-size: var(--kbq-md-typography-md-h3-font-size);
-  line-height: var(--kbq-md-typography-md-h3-line-height);
-  font-weight: var(--kbq-md-typography-md-h3-font-weight);
-  letter-spacing: var(--kbq-md-typography-md-h3-letter-spacing);
+
+  @mixin markdown-typography h3;
 }
 
-.markdownOutput h4 {
+.base h4 {
   margin-block: var(--kbq-markdown-h4-size-margin-top)
     var(--kbq-markdown-h4-size-margin-bottom);
-  font-size: var(--kbq-md-typography-md-h4-font-size);
-  line-height: var(--kbq-md-typography-md-h4-line-height);
-  font-weight: var(--kbq-md-typography-md-h4-font-weight);
-  letter-spacing: var(--kbq-md-typography-md-h4-letter-spacing);
+
+  @mixin markdown-typography h4;
 }
 
-.markdownOutput h5 {
+.base h5 {
   margin-block: var(--kbq-markdown-h5-size-margin-top)
     var(--kbq-markdown-h5-size-margin-bottom);
-  font-size: var(--kbq-md-typography-md-h5-font-size);
-  line-height: var(--kbq-md-typography-md-h5-line-height);
-  font-weight: var(--kbq-md-typography-md-h5-font-weight);
-  letter-spacing: var(--kbq-md-typography-md-h5-letter-spacing);
+
+  @mixin markdown-typography h5;
 }
 
-.markdownOutput h6 {
+.base h6 {
   margin-block: var(--kbq-markdown-h6-size-margin-top)
     var(--kbq-markdown-h6-size-margin-bottom);
-  font-size: var(--kbq-md-typography-md-h6-font-size);
-  line-height: var(--kbq-md-typography-md-h6-line-height);
-  font-weight: var(--kbq-md-typography-md-h6-font-weight);
-  letter-spacing: var(--kbq-md-typography-md-h6-letter-spacing);
-  text-transform: var(--kbq-md-typography-md-h6-text-transform);
+
+  @mixin markdown-typography h6;
 }
 
-.markdownOutput p {
+.base p {
   margin-block: var(--kbq-markdown-p-size-margin-top)
     var(--kbq-markdown-p-size-margin-bottom);
   color: var(--kbq-foreground-contrast);
-  font-size: var(--kbq-md-typography-md-body-font-size);
-  line-height: var(--kbq-md-typography-md-body-line-height);
-  letter-spacing: var(--kbq-md-typography-md-body-letter-spacing);
+
+  @mixin markdown-typography body;
 }
 
-.markdownOutput ul,
-.markdownOutput ol {
+.base ul,
+.base ol {
   margin-block: var(--kbq-markdown-list-size-margin-top)
     var(--kbq-markdown-list-size-margin-bottom);
   color: var(--kbq-foreground-contrast);
-  font-size: var(--kbq-md-typography-md-body-font-size);
-  line-height: var(--kbq-md-typography-md-body-line-height);
+
+  @mixin markdown-typography body;
 }
 
-.markdownOutput p + ul,
-.markdownOutput p + ol {
+.base p + ul,
+.base p + ol {
   margin-block-start: var(--kbq-markdown-list-size-margin-top-after-paragraph);
 }
 
-.markdownOutput ul {
+.base ul {
   position: relative;
   list-style: none;
   padding-inline: var(--kbq-size-xxl) 0;
   padding-block: 0;
 }
 
-.markdownOutput ul > li::before {
+.base ul > li::before {
   content: '—';
   display: block;
   position: absolute;
@@ -119,30 +107,30 @@
   text-align: start;
 }
 
-.markdownOutput ol {
+.base ol {
   list-style: none;
   padding: 0;
   counter-reset: li;
 }
 
-.markdownOutput ol > li {
+.base ol > li {
   counter-increment: li;
 }
 
-.markdownOutput ol > li::before {
+.base ol > li::before {
   content: counter(li) '.';
   padding-inline-end: var(--kbq-markdown-list-size-ol-number-padding-right);
 }
 
-.markdownOutput ol > li > * {
+.base ol > li > * {
   display: inline-block;
 }
 
-.markdownOutput li {
+.base li {
   margin-block-end: var(--kbq-markdown-list-size-item-margin-bottom);
 }
 
-.markdownOutput blockquote {
+.base blockquote {
   margin-block: var(--kbq-markdown-blockquote-size-margin-top)
     var(--kbq-markdown-blockquote-size-margin-bottom);
   margin-inline: 0;
@@ -153,11 +141,11 @@
   background: var(--kbq-markdown-blockquote-background);
 }
 
-.markdownOutput blockquote > p {
+.base blockquote > p {
   margin-block: 0;
 }
 
-.markdownOutput pre {
+.base pre {
   position: relative;
   overflow-x: auto;
   margin-block: var(--kbq-markdown-code-size-multiline-margin-top)
@@ -168,44 +156,44 @@
   background-color: var(--kbq-markdown-code-background);
 }
 
-.markdownOutput code {
+.base code {
   border-radius: var(--kbq-markdown-code-size-border-radius);
-  font-family: var(--kbq-md-typography-md-inline-code-font-family);
-  font-size: var(--kbq-md-typography-md-inline-code-font-size);
-  line-height: var(--kbq-md-typography-md-inline-code-line-height);
+
+  @mixin markdown-typography inline-code;
 }
 
-.markdownOutput code:not(pre > code) {
+.base code:not(pre > code) {
   white-space: nowrap;
   padding: var(--kbq-markdown-code-size-inline-padding);
 }
 
-.markdownOutput code:not(pre > code, a code) {
+.base code:not(pre > code, a code) {
   color: var(--kbq-markdown-code-text);
   background-color: var(--kbq-markdown-code-background);
 }
 
-.markdownOutput a code {
+.base a code {
   background-color: var(--kbq-markdown-code-background);
-  font-weight: var(--kbq-md-typography-md-inline-code-as-link-font-weight);
+
+  @mixin markdown-typography inline-code-as-link;
 }
 
-.markdownOutput img {
+.base img {
   max-inline-size: 100%;
   margin-block: var(--kbq-markdown-image-size-margin-top)
     var(--kbq-markdown-image-size-margin-bottom);
 }
 
-.markdownOutput img + em {
+.base img + em {
   display: block;
   margin-block: var(--kbq-markdown-image-size-caption-margin-top)
     var(--kbq-markdown-image-size-caption-margin-bottom);
   color: var(--kbq-markdown-image-caption-text);
-  font-size: var(--kbq-md-typography-md-caption-font-size);
-  line-height: var(--kbq-md-typography-md-caption-line-height);
+
+  @mixin markdown-typography caption;
 }
 
-.markdownOutput hr {
+.base hr {
   block-size: 0;
   margin-block: var(--kbq-markdown-hr-size-margin-vertical);
   border: none;
@@ -213,7 +201,7 @@
     var(--kbq-markdown-hr-color);
 }
 
-.markdownOutput table {
+.base table {
   max-inline-size: 100%;
   overflow-x: auto;
   display: table;
@@ -222,44 +210,42 @@
   color: var(--kbq-markdown-table-body);
 }
 
-.markdownOutput table td,
-.markdownOutput table th {
+.base table td,
+.base table th {
   padding: var(--kbq-markdown-table-size-padding);
-  font-weight: 400;
   vertical-align: top;
 }
 
-.markdownOutput thead {
+.base thead {
   border-block-end: var(--kbq-markdown-table-size-border-width) solid
     var(--kbq-markdown-table-border);
   text-align: start;
   color: var(--kbq-markdown-table-header);
-  font-size: var(--kbq-md-typography-md-table-header-font-size);
-  line-height: var(--kbq-md-typography-md-table-header-line-height);
+
+  @mixin markdown-typography table-header;
 }
 
-.markdownOutput thead th:first-child {
+.base thead th:first-child {
   padding-inline-start: 0;
 }
 
-.markdownOutput thead th:last-child {
+.base thead th:last-child {
   padding-inline-end: 0;
 }
 
-.markdownOutput tbody {
-  font-size: var(--kbq-md-typography-md-table-cell-font-size);
-  line-height: var(--kbq-md-typography-md-table-cell-line-height);
+.base tbody {
+  @mixin markdown-typography table-cell;
 }
 
-.markdownOutput tbody td:first-child {
+.base tbody td:first-child {
   padding-inline-start: 0;
 }
 
-.markdownOutput tbody td:last-child {
+.base tbody td:last-child {
   padding-inline-end: 0;
 }
 
-.markdownOutput a {
+.base a {
   color: var(--kbq-foreground-theme);
   text-decoration-line: underline;
   text-decoration-color: var(--kbq-line-theme-less);
@@ -270,25 +256,27 @@
     color var(--kbq-transition-default),
     outline-color var(--kbq-transition-default),
     text-decoration-color var(--kbq-transition-default);
+
+  @mixin markdown-typography body;
 }
 
-.markdownOutput a:hover {
+.base a:hover {
   color: var(--kbq-states-foreground-theme-hover);
 }
 
-.markdownOutput a:active {
+.base a:active {
   color: var(--kbq-states-foreground-theme-active);
 }
 
-.markdownOutput a:focus-visible {
+.base a:focus-visible {
   outline-color: var(--kbq-states-line-focus-theme);
 }
 
-.markdownOutput a:visited {
+.base a:visited {
   color: var(--kbq-foreground-visited);
   text-decoration-color: var(--kbq-line-visited);
 }
 
-.markdownOutput a:has(code) {
+.base a:has(code) {
   text-decoration-line: none;
 }

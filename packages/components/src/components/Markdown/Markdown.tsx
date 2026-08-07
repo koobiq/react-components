@@ -17,12 +17,8 @@ export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(
     const { children, className, ...other } = props;
 
     return (
-      <div ref={ref} className={clsx(s.markdown, className)} {...other}>
-        <div className={s.markdownOutput}>
-          <ReactMarkdown remarkPlugins={remarkPlugins}>
-            {children}
-          </ReactMarkdown>
-        </div>
+      <div ref={ref} className={clsx(s.base, className)} {...other}>
+        <ReactMarkdown remarkPlugins={remarkPlugins}>{children}</ReactMarkdown>
       </div>
     );
   }
