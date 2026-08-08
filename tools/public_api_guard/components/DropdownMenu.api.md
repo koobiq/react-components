@@ -4,8 +4,10 @@
 
 ```ts
 
+import type { AriaDialogProps } from '@koobiq/react-primitives';
 import type { AriaSearchFieldProps } from '@koobiq/react-primitives';
-import type { ButtonBaseProps } from '@koobiq/react-primitives';
+import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primitives';
+import type { ButtonOptions } from '@koobiq/react-primitives';
 import type { ComponentProps } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
@@ -22,7 +24,6 @@ import type { MenuItemProps } from '@koobiq/react-primitives';
 import type { MenuProps } from '@koobiq/react-primitives';
 import type { MenuSectionProps } from '@koobiq/react-primitives';
 import { PolyForwardComponent } from '@koobiq/react-core';
-import type { PopoverProps } from '@koobiq/react-primitives';
 import { Pressable } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import { ReactNode } from 'react';
@@ -31,6 +32,7 @@ import { RefAttributes } from 'react';
 import type { RefObject } from 'react';
 import type { SeparatorProps } from '@koobiq/react-primitives';
 import { TextProps } from '@koobiq/react-primitives';
+import type { TransitionProps } from 'react-transition-group/Transition';
 import { ValidationResult } from '@koobiq/react-core';
 
 // Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
@@ -42,7 +44,7 @@ export const DropdownMenu: CompoundedComponent;
 export type DropdownMenuComponent = (props: DropdownMenuProps) => ReactElement | null;
 
 // @public
-export function DropdownMenuContent<T extends object = object>(props: DropdownMenuContentProps<T>): JSX.Element;
+export function DropdownMenuContent<T extends object = object>(props: DropdownMenuContentProps<T>): JSX.Element | null;
 
 // @public (undocumented)
 export namespace DropdownMenuContent {
@@ -56,7 +58,7 @@ export namespace DropdownMenuContent {
 export type DropdownMenuContentProps<T extends object = object> = Omit<MenuProps<T>, 'className' | 'style' | 'slot' | 'renderEmptyState'> & DropdownMenuContentOwnProps<T>;
 
 // @public (undocumented)
-export type DropdownMenuContentRef = HTMLElement;
+export type DropdownMenuContentRef = HTMLDivElement;
 
 // @public
 export function DropdownMenuHeader(props: DropdownMenuHeaderProps): JSX.Element;

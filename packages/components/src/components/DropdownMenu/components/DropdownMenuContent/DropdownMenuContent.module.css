@@ -1,26 +1,23 @@
 @import url('../../../../styles/mixins.css');
 
+/* The shell — shadow, background, fade — comes from `Popover`. */
 .popover {
-  display: flex;
-  overflow: hidden;
-  box-sizing: border-box;
-  flex-direction: column;
   min-inline-size: 200px;
   max-inline-size: 640px;
   border-radius: var(--kbq-size-s);
-  box-shadow: var(--kbq-shadow-overlay);
-  background-color: var(--kbq-background-bg);
 }
 
-/*
- * No enter/exit animation on purpose. React Aria unmounts the popover only
- * after every animation on it resolves, and swallows failures, so any
- * keyframes here leave the closed popover in the DOM with its focus scope.
- * A fade has to come from somewhere other than this element.
- */
+.container {
+  overflow: hidden;
+  flex-direction: column;
+}
 
 .menu {
   inline-size: 100%;
+  scrollbar-width: auto;
+  scrollbar-gutter: auto;
+  scrollbar-color: var(--kbq-scrollbar-thumb-default-background)
+    var(--kbq-background-transparent);
 }
 
 .empty {

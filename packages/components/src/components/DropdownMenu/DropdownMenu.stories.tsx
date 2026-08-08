@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
+  IconAlignCenter16,
+  IconAlignLeft16,
+  IconAlignRight16,
   IconArrowRightToBracket16,
   IconBell16,
   IconFileMultipleO16,
@@ -11,6 +14,9 @@ import {
   IconMessage16,
   IconPlus16,
   IconScissors16,
+  IconTextBold16,
+  IconTextItalic16,
+  IconTextUnderline16,
   IconTrash16,
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -250,6 +256,7 @@ export const Sections: Story = {
           <DropdownMenu.Item id="new">New</DropdownMenu.Item>
           <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
         </DropdownMenu.Section>
+        <DropdownMenu.Separator />
         <DropdownMenu.Section title="Edit">
           <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
           <DropdownMenu.Item id="cut">Cut</DropdownMenu.Item>
@@ -262,15 +269,19 @@ export const Sections: Story = {
 
 export const SectionsDynamic: Story = {
   render: function Render(args) {
+    // A separator is its own entry: the collection expects one node per item.
     const sections = [
       {
+        id: 'file',
         name: 'File',
         children: [
           { id: 'new', name: 'New' },
           { id: 'open', name: 'Open' },
         ],
       },
+      { id: 'file-separator' },
       {
+        id: 'edit',
         name: 'Edit',
         children: [
           { id: 'copy', name: 'Copy' },
@@ -286,17 +297,114 @@ export const SectionsDynamic: Story = {
           <Button>Actions</Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content items={sections} onAction={(key) => alert(key)}>
-          {(section: (typeof sections)[number]) => (
-            <DropdownMenu.Section
-              id={section.name}
-              title={section.name}
-              items={section.children}
-            >
-              {(item: { id: string; name: string }) => (
-                <DropdownMenu.Item>{item.name}</DropdownMenu.Item>
-              )}
-            </DropdownMenu.Section>
-          )}
+          {(section: (typeof sections)[number]) =>
+            'children' in section ? (
+              <DropdownMenu.Section
+                title={section.name}
+                items={section.children}
+              >
+                {(item: { id: string; name: string }) => (
+                  <DropdownMenu.Item>{item.name}</DropdownMenu.Item>
+                )}
+              </DropdownMenu.Section>
+            ) : (
+              <DropdownMenu.Separator />
+            )
+          }
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+  },
+};
+
+export const WithSectionLevelSelection: Story = {
+  render: function Render(args) {
+    const [style, setStyle] = useState<Selection>(new Set(['bold', 'italic']));
+    const [align, setAlign] = useState<Selection>(new Set(['left']));
+
+    return (
+      <DropdownMenu {...args}>
+        <DropdownMenu.Trigger>
+          <Button>Styles</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Section title="Actions">
+            <DropdownMenu.Item id="cut" textValue="Cut">
+              <DropdownMenu.ItemAddon>
+                <IconScissors16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Cut</DropdownMenu.ItemText>
+              <DropdownMenu.ItemAddon>
+                <Typography color="contrast-tertiary" variant="text-compact">
+                  ⌘X
+                </Typography>
+              </DropdownMenu.ItemAddon>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="copy" textValue="Copy">
+              <DropdownMenu.ItemAddon>
+                <IconFileMultipleO16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Copy</DropdownMenu.ItemText>
+              <DropdownMenu.ItemAddon>
+                <Typography color="contrast-tertiary" variant="text-compact">
+                  ⌘C
+                </Typography>
+              </DropdownMenu.ItemAddon>
+            </DropdownMenu.Item>
+          </DropdownMenu.Section>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Section
+            title="Text style"
+            selectionMode="multiple"
+            selectedKeys={style}
+            onSelectionChange={setStyle}
+          >
+            <DropdownMenu.Item id="bold" textValue="Bold">
+              <DropdownMenu.ItemAddon>
+                <IconTextBold16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Bold</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="italic" textValue="Italic">
+              <DropdownMenu.ItemAddon>
+                <IconTextItalic16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Italic</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="underline" textValue="Underline">
+              <DropdownMenu.ItemAddon>
+                <IconTextUnderline16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Underline</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+          </DropdownMenu.Section>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Section
+            title="Text alignment"
+            selectionMode="single"
+            selectedKeys={align}
+            onSelectionChange={setAlign}
+            disallowEmptySelection
+          >
+            <DropdownMenu.Item id="left" textValue="Left">
+              <DropdownMenu.ItemAddon>
+                <IconAlignLeft16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Left</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="center" textValue="Center">
+              <DropdownMenu.ItemAddon>
+                <IconAlignCenter16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Center</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="right" textValue="Right">
+              <DropdownMenu.ItemAddon>
+                <IconAlignRight16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Right</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+          </DropdownMenu.Section>
         </DropdownMenu.Content>
       </DropdownMenu>
     );

@@ -166,24 +166,23 @@ export type { FileTriggerProps } from 'react-aria-components';
 export {
   Menu,
   Header,
-  Popover,
   MenuItem,
   Separator,
   MenuSection,
   MenuTrigger,
   Autocomplete,
+  PopoverContext,
   SubmenuTrigger,
   FieldInputContext,
+  OverlayTriggerStateContext,
 } from 'react-aria-components';
 
 export type {
   MenuProps,
   HeaderProps,
-  PopoverProps,
   MenuItemProps,
   MenuSectionProps,
   AutocompleteProps,
-  PopoverRenderProps,
   MenuItemRenderProps,
 } from 'react-aria-components';
 

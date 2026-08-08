@@ -1,11 +1,20 @@
 'use client';
 
+import { useContext } from 'react';
+
 import { clsx, mergeProps } from '@koobiq/react-core';
-import type { PopoverProps as AriaPopoverProps } from '@koobiq/react-primitives';
 import {
-  Popover as AriaPopover,
-  composeRenderProps,
+  PopoverContext,
+  useSlottedContext,
+  OverlayTriggerStateContext,
 } from '@koobiq/react-primitives';
+
+import type {
+  PopoverProps,
+  PopoverInnerProps,
+  PopoverPropPlacement,
+} from '../../../Popover';
+import { PopoverInner } from '../../../Popover/PopoverInner';
 
 import s from './DropdownMenuContent.module.css';
 import { DropdownMenuContentInner } from './DropdownMenuContentInner';
@@ -35,43 +44,52 @@ export function DropdownMenuContent<T extends object = object>(
     ...other
   } = props;
 
-  const { className: popoverClassName, ...popoverSlotProps } =
-    slotProps?.popover ?? {};
+  // The trigger hands its popover the open state and the element to anchor to
+  // through context.
+  const state = useContext(OverlayTriggerStateContext);
+  const context = useSlottedContext(PopoverContext) ?? {};
 
-  // Left undefined unless set, so the trigger's context defaults survive:
-  // 'bottom start' for a menu, 'end top' for a submenu.
+  if (!state) return null;
+
+  const isSubmenu = context.trigger === 'SubmenuTrigger';
+
+  const defaultPlacement: PopoverPropPlacement = isSubmenu
+    ? 'end top'
+    : 'bottom start';
+
   const popoverProps = mergeProps<
-    [AriaPopoverProps, Omit<AriaPopoverProps, 'className'>]
+    [PopoverInnerProps, PopoverProps | undefined]
   >(
     {
-      style,
+      state,
       offset,
-      placement,
       shouldFlip,
-      isNonModal,
       crossOffset,
+      maxBlockSize,
       containerPadding,
-      triggerRef: anchorRef,
-      maxHeight: maxBlockSize,
-      className: composeRenderProps(
-        popoverClassName,
-        (popoverClassName, renderProps) =>
-          clsx(
-            s.popover,
-            typeof className === 'function'
-              ? className(renderProps)
-              : className,
-            popoverClassName
-          )
-      ),
+      hideArrow: true,
+      hideCloseButton: true,
+      // The menu is sized by its items, between the bounds in the CSS.
+      size: 'auto',
+      // Skips the dialog wrapper: the menu brings its own role and label.
+      type: 'menu',
+      popoverRef: ref,
+      'data-testid': testId,
+      style: { ...context.style, ...style },
+      className: clsx(s.popover, className),
+      slotProps: { container: { className: s.container } },
+      anchorRef: anchorRef ?? context.triggerRef,
+      isNonModal: isNonModal ?? context.isNonModal,
+      shouldCloseOnInteractOutside: context.shouldCloseOnInteractOutside,
+      placement: placement ?? defaultPlacement,
     },
-    popoverSlotProps
+    slotProps?.popover
   );
 
   return (
-    <AriaPopover ref={ref} data-testid={testId} {...popoverProps}>
+    <PopoverInner {...popoverProps}>
       <DropdownMenuContentInner<T> {...other} slotProps={slotProps} />
-    </AriaPopover>
+    </PopoverInner>
   );
 }
 

@@ -44,7 +44,7 @@ export function DropdownMenuSearch(props: DropdownMenuSearchProps) {
       'aria-label': t.format('search'),
     },
     props,
-    autocompleteInputProps as SearchInputProps
+    autocompleteInputProps
   );
 
   return <SearchInput ref={inputRef} {...searchInputProps} />;

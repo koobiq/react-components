@@ -1,20 +1,18 @@
 import type { CSSProperties, ReactNode, Ref, RefObject } from 'react';
 
-import type {
-  MenuProps as AriaMenuProps,
-  PopoverProps as AriaPopoverProps,
-} from '@koobiq/react-primitives';
+import type { MenuProps as AriaMenuProps } from '@koobiq/react-primitives';
 
 import type { DividerProps } from '../../../Divider';
 import type { DropdownFooterProps } from '../../../DropdownFooter';
+import type { PopoverProps } from '../../../Popover';
 import type { SearchInputProps } from '../../../SearchInput';
 import type { DropdownMenuPropPlacement } from '../../types';
 
-export type DropdownMenuContentRef = HTMLElement;
+export type DropdownMenuContentRef = HTMLDivElement;
 
 type DropdownMenuContentOwnProps<T extends object> = {
   /** Additional CSS-classes. */
-  className?: AriaPopoverProps['className'];
+  className?: string;
   /** Inline styles. */
   style?: CSSProperties;
   /** Unique identifier for testing purposes. */
@@ -69,7 +67,7 @@ type DropdownMenuContentOwnProps<T extends object> = {
 
   /** The props used for each slot inside. */
   slotProps?: {
-    popover?: AriaPopoverProps;
+    popover?: PopoverProps;
     menu?: Omit<AriaMenuProps<T>, 'children'>;
     'search-input'?: SearchInputProps;
     divider?: DividerProps;

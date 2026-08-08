@@ -406,6 +406,43 @@ describe('DropdownMenu', () => {
 
       expect(screen.getByRole('separator')).toBeInTheDocument();
     });
+
+    it('should keep a selection mode per section', async () => {
+      render(
+        <DropdownMenu>
+          <DropdownMenu.Trigger>
+            <Button data-testid="control">Styles</Button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Section title="Actions">
+              <DropdownMenu.Item id="cut">Cut</DropdownMenu.Item>
+            </DropdownMenu.Section>
+            <DropdownMenu.Section
+              title="Text style"
+              selectionMode="multiple"
+              onSelectionChange={onSelectionChange}
+            >
+              <DropdownMenu.Item id="bold">Bold</DropdownMenu.Item>
+              <DropdownMenu.Item id="italic">Italic</DropdownMenu.Item>
+            </DropdownMenu.Section>
+            <DropdownMenu.Section title="Text alignment" selectionMode="single">
+              <DropdownMenu.Item id="left">Left</DropdownMenu.Item>
+            </DropdownMenu.Section>
+          </DropdownMenu.Content>
+        </DropdownMenu>
+      );
+
+      await open();
+
+      expect(screen.getByRole('menuitem')).toHaveTextContent('Cut');
+      expect(screen.getAllByRole('menuitemcheckbox')).toHaveLength(2);
+      expect(screen.getByRole('menuitemradio')).toHaveTextContent('Left');
+
+      await userEvent.click(screen.getAllByRole('menuitemcheckbox')[0]);
+
+      expect(onSelectionChange).toHaveBeenCalledTimes(1);
+      expect([...onSelectionChange.mock.calls[0]![0]]).toStrictEqual(['bold']);
+    });
   });
 
   describe('item content', () => {

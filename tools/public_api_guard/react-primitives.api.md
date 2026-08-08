@@ -118,11 +118,10 @@ import type { Node as Node_2 } from '@koobiq/react-core';
 import { NumberFieldAria } from 'react-aria';
 import type { OverlayTriggerProps } from '@react-types/overlays';
 import { OverlayTriggerState } from '@react-stately/overlays';
+import { OverlayTriggerStateContext } from 'react-aria-components';
 import { PointerEventHandler } from 'react';
 import { PolyForwardComponent } from '@koobiq/react-core';
-import { Popover } from 'react-aria-components';
-import { PopoverProps } from 'react-aria-components';
-import { PopoverRenderProps } from 'react-aria-components';
+import { PopoverContext } from 'react-aria-components';
 import type { PressEvents } from '@koobiq/react-core';
 import { Provider } from 'react-aria-components';
 import type { RadioGroupState } from '@react-stately/radio';
@@ -532,11 +531,9 @@ export type NumberFieldRenderProps = {
 
 export { OverlayTriggerState }
 
-export { Popover }
+export { OverlayTriggerStateContext }
 
-export { PopoverProps }
-
-export { PopoverRenderProps }
+export { PopoverContext }
 
 // @public (undocumented)
 export const ProgressBar: PolyForwardComponent<"div", ProgressBarBaseProps, ElementType>;
