@@ -440,4 +440,9 @@ export const rows: Rows = [
     status: '🚧 Planned',
     planned: 'Q3 2026',
   },
+  {
+    component: 'Highlight',
+    status: '🚧 Planned',
+    planned: 'Q3 2026',
+  },
 ];
