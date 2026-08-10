@@ -14,8 +14,7 @@ export type FormFieldControlGroupRenderProps = {
 };
 
 export type FormFieldControlGroupPropChildren =
-  | ReactNode
-  | ((props: FormFieldControlGroupRenderProps) => ReactNode);
+  ReactNode | ((props: FormFieldControlGroupRenderProps) => ReactNode);
 
 export const formFieldControlGroupPropVariant = [
   'filled',

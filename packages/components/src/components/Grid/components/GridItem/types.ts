@@ -17,8 +17,7 @@ export type GridItemBaseProps = {
     | ResponsiveValue<CSSProperties['justifySelf']>;
   /** The align-self CSS property overrides a grid or flex item's align-items value. In Grid, it aligns the item inside the grid area. In Flexbox, it aligns the item on the cross axis. */
   alignSelf?:
-    | CSSProperties['alignSelf']
-    | ResponsiveValue<CSSProperties['alignSelf']>;
+    CSSProperties['alignSelf'] | ResponsiveValue<CSSProperties['alignSelf']>;
   /** Additional CSS-classes. */
   className?: string;
   /** The content of the component. */

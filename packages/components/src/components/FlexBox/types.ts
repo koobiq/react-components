@@ -25,8 +25,7 @@ export type FlexBoxBaseProps = {
   rowGap?: FlexPropGap | ResponsiveValue<FlexPropGap>;
   /** Defines the `justify-content` property. */
   justifyContent?:
-    | FlexPropJustifyContent
-    | ResponsiveValue<FlexPropJustifyContent>;
+    FlexPropJustifyContent | ResponsiveValue<FlexPropJustifyContent>;
   /** Defines the `align-items` property. */
   alignItems?: FlexPropAlignItems | ResponsiveValue<FlexPropAlignItems>;
   /** Additional CSS-classes. */

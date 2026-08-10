@@ -29,8 +29,7 @@ export type SidebarRenderProps = {
 };
 
 export type SidebarPropContent =
-  | ReactNode
-  | ((props: SidebarRenderProps) => ReactNode);
+  ReactNode | ((props: SidebarRenderProps) => ReactNode);
 
 export type SidebarBaseProps = {
   /**

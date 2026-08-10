@@ -25,8 +25,7 @@ export const modalPropSize = ['small', 'medium', 'large'] as const;
 export type ModalPropSize = (typeof modalPropSize)[number];
 
 export type ModalPropContent =
-  | ReactNode
-  | ((props: { close(): void }) => ReactElement);
+  ReactNode | ((props: { close(): void }) => ReactElement);
 
 export type ModalPropControl = (props: ButtonOptions) => ReactElement;
 

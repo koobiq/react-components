@@ -41,8 +41,7 @@ export type GridBaseProps = {
    * Defines the default `alignSelf` for all items in the grid.
    */
   alignItems?:
-    | CSSProperties['alignItems']
-    | ResponsiveValue<CSSProperties['alignItems']>;
+    CSSProperties['alignItems'] | ResponsiveValue<CSSProperties['alignItems']>;
   /** Additional CSS-classes. */
   className?: string;
   /** The content of the component. */
