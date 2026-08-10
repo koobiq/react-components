@@ -516,11 +516,11 @@ importers:
         specifier: ^3.17.2
         version: 3.17.2
       '@koobiq/react-components':
-        specifier: 0.30.1
-        version: 0.30.1(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.36.0
+        version: 0.36.0(@koobiq/design-tokens@3.17.2)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3))(react@19.2.3)(remark-gfm@4.0.1)
       '@koobiq/react-icons':
-        specifier: ^12.0.0
-        version: 12.0.0(react@19.2.3)
+        specifier: ^12.1.1
+        version: 12.1.1(react@19.2.3)
       next:
         specifier: ^16.2.11
         version: 16.2.11(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -571,14 +571,14 @@ importers:
   templates/vite/template:
     dependencies:
       '@koobiq/react-components':
-        specifier: 0.32.0
-        version: 0.32.0(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.36.0
+        version: 0.36.0(@koobiq/design-tokens@3.17.2)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3))(react@19.2.3)(remark-gfm@4.0.1)
       '@koobiq/react-core':
-        specifier: 0.32.0
-        version: 0.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.36.0
+        version: 0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@koobiq/react-icons':
-        specifier: ^12.0.0
-        version: 12.0.0(react@19.2.3)
+        specifier: ^12.1.1
+        version: 12.1.1(react@19.2.3)
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -1967,66 +1967,37 @@ packages:
       '@internationalized/date': ^3.8.2
       '@koobiq/date-adapter': ^3.0.0
 
-  '@koobiq/logger@0.30.1':
-    resolution: {integrity: sha512-w/GffYna97pajQRuUQL/1nm1t6toW3GGOHH2XuP8P1/4h7hiCVrfvPOy58a2unPWEaxyFmkT+yGYqh7SI5FtVA==}
+  '@koobiq/logger@0.36.0':
+    resolution: {integrity: sha512-A6cBuqcQztsABl7dPuDTm3tLPeKSRyWfhrsz8KAVBvHz3In9ON8u0eReGEW4/9fUd850n0YiDgWKNbgPsRKd6Q==}
 
-  '@koobiq/logger@0.32.0':
-    resolution: {integrity: sha512-7BMXGZogiVroAtEypjB+TpyOFoJTGA6LemO5uLQ7Z0UkjLEe4wwvfQBemRdvOWB7kapJmzBXHhXCOatdB2+WTw==}
-
-  '@koobiq/react-components@0.30.1':
-    resolution: {integrity: sha512-mfX/eh4yraIjByF3Jgh3KeHQExytzUj04ryi3yDTEr+GSTCI+DL5QHXAA/IuNuCGWOP72A1YULxB8iKwYYx/2g==}
+  '@koobiq/react-components@0.36.0':
+    resolution: {integrity: sha512-xGmSGZ+ZeQ4IsGoPyT8yvILT+sNq6kFg+jM8dr6h/PMGevt3ZwYxrBAPXI35ZXrS0q8omrdwTJfvLma3yC5XDA==}
     peerDependencies:
       '@koobiq/design-tokens': ^3.17.2
+      '@koobiq/react-icons': ^12.1.1
       react: ^19.0.0
       react-dom: ^19.0.0
+      react-markdown: ^10.1.0
+      remark-gfm: ^4.0.1
+    peerDependenciesMeta:
+      react-markdown:
+        optional: true
+      remark-gfm:
+        optional: true
 
-  '@koobiq/react-components@0.32.0':
-    resolution: {integrity: sha512-5GiFVqKYKe4UBx2thghUpQvladyW5f0PkNgZLe7q1/FZJf3HLxdxGNGE9oalFho9ak3JE3HvMhn4o+wEImOYaQ==}
-    peerDependencies:
-      '@koobiq/design-tokens': ^3.17.2
-      react: ^19.0.0
-      react-dom: ^19.0.0
-
-  '@koobiq/react-core@0.30.1':
-    resolution: {integrity: sha512-rInzsOuzMzIYUeQYeFF+tNayMeJqC7Yi8IeDf/xHo7663dIUdRjYF2B/k7KHy9qWKVt0lJAbwrDoRJD82W8gcQ==}
-    peerDependencies:
-      react: ^19.0.0
-      react-dom: ^19.0.0
-
-  '@koobiq/react-core@0.32.0':
-    resolution: {integrity: sha512-/W4daoH6b8FocOBvapSlHFwp/mErSLbdeNQzWnURTTwSeoMbmcKG8q7OKFGcKfKSNFzb3PouguWP3HMZ6NbpwA==}
+  '@koobiq/react-core@0.36.0':
+    resolution: {integrity: sha512-s4YEfgSAjSI+86Zfb9rtAD9yLmsJ+MdC+N3uudCDmxItBfizWzEeIJ8jvKRH7AK0bcftI9/p+V+lAsBs/HXFFA==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
-
-  '@koobiq/react-icons@0.30.1':
-    resolution: {integrity: sha512-0iGZcDNTnmBiPmORyD52rhtoA+DLuYfsdUuZ7/1V3GbTvGZ00OwO8AS1ejh0GPWMluyH+GREpn1dcyVx7hrD/Q==}
-    peerDependencies:
-      react: ^19.0.0
-
-  '@koobiq/react-icons@0.32.0':
-    resolution: {integrity: sha512-aEMWnPvFXQwDN67RiUfJsygx/6qW1J3qQZ0Y0sfTOTrGw3aopqnQHsZIIUH5dMTZP9+soB5zsgYD+Y6k0iSOsA==}
-    peerDependencies:
-      react: ^19.0.0
-
-  '@koobiq/react-icons@12.0.0':
-    resolution: {integrity: sha512-SMVcAzzIcJCofQFn1nPscd+U7FNjp9Ljz6193Or/ARp6vPdRp9VApplTOKePW3o06ahaopc+Dah1yQQ6kJWNEA==}
-    peerDependencies:
-      react: ^19.0.0
 
   '@koobiq/react-icons@12.1.1':
     resolution: {integrity: sha512-DKbYt/5m+HeFvgvRyTcc+XydmasErvIrwsBtPAwUJl5G/84dh+GbZY2b5ValWBuYAnRySPrtVI+J0o7oBdtt/w==}
     peerDependencies:
       react: ^19.0.0
 
-  '@koobiq/react-primitives@0.30.1':
-    resolution: {integrity: sha512-OolcKtjsx7sjcAEw1NmmICsXzBB5onGVA5n+ocsBZlhgYmHqj6pWGNsHTKh6rGcLpme9FINR+vP7jGYjBsUVXA==}
-    peerDependencies:
-      react: ^19.0.0
-      react-dom: ^19.0.0
-
-  '@koobiq/react-primitives@0.32.0':
-    resolution: {integrity: sha512-GWEpWjDF98WQpest5aCLC/UuSqtRAPoLs248R7AehsbFVpLZ/UQLl9Uu3Xq+iz8mHpRttty6DLNRBSbZzUiREw==}
+  '@koobiq/react-primitives@0.36.0':
+    resolution: {integrity: sha512-2RNb7oXQboaSIl9qJ+wqYgAScktnLuQbRfwz+5OmMbkatgyldObcDWHnDndoOr1RXD+oJc53ud2VQh/cKriSiQ==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -10476,43 +10447,29 @@ snapshots:
       '@internationalized/date': 3.12.1
       '@koobiq/date-adapter': 3.5.1
 
-  '@koobiq/logger@0.30.1': {}
+  '@koobiq/logger@0.36.0': {}
 
-  '@koobiq/logger@0.32.0': {}
-
-  '@koobiq/react-components@0.30.1(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-components@0.36.0(@koobiq/design-tokens@3.17.2)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3))(react@19.2.3)(remark-gfm@4.0.1)':
     dependencies:
       '@internationalized/date': 3.12.1
       '@koobiq/design-tokens': 3.17.2
-      '@koobiq/logger': 0.30.1
-      '@koobiq/react-core': 0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@koobiq/react-icons': 0.30.1(react@19.2.3)
-      '@koobiq/react-primitives': 0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/logger': 0.36.0
+      '@koobiq/react-core': 0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/react-icons': 12.1.1(react@19.2.3)
+      '@koobiq/react-primitives': 0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/react-transition-group': 4.4.12(@types/react@19.2.7)
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
       react-transition-group: 4.4.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+    optionalDependencies:
+      react-markdown: 10.1.0(@types/react@19.2.7)(react@19.2.3)
+      remark-gfm: 4.0.1
     transitivePeerDependencies:
       - '@types/react'
 
-  '@koobiq/react-components@0.32.0(@koobiq/design-tokens@3.17.2)(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-core@0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@internationalized/date': 3.12.1
-      '@koobiq/design-tokens': 3.17.2
-      '@koobiq/logger': 0.32.0
-      '@koobiq/react-core': 0.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@koobiq/react-icons': 0.32.0(react@19.2.3)
-      '@koobiq/react-primitives': 0.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@types/react-transition-group': 4.4.12(@types/react@19.2.7)
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-      react-transition-group: 4.4.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-    transitivePeerDependencies:
-      - '@types/react'
-
-  '@koobiq/react-core@0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      '@koobiq/logger': 0.30.1
+      '@koobiq/logger': 0.36.0
       '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/interactions': 3.27.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10522,40 +10479,15 @@ snapshots:
       '@react-types/shared': 3.33.1(react@19.2.3)
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
-
-  '@koobiq/react-core@0.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      '@koobiq/logger': 0.32.0
-      '@react-aria/focus': 3.21.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/i18n': 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/interactions': 3.27.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/utils': 3.33.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-stately/utils': 3.11.0(react@19.2.3)
-      '@react-types/form': 3.7.18(react@19.2.3)
-      '@react-types/shared': 3.33.1(react@19.2.3)
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-
-  '@koobiq/react-icons@0.30.1(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
-
-  '@koobiq/react-icons@0.32.0(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
-
-  '@koobiq/react-icons@12.0.0(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
 
   '@koobiq/react-icons@12.1.1(react@19.2.3)':
     dependencies:
       react: 19.2.3
 
-  '@koobiq/react-primitives@0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@koobiq/react-primitives@0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@koobiq/logger': 0.30.1
-      '@koobiq/react-core': 0.30.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@koobiq/logger': 0.36.0
+      '@koobiq/react-core': 0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/autocomplete': 3.0.0-rc.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/breadcrumbs': 3.5.32(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/button': 3.14.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -10587,67 +10519,7 @@ snapshots:
       '@react-aria/toggle': 3.12.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/toolbar': 3.0.0-beta.24(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/tooltip': 3.9.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/visually-hidden': 3.8.31(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-stately/autocomplete': 3.0.0-beta.4(react@19.2.3)
-      '@react-stately/calendar': 3.9.3(react@19.2.3)
-      '@react-stately/collections': 3.12.10(react@19.2.3)
-      '@react-stately/combobox': 3.13.0(react@19.2.3)
-      '@react-stately/data': 3.15.2(react@19.2.3)
-      '@react-stately/datepicker': 3.16.1(react@19.2.3)
-      '@react-stately/disclosure': 3.0.11(react@19.2.3)
-      '@react-stately/form': 3.2.4(react@19.2.3)
-      '@react-stately/list': 3.13.4(react@19.2.3)
-      '@react-stately/menu': 3.9.11(react@19.2.3)
-      '@react-stately/numberfield': 3.11.0(react@19.2.3)
-      '@react-stately/overlays': 3.6.23(react@19.2.3)
-      '@react-stately/radio': 3.11.5(react@19.2.3)
-      '@react-stately/searchfield': 3.5.19(react@19.2.3)
-      '@react-stately/select': 3.9.2(react@19.2.3)
-      '@react-stately/table': 3.15.4(react@19.2.3)
-      '@react-stately/tabs': 3.8.9(react@19.2.3)
-      '@react-stately/toast': 3.1.3(react@19.2.3)
-      '@react-stately/toggle': 3.9.5(react@19.2.3)
-      '@react-stately/tooltip': 3.5.11(react@19.2.3)
-      '@react-stately/tree': 3.9.6(react@19.2.3)
-      react: 19.2.3
-      react-aria-components: 1.16.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react-dom: 19.2.3(react@19.2.3)
-
-  '@koobiq/react-primitives@0.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      '@koobiq/logger': 0.32.0
-      '@koobiq/react-core': 0.32.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/autocomplete': 3.0.0-rc.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/breadcrumbs': 3.5.32(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/button': 3.14.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/calendar': 3.9.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/checkbox': 3.16.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/collections': 3.0.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/combobox': 3.15.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/datepicker': 3.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/dialog': 3.5.34(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/disclosure': 3.1.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/label': 3.7.25(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/link': 3.8.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/listbox': 3.15.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/menu': 3.21.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/numberfield': 3.12.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/overlays': 3.31.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/progress': 3.4.30(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/radio': 3.12.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/searchfield': 3.8.12(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/select': 3.17.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/selection': 3.27.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/separator': 3.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/switch': 3.7.11(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/table': 3.17.11(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/tabs': 3.11.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/tag': 3.8.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/textfield': 3.18.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/toast': 3.0.11(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/toggle': 3.12.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/toolbar': 3.0.0-beta.24(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-aria/tooltip': 3.9.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/tree': 3.1.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/visually-hidden': 3.8.31(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/autocomplete': 3.0.0-beta.4(react@19.2.3)
       '@react-stately/calendar': 3.9.3(react@19.2.3)
