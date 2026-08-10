@@ -37,6 +37,7 @@ import { Autocomplete } from 'react-aria-components';
 import { AutocompleteAria } from '@react-aria/autocomplete';
 import { AutocompleteProps } from 'react-aria-components';
 import { AutocompleteState } from '@react-stately/autocomplete';
+import { AutocompleteStateContext } from 'react-aria-components';
 import type { ButtonAria } from '@react-aria/button';
 import { ButtonContext } from 'react-aria-components';
 import { CalendarAria } from '@react-aria/calendar';
@@ -250,6 +251,8 @@ export { AutocompleteAria }
 export { AutocompleteProps }
 
 export { AutocompleteState }
+
+export { AutocompleteStateContext }
 
 // @public
 export const Button: PolyForwardComponent<"button", ButtonBaseProps, ElementType>;

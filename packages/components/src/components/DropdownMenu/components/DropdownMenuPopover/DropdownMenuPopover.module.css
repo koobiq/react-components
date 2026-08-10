@@ -1,0 +1,11 @@
+/* The shell — shadow, background, fade — comes from `Popover`. */
+.base {
+  min-inline-size: 200px;
+  max-inline-size: 640px;
+  border-radius: var(--kbq-size-s);
+}
+
+.container {
+  overflow: hidden;
+  flex-direction: column;
+}

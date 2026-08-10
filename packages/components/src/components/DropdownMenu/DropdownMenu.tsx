@@ -7,13 +7,16 @@ import { ListItemText } from '../List';
 import { ListItemAddon } from '../List/components';
 
 import {
+  DropdownMenuAutocomplete,
   DropdownMenuContent,
+  DropdownMenuFooter,
   DropdownMenuHeader,
   DropdownMenuItem,
+  DropdownMenuPopover,
+  DropdownMenuSearchInput,
   DropdownMenuSection,
   DropdownMenuSeparator,
   DropdownMenuSubmenuTrigger,
-  DropdownMenuTrigger,
 } from './components';
 import type { DropdownMenuComponent, DropdownMenuProps } from './types';
 
@@ -24,7 +27,7 @@ function DropdownMenuComponentRender(props: DropdownMenuProps) {
 DropdownMenuComponentRender.displayName = 'DropdownMenu';
 
 type CompoundedComponent = DropdownMenuComponent & {
-  Trigger: typeof DropdownMenuTrigger;
+  Popover: typeof DropdownMenuPopover;
   Content: typeof DropdownMenuContent;
   Item: typeof DropdownMenuItem;
   ItemText: typeof ListItemText;
@@ -33,14 +36,20 @@ type CompoundedComponent = DropdownMenuComponent & {
   Header: typeof DropdownMenuHeader;
   Separator: typeof DropdownMenuSeparator;
   SubmenuTrigger: typeof DropdownMenuSubmenuTrigger;
+  Autocomplete: typeof DropdownMenuAutocomplete;
+  SearchInput: typeof DropdownMenuSearchInput;
+  Footer: typeof DropdownMenuFooter;
   Pressable: typeof Pressable;
 };
 
-/** A dropdown menu displays a list of actions or options that a user can choose. */
+/**
+ * A dropdown menu displays a list of actions or options that a user can choose.
+ * The first child is the trigger, the rest is the popover.
+ */
 export const DropdownMenu: CompoundedComponent = Object.assign(
   DropdownMenuComponentRender,
   {
-    Trigger: DropdownMenuTrigger,
+    Popover: DropdownMenuPopover,
     Content: DropdownMenuContent,
     Item: DropdownMenuItem,
     ItemText: ListItemText,
@@ -49,6 +58,9 @@ export const DropdownMenu: CompoundedComponent = Object.assign(
     Header: DropdownMenuHeader,
     Separator: DropdownMenuSeparator,
     SubmenuTrigger: DropdownMenuSubmenuTrigger,
+    Autocomplete: DropdownMenuAutocomplete,
+    SearchInput: DropdownMenuSearchInput,
+    Footer: DropdownMenuFooter,
     Pressable,
   }
 );

@@ -1,3 +1,3 @@
 import type { SearchInputProps } from '../../../SearchInput';
 
-export type DropdownMenuSearchProps = SearchInputProps;
+export type DropdownMenuSearchInputProps = SearchInputProps;

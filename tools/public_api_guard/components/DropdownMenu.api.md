@@ -6,6 +6,7 @@
 
 import type { AriaDialogProps } from '@koobiq/react-primitives';
 import type { AriaSearchFieldProps } from '@koobiq/react-primitives';
+import type { AutocompleteProps } from '@koobiq/react-primitives';
 import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primitives';
 import type { ButtonOptions } from '@koobiq/react-primitives';
 import type { ComponentProps } from 'react';
@@ -18,7 +19,6 @@ import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
 import type { HeaderProps } from '@koobiq/react-primitives';
-import type { HTMLAttributes } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import type { MenuItemProps } from '@koobiq/react-primitives';
 import type { MenuProps } from '@koobiq/react-primitives';
@@ -30,7 +30,6 @@ import { ReactNode } from 'react';
 import { Ref } from 'react';
 import { RefAttributes } from 'react';
 import type { RefObject } from 'react';
-import type { SeparatorProps } from '@koobiq/react-primitives';
 import { TextProps } from '@koobiq/react-primitives';
 import type { TransitionProps } from 'react-transition-group/Transition';
 import { ValidationResult } from '@koobiq/react-core';
@@ -40,11 +39,23 @@ import { ValidationResult } from '@koobiq/react-core';
 // @public
 export const DropdownMenu: CompoundedComponent;
 
+// @public
+export function DropdownMenuAutocomplete(props: DropdownMenuAutocompleteProps): JSX.Element;
+
+// @public (undocumented)
+export namespace DropdownMenuAutocomplete {
+    var // (undocumented)
+    displayName: string;
+}
+
+// @public (undocumented)
+export type DropdownMenuAutocompleteProps = AutocompleteProps;
+
 // @public (undocumented)
 export type DropdownMenuComponent = (props: DropdownMenuProps) => ReactElement | null;
 
 // @public
-export function DropdownMenuContent<T extends object = object>(props: DropdownMenuContentProps<T>): JSX.Element | null;
+export function DropdownMenuContent<T extends object = object>(input: DropdownMenuContentProps<T>): JSX.Element;
 
 // @public (undocumented)
 export namespace DropdownMenuContent {
@@ -52,13 +63,24 @@ export namespace DropdownMenuContent {
     displayName: string;
 }
 
-// Warning: (ae-forgotten-export) The symbol "DropdownMenuContentOwnProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type DropdownMenuContentProps<T extends object = object> = Omit<MenuProps<T>, 'className' | 'style' | 'slot' | 'renderEmptyState'> & DropdownMenuContentOwnProps<T>;
+export type DropdownMenuContentProps<T extends object = object> = Omit<MenuProps<T>, 'renderEmptyState' | 'slot'> & DataAttributeProps & {
+    noItemsText?: ReactNode;
+};
+
+// @public
+export function DropdownMenuFooter(props: DropdownMenuFooterProps): JSX.Element;
 
 // @public (undocumented)
-export type DropdownMenuContentRef = HTMLDivElement;
+export namespace DropdownMenuFooter {
+    var // (undocumented)
+    displayName: string;
+}
+
+// Warning: (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type DropdownMenuFooterProps = DropdownFooterProps;
 
 // @public
 export function DropdownMenuHeader(props: DropdownMenuHeaderProps): JSX.Element;
@@ -102,6 +124,38 @@ export type DropdownMenuItemProps<T extends object = object> = Partial<MenuItemP
 // @public (undocumented)
 export type DropdownMenuItemTextProps = ListItemTextProps;
 
+// @public
+export function DropdownMenuPopover(props: DropdownMenuPopoverProps): JSX.Element | null;
+
+// @public (undocumented)
+export namespace DropdownMenuPopover {
+    var // (undocumented)
+    displayName: string;
+}
+
+// @public (undocumented)
+export type DropdownMenuPopoverProps = {
+    children?: ReactNode;
+    className?: string;
+    style?: CSSProperties;
+    'data-testid'?: string | number;
+    ref?: Ref<DropdownMenuPopoverRef>;
+    placement?: DropdownMenuPropPlacement;
+    offset?: number;
+    crossOffset?: number;
+    containerPadding?: number;
+    shouldFlip?: boolean;
+    maxBlockSize?: number;
+    isNonModal?: boolean;
+    anchorRef?: RefObject<Element | null>;
+    slotProps?: {
+        popover?: PopoverProps;
+    };
+};
+
+// @public (undocumented)
+export type DropdownMenuPopoverRef = HTMLDivElement;
+
 // @public (undocumented)
 export type DropdownMenuPressableProps = ComponentProps<typeof Pressable>;
 
@@ -127,6 +181,20 @@ export type DropdownMenuPropTrigger = (typeof dropdownMenuPropTrigger)[number];
 
 // @public (undocumented)
 export const dropdownMenuPropTrigger: readonly ["press", "longPress"];
+
+// @public
+export function DropdownMenuSearchInput(props: DropdownMenuSearchInputProps): JSX.Element;
+
+// @public (undocumented)
+export namespace DropdownMenuSearchInput {
+    var // (undocumented)
+    displayName: string;
+}
+
+// Warning: (ae-forgotten-export) The symbol "SearchInputProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type DropdownMenuSearchInputProps = SearchInputProps;
 
 // @public
 export function DropdownMenuSection<T extends object = object>(input: DropdownMenuSectionProps<T>): JSX.Element;
@@ -172,19 +240,9 @@ export type DropdownMenuSubmenuTriggerProps = {
     delay?: number;
 };
 
-// @public
-export function DropdownMenuTrigger(input: DropdownMenuTriggerProps): JSX.Element;
-
-// @public (undocumented)
-export namespace DropdownMenuTrigger {
-    var // (undocumented)
-    displayName: string;
-}
-
-// @public (undocumented)
-export type DropdownMenuTriggerProps = {
-    children?: ReactNode;
-};
+// Warnings were encountered during analysis:
+//
+// packages/components/dist/components/DropdownMenu/components/DropdownMenuPopover/types.d.ts:46:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -26,24 +26,21 @@ const open = async () => {
 
 type FixtureProps = {
   contentProps?: Record<string, unknown>;
+  popoverProps?: Record<string, unknown>;
   rootProps?: Record<string, unknown>;
 };
 
-function Fixture({ contentProps, rootProps }: FixtureProps = {}) {
+function Fixture({ contentProps, popoverProps, rootProps }: FixtureProps = {}) {
   return (
     <DropdownMenu onOpenChange={onOpenChange} {...rootProps}>
-      <DropdownMenu.Trigger>
-        <Button data-testid="control">Actions</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content
-        data-testid="popover"
-        onAction={onAction}
-        {...contentProps}
-      >
-        <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
-        <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
-        <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button data-testid="control">Actions</Button>
+      <DropdownMenu.Popover data-testid="popover" {...popoverProps}>
+        <DropdownMenu.Content onAction={onAction} {...contentProps}>
+          <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+          <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
+          <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   );
 }
@@ -82,7 +79,7 @@ describe('DropdownMenu', () => {
     it('should forward a ref to the popover element', async () => {
       const ref = { current: null } as { current: HTMLElement | null };
 
-      render(<Fixture contentProps={{ ref, defaultOpen: undefined }} />);
+      render(<Fixture popoverProps={{ ref }} />);
       await open();
 
       expect(ref.current).toBeInstanceOf(HTMLElement);
@@ -90,7 +87,7 @@ describe('DropdownMenu', () => {
     });
 
     it('should merge a custom className into the popover', async () => {
-      render(<Fixture contentProps={{ className: 'custom' }} />);
+      render(<Fixture popoverProps={{ className: 'custom' }} />);
       await open();
 
       expect(screen.getByTestId('popover')).toHaveClass('custom');
@@ -263,14 +260,14 @@ describe('DropdownMenu', () => {
     it('should not call onAction for an item with isDisabled', async () => {
       render(
         <DropdownMenu>
-          <DropdownMenu.Trigger>
-            <Button data-testid="control">Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content onAction={onAction}>
-            <DropdownMenu.Item id="copy" isDisabled>
-              Copy
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content onAction={onAction}>
+              <DropdownMenu.Item id="copy" isDisabled>
+                Copy
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       );
 
@@ -347,14 +344,14 @@ describe('DropdownMenu', () => {
     it('should render items with href as links', async () => {
       render(
         <DropdownMenu>
-          <DropdownMenu.Trigger>
-            <Button data-testid="control">Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Item href="https://koobiq.io" target="_blank">
-              Koobiq
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item href="https://koobiq.io" target="_blank">
+                Koobiq
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       );
 
@@ -368,19 +365,19 @@ describe('DropdownMenu', () => {
     const renderSections = () =>
       render(
         <DropdownMenu>
-          <DropdownMenu.Trigger>
-            <Button data-testid="control">Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Section title="Edit">
-              <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
-            </DropdownMenu.Section>
-            <DropdownMenu.Separator />
-            <DropdownMenu.Section>
-              <DropdownMenu.Header>Danger</DropdownMenu.Header>
-              <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
-            </DropdownMenu.Section>
-          </DropdownMenu.Content>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content>
+              <DropdownMenu.Section title="Edit">
+                <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+              </DropdownMenu.Section>
+              <DropdownMenu.Separator />
+              <DropdownMenu.Section>
+                <DropdownMenu.Header>Danger</DropdownMenu.Header>
+                <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
+              </DropdownMenu.Section>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       );
 
@@ -410,25 +407,28 @@ describe('DropdownMenu', () => {
     it('should keep a selection mode per section', async () => {
       render(
         <DropdownMenu>
-          <DropdownMenu.Trigger>
-            <Button data-testid="control">Styles</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Section title="Actions">
-              <DropdownMenu.Item id="cut">Cut</DropdownMenu.Item>
-            </DropdownMenu.Section>
-            <DropdownMenu.Section
-              title="Text style"
-              selectionMode="multiple"
-              onSelectionChange={onSelectionChange}
-            >
-              <DropdownMenu.Item id="bold">Bold</DropdownMenu.Item>
-              <DropdownMenu.Item id="italic">Italic</DropdownMenu.Item>
-            </DropdownMenu.Section>
-            <DropdownMenu.Section title="Text alignment" selectionMode="single">
-              <DropdownMenu.Item id="left">Left</DropdownMenu.Item>
-            </DropdownMenu.Section>
-          </DropdownMenu.Content>
+          <Button data-testid="control">Styles</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content>
+              <DropdownMenu.Section title="Actions">
+                <DropdownMenu.Item id="cut">Cut</DropdownMenu.Item>
+              </DropdownMenu.Section>
+              <DropdownMenu.Section
+                title="Text style"
+                selectionMode="multiple"
+                onSelectionChange={onSelectionChange}
+              >
+                <DropdownMenu.Item id="bold">Bold</DropdownMenu.Item>
+                <DropdownMenu.Item id="italic">Italic</DropdownMenu.Item>
+              </DropdownMenu.Section>
+              <DropdownMenu.Section
+                title="Text alignment"
+                selectionMode="single"
+              >
+                <DropdownMenu.Item id="left">Left</DropdownMenu.Item>
+              </DropdownMenu.Section>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       );
 
@@ -449,23 +449,23 @@ describe('DropdownMenu', () => {
     const renderComposed = (textValue?: string) =>
       render(
         <DropdownMenu>
-          <DropdownMenu.Trigger>
-            <Button data-testid="control">Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Item id="copy" textValue={textValue}>
-              <DropdownMenu.ItemAddon data-testid="start-addon">
-                +
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText caption="Copy to clipboard">
-                Copy
-              </DropdownMenu.ItemText>
-              <DropdownMenu.ItemAddon>⌘C</DropdownMenu.ItemAddon>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item id="cut" textValue="Cut">
-              <DropdownMenu.ItemText>Cut</DropdownMenu.ItemText>
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item id="copy" textValue={textValue}>
+                <DropdownMenu.ItemAddon data-testid="start-addon">
+                  +
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText caption="Copy to clipboard">
+                  Copy
+                </DropdownMenu.ItemText>
+                <DropdownMenu.ItemAddon>⌘C</DropdownMenu.ItemAddon>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item id="cut" textValue="Cut">
+                <DropdownMenu.ItemText>Cut</DropdownMenu.ItemText>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       );
 
@@ -517,19 +517,21 @@ describe('DropdownMenu', () => {
     const renderSubmenu = () =>
       render(
         <DropdownMenu>
-          <DropdownMenu.Trigger>
-            <Button data-testid="control">Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content onAction={onAction}>
-            <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
-            <DropdownMenu.SubmenuTrigger>
-              <DropdownMenu.Item id="share">Share</DropdownMenu.Item>
-              <DropdownMenu.Content onAction={onAction}>
-                <DropdownMenu.Item id="email">Email</DropdownMenu.Item>
-                <DropdownMenu.Item id="sms">SMS</DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.SubmenuTrigger>
-          </DropdownMenu.Content>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content onAction={onAction}>
+              <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+              <DropdownMenu.SubmenuTrigger>
+                <DropdownMenu.Item id="share">Share</DropdownMenu.Item>
+                <DropdownMenu.Popover>
+                  <DropdownMenu.Content onAction={onAction}>
+                    <DropdownMenu.Item id="email">Email</DropdownMenu.Item>
+                    <DropdownMenu.Item id="sms">SMS</DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Popover>
+              </DropdownMenu.SubmenuTrigger>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       );
 
@@ -598,35 +600,40 @@ describe('DropdownMenu', () => {
   });
 
   describe('search', () => {
-    const renderSearchable = (contentProps?: Record<string, unknown>) =>
+    const renderSearchable = (menuProps?: Record<string, unknown>) =>
       render(
         <DropdownMenu>
-          <DropdownMenu.Trigger>
-            <Button data-testid="control">Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content isSearchable {...contentProps}>
-            <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
-            <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
-            <DropdownMenu.SubmenuTrigger>
-              <DropdownMenu.Item id="share">Share</DropdownMenu.Item>
-              <DropdownMenu.Content>
-                <DropdownMenu.Item id="email">Email</DropdownMenu.Item>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Autocomplete>
+              <DropdownMenu.SearchInput />
+              <DropdownMenu.Content {...menuProps}>
+                <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+                <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
+                <DropdownMenu.SubmenuTrigger>
+                  <DropdownMenu.Item id="share">Share</DropdownMenu.Item>
+                  <DropdownMenu.Popover>
+                    <DropdownMenu.Content>
+                      <DropdownMenu.Item id="email">Email</DropdownMenu.Item>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Popover>
+                </DropdownMenu.SubmenuTrigger>
               </DropdownMenu.Content>
-            </DropdownMenu.SubmenuTrigger>
-          </DropdownMenu.Content>
+            </DropdownMenu.Autocomplete>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       );
 
     const getSearch = () => screen.getByRole('searchbox');
 
-    it('should not render the search input unless isSearchable', async () => {
+    it('should not render a search input on its own', async () => {
       render(<Fixture />);
       await open();
 
       expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
     });
 
-    it('should render the search input when isSearchable', async () => {
+    it('should render the search input inside an Autocomplete', async () => {
       renderSearchable();
       await open();
 
@@ -721,20 +728,22 @@ describe('DropdownMenu', () => {
 
         return (
           <DropdownMenu defaultOpen>
-            <DropdownMenu.Trigger>
-              <Button data-testid="control">Actions</Button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content
-              isSearchable
-              inputValue={value}
-              onInputChange={(next) => {
-                onInputChange(next);
-                setValue(next);
-              }}
-            >
-              <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
-              <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
-            </DropdownMenu.Content>
+            <Button data-testid="control">Actions</Button>
+            <DropdownMenu.Popover>
+              <DropdownMenu.Autocomplete
+                inputValue={value}
+                onInputChange={(next) => {
+                  onInputChange(next);
+                  setValue(next);
+                }}
+              >
+                <DropdownMenu.SearchInput />
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+                  <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Autocomplete>
+            </DropdownMenu.Popover>
           </DropdownMenu>
         );
       }
@@ -751,10 +760,20 @@ describe('DropdownMenu', () => {
       await waitFor(() => expect(getItems()).toHaveLength(2));
     });
 
-    it('should pass props to the search input via slotProps', async () => {
-      renderSearchable({
-        slotProps: { 'search-input': { placeholder: 'Find an action' } },
-      });
+    it('should pass props to the search input', async () => {
+      render(
+        <DropdownMenu>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Autocomplete>
+              <DropdownMenu.SearchInput placeholder="Find an action" />
+              <DropdownMenu.Content>
+                <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Autocomplete>
+          </DropdownMenu.Popover>
+        </DropdownMenu>
+      );
 
       await open();
 
@@ -762,9 +781,20 @@ describe('DropdownMenu', () => {
     });
   });
 
-  describe('dropdown footer', () => {
-    it('should render dropdownFooter content', async () => {
-      render(<Fixture contentProps={{ dropdownFooter: 'Footer text' }} />);
+  describe('footer', () => {
+    it('should render the footer content', async () => {
+      render(
+        <DropdownMenu>
+          <Button data-testid="control">Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+            </DropdownMenu.Content>
+            <DropdownMenu.Footer>Footer text</DropdownMenu.Footer>
+          </DropdownMenu.Popover>
+        </DropdownMenu>
+      );
+
       await open();
 
       expect(screen.getByText('Footer text')).toBeInTheDocument();
@@ -773,7 +803,7 @@ describe('DropdownMenu', () => {
 
   describe('placement', () => {
     it('should reflect the placement on the popover', async () => {
-      render(<Fixture contentProps={{ placement: 'top end' }} />);
+      render(<Fixture popoverProps={{ placement: 'top end' }} />);
       await open();
 
       expect(screen.getByTestId('popover')).toHaveAttribute(

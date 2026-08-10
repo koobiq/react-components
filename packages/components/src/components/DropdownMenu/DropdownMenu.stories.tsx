@@ -23,6 +23,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import type { Selection } from '../../index';
 import { Button } from '../Button';
+import { Divider } from '../Divider';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
 import { SelectNext as Select } from '../SelectNext';
@@ -37,7 +38,7 @@ const meta = {
   title: 'Components/DropdownMenu',
   component: DropdownMenu,
   subcomponents: {
-    'DropdownMenu.Trigger': DropdownMenu.Trigger,
+    'DropdownMenu.Popover': DropdownMenu.Popover,
     'DropdownMenu.Content': DropdownMenu.Content,
     'DropdownMenu.Item': DropdownMenu.Item,
     'DropdownMenu.ItemText': DropdownMenu.ItemText,
@@ -46,6 +47,9 @@ const meta = {
     'DropdownMenu.Header': DropdownMenu.Header,
     'DropdownMenu.Separator': DropdownMenu.Separator,
     'DropdownMenu.SubmenuTrigger': DropdownMenu.SubmenuTrigger,
+    'DropdownMenu.Autocomplete': DropdownMenu.Autocomplete,
+    'DropdownMenu.SearchInput': DropdownMenu.SearchInput,
+    'DropdownMenu.Footer': DropdownMenu.Footer,
   },
   parameters: {
     layout: 'centered',
@@ -59,16 +63,16 @@ type Story = StoryObj<DropdownMenuProps>;
 export const Base: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Actions</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content onAction={(key) => alert(key)}>
-        <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-        <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-        <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
-        <DropdownMenu.Item id="duplicate">Duplicate</DropdownMenu.Item>
-        <DropdownMenu.Item id="rename">Rename</DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button>Actions</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content onAction={(key) => alert(key)}>
+          <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+          <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+          <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
+          <DropdownMenu.Item id="duplicate">Duplicate</DropdownMenu.Item>
+          <DropdownMenu.Item id="rename">Rename</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -85,14 +89,14 @@ export const Content: Story = {
 
     return (
       <DropdownMenu {...args}>
-        <DropdownMenu.Trigger>
-          <Button>Actions</Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content items={items} onAction={(key) => alert(key)}>
-          {(item: (typeof items)[number]) => (
-            <DropdownMenu.Item>{item.name}</DropdownMenu.Item>
-          )}
-        </DropdownMenu.Content>
+        <Button>Actions</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content items={items} onAction={(key) => alert(key)}>
+            {(item: (typeof items)[number]) => (
+              <DropdownMenu.Item>{item.name}</DropdownMenu.Item>
+            )}
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     );
   },
@@ -101,50 +105,50 @@ export const Content: Story = {
 export const ItemContent: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Edit</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content onAction={(key) => alert(key)}>
-        <DropdownMenu.Item id="copy" align="start" textValue="Copy">
-          <DropdownMenu.ItemAddon>
-            <IconFileMultipleO16 />
-          </DropdownMenu.ItemAddon>
-          <DropdownMenu.ItemText caption="Copy to the clipboard">
-            Copy
-          </DropdownMenu.ItemText>
-          <DropdownMenu.ItemAddon>
-            <Typography color="contrast-tertiary" variant="text-compact">
-              ⌘C
-            </Typography>
-          </DropdownMenu.ItemAddon>
-        </DropdownMenu.Item>
-        <DropdownMenu.Item id="cut" align="start" textValue="Cut">
-          <DropdownMenu.ItemAddon>
-            <IconScissors16 />
-          </DropdownMenu.ItemAddon>
-          <DropdownMenu.ItemText caption="Move to the clipboard">
-            Cut
-          </DropdownMenu.ItemText>
-          <DropdownMenu.ItemAddon>
-            <Typography color="contrast-tertiary" variant="text-compact">
-              ⌘X
-            </Typography>
-          </DropdownMenu.ItemAddon>
-        </DropdownMenu.Item>
-        <DropdownMenu.Item id="delete" align="start" textValue="Delete">
-          <DropdownMenu.ItemAddon>
-            <IconTrash16 />
-          </DropdownMenu.ItemAddon>
-          <DropdownMenu.ItemText caption="Cannot be undone">
-            Delete
-          </DropdownMenu.ItemText>
-          <DropdownMenu.ItemAddon>
-            <Typography color="contrast-tertiary" variant="text-compact">
-              ⌫
-            </Typography>
-          </DropdownMenu.ItemAddon>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button>Edit</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content onAction={(key) => alert(key)}>
+          <DropdownMenu.Item id="copy" align="start" textValue="Copy">
+            <DropdownMenu.ItemAddon>
+              <IconFileMultipleO16 />
+            </DropdownMenu.ItemAddon>
+            <DropdownMenu.ItemText caption="Copy to the clipboard">
+              Copy
+            </DropdownMenu.ItemText>
+            <DropdownMenu.ItemAddon>
+              <Typography color="contrast-tertiary" variant="text-compact">
+                ⌘C
+              </Typography>
+            </DropdownMenu.ItemAddon>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item id="cut" align="start" textValue="Cut">
+            <DropdownMenu.ItemAddon>
+              <IconScissors16 />
+            </DropdownMenu.ItemAddon>
+            <DropdownMenu.ItemText caption="Move to the clipboard">
+              Cut
+            </DropdownMenu.ItemText>
+            <DropdownMenu.ItemAddon>
+              <Typography color="contrast-tertiary" variant="text-compact">
+                ⌘X
+              </Typography>
+            </DropdownMenu.ItemAddon>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item id="delete" align="start" textValue="Delete">
+            <DropdownMenu.ItemAddon>
+              <IconTrash16 />
+            </DropdownMenu.ItemAddon>
+            <DropdownMenu.ItemText caption="Cannot be undone">
+              Delete
+            </DropdownMenu.ItemText>
+            <DropdownMenu.ItemAddon>
+              <Typography color="contrast-tertiary" variant="text-compact">
+                ⌫
+              </Typography>
+            </DropdownMenu.ItemAddon>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -157,19 +161,19 @@ export const SelectionSingle: Story = {
 
     return (
       <DropdownMenu {...args}>
-        <DropdownMenu.Trigger>
-          <Button>Text size</Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content
-          selectionMode="single"
-          selectedKeys={selectedKeys}
-          disallowEmptySelection
-          onSelectionChange={setSelectedKeys}
-        >
-          <DropdownMenu.Item id="small">Small</DropdownMenu.Item>
-          <DropdownMenu.Item id="medium">Medium</DropdownMenu.Item>
-          <DropdownMenu.Item id="large">Large</DropdownMenu.Item>
-        </DropdownMenu.Content>
+        <Button>Text size</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content
+            selectionMode="single"
+            selectedKeys={selectedKeys}
+            disallowEmptySelection
+            onSelectionChange={setSelectedKeys}
+          >
+            <DropdownMenu.Item id="small">Small</DropdownMenu.Item>
+            <DropdownMenu.Item id="medium">Medium</DropdownMenu.Item>
+            <DropdownMenu.Item id="large">Large</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     );
   },
@@ -183,18 +187,18 @@ export const SelectionMultiple: Story = {
 
     return (
       <DropdownMenu {...args}>
-        <DropdownMenu.Trigger>
-          <Button>View</Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content
-          selectionMode="multiple"
-          selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
-        >
-          <DropdownMenu.Item id="sidebar">Sidebar</DropdownMenu.Item>
-          <DropdownMenu.Item id="searchbar">Search bar</DropdownMenu.Item>
-          <DropdownMenu.Item id="console">Console</DropdownMenu.Item>
-        </DropdownMenu.Content>
+        <Button>View</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content
+            selectionMode="multiple"
+            selectedKeys={selectedKeys}
+            onSelectionChange={setSelectedKeys}
+          >
+            <DropdownMenu.Item id="sidebar">Sidebar</DropdownMenu.Item>
+            <DropdownMenu.Item id="searchbar">Search bar</DropdownMenu.Item>
+            <DropdownMenu.Item id="console">Console</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     );
   },
@@ -203,20 +207,20 @@ export const SelectionMultiple: Story = {
 export const DisabledItems: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Actions</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content
-        disabledKeys={['open']}
-        onAction={(key) => alert(key)}
-      >
-        <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-        <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-        <DropdownMenu.Item id="save" isDisabled>
-          Save
-        </DropdownMenu.Item>
-        <DropdownMenu.Item id="rename">Rename</DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button>Actions</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content
+          disabledKeys={['open']}
+          onAction={(key) => alert(key)}
+        >
+          <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+          <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+          <DropdownMenu.Item id="save" isDisabled>
+            Save
+          </DropdownMenu.Item>
+          <DropdownMenu.Item id="rename">Rename</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -224,23 +228,23 @@ export const DisabledItems: Story = {
 export const Links: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Links</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item href="https://react.koobiq.io" target="_blank">
-          Koobiq React
-        </DropdownMenu.Item>
-        <DropdownMenu.Item href="https://koobiq.io" target="_blank">
-          Koobiq
-        </DropdownMenu.Item>
-        <DropdownMenu.Item
-          href="https://github.com/koobiq/react-components"
-          target="_blank"
-        >
-          GitHub
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button>Links</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item href="https://react.koobiq.io" target="_blank">
+            Koobiq React
+          </DropdownMenu.Item>
+          <DropdownMenu.Item href="https://koobiq.io" target="_blank">
+            Koobiq
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            href="https://github.com/koobiq/react-components"
+            target="_blank"
+          >
+            GitHub
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -248,21 +252,21 @@ export const Links: Story = {
 export const Sections: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Actions</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content onAction={(key) => alert(key)}>
-        <DropdownMenu.Section title="File">
-          <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-          <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-        </DropdownMenu.Section>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Section title="Edit">
-          <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
-          <DropdownMenu.Item id="cut">Cut</DropdownMenu.Item>
-          <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
-        </DropdownMenu.Section>
-      </DropdownMenu.Content>
+      <Button>Actions</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content onAction={(key) => alert(key)}>
+          <DropdownMenu.Section title="File">
+            <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+            <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+          </DropdownMenu.Section>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Section title="Edit">
+            <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+            <DropdownMenu.Item id="cut">Cut</DropdownMenu.Item>
+            <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
+          </DropdownMenu.Section>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -293,25 +297,25 @@ export const SectionsDynamic: Story = {
 
     return (
       <DropdownMenu {...args}>
-        <DropdownMenu.Trigger>
-          <Button>Actions</Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content items={sections} onAction={(key) => alert(key)}>
-          {(section: (typeof sections)[number]) =>
-            'children' in section ? (
-              <DropdownMenu.Section
-                title={section.name}
-                items={section.children}
-              >
-                {(item: { id: string; name: string }) => (
-                  <DropdownMenu.Item>{item.name}</DropdownMenu.Item>
-                )}
-              </DropdownMenu.Section>
-            ) : (
-              <DropdownMenu.Separator />
-            )
-          }
-        </DropdownMenu.Content>
+        <Button>Actions</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content items={sections} onAction={(key) => alert(key)}>
+            {(section: (typeof sections)[number]) =>
+              'children' in section ? (
+                <DropdownMenu.Section
+                  title={section.name}
+                  items={section.children}
+                >
+                  {(item: { id: string; name: string }) => (
+                    <DropdownMenu.Item>{item.name}</DropdownMenu.Item>
+                  )}
+                </DropdownMenu.Section>
+              ) : (
+                <DropdownMenu.Separator />
+              )
+            }
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     );
   },
@@ -324,88 +328,88 @@ export const WithSectionLevelSelection: Story = {
 
     return (
       <DropdownMenu {...args}>
-        <DropdownMenu.Trigger>
-          <Button>Styles</Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <DropdownMenu.Section title="Actions">
-            <DropdownMenu.Item id="cut" textValue="Cut">
-              <DropdownMenu.ItemAddon>
-                <IconScissors16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Cut</DropdownMenu.ItemText>
-              <DropdownMenu.ItemAddon>
-                <Typography color="contrast-tertiary" variant="text-compact">
-                  ⌘X
-                </Typography>
-              </DropdownMenu.ItemAddon>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item id="copy" textValue="Copy">
-              <DropdownMenu.ItemAddon>
-                <IconFileMultipleO16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Copy</DropdownMenu.ItemText>
-              <DropdownMenu.ItemAddon>
-                <Typography color="contrast-tertiary" variant="text-compact">
-                  ⌘C
-                </Typography>
-              </DropdownMenu.ItemAddon>
-            </DropdownMenu.Item>
-          </DropdownMenu.Section>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Section
-            title="Text style"
-            selectionMode="multiple"
-            selectedKeys={style}
-            onSelectionChange={setStyle}
-          >
-            <DropdownMenu.Item id="bold" textValue="Bold">
-              <DropdownMenu.ItemAddon>
-                <IconTextBold16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Bold</DropdownMenu.ItemText>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item id="italic" textValue="Italic">
-              <DropdownMenu.ItemAddon>
-                <IconTextItalic16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Italic</DropdownMenu.ItemText>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item id="underline" textValue="Underline">
-              <DropdownMenu.ItemAddon>
-                <IconTextUnderline16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Underline</DropdownMenu.ItemText>
-            </DropdownMenu.Item>
-          </DropdownMenu.Section>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Section
-            title="Text alignment"
-            selectionMode="single"
-            selectedKeys={align}
-            onSelectionChange={setAlign}
-            disallowEmptySelection
-          >
-            <DropdownMenu.Item id="left" textValue="Left">
-              <DropdownMenu.ItemAddon>
-                <IconAlignLeft16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Left</DropdownMenu.ItemText>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item id="center" textValue="Center">
-              <DropdownMenu.ItemAddon>
-                <IconAlignCenter16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Center</DropdownMenu.ItemText>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item id="right" textValue="Right">
-              <DropdownMenu.ItemAddon>
-                <IconAlignRight16 />
-              </DropdownMenu.ItemAddon>
-              <DropdownMenu.ItemText>Right</DropdownMenu.ItemText>
-            </DropdownMenu.Item>
-          </DropdownMenu.Section>
-        </DropdownMenu.Content>
+        <Button>Styles</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content>
+            <DropdownMenu.Section title="Actions">
+              <DropdownMenu.Item id="cut" textValue="Cut">
+                <DropdownMenu.ItemAddon>
+                  <IconScissors16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Cut</DropdownMenu.ItemText>
+                <DropdownMenu.ItemAddon>
+                  <Typography color="contrast-tertiary" variant="text-compact">
+                    ⌘X
+                  </Typography>
+                </DropdownMenu.ItemAddon>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item id="copy" textValue="Copy">
+                <DropdownMenu.ItemAddon>
+                  <IconFileMultipleO16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Copy</DropdownMenu.ItemText>
+                <DropdownMenu.ItemAddon>
+                  <Typography color="contrast-tertiary" variant="text-compact">
+                    ⌘C
+                  </Typography>
+                </DropdownMenu.ItemAddon>
+              </DropdownMenu.Item>
+            </DropdownMenu.Section>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Section
+              title="Text style"
+              selectionMode="multiple"
+              selectedKeys={style}
+              onSelectionChange={setStyle}
+            >
+              <DropdownMenu.Item id="bold" textValue="Bold">
+                <DropdownMenu.ItemAddon>
+                  <IconTextBold16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Bold</DropdownMenu.ItemText>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item id="italic" textValue="Italic">
+                <DropdownMenu.ItemAddon>
+                  <IconTextItalic16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Italic</DropdownMenu.ItemText>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item id="underline" textValue="Underline">
+                <DropdownMenu.ItemAddon>
+                  <IconTextUnderline16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Underline</DropdownMenu.ItemText>
+              </DropdownMenu.Item>
+            </DropdownMenu.Section>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Section
+              title="Text alignment"
+              selectionMode="single"
+              selectedKeys={align}
+              onSelectionChange={setAlign}
+              disallowEmptySelection
+            >
+              <DropdownMenu.Item id="left" textValue="Left">
+                <DropdownMenu.ItemAddon>
+                  <IconAlignLeft16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Left</DropdownMenu.ItemText>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item id="center" textValue="Center">
+                <DropdownMenu.ItemAddon>
+                  <IconAlignCenter16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Center</DropdownMenu.ItemText>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item id="right" textValue="Right">
+                <DropdownMenu.ItemAddon>
+                  <IconAlignRight16 />
+                </DropdownMenu.ItemAddon>
+                <DropdownMenu.ItemText>Right</DropdownMenu.ItemText>
+              </DropdownMenu.Item>
+            </DropdownMenu.Section>
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     );
   },
@@ -433,66 +437,66 @@ export const Separators: Story = {
 
     return (
       <DropdownMenu {...args}>
-        <DropdownMenu.Trigger>
-          <DropdownMenu.Pressable>
-            <div role="button" style={buttonStyle}>
-              <img src={avatar} alt="Sophia Bellmont" style={imgStyle} />
-            </div>
-          </DropdownMenu.Pressable>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content onAction={(key) => alert(key)}>
-          <DropdownMenu.Header>
-            <FlexBox
-              gap="xs"
-              direction="column"
-              className={spacing({ p: 'm' })}
-            >
-              <Typography variant="text-normal-strong">
-                Sophia Bellmont
-              </Typography>
-              <Typography color="contrast-secondary">@Sophia</Typography>
-            </FlexBox>
-          </DropdownMenu.Header>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item id="dashboard" textValue="Dashboard">
-            <DropdownMenu.ItemAddon>
-              <IconDashboard16 />
-            </DropdownMenu.ItemAddon>
-            <DropdownMenu.ItemText>Dashboard</DropdownMenu.ItemText>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item id="notifications" textValue="Notifications">
-            <DropdownMenu.ItemAddon>
-              <IconBell16 />
-            </DropdownMenu.ItemAddon>
-            <DropdownMenu.ItemText>Notifications</DropdownMenu.ItemText>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item id="create-team" textValue="Create team">
-            <DropdownMenu.ItemAddon>
-              <IconPlus16 />
-            </DropdownMenu.ItemAddon>
-            <DropdownMenu.ItemText>Create team</DropdownMenu.ItemText>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item id="settings" textValue="Settings">
-            <DropdownMenu.ItemAddon>
-              <IconGear16 />
-            </DropdownMenu.ItemAddon>
-            <DropdownMenu.ItemText>Settings</DropdownMenu.ItemText>
-          </DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item id="support" textValue="Contact support">
-            <DropdownMenu.ItemAddon>
-              <IconMessage16 />
-            </DropdownMenu.ItemAddon>
-            <DropdownMenu.ItemText>Contact support</DropdownMenu.ItemText>
-          </DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item id="logout" textValue="Log out">
-            <DropdownMenu.ItemAddon>
-              <IconArrowRightToBracket16 />
-            </DropdownMenu.ItemAddon>
-            <DropdownMenu.ItemText>Log out</DropdownMenu.ItemText>
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
+        <DropdownMenu.Pressable>
+          <div role="button" style={buttonStyle}>
+            <img src={avatar} alt="Sophia Bellmont" style={imgStyle} />
+          </div>
+        </DropdownMenu.Pressable>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content onAction={(key) => alert(key)}>
+            <DropdownMenu.Header>
+              <FlexBox
+                gap="xs"
+                direction="column"
+                className={spacing({ p: 'm' })}
+              >
+                <Typography variant="text-normal-strong">
+                  Sophia Bellmont
+                </Typography>
+                <Typography color="contrast-secondary">@Sophia</Typography>
+              </FlexBox>
+            </DropdownMenu.Header>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item id="dashboard" textValue="Dashboard">
+              <DropdownMenu.ItemAddon>
+                <IconDashboard16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Dashboard</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="notifications" textValue="Notifications">
+              <DropdownMenu.ItemAddon>
+                <IconBell16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Notifications</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="create-team" textValue="Create team">
+              <DropdownMenu.ItemAddon>
+                <IconPlus16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Create team</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item id="settings" textValue="Settings">
+              <DropdownMenu.ItemAddon>
+                <IconGear16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Settings</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item id="support" textValue="Contact support">
+              <DropdownMenu.ItemAddon>
+                <IconMessage16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Contact support</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item id="logout" textValue="Log out">
+              <DropdownMenu.ItemAddon>
+                <IconArrowRightToBracket16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText>Log out</DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     );
   },
@@ -501,29 +505,35 @@ export const Separators: Story = {
 export const Submenu: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Actions</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content onAction={(key) => alert(key)}>
-        <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-        <DropdownMenu.Item id="rename">Rename</DropdownMenu.Item>
-        <DropdownMenu.SubmenuTrigger>
-          <DropdownMenu.Item id="share">Share</DropdownMenu.Item>
-          <DropdownMenu.Content onAction={(key) => alert(key)}>
-            <DropdownMenu.Item id="email">Email</DropdownMenu.Item>
-            <DropdownMenu.Item id="sms">SMS</DropdownMenu.Item>
-            <DropdownMenu.SubmenuTrigger>
-              <DropdownMenu.Item id="socials">Socials</DropdownMenu.Item>
+      <Button>Actions</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content onAction={(key) => alert(key)}>
+          <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+          <DropdownMenu.Item id="rename">Rename</DropdownMenu.Item>
+          <DropdownMenu.SubmenuTrigger>
+            <DropdownMenu.Item id="share">Share</DropdownMenu.Item>
+            <DropdownMenu.Popover>
               <DropdownMenu.Content onAction={(key) => alert(key)}>
-                <DropdownMenu.Item id="telegram">Telegram</DropdownMenu.Item>
-                <DropdownMenu.Item id="vk">VK</DropdownMenu.Item>
+                <DropdownMenu.Item id="email">Email</DropdownMenu.Item>
+                <DropdownMenu.Item id="sms">SMS</DropdownMenu.Item>
+                <DropdownMenu.SubmenuTrigger>
+                  <DropdownMenu.Item id="socials">Socials</DropdownMenu.Item>
+                  <DropdownMenu.Popover>
+                    <DropdownMenu.Content onAction={(key) => alert(key)}>
+                      <DropdownMenu.Item id="telegram">
+                        Telegram
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item id="vk">VK</DropdownMenu.Item>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Popover>
+                </DropdownMenu.SubmenuTrigger>
               </DropdownMenu.Content>
-            </DropdownMenu.SubmenuTrigger>
-          </DropdownMenu.Content>
-        </DropdownMenu.SubmenuTrigger>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
-      </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu.SubmenuTrigger>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -556,23 +566,29 @@ export const Search: Story = {
 
     return (
       <DropdownMenu {...args}>
-        <DropdownMenu.Trigger>
-          <Button>Cities</Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content isSearchable onAction={(key) => alert(key)}>
-          {items.map((item) => (
-            <DropdownMenu.Item key={item} id={item}>
-              {item}
-            </DropdownMenu.Item>
-          ))}
-          <DropdownMenu.SubmenuTrigger>
-            <DropdownMenu.Item id="other">Other cities</DropdownMenu.Item>
+        <Button>Cities</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Autocomplete>
+            <DropdownMenu.SearchInput />
+            <Divider disablePaddings />
             <DropdownMenu.Content onAction={(key) => alert(key)}>
-              <DropdownMenu.Item id="tallinn">Tallinn</DropdownMenu.Item>
-              <DropdownMenu.Item id="vilnius">Vilnius</DropdownMenu.Item>
+              {items.map((item) => (
+                <DropdownMenu.Item key={item} id={item}>
+                  {item}
+                </DropdownMenu.Item>
+              ))}
+              <DropdownMenu.SubmenuTrigger>
+                <DropdownMenu.Item id="other">Other cities</DropdownMenu.Item>
+                <DropdownMenu.Popover>
+                  <DropdownMenu.Content onAction={(key) => alert(key)}>
+                    <DropdownMenu.Item id="tallinn">Tallinn</DropdownMenu.Item>
+                    <DropdownMenu.Item id="vilnius">Vilnius</DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Popover>
+              </DropdownMenu.SubmenuTrigger>
             </DropdownMenu.Content>
-          </DropdownMenu.SubmenuTrigger>
-        </DropdownMenu.Content>
+          </DropdownMenu.Autocomplete>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     );
   },
@@ -581,14 +597,18 @@ export const Search: Story = {
 export const SearchEmpty: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Actions</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content isSearchable noItemsText="No such action">
-        <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-        <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-        <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button>Actions</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Autocomplete>
+          <DropdownMenu.SearchInput />
+          <Divider disablePaddings />
+          <DropdownMenu.Content noItemsText="No such action">
+            <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+            <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+            <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Autocomplete>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -596,14 +616,17 @@ export const SearchEmpty: Story = {
 export const DropdownFooter: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
-        <Button>Actions</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content dropdownFooter="The text in the footer of the drop-down list.">
-        <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-        <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-        <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button>Actions</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+          <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+          <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
+        </DropdownMenu.Content>
+        <DropdownMenu.Footer>
+          The text in the footer of the drop-down list.
+        </DropdownMenu.Footer>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };
@@ -628,14 +651,14 @@ export const Placement: Story = {
           ))}
         </Select>
         <DropdownMenu {...args}>
-          <DropdownMenu.Trigger>
-            <Button>Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content placement={placement}>
-            <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-            <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-            <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
-          </DropdownMenu.Content>
+          <Button>Actions</Button>
+          <DropdownMenu.Popover placement={placement}>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+              <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+              <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       </FlexBox>
     );
@@ -652,14 +675,14 @@ export const Open: Story = {
           {isOpen ? 'Close' : 'Open'} the menu
         </Button>
         <DropdownMenu {...args} isOpen={isOpen} onOpenChange={set}>
-          <DropdownMenu.Trigger>
-            <Button>Actions</Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-            <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-            <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
-          </DropdownMenu.Content>
+          <Button>Actions</Button>
+          <DropdownMenu.Popover>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+              <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+              <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Popover>
         </DropdownMenu>
       </FlexBox>
     );
@@ -669,14 +692,14 @@ export const Open: Story = {
 export const LongPress: Story = {
   render: (args) => (
     <DropdownMenu {...args} trigger="longPress">
-      <DropdownMenu.Trigger>
-        <Button>Press and hold</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content onAction={(key) => alert(key)}>
-        <DropdownMenu.Item id="new">New</DropdownMenu.Item>
-        <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
-        <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
-      </DropdownMenu.Content>
+      <Button>Press and hold</Button>
+      <DropdownMenu.Popover>
+        <DropdownMenu.Content onAction={(key) => alert(key)}>
+          <DropdownMenu.Item id="new">New</DropdownMenu.Item>
+          <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
+          <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Popover>
     </DropdownMenu>
   ),
 };

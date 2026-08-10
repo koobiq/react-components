@@ -174,6 +174,7 @@ export {
   PopoverContext,
   SubmenuTrigger,
   FieldInputContext,
+  AutocompleteStateContext,
   OverlayTriggerStateContext,
 } from 'react-aria-components';
 

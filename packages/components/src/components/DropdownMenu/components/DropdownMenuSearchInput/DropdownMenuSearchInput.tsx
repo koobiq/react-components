@@ -12,14 +12,14 @@ import { FieldInputContext, useSlottedContext } from '@koobiq/react-primitives';
 import { SearchInput, type SearchInputProps } from '../../../SearchInput';
 import intlMessages from '../../intl';
 
-import s from './DropdownMenuSearch.module.css';
-import type { DropdownMenuSearchProps } from './types';
+import s from './DropdownMenuSearchInput.module.css';
+import type { DropdownMenuSearchInputProps } from './types';
 
 /**
  * The search field of a dropdown menu. React Aria passes the input props
  * through a context, so this bridges them onto the Koobiq `SearchInput`.
  */
-export function DropdownMenuSearch(props: DropdownMenuSearchProps) {
+export function DropdownMenuSearchInput(props: DropdownMenuSearchInputProps) {
   const t = useLocalizedStringFormatter(intlMessages);
 
   const domRef = useRef<HTMLInputElement>(null);
@@ -50,4 +50,4 @@ export function DropdownMenuSearch(props: DropdownMenuSearchProps) {
   return <SearchInput ref={inputRef} {...searchInputProps} />;
 }
 
-DropdownMenuSearch.displayName = 'DropdownMenuSearch';
+DropdownMenuSearchInput.displayName = 'DropdownMenu.SearchInput';

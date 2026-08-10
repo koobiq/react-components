@@ -1,18 +1,4 @@
-@import url('../../../../styles/mixins.css');
-
-/* The shell — shadow, background, fade — comes from `Popover`. */
-.popover {
-  min-inline-size: 200px;
-  max-inline-size: 640px;
-  border-radius: var(--kbq-size-s);
-}
-
-.container {
-  overflow: hidden;
-  flex-direction: column;
-}
-
-.menu {
+.base {
   inline-size: 100%;
   scrollbar-width: auto;
   scrollbar-gutter: auto;

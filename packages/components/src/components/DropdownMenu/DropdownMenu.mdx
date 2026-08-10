@@ -39,8 +39,8 @@ A dropdown menu is composed of a trigger and its content:
 
 The component has the following helper components:
 
-- `DropdownMenu.Trigger` — wraps the element that opens the menu
-- `DropdownMenu.Content` — the popover holding the items, also used for a submenu
+- `DropdownMenu.Popover` — the overlay, also used for a submenu
+- `DropdownMenu.Content` — the list of items inside the popover
 - `DropdownMenu.Item` — a single action
 - `DropdownMenu.ItemText` — text of an item, with an optional `caption`
 - `DropdownMenu.ItemAddon` — an addon of an item, such as an icon or a shortcut
@@ -48,12 +48,18 @@ The component has the following helper components:
 - `DropdownMenu.Header` — a block of custom content, or the heading of a section
 - `DropdownMenu.Separator` — a line between groups of items
 - `DropdownMenu.SubmenuTrigger` — wraps an item and the submenu it opens
+- `DropdownMenu.Autocomplete` — filters the menu with a field
+- `DropdownMenu.SearchInput` — the search field for an `Autocomplete`
+- `DropdownMenu.Footer` — text under the items, outside the scroll area
 - `DropdownMenu.Pressable` — makes custom markup usable as a trigger.
+
+The popover and the content are separate on purpose: anything may sit between them,
+which is how search is assembled instead of a prop on the menu.
 
 ## Trigger
 
-Any component built on the Koobiq `Button` works as a trigger without extra props —
-`DropdownMenu.Trigger` passes the interactions down to it.
+The first child of `DropdownMenu` is the trigger. Any component built on the Koobiq
+`Button` works without extra props — the interactions reach it on their own.
 
 For custom markup that is not a button, wrap it in `DropdownMenu.Pressable`
 (see the [Separators](#separators) example).
@@ -133,13 +139,13 @@ export default function App() {
   return (
     <RouterProvider navigate={router.push}>
       <DropdownMenu>
-        <DropdownMenu.Trigger>
-          <Button>Pages</Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content aria-label="pages">
-          <DropdownMenu.Item href="/page1">Page 1</DropdownMenu.Item>
-          <DropdownMenu.Item href="/page2">Page 2</DropdownMenu.Item>
-        </DropdownMenu.Content>
+        <Button>Pages</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content aria-label="pages">
+            <DropdownMenu.Item href="/page1">Page 1</DropdownMenu.Item>
+            <DropdownMenu.Item href="/page2">Page 2</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
       </DropdownMenu>
     </RouterProvider>
   );
@@ -174,7 +180,7 @@ Separators may be added between items or sections in order to create non-labeled
 
 ## Submenu
 
-Wrap an item and a nested `DropdownMenu.Content` in a `DropdownMenu.SubmenuTrigger`
+Wrap an item and a nested `DropdownMenu.Popover` in a `DropdownMenu.SubmenuTrigger`
 to give the item a submenu. The chevron is added automatically. A submenu opens on
 hover after `delay` (200 ms by default), on <kbd>ArrowRight</kbd> and on press,
 and closes on <kbd>ArrowLeft</kbd>. Submenus can be nested.
@@ -186,8 +192,10 @@ so its behaviour may change in a future release.
 
 ## Search
 
-Set `isSearchable` to filter the items with a search field.
-Matching is case- and accent-insensitive; pass `defaultFilter` to change it.
+Wrap the content in a `DropdownMenu.Autocomplete` and put a `DropdownMenu.SearchInput`
+next to it. The field has to be a sibling of the menu, not a child of it: the menu
+clears the field context for its own subtree. Matching is case- and
+accent-insensitive; pass `filter` to the autocomplete to change it.
 
 Focus stays in the search field while the arrow keys move through the items.
 An item that opens a submenu is kept when its own text matches, but the contents
@@ -195,20 +203,21 @@ of a submenu are not searched.
 
 <Story of={Stories.Search} />
 
-Use `noItemsText` to change the message shown when nothing matches.
+Use `noItemsText` of the content to change the message shown when nothing matches.
 
 <Story of={Stories.SearchEmpty} />
 
-## Dropdown Footer
+## Footer
 
-Use `dropdownFooter` to show text under the menu items.
+`DropdownMenu.Footer` shows text under the items. It sits next to the menu rather
+than inside it, so it stays put while the items scroll.
 
 <Story of={Stories.DropdownFooter} />
 
 ## Placement
 
 The menu's placement with respect to its trigger can be adjusted
-using the `placement` prop of the content. Menus
+using the `placement` prop of the popover. Menus
 will also automatically flip to the opposite direction if there isn't enough space.
 
 <Story of={Stories.Placement} />
