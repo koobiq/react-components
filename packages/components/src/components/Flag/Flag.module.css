@@ -1,5 +1,4 @@
 .base {
-  /* Defaults for the public `--kbq-flag-*` knobs (see the component docs). */
   --flag-size: 1em;
   --flag-aspect-ratio: 3 / 2;
   --flag-border-radius: 0;
