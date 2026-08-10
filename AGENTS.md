@@ -141,11 +141,11 @@ Private `--<component>-*` variables define defaults.
 Public `--kbq-<component>-*` variables are override points.
 
 ```css
-/* TopBar.module.css */
+/* Flag.module.css */
 .base {
-  --topbar-gap: 80px;
+  --flag-border-radius: 0;
 
-  gap: var(--kbq-topbar-gap, var(--topbar-gap));
+  border-radius: var(--kbq-flag-border-radius, var(--flag-border-radius));
 }
 ```
 

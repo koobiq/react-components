@@ -4,8 +4,8 @@
   @mixin ellipsis;
 
   min-inline-size: var(
-    --kbq-topbar-title-min-inline-size,
-    var(--topbar-title-min-inline-size)
+    --kbq-top-bar-title-min-inline-size,
+    var(--top-bar-title-min-inline-size)
   );
   color: var(--kbq-foreground-contrast);
 }
