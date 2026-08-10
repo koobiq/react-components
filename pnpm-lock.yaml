@@ -43,6 +43,9 @@ importers:
       '@koobiq/internationalized-date-adapter':
         specifier: ^3.5.1
         version: 3.5.1(@internationalized/date@3.12.1)(@koobiq/date-adapter@3.5.1)
+      '@koobiq/react-icons':
+        specifier: ^12.1.1
+        version: 12.1.1(react@19.2.3)
       '@koobiq/visuals':
         specifier: ^12.1.0
         version: 12.1.0
@@ -260,8 +263,8 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@koobiq/react-icons':
-        specifier: ^12.0.0
-        version: 12.0.0(react@19.2.3)
+        specifier: ^12.1.1
+        version: 12.1.1(react@19.2.3)
       '@koobiq/react-primitives':
         specifier: workspace:*
         version: link:../primitives
@@ -2002,6 +2005,11 @@ packages:
 
   '@koobiq/react-icons@12.0.0':
     resolution: {integrity: sha512-SMVcAzzIcJCofQFn1nPscd+U7FNjp9Ljz6193Or/ARp6vPdRp9VApplTOKePW3o06ahaopc+Dah1yQQ6kJWNEA==}
+    peerDependencies:
+      react: ^19.0.0
+
+  '@koobiq/react-icons@12.1.1':
+    resolution: {integrity: sha512-DKbYt/5m+HeFvgvRyTcc+XydmasErvIrwsBtPAwUJl5G/84dh+GbZY2b5ValWBuYAnRySPrtVI+J0o7oBdtt/w==}
     peerDependencies:
       react: ^19.0.0
 
@@ -10509,6 +10517,10 @@ snapshots:
       react: 19.2.3
 
   '@koobiq/react-icons@12.0.0(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+
+  '@koobiq/react-icons@12.1.1(react@19.2.3)':
     dependencies:
       react: 19.2.3
 
