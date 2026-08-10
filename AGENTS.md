@@ -135,6 +135,23 @@ Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or
 - Only use CSS features supported by the project's [browserslist](package.json) targets.
 - Mostly plain CSS. Mixins are used for typography and text ellipsis (`packages/components/src/styles/mixins.css`).
 
+### Component CSS Variables
+
+Private `--<component>-*` variables define defaults.
+Public `--kbq-<component>-*` variables are override points.
+
+```css
+/* TopBar.module.css */
+.base {
+  --topbar-gap: 80px;
+
+  gap: var(--kbq-topbar-gap, var(--topbar-gap));
+}
+```
+
+- Never define public variables in component CSS.
+- Public variables inherit, allowing parents to style nested components.
+
 ### Prop System
 
 - Prefer standard ARIA attributes and existing prop names to keep component APIs consistent and familiar.

@@ -336,8 +336,8 @@ export const CollapsingActions: Story = {
         ref={parentRef}
         style={
           {
-            '--kbq-top-bar-container-start-min-inline-size': `${START_RESERVE}px`,
-            '--kbq-top-bar-container-end-gap': 0,
+            '--kbq-topbar-container-start-min-inline-size': `${START_RESERVE}px`,
+            '--kbq-topbar-container-end-gap': 0,
           } as CSSProperties
         }
       >

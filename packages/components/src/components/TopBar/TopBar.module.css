@@ -1,43 +1,43 @@
 .base {
-  --top-bar-background: var(--kbq-background-bg);
-  --top-bar-padding-block: var(--kbq-size-m);
-  --top-bar-padding-inline: var(--kbq-size-xxl);
-  --top-bar-border-radius: 0;
-  --top-bar-min-block-size: var(--kbq-size-6xl);
-  --top-bar-gap: 80px;
-  --top-bar-z-index: var(--kbq-layer-topbar);
-  --top-bar-shadow: var(--kbq-shadow-overflow-normal-bottom);
-  --top-bar-container-start-gap: 0;
-  --top-bar-container-start-min-inline-size: 0;
-  --top-bar-container-end-gap: var(--kbq-size-s);
-  --top-bar-title-min-inline-size: 4ch;
+  --topbar-background: var(--kbq-background-bg);
+  --topbar-padding-block: var(--kbq-size-m);
+  --topbar-padding-inline: var(--kbq-size-xxl);
+  --topbar-border-radius: 0;
+  --topbar-min-block-size: var(--kbq-size-6xl);
+  --topbar-gap: 80px;
+  --topbar-z-index: var(--kbq-layer-topbar);
+  --topbar-shadow: var(--kbq-shadow-overflow-normal-bottom);
+  --topbar-container-start-gap: 0;
+  --topbar-container-start-min-inline-size: 0;
+  --topbar-container-end-gap: var(--kbq-size-s);
+  --topbar-title-min-inline-size: 4ch;
 
   display: flex;
   box-sizing: border-box;
   align-items: center;
   min-block-size: var(
-    --kbq-top-bar-min-block-size,
-    var(--top-bar-min-block-size)
+    --kbq-topbar-min-block-size,
+    var(--topbar-min-block-size)
   );
-  gap: var(--kbq-top-bar-gap, var(--top-bar-gap));
-  padding-block: var(--kbq-top-bar-padding-block, var(--top-bar-padding-block));
+  gap: var(--kbq-topbar-gap, var(--topbar-gap));
+  padding-block: var(--kbq-topbar-padding-block, var(--topbar-padding-block));
   padding-inline: var(
-    --kbq-top-bar-padding-inline,
-    var(--top-bar-padding-inline)
+    --kbq-topbar-padding-inline,
+    var(--topbar-padding-inline)
   );
-  border-radius: var(--kbq-top-bar-border-radius, var(--top-bar-border-radius));
-  background: var(--kbq-top-bar-background, var(--top-bar-background));
+  border-radius: var(--kbq-topbar-border-radius, var(--topbar-border-radius));
+  background: var(--kbq-topbar-background, var(--topbar-background));
   transition: box-shadow var(--kbq-transition-slow);
 }
 
 /* position */
 .base[data-position='sticky'] {
   position: sticky;
-  z-index: var(--kbq-top-bar-z-index, var(--top-bar-z-index));
+  z-index: var(--kbq-topbar-z-index, var(--topbar-z-index));
   inset-block-start: 0;
 }
 
 /* shadow */
 .base[data-shadow='true'] {
-  box-shadow: var(--kbq-top-bar-shadow, var(--top-bar-shadow));
+  box-shadow: var(--kbq-topbar-shadow, var(--topbar-shadow));
 }

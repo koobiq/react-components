@@ -1,17 +1,18 @@
 .base {
-  /* Public, overridable knobs (see the component docs). */
-  --kbq-flag-aspect-ratio: 3 / 2;
-  --kbq-flag-border-radius: 0;
-  --kbq-flag-shadow-color: var(--kbq-line-contrast-fade);
-  --kbq-flag-empty-background: var(--kbq-states-background-disabled);
+  /* Defaults for the public `--kbq-flag-*` knobs (see the component docs). */
+  --flag-size: 1em;
+  --flag-aspect-ratio: 3 / 2;
+  --flag-border-radius: 0;
+  --flag-shadow-color: var(--kbq-line-contrast-fade);
+  --flag-empty-background: var(--kbq-states-background-disabled);
 
   display: inline-block;
   position: relative;
   overflow: hidden;
   vertical-align: middle;
-  block-size: var(--kbq-flag-size, 1em);
-  aspect-ratio: var(--kbq-flag-aspect-ratio);
-  border-radius: var(--kbq-flag-border-radius);
+  block-size: var(--kbq-flag-size, var(--flag-size));
+  aspect-ratio: var(--kbq-flag-aspect-ratio, var(--flag-aspect-ratio));
+  border-radius: var(--kbq-flag-border-radius, var(--flag-border-radius));
 }
 
 /* The projected flag graphic fills the box (descendant selector supports wrapped graphics). */
@@ -28,7 +29,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid var(--kbq-flag-shadow-color);
+  border: 1px solid var(--kbq-flag-shadow-color, var(--flag-shadow-color));
   pointer-events: none;
 }
 
@@ -43,5 +44,8 @@
 
 /* No projected graphic → neutral placeholder (e.g. unknown/invalid country). */
 .base:empty {
-  background-color: var(--kbq-flag-empty-background);
+  background-color: var(
+    --kbq-flag-empty-background,
+    var(--flag-empty-background)
+  );
 }
