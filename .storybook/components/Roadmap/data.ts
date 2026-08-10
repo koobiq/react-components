@@ -375,6 +375,24 @@ export const rows: Rows = [
     planned: 'Q3 2026',
   },
   {
+    component: 'Flag',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'Resizable',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'Username',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
     component: 'ButtonGroup',
     status: '✅ Done',
     stage: '🔵 experimental',
@@ -384,6 +402,42 @@ export const rows: Rows = [
     component: 'TopBar',
     status: '✅ Done',
     stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'Markdown',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'DropdownMenu',
+    status: '🚧 Planned',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'CodeBlock',
+    status: '🚧 Planned',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'SplitButton',
+    status: '🚧 Planned',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'ClampedText',
+    status: '🚧 Planned',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'ClampedList',
+    status: '🚧 Planned',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'TimeRange',
+    status: '🚧 Planned',
     planned: 'Q3 2026',
   },
 ];

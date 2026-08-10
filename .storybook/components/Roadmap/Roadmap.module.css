@@ -2,6 +2,10 @@
   border: var(--table-border);
   border-radius: var(--kbq-size-s);
   inline-size: inherit;
+
+  tbody tr:last-child td {
+    border-block-end: none;
+  }
 }
 
 .box {
