@@ -32,8 +32,7 @@ export const sidePanelPropPlacement = ['start', 'end'] as const;
 export type SidePanelPropPlacement = (typeof sidePanelPropPlacement)[number];
 
 export type SidePanelPropContent =
-  | ReactNode
-  | ((props: { close(): void }) => ReactElement);
+  ReactNode | ((props: { close(): void }) => ReactElement);
 
 export type SidePanelPropControl = (props: ButtonOptions) => ReactElement;
 

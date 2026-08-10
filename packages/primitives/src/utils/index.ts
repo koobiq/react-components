@@ -28,8 +28,7 @@ export interface DOMProps extends StyleProps, SharedDOMProps {
 export interface StyleRenderProps<T> {
   /** The CSS [className](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. A function may be provided to compute the class based on component state. */
   className?:
-    | string
-    | ((values: T & { defaultClassName: string | undefined }) => string);
+    string | ((values: T & { defaultClassName: string | undefined }) => string);
   /** The inline [style](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style) for the element. A function may be provided to compute the style based on component state. */
   style?:
     | CSSProperties

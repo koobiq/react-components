@@ -59,8 +59,7 @@ export type ContainerBaseProps = {
   placement?: ContainerPlacementProp | ResponsiveValue<ContainerPlacementProp>;
   /** Determine the max-inline-size of the container. */
   maxInlineSize?:
-    | ContainerMaxInlineSizeProp
-    | ResponsiveValue<ContainerMaxInlineSizeProp>;
+    ContainerMaxInlineSizeProp | ResponsiveValue<ContainerMaxInlineSizeProp>;
   /**
    * Margins are the space between content and the left and right edges of the screen.
    * @default 0
