@@ -10,7 +10,7 @@ import { FlexBox } from '../FlexBox';
 import { SelectNext as Select } from '../SelectNext';
 import { Typography } from '../Typography';
 
-import s from './Flag.stories.module.css';
+import s from './__stories__/styles.module.css';
 import {
   Flag,
   type FlagProps,
@@ -138,7 +138,7 @@ export const Fallback: Story = {
  */
 export const Accessibility: Story = {
   render: (args) => (
-    <FlexBox gap="l" direction="row">
+    <FlexBox gap="l" direction="row" alignItems="center">
       {/* Meaningful flag, no adjacent text. */}
       <Flag {...args} role="img" aria-label="Germany" size={18}>
         <flags3x2.DE />
