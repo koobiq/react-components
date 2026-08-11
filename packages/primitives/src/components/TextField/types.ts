@@ -33,7 +33,6 @@ export type TextFieldRenderProps = {
 };
 
 type TextFieldBaseProps = RenderProps<TextFieldRenderProps> & {
-  inputElementType?: 'input' | 'textarea';
   /** Handler that is called when the clear button is clicked. */
   onClear?: () => void;
   /** Whether the field can be emptied. */

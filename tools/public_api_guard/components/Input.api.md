@@ -24,7 +24,7 @@ import { TextProps } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
 // @public
-export const Input: ForwardRefExoticComponent<Omit<Omit<TextFieldProps<HTMLInputElement>, "children" | "description" | "validationState" | "inputElementType">, "caption" | "style" | "className" | "data-testid" | "startAddon" | "endAddon" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isClearable" | "isLabelHidden" | "onClear" | keyof {
+export const Input: ForwardRefExoticComponent<Omit<Omit<TextFieldProps<HTMLInputElement>, "children" | "description" | "validationState">, "caption" | "style" | "className" | "data-testid" | "startAddon" | "endAddon" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isClearable" | "isLabelHidden" | "onClear" | keyof {
 disabled?: boolean;
 error?: boolean;
 required?: boolean;
@@ -103,7 +103,7 @@ export type InputProps = ExtendableProps<{
         clearButton?: IconButtonProps;
         input?: FormFieldInputProps;
     };
-} & InputDeprecatedProps, Omit<TextFieldProps<HTMLInputElement>, 'description' | 'children' | 'inputElementType' | 'validationState'>>;
+} & InputDeprecatedProps, Omit<TextFieldProps<HTMLInputElement>, 'description' | 'children' | 'validationState'>>;
 
 // Warning: (ae-forgotten-export) The symbol "FormFieldControlGroupPropVariant" needs to be exported by the entry point index.d.ts
 //

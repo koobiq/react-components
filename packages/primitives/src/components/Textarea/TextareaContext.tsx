@@ -1,9 +1,8 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { TextAreaContext, useSlottedContext } from 'react-aria-components';
 
-import type { TextareaProps } from './index';
+export { TextAreaContext as TextareaContext };
 
-export const TextareaContext = createContext<TextareaProps>({});
-
-export const useTextareaContext = () => useContext(TextareaContext);
+export const useTextareaContext = () =>
+  useSlottedContext(TextAreaContext) ?? {};

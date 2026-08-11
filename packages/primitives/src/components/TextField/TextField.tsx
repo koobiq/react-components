@@ -1,7 +1,7 @@
 'use client';
 
-import { forwardRef, useRef, useCallback } from 'react';
-import type { Ref, KeyboardEvent } from 'react';
+import { forwardRef, useRef, useCallback, useState } from 'react';
+import type { KeyboardEvent, Ref } from 'react';
 
 import {
   filterDOMProps,
@@ -14,6 +14,8 @@ import {
   Provider,
   DEFAULT_SLOT,
   ButtonContext,
+  FieldInputContext,
+  useContextProps,
   useRenderProps,
   useSlottedContext,
 } from 'react-aria-components';
@@ -34,13 +36,37 @@ import type {
 import intlMessages from './intl.json';
 
 function TextFieldRender(
-  props: Omit<TextFieldProps<HTMLInputElement | HTMLTextAreaElement>, 'ref'>,
+  inProps: Omit<TextFieldProps<HTMLInputElement | HTMLTextAreaElement>, 'ref'>,
   ref: Ref<TextFieldRef>
 ) {
+  let props = inProps;
+  let inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+
+  [props, inputRef as unknown] = useContextProps(
+    props,
+    inputRef,
+    FieldInputContext
+  );
+
   const { isDisabled, isReadOnly, isRequired, onClear, isClearable } = props;
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const [inputElementType, setInputElementType] = useState<
+    'input' | 'textarea'
+  >('input');
+
+  const inputOrTextareaRef = useCallback(
+    (node: HTMLInputElement | HTMLTextAreaElement | null) => {
+      inputRef.current = node;
+
+      if (node) {
+        setInputElementType(
+          node instanceof HTMLTextAreaElement ? 'textarea' : 'input'
+        );
+      }
+    },
+    [inputRef]
+  );
 
   const [inputValue, setInputValue] = useControlledState(
     props.value,
@@ -92,7 +118,7 @@ function TextFieldRender(
     descriptionProps,
     errorMessageProps,
     ...validation
-  } = useTextField<'input' | 'textarea'>(
+  } = useTextField<any>(
     {
       ...removeDataAttributes(props),
       value: inputValue,
@@ -101,6 +127,7 @@ function TextFieldRender(
         handleKeyDown(e);
       },
       onChange: setInputValue,
+      inputElementType,
       validationBehavior,
     },
     inputRef
@@ -136,8 +163,8 @@ function TextFieldRender(
       <Provider
         values={[
           [LabelContext, labelProps],
-          [InputContext, { ...inputProps, ref: inputRef }],
-          [TextareaContext, { ...inputProps, ref: inputRef }],
+          [InputContext, { ...inputProps, ref: inputOrTextareaRef }],
+          [TextareaContext, { ...inputProps, ref: inputOrTextareaRef }],
           [
             TextContext,
             {

@@ -110,7 +110,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   );
 
   return (
-    <FormField as={TextField} inputElementType="input" {...rootProps}>
+    <FormField as={TextField} {...rootProps}>
       {({ isInvalid, isRequired, isDisabled, state }) => {
         const hasValue = state.value !== '';
         const clearButtonIsHidden = !hasValue || isDisabled || isReadOnly;
