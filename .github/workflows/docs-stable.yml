@@ -20,4 +20,4 @@ jobs:
         run: pnpm run build-storybook
 
       - name: Deploy
-        run: npx --yes firebase-tools@15 deploy --only hosting:stable --token=${{ secrets.FIREBASE_DEPLOY_TOKEN }}
+        run: npx --yes firebase-tools@15.22.3 deploy --only hosting:stable --token=${{ secrets.FIREBASE_DEPLOY_TOKEN }}
