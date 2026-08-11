@@ -1,16 +1,22 @@
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 
 import { once } from '@koobiq/logger';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Button } from '../Button';
 
-import { DropdownMenu, dropdownMenuPropTrigger } from './index.js';
+import {
+  DropdownMenu,
+  dropdownMenuPropTrigger,
+  type DropdownMenuContentProps,
+  type DropdownMenuPopoverProps,
+  type DropdownMenuProps,
+} from './index.js';
 
 const onAction = vi.fn();
-const onOpenChange = vi.fn((value) => value);
+const onOpenChange = vi.fn();
 const onSelectionChange = vi.fn();
 const onInputChange = vi.fn();
 
@@ -25,9 +31,9 @@ const open = async () => {
 };
 
 type FixtureProps = {
-  contentProps?: Record<string, unknown>;
-  popoverProps?: Record<string, unknown>;
-  rootProps?: Record<string, unknown>;
+  contentProps?: Omit<DropdownMenuContentProps, 'children'>;
+  popoverProps?: Omit<DropdownMenuPopoverProps, 'children'>;
+  rootProps?: Omit<DropdownMenuProps, 'children'>;
 };
 
 function Fixture({ contentProps, popoverProps, rootProps }: FixtureProps = {}) {
@@ -51,6 +57,7 @@ describe('DropdownMenu', () => {
   });
 
   afterEach(() => {
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
@@ -77,7 +84,7 @@ describe('DropdownMenu', () => {
     });
 
     it('should forward a ref to the popover element', async () => {
-      const ref = { current: null } as { current: HTMLElement | null };
+      const ref = createRef<HTMLDivElement>();
 
       render(<Fixture popoverProps={{ ref }} />);
       await open();
@@ -126,12 +133,12 @@ describe('DropdownMenu', () => {
       await open();
 
       expect(onOpenChange).toHaveBeenCalledTimes(1);
-      expect(onOpenChange.mock.results[0]?.value).toBe(true);
+      expect(onOpenChange).toHaveBeenLastCalledWith(true);
 
       await userEvent.keyboard('{Escape}');
 
       expect(onOpenChange).toHaveBeenCalledTimes(2);
-      expect(onOpenChange.mock.results[1]?.value).toBe(false);
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
     });
 
     it('should close on Escape', async () => {
@@ -173,8 +180,12 @@ describe('DropdownMenu', () => {
         if (trigger === 'longPress') {
           await userEvent.pointer({ keys: '[TouchA>]', target: getControl() });
 
-          await new Promise((resolve) => {
-            setTimeout(resolve, 600);
+          // The long press opens the menu on a timer, so React needs to flush
+          // the resulting render before the pointer is released.
+          await act(async () => {
+            await new Promise((resolve) => {
+              setTimeout(resolve, 600);
+            });
           });
 
           await userEvent.pointer({ keys: '[/TouchA]', target: getControl() });
@@ -470,7 +481,7 @@ describe('DropdownMenu', () => {
       );
 
     it('should render addons and text inside an item', async () => {
-      renderComposed();
+      renderComposed('Copy');
       await open();
 
       expect(screen.getByTestId('start-addon')).toBeInTheDocument();
@@ -496,8 +507,6 @@ describe('DropdownMenu', () => {
       expect(warn).toHaveBeenCalledWith(
         expect.stringContaining('DropdownMenu.Item')
       );
-
-      warn.mockRestore();
     });
 
     it('should not warn when a textValue is given', async () => {
@@ -508,8 +517,6 @@ describe('DropdownMenu', () => {
       await open();
 
       expect(warn).not.toHaveBeenCalled();
-
-      warn.mockRestore();
     });
   });
 
@@ -626,6 +633,24 @@ describe('DropdownMenu', () => {
 
     const getSearch = () => screen.getByRole('searchbox');
 
+    // `userEvent.keyboard` dispatches events inside a synchronous `act`, but
+    // clearing the query suspends while React Aria rebuilds the collection.
+    const pressEscape = async () => {
+      await act(async () => {
+        getSearch().dispatchEvent(
+          new KeyboardEvent('keydown', {
+            bubbles: true,
+            cancelable: true,
+            code: 'Escape',
+            key: 'Escape',
+          })
+        );
+
+        // Keep the scope asynchronous so `act` waits for that suspended render.
+        await Promise.resolve();
+      });
+    };
+
     it('should not render a search input on its own', async () => {
       render(<Fixture />);
       await open();
@@ -701,7 +726,8 @@ describe('DropdownMenu', () => {
       await userEvent.type(getSearch(), 'pas');
       await waitFor(() => expect(getItems()).toHaveLength(1));
 
-      await userEvent.keyboard('{Escape}');
+      await pressEscape();
+      await waitFor(() => expect(getItems()).toHaveLength(3));
 
       expect(getSearch()).toHaveValue('');
       expect(getMenu()).toBeInTheDocument();
@@ -713,8 +739,12 @@ describe('DropdownMenu', () => {
       await userEvent.type(getSearch(), 'pas');
       await waitFor(() => expect(getItems()).toHaveLength(1));
 
-      // The first Escape clears the query, the second closes the menu.
-      await userEvent.keyboard('{Escape}{Escape}');
+      // The first Escape clears the query, the second closes the menu. Waiting
+      // between them lets the rebuilt collection settle inside `act`.
+      await pressEscape();
+      await waitFor(() => expect(getItems()).toHaveLength(3));
+
+      await userEvent.keyboard('{Escape}');
       await waitFor(() => expect(queryMenu()).not.toBeInTheDocument());
       await open();
 
