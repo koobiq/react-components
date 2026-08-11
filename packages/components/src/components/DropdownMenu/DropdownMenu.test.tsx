@@ -6,6 +6,8 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Button } from '../Button';
+import { Divider } from '../Divider';
+import { SearchInput } from '../SearchInput';
 
 import {
   DropdownMenu,
@@ -372,7 +374,7 @@ describe('DropdownMenu', () => {
     });
   });
 
-  describe('sections, headers and separators', () => {
+  describe('sections, headers and dividers', () => {
     const renderSections = () =>
       render(
         <DropdownMenu>
@@ -382,7 +384,7 @@ describe('DropdownMenu', () => {
               <DropdownMenu.Section title="Edit">
                 <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
               </DropdownMenu.Section>
-              <DropdownMenu.Separator />
+              <Divider />
               <DropdownMenu.Section>
                 <DropdownMenu.Header>Danger</DropdownMenu.Header>
                 <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
@@ -408,7 +410,7 @@ describe('DropdownMenu', () => {
       expect(screen.getByRole('group', { name: 'Danger' })).toBeInTheDocument();
     });
 
-    it('should render a separator', async () => {
+    it('should render a divider', async () => {
       renderSections();
       await open();
 
@@ -613,7 +615,7 @@ describe('DropdownMenu', () => {
           <Button data-testid="control">Actions</Button>
           <DropdownMenu.Popover>
             <DropdownMenu.Autocomplete>
-              <DropdownMenu.SearchInput />
+              <SearchInput />
               <DropdownMenu.Content {...menuProps}>
                 <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
                 <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
@@ -767,7 +769,7 @@ describe('DropdownMenu', () => {
                   setValue(next);
                 }}
               >
-                <DropdownMenu.SearchInput />
+                <SearchInput />
                 <DropdownMenu.Content>
                   <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
                   <DropdownMenu.Item id="paste">Paste</DropdownMenu.Item>
@@ -796,7 +798,7 @@ describe('DropdownMenu', () => {
           <Button data-testid="control">Actions</Button>
           <DropdownMenu.Popover>
             <DropdownMenu.Autocomplete>
-              <DropdownMenu.SearchInput placeholder="Find an action" />
+              <SearchInput placeholder="Find an action" />
               <DropdownMenu.Content>
                 <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
               </DropdownMenu.Content>

@@ -1,9 +1,0 @@
-/* React Aria renders the separator, so only the `Divider` look is repeated. */
-.base {
-  border: 0;
-  block-size: 0;
-  flex-shrink: 0;
-  inline-size: 100%;
-  margin-block: var(--kbq-size-xxs);
-  border-block-end: 1px solid var(--kbq-line-contrast-less);
-}

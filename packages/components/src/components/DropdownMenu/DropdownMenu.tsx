@@ -13,9 +13,7 @@ import {
   DropdownMenuHeader,
   DropdownMenuItem,
   DropdownMenuPopover,
-  DropdownMenuSearchInput,
   DropdownMenuSection,
-  DropdownMenuSeparator,
   DropdownMenuSubmenuTrigger,
 } from './components';
 import type { DropdownMenuComponent, DropdownMenuProps } from './types';
@@ -34,10 +32,8 @@ type CompoundedComponent = DropdownMenuComponent & {
   ItemAddon: typeof ListItemAddon;
   Section: typeof DropdownMenuSection;
   Header: typeof DropdownMenuHeader;
-  Separator: typeof DropdownMenuSeparator;
   SubmenuTrigger: typeof DropdownMenuSubmenuTrigger;
   Autocomplete: typeof DropdownMenuAutocomplete;
-  SearchInput: typeof DropdownMenuSearchInput;
   Footer: typeof DropdownMenuFooter;
   Pressable: typeof Pressable;
 };
@@ -56,10 +52,8 @@ export const DropdownMenu: CompoundedComponent = Object.assign(
     ItemAddon: ListItemAddon,
     Section: DropdownMenuSection,
     Header: DropdownMenuHeader,
-    Separator: DropdownMenuSeparator,
     SubmenuTrigger: DropdownMenuSubmenuTrigger,
     Autocomplete: DropdownMenuAutocomplete,
-    SearchInput: DropdownMenuSearchInput,
     Footer: DropdownMenuFooter,
     Pressable,
   }

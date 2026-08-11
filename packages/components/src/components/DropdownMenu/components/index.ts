@@ -4,7 +4,5 @@ export * from './DropdownMenuFooter';
 export * from './DropdownMenuHeader';
 export * from './DropdownMenuItem';
 export * from './DropdownMenuPopover';
-export * from './DropdownMenuSearchInput';
 export * from './DropdownMenuSection';
-export * from './DropdownMenuSeparator';
 export * from './DropdownMenuSubmenuTrigger';

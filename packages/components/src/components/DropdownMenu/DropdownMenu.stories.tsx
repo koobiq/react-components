@@ -26,6 +26,7 @@ import { Button } from '../Button';
 import { Divider } from '../Divider';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
+import { SearchInput } from '../SearchInput';
 import { SelectNext as Select } from '../SelectNext';
 import { Typography } from '../Typography';
 
@@ -45,10 +46,8 @@ const meta = {
     'DropdownMenu.ItemAddon': DropdownMenu.ItemAddon,
     'DropdownMenu.Section': DropdownMenu.Section,
     'DropdownMenu.Header': DropdownMenu.Header,
-    'DropdownMenu.Separator': DropdownMenu.Separator,
     'DropdownMenu.SubmenuTrigger': DropdownMenu.SubmenuTrigger,
     'DropdownMenu.Autocomplete': DropdownMenu.Autocomplete,
-    'DropdownMenu.SearchInput': DropdownMenu.SearchInput,
     'DropdownMenu.Footer': DropdownMenu.Footer,
   },
   parameters: {
@@ -259,7 +258,7 @@ export const Sections: Story = {
             <DropdownMenu.Item id="new">New</DropdownMenu.Item>
             <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
           </DropdownMenu.Section>
-          <DropdownMenu.Separator />
+          <Divider />
           <DropdownMenu.Section title="Edit">
             <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
             <DropdownMenu.Item id="cut">Cut</DropdownMenu.Item>
@@ -311,7 +310,7 @@ export const SectionsDynamic: Story = {
                   )}
                 </DropdownMenu.Section>
               ) : (
-                <DropdownMenu.Separator />
+                <Divider />
               )
             }
           </DropdownMenu.Content>
@@ -355,7 +354,7 @@ export const WithSectionLevelSelection: Story = {
                 </DropdownMenu.ItemAddon>
               </DropdownMenu.Item>
             </DropdownMenu.Section>
-            <DropdownMenu.Separator />
+            <Divider />
             <DropdownMenu.Section
               title="Text style"
               selectionMode="multiple"
@@ -381,7 +380,7 @@ export const WithSectionLevelSelection: Story = {
                 <DropdownMenu.ItemText>Underline</DropdownMenu.ItemText>
               </DropdownMenu.Item>
             </DropdownMenu.Section>
-            <DropdownMenu.Separator />
+            <Divider />
             <DropdownMenu.Section
               title="Text alignment"
               selectionMode="single"
@@ -456,7 +455,7 @@ export const Separators: Story = {
                 <Typography color="contrast-secondary">@Sophia</Typography>
               </FlexBox>
             </DropdownMenu.Header>
-            <DropdownMenu.Separator />
+            <Divider />
             <DropdownMenu.Item id="dashboard" textValue="Dashboard">
               <DropdownMenu.ItemAddon>
                 <IconDashboard16 />
@@ -481,14 +480,14 @@ export const Separators: Story = {
               </DropdownMenu.ItemAddon>
               <DropdownMenu.ItemText>Settings</DropdownMenu.ItemText>
             </DropdownMenu.Item>
-            <DropdownMenu.Separator />
+            <Divider />
             <DropdownMenu.Item id="support" textValue="Contact support">
               <DropdownMenu.ItemAddon>
                 <IconMessage16 />
               </DropdownMenu.ItemAddon>
               <DropdownMenu.ItemText>Contact support</DropdownMenu.ItemText>
             </DropdownMenu.Item>
-            <DropdownMenu.Separator />
+            <Divider />
             <DropdownMenu.Item id="logout" textValue="Log out">
               <DropdownMenu.ItemAddon>
                 <IconArrowRightToBracket16 />
@@ -532,7 +531,7 @@ export const Submenu: Story = {
               </DropdownMenu.Content>
             </DropdownMenu.Popover>
           </DropdownMenu.SubmenuTrigger>
-          <DropdownMenu.Separator />
+          <Divider />
           <DropdownMenu.Item id="delete">Delete</DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Popover>
@@ -571,7 +570,7 @@ export const Search: Story = {
         <Button>Cities</Button>
         <DropdownMenu.Popover>
           <DropdownMenu.Autocomplete>
-            <DropdownMenu.SearchInput />
+            <SearchInput />
             <Divider disablePaddings />
             <DropdownMenu.Content onAction={(key) => alert(key)}>
               {items.map((item) => (
@@ -602,7 +601,7 @@ export const SearchEmpty: Story = {
       <Button>Actions</Button>
       <DropdownMenu.Popover>
         <DropdownMenu.Autocomplete>
-          <DropdownMenu.SearchInput />
+          <SearchInput />
           <Divider disablePaddings />
           <DropdownMenu.Content noItemsText="No such action">
             <DropdownMenu.Item id="new">New</DropdownMenu.Item>

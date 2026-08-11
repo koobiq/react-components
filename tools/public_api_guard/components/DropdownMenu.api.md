@@ -5,7 +5,6 @@
 ```ts
 
 import type { AriaDialogProps } from '@koobiq/react-primitives';
-import type { AriaSearchFieldProps } from '@koobiq/react-primitives';
 import type { AutocompleteProps } from '@koobiq/react-primitives';
 import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primitives';
 import type { ButtonOptions } from '@koobiq/react-primitives';
@@ -13,9 +12,8 @@ import type { ComponentProps } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
-import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
-import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
+import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
 import type { HeaderProps } from '@koobiq/react-primitives';
@@ -27,12 +25,10 @@ import { PolyForwardComponent } from '@koobiq/react-core';
 import { Pressable } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import { ReactNode } from 'react';
-import { Ref } from 'react';
+import type { Ref } from 'react';
 import { RefAttributes } from 'react';
 import type { RefObject } from 'react';
-import { TextProps } from '@koobiq/react-primitives';
 import type { TransitionProps } from 'react-transition-group/Transition';
-import { ValidationResult } from '@koobiq/react-core';
 
 // Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
 //
@@ -183,20 +179,6 @@ export type DropdownMenuPropTrigger = (typeof dropdownMenuPropTrigger)[number];
 export const dropdownMenuPropTrigger: readonly ["press", "longPress"];
 
 // @public
-export function DropdownMenuSearchInput(props: DropdownMenuSearchInputProps): JSX.Element;
-
-// @public (undocumented)
-export namespace DropdownMenuSearchInput {
-    var // (undocumented)
-    displayName: string;
-}
-
-// Warning: (ae-forgotten-export) The symbol "SearchInputProps" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-export type DropdownMenuSearchInputProps = SearchInputProps;
-
-// @public
 export function DropdownMenuSection<T extends object = object>(input: DropdownMenuSectionProps<T>): JSX.Element;
 
 // @public (undocumented)
@@ -209,21 +191,6 @@ export namespace DropdownMenuSection {
 export type DropdownMenuSectionProps<T extends object = object> = MenuSectionProps<T> & DataAttributeProps & {
     title?: ReactNode;
 };
-
-// @public
-export function DropdownMenuSeparator(input: DropdownMenuSeparatorProps): JSX.Element;
-
-// @public (undocumented)
-export namespace DropdownMenuSeparator {
-    var // (undocumented)
-    displayName: string;
-}
-
-// @public (undocumented)
-export type DropdownMenuSeparatorProps = {
-    className?: string;
-    style?: CSSProperties;
-} & DataAttributeProps;
 
 // @public
 export function DropdownMenuSubmenuTrigger(props: DropdownMenuSubmenuTriggerProps): JSX.Element;

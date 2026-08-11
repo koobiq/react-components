@@ -22,7 +22,7 @@ adding submenus and search on top of it.
 ## Import
 
 ```tsx
-import { DropdownMenu } from '@koobiq/react-components';
+import { Divider, DropdownMenu, SearchInput } from '@koobiq/react-components';
 ```
 
 ## Usage
@@ -46,10 +46,8 @@ The component has the following helper components:
 - `DropdownMenu.ItemAddon` — an addon of an item, such as an icon or a shortcut
 - `DropdownMenu.Section` — a group of items
 - `DropdownMenu.Header` — a block of custom content, or the heading of a section
-- `DropdownMenu.Separator` — a line between groups of items
 - `DropdownMenu.SubmenuTrigger` — wraps an item and the submenu it opens
 - `DropdownMenu.Autocomplete` — filters the menu with a field
-- `DropdownMenu.SearchInput` — the search field for an `Autocomplete`
 - `DropdownMenu.Footer` — text under the items, outside the scroll area
 - `DropdownMenu.Pressable` — makes custom markup usable as a trigger.
 
@@ -173,7 +171,7 @@ so one menu can mix plain actions with a multiple and a single choice.
 
 ## Separators
 
-Separators may be added between items or sections in order to create non-labeled groupings.
+Use `Divider` between items or sections to create non-labeled groupings.
 `DropdownMenu.Header` renders arbitrary content inside the menu.
 
 <Story of={Stories.Separators} />
@@ -192,10 +190,10 @@ so its behaviour may change in a future release.
 
 ## Search
 
-Wrap the content in a `DropdownMenu.Autocomplete` and put a `DropdownMenu.SearchInput`
-next to it. The field has to be a sibling of the menu, not a child of it: the menu
-clears the field context for its own subtree. Matching is case- and
-accent-insensitive; pass `filter` to the autocomplete to change it.
+Wrap the content in a `DropdownMenu.Autocomplete` and put a `SearchInput` next to it.
+The field has to be a sibling of the menu, not a child of it: the menu clears the
+field context for its own subtree. Matching is case- and accent-insensitive; pass
+`filter` to the autocomplete to change it.
 
 Focus stays in the search field while the arrow keys move through the items.
 An item that opens a submenu is kept when its own text matches, but the contents

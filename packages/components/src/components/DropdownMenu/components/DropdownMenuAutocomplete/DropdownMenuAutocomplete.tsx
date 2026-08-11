@@ -1,8 +1,16 @@
 'use client';
 
-import { useFilter } from '@koobiq/react-core';
-import { Autocomplete as AriaAutocomplete } from '@koobiq/react-primitives';
+import { useFilter, useLocalizedStringFormatter } from '@koobiq/react-core';
+import {
+  Autocomplete as AriaAutocomplete,
+  Provider,
+} from '@koobiq/react-primitives';
 
+import type { SearchInputProps } from '../../../SearchInput';
+import { SearchInputContext } from '../../../SearchInput/SearchInputContext';
+import intlMessages from '../../intl';
+
+import s from './DropdownMenuAutocomplete.module.css';
 import type { DropdownMenuAutocompleteProps } from './types';
 
 /**
@@ -13,8 +21,23 @@ import type { DropdownMenuAutocompleteProps } from './types';
  */
 export function DropdownMenuAutocomplete(props: DropdownMenuAutocompleteProps) {
   const { contains } = useFilter({ sensitivity: 'base' });
+  const t = useLocalizedStringFormatter(intlMessages);
 
-  return <AriaAutocomplete filter={contains} {...props} />;
+  const searchInputProps: SearchInputProps = {
+    autoFocus: true,
+    fullWidth: true,
+    isLabelHidden: true,
+    className: s.search,
+    variant: 'transparent',
+    placeholder: t.format('search'),
+    'aria-label': t.format('search'),
+  };
+
+  return (
+    <Provider values={[[SearchInputContext, searchInputProps]]}>
+      <AriaAutocomplete filter={contains} {...props} />
+    </Provider>
+  );
 }
 
 DropdownMenuAutocomplete.displayName = 'DropdownMenu.Autocomplete';
