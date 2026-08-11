@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.36.0](https://github.com/koobiq/react-components/compare/0.35.1...0.36.0) (2026-08-10)
+
+
+### 🚀 Features
+
+* **components:** add `ButtonGroup` component (DS-5244) ([#436](https://github.com/koobiq/react-components/issues/436)) ([5d8e416](https://github.com/koobiq/react-components/commit/5d8e41685c4df5ee87e9fc69522bce4a394cfc6d))
+* **components:** add `FileUpload` component (DS-5195) ([#420](https://github.com/koobiq/react-components/issues/420)) ([3381e96](https://github.com/koobiq/react-components/commit/3381e964155c509c5933d53776e997c854f1f12f))
+* **components:** add `Resizable` component (DS-5253) ([#426](https://github.com/koobiq/react-components/issues/426)) ([a3ea25a](https://github.com/koobiq/react-components/commit/a3ea25a1fe77cf59e878db1d2ab0cdf98d53f61d))
+* **components:** add `Sidebar` component (DS-5256) ([#421](https://github.com/koobiq/react-components/issues/421)) ([071934e](https://github.com/koobiq/react-components/commit/071934e9a18c654c6e89b49d7a4aecb4c1ca2de4))
+* **components:** add `TopBar` component (DS-5242) ([#444](https://github.com/koobiq/react-components/issues/444)) ([001ed06](https://github.com/koobiq/react-components/commit/001ed06cd7bb8c97e47f6b35af6c6bff9059201d))
+* **components:** added Markdown component (#DS-5225) ([#447](https://github.com/koobiq/react-components/issues/447)) ([43af5a8](https://github.com/koobiq/react-components/commit/43af5a8079c95dca7532303f5830fa345564494c)), closes [#DS-5225](https://github.com/koobiq/react-components/issues/DS-5225) [#DS-5225](https://github.com/koobiq/react-components/issues/DS-5225)
+* **core:** add `useElementOverflow` hook (DS-5332) ([#419](https://github.com/koobiq/react-components/issues/419)) ([61949f6](https://github.com/koobiq/react-components/commit/61949f693d6ee2dd577db35680a619c4ce3d6c4f))
+* **core:** add FileSizeFormatter utility and hook (DS-5343) ([#427](https://github.com/koobiq/react-components/issues/427)) ([6853984](https://github.com/koobiq/react-components/commit/6853984d70754f8af60c9745572f9944556cc4d3))
+* **Flag:** add Flag component (#DS-1405) ([#417](https://github.com/koobiq/react-components/issues/417)) ([0e124ca](https://github.com/koobiq/react-components/commit/0e124ca2f177de7a0ac1de2a67333ebbbe7d01f7)), closes [#DS-1405](https://github.com/koobiq/react-components/issues/DS-1405)
+* **icons:** update @koobiq/react-icons to 12.1.1 (DS-5417) ([#453](https://github.com/koobiq/react-components/issues/453)) ([94404bd](https://github.com/koobiq/react-components/commit/94404bd082b0f61e7c64a0df83b141e0d72dbe8a))
+* **SelectNext:** add `isReadOnly` support (DS-5220) ([#415](https://github.com/koobiq/react-components/issues/415)) ([a8a33b0](https://github.com/koobiq/react-components/commit/a8a33b0f8d5273645c1c11f4dedc66e7740580ac))
+* **SelectNext:** add `minOptionsThreshold` prop (DS-4707) ([#437](https://github.com/koobiq/react-components/issues/437)) ([2cb3b69](https://github.com/koobiq/react-components/commit/2cb3b697ca3f718de60b7b3aba84a2901d86459b))
+* **Tabs:** add drag-to-scroll for horizontal tabs (DS-4765) ([#423](https://github.com/koobiq/react-components/issues/423)) ([ffa04b3](https://github.com/koobiq/react-components/commit/ffa04b3830134a97d771b18fc3b9b230b5c0c9ca))
+* **Username:** add `Username` component (#DS-5240) ([#428](https://github.com/koobiq/react-components/issues/428)) ([d112224](https://github.com/koobiq/react-components/commit/d112224a51bd57d31ddd42e3980e90fd0f43af14)), closes [#DS-5240](https://github.com/koobiq/react-components/issues/DS-5240)
+
+
+### 🐞 Bug Fixes
+
+* **Button:** correct disabled border color in outline variants (DS-5384) ([#434](https://github.com/koobiq/react-components/issues/434)) ([2c8ce2d](https://github.com/koobiq/react-components/commit/2c8ce2daf2bb17330d8c5f3a12f369826f7d8bf6))
+* **components:** correct Tooltip and Popover arrow alignment (DS-5146) ([#446](https://github.com/koobiq/react-components/issues/446)) ([dce74f7](https://github.com/koobiq/react-components/commit/dce74f7c5ba803eb44027281e42960fe4a3eeccc))
+* **components:** export compound component props (DS-5287) ([#424](https://github.com/koobiq/react-components/issues/424)) ([ff5e736](https://github.com/koobiq/react-components/commit/ff5e736ea7d7de0c38cb8eafab78abf6143312ae))
+* **Flag, Sidebar:** move CSS variable defaults to private variables (DS-5396) ([#451](https://github.com/koobiq/react-components/issues/451)) ([275dccb](https://github.com/koobiq/react-components/commit/275dccbb10e0639c814db3a39045076399f20a6b))
+* **flex, FlexBox:** correct rowGap and colGap behavior (DS-5394) ([#443](https://github.com/koobiq/react-components/issues/443)) ([ca07268](https://github.com/koobiq/react-components/commit/ca07268f5022042489469efd2c809cf47180e132))
+* **flex:** ensure utility styles override component styles (DS-5175) ([#438](https://github.com/koobiq/react-components/issues/438)) ([5726788](https://github.com/koobiq/react-components/commit/5726788187e51680d6f2b0ee55ac8f8a92156ea1))
+* **spacing:** fix zero-value padding utility classes (DS-5389) ([#442](https://github.com/koobiq/react-components/issues/442)) ([fdfc45f](https://github.com/koobiq/react-components/commit/fdfc45f673925d430366e82e278a69a4ca1905c6))
+* **Table:** rebuild collection when children change (DS-5260) ([#425](https://github.com/koobiq/react-components/issues/425)) ([9fa6eac](https://github.com/koobiq/react-components/commit/9fa6eac3370354f3656405d83a6757f77f44a2e3))
+* **Textarea:** exclude isClearable from props type (DS-5291) ([#432](https://github.com/koobiq/react-components/issues/432)) ([a38d828](https://github.com/koobiq/react-components/commit/a38d828e5144be8c404296c44148f561c038ce4e))
+* **Toast:** correct info status icon color (DS-5381) ([#430](https://github.com/koobiq/react-components/issues/430)) ([852498b](https://github.com/koobiq/react-components/commit/852498b2768e07a74419e2ecee3632d511d676b2))
+* **ToastProvider:** dismiss stuck toasts in a background tab (DS-4709) ([#448](https://github.com/koobiq/react-components/issues/448)) ([0bd8392](https://github.com/koobiq/react-components/commit/0bd8392ad3171a562a0202e6a96f58b6433b96ae))
+* **ToastProvider:** prevent document access during SSR (DS-5380) ([#431](https://github.com/koobiq/react-components/issues/431)) ([718703e](https://github.com/koobiq/react-components/commit/718703e1063b13b2489775f18104702a347814bd))
+* **TreeSelect:** prevent clear-button slot error in Popover (DS-5393) ([#449](https://github.com/koobiq/react-components/issues/449)) ([6571a61](https://github.com/koobiq/react-components/commit/6571a61ab606b7fab10ef3780b67349ea30972b9))
+
 ## [0.35.1](https://github.com/koobiq/react-components/compare/0.35.0...0.35.1) (2026-07-14)
 
 

@@ -37,16 +37,14 @@ export type FormProps = {
    * @default 'top'
    */
   labelPlacement?:
-    | FormFieldPropLabelPlacement
-    | ResponsiveValue<FormFieldPropLabelPlacement>;
+    FormFieldPropLabelPlacement | ResponsiveValue<FormFieldPropLabelPlacement>;
   /**
    * The label's horizontal alignment relative to the element it is labeling.
    * Responsive values allowed.
    * @default 'start'
    */
   labelAlign?:
-    | FormFieldPropLabelAlign
-    | ResponsiveValue<FormFieldPropLabelAlign>;
+    FormFieldPropLabelAlign | ResponsiveValue<FormFieldPropLabelAlign>;
   /**
    * Size of the label column when `labelPlacement="side"`.
    * Ignored for `"top"`.
@@ -56,7 +54,6 @@ export type FormProps = {
    * @default 'max-content'
    */
   labelInlineSize?:
-    | FormPropLabelInlineSize
-    | ResponsiveValue<FormPropLabelInlineSize>;
+    FormPropLabelInlineSize | ResponsiveValue<FormPropLabelInlineSize>;
 } & FormPropsPrimitive;
 export type FormRef = ComponentRef<'form'>;

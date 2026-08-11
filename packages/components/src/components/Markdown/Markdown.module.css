@@ -1,0 +1,282 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  display: block;
+  color: var(--kbq-foreground-contrast);
+  background: var(--kbq-markdown-bg, transparent);
+}
+
+.base > :first-child {
+  margin-block-start: 0;
+}
+
+.base > :last-child {
+  margin-block-end: 0;
+}
+
+.base h1,
+.base h2,
+.base h3,
+.base h4,
+.base h5,
+.base h6 {
+  color: var(--kbq-foreground-contrast);
+}
+
+.base :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+  margin-block-start: 0;
+}
+
+.base h1 {
+  margin-block: var(--kbq-markdown-h1-size-margin-top)
+    var(--kbq-markdown-h1-size-margin-bottom);
+
+  @mixin markdown-typography h1;
+}
+
+.base h2 {
+  margin-block: var(--kbq-markdown-h2-size-margin-top)
+    var(--kbq-markdown-h2-size-margin-bottom);
+
+  @mixin markdown-typography h2;
+}
+
+.base h3 {
+  margin-block: var(--kbq-markdown-h3-size-margin-top)
+    var(--kbq-markdown-h3-size-margin-bottom);
+
+  @mixin markdown-typography h3;
+}
+
+.base h4 {
+  margin-block: var(--kbq-markdown-h4-size-margin-top)
+    var(--kbq-markdown-h4-size-margin-bottom);
+
+  @mixin markdown-typography h4;
+}
+
+.base h5 {
+  margin-block: var(--kbq-markdown-h5-size-margin-top)
+    var(--kbq-markdown-h5-size-margin-bottom);
+
+  @mixin markdown-typography h5;
+}
+
+.base h6 {
+  margin-block: var(--kbq-markdown-h6-size-margin-top)
+    var(--kbq-markdown-h6-size-margin-bottom);
+
+  @mixin markdown-typography h6;
+}
+
+.base p {
+  margin-block: var(--kbq-markdown-p-size-margin-top)
+    var(--kbq-markdown-p-size-margin-bottom);
+  color: var(--kbq-foreground-contrast);
+
+  @mixin markdown-typography body;
+}
+
+.base ul,
+.base ol {
+  margin-block: var(--kbq-markdown-list-size-margin-top)
+    var(--kbq-markdown-list-size-margin-bottom);
+  color: var(--kbq-foreground-contrast);
+
+  @mixin markdown-typography body;
+}
+
+.base p + ul,
+.base p + ol {
+  margin-block-start: var(--kbq-markdown-list-size-margin-top-after-paragraph);
+}
+
+.base ul {
+  position: relative;
+  list-style: none;
+  padding-inline: var(--kbq-size-xxl) 0;
+  padding-block: 0;
+}
+
+.base ul > li::before {
+  content: '—';
+  display: block;
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: 24px;
+  text-align: start;
+}
+
+.base ol {
+  list-style: none;
+  padding: 0;
+  counter-reset: li;
+}
+
+.base ol > li {
+  counter-increment: li;
+}
+
+.base ol > li::before {
+  content: counter(li) '.';
+  padding-inline-end: var(--kbq-markdown-list-size-ol-number-padding-right);
+}
+
+.base ol > li > * {
+  display: inline-block;
+}
+
+.base li {
+  margin-block-end: var(--kbq-markdown-list-size-item-margin-bottom);
+}
+
+.base blockquote {
+  margin-block: var(--kbq-markdown-blockquote-size-margin-top)
+    var(--kbq-markdown-blockquote-size-margin-bottom);
+  margin-inline: 0;
+  padding: var(--kbq-markdown-blockquote-size-padding);
+  border-inline-start: var(--kbq-markdown-blockquote-size-line-width) solid
+    var(--kbq-markdown-blockquote-line);
+  color: var(--kbq-markdown-blockquote-text);
+  background: var(--kbq-markdown-blockquote-background);
+}
+
+.base blockquote > p {
+  margin-block: 0;
+}
+
+.base pre {
+  position: relative;
+  overflow-x: auto;
+  margin-block: var(--kbq-markdown-code-size-multiline-margin-top)
+    var(--kbq-markdown-code-size-multiline-margin-bottom);
+  padding: var(--kbq-markdown-code-size-multiline-padding);
+  border-radius: var(--kbq-markdown-code-size-border-radius);
+  color: var(--kbq-markdown-code-text);
+  background-color: var(--kbq-markdown-code-background);
+}
+
+.base code {
+  border-radius: var(--kbq-markdown-code-size-border-radius);
+
+  @mixin markdown-typography inline-code;
+}
+
+.base code:not(pre > code) {
+  white-space: nowrap;
+  padding: var(--kbq-markdown-code-size-inline-padding);
+}
+
+.base code:not(pre > code, a code) {
+  color: var(--kbq-markdown-code-text);
+  background-color: var(--kbq-markdown-code-background);
+}
+
+.base a code {
+  background-color: var(--kbq-markdown-code-background);
+
+  @mixin markdown-typography inline-code-as-link;
+}
+
+.base img {
+  max-inline-size: 100%;
+  margin-block: var(--kbq-markdown-image-size-margin-top)
+    var(--kbq-markdown-image-size-margin-bottom);
+}
+
+.base img + em {
+  display: block;
+  margin-block: var(--kbq-markdown-image-size-caption-margin-top)
+    var(--kbq-markdown-image-size-caption-margin-bottom);
+  color: var(--kbq-markdown-image-caption-text);
+
+  @mixin markdown-typography caption;
+}
+
+.base hr {
+  block-size: 0;
+  margin-block: var(--kbq-markdown-hr-size-margin-vertical);
+  border: none;
+  border-block-end: var(--kbq-markdown-hr-size-width) solid
+    var(--kbq-markdown-hr-color);
+}
+
+.base table {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  display: table;
+  border-collapse: collapse;
+  margin-block-end: var(--kbq-markdown-table-size-margin-bottom);
+  color: var(--kbq-markdown-table-body);
+}
+
+.base table td,
+.base table th {
+  padding: var(--kbq-markdown-table-size-padding);
+  vertical-align: top;
+}
+
+.base thead {
+  border-block-end: var(--kbq-markdown-table-size-border-width) solid
+    var(--kbq-markdown-table-border);
+  text-align: start;
+  color: var(--kbq-markdown-table-header);
+
+  @mixin markdown-typography table-header;
+}
+
+.base thead th:first-child {
+  padding-inline-start: 0;
+}
+
+.base thead th:last-child {
+  padding-inline-end: 0;
+}
+
+.base tbody {
+  @mixin markdown-typography table-cell;
+}
+
+.base tbody td:first-child {
+  padding-inline-start: 0;
+}
+
+.base tbody td:last-child {
+  padding-inline-end: 0;
+}
+
+.base a {
+  color: var(--kbq-foreground-theme);
+  text-decoration-line: underline;
+  text-decoration-color: var(--kbq-line-theme-less);
+  outline: var(--kbq-markdown-link-size-state-focused-outline-width) solid
+    transparent;
+  outline-offset: var(--kbq-markdown-link-size-state-focused-outline-offset);
+  transition:
+    color var(--kbq-transition-default),
+    outline-color var(--kbq-transition-default),
+    text-decoration-color var(--kbq-transition-default);
+
+  @mixin markdown-typography body;
+}
+
+.base a:hover {
+  color: var(--kbq-states-foreground-theme-hover);
+}
+
+.base a:active {
+  color: var(--kbq-states-foreground-theme-active);
+}
+
+.base a:focus-visible {
+  outline-color: var(--kbq-states-line-focus-theme);
+}
+
+.base a:visited {
+  color: var(--kbq-foreground-visited);
+  text-decoration-color: var(--kbq-line-visited);
+}
+
+.base a:has(code) {
+  text-decoration-line: none;
+}

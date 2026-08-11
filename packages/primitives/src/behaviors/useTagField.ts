@@ -44,11 +44,7 @@ import type { TagListState } from './useTagListState';
 
 /** How the user's input ended up as new tags. */
 export type TagFieldAddSource =
-  | 'enter'
-  | 'separator'
-  | 'paste'
-  | 'blur'
-  | 'suggestion';
+  'enter' | 'separator' | 'paste' | 'blur' | 'suggestion';
 
 export type TagFieldAddContext<T = unknown> =
   | { source: Exclude<TagFieldAddSource, 'suggestion'> }
@@ -109,8 +105,7 @@ export type TagFieldTagListProps<T extends object> = {
   isDisabled: boolean | undefined;
   tabIndex: -1;
   onRemove:
-    | ((keys: Set<Key>, context?: TagListItemRemoveContext) => void)
-    | undefined;
+    ((keys: Set<Key>, context?: TagListItemRemoveContext) => void) | undefined;
   'aria-label': string;
 };
 

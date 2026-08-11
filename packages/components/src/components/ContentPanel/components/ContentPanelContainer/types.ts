@@ -12,8 +12,7 @@ import type {
 import type { OverlayTriggerState } from '@react-stately/overlays';
 
 export type ContentPanelContainerPropContent =
-  | ReactNode
-  | ((props: OverlayTriggerState) => ReactElement);
+  ReactNode | ((props: OverlayTriggerState) => ReactElement);
 
 export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<
   {

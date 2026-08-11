@@ -1,6 +1,6 @@
 {
   "name": "@koobiq/react-components",
-  "version": "0.35.1",
+  "version": "0.36.0",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist && rimraf node_modules && rimraf .turbo",
@@ -16,6 +16,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./markdown": {
+      "types": "./dist/markdown.d.ts",
+      "default": "./dist/markdown.js"
+    },
     "./style.css": "./dist/style.css"
   },
   "type": "module",
@@ -30,19 +34,29 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@internationalized/date": "^3.12.0",
     "@koobiq/design-tokens": "^3.17.2",
     "@koobiq/logger": "workspace:*",
     "@koobiq/react-core": "workspace:*",
-    "@koobiq/react-icons": "^12.0.0",
+    "@koobiq/react-icons": "^12.1.1",
     "@koobiq/react-primitives": "workspace:*",
     "@types/react-transition-group": "^4.4.12",
-    "react-transition-group": "^4.4.5",
-    "@internationalized/date": "^3.12.0"
+    "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
     "@koobiq/design-tokens": "^3.17.2",
-    "@koobiq/react-icons": "^12.0.0",
+    "@koobiq/react-icons": "^12.1.1",
     "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
+    "react-dom": "18.x || 19.x",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "peerDependenciesMeta": {
+    "react-markdown": {
+      "optional": true
+    },
+    "remark-gfm": {
+      "optional": true
+    }
   }
 }

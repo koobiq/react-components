@@ -17,6 +17,18 @@
   );
 }
 
+@define-mixin markdown-typography $name {
+  font-size: var(--kbq-md-typography-md-$(name)-font-size);
+  font-weight: var(--kbq-md-typography-md-$(name)-font-weight);
+  line-height: var(--kbq-md-typography-md-$(name)-line-height);
+  font-family: var(--kbq-md-typography-md-$(name)-font-family);
+  text-transform: var(--kbq-md-typography-md-$(name)-text-transform);
+  font-feature-settings: var(
+    --kbq-md-typography-md-$(name)-font-feature-settings
+  );
+  letter-spacing: var(--kbq-md-typography-md-$(name)-letter-spacing);
+}
+
 @define-mixin ellipsis {
   overflow: hidden;
   white-space: nowrap;

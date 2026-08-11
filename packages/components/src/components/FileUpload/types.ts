@@ -46,8 +46,7 @@ export type FileUploadPropAllowed = (typeof fileUploadPropAllowed)[number];
 
 /** Where files can be dropped: an element ref, or the whole viewport. */
 export type FileUploadPropDropzoneTarget =
-  | 'fullscreen'
-  | RefObject<HTMLElement | null>;
+  'fullscreen' | RefObject<HTMLElement | null>;
 
 /** Localizable strings used by `FileUpload`. */
 export type FileUploadMessages = {
