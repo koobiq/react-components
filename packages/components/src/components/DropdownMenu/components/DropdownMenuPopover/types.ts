@@ -24,7 +24,7 @@ export type DropdownMenuPopoverProps = {
   placement?: DropdownMenuPropPlacement;
   /**
    * The additional offset along the main axis between the popover and its trigger.
-   * @default 4
+   * @default 4 for a menu, -4 for a submenu
    */
   offset?: number;
   /** The additional offset along the cross axis between the popover and its trigger. */

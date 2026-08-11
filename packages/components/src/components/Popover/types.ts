@@ -26,8 +26,7 @@ export type PopoverBodyProps = DialogBodyProps;
 export type PopoverFooterProps = DialogFooterProps;
 
 export type PopoverPropContent =
-  | ReactNode
-  | ((props: { close(): void }) => ReactElement);
+  ReactNode | ((props: { close(): void }) => ReactElement);
 
 export type PopoverPropControl = (
   props: ButtonOptions & { ref?: Ref<HTMLButtonElement> }
@@ -53,8 +52,7 @@ export type PopoverPropPlacement = (typeof popoverPropPlacement)[number];
 export const popoverPropSize = ['small', 'medium', 'large'] as const;
 
 export type PopoverPropSize =
-  | (typeof popoverPropSize)[number]
-  | CSSProperties['inlineSize'];
+  (typeof popoverPropSize)[number] | CSSProperties['inlineSize'];
 
 export const popoverPropType = [
   'dialog',
@@ -195,4 +193,9 @@ export type PopoverInnerProps = {
    * hands its overlays an `Element` ref.
    */
   anchorRef?: RefObject<Element | null>;
+  /**
+   * What opened the popover. React Aria reads it to tell a submenu from any
+   * other overlay and treats it differently on outside clicks and scroll.
+   */
+  trigger?: string;
 } & Omit<PopoverProps, 'ref' | 'anchorRef'>;

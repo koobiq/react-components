@@ -29,11 +29,11 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
     style,
     children,
     className,
+    offset,
     placement,
     anchorRef,
     shouldFlip,
     isNonModal,
-    offset = 4,
     crossOffset,
     containerPadding = 12,
     maxBlockSize = 480,
@@ -54,13 +54,17 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
     ? 'end top'
     : 'bottom start';
 
+  // A submenu sits flush against its menu, a menu keeps a gap from its trigger.
+  const defaultOffset = isSubmenu ? -4 : 4;
+
   const popoverProps = mergeProps<
     [PopoverInnerProps, PopoverProps | undefined]
   >(
     {
       state,
-      offset,
       shouldFlip,
+      // Marks the overlay as a submenu for React Aria.
+      trigger: context.trigger,
       crossOffset,
       maxBlockSize,
       containerPadding,
@@ -79,6 +83,7 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
       isNonModal: isNonModal ?? context.isNonModal,
       shouldCloseOnInteractOutside: context.shouldCloseOnInteractOutside,
       placement: placement ?? defaultPlacement,
+      offset: offset ?? defaultOffset,
     },
     slotProps?.popover
   );

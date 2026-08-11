@@ -57,6 +57,7 @@ export type PopoverInnerProps = {
     state: OverlayTriggerState;
     popoverRef?: Ref<HTMLDivElement>;
     anchorRef?: RefObject<Element | null>;
+    trigger?: string;
 } & Omit<PopoverProps, 'ref' | 'anchorRef'>;
 
 // @public (undocumented)

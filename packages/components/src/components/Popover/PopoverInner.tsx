@@ -1,5 +1,5 @@
 import type { ComponentRef, CSSProperties, FC } from 'react';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 
 import { clsx, mergeProps, useBoolean, useDOMRef } from '@koobiq/react-core';
 import {
@@ -13,6 +13,7 @@ import type { TransitionProps } from 'react-transition-group/Transition';
 import { Dialog } from '../Dialog';
 
 import s from './Popover.module.css';
+import { PopoverGroupContext } from './PopoverGroupContext';
 import type { PopoverInnerProps } from './types';
 import { normalizeInlineSize } from './utils';
 
@@ -26,6 +27,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
     placement: placementProp = 'top',
     maxBlockSize = 480,
     type = 'dialog',
+    trigger,
     hideArrow,
     shouldFlip,
     state,
@@ -49,6 +51,11 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
   const domRef = useDOMRef<ComponentRef<'div'>>(popoverRef);
 
   const controlRef = useRef<HTMLButtonElement | null>(null);
+
+  // A submenu joins the group of its menu instead of standing on its own.
+  const group = useContext(PopoverGroupContext);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const groupContainer = trigger === 'SubmenuTrigger' ? group : null;
 
   const openState = state.isOpen;
 
@@ -78,6 +85,7 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
       placement: placementProp,
       shouldCloseOnInteractOutside,
       triggerRef: anchorRef || controlRef,
+      groupRef: groupContainer ?? containerRef,
       isKeyboardDismissDisabled: disableExitOnEscapeKeyDown,
     },
     { ...state, isOpen: openState || opened }
@@ -124,6 +132,37 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
       ? children({ close: state.close })
       : children;
 
+  const renderPopover = (transition: string) => (
+    <div
+      ref={domRef}
+      data-size={size}
+      data-placement={placement}
+      data-transition={transition}
+      data-arrow={showArrow || undefined}
+      className={clsx(s.base, s[size], className)}
+      {...mergeProps(popoverProps, other)}
+      style={
+        {
+          ...props.style,
+          ...popoverProps.style,
+          '--popover-inline-size': normalizeInlineSize(size),
+        } as CSSProperties
+      }
+    >
+      {showArrow && <div {...arrowProps} data-placement={placement} />}
+      <div
+        {...slotProps?.container}
+        className={clsx(s.container, slotProps?.container?.className)}
+      >
+        {type === 'dialog' ? (
+          <Dialog {...dialogProps}>{resolvedChildren}</Dialog>
+        ) : (
+          resolvedChildren
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <>
       {control?.({
@@ -131,42 +170,32 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
         ...triggerProps,
       })}
       <Transition {...transitionProps}>
-        {(transition) => (
-          <Overlay
-            portalContainer={portalContainer}
-            disableFocusManagement={disableFocusManagement}
-          >
-            <div {...backdropProps} />
-            <div
-              ref={domRef}
-              data-size={size}
-              data-placement={placement}
-              data-transition={transition}
-              data-arrow={showArrow || undefined}
-              className={clsx(s.base, s[size], className)}
-              {...mergeProps(popoverProps, other)}
-              style={
-                {
-                  ...props.style,
-                  ...popoverProps.style,
-                  '--popover-inline-size': normalizeInlineSize(size),
-                } as CSSProperties
+        {(transition) =>
+          groupContainer ? (
+            // Inside the group container, so a click here is not an outside one.
+            <Overlay
+              portalContainer={
+                portalContainer ?? groupContainer.current ?? undefined
               }
+              disableFocusManagement={disableFocusManagement}
             >
-              {showArrow && <div {...arrowProps} data-placement={placement} />}
-              <div
-                {...slotProps?.container}
-                className={clsx(s.container, slotProps?.container?.className)}
-              >
-                {type === 'dialog' ? (
-                  <Dialog {...dialogProps}>{resolvedChildren}</Dialog>
-                ) : (
-                  resolvedChildren
-                )}
+              {renderPopover(transition)}
+            </Overlay>
+          ) : (
+            <Overlay
+              portalContainer={portalContainer}
+              disableFocusManagement={disableFocusManagement}
+            >
+              <div {...backdropProps} />
+              {/* Box-less anchor of the group, left out of the backdrop. */}
+              <div ref={containerRef} style={{ display: 'contents' }}>
+                <PopoverGroupContext.Provider value={containerRef}>
+                  {renderPopover(transition)}
+                </PopoverGroupContext.Provider>
               </div>
-            </div>
-          </Overlay>
-        )}
+            </Overlay>
+          )
+        }
       </Transition>
     </>
   );

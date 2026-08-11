@@ -517,13 +517,15 @@ export const Submenu: Story = {
                 <DropdownMenu.Item id="email">Email</DropdownMenu.Item>
                 <DropdownMenu.Item id="sms">SMS</DropdownMenu.Item>
                 <DropdownMenu.SubmenuTrigger>
-                  <DropdownMenu.Item id="socials">Socials</DropdownMenu.Item>
+                  <DropdownMenu.Item id="messengers">
+                    Messengers
+                  </DropdownMenu.Item>
                   <DropdownMenu.Popover>
                     <DropdownMenu.Content onAction={(key) => alert(key)}>
                       <DropdownMenu.Item id="telegram">
                         Telegram
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item id="vk">VK</DropdownMenu.Item>
+                      <DropdownMenu.Item id="signal">Signal</DropdownMenu.Item>
                     </DropdownMenu.Content>
                   </DropdownMenu.Popover>
                 </DropdownMenu.SubmenuTrigger>
