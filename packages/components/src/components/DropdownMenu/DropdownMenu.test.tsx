@@ -702,8 +702,8 @@ describe('DropdownMenu', () => {
       expect(await screen.findByText('Nothing found')).toBeInTheDocument();
     });
 
-    it('should render a custom noItemsText', async () => {
-      renderSearchable({ noItemsText: 'No results' });
+    it('should render a custom empty state', async () => {
+      renderSearchable({ renderEmptyState: () => <div>No results</div> });
       await open();
       await userEvent.type(getSearch(), 'zzz');
 

@@ -60,9 +60,7 @@ export namespace DropdownMenuContent {
 }
 
 // @public (undocumented)
-export type DropdownMenuContentProps<T extends object = object> = Omit<MenuProps<T>, 'renderEmptyState' | 'slot'> & DataAttributeProps & {
-    noItemsText?: ReactNode;
-};
+export type DropdownMenuContentProps<T extends object = object> = Omit<MenuProps<T>, 'slot'> & DataAttributeProps;
 
 // @public
 export function DropdownMenuFooter(props: DropdownMenuFooterProps): JSX.Element;

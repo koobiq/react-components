@@ -21,7 +21,7 @@ const { list } = utilClasses;
 /** The list of items of a dropdown menu. */
 export function DropdownMenuContent<T extends object = object>({
   className,
-  noItemsText,
+  renderEmptyState,
   ...props
 }: DropdownMenuContentProps<T>) {
   const t = useLocalizedStringFormatter(intlMessages);
@@ -34,11 +34,14 @@ export function DropdownMenuContent<T extends object = object>({
   return (
     <AriaMenu<T>
       data-padded
-      renderEmptyState={() => (
-        <div className={clsx(s.empty, textVariant['text-normal'])}>
-          {noItemsText ?? t.format(query ? 'nothing found' : 'empty items')}
-        </div>
-      )}
+      renderEmptyState={
+        renderEmptyState ??
+        (() => (
+          <div className={clsx(s.empty, textVariant['text-normal'])}>
+            {t.format(query ? 'nothing found' : 'empty items')}
+          </div>
+        ))
+      }
       className={composeRenderProps(className, (className) =>
         clsx(s.base, list, className)
       )}

@@ -24,6 +24,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { Selection } from '../../index';
 import { Button } from '../Button';
 import { Divider } from '../Divider';
+import { EmptyState } from '../EmptyState';
 import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
 import { SearchInput } from '../SearchInput';
@@ -603,7 +604,13 @@ export const SearchEmpty: Story = {
         <DropdownMenu.Autocomplete>
           <SearchInput />
           <Divider disablePaddings />
-          <DropdownMenu.Content noItemsText="No such action">
+          <DropdownMenu.Content
+            renderEmptyState={() => (
+              <EmptyState size="normal">
+                <EmptyState.Content>No such action</EmptyState.Content>
+              </EmptyState>
+            )}
+          >
             <DropdownMenu.Item id="new">New</DropdownMenu.Item>
             <DropdownMenu.Item id="open">Open</DropdownMenu.Item>
             <DropdownMenu.Item id="save">Save</DropdownMenu.Item>
