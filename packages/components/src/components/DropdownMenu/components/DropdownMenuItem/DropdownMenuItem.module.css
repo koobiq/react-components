@@ -2,6 +2,7 @@
   /* Keeps the chevron at the end for items without `ItemText`. */
   .chevron {
     margin-inline-start: auto;
+    color: var(--kbq-icon-contrast-fade);
   }
 
   /* Stay highlighted while the submenu is open. */
