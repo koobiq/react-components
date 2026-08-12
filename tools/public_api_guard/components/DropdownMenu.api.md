@@ -109,7 +109,7 @@ export type DropdownMenuItemPropAlign = (typeof dropdownMenuItemPropAlign)[numbe
 export const dropdownMenuItemPropAlign: readonly ["start", "center"];
 
 // @public (undocumented)
-export type DropdownMenuItemProps<T extends object = object> = Partial<MenuItemProps<T>> & DataAttributeProps & {
+export type DropdownMenuItemProps<T extends object = object> = MenuItemProps<T> & DataAttributeProps & {
     align?: DropdownMenuItemPropAlign;
 };
 

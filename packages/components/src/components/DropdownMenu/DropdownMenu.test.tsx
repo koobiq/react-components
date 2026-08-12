@@ -108,6 +108,26 @@ describe('DropdownMenu', () => {
 
       expect(screen.getByTestId('popover')).toBeInTheDocument();
     });
+
+    it('should warn when the popover is rendered on its own', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      once.clear();
+
+      render(
+        <DropdownMenu.Popover>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item id="copy">Copy</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Popover>
+      );
+
+      expect(queryMenu()).not.toBeInTheDocument();
+
+      expect(warn).toHaveBeenCalledWith(
+        expect.stringContaining('DropdownMenu.Popover')
+      );
+    });
   });
 
   describe('open state', () => {

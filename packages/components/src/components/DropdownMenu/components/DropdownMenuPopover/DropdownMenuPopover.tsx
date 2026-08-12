@@ -2,6 +2,7 @@
 
 import { useContext } from 'react';
 
+import { once } from '@koobiq/logger';
 import { clsx, mergeProps } from '@koobiq/react-core';
 import {
   PopoverContext,
@@ -46,7 +47,15 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
   const state = useContext(OverlayTriggerStateContext);
   const context = useSlottedContext(PopoverContext) ?? {};
 
-  if (!state) return null;
+  if (!state) {
+    if (process.env.NODE_ENV !== 'production') {
+      once.warn(
+        'DropdownMenu.Popover: render it inside a `DropdownMenu` or a `DropdownMenu.SubmenuTrigger`, they are what gives the popover its open state.'
+      );
+    }
+
+    return null;
+  }
 
   const isSubmenu = context.trigger === 'SubmenuTrigger';
 
