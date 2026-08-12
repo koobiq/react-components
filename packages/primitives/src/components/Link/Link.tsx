@@ -14,6 +14,22 @@ import { useLink } from '../../behaviors';
 
 import type { LinkBaseProps } from './types.js';
 
+const buttonDOMPropNames = new Set([
+  'type',
+  'name',
+  'value',
+  'form',
+  'formAction',
+  'formEncType',
+  'formMethod',
+  'formNoValidate',
+  'formTarget',
+  'aria-controls',
+  'aria-expanded',
+  'aria-haspopup',
+  'aria-pressed',
+]);
+
 /**
  * A link primitive allows a user to navigate to another page or resource within
  * a web page or application.
@@ -27,7 +43,7 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     useLink(
       {
         ...other,
-        elementType: `${Tag}`,
+        elementType: Tag === 'button' ? undefined : `${Tag}`,
         ...(other.isDisabled && {
           onPress: undefined,
           onPressStart: undefined,
@@ -56,7 +72,11 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     values: renderValues,
   });
 
-  const DOMProps = filterDOMProps(props, { global: true });
+  const DOMProps = filterDOMProps(props, {
+    global: true,
+    propNames: Tag === 'button' ? buttonDOMPropNames : undefined,
+  });
+
   delete DOMProps.onClick;
 
   return (

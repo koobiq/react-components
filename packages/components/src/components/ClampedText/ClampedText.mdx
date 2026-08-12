@@ -1,0 +1,74 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ClampedText.stories';
+
+<Meta of={Stories} />
+
+# ClampedText
+
+<Status variant="experimental" />
+
+ClampedText keeps long non-interactive text compact while allowing users to reveal the full content.
+
+## Import
+
+```tsx
+import { ClampedText } from '@koobiq/react-components';
+```
+
+## Usage
+
+The collapsed component displays five rows by default. The toggle is shown only when the content occupies more than six rows.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Number of rows
+
+Use `rows` to configure the number of rows visible while collapsed.
+
+<Story of={Stories.Rows} />
+
+## One additional row
+
+When the hidden part would contain only one row, ClampedText displays it immediately. The toggle is omitted because the full content occupies the same vertical space as the clamped text and its action.
+
+<Story of={Stories.OneAdditionalRow} />
+
+## Block content
+
+ClampedText supports non-interactive text split across semantic block elements, including headings and paragraphs rendered with Typography. The row limit applies to their shared content.
+
+<Story of={Stories.BlockContent} />
+
+## Controlled expansion
+
+Use `isExpanded` with `onExpandedChange` when expansion state is owned by the application. For an uncontrolled initial state, use `defaultExpanded`.
+
+```tsx
+const [isExpanded, setExpanded] = useState(false);
+
+<ClampedText isExpanded={isExpanded} onExpandedChange={setExpanded} rows={3}>
+  {text}
+</ClampedText>;
+```
+
+<Story of={Stories.ControlledExpansion} />
+
+## Resizing
+
+ClampedText recalculates the number of rows when its container changes size. The last expansion preference is preserved while the toggle is temporarily unnecessary.
+
+<Story of={Stories.ResizePersistence} />
+
+## Accessibility
+
+The toggle is a native button with `aria-expanded` and `aria-controls`. It supports mouse, touch, Enter, and Space interactions. Keep the component content non-interactive because visually clipped descendants remain in the accessibility tree.
