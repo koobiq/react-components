@@ -15,9 +15,8 @@ import * as Stories from './DropdownMenu.stories';
 
 A dropdown menu displays a list of actions or options that a user can choose.
 
-It is built on [React Aria Components](https://react-spectrum.adobe.com/react-aria/Menu.html)
-and supersedes the [Menu](?path=/docs/components-menu--docs) component,
-adding submenus and search on top of it.
+Compared to the [Menu](?path=/docs/components-menu--docs) component, it adds
+submenus and search.
 
 ## Import
 
@@ -42,24 +41,24 @@ The component has the following helper components:
 - `DropdownMenu.Popover` — the overlay, also used for a submenu
 - `DropdownMenu.Content` — the list of items inside the popover
 - `DropdownMenu.Item` — a single action
-- `DropdownMenu.ItemText` — text of an item, with an optional `caption`
+- `DropdownMenu.ItemText` — the text of an item, with an optional caption
 - `DropdownMenu.ItemAddon` — an addon of an item, such as an icon or a shortcut
 - `DropdownMenu.Section` — a group of items
 - `DropdownMenu.Header` — a block of custom content, or the heading of a section
 - `DropdownMenu.SubmenuTrigger` — wraps an item and the submenu it opens
 - `DropdownMenu.Autocomplete` — filters the menu with a field
-- `DropdownMenu.Footer` — text under the items, outside the scroll area
+- `DropdownMenu.Footer` — the text under the items, outside the scroll area
 - `DropdownMenu.Pressable` — makes custom markup usable as a trigger.
 
-The popover and the content are separate on purpose: anything may sit between them,
-which is how search is assembled instead of a prop on the menu.
+The popover and the content are separate components, so anything can go between
+them. That is how the search field is added.
 
 ## Trigger
 
-The first child of `DropdownMenu` is the trigger. Any component built on the Koobiq
-`Button` works without extra props — the interactions reach it on their own.
+The first child of the `DropdownMenu` is the trigger. A `Button` works as one
+without extra props.
 
-For custom markup that is not a button, wrap it in `DropdownMenu.Pressable`
+For custom markup that is not a button, wrap it in the `DropdownMenu.Pressable`
 (see the [Separators](#separators) example).
 
 The `trigger` prop switches between opening on press (default) and on a long press:
@@ -68,33 +67,36 @@ The `trigger` prop switches between opening on press (default) and on a long pre
 
 ## Content
 
-The `DropdownMenu.Content` accepts both static and dynamic collections,
-so it can display options you know ahead of time or ones that arrive or change later.
-For dynamic collections, pass your items via the `items` prop and give each a unique `id`;
-when an option is chosen, `onAction` is called with that `id`.
+The items can be written out one by one, or passed as data through the `items`
+prop. Give every item a unique `id`. When an item is chosen, the `onAction`
+handler is called with that id.
 
 <Story of={Stories.Content} />
 
 ## Item content
 
-An item is composed of slots: `DropdownMenu.ItemAddon` for icons and shortcuts,
-and `DropdownMenu.ItemText` for the label and its `caption`.
+An item is composed of slots: the `DropdownMenu.ItemAddon` for icons and
+shortcuts, and the `DropdownMenu.ItemText` for the label and its caption.
 
 <Story of={Stories.ItemContent} />
 
-An item with composed children rather than plain text needs an explicit `textValue`:
-it is what typeahead and search match on. Without it the item is unreachable by
-keyboard and disappears on the first keystroke in a searchable menu, so the
-component warns about it in development. Add `aria-label` when the item needs a
-shorter accessible name than the sum of its slots.
+An item built from slots needs the `textValue` prop, because the search and the
+typeahead match on it. Without it the item cannot be found by typing, and it
+disappears on the first keystroke in a searchable menu. The component warns
+about this in development.
+
+Add the `aria-label` prop when an item needs a shorter name for screen readers
+than all of its slots read together.
+
+The `align` prop lines the slots up by their top edge instead of centring them.
+It is useful for a tall item with a caption.
 
 ## Selection
 
-The component supports multiple selection modes.
-By default, selection is disabled, however this can be changed using the `selectionMode` prop.
-Use `defaultSelectedKeys` to provide a default set of selected items (uncontrolled)
-and `selectedKeys` to set the selected items (controlled).
-The value of the selected keys must match the `id` prop of the items.
+The items are not selectable by default. Selection is turned on with the
+`selectionMode` prop. Use the `defaultSelectedKeys` prop to set the selected
+items (uncontrolled), and the `selectedKeys` prop to control them. Both take the
+`id` of the items.
 
 ### Single
 
@@ -106,25 +108,22 @@ The value of the selected keys must match the `id` prop of the items.
 
 ## Disabled items
 
-Items can be marked as disabled with the `disabledKeys` prop of the content,
-or with the `isDisabled` prop of a single item.
+Items can be marked as disabled with the `disabledKeys` prop of the content, or
+with the `isDisabled` prop of a single item.
 
 <Story of={Stories.DisabledItems} />
 
 ## Links
 
-By default, interacting with an item triggers `onAction` and optionally
-`onSelectionChange` depending on the `selectionMode`.
-Alternatively, items may be links to another page or website.
-This can be achieved by passing the `href` prop to the `DropdownMenu.Item` component.
-Link items in a menu are not selectable.
+An item with the `href` prop becomes a link. It navigates instead of calling the
+`onAction` handler, and it is never selectable.
 
 <Story of={Stories.Links} />
 
 ## Client side routing
 
-The `DropdownMenu` component works with frameworks and client side routers like **Next.js** and **React Router**.
-As with other React Aria components that support links, this works via the `RouterProvider` component at the root of your app.
+Wrap the app in the `RouterProvider`, and the link items will navigate through
+your router, be it **Next.js**, **React Router** or another one.
 
 ```tsx
 import { useRouter } from 'next/navigation';
@@ -152,7 +151,7 @@ export default function App() {
 
 ## Sections
 
-Groups of items can be wrapped in a `DropdownMenu.Section` with a `title`.
+Groups of items can be wrapped in a `DropdownMenu.Section` with the `title` prop.
 
 ### Static items
 
@@ -164,60 +163,56 @@ Groups of items can be wrapped in a `DropdownMenu.Section` with a `title`.
 
 ### With Section Level Selection
 
-A section takes its own `selectionMode`, `selectedKeys` and `onSelectionChange`,
-so one menu can mix plain actions with a multiple and a single choice.
+Each section takes its own `selectionMode`, `selectedKeys` and `onSelectionChange`
+props, so one menu can mix plain actions with a single and a multiple choice.
 
 <Story of={Stories.WithSectionLevelSelection} />
 
 ## Separators
 
-Use `Divider` between items or sections to create non-labeled groupings.
-`DropdownMenu.Header` renders arbitrary content inside the menu.
+Put a `Divider` between items or sections to group them without a title. The
+`DropdownMenu.Header` renders custom content inside the menu.
 
 <Story of={Stories.Separators} />
 
 ## Submenu
 
 Wrap an item and a nested `DropdownMenu.Popover` in a `DropdownMenu.SubmenuTrigger`
-to give the item a submenu. The chevron is added automatically. A submenu opens on
-hover after `delay` (200 ms by default), on <kbd>ArrowRight</kbd> and on press,
-and closes on <kbd>ArrowLeft</kbd>. Submenus can be nested.
+to give the item a submenu. The chevron is added automatically. A submenu opens
+on hover after the `delay` prop (200 ms by default), on <kbd>ArrowRight</kbd> and
+on press, and closes on <kbd>ArrowLeft</kbd>. Submenus can be nested.
 
 <Story of={Stories.Submenu} />
 
-Submenu support relies on an API that React Aria still marks as alpha,
-so its behaviour may change in a future release.
-
 ## Search
 
-Wrap the content in a `DropdownMenu.Autocomplete` and put a `SearchInput` next to it.
-The field has to be a sibling of the menu, not a child of it: the menu clears the
-field context for its own subtree. Matching is case- and accent-insensitive; pass
-`filter` to the autocomplete to change it.
+Wrap the content in a `DropdownMenu.Autocomplete` and put a `SearchInput` above
+it. The field has to be next to the menu, not inside it.
 
-Focus stays in the search field while the arrow keys move through the items.
-An item that opens a submenu is kept when its own text matches, but the contents
-of a submenu are not searched.
+Matching ignores the case and the accents. Pass the `filter` prop to change it.
+The focus stays in the field while the arrows move through the items. An item
+that opens a submenu stays when its own text matches, but the items inside a
+submenu are not searched.
 
 <Story of={Stories.Search} />
 
-Use `renderEmptyState` of the content to replace the default message with any custom
-content, such as an `EmptyState`.
+The `renderEmptyState` prop of the content replaces the default message, with an
+`EmptyState` for instance.
 
 <Story of={Stories.SearchEmpty} />
 
 ## Footer
 
-`DropdownMenu.Footer` shows text under the items. It sits next to the menu rather
-than inside it, so it stays put while the items scroll.
+The `DropdownMenu.Footer` shows text under the items. It stays in place while the
+items scroll.
 
 <Story of={Stories.DropdownFooter} />
 
 ## Placement
 
-The menu's placement with respect to its trigger can be adjusted
-using the `placement` prop of the popover. Menus
-will also automatically flip to the opposite direction if there isn't enough space.
+The placement of the menu with respect to its trigger can be adjusted using the
+`placement` prop of the popover. The menu also flips to the opposite side when
+there is not enough space.
 
 <Story of={Stories.Placement} />
 
@@ -225,11 +220,12 @@ will also automatically flip to the opposite direction if there isn't enough spa
 
 ### Default open
 
-The menu isn't opened by default. The `defaultOpen` prop can be used to set the default state.
+The menu isn't opened by default. The `defaultOpen` prop can be used to set the
+default state.
 
 ### Controlled open
 
-The `isOpen` prop can be used to make the opened state controlled.
-The `onOpenChange` event is fired when the menu's open state changes.
+The `isOpen` prop can be used to make the opened state controlled. The
+`onOpenChange` event is fired when the open state of the menu changes.
 
 <Story of={Stories.Open} />
