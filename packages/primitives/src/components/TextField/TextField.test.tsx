@@ -10,14 +10,14 @@ import { TextField } from './TextField';
 
 describe('TextField primitive', () => {
   it.each([
-    ['Input', () => <Input aria-label="Search" />],
-    ['Textarea', () => <Textarea aria-label="Search" />],
+    ['Input', () => <Input />],
+    ['Textarea', () => <Textarea />],
   ])(
     'should connect an %s to an Autocomplete without an element type prop',
     async (_, renderField) => {
       render(
         <Autocomplete>
-          <TextField>{renderField()}</TextField>
+          <TextField aria-label="Search">{renderField()}</TextField>
           <Menu>
             <MenuItem id="one">One</MenuItem>
             <MenuItem id="two">Two</MenuItem>
