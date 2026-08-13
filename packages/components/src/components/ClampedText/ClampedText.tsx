@@ -71,7 +71,20 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
 
       if (!contentElement) return;
 
-      setRowsCount(getRowsCount(contentElement));
+      const wasClamped = contentElement.classList.contains(s.clamped);
+
+      if (wasClamped) {
+        contentElement.classList.remove(s.clamped);
+
+        // Flush the clamped layout before Range reads all line boxes.
+        contentElement.getBoundingClientRect();
+      }
+
+      const nextRowsCount = getRowsCount(contentElement);
+
+      contentElement.classList.toggle(s.clamped, wasClamped);
+
+      setRowsCount(nextRowsCount);
     }, [children, rows, contentRect.width, contentRect.height, setRowsCount]);
 
     const isMeasured = rowsCount !== undefined;
@@ -79,9 +92,11 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
 
     const effectiveExpanded = isMeasured
       ? !hasToggle || preferredExpanded
-      : true;
+      : preferredExpanded;
 
-    const isClamped = hasToggle && !effectiveExpanded;
+    const isClamped = isMeasured
+      ? hasToggle && !effectiveExpanded
+      : !preferredExpanded;
 
     useEffect(() => {
       if (!isClamped || !shouldScrollOnCollapseRef.current) return;
@@ -108,7 +123,8 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
 
     const contentStyle: ContentStyle = {
       ...slotProps?.content?.style,
-      '--clamped-text-rows': rows,
+      '--clamped-text-rows':
+        !isMeasured && !preferredExpanded ? rows + 1 : rows,
     };
 
     const contentProps = mergeProps(

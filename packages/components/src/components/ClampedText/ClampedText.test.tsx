@@ -8,6 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { hydrateRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -218,12 +219,66 @@ describe('ClampedText', () => {
       expect(html).toContain('id="server-root"');
       expect(html).toContain('id="server-content"');
       expect(html).toContain('Server text');
+      expect(html).toContain('data-clamped="true"');
+      expect(html).toContain('--clamped-text-rows:6');
       expect(html).not.toContain('<button');
+
+      const expandedHtml = renderToString(
+        <ClampedText rows={2} defaultExpanded>
+          Expanded server text
+        </ClampedText>
+      );
+
+      expect(expandedHtml).toContain('data-expanded="true"');
+      expect(expandedHtml).toContain('--clamped-text-rows:2');
+      expect(expandedHtml).not.toContain('data-clamped');
     } finally {
       if (documentDescriptor) {
         Object.defineProperty(globalThis, 'document', documentDescriptor);
       }
     }
+  });
+
+  it('hydrates the server markup without a mismatch', async () => {
+    rowTops = [0, 20, 40, 60];
+
+    const element = (
+      <ClampedText rows={2} slotProps={{ content: { id: 'content' } }}>
+        Long text
+      </ClampedText>
+    );
+
+    const container = document.createElement('div');
+
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    container.innerHTML = renderToString(element);
+    document.body.append(container);
+
+    expect(container.firstElementChild).toHaveAttribute('data-clamped');
+
+    expect(container.querySelector('#content')).toHaveStyle(
+      '--clamped-text-rows: 3'
+    );
+
+    expect(container.querySelector('button')).not.toBeInTheDocument();
+
+    const root = hydrateRoot(container, element);
+
+    await act(async () => {});
+
+    expect(consoleError).not.toHaveBeenCalled();
+
+    expect(container.querySelector('#content')).toHaveStyle(
+      '--clamped-text-rows: 2'
+    );
+
+    expect(container.querySelector('button')).toHaveAccessibleName('Expand');
+
+    act(() => root.unmount());
+    container.remove();
   });
 
   it('shows rows + 1 lines without a toggle or change event', () => {
