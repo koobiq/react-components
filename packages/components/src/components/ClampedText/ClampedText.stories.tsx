@@ -42,7 +42,7 @@ export const Rows: Story = {
 
 export const StructuredContent: Story = {
   render: (args) => (
-    <ClampedText {...args} rows={3}>
+    <ClampedText rows={3} {...args}>
       <Typography as="h3" variant="title" className={spacing({ pbe: 's' })}>
         Line clamp with structured content
       </Typography>
@@ -57,10 +57,10 @@ export const ControlledExpansion: Story = {
 
     return (
       <ClampedText
+        rows={2}
         {...args}
         isExpanded={isExpanded}
         onExpandedChange={setExpanded}
-        rows={2}
       >
         {text}
       </ClampedText>
@@ -89,8 +89,8 @@ export const ResizePersistence: Story = {
           Narrow
         </Toggle>
         <ClampedText
-          {...args}
           rows={2}
+          {...args}
           style={{ inlineSize: isNarrow ? 200 : '100%' }}
         >
           {text}
@@ -104,8 +104,8 @@ export const Customization: Story = {
   render: (args) => {
     return (
       <ClampedText
-        {...args}
         rows={2}
+        {...args}
         id="custom-clamped-text"
         moreText="Show details"
         lessText="Hide details"

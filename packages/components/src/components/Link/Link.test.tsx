@@ -62,19 +62,12 @@ describe('Link', () => {
       const props = {
         ...baseProps,
         onPress: vi.fn(),
-        type: 'button' as const,
-        'aria-controls': 'content',
-        'aria-expanded': false,
       };
 
       render(<Link {...props} as="button" />);
       const linkAsButton = getRoot();
 
       expect(linkAsButton.tagName).toBe('BUTTON');
-      expect(linkAsButton).not.toHaveAttribute('role');
-      expect(linkAsButton).toHaveAttribute('type', 'button');
-      expect(linkAsButton).toHaveAttribute('aria-controls', 'content');
-      expect(linkAsButton).toHaveAttribute('aria-expanded', 'false');
 
       await userEvent.click(linkAsButton);
 

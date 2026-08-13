@@ -4,8 +4,7 @@ import type {
   DataAttributeProps,
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
-
-import type { LinkProps } from '../Link';
+import type { ButtonProps } from '@koobiq/react-primitives';
 
 export type ClampedTextProps = ExtendableComponentPropsWithRef<
   {
@@ -34,14 +33,8 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<
       content?: Omit<ComponentPropsWithRef<'div'>, 'children'> &
         DataAttributeProps;
       toggle?: Omit<
-        LinkProps<'button'>,
-        | 'as'
-        | 'children'
-        | 'type'
-        | 'isPseudo'
-        | 'aria-controls'
-        | 'aria-expanded'
-        | 'startIcon'
+        ButtonProps,
+        'as' | 'children' | 'type' | 'aria-controls' | 'aria-expanded'
       > &
         DataAttributeProps;
     };

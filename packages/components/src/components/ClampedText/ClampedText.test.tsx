@@ -1,5 +1,6 @@
 import { createRef, type SVGProps } from 'react';
 
+import { once } from '@koobiq/logger';
 import {
   act,
   fireEvent,
@@ -104,9 +105,11 @@ describe('ClampedText', () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     vi.clearAllMocks();
+    once.clear();
     Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
   });
 
@@ -372,6 +375,35 @@ describe('ClampedText', () => {
     expect(content.style.getPropertyValue('--clamped-text-rows')).toBe('2');
   });
 
+  it('normalizes invalid rows values to a positive integer', () => {
+    rowTops = [0, 20, 40, 60];
+    const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const { rerender } = render(
+      <ClampedText rows={0} data-testid="root">
+        Long text
+      </ClampedText>
+    );
+
+    const content = screen.getByTestId('root').firstElementChild as HTMLElement;
+
+    expect(content.style.getPropertyValue('--clamped-text-rows')).toBe('1');
+
+    expect(screen.getByRole('button', { name: 'Expand' })).toBeInTheDocument();
+
+    expect(consoleWarn).toHaveBeenCalledWith(
+      '[koobiq] ClampedText: the "rows" prop must be a positive integer. The received value was normalized.'
+    );
+
+    rerender(
+      <ClampedText rows={2.9} data-testid="root">
+        Long text
+      </ClampedText>
+    );
+
+    expect(content.style.getPropertyValue('--clamped-text-rows')).toBe('2');
+  });
+
   it('supports an initially expanded uncontrolled state', () => {
     rowTops = [0, 20, 40, 60];
 
@@ -467,6 +499,38 @@ describe('ClampedText', () => {
     );
 
     expect(onExpandedChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not retain a scroll request when controlled collapse is ignored', () => {
+    vi.useFakeTimers();
+    rowTops = [0, 20, 40, 60];
+    const onExpandedChange = vi.fn();
+
+    const { rerender } = render(
+      <ClampedText rows={2} isExpanded onExpandedChange={onExpandedChange}>
+        Long text
+      </ClampedText>
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse' }));
+    act(() => vi.runAllTimers());
+
+    expect(onExpandedChange).toHaveBeenCalledWith(false);
+    expect(scrollIntoView).not.toHaveBeenCalled();
+
+    rerender(
+      <ClampedText
+        rows={2}
+        isExpanded={false}
+        onExpandedChange={onExpandedChange}
+      >
+        Long text
+      </ClampedText>
+    );
+
+    act(() => vi.runAllTimers());
+
+    expect(scrollIntoView).not.toHaveBeenCalled();
   });
 
   it('preserves the toggle preference across resize changes', async () => {

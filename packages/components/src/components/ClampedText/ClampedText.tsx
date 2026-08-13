@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 
+import { once } from '@koobiq/logger';
 import {
   clsx,
   mergeProps,
@@ -19,8 +20,10 @@ import {
   useResizeObserver,
 } from '@koobiq/react-core';
 import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
-
-import { Link } from '../Link';
+import {
+  Button as ButtonPrimitive,
+  composeRenderProps,
+} from '@koobiq/react-primitives';
 
 import s from './ClampedText.module.css';
 import intlMessages from './intl.json';
@@ -50,6 +53,19 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       ...other
     } = props;
 
+    const normalizedRows = Number.isFinite(rows)
+      ? Math.max(1, Math.trunc(rows))
+      : 1;
+
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      (!Number.isInteger(rows) || rows < 1)
+    ) {
+      once.warn(
+        'ClampedText: the "rows" prop must be a positive integer. The received value was normalized.'
+      );
+    }
+
     const rootRef = useObjectRef(ref);
     const [contentRef, contentRect] = useResizeObserver<HTMLDivElement>();
     const generatedContentId = useId();
@@ -64,7 +80,7 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
 
     const [rowsCount, setRowsCount] = useState<number>();
 
-    const shouldScrollOnCollapseRef = useRef(false);
+    const scrollTimeoutRef = useRef<number | undefined>(undefined);
 
     useIsomorphicEffect(() => {
       const contentElement = contentRef.current;
@@ -85,10 +101,16 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       contentElement.classList.toggle(s.clamped, wasClamped);
 
       setRowsCount(nextRowsCount);
-    }, [children, rows, contentRect.width, contentRect.height, setRowsCount]);
+    }, [
+      children,
+      normalizedRows,
+      contentRect.width,
+      contentRect.height,
+      setRowsCount,
+    ]);
 
     const isMeasured = rowsCount !== undefined;
-    const hasToggle = isMeasured && rowsCount > rows + 1;
+    const hasToggle = isMeasured && rowsCount > normalizedRows + 1;
 
     const effectiveExpanded = isMeasured
       ? !hasToggle || preferredExpanded
@@ -99,32 +121,35 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       : !preferredExpanded;
 
     useEffect(() => {
-      if (!isClamped || !shouldScrollOnCollapseRef.current) return;
-
-      shouldScrollOnCollapseRef.current = false;
-
-      const timeoutId = window.setTimeout(() => {
-        rootRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'center',
-        });
-      });
-
-      return () => window.clearTimeout(timeoutId);
-    }, [isClamped, rootRef]);
+      return () => window.clearTimeout(scrollTimeoutRef.current);
+    }, []);
 
     const onToggle = () => {
       const nextExpanded = !preferredExpanded;
 
-      shouldScrollOnCollapseRef.current = !nextExpanded;
+      window.clearTimeout(scrollTimeoutRef.current);
+
       setPreferredExpanded(nextExpanded);
+
+      if (!nextExpanded) {
+        scrollTimeoutRef.current = window.setTimeout(() => {
+          const rootElement = rootRef.current;
+
+          if (!rootElement?.hasAttribute('data-clamped')) return;
+
+          rootElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center',
+          });
+        });
+      }
     };
 
     const contentStyle: ContentStyle = {
       ...slotProps?.content?.style,
       '--clamped-text-rows':
-        !isMeasured && !preferredExpanded ? rows + 1 : rows,
+        !isMeasured && !preferredExpanded ? normalizedRows + 1 : normalizedRows,
     };
 
     const contentProps = mergeProps(
@@ -141,7 +166,6 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
 
     const toggleProps = mergeProps(
       {
-        className: s.toggle,
         onPress: onToggle,
       },
       slotProps?.toggle
@@ -158,25 +182,27 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       >
         <div {...contentProps}>{children}</div>
         {hasToggle && (
-          <Link
+          <ButtonPrimitive
             {...toggleProps}
-            as="button"
             type="button"
+            className={composeRenderProps(
+              slotProps?.toggle?.className,
+              (className) => clsx(s.toggle, className)
+            )}
             aria-controls={contentId}
             aria-expanded={effectiveExpanded}
-            startIcon={
-              effectiveExpanded ? (
-                <IconChevronUp16 aria-hidden />
-              ) : (
-                <IconChevronDown16 aria-hidden />
-              )
-            }
-            isPseudo
           >
-            {effectiveExpanded
-              ? (lessText ?? strings.format('collapse'))
-              : (moreText ?? strings.format('expand'))}
-          </Link>
+            {effectiveExpanded ? (
+              <IconChevronUp16 aria-hidden />
+            ) : (
+              <IconChevronDown16 aria-hidden />
+            )}
+            <span>
+              {effectiveExpanded
+                ? (lessText ?? strings.format('collapse'))
+                : (moreText ?? strings.format('expand'))}
+            </span>
+          </ButtonPrimitive>
         )}
       </div>
     );

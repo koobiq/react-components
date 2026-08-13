@@ -4,16 +4,12 @@
 
 ```ts
 
+import type { ButtonProps } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
-import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
-import type { ElementType } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
-import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
-import type { LinkBaseProps as LinkBaseProps_2 } from '@koobiq/react-primitives';
-import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 
@@ -31,16 +27,12 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<{
     lessText?: ReactNode;
     slotProps?: {
         content?: Omit<ComponentPropsWithRef<'div'>, 'children'> & DataAttributeProps;
-        toggle?: Omit<LinkProps<'button'>, 'as' | 'children' | 'type' | 'isPseudo' | 'aria-controls' | 'aria-expanded' | 'startIcon'> & DataAttributeProps;
+        toggle?: Omit<ButtonProps, 'as' | 'children' | 'type' | 'aria-controls' | 'aria-expanded'> & DataAttributeProps;
     };
 }, 'div'>;
 
 // @public (undocumented)
 export type ClampedTextRef = ComponentRef<'div'>;
-
-// Warnings were encountered during analysis:
-//
-// packages/components/dist/components/ClampedText/types.d.ts:28:9 - (ae-forgotten-export) The symbol "LinkProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
