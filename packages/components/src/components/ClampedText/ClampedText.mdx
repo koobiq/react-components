@@ -13,7 +13,7 @@ import * as Stories from './ClampedText.stories';
 
 <Status variant="experimental" />
 
-ClampedText keeps long non-interactive text compact while allowing users to reveal the full content.
+`ClampedText` keeps long text compact while allowing users to reveal the full content.
 
 ## Import
 
@@ -23,8 +23,6 @@ import { ClampedText } from '@koobiq/react-components';
 
 ## Usage
 
-The collapsed component displays five rows by default. The toggle is shown only when the content occupies more than six rows.
-
 <Story of={Stories.Base} />
 
 ## Props
@@ -33,42 +31,47 @@ The collapsed component displays five rows by default. The toggle is shown only 
 
 ## Number of rows
 
-Use `rows` to configure the number of rows visible while collapsed.
+The collapsed component displays `5` rows by default. The toggle appears only
+when the content exceeds `rows + 1`, so a single additional row is shown in
+full.
+
+Use the `rows` prop to configure the number of rows visible while collapsed.
 
 <Story of={Stories.Rows} />
 
-## One additional row
+## Structured content
 
-When the hidden part would contain only one row, ClampedText displays it immediately. The toggle is omitted because the full content occupies the same vertical space as the clamped text and its action.
+ClampedText supports text split across semantic block elements,
+including headings and paragraphs rendered with Typography.
+The row limit applies to their shared content.
 
-<Story of={Stories.OneAdditionalRow} />
-
-## Block content
-
-ClampedText supports non-interactive text split across semantic block elements, including headings and paragraphs rendered with Typography. The row limit applies to their shared content.
-
-<Story of={Stories.BlockContent} />
+<Story of={Stories.StructuredContent} />
 
 ## Controlled expansion
 
-Use `isExpanded` with `onExpandedChange` when expansion state is owned by the application. For an uncontrolled initial state, use `defaultExpanded`.
-
-```tsx
-const [isExpanded, setExpanded] = useState(false);
-
-<ClampedText isExpanded={isExpanded} onExpandedChange={setExpanded} rows={3}>
-  {text}
-</ClampedText>;
-```
+Use the `isExpanded` prop with the `onExpandedChange` prop when expansion state is owned by the application.
+For an uncontrolled initial state, use the `defaultExpanded` prop.
 
 <Story of={Stories.ControlledExpansion} />
 
 ## Resizing
 
-ClampedText recalculates the number of rows when its container changes size. The last expansion preference is preserved while the toggle is temporarily unnecessary.
+The `ClampedText` recalculates the number of rows when its container changes size.
+The last expansion preference is preserved while the toggle is temporarily unnecessary.
 
 <Story of={Stories.ResizePersistence} />
 
+## Customization
+
+Use the `moreText` and `lessText` props to replace the localized toggle labels.
+
+Use the `slotProps.content` and `slotProps.toggle` props to customize the content container
+and toggle.
+
+<Story of={Stories.Customization} />
+
 ## Accessibility
 
-The toggle is a native button with `aria-expanded` and `aria-controls`. It supports mouse, touch, Enter, and Space interactions. Keep the component content non-interactive because visually clipped descendants remain in the accessibility tree.
+The toggle is a native button with `aria-expanded` and `aria-controls`. It supports mouse, touch, Enter, and Space interactions.
+
+Interactive elements inside collapsed content remain in keyboard navigation even when they are visually clipped. When a hidden link receives focus, the browser may reveal part of the clipped area and cause an unpleasant visual effect. Account for this behavior when placing links or controls inside ClampedText.

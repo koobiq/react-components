@@ -10,6 +10,7 @@ import {
 
 import {
   clsx,
+  mergeProps,
   useControlledState,
   useId,
   useIsomorphicEffect,
@@ -24,30 +25,10 @@ import { Link } from '../Link';
 import s from './ClampedText.module.css';
 import intlMessages from './intl.json';
 import type { ClampedTextProps, ClampedTextRef } from './types';
+import { getRowsCount } from './utils';
 
 type ContentStyle = CSSProperties & {
   '--clamped-text-rows': number;
-};
-
-const getRowsCount = (element: HTMLElement) => {
-  const range = document.createRange();
-  const textNodes = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-  const rowTops = new Set<number>();
-  let textNode = textNodes.nextNode();
-
-  while (textNode) {
-    if (textNode.textContent?.trim()) {
-      range.selectNodeContents(textNode);
-
-      Array.from(range.getClientRects()).forEach(({ top }) => {
-        rowTops.add(top);
-      });
-    }
-
-    textNode = textNodes.nextNode();
-  }
-
-  return rowTops.size;
 };
 
 /**
@@ -62,13 +43,17 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       isExpanded,
       defaultExpanded,
       onExpandedChange,
+      moreText,
+      lessText,
+      slotProps,
       className,
       ...other
     } = props;
 
     const rootRef = useObjectRef(ref);
     const [contentRef, contentRect] = useResizeObserver<HTMLDivElement>();
-    const contentId = useId();
+    const generatedContentId = useId();
+    const contentId = slotProps?.content?.id ?? generatedContentId;
     const strings = useLocalizedStringFormatter(intlMessages);
 
     const [preferredExpanded, setPreferredExpanded] = useControlledState(
@@ -122,8 +107,29 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
     };
 
     const contentStyle: ContentStyle = {
+      ...slotProps?.content?.style,
       '--clamped-text-rows': rows,
     };
+
+    const contentProps = mergeProps(
+      {
+        ref: contentRef,
+        className: clsx(s.content, isClamped && s.clamped),
+      },
+      slotProps?.content,
+      {
+        id: contentId,
+        style: contentStyle,
+      }
+    );
+
+    const toggleProps = mergeProps(
+      {
+        className: s.toggle,
+        onPress: onToggle,
+      },
+      slotProps?.toggle
+    );
 
     return (
       <div
@@ -134,24 +140,14 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
         data-overflowing={hasToggle || undefined}
         data-clamped={isClamped || undefined}
       >
-        <div
-          ref={contentRef}
-          id={contentId}
-          className={clsx(s.content, isClamped && s.clamped)}
-          style={contentStyle}
-        >
-          {children}
-        </div>
-
+        <div {...contentProps}>{children}</div>
         {hasToggle && (
           <Link
+            {...toggleProps}
             as="button"
             type="button"
-            isPseudo
-            className={s.toggle}
             aria-controls={contentId}
             aria-expanded={effectiveExpanded}
-            onPress={onToggle}
             startIcon={
               effectiveExpanded ? (
                 <IconChevronUp16 aria-hidden />
@@ -159,8 +155,11 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
                 <IconChevronDown16 aria-hidden />
               )
             }
+            isPseudo
           >
-            {strings.format(effectiveExpanded ? 'collapse' : 'expand')}
+            {effectiveExpanded
+              ? (lessText ?? strings.format('collapse'))
+              : (moreText ?? strings.format('expand'))}
           </Link>
         )}
       </div>

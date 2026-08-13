@@ -1,7 +1,14 @@
 import { createRef, type SVGProps } from 'react';
 
-import { act, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Provider } from '../Provider';
@@ -119,6 +126,104 @@ describe('ClampedText', () => {
     expect(ref.current).toBe(screen.getByTestId('root'));
     expect(ref.current).toHaveClass('custom');
     expect(ref.current).toHaveStyle({ padding: '4px' });
+  });
+
+  it('supports custom labels and content and toggle slot props', async () => {
+    rowTops = [0, 20, 40, 60];
+    const contentRef = createRef<HTMLDivElement>();
+    const toggleRef = createRef<HTMLButtonElement>();
+    const onContentClick = vi.fn();
+    const onTogglePress = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <ClampedText
+        id="custom-root"
+        rows={2}
+        moreText={<span>Show full text</span>}
+        lessText={<span>Show less text</span>}
+        data-testid="root"
+        slotProps={{
+          content: {
+            id: 'custom-content',
+            ref: contentRef,
+            className: 'custom-content',
+            style: { color: 'red' },
+            onClick: onContentClick,
+          },
+          toggle: {
+            ref: toggleRef,
+            className: 'custom-toggle',
+            style: { color: 'blue' },
+            'data-testid': 'toggle',
+            onPress: onTogglePress,
+          },
+        }}
+      >
+        Long text
+      </ClampedText>
+    );
+
+    const root = screen.getByTestId('root');
+    const content = contentRef.current!;
+    const toggle = screen.getByTestId('toggle');
+
+    expect(root).toHaveAttribute('id', 'custom-root');
+    expect(content).toHaveAttribute('id', 'custom-content');
+    expect(content).toHaveClass('custom-content');
+    expect(content.style.color).toBe('red');
+    expect(content.style.getPropertyValue('--clamped-text-rows')).toBe('2');
+
+    expect(toggleRef.current).toBe(toggle);
+    expect(toggle).toHaveClass('custom-toggle');
+    expect(toggle.style.color).toBe('blue');
+    expect(toggle).toHaveAttribute('aria-controls', 'custom-content');
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(toggle).toHaveAccessibleName('Show full text');
+
+    fireEvent.click(content);
+    expect(onContentClick).toHaveBeenCalledTimes(1);
+
+    await user.click(toggle);
+
+    expect(onTogglePress).toHaveBeenCalledTimes(1);
+    expect(toggle).toHaveAccessibleName('Show less text');
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('renders on the server without browser measurement APIs', () => {
+    const documentDescriptor = Object.getOwnPropertyDescriptor(
+      globalThis,
+      'document'
+    );
+
+    Object.defineProperty(globalThis, 'document', {
+      configurable: true,
+      value: undefined,
+    });
+
+    vi.stubGlobal('Range', undefined);
+    vi.stubGlobal('ResizeObserver', undefined);
+
+    try {
+      const html = renderToString(
+        <ClampedText
+          id="server-root"
+          slotProps={{ content: { id: 'server-content' } }}
+        >
+          Server text
+        </ClampedText>
+      );
+
+      expect(html).toContain('id="server-root"');
+      expect(html).toContain('id="server-content"');
+      expect(html).toContain('Server text');
+      expect(html).not.toContain('<button');
+    } finally {
+      if (documentDescriptor) {
+        Object.defineProperty(globalThis, 'document', documentDescriptor);
+      }
+    }
   });
 
   it('shows rows + 1 lines without a toggle or change event', () => {
