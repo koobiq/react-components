@@ -1,5 +1,9 @@
-import type { ComponentRef } from 'react';
+import type { ComponentRef, HTMLAttributes, ReactNode, Ref } from 'react';
 
-export type { InputProps } from 'react-aria-components';
+export type InputProps = {
+  children?: ReactNode;
+  value?: string | number | readonly string[];
+  ref?: Ref<HTMLInputElement | HTMLTextAreaElement>;
+} & HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>;
 
 export type InputRef = ComponentRef<'input'>;

@@ -1,7 +1,9 @@
 'use client';
 
-import { InputContext, useSlottedContext } from 'react-aria-components';
+import { createContext, useContext } from 'react';
 
-export { InputContext };
+import type { InputProps } from './index';
 
-export const useInputContext = () => useSlottedContext(InputContext) ?? {};
+export const InputContext = createContext<InputProps>({});
+
+export const useInputContext = () => useContext(InputContext);

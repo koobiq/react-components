@@ -124,6 +124,7 @@ export type TextareaProps = ExtendableProps<
       | 'children'
       | 'style'
       | 'className'
+      | 'inputElementType'
       | 'isClearable'
     >
 >;

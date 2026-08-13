@@ -24,7 +24,7 @@ error?: boolean;
 required?: boolean;
 hiddenLabel?: boolean;
 readonly?: boolean;
-} & Omit<TextFieldProps<HTMLTextAreaElement>, "children" | "style" | "className" | "description" | "isClearable" | "validationState">, "caption" | "style" | "className" | "cols" | "data-testid" | "rows" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isLabelHidden" | "expand"> & {
+} & Omit<TextFieldProps<HTMLTextAreaElement>, "children" | "style" | "className" | "description" | "isClearable" | "validationState" | "inputElementType">, "caption" | "style" | "className" | "cols" | "data-testid" | "rows" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isLabelHidden" | "expand"> & {
 className?: string;
 style?: CSSProperties;
 variant?: TextareaPropVariant;
@@ -89,7 +89,7 @@ export type TextareaProps = ExtendableProps<{
         textarea?: FormFieldInputProps<'textarea'>;
         errorMessage?: FormFieldErrorProps;
     };
-}, TextareaDeprecatedProps & Omit<TextFieldProps<HTMLTextAreaElement>, 'description' | 'validationState' | 'children' | 'style' | 'className' | 'isClearable'>>;
+}, TextareaDeprecatedProps & Omit<TextFieldProps<HTMLTextAreaElement>, 'description' | 'validationState' | 'children' | 'style' | 'className' | 'inputElementType' | 'isClearable'>>;
 
 // Warning: (ae-forgotten-export) The symbol "FormFieldControlGroupPropVariant" needs to be exported by the entry point index.d.ts
 //

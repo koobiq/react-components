@@ -81,7 +81,7 @@ import type { FocusStrategy } from '@koobiq/react-core';
 import { FormEventHandler } from 'react';
 import type { FormProps as FormProps_2 } from '@koobiq/react-core';
 import type { FormValidationState } from '@react-stately/form';
-import { ForwardedRef } from 'react';
+import type { ForwardedRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
 import { getItemCount } from '@react-stately/collections';
 import type { GlobalDOMAttributes } from '@koobiq/react-core';
@@ -92,12 +92,9 @@ import type { HoverEvents } from '@koobiq/react-core';
 import type { HTMLAttributes } from 'react';
 import { HTMLInputAutoCompleteAttribute } from 'react';
 import { HTMLInputTypeAttribute } from 'react';
-import { Input } from 'react-aria-components';
 import { InputBase } from '@koobiq/react-core';
-import { InputContext } from 'react-aria-components';
 import { InputEventHandler } from 'react';
 import { InputHTMLAttributes } from 'react';
-import { InputProps } from 'react-aria-components';
 import { Item } from '@react-stately/collections';
 import type { Key } from 'react';
 import type { Key as Key_2 } from '@koobiq/react-core';
@@ -140,9 +137,6 @@ import type { RouterOptions } from '@koobiq/react-core';
 import type { Selection as Selection_2 } from '@koobiq/react-core';
 import { Separator } from 'react-aria-components';
 import { SubmenuTrigger } from 'react-aria-components';
-import { TextArea as Textarea } from 'react-aria-components';
-import { TextAreaContext as TextareaContext } from 'react-aria-components';
-import { TextAreaProps as TextareaProps } from 'react-aria-components';
 import type { TextFieldAria } from '@react-aria/textfield';
 import { TextInputBase } from '@koobiq/react-core';
 import { ToggleEventHandler } from 'react';
@@ -412,11 +406,18 @@ export { Header }
 
 export { HeaderProps }
 
-export { Input }
+// @public (undocumented)
+export const Input: ForwardRefExoticComponent<Omit<InputProps, "ref"> & RefAttributes<HTMLInputElement>>;
 
-export { InputContext }
+// @public (undocumented)
+export const InputContext: Context<InputProps>;
 
-export { InputProps }
+// @public (undocumented)
+export type InputProps = {
+    children?: ReactNode;
+    value?: string | number | readonly string[];
+    ref?: Ref<HTMLInputElement | HTMLTextAreaElement>;
+} & HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>;
 
 // @public (undocumented)
 export type InputRef = ComponentRef<'input'>;
@@ -784,11 +785,18 @@ export type TagListState<T extends object> = ListState<T>;
 const Text_2: PolyForwardComponent<"p", TextBaseProps, ElementType>;
 export { Text_2 as Text }
 
-export { Textarea }
+// @public (undocumented)
+export const Textarea: ForwardRefExoticComponent<Omit<TextareaProps, "ref"> & RefAttributes<HTMLTextAreaElement>>;
 
-export { TextareaContext }
+// @public (undocumented)
+export const TextareaContext: Context<TextareaProps>;
 
-export { TextareaProps }
+// @public (undocumented)
+export type TextareaProps = {
+    children?: ReactNode;
+    value?: string | number | readonly string[];
+    ref?: Ref<HTMLTextAreaElement | HTMLInputElement>;
+} & HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>;
 
 // @public (undocumented)
 export type TextareaRef = ComponentRef<'textarea'>;
@@ -992,9 +1000,7 @@ export { useContextProps }
 export const useGroupContext: () => GroupProps;
 
 // @public (undocumented)
-export const useInputContext: () => InputProps & {
-    ref?: ForwardedRef<HTMLInputElement> | undefined;
-};
+export const useInputContext: () => InputProps;
 
 // @public (undocumented)
 export function useLink(props: UseLinkProps, ref: RefObject<HTMLElement | null>): {
@@ -1427,9 +1433,7 @@ export function useTagListItem<T extends object>(props: AriaTagListItemProps, st
 export function useTagListState<T extends object>(props: AriaTagListStateProps<T>): TagListState<T>;
 
 // @public (undocumented)
-export const useTextareaContext: () => TextareaProps & {
-    ref?: ForwardedRef<HTMLTextAreaElement> | undefined;
-};
+export const useTextareaContext: () => TextareaProps;
 
 export { useToggleButtonGroup }
 

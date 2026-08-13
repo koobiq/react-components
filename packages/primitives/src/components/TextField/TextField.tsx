@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useRef, useCallback, useState } from 'react';
-import type { KeyboardEvent, Ref } from 'react';
+import type { KeyboardEvent, Ref, RefObject } from 'react';
 
 import {
   filterDOMProps,
@@ -24,9 +24,11 @@ import { removeDataAttributes } from '../../utils';
 import { FieldErrorContext } from '../FieldError';
 import { FormContext } from '../Form';
 import { InputContext } from '../Input';
+import type { InputProps } from '../Input';
 import { LabelContext } from '../Label';
 import { TextContext } from '../Text';
 import { TextareaContext } from '../Textarea';
+import type { TextareaProps } from '../Textarea';
 
 import type {
   TextFieldRef,
@@ -39,21 +41,27 @@ function TextFieldRender(
   inProps: Omit<TextFieldProps<HTMLInputElement | HTMLTextAreaElement>, 'ref'>,
   ref: Ref<TextFieldRef>
 ) {
-  let props = inProps;
-  let inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const innerRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
-  [props, inputRef as unknown] = useContextProps(
-    props,
-    inputRef,
+  // A parent, such as `Autocomplete`, drives the field through this context,
+  // handing over both its props and the ref it wants the field to use.
+  const [props, contextRef] = useContextProps(
+    inProps,
+    innerRef,
     FieldInputContext
   );
+
+  // The context is typed for any focusable element, this field is narrower.
+  const inputRef = contextRef as RefObject<
+    HTMLInputElement | HTMLTextAreaElement | null
+  >;
 
   const { isDisabled, isReadOnly, isRequired, onClear, isClearable } = props;
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const [inputElementType, setInputElementType] = useState<
     'input' | 'textarea'
-  >('input');
+  >(props.inputElementType ?? 'input');
 
   const inputOrTextareaRef = useCallback(
     (node: HTMLInputElement | HTMLTextAreaElement | null) => {
@@ -118,7 +126,7 @@ function TextFieldRender(
     descriptionProps,
     errorMessageProps,
     ...validation
-  } = useTextField<any>(
+  } = useTextField<'input' | 'textarea'>(
     {
       ...removeDataAttributes(props),
       value: inputValue,
@@ -132,6 +140,10 @@ function TextFieldRender(
     },
     inputRef
   );
+
+  // The hook types its result for one element or the other, the same props go
+  // to both the input and the textarea.
+  const fieldProps = inputProps as InputProps & TextareaProps;
 
   const DOMProps = filterDOMProps(props);
   delete DOMProps.id;
@@ -163,8 +175,8 @@ function TextFieldRender(
       <Provider
         values={[
           [LabelContext, labelProps],
-          [InputContext, { ...inputProps, ref: inputOrTextareaRef }],
-          [TextareaContext, { ...inputProps, ref: inputOrTextareaRef }],
+          [InputContext, { ...fieldProps, ref: inputOrTextareaRef }],
+          [TextareaContext, { ...fieldProps, ref: inputOrTextareaRef }],
           [
             TextContext,
             {

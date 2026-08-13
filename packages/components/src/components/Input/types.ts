@@ -115,7 +115,7 @@ export type InputProps = ExtendableProps<
   } & InputDeprecatedProps,
   Omit<
     TextFieldProps<HTMLInputElement>,
-    'description' | 'children' | 'validationState'
+    'description' | 'children' | 'inputElementType' | 'validationState'
   >
 >;
 

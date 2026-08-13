@@ -1,5 +1,9 @@
-import type { ComponentRef } from 'react';
+import type { ComponentRef, HTMLAttributes, ReactNode, Ref } from 'react';
 
-export type { TextAreaProps as TextareaProps } from 'react-aria-components';
+export type TextareaProps = {
+  children?: ReactNode;
+  value?: string | number | readonly string[];
+  ref?: Ref<HTMLTextAreaElement | HTMLInputElement>;
+} & HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>;
 
 export type TextareaRef = ComponentRef<'textarea'>;
