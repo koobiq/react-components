@@ -1,8 +1,8 @@
-/* The shell — shadow, background, fade — comes from `Popover`. */
 .base {
+  --kbq-popover-border-radius: var(--kbq-size-s);
+
   min-inline-size: 200px;
   max-inline-size: 640px;
-  border-radius: var(--kbq-size-s);
 }
 
 .container {
