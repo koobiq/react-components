@@ -110,6 +110,9 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
     ]);
 
     const isMeasured = rowsCount !== undefined;
+
+    // A single additional row is shown in full because a toggle would occupy
+    // the same vertical space without revealing more content.
     const hasToggle = isMeasured && rowsCount > normalizedRows + 1;
 
     const effectiveExpanded = isMeasured

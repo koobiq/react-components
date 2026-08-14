@@ -70,9 +70,15 @@ describe('ClampedText', () => {
   const disconnect = vi.fn();
   const scrollIntoView = vi.fn();
   const selectNodeContents = vi.fn();
+  let scrollIntoViewDescriptor: PropertyDescriptor | undefined;
 
   beforeEach(() => {
     rowTops = [];
+
+    scrollIntoViewDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      'scrollIntoView'
+    );
 
     class ResizeObserverMock {
       constructor(callback: ResizeObserverCallback) {
@@ -110,7 +116,16 @@ describe('ClampedText', () => {
     vi.restoreAllMocks();
     vi.clearAllMocks();
     once.clear();
-    Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
+
+    if (scrollIntoViewDescriptor) {
+      Object.defineProperty(
+        HTMLElement.prototype,
+        'scrollIntoView',
+        scrollIntoViewDescriptor
+      );
+    } else {
+      Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
+    }
   });
 
   it('forwards the ref and root element props', () => {
