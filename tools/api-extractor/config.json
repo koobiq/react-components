@@ -13,6 +13,7 @@
     "Calendar",
     "Checkbox",
     "CheckboxGroup",
+    "ClampedList",
     "Container",
     "ContentPanel",
     "DateInput",

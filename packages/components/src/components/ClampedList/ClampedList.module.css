@@ -1,0 +1,47 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  max-inline-size: 100%;
+}
+
+.content {
+  display: inline;
+  min-inline-size: 0;
+}
+
+.toggle {
+  gap: var(--kbq-size-xxs);
+  padding: 0;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: var(--kbq-size-xxs);
+  cursor: pointer;
+  background: none;
+  color: var(--kbq-foreground-theme);
+  outline: var(--kbq-size-3xs) solid transparent;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition:
+    color var(--kbq-transition-default),
+    outline var(--kbq-transition-default),
+    text-decoration-color var(--kbq-transition-default);
+
+  @mixin typography text-normal;
+
+  &[data-hovered] {
+    color: var(--kbq-states-foreground-theme-hover);
+    text-decoration-color: var(--kbq-line-theme-less);
+  }
+
+  &[data-pressed] {
+    color: var(--kbq-states-foreground-theme-active);
+    text-decoration-color: var(--kbq-line-theme-less);
+  }
+
+  &[data-focus-visible] {
+    color: var(--kbq-foreground-theme);
+    outline-color: var(--kbq-states-line-focus-theme);
+  }
+}
