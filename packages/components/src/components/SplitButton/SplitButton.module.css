@@ -1,0 +1,79 @@
+.base {
+  display: flex;
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.base > [data-slot='button']:not(:last-child) {
+  margin-inline-end: 0;
+  box-shadow: none;
+}
+
+.base[data-variant='contrast-filled'] {
+  --split-button-divider-color: var(--kbq-line-on-contrast-fade);
+}
+
+.base[data-variant='fade-contrast-filled'],
+.base[data-variant='fade-contrast-outline'],
+.base[data-variant='contrast-transparent'] {
+  --split-button-divider-color: var(--kbq-line-contrast-fade);
+}
+
+.base[data-variant='fade-theme-outline'],
+.base[data-variant='theme-transparent'] {
+  --split-button-divider-color: var(--kbq-line-theme-fade);
+}
+
+/*
+ * The trailing/chevron button never shrinks below this, so a long primary
+ * label truncates first instead of squeezing the menu trigger.
+ */
+.base > [data-slot='button']:last-child {
+  min-inline-size: var(--kbq-size-3xl);
+  background-image: linear-gradient(
+    var(--split-button-divider-color),
+    var(--split-button-divider-color)
+  );
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+  background-size: var(--kbq-size-border-width) var(--kbq-size-l);
+}
+
+/*
+ * The divider only turns the disabled gray when both buttons are disabled —
+ * if either button is still enabled, it keeps the normal per-variant color.
+ */
+.base
+  > [data-slot='button'][data-disabled]
+  + [data-slot='button']:last-child[data-disabled] {
+  --split-button-divider-color: var(--kbq-states-line-disabled);
+}
+
+.base > [data-slot='button']:last-child[aria-expanded='true'],
+.base
+  > [data-slot='button']:last-child:not([data-disabled]):is(
+    :hover,
+    :focus-visible
+  ),
+.base
+  > [data-slot='button']:not(:last-child, [data-disabled]):is(
+    :hover,
+    :focus-visible
+  )
+  + [data-slot='button']:last-child {
+  background-image: none;
+}
+
+/*
+ * Filled fade contrast: when only one button is disabled, the still-enabled
+ * button also takes the disabled background so the pill reads as one piece.
+ */
+.base[data-variant='fade-contrast-filled']
+  > [data-slot='button']:not(:last-child, [data-disabled]):has(
+    + [data-slot='button']:last-child[data-disabled]
+  ),
+.base[data-variant='fade-contrast-filled']
+  > [data-slot='button'][data-disabled]
+  + [data-slot='button']:last-child:not([data-disabled]) {
+  background-color: var(--kbq-states-background-disabled);
+}
