@@ -1,7 +1,8 @@
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
-import type { ButtonProps } from '@koobiq/react-primitives';
+
+import type { ClampedListTriggerProps } from './components';
 
 export type ClampedListState<T> = {
   /** Items currently exposed to the render function. */
@@ -44,16 +45,12 @@ export type ClampedListProps<T> = {
   slotProps?: {
     content?: Omit<ComponentPropsWithRef<'div'>, 'children'> &
       DataAttributeProps;
-    toggle?: Omit<
-      ButtonProps,
-      'as' | 'children' | 'type' | 'aria-controls' | 'aria-expanded'
-    > &
-      DataAttributeProps & {
-        /**
-         * Icon displayed before the toggle content. Pass `null` to hide it or
-         * a render function to use the current expanded state.
-         */
-        icon?: ReactNode | ((isExpanded: boolean) => ReactNode);
-      };
+    toggle?: Omit<ClampedListTriggerProps, 'children' | 'icon'> & {
+      /**
+       * Icon displayed before the toggle content. Pass `null` to hide it or a
+       * render function to use the current expanded state.
+       */
+      icon?: ReactNode | ((isExpanded: boolean) => ReactNode);
+    };
   };
 };

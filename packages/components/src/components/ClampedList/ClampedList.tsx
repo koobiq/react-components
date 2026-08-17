@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
 
 import {
   mergeProps,
@@ -8,6 +8,7 @@ import {
   useId,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
+import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
 
 import s from './ClampedList.module.css';
 import { ClampedListTrigger } from './components';
@@ -63,6 +64,36 @@ export function ClampedList<T>({
     { id: contentId, role: 'group' }
   );
 
+  const { icon: iconProp, ...toggleSlotProps } = slotProps?.toggle ?? {};
+
+  let toggleIcon: ReactNode;
+
+  if (iconProp === undefined) {
+    toggleIcon = isExpanded ? <IconChevronUp16 /> : <IconChevronDown16 />;
+  } else if (typeof iconProp === 'function') {
+    toggleIcon = iconProp(isExpanded);
+  } else {
+    toggleIcon = iconProp;
+  }
+
+  const toggleProps = mergeProps(
+    {
+      'aria-controls': contentId,
+      'aria-expanded': isExpanded,
+      onPress: onToggle,
+    },
+    toggleSlotProps,
+    {
+      children: isExpanded
+        ? (lessText ?? strings.format('collapse'))
+        : (moreText ??
+          strings.format('show more', {
+            count: hiddenItemCount,
+          })),
+      icon: toggleIcon,
+    }
+  );
+
   return (
     <div
       className={s.base}
@@ -70,21 +101,7 @@ export function ClampedList<T>({
       data-clamped={(hasToggle && !isExpanded) || undefined}
     >
       <div {...contentProps}>{children(state)}</div>
-      {hasToggle && (
-        <ClampedListTrigger
-          {...slotProps?.toggle}
-          contentId={contentId}
-          isExpanded={isExpanded}
-          onToggle={onToggle}
-        >
-          {isExpanded
-            ? (lessText ?? strings.format('collapse'))
-            : (moreText ??
-              strings.format('show more', {
-                count: hiddenItemCount,
-              }))}
-        </ClampedListTrigger>
-      )}
+      {hasToggle && <ClampedListTrigger {...toggleProps} />}
     </div>
   );
 }
