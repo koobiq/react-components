@@ -115,6 +115,7 @@ export const Customization: Story = {
             'data-testid': 'custom-content',
           },
           toggle: {
+            icon: null,
             'data-testid': 'custom-toggle',
             style: { alignSelf: 'flex-end' },
           },

@@ -4,7 +4,8 @@ import type {
   DataAttributeProps,
   ExtendableComponentPropsWithRef,
 } from '@koobiq/react-core';
-import type { ButtonProps } from '@koobiq/react-primitives';
+
+import type { ClampedTextTriggerProps } from './components';
 
 export type ClampedTextProps = ExtendableComponentPropsWithRef<
   {
@@ -32,11 +33,7 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<
     slotProps?: {
       content?: Omit<ComponentPropsWithRef<'div'>, 'children'> &
         DataAttributeProps;
-      toggle?: Omit<
-        ButtonProps,
-        'as' | 'children' | 'type' | 'aria-controls' | 'aria-expanded'
-      > &
-        DataAttributeProps;
+      toggle?: ClampedTextTriggerProps;
     };
   },
   'div'

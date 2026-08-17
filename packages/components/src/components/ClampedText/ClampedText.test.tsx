@@ -210,6 +210,47 @@ describe('ClampedText', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
 
+  it('supports hiding the toggle icon', () => {
+    rowTops = [0, 20, 40, 60];
+
+    render(
+      <ClampedText rows={2} slotProps={{ toggle: { icon: null } }}>
+        Long text
+      </ClampedText>
+    );
+
+    const toggle = screen.getByRole('button', { name: 'Expand' });
+
+    expect(toggle.querySelector('svg')).not.toBeInTheDocument();
+  });
+
+  it('supports a custom toggle icon', async () => {
+    rowTops = [0, 20, 40, 60];
+    const user = userEvent.setup();
+
+    const toggleIcon = vi.fn((isExpanded: boolean) => (
+      <span data-testid="toggle-icon">{isExpanded ? 'Up' : 'Down'}</span>
+    ));
+
+    render(
+      <ClampedText rows={2} slotProps={{ toggle: { icon: toggleIcon } }}>
+        Long text
+      </ClampedText>
+    );
+
+    expect(screen.getByTestId('toggle-icon')).toHaveTextContent('Down');
+
+    expect(screen.getByTestId('toggle-icon').parentElement).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Expand' }));
+
+    expect(screen.getByTestId('toggle-icon')).toHaveTextContent('Up');
+    expect(toggleIcon).toHaveBeenLastCalledWith(true);
+  });
+
   it('renders on the server without browser measurement APIs', () => {
     const documentDescriptor = Object.getOwnPropertyDescriptor(
       globalThis,
@@ -372,6 +413,12 @@ describe('ClampedText', () => {
     expect(button).toHaveAttribute('aria-expanded', 'false');
     expect(button).toHaveAttribute('aria-controls', content.id);
     expect(screen.getByTestId('expand-icon')).toBeInTheDocument();
+
+    expect(screen.getByTestId('expand-icon').parentElement).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+
     expect(onExpandedChange).not.toHaveBeenCalled();
   });
 

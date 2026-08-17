@@ -19,13 +19,9 @@ import {
   useObjectRef,
   useResizeObserver,
 } from '@koobiq/react-core';
-import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
-import {
-  Button as ButtonPrimitive,
-  composeRenderProps,
-} from '@koobiq/react-primitives';
 
 import s from './ClampedText.module.css';
+import { ClampedTextTrigger } from './components';
 import intlMessages from './intl.json';
 import type { ClampedTextProps, ClampedTextRef } from './types';
 import { getRowsCount } from './utils';
@@ -167,13 +163,6 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       }
     );
 
-    const toggleProps = mergeProps(
-      {
-        onPress: onToggle,
-      },
-      slotProps?.toggle
-    );
-
     return (
       <div
         {...other}
@@ -185,27 +174,16 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       >
         <div {...contentProps}>{children}</div>
         {hasToggle && (
-          <ButtonPrimitive
-            {...toggleProps}
-            type="button"
-            className={composeRenderProps(
-              slotProps?.toggle?.className,
-              (className) => clsx(s.toggle, className)
-            )}
-            aria-controls={contentId}
-            aria-expanded={effectiveExpanded}
+          <ClampedTextTrigger
+            {...slotProps?.toggle}
+            contentId={contentId}
+            isExpanded={effectiveExpanded}
+            onToggle={onToggle}
           >
-            {effectiveExpanded ? (
-              <IconChevronUp16 aria-hidden />
-            ) : (
-              <IconChevronDown16 aria-hidden />
-            )}
-            <span>
-              {effectiveExpanded
-                ? (lessText ?? strings.format('collapse'))
-                : (moreText ?? strings.format('expand'))}
-            </span>
-          </ButtonPrimitive>
+            {effectiveExpanded
+              ? (lessText ?? strings.format('collapse'))
+              : (moreText ?? strings.format('expand'))}
+          </ClampedTextTrigger>
         )}
       </div>
     );
