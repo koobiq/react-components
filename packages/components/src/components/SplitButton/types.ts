@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactElement } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import { buttonGroupPropVariant } from '../ButtonGroup/types.js';
 
@@ -12,7 +12,7 @@ export type SplitButtonBaseProps = {
    * action `Button`, followed by a `Menu` whose `control` renders the
    * trigger `Button` for the secondary actions.
    */
-  children?: [primaryAction: ReactElement, menu: ReactElement];
+  children?: ReactNode;
   /**
    * The variant applied to both nested buttons.
    * @default 'fade-contrast-filled'
@@ -22,11 +22,6 @@ export type SplitButtonBaseProps = {
   isDisabled?: boolean;
   /** If `true`, both nested buttons show a loader and block clicks. */
   isLoading?: boolean;
-  /**
-   * If `true`, the menu's width matches the split button's width.
-   * @default false
-   */
-  panelAutoWidth?: boolean;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

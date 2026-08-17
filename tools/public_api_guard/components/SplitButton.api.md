@@ -8,18 +8,17 @@ import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { ElementType } from 'react';
 import { PolyForwardComponent } from '@koobiq/react-core';
-import type { ReactElement } from 'react';
+import type { ReactNode } from 'react';
 
 // @public
 export const SplitButton: PolyForwardComponent<"div", SplitButtonBaseProps, ElementType>;
 
 // @public (undocumented)
 export type SplitButtonBaseProps = {
-    children?: [primaryAction: ReactElement, menu: ReactElement];
+    children?: ReactNode;
     variant?: SplitButtonPropVariant;
     isDisabled?: boolean;
     isLoading?: boolean;
-    panelAutoWidth?: boolean;
     className?: string;
     style?: CSSProperties;
     'data-testid'?: string | number;

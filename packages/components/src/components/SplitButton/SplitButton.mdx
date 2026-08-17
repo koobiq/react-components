@@ -75,8 +75,9 @@ progress blocks clicks.
 Menu positioning is configured the same way as in the
 [Menu](/?path=/docs/components-menu--docs) component. When the menu width is
 approximately equal to the split button's size, it is better to align them
-for visual consistency — set `panelAutoWidth` to match the menu's width to
-the split button's width.
+for visual consistency — measure the split button with
+[useElementSize](/?path=/docs/hooks-useelementsize--docs) and pass the
+result to the `Menu`'s own `slotProps.popover.size`.
 
 <Story of={Stories.MenuWidth} />
 

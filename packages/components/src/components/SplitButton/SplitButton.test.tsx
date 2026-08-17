@@ -1,76 +1,17 @@
 import { createRef } from 'react';
 
-import { act, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
 import { Button } from '../Button';
 import { Menu } from '../Menu';
 
 import { SplitButton, splitButtonPropVariant } from './index.js';
 
-const createResizeEntry = (width: number): ResizeObserverEntry =>
-  ({
-    contentRect: {
-      x: 0,
-      y: 0,
-      top: 0,
-      left: 0,
-      right: width,
-      bottom: 32,
-      width,
-      height: 32,
-    },
-    borderBoxSize: [{ inlineSize: width, blockSize: 32 }],
-  }) as unknown as ResizeObserverEntry;
-
 describe('SplitButton', () => {
-  let observers: { target: Element; callback: ResizeObserverCallback }[];
-
-  beforeEach(() => {
-    observers = [];
-
-    class ResizeObserverMock {
-      callback: ResizeObserverCallback;
-
-      constructor(callback: ResizeObserverCallback) {
-        this.callback = callback;
-      }
-
-      observe = (target: Element) => {
-        observers.push({ target, callback: this.callback });
-      };
-
-      unobserve = vi.fn();
-      disconnect = vi.fn();
-    }
-
-    vi.stubGlobal('ResizeObserver', ResizeObserverMock);
-
-    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
-      callback(0);
-
-      return 1;
-    });
-
-    vi.stubGlobal('cancelAnimationFrame', vi.fn());
-  });
-
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
-
   const baseProps = { 'data-testid': 'root' };
 
   const getRoot = () => screen.getByTestId<HTMLDivElement>('root');
-
-  const resizeRoot = (width: number) => {
-    const root = getRoot();
-    const observer = observers.find((entry) => entry.target === root);
-
-    act(() =>
-      observer?.callback([createResizeEntry(width)], {} as ResizeObserver)
-    );
-  };
 
   const menu = (props: Record<string, unknown> = {}) => (
     <Menu
@@ -244,88 +185,6 @@ describe('SplitButton', () => {
 
       expect(primary).toHaveAttribute('data-loading', 'true');
       expect(trigger).not.toHaveAttribute('data-loading');
-    });
-  });
-
-  describe('check the panelAutoWidth prop', () => {
-    it("should leave the menu's own size untouched by default", () => {
-      render(
-        <SplitButton {...baseProps}>
-          <Button>Split Button</Button>
-          {menu({ isOpen: true })}
-        </SplitButton>
-      );
-
-      resizeRoot(240);
-
-      expect(screen.getByTestId('menu')).toHaveStyle({
-        '--popover-inline-size': 'auto',
-      });
-    });
-
-    it("should match the menu's width to the split button's measured width", () => {
-      render(
-        <SplitButton {...baseProps} panelAutoWidth>
-          <Button>Split Button</Button>
-          {menu({ isOpen: true })}
-        </SplitButton>
-      );
-
-      resizeRoot(240);
-
-      expect(screen.getByTestId('menu')).toHaveStyle({
-        '--popover-inline-size': '240px',
-      });
-    });
-
-    it("should not override the menu's own explicit popover size", () => {
-      render(
-        <SplitButton {...baseProps} panelAutoWidth>
-          <Button>Split Button</Button>
-          {menu({ isOpen: true, slotProps: { popover: { size: '999px' } } })}
-        </SplitButton>
-      );
-
-      resizeRoot(240);
-
-      expect(screen.getByTestId('menu')).toHaveStyle({
-        '--popover-inline-size': '999px',
-      });
-    });
-
-    it("should remove the menu's own 200px min-inline-size floor so a narrower measured width actually takes effect", () => {
-      render(
-        <SplitButton {...baseProps} panelAutoWidth>
-          <Button>Split Button</Button>
-          {menu({ isOpen: true })}
-        </SplitButton>
-      );
-
-      resizeRoot(120);
-
-      expect(screen.getByTestId('menu')).toHaveStyle({
-        '--popover-inline-size': '120px',
-        'min-inline-size': '0',
-      });
-    });
-
-    it('should not remount the menu when the width first measures in', () => {
-      render(
-        <SplitButton {...baseProps} panelAutoWidth>
-          <Button>Split Button</Button>
-          {menu({ isOpen: true })}
-        </SplitButton>
-      );
-
-      const menuBeforeResize = screen.getByTestId('menu');
-
-      resizeRoot(240);
-
-      expect(screen.getByTestId('menu')).toBe(menuBeforeResize);
-
-      expect(screen.getByTestId('menu')).toHaveStyle({
-        '--popover-inline-size': '240px',
-      });
     });
   });
 });

@@ -1,3 +1,4 @@
+import { useElementSize } from '@koobiq/react-core';
 import {
   IconChevronDownS16,
   IconClock16,
@@ -409,23 +410,30 @@ export const ProgressState: Story = {
 };
 
 export const MenuWidth: Story = {
-  render: () => (
-    <SplitButton panelAutoWidth aria-label="Split action">
-      <Button>Split Button</Button>
-      <Menu
-        placement="bottom end"
-        control={(props) => (
-          <Button
-            {...props}
-            onlyIcon
-            aria-label="More options"
-            startIcon={<IconChevronDownS16 />}
-          />
-        )}
-      >
-        <Menu.Item key="a">A</Menu.Item>
-        <Menu.Item key="b">B</Menu.Item>
-      </Menu>
-    </SplitButton>
-  ),
+  render: function Render() {
+    const { ref, width } = useElementSize<HTMLDivElement>();
+
+    return (
+      <SplitButton ref={ref} aria-label="Split action">
+        <Button>Split Button</Button>
+        <Menu
+          placement="bottom end"
+          slotProps={{
+            popover: { size: `${width}px`, style: { minInlineSize: 0 } },
+          }}
+          control={(props) => (
+            <Button
+              {...props}
+              onlyIcon
+              aria-label="More options"
+              startIcon={<IconChevronDownS16 />}
+            />
+          )}
+        >
+          <Menu.Item key="a">A</Menu.Item>
+          <Menu.Item key="b">B</Menu.Item>
+        </Menu>
+      </SplitButton>
+    );
+  },
 };
