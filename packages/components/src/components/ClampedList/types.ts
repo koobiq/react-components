@@ -48,6 +48,12 @@ export type ClampedListProps<T> = {
       ButtonProps,
       'as' | 'children' | 'type' | 'aria-controls' | 'aria-expanded'
     > &
-      DataAttributeProps;
+      DataAttributeProps & {
+        /**
+         * Icon displayed before the toggle content. Pass `null` to hide it or
+         * a render function to use the current expanded state.
+         */
+        icon?: ReactNode | ((isExpanded: boolean) => ReactNode);
+      };
   };
 };

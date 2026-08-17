@@ -55,7 +55,8 @@ Items can be rendered inline. Use `moreText` and `lessText` for compact toggle
 labels that continue the same line as the visible items.
 
 Use `slotProps.content` and `slotProps.toggle` to customize the content
-container and toggle.
+container and toggle. Set `slotProps.toggle.icon` to `null` to remove the
+chevron. Pass an icon or a function that receives `isExpanded` to replace it.
 
 <Story of={Stories.FlatList} />
 

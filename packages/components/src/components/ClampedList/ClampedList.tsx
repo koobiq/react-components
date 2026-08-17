@@ -3,19 +3,14 @@
 import { useMemo } from 'react';
 
 import {
-  clsx,
   mergeProps,
   useControlledState,
   useId,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
-import {
-  Button as ButtonPrimitive,
-  composeRenderProps,
-} from '@koobiq/react-primitives';
 
 import s from './ClampedList.module.css';
+import { ClampedListTrigger } from './components';
 import intlMessages from './intl';
 import type { ClampedListProps, ClampedListState } from './types';
 
@@ -68,8 +63,6 @@ export function ClampedList<T>({
     { id: contentId, role: 'group' }
   );
 
-  const toggleProps = mergeProps({ onPress: onToggle }, slotProps?.toggle);
-
   return (
     <div
       className={s.base}
@@ -78,30 +71,19 @@ export function ClampedList<T>({
     >
       <div {...contentProps}>{children(state)}</div>
       {hasToggle && (
-        <ButtonPrimitive
-          {...toggleProps}
-          type="button"
-          className={composeRenderProps(
-            slotProps?.toggle?.className,
-            (className) => clsx(s.toggle, className)
-          )}
-          aria-controls={contentId}
-          aria-expanded={isExpanded}
+        <ClampedListTrigger
+          {...slotProps?.toggle}
+          contentId={contentId}
+          isExpanded={isExpanded}
+          onToggle={onToggle}
         >
-          {isExpanded ? (
-            <IconChevronUp16 aria-hidden />
-          ) : (
-            <IconChevronDown16 aria-hidden />
-          )}
-          <span>
-            {isExpanded
-              ? (lessText ?? strings.format('collapse'))
-              : (moreText ??
-                strings.format('show more', {
-                  count: hiddenItemCount,
-                }))}
-          </span>
-        </ButtonPrimitive>
+          {isExpanded
+            ? (lessText ?? strings.format('collapse'))
+            : (moreText ??
+              strings.format('show more', {
+                count: hiddenItemCount,
+              }))}
+        </ClampedListTrigger>
       )}
     </div>
   );

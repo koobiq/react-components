@@ -65,7 +65,11 @@ describe('ClampedList', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(trigger).toHaveAttribute('aria-controls', content.id);
     expect(content).not.toContainElement(trigger);
-    expect(trigger.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+
+    expect(trigger.querySelector('svg')?.parentElement).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
   });
 
   it('renders a trigger when the hidden count equals the threshold', () => {
@@ -269,6 +273,50 @@ describe('ClampedList', () => {
     expect(
       screen.getByRole('button', { name: 'Hide extra items' })
     ).toBeInTheDocument();
+  });
+
+  it('supports hiding the toggle icon', () => {
+    render(
+      <ClampedList
+        items={createItems(17)}
+        slotProps={{ toggle: { icon: null } }}
+      >
+        {renderItems}
+      </ClampedList>
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Show 7 more' }).querySelector('svg')
+    ).not.toBeInTheDocument();
+  });
+
+  it('supports a custom toggle icon', async () => {
+    const user = userEvent.setup();
+
+    const toggleIcon = vi.fn((isExpanded: boolean) => (
+      <span data-testid="toggle-icon">{isExpanded ? 'Up' : 'Down'}</span>
+    ));
+
+    render(
+      <ClampedList
+        items={createItems(17)}
+        slotProps={{ toggle: { icon: toggleIcon } }}
+      >
+        {renderItems}
+      </ClampedList>
+    );
+
+    expect(screen.getByTestId('toggle-icon')).toHaveTextContent('Down');
+
+    expect(screen.getByTestId('toggle-icon').parentElement).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Show 7 more' }));
+
+    expect(screen.getByTestId('toggle-icon')).toHaveTextContent('Up');
+    expect(toggleIcon).toHaveBeenLastCalledWith(true);
   });
 
   it('supports customizing the content and toggle slots', async () => {

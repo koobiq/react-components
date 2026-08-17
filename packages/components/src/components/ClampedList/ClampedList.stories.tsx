@@ -460,19 +460,34 @@ export const FlatList: Story = {
         lessText="Collapse"
         slotProps={{
           content: { style: { display: 'inline' } },
-          toggle: { style: { margin: 0 } },
+          toggle: { icon: null, style: { margin: 0 } },
         }}
       >
-        {({ visibleItems }) =>
-          visibleItems.map((item) => (
-            <div key={item.id} style={{ display: 'inline-flex' }}>
-              <Typography as="span" style={{ whiteSpace: 'nowrap' }}>
-                {item.name}
-                {',\u00a0'}
-              </Typography>
-            </div>
-          ))
-        }
+        {({ visibleItems }) => (
+          <ul
+            style={{
+              display: 'inline',
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
+            }}
+          >
+            {visibleItems.map((item) => (
+              <li key={item.id} style={{ display: 'inline' }}>
+                <Typography
+                  as="span"
+                  style={{
+                    display: 'inline-flex',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {item.name}
+                  {',\u00a0'}
+                </Typography>
+              </li>
+            ))}
+          </ul>
+        )}
       </ClampedList>
     );
   },
@@ -515,36 +530,46 @@ export const FlatListWithDotSeparators: Story = {
         lessText="Collapse"
         slotProps={{
           content: { style: { display: 'inline' } },
-          toggle: { style: { margin: 0 } },
+          toggle: { icon: null, style: { margin: 0 } },
         }}
       >
-        {({ visibleItems }) =>
-          visibleItems.map((item) => (
-            <Typography
-              key={item.id}
-              as="span"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {item.name}
-              <span
-                aria-hidden
-                style={{
-                  display: 'inline-flex',
-                  marginInline: 'var(--kbq-size-xxs)',
-                  color: 'var(--kbq-foreground-contrast-secondary)',
-                }}
-              >
-                <svg width="2" height="2" viewBox="0 0 2 2">
-                  <circle cx="1" cy="1" r="1" fill="currentColor" />
-                </svg>
-              </span>
-            </Typography>
-          ))
-        }
+        {({ visibleItems }) => (
+          <ul
+            style={{
+              display: 'inline',
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
+            }}
+          >
+            {visibleItems.map((item) => (
+              <li key={item.id} style={{ display: 'inline' }}>
+                <Typography
+                  as="span"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {item.name}
+                  <span
+                    aria-hidden
+                    style={{
+                      display: 'inline-flex',
+                      marginInline: 'var(--kbq-size-xxs)',
+                      color: 'var(--kbq-foreground-contrast-secondary)',
+                    }}
+                  >
+                    <svg width="2" height="2" viewBox="0 0 2 2">
+                      <circle cx="1" cy="1" r="1" fill="currentColor" />
+                    </svg>
+                  </span>
+                </Typography>
+              </li>
+            ))}
+          </ul>
+        )}
       </ClampedList>
     );
   },
