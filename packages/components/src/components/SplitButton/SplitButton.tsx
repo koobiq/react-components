@@ -8,6 +8,7 @@ import type {
   ReactElement,
 } from 'react';
 
+import { once } from '@koobiq/logger';
 import {
   clsx,
   polymorphicForwardRef,
@@ -36,11 +37,21 @@ export const SplitButton = polymorphicForwardRef<'div', SplitButtonBaseProps>(
       as = 'div',
       variant = 'fade-contrast-filled',
       isDisabled,
+      isLoading,
       panelAutoWidth = false,
       className,
       children,
       ...other
     } = props;
+
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      Children.count(children) !== 2
+    ) {
+      once.warn(
+        'SplitButton expects exactly two children: the primary action Button, followed by a Menu.'
+      );
+    }
 
     const { ref: sizeRef, width } = useElementSize<HTMLDivElement>();
     const mergedRef = useMultiRef([ref, sizeRef]);
@@ -84,7 +95,9 @@ export const SplitButton = polymorphicForwardRef<'div', SplitButtonBaseProps>(
         as={as}
         variant={variant}
         isDisabled={isDisabled}
+        isLoading={isLoading}
         className={clsx(s.base, className)}
+        data-slot="split-button"
         data-panel-auto-width={panelAutoWidth || undefined}
         {...other}
         ref={mergedRef}

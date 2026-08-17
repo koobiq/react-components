@@ -8,16 +8,17 @@ import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { ElementType } from 'react';
 import { PolyForwardComponent } from '@koobiq/react-core';
-import type { ReactNode } from 'react';
+import type { ReactElement } from 'react';
 
 // @public
 export const SplitButton: PolyForwardComponent<"div", SplitButtonBaseProps, ElementType>;
 
 // @public (undocumented)
 export type SplitButtonBaseProps = {
-    children?: ReactNode;
+    children?: [primaryAction: ReactElement, menu: ReactElement];
     variant?: SplitButtonPropVariant;
     isDisabled?: boolean;
+    isLoading?: boolean;
     panelAutoWidth?: boolean;
     className?: string;
     style?: CSSProperties;
@@ -27,10 +28,8 @@ export type SplitButtonBaseProps = {
 // @public (undocumented)
 export type SplitButtonProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof SplitButton<As>>;
 
-// Warning: (ae-forgotten-export) The symbol "ButtonGroupPropVariant" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type SplitButtonPropVariant = ButtonGroupPropVariant;
+export type SplitButtonPropVariant = (typeof splitButtonPropVariant)[number];
 
 // @public (undocumented)
 export const splitButtonPropVariant: readonly ["contrast-filled", "fade-contrast-filled", "fade-contrast-outline", "fade-theme-outline", "contrast-transparent", "theme-transparent"];

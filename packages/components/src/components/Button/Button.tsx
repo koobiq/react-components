@@ -33,7 +33,8 @@ export const Button = polymorphicForwardRef<'button', ButtonBaseProps>(
 
     const group = useButtonGroupContext();
 
-    const isLoading = isLoadingProp ?? progress;
+    // The group wins when it's in progress, but a single button can still show its own loader.
+    const isLoading = (isLoadingProp ?? progress) || group.isLoading;
 
     // Inside a group the group's variant wins, so the group looks like one control.
     const variant = group.variant ?? variantProp ?? 'contrast-filled';

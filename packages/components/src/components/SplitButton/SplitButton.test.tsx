@@ -198,6 +198,55 @@ describe('SplitButton', () => {
     });
   });
 
+  describe('check the isLoading prop', () => {
+    it('should not be in progress by default', () => {
+      render(
+        <SplitButton {...baseProps}>
+          <Button>Split Button</Button>
+          {menu()}
+        </SplitButton>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-loading');
+
+      screen.getAllByRole('button').forEach((button) => {
+        expect(button).not.toHaveAttribute('data-loading');
+      });
+    });
+
+    it('should show a loader on both the primary button and the menu trigger button', () => {
+      render(
+        <SplitButton {...baseProps} isLoading>
+          <Button>Split Button</Button>
+          {menu()}
+        </SplitButton>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-loading', 'true');
+
+      const [primary, trigger] = screen.getAllByRole('button');
+
+      expect(primary).toHaveAttribute('data-loading', 'true');
+      expect(primary).toHaveAttribute('aria-disabled', 'true');
+      expect(trigger).toHaveAttribute('data-loading', 'true');
+      expect(trigger).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    it('should show a loader on a single button while the split button stays idle', () => {
+      render(
+        <SplitButton {...baseProps}>
+          <Button isLoading>Split Button</Button>
+          {menu()}
+        </SplitButton>
+      );
+
+      const [primary, trigger] = screen.getAllByRole('button');
+
+      expect(primary).toHaveAttribute('data-loading', 'true');
+      expect(trigger).not.toHaveAttribute('data-loading');
+    });
+  });
+
   describe('check the panelAutoWidth prop', () => {
     it("should leave the menu's own size untouched by default", () => {
       render(

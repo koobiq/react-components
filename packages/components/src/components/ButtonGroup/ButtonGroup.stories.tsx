@@ -164,13 +164,20 @@ export const Disabled: Story = {
 
 export const Loading: Story = {
   render: () => (
-    <ButtonGroup variant="fade-contrast-filled">
-      <Button>Archive</Button>
-      <Button>Report</Button>
-      <Button isLoading startIcon={<IconClock16 />}>
-        Snooze
-      </Button>
-    </ButtonGroup>
+    <FlexBox gap="l" direction="column" alignItems="flex-start">
+      <ButtonGroup variant="fade-contrast-filled">
+        <Button>Archive</Button>
+        <Button>Report</Button>
+        <Button isLoading startIcon={<IconClock16 />}>
+          Snooze
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup variant="fade-contrast-filled" isLoading>
+        <Button>Archive</Button>
+        <Button>Report</Button>
+        <Button startIcon={<IconClock16 />}>Snooze</Button>
+      </ButtonGroup>
+    </FlexBox>
   ),
 };
 

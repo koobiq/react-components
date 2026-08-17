@@ -35,7 +35,7 @@ secondary actions.
 
 <Props of={Stories.Base} />
 
-## Style
+## Variant
 
 A split button follows the same visual variants as a regular
 [button](/?path=/docs/components-button--docs). The `variant` prop sets the
@@ -64,9 +64,9 @@ entire group can be disabled at once with `isDisabled`.
 
 ## In progress
 
-Use `isLoading` on either nested `Button` to show a loader and block
-clicks. It can be applied to the entire button group or to an individual
-element, and combined with the disabled state.
+Either the primary or secondary action can show a loader individually, or
+both nested buttons can show it at once with `isLoading`. A button in
+progress blocks clicks.
 
 <Story of={Stories.ProgressState} />
 
