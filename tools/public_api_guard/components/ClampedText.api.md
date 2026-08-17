@@ -27,7 +27,9 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<{
     lessText?: ReactNode;
     slotProps?: {
         content?: Omit<ComponentPropsWithRef<'div'>, 'children'> & DataAttributeProps;
-        toggle?: ClampedTextTriggerProps;
+        toggle?: Omit<ClampedTextTriggerProps, 'children' | 'icon'> & {
+            icon?: ReactNode | ((isExpanded: boolean) => ReactNode);
+        };
     };
 }, 'div'>;
 
@@ -35,8 +37,9 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<{
 export type ClampedTextRef = ComponentRef<'div'>;
 
 // @public (undocumented)
-export type ClampedTextTriggerProps = Omit<ButtonProps, 'as' | 'children' | 'type' | 'aria-controls' | 'aria-expanded'> & DataAttributeProps & {
-    icon?: ReactNode | ((isExpanded: boolean) => ReactNode);
+export type ClampedTextTriggerProps = Omit<ButtonProps, 'as' | 'children' | 'type'> & DataAttributeProps & {
+    children: ReactNode;
+    icon?: ReactNode;
 };
 
 // (No @packageDocumentation comment for this package)

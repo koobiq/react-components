@@ -33,7 +33,13 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<
     slotProps?: {
       content?: Omit<ComponentPropsWithRef<'div'>, 'children'> &
         DataAttributeProps;
-      toggle?: ClampedTextTriggerProps;
+      toggle?: Omit<ClampedTextTriggerProps, 'children' | 'icon'> & {
+        /**
+         * Icon displayed before the toggle content. Pass `null` to hide it or
+         * a render function to use the current expanded state.
+         */
+        icon?: ReactNode | ((isExpanded: boolean) => ReactNode);
+      };
     };
   },
   'div'

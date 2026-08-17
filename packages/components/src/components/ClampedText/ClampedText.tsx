@@ -3,6 +3,7 @@
 import {
   forwardRef,
   type CSSProperties,
+  type ReactNode,
   useEffect,
   useRef,
   useState,
@@ -19,6 +20,7 @@ import {
   useObjectRef,
   useResizeObserver,
 } from '@koobiq/react-core';
+import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
 
 import s from './ClampedText.module.css';
 import { ClampedTextTrigger } from './components';
@@ -163,6 +165,37 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       }
     );
 
+    const { icon: iconProp, ...toggleSlotProps } = slotProps?.toggle ?? {};
+
+    let toggleIcon: ReactNode;
+
+    if (iconProp === undefined) {
+      toggleIcon = effectiveExpanded ? (
+        <IconChevronUp16 />
+      ) : (
+        <IconChevronDown16 />
+      );
+    } else if (typeof iconProp === 'function') {
+      toggleIcon = iconProp(effectiveExpanded);
+    } else {
+      toggleIcon = iconProp;
+    }
+
+    const toggleProps = mergeProps(
+      {
+        'aria-controls': contentId,
+        'aria-expanded': effectiveExpanded,
+        onPress: onToggle,
+      },
+      toggleSlotProps,
+      {
+        children: effectiveExpanded
+          ? (lessText ?? strings.format('collapse'))
+          : (moreText ?? strings.format('expand')),
+        icon: toggleIcon,
+      }
+    );
+
     return (
       <div
         {...other}
@@ -173,18 +206,7 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
         data-clamped={isClamped || undefined}
       >
         <div {...contentProps}>{children}</div>
-        {hasToggle && (
-          <ClampedTextTrigger
-            {...slotProps?.toggle}
-            contentId={contentId}
-            isExpanded={effectiveExpanded}
-            onToggle={onToggle}
-          >
-            {effectiveExpanded
-              ? (lessText ?? strings.format('collapse'))
-              : (moreText ?? strings.format('expand'))}
-          </ClampedTextTrigger>
-        )}
+        {hasToggle && <ClampedTextTrigger {...toggleProps} />}
       </div>
     );
   }
