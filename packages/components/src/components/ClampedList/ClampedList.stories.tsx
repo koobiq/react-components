@@ -120,16 +120,19 @@ export const Base: Story = {
     return (
       <ClampedList {...args} items={items}>
         {({ visibleItems }) => (
-          <div
+          <ul
             style={{
               display: 'grid',
               gridTemplateColumns: 'minmax(0, 1fr) auto',
               columnGap: 'var(--kbq-size-m)',
               rowGap: 'var(--kbq-size-xxs)',
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
             }}
           >
             {visibleItems.map((item) => (
-              <div
+              <li
                 key={item.id}
                 style={{
                   display: 'grid',
@@ -142,9 +145,9 @@ export const Base: Story = {
                   {item.name}
                 </Link>
                 <Typography>{item.id}</Typography>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </ClampedList>
     );
@@ -244,16 +247,19 @@ export const CustomVisibility: Story = {
     return (
       <ClampedList items={items} collapsedVisibleCount={4} hiddenThreshold={3}>
         {({ visibleItems }) => (
-          <div
+          <ul
             style={{
               display: 'grid',
               gridTemplateColumns: 'minmax(0, 1fr) auto',
               columnGap: 'var(--kbq-size-m)',
               rowGap: 'var(--kbq-size-xxs)',
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
             }}
           >
             {visibleItems.map((item) => (
-              <div
+              <li
                 key={item.id}
                 style={{
                   display: 'grid',
@@ -266,9 +272,9 @@ export const CustomVisibility: Story = {
                   {item.name}
                 </Link>
                 <Typography>{item.id}</Typography>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </ClampedList>
     );
@@ -382,16 +388,19 @@ export const Controlled: Story = {
           onExpandedChange={setExpanded}
         >
           {({ visibleItems }) => (
-            <div
+            <ul
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'minmax(0, 1fr) auto',
                 columnGap: 'var(--kbq-size-m)',
                 rowGap: 'var(--kbq-size-xxs)',
+                margin: 0,
+                padding: 0,
+                listStyle: 'none',
               }}
             >
               {visibleItems.map((item) => (
-                <div
+                <li
                   key={item.id}
                   style={{
                     display: 'grid',
@@ -404,9 +413,9 @@ export const Controlled: Story = {
                     {item.name}
                   </Link>
                   <Typography>{item.id}</Typography>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </ClampedList>
       </FlexBox>
@@ -449,7 +458,10 @@ export const FlatList: Story = {
         items={items}
         moreText={`${items.length - 10} more`}
         lessText="Collapse"
-        slotProps={{ toggle: { style: { margin: 0 } } }}
+        slotProps={{
+          content: { style: { display: 'inline' } },
+          toggle: { style: { margin: 0 } },
+        }}
       >
         {({ visibleItems }) =>
           visibleItems.map((item) => (
@@ -501,7 +513,10 @@ export const FlatListWithDotSeparators: Story = {
         items={items}
         moreText={`${items.length - 10} more`}
         lessText="Collapse"
-        slotProps={{ toggle: { style: { margin: 0 } } }}
+        slotProps={{
+          content: { style: { display: 'inline' } },
+          toggle: { style: { margin: 0 } },
+        }}
       >
         {({ visibleItems }) =>
           visibleItems.map((item) => (

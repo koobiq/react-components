@@ -5,6 +5,7 @@
 ```ts
 
 import type { ButtonProps } from '@koobiq/react-primitives';
+import type { ComponentPropsWithRef } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
 import { JSX } from 'react/jsx-runtime';
 import type { ReactNode } from 'react';
@@ -21,10 +22,12 @@ export type ClampedListProps<T> = {
     isExpanded?: boolean;
     defaultExpanded?: boolean;
     onExpandedChange?: (isExpanded: boolean) => void;
+    moreText?: ReactNode;
+    lessText?: ReactNode;
     slotProps?: {
-        trigger?: ClampedListTriggerSlotProps;
+        content?: Omit<ComponentPropsWithRef<'div'>, 'children'> & DataAttributeProps;
+        toggle?: Omit<ButtonProps, 'as' | 'children' | 'type' | 'aria-controls' | 'aria-expanded'> & DataAttributeProps;
     };
-    renderTriggerContent?: (state: ClampedListState<T>) => ReactNode;
 };
 
 // @public (undocumented)
@@ -33,9 +36,6 @@ export type ClampedListState<T> = {
     hiddenItemCount: number;
     isExpanded: boolean;
 };
-
-// @public (undocumented)
-export type ClampedListTriggerSlotProps = Omit<ButtonProps, 'children' | 'type' | 'onPress' | 'aria-controls' | 'aria-expanded'> & DataAttributeProps;
 
 // (No @packageDocumentation comment for this package)
 
