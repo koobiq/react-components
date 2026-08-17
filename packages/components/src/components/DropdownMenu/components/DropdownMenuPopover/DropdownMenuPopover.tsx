@@ -1,5 +1,6 @@
 'use client';
 
+import type { CSSProperties } from 'react';
 import { useContext } from 'react';
 
 import { once } from '@koobiq/logger';
@@ -19,6 +20,10 @@ import { PopoverInner } from '../../../Popover/PopoverInner';
 
 import s from './DropdownMenuPopover.module.css';
 import type { DropdownMenuPopoverProps } from './types';
+
+type DropdownMenuPopoverStyle = CSSProperties & {
+  '--dropdown-menu-popover-max-block-size': string;
+};
 
 /**
  * The overlay of a dropdown menu. Holds the menu and anything next to it,
@@ -97,7 +102,24 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
     slotProps?.popover
   );
 
-  return <PopoverInner {...popoverProps}>{children}</PopoverInner>;
+  const popoverStyle: DropdownMenuPopoverStyle = {
+    ...popoverProps.style,
+    '--dropdown-menu-popover-max-block-size': `${popoverProps.maxBlockSize ?? maxBlockSize}px`,
+  };
+
+  return (
+    <PopoverInner
+      {...popoverProps}
+      // Workaround for https://github.com/adobe/react-spectrum/issues/10176.
+      // RAC only clears its previous calculated max height before re-measuring
+      // when maxHeight is falsy. Passing 0 lets a collection populated on a
+      // later render be measured again; our CSS keeps the public size limit.
+      maxBlockSize={0}
+      style={popoverStyle}
+    >
+      {children}
+    </PopoverInner>
+  );
 }
 
 DropdownMenuPopover.displayName = 'DropdownMenu.Popover';

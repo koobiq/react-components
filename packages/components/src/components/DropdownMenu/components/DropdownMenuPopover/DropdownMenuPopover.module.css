@@ -1,11 +1,18 @@
 .base {
   --kbq-popover-border-radius: var(--kbq-size-s);
+  --dropdown-menu-popover-max-block-size: 480px;
 
   min-inline-size: 200px;
   max-inline-size: 640px;
 }
 
+/*
+ * The cap lives here rather than on the popover itself: React Aria owns the
+ * inline max height of the popover and needs it free to measure the menu again
+ * once the collection has populated.
+ */
 .container {
   overflow: hidden;
   flex-direction: column;
+  max-block-size: var(--dropdown-menu-popover-max-block-size);
 }

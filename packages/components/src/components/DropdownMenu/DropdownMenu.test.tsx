@@ -864,4 +864,32 @@ describe('DropdownMenu', () => {
       );
     });
   });
+
+  describe('maxBlockSize', () => {
+    // React Aria only re-measures an overlay whose max height it owns, which is
+    // what lets it flip a menu whose collection populates on a later render.
+    it('should cap the popover in the CSS rather than through React Aria', async () => {
+      render(<Fixture />);
+      await open();
+
+      const popover = screen.getByTestId('popover');
+
+      expect(
+        popover.style.getPropertyValue('--dropdown-menu-popover-max-block-size')
+      ).toBe('480px');
+
+      expect(popover.style.maxHeight).not.toBe('480px');
+    });
+
+    it('should apply a custom maxBlockSize', async () => {
+      render(<Fixture popoverProps={{ maxBlockSize: 240 }} />);
+      await open();
+
+      expect(
+        screen
+          .getByTestId('popover')
+          .style.getPropertyValue('--dropdown-menu-popover-max-block-size')
+      ).toBe('240px');
+    });
+  });
 });
