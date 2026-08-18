@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, type ComponentPropsWithRef, type ElementType } from 'react';
+import { useMemo } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
@@ -48,6 +49,8 @@ export const Highlight = polymorphicForwardRef<'span', HighlightBaseProps>(
     );
   }
 );
+
+Highlight.displayName = 'Highlight';
 
 export type HighlightProps<As extends ElementType = 'span'> =
   ComponentPropsWithRef<typeof Highlight<As>>;
