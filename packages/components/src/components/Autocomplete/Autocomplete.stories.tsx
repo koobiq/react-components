@@ -10,6 +10,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Badge, useFilter } from '../../index';
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Typography } from '../Typography';
 
@@ -268,6 +269,40 @@ export const CustomFiltering: Story = {
         allowsCustomValue
       >
         {(item) => <Autocomplete.Item>{item.name}</Autocomplete.Item>}
+      </Autocomplete>
+    );
+  },
+};
+
+export const HighlightingMatches: Story = {
+  render: function Render() {
+    const items = [
+      { key: 'tls', name: 'TLS' },
+      { key: 'ssh', name: 'SSH' },
+      { key: 'pgp', name: 'PGP' },
+      { key: 'ipsec', name: 'IPSec' },
+      { key: 'kerberos', name: 'Kerberos' },
+    ];
+
+    const { contains } = useFilter({ sensitivity: 'base' });
+
+    const [inputValue, setInputValue] = useState('');
+
+    const filtered = items.filter((item) => contains(item.name, inputValue));
+
+    return (
+      <Autocomplete
+        label="Protocol"
+        items={filtered}
+        placeholder="Search a protocol"
+        inputValue={inputValue}
+        onInputChange={setInputValue}
+      >
+        {(item) => (
+          <Autocomplete.Item key={item.key} textValue={item.name}>
+            <Highlight text={item.name} query={inputValue} />
+          </Autocomplete.Item>
+        )}
       </Autocomplete>
     );
   },

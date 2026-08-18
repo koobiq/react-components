@@ -1,0 +1,98 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Highlight.stories';
+
+<Meta of={Stories} />
+
+# Highlight
+
+<Status variant="experimental" />
+
+Highlight marks every occurrence of a search query inside a text.
+Marking matches helps users understand why a result is relevant and speeds up
+scanning through long lists.
+
+Matching is case-insensitive, covers all occurrences, and treats the query
+literally — regular expression characters such as `.` or `[0]` need no escaping.
+Matched fragments are wrapped in a `<mark>` element; the surrounding text is
+rendered as plain text, so markup inside `text` is never interpreted.
+
+## Import
+
+```tsx
+import { Highlight } from '@koobiq/react-components';
+```
+
+## Usage
+
+Pass the full string to `text` and the search term to `query`.
+When `query` is empty, the text is rendered without highlighting.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Variant
+
+The `variant` prop selects the marking style.
+
+- `background` — a solid background behind the match. This is the default.
+  Use it in dropdown pickers with filtering and to mark matches in longer
+  content: descriptions, messages, articles. The solid background stays legible
+  in hover and selected states inside overlays.
+- `bold` — the match is set in a bolder weight, with no background.
+  This style is unobtrusive and suits quick scanning of familiar data.
+
+<Story of={Stories.Variant} />
+
+## Root tag
+
+The component renders an inline `<span>` by default. Use the `as` prop when the
+highlighted text is a block of its own, or when it has to be a specific element
+such as a table cell.
+
+```tsx
+<Highlight as="p" text={snippet} query={query} />
+```
+
+## In text
+
+<Story of={Stories.Text} />
+
+## In autocomplete
+
+`Highlight` marks matches; it does not filter. Filtering stays the consumer's
+job — `useFilter` from the library provides locale-aware `contains` and
+`startsWith` matchers for that. Pass `textValue` on the option so the collection
+keeps a plain-text label for typeahead and accessibility.
+
+<Story of={Stories.InAutocomplete} />
+
+## In search results
+
+Highlighting the query in both the title and the snippet makes it obvious which
+part of a result matched.
+
+<Story of={Stories.SearchResults} />
+
+## In a table
+
+<Story of={Stories.InTable} />
+
+## CSS Variables
+
+Use CSS variables to customize the marked fragment.
+
+| Variable                           |
+| ---------------------------------- |
+| `--kbq-highlight-color`            |
+| `--kbq-highlight-background-color` |
+| `--kbq-highlight-border-radius`    |
+| `--kbq-highlight-font-weight`      |
