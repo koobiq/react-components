@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentPropsWithRef, ElementType } from 'react';
+import { useMemo, type ComponentPropsWithRef, type ElementType } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
@@ -20,7 +20,9 @@ export const Highlight = polymorphicForwardRef<'span', HighlightBaseProps>(
       ...other
     } = props;
 
-    const parts = splitByQuery(text, query);
+    const parts = useMemo(() => splitByQuery(text, query), [text, query]);
+
+    let offset = 0;
 
     return (
       <Tag
@@ -29,15 +31,19 @@ export const Highlight = polymorphicForwardRef<'span', HighlightBaseProps>(
         {...other}
         ref={ref}
       >
-        {parts.map((part, index) =>
-          part.isMatch ? (
-            <mark key={index} className={s.mark}>
+        {parts.map((part) => {
+          const key = offset;
+
+          offset += part.text.length;
+
+          return part.isMatch ? (
+            <mark key={key} className={s.mark}>
               {part.text}
             </mark>
           ) : (
             part.text
-          )
-        )}
+          );
+        })}
       </Tag>
     );
   }

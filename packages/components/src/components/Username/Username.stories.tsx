@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { isNotNil } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
@@ -14,6 +15,7 @@ import {
   type UsernameUserInfo,
   formatUsername,
   buildUsernameText,
+  usernameHintAffixes,
   usernamePropMode,
   usernamePropType,
 } from './index.js';
@@ -249,6 +251,12 @@ export const SearchAndHighlight: Story = {
         .includes(query.toLowerCase());
     });
 
+    const {
+      isCompact = false,
+      fullNameFormat = 'lf.m.',
+      formatter = formatUsername,
+    } = args;
+
     return (
       <FlexBox direction="column" gap="m" style={{ minInlineSize: 280 }}>
         <SearchInput
@@ -258,26 +266,44 @@ export const SearchAndHighlight: Story = {
         />
         <FlexBox direction="column" gap="xs">
           {filtered.map((user) => {
-            const name = formatUsername(user, 'lf.m.');
+            // Mirrors Username's own primary/secondary/hint placement rules
+            // (see Username.tsx) so this custom view stays consistent with it.
+            const hasFullName = Boolean(user.firstName && user.lastName);
+            const name = hasFullName ? formatter(user, fullNameFormat) : '';
+            const primaryText = hasFullName ? name : user.login;
+
+            const secondaryText =
+              !isCompact && hasFullName ? user.login : undefined;
+
+            const showSiteInSecondary = isNotNil(user.site && secondaryText);
+
+            const primaryHoldsLogin = isCompact
+              ? isNotNil(primaryText)
+              : isNotNil(user.login) && !hasFullName;
+
+            const showSiteInPrimary =
+              isNotNil(user.site) && !showSiteInSecondary && primaryHoldsLogin;
 
             const hint = user.site ? (
               <Username.SecondaryHint>
-                {' ('}
+                {usernameHintAffixes.prefix}
                 <Highlight text={user.site} query={query} />
-                {')'}
+                {usernameHintAffixes.suffix}
               </Username.SecondaryHint>
             ) : null;
 
             return (
               <Username key={user.login ?? user.firstName} {...args}>
-                <Username.Primary>
-                  <Highlight text={name || user.login} query={query} />
-                  {!name && hint}
-                </Username.Primary>
-                {name && user.login && (
+                {primaryText && (
+                  <Username.Primary>
+                    <Highlight text={primaryText} query={query} />
+                    {showSiteInPrimary && hint}
+                  </Username.Primary>
+                )}
+                {secondaryText && (
                   <Username.Secondary>
-                    <Highlight text={user.login} query={query} />
-                    {hint}
+                    <Highlight text={secondaryText} query={query} />
+                    {showSiteInSecondary && hint}
                   </Username.Secondary>
                 )}
               </Username>

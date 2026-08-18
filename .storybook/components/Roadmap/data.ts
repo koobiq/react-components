@@ -411,6 +411,12 @@ export const rows: Rows = [
     planned: 'Q3 2026',
   },
   {
+    component: 'Highlight',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
     component: 'DropdownMenu',
     status: '✅ Done',
     stage: '🔵 experimental',
@@ -441,12 +447,6 @@ export const rows: Rows = [
   {
     component: 'TimeRange',
     status: '🚧 Planned',
-    planned: 'Q3 2026',
-  },
-  {
-    component: 'Highlight',
-    status: '✅ Done',
-    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
 ];

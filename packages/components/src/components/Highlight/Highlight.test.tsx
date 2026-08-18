@@ -159,6 +159,13 @@ describe('Highlight', () => {
       expect(getMarkTexts()).toEqual(['вет']);
       expect(getRoot().textContent).toBe('Привет мир');
     });
+
+    it('should match a diacritic in the text against a plain query letter', () => {
+      render(<Highlight {...baseProps} text="IPSéc" query="e" />);
+
+      expect(getMarkTexts()).toEqual(['é']);
+      expect(getRoot().textContent).toBe('IPSéc');
+    });
   });
 
   describe('regular expression special characters in the query', () => {
