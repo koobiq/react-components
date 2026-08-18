@@ -33,12 +33,9 @@
     background-color: var(--button-bg-color-active);
   }
 
-  /*
-   * The trailing/chevron button never shrinks below this, so a long primary
-   * label truncates first instead of squeezing the menu trigger.
-   */
   & > [data-slot='button']:last-child {
-    min-inline-size: var(--kbq-size-3xl);
+    flex-shrink: 0;
+    inline-size: auto;
     background-image: linear-gradient(
       var(--split-button-divider-color),
       var(--split-button-divider-color)
@@ -46,6 +43,12 @@
     background-repeat: no-repeat;
     background-position: 0 50%;
     background-size: var(--kbq-size-border-width) var(--kbq-size-l);
+  }
+
+  &
+    > [data-slot='button'][data-onlyicon='true']
+    + [data-slot='button'][data-onlyicon='true'] {
+    --button-padding-inline: var(--kbq-size-xxs);
   }
 
   /*
