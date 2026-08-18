@@ -243,19 +243,56 @@ export const SearchAndHighlight: Story = {
       { login: 'ghost', site: 'external' },
     ];
 
-    const filtered = searchUsers.filter((user) => {
-      const name = formatUsername(user, 'lf.m.');
-
-      return buildUsernameText({ name, login: user.login, site: user.site })
-        .toLowerCase()
-        .includes(query.toLowerCase());
-    });
-
     const {
       isCompact = false,
       fullNameFormat = 'lf.m.',
       formatter = formatUsername,
     } = args;
+
+    // Mirrors Username's own primary/secondary/hint placement rules
+    // (see Username.tsx) so this custom view stays consistent with it.
+    const getDisplayParts = (user: UsernameUserInfo) => {
+      const hasFullName = Boolean(user.firstName && user.lastName);
+      const name = hasFullName ? formatter(user, fullNameFormat) : '';
+      const primaryText = hasFullName ? name : user.login;
+
+      const secondaryText = !isCompact && hasFullName ? user.login : undefined;
+
+      const showSiteInSecondary = isNotNil(user.site && secondaryText);
+
+      const primaryHoldsLogin = isCompact
+        ? isNotNil(primaryText)
+        : isNotNil(user.login) && !hasFullName;
+
+      const showSiteInPrimary =
+        isNotNil(user.site) && !showSiteInSecondary && primaryHoldsLogin;
+
+      return {
+        primaryText,
+        secondaryText,
+        showSiteInPrimary,
+        showSiteInSecondary,
+      };
+    };
+
+    // Search the text the story actually renders, so the story controls keep
+    // filtering and highlighting in sync.
+    const filtered = searchUsers.filter((user) => {
+      const {
+        primaryText,
+        secondaryText,
+        showSiteInPrimary,
+        showSiteInSecondary,
+      } = getDisplayParts(user);
+
+      return buildUsernameText({
+        name: primaryText ?? '',
+        login: secondaryText,
+        site: showSiteInPrimary || showSiteInSecondary ? user.site : undefined,
+      })
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    });
 
     return (
       <FlexBox direction="column" gap="m" style={{ minInlineSize: 280 }}>
@@ -266,23 +303,12 @@ export const SearchAndHighlight: Story = {
         />
         <FlexBox direction="column" gap="xs">
           {filtered.map((user) => {
-            // Mirrors Username's own primary/secondary/hint placement rules
-            // (see Username.tsx) so this custom view stays consistent with it.
-            const hasFullName = Boolean(user.firstName && user.lastName);
-            const name = hasFullName ? formatter(user, fullNameFormat) : '';
-            const primaryText = hasFullName ? name : user.login;
-
-            const secondaryText =
-              !isCompact && hasFullName ? user.login : undefined;
-
-            const showSiteInSecondary = isNotNil(user.site && secondaryText);
-
-            const primaryHoldsLogin = isCompact
-              ? isNotNil(primaryText)
-              : isNotNil(user.login) && !hasFullName;
-
-            const showSiteInPrimary =
-              isNotNil(user.site) && !showSiteInSecondary && primaryHoldsLogin;
+            const {
+              primaryText,
+              secondaryText,
+              showSiteInPrimary,
+              showSiteInSecondary,
+            } = getDisplayParts(user);
 
             const hint = user.site ? (
               <Username.SecondaryHint>
