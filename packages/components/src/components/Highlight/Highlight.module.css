@@ -28,5 +28,5 @@
 }
 
 .bold {
-  --highlight-font-weight: bold;
+  --highlight-font-weight: var(--kbq-typography-text-normal-strong-font-weight);
 }
