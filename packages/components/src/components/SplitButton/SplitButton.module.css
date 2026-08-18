@@ -79,14 +79,25 @@
   /*
    * Filled fade contrast: when only one button is disabled, the still-enabled
    * button also takes the disabled background so the pill reads as one piece.
+   * Excluded on hover/press/focus-visible so the enabled button's own
+   * interaction states aren't masked by the disabled background.
    */
   &[data-variant='fade-contrast-filled']
-    > [data-slot='button']:not(:last-child, [data-disabled]):has(
-      + [data-slot='button']:last-child[data-disabled]
-    ),
+    > [data-slot='button']:not(
+      :last-child,
+      [data-disabled],
+      [data-hovered],
+      [data-pressed],
+      [data-focus-visible]
+    ):has(+ [data-slot='button']:last-child[data-disabled]),
   &[data-variant='fade-contrast-filled']
     > [data-slot='button'][data-disabled]
-    + [data-slot='button']:last-child:not([data-disabled]) {
+    + [data-slot='button']:last-child:not(
+      [data-disabled],
+      [data-hovered],
+      [data-pressed],
+      [data-focus-visible]
+    ) {
     background-color: var(--kbq-states-background-disabled);
   }
 }
