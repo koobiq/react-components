@@ -25,6 +25,7 @@
     "Form",
     "FormField",
     "Grid",
+    "Highlight",
     "IconButton",
     "IconItem",
     "Input",

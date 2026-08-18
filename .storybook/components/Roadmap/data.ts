@@ -442,7 +442,8 @@ export const rows: Rows = [
   },
   {
     component: 'Highlight',
-    status: '🚧 Planned',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
 ];

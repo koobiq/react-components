@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { Link } from '../Link';
 import { SearchInput } from '../SearchInput';
 import { Typography } from '../Typography';
@@ -256,13 +257,32 @@ export const SearchAndHighlight: Story = {
           placeholder="Search users..."
         />
         <FlexBox direction="column" gap="xs">
-          {filtered.map((user) => (
-            <Username
-              key={user.login ?? user.firstName}
-              {...args}
-              userInfo={user}
-            />
-          ))}
+          {filtered.map((user) => {
+            const name = formatUsername(user, 'lf.m.');
+
+            const hint = user.site ? (
+              <Username.SecondaryHint>
+                {' ('}
+                <Highlight text={user.site} query={query} />
+                {')'}
+              </Username.SecondaryHint>
+            ) : null;
+
+            return (
+              <Username key={user.login ?? user.firstName} {...args}>
+                <Username.Primary>
+                  <Highlight text={name || user.login} query={query} />
+                  {!name && hint}
+                </Username.Primary>
+                {name && user.login && (
+                  <Username.Secondary>
+                    <Highlight text={user.login} query={query} />
+                    {hint}
+                  </Username.Secondary>
+                )}
+              </Username>
+            );
+          })}
         </FlexBox>
       </FlexBox>
     );
