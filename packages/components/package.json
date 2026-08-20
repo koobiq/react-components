@@ -20,6 +20,10 @@
       "types": "./dist/markdown.d.ts",
       "default": "./dist/markdown.js"
     },
+    "./code-block": {
+      "types": "./dist/code-block.d.ts",
+      "default": "./dist/code-block.js"
+    },
     "./style.css": "./dist/style.css"
   },
   "type": "module",
@@ -46,6 +50,7 @@
   "peerDependencies": {
     "@koobiq/design-tokens": "^3.17.2",
     "@koobiq/react-icons": "^12.1.1",
+    "highlight.js": "^11.0.0",
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x",
     "react-markdown": "^10.1.0",
@@ -56,6 +61,9 @@
       "optional": true
     },
     "remark-gfm": {
+      "optional": true
+    },
+    "highlight.js": {
       "optional": true
     }
   }

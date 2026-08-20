@@ -1,0 +1,24 @@
+{
+  "ru-RU": {
+    "softWrapOnTooltip": "Включить перенос строк",
+    "softWrapOffTooltip": "Выключить перенос строк",
+    "downloadTooltip": "Скачать",
+    "copyTooltip": "Копировать",
+    "copiedTooltip": "✓ Скопировано",
+    "viewAllText": "Показать всё",
+    "viewLessText": "Свернуть",
+    "filesLabel": "Файлы",
+    "openExternalSystemTooltip": "Открыть во внешней системе"
+  },
+  "en-US": {
+    "softWrapOnTooltip": "Enable word wrap",
+    "softWrapOffTooltip": "Disable word wrap",
+    "downloadTooltip": "Download",
+    "copyTooltip": "Copy",
+    "copiedTooltip": "✓ Copied",
+    "viewAllText": "Show all",
+    "viewLessText": "Show less",
+    "filesLabel": "Files",
+    "openExternalSystemTooltip": "Open in the external system"
+  }
+}
