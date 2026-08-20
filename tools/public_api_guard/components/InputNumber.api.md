@@ -23,7 +23,7 @@ import { TextProps } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
 // @public
-export const InputNumber: ForwardRefExoticComponent<Omit<Omit<NumberFieldProps, "children" | "description" | "validationState" | "inputElementType">, "caption" | "style" | "className" | "data-testid" | "startAddon" | "endAddon" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isLabelHidden" | keyof {
+export const InputNumber: ForwardRefExoticComponent<Omit<Omit<NumberFieldProps, "children" | "description" | "validationState" | "inputElementType">, "className" | "style" | "variant" | "fullWidth" | "data-testid" | "caption" | "slotProps" | "startAddon" | "endAddon" | "labelPlacement" | "labelAlign" | "isLabelHidden" | keyof {
 disabled?: boolean;
 error?: boolean;
 required?: boolean;

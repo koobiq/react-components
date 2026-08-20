@@ -1,3 +1,5 @@
+import { createRef } from 'react';
+
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -92,6 +94,35 @@ describe('Tabs', () => {
 
     expect(screen.getByRole('tab', { name: 'Overview' })).toBeInTheDocument();
     expect(screen.getByText('Overview content')).toBeInTheDocument();
+  });
+
+  it('should forward tabPanel slot DOM props and ref', () => {
+    const panelRef = createRef<HTMLDivElement>();
+    const onScroll = vi.fn();
+
+    render(
+      <Tabs
+        aria-label="tabs"
+        slotProps={{
+          tabPanel: {
+            ref: panelRef,
+            onScroll,
+          },
+        }}
+      >
+        <Tab key="overview" title="Overview">
+          Overview content
+        </Tab>
+      </Tabs>
+    );
+
+    const panel = screen.getByRole('tabpanel');
+
+    expect(panelRef.current).toBe(panel);
+
+    fireEvent.scroll(panel);
+
+    expect(onScroll).toHaveBeenCalledOnce();
   });
 
   it('should render startAddon and endAddon', () => {

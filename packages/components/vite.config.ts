@@ -25,6 +25,7 @@ export default defineConfig({
       entry: {
         index: path.resolve(__dirname, 'src/index.ts'),
         markdown: path.resolve(__dirname, 'src/markdown.ts'),
+        'code-block': path.resolve(__dirname, 'src/code-block.ts'),
       },
       fileName: (_, entryName: string) => `${entryName}.js`,
       formats: ['es'],

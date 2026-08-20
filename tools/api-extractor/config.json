@@ -13,6 +13,7 @@
     "Calendar",
     "Checkbox",
     "CheckboxGroup",
+    "CodeBlock",
     "Container",
     "ContentPanel",
     "DateInput",

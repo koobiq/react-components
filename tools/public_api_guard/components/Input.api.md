@@ -24,7 +24,7 @@ import { TextProps } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
 // @public
-export const Input: ForwardRefExoticComponent<Omit<Omit<TextFieldProps<HTMLInputElement>, "children" | "description" | "validationState" | "inputElementType">, "caption" | "style" | "className" | "data-testid" | "startAddon" | "endAddon" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isClearable" | "isLabelHidden" | "onClear" | keyof {
+export const Input: ForwardRefExoticComponent<Omit<Omit<TextFieldProps<HTMLInputElement>, "children" | "description" | "validationState" | "inputElementType">, "className" | "style" | "variant" | "fullWidth" | "data-testid" | "caption" | "slotProps" | "startAddon" | "endAddon" | "labelPlacement" | "labelAlign" | "isClearable" | "isLabelHidden" | "onClear" | keyof {
 disabled?: boolean;
 error?: boolean;
 required?: boolean;

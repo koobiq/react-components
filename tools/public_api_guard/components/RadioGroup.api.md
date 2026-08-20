@@ -24,7 +24,7 @@ import { TextProps } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
 // @public (undocumented)
-export const Radio: ForwardRefExoticComponent<Omit<RadioProps_2, "children" | "style" | "className" | "disabled" | "size" | "data-testid" | "slotProps" | "labelPlacement"> & {
+export const Radio: ForwardRefExoticComponent<Omit<RadioProps_2, "children" | "className" | "style" | "data-testid" | "disabled" | "size" | "slotProps" | "labelPlacement"> & {
 children?: ReactNode;
 size?: RadioPropSize;
 labelPlacement?: RadioPropLabelPlacement;
