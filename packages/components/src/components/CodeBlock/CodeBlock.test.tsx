@@ -343,6 +343,8 @@ describe('CodeBlock', () => {
     });
 
     it('escapes source text when neither the requested nor fallback language is registered', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
       const hljs = {
         getLanguage: vi.fn(() => undefined),
         highlight: vi.fn(),
@@ -355,10 +357,11 @@ describe('CodeBlock', () => {
       };
 
       const content = '<script>"unsafe"</script>';
+      const file = { content, language: 'unknown' };
 
       render(
         <CodeBlockHighlightConfigProvider config={config}>
-          <CodeBlock files={[{ content, language: 'unknown' }]} />
+          <CodeBlock files={[file]} />
         </CodeBlockHighlightConfigProvider>
       );
 
@@ -370,6 +373,49 @@ describe('CodeBlock', () => {
       expect(getCode()?.innerHTML).toContain('&lt;script&gt;');
       expect(getCode()?.querySelector('script')).toBeNull();
       expect(hljs.highlight).not.toHaveBeenCalled();
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[koobiq] [CodeBlock] Unsupported file language: "unknown". Fall back to "text".',
+        file
+      );
+    });
+
+    it('reports a missing language without printing undefined', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      const hljs = {
+        getLanguage: vi.fn((language: string) =>
+          language === 'plaintext' ? {} : undefined
+        ),
+        highlight: vi.fn(() => ({
+          value: 'plain text',
+          language: 'plaintext',
+          illegal: false,
+          relevance: 1,
+        })),
+        registerLanguage: vi.fn(),
+      } as unknown as HLJSApi;
+
+      const config: CodeBlockHighlightConfig = {
+        core: vi.fn().mockResolvedValue({ default: hljs }),
+      };
+
+      const file = { content: 'plain text' };
+
+      render(
+        <CodeBlockHighlightConfigProvider config={config}>
+          <CodeBlock files={[file]} />
+        </CodeBlockHighlightConfigProvider>
+      );
+
+      await waitFor(() =>
+        expect(getCode()).toHaveAttribute('data-language', 'plaintext')
+      );
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[koobiq] [CodeBlock] Missing file language. Fall back to "plaintext".',
+        file
+      );
     });
 
     it('keeps the raw source visible when highlighting fails', async () => {
@@ -525,9 +571,14 @@ describe('CodeBlock', () => {
         revokeObjectURL,
       });
 
+      const clickedLinks: HTMLAnchorElement[] = [];
+
       const clickSpy = vi
         .spyOn(HTMLAnchorElement.prototype, 'click')
-        .mockImplementation(() => {});
+        .mockImplementation(function (this: HTMLAnchorElement) {
+          clickedLinks.push(this);
+          expect(this.isConnected).toBe(true);
+        });
 
       const { rerender } = render(
         <CodeBlock files={jsFile} canDownload fallbackFileName="snippet.js" />
@@ -545,7 +596,11 @@ describe('CodeBlock', () => {
         href: 'blob:mock-url',
       });
 
-      expect(revokeObjectURL).toHaveBeenCalledWith('blob:mock-url');
+      expect(clickedLinks[0]?.isConnected).toBe(false);
+
+      await waitFor(() =>
+        expect(revokeObjectURL).toHaveBeenCalledWith('blob:mock-url')
+      );
 
       rerender(
         <CodeBlock
@@ -560,6 +615,8 @@ describe('CodeBlock', () => {
       expect(clickSpy.mock.instances[1]).toMatchObject({
         download: 'main.js',
       });
+
+      await waitFor(() => expect(revokeObjectURL).toHaveBeenCalledTimes(2));
     });
 
     it('opens the file link in a new tab', async () => {
@@ -831,8 +888,9 @@ describe('CodeBlock', () => {
     await waitFor(() => expect(getCode()).not.toBeNull());
 
     const panel = screen.getByRole('region', { name: 'code' });
-    const header = screen.getByTestId('code-block-actionbar').parentElement!;
-    const initialClassName = header.className;
+    const header = screen.getByTestId('code-block-header');
+
+    expect(header).not.toHaveAttribute('data-scrolled');
 
     Object.defineProperty(panel, 'scrollTop', {
       configurable: true,
@@ -841,11 +899,11 @@ describe('CodeBlock', () => {
     });
 
     fireEvent.scroll(panel);
-    expect(header.className).not.toBe(initialClassName);
+    expect(header).toHaveAttribute('data-scrolled');
 
     panel.scrollTop = 0;
     fireEvent.scroll(panel);
-    expect(header.className).toBe(initialClassName);
+    expect(header).not.toHaveAttribute('data-scrolled');
   });
 
   it('clamps an out-of-range active file index', async () => {
@@ -864,6 +922,35 @@ describe('CodeBlock', () => {
     );
 
     expect(onActiveFileIndexChange).toHaveBeenCalledWith(1);
+  });
+
+  it('does not emit a derived change for a controlled out-of-range active file index', async () => {
+    const firstOnChange = vi.fn();
+    const secondOnChange = vi.fn();
+
+    const { rerender } = render(
+      <CodeBlock
+        files={multiFile}
+        activeFileIndex={10}
+        onActiveFileIndexChange={firstOnChange}
+      />
+    );
+
+    await waitFor(() =>
+      expect(getCode()).toHaveAttribute('data-language', 'javascript')
+    );
+
+    expect(firstOnChange).not.toHaveBeenCalled();
+
+    rerender(
+      <CodeBlock
+        files={multiFile}
+        activeFileIndex={10}
+        onActiveFileIndexChange={secondOnChange}
+      />
+    );
+
+    expect(secondOnChange).not.toHaveBeenCalled();
   });
 
   it('keeps the action bar visible when tabs are hidden if requested', async () => {

@@ -20,7 +20,7 @@ function getLines(text: string): string[] {
 }
 
 function getLinesCount(text: string): number {
-  return (text.trim().match(BREAK_LINE_REGEXP) || []).length;
+  return (text.match(BREAK_LINE_REGEXP) || []).length;
 }
 
 /** Splits a multiline `hljs-*` span into one span per line, so each line can be wrapped in its own table row. */

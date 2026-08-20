@@ -66,6 +66,27 @@ describe('addLineNumbers', () => {
     expect(codeCells[1]?.querySelector('.hljs-string')).not.toBeNull();
   });
 
+  it('duplicates a highlight span that ends with a line break', () => {
+    const result = parse(
+      addLineNumbers('<span class="hljs-string">first\n</span>second')
+    );
+
+    const codeCells = result.querySelectorAll('.hljs-ln-code');
+
+    expect(codeCells).toHaveLength(2);
+
+    expect(Array.from(codeCells).map((cell) => cell.textContent)).toEqual([
+      'first',
+      ' second',
+    ]);
+
+    expect(codeCells[0]?.querySelector('.hljs-string')).toHaveTextContent(
+      'first'
+    );
+
+    expect(codeCells[1]?.querySelector('.hljs-string')?.textContent).toBe(' ');
+  });
+
   it('handles empty content and ignores a trailing blank line', () => {
     expect(addLineNumbers('')).toBe('');
 

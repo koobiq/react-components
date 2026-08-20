@@ -1,8 +1,15 @@
 'use client';
 
-import type { CSSProperties, ReactNode, Ref, UIEventHandler } from 'react';
+import type {
+  ComponentProps,
+  CSSProperties,
+  ReactNode,
+  Ref,
+  UIEventHandler,
+} from 'react';
 
 import { clsx } from '@koobiq/react-core';
+import type { DataAttributeProps } from '@koobiq/react-core';
 
 import { Tab, Tabs } from '../../Tabs';
 import s from '../CodeBlock.module.css';
@@ -51,6 +58,13 @@ export function CodeBlockTabs(props: CodeBlockTabsProps) {
     '--code-block-actionbar-inline-size': actionBarInlineSize,
   } as CSSProperties;
 
+  const headerProps = {
+    className: clsx(s.header, isScrolled && s.headerScrolled),
+    style: headerStyle,
+    'data-testid': 'code-block-header',
+    'data-scrolled': isScrolled || undefined,
+  } satisfies ComponentProps<'div'> & DataAttributeProps;
+
   return (
     <Tabs
       aria-label={ariaLabel}
@@ -61,8 +75,7 @@ export function CodeBlockTabs(props: CodeBlockTabsProps) {
       }}
       slotProps={{
         tabs: {
-          className: clsx(s.header, isScrolled && s.headerScrolled),
-          style: headerStyle,
+          ...headerProps,
         },
         tabPanel: {
           ref: panelRef,

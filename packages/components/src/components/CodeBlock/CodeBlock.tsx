@@ -135,10 +135,18 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
   const activeFile = files[activeFileIndex] ?? EMPTY_FILE;
 
   useEffect(() => {
-    if (activeFileIndexState !== activeFileIndex) {
+    if (
+      activeFileIndexProp === undefined &&
+      activeFileIndexState !== activeFileIndex
+    ) {
       setActiveFileIndex(activeFileIndex);
     }
-  }, [activeFileIndex, activeFileIndexState, setActiveFileIndex]);
+  }, [
+    activeFileIndex,
+    activeFileIndexProp,
+    activeFileIndexState,
+    setActiveFileIndex,
+  ]);
 
   // A single file without a name has nothing to switch between or label — hide the tabs, same as Angular.
   const isSingleUnnamedFile = files.length === 1 && !activeFile.filename;
@@ -309,7 +317,11 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
     >
       {isTabsHidden ? (
         <>
-          <div className={clsx(s.header, isScrolled && s.headerScrolled)}>
+          <div
+            className={clsx(s.header, isScrolled && s.headerScrolled)}
+            data-testid="code-block-header"
+            data-scrolled={isScrolled || undefined}
+          >
             {actionBar}
           </div>
           <div

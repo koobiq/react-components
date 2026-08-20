@@ -39,9 +39,11 @@ function download(file: CodeBlockFile, fallbackFileName: string): void {
 
   link.href = url;
   link.download = file.filename || fallbackFileName;
+  document.body.append(link);
   link.click();
+  link.remove();
 
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 export function CodeBlockActionBar(props: CodeBlockActionBarProps) {
