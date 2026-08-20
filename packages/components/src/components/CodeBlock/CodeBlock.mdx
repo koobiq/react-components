@@ -16,7 +16,7 @@ import * as Stories from './CodeBlock.stories';
 `CodeBlock` is a component that displays reformatted text content with syntax highlighting.
 
 <Alert title="Note">
-  For the component to work, the
+  For syntax highlighting, the
   [`highlight.js@^11`](https://github.com/highlightjs/highlight.js/tree/stable-11) peer dependency is required:
 
 ```bash
@@ -32,19 +32,23 @@ reduce bundle size, wrap the app (or a part of it) with `CodeBlockHighlightConfi
 only the languages you need:
 
 ```tsx
-<CodeBlockHighlightConfigProvider
-  config={{
-    core: () => import('highlight.js/lib/core'),
-    languages: {
-      typescript: () => import('highlight.js/lib/languages/typescript'),
-      css: () => import('highlight.js/lib/languages/css'),
-      html: () => import('highlight.js/lib/languages/xml'),
-    },
-    fallbackLanguage: 'plaintext',
-  }}
->
-  <App />
-</CodeBlockHighlightConfigProvider>
+const highlightConfig = {
+  core: () => import('highlight.js/lib/core'),
+  languages: {
+    typescript: () => import('highlight.js/lib/languages/typescript'),
+    css: () => import('highlight.js/lib/languages/css'),
+    xml: () => import('highlight.js/lib/languages/xml'),
+  },
+  fallbackLanguage: 'plaintext',
+};
+
+function App() {
+  return (
+    <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock files={files} />
+    </CodeBlockHighlightConfigProvider>
+  );
+}
 ```
 
 Languages are loaded lazily on first use. Note that `html` is an alias of `xml` in `highlight.js`, so

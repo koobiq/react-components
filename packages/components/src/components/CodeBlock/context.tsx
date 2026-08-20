@@ -35,17 +35,17 @@ export type CodeBlockHighlightConfigProviderProps = {
  * To reduce bundle size, wrap the app (or a part of it) with this provider and specify only the languages you need.
  * @example
  * ```tsx
- * <CodeBlockHighlightConfigProvider
- *   config={{
- *     core: () => import('highlight.js/lib/core'),
- *     languages: {
- *       typescript: () => import('highlight.js/lib/languages/typescript'),
- *       css: () => import('highlight.js/lib/languages/css'),
- *       html: () => import('highlight.js/lib/languages/xml')
- *     },
- *     fallbackLanguage: 'plaintext'
- *   }}
- * >
+ * const highlightConfig = {
+ *   core: () => import('highlight.js/lib/core'),
+ *   languages: {
+ *     typescript: () => import('highlight.js/lib/languages/typescript'),
+ *     css: () => import('highlight.js/lib/languages/css'),
+ *     xml: () => import('highlight.js/lib/languages/xml')
+ *   },
+ *   fallbackLanguage: 'plaintext'
+ * };
+ *
+ * <CodeBlockHighlightConfigProvider config={highlightConfig}>
  *   <App />
  * </CodeBlockHighlightConfigProvider>
  * ```

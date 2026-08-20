@@ -136,7 +136,9 @@ export function useHighlightedCode(
         if (!language || !hljs.getLanguage(language)) {
           if (process.env.NODE_ENV !== 'production') {
             once.warn(
-              `[CodeBlock] Unknown file language: "${language}". Fall back to "${fallbackLanguage}".`,
+              language
+                ? `[CodeBlock] Unsupported file language: "${language}". Fall back to "${fallbackLanguage}".`
+                : `[CodeBlock] Missing file language. Fall back to "${fallbackLanguage}".`,
               file
             );
           }
