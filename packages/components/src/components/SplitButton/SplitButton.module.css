@@ -93,6 +93,7 @@
   &[data-variant='fade-contrast-filled']
     > [data-slot='button'][data-disabled]
     + [data-slot='button']:last-child:not(
+      [aria-expanded='true'],
       [data-disabled],
       [data-hovered],
       [data-pressed],
