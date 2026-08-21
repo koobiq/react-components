@@ -45,9 +45,9 @@ export type CodeBlockHighlightConfigProviderProps = {
  *   fallbackLanguage: 'plaintext'
  * };
  *
- * <CodeBlockHighlightConfigProvider config={highlightConfig}>
+ * <CodeBlock.HighlightConfigProvider config={highlightConfig}>
  *   <App />
- * </CodeBlockHighlightConfigProvider>
+ * </CodeBlock.HighlightConfigProvider>
  * ```
  */
 export function CodeBlockHighlightConfigProvider(

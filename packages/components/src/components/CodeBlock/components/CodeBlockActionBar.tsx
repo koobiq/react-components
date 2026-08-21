@@ -30,6 +30,7 @@ export type CodeBlockActionBarProps = {
   softWrapOnTooltip: string;
   softWrapOffTooltip: string;
   openExternalSystemTooltip: string;
+  onTooltipOpenChange: (isOpen: boolean) => void;
 };
 
 function download(file: CodeBlockFile, fallbackFileName: string): void {
@@ -61,6 +62,7 @@ export function CodeBlockActionBar(props: CodeBlockActionBarProps) {
     softWrapOnTooltip,
     softWrapOffTooltip,
     openExternalSystemTooltip,
+    onTooltipOpenChange,
   } = props;
 
   const [, copy] = useCopyToClipboard();
@@ -87,11 +89,17 @@ export function CodeBlockActionBar(props: CodeBlockActionBarProps) {
     }
   };
 
+  const onCopyTooltipOpenChange = (isOpen: boolean): void => {
+    resetCopyTooltip(isOpen);
+    onTooltipOpenChange(isOpen);
+  };
+
   return (
     <div className={s.actionbar} data-testid="code-block-actionbar">
       <div className={s.actionbarButtonStack}>
         {canToggleSoftWrap && (
           <Tooltip
+            onOpenChange={onTooltipOpenChange}
             control={(tooltipProps) => (
               <Button
                 {...tooltipProps}
@@ -111,6 +119,7 @@ export function CodeBlockActionBar(props: CodeBlockActionBarProps) {
 
         {canDownload && (
           <Tooltip
+            onOpenChange={onTooltipOpenChange}
             control={(tooltipProps) => (
               <Button
                 {...tooltipProps}
@@ -129,7 +138,7 @@ export function CodeBlockActionBar(props: CodeBlockActionBarProps) {
         {canCopy && (
           <Tooltip
             shouldCloseOnPress={false}
-            onOpenChange={resetCopyTooltip}
+            onOpenChange={onCopyTooltipOpenChange}
             control={(tooltipProps) => (
               <Button
                 {...tooltipProps}
@@ -147,6 +156,7 @@ export function CodeBlockActionBar(props: CodeBlockActionBarProps) {
 
         {file.link && (
           <Tooltip
+            onOpenChange={onTooltipOpenChange}
             control={(tooltipProps) => (
               <Button
                 {...tooltipProps}
