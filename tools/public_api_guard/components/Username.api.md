@@ -53,6 +53,12 @@ export type UsernameFormatOptions = {
     join?: 'concat' | 'space';
 };
 
+// @public
+export const usernameHintAffixes: {
+    readonly prefix: " (";
+    readonly suffix: ")";
+};
+
 // @public (undocumented)
 export type UsernamePrimaryProps = Omit<ComponentPropsWithRef<'span'>, 'children'> & {
     children?: ReactNode;

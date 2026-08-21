@@ -1,0 +1,32 @@
+.base {
+  --highlight-color: ;
+  --highlight-background-color: ;
+  --highlight-border-radius: ;
+  --highlight-font-weight: ;
+
+  /* Kept even when a variant leaves the token empty: the declaration still wins
+     the cascade and then computes to `unset`, which is what neutralises the UA
+     `mark { background-color: Mark; color: Marktext }` yellow. */
+  .mark {
+    color: var(--kbq-highlight-color, var(--highlight-color));
+    background-color: var(
+      --kbq-highlight-background-color,
+      var(--highlight-background-color)
+    );
+    border-radius: var(
+      --kbq-highlight-border-radius,
+      var(--highlight-border-radius)
+    );
+    font-weight: var(--kbq-highlight-font-weight, var(--highlight-font-weight));
+  }
+}
+
+.background {
+  --highlight-color: var(--kbq-foreground-contrast);
+  --highlight-background-color: var(--kbq-background-highlight);
+  --highlight-border-radius: var(--kbq-size-xxs);
+}
+
+.bold {
+  --highlight-font-weight: var(--kbq-typography-text-normal-strong-font-weight);
+}

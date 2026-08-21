@@ -1,5 +1,8 @@
 import type { UsernameUserInfo } from './types';
 
+/** Punctuation `Username`'s built-in hint uses to wrap `userInfo.site`. */
+export const usernameHintAffixes = { prefix: ' (', suffix: ')' } as const;
+
 const legacyMapping: Record<string, keyof UsernameUserInfo> = {
   l: 'lastName',
   f: 'firstName',

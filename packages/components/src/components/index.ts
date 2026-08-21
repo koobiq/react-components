@@ -62,6 +62,7 @@ export * from './Resizable';
 export * from './FileUpload';
 export * from './Username';
 export * from './TopBar';
+export * from './Highlight';
 export * from './layout';
 export {
   useListData,
