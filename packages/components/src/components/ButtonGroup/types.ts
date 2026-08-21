@@ -26,6 +26,8 @@ export type ButtonGroupBaseProps = {
   variant?: ButtonGroupPropVariant;
   /** If `true`, every nested button is disabled. */
   isDisabled?: boolean;
+  /** If `true`, every nested button shows a loader and blocks clicks. */
+  isLoading?: boolean;
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

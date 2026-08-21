@@ -1,0 +1,104 @@
+/*
+ * [data-slot='split-button'] bumps specificity over ButtonGroup's own rules,
+ * so overrides here don't depend on CSS Modules import/bundle order.
+ */
+.base[data-slot='split-button'] {
+  inline-size: 100%;
+  min-inline-size: 0;
+
+  & > [data-slot='button']:not(:last-child) {
+    margin-inline-end: 0;
+    box-shadow: none;
+  }
+
+  &[data-variant='contrast-filled'] {
+    --split-button-divider-color: var(--kbq-line-on-contrast-fade);
+  }
+
+  &[data-variant='fade-contrast-filled'],
+  &[data-variant='fade-contrast-outline'],
+  &[data-variant='contrast-transparent'] {
+    --split-button-divider-color: var(--kbq-line-contrast-fade);
+  }
+
+  &[data-variant='fade-theme-outline'],
+  &[data-variant='theme-transparent'] {
+    --split-button-divider-color: var(--kbq-line-theme-fade);
+  }
+
+  /* When the button is expanded, change the border color and background color */
+  & > [data-slot='button'][aria-expanded='true'] {
+    --button-border-color: var(--button-border-color-active);
+
+    background-color: var(--button-bg-color-active);
+  }
+
+  & > [data-slot='button']:last-child {
+    flex-shrink: 0;
+    inline-size: auto;
+    background-image: linear-gradient(
+      var(--split-button-divider-color),
+      var(--split-button-divider-color)
+    );
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-size: var(--kbq-size-border-width) var(--kbq-size-l);
+  }
+
+  &
+    > [data-slot='button'][data-onlyicon='true']
+    + [data-slot='button'][data-onlyicon='true'] {
+    --button-padding-inline: var(--kbq-size-xxs);
+  }
+
+  /*
+   * The divider only turns the disabled gray when both buttons are disabled —
+   * if either button is still enabled, it keeps the normal per-variant color.
+   */
+  &
+    > [data-slot='button'][data-disabled]
+    + [data-slot='button']:last-child[data-disabled] {
+    --split-button-divider-color: var(--kbq-states-line-disabled);
+  }
+
+  & > [data-slot='button']:last-child[aria-expanded='true'],
+  &
+    > [data-slot='button']:last-child:not([data-disabled]):is(
+      :hover,
+      :focus-visible
+    ),
+  &
+    > [data-slot='button']:not(:last-child, [data-disabled]):is(
+      :hover,
+      :focus-visible
+    )
+    + [data-slot='button']:last-child {
+    background-image: none;
+  }
+
+  /*
+   * Filled fade contrast: when only one button is disabled, the still-enabled
+   * button also takes the disabled background so the pill reads as one piece.
+   * Excluded on hover/press/focus-visible so the enabled button's own
+   * interaction states aren't masked by the disabled background.
+   */
+  &[data-variant='fade-contrast-filled']
+    > [data-slot='button']:not(
+      :last-child,
+      [data-disabled],
+      [data-hovered],
+      [data-pressed],
+      [data-focus-visible]
+    ):has(+ [data-slot='button']:last-child[data-disabled]),
+  &[data-variant='fade-contrast-filled']
+    > [data-slot='button'][data-disabled]
+    + [data-slot='button']:last-child:not(
+      [aria-expanded='true'],
+      [data-disabled],
+      [data-hovered],
+      [data-pressed],
+      [data-focus-visible]
+    ) {
+    background-color: var(--kbq-states-background-disabled);
+  }
+}

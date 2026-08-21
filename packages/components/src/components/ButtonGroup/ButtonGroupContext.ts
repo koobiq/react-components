@@ -9,6 +9,8 @@ export type ButtonGroupContextProps = {
   variant?: ButtonGroupPropVariant;
   /** If `true`, every nested button is disabled. */
   isDisabled?: boolean;
+  /** If `true`, every nested button shows a loader and blocks clicks. */
+  isLoading?: boolean;
 };
 
 export const ButtonGroupContext = createContext<ButtonGroupContextProps>({});
