@@ -102,7 +102,7 @@ export const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
   );
 
   return (
-    <FormField as={TextField} inputElementType="textarea" {...rootProps}>
+    <FormField as={TextField} {...rootProps}>
       {(values) => (
         <TextareaContextConsumer
           {...values}

@@ -1,8 +1,8 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useCallback } from 'react';
 
-import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
+import { clsx, mergeProps, useDOMRef, useMultiRef } from '@koobiq/react-core';
 import { IconMagnifyingGlass16 } from '@koobiq/react-icons';
 import {
   removeDataAttributes,
@@ -14,6 +14,8 @@ import {
   ButtonContext,
   DEFAULT_SLOT,
   Provider,
+  FieldInputContext,
+  useContextProps,
 } from '@koobiq/react-primitives';
 
 import { useForm } from '../Form';
@@ -28,11 +30,39 @@ import type {
 import { FormField, FormFieldClearButton } from '../FormField';
 
 import s from './SearchInput.module.css';
+import {
+  SearchInputContext,
+  type SearchInputContextProps,
+} from './SearchInputContext';
 import type { SearchInputProps, SearchInputRef } from './types';
 
 /** A search input allows a user to enter and clear a search query. */
 export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
-  (props, ref) => {
+  (inProps, inRef) => {
+    const contextInputProps: SearchInputContextProps = inProps;
+
+    const [contextProps, contextRef] = useContextProps(
+      contextInputProps,
+      inRef,
+      SearchInputContext
+    );
+
+    const { ref: fieldInputRef, ...fieldInputProps } =
+      useSlottedContext(FieldInputContext) ?? {};
+
+    const props = mergeProps(contextProps, fieldInputProps);
+
+    const setFieldInputRef = useCallback(
+      (node: SearchInputRef | null) => {
+        if (typeof fieldInputRef === 'function') {
+          fieldInputRef(node);
+        } else if (fieldInputRef) {
+          fieldInputRef.current = node;
+        }
+      },
+      [fieldInputRef]
+    );
+
     const {
       startAddon = <IconMagnifyingGlass16 className={s.searchIcon} />,
       variant = 'filled',
@@ -63,7 +93,9 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
       removeDataAttributes({ ...props, isDisabled, isReadOnly })
     );
 
-    const inputRef = useDOMRef(ref);
+    const inputRef = useDOMRef(
+      useMultiRef<SearchInputRef>([contextRef, setFieldInputRef])
+    );
 
     const { validationBehavior: formValidationBehavior } =
       useSlottedContext(FormContext) || {};

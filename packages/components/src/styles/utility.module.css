@@ -386,36 +386,40 @@
   --list-item-bg-color: var(--kbq-background-theme-less);
 }
 
-.list[aria-multiselectable='true'] .list-item:where([data-selected='true']) {
-  --list-item-bg-color: var(--kbq-background-contrast-less);
-}
-
-.list[aria-multiselectable='true']
-  .list-item:where([data-selected='true'][data-hovered='true']) {
-  --list-item-bg-color: var(--kbq-states-background-contrast-less-hover);
-}
-
-.list[aria-multiselectable='true']
-  .list-item:where([data-selected='true'][data-pressed='true']) {
-  --list-item-bg-color: var(--kbq-states-background-contrast-less-active);
-}
-
-.list[aria-multiselectable='true']
-  .list-item:is([data-selected='true'], [data-focus-visible='true']):has(
-    + :is([data-selected='true'], [data-focus-visible='true'])
-  ) {
-  &::before {
-    border-end-end-radius: 0;
-    border-end-start-radius: 0;
+/*
+ * Multi-select look, keyed off the list or off the item. `role="menu"` cannot
+ * carry `aria-multiselectable`, so a menu is recognized by the
+ * `data-selection-mode` React Aria writes on every item instead.
+ */
+.list[aria-multiselectable='true'] .list-item,
+.list-item:where([data-selection-mode='multiple']) {
+  &:where([data-selected='true']) {
+    --list-item-bg-color: var(--kbq-background-contrast-less);
   }
-}
 
-.list[aria-multiselectable='true']
-  .list-item:is([data-selected='true'], [data-focus-visible='true'])
-  + :is([data-selected='true'], [data-focus-visible='true']) {
-  &::before {
-    border-start-end-radius: 0;
-    border-start-start-radius: 0;
+  &:where([data-selected='true'][data-hovered='true']) {
+    --list-item-bg-color: var(--kbq-states-background-contrast-less-hover);
+  }
+
+  &:where([data-selected='true'][data-pressed='true']) {
+    --list-item-bg-color: var(--kbq-states-background-contrast-less-active);
+  }
+
+  &:is([data-selected='true'], [data-focus-visible='true']):has(
+      + :is([data-selected='true'], [data-focus-visible='true'])
+    ) {
+    &::before {
+      border-end-end-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
+
+  &:is([data-selected='true'], [data-focus-visible='true'])
+    + :is([data-selected='true'], [data-focus-visible='true']) {
+    &::before {
+      border-start-end-radius: 0;
+      border-start-start-radius: 0;
+    }
   }
 }
 

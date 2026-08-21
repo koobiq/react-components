@@ -1,7 +1,7 @@
 'use client';
 
-import { forwardRef, useRef, useCallback } from 'react';
-import type { Ref, KeyboardEvent } from 'react';
+import { forwardRef, useRef, useCallback, useState } from 'react';
+import type { KeyboardEvent, Ref, RefObject } from 'react';
 
 import {
   filterDOMProps,
@@ -14,6 +14,8 @@ import {
   Provider,
   DEFAULT_SLOT,
   ButtonContext,
+  FieldInputContext,
+  useContextProps,
   useRenderProps,
   useSlottedContext,
 } from 'react-aria-components';
@@ -22,9 +24,11 @@ import { removeDataAttributes } from '../../utils';
 import { FieldErrorContext } from '../FieldError';
 import { FormContext } from '../Form';
 import { InputContext } from '../Input';
+import type { InputProps } from '../Input';
 import { LabelContext } from '../Label';
 import { TextContext } from '../Text';
 import { TextareaContext } from '../Textarea';
+import type { TextareaProps } from '../Textarea';
 
 import type {
   TextFieldRef,
@@ -34,13 +38,43 @@ import type {
 import intlMessages from './intl.json';
 
 function TextFieldRender(
-  props: Omit<TextFieldProps<HTMLInputElement | HTMLTextAreaElement>, 'ref'>,
+  inProps: Omit<TextFieldProps<HTMLInputElement | HTMLTextAreaElement>, 'ref'>,
   ref: Ref<TextFieldRef>
 ) {
+  const innerRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+
+  // A parent, such as `Autocomplete`, drives the field through this context,
+  // handing over both its props and the ref it wants the field to use.
+  const [props, contextRef] = useContextProps(
+    inProps,
+    innerRef,
+    FieldInputContext
+  );
+
+  // The context is typed for any focusable element, this field is narrower.
+  const inputRef = contextRef as RefObject<
+    HTMLInputElement | HTMLTextAreaElement | null
+  >;
+
   const { isDisabled, isReadOnly, isRequired, onClear, isClearable } = props;
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const [inputElementType, setInputElementType] = useState<
+    'input' | 'textarea'
+  >(props.inputElementType ?? 'input');
+
+  const inputOrTextareaRef = useCallback(
+    (node: HTMLInputElement | HTMLTextAreaElement | null) => {
+      inputRef.current = node;
+
+      if (node) {
+        setInputElementType(
+          node instanceof HTMLTextAreaElement ? 'textarea' : 'input'
+        );
+      }
+    },
+    [inputRef]
+  );
 
   const [inputValue, setInputValue] = useControlledState(
     props.value,
@@ -101,10 +135,15 @@ function TextFieldRender(
         handleKeyDown(e);
       },
       onChange: setInputValue,
+      inputElementType,
       validationBehavior,
     },
     inputRef
   );
+
+  // The hook types its result for one element or the other, the same props go
+  // to both the input and the textarea.
+  const fieldProps = inputProps as InputProps & TextareaProps;
 
   const DOMProps = filterDOMProps(props);
   delete DOMProps.id;
@@ -136,8 +175,8 @@ function TextFieldRender(
       <Provider
         values={[
           [LabelContext, labelProps],
-          [InputContext, { ...inputProps, ref: inputRef }],
-          [TextareaContext, { ...inputProps, ref: inputRef }],
+          [InputContext, { ...fieldProps, ref: inputOrTextareaRef }],
+          [TextareaContext, { ...fieldProps, ref: inputOrTextareaRef }],
           [
             TextContext,
             {
