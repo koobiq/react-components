@@ -14,8 +14,10 @@ import type { ReactNode } from 'react';
 import type { Ref } from 'react';
 import { RefAttributes } from 'react';
 
+// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-export const CodeBlock: ForwardRefExoticComponent<Omit<CodeBlockProps, "ref"> & RefAttributes<CodeBlockRef>>;
+export const CodeBlock: CompoundedComponent;
 
 // @public
 export type CodeBlockFile = {
@@ -35,9 +37,6 @@ export type CodeBlockHighlightConfig = Partial<{
     }>>;
     fallbackLanguage: string;
 }>;
-
-// @public
-export function CodeBlockHighlightConfigProvider(props: CodeBlockHighlightConfigProviderProps): JSX.Element;
 
 // @public (undocumented)
 export type CodeBlockHighlightConfigProviderProps = {

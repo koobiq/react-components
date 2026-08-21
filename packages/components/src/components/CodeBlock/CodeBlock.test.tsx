@@ -13,7 +13,6 @@ import type { HLJSApi } from 'highlight.js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CodeBlock } from './CodeBlock';
-import { CodeBlockHighlightConfigProvider } from './context';
 import type { CodeBlockHighlightConfig } from './context';
 import type { CodeBlockFile, CodeBlockRef } from './types';
 
@@ -89,6 +88,16 @@ describe('CodeBlock', () => {
     expect(screen.queryAllByRole('tab')).toHaveLength(0);
     expect(screen.getByTestId('root')).toHaveAttribute('data-hide-tabs');
     expect(onHideTabsChange).toHaveBeenCalledWith(true);
+  });
+
+  it('keeps action bar controls in sequential keyboard navigation when tabs are hidden', async () => {
+    render(<CodeBlock files={jsFile} />);
+
+    const copyButton = await screen.findByRole('button', { name: 'Copy' });
+
+    await user.tab();
+
+    expect(copyButton).toHaveFocus();
   });
 
   it('shows tabs again when files no longer require automatic hiding', async () => {
@@ -322,10 +331,10 @@ describe('CodeBlock', () => {
       };
 
       render(
-        <CodeBlockHighlightConfigProvider config={config}>
+        <CodeBlock.HighlightConfigProvider config={config}>
           <CodeBlock files={jsFile} />
           <CodeBlock files={jsFile} />
-        </CodeBlockHighlightConfigProvider>
+        </CodeBlock.HighlightConfigProvider>
       );
 
       await waitFor(() =>
@@ -360,9 +369,9 @@ describe('CodeBlock', () => {
       const file = { content, language: 'unknown' };
 
       render(
-        <CodeBlockHighlightConfigProvider config={config}>
+        <CodeBlock.HighlightConfigProvider config={config}>
           <CodeBlock files={[file]} />
-        </CodeBlockHighlightConfigProvider>
+        </CodeBlock.HighlightConfigProvider>
       );
 
       await waitFor(() =>
@@ -403,9 +412,9 @@ describe('CodeBlock', () => {
       const file = { content: 'plain text' };
 
       render(
-        <CodeBlockHighlightConfigProvider config={config}>
+        <CodeBlock.HighlightConfigProvider config={config}>
           <CodeBlock files={[file]} />
-        </CodeBlockHighlightConfigProvider>
+        </CodeBlock.HighlightConfigProvider>
       );
 
       await waitFor(() =>
@@ -427,9 +436,9 @@ describe('CodeBlock', () => {
       };
 
       render(
-        <CodeBlockHighlightConfigProvider config={config}>
+        <CodeBlock.HighlightConfigProvider config={config}>
           <CodeBlock files={jsFile} />
-        </CodeBlockHighlightConfigProvider>
+        </CodeBlock.HighlightConfigProvider>
       );
 
       await waitFor(() =>
@@ -500,9 +509,10 @@ describe('CodeBlock', () => {
       vi.unstubAllGlobals();
     });
 
-    it('closes an open tooltip when pointer enters its portal', async () => {
+    it('keeps the action bar visible while pointer is over its tooltip', async () => {
       render(<CodeBlock files={jsFile} data-testid="root" />);
 
+      const root = screen.getByTestId('root');
       const copyButton = await screen.findByRole('button', { name: 'Copy' });
 
       await user.hover(copyButton);
@@ -514,9 +524,21 @@ describe('CodeBlock', () => {
         )
       );
 
-      await user.hover(screen.getByRole('tooltip'));
+      expect(root).toHaveAttribute('data-action-bar-tooltip-open');
 
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+      const tooltip = screen.getByRole('tooltip');
+
+      await user.hover(tooltip);
+
+      expect(tooltip).toBeVisible();
+      expect(root).toHaveAttribute('data-action-bar-tooltip-open');
+
+      await user.unhover(tooltip);
+
+      await waitFor(() => {
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+        expect(root).not.toHaveAttribute('data-action-bar-tooltip-open');
+      });
     });
 
     it('toggles an uncontrolled defaultSoftWrap value and reports the change', async () => {
@@ -791,9 +813,9 @@ describe('CodeBlock', () => {
       .mockImplementation(() => {});
 
     render(
-      <CodeBlockHighlightConfigProvider config={config}>
+      <CodeBlock.HighlightConfigProvider config={config}>
         <CodeBlock files={jsFile} ref={ref} />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
 
     ref.current?.scrollTo({ top: 24, behavior: 'instant' });

@@ -10,7 +10,6 @@ import { Typography } from '../Typography';
 
 import {
   CodeBlock,
-  CodeBlockHighlightConfigProvider,
   type CodeBlockFile,
   type CodeBlockProps,
   type CodeBlockRef,
@@ -19,6 +18,9 @@ import {
 const meta = {
   title: 'Components/CodeBlock',
   component: CodeBlock,
+  subcomponents: {
+    HighlightConfigProvider: CodeBlock.HighlightConfigProvider,
+  },
   parameters: {
     layout: 'padded',
   },
@@ -51,7 +53,7 @@ export const Overview: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <Toggle
           isSelected={hasLineNumbers}
           onChange={setHasLineNumbers}
@@ -65,7 +67,7 @@ export const Overview: Story = {
           files={files}
           hasLineNumbers={hasLineNumbers}
         />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -112,7 +114,7 @@ export const HeaderPinned: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <CodeBlock
           {...args}
           canToggleSoftWrap
@@ -145,7 +147,7 @@ export const HeaderPinned: Story = {
           )}
           style={{ blockSize: 350 }}
         />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -173,7 +175,7 @@ export const WithMaxHeight: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <Toggle
           isSelected={viewAll}
           onChange={setViewAll}
@@ -197,7 +199,7 @@ export const WithMaxHeight: Story = {
           onViewAllChange={setViewAll}
           viewAll={viewAll}
         />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -224,7 +226,7 @@ export const WithSoftWrap: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <Toggle
           isSelected={softWrap}
           onChange={setSoftWrap}
@@ -240,7 +242,7 @@ export const WithSoftWrap: Story = {
           onSoftWrapChange={setSoftWrap}
           softWrap={softWrap}
         />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -283,7 +285,7 @@ export const WithTabs: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <Toggle
           isSelected={hideTabs}
           onChange={setHideTabs}
@@ -314,7 +316,7 @@ export const WithTabs: Story = {
           hideTabs={hideTabs}
           isFilled={isFilled}
         />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -359,7 +361,7 @@ export const WithTabsAndShadow: Story = {
     }, []);
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <CodeBlock
           {...args}
           ref={codeBlockRef}
@@ -370,7 +372,7 @@ export const WithTabsAndShadow: Story = {
           hasLineNumbers
           style={{ blockSize: 350 }}
         />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -398,7 +400,7 @@ export const WithFilled: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <Toggle
           isSelected={isFilled}
           onChange={setIsFilled}
@@ -421,7 +423,7 @@ export const WithFilled: Story = {
           files={files}
           isFilled={isFilled}
         />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -454,7 +456,7 @@ export const WithNoBorder: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <SidePanel
           size="small"
           control={(props) => <Button {...props}>Open sidepanel</Button>}
@@ -480,7 +482,7 @@ export const WithNoBorder: Story = {
             </SidePanel.Body>
           )}
         </SidePanel>
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };
@@ -507,9 +509,9 @@ export const WithLink: Story = {
     ];
 
     return (
-      <CodeBlockHighlightConfigProvider config={highlightConfig}>
+      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
         <CodeBlock {...args} files={files} hasLineNumbers hideCopyButton />
-      </CodeBlockHighlightConfigProvider>
+      </CodeBlock.HighlightConfigProvider>
     );
   },
 };

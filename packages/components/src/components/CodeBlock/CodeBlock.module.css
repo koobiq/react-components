@@ -95,7 +95,7 @@
     }
 
     .actionbar {
-      visibility: hidden;
+      opacity: 0;
       pointer-events: none;
       position: absolute;
       inset-block-start: 0;
@@ -126,14 +126,15 @@
      */
     &:hover .actionbar,
     &:focus-within .actionbar,
+    &[data-action-bar-tooltip-open] .actionbar,
     &[data-always-show-action-bar] .actionbar {
-      visibility: visible;
+      opacity: 1;
       pointer-events: auto;
     }
 
     @media (hover: none) {
       .actionbar {
-        visibility: visible;
+        opacity: 1;
         pointer-events: auto;
       }
     }

@@ -28,7 +28,7 @@ npm install highlight.js@^11
 ### Configuring highlight.js
 
 By default, `CodeBlock` lazily loads the full `highlight.js` bundle with all languages (~1 MB). To
-reduce bundle size, wrap the app (or a part of it) with `CodeBlockHighlightConfigProvider` and specify
+reduce bundle size, wrap the app (or a part of it) with `CodeBlock.HighlightConfigProvider` and specify
 only the languages you need:
 
 ```tsx
@@ -44,9 +44,9 @@ const highlightConfig = {
 
 function App() {
   return (
-    <CodeBlockHighlightConfigProvider config={highlightConfig}>
+    <CodeBlock.HighlightConfigProvider config={highlightConfig}>
       <CodeBlock files={files} />
-    </CodeBlockHighlightConfigProvider>
+    </CodeBlock.HighlightConfigProvider>
   );
 }
 ```

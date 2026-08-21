@@ -23,6 +23,7 @@ import { Button } from '../Button';
 
 import s from './CodeBlock.module.css';
 import { CodeBlockActionBar, CodeBlockTabs } from './components';
+import { CodeBlockHighlightConfigProvider } from './context';
 import { useHighlightedCode, useOverflowShadow } from './hooks';
 import intlMessages from './intl.json';
 import type {
@@ -103,7 +104,7 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
   const mainRef = useRef<HTMLDivElement>(null);
   const pendingScrollRef = useRef<CodeBlockScrollToOptions | null>(null);
   const tabsHiddenAutomaticallyRef = useRef(false);
-  const [actionBarSession, setActionBarSession] = useState(0);
+  const [isActionBarTooltipOpen, setIsActionBarTooltipOpen] = useState(false);
 
   const [softWrap, setSoftWrap] = useControlledState(
     softWrapProp,
@@ -163,29 +164,6 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
   const shouldAutoHideTabs = hideTabsProp === undefined && isSingleUnnamedFile;
 
   const isTabsHidden = hideTabs || shouldAutoHideTabs;
-
-  useEffect(() => {
-    const root = rootRef.current;
-
-    if (!root) return;
-
-    const onMouseLeave = () => {
-      const actionBarRemainsVisible =
-        !isTabsHidden ||
-        alwaysShowActionBar ||
-        root.contains(document.activeElement);
-
-      if (!actionBarRemainsVisible) {
-        // React treats a portal as part of the component tree, so its synthetic mouseleave does not fire
-        // when the pointer enters a tooltip. A native listener follows the DOM tree and closes it correctly.
-        setActionBarSession((session) => session + 1);
-      }
-    };
-
-    root.addEventListener('mouseleave', onMouseLeave);
-
-    return () => root.removeEventListener('mouseleave', onMouseLeave);
-  }, [alwaysShowActionBar, isTabsHidden]);
 
   useEffect(() => {
     if (hideTabsProp !== undefined) {
@@ -276,7 +254,6 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
 
   const actionBar = (
     <CodeBlockActionBar
-      key={actionBarSession}
       file={activeFile}
       fallbackFileName={fallbackFileName}
       canToggleSoftWrap={canToggleSoftWrap}
@@ -290,6 +267,7 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
       softWrapOnTooltip={t.format('softWrapOnTooltip')}
       softWrapOffTooltip={t.format('softWrapOffTooltip')}
       openExternalSystemTooltip={t.format('openExternalSystemTooltip')}
+      onTooltipOpenChange={setIsActionBarTooltipOpen}
     />
   );
 
@@ -342,6 +320,7 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
       data-line-numbers={hasLineNumbers || undefined}
       data-hide-tabs={isTabsHidden || undefined}
       data-always-show-action-bar={alwaysShowActionBar || undefined}
+      data-action-bar-tooltip-open={isActionBarTooltipOpen || undefined}
       data-soft-wrap={softWrap || undefined}
       data-view-all={viewAll || undefined}
       style={style}
@@ -392,6 +371,13 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
   );
 }
 
-export const CodeBlock = forwardRef(CodeBlockRender);
+const CodeBlockComponent = forwardRef(CodeBlockRender);
+
+type CompoundedComponent = typeof CodeBlockComponent & {
+  HighlightConfigProvider: typeof CodeBlockHighlightConfigProvider;
+};
+
+export const CodeBlock = CodeBlockComponent as CompoundedComponent;
 
 CodeBlock.displayName = 'CodeBlock';
+CodeBlock.HighlightConfigProvider = CodeBlockHighlightConfigProvider;
