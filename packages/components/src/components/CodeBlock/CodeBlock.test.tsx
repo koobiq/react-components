@@ -500,6 +500,25 @@ describe('CodeBlock', () => {
       vi.unstubAllGlobals();
     });
 
+    it('closes an open tooltip when pointer enters its portal', async () => {
+      render(<CodeBlock files={jsFile} data-testid="root" />);
+
+      const copyButton = await screen.findByRole('button', { name: 'Copy' });
+
+      await user.hover(copyButton);
+
+      await waitFor(() =>
+        expect(screen.getByRole('tooltip')).toHaveAttribute(
+          'data-transition',
+          'entered'
+        )
+      );
+
+      await user.hover(screen.getByRole('tooltip'));
+
+      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    });
+
     it('toggles an uncontrolled defaultSoftWrap value and reports the change', async () => {
       const onSoftWrapChange = vi.fn();
 
