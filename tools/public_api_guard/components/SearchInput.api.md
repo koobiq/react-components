@@ -24,7 +24,7 @@ import { TextProps } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
 // @public
-export const SearchInput: ForwardRefExoticComponent<Omit<Omit<AriaSearchFieldProps, "description" | "validationState">, "caption" | "style" | "className" | `data-${string}` | "startAddon" | "endAddon" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isLabelHidden"> & {
+export const SearchInput: ForwardRefExoticComponent<Omit<Omit<AriaSearchFieldProps, "description" | "validationState">, "className" | "style" | "variant" | "fullWidth" | "caption" | `data-${string}` | "slotProps" | "startAddon" | "endAddon" | "labelPlacement" | "labelAlign" | "isLabelHidden"> & {
 className?: string;
 style?: CSSProperties;
 isLabelHidden?: boolean;
