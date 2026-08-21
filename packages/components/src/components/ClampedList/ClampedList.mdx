@@ -1,0 +1,73 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+  Alert,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ClampedList.stories';
+
+<Meta of={Stories} />
+
+# ClampedList
+
+<Status variant="experimental" />
+
+`ClampedList` keeps long collections compact and lets users show or hide the remaining items.
+It provides the visible items, and you define how to render them.
+
+## Import
+
+```tsx
+import { ClampedList } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Visibility threshold
+
+By default, `ClampedList` shows `10` items. The toggle appears when `6` or more
+items remain. If fewer items remain, all items are shown.
+
+Use `collapsedVisibleCount` and `hiddenThreshold` to change these values.
+`hiddenItemCount` is based on the collapsed state, so it stays the same after
+expansion.
+
+<Story of={Stories.CustomVisibility} />
+
+## Controlled expansion
+
+Use `isExpanded` with `onExpandedChange` when expansion state is owned by the
+application. For an uncontrolled initial state, use `defaultExpanded`.
+
+<Story of={Stories.Controlled} />
+
+## Flat lists
+
+Items can be rendered inline. Use `moreText` and `lessText` for compact toggle
+labels that continue the same line as the visible items.
+
+Use `slotProps.content` and `slotProps.toggle` to customize the content
+container and toggle. Set `slotProps.toggle.icon` to `null` to remove the
+chevron. Pass an icon or a function that receives `isExpanded` to replace it.
+
+<Story of={Stories.FlatList} />
+
+Use a centered dot when a stronger visual separator is needed in a wrapped
+multiline list.
+
+<Story of={Stories.FlatListWithDotSeparators} />
+
+## Accessibility
+
+The rendered collection is wrapped in a `role="group"` container. The native
+button references that container with `aria-controls` and exposes the current
+state through `aria-expanded`. It supports mouse, touch, Enter, and Space
+interactions.

@@ -1,0 +1,7 @@
+.base {
+  max-inline-size: 100%;
+}
+
+.content {
+  min-inline-size: 0;
+}
