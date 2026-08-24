@@ -11,17 +11,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
-import { Menu } from '../Menu';
-import { Typography } from '../Typography';
 
 import {
   ButtonGroup,
   type ButtonGroupProps,
-  type ButtonGroupPropVariant,
   buttonGroupPropVariant,
 } from './index';
-
-import './__stories__/styles.css';
 
 const meta = {
   title: 'Components/ButtonGroup',
@@ -169,13 +164,20 @@ export const Disabled: Story = {
 
 export const Loading: Story = {
   render: () => (
-    <ButtonGroup variant="fade-contrast-filled">
-      <Button>Archive</Button>
-      <Button>Report</Button>
-      <Button isLoading startIcon={<IconClock16 />}>
-        Snooze
-      </Button>
-    </ButtonGroup>
+    <FlexBox gap="l" direction="column" alignItems="flex-start">
+      <ButtonGroup variant="fade-contrast-filled">
+        <Button>Archive</Button>
+        <Button>Report</Button>
+        <Button isLoading startIcon={<IconClock16 />}>
+          Snooze
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup variant="fade-contrast-filled" isLoading>
+        <Button>Archive</Button>
+        <Button>Report</Button>
+        <Button startIcon={<IconClock16 />}>Snooze</Button>
+      </ButtonGroup>
+    </FlexBox>
   ),
 };
 
@@ -187,56 +189,4 @@ export const RootTag: Story = {
       <Button>Delete</Button>
     </ButtonGroup>
   ),
-};
-
-export const SplitButton: Story = {
-  render: () => {
-    const splitButtonVariants: {
-      label: string;
-      variant: ButtonGroupPropVariant;
-    }[] = [
-      { label: 'Filled Contrast', variant: 'contrast-filled' },
-      { label: 'Filled Fade Contrast', variant: 'fade-contrast-filled' },
-      { label: 'Outline Fade Theme', variant: 'fade-theme-outline' },
-      { label: 'Outline Fade Contrast', variant: 'fade-contrast-outline' },
-      { label: 'Transparent Theme', variant: 'theme-transparent' },
-      { label: 'Transparent Contrast', variant: 'contrast-transparent' },
-    ];
-
-    return (
-      <div className="split-button-demo">
-        {splitButtonVariants.map(({ label, variant }) => (
-          <FlexBox
-            key={variant}
-            gap="s"
-            direction="column"
-            alignItems="flex-start"
-          >
-            <Typography>{label}</Typography>
-            <ButtonGroup
-              className="split-button-demo__group"
-              variant={variant}
-              aria-label={`${label} split action`}
-            >
-              <Button startIcon={<IconPlus16 />}>Split Button</Button>
-              <Menu
-                placement="bottom end"
-                control={(props) => (
-                  <Button
-                    {...props}
-                    onlyIcon
-                    aria-label={`More ${label} actions`}
-                    startIcon={<IconChevronDownS16 />}
-                  />
-                )}
-              >
-                <Menu.Item key="template">Create from template</Menu.Item>
-                <Menu.Item key="import">Import</Menu.Item>
-              </Menu>
-            </ButtonGroup>
-          </FlexBox>
-        ))}
-      </div>
-    );
-  },
 };

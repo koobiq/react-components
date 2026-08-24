@@ -33,8 +33,11 @@ import type { AriaTextFieldProps } from '@react-aria/textfield';
 import { AriaToggleButtonGroupItemProps } from '@react-aria/button';
 import { AriaToggleButtonGroupProps } from '@react-aria/button';
 import { AsyncLoadable } from '@koobiq/react-core';
+import { Autocomplete } from 'react-aria-components';
 import { AutocompleteAria } from '@react-aria/autocomplete';
+import { AutocompleteProps } from 'react-aria-components';
 import { AutocompleteState } from '@react-stately/autocomplete';
+import { AutocompleteStateContext } from 'react-aria-components';
 import type { ButtonAria } from '@react-aria/button';
 import { ButtonContext } from 'react-aria-components';
 import { CalendarAria } from '@react-aria/calendar';
@@ -68,6 +71,7 @@ import { DragEventHandler } from 'react';
 import { ElementType } from 'react';
 import type { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
+import { FieldInputContext } from 'react-aria-components';
 import { FileTrigger } from 'react-aria-components';
 import { FileTriggerProps } from 'react-aria-components';
 import { FocusableElement } from '@react-types/shared';
@@ -81,6 +85,8 @@ import type { ForwardedRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
 import { getItemCount } from '@react-stately/collections';
 import type { GlobalDOMAttributes } from '@koobiq/react-core';
+import { Header } from 'react-aria-components';
+import { HeaderProps } from 'react-aria-components';
 import type { HelpTextProps } from '@koobiq/react-core';
 import type { HoverEvents } from '@koobiq/react-core';
 import type { HTMLAttributes } from 'react';
@@ -98,6 +104,14 @@ import { LabelHTMLAttributes } from 'react';
 import { CollectionBuilder as LegacyCollectionBuilder } from '@react-stately/collections';
 import type { ListProps } from '@react-stately/list';
 import type { ListState } from '@react-stately/list';
+import { Menu } from 'react-aria-components';
+import { MenuItem } from 'react-aria-components';
+import { MenuItemProps } from 'react-aria-components';
+import { MenuItemRenderProps } from 'react-aria-components';
+import { MenuProps } from 'react-aria-components';
+import { MenuSection } from 'react-aria-components';
+import { MenuSectionProps } from 'react-aria-components';
+import { MenuTrigger } from 'react-aria-components';
 import type { MenuTriggerState } from '@react-stately/menu';
 import { MouseEventHandler } from 'react';
 import { MultipleSelection } from '@koobiq/react-core';
@@ -105,8 +119,10 @@ import type { Node as Node_2 } from '@koobiq/react-core';
 import { NumberFieldAria } from 'react-aria';
 import type { OverlayTriggerProps } from '@react-types/overlays';
 import { OverlayTriggerState } from '@react-stately/overlays';
+import { OverlayTriggerStateContext } from 'react-aria-components';
 import { PointerEventHandler } from 'react';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PopoverContext } from 'react-aria-components';
 import type { PressEvents } from '@koobiq/react-core';
 import { Provider } from 'react-aria-components';
 import type { RadioGroupState } from '@react-stately/radio';
@@ -119,6 +135,8 @@ import { RefObject } from 'react';
 import type { RenderProps as RenderProps_2 } from 'react-aria-components';
 import type { RouterOptions } from '@koobiq/react-core';
 import type { Selection as Selection_2 } from '@koobiq/react-core';
+import { Separator } from 'react-aria-components';
+import { SubmenuTrigger } from 'react-aria-components';
 import type { TextFieldAria } from '@react-aria/textfield';
 import { TextInputBase } from '@koobiq/react-core';
 import { ToggleEventHandler } from 'react';
@@ -226,9 +244,15 @@ export type AriaTreeSelectOptions<T extends object, M extends SelectionMode_2 = 
 // @public (undocumented)
 export type AriaTreeSelectProps<T extends object = object, M extends SelectionMode_2 = 'single'> = TreeSelectStateOptions<T, M>;
 
+export { Autocomplete }
+
 export { AutocompleteAria }
 
+export { AutocompleteProps }
+
 export { AutocompleteState }
+
+export { AutocompleteStateContext }
 
 // @public
 export const Button: PolyForwardComponent<"button", ButtonBaseProps, ElementType>;
@@ -328,6 +352,8 @@ export type FieldErrorProps<As extends ElementType = 'p'> = ComponentPropsWithRe
 // @public (undocumented)
 export type FieldErrorRenderProps = ValidationResult;
 
+export { FieldInputContext }
+
 export { FileTrigger }
 
 export { FileTriggerProps }
@@ -375,6 +401,10 @@ export type GroupRenderProps = {
     isDisabled: boolean;
     isInvalid: boolean;
 };
+
+export { Header }
+
+export { HeaderProps }
 
 // @public (undocumented)
 export const Input: ForwardRefExoticComponent<Omit<InputProps, "ref"> & RefAttributes<HTMLInputElement>>;
@@ -444,6 +474,22 @@ export type LinkRenderProps = {
     isFocusVisible: boolean;
 };
 
+export { Menu }
+
+export { MenuItem }
+
+export { MenuItemProps }
+
+export { MenuItemRenderProps }
+
+export { MenuProps }
+
+export { MenuSection }
+
+export { MenuSectionProps }
+
+export { MenuTrigger }
+
 // @public (undocumented)
 export interface MultiSelectListProps<T> extends CollectionBase<T>, MultipleSelection {
 }
@@ -487,6 +533,10 @@ export type NumberFieldRenderProps = {
 };
 
 export { OverlayTriggerState }
+
+export { OverlayTriggerStateContext }
+
+export { PopoverContext }
 
 // @public (undocumented)
 export const ProgressBar: PolyForwardComponent<"div", ProgressBarBaseProps, ElementType>;
@@ -550,6 +600,10 @@ export function removeDataAttributes<T>(props: T): T;
 // @public (undocumented)
 type SelectionMode_2 = 'single' | 'multiple';
 export { SelectionMode_2 as SelectionMode }
+
+export { Separator }
+
+export { SubmenuTrigger }
 
 // @public (undocumented)
 export const Switch: ForwardRefExoticComponent<Omit<UseSwitchProps, "inputRef" | keyof RenderProps<SwitchRenderProps>> & RenderProps<SwitchRenderProps> & {

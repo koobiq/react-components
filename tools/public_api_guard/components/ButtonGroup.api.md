@@ -20,6 +20,7 @@ export type ButtonGroupBaseProps = {
     orientation?: ButtonGroupPropOrientation;
     variant?: ButtonGroupPropVariant;
     isDisabled?: boolean;
+    isLoading?: boolean;
     className?: string;
     style?: CSSProperties;
     'data-testid'?: string | number;
@@ -32,6 +33,7 @@ export const ButtonGroupContext: Context<ButtonGroupContextProps>;
 export type ButtonGroupContextProps = {
     variant?: ButtonGroupPropVariant;
     isDisabled?: boolean;
+    isLoading?: boolean;
 };
 
 // @public (undocumented)

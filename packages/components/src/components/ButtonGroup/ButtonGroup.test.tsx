@@ -178,4 +178,47 @@ describe('ButtonGroup', () => {
       expect(remove).toBeDisabled();
     });
   });
+
+  describe('check the isLoading prop', () => {
+    it('should not be in progress by default', () => {
+      render(
+        <ButtonGroup {...baseProps}>
+          <Button>Archive</Button>
+        </ButtonGroup>
+      );
+
+      expect(getRoot()).not.toHaveAttribute('data-loading');
+      expect(screen.getByRole('button')).not.toHaveAttribute('data-loading');
+    });
+
+    it('should show a loader on every nested button', () => {
+      render(
+        <ButtonGroup {...baseProps} isLoading>
+          <Button>Archive</Button>
+          <Button>Delete</Button>
+        </ButtonGroup>
+      );
+
+      expect(getRoot()).toHaveAttribute('data-loading', 'true');
+
+      screen.getAllByRole('button').forEach((button) => {
+        expect(button).toHaveAttribute('data-loading', 'true');
+        expect(button).toHaveAttribute('aria-disabled', 'true');
+      });
+    });
+
+    it('should show a loader on a single button while the group stays idle', () => {
+      render(
+        <ButtonGroup {...baseProps}>
+          <Button>Archive</Button>
+          <Button isLoading>Delete</Button>
+        </ButtonGroup>
+      );
+
+      const [archive, remove] = screen.getAllByRole('button');
+
+      expect(archive).not.toHaveAttribute('data-loading');
+      expect(remove).toHaveAttribute('data-loading', 'true');
+    });
+  });
 });

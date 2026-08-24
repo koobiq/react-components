@@ -6,10 +6,12 @@ export * from './IconItem';
 export * from './Alert';
 export * from './Button';
 export * from './ButtonGroup';
+export * from './SplitButton';
 export * from './IconButton';
 export * from './Typography';
 export * from './Checkbox';
 export * from './CheckboxGroup';
+export * from './ClampedText';
 export * from './ClampedList';
 export * from './Link';
 export * from './Badge';
@@ -62,6 +64,7 @@ export * from './Resizable';
 export * from './FileUpload';
 export * from './Username';
 export * from './TopBar';
+export * from './DropdownMenu';
 export * from './layout';
 export {
   useListData,

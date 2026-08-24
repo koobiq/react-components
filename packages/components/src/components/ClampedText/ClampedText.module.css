@@ -1,0 +1,24 @@
+@import url('../../styles/mixins.css');
+
+.base {
+  display: inline-flex;
+  max-inline-size: 100%;
+  flex-direction: column;
+
+  @mixin typography text-normal;
+}
+
+.content {
+  min-inline-size: 0;
+}
+
+.clamped {
+  display: -webkit-box;
+  overflow: hidden;
+
+  /* Required by the legacy -webkit-line-clamp implementation. */
+  /* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--clamped-text-rows);
+  line-clamp: var(--clamped-text-rows);
+}

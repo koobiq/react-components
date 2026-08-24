@@ -1,0 +1,100 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './SplitButton.stories';
+
+<Meta of={Stories} />
+
+# SplitButton
+
+<Status variant="experimental" />
+
+A split button combines several related actions into a single control. The
+primary action is immediately accessible, while additional options are
+hidden in a menu.
+
+## Import
+
+```tsx
+import { SplitButton, Button, Menu } from '@koobiq/react-components';
+```
+
+## Usage
+
+A `SplitButton` expects exactly two children: the primary action `Button`,
+followed by a `Menu` whose `control` renders the trigger `Button` for the
+secondary actions.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Variant
+
+A split button follows the same visual variants as a regular
+[button](?path=/docs/components-button--docs). The `variant` prop sets the
+look of both nested buttons.
+
+<Story of={Stories.Variant} />
+
+## Content
+
+The primary action can be labeled with a caption and illustrated with an
+icon. In the variant without a caption, the menu button is looser than a
+default icon-only button.
+
+<Story of={Stories.Content} />
+
+Long text in the primary button does not wrap to a new line — it is
+truncated with an ellipsis. Avoid buttons with long text.
+
+<Story of={Stories.TextOverflow} />
+
+## Disabled state
+
+Either the primary or secondary action can be disabled individually, or the
+entire group can be disabled at once with `isDisabled`.
+
+<Story of={Stories.DisabledState} />
+
+## In progress
+
+The Progress state can be combined with any other state (Normal, Disabled, Active). Like the Disabled state, it can be applied to the entire button group or to an individual element.
+
+<Story of={Stories.ProgressState} />
+
+## Menu width matching the button
+
+Menu positioning is configured the same way as in the
+[Menu](?path=/docs/components-menu--docs) component. When the menu width is
+approximately equal to the split button's size, it is better to align them
+for visual consistency — measure the split button with
+[useElementSize](?path=/docs/hooks-useelementsize--docs) and pass the
+result to the `Menu`'s own `slotProps.popover.size`.
+
+<Story of={Stories.MenuWidth} />
+
+## Recommendations
+
+A split button is often confused with a plain [menu button](?path=/docs/components-menu--docs),
+which consists of a single element that opens a dropdown list of commands.
+Use a split button only in exceptional cases:
+
+- **When there is a clear and frequently used primary action.** A split
+  button is ideal when in 80% of cases the user needs one action (for
+  example, "Save"), but occasionally needs to choose a different option.
+- **The menu actions are homogeneous and closely related to the primary
+  action.** All items in the menu must be variations or refinements of the
+  primary action.
+
+## Accessibility
+
+Give the icon-only trigger button an `aria-label`, and label the split
+button itself with `aria-label` when the surrounding content doesn't already
+name it.

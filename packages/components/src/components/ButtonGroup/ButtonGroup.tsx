@@ -17,14 +17,15 @@ export const ButtonGroup = polymorphicForwardRef<'div', ButtonGroupBaseProps>(
       orientation = 'horizontal',
       variant = 'fade-contrast-outline',
       isDisabled,
+      isLoading,
       className,
       children,
       ...other
     } = props;
 
     const contextValue = useMemo(
-      () => ({ variant, isDisabled }),
-      [variant, isDisabled]
+      () => ({ variant, isDisabled, isLoading }),
+      [variant, isDisabled, isLoading]
     );
 
     return (
@@ -34,6 +35,7 @@ export const ButtonGroup = polymorphicForwardRef<'div', ButtonGroupBaseProps>(
           data-variant={variant}
           data-orientation={orientation}
           data-disabled={isDisabled || undefined}
+          data-loading={isLoading || undefined}
           className={clsx(
             s.base,
             s[variant],

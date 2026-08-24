@@ -117,6 +117,12 @@ export type PopoverProps = {
    * @default 'top'
    */
   placement?: PopoverPropPlacement;
+  /**
+   * Whether the popover should flip to the opposite side when it reaches the
+   * viewport boundary.
+   * @default true
+   */
+  shouldFlip?: boolean;
   /** The ref for the element which the popover positions itself with respect to. */
   anchorRef?: RefObject<HTMLElement | null>;
   /**
@@ -182,4 +188,14 @@ export type PopoverProps = {
 export type PopoverInnerProps = {
   state: OverlayTriggerState;
   popoverRef?: Ref<HTMLDivElement>;
-} & Omit<PopoverProps, 'ref'>;
+  /**
+   * Same as in `PopoverProps`, but as wide as `usePopover` itself: React Aria
+   * hands its overlays an `Element` ref.
+   */
+  anchorRef?: RefObject<Element | null>;
+  /**
+   * What opened the popover. React Aria reads it to tell a submenu from any
+   * other overlay and treats it differently on outside clicks and scroll.
+   */
+  trigger?: string;
+} & Omit<PopoverProps, 'ref' | 'anchorRef'>;

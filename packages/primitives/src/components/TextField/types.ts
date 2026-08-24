@@ -33,6 +33,10 @@ export type TextFieldRenderProps = {
 };
 
 type TextFieldBaseProps = RenderProps<TextFieldRenderProps> & {
+  /**
+   * The element the field renders into.
+   * @deprecated The field detects the element on its own.
+   */
   inputElementType?: 'input' | 'textarea';
   /** Handler that is called when the clear button is clicked. */
   onClear?: () => void;

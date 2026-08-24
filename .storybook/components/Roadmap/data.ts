@@ -412,7 +412,8 @@ export const rows: Rows = [
   },
   {
     component: 'DropdownMenu',
-    status: '🚧 Planned',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
   {
@@ -427,7 +428,8 @@ export const rows: Rows = [
   },
   {
     component: 'ClampedText',
-    status: '🚧 Planned',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
   {
