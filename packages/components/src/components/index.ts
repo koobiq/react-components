@@ -11,6 +11,7 @@ export * from './IconButton';
 export * from './Typography';
 export * from './Checkbox';
 export * from './CheckboxGroup';
+export * from './ClampedText';
 export * from './Link';
 export * from './Badge';
 export * from './Input';

@@ -1,0 +1,78 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './ClampedText.stories';
+
+<Meta of={Stories} />
+
+# ClampedText
+
+<Status variant="experimental" />
+
+`ClampedText` keeps long text compact while allowing users to reveal the full content.
+
+## Import
+
+```tsx
+import { ClampedText } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Number of rows
+
+The collapsed component displays `5` rows by default. The toggle appears only
+when the content exceeds `rows + 1`, so a single additional row is shown in
+full.
+
+Use the `rows` prop to configure the number of rows visible while collapsed.
+
+<Story of={Stories.Rows} />
+
+## Structured content
+
+ClampedText supports text split across semantic block elements,
+including headings and paragraphs rendered with Typography.
+The row limit applies to their shared content.
+
+<Story of={Stories.StructuredContent} />
+
+## Controlled expansion
+
+Use the `isExpanded` prop with the `onExpandedChange` prop when expansion state is owned by the application.
+For an uncontrolled initial state, use the `defaultExpanded` prop.
+
+<Story of={Stories.ControlledExpansion} />
+
+## Resizing
+
+The `ClampedText` recalculates the number of rows when its container changes size.
+The last expansion preference is preserved while the toggle is temporarily unnecessary.
+
+<Story of={Stories.ResizePersistence} />
+
+## Customization
+
+Use the `moreText` and `lessText` props to replace the localized toggle labels.
+
+Use the `slotProps.content` and `slotProps.toggle` props to customize the content container
+and toggle. Set `slotProps.toggle.icon` to `null` to remove the chevron. Pass an icon or a
+function that receives `isExpanded` to replace it.
+
+<Story of={Stories.Customization} />
+
+## Accessibility
+
+The toggle is a native button with `aria-expanded` and `aria-controls`. It supports mouse, touch, Enter, and Space interactions.
+
+Interactive elements inside collapsed content remain in keyboard navigation even when they are visually clipped. When a hidden link receives focus, the browser may reveal part of the clipped area and cause an unpleasant visual effect. Account for this behavior when placing links or controls inside ClampedText.
