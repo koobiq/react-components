@@ -12,6 +12,7 @@ export * from './Typography';
 export * from './Checkbox';
 export * from './CheckboxGroup';
 export * from './ClampedText';
+export * from './ClampedList';
 export * from './Link';
 export * from './Badge';
 export * from './Input';

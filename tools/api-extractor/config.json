@@ -14,6 +14,7 @@
     "Checkbox",
     "CheckboxGroup",
     "ClampedText",
+    "ClampedList",
     "Container",
     "ContentPanel",
     "DateInput",

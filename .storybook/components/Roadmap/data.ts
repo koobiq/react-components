@@ -434,7 +434,8 @@ export const rows: Rows = [
   },
   {
     component: 'ClampedList',
-    status: '🚧 Planned',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
   {
