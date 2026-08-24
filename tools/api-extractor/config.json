@@ -18,6 +18,7 @@
     "DateInput",
     "DatePicker",
     "Divider",
+    "DropdownMenu",
     "EmptyState",
     "FileUpload",
     "Flag",

@@ -56,7 +56,9 @@ export type PopoverHeaderProps = DialogHeaderProps;
 export type PopoverInnerProps = {
     state: OverlayTriggerState;
     popoverRef?: Ref<HTMLDivElement>;
-} & Omit<PopoverProps, 'ref'>;
+    anchorRef?: RefObject<Element | null>;
+    trigger?: string;
+} & Omit<PopoverProps, 'ref' | 'anchorRef'>;
 
 // @public (undocumented)
 export type PopoverPropContent = ReactNode | ((props: {
@@ -92,6 +94,7 @@ export type PopoverProps = {
     'data-testid'?: string | number;
     disableFocusManagement?: boolean;
     placement?: PopoverPropPlacement;
+    shouldFlip?: boolean;
     anchorRef?: RefObject<HTMLElement | null>;
     hideArrow?: boolean;
     isNonModal?: boolean;
@@ -125,7 +128,7 @@ export const popoverPropType: readonly ["dialog", "menu", "listbox", "tree", "gr
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Popover/types.d.ts:126:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Popover/types.d.ts:132:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
