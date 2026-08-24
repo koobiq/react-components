@@ -133,6 +133,83 @@ describe('ClampedList', () => {
     ).toBeInTheDocument();
   });
 
+  it('normalizes invalid visibility counts', () => {
+    const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const { rerender } = render(
+      <ClampedList
+        items={createItems(8)}
+        collapsedVisibleCount={-2}
+        hiddenThreshold={0}
+      >
+        {renderItems}
+      </ClampedList>
+    );
+
+    expect(
+      within(screen.getByTestId('items')).queryAllByRole('listitem')
+    ).toHaveLength(0);
+
+    expect(
+      screen.getByRole('button', { name: 'Show 8 more' })
+    ).toBeInTheDocument();
+
+    expect(consoleWarn).toHaveBeenCalledWith(
+      '[koobiq] ClampedList: the "collapsedVisibleCount" prop must be a non-negative integer. The received value was normalized.'
+    );
+
+    expect(consoleWarn).toHaveBeenCalledWith(
+      '[koobiq] ClampedList: the "hiddenThreshold" prop must be a positive integer. The received value was normalized.'
+    );
+
+    rerender(
+      <ClampedList
+        items={createItems(10)}
+        collapsedVisibleCount={3.9}
+        hiddenThreshold={2.9}
+      >
+        {renderItems}
+      </ClampedList>
+    );
+
+    expect(getRenderedItems()).toHaveLength(3);
+
+    expect(
+      screen.getByRole('button', { name: 'Show 7 more' })
+    ).toBeInTheDocument();
+
+    rerender(
+      <ClampedList
+        items={createItems(10)}
+        collapsedVisibleCount={10}
+        hiddenThreshold={0}
+      >
+        {renderItems}
+      </ClampedList>
+    );
+
+    expect(getRenderedItems()).toHaveLength(10);
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+
+    rerender(
+      <ClampedList
+        items={createItems(17)}
+        collapsedVisibleCount={Number.POSITIVE_INFINITY}
+        hiddenThreshold={Number.POSITIVE_INFINITY}
+      >
+        {renderItems}
+      </ClampedList>
+    );
+
+    expect(getRenderedItems()).toHaveLength(10);
+
+    expect(
+      screen.getByRole('button', { name: 'Show 7 more' })
+    ).toBeInTheDocument();
+
+    consoleWarn.mockRestore();
+  });
+
   it('keeps a one-shot iterable materialized while toggling', async () => {
     function* generateItems() {
       yield* createItems(17);
