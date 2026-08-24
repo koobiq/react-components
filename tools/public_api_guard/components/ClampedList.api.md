@@ -26,7 +26,7 @@ export type ClampedListProps<T> = {
     lessText?: ReactNode;
     slotProps?: {
         content?: Omit<ComponentPropsWithRef<'div'>, 'children'> & DataAttributeProps;
-        toggle?: Omit<ClampedListTriggerProps, 'children' | 'icon'> & {
+        toggle?: Omit<ClampedListTriggerProps, 'children' | 'icon' | 'aria-controls' | 'aria-expanded'> & {
             icon?: ReactNode | ((isExpanded: boolean) => ReactNode);
         };
     };

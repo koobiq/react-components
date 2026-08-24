@@ -95,7 +95,7 @@ export function ClampedList<T>({
     [visibleItems, hiddenItemCount, isExpanded]
   );
 
-  const onToggle = () => setPreferredExpanded(!preferredExpanded);
+  const onToggle = () => setPreferredExpanded((value) => !value);
 
   const contentProps = mergeProps(
     { className: s.content },
@@ -115,20 +115,27 @@ export function ClampedList<T>({
     toggleIcon = iconProp;
   }
 
+  let toggleContent: ReactNode;
+
+  if (isExpanded) {
+    toggleContent = lessText ?? strings.format('collapse');
+  } else {
+    toggleContent =
+      moreText ??
+      strings.format('show more', {
+        count: hiddenItemCount,
+      });
+  }
+
   const toggleProps = mergeProps(
     {
-      'aria-controls': contentId,
-      'aria-expanded': isExpanded,
       onPress: onToggle,
     },
     toggleSlotProps,
     {
-      children: isExpanded
-        ? (lessText ?? strings.format('collapse'))
-        : (moreText ??
-          strings.format('show more', {
-            count: hiddenItemCount,
-          })),
+      'aria-controls': contentId,
+      'aria-expanded': isExpanded,
+      children: toggleContent,
       icon: toggleIcon,
     }
   );

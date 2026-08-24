@@ -7,7 +7,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { List } from '../List';
 import { Provider } from '../Provider';
 
-import { ClampedList, type ClampedListState } from './index';
+import {
+  ClampedList,
+  type ClampedListProps,
+  type ClampedListState,
+} from './index';
 
 type Item = {
   id: number;
@@ -458,6 +462,32 @@ describe('ClampedList', () => {
     expect(
       screen.getByRole('button', { name: 'Collapse custom list' })
     ).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('protects managed toggle ARIA attributes from slot overrides', () => {
+    type ToggleSlotProps = NonNullable<
+      NonNullable<ClampedListProps<Item>['slotProps']>['toggle']
+    >;
+
+    const unsafeToggleProps = {
+      'aria-controls': 'wrong-content',
+      'aria-expanded': true,
+    } as unknown as ToggleSlotProps;
+
+    render(
+      <ClampedList
+        items={createItems(17)}
+        slotProps={{ toggle: unsafeToggleProps }}
+      >
+        {renderItems}
+      </ClampedList>
+    );
+
+    const content = screen.getByRole('group');
+    const toggle = screen.getByRole('button', { name: 'Show 7 more' });
+
+    expect(toggle).toHaveAttribute('aria-controls', content.id);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('uses localized trigger content', () => {

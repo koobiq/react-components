@@ -45,7 +45,10 @@ export type ClampedListProps<T> = {
   slotProps?: {
     content?: Omit<ComponentPropsWithRef<'div'>, 'children'> &
       DataAttributeProps;
-    toggle?: Omit<ClampedListTriggerProps, 'children' | 'icon'> & {
+    toggle?: Omit<
+      ClampedListTriggerProps,
+      'children' | 'icon' | 'aria-controls' | 'aria-expanded'
+    > & {
       /**
        * Icon displayed before the toggle content. Pass `null` to hide it or a
        * render function to use the current expanded state.
