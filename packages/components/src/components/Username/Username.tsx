@@ -13,7 +13,7 @@ import s from './Username.module.css';
 import { UsernamePrimary } from './UsernamePrimary';
 import { UsernameSecondary } from './UsernameSecondary';
 import { UsernameSecondaryHint } from './UsernameSecondaryHint';
-import { formatUsername } from './utils';
+import { formatUsername, usernameHintAffixes } from './utils';
 
 /**
  * Displays a user's name based on profile data.
@@ -64,7 +64,11 @@ const UsernameComponent = forwardRef<ComponentRef<'span'>, UsernameBaseProps>(
       isNotNil(userInfo?.site) && !showSiteInSecondary && primaryHoldsLogin;
 
     const hint = userInfo?.site ? (
-      <UsernameSecondaryHint> ({userInfo.site})</UsernameSecondaryHint>
+      <UsernameSecondaryHint>
+        {usernameHintAffixes.prefix}
+        {userInfo.site}
+        {usernameHintAffixes.suffix}
+      </UsernameSecondaryHint>
     ) : null;
 
     return (

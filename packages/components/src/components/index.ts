@@ -65,6 +65,7 @@ export * from './FileUpload';
 export * from './Username';
 export * from './TopBar';
 export * from './DropdownMenu';
+export * from './Highlight';
 export * from './layout';
 export {
   useListData,

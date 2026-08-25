@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
+import { isNotNil } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { Link } from '../Link';
 import { SearchInput } from '../SearchInput';
 import { Typography } from '../Typography';
@@ -13,6 +15,7 @@ import {
   type UsernameUserInfo,
   formatUsername,
   buildUsernameText,
+  usernameHintAffixes,
   usernamePropMode,
   usernamePropType,
 } from './index.js';
@@ -240,10 +243,53 @@ export const SearchAndHighlight: Story = {
       { login: 'ghost', site: 'external' },
     ];
 
-    const filtered = searchUsers.filter((user) => {
-      const name = formatUsername(user, 'lf.m.');
+    const {
+      isCompact = false,
+      fullNameFormat = 'lf.m.',
+      formatter = formatUsername,
+    } = args;
 
-      return buildUsernameText({ name, login: user.login, site: user.site })
+    // Mirrors Username's own primary/secondary/hint placement rules
+    // (see Username.tsx) so this custom view stays consistent with it.
+    const getDisplayParts = (user: UsernameUserInfo) => {
+      const hasFullName = Boolean(user.firstName && user.lastName);
+      const name = hasFullName ? formatter(user, fullNameFormat) : '';
+      const primaryText = hasFullName ? name : user.login;
+
+      const secondaryText = !isCompact && hasFullName ? user.login : undefined;
+
+      const showSiteInSecondary = isNotNil(user.site && secondaryText);
+
+      const primaryHoldsLogin = isCompact
+        ? isNotNil(primaryText)
+        : isNotNil(user.login) && !hasFullName;
+
+      const showSiteInPrimary =
+        isNotNil(user.site) && !showSiteInSecondary && primaryHoldsLogin;
+
+      return {
+        primaryText,
+        secondaryText,
+        showSiteInPrimary,
+        showSiteInSecondary,
+      };
+    };
+
+    // Search the text the story actually renders, so the story controls keep
+    // filtering and highlighting in sync.
+    const filtered = searchUsers.filter((user) => {
+      const {
+        primaryText,
+        secondaryText,
+        showSiteInPrimary,
+        showSiteInSecondary,
+      } = getDisplayParts(user);
+
+      return buildUsernameText({
+        name: primaryText ?? '',
+        login: secondaryText,
+        site: showSiteInPrimary || showSiteInSecondary ? user.site : undefined,
+      })
         .toLowerCase()
         .includes(query.toLowerCase());
     });
@@ -256,13 +302,39 @@ export const SearchAndHighlight: Story = {
           placeholder="Search users..."
         />
         <FlexBox direction="column" gap="xs">
-          {filtered.map((user) => (
-            <Username
-              key={user.login ?? user.firstName}
-              {...args}
-              userInfo={user}
-            />
-          ))}
+          {filtered.map((user) => {
+            const {
+              primaryText,
+              secondaryText,
+              showSiteInPrimary,
+              showSiteInSecondary,
+            } = getDisplayParts(user);
+
+            const hint = user.site ? (
+              <Username.SecondaryHint>
+                {usernameHintAffixes.prefix}
+                <Highlight text={user.site} query={query} />
+                {usernameHintAffixes.suffix}
+              </Username.SecondaryHint>
+            ) : null;
+
+            return (
+              <Username key={user.login ?? user.firstName} {...args}>
+                {primaryText && (
+                  <Username.Primary>
+                    <Highlight text={primaryText} query={query} />
+                    {showSiteInPrimary && hint}
+                  </Username.Primary>
+                )}
+                {secondaryText && (
+                  <Username.Secondary>
+                    <Highlight text={secondaryText} query={query} />
+                    {showSiteInSecondary && hint}
+                  </Username.Secondary>
+                )}
+              </Username>
+            );
+          })}
         </FlexBox>
       </FlexBox>
     );
