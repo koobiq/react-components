@@ -59,6 +59,34 @@ export const Variant: Story = {
   ),
 };
 
+export const RootTag: Story = {
+  render: (args) => (
+    <FlexBox gap="l" direction="column" style={{ maxInlineSize: 420 }}>
+      <FlexBox gap="xxs" direction="column">
+        <Typography>
+          A default <Highlight {...args} text="inline span" query="inline" />{' '}
+          stays in the surrounding text flow.
+        </Typography>
+        <Typography variant="text-compact" color="contrast-secondary">
+          as = span (default)
+        </Typography>
+      </FlexBox>
+      <FlexBox gap="xxs" direction="column">
+        <Highlight
+          {...args}
+          as="p"
+          style={{ margin: 0 }}
+          text="A paragraph is a block of its own and takes the full width."
+          query="block"
+        />
+        <Typography variant="text-compact" color="contrast-secondary">
+          as = p
+        </Typography>
+      </FlexBox>
+    </FlexBox>
+  ),
+};
+
 export const Text: Story = {
   render: (args) => {
     const query = 'cub';
@@ -100,21 +128,20 @@ export const InAutocomplete: Story = {
     const items = clubs.filter((club) => contains(club.name, inputValue));
 
     return (
-      <div style={{ inlineSize: 320 }}>
-        <Autocomplete
-          items={items}
-          label="Club"
-          placeholder="Choose a club"
-          inputValue={inputValue}
-          onInputChange={setInputValue}
-        >
-          {(item) => (
-            <Autocomplete.Item key={item.key} textValue={item.name}>
-              <Highlight {...args} text={item.name} query={inputValue} />
-            </Autocomplete.Item>
-          )}
-        </Autocomplete>
-      </div>
+      <Autocomplete
+        items={items}
+        label="Club"
+        style={{ inlineSize: 320 }}
+        placeholder="Choose a club"
+        inputValue={inputValue}
+        onInputChange={setInputValue}
+      >
+        {(item) => (
+          <Autocomplete.Item key={item.key} textValue={item.name}>
+            <Highlight {...args} text={item.name} query={inputValue} />
+          </Autocomplete.Item>
+        )}
+      </Autocomplete>
     );
   },
 };

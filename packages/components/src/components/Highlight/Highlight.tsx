@@ -23,8 +23,6 @@ export const Highlight = polymorphicForwardRef<'span', HighlightBaseProps>(
 
     const parts = useMemo(() => splitByQuery(text, query), [text, query]);
 
-    let offset = 0;
-
     return (
       <Tag
         data-variant={variant}
@@ -32,19 +30,15 @@ export const Highlight = polymorphicForwardRef<'span', HighlightBaseProps>(
         {...other}
         ref={ref}
       >
-        {parts.map((part) => {
-          const key = offset;
-
-          offset += part.text.length;
-
-          return part.isMatch ? (
-            <mark key={key} className={s.mark}>
+        {parts.map((part, index) =>
+          part.isMatch ? (
+            <mark key={index} className={s.mark}>
               {part.text}
             </mark>
           ) : (
             part.text
-          );
-        })}
+          )
+        )}
       </Tag>
     );
   }
