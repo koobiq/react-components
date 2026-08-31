@@ -61,6 +61,7 @@
     "TagInput",
     "Textarea",
     "TimePicker",
+    "TimeRange",
     "ToastProvider",
     "Toggle",
     "Tooltip",

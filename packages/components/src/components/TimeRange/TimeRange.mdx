@@ -1,0 +1,121 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TimeRange.stories';
+
+<Meta of={Stories} />
+
+# TimeRange
+
+<Status variant="experimental" />
+
+`TimeRange` is a popover-based time range picker: a trigger showing the selected
+period, relative-time presets ("last 7 days", "current quarter", …), and a
+manual from/to editor for custom ranges. Changes in the editor only take effect
+when Apply is pressed; Cancel discards them.
+
+## Import
+
+```tsx
+import { TimeRange } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Overview} />
+
+## Props
+
+<Props of={Stories.Overview} />
+
+## Custom trigger
+
+Pass `renderTrigger` to replace the default trigger entirely. It receives the
+formatted value, the popover's open state, and `buttonProps` to spread onto
+whatever pressable element you render.
+
+<Story of={Stories.CustomTrigger} />
+
+## Trigger as a form field
+
+Set `triggerVariant="field"` to render the trigger inside a `FormField`,
+matching the look of a `Select`.
+
+<Story of={Stories.AsFormField} />
+
+## Manual range only
+
+An empty `availableTimeRangeTypes` array hides the presets list entirely,
+leaving only the manual from/to editor.
+
+<Story of={Stories.NoPresets} />
+
+## Restricting the range
+
+Use `minValue`/`maxValue` to restrict the manual date fields. `isClearable`
+lets the value be emptied back to `null`.
+
+<Story of={Stories.MinMax} />
+
+## Custom presets
+
+`customTimeRangeTypes` registers additional presets beyond the built-in
+`TimeRangeType`s. Each needs a `units` duration (used to compute the range
+relative to "now") and a `translationType`, used to pick the unit word when
+formatting the label.
+
+<Story of={Stories.CustomRangeTypes} />
+
+## Custom preset ranges
+
+A custom preset's `range` overrides the "now minus units" computation with a
+fixed `start`/`end`, useful for calendar-anchored presets like fiscal quarters.
+`renderOption` customizes how each preset is labeled in the editor.
+
+<Story of={Stories.CustomOption} />
+
+## Correcting out-of-range values
+
+When an incoming `value`'s type isn't in `availableTimeRangeTypes` (or
+`customTimeRangeTypes`), `TimeRange` falls back to the first available preset
+and calls `onValueCorrected` with the corrected value. This never fires
+`onChange` — apply the correction to your own state if you want it reflected.
+
+<Story of={Stories.ValueCorrected} />
+
+## Utilities
+
+`TimeRange`'s preset and validation logic is exposed as pure functions, useful
+for replicating the same computation or formatting outside the component (for
+example, to build an API query for the currently selected range).
+
+- **`calculateTimeRange(type, customTimeRangeTypes?, manualRange?)`** — resolves a
+  preset's absolute `start`/`end` bounds. Duration-based presets are computed
+  relative to now; `range` (and any custom preset with a fixed `range`) passes
+  its bounds through.
+- **`formatTimeRangeDuration(type, entry, formatter)`** — formats a preset's
+  label ("Last 7 days", "Current quarter", …) for display outside the
+  component's own trigger/editor, given the entry from `calculateTimeRange`'s
+  config and a `LocalizedStringFormatter`.
+- **`combineDateTime(date, time)`** / **`splitDateTime(dateTime)`** — combine or
+  split a date and a time-of-day, the same operation the manual editor uses to
+  turn its two fields into one comparable value.
+- **`isRangeValid(start, end)`** — checks that a manual range's `start` is not
+  later than its `end`; use it to validate a `TimeRangeInstant` pair before
+  submitting a form.
+- **`getDefaultRangeValue(minValue?, maxValue?)`** — "yesterday → today",
+  clamped to the given bounds; the default seed for a manual range editor.
+- **`checkAndCorrectTimeRangeValue(value, availableTimeRangeTypes, customTimeRangeTypes?, minValue?, maxValue?)`**
+  — the standalone version of the correction `TimeRange` runs internally;
+  useful for validating a value before setting it as a controlled `value` prop.
+
+## Accessibility
+
+The trigger exposes `aria-haspopup`/`aria-expanded`. The editor is rendered in
+a `role="dialog"` popover; presets are a standard `RadioGroup` supporting
+arrow-key navigation, and the manual from/to fields reuse `DatePicker`'s and
+`TimePicker`'s existing keyboard support.
