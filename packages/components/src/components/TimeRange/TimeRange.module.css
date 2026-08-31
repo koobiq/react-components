@@ -10,18 +10,23 @@
   gap: var(--kbq-timerange-trigger-gap, var(--timerange-trigger-gap));
 }
 
-.linkTrigger {
-  text-decoration: underline dashed;
-  text-underline-offset: 2px;
-}
-
-.triggerField {
-  min-inline-size: 220px;
-}
-
 .selectValue {
-  justify-content: flex-start;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  display: flex;
   inline-size: 100%;
+  align-items: center;
+  box-sizing: border-box;
+  color: inherit;
+  background: transparent;
+  padding-inline: 0;
+
+  @mixin typography text-normal;
+}
+
+.selectValue[aria-disabled='true'] {
+  cursor: default;
 }
 
 .chevron {
@@ -32,20 +37,19 @@
 /* ── Editor ───────────────────────────────────────────────────── */
 
 .editor {
-  display: flex;
-  flex-direction: column;
-  gap: var(--kbq-size-l);
   min-inline-size: 360px;
 }
 
 .presetGrid {
   display: grid;
+  align-self: stretch;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--kbq-size-s) var(--kbq-size-m);
 }
 
 .manualRange {
   display: flex;
+  align-self: stretch;
   flex-direction: column;
   gap: var(--kbq-size-s);
   padding-block-start: var(--kbq-size-m);
@@ -56,18 +60,21 @@
 
 .dateTimeRow {
   display: flex;
-  flex-direction: column;
-  gap: var(--kbq-size-xs);
+  flex-direction: row;
+  align-items: center;
+  gap: var(--kbq-size-s);
 }
 
 .dateTimeRowLabel {
-  @mixin typography text-compact-strong;
-
+  min-inline-size: 32px;
   color: var(--kbq-foreground-contrast-secondary);
+
+  @mixin typography text-normal;
 }
 
 .dateTimeRowFields {
   display: flex;
+  flex: 1 1 auto;
   gap: var(--kbq-size-s);
 }
 

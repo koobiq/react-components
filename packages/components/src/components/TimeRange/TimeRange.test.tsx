@@ -65,7 +65,6 @@ describe('TimeRange', () => {
     render(
       <TimeRange
         data-testid="control"
-        isClearable
         placeholder="Select period"
         value={null}
       />
@@ -74,16 +73,17 @@ describe('TimeRange', () => {
     expect(getTrigger()).toHaveTextContent('Select period');
   });
 
-  it('should call renderTrigger with the current formatted value and open state', async () => {
+  it('should call the TimeRange.Trigger render function with the current formatted value and open state', async () => {
     render(
-      <TimeRange
-        defaultValue={{ type: 'lastHour' }}
-        renderTrigger={({ formattedValue, isOpen, buttonProps }) => (
-          <Button {...buttonProps} data-testid="control">
-            {isOpen ? 'open' : 'closed'}: {formattedValue}
-          </Button>
-        )}
-      />
+      <TimeRange defaultValue={{ type: 'lastHour' }}>
+        <TimeRange.Trigger>
+          {({ formattedValue, isOpen, buttonProps }) => (
+            <Button {...buttonProps} data-testid="control">
+              {isOpen ? 'open' : 'closed'}: {formattedValue}
+            </Button>
+          )}
+        </TimeRange.Trigger>
+      </TimeRange>
     );
 
     expect(getTrigger()).toHaveTextContent('closed: Last hour');
@@ -101,8 +101,8 @@ describe('TimeRange', () => {
     const dialog = await getDialog();
 
     expect(within(dialog).getByRole('radiogroup')).toBeInTheDocument();
-    expect(within(dialog).getByText('From')).toBeInTheDocument();
-    expect(within(dialog).getByText('To')).toBeInTheDocument();
+    expect(within(dialog).getByText('from')).toBeInTheDocument();
+    expect(within(dialog).getByText('to')).toBeInTheDocument();
   });
 
   it('should hide the presets radio group when availableTimeRangeTypes is empty', async () => {
@@ -112,7 +112,7 @@ describe('TimeRange', () => {
     const dialog = await getDialog();
 
     expect(within(dialog).queryByRole('radiogroup')).not.toBeInTheDocument();
-    expect(within(dialog).getByText('From')).toBeInTheDocument();
+    expect(within(dialog).getByText('from')).toBeInTheDocument();
   });
 
   describe('Apply/Cancel semantics', () => {
@@ -208,35 +208,6 @@ describe('TimeRange', () => {
     });
   });
 
-  describe('isClearable', () => {
-    it('should not show a clear affordance by default', () => {
-      render(
-        <TimeRange data-testid="control" defaultValue={{ type: 'lastHour' }} />
-      );
-
-      expect(
-        screen.queryByRole('button', { name: /clear/i })
-      ).not.toBeInTheDocument();
-    });
-
-    it('should clear the value when the clear button is pressed', async () => {
-      const onChange = vi.fn();
-
-      render(
-        <TimeRange
-          data-testid="control"
-          isClearable
-          defaultValue={{ type: 'lastHour' }}
-          onChange={onChange}
-        />
-      );
-
-      await userEvent.click(screen.getByRole('button', { name: /clear/i }));
-
-      expect(onChange).toHaveBeenCalledWith(null);
-    });
-  });
-
   describe('controlled value', () => {
     it('should reflect an external value change', () => {
       const { rerender } = render(
@@ -295,6 +266,51 @@ describe('TimeRange', () => {
     expect(onValueCorrected.mock.calls[0][0]).toMatchObject({
       type: 'lastHour',
     });
+  });
+
+  it('should self-correct an out-of-range defaultValue and select it when opened', async () => {
+    const onValueCorrected = vi.fn();
+
+    render(
+      <TimeRange
+        data-testid="control"
+        defaultValue={{ type: 'last30Days' }}
+        availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
+        onValueCorrected={onValueCorrected}
+      />
+    );
+
+    await waitFor(() => expect(onValueCorrected).toHaveBeenCalledTimes(1));
+    expect(getTrigger()).toHaveTextContent('Last hour');
+
+    await open();
+    const dialog = await getDialog();
+
+    expect(
+      within(dialog).getByRole('radio', { name: /last hour/i, checked: true })
+    ).toBeInTheDocument();
+  });
+
+  it('should disable the manual date/time fields unless the range preset is selected', async () => {
+    render(
+      <TimeRange
+        data-testid="control"
+        defaultValue={{ type: 'lastHour' }}
+        availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
+      />
+    );
+
+    await open();
+    const dialog = await getDialog();
+
+    const fromDateField = within(dialog).getByLabelText('from date');
+    expect(fromDateField).toHaveAttribute('aria-disabled', 'true');
+
+    await userEvent.click(
+      within(dialog).getByRole('radio', { name: /custom range/i })
+    );
+
+    expect(fromDateField).not.toHaveAttribute('aria-disabled', 'true');
   });
 
   describe('utils', () => {

@@ -84,8 +84,10 @@ export function isRangeValid(start?: TimeRangeInstant, end?: TimeRangeInstant): 
 // @public
 export function splitDateTime(value: CalendarDateTime | ZonedDateTime): TimeRangeInstant;
 
+// Warning: (ae-forgotten-export) The symbol "CompoundedComponent_2" needs to be exported by the entry point index.d.ts
+//
 // @public
-export const TimeRange: TimeRangeComponent;
+export const TimeRange: CompoundedComponent_2;
 
 // @public (undocumented)
 export type TimeRangeComponent = <T extends DateValue = DateValue>(props: TimeRangeProps<T>) => ReactElement | null;
@@ -118,13 +120,10 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
     maxValue?: T;
     availableTimeRangeTypes?: (TimeRangeType | string)[];
     customTimeRangeTypes?: CustomTimeRangeType[];
-    isClearable?: boolean;
     hideArrow?: boolean;
     hideRangeAsDefault?: boolean;
-    triggerVariant?: TimeRangeTriggerVariant;
     placeholder?: string;
-    label?: ReactNode;
-    renderTrigger?: (props: TimeRangeRenderTriggerProps) => ReactElement;
+    children?: ReactNode;
     renderOption?: (context: TimeRangeOptionContext) => ReactNode;
     isDisabled?: boolean;
     isReadOnly?: boolean;
@@ -144,24 +143,24 @@ export type TimeRangeRef = HTMLButtonElement;
 // @public (undocumented)
 export function TimeRangeRender<T extends DateValue>(props: Omit<TimeRangeProps<T>, 'ref'>, ref: Ref<TimeRangeRef>): JSX.Element;
 
-// @public (undocumented)
-export type TimeRangeRenderTriggerProps = {
-    formattedValue: string;
-    isOpen: boolean;
-    isEmpty: boolean;
-    buttonProps: ButtonOptions & {
-        ref: Ref<HTMLButtonElement>;
-    };
-};
-
 // @public
 export type TimeRangeTranslationType = 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years' | 'other';
 
 // @public (undocumented)
-export type TimeRangeTriggerVariant = (typeof timeRangeTriggerVariant)[number];
+export type TimeRangeTriggerProps = {
+    children?: (context: TimeRangeTriggerRenderProps) => ReactElement;
+} & DataAttributeProps;
 
-// @public (undocumented)
-export const timeRangeTriggerVariant: readonly ["link", "field"];
+// @public
+export type TimeRangeTriggerRenderProps = {
+    formattedValue: string;
+    isOpen: boolean;
+    isEmpty: boolean;
+    placeholder?: string;
+    buttonProps: ButtonOptions & {
+        ref: Ref<HTMLButtonElement>;
+    };
+};
 
 // @public
 export type TimeRangeType = (typeof timeRangeType)[number];
@@ -178,8 +177,8 @@ export type TimeRangeValue = {
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TimeRange/types.d.ts:132:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:133:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:134:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:135:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

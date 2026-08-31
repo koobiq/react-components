@@ -34,16 +34,20 @@ import { TimeRange } from '@koobiq/react-components';
 
 ## Custom trigger
 
-Pass `renderTrigger` to replace the default trigger entirely. It receives the
-formatted value, the popover's open state, and `buttonProps` to spread onto
-whatever pressable element you render.
+Render a `TimeRange.Trigger` as `TimeRange`'s child to replace the default
+trigger entirely. Its function child receives the formatted value, the
+popover's open state, and `buttonProps` — spread `buttonProps` onto whatever
+pressable element you render so it gets the popover's press/keyboard/ref
+wiring.
 
 <Story of={Stories.CustomTrigger} />
 
 ## Trigger as a form field
 
-Set `triggerVariant="field"` to render the trigger inside a `FormField`,
-matching the look of a `Select`.
+Compose `TimeRange.Trigger` inside a `FormField` yourself, the same way you'd
+build a custom `Select`-like control. Use the unstyled `Button` primitive from
+`@koobiq/react-primitives` for the pressable element so it doesn't paint its
+own border on top of `FormField.ControlGroup`'s.
 
 <Story of={Stories.AsFormField} />
 
@@ -56,8 +60,7 @@ leaving only the manual from/to editor.
 
 ## Restricting the range
 
-Use `minValue`/`maxValue` to restrict the manual date fields. `isClearable`
-lets the value be emptied back to `null`.
+Use `minValue`/`maxValue` to restrict the manual date fields.
 
 <Story of={Stories.MinMax} />
 
@@ -80,10 +83,13 @@ fixed `start`/`end`, useful for calendar-anchored presets like fiscal quarters.
 
 ## Correcting out-of-range values
 
-When an incoming `value`'s type isn't in `availableTimeRangeTypes` (or
-`customTimeRangeTypes`), `TimeRange` falls back to the first available preset
-and calls `onValueCorrected` with the corrected value. This never fires
-`onChange` — apply the correction to your own state if you want it reflected.
+When a `value`/`defaultValue` (or `customTimeRangeTypes`/`availableTimeRangeTypes`
+change makes the current value's type unavailable), `TimeRange` falls back to
+the first available preset and calls `onValueCorrected` with the corrected
+value. For an uncontrolled `defaultValue`, `TimeRange` also applies the
+correction to its own state. For a controlled `value`, it never fires
+`onChange` on your behalf — apply the correction to your own state in the
+`onValueCorrected` handler if you want it reflected.
 
 <Story of={Stories.ValueCorrected} />
 

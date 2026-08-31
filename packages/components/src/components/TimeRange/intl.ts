@@ -43,8 +43,8 @@ export default {
   'en-US': {
     apply: 'Apply',
     cancel: 'Cancel',
-    from: 'From',
-    to: 'To',
+    from: 'from',
+    to: 'to',
     placeholder: 'Select period',
     presets: 'Period',
     allTime: 'All time',

@@ -19,6 +19,7 @@ import type { PopoverProps } from '../Popover';
 import { TimeRangeEditor } from './components/TimeRangeEditor';
 import type { TimeRangeDraft } from './components/TimeRangeEditor';
 import { TimeRangeTrigger } from './components/TimeRangeTrigger';
+import { TimeRangeTriggerContext } from './components/TimeRangeTriggerContext';
 import intlMessages from './intl';
 import type {
   TimeRangeComponent,
@@ -128,13 +129,10 @@ export function TimeRangeRender<T extends DateValue>(
     maxValue,
     availableTimeRangeTypes = defaultTimeRangeTypes,
     customTimeRangeTypes = [],
-    isClearable = false,
-    hideArrow = false,
+    hideArrow = true,
     hideRangeAsDefault = false,
-    triggerVariant = 'link',
     placeholder,
-    label,
-    renderTrigger,
+    children,
     renderOption,
     isDisabled = false,
     isReadOnly = false,
@@ -167,22 +165,26 @@ export function TimeRangeRender<T extends DateValue>(
   );
 
   useEffect(() => {
-    if (valueProp === undefined) return;
-
     const { value: corrected, corrected: wasCorrected } =
       checkAndCorrectTimeRangeValue(
-        valueProp,
+        valueProp !== undefined ? valueProp : committed,
         availableTimeRangeTypes,
         customTimeRangeTypes,
         minValue,
         maxValue
       );
 
-    if (wasCorrected && corrected) onValueCorrected?.(corrected);
-    // Only re-check when the incoming value or preset configuration changes.
+    if (!wasCorrected || !corrected) return;
+
+    onValueCorrected?.(corrected);
+
+    // A controlled `value` is corrected by the consumer, via `onValueCorrected`.
+    if (valueProp === undefined) setCommitted(corrected);
+    // Only re-check when the incoming/committed value or preset configuration changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     valueProp,
+    committed,
     availableTimeRangeTypes,
     customTimeRangeTypes,
     minValue,
@@ -208,8 +210,6 @@ export function TimeRangeRender<T extends DateValue>(
 
     setCommitted({ type: draft.type, ...resolved });
   };
-
-  const handleClear = () => setCommitted(null);
 
   const isEmpty = !committed;
 
@@ -242,21 +242,25 @@ export function TimeRangeRender<T extends DateValue>(
     <Popover
       {...popoverProps}
       control={(triggerProps) => (
-        <TimeRangeTrigger
-          {...triggerProps}
-          ref={mergeRefs(ref, triggerProps.ref)}
-          formattedValue={formattedValue}
-          isOpen={isOpen}
-          isEmpty={isEmpty}
-          isClearable={isClearable}
-          isDisabled={isDisabled || isReadOnly}
-          placeholder={placeholder}
-          label={label}
-          triggerVariant={triggerVariant}
-          renderTrigger={renderTrigger}
-          onClear={handleClear}
-          data-testid={testId as string | number | undefined}
-        />
+        <TimeRangeTriggerContext.Provider
+          value={{
+            formattedValue,
+            isOpen,
+            isEmpty,
+            isDisabled: isDisabled || isReadOnly,
+            placeholder,
+            buttonProps: {
+              ...triggerProps,
+              ref: mergeRefs(ref, triggerProps.ref),
+            },
+          }}
+        >
+          {children ?? (
+            <TimeRangeTrigger
+              data-testid={testId as string | number | undefined}
+            />
+          )}
+        </TimeRangeTriggerContext.Provider>
       )}
     >
       {({ close }) => (
@@ -281,11 +285,7 @@ export function TimeRangeRender<T extends DateValue>(
             />
           </Popover.Body>
           <Popover.Footer>
-            <Button variant="fade-contrast-outline" onPress={close}>
-              {t.format('cancel')}
-            </Button>
             <Button
-              variant="contrast-filled"
               isDisabled={isDraftInvalid}
               onPress={() => {
                 handleApply();
@@ -294,6 +294,9 @@ export function TimeRangeRender<T extends DateValue>(
             >
               {t.format('apply')}
             </Button>
+            <Button variant="fade-contrast-filled" onPress={close}>
+              {t.format('cancel')}
+            </Button>
           </Popover.Footer>
         </>
       )}
@@ -301,8 +304,18 @@ export function TimeRangeRender<T extends DateValue>(
   );
 }
 
+const TimeRangeComponentImpl = forwardRef(
+  TimeRangeRender
+) as TimeRangeComponent;
+
+type CompoundedComponent = TimeRangeComponent & {
+  Trigger: typeof TimeRangeTrigger;
+};
+
 /**
  * A time range picker: a popover trigger with relative-time presets
  * ("last 7 days", "current quarter", …) and a manual from/to editor.
  */
-export const TimeRange = forwardRef(TimeRangeRender) as TimeRangeComponent;
+export const TimeRange = TimeRangeComponentImpl as CompoundedComponent;
+
+TimeRange.Trigger = TimeRangeTrigger;

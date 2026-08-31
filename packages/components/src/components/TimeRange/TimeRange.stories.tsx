@@ -1,12 +1,16 @@
 import { useState } from 'react';
 
 import { getLocalTimeZone, parseTime, today } from '@internationalized/date';
+import { IconChevronDownS16 } from '@koobiq/react-icons';
+import { Button as UnstyledButton } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '../Button';
+import { FormField } from '../FormField';
 import { Typography } from '../Typography';
 
 import { TimeRange } from './TimeRange';
+import s from './TimeRange.module.css';
 import type { TimeRangeValue } from './types';
 
 const meta = {
@@ -30,7 +34,10 @@ export const Overview: Story = {
     return (
       <TimeRange
         value={value}
-        onChange={setValue}
+        onChange={(next) => {
+          console.log('TimeRange submitted:', next);
+          setValue(next);
+        }}
         availableTimeRangeTypes={[
           'lastMinute',
           'last5Minutes',
@@ -58,17 +65,15 @@ export const Overview: Story = {
 export const CustomTrigger: Story = {
   render: function Render(args) {
     return (
-      <TimeRange
-        renderTrigger={({ formattedValue, isOpen, buttonProps }) => (
-          <Button
-            {...buttonProps}
-            variant={isOpen ? 'fade-contrast-filled' : 'fade-contrast-outline'}
-          >
-            {formattedValue}
-          </Button>
-        )}
-        {...args}
-      />
+      <TimeRange {...args}>
+        <TimeRange.Trigger>
+          {({ formattedValue, buttonProps }) => (
+            <Button {...buttonProps} variant="fade-contrast-outline">
+              {formattedValue}
+            </Button>
+          )}
+        </TimeRange.Trigger>
+      </TimeRange>
     );
   },
 };
@@ -76,12 +81,22 @@ export const CustomTrigger: Story = {
 export const AsFormField: Story = {
   render: function Render(args) {
     return (
-      <TimeRange
-        triggerVariant="field"
-        label="Period"
-        placeholder="Select a period"
-        {...args}
-      />
+      <TimeRange placeholder="Select a period" {...args}>
+        <FormField>
+          <FormField.Label>Period</FormField.Label>
+          <FormField.ControlGroup
+            endAddon={<IconChevronDownS16 className={s.chevron} />}
+          >
+            <TimeRange.Trigger>
+              {({ formattedValue, isEmpty, placeholder, buttonProps }) => (
+                <UnstyledButton {...buttonProps} className={s.selectValue}>
+                  {isEmpty ? placeholder : formattedValue}
+                </UnstyledButton>
+              )}
+            </TimeRange.Trigger>
+          </FormField.ControlGroup>
+        </FormField>
+      </TimeRange>
     );
   },
 };
@@ -98,7 +113,6 @@ export const MinMax: Story = {
   render: function Render(args) {
     return (
       <TimeRange
-        isClearable
         availableTimeRangeTypes={['range']}
         minValue={today(getLocalTimeZone()).subtract({ months: 1 })}
         maxValue={today(getLocalTimeZone())}

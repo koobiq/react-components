@@ -42,10 +42,6 @@ export const defaultTimeRangeTypes: TimeRangeType[] = [
   'range',
 ];
 
-export const timeRangeTriggerVariant = ['link', 'field'] as const;
-
-export type TimeRangeTriggerVariant = (typeof timeRangeTriggerVariant)[number];
-
 /** The calendar-arithmetic unit a preset's duration is expressed in. */
 export type TimeRangeTranslationType =
   'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years' | 'other';
@@ -86,12 +82,26 @@ export type TimeRangeOptionContext = {
   units: DateTimeDuration;
 };
 
-export type TimeRangeRenderTriggerProps = {
+/**
+ * The live state handed to `TimeRange.Trigger`'s render function.
+ * `buttonProps` must be spread onto whatever pressable element is rendered,
+ * so it receives the popover's press/keyboard/ref wiring.
+ */
+export type TimeRangeTriggerRenderProps = {
   formattedValue: string;
   isOpen: boolean;
   isEmpty: boolean;
+  placeholder?: string;
   buttonProps: ButtonOptions & { ref: Ref<HTMLButtonElement> };
 };
+
+export type TimeRangeTriggerProps = {
+  /**
+   * Renders a custom trigger. Omit it to get the default pseudo-link
+   * trigger.
+   */
+  children?: (context: TimeRangeTriggerRenderProps) => ReactElement;
+} & DataAttributeProps;
 
 export type TimeRangeProps<T extends DateValue = DateValue> = {
   /** The selected time range. */
@@ -119,13 +129,8 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   /** Additional presets beyond the built-in `TimeRangeType`s. */
   customTimeRangeTypes?: CustomTimeRangeType[];
   /**
-   * Whether the field can be emptied.
-   * @default false
-   */
-  isClearable?: boolean;
-  /**
    * If `true`, the popover's arrow isn't shown.
-   * @default false
+   * @default true
    */
   hideArrow?: boolean;
   /**
@@ -133,17 +138,13 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
    * @default false
    */
   hideRangeAsDefault?: boolean;
-  /**
-   * The visual style of the trigger.
-   * @default 'link'
-   */
-  triggerVariant?: TimeRangeTriggerVariant;
   /** Placeholder shown by the trigger when the value is empty. */
   placeholder?: string;
-  /** The label of the trigger, only used when `triggerVariant` is `'field'`. */
-  label?: ReactNode;
-  /** Renders a custom trigger element in place of the default one. */
-  renderTrigger?: (props: TimeRangeRenderTriggerProps) => ReactElement;
+  /**
+   * A custom trigger, composed from a `TimeRange.Trigger`. Omit it to render
+   * the default pseudo-link trigger.
+   */
+  children?: ReactNode;
   /** Renders a custom label for a preset option in the editor. */
   renderOption?: (context: TimeRangeOptionContext) => ReactNode;
   /**
