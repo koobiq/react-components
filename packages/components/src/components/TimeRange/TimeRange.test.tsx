@@ -12,6 +12,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { Button } from '../Button';
 
+import { TimeRangeEditor } from './components/TimeRangeEditor';
 import { TimeRange } from './TimeRange';
 import type { TimeRangeValue } from './types';
 import {
@@ -19,6 +20,7 @@ import {
   checkAndCorrectTimeRangeValue,
   combineDateTime,
   getDefaultRangeValue,
+  isRangeReversed,
   isRangeValid,
   splitDateTime,
 } from './utils';
@@ -61,6 +63,21 @@ describe('TimeRange', () => {
     expect(getTrigger()).toHaveTextContent('Last hour');
   });
 
+  it('should render a range value formatted as its start–end span', () => {
+    render(
+      <TimeRange
+        data-testid="control"
+        defaultValue={{
+          type: 'range',
+          start: new CalendarDate(2026, 8, 31),
+          end: new CalendarDate(2026, 9, 1),
+        }}
+      />
+    );
+
+    expect(getTrigger()).toHaveTextContent('August 31 – September 1');
+  });
+
   it('should render the placeholder when the value is empty', () => {
     render(
       <TimeRange
@@ -89,6 +106,22 @@ describe('TimeRange', () => {
     expect(getTrigger()).toHaveTextContent('closed: Last hour');
     await open();
     expect(getTrigger()).toHaveTextContent('open: Last hour');
+  });
+
+  it('should reflect isDisabled in the TimeRange.Trigger render function, e.g. for a custom FormField wrapper', () => {
+    render(
+      <TimeRange defaultValue={{ type: 'lastHour' }} isDisabled>
+        <TimeRange.Trigger>
+          {({ isDisabled, buttonProps }) => (
+            <Button {...buttonProps} data-testid="control">
+              {isDisabled ? 'disabled' : 'enabled'}
+            </Button>
+          )}
+        </TimeRange.Trigger>
+      </TimeRange>
+    );
+
+    expect(getTrigger()).toHaveTextContent('disabled');
   });
 
   it('should render the presets radio group and manual range fields when open', async () => {
@@ -313,6 +346,68 @@ describe('TimeRange', () => {
     expect(fromDateField).not.toHaveAttribute('aria-disabled', 'true');
   });
 
+  describe('manual range swap-on-blur', () => {
+    const baseEditorProps = {
+      onSelectPreset: () => {},
+      onChangeStart: () => {},
+      onChangeEnd: () => {},
+      availableTimeRangeTypes: ['range'],
+      customTimeRangeTypes: [],
+      hideRangeAsDefault: false,
+    };
+
+    it('should swap a reversed range once focus leaves the fields', async () => {
+      const onSwapRange = vi.fn();
+
+      render(
+        <>
+          <TimeRangeEditor
+            {...baseEditorProps}
+            draft={{
+              type: 'range',
+              start: {
+                date: new CalendarDate(2026, 6, 10),
+                time: new Time(10),
+              },
+              end: { date: new CalendarDate(2026, 6, 5), time: new Time(9) },
+            }}
+            onSwapRange={onSwapRange}
+          />
+          <button type="button">outside</button>
+        </>
+      );
+
+      await userEvent.click(screen.getByLabelText('from date'));
+      await userEvent.click(screen.getByText('outside'));
+
+      expect(onSwapRange).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not swap an already-valid range', async () => {
+      const onSwapRange = vi.fn();
+
+      render(
+        <>
+          <TimeRangeEditor
+            {...baseEditorProps}
+            draft={{
+              type: 'range',
+              start: { date: new CalendarDate(2026, 6, 5), time: new Time(9) },
+              end: { date: new CalendarDate(2026, 6, 10), time: new Time(10) },
+            }}
+            onSwapRange={onSwapRange}
+          />
+          <button type="button">outside</button>
+        </>
+      );
+
+      await userEvent.click(screen.getByLabelText('from date'));
+      await userEvent.click(screen.getByText('outside'));
+
+      expect(onSwapRange).not.toHaveBeenCalled();
+    });
+  });
+
   describe('utils', () => {
     describe('calculateTimeRange', () => {
       it('should compute an open range for allTime', () => {
@@ -394,6 +489,31 @@ describe('TimeRange', () => {
             { date: new CalendarDate(2026, 1, 1), time: null }
           )
         ).toBe(false);
+      });
+    });
+
+    describe('isRangeReversed', () => {
+      it('should be true when start is after end', () => {
+        const start = { date: new CalendarDate(2026, 1, 5), time: new Time(9) };
+        const end = { date: new CalendarDate(2026, 1, 1), time: new Time(9) };
+
+        expect(isRangeReversed(start, end)).toBe(true);
+      });
+
+      it('should be false when start is before or equal to end', () => {
+        const start = { date: new CalendarDate(2026, 1, 1), time: new Time(9) };
+        const end = { date: new CalendarDate(2026, 1, 5), time: new Time(9) };
+
+        expect(isRangeReversed(start, end)).toBe(false);
+        expect(isRangeReversed(start, start)).toBe(false);
+      });
+
+      it('should be false when either side is incomplete, unlike !isRangeValid', () => {
+        const incomplete = { date: null, time: null };
+        const end = { date: new CalendarDate(2026, 1, 1), time: null };
+
+        expect(isRangeReversed(incomplete, end)).toBe(false);
+        expect(isRangeValid(incomplete, end)).toBe(false);
       });
     });
 

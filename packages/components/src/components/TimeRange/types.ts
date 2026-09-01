@@ -91,6 +91,13 @@ export type TimeRangeTriggerRenderProps = {
   formattedValue: string;
   isOpen: boolean;
   isEmpty: boolean;
+  /**
+   * Also reflected in `buttonProps.isDisabled` — exposed separately so a
+   * custom `FormField`/`FormField.ControlGroup` wrapper can mirror it for
+   * its own disabled styling (`buttonProps` alone only disables the
+   * pressable element, not the surrounding field chrome).
+   */
+  isDisabled: boolean;
   placeholder?: string;
   buttonProps: ButtonOptions & { ref: Ref<HTMLButtonElement> };
 };

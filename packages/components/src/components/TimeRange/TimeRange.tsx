@@ -8,6 +8,7 @@ import {
   mergeProps,
   mergeRefs,
   useControlledState,
+  useDateFormatter,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import type { DateValue } from '@koobiq/react-primitives';
@@ -43,6 +44,7 @@ type DraftAction<T extends DateValue> =
   | { type: 'SELECT_PRESET'; preset: string }
   | { type: 'SET_START'; instant: TimeRangeInstant<T> }
   | { type: 'SET_END'; instant: TimeRangeInstant<T> }
+  | { type: 'SWAP_RANGE' }
   | { type: 'RESET'; draft: TimeRangeDraft<T> };
 
 function draftReducer<T extends DateValue>(
@@ -56,6 +58,8 @@ function draftReducer<T extends DateValue>(
       return { ...state, type: 'range', start: action.instant };
     case 'SET_END':
       return { ...state, type: 'range', end: action.instant };
+    case 'SWAP_RANGE':
+      return { ...state, start: state.end, end: state.start };
     case 'RESET':
       return action.draft;
     default:
@@ -144,6 +148,7 @@ export function TimeRangeRender<T extends DateValue>(
   } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
+  const rangeFormatter = useDateFormatter({ month: 'long', day: 'numeric' });
 
   const [committed, setCommitted] = useControlledState<TimeRangeValue | null>(
     valueProp,
@@ -217,7 +222,9 @@ export function TimeRangeRender<T extends DateValue>(
     ? formatTimeRangeDuration(
         committed.type,
         getTimeRangeTypeConfig(committed.type, customTimeRangeTypes),
-        t
+        t,
+        { start: committed.start, end: committed.end },
+        rangeFormatter
       )
     : '';
 
@@ -230,6 +237,7 @@ export function TimeRangeRender<T extends DateValue>(
       isOpen,
       onOpenChange: handleOpenChange,
       placement: 'bottom start',
+      offset: 4,
       size: 'auto',
       hideArrow,
       className,
@@ -275,6 +283,7 @@ export function TimeRangeRender<T extends DateValue>(
                 dispatch({ type: 'SET_START', instant })
               }
               onChangeEnd={(instant) => dispatch({ type: 'SET_END', instant })}
+              onSwapRange={() => dispatch({ type: 'SWAP_RANGE' })}
               availableTimeRangeTypes={availableTimeRangeTypes}
               customTimeRangeTypes={customTimeRangeTypes}
               hideRangeAsDefault={hideRangeAsDefault}

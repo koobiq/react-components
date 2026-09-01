@@ -2,7 +2,10 @@
 
 import type { ReactNode } from 'react';
 
-import { useLocalizedStringFormatter } from '@koobiq/react-core';
+import {
+  useFocusWithin,
+  useLocalizedStringFormatter,
+} from '@koobiq/react-core';
 import type { DateValue } from '@koobiq/react-primitives';
 
 import { Radio, RadioGroup } from '../../RadioGroup';
@@ -13,7 +16,7 @@ import type {
   TimeRangeInstant,
   TimeRangeOptionContext,
 } from '../types';
-import { isRangeValid } from '../utils';
+import { isRangeReversed, isRangeValid } from '../utils';
 
 import { TimeRangeDateTimeField } from './TimeRangeDateTimeField';
 import { TimeRangePresetList } from './TimeRangePresetList';
@@ -29,6 +32,7 @@ export type TimeRangeEditorProps<T extends DateValue> = {
   onSelectPreset: (type: string) => void;
   onChangeStart: (instant: TimeRangeInstant<T>) => void;
   onChangeEnd: (instant: TimeRangeInstant<T>) => void;
+  onSwapRange: () => void;
   availableTimeRangeTypes: string[];
   customTimeRangeTypes: CustomTimeRangeType[];
   hideRangeAsDefault: boolean;
@@ -49,6 +53,7 @@ export function TimeRangeEditor<T extends DateValue>({
   onSelectPreset,
   onChangeStart,
   onChangeEnd,
+  onSwapRange,
   availableTimeRangeTypes,
   customTimeRangeTypes,
   hideRangeAsDefault,
@@ -69,6 +74,17 @@ export function TimeRangeEditor<T extends DateValue>({
   const isInvalid = isRangeSelected && !isRangeValid(draft.start, draft.end);
   const areFieldsDisabled = isDisabled || !isRangeSelected;
 
+  // Once the user finishes editing (focus leaves the from/to fields), a
+  // reversed range is silently swapped back into order instead of showing a
+  // validation error.
+  const { focusWithinProps } = useFocusWithin({
+    onBlurWithin: () => {
+      if (isRangeSelected && isRangeReversed(draft.start, draft.end)) {
+        onSwapRange();
+      }
+    },
+  });
+
   const content = (
     <>
       {hasPresets && (
@@ -80,7 +96,7 @@ export function TimeRangeEditor<T extends DateValue>({
         />
       )}
       {showRangeSection && (
-        <div className={s.manualRange}>
+        <div className={s.manualRange} {...focusWithinProps}>
           {hasPresets && <Radio value="range">{t.format('range')}</Radio>}
           <TimeRangeDateTimeField
             label={t.format('from')}

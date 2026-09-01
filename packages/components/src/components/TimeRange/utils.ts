@@ -1,5 +1,6 @@
 import {
   type CalendarDateTime,
+  type DateFormatter,
   type DateValue,
   type DateTimeDuration,
   type Time,
@@ -152,6 +153,24 @@ export function isRangeValid(
   return startDate.compare(endDate) <= 0;
 }
 
+/**
+ * Whether a manual range's `start` and `end` are both set and `start` comes
+ * after `end` — distinct from `!isRangeValid`, which is also `true` for an
+ * incomplete range. Used to swap the two once the user finishes editing,
+ * instead of surfacing a validation error.
+ */
+export function isRangeReversed(
+  start?: TimeRangeInstant,
+  end?: TimeRangeInstant
+): boolean {
+  const startDate = resolveInstantDate(start);
+  const endDate = resolveInstantDate(end);
+
+  if (!startDate || !endDate) return false;
+
+  return startDate.compare(endDate) > 0;
+}
+
 /** "Yesterday → today", used to seed the manual range editor when nothing else is available. */
 export function getDefaultRangeValue<T extends DateValue>(
   minValue?: T,
@@ -179,21 +198,39 @@ export function getDefaultRangeValue<T extends DateValue>(
 }
 
 /**
- * Formats a preset's label: a literal string for `allTime`/`currentQuarter`/
- * `currentYear`/`range`, an ICU-pluralized "last N units" for duration-based
- * presets (built-in or custom), or a title-cased fallback of `type` for a
- * custom `translationType: 'other'` preset with no literal translation.
+ * Formats a preset's label: for `range`, the actual `start`–`end` span (e.g.
+ * "August 31 – September 1") when both `range` and `formatter` are given,
+ * falling back to a literal "Custom range" string otherwise (e.g. for the
+ * `range` option itself in the presets list, which has no concrete bounds
+ * yet); a literal string for `allTime`/`currentQuarter`/`currentYear`; an
+ * ICU-pluralized "last N units" for duration-based presets (built-in or
+ * custom); or a title-cased fallback of `type` for a custom
+ * `translationType: 'other'` preset with no literal translation.
  */
 export function formatTimeRangeDuration(
   type: string,
   entry: TimeRangeConfigEntry | CustomTimeRangeType | undefined,
-  t: LocalizedStringFormatter<string>
+  t: LocalizedStringFormatter<string>,
+  range?: { start?: DateValue; end?: DateValue },
+  formatter?: DateFormatter
 ): string {
+  if (type === 'range') {
+    if (range?.start && range.end && formatter) {
+      const zone = getLocalTimeZone();
+
+      return formatter.formatRange(
+        range.start.toDate(zone),
+        range.end.toDate(zone)
+      );
+    }
+
+    return t.format('range');
+  }
+
   if (
     type === 'allTime' ||
     type === 'currentQuarter' ||
-    type === 'currentYear' ||
-    type === 'range'
+    type === 'currentYear'
   ) {
     return t.format(type);
   }

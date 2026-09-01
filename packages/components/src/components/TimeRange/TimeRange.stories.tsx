@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { getLocalTimeZone, parseTime, today } from '@internationalized/date';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
@@ -32,32 +32,31 @@ export const Overview: Story = {
     });
 
     return (
-      <TimeRange
-        value={value}
-        onChange={(next) => {
-          console.log('TimeRange submitted:', next);
-          setValue(next);
-        }}
-        availableTimeRangeTypes={[
-          'lastMinute',
-          'last5Minutes',
-          'last15Minutes',
-          'last30Minutes',
-          'lastHour',
-          'last24Hours',
-          'last3Days',
-          'last7Days',
-          'last14Days',
-          'last30Days',
-          'last3Months',
-          'last12Months',
-          'allTime',
-          'currentQuarter',
-          'currentYear',
-          'range',
-        ]}
-        {...args}
-      />
+      <>
+        <TimeRange
+          value={value}
+          onChange={(next) => setValue(next)}
+          availableTimeRangeTypes={[
+            'lastMinute',
+            'last5Minutes',
+            'last15Minutes',
+            'last30Minutes',
+            'lastHour',
+            'last24Hours',
+            'last3Days',
+            'last7Days',
+            'last14Days',
+            'last30Days',
+            'last3Months',
+            'last12Months',
+            'allTime',
+            'currentQuarter',
+            'currentYear',
+            'range',
+          ]}
+          {...args}
+        />
+      </>
     );
   },
 };
@@ -68,7 +67,11 @@ export const CustomTrigger: Story = {
       <TimeRange {...args}>
         <TimeRange.Trigger>
           {({ formattedValue, buttonProps }) => (
-            <Button {...buttonProps} variant="fade-contrast-outline">
+            <Button
+              {...buttonProps}
+              variant="fade-contrast-outline"
+              className={s.customTriggerButton}
+            >
               {formattedValue}
             </Button>
           )}
@@ -80,22 +83,48 @@ export const CustomTrigger: Story = {
 
 export const AsFormField: Story = {
   render: function Render(args) {
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const groupRef = useRef<HTMLDivElement>(null);
+
     return (
-      <TimeRange placeholder="Select a period" {...args}>
-        <FormField>
-          <FormField.Label>Period</FormField.Label>
-          <FormField.ControlGroup
-            endAddon={<IconChevronDownS16 className={s.chevron} />}
-          >
-            <TimeRange.Trigger>
-              {({ formattedValue, isEmpty, placeholder, buttonProps }) => (
+      <TimeRange
+        ref={triggerRef}
+        placeholder="Select a period"
+        slotProps={{ popover: { anchorRef: groupRef } }}
+        {...args}
+      >
+        <TimeRange.Trigger>
+          {({
+            formattedValue,
+            isEmpty,
+            isDisabled,
+            placeholder,
+            buttonProps,
+          }) => (
+            <FormField data-disabled={isDisabled || undefined}>
+              <FormField.Label>Period</FormField.Label>
+              <FormField.ControlGroup
+                ref={groupRef}
+                isDisabled={isDisabled}
+                endAddon={<IconChevronDownS16 className={s.chevron} />}
+                slotProps={{ endAddon: { className: s.addon } }}
+                onMouseDown={(e) => {
+                  // The chevron/padding around the trigger button aren't
+                  // part of it, so clicking there wouldn't open the popover
+                  // — forward the click to the trigger, same as
+                  // `SelectNext`'s ControlGroup.
+                  if (e.currentTarget !== e.target) return;
+                  e.preventDefault();
+                  triggerRef.current?.click();
+                }}
+              >
                 <UnstyledButton {...buttonProps} className={s.selectValue}>
                   {isEmpty ? placeholder : formattedValue}
                 </UnstyledButton>
-              )}
-            </TimeRange.Trigger>
-          </FormField.ControlGroup>
-        </FormField>
+              </FormField.ControlGroup>
+            </FormField>
+          )}
+        </TimeRange.Trigger>
       </TimeRange>
     );
   },
@@ -224,7 +253,7 @@ export const CustomOption: Story = {
 
 export const ValueCorrected: Story = {
   render: function Render(args) {
-    const [message, setMessage] = useState<string | null>(null);
+    const [message, setMessage] = useState<string | null>();
 
     return (
       <>
@@ -232,7 +261,7 @@ export const ValueCorrected: Story = {
           defaultValue={{ type: 'last30Days' }}
           availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
           onValueCorrected={(value) =>
-            setMessage(`Corrected to: ${value.type}`)
+            setMessage(`Initial value: last30Days. Corrected to: ${value.type}`)
           }
           {...args}
         />

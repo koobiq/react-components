@@ -10,6 +10,19 @@
   gap: var(--kbq-timerange-trigger-gap, var(--timerange-trigger-gap));
 }
 
+/* Focus normally moves into the popover's dialog once it opens, so the
+   default `:pressed`/`:focus-within` styling can't reflect the open state —
+   key off `aria-expanded` instead, which stays put for as long as it's open. */
+.triggerLink a[aria-expanded='true'] {
+  color: var(--kbq-states-foreground-theme-active);
+}
+
+.customTriggerButton[aria-expanded='true'] {
+  --button-border-color: var(--button-border-color-active);
+
+  background-color: var(--button-bg-color-active);
+}
+
 .selectValue {
   cursor: pointer;
   border: none;
@@ -25,13 +38,26 @@
   @mixin typography text-normal;
 }
 
+/* `UnstyledButton` renders as a native `<button>`, so `isDisabled` lands as
+   the native `disabled` attribute, not `aria-disabled` — cover both since a
+   consumer could render a non-button element instead. */
+.selectValue:disabled,
 .selectValue[aria-disabled='true'] {
   cursor: default;
+  pointer-events: none;
 }
 
 .chevron {
   display: inline-flex;
   color: var(--kbq-foreground-contrast-secondary);
+}
+
+/* Lets clicks on the chevron (and the group's own padding around it) fall
+   through to `FormField.ControlGroup`'s own `onMouseDown`, which opens the
+   trigger — mirrors `SelectNext`'s `.addon`/`onMouseDown` pattern so the
+   whole control group, not just the inner button, is clickable. */
+.addon {
+  pointer-events: none;
 }
 
 /* ── Editor ───────────────────────────────────────────────────── */

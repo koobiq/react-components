@@ -44,10 +44,15 @@ wiring.
 
 ## Trigger as a form field
 
-Compose `TimeRange.Trigger` inside a `FormField` yourself, the same way you'd
-build a custom `Select`-like control. Use the unstyled `Button` primitive from
-`@koobiq/react-primitives` for the pressable element so it doesn't paint its
-own border on top of `FormField.ControlGroup`'s.
+Build a custom `Select`-like control by rendering a `FormField` inside
+`TimeRange.Trigger`'s render function — its `isDisabled`/`isEmpty` state
+mirrors onto `FormField`/`FormField.ControlGroup` so the field's chrome
+(background, border) reacts the same way a built-in `FormField` control does.
+Use the unstyled `Button` primitive from `@koobiq/react-primitives` for the
+pressable element so it doesn't paint its own border on top of
+`FormField.ControlGroup`'s, and forward `FormField.ControlGroup`'s own
+`onMouseDown` to the trigger (see the story's source) so clicking anywhere in
+the field — not just the button — opens the popover.
 
 <Story of={Stories.AsFormField} />
 
@@ -103,10 +108,14 @@ example, to build an API query for the currently selected range).
   preset's absolute `start`/`end` bounds. Duration-based presets are computed
   relative to now; `range` (and any custom preset with a fixed `range`) passes
   its bounds through.
-- **`formatTimeRangeDuration(type, entry, formatter)`** — formats a preset's
-  label ("Last 7 days", "Current quarter", …) for display outside the
+- **`formatTimeRangeDuration(type, entry, t, range?, formatter?)`** — formats a
+  preset's label ("Last 7 days", "Current quarter", …) for display outside the
   component's own trigger/editor, given the entry from `calculateTimeRange`'s
-  config and a `LocalizedStringFormatter`.
+  config and a `LocalizedStringFormatter`. For `type: 'range'`, pass the
+  resolved `start`/`end` bounds and a `DateFormatter` (e.g. from
+  `useDateFormatter({ month: 'long', day: 'numeric' })`) to get the actual
+  span ("August 31 – September 1") instead of the literal "Custom range"
+  fallback.
 - **`combineDateTime(date, time)`** / **`splitDateTime(dateTime)`** — combine or
   split a date and a time-of-day, the same operation the manual editor uses to
   turn its two fields into one comparable value.

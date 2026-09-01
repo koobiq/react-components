@@ -11,6 +11,7 @@ import { CalendarDateTime } from '@internationalized/date';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
+import { DateFormatter } from '@internationalized/date';
 import { DateTimeDuration } from '@internationalized/date';
 import type { DateValue } from '@koobiq/react-primitives';
 import { DateValue as DateValue_2 } from '@internationalized/date';
@@ -70,7 +71,10 @@ export const defaultTimeRangeTypes: TimeRangeType[];
 // Warning: (ae-forgotten-export) The symbol "TimeRangeConfigEntry" needs to be exported by the entry point index.d.ts
 //
 // @public
-export function formatTimeRangeDuration(type: string, entry: TimeRangeConfigEntry | CustomTimeRangeType | undefined, t: LocalizedStringFormatter<string>): string;
+export function formatTimeRangeDuration(type: string, entry: TimeRangeConfigEntry | CustomTimeRangeType | undefined, t: LocalizedStringFormatter<string>, range?: {
+    start?: DateValue_2;
+    end?: DateValue_2;
+}, formatter?: DateFormatter): string;
 
 // @public
 export function getDefaultRangeValue<T extends DateValue_2>(minValue?: T, maxValue?: T): {
@@ -156,6 +160,7 @@ export type TimeRangeTriggerRenderProps = {
     formattedValue: string;
     isOpen: boolean;
     isEmpty: boolean;
+    isDisabled: boolean;
     placeholder?: string;
     buttonProps: ButtonOptions & {
         ref: Ref<HTMLButtonElement>;
@@ -177,8 +182,8 @@ export type TimeRangeValue = {
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TimeRange/types.d.ts:134:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:135:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:141:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:142:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -40,6 +40,7 @@ export function TimeRangeTrigger({
       formattedValue,
       isOpen,
       isEmpty,
+      isDisabled: Boolean(isDisabled),
       placeholder,
       buttonProps,
     });
