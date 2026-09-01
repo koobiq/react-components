@@ -10,6 +10,10 @@ import type { TimeRangeInstant } from '../types';
 
 export type TimeRangeDateTimeFieldProps<T extends DateValue> = {
   label: string;
+  /** Fully localized accessible name for the time field. */
+  timeLabel: string;
+  /** Fully localized accessible name for the date field. */
+  dateLabel: string;
   instant: TimeRangeInstant<T>;
   onChange: (instant: TimeRangeInstant<T>) => void;
   minValue?: T;
@@ -21,6 +25,8 @@ export type TimeRangeDateTimeFieldProps<T extends DateValue> = {
 /** One "from"/"to" row of the manual range editor: an independent time field + date field. */
 export function TimeRangeDateTimeField<T extends DateValue>({
   label,
+  timeLabel,
+  dateLabel,
   instant,
   onChange,
   minValue,
@@ -33,14 +39,14 @@ export function TimeRangeDateTimeField<T extends DateValue>({
       <span className={s.dateTimeRowLabel}>{label}</span>
       <div className={s.dateTimeRowFields}>
         <TimePicker
-          aria-label={`${label} time`}
+          aria-label={timeLabel}
           value={instant.time}
           onChange={(time: Time | null) => onChange({ ...instant, time })}
           isInvalid={isInvalid}
           isDisabled={isDisabled}
         />
         <DatePicker
-          aria-label={`${label} date`}
+          aria-label={dateLabel}
           value={instant.date}
           onChange={(date) => onChange({ ...instant, date: date as T | null })}
           minValue={minValue}

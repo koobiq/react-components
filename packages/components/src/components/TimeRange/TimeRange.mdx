@@ -110,12 +110,17 @@ example, to build an API query for the currently selected range).
   its bounds through.
 - **`formatTimeRangeDuration(type, entry, t, range?, formatter?)`** — formats a
   preset's label ("Last 7 days", "Current quarter", …) for display outside the
-  component's own trigger/editor, given the entry from `calculateTimeRange`'s
-  config and a `LocalizedStringFormatter`. For `type: 'range'`, pass the
+  component's own trigger/editor, given the entry looked up via
+  `getTimeRangeTypeConfig(type, customTimeRangeTypes?)` and a
+  `LocalizedStringFormatter`. For `type: 'range'`, pass the
   resolved `start`/`end` bounds and a `DateFormatter` (e.g. from
   `useDateFormatter({ month: 'long', day: 'numeric' })`) to get the actual
   span ("August 31 – September 1") instead of the literal "Custom range"
   fallback.
+- **`getTimeRangeTypeConfig(type, customTimeRangeTypes?)`** — looks up a
+  preset's `entry` (its `units`/`translationType`), checking the built-in
+  presets first and falling back to `customTimeRangeTypes`; the input
+  `formatTimeRangeDuration` expects for its `entry` argument.
 - **`combineDateTime(date, time)`** / **`splitDateTime(dateTime)`** — combine or
   split a date and a time-of-day, the same operation the manual editor uses to
   turn its two fields into one comparable value.

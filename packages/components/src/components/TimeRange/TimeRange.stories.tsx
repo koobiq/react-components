@@ -16,6 +16,9 @@ import type { TimeRangeValue } from './types';
 const meta = {
   title: 'Components/TimeRange',
   component: TimeRange,
+  subcomponents: {
+    'TimeRange.Trigger': TimeRange.Trigger,
+  },
   parameters: {
     layout: 'centered',
   },

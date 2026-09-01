@@ -22,6 +22,20 @@ const ruUnits: Record<
 };
 
 /**
+ * The Russian adjective "последний" must agree in gender with the unit noun
+ * it modifies, so a single fixed prefix can't cover the singular ("last
+ * minute") forms — only the plural ("last N minutes") forms share one prefix.
+ */
+const ruSingularPrefix: Record<string, string> = {
+  minutes: 'Последняя',
+  hours: 'Последний',
+  days: 'Последний',
+  weeks: 'Последняя',
+  months: 'Последний',
+  years: 'Последний',
+};
+
+/**
  * The plural units table is keyed per-locale already (`enUnits`/`ruUnits`), so
  * the plural category is resolved against that same fixed locale rather than
  * the formatter's runtime locale, which isn't exposed by `LocalizedStringFormatter`.
@@ -30,11 +44,12 @@ function formatDuration(
   { count, unit }: DurationArgs,
   pluralLocale: string,
   units: Record<string, Record<string, string>>,
-  prefix: string
+  getPrefix: (count: number, unit: string) => string
 ): string {
   const forms = units[unit];
   const category = new Intl.PluralRules(pluralLocale).select(count);
   const label = forms?.[category] ?? forms?.other ?? unit;
+  const prefix = getPrefix(count, unit);
 
   return count === 1 ? `${prefix} ${label}` : `${prefix} ${count} ${label}`;
 }
@@ -45,6 +60,10 @@ export default {
     cancel: 'Cancel',
     from: 'from',
     to: 'to',
+    fromTimeLabel: 'from time',
+    fromDateLabel: 'from date',
+    toTimeLabel: 'to time',
+    toDateLabel: 'to date',
     placeholder: 'Select period',
     presets: 'Period',
     allTime: 'All time',
@@ -52,13 +71,17 @@ export default {
     currentYear: 'Current year',
     range: 'Custom range',
     duration: (args: DurationArgs) =>
-      formatDuration(args, 'en-US', enUnits, 'Last'),
+      formatDuration(args, 'en-US', enUnits, () => 'Last'),
   },
   'ru-RU': {
     apply: 'Применить',
     cancel: 'Отмена',
     from: 'С',
     to: 'По',
+    fromTimeLabel: 'время начала',
+    fromDateLabel: 'дата начала',
+    toTimeLabel: 'время окончания',
+    toDateLabel: 'дата окончания',
     placeholder: 'Выберите период',
     presets: 'Период',
     allTime: 'Всё время',
@@ -66,6 +89,8 @@ export default {
     currentYear: 'Текущий год',
     range: 'Свой диапазон',
     duration: (args: DurationArgs) =>
-      formatDuration(args, 'ru-RU', ruUnits, 'Последние'),
+      formatDuration(args, 'ru-RU', ruUnits, (count, unit) =>
+        count === 1 ? (ruSingularPrefix[unit] ?? 'Последний') : 'Последние'
+      ),
   },
 } as unknown as Record<string, Record<string, string>>;

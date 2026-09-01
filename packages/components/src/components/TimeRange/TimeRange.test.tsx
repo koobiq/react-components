@@ -43,10 +43,12 @@ describe('TimeRange', () => {
   });
 
   it('should merge a custom class name with the default ones', async () => {
-    render(<TimeRange data-testid="control" />);
+    render(<TimeRange data-testid="control" className="foo" />);
     await open();
 
-    expect(getTrigger()).toBeInTheDocument();
+    await getDialog();
+
+    expect(document.querySelector('.foo')).toBeInTheDocument();
   });
 
   it('should not render the editor until the trigger is pressed', () => {
@@ -532,11 +534,21 @@ describe('TimeRange', () => {
 
     describe('getDefaultRangeValue', () => {
       it('should default to yesterday through today', () => {
-        const { start, end } = getDefaultRangeValue();
-        const zone = getLocalTimeZone();
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date(2026, 5, 15, 12, 0, 0));
 
-        expect(end.date?.compare(today(zone))).toBe(0);
-        expect(start.date?.compare(today(zone).subtract({ days: 1 }))).toBe(0);
+        try {
+          const { start, end } = getDefaultRangeValue();
+          const zone = getLocalTimeZone();
+
+          expect(end.date?.compare(today(zone))).toBe(0);
+
+          expect(start.date?.compare(today(zone).subtract({ days: 1 }))).toBe(
+            0
+          );
+        } finally {
+          vi.useRealTimers();
+        }
       });
 
       it('should clamp to minValue/maxValue', () => {

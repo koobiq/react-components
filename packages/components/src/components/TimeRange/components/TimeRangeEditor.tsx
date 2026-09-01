@@ -3,12 +3,14 @@
 import type { ReactNode } from 'react';
 
 import {
+  mergeProps,
   useFocusWithin,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import type { DateValue } from '@koobiq/react-primitives';
 
 import { Radio, RadioGroup } from '../../RadioGroup';
+import type { RadioGroupProps } from '../../RadioGroup';
 import intlMessages from '../intl';
 import s from '../TimeRange.module.css';
 import type {
@@ -35,18 +37,19 @@ export type TimeRangeEditorProps<T extends DateValue> = {
   onSwapRange: () => void;
   availableTimeRangeTypes: string[];
   customTimeRangeTypes: CustomTimeRangeType[];
-  hideRangeAsDefault: boolean;
   minValue?: T;
   maxValue?: T;
   isDisabled?: boolean;
   renderOption?: (context: TimeRangeOptionContext) => ReactNode;
+  radioGroupProps?: RadioGroupProps;
 };
 
 /**
  * The popover body: a `RadioGroup` of presets, plus a manual from/to editor
- * grouped with the `'range'` option itself (unless `hideRangeAsDefault` and
- * no `'range'` preset is registered). The manual date/time fields are only
- * interactive while `'range'` is the selected preset.
+ * grouped with the `'range'` option itself (rendered whenever `'range'` is
+ * present in `availableTimeRangeTypes`, which `TimeRange` resolves according
+ * to `hideRangeAsDefault`). The manual date/time fields are only interactive
+ * while `'range'` is the selected preset.
  */
 export function TimeRangeEditor<T extends DateValue>({
   draft,
@@ -56,19 +59,18 @@ export function TimeRangeEditor<T extends DateValue>({
   onSwapRange,
   availableTimeRangeTypes,
   customTimeRangeTypes,
-  hideRangeAsDefault,
   minValue,
   maxValue,
   isDisabled,
   renderOption,
+  radioGroupProps,
 }: TimeRangeEditorProps<T>) {
   const t = useLocalizedStringFormatter(intlMessages);
 
   const presets = availableTimeRangeTypes.filter((type) => type !== 'range');
   const hasPresets = presets.length > 0;
 
-  const showRangeSection =
-    !hideRangeAsDefault || availableTimeRangeTypes.includes('range');
+  const showRangeSection = availableTimeRangeTypes.includes('range');
 
   const isRangeSelected = draft.type === 'range';
   const isInvalid = isRangeSelected && !isRangeValid(draft.start, draft.end);
@@ -100,6 +102,8 @@ export function TimeRangeEditor<T extends DateValue>({
           {hasPresets && <Radio value="range">{t.format('range')}</Radio>}
           <TimeRangeDateTimeField
             label={t.format('from')}
+            timeLabel={t.format('fromTimeLabel')}
+            dateLabel={t.format('fromDateLabel')}
             instant={draft.start}
             onChange={onChangeStart}
             minValue={minValue}
@@ -109,6 +113,8 @@ export function TimeRangeEditor<T extends DateValue>({
           />
           <TimeRangeDateTimeField
             label={t.format('to')}
+            timeLabel={t.format('toTimeLabel')}
+            dateLabel={t.format('toDateLabel')}
             instant={draft.end}
             onChange={onChangeEnd}
             minValue={minValue}
@@ -127,12 +133,17 @@ export function TimeRangeEditor<T extends DateValue>({
 
   return (
     <RadioGroup
-      isLabelHidden
-      label={t.format('presets')}
-      value={draft.type}
-      onChange={onSelectPreset}
-      isDisabled={isDisabled}
-      className={s.editor}
+      {...mergeProps<(RadioGroupProps | undefined)[]>(
+        {
+          isLabelHidden: true,
+          label: t.format('presets'),
+          value: draft.type,
+          onChange: onSelectPreset,
+          isDisabled,
+          className: s.editor,
+        },
+        radioGroupProps
+      )}
     >
       {content}
     </RadioGroup>

@@ -3,17 +3,15 @@
 /* ── Trigger ──────────────────────────────────────────────────── */
 
 .triggerLink {
-  --timerange-trigger-gap: var(--kbq-size-xxs);
-
   display: inline-flex;
   align-items: center;
-  gap: var(--kbq-timerange-trigger-gap, var(--timerange-trigger-gap));
+  gap: var(--kbq-size-xxs);
 }
 
 /* Focus normally moves into the popover's dialog once it opens, so the
    default `:pressed`/`:focus-within` styling can't reflect the open state —
    key off `aria-expanded` instead, which stays put for as long as it's open. */
-.triggerLink a[aria-expanded='true'] {
+.triggerLink button[aria-expanded='true'] {
   color: var(--kbq-states-foreground-theme-active);
 }
 

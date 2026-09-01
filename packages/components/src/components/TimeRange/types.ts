@@ -132,7 +132,7 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
    * The presets shown in the editor.
    * @default defaultTimeRangeTypes
    */
-  availableTimeRangeTypes?: (TimeRangeType | string)[];
+  availableTimeRangeTypes?: (TimeRangeType | (string & {}))[];
   /** Additional presets beyond the built-in `TimeRangeType`s. */
   customTimeRangeTypes?: CustomTimeRangeType[];
   /**
@@ -141,7 +141,8 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
    */
   hideArrow?: boolean;
   /**
-   * If `true`, the manual range editor isn't preselected when there are no presets to show.
+   * If `true`, the manual from/to range section is hidden entirely when
+   * `'range'` isn't included in `availableTimeRangeTypes`.
    * @default false
    */
   hideRangeAsDefault?: boolean;

@@ -6,6 +6,8 @@ export {
   combineDateTime,
   formatTimeRangeDuration,
   getDefaultRangeValue,
+  getTimeRangeTypeConfig,
   isRangeValid,
   splitDateTime,
 } from './utils';
+export type { TimeRangeConfigEntry } from './utils';

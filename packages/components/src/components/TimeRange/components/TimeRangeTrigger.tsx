@@ -50,6 +50,8 @@ export function TimeRangeTrigger({
     <span className={s.triggerLink}>
       <Link
         {...(mergeProps(buttonProps, other) as ComponentProps<typeof Link>)}
+        as="button"
+        type="button"
         isPseudo
         endIcon={<IconCalendarO16 />}
       >

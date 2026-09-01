@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useReducer, useState } from 'react';
+import { forwardRef, useEffect, useReducer, useRef, useState } from 'react';
 import type { Ref } from 'react';
 
 import type { CalendarDateTime, ZonedDateTime } from '@internationalized/date';
@@ -119,6 +119,25 @@ function getInitialValue<T extends DateValue>(
   return { type, ...calculateTimeRange(type, customTimeRangeTypes) };
 }
 
+/**
+ * The manual `'range'` option is rendered (and thus must be treated as
+ * available for correction) whenever `hideRangeAsDefault` is `false`, even if
+ * it isn't explicitly listed in `availableTimeRangeTypes` — mirrors
+ * `TimeRangeEditor`'s own rendering rule so the two never disagree about
+ * whether `'range'` is a valid, selectable type.
+ */
+function resolveAvailableTimeRangeTypes(
+  availableTimeRangeTypes: string[],
+  hideRangeAsDefault: boolean
+): string[] {
+  const showRange =
+    !hideRangeAsDefault || availableTimeRangeTypes.includes('range');
+
+  return showRange && !availableTimeRangeTypes.includes('range')
+    ? [...availableTimeRangeTypes, 'range']
+    : availableTimeRangeTypes;
+}
+
 export function TimeRangeRender<T extends DateValue>(
   props: Omit<TimeRangeProps<T>, 'ref'>,
   ref: Ref<TimeRangeRef>
@@ -150,16 +169,22 @@ export function TimeRangeRender<T extends DateValue>(
   const t = useLocalizedStringFormatter(intlMessages);
   const rangeFormatter = useDateFormatter({ month: 'long', day: 'numeric' });
 
+  const resolvedAvailableTypes = resolveAvailableTimeRangeTypes(
+    availableTimeRangeTypes,
+    hideRangeAsDefault
+  );
+
   const [committed, setCommitted] = useControlledState<TimeRangeValue | null>(
     valueProp,
-    defaultValue ??
-      getInitialValue(
-        availableTimeRangeTypes,
-        customTimeRangeTypes,
-        defaultRangeValue,
-        minValue,
-        maxValue
-      ),
+    'defaultValue' in props
+      ? (defaultValue as TimeRangeValue | null)
+      : getInitialValue(
+          availableTimeRangeTypes,
+          customTimeRangeTypes,
+          defaultRangeValue,
+          minValue,
+          maxValue
+        ),
     onChange
   );
 
@@ -169,17 +194,33 @@ export function TimeRangeRender<T extends DateValue>(
     toDraft(initial, defaultRangeValue, minValue, maxValue)
   );
 
+  // Dedupes repeated `onValueCorrected` calls for the same corrected outcome
+  // — in controlled mode `committed` never changes, so without this the
+  // effect below would otherwise fire on every unrelated re-render.
+  const lastCorrectedSignatureRef = useRef<string | null>(null);
+  const availableTypesKey = resolvedAvailableTypes.join(',');
+
+  const customTypesKey = customTimeRangeTypes
+    .map((entry) => entry.type)
+    .join(',');
+
   useEffect(() => {
     const { value: corrected, corrected: wasCorrected } =
       checkAndCorrectTimeRangeValue(
         valueProp !== undefined ? valueProp : committed,
-        availableTimeRangeTypes,
+        resolvedAvailableTypes,
         customTimeRangeTypes,
         minValue,
         maxValue
       );
 
     if (!wasCorrected || !corrected) return;
+
+    const signature = `${availableTypesKey}|${customTypesKey}|${corrected.type}`;
+
+    if (lastCorrectedSignatureRef.current === signature) return;
+
+    lastCorrectedSignatureRef.current = signature;
 
     onValueCorrected?.(corrected);
 
@@ -190,8 +231,8 @@ export function TimeRangeRender<T extends DateValue>(
   }, [
     valueProp,
     committed,
-    availableTimeRangeTypes,
-    customTimeRangeTypes,
+    availableTypesKey,
+    customTypesKey,
     minValue,
     maxValue,
   ]);
@@ -284,13 +325,13 @@ export function TimeRangeRender<T extends DateValue>(
               }
               onChangeEnd={(instant) => dispatch({ type: 'SET_END', instant })}
               onSwapRange={() => dispatch({ type: 'SWAP_RANGE' })}
-              availableTimeRangeTypes={availableTimeRangeTypes}
+              availableTimeRangeTypes={resolvedAvailableTypes}
               customTimeRangeTypes={customTimeRangeTypes}
-              hideRangeAsDefault={hideRangeAsDefault}
               minValue={minValue}
               maxValue={maxValue}
               isDisabled={isReadOnly}
               renderOption={renderOption}
+              radioGroupProps={slotProps?.radioGroup}
             />
           </Popover.Body>
           <Popover.Footer>

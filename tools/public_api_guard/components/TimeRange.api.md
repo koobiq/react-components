@@ -68,8 +68,6 @@ export type CustomTimeRangeType = {
 // @public
 export const defaultTimeRangeTypes: TimeRangeType[];
 
-// Warning: (ae-forgotten-export) The symbol "TimeRangeConfigEntry" needs to be exported by the entry point index.d.ts
-//
 // @public
 export function formatTimeRangeDuration(type: string, entry: TimeRangeConfigEntry | CustomTimeRangeType | undefined, t: LocalizedStringFormatter<string>, range?: {
     start?: DateValue_2;
@@ -81,6 +79,9 @@ export function getDefaultRangeValue<T extends DateValue_2>(minValue?: T, maxVal
     start: TimeRangeInstant<T>;
     end: TimeRangeInstant<T>;
 };
+
+// @public
+export function getTimeRangeTypeConfig(type: string, customTimeRangeTypes?: CustomTimeRangeType[]): TimeRangeConfigEntry | CustomTimeRangeType | undefined;
 
 // @public
 export function isRangeValid(start?: TimeRangeInstant, end?: TimeRangeInstant): boolean;
@@ -95,6 +96,12 @@ export const TimeRange: CompoundedComponent_2;
 
 // @public (undocumented)
 export type TimeRangeComponent = <T extends DateValue = DateValue>(props: TimeRangeProps<T>) => ReactElement | null;
+
+// @public
+export type TimeRangeConfigEntry = {
+    units: DateTimeDuration;
+    translationType: TimeRangeTranslationType;
+};
 
 // @public
 export type TimeRangeInstant<T extends DateValue = DateValue> = {
@@ -122,7 +129,7 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
     onValueCorrected?: (value: TimeRangeValue) => void;
     minValue?: T;
     maxValue?: T;
-    availableTimeRangeTypes?: (TimeRangeType | string)[];
+    availableTimeRangeTypes?: (TimeRangeType | (string & {}))[];
     customTimeRangeTypes?: CustomTimeRangeType[];
     hideArrow?: boolean;
     hideRangeAsDefault?: boolean;
@@ -182,8 +189,8 @@ export type TimeRangeValue = {
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TimeRange/types.d.ts:141:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:142:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:142:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:143:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

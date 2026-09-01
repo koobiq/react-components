@@ -25,7 +25,8 @@ import type {
   TimeRangeValue,
 } from './types';
 
-type TimeRangeConfigEntry = {
+/** The duration and label unit looked up for a built-in preset via `getTimeRangeTypeConfig`. */
+export type TimeRangeConfigEntry = {
   units: DateTimeDuration;
   translationType: TimeRangeTranslationType;
 };
@@ -189,7 +190,12 @@ export function getDefaultRangeValue<T extends DateValue>(
   const start =
     minValue && yesterday.compare(minValue) < 0 ? minValue : yesterday;
 
-  const end = maxValue && today.compare(maxValue) > 0 ? maxValue : today;
+  let end = maxValue && today.compare(maxValue) > 0 ? maxValue : today;
+
+  // `minValue`/`maxValue` can exclude the default "yesterday → today" range
+  // entirely (e.g. `minValue` is in the future) — collapse to a single valid
+  // day instead of returning a `start` after `end`.
+  if (start.compare(end) > 0) end = start;
 
   return {
     start: { date: start, time },
