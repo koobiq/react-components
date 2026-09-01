@@ -5,7 +5,8 @@
     "skipLibCheck": true,
     "rootDir": "./src",
     "outDir": "./dist",
-    "paths": {}
+    "paths": {},
+    "stableTypeOrdering": true
   },
   "exclude": [
     "**/*/__tests__/*",

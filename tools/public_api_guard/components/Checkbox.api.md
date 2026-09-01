@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 
 // @public
-export const Checkbox: ForwardRefExoticComponent<Omit<Omit<CheckboxProps_2, "validationState" | "inputRef">, "children" | "style" | "className" | "size" | "data-testid" | "slotProps" | "labelPlacement" | keyof {
+export const Checkbox: ForwardRefExoticComponent<Omit<Omit<CheckboxProps_2, "inputRef" | "validationState">, "children" | "className" | "data-testid" | "labelPlacement" | "size" | "slotProps" | "style" | keyof {
 disabled?: boolean;
 error?: boolean;
 checked?: boolean;

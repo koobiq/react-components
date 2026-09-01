@@ -51,8 +51,8 @@ import type { SetStateAction } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { TextInputBase } from '@react-types/shared';
 import { useDescription } from '@react-aria/utils';
-import { useEffect } from 'react';
 import { useId } from '@react-aria/utils';
+import { useLayoutEffect } from 'react';
 import { useLinkProps } from '@react-aria/utils';
 import { useObjectRef } from '@react-aria/utils';
 import { useRouter } from '@react-aria/utils';
@@ -392,7 +392,7 @@ interval: number | null): void;
 export function useIsFirstRender(): boolean;
 
 // @public (undocumented)
-export const useIsomorphicEffect: typeof useEffect;
+export const useIsomorphicEffect: typeof useLayoutEffect;
 
 // @public (undocumented)
 export function useKeyedRefs<T extends HTMLElement = HTMLElement>(): (key: Key_2) => RefObject_2<T | null>;

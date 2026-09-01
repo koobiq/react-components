@@ -24,7 +24,7 @@ error?: boolean;
 required?: boolean;
 hiddenLabel?: boolean;
 readonly?: boolean;
-} & Omit<TextFieldProps<HTMLTextAreaElement>, "children" | "style" | "className" | "description" | "isClearable" | "validationState" | "inputElementType">, "caption" | "style" | "className" | "cols" | "data-testid" | "rows" | "variant" | "slotProps" | "labelPlacement" | "labelAlign" | "fullWidth" | "isLabelHidden" | "expand"> & {
+} & Omit<TextFieldProps<HTMLTextAreaElement>, "children" | "className" | "description" | "inputElementType" | "isClearable" | "style" | "validationState">, "caption" | "className" | "cols" | "data-testid" | "expand" | "fullWidth" | "isLabelHidden" | "labelAlign" | "labelPlacement" | "rows" | "slotProps" | "style" | "variant"> & {
 className?: string;
 style?: CSSProperties;
 variant?: TextareaPropVariant;

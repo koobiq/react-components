@@ -13,7 +13,7 @@ import { RefAttributes } from 'react';
 import { SwitchProps } from '@koobiq/react-primitives';
 
 // @public
-export const Toggle: ForwardRefExoticComponent<Omit<Omit<SwitchProps, "inputRef">, "children" | "style" | "className" | "size" | "slotProps" | "labelPlacement" | keyof {
+export const Toggle: ForwardRefExoticComponent<Omit<Omit<SwitchProps, "inputRef">, "children" | "className" | "labelPlacement" | "size" | "slotProps" | "style" | keyof {
 disabled?: boolean;
 error?: boolean;
 checked?: boolean;
