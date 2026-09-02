@@ -6,30 +6,6 @@
   background-color: var(--button-bg-color-active);
 }
 
-.selectValue {
-  cursor: pointer;
-  border: none;
-  outline: none;
-  display: flex;
-  inline-size: 100%;
-  align-items: center;
-  box-sizing: border-box;
-  color: inherit;
-  background: transparent;
-  padding-inline: 0;
-
-  @mixin typography text-normal;
-}
-
-/* `UnstyledButton` renders as a native `<button>`, so `isDisabled` lands as
-   the native `disabled` attribute, not `aria-disabled` — cover both since a
-   consumer could render a non-button element instead. */
-.selectValue:disabled,
-.selectValue[aria-disabled='true'] {
-  cursor: default;
-  pointer-events: none;
-}
-
 .chevron {
   display: inline-flex;
   color: var(--kbq-foreground-contrast-secondary);

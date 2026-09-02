@@ -5,10 +5,7 @@ import type { ComponentProps } from 'react';
 
 import { mergeProps, mergeRefs } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
-import {
-  Button as UnstyledButton,
-  FieldErrorContext,
-} from '@koobiq/react-primitives';
+import { FieldErrorContext } from '@koobiq/react-primitives';
 
 import { FormField } from '../../FormField';
 import type {
@@ -121,15 +118,16 @@ export function TimeRangeTrigger({
     <FormField {...rootProps}>
       <FormField.Label {...labelProps} />
       <FormField.ControlGroup {...groupProps}>
-        <UnstyledButton
+        <FormField.Select
+          as="button"
           {...(mergeProps(buttonProps, other) as ComponentProps<
-            typeof UnstyledButton
+            typeof FormField.Select
           >)}
           ref={mergeRefs(buttonProps.ref, buttonRef)}
-          className={s.selectValue}
+          placeholder={placeholder}
         >
-          {isEmpty ? placeholder : formattedValue}
-        </UnstyledButton>
+          {isEmpty ? undefined : formattedValue}
+        </FormField.Select>
       </FormField.ControlGroup>
       <FieldErrorContext.Provider
         value={{
