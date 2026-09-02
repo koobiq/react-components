@@ -1,6 +1,12 @@
 .base {
-  display: flex;
-  flex-direction: column;
+  /* Vertically centers a single line of code against the floating action bar. */
+  --code-block-floating-code-padding-block: calc(
+    var(--kbq-size-m) + var(--kbq-size-3xs)
+  );
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
   position: relative;
   box-sizing: border-box;
   border-style: solid;
@@ -10,16 +16,40 @@
   background: var(--kbq-code-block-outline-container-background);
   hyphens: none;
 
+  /*
+   * The header band. The tab list and the action bar live in separate grid cells, so the background
+   * and the scroll shadow they share are painted by this row-spanning pseudo-element.
+   */
+  &::before {
+    content: '';
+    grid-area: 1 / 1 / 2 / -1;
+    border-start-start-radius: var(--kbq-size-m);
+    border-start-end-radius: var(--kbq-size-m);
+    transition: box-shadow var(--kbq-transition-default);
+  }
+
+  /*
+   * `Tabs` renders the header row and the tab panel together. Unwrapping them into the grid lets the
+   * action bar sit next to the tab list instead of being positioned over it.
+   */
+  > .tabsContainer {
+    display: contents;
+  }
+
   &[data-border-hidden] {
-    border-color: transparent !important;
+    border-color: transparent;
   }
 
   &[data-filled] {
-    border-color: transparent !important;
+    border-color: transparent;
     background: var(--kbq-code-block-filled-container-background);
 
-    .header {
+    &::before {
       background: var(--kbq-code-block-filled-header-background);
+    }
+
+    &:has(.header[data-scrolled])::before {
+      box-shadow: var(--kbq-code-block-filled-header-scroll-shadow);
     }
 
     &[data-hide-tabs] .actionbarButtonStack {
@@ -46,8 +76,12 @@
   }
 
   &:not([data-filled]) {
-    .header {
+    &::before {
       background: var(--kbq-code-block-outline-header-background);
+    }
+
+    &:has(.header[data-scrolled])::before {
+      box-shadow: var(--kbq-code-block-outline-header-scroll-shadow);
     }
 
     &[data-hide-tabs] .actionbarButtonStack {
@@ -74,18 +108,22 @@
   }
 
   &:not([data-hide-tabs]) {
+    /* The tab list ends where the action bar begins, so the header keeps no padding of its own. */
     .header {
-      border-radius: var(--kbq-size-m) var(--kbq-size-m) 0 0;
+      padding-inline-end: 0;
     }
 
     .main {
-      border-radius: 0 0 var(--kbq-size-m) var(--kbq-size-m);
+      border-end-start-radius: var(--kbq-size-m);
+      border-end-end-radius: var(--kbq-size-m);
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
     }
 
     > .actionbar {
-      position: absolute;
-      inset-block-start: var(--kbq-size-s);
-      inset-inline-end: var(--kbq-size-m);
+      grid-area: 1 / 2 / 2 / 3;
+      align-self: center;
+      margin-inline-end: var(--kbq-size-m);
     }
   }
 
@@ -113,10 +151,15 @@
 
     .main {
       position: relative;
+    }
 
-      .code {
-        padding: 14px var(--kbq-size-xl);
-      }
+    .code {
+      --code-block-code-padding-block-start: var(
+        --code-block-floating-code-padding-block
+      );
+      --code-block-code-padding-block-end: var(
+        --code-block-floating-code-padding-block
+      );
     }
 
     /*
@@ -144,31 +187,12 @@
 .header {
   display: flex;
   align-items: center;
+  grid-area: 1 / 1 / 2 / 2;
   padding: var(--kbq-size-s) var(--kbq-size-m);
-  padding-inline-end: calc(
-    var(--kbq-size-m) + var(--code-block-actionbar-inline-size, 0px)
-  );
-  transition: box-shadow var(--kbq-transition-default);
-}
-
-.headerScrolled {
-  box-shadow: var(--kbq-code-block-outline-header-scroll-shadow);
-
-  .base[data-filled] & {
-    box-shadow: var(--kbq-code-block-filled-header-scroll-shadow);
-  }
-}
-
-.tabsContainer {
-  gap: 0;
-  flex-grow: 1;
-  min-block-size: 0;
-  inline-size: 100%;
 }
 
 .main {
-  flex-grow: 1;
-  min-block-size: 0;
+  grid-area: 2 / 1 / 3 / -1;
   overflow: auto;
   border-radius: var(--kbq-size-m);
 
@@ -184,22 +208,21 @@
 
 .pre {
   margin: 0;
-  flex-grow: 1;
 }
 
 .code {
+  --code-block-code-padding-block-start: var(--kbq-size-xxs);
+  --code-block-code-padding-block-end: var(--kbq-size-l);
+
   display: block;
   tab-size: 4;
-  padding: var(--kbq-size-xxs) var(--kbq-size-xl) var(--kbq-size-l)
-    var(--kbq-size-xl);
+  padding-block: var(--code-block-code-padding-block-start)
+    var(--code-block-code-padding-block-end);
+  padding-inline: var(--kbq-size-xl);
   color: var(--kbq-foreground-contrast);
 
   &:focus-visible {
     outline: none;
-  }
-
-  .base:has(.viewAll) & {
-    padding-block-end: var(--kbq-size-3xl) !important;
   }
 
   .base[data-soft-wrap] & {
@@ -232,6 +255,11 @@
     white-space: nowrap;
     content: attr(data-line-number);
   }
+}
+
+/* Leaves room for the expand button, which overlaps the end of the content. */
+.base:has(.viewAll) .code {
+  --code-block-code-padding-block-end: var(--kbq-size-3xl);
 }
 
 .viewAll {

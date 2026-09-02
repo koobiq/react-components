@@ -22,14 +22,14 @@ const CodeBlockHighlightConfigContext =
 // call when no provider is present — `useHighlightedCode` keys its load cache off that identity.
 const EMPTY_CONFIG: CodeBlockHighlightConfig = {};
 
-export type CodeBlockHighlightConfigProviderProps = {
+export type CodeBlockProviderProps = {
   /** The `highlight.js` loading configuration applied to every `CodeBlock` inside. */
-  config: CodeBlockHighlightConfig;
+  highlightConfig: CodeBlockHighlightConfig;
   children?: ReactNode;
 };
 
 /**
- * Configures how `CodeBlock` loads `highlight.js`.
+ * Configures every `CodeBlock` inside it.
  *
  * By default, `CodeBlock` lazily loads the full `highlight.js` bundle with all languages (~1 MB).
  * To reduce bundle size, wrap the app (or a part of it) with this provider and specify only the languages you need.
@@ -45,18 +45,16 @@ export type CodeBlockHighlightConfigProviderProps = {
  *   fallbackLanguage: 'plaintext'
  * };
  *
- * <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+ * <CodeBlockProvider highlightConfig={highlightConfig}>
  *   <App />
- * </CodeBlock.HighlightConfigProvider>
+ * </CodeBlockProvider>
  * ```
  */
-export function CodeBlockHighlightConfigProvider(
-  props: CodeBlockHighlightConfigProviderProps
-) {
-  const { config, children } = props;
+export function CodeBlockProvider(props: CodeBlockProviderProps) {
+  const { highlightConfig, children } = props;
 
   return (
-    <CodeBlockHighlightConfigContext.Provider value={config}>
+    <CodeBlockHighlightConfigContext.Provider value={highlightConfig}>
       {children}
     </CodeBlockHighlightConfigContext.Provider>
   );

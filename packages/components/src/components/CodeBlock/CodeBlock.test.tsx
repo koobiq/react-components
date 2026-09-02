@@ -13,6 +13,7 @@ import type { HLJSApi } from 'highlight.js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CodeBlock } from './CodeBlock';
+import { CodeBlockProvider } from './context';
 import type { CodeBlockHighlightConfig } from './context';
 import type { CodeBlockFile, CodeBlockRef } from './types';
 
@@ -317,6 +318,51 @@ describe('CodeBlock', () => {
     ).toEqual(['10', '11']);
   });
 
+  it('forwards slotProps to the header and the content region', async () => {
+    const { rerender } = render(
+      <CodeBlock
+        files={multiFile}
+        slotProps={{
+          header: { className: 'custom-header' },
+          content: { className: 'custom-content', style: { minBlockSize: 40 } },
+        }}
+      />
+    );
+
+    await waitFor(() =>
+      expect(getCode()).toHaveAttribute('data-language', 'xml')
+    );
+
+    expect(screen.getByTestId('code-block-header')).toHaveClass(
+      'custom-header'
+    );
+
+    const panel = screen.getByRole('tabpanel');
+
+    expect(panel).toHaveClass('custom-content');
+    expect(panel).toHaveStyle({ minBlockSize: '40px' });
+
+    // The same slots are applied to the plain header and region rendered without tabs.
+    rerender(
+      <CodeBlock
+        files={jsFile}
+        slotProps={{
+          header: { className: 'custom-header' },
+          content: { className: 'custom-content', style: { minBlockSize: 40 } },
+        }}
+      />
+    );
+
+    expect(screen.getByTestId('code-block-header')).toHaveClass(
+      'custom-header'
+    );
+
+    const region = screen.getByRole('region');
+
+    expect(region).toHaveClass('custom-content');
+    expect(region).toHaveStyle({ minBlockSize: '40px' });
+  });
+
   describe('highlight configuration', () => {
     it('loads and reuses only the languages provided by the nearest provider', async () => {
       const loadCore = vi.fn(() => import('highlight.js/lib/core'));
@@ -331,10 +377,10 @@ describe('CodeBlock', () => {
       };
 
       render(
-        <CodeBlock.HighlightConfigProvider config={config}>
+        <CodeBlockProvider highlightConfig={config}>
           <CodeBlock files={jsFile} />
           <CodeBlock files={jsFile} />
-        </CodeBlock.HighlightConfigProvider>
+        </CodeBlockProvider>
       );
 
       await waitFor(() =>
@@ -369,9 +415,9 @@ describe('CodeBlock', () => {
       const file = { content, language: 'unknown' };
 
       render(
-        <CodeBlock.HighlightConfigProvider config={config}>
+        <CodeBlockProvider highlightConfig={config}>
           <CodeBlock files={[file]} />
-        </CodeBlock.HighlightConfigProvider>
+        </CodeBlockProvider>
       );
 
       await waitFor(() =>
@@ -412,9 +458,9 @@ describe('CodeBlock', () => {
       const file = { content: 'plain text' };
 
       render(
-        <CodeBlock.HighlightConfigProvider config={config}>
+        <CodeBlockProvider highlightConfig={config}>
           <CodeBlock files={[file]} />
-        </CodeBlock.HighlightConfigProvider>
+        </CodeBlockProvider>
       );
 
       await waitFor(() =>
@@ -436,9 +482,9 @@ describe('CodeBlock', () => {
       };
 
       render(
-        <CodeBlock.HighlightConfigProvider config={config}>
+        <CodeBlockProvider highlightConfig={config}>
           <CodeBlock files={jsFile} />
-        </CodeBlock.HighlightConfigProvider>
+        </CodeBlockProvider>
       );
 
       await waitFor(() =>
@@ -813,9 +859,9 @@ describe('CodeBlock', () => {
       .mockImplementation(() => {});
 
     render(
-      <CodeBlock.HighlightConfigProvider config={config}>
+      <CodeBlockProvider highlightConfig={config}>
         <CodeBlock files={jsFile} ref={ref} />
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
 
     ref.current?.scrollTo({ top: 24, behavior: 'instant' });

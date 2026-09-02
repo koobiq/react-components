@@ -35,8 +35,8 @@ async function loadHljs(config: CodeBlockHighlightConfig): Promise<HLJSApi> {
  * Resolves the shared `highlight.js` instance for the app.
  *
  * Cached at module scope so every `CodeBlock` on the page reuses the same load, keyed by the
- * `CodeBlockHighlightConfig` reference — pass a stable (e.g. module-level or memoized) `config` to
- * `CodeBlock.HighlightConfigProvider` to avoid redundant reloads.
+ * `CodeBlockHighlightConfig` reference — pass a stable (e.g. module-level or memoized) `highlightConfig` to
+ * `CodeBlockProvider` to avoid redundant reloads.
  */
 function getHljsInstance(config: CodeBlockHighlightConfig): Promise<HLJSApi> {
   const cachedPromise = hljsPromises.get(config);
@@ -91,7 +91,7 @@ function escapeHTML(value: string): string {
 }
 
 /**
- * Loads `highlight.js` (honoring `CodeBlock.HighlightConfigProvider`) and highlights `file`.
+ * Loads `highlight.js` (honoring `CodeBlockProvider`) and highlights `file`.
  *
  * `highlight.js` escapes the raw source text before wrapping it in `<span>` tokens, so the returned
  * `html` is safe to render with `dangerouslySetInnerHTML` — the same trust model other React syntax

@@ -1,4 +1,9 @@
-import type { CSSProperties, ReactNode, Ref } from 'react';
+import type {
+  ComponentPropsWithRef,
+  CSSProperties,
+  ReactNode,
+  Ref,
+} from 'react';
 
 import type { DataAttributeProps } from '@koobiq/react-core';
 
@@ -111,10 +116,11 @@ export type CodeBlockProps = {
    */
   maxHeight?: number;
   /**
-   * Whether to hide the header tabs. Tabs are hidden automatically for a single file without a
-   * `filename`; control this prop with `false` to keep them visible.
-   * Makes the action bar floating and shown only on hover.
-   * @default false
+   * Whether to hide the header tabs, which also makes the action bar floating and shown on hover only.
+   *
+   * When the prop is omitted, the component decides on its own: the header is hidden for a single file
+   * without a `filename` and shown otherwise. Passing `false` takes that decision over and keeps the
+   * header visible even for such a file.
    */
   hideTabs?: boolean;
   /** The uncontrolled default value for `hideTabs`. */
@@ -139,6 +145,13 @@ export type CodeBlockProps = {
   fallbackFileName?: string;
   /** The starting line number. */
   startFrom?: number;
+  /** The props used for each slot inside. */
+  slotProps?: {
+    /** Props of the header holding the tabs. */
+    header?: Omit<ComponentPropsWithRef<'div'>, 'children'>;
+    /** Props of the scrollable region holding the code. */
+    content?: Omit<ComponentPropsWithRef<'div'>, 'children'>;
+  };
   /** Additional CSS-classes. */
   className?: string;
   /** Inline styles. */

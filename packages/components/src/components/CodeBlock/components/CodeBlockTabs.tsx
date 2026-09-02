@@ -1,19 +1,14 @@
 'use client';
 
-import type {
-  ComponentProps,
-  CSSProperties,
-  ReactNode,
-  Ref,
-  UIEventHandler,
-} from 'react';
+import type { ReactNode, Ref, UIEventHandler } from 'react';
 
-import { clsx } from '@koobiq/react-core';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { mergeProps, mergeRefs } from '@koobiq/react-core';
 
 import { Tab, Tabs } from '../../Tabs';
 import s from '../CodeBlock.module.css';
-import type { CodeBlockFile } from '../types';
+import type { CodeBlockFile, CodeBlockProps } from '../types';
+
+import { getCodeBlockHeaderProps } from './CodeBlockHeader';
 
 export type CodeBlockTabsProps = {
   files: CodeBlockFile[];
@@ -26,10 +21,14 @@ export type CodeBlockTabsProps = {
   panelMaxHeight?: number;
   onPanelScroll: UIEventHandler<HTMLDivElement>;
   isScrolled: boolean;
-  actionCount: number;
   'aria-label': string;
+  slotProps?: CodeBlockProps['slotProps'];
 };
 
+/**
+ * The header of a `CodeBlock` with tabs, along with the tab panel holding the code: `Tabs` renders
+ * both of them, and the code block lays them out next to the action bar.
+ */
 export function CodeBlockTabs(props: CodeBlockTabsProps) {
   const {
     files,
@@ -42,28 +41,15 @@ export function CodeBlockTabs(props: CodeBlockTabsProps) {
     panelMaxHeight,
     onPanelScroll,
     isScrolled,
-    actionCount,
     'aria-label': ariaLabel,
+    slotProps,
   } = props;
 
-  const actionBarInlineSize =
-    actionCount > 0
-      ? `calc(${actionCount} * var(--kbq-size-3xl) + ${Math.max(
-          actionCount - 1,
-          0
-        )} * var(--kbq-size-3xs))`
-      : '0px';
-
-  const headerStyle = {
-    '--code-block-actionbar-inline-size': actionBarInlineSize,
-  } as CSSProperties;
-
-  const headerProps = {
-    className: clsx(s.header, isScrolled && s.headerScrolled),
-    style: headerStyle,
-    'data-testid': 'code-block-header',
-    'data-scrolled': isScrolled || undefined,
-  } satisfies ComponentProps<'div'> & DataAttributeProps;
+  const {
+    ref: contentRef,
+    style: contentStyle,
+    ...contentProps
+  } = slotProps?.content ?? {};
 
   return (
     <Tabs
@@ -74,14 +60,14 @@ export function CodeBlockTabs(props: CodeBlockTabsProps) {
         if (files.length > 1) onActiveFileIndexChange(Number(key));
       }}
       slotProps={{
-        tabs: {
-          ...headerProps,
-        },
+        tabs: getCodeBlockHeaderProps(isScrolled, slotProps?.header),
         tabPanel: {
-          ref: panelRef,
-          className: s.main,
-          style: { maxHeight: panelMaxHeight },
-          onScroll: onPanelScroll,
+          ...mergeProps(
+            { className: s.main, onScroll: onPanelScroll },
+            contentProps
+          ),
+          ref: mergeRefs(panelRef, contentRef),
+          style: { maxHeight: panelMaxHeight, ...contentStyle },
         },
       }}
     >

@@ -4,12 +4,14 @@ import { IconDiamond16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { spacing } from '../layout';
 import { SidePanel } from '../SidePanel';
 import { Toggle } from '../Toggle';
 import { Typography } from '../Typography';
 
 import {
   CodeBlock,
+  CodeBlockProvider,
   type CodeBlockFile,
   type CodeBlockProps,
   type CodeBlockRef,
@@ -18,9 +20,7 @@ import {
 const meta = {
   title: 'Components/CodeBlock',
   component: CodeBlock,
-  subcomponents: {
-    HighlightConfigProvider: CodeBlock.HighlightConfigProvider,
-  },
+  subcomponents: { CodeBlockProvider },
   parameters: {
     layout: 'padded',
   },
@@ -31,7 +31,34 @@ export default meta;
 
 type Story = StoryObj<CodeBlockProps>;
 
-export const Overview: Story = {
+export const Base: Story = {
+  render: function Render(args) {
+    const highlightConfig = useMemo(
+      () => ({
+        core: () => import('highlight.js/lib/core'),
+        languages: {
+          typescript: () => import('highlight.js/lib/languages/typescript'),
+        },
+      }),
+      []
+    );
+
+    const files: CodeBlockFile[] = [
+      {
+        language: 'typescript',
+        content: `type Vulnerability = {\n\tid: string;\n\tname: string;\n};\n\nconst vulnerabilities: Vulnerability[] = [\n\t{ id: '1', name: 'Zero-Day Exploit' },\n\t{ id: '2', name: 'Ransomware' }\n];`,
+      },
+    ];
+
+    return (
+      <CodeBlockProvider highlightConfig={highlightConfig}>
+        <CodeBlock {...args} files={files} />
+      </CodeBlockProvider>
+    );
+  },
+};
+
+export const LineNumbers: Story = {
   render: function Render(args) {
     const highlightConfig = useMemo(
       () => ({
@@ -53,21 +80,16 @@ export const Overview: Story = {
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <Toggle
           isSelected={hasLineNumbers}
           onChange={setHasLineNumbers}
-          style={{ marginBlockEnd: 'var(--kbq-size-m)' }}
+          className={spacing({ mbe: 'm' })}
         >
           Line numbers
         </Toggle>
-        <CodeBlock
-          {...args}
-          canToggleSoftWrap
-          files={files}
-          hasLineNumbers={hasLineNumbers}
-        />
-      </CodeBlock.HighlightConfigProvider>
+        <CodeBlock {...args} files={files} hasLineNumbers={hasLineNumbers} />
+      </CodeBlockProvider>
     );
   },
 };
@@ -87,59 +109,29 @@ export const HeaderPinned: Story = {
     const files: CodeBlockFile[] = [
       {
         language: 'json',
-        content: `{
-  "data": [{
-    "id": "1",
-    "attributes": {
-      "title": "JSON:API paints my hyper-super-duper mighty bikeshed!",
-      "body": "The shortest article. Ever."
-    },
-    "relationships": {
-      "author": {
-        "data": {"id": "42", "type": "people"}
-      }
-    }
-  }],
-  "included": [
-    {
-      "type": "people",
-      "id": "42",
-      "attributes": {
-        "name": "John"
-      }
-    }
-  ]
-}`,
+        content: `{\n\t"data": [{\n\t\t"id": "1",\n\t\t"attributes": {\n\t\t\t"name": "Cross-site scripting",\n\t\t\t"abbreviation": "XSS",\n\t\t\t"severity": "high"\n\t\t},\n\t\t"relationships": {\n\t\t\t"assignee": {\n\t\t\t\t"data": {"id": "42", "type": "people"}\n\t\t\t}\n\t\t}\n\t}],\n\t"included": [\n\t\t{\n\t\t\t"type": "people",\n\t\t\t"id": "42",\n\t\t\t"attributes": {\n\t\t\t\t"name": "John"\n\t\t\t}\n\t\t}\n\t]\n}`,
       },
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <CodeBlock
           {...args}
-          canToggleSoftWrap
-          canDownload
-          defaultSoftWrap
           files={files}
           hasLineNumbers
           hideTabs={false}
-          isFilled
           renderTabLabel={() => 'data'}
-          style={{ blockSize: 350, marginBlockEnd: 'var(--kbq-size-xs)' }}
+          className={spacing({ mbe: 'xs' })}
+          style={{ blockSize: 350 }}
         />
         <CodeBlock
           {...args}
-          canToggleSoftWrap
-          canDownload
-          defaultSoftWrap
           files={files}
           hasLineNumbers
           hideTabs={false}
           renderTabLabel={(file, fallbackFileName) => (
             <>
-              <IconDiamond16
-                style={{ marginInlineEnd: 'var(--kbq-size-xs)' }}
-              />
+              <IconDiamond16 className={spacing({ mie: 'xs' })} />
               <Typography as="span" variant="caps-normal-strong">
                 {file.language || fallbackFileName}
               </Typography>
@@ -147,7 +139,7 @@ export const HeaderPinned: Story = {
           )}
           style={{ blockSize: 350 }}
         />
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
   },
 };
@@ -165,7 +157,6 @@ export const WithMaxHeight: Story = {
     );
 
     const [viewAll, setViewAll] = useState(false);
-    const [isFilled, setIsFilled] = useState(false);
 
     const files: CodeBlockFile[] = [
       {
@@ -175,31 +166,23 @@ export const WithMaxHeight: Story = {
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <Toggle
           isSelected={viewAll}
           onChange={setViewAll}
-          style={{
-            marginBlockEnd: 'var(--kbq-size-m)',
-            marginInlineEnd: 'var(--kbq-size-m)',
-          }}
+          className={spacing({ mbe: 'm' })}
         >
           Show all
         </Toggle>
-        <Toggle isSelected={isFilled} onChange={setIsFilled}>
-          Filled
-        </Toggle>
         <CodeBlock
           {...args}
-          canToggleSoftWrap
           files={files}
           hasLineNumbers
-          isFilled={isFilled}
           maxHeight={200}
           onViewAllChange={setViewAll}
           viewAll={viewAll}
         />
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
   },
 };
@@ -226,11 +209,11 @@ export const WithSoftWrap: Story = {
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <Toggle
           isSelected={softWrap}
           onChange={setSoftWrap}
-          style={{ marginBlockEnd: 'var(--kbq-size-m)' }}
+          className={spacing({ mbe: 'm' })}
         >
           Word wrap
         </Toggle>
@@ -242,7 +225,7 @@ export const WithSoftWrap: Story = {
           onSoftWrapChange={setSoftWrap}
           softWrap={softWrap}
         />
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
   },
 };
@@ -263,8 +246,6 @@ export const WithTabs: Story = {
     );
 
     const [hideTabs, setHideTabs] = useState(false);
-    const [isFilled, setIsFilled] = useState(false);
-    const [hasLineNumbers, setHasLineNumbers] = useState(true);
 
     const files: CodeBlockFile[] = [
       {
@@ -285,38 +266,22 @@ export const WithTabs: Story = {
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <Toggle
           isSelected={hideTabs}
           onChange={setHideTabs}
-          style={{
-            marginBlockEnd: 'var(--kbq-size-m)',
-            marginInlineEnd: 'var(--kbq-size-m)',
-          }}
+          className={spacing({ mbe: 'm' })}
         >
           Hide tabs
         </Toggle>
-        <Toggle
-          isSelected={isFilled}
-          onChange={setIsFilled}
-          style={{ marginInlineEnd: 'var(--kbq-size-m)' }}
-        >
-          Filled
-        </Toggle>
-        <Toggle isSelected={hasLineNumbers} onChange={setHasLineNumbers}>
-          Line numbers
-        </Toggle>
         <CodeBlock
           {...args}
-          canDownload
-          canToggleSoftWrap
           defaultActiveFileIndex={1}
           files={files}
-          hasLineNumbers={hasLineNumbers}
+          hasLineNumbers
           hideTabs={hideTabs}
-          isFilled={isFilled}
         />
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
   },
 };
@@ -361,18 +326,16 @@ export const WithTabsAndShadow: Story = {
     }, []);
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <CodeBlock
           {...args}
           ref={codeBlockRef}
-          canToggleSoftWrap
           defaultActiveFileIndex={2}
-          defaultSoftWrap
           files={files}
           hasLineNumbers
           style={{ blockSize: 350 }}
         />
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
   },
 };
@@ -390,40 +353,25 @@ export const WithFilled: Story = {
     );
 
     const [isFilled, setIsFilled] = useState(true);
-    const [alwaysShowActionBar, setAlwaysShowActionBar] = useState(false);
 
     const files: CodeBlockFile[] = [
       {
         language: 'bash',
-        content: 'npm install @koobiq/components',
+        content: 'npm audit --audit-level=high',
       },
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <Toggle
           isSelected={isFilled}
           onChange={setIsFilled}
-          style={{
-            marginBlockEnd: 'var(--kbq-size-m)',
-            marginInlineEnd: 'var(--kbq-size-m)',
-          }}
+          className={spacing({ mbe: 'm' })}
         >
           Filled
         </Toggle>
-        <Toggle
-          isSelected={alwaysShowActionBar}
-          onChange={setAlwaysShowActionBar}
-        >
-          Always show actionbar
-        </Toggle>
-        <CodeBlock
-          {...args}
-          alwaysShowActionBar={alwaysShowActionBar}
-          files={files}
-          isFilled={isFilled}
-        />
-      </CodeBlock.HighlightConfigProvider>
+        <CodeBlock {...args} files={files} isFilled={isFilled} />
+      </CodeBlockProvider>
     );
   },
 };
@@ -451,12 +399,11 @@ export const WithNoBorder: Story = {
           ...Array.from({ length: 10 }, () => xss),
         ].join('\n')}\n<vulnerabilities>`,
         language: 'xml',
-        link: 'https://github.com/koobiq/angular-components',
       },
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <SidePanel
           size="small"
           control={(props) => <Button {...props}>Open sidepanel</Button>}
@@ -472,8 +419,6 @@ export const WithNoBorder: Story = {
             >
               <CodeBlock
                 {...args}
-                canToggleSoftWrap
-                defaultSoftWrap
                 files={files}
                 hasLineNumbers
                 hideBorder
@@ -482,7 +427,7 @@ export const WithNoBorder: Story = {
             </SidePanel.Body>
           )}
         </SidePanel>
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
   },
 };
@@ -509,9 +454,9 @@ export const WithLink: Story = {
     ];
 
     return (
-      <CodeBlock.HighlightConfigProvider config={highlightConfig}>
+      <CodeBlockProvider highlightConfig={highlightConfig}>
         <CodeBlock {...args} files={files} hasLineNumbers hideCopyButton />
-      </CodeBlock.HighlightConfigProvider>
+      </CodeBlockProvider>
     );
   },
 };

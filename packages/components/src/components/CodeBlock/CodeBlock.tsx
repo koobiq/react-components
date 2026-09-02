@@ -16,14 +16,15 @@ import {
   useLocalizedStringFormatter,
   useResizeObserver,
 } from '@koobiq/react-core';
-import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
-
-import { utilClasses } from '../../styles/utility';
-import { Button } from '../Button';
 
 import s from './CodeBlock.module.css';
-import { CodeBlockActionBar, CodeBlockTabs } from './components';
-import { CodeBlockHighlightConfigProvider } from './context';
+import {
+  CodeBlockActionBar,
+  CodeBlockCode,
+  CodeBlockContent,
+  CodeBlockHeader,
+  CodeBlockTabs,
+} from './components';
 import { useHighlightedCode, useOverflowShadow } from './hooks';
 import intlMessages from './intl.json';
 import type {
@@ -88,6 +89,7 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
     renderTabLabel,
     fallbackFileName = 'code',
     startFrom = 1,
+    slotProps,
     className,
     style,
     'data-testid': dataTestId,
@@ -246,12 +248,6 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
     if (!nextViewAll) scrollToTop();
   };
 
-  const actionCount =
-    Number(canToggleSoftWrap) +
-    Number(canDownload) +
-    Number(!hideCopyButton) +
-    Number(Boolean(activeFile.link));
-
   const actionBar = (
     <CodeBlockActionBar
       file={activeFile}
@@ -271,42 +267,19 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
     />
   );
 
-  const panelContent = (
-    <>
-      <pre ref={preRef} className={s.pre}>
-        <code
-          className={clsx(
-            'hljs',
-            s.code,
-            utilClasses.typography['mono-codeblock']
-          )}
-          data-language={pending || failed ? undefined : language}
-          // `highlight.js` escapes the raw source before wrapping tokens in spans — see useHighlightedCode.
-          dangerouslySetInnerHTML={
-            pending || failed ? undefined : { __html: html }
-          }
-        >
-          {pending || failed ? activeFile.content : undefined}
-        </code>
-      </pre>
-
-      {contentExceedsMaxHeight && (
-        <div
-          className={s.viewAll}
-          data-state={viewAll ? 'expanded' : 'collapsed'}
-        >
-          <div className={s.viewAllWrapper}>
-            <Button
-              variant="theme-transparent"
-              startIcon={viewAll ? <IconChevronUp16 /> : <IconChevronDown16 />}
-              onPress={toggleViewAll}
-            >
-              {viewAll ? t.format('viewLessText') : t.format('viewAllText')}
-            </Button>
-          </div>
-        </div>
-      )}
-    </>
+  const code = (
+    <CodeBlockCode
+      preRef={preRef}
+      html={html}
+      language={language}
+      source={activeFile.content}
+      isHighlighted={!pending && !failed}
+      canViewAll={contentExceedsMaxHeight}
+      viewAll={viewAll}
+      onViewAllToggle={toggleViewAll}
+      viewAllText={t.format('viewAllText')}
+      viewLessText={t.format('viewLessText')}
+    />
   );
 
   return (
@@ -327,26 +300,22 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
     >
       {isTabsHidden ? (
         <>
-          <div
-            className={clsx(s.header, isScrolled && s.headerScrolled)}
-            data-testid="code-block-header"
-            data-scrolled={isScrolled || undefined}
+          <CodeBlockHeader
+            isScrolled={isScrolled}
+            slotProps={slotProps?.header}
           >
             {actionBar}
-          </div>
-          <div
-            ref={mainRef}
-            className={s.main}
-            style={{ maxHeight: calculatedMaxHeight }}
-            role="region"
+          </CodeBlockHeader>
+          <CodeBlockContent
+            contentRef={mainRef}
             aria-label={activeFile.filename || fallbackFileName}
-            // A scrollable region must be keyboard-focusable when its content overflows.
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            tabIndex={canFocusContent ? 0 : -1}
+            isFocusable={canFocusContent}
+            maxHeight={calculatedMaxHeight}
             onScroll={onScroll}
+            slotProps={slotProps?.content}
           >
-            {panelContent}
-          </div>
+            {code}
+          </CodeBlockContent>
         </>
       ) : (
         <>
@@ -357,12 +326,12 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
             fallbackFileName={fallbackFileName}
             renderTabLabel={renderTabLabel}
             panelRef={mainRef}
-            panelContent={panelContent}
+            panelContent={code}
             panelMaxHeight={calculatedMaxHeight}
             onPanelScroll={onScroll}
             isScrolled={isScrolled}
-            actionCount={actionCount}
             aria-label={t.format('filesLabel')}
+            slotProps={slotProps}
           />
           {actionBar}
         </>
@@ -371,13 +340,11 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
   );
 }
 
-const CodeBlockComponent = forwardRef(CodeBlockRender);
-
-type CompoundedComponent = typeof CodeBlockComponent & {
-  HighlightConfigProvider: typeof CodeBlockHighlightConfigProvider;
-};
-
-export const CodeBlock = CodeBlockComponent as CompoundedComponent;
+/**
+ * CodeBlock displays reformatted text content with syntax highlighting.
+ *
+ * Wrap it with `CodeBlockProvider` to control how `highlight.js` is loaded.
+ */
+export const CodeBlock = forwardRef(CodeBlockRender);
 
 CodeBlock.displayName = 'CodeBlock';
-CodeBlock.HighlightConfigProvider = CodeBlockHighlightConfigProvider;

@@ -1,6 +1,7 @@
 export * from './CodeBlock';
 export {
+  CodeBlockProvider,
   type CodeBlockHighlightConfig,
-  type CodeBlockHighlightConfigProviderProps,
+  type CodeBlockProviderProps,
 } from './context';
 export * from './types';

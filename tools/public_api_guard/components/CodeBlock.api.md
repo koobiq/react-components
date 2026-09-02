@@ -4,6 +4,7 @@
 
 ```ts
 
+import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
@@ -14,10 +15,8 @@ import type { ReactNode } from 'react';
 import type { Ref } from 'react';
 import { RefAttributes } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-export const CodeBlock: CompoundedComponent;
+// @public
+export const CodeBlock: ForwardRefExoticComponent<Omit<CodeBlockProps, "ref"> & RefAttributes<CodeBlockRef>>;
 
 // @public
 export type CodeBlockFile = {
@@ -37,12 +36,6 @@ export type CodeBlockHighlightConfig = Partial<{
     }>>;
     fallbackLanguage: string;
 }>;
-
-// @public (undocumented)
-export type CodeBlockHighlightConfigProviderProps = {
-    config: CodeBlockHighlightConfig;
-    children?: ReactNode;
-};
 
 // @public (undocumented)
 export type CodeBlockProps = {
@@ -70,11 +63,24 @@ export type CodeBlockProps = {
     renderTabLabel?: (file: CodeBlockFile, fallbackFileName: string) => ReactNode;
     fallbackFileName?: string;
     startFrom?: number;
+    slotProps?: {
+        header?: Omit<ComponentPropsWithRef<'div'>, 'children'>;
+        content?: Omit<ComponentPropsWithRef<'div'>, 'children'>;
+    };
     className?: string;
     style?: CSSProperties;
     ref?: Ref<CodeBlockRef>;
     'data-testid'?: string | number;
 } & DataAttributeProps;
+
+// @public
+export function CodeBlockProvider(props: CodeBlockProviderProps): JSX.Element;
+
+// @public (undocumented)
+export type CodeBlockProviderProps = {
+    highlightConfig: CodeBlockHighlightConfig;
+    children?: ReactNode;
+};
 
 // @public
 export type CodeBlockRef = {
