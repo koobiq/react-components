@@ -2,10 +2,15 @@ name: Commitlint
 
 on: [pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-node
-      - run: echo "${{ github.event.pull_request.title }}" | pnpm commitlint --verbose
+      - run: printf '%s\n' "$PR_TITLE" | pnpm commitlint --verbose
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
