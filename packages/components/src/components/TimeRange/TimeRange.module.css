@@ -10,14 +10,13 @@
 
 /* Focus normally moves into the popover's dialog once it opens, so the
    default `:pressed`/`:focus-within` styling can't reflect the open state —
-   key off `aria-expanded` instead, which stays put for as long as it's open. */
-.triggerLink button[aria-expanded='true'] {
+   key off the trigger's own `data-open` instead, which stays put for as long
+   as it's open. */
+.triggerLink button[data-open] {
   color: var(--kbq-states-foreground-theme-active);
 }
 
-.customTriggerButton[aria-expanded='true'] {
-  --button-border-color: var(--button-border-color-active);
-
+.customTriggerButton[data-open] {
   background-color: var(--button-bg-color-active);
 }
 

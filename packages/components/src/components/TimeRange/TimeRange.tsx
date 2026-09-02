@@ -216,7 +216,7 @@ export function TimeRangeRender<T extends DateValue>(
 
     if (!wasCorrected || !corrected) return;
 
-    const signature = `${availableTypesKey}|${customTypesKey}|${corrected.type}`;
+    const signature = `${availableTypesKey}|${customTypesKey}|${corrected.type}|${minValue?.toString()}|${maxValue?.toString()}`;
 
     if (lastCorrectedSignatureRef.current === signature) return;
 

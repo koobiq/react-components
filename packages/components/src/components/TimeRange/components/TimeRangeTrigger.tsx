@@ -54,6 +54,7 @@ export function TimeRangeTrigger({
         type="button"
         isPseudo
         endIcon={<IconCalendarO16 />}
+        data-open={isOpen || undefined}
       >
         {isEmpty ? placeholder : formattedValue}
       </Link>

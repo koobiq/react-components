@@ -69,11 +69,12 @@ export const CustomTrigger: Story = {
     return (
       <TimeRange {...args}>
         <TimeRange.Trigger>
-          {({ formattedValue, buttonProps }) => (
+          {({ formattedValue, isOpen, buttonProps }) => (
             <Button
               {...buttonProps}
               variant="fade-contrast-outline"
               className={s.customTriggerButton}
+              data-open={isOpen || undefined}
             >
               {formattedValue}
             </Button>
@@ -116,7 +117,7 @@ export const AsFormField: Story = {
                   // part of it, so clicking there wouldn't open the popover
                   // — forward the click to the trigger, same as
                   // `SelectNext`'s ControlGroup.
-                  if (e.currentTarget !== e.target) return;
+                  if (triggerRef.current?.contains(e.target as Node)) return;
                   e.preventDefault();
                   triggerRef.current?.click();
                 }}
