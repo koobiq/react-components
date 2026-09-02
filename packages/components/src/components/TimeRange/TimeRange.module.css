@@ -2,20 +2,6 @@
 
 /* ── Trigger ──────────────────────────────────────────────────── */
 
-.triggerLink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--kbq-size-xxs);
-}
-
-/* Focus normally moves into the popover's dialog once it opens, so the
-   default `:pressed`/`:focus-within` styling can't reflect the open state —
-   key off the trigger's own `data-open` instead, which stays put for as long
-   as it's open. */
-.triggerLink button[data-open] {
-  color: var(--kbq-states-foreground-theme-active);
-}
-
 .customTriggerButton[data-open] {
   background-color: var(--button-bg-color-active);
 }
@@ -76,7 +62,7 @@
   flex-direction: column;
   gap: var(--kbq-size-s);
   padding-block-start: var(--kbq-size-m);
-  border-block-start: 1px solid var(--kbq-line-divider);
+  border-block-start: 1px solid var(--kbq-line-contrast-less);
 }
 
 /* ── Manual from/to row ───────────────────────────────────────── */

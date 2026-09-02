@@ -147,7 +147,6 @@ export function TimeRangeRender<T extends DateValue>(
     defaultValue,
     defaultRangeValue,
     onChange,
-    onValueCorrected,
     minValue,
     maxValue,
     availableTimeRangeTypes = defaultTimeRangeTypes,
@@ -159,12 +158,23 @@ export function TimeRangeRender<T extends DateValue>(
     renderOption,
     isDisabled = false,
     isReadOnly = false,
+    label,
+    isLabelHidden = false,
+    isRequired = false,
+    isInvalid = false,
+    errorMessage,
+    caption,
+    fullWidth,
+    labelPlacement,
+    labelAlign,
     className,
     style,
     'data-testid': testId,
     slotProps,
     ...other
   } = props;
+
+  const groupRef = useRef<HTMLDivElement>(null);
 
   const t = useLocalizedStringFormatter(intlMessages);
   const rangeFormatter = useDateFormatter({ month: 'long', day: 'numeric' });
@@ -194,39 +204,29 @@ export function TimeRangeRender<T extends DateValue>(
     toDraft(initial, defaultRangeValue, minValue, maxValue)
   );
 
-  // Dedupes repeated `onValueCorrected` calls for the same corrected outcome
-  // — in controlled mode `committed` never changes, so without this the
-  // effect below would otherwise fire on every unrelated re-render.
-  const lastCorrectedSignatureRef = useRef<string | null>(null);
   const availableTypesKey = resolvedAvailableTypes.join(',');
 
   const customTypesKey = customTimeRangeTypes
     .map((entry) => entry.type)
     .join(',');
 
+  // Only an uncontrolled value is self-corrected: a controlled `value` is
+  // owned by the consumer, so it's rendered as given rather than silently
+  // rewritten via `setCommitted`.
   useEffect(() => {
+    if (valueProp !== undefined) return;
+
     const { value: corrected, corrected: wasCorrected } =
       checkAndCorrectTimeRangeValue(
-        valueProp !== undefined ? valueProp : committed,
+        committed,
         resolvedAvailableTypes,
         customTimeRangeTypes,
         minValue,
         maxValue
       );
 
-    if (!wasCorrected || !corrected) return;
-
-    const signature = `${availableTypesKey}|${customTypesKey}|${corrected.type}|${minValue?.toString()}|${maxValue?.toString()}`;
-
-    if (lastCorrectedSignatureRef.current === signature) return;
-
-    lastCorrectedSignatureRef.current = signature;
-
-    onValueCorrected?.(corrected);
-
-    // A controlled `value` is corrected by the consumer, via `onValueCorrected`.
-    if (valueProp === undefined) setCommitted(corrected);
-    // Only re-check when the incoming/committed value or preset configuration changes.
+    if (wasCorrected && corrected) setCommitted(corrected);
+    // Only re-check when the committed value or preset configuration changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     valueProp,
@@ -283,6 +283,9 @@ export function TimeRangeRender<T extends DateValue>(
       hideArrow,
       className,
       style,
+      // A custom trigger has no `ControlGroup` to anchor to — fall back to
+      // the popover's own trigger-element ref in that case.
+      ...(children ? {} : { anchorRef: groupRef }),
     },
     slotProps?.popover
   );
@@ -301,6 +304,25 @@ export function TimeRangeRender<T extends DateValue>(
             buttonProps: {
               ...triggerProps,
               ref: mergeRefs(ref, triggerProps.ref),
+            },
+            formField: {
+              label,
+              isLabelHidden,
+              isRequired,
+              isInvalid,
+              errorMessage,
+              caption,
+              fullWidth,
+              labelPlacement,
+              labelAlign,
+              groupRef,
+              slotProps: {
+                root: slotProps?.root,
+                label: slotProps?.label,
+                group: slotProps?.group,
+                caption: slotProps?.caption,
+                errorMessage: slotProps?.errorMessage,
+              },
             },
           }}
         >

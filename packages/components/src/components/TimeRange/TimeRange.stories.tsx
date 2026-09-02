@@ -1,13 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { getLocalTimeZone, parseTime, today } from '@internationalized/date';
-import { IconChevronDownS16 } from '@koobiq/react-icons';
-import { Button as UnstyledButton } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '../Button';
-import { FormField } from '../FormField';
-import { Typography } from '../Typography';
 
 import { TimeRange } from './TimeRange';
 import s from './TimeRange.module.css';
@@ -85,51 +81,29 @@ export const CustomTrigger: Story = {
   },
 };
 
-export const AsFormField: Story = {
+export const WithLabel: Story = {
   render: function Render(args) {
-    const triggerRef = useRef<HTMLButtonElement>(null);
-    const groupRef = useRef<HTMLDivElement>(null);
-
     return (
       <TimeRange
-        ref={triggerRef}
+        label="Period"
+        caption="Applies to the whole report"
         placeholder="Select a period"
-        slotProps={{ popover: { anchorRef: groupRef } }}
         {...args}
-      >
-        <TimeRange.Trigger>
-          {({
-            formattedValue,
-            isEmpty,
-            isDisabled,
-            placeholder,
-            buttonProps,
-          }) => (
-            <FormField data-disabled={isDisabled || undefined}>
-              <FormField.Label>Period</FormField.Label>
-              <FormField.ControlGroup
-                ref={groupRef}
-                isDisabled={isDisabled}
-                endAddon={<IconChevronDownS16 className={s.chevron} />}
-                slotProps={{ endAddon: { className: s.addon } }}
-                onMouseDown={(e) => {
-                  // The chevron/padding around the trigger button aren't
-                  // part of it, so clicking there wouldn't open the popover
-                  // — forward the click to the trigger, same as
-                  // `SelectNext`'s ControlGroup.
-                  if (triggerRef.current?.contains(e.target as Node)) return;
-                  e.preventDefault();
-                  triggerRef.current?.click();
-                }}
-              >
-                <UnstyledButton {...buttonProps} className={s.selectValue}>
-                  {isEmpty ? placeholder : formattedValue}
-                </UnstyledButton>
-              </FormField.ControlGroup>
-            </FormField>
-          )}
-        </TimeRange.Trigger>
-      </TimeRange>
+      />
+    );
+  },
+};
+
+export const Invalid: Story = {
+  render: function Render(args) {
+    return (
+      <TimeRange
+        label="Period"
+        placeholder="Select a period"
+        isInvalid
+        errorMessage="Select a period to continue"
+        {...args}
+      />
     );
   },
 };
@@ -251,26 +225,6 @@ export const CustomOption: Story = {
         renderOption={({ type }) => type.toUpperCase()}
         {...args}
       />
-    );
-  },
-};
-
-export const ValueCorrected: Story = {
-  render: function Render(args) {
-    const [message, setMessage] = useState<string | null>();
-
-    return (
-      <>
-        <TimeRange
-          defaultValue={{ type: 'last30Days' }}
-          availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
-          onValueCorrected={(value) =>
-            setMessage(`Initial value: last30Days. Corrected to: ${value.type}`)
-          }
-          {...args}
-        />
-        {message && <Typography style={{ marginTop: 8 }}>{message}</Typography>}
-      </>
     );
   },
 };

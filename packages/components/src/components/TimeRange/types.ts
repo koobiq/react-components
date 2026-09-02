@@ -4,6 +4,15 @@ import type { DateTimeDuration, Time } from '@internationalized/date';
 import type { DataAttributeProps } from '@koobiq/react-core';
 import type { ButtonOptions, DateValue } from '@koobiq/react-primitives';
 
+import type {
+  FormFieldCaptionProps,
+  FormFieldControlGroupProps,
+  FormFieldErrorProps,
+  FormFieldLabelProps,
+  FormFieldProps,
+  FormFieldPropLabelAlign,
+  FormFieldPropLabelPlacement,
+} from '../FormField';
 import type { PopoverProps } from '../Popover';
 import type { RadioGroupProps } from '../RadioGroup';
 
@@ -104,7 +113,7 @@ export type TimeRangeTriggerRenderProps = {
 
 export type TimeRangeTriggerProps = {
   /**
-   * Renders a custom trigger. Omit it to get the default pseudo-link
+   * Renders a custom trigger. Omit it to get the default `FormField`-based
    * trigger.
    */
   children?: (context: TimeRangeTriggerRenderProps) => ReactElement;
@@ -122,8 +131,6 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   };
   /** Handler that is called when the value changes, i.e. Apply is pressed. */
   onChange?: (value: TimeRangeValue | null) => void;
-  /** Handler that is called when an out-of-range initial/incoming value gets corrected. */
-  onValueCorrected?: (value: TimeRangeValue) => void;
   /** The minimum allowed date for the manual range editor. */
   minValue?: T;
   /** The maximum allowed date for the manual range editor. */
@@ -150,9 +157,47 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   placeholder?: string;
   /**
    * A custom trigger, composed from a `TimeRange.Trigger`. Omit it to render
-   * the default pseudo-link trigger.
+   * the default `FormField`-based trigger.
    */
   children?: ReactNode;
+  /** Label displayed above the default trigger. No effect on a custom trigger. */
+  label?: ReactNode;
+  /**
+   * If `true`, `label` is visually hidden but still exposed to assistive
+   * technology.
+   * @default false
+   */
+  isLabelHidden?: boolean;
+  /**
+   * If `true`, `label` is marked as required.
+   * @default false
+   */
+  isRequired?: boolean;
+  /**
+   * If `true`, the default trigger is styled and marked as invalid.
+   * @default false
+   */
+  isInvalid?: boolean;
+  /** Error message shown below the default trigger when `isInvalid` is `true`. */
+  errorMessage?: ReactNode;
+  /** Supplementary text shown below the default trigger. */
+  caption?: ReactNode;
+  /**
+   * If `true`, the default trigger stretches to fill its container's inline
+   * size.
+   * @default false
+   */
+  fullWidth?: boolean;
+  /**
+   * `label`'s position relative to the default trigger.
+   * @default 'top'
+   */
+  labelPlacement?: FormFieldPropLabelPlacement;
+  /**
+   * `label`'s horizontal alignment relative to the default trigger.
+   * @default 'start'
+   */
+  labelAlign?: FormFieldPropLabelAlign;
   /** Renders a custom label for a preset option in the editor. */
   renderOption?: (context: TimeRangeOptionContext) => ReactNode;
   /**
@@ -177,6 +222,16 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   slotProps?: {
     popover?: PopoverProps;
     radioGroup?: RadioGroupProps;
+    /** Only applies to the default trigger. */
+    root?: FormFieldProps;
+    /** Only applies to the default trigger. */
+    label?: FormFieldLabelProps;
+    /** Only applies to the default trigger. */
+    group?: FormFieldControlGroupProps;
+    /** Only applies to the default trigger. */
+    caption?: FormFieldCaptionProps;
+    /** Only applies to the default trigger. */
+    errorMessage?: FormFieldErrorProps;
   };
 } & DataAttributeProps;
 

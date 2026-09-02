@@ -69,25 +69,25 @@ export default {
     allTime: 'All time',
     currentQuarter: 'Current quarter',
     currentYear: 'Current year',
-    range: 'Custom range',
+    range: 'Period',
     duration: (args: DurationArgs) =>
       formatDuration(args, 'en-US', enUnits, () => 'Last'),
   },
   'ru-RU': {
     apply: 'Применить',
     cancel: 'Отмена',
-    from: 'С',
-    to: 'По',
+    from: 'с',
+    to: 'по',
     fromTimeLabel: 'время начала',
     fromDateLabel: 'дата начала',
     toTimeLabel: 'время окончания',
     toDateLabel: 'дата окончания',
     placeholder: 'Выберите период',
     presets: 'Период',
-    allTime: 'Всё время',
+    allTime: 'Все время',
     currentQuarter: 'Текущий квартал',
     currentYear: 'Текущий год',
-    range: 'Свой диапазон',
+    range: 'Период',
     duration: (args: DurationArgs) =>
       formatDuration(args, 'ru-RU', ruUnits, (count, unit) =>
         count === 1 ? (ruSingularPrefix[unit] ?? 'Последний') : 'Последние'

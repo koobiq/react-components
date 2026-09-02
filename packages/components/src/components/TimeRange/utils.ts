@@ -206,7 +206,7 @@ export function getDefaultRangeValue<T extends DateValue>(
 /**
  * Formats a preset's label: for `range`, the actual `start`–`end` span (e.g.
  * "August 31 – September 1") when both `range` and `formatter` are given,
- * falling back to a literal "Custom range" string otherwise (e.g. for the
+ * falling back to a literal "Period" string otherwise (e.g. for the
  * `range` option itself in the presets list, which has no concrete bounds
  * yet); a literal string for `allTime`/`currentQuarter`/`currentYear`; an
  * ICU-pluralized "last N units" for duration-based presets (built-in or

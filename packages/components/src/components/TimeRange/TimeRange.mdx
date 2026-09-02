@@ -32,29 +32,28 @@ import { TimeRange } from '@koobiq/react-components';
 
 <Props of={Stories.Overview} />
 
+## Form field
+
+Like `Input`, `Select`, and `TreeSelect`, `TimeRange`'s default trigger is a
+`FormField` control: pass `label`, `isLabelHidden`, `isRequired`, `caption`,
+`isInvalid`, `errorMessage`, `fullWidth`, `labelPlacement`, and `labelAlign`
+directly, the same as any other form field. Reach the underlying `FormField`
+parts via `slotProps.root`/`.label`/`.group`/`.caption`/`.errorMessage` for
+anything not covered by a dedicated prop.
+
+<Story of={Stories.WithLabel} />
+<Story of={Stories.Invalid} />
+
 ## Custom trigger
 
 Render a `TimeRange.Trigger` as `TimeRange`'s child to replace the default
-trigger entirely. Its function child receives the formatted value, the
-popover's open state, and `buttonProps` — spread `buttonProps` onto whatever
-pressable element you render so it gets the popover's press/keyboard/ref
-wiring.
+trigger entirely — this opts out of the built-in `FormField` wiring above, so
+`label`/`caption`/`isInvalid`/`errorMessage` have no effect. Its function
+child receives the formatted value, the popover's open state, and
+`buttonProps` — spread `buttonProps` onto whatever pressable element you
+render so it gets the popover's press/keyboard/ref wiring.
 
 <Story of={Stories.CustomTrigger} />
-
-## Trigger as a form field
-
-Build a custom `Select`-like control by rendering a `FormField` inside
-`TimeRange.Trigger`'s render function — its `isDisabled`/`isEmpty` state
-mirrors onto `FormField`/`FormField.ControlGroup` so the field's chrome
-(background, border) reacts the same way a built-in `FormField` control does.
-Use the unstyled `Button` primitive from `@koobiq/react-primitives` for the
-pressable element so it doesn't paint its own border on top of
-`FormField.ControlGroup`'s, and forward `FormField.ControlGroup`'s own
-`onMouseDown` to the trigger (see the story's source) so clicking anywhere in
-the field — not just the button — opens the popover.
-
-<Story of={Stories.AsFormField} />
 
 ## Manual range only
 
@@ -88,15 +87,12 @@ fixed `start`/`end`, useful for calendar-anchored presets like fiscal quarters.
 
 ## Correcting out-of-range values
 
-When a `value`/`defaultValue` (or `customTimeRangeTypes`/`availableTimeRangeTypes`
-change makes the current value's type unavailable), `TimeRange` falls back to
-the first available preset and calls `onValueCorrected` with the corrected
-value. For an uncontrolled `defaultValue`, `TimeRange` also applies the
-correction to its own state. For a controlled `value`, it never fires
-`onChange` on your behalf — apply the correction to your own state in the
-`onValueCorrected` handler if you want it reflected.
-
-<Story of={Stories.ValueCorrected} />
+When an uncontrolled `defaultValue` (or a `customTimeRangeTypes`/
+`availableTimeRangeTypes` change) makes the current value's type unavailable,
+`TimeRange` falls back to the first available preset and applies the
+correction to its own state. A controlled `value` is owned by the consumer,
+so it's rendered as given instead — validate it yourself beforehand with
+`checkAndCorrectTimeRangeValue` if you want it corrected.
 
 ## Utilities
 
@@ -115,7 +111,7 @@ example, to build an API query for the currently selected range).
   `LocalizedStringFormatter`. For `type: 'range'`, pass the
   resolved `start`/`end` bounds and a `DateFormatter` (e.g. from
   `useDateFormatter({ month: 'long', day: 'numeric' })`) to get the actual
-  span ("August 31 – September 1") instead of the literal "Custom range"
+  span ("August 31 – September 1") instead of the literal "Period"
   fallback.
 - **`getTimeRangeTypeConfig(type, customTimeRangeTypes?)`** — looks up a
   preset's `entry` (its `units`/`translationType`), checking the built-in

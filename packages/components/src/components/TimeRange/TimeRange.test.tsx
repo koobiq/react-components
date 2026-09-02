@@ -92,6 +92,64 @@ describe('TimeRange', () => {
     expect(getTrigger()).toHaveTextContent('Select period');
   });
 
+  describe('form field', () => {
+    it('should render the label above the trigger', () => {
+      render(<TimeRange data-testid="control" label="Period" />);
+
+      expect(screen.getByText('Period')).toBeInTheDocument();
+    });
+
+    it('should render the caption below the trigger', () => {
+      render(<TimeRange data-testid="control" caption="Applies everywhere" />);
+
+      expect(screen.getByText('Applies everywhere')).toBeInTheDocument();
+    });
+
+    it('should render the error message only when isInvalid is true', () => {
+      const { rerender } = render(
+        <TimeRange data-testid="control" errorMessage="Required" />
+      );
+
+      expect(screen.queryByText('Required')).not.toBeInTheDocument();
+
+      rerender(
+        <TimeRange data-testid="control" isInvalid errorMessage="Required" />
+      );
+
+      expect(screen.getByText('Required')).toBeInTheDocument();
+    });
+
+    it('should open the popover when clicking the control group outside the button', async () => {
+      render(<TimeRange data-testid="control" label="Period" />);
+
+      // The group's own padding/chevron aren't part of the button, so a
+      // click there must be forwarded to it to open the popover.
+      await userEvent.click(screen.getByRole('group'));
+      await getDialog();
+    });
+
+    it('should not apply label/caption/errorMessage to a custom trigger', () => {
+      render(
+        <TimeRange
+          label="Period"
+          caption="Applies everywhere"
+          isInvalid
+          errorMessage="Required"
+        >
+          <TimeRange.Trigger>
+            {({ buttonProps }) => (
+              <Button {...buttonProps} data-testid="control" />
+            )}
+          </TimeRange.Trigger>
+        </TimeRange>
+      );
+
+      expect(screen.queryByText('Period')).not.toBeInTheDocument();
+      expect(screen.queryByText('Applies everywhere')).not.toBeInTheDocument();
+      expect(screen.queryByText('Required')).not.toBeInTheDocument();
+    });
+  });
+
   it('should call the TimeRange.Trigger render function with the current formatted value and open state', async () => {
     render(
       <TimeRange defaultValue={{ type: 'lastHour' }}>
@@ -283,40 +341,29 @@ describe('TimeRange', () => {
     });
   });
 
-  it('should correct an out-of-range value and call onValueCorrected', async () => {
-    const onValueCorrected = vi.fn();
-
+  it('should render a controlled out-of-range value as-is, without correcting it', async () => {
     render(
       <TimeRange
         data-testid="control"
         value={{ type: 'last30Days' }}
         availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
         onChange={() => {}}
-        onValueCorrected={onValueCorrected}
       />
     );
 
-    await waitFor(() => expect(onValueCorrected).toHaveBeenCalledTimes(1));
-
-    expect(onValueCorrected.mock.calls[0][0]).toMatchObject({
-      type: 'lastHour',
-    });
+    expect(getTrigger()).toHaveTextContent('Last 30 days');
   });
 
   it('should self-correct an out-of-range defaultValue and select it when opened', async () => {
-    const onValueCorrected = vi.fn();
-
     render(
       <TimeRange
         data-testid="control"
         defaultValue={{ type: 'last30Days' }}
         availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
-        onValueCorrected={onValueCorrected}
       />
     );
 
-    await waitFor(() => expect(onValueCorrected).toHaveBeenCalledTimes(1));
-    expect(getTrigger()).toHaveTextContent('Last hour');
+    await waitFor(() => expect(getTrigger()).toHaveTextContent('Last hour'));
 
     await open();
     const dialog = await getDialog();
@@ -342,7 +389,7 @@ describe('TimeRange', () => {
     expect(fromDateField).toHaveAttribute('aria-disabled', 'true');
 
     await userEvent.click(
-      within(dialog).getByRole('radio', { name: /custom range/i })
+      within(dialog).getByRole('radio', { name: /^period$/i })
     );
 
     expect(fromDateField).not.toHaveAttribute('aria-disabled', 'true');
