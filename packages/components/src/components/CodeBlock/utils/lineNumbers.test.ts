@@ -87,6 +87,30 @@ describe('addLineNumbers', () => {
     expect(codeCells[1]?.querySelector('.hljs-string')?.textContent).toBe(' ');
   });
 
+  it('keeps the outer token on every row when the line break sits in a nested one', () => {
+    const result = parse(
+      addLineNumbers(
+        '<span class="hljs-string"><span class="hljs-subst">first\nsecond</span></span>'
+      )
+    );
+
+    const codeCells = result.querySelectorAll('.hljs-ln-code');
+
+    expect(codeCells).toHaveLength(2);
+
+    expect(Array.from(codeCells).map((cell) => cell.textContent)).toEqual([
+      'first',
+      'second',
+    ]);
+
+    // Splitting the nested token alone would leave the outer tags torn across the two rows.
+    expect(
+      Array.from(codeCells).map((cell) =>
+        Boolean(cell.querySelector('.hljs-string'))
+      )
+    ).toEqual([true, true]);
+  });
+
   it('handles empty content and ignores a trailing blank line', () => {
     expect(addLineNumbers('')).toBe('');
 

@@ -42,17 +42,15 @@ function duplicateMultilineNode(element: Element): void {
 
 /** Recursively fixes multi-line token spans produced by `highlight.js`. */
 function duplicateMultilineNodes(element: Element): void {
-  // A snapshot: `duplicateMultilineNode` rewrites the parent's `innerHTML`, which would swap the
-  // entries of the live `childNodes` list mid-iteration.
-  Array.from(element.childNodes).forEach((node) => {
-    if (getLinesCount(node.textContent ?? '') === 0) return;
+  // Depth first, and over a snapshot: `duplicateMultilineNode` rewrites the element's `innerHTML`,
+  // which would swap the entries of the live child list mid-iteration. A nested token has to be
+  // split before its parent — otherwise the parent keeps a single pair of tags around a line break
+  // and `addLineNumbersBlockFor` tears them apart across two rows.
+  Array.from(element.children).forEach(duplicateMultilineNodes);
 
-    if (node.childNodes.length > 0) {
-      duplicateMultilineNodes(node as Element);
-    } else if (node.parentElement) {
-      duplicateMultilineNode(node.parentElement);
-    }
-  });
+  if (getLinesCount(element.textContent ?? '') > 0) {
+    duplicateMultilineNode(element);
+  }
 }
 
 function addLineNumbersBlockFor(

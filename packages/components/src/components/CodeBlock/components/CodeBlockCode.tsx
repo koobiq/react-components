@@ -41,21 +41,26 @@ export function CodeBlockCode(props: CodeBlockCodeProps) {
     viewLessText,
   } = props;
 
+  const codeClassName = clsx(
+    'hljs',
+    s.code,
+    utilClasses.typography['mono-codeblock']
+  );
+
   return (
     <>
       <pre ref={preRef} className={s.pre}>
-        <code
-          className={clsx(
-            'hljs',
-            s.code,
-            utilClasses.typography['mono-codeblock']
-          )}
-          data-language={isHighlighted ? language : undefined}
-          // `highlight.js` escapes the raw source before wrapping tokens in spans — see useHighlightedCode.
-          dangerouslySetInnerHTML={isHighlighted ? { __html: html } : undefined}
-        >
-          {isHighlighted ? undefined : source}
-        </code>
+        {/* Separate branches: `dangerouslySetInnerHTML` and children may not sit on one element. */}
+        {isHighlighted ? (
+          <code
+            className={codeClassName}
+            data-language={language}
+            // `highlight.js` escapes the raw source before wrapping tokens in spans — see useHighlightedCode.
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        ) : (
+          <code className={codeClassName}>{source}</code>
+        )}
       </pre>
 
       {canViewAll && (
