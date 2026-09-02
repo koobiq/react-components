@@ -127,6 +127,15 @@ export function useHighlightedCode(
   useEffect(() => {
     let cancelled = false;
 
+    // The inputs `isCurrentResult` compares the stored result against.
+    const inputs = {
+      config,
+      content: file.content,
+      fileLanguage: file.language,
+      hasLineNumbers,
+      startFrom,
+    };
+
     getHljsInstance(config)
       .then((hljs) => {
         if (cancelled) return;
@@ -180,15 +189,11 @@ export function useHighlightedCode(
           : value;
 
         setResult({
+          ...inputs,
           html,
           pending: false,
           failed: false,
           language: resolvedLanguage,
-          config,
-          content: file.content,
-          fileLanguage: file.language,
-          hasLineNumbers,
-          startFrom,
         });
       })
       .catch((error: unknown) => {
@@ -199,15 +204,11 @@ export function useHighlightedCode(
         }
 
         setResult({
+          ...inputs,
           html: '',
           pending: false,
           failed: true,
           language: file.language ?? fallbackLanguage,
-          config,
-          content: file.content,
-          fileLanguage: file.language,
-          hasLineNumbers,
-          startFrom,
         });
       });
 

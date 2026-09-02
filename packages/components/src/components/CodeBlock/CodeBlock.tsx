@@ -158,8 +158,9 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
     setActiveFileIndex,
   ]);
 
-  // A single file without a name has nothing to switch between or label — hide the tabs, same as Angular.
-  const isSingleUnnamedFile = files.length === 1 && !activeFile.filename;
+  // A single file without a name has nothing to switch between or label — hide the tabs, same as
+  // Angular. An empty list has nothing to label either, and tabs would render an empty tab list.
+  const isSingleUnnamedFile = files.length <= 1 && !activeFile.filename;
 
   // A controlled `false` deliberately overrides the automatic single-file behavior so a custom
   // header can remain visible.
@@ -194,16 +195,23 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
 
   const contentExceedsMaxHeight = hasMaxHeight && preRect.height > maxHeight;
 
-  const mainElement = mainRef.current;
+  const [isContentOverflowing, setIsContentOverflowing] = useState(false);
 
-  const canFocusContent = Boolean(
-    !calculatedMaxHeight &&
-    mainElement &&
-    (mainElement.scrollHeight > mainElement.clientHeight ||
-      mainElement.scrollWidth > mainElement.clientWidth)
-  );
+  // Measured after the commit: reading `mainRef` while rendering reports the DOM of the previous
+  // one, which is null on mount and stale right after the active file changes.
+  useEffect(() => {
+    const element = mainRef.current;
 
-  const { isScrolled, onScroll } = useOverflowShadow();
+    setIsContentOverflowing(
+      element != null &&
+        (element.scrollHeight > element.clientHeight ||
+          element.scrollWidth > element.clientWidth)
+    );
+  }, [activeFileIndex, calculatedMaxHeight, html, pending, preRect, softWrap]);
+
+  const canFocusContent = !calculatedMaxHeight && isContentOverflowing;
+
+  const { isScrolled, onScroll, resetShadow } = useOverflowShadow();
 
   const scrollTo = (options: CodeBlockScrollToOptions) => {
     if (pending) {
@@ -227,9 +235,15 @@ function CodeBlockRender(props: CodeBlockProps, ref: Ref<CodeBlockRef>) {
     scrollTo,
   }));
 
-  const scrollToTop = () =>
-    mainRef.current &&
-    scrollElementTo(mainRef.current, { top: 0, behavior: 'instant' });
+  const scrollToTop = () => {
+    // With tabs the panel this scrolls is about to be replaced, so the shadow it left behind has to
+    // be dropped by hand — the new, unscrolled panel never fires a scroll event of its own.
+    resetShadow();
+
+    if (mainRef.current) {
+      scrollElementTo(mainRef.current, { top: 0, behavior: 'instant' });
+    }
+  };
 
   const onTabChange = (index: number) => {
     if (index === activeFileIndex) return;

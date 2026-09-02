@@ -993,6 +993,29 @@ describe('CodeBlock', () => {
     expect(header).not.toHaveAttribute('data-scrolled');
   });
 
+  it('drops the header shadow when the active file changes', async () => {
+    render(<CodeBlock files={multiFile} />);
+
+    await waitFor(() => expect(getCode()).not.toBeNull());
+
+    const header = screen.getByTestId('code-block-header');
+    const panel = screen.getByRole('tabpanel');
+
+    Object.defineProperty(panel, 'scrollTop', {
+      configurable: true,
+      value: 10,
+      writable: true,
+    });
+
+    fireEvent.scroll(panel);
+    expect(header).toHaveAttribute('data-scrolled');
+
+    // The panel is re-created on tab change, so it never reports a scroll back to the top itself.
+    await user.click(screen.getByRole('tab', { name: 'main.ts' }));
+
+    expect(header).not.toHaveAttribute('data-scrolled');
+  });
+
   it('clamps an out-of-range active file index', async () => {
     const onActiveFileIndexChange = vi.fn();
 

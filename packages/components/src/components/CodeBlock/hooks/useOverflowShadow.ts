@@ -11,5 +11,9 @@ export function useOverflowShadow() {
     setIsScrolled(event.currentTarget.scrollTop > 0);
   }, []);
 
-  return { isScrolled, onScroll };
+  // A remounted scroll container (`Tabs` re-creates the panel on tab change) starts at the top
+  // without firing a scroll event, so the shadow has to be dropped explicitly.
+  const resetShadow = useCallback(() => setIsScrolled(false), []);
+
+  return { isScrolled, onScroll, resetShadow };
 }

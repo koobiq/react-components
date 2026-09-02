@@ -42,7 +42,9 @@ function duplicateMultilineNode(element: Element): void {
 
 /** Recursively fixes multi-line token spans produced by `highlight.js`. */
 function duplicateMultilineNodes(element: Element): void {
-  element.childNodes.forEach((node) => {
+  // A snapshot: `duplicateMultilineNode` rewrites the parent's `innerHTML`, which would swap the
+  // entries of the live `childNodes` list mid-iteration.
+  Array.from(element.childNodes).forEach((node) => {
     if (getLinesCount(node.textContent ?? '') === 0) return;
 
     if (node.childNodes.length > 0) {

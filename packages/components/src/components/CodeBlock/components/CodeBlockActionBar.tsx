@@ -95,7 +95,7 @@ export function CodeBlockActionBar(props: CodeBlockActionBarProps) {
   };
 
   return (
-    <div className={s.actionbar} data-testid="code-block-actionbar">
+    <div className={s.actionbar}>
       <div className={s.actionbarButtonStack}>
         {canToggleSoftWrap && (
           <Tooltip

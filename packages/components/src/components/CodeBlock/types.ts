@@ -143,7 +143,10 @@ export type CodeBlockProps = {
    * @default 'code'
    */
   fallbackFileName?: string;
-  /** The starting line number. */
+  /**
+   * The starting line number.
+   * @default 1
+   */
   startFrom?: number;
   /** The props used for each slot inside. */
   slotProps?: {

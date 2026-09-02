@@ -80,7 +80,8 @@ export function CodeBlockTabs(props: CodeBlockTabsProps) {
               : file.filename || fallbackFileName
           }
         >
-          {panelContent}
+          {/* `Tabs` renders the children of the selected tab only, so the others need no copy. */}
+          {index === activeFileIndex ? panelContent : null}
         </Tab>
       ))}
     </Tabs>
