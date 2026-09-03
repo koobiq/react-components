@@ -195,6 +195,10 @@
   grid-area: 2 / 1 / 3 / -1;
   overflow: auto;
   border-radius: var(--kbq-size-m);
+  scrollbar-width: auto;
+  scrollbar-gutter: auto;
+  scrollbar-color: var(--kbq-scrollbar-thumb-default-background)
+    var(--kbq-background-transparent);
 
   &:focus-visible {
     outline: 2px solid var(--kbq-states-line-focus-theme);

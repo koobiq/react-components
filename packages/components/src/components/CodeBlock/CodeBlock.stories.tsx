@@ -4,6 +4,7 @@ import { IconDiamond16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { FlexBox } from '../FlexBox';
 import { spacing } from '../layout';
 import { SidePanel } from '../SidePanel';
 import { Toggle } from '../Toggle';
@@ -130,12 +131,12 @@ export const HeaderPinned: Story = {
           hasLineNumbers
           hideTabs={false}
           renderTabLabel={(file, fallbackFileName) => (
-            <>
-              <IconDiamond16 className={spacing({ mie: 'xs' })} />
+            <FlexBox alignItems="center" gap="xs">
+              <IconDiamond16 />
               <Typography as="span" variant="caps-normal-strong">
                 {file.language || fallbackFileName}
               </Typography>
-            </>
+            </FlexBox>
           )}
           style={{ blockSize: 350 }}
         />
