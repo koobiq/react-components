@@ -185,6 +185,26 @@ export function TimeRangeRender<T extends DateValue>(
     hideRangeAsDefault
   );
 
+  // Using any FormField-only prop switches the default trigger from a plain
+  // link to a `FormField` control — FormField is an enhancement you opt into
+  // by using it, not a separate flag to keep in sync with these props.
+  const isFormFieldTrigger = Boolean(
+    label !== undefined ||
+    errorMessage !== undefined ||
+    caption !== undefined ||
+    isLabelHidden ||
+    isRequired ||
+    isInvalid ||
+    fullWidth ||
+    labelPlacement !== undefined ||
+    labelAlign !== undefined ||
+    slotProps?.root ||
+    slotProps?.label ||
+    slotProps?.group ||
+    slotProps?.caption ||
+    slotProps?.errorMessage
+  );
+
   const [committed, setCommitted] = useControlledState<TimeRangeValue | null>(
     valueProp,
     'defaultValue' in props
@@ -313,12 +333,14 @@ export function TimeRangeRender<T extends DateValue>(
       placement: 'bottom start',
       offset: 4,
       size: 'auto',
+      hideCloseButton: true,
       hideArrow,
       className,
       style,
-      // A custom trigger has no `ControlGroup` to anchor to — fall back to
-      // the popover's own trigger-element ref in that case.
-      ...(children ? {} : { anchorRef: groupRef }),
+      // A custom trigger, or the plain link trigger, has no `ControlGroup`
+      // to anchor to — fall back to the popover's own trigger-element ref in
+      // that case.
+      ...(children || !isFormFieldTrigger ? {} : { anchorRef: groupRef }),
     },
     slotProps?.popover
   );
@@ -334,6 +356,7 @@ export function TimeRangeRender<T extends DateValue>(
             isEmpty,
             isDisabled: isDisabled || isReadOnly,
             placeholder,
+            isFormFieldTrigger,
             buttonProps: {
               ...triggerProps,
               ref: mergeRefs(ref, triggerProps.ref),

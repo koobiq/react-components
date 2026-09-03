@@ -15,7 +15,7 @@ import type {
   FormFieldPropLabelPlacement,
 } from '../../FormField';
 
-/** Only consumed by the default trigger — a custom trigger ignores it entirely. */
+/** Only consumed by the default trigger when `isFormFieldTrigger` is `true`. */
 export type TimeRangeTriggerFormFieldContext = {
   label?: ReactNode;
   isLabelHidden?: boolean;
@@ -43,6 +43,8 @@ export type TimeRangeTriggerContextValue = {
   isEmpty: boolean;
   isDisabled?: boolean;
   placeholder?: string;
+  /** Whether the default trigger renders as a `FormField` control instead of a plain link. */
+  isFormFieldTrigger: boolean;
   buttonProps: ButtonOptions & { ref: Ref<HTMLButtonElement> };
   formField: TimeRangeTriggerFormFieldContext;
 };

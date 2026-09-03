@@ -2,13 +2,22 @@
 
 /* ── Trigger ──────────────────────────────────────────────────── */
 
-.customTriggerButton[data-open] {
-  background-color: var(--button-bg-color-active);
+.triggerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--kbq-size-xxs);
 }
 
-.chevron {
-  display: inline-flex;
-  color: var(--kbq-foreground-contrast-secondary);
+/* Focus normally moves into the popover's dialog once it opens, so the
+   default `:pressed`/`:focus-within` styling can't reflect the open state —
+   key off the trigger's own `data-open` instead, which stays put for as long
+   as it's open. */
+.triggerLink button[data-open] {
+  color: var(--kbq-states-foreground-theme-active);
+}
+
+.customTriggerButton[data-open] {
+  background-color: var(--button-bg-color-active);
 }
 
 /* Lets clicks on the chevron (and the group's own padding around it) fall
@@ -38,6 +47,10 @@
   flex-direction: column;
   gap: var(--kbq-size-s);
   padding-block-start: var(--kbq-size-m);
+}
+
+.manualRange[data-no-presets] {
+  padding-block-start: 0;
 }
 
 /* ── Manual from/to row ───────────────────────────────────────── */

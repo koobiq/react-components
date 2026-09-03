@@ -98,7 +98,11 @@ export function TimeRangeEditor<T extends DateValue>({
         />
       )}
       {showRangeSection && (
-        <div className={s.manualRange} {...focusWithinProps}>
+        <div
+          className={s.manualRange}
+          data-no-presets={!hasPresets || undefined}
+          {...focusWithinProps}
+        >
           {hasPresets && <Radio value="range">{t.format('range')}</Radio>}
           <TimeRangeDateTimeField
             label={t.format('from')}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { getLocalTimeZone, parseTime, today } from '@internationalized/date';
+import { getLocalTimeZone, today } from '@internationalized/date';
+import { IconCalendarO16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '../Button';
@@ -35,6 +36,7 @@ export const Base: Story = {
         <TimeRange
           value={value}
           onChange={(next) => setValue(next)}
+          onValueCorrected={(corrected) => setValue(corrected)}
           availableTimeRangeTypes={[
             'lastMinute',
             'last5Minutes',
@@ -55,7 +57,6 @@ export const Base: Story = {
           ]}
           {...args}
         />
-        <div>{value && JSON.stringify(value)}</div>
       </>
     );
   },
@@ -66,15 +67,15 @@ export const CustomTrigger: Story = {
     return (
       <TimeRange {...args}>
         <TimeRange.Trigger>
-          {({ formattedValue, isOpen, buttonProps }) => (
+          {({ isOpen, buttonProps }) => (
             <Button
               {...buttonProps}
-              variant="fade-contrast-outline"
+              variant="fade-contrast-filled"
               className={s.customTriggerButton}
               data-open={isOpen || undefined}
-            >
-              {formattedValue}
-            </Button>
+              startIcon={<IconCalendarO16 />}
+              onlyIcon
+            ></Button>
           )}
         </TimeRange.Trigger>
       </TimeRange>
@@ -83,26 +84,13 @@ export const CustomTrigger: Story = {
 };
 
 export const WithLabel: Story = {
+  name: 'Form field',
   render: function Render(args) {
     return (
       <TimeRange
         label="Period"
         caption="Applies to the whole report"
         placeholder="Select a period"
-        {...args}
-      />
-    );
-  },
-};
-
-export const Invalid: Story = {
-  render: function Render(args) {
-    return (
-      <TimeRange
-        label="Period"
-        placeholder="Select a period"
-        isInvalid
-        errorMessage="Select a period to continue"
         {...args}
       />
     );
@@ -132,6 +120,7 @@ export const MinMax: Story = {
 };
 
 export const CustomRangeTypes: Story = {
+  name: 'Custom presets',
   render: function Render(args) {
     return (
       <TimeRange
@@ -150,80 +139,6 @@ export const CustomRangeTypes: Story = {
           { type: 'last3Weeks', units: { weeks: 3 }, translationType: 'weeks' },
           { type: 'last3Years', units: { years: 3 }, translationType: 'years' },
         ]}
-        {...args}
-      />
-    );
-  },
-};
-
-export const CustomOption: Story = {
-  render: function Render(args) {
-    const zone = getLocalTimeZone();
-    const yearStart = today(zone).set({ month: 1, day: 1 });
-
-    return (
-      <TimeRange
-        availableTimeRangeTypes={['q1', 'q2', 'q3', 'q4']}
-        customTimeRangeTypes={[
-          {
-            type: 'q1',
-            units: {},
-            translationType: 'other',
-            range: {
-              start: { date: yearStart, time: parseTime('00:00') },
-              end: {
-                date: yearStart.set({ month: 3, day: 31 }),
-                time: parseTime('23:59'),
-              },
-            },
-          },
-          {
-            type: 'q2',
-            units: {},
-            translationType: 'other',
-            range: {
-              start: {
-                date: yearStart.set({ month: 4, day: 1 }),
-                time: parseTime('00:00'),
-              },
-              end: {
-                date: yearStart.set({ month: 6, day: 30 }),
-                time: parseTime('23:59'),
-              },
-            },
-          },
-          {
-            type: 'q3',
-            units: {},
-            translationType: 'other',
-            range: {
-              start: {
-                date: yearStart.set({ month: 7, day: 1 }),
-                time: parseTime('00:00'),
-              },
-              end: {
-                date: yearStart.set({ month: 9, day: 30 }),
-                time: parseTime('23:59'),
-              },
-            },
-          },
-          {
-            type: 'q4',
-            units: {},
-            translationType: 'other',
-            range: {
-              start: {
-                date: yearStart.set({ month: 10, day: 1 }),
-                time: parseTime('00:00'),
-              },
-              end: {
-                date: yearStart.set({ month: 12, day: 31 }),
-                time: parseTime('23:59'),
-              },
-            },
-          },
-        ]}
-        renderOption={({ type }) => type.toUpperCase()}
         {...args}
       />
     );

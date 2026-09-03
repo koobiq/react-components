@@ -30,24 +30,24 @@ import { TimeRange } from '@koobiq/react-components';
 
 ## Props
 
-<Props of={Stories.Overview} />
+<Props of={Stories.Base} />
 
 ## Form field
 
-Like `Input`, `Select`, and `TreeSelect`, `TimeRange`'s default trigger is a
-`FormField` control: pass `label`, `isLabelHidden`, `isRequired`, `caption`,
-`isInvalid`, `errorMessage`, `fullWidth`, `labelPlacement`, and `labelAlign`
-directly, the same as any other form field. Reach the underlying `FormField`
-parts via `slotProps.root`/`.label`/`.group`/`.caption`/`.errorMessage` for
-anything not covered by a dedicated prop.
+The default trigger is a plain link. Passing `label`, `isLabelHidden`,
+`isRequired`, `caption`, `isInvalid`, `errorMessage`, `fullWidth`,
+`labelPlacement`, `labelAlign`, or a matching `slotProps.root`/`.label`/
+`.group`/`.caption`/`.errorMessage` switches it to a `FormField` control
+instead — the same as `Input`, `Select`, and `TreeSelect` — with the rest of
+those props wired up directly. `isInvalid`/`errorMessage` work the same way,
+even without a dedicated example below.
 
 <Story of={Stories.WithLabel} />
-<Story of={Stories.Invalid} />
 
 ## Custom trigger
 
 Render a `TimeRange.Trigger` as `TimeRange`'s child to replace the default
-trigger entirely — this opts out of the built-in `FormField` wiring above, so
+trigger entirely — this opts out of the `FormField` wiring above, so
 `label`/`caption`/`isInvalid`/`errorMessage` have no effect. Its function
 child receives the formatted value, the popover's open state, and
 `buttonProps` — spread `buttonProps` onto whatever pressable element you
@@ -73,30 +73,11 @@ Use `minValue`/`maxValue` to restrict the manual date fields.
 `customTimeRangeTypes` registers additional presets beyond the built-in
 `TimeRangeType`s. Each needs a `units` duration (used to compute the range
 relative to "now") and a `translationType`, used to pick the unit word when
-formatting the label.
+formatting the label. A fixed `range` overrides the "now minus units"
+computation instead, useful for calendar-anchored presets like fiscal
+quarters; `renderOption` customizes how any preset is labeled in the editor.
 
 <Story of={Stories.CustomRangeTypes} />
-
-## Custom preset ranges
-
-A custom preset's `range` overrides the "now minus units" computation with a
-fixed `start`/`end`, useful for calendar-anchored presets like fiscal quarters.
-`renderOption` customizes how each preset is labeled in the editor.
-
-<Story of={Stories.CustomOption} />
-
-## Correcting out-of-range values
-
-When a `value`/`defaultValue` (or a `customTimeRangeTypes`/
-`availableTimeRangeTypes` change) makes the current value's type unavailable
-— or an available `'range'` value is missing `start`/`end` — `TimeRange`
-falls back to the first available preset (recalculating `start`/`end` for
-`'range'` when needed) and reflects the correction immediately, for both
-controlled and uncontrolled values. For an uncontrolled `defaultValue`, the
-correction is also applied to the component's own state. For a controlled
-`value`, it's only reflected in what's rendered — `TimeRange` never rewrites
-your prop — so update your own state in the `onValueCorrected` handler if
-you want the next render's `value` to agree with what's already shown.
 
 ## Accessibility
 

@@ -92,6 +92,15 @@ describe('TimeRange', () => {
     expect(getTrigger()).toHaveTextContent('Select period');
   });
 
+  it('should render the default trigger as a plain link when no FormField prop is used', () => {
+    render(
+      <TimeRange data-testid="control" defaultValue={{ type: 'lastHour' }} />
+    );
+
+    expect(screen.queryByRole('group')).not.toBeInTheDocument();
+    expect(getTrigger().tagName).toBe('BUTTON');
+  });
+
   describe('form field', () => {
     it('should render the label above the trigger', () => {
       render(<TimeRange data-testid="control" label="Period" />);
@@ -221,6 +230,11 @@ describe('TimeRange', () => {
         />
       );
 
+      // `lastHour` starts with no `start`/`end`, so mount fills them in via
+      // the self-correction effect — an unrelated `onChange` call to clear
+      // before checking the Apply/Cancel behavior below.
+      onChange.mockClear();
+
       await open();
 
       const dialog = await getDialog();
@@ -275,6 +289,11 @@ describe('TimeRange', () => {
           onChange={onChange}
         />
       );
+
+      // `lastHour` starts with no `start`/`end`, so mount fills them in via
+      // the self-correction effect — an unrelated `onChange` call to clear
+      // before checking the Apply/Cancel behavior below.
+      onChange.mockClear();
 
       await open();
 
@@ -421,6 +440,26 @@ describe('TimeRange', () => {
       expect(onValueCorrected).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'range',
+          start: expect.anything(),
+          end: expect.anything(),
+        })
+      );
+    });
+
+    it('should fill in missing start/end for an uncontrolled defaultValue on mount', () => {
+      const onValueCorrected = vi.fn();
+
+      render(
+        <TimeRange
+          data-testid="control"
+          defaultValue={{ type: 'lastHour' }}
+          onValueCorrected={onValueCorrected}
+        />
+      );
+
+      expect(onValueCorrected).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'lastHour',
           start: expect.anything(),
           end: expect.anything(),
         })
@@ -684,8 +723,12 @@ describe('TimeRange', () => {
     });
 
     describe('checkAndCorrectTimeRangeValue', () => {
-      it('should pass through an available type unchanged', () => {
-        const value: TimeRangeValue = { type: 'lastHour' };
+      it('should pass through an available type that already has start/end unchanged', () => {
+        const value: TimeRangeValue = {
+          type: 'lastHour',
+          start: new CalendarDate(2026, 1, 1),
+          end: new CalendarDate(2026, 1, 1),
+        };
 
         const result = checkAndCorrectTimeRangeValue(value, [
           'lastHour',
@@ -694,6 +737,28 @@ describe('TimeRange', () => {
 
         expect(result.corrected).toBe(false);
         expect(result.value).toBe(value);
+      });
+
+      it('should fill in missing start/end for an available duration preset', () => {
+        const result = checkAndCorrectTimeRangeValue({ type: 'lastHour' }, [
+          'lastHour',
+          'range',
+        ]);
+
+        expect(result.corrected).toBe(true);
+        expect(result.value?.type).toBe('lastHour');
+        expect(result.value?.start).toBeDefined();
+        expect(result.value?.end).toBeDefined();
+      });
+
+      it('should not correct allTime even though it has no dates', () => {
+        const result = checkAndCorrectTimeRangeValue({ type: 'allTime' }, [
+          'allTime',
+          'range',
+        ]);
+
+        expect(result.corrected).toBe(false);
+        expect(result.value).toEqual({ type: 'allTime' });
       });
 
       it('should fall back to the first available preset when unavailable', () => {

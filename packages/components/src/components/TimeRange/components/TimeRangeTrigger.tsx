@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import type { ComponentProps } from 'react';
 
 import { mergeProps, mergeRefs } from '@koobiq/react-core';
-import { IconChevronDownS16 } from '@koobiq/react-icons';
+import { IconCalendarO16, IconChevronDownS16 } from '@koobiq/react-icons';
 import { FieldErrorContext } from '@koobiq/react-primitives';
 
 import { FormField } from '../../FormField';
@@ -15,6 +15,7 @@ import type {
   FormFieldLabelProps,
   FormFieldProps,
 } from '../../FormField';
+import { Link } from '../../Link';
 import s from '../TimeRange.module.css';
 import type { TimeRangeTriggerProps } from '../types';
 
@@ -22,12 +23,13 @@ import { useTimeRangeTriggerContext } from './TimeRangeTriggerContext';
 
 /**
  * The pressable element that opens `TimeRange`'s popover. Rendered
- * automatically when `TimeRange` has no children — a `FormField`-based
- * control wired up from `label`/`isInvalid`/`errorMessage`/`caption` and the
- * rest of `TimeRange`'s own props. Render it explicitly with a function
- * child to replace the default trigger with your own layout instead — spread
- * the received `buttonProps` onto whatever element you render; the
- * `FormField` wiring only applies to the default trigger.
+ * automatically when `TimeRange` has no children — a plain pseudo-link by
+ * default, or a `FormField`-based control wired up from
+ * `label`/`isInvalid`/`errorMessage`/`caption` once any of those props is
+ * used. Render it explicitly with a function child to replace the default
+ * trigger with your own layout instead — spread the received `buttonProps`
+ * onto whatever element you render; the `FormField` wiring only applies to
+ * the default trigger.
  */
 export function TimeRangeTrigger({
   children,
@@ -39,6 +41,7 @@ export function TimeRangeTrigger({
     isEmpty,
     isDisabled,
     placeholder,
+    isFormFieldTrigger,
     buttonProps: contextButtonProps,
     formField,
   } = useTimeRangeTriggerContext();
@@ -60,6 +63,22 @@ export function TimeRangeTrigger({
       placeholder,
       buttonProps,
     });
+  }
+
+  if (!isFormFieldTrigger) {
+    return (
+      <span className={s.triggerLink}>
+        <Link
+          {...(mergeProps(buttonProps, other) as ComponentProps<typeof Link>)}
+          as="button"
+          type="button"
+          isPseudo
+          endIcon={<IconCalendarO16 />}
+        >
+          {isEmpty ? placeholder : formattedValue}
+        </Link>
+      </span>
+    );
   }
 
   const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
@@ -98,7 +117,7 @@ export function TimeRangeTrigger({
       ref: formField.groupRef,
       isDisabled,
       isInvalid: formField.isInvalid,
-      endAddon: <IconChevronDownS16 className={s.chevron} />,
+      endAddon: <IconChevronDownS16 />,
       slotProps: { endAddon: { className: s.addon } },
       // The chevron/padding around the trigger button aren't part of it, so
       // clicking there wouldn't open the popover — forward the click to the
@@ -120,7 +139,7 @@ export function TimeRangeTrigger({
       <FormField.Label {...labelProps} />
       <FormField.ControlGroup {...groupProps}>
         <FormField.Select
-          as="button"
+          as="div"
           {...(mergeProps(buttonProps, other) as ComponentProps<
             typeof FormField.Select
           >)}

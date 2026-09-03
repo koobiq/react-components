@@ -113,8 +113,8 @@ export type TimeRangeTriggerRenderProps = {
 
 export type TimeRangeTriggerProps = {
   /**
-   * Renders a custom trigger. Omit it to get the default `FormField`-based
-   * trigger.
+   * Renders a custom trigger. Omit it to get the default trigger — a plain
+   * link, or a `FormField` control once any FormField-only prop is used.
    */
   children?: (context: TimeRangeTriggerRenderProps) => ReactElement;
 } & DataAttributeProps;
@@ -167,44 +167,58 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   placeholder?: string;
   /**
    * A custom trigger, composed from a `TimeRange.Trigger`. Omit it to render
-   * the default `FormField`-based trigger.
+   * the default trigger — a plain link, or a `FormField` control once any
+   * FormField-only prop below is used.
    */
   children?: ReactNode;
-  /** Label displayed above the default trigger. No effect on a custom trigger. */
+  /**
+   * Label displayed above the default trigger. Using it switches the
+   * default trigger to a `FormField` control. No effect on a custom trigger.
+   */
   label?: ReactNode;
   /**
    * If `true`, `label` is visually hidden but still exposed to assistive
-   * technology.
+   * technology. Switches the default trigger to a `FormField` control.
    * @default false
    */
   isLabelHidden?: boolean;
   /**
-   * If `true`, `label` is marked as required.
+   * If `true`, `label` is marked as required. Switches the default trigger
+   * to a `FormField` control.
    * @default false
    */
   isRequired?: boolean;
   /**
    * If `true`, the default trigger is styled and marked as invalid.
+   * Switches the default trigger to a `FormField` control.
    * @default false
    */
   isInvalid?: boolean;
-  /** Error message shown below the default trigger when `isInvalid` is `true`. */
+  /**
+   * Error message shown below the default trigger when `isInvalid` is
+   * `true`. Switches the default trigger to a `FormField` control.
+   */
   errorMessage?: ReactNode;
-  /** Supplementary text shown below the default trigger. */
+  /**
+   * Supplementary text shown below the default trigger. Switches the
+   * default trigger to a `FormField` control.
+   */
   caption?: ReactNode;
   /**
    * If `true`, the default trigger stretches to fill its container's inline
-   * size.
+   * size. Switches the default trigger to a `FormField` control.
    * @default false
    */
   fullWidth?: boolean;
   /**
-   * `label`'s position relative to the default trigger.
+   * `label`'s position relative to the default trigger. Switches the
+   * default trigger to a `FormField` control.
    * @default 'top'
    */
   labelPlacement?: FormFieldPropLabelPlacement;
   /**
    * `label`'s horizontal alignment relative to the default trigger.
+   * Switches the default trigger to a `FormField` control.
    * @default 'start'
    */
   labelAlign?: FormFieldPropLabelAlign;
@@ -232,15 +246,15 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   slotProps?: {
     popover?: PopoverProps;
     radioGroup?: RadioGroupProps;
-    /** Only applies to the default trigger. */
+    /** Only applies to the default trigger; switches it to a `FormField` control. */
     root?: FormFieldProps;
-    /** Only applies to the default trigger. */
+    /** Only applies to the default trigger; switches it to a `FormField` control. */
     label?: FormFieldLabelProps;
-    /** Only applies to the default trigger. */
+    /** Only applies to the default trigger; switches it to a `FormField` control. */
     group?: FormFieldControlGroupProps;
-    /** Only applies to the default trigger. */
+    /** Only applies to the default trigger; switches it to a `FormField` control. */
     caption?: FormFieldCaptionProps;
-    /** Only applies to the default trigger. */
+    /** Only applies to the default trigger; switches it to a `FormField` control. */
     errorMessage?: FormFieldErrorProps;
   };
 } & DataAttributeProps;
