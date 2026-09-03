@@ -24,7 +24,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Overview: Story = {
+export const Base: Story = {
   render: function Render(args) {
     const [value, setValue] = useState<TimeRangeValue | null>({
       type: 'last7Days',
@@ -55,6 +55,7 @@ export const Overview: Story = {
           ]}
           {...args}
         />
+        <div>{value && JSON.stringify(value)}</div>
       </>
     );
   },

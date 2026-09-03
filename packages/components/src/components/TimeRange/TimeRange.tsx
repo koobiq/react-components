@@ -147,6 +147,7 @@ export function TimeRangeRender<T extends DateValue>(
     defaultValue,
     defaultRangeValue,
     onChange,
+    onValueCorrected,
     minValue,
     maxValue,
     availableTimeRangeTypes = defaultTimeRangeTypes,
@@ -198,43 +199,75 @@ export function TimeRangeRender<T extends DateValue>(
     onChange
   );
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [draft, dispatch] = useReducer(draftReducer<T>, committed, (initial) =>
-    toDraft(initial, defaultRangeValue, minValue, maxValue)
-  );
-
   const availableTypesKey = resolvedAvailableTypes.join(',');
 
   const customTypesKey = customTimeRangeTypes
     .map((entry) => entry.type)
     .join(',');
 
-  // Only an uncontrolled value is self-corrected: a controlled `value` is
-  // owned by the consumer, so it's rendered as given rather than silently
-  // rewritten via `setCommitted`.
+  const correction = checkAndCorrectTimeRangeValue(
+    committed,
+    resolvedAvailableTypes,
+    customTimeRangeTypes,
+    minValue,
+    maxValue
+  );
+
+  // What's actually rendered: a correction is reflected right away, even for
+  // a controlled `value` that the consumer hasn't updated yet, so the
+  // trigger/editor never show a preset that isn't selectable. `committed`
+  // itself only changes for an uncontrolled value (see the effect below) —
+  // for a controlled one it always mirrors `value` as given.
+  const displayValue = correction.corrected ? correction.value : committed;
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [draft, dispatch] = useReducer(
+    draftReducer<T>,
+    displayValue,
+    (initial) => toDraft(initial, defaultRangeValue, minValue, maxValue)
+  );
+
+  // Dedupes repeated `onValueCorrected` calls for the same incoming value —
+  // keyed by what was corrected (not the corrected outcome), so two
+  // different invalid values that happen to fall back to the same preset are
+  // both still reported.
+  const lastCorrectedInputRef = useRef<string | null>(null);
+
   useEffect(() => {
-    if (valueProp !== undefined) return;
+    if (!correction.corrected) return;
 
-    const { value: corrected, corrected: wasCorrected } =
-      checkAndCorrectTimeRangeValue(
-        committed,
-        resolvedAvailableTypes,
-        customTimeRangeTypes,
-        minValue,
-        maxValue
-      );
+    const inputSignature = [
+      committed?.type,
+      committed?.start?.toString(),
+      committed?.end?.toString(),
+      availableTypesKey,
+      customTypesKey,
+      minValue?.toString(),
+      maxValue?.toString(),
+    ].join('|');
 
-    if (wasCorrected) setCommitted(corrected);
+    if (lastCorrectedInputRef.current === inputSignature) return;
+
+    lastCorrectedInputRef.current = inputSignature;
+
+    // `onValueCorrected` only reports an actual fallback value — there's
+    // nothing to hand the consumer when no preset is available at all.
+    if (correction.value) onValueCorrected?.(correction.value);
+
+    // Only an uncontrolled value is corrected in place — a controlled
+    // `value` is owned by the consumer, so `onValueCorrected` above is how
+    // it's told to update its own state to match instead.
+    if (valueProp === undefined) setCommitted(correction.value);
     // Only re-check when the committed value or preset configuration changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    valueProp,
     committed,
     availableTypesKey,
     customTypesKey,
     minValue,
     maxValue,
+    valueProp,
   ]);
 
   const handleOpenChange = (open: boolean) => {
@@ -243,7 +276,7 @@ export function TimeRangeRender<T extends DateValue>(
     if (open) {
       dispatch({
         type: 'RESET',
-        draft: toDraft(committed, defaultRangeValue, minValue, maxValue),
+        draft: toDraft(displayValue, defaultRangeValue, minValue, maxValue),
       });
     }
   };
@@ -257,14 +290,14 @@ export function TimeRangeRender<T extends DateValue>(
     setCommitted({ type: draft.type, ...resolved });
   };
 
-  const isEmpty = !committed;
+  const isEmpty = !displayValue;
 
-  const formattedValue = committed
+  const formattedValue = displayValue
     ? formatTimeRangeDuration(
-        committed.type,
-        getTimeRangeTypeConfig(committed.type, customTimeRangeTypes),
+        displayValue.type,
+        getTimeRangeTypeConfig(displayValue.type, customTimeRangeTypes),
         t,
-        { start: committed.start, end: committed.end },
+        { start: displayValue.start, end: displayValue.end },
         rangeFormatter
       )
     : '';

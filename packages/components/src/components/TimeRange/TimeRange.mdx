@@ -26,7 +26,7 @@ import { TimeRange } from '@koobiq/react-components';
 
 ## Usage
 
-<Story of={Stories.Overview} />
+<Story of={Stories.Base} />
 
 ## Props
 
@@ -87,47 +87,16 @@ fixed `start`/`end`, useful for calendar-anchored presets like fiscal quarters.
 
 ## Correcting out-of-range values
 
-When an uncontrolled `defaultValue` (or a `customTimeRangeTypes`/
-`availableTimeRangeTypes` change) makes the current value's type unavailable,
-`TimeRange` falls back to the first available preset and applies the
-correction to its own state. A controlled `value` is owned by the consumer,
-so it's rendered as given instead — validate it yourself beforehand with
-`checkAndCorrectTimeRangeValue` if you want it corrected.
-
-## Utilities
-
-`TimeRange`'s preset and validation logic is exposed as pure functions, useful
-for replicating the same computation or formatting outside the component (for
-example, to build an API query for the currently selected range).
-
-- **`calculateTimeRange(type, customTimeRangeTypes?, manualRange?)`** — resolves a
-  preset's absolute `start`/`end` bounds. Duration-based presets are computed
-  relative to now; `range` (and any custom preset with a fixed `range`) passes
-  its bounds through.
-- **`formatTimeRangeDuration(type, entry, t, range?, formatter?)`** — formats a
-  preset's label ("Last 7 days", "Current quarter", …) for display outside the
-  component's own trigger/editor, given the entry looked up via
-  `getTimeRangeTypeConfig(type, customTimeRangeTypes?)` and a
-  `LocalizedStringFormatter`. For `type: 'range'`, pass the
-  resolved `start`/`end` bounds and a `DateFormatter` (e.g. from
-  `useDateFormatter({ month: 'long', day: 'numeric' })`) to get the actual
-  span ("August 31 – September 1") instead of the literal "Period"
-  fallback.
-- **`getTimeRangeTypeConfig(type, customTimeRangeTypes?)`** — looks up a
-  preset's `entry` (its `units`/`translationType`), checking the built-in
-  presets first and falling back to `customTimeRangeTypes`; the input
-  `formatTimeRangeDuration` expects for its `entry` argument.
-- **`combineDateTime(date, time)`** / **`splitDateTime(dateTime)`** — combine or
-  split a date and a time-of-day, the same operation the manual editor uses to
-  turn its two fields into one comparable value.
-- **`isRangeValid(start, end)`** — checks that a manual range's `start` is not
-  later than its `end`; use it to validate a `TimeRangeInstant` pair before
-  submitting a form.
-- **`getDefaultRangeValue(minValue?, maxValue?)`** — "yesterday → today",
-  clamped to the given bounds; the default seed for a manual range editor.
-- **`checkAndCorrectTimeRangeValue(value, availableTimeRangeTypes, customTimeRangeTypes?, minValue?, maxValue?)`**
-  — the standalone version of the correction `TimeRange` runs internally;
-  useful for validating a value before setting it as a controlled `value` prop.
+When a `value`/`defaultValue` (or a `customTimeRangeTypes`/
+`availableTimeRangeTypes` change) makes the current value's type unavailable
+— or an available `'range'` value is missing `start`/`end` — `TimeRange`
+falls back to the first available preset (recalculating `start`/`end` for
+`'range'` when needed) and reflects the correction immediately, for both
+controlled and uncontrolled values. For an uncontrolled `defaultValue`, the
+correction is also applied to the component's own state. For a controlled
+`value`, it's only reflected in what's rendered — `TimeRange` never rewrites
+your prop — so update your own state in the `onValueCorrected` handler if
+you want the next render's `value` to agree with what's already shown.
 
 ## Accessibility
 

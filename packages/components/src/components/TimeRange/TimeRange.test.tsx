@@ -341,17 +341,91 @@ describe('TimeRange', () => {
     });
   });
 
-  it('should render a controlled out-of-range value as-is, without correcting it', async () => {
-    render(
-      <TimeRange
-        data-testid="control"
-        value={{ type: 'last30Days' }}
-        availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
-        onChange={() => {}}
-      />
-    );
+  describe('value correction', () => {
+    it('should immediately show a corrected value for a controlled out-of-range value, without mutating the value prop', () => {
+      const onValueCorrected = vi.fn();
 
-    expect(getTrigger()).toHaveTextContent('Last 30 days');
+      render(
+        <TimeRange
+          data-testid="control"
+          value={{ type: 'last30Days' }}
+          availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
+          onChange={() => {}}
+          onValueCorrected={onValueCorrected}
+        />
+      );
+
+      expect(getTrigger()).toHaveTextContent('Last hour');
+
+      expect(onValueCorrected).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'lastHour' })
+      );
+    });
+
+    it('should not call onValueCorrected again for the same invalid value on an unrelated re-render', () => {
+      const onValueCorrected = vi.fn();
+
+      const props = {
+        'data-testid': 'control',
+        availableTimeRangeTypes: ['lastHour', 'last24Hours', 'range'],
+        onChange: () => {},
+        onValueCorrected,
+      };
+
+      const { rerender } = render(
+        <TimeRange {...props} value={{ type: 'last30Days' }} />
+      );
+
+      expect(onValueCorrected).toHaveBeenCalledTimes(1);
+
+      // A new object with the same content, as a parent re-creating an
+      // inline literal on every render would produce.
+      rerender(<TimeRange {...props} value={{ type: 'last30Days' }} />);
+
+      expect(onValueCorrected).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onValueCorrected again for a different invalid value that falls back to the same preset', () => {
+      const onValueCorrected = vi.fn();
+
+      const props = {
+        'data-testid': 'control',
+        availableTimeRangeTypes: ['lastHour', 'last24Hours', 'range'],
+        onChange: () => {},
+        onValueCorrected,
+      };
+
+      const { rerender } = render(
+        <TimeRange {...props} value={{ type: 'last30Days' }} />
+      );
+
+      expect(onValueCorrected).toHaveBeenCalledTimes(1);
+
+      rerender(<TimeRange {...props} value={{ type: 'currentYear' }} />);
+
+      expect(onValueCorrected).toHaveBeenCalledTimes(2);
+    });
+
+    it('should recalculate missing start/end for an available range value and report it', () => {
+      const onValueCorrected = vi.fn();
+
+      render(
+        <TimeRange
+          data-testid="control"
+          value={{ type: 'range' }}
+          onChange={() => {}}
+          onValueCorrected={onValueCorrected}
+        />
+      );
+
+      expect(onValueCorrected).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'range',
+          start: expect.anything(),
+          end: expect.anything(),
+        })
+      );
+    });
   });
 
   it('should self-correct an out-of-range defaultValue and select it when opened', async () => {
@@ -640,6 +714,34 @@ describe('TimeRange', () => {
 
         expect(result.corrected).toBe(true);
         expect(result.value).toBeNull();
+      });
+
+      it('should recalculate missing start/end for an available range value', () => {
+        const result = checkAndCorrectTimeRangeValue({ type: 'range' }, [
+          'lastHour',
+          'range',
+        ]);
+
+        expect(result.corrected).toBe(true);
+        expect(result.value?.type).toBe('range');
+        expect(result.value?.start).toBeDefined();
+        expect(result.value?.end).toBeDefined();
+      });
+
+      it('should pass through an available range value that already has start/end', () => {
+        const value: TimeRangeValue = {
+          type: 'range',
+          start: new CalendarDate(2026, 1, 1),
+          end: new CalendarDate(2026, 1, 5),
+        };
+
+        const result = checkAndCorrectTimeRangeValue(value, [
+          'lastHour',
+          'range',
+        ]);
+
+        expect(result.corrected).toBe(false);
+        expect(result.value).toBe(value);
       });
     });
   });

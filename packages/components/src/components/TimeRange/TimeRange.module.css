@@ -38,7 +38,6 @@
   flex-direction: column;
   gap: var(--kbq-size-s);
   padding-block-start: var(--kbq-size-m);
-  border-block-start: 1px solid var(--kbq-line-contrast-less);
 }
 
 /* ── Manual from/to row ───────────────────────────────────────── */

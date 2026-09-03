@@ -256,7 +256,10 @@ export function formatTimeRangeDuration(
 /**
  * Sanitizes an incoming value against the currently available preset types:
  * falls back to the first available preset (or `getDefaultRangeValue`) when
- * the value's type isn't registered.
+ * the value's type isn't registered, and fills in `start`/`end` for an
+ * available `'range'` value that's missing them — unlike duration-based
+ * presets, `'range'` has no "now minus units" formula to compute bounds from
+ * later, so it can't function without concrete dates.
  */
 export function checkAndCorrectTimeRangeValue<T extends DateValue>(
   value: TimeRangeValue | null | undefined,
@@ -271,7 +274,22 @@ export function checkAndCorrectTimeRangeValue<T extends DateValue>(
     availableTimeRangeTypes.includes(value.type) ||
     customTimeRangeTypes.some((custom) => custom.type === value.type);
 
-  if (isAvailable) return { value, corrected: false };
+  if (isAvailable) {
+    if (value.type === 'range' && (!value.start || !value.end)) {
+      const { start, end } = getDefaultRangeValue(minValue, maxValue);
+
+      return {
+        value: {
+          type: 'range',
+          start: resolveInstantDate(start),
+          end: resolveInstantDate(end),
+        },
+        corrected: true,
+      };
+    }
+
+    return { value, corrected: false };
+  }
 
   const fallbackType = availableTimeRangeTypes[0];
 

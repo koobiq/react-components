@@ -131,6 +131,16 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   };
   /** Handler that is called when the value changes, i.e. Apply is pressed. */
   onChange?: (value: TimeRangeValue | null) => void;
+  /**
+   * Handler that is called when `value`/`defaultValue` gets corrected — its
+   * type isn't in `availableTimeRangeTypes`/`customTimeRangeTypes`, or an
+   * available `'range'` value is missing `start`/`end`. Fires for both
+   * controlled and uncontrolled values; for a controlled `value`, the
+   * trigger and editor already reflect the corrected result before this
+   * fires — update your own state to match so the next render's `value`
+   * agrees with what's shown.
+   */
+  onValueCorrected?: (value: TimeRangeValue) => void;
   /** The minimum allowed date for the manual range editor. */
   minValue?: T;
   /** The maximum allowed date for the manual range editor. */
