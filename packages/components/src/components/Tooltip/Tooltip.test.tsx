@@ -44,6 +44,22 @@ describe('Tooltip', () => {
     expect(root?.className).toContain(s.base);
   });
 
+  it('should keep trigger behavior props out of the DOM', () => {
+    render(
+      <Tooltip
+        {...baseProps}
+        isOpen
+        trigger="focus"
+        shouldCloseOnPress={false}
+      />
+    );
+
+    const root = getRoot();
+
+    expect(root).not.toHaveAttribute('shouldcloseonpress');
+    expect(root).not.toHaveAttribute('trigger');
+  });
+
   it('should set a custom style', () => {
     const style = { padding: 20 };
 
