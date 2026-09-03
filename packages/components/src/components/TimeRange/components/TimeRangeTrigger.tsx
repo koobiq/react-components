@@ -46,6 +46,7 @@ export function TimeRangeTrigger({
   const buttonProps = {
     ...contextButtonProps,
     isDisabled,
+    'data-open': isOpen || undefined,
   };
 
   const buttonRef = useRef<HTMLButtonElement>(null);

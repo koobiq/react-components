@@ -225,7 +225,7 @@ export function TimeRangeRender<T extends DateValue>(
         maxValue
       );
 
-    if (wasCorrected && corrected) setCommitted(corrected);
+    if (wasCorrected) setCommitted(corrected);
     // Only re-check when the committed value or preset configuration changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
