@@ -50,6 +50,9 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     onOpenChange,
     portalContainer,
     offset: offsetProp,
+    // Trigger behavior, not DOM attributes: `other` is spread onto the tooltip element below.
+    trigger,
+    shouldCloseOnPress,
     ...other
   } = props;
 
@@ -79,6 +82,8 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     onOpenChange,
     isOpen,
     isDisabled,
+    trigger,
+    shouldCloseOnPress,
     ...other,
   });
 
@@ -96,6 +101,8 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
       closeDelay,
       defaultOpen,
       onOpenChange,
+      trigger,
+      shouldCloseOnPress,
       ...other,
     },
     state,

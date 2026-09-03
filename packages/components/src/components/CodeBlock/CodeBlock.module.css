@@ -1,0 +1,564 @@
+.base {
+  /* Vertically centers a single line of code against the floating action bar. */
+  --code-block-floating-code-padding-block: calc(
+    var(--kbq-size-m) + var(--kbq-size-3xs)
+  );
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
+  position: relative;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: var(--kbq-size-border-width);
+  border-radius: var(--kbq-size-m);
+  border-color: var(--kbq-code-block-outline-container-border-color);
+  background: var(--kbq-code-block-outline-container-background);
+  hyphens: none;
+
+  /*
+   * The header band. The tab list and the action bar live in separate grid cells, so the background
+   * and the scroll shadow they share are painted by this row-spanning pseudo-element.
+   */
+  &::before {
+    content: '';
+    grid-area: 1 / 1 / 2 / -1;
+    border-start-start-radius: var(--kbq-size-m);
+    border-start-end-radius: var(--kbq-size-m);
+    transition: box-shadow var(--kbq-transition-default);
+  }
+
+  /*
+   * `Tabs` renders the header row and the tab panel together. Unwrapping them into the grid lets the
+   * action bar sit next to the tab list instead of being positioned over it.
+   */
+  > .tabsContainer {
+    display: contents;
+  }
+
+  &[data-border-hidden] {
+    border-color: transparent;
+  }
+
+  &[data-filled] {
+    border-color: transparent;
+    background: var(--kbq-code-block-filled-container-background);
+
+    &::before {
+      background: var(--kbq-code-block-filled-header-background);
+    }
+
+    &:has(.header[data-scrolled])::before {
+      box-shadow: var(--kbq-code-block-filled-header-scroll-shadow);
+    }
+
+    &[data-hide-tabs] .actionbarButtonStack {
+      background: var(--kbq-code-block-filled-actionbar-background);
+      border-color: var(
+        --kbq-code-block-filled-actionbar-border-color,
+        var(--kbq-line-contrast-less)
+      );
+    }
+
+    .viewAllWrapper {
+      background: var(
+        --kbq-code-block-filled-collapse-button-expand-background
+      );
+    }
+
+    .viewAll[data-state='expanded'] {
+      background: var(--kbq-code-block-filled-collapse-expanded-background);
+    }
+
+    .viewAll[data-state='collapsed'] {
+      background: var(--kbq-code-block-filled-collapse-collapsed-background);
+    }
+  }
+
+  &:not([data-filled]) {
+    &::before {
+      background: var(--kbq-code-block-outline-header-background);
+    }
+
+    &:has(.header[data-scrolled])::before {
+      box-shadow: var(--kbq-code-block-outline-header-scroll-shadow);
+    }
+
+    &[data-hide-tabs] .actionbarButtonStack {
+      background: var(--kbq-code-block-outline-actionbar-background);
+      border-color: var(
+        --kbq-code-block-outline-actionbar-border-color,
+        var(--kbq-line-contrast-less)
+      );
+    }
+
+    .viewAllWrapper {
+      background: var(
+        --kbq-code-block-outline-collapse-button-expand-background
+      );
+    }
+
+    .viewAll[data-state='expanded'] {
+      background: var(--kbq-code-block-outline-collapse-expanded-background);
+    }
+
+    .viewAll[data-state='collapsed'] {
+      background: var(--kbq-code-block-outline-collapse-collapsed-background);
+    }
+  }
+
+  &:not([data-hide-tabs]) {
+    /* The tab list ends where the action bar begins, so the header keeps no padding of its own. */
+    .header {
+      padding-inline-end: 0;
+    }
+
+    .main {
+      border-end-start-radius: var(--kbq-size-m);
+      border-end-end-radius: var(--kbq-size-m);
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+    }
+
+    > .actionbar {
+      grid-area: 1 / 2 / 2 / 3;
+      align-self: center;
+      margin-inline-end: var(--kbq-size-m);
+    }
+  }
+
+  &[data-hide-tabs] {
+    .header {
+      padding: 0;
+    }
+
+    .actionbar {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-end: 0;
+      margin-block: var(--kbq-size-s);
+      margin-inline: 0 var(--kbq-size-s);
+      z-index: var(--kbq-layer-absolute);
+    }
+
+    .actionbarButtonStack {
+      border-width: var(--kbq-size-border-width);
+      border-style: solid;
+      border-radius: calc(var(--kbq-size-s) + 1px);
+    }
+
+    .main {
+      position: relative;
+    }
+
+    .code {
+      --code-block-code-padding-block-start: var(
+        --code-block-floating-code-padding-block
+      );
+      --code-block-code-padding-block-end: var(
+        --code-block-floating-code-padding-block
+      );
+    }
+
+    /*
+     * The actionbar is only revealed on hover/focus — always shown when there's no hover input (touch).
+     * Hovering the whole block, not just the (zero-height, once tabs are hidden) header — the header has
+     * no other content to give it a hoverable box.
+     */
+    &:hover .actionbar,
+    &:focus-within .actionbar,
+    &[data-action-bar-tooltip-open] .actionbar,
+    &[data-always-show-action-bar] .actionbar {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (hover: none) {
+      .actionbar {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  grid-area: 1 / 1 / 2 / 2;
+  padding: var(--kbq-size-s) var(--kbq-size-m);
+}
+
+.main {
+  grid-area: 2 / 1 / 3 / -1;
+  overflow: auto;
+  border-radius: var(--kbq-size-m);
+  scrollbar-width: auto;
+  scrollbar-gutter: auto;
+  scrollbar-color: var(--kbq-scrollbar-thumb-default-background)
+    var(--kbq-background-transparent);
+
+  &:focus-visible {
+    outline: 2px solid var(--kbq-states-line-focus-theme);
+    outline-offset: -2px;
+  }
+}
+
+.base:has(.viewAll):not([data-view-all]) .main {
+  overflow: hidden;
+}
+
+.pre {
+  margin: 0;
+}
+
+.code {
+  --code-block-code-padding-block-start: var(--kbq-size-xxs);
+  --code-block-code-padding-block-end: var(--kbq-size-l);
+
+  display: block;
+  tab-size: 4;
+  padding-block: var(--code-block-code-padding-block-start)
+    var(--code-block-code-padding-block-end);
+  padding-inline: var(--kbq-size-xl);
+  color: var(--kbq-foreground-contrast);
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  .base[data-soft-wrap] & {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .base:not([data-line-numbers]) & :global(.hljs-ln-numbers) {
+    display: none;
+  }
+
+  & :global(.hljs-ln-line) {
+    padding: 0;
+  }
+
+  & :global(.hljs-ln-numbers) {
+    padding-inline-end: var(--kbq-size-m);
+    vertical-align: baseline;
+    text-align: end;
+    color: var(--kbq-code-block-hljs-line-numbers-color);
+    user-select: none;
+  }
+
+  & :global(.hljs-ln) {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  & :global(.hljs-ln-n)::before {
+    white-space: nowrap;
+    content: attr(data-line-number);
+  }
+}
+
+/* Leaves room for the expand button, which overlaps the end of the content. */
+.base:has(.viewAll) .code {
+  --code-block-code-padding-block-end: var(--kbq-size-3xl);
+}
+
+.viewAll {
+  display: flex;
+  justify-content: center;
+  inline-size: 100%;
+  position: absolute;
+  inset-block-end: calc(var(--kbq-size-border-width) * -1);
+  border-radius: var(--kbq-size-m);
+
+  &[data-state='collapsed'] {
+    padding-block: var(--kbq-size-3xl) var(--kbq-size-l);
+  }
+
+  &[data-state='expanded'] {
+    padding-block-start: 0;
+    margin-block-end: var(--kbq-size-l);
+  }
+}
+
+.viewAllWrapper {
+  border-radius: var(--kbq-size-s);
+  opacity: 0.9;
+}
+
+.actionbar {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  z-index: var(--kbq-layer-absolute);
+}
+
+.actionbarButtonStack {
+  display: flex;
+  gap: var(--kbq-size-3xs);
+}
+
+/* stylelint-disable selector-class-pattern */
+.code :global(.hljs-addition) {
+  background-color: var(--kbq-code-block-hljs-addition-background);
+  color: var(--kbq-code-block-hljs-addition-color);
+}
+
+.code :global(.hljs-attr) {
+  background-color: var(--kbq-code-block-hljs-attr-background);
+  color: var(--kbq-code-block-hljs-attr-color);
+}
+
+.code :global(.hljs-attribute) {
+  background-color: var(--kbq-code-block-hljs-attribute-background);
+  color: var(--kbq-code-block-hljs-attribute-color);
+}
+
+.code :global(.hljs-built_in) {
+  background-color: var(--kbq-code-block-hljs-built_in-background);
+  color: var(--kbq-code-block-hljs-built_in-color);
+}
+
+.code :global(.hljs-bullet) {
+  background-color: var(--kbq-code-block-hljs-bullet-background);
+  color: var(--kbq-code-block-hljs-bullet-color);
+}
+
+.code :global(.hljs-char.escape_) {
+  background-color: var(--kbq-code-block-hljs-char-escape-background);
+  color: var(--kbq-code-block-hljs-char-escape-color);
+}
+
+.code :global(.hljs-class) {
+  background-color: var(--kbq-code-block-hljs-class-background);
+  color: var(--kbq-code-block-hljs-class-color);
+}
+
+.code :global(.hljs-code) {
+  background-color: var(--kbq-code-block-hljs-code-background);
+  color: var(--kbq-code-block-hljs-code-color);
+}
+
+.code :global(.hljs-comment) {
+  background-color: var(--kbq-code-block-hljs-comment-background);
+  color: var(--kbq-code-block-hljs-comment-color);
+}
+
+.code :global(.hljs-deletion) {
+  background-color: var(--kbq-code-block-hljs-deletion-background);
+  color: var(--kbq-code-block-hljs-deletion-color);
+}
+
+.code :global(.hljs-doctag) {
+  background-color: var(--kbq-code-block-hljs-doctag-background);
+  color: var(--kbq-code-block-hljs-doctag-color);
+}
+
+.code :global(.hljs-emphasis) {
+  background-color: var(--kbq-code-block-hljs-emphasis-background);
+  color: var(--kbq-code-block-hljs-emphasis-color);
+  font-style: italic;
+}
+
+.code :global(.hljs-formula) {
+  background-color: var(--kbq-code-block-hljs-formula-background);
+  color: var(--kbq-code-block-hljs-formula-color);
+}
+
+.code :global(.hljs-function) {
+  background-color: var(--kbq-code-block-hljs-function-background);
+  color: var(--kbq-code-block-hljs-function-color);
+}
+
+.code :global(.hljs-keyword) {
+  background-color: var(--kbq-code-block-hljs-keyword-background);
+  color: var(--kbq-code-block-hljs-keyword-color);
+}
+
+.code :global(.hljs-link) {
+  background-color: var(--kbq-code-block-hljs-link-background);
+  color: var(--kbq-code-block-hljs-link-color);
+}
+
+.code :global(.hljs-literal) {
+  background-color: var(--kbq-code-block-hljs-literal-background);
+  color: var(--kbq-code-block-hljs-literal-color);
+}
+
+.code :global(.hljs-meta) {
+  background-color: var(--kbq-code-block-hljs-meta-background);
+  color: var(--kbq-code-block-hljs-meta-color);
+}
+
+.code :global(.hljs-meta-keyword) {
+  background-color: var(--kbq-code-block-hljs-meta-keyword-background);
+  color: var(--kbq-code-block-hljs-meta-keyword-color);
+}
+
+.code :global(.hljs-meta-string) {
+  background-color: var(--kbq-code-block-hljs-meta-string-background);
+  color: var(--kbq-code-block-hljs-meta-string-color);
+}
+
+.code :global(.hljs-meta-prompt),
+.code :global(.hljs-meta .hljs-prompt) {
+  background-color: var(--kbq-code-block-hljs-meta-prompt-background);
+  color: var(--kbq-code-block-hljs-meta-prompt-color);
+}
+
+.code :global(.hljs-name) {
+  background-color: var(--kbq-code-block-hljs-name-background);
+  color: var(--kbq-code-block-hljs-name-color);
+}
+
+.code :global(.hljs-number) {
+  background-color: var(--kbq-code-block-hljs-number-background);
+  color: var(--kbq-code-block-hljs-number-color);
+}
+
+.code :global(.hljs-operator) {
+  background-color: var(--kbq-code-block-hljs-operator-background);
+  color: var(--kbq-code-block-hljs-operator-color);
+}
+
+.code :global(.hljs-params) {
+  background-color: var(--kbq-code-block-hljs-params-background);
+  color: var(--kbq-code-block-hljs-params-color);
+}
+
+.code :global(.hljs-property) {
+  background-color: var(--kbq-code-block-hljs-property-background);
+  color: var(--kbq-code-block-hljs-property-color);
+}
+
+.code :global(.hljs-punctuation) {
+  background-color: var(--kbq-code-block-hljs-punctuation-background);
+  color: var(--kbq-code-block-hljs-punctuation-color);
+}
+
+.code :global(.hljs-quote) {
+  background-color: var(--kbq-code-block-hljs-quote-background);
+  color: var(--kbq-code-block-hljs-quote-color);
+}
+
+.code :global(.hljs-regexp) {
+  background-color: var(--kbq-code-block-hljs-regexp-background);
+  color: var(--kbq-code-block-hljs-regexp-color);
+}
+
+.code :global(.hljs-section) {
+  background-color: var(--kbq-code-block-hljs-section-background);
+  color: var(--kbq-code-block-hljs-section-color);
+}
+
+.code :global(.hljs-selector-attr) {
+  background-color: var(--kbq-code-block-hljs-selector-attr-background);
+  color: var(--kbq-code-block-hljs-selector-attr-color);
+}
+
+.code :global(.hljs-selector-class) {
+  background-color: var(--kbq-code-block-hljs-selector-class-background);
+  color: var(--kbq-code-block-hljs-selector-class-color);
+}
+
+.code :global(.hljs-selector-id) {
+  background-color: var(--kbq-code-block-hljs-selector-id-background);
+  color: var(--kbq-code-block-hljs-selector-id-color);
+}
+
+.code :global(.hljs-selector-pseudo) {
+  background-color: var(--kbq-code-block-hljs-selector-pseudo-background);
+  color: var(--kbq-code-block-hljs-selector-pseudo-color);
+}
+
+.code :global(.hljs-selector-tag) {
+  background-color: var(--kbq-code-block-hljs-selector-tag-background);
+  color: var(--kbq-code-block-hljs-selector-tag-color);
+}
+
+.code :global(.hljs-string) {
+  background-color: var(--kbq-code-block-hljs-string-background);
+  color: var(--kbq-code-block-hljs-string-color);
+}
+
+.code :global(.hljs-strong) {
+  background-color: var(--kbq-code-block-hljs-strong-background);
+  color: var(--kbq-code-block-hljs-strong-color);
+  font-weight: bold;
+}
+
+.code :global(.hljs-subst) {
+  background-color: var(--kbq-code-block-hljs-subst-background);
+  color: var(--kbq-code-block-hljs-subst-color);
+}
+
+.code :global(.hljs-symbol) {
+  background-color: var(--kbq-code-block-hljs-symbol-background);
+  color: var(--kbq-code-block-hljs-symbol-color);
+}
+
+.code :global(.hljs-tag) {
+  background-color: var(--kbq-code-block-hljs-tag-background);
+  color: var(--kbq-code-block-hljs-tag-color);
+}
+
+.code :global(.hljs-template-tag) {
+  background-color: var(--kbq-code-block-hljs-template-tag-background);
+  color: var(--kbq-code-block-hljs-template-tag-color);
+}
+
+.code :global(.hljs-template-variable) {
+  background-color: var(--kbq-code-block-hljs-template-variable-background);
+  color: var(--kbq-code-block-hljs-template-variable-color);
+}
+
+.code :global(.hljs-title) {
+  background-color: var(--kbq-code-block-hljs-title-background);
+  color: var(--kbq-code-block-hljs-title-color);
+}
+
+.code :global(.hljs-title.class_) {
+  background-color: var(--kbq-code-block-hljs-title-class-background);
+  color: var(--kbq-code-block-hljs-title-class-color);
+  font-style: var(--kbq-code-block-font-hljs-title-class-font-style);
+  font-weight: var(--kbq-code-block-font-hljs-title-class-font-weight);
+}
+
+.code :global(.hljs-title.class_.inherited__) {
+  background-color: var(--kbq-code-block-hljs-title-class-inherited-background);
+  color: var(--kbq-code-block-hljs-title-class-inherited-color);
+}
+
+.code :global(.hljs-title.function_) {
+  background-color: var(--kbq-code-block-hljs-title-function-background);
+  color: var(--kbq-code-block-hljs-title-function-color);
+}
+
+.code :global(.hljs-title.function_.invoke__) {
+  background-color: var(--kbq-code-block-hljs-title-function-invoke-background);
+  color: var(--kbq-code-block-hljs-title-function-invoke-color);
+}
+
+.code :global(.hljs-type) {
+  background-color: var(--kbq-code-block-hljs-type-background);
+  color: var(--kbq-code-block-hljs-type-color);
+}
+
+.code :global(.hljs-variable) {
+  background-color: var(--kbq-code-block-hljs-variable-background);
+  color: var(--kbq-code-block-hljs-variable-color);
+}
+
+.code :global(.hljs-variable.constant_) {
+  background-color: var(--kbq-code-block-hljs-variable-constant-background);
+  color: var(--kbq-code-block-hljs-variable-constant-color);
+}
+
+.code :global(.hljs-variable.language_) {
+  background-color: var(--kbq-code-block-hljs-variable-language-background);
+  color: var(--kbq-code-block-hljs-variable-language-color);
+}
+/* stylelint-enable selector-class-pattern */
