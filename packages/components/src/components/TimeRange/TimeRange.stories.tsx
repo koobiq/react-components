@@ -128,7 +128,6 @@ export const WithLabel: Story = {
 };
 
 export const NoPresets: Story = {
-  name: 'No presets (manual range only)',
   render: (args) => (
     <TimeRange availableTimeRangeTypes={[]} {...args}>
       {({ formattedValue }) => <Link isPseudo>{formattedValue}</Link>}
