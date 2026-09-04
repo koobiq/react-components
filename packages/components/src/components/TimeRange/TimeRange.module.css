@@ -26,13 +26,16 @@
 
 .editor {
   min-inline-size: 360px;
+  max-inline-size: 400px;
 }
 
 .presetGrid {
-  display: grid;
+  column-count: 2;
   align-self: stretch;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--kbq-size-s) var(--kbq-size-m);
+}
+
+.presetGrid > * {
+  margin-block-end: var(--kbq-size-s);
 }
 
 .manualRange {
