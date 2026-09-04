@@ -13,10 +13,7 @@ import * as Stories from './TimeRange.stories';
 
 <Status variant="experimental" />
 
-`TimeRange` is a popover-based time range picker: a trigger showing the selected
-period, relative-time presets ("last 7 days", "current quarter", …), and a
-manual from/to editor for custom ranges. Changes in the editor only take effect
-when Apply is pressed; Cancel discards them.
+`TimeRange` allows users to select a preset or specify a custom time range.
 
 ## Import
 
@@ -34,68 +31,26 @@ import { TimeRange } from '@koobiq/react-components';
 
 ## Triggers
 
-Pass a `Button`, `Link`, or `TimeRange.Field` as `children`. It becomes an
-accessible popover trigger automatically, including its press behavior and
-ref. Regular children keep the content you provide. To display the selected
-range, use a render function receiving `{ formattedValue }`. This is an empty
-string when no range is selected, so you can provide your own fallback text.
-Icons and visual variants are configured on the trigger itself.
-
-```tsx
-<TimeRange defaultValue={{ type: 'last7Days' }}>
-  {({ formattedValue }) => (
-    <Link isPseudo>{formattedValue || 'Select a period'}</Link>
-  )}
-</TimeRange>
-```
-
-<Story of={Stories.ButtonTrigger} />
-
-<Story of={Stories.CustomText} />
-
-Use `onlyIcon` and an `aria-label` for an icon-only button.
+Component allows you to customize the trigger element. For example, it can be a `Button`, a `Link`, or a `TimeRange.Field`.
 
 <Story of={Stories.CustomTrigger} />
 
-Each TimeRange serves one trigger. The trigger may be nested inside a layout
-container; it must support React Aria press interactions. The TimeRange ref
-points to the trigger element. Use `[aria-expanded="true"]` to style its open
-state.
-
 ## Form field
 
-Configure `label`, `labelPlacement`, `labelAlign`, `isLabelHidden`, `isRequired`,
-`isInvalid`, `errorMessage`, `caption`, `fullWidth`, and `placeholder` on
-`TimeRange.Field`. Its value comes from the surrounding TimeRange. The label,
-caption, and error message are associated with the focusable control.
-
-Use Field's `slotProps.root`, `.label`, `.group`, `.control`, `.caption`, and
-`.errorMessage` to customize its parts. The Field ref points to its focusable
-control; the popover is positioned against the whole control group.
+`TimeRange.Field` renders the trigger as a full form field, with a `label`,
+`caption`, and `errorMessage`. Mark it required with `isRequired`, stretch it
+with `fullWidth`, or change the label position via `labelPlacement` and
+`labelAlign`. Its value comes from the surrounding `TimeRange`.
 
 <Story of={Stories.WithLabel} />
 
-<Story of={Stories.FieldStates} />
-
-## Empty and disabled states
-
-<Story of={Stories.EmptyValue} />
-
-`isDisabled` and `isReadOnly` on TimeRange prevent its trigger from opening the
-editor. A trigger can also be disabled individually. For Link, pass `isDisabled`
-to the link itself as well to expose its disabled state to assistive technology
-and apply its disabled styling.
-
-<Story of={Stories.Disabled} />
-
 ## Manual range only
 
-An empty `availableTimeRangeTypes` array hides the presets list entirely,
-leaving only the manual from/to editor.
+When there are no preset values, only the start and end of the period remain in the window.
 
 <Story of={Stories.NoPresets} />
 
-## Restricting the range
+## Selection restriction
 
 Use `minValue`/`maxValue` to restrict the manual date fields.
 
@@ -103,12 +58,7 @@ Use `minValue`/`maxValue` to restrict the manual date fields.
 
 ## Custom presets
 
-`customTimeRangeTypes` registers additional presets beyond the built-in
-`TimeRangeType`s. Each needs a `units` duration (used to compute the range
-relative to "now") and a `translationType`, used to pick the unit word when
-formatting the label. A fixed `range` overrides the "now minus units"
-computation instead, useful for calendar-anchored presets like fiscal
-quarters; `renderOption` customizes how any preset is labeled in the editor.
+The component allows you to set custom time range options.
 
 <Story of={Stories.CustomRangeTypes} />
 

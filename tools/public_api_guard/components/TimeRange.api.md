@@ -7,21 +7,17 @@
 import type { AriaDialogProps } from '@koobiq/react-primitives';
 import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primitives';
 import type { ButtonOptions } from '@koobiq/react-primitives';
-import { CalendarDateTime } from '@internationalized/date';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import type { DataAttributeProps } from '@koobiq/react-core';
-import { DateFormatter } from '@internationalized/date';
 import { DateTimeDuration } from '@internationalized/date';
 import { DateValue } from '@koobiq/react-primitives';
-import { DateValue as DateValue_2 } from '@internationalized/date';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
 import { JSX } from 'react/jsx-runtime';
-import type { LocalizedStringFormatter } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import type { RadioGroup } from '@koobiq/react-primitives';
 import type { RadioGroupProps as RadioGroupProps_2 } from '@koobiq/react-primitives';
@@ -31,28 +27,9 @@ import { Ref } from 'react';
 import { RefAttributes } from 'react';
 import type { RefObject } from 'react';
 import { TextProps } from '@koobiq/react-primitives';
-import { Time } from '@internationalized/date';
+import type { Time } from '@internationalized/date';
 import type { TransitionProps } from 'react-transition-group/Transition';
 import { ValidationResult } from '@koobiq/react-core';
-import { ZonedDateTime } from '@internationalized/date';
-
-// @public
-export function calculateTimeRange(type: string, customTimeRangeTypes?: CustomTimeRangeType[], manualRange?: {
-    start?: TimeRangeInstant;
-    end?: TimeRangeInstant;
-}): {
-    start?: DateValue_2;
-    end?: DateValue_2;
-};
-
-// @public
-export function checkAndCorrectTimeRangeValue<T extends DateValue_2>(value: TimeRangeValue | null | undefined, availableTimeRangeTypes: string[], customTimeRangeTypes?: CustomTimeRangeType[], minValue?: T, maxValue?: T): {
-    value: TimeRangeValue | null;
-    corrected: boolean;
-};
-
-// @public
-export function combineDateTime<T extends DateValue_2>(date: T, time: Time): CalendarDateTime;
 
 // @public
 export type CustomTimeRangeType = {
@@ -67,27 +44,6 @@ export type CustomTimeRangeType = {
 
 // @public
 export const defaultTimeRangeTypes: TimeRangeType[];
-
-// @public
-export function formatTimeRangeDuration(type: string, entry: TimeRangeConfigEntry | CustomTimeRangeType | undefined, t: LocalizedStringFormatter<string>, range?: {
-    start?: DateValue_2;
-    end?: DateValue_2;
-}, formatter?: DateFormatter): string;
-
-// @public
-export function getDefaultRangeValue<T extends DateValue_2>(minValue?: T, maxValue?: T): {
-    start: TimeRangeInstant<T>;
-    end: TimeRangeInstant<T>;
-};
-
-// @public
-export function getTimeRangeTypeConfig(type: string, customTimeRangeTypes?: CustomTimeRangeType[]): TimeRangeConfigEntry | CustomTimeRangeType | undefined;
-
-// @public
-export function isRangeValid(start?: TimeRangeInstant, end?: TimeRangeInstant): boolean;
-
-// @public
-export function splitDateTime(value: CalendarDateTime | ZonedDateTime): TimeRangeInstant;
 
 // Warning: (ae-forgotten-export) The symbol "CompoundedComponent_2" needs to be exported by the entry point index.d.ts
 //

@@ -63,54 +63,36 @@ export const Base: Story = {
   },
 };
 
-export const ButtonTrigger: Story = {
-  render: (args) => (
-    <TimeRange {...args}>
-      {({ formattedValue }) => (
-        <Button variant="fade-contrast-filled" startIcon={<IconCalendarO16 />}>
-          {formattedValue}
-        </Button>
-      )}
-    </TimeRange>
-  ),
-};
-
 export const CustomTrigger: Story = {
-  name: 'Icon-only trigger',
+  name: 'Custom trigger',
   render: (args) => (
-    <TimeRange {...args}>
-      <Button
-        variant="fade-contrast-filled"
-        startIcon={<IconCalendarO16 />}
-        onlyIcon
-        aria-label="Choose period"
-      />
-    </TimeRange>
-  ),
-};
-
-export const CustomText: Story = {
-  render: (args) => (
-    <TimeRange {...args}>
-      <Link isPseudo>Choose a reporting period</Link>
-    </TimeRange>
+    <FlexBox direction="column" gap="l">
+      <TimeRange {...args}>
+        <Button
+          variant="fade-contrast-filled"
+          startIcon={<IconCalendarO16 />}
+          onlyIcon
+          aria-label="Choose period"
+        />
+      </TimeRange>
+      <TimeRange {...args}>
+        <Link isPseudo isDisabled={args.isDisabled}>
+          Choose a reporting period
+        </Link>
+      </TimeRange>
+      <TimeRange {...args}>
+        <TimeRange.Field
+          label="Period"
+          caption="Applies to the whole report"
+          placeholder="Select a period"
+        />
+      </TimeRange>
+    </FlexBox>
   ),
 };
 
 export const WithLabel: Story = {
   name: 'Form field',
-  render: (args) => (
-    <TimeRange {...args}>
-      <TimeRange.Field
-        label="Period"
-        caption="Applies to the whole report"
-        placeholder="Select a period"
-      />
-    </TimeRange>
-  ),
-};
-
-export const FieldStates: Story = {
   render: (args) => (
     <FlexBox direction="column" gap="xl" style={{ inlineSize: 480 }}>
       <TimeRange {...args} defaultValue={null}>
@@ -145,39 +127,6 @@ export const FieldStates: Story = {
   ),
 };
 
-export const EmptyValue: Story = {
-  render: (args) => (
-    <TimeRange {...args} defaultValue={null}>
-      {({ formattedValue }) => (
-        <Link isPseudo>{formattedValue || 'Select a period'}</Link>
-      )}
-    </TimeRange>
-  ),
-};
-
-export const Disabled: Story = {
-  render: (args) => (
-    <FlexBox direction="column" gap="l">
-      <TimeRange {...args} isDisabled>
-        {({ formattedValue }) => (
-          <Link isPseudo isDisabled>
-            {formattedValue}
-          </Link>
-        )}
-      </TimeRange>
-      <TimeRange {...args} isDisabled>
-        {({ formattedValue }) => <Button>{formattedValue}</Button>}
-      </TimeRange>
-      <TimeRange {...args} isDisabled>
-        <TimeRange.Field label="Period" />
-      </TimeRange>
-      <TimeRange {...args} isReadOnly>
-        <TimeRange.Field label="Read-only period" />
-      </TimeRange>
-    </FlexBox>
-  ),
-};
-
 export const NoPresets: Story = {
   name: 'No presets (manual range only)',
   render: (args) => (
@@ -188,7 +137,7 @@ export const NoPresets: Story = {
 };
 
 export const MinMax: Story = {
-  name: 'MinValue and MaxValue',
+  name: 'Selection restriction',
   render: (args) => (
     <TimeRange
       availableTimeRangeTypes={['range']}

@@ -20,6 +20,7 @@ import { Select } from '../Select';
 import { TagInput } from '../TagInput';
 import { Textarea } from '../Textarea';
 import { TimePicker } from '../TimePicker';
+import { TimeRange } from '../TimeRange';
 import { TreeSelect } from '../TreeSelect';
 import { Typography } from '../Typography';
 
@@ -551,6 +552,9 @@ export const FormFields: Story = {
             <Input aria-label="second" placeholder="Input 2" />
           </FlexBox>
         </FormField>
+        <TimeRange defaultValue={null}>
+          <TimeRange.Field label="TimeRange" placeholder="Select a period" />
+        </TimeRange>
       </Form>
     );
   },
