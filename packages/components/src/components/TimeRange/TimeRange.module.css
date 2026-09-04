@@ -2,28 +2,22 @@
 
 /* ── Trigger ──────────────────────────────────────────────────── */
 
-.triggerLink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--kbq-size-xxs);
+.body {
+  inline-size: 100%;
+  min-inline-size: 0;
 }
 
-/* Focus normally moves into the popover's dialog once it opens, so the
-   default `:pressed`/`:focus-within` styling can't reflect the open state —
-   key off the trigger's own `data-open` instead, which stays put for as long
-   as it's open. */
-.triggerLink button[data-open] {
-  color: var(--kbq-states-foreground-theme-active);
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
 }
 
-.customTriggerButton[data-open] {
-  background-color: var(--button-bg-color-active);
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
 }
 
-/* Lets clicks on the chevron (and the group's own padding around it) fall
-   through to `FormField.ControlGroup`'s own `onMouseDown`, which opens the
-   trigger — mirrors `SelectNext`'s `.addon`/`onMouseDown` pattern so the
-   whole control group, not just the inner button, is clickable. */
+/* The default chevron opens the control group when pressed. */
 .addon {
   pointer-events: none;
 }

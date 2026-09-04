@@ -32,28 +32,61 @@ import { TimeRange } from '@koobiq/react-components';
 
 <Props of={Stories.Base} />
 
+## Triggers
+
+Pass a `Button`, `Link`, or `TimeRange.Field` as `children`. It becomes an
+accessible popover trigger automatically, including its press behavior and
+ref. Regular children keep the content you provide. To display the selected
+range, use a render function receiving `{ formattedValue }`. This is an empty
+string when no range is selected, so you can provide your own fallback text.
+Icons and visual variants are configured on the trigger itself.
+
+```tsx
+<TimeRange defaultValue={{ type: 'last7Days' }}>
+  {({ formattedValue }) => (
+    <Link isPseudo>{formattedValue || 'Select a period'}</Link>
+  )}
+</TimeRange>
+```
+
+<Story of={Stories.ButtonTrigger} />
+
+<Story of={Stories.CustomText} />
+
+Use `onlyIcon` and an `aria-label` for an icon-only button.
+
+<Story of={Stories.CustomTrigger} />
+
+Each TimeRange serves one trigger. The trigger may be nested inside a layout
+container; it must support React Aria press interactions. The TimeRange ref
+points to the trigger element. Use `[aria-expanded="true"]` to style its open
+state.
+
 ## Form field
 
-The default trigger is a plain link. Passing `label`, `isLabelHidden`,
-`isRequired`, `caption`, `isInvalid`, `errorMessage`, `fullWidth`,
-`labelPlacement`, `labelAlign`, or a matching `slotProps.root`/`.label`/
-`.group`/`.caption`/`.errorMessage` switches it to a `FormField` control
-instead — the same as `Input`, `Select`, and `TreeSelect` — with the rest of
-those props wired up directly. `isInvalid`/`errorMessage` work the same way,
-even without a dedicated example below.
+Configure `label`, `labelPlacement`, `labelAlign`, `isLabelHidden`, `isRequired`,
+`isInvalid`, `errorMessage`, `caption`, `fullWidth`, and `placeholder` on
+`TimeRange.Field`. Its value comes from the surrounding TimeRange. The label,
+caption, and error message are associated with the focusable control.
+
+Use Field's `slotProps.root`, `.label`, `.group`, `.control`, `.caption`, and
+`.errorMessage` to customize its parts. The Field ref points to its focusable
+control; the popover is positioned against the whole control group.
 
 <Story of={Stories.WithLabel} />
 
-## Custom trigger
+<Story of={Stories.FieldStates} />
 
-Render a `TimeRange.Trigger` as `TimeRange`'s child to replace the default
-trigger entirely — this opts out of the `FormField` wiring above, so
-`label`/`caption`/`isInvalid`/`errorMessage` have no effect. Its function
-child receives the formatted value, the popover's open state, and
-`buttonProps` — spread `buttonProps` onto whatever pressable element you
-render so it gets the popover's press/keyboard/ref wiring.
+## Empty and disabled states
 
-<Story of={Stories.CustomTrigger} />
+<Story of={Stories.EmptyValue} />
+
+`isDisabled` and `isReadOnly` on TimeRange prevent its trigger from opening the
+editor. A trigger can also be disabled individually. For Link, pass `isDisabled`
+to the link itself as well to expose its disabled state to assistive technology
+and apply its disabled styling.
+
+<Story of={Stories.Disabled} />
 
 ## Manual range only
 

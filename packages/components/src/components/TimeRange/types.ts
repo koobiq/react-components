@@ -10,6 +10,7 @@ import type {
   FormFieldErrorProps,
   FormFieldLabelProps,
   FormFieldProps,
+  FormFieldSelectProps,
   FormFieldPropLabelAlign,
   FormFieldPropLabelPlacement,
 } from '../FormField';
@@ -91,33 +92,46 @@ export type TimeRangeOptionContext = {
   units: DateTimeDuration;
 };
 
-/**
- * The live state handed to `TimeRange.Trigger`'s render function.
- * `buttonProps` must be spread onto whatever pressable element is rendered,
- * so it receives the popover's press/keyboard/ref wiring.
- */
-export type TimeRangeTriggerRenderProps = {
-  formattedValue: string;
-  isOpen: boolean;
-  isEmpty: boolean;
-  /**
-   * Also reflected in `buttonProps.isDisabled` — exposed separately so a
-   * custom `FormField`/`FormField.ControlGroup` wrapper can mirror it for
-   * its own disabled styling (`buttonProps` alone only disables the
-   * pressable element, not the surrounding field chrome).
-   */
-  isDisabled: boolean;
+/** A form field that displays the selected range and opens its editor. */
+export type TimeRangeFieldProps = {
+  label?: ReactNode;
+  isLabelHidden?: boolean;
+  isRequired?: boolean;
+  isInvalid?: boolean;
+  isDisabled?: boolean;
+  errorMessage?: ReactNode;
+  caption?: ReactNode;
+  fullWidth?: boolean;
+  labelPlacement?: FormFieldPropLabelPlacement;
+  labelAlign?: FormFieldPropLabelAlign;
+  /** Text displayed when the selected range is empty. */
   placeholder?: string;
-  buttonProps: ButtonOptions & { ref: Ref<HTMLButtonElement> };
-};
-
-export type TimeRangeTriggerProps = {
-  /**
-   * Renders a custom trigger. Omit it to get the default trigger — a plain
-   * link, or a `FormField` control once any FormField-only prop is used.
-   */
-  children?: (context: TimeRangeTriggerRenderProps) => ReactElement;
+  /** Additional CSS classes on the field root. */
+  className?: string;
+  /** Inline styles on the field root. */
+  style?: CSSProperties;
+  /** Ref to the focusable control. */
+  ref?: Ref<TimeRangeFieldRef>;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+  /** Props for the field's parts. */
+  slotProps?: {
+    root?: FormFieldProps;
+    label?: FormFieldLabelProps<'span'>;
+    group?: FormFieldControlGroupProps;
+    control?: FormFieldSelectProps & ButtonOptions;
+    caption?: FormFieldCaptionProps;
+    errorMessage?: FormFieldErrorProps;
+  };
 } & DataAttributeProps;
+
+export type TimeRangeFieldRef = HTMLDivElement;
+
+export type TimeRangeRenderProps = {
+  /** The selected range's localized label, or an empty string when no range is selected. */
+  formattedValue: string;
+};
 
 export type TimeRangeProps<T extends DateValue = DateValue> = {
   /** The selected time range. */
@@ -163,65 +177,8 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
    * @default false
    */
   hideRangeAsDefault?: boolean;
-  /** Placeholder shown by the trigger when the value is empty. */
-  placeholder?: string;
-  /**
-   * A custom trigger, composed from a `TimeRange.Trigger`. Omit it to render
-   * the default trigger — a plain link, or a `FormField` control once any
-   * FormField-only prop below is used.
-   */
-  children?: ReactNode;
-  /**
-   * Label displayed above the default trigger. Using it switches the
-   * default trigger to a `FormField` control. No effect on a custom trigger.
-   */
-  label?: ReactNode;
-  /**
-   * If `true`, `label` is visually hidden but still exposed to assistive
-   * technology. Switches the default trigger to a `FormField` control.
-   * @default false
-   */
-  isLabelHidden?: boolean;
-  /**
-   * If `true`, `label` is marked as required. Switches the default trigger
-   * to a `FormField` control.
-   * @default false
-   */
-  isRequired?: boolean;
-  /**
-   * If `true`, the default trigger is styled and marked as invalid.
-   * Switches the default trigger to a `FormField` control.
-   * @default false
-   */
-  isInvalid?: boolean;
-  /**
-   * Error message shown below the default trigger when `isInvalid` is
-   * `true`. Switches the default trigger to a `FormField` control.
-   */
-  errorMessage?: ReactNode;
-  /**
-   * Supplementary text shown below the default trigger. Switches the
-   * default trigger to a `FormField` control.
-   */
-  caption?: ReactNode;
-  /**
-   * If `true`, the default trigger stretches to fill its container's inline
-   * size. Switches the default trigger to a `FormField` control.
-   * @default false
-   */
-  fullWidth?: boolean;
-  /**
-   * `label`'s position relative to the default trigger. Switches the
-   * default trigger to a `FormField` control.
-   * @default 'top'
-   */
-  labelPlacement?: FormFieldPropLabelPlacement;
-  /**
-   * `label`'s horizontal alignment relative to the default trigger.
-   * Switches the default trigger to a `FormField` control.
-   * @default 'start'
-   */
-  labelAlign?: FormFieldPropLabelAlign;
+  /** A trigger, or a function rendering a trigger with the formatted range. */
+  children: ReactNode | ((props: TimeRangeRenderProps) => ReactNode);
   /** Renders a custom label for a preset option in the editor. */
   renderOption?: (context: TimeRangeOptionContext) => ReactNode;
   /**
@@ -241,21 +198,11 @@ export type TimeRangeProps<T extends DateValue = DateValue> = {
   /** Unique identifier for testing purposes. */
   'data-testid'?: string | number;
   /** Ref to the trigger element. */
-  ref?: Ref<HTMLButtonElement>;
+  ref?: Ref<TimeRangeRef>;
   /** The props used for each slot inside. */
   slotProps?: {
     popover?: PopoverProps;
     radioGroup?: RadioGroupProps;
-    /** Only applies to the default trigger; switches it to a `FormField` control. */
-    root?: FormFieldProps;
-    /** Only applies to the default trigger; switches it to a `FormField` control. */
-    label?: FormFieldLabelProps;
-    /** Only applies to the default trigger; switches it to a `FormField` control. */
-    group?: FormFieldControlGroupProps;
-    /** Only applies to the default trigger; switches it to a `FormField` control. */
-    caption?: FormFieldCaptionProps;
-    /** Only applies to the default trigger; switches it to a `FormField` control. */
-    errorMessage?: FormFieldErrorProps;
   };
 } & DataAttributeProps;
 
@@ -263,4 +210,4 @@ export type TimeRangeComponent = <T extends DateValue = DateValue>(
   props: TimeRangeProps<T>
 ) => ReactElement | null;
 
-export type TimeRangeRef = HTMLButtonElement;
+export type TimeRangeRef = HTMLElement;

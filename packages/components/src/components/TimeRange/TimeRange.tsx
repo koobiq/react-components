@@ -1,26 +1,32 @@
 'use client';
 
-import { forwardRef, useEffect, useReducer, useRef, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useReducer, useRef } from 'react';
 import type { Ref } from 'react';
 
 import type { CalendarDateTime, ZonedDateTime } from '@internationalized/date';
 import {
+  PressResponder,
   mergeProps,
   mergeRefs,
   useControlledState,
   useDateFormatter,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
-import type { DateValue } from '@koobiq/react-primitives';
+import {
+  ButtonContext,
+  useOverlayTrigger,
+  useOverlayTriggerState,
+  type DateValue,
+} from '@koobiq/react-primitives';
 
 import { Button } from '../Button';
 import { Popover } from '../Popover';
 import type { PopoverProps } from '../Popover';
 
+import { TimeRangeContext } from './components/TimeRangeContext';
 import { TimeRangeEditor } from './components/TimeRangeEditor';
 import type { TimeRangeDraft } from './components/TimeRangeEditor';
-import { TimeRangeTrigger } from './components/TimeRangeTrigger';
-import { TimeRangeTriggerContext } from './components/TimeRangeTriggerContext';
+import { TimeRangeField } from './components/TimeRangeField';
 import intlMessages from './intl';
 import type {
   TimeRangeComponent,
@@ -154,20 +160,10 @@ export function TimeRangeRender<T extends DateValue>(
     customTimeRangeTypes = [],
     hideArrow = true,
     hideRangeAsDefault = false,
-    placeholder,
     children,
     renderOption,
-    isDisabled = false,
-    isReadOnly = false,
-    label,
-    isLabelHidden = false,
-    isRequired = false,
-    isInvalid = false,
-    errorMessage,
-    caption,
-    fullWidth,
-    labelPlacement,
-    labelAlign,
+    isDisabled,
+    isReadOnly,
     className,
     style,
     'data-testid': testId,
@@ -176,6 +172,16 @@ export function TimeRangeRender<T extends DateValue>(
   } = props;
 
   const groupRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement>(null);
+
+  const anchorRef = useMemo(
+    () => ({
+      get current() {
+        return groupRef.current ?? triggerRef.current;
+      },
+    }),
+    []
+  );
 
   const t = useLocalizedStringFormatter(intlMessages);
   const rangeFormatter = useDateFormatter({ month: 'long', day: 'numeric' });
@@ -183,26 +189,6 @@ export function TimeRangeRender<T extends DateValue>(
   const resolvedAvailableTypes = resolveAvailableTimeRangeTypes(
     availableTimeRangeTypes,
     hideRangeAsDefault
-  );
-
-  // Using any FormField-only prop switches the default trigger from a plain
-  // link to a `FormField` control — FormField is an enhancement you opt into
-  // by using it, not a separate flag to keep in sync with these props.
-  const isFormFieldTrigger = Boolean(
-    label !== undefined ||
-    errorMessage !== undefined ||
-    caption !== undefined ||
-    isLabelHidden ||
-    isRequired ||
-    isInvalid ||
-    fullWidth ||
-    labelPlacement !== undefined ||
-    labelAlign !== undefined ||
-    slotProps?.root ||
-    slotProps?.label ||
-    slotProps?.group ||
-    slotProps?.caption ||
-    slotProps?.errorMessage
   );
 
   const [committed, setCommitted] = useControlledState<TimeRangeValue | null>(
@@ -240,7 +226,17 @@ export function TimeRangeRender<T extends DateValue>(
   // for a controlled one it always mirrors `value` as given.
   const displayValue = correction.corrected ? correction.value : committed;
 
-  const [isOpen, setIsOpen] = useState(false);
+  const state = useOverlayTriggerState({
+    isOpen: slotProps?.popover?.isOpen,
+    defaultOpen: slotProps?.popover?.defaultOpen,
+    onOpenChange: slotProps?.popover?.onOpenChange,
+  });
+
+  const { triggerProps, overlayProps } = useOverlayTrigger(
+    { type: 'dialog' },
+    state,
+    triggerRef
+  );
 
   const [draft, dispatch] = useReducer(
     draftReducer<T>,
@@ -290,16 +286,18 @@ export function TimeRangeRender<T extends DateValue>(
     valueProp,
   ]);
 
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
+  const wasOpen = useRef(false);
 
-    if (open) {
+  useEffect(() => {
+    if (state.isOpen && !wasOpen.current) {
       dispatch({
         type: 'RESET',
         draft: toDraft(displayValue, defaultRangeValue, minValue, maxValue),
       });
     }
-  };
+
+    wasOpen.current = state.isOpen;
+  }, [state.isOpen, displayValue, defaultRangeValue, minValue, maxValue]);
 
   const handleApply = () => {
     const resolved = calculateTimeRange(draft.type, customTimeRangeTypes, {
@@ -328,8 +326,6 @@ export function TimeRangeRender<T extends DateValue>(
   const popoverProps = mergeProps<(PopoverProps | undefined)[]>(
     {
       ...(other as PopoverProps),
-      isOpen,
-      onOpenChange: handleOpenChange,
       placement: 'bottom start',
       offset: 4,
       size: 'auto',
@@ -337,98 +333,90 @@ export function TimeRangeRender<T extends DateValue>(
       hideArrow,
       className,
       style,
-      // A custom trigger, or the plain link trigger, has no `ControlGroup`
-      // to anchor to — fall back to the popover's own trigger-element ref in
-      // that case.
-      ...(children || !isFormFieldTrigger ? {} : { anchorRef: groupRef }),
+      anchorRef,
     },
     slotProps?.popover
   );
 
+  const disabled = isDisabled || isReadOnly;
+
   return (
-    <Popover
-      {...popoverProps}
-      control={(triggerProps) => (
-        <TimeRangeTriggerContext.Provider
-          value={{
-            formattedValue,
-            isOpen,
-            isEmpty,
-            isDisabled: isDisabled || isReadOnly,
-            placeholder,
-            isFormFieldTrigger,
-            buttonProps: {
-              ...triggerProps,
-              ref: mergeRefs(ref, triggerProps.ref),
-            },
-            formField: {
-              label,
-              isLabelHidden,
-              isRequired,
-              isInvalid,
-              errorMessage,
-              caption,
-              fullWidth,
-              labelPlacement,
-              labelAlign,
-              groupRef,
-              slotProps: {
-                root: slotProps?.root,
-                label: slotProps?.label,
-                group: slotProps?.group,
-                caption: slotProps?.caption,
-                errorMessage: slotProps?.errorMessage,
-              },
-            },
+    <>
+      <TimeRangeContext.Provider
+        value={{ formattedValue, isEmpty, isDisabled: disabled, groupRef }}
+      >
+        <PressResponder
+          {...triggerProps}
+          {...{
+            role: 'button',
+            'aria-haspopup': 'dialog',
+            'aria-disabled': disabled || undefined,
+            'data-testid': testId,
+            tabIndex: disabled ? -1 : undefined,
           }}
+          onPress={(event) => {
+            if (!disabled) triggerProps.onPress?.(event);
+          }}
+          isDisabled={disabled}
+          isPressed={state.isOpen}
+          ref={mergeRefs(ref, triggerRef)}
         >
-          {children ?? (
-            <TimeRangeTrigger
-              data-testid={testId as string | number | undefined}
-            />
-          )}
-        </TimeRangeTriggerContext.Provider>
-      )}
-    >
-      {({ close }) => (
-        <>
-          <Popover.Body>
-            <TimeRangeEditor
-              draft={draft}
-              onSelectPreset={(preset) =>
-                dispatch({ type: 'SELECT_PRESET', preset })
-              }
-              onChangeStart={(instant) =>
-                dispatch({ type: 'SET_START', instant })
-              }
-              onChangeEnd={(instant) => dispatch({ type: 'SET_END', instant })}
-              onSwapRange={() => dispatch({ type: 'SWAP_RANGE' })}
-              availableTimeRangeTypes={resolvedAvailableTypes}
-              customTimeRangeTypes={customTimeRangeTypes}
-              minValue={minValue}
-              maxValue={maxValue}
-              isDisabled={isReadOnly}
-              renderOption={renderOption}
-              radioGroupProps={slotProps?.radioGroup}
-            />
-          </Popover.Body>
-          <Popover.Footer>
-            <Button
-              isDisabled={isDraftInvalid}
-              onPress={() => {
-                handleApply();
-                close();
-              }}
-            >
-              {t.format('apply')}
-            </Button>
-            <Button variant="fade-contrast-filled" onPress={close}>
-              {t.format('cancel')}
-            </Button>
-          </Popover.Footer>
-        </>
-      )}
-    </Popover>
+          <ButtonContext.Provider value={{ isDisabled: disabled }}>
+            {typeof children === 'function'
+              ? children({ formattedValue })
+              : children}
+          </ButtonContext.Provider>
+        </PressResponder>
+      </TimeRangeContext.Provider>
+      <Popover
+        {...popoverProps}
+        isOpen={state.isOpen}
+        onOpenChange={state.setOpen}
+        slotProps={{
+          ...popoverProps.slotProps,
+          dialog: mergeProps(
+            { 'aria-label': t.format('presets') },
+            overlayProps,
+            popoverProps.slotProps?.dialog
+          ),
+        }}
+      >
+        <Popover.Body>
+          <TimeRangeEditor
+            draft={draft}
+            onSelectPreset={(preset) =>
+              dispatch({ type: 'SELECT_PRESET', preset })
+            }
+            onChangeStart={(instant) =>
+              dispatch({ type: 'SET_START', instant })
+            }
+            onChangeEnd={(instant) => dispatch({ type: 'SET_END', instant })}
+            onSwapRange={() => dispatch({ type: 'SWAP_RANGE' })}
+            availableTimeRangeTypes={resolvedAvailableTypes}
+            customTimeRangeTypes={customTimeRangeTypes}
+            minValue={minValue}
+            maxValue={maxValue}
+            isDisabled={isReadOnly}
+            renderOption={renderOption}
+            radioGroupProps={slotProps?.radioGroup}
+          />
+        </Popover.Body>
+        <Popover.Footer>
+          <Button
+            isDisabled={isDraftInvalid}
+            onPress={() => {
+              handleApply();
+              state.close();
+            }}
+          >
+            {t.format('apply')}
+          </Button>
+          <Button variant="fade-contrast-filled" onPress={state.close}>
+            {t.format('cancel')}
+          </Button>
+        </Popover.Footer>
+      </Popover>
+    </>
   );
 }
 
@@ -437,7 +425,7 @@ const TimeRangeComponentImpl = forwardRef(
 ) as TimeRangeComponent;
 
 type CompoundedComponent = TimeRangeComponent & {
-  Trigger: typeof TimeRangeTrigger;
+  Field: typeof TimeRangeField;
 };
 
 /**
@@ -446,4 +434,4 @@ type CompoundedComponent = TimeRangeComponent & {
  */
 export const TimeRange = TimeRangeComponentImpl as CompoundedComponent;
 
-TimeRange.Trigger = TimeRangeTrigger;
+TimeRange.Field = TimeRangeField;

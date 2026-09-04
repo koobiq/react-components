@@ -6,11 +6,14 @@ import {
   getLocalTimeZone,
   today,
 } from '@internationalized/date';
+import { IconCalendarO16 } from '@koobiq/react-icons';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Button } from '../Button';
+import { Form } from '../Form';
+import { Link } from '../Link';
 
 import { TimeRangeEditor } from './components/TimeRangeEditor';
 import { TimeRange } from './TimeRange';
@@ -37,13 +40,23 @@ const open = async () => {
 describe('TimeRange', () => {
   it('should accept a ref', () => {
     const ref = createRef<HTMLButtonElement>();
-    render(<TimeRange ref={ref} data-testid="control" />);
+
+    render(
+      <TimeRange ref={ref} data-testid="control">
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
+    );
 
     expect(ref.current).toBe(getTrigger());
   });
 
   it('should merge a custom class name with the default ones', async () => {
-    render(<TimeRange data-testid="control" className="foo" />);
+    render(
+      <TimeRange data-testid="control" className="foo">
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
+    );
+
     await open();
 
     await getDialog();
@@ -52,14 +65,20 @@ describe('TimeRange', () => {
   });
 
   it('should not render the editor until the trigger is pressed', () => {
-    render(<TimeRange data-testid="control" />);
+    render(
+      <TimeRange data-testid="control">
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
+    );
 
     expect(queryDialog()).not.toBeInTheDocument();
   });
 
   it('should render a default value formatted as its preset label', () => {
     render(
-      <TimeRange data-testid="control" defaultValue={{ type: 'lastHour' }} />
+      <TimeRange data-testid="control" defaultValue={{ type: 'lastHour' }}>
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
     );
 
     expect(getTrigger()).toHaveTextContent('Last hour');
@@ -74,7 +93,9 @@ describe('TimeRange', () => {
           start: new CalendarDate(2026, 8, 31),
           end: new CalendarDate(2026, 9, 1),
         }}
-      />
+      >
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
     );
 
     expect(getTrigger()).toHaveTextContent('August 31 – September 1');
@@ -82,120 +103,457 @@ describe('TimeRange', () => {
 
   it('should render the placeholder when the value is empty', () => {
     render(
-      <TimeRange
-        data-testid="control"
-        placeholder="Select period"
-        value={null}
-      />
+      <TimeRange data-testid="control" value={null}>
+        {({ formattedValue }) => (
+          <Button>{formattedValue || 'Select period'}</Button>
+        )}
+      </TimeRange>
     );
 
     expect(getTrigger()).toHaveTextContent('Select period');
   });
 
-  it('should render the default trigger as a plain link when no FormField prop is used', () => {
-    render(
-      <TimeRange data-testid="control" defaultValue={{ type: 'lastHour' }} />
+  describe('composed triggers', () => {
+    it('should support a trigger inside a layout without injecting text', async () => {
+      const ref = createRef<HTMLElement>();
+
+      render(
+        <TimeRange ref={ref} defaultValue={{ type: 'lastHour' }}>
+          <div>
+            <span>Reporting period</span>
+            <Button aria-label="Choose period" />
+          </div>
+        </TimeRange>
+      );
+
+      const button = screen.getByRole('button', { name: 'Choose period' });
+      expect(button).not.toHaveTextContent('Last hour');
+      expect(ref.current).toBe(button);
+      await userEvent.click(button);
+      const dialog = await getDialog();
+      expect(button).toHaveAttribute('aria-controls', dialog.id);
+    });
+
+    it('should render formatted Link text with a user-provided icon', async () => {
+      const rootRef = createRef<HTMLElement>();
+      const linkRef = createRef<HTMLAnchorElement>();
+      const onPress = vi.fn();
+
+      render(
+        <TimeRange ref={rootRef} defaultValue={{ type: 'lastHour' }}>
+          {({ formattedValue }) => (
+            <Link
+              ref={linkRef}
+              isPseudo
+              endIcon={<IconCalendarO16 data-testid="icon" />}
+              onPress={onPress}
+            >
+              {formattedValue}
+            </Link>
+          )}
+        </TimeRange>
+      );
+
+      const link = screen.getByRole('button', { name: 'Last hour' });
+      expect(rootRef.current).toBe(link);
+      expect(linkRef.current).toBe(link);
+      expect(within(link).getByTestId('icon')).toBeInTheDocument();
+      expect(link).toHaveAttribute('aria-haspopup', 'dialog');
+      expect(link).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(link);
+      const dialog = await getDialog();
+      expect(onPress).toHaveBeenCalledTimes(1);
+      expect(link).toHaveAttribute('aria-expanded', 'true');
+      expect(link).toHaveAttribute('aria-controls', dialog.id);
+    });
+
+    it('should preserve explicit children and merge button refs and handlers', async () => {
+      const rootRef = createRef<HTMLElement>();
+      const buttonRef = createRef<HTMLButtonElement>();
+      const onPress = vi.fn();
+      const onClick = vi.fn();
+
+      render(
+        <TimeRange ref={rootRef} defaultValue={{ type: 'lastHour' }}>
+          <Button ref={buttonRef} onPress={onPress} onClick={onClick}>
+            Choose a period
+          </Button>
+        </TimeRange>
+      );
+
+      const button = screen.getByRole('button', { name: 'Choose a period' });
+      expect(rootRef.current).toBe(button);
+      expect(buttonRef.current).toBe(button);
+      await userEvent.click(button);
+      await getDialog();
+      expect(onPress).toHaveBeenCalledTimes(1);
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should preserve an icon-only button and its accessible name', async () => {
+      render(
+        <TimeRange defaultValue={{ type: 'lastHour' }}>
+          <Button
+            onlyIcon
+            startIcon={<IconCalendarO16 />}
+            aria-label="Choose period"
+          />
+        </TimeRange>
+      );
+
+      const button = screen.getByRole('button', { name: 'Choose period' });
+      expect(button).not.toHaveTextContent('Last hour');
+      await userEvent.click(button);
+      await getDialog();
+    });
+
+    it.each([
+      ['button', <Button key="0" />, '{Enter}'],
+      ['button Space', <Button key="1" />, ' '],
+      ['link', <Link key="2" isPseudo />, '{Enter}'],
+      ['field', <TimeRange.Field key="3" label="Period" />, ' '],
+    ])(
+      'should open %s from the keyboard and restore focus after Escape',
+      async (_, trigger, key) => {
+        render(<TimeRange data-testid="control">{trigger}</TimeRange>);
+        await userEvent.tab();
+        expect(getTrigger()).toHaveFocus();
+        await userEvent.keyboard(key);
+        await getDialog();
+        await userEvent.keyboard('{Escape}');
+        await waitFor(() => expect(queryDialog()).not.toBeInTheDocument());
+        await waitFor(() => expect(getTrigger()).toHaveFocus());
+        expect(getTrigger()).toHaveAttribute('aria-expanded', 'false');
+      }
     );
 
-    expect(screen.queryByRole('group')).not.toBeInTheDocument();
-    expect(getTrigger().tagName).toBe('BUTTON');
+    it.each([
+      ['Button', <Button key="4" isDisabled={false} />],
+      ['Link', <Link key="5" isDisabled={false} />],
+      ['Field', <TimeRange.Field key="6" isDisabled={false} />],
+    ])(
+      'should block a %s when the root is disabled or read-only',
+      async (_, trigger) => {
+        const { rerender } = render(
+          <TimeRange isDisabled data-testid="control">
+            {trigger}
+          </TimeRange>
+        );
+
+        await userEvent.click(getTrigger());
+        expect(queryDialog()).not.toBeInTheDocument();
+
+        rerender(
+          <TimeRange isReadOnly data-testid="control">
+            {trigger}
+          </TimeRange>
+        );
+
+        await userEvent.click(getTrigger());
+        expect(queryDialog()).not.toBeInTheDocument();
+        await userEvent.tab();
+        expect(getTrigger()).not.toHaveFocus();
+      }
+    );
+
+    it.each([
+      <Button key="7" isDisabled />,
+      <Link key="8" isDisabled />,
+      <TimeRange.Field key="9" isDisabled />,
+    ])('should preserve a disabled child', async (trigger) => {
+      render(<TimeRange data-testid="control">{trigger}</TimeRange>);
+      await userEvent.click(getTrigger());
+      expect(queryDialog()).not.toBeInTheDocument();
+    });
+
+    it('should update render function text and preserve explicit empty content', () => {
+      const { rerender } = render(
+        <TimeRange value={null}>
+          {({ formattedValue }) => (
+            <Link>{formattedValue || 'Choose period'}</Link>
+          )}
+        </TimeRange>
+      );
+
+      expect(screen.getByRole('button')).toHaveTextContent('Choose period');
+
+      rerender(
+        <TimeRange value={{ type: 'lastHour' }}>
+          {({ formattedValue }) => <Link>{formattedValue}</Link>}
+        </TimeRange>
+      );
+
+      expect(screen.getByRole('button')).toHaveTextContent('Last hour');
+
+      rerender(
+        <TimeRange value={{ type: 'lastHour' }}>
+          <Link aria-label="Choose period">{null}</Link>
+        </TimeRange>
+      );
+
+      expect(screen.getByRole('button')).toBeEmptyDOMElement();
+    });
+  });
+
+  describe('controlled popover', () => {
+    it('should synchronize the trigger, dialog and open callback', async () => {
+      const onOpenChange = vi.fn();
+
+      function Fixture() {
+        const [isOpen, setOpen] = useState(false);
+
+        return (
+          <TimeRange
+            slotProps={{
+              popover: {
+                isOpen,
+                onOpenChange: (open) => {
+                  onOpenChange(open);
+                  setOpen(open);
+                },
+                slotProps: { dialog: { id: 'range-dialog' } },
+              },
+            }}
+          >
+            <Button data-testid="control" />
+          </TimeRange>
+        );
+      }
+
+      render(<Fixture />);
+      await open();
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
+      expect(onOpenChange).toHaveBeenLastCalledWith(true);
+      expect(getTrigger()).toHaveAttribute('aria-controls', 'range-dialog');
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => expect(queryDialog()).not.toBeInTheDocument());
+      expect(onOpenChange).toHaveBeenCalledTimes(2);
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
+    });
+
+    it('should initialize the draft from the current value when opened externally', async () => {
+      const { rerender } = render(
+        <TimeRange
+          value={{ type: 'lastHour' }}
+          slotProps={{ popover: { isOpen: false } }}
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
+      );
+
+      rerender(
+        <TimeRange
+          value={{ type: 'last7Days' }}
+          slotProps={{ popover: { isOpen: true } }}
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
+      );
+
+      const dialog = await getDialog();
+
+      expect(
+        within(dialog).getByRole('radio', {
+          name: 'Last 7 days',
+          checked: true,
+        })
+      ).toBeInTheDocument();
+    });
   });
 
   describe('form field', () => {
-    it('should render the label above the trigger', () => {
-      render(<TimeRange data-testid="control" label="Period" />);
+    it('should associate label, caption, error and refs with the control', () => {
+      const rootRef = createRef<HTMLElement>();
+      const fieldRef = createRef<HTMLDivElement>();
+      const controlRef = createRef<HTMLDivElement>();
 
-      expect(screen.getByText('Period')).toBeInTheDocument();
-    });
-
-    it('should render the caption below the trigger', () => {
-      render(<TimeRange data-testid="control" caption="Applies everywhere" />);
-
-      expect(screen.getByText('Applies everywhere')).toBeInTheDocument();
-    });
-
-    it('should render the error message only when isInvalid is true', () => {
-      const { rerender } = render(
-        <TimeRange data-testid="control" errorMessage="Required" />
+      render(
+        <TimeRange ref={rootRef} defaultValue={{ type: 'lastHour' }}>
+          <TimeRange.Field
+            ref={fieldRef}
+            label="Period"
+            caption="Applies everywhere"
+            isRequired
+            isInvalid
+            errorMessage="Required"
+            slotProps={{ control: { ref: controlRef } }}
+          />
+        </TimeRange>
       );
 
+      const control = screen.getByRole('button', { name: /Period/ });
+      expect(rootRef.current).toBe(control);
+      expect(fieldRef.current).toBe(control);
+      expect(controlRef.current).toBe(control);
+      expect(control).toHaveAttribute('aria-invalid', 'true');
+
+      expect(control).toHaveAccessibleDescription(
+        'Applies everywhere Required'
+      );
+
+      expect(control).toHaveTextContent('Last hour');
+    });
+
+    it('should show errors only when invalid and use its own placeholder', () => {
+      const { rerender } = render(
+        <TimeRange value={null}>
+          <TimeRange.Field
+            label="Period"
+            placeholder="Select period"
+            errorMessage="Required"
+          />
+        </TimeRange>
+      );
+
+      expect(screen.getByRole('button')).toHaveTextContent('Select period');
       expect(screen.queryByText('Required')).not.toBeInTheDocument();
 
       rerender(
-        <TimeRange data-testid="control" isInvalid errorMessage="Required" />
+        <TimeRange value={null}>
+          <TimeRange.Field label="Period" isInvalid errorMessage="Required" />
+        </TimeRange>
       );
 
-      expect(screen.getByText('Required')).toBeInTheDocument();
+      expect(screen.getByRole('button')).toHaveAccessibleDescription(
+        'Required'
+      );
     });
 
-    it('should open the popover when clicking the control group outside the button', async () => {
-      render(<TimeRange data-testid="control" label="Period" />);
+    it('should inherit form layout and allow local overrides with a hidden label', () => {
+      const { rerender } = render(
+        <Form labelPlacement="side" labelAlign="end">
+          <TimeRange>
+            <TimeRange.Field
+              label="Period"
+              isLabelHidden
+              fullWidth
+              slotProps={{ root: { 'data-testid': 'field' } }}
+            />
+          </TimeRange>
+        </Form>
+      );
 
-      // The group's own padding/chevron aren't part of the button, so a
-      // click there must be forwarded to it to open the popover.
+      expect(screen.getByTestId('field')).toHaveAttribute(
+        'data-label-placement',
+        'side'
+      );
+
+      expect(screen.getByTestId('field')).toHaveAttribute(
+        'data-label-align',
+        'end'
+      );
+
+      expect(screen.getByTestId('field')).toHaveAttribute('data-fullwidth');
+      expect(screen.getByRole('button')).toHaveAccessibleName('Period');
+
+      rerender(
+        <Form labelPlacement="side">
+          <TimeRange>
+            <TimeRange.Field
+              label="Period"
+              labelPlacement="top"
+              slotProps={{ root: { 'data-testid': 'field' } }}
+            />
+          </TimeRange>
+        </Form>
+      );
+
+      expect(screen.getByTestId('field')).toHaveAttribute(
+        'data-label-placement',
+        'top'
+      );
+    });
+
+    it('should support slot content, ids, styling and handlers', async () => {
+      const onPress = vi.fn();
+      const groupRef = createRef<HTMLDivElement>();
+
+      render(
+        <TimeRange>
+          <TimeRange.Field
+            isInvalid
+            slotProps={{
+              root: { className: 'field-root' },
+              label: { id: 'period-label', children: 'Custom label' },
+              group: { className: 'field-group', ref: groupRef },
+              control: {
+                id: 'period-control',
+                onPress,
+                'aria-describedby': 'extra-description',
+              },
+              caption: { id: 'period-caption', children: 'Custom caption' },
+              errorMessage: { id: 'period-error', children: 'Custom error' },
+            }}
+          />
+        </TimeRange>
+      );
+
+      const control = screen.getByRole('button', { name: 'Custom label' });
+      expect(control.id).toBe('period-control');
+      expect(screen.getByText('Custom error').id).toBe('period-error');
+      expect(screen.getByText('Custom caption').id).toBe('period-caption');
+
+      expect(control).toHaveAccessibleDescription(
+        'Custom caption Custom error'
+      );
+
+      expect(control.closest('[data-slot="form-field"]')).toHaveClass(
+        'field-root'
+      );
+
+      expect(screen.getByRole('group')).toHaveClass('field-group');
+      expect(groupRef.current).toBe(screen.getByRole('group'));
+      await userEvent.click(control);
+      await getDialog();
+      expect(onPress).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open when clicking the group outside the control', async () => {
+      render(
+        <TimeRange>
+          <TimeRange.Field label="Period" />
+        </TimeRange>
+      );
+
       await userEvent.click(screen.getByRole('group'));
       await getDialog();
     });
 
-    it('should not apply label/caption/errorMessage to a custom trigger', () => {
+    it('should keep links in field decorations independent', async () => {
+      const ref = createRef<HTMLElement>();
+      const onPress = vi.fn();
+
       render(
-        <TimeRange
-          label="Period"
-          caption="Applies everywhere"
-          isInvalid
-          errorMessage="Required"
-        >
-          <TimeRange.Trigger>
-            {({ buttonProps }) => (
-              <Button {...buttonProps} data-testid="control" />
-            )}
-          </TimeRange.Trigger>
+        <TimeRange ref={ref}>
+          <TimeRange.Field
+            label="Period"
+            caption={
+              <Link as="button" onPress={onPress}>
+                Help
+              </Link>
+            }
+            slotProps={{
+              group: { startAddon: <Button onPress={onPress}>Action</Button> },
+            }}
+          />
         </TimeRange>
       );
 
-      expect(screen.queryByText('Period')).not.toBeInTheDocument();
-      expect(screen.queryByText('Applies everywhere')).not.toBeInTheDocument();
-      expect(screen.queryByText('Required')).not.toBeInTheDocument();
+      const control = screen.getByRole('button', { name: 'Period' });
+      expect(ref.current).toBe(control);
+      await userEvent.click(screen.getByRole('link', { name: 'Help' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Action' }));
+      expect(onPress).toHaveBeenCalledTimes(2);
+      expect(queryDialog()).not.toBeInTheDocument();
+      expect(ref.current).toBe(control);
     });
-  });
-
-  it('should call the TimeRange.Trigger render function with the current formatted value and open state', async () => {
-    render(
-      <TimeRange defaultValue={{ type: 'lastHour' }}>
-        <TimeRange.Trigger>
-          {({ formattedValue, isOpen, buttonProps }) => (
-            <Button {...buttonProps} data-testid="control">
-              {isOpen ? 'open' : 'closed'}: {formattedValue}
-            </Button>
-          )}
-        </TimeRange.Trigger>
-      </TimeRange>
-    );
-
-    expect(getTrigger()).toHaveTextContent('closed: Last hour');
-    await open();
-    expect(getTrigger()).toHaveTextContent('open: Last hour');
-  });
-
-  it('should reflect isDisabled in the TimeRange.Trigger render function, e.g. for a custom FormField wrapper', () => {
-    render(
-      <TimeRange defaultValue={{ type: 'lastHour' }} isDisabled>
-        <TimeRange.Trigger>
-          {({ isDisabled, buttonProps }) => (
-            <Button {...buttonProps} data-testid="control">
-              {isDisabled ? 'disabled' : 'enabled'}
-            </Button>
-          )}
-        </TimeRange.Trigger>
-      </TimeRange>
-    );
-
-    expect(getTrigger()).toHaveTextContent('disabled');
   });
 
   it('should render the presets radio group and manual range fields when open', async () => {
     render(
-      <TimeRange data-testid="control" defaultValue={{ type: 'lastHour' }} />
+      <TimeRange data-testid="control" defaultValue={{ type: 'lastHour' }}>
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
     );
 
     await open();
@@ -208,7 +566,12 @@ describe('TimeRange', () => {
   });
 
   it('should hide the presets radio group when availableTimeRangeTypes is empty', async () => {
-    render(<TimeRange data-testid="control" availableTimeRangeTypes={[]} />);
+    render(
+      <TimeRange data-testid="control" availableTimeRangeTypes={[]}>
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
+    );
+
     await open();
 
     const dialog = await getDialog();
@@ -227,7 +590,9 @@ describe('TimeRange', () => {
           defaultValue={{ type: 'lastHour' }}
           availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
           onChange={onChange}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       // `lastHour` starts with no `start`/`end`, so mount fills them in via
@@ -255,7 +620,9 @@ describe('TimeRange', () => {
           defaultValue={{ type: 'lastHour' }}
           availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
           onChange={onChange}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       await open();
@@ -287,7 +654,9 @@ describe('TimeRange', () => {
           defaultValue={{ type: 'lastHour' }}
           availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
           onChange={onChange}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       // `lastHour` starts with no `start`/`end`, so mount fills them in via
@@ -327,7 +696,9 @@ describe('TimeRange', () => {
           data-testid="control"
           value={{ type: 'lastHour' }}
           onChange={() => {}}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       expect(getTrigger()).toHaveTextContent('Last hour');
@@ -337,7 +708,9 @@ describe('TimeRange', () => {
           data-testid="control"
           value={{ type: 'currentYear' }}
           onChange={() => {}}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       expect(getTrigger()).toHaveTextContent('Current year');
@@ -350,7 +723,9 @@ describe('TimeRange', () => {
         });
 
         return (
-          <TimeRange data-testid="control" value={value} onChange={setValue} />
+          <TimeRange data-testid="control" value={value} onChange={setValue}>
+            {({ formattedValue }) => <Button>{formattedValue}</Button>}
+          </TimeRange>
         );
       }
 
@@ -371,7 +746,9 @@ describe('TimeRange', () => {
           availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
           onChange={() => {}}
           onValueCorrected={onValueCorrected}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       expect(getTrigger()).toHaveTextContent('Last hour');
@@ -392,14 +769,20 @@ describe('TimeRange', () => {
       };
 
       const { rerender } = render(
-        <TimeRange {...props} value={{ type: 'last30Days' }} />
+        <TimeRange {...props} value={{ type: 'last30Days' }}>
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       expect(onValueCorrected).toHaveBeenCalledTimes(1);
 
       // A new object with the same content, as a parent re-creating an
       // inline literal on every render would produce.
-      rerender(<TimeRange {...props} value={{ type: 'last30Days' }} />);
+      rerender(
+        <TimeRange {...props} value={{ type: 'last30Days' }}>
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
+      );
 
       expect(onValueCorrected).toHaveBeenCalledTimes(1);
     });
@@ -415,12 +798,18 @@ describe('TimeRange', () => {
       };
 
       const { rerender } = render(
-        <TimeRange {...props} value={{ type: 'last30Days' }} />
+        <TimeRange {...props} value={{ type: 'last30Days' }}>
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       expect(onValueCorrected).toHaveBeenCalledTimes(1);
 
-      rerender(<TimeRange {...props} value={{ type: 'currentYear' }} />);
+      rerender(
+        <TimeRange {...props} value={{ type: 'currentYear' }}>
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
+      );
 
       expect(onValueCorrected).toHaveBeenCalledTimes(2);
     });
@@ -434,7 +823,9 @@ describe('TimeRange', () => {
           value={{ type: 'range' }}
           onChange={() => {}}
           onValueCorrected={onValueCorrected}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       expect(onValueCorrected).toHaveBeenCalledWith(
@@ -454,7 +845,9 @@ describe('TimeRange', () => {
           data-testid="control"
           defaultValue={{ type: 'lastHour' }}
           onValueCorrected={onValueCorrected}
-        />
+        >
+          {({ formattedValue }) => <Button>{formattedValue}</Button>}
+        </TimeRange>
       );
 
       expect(onValueCorrected).toHaveBeenCalledWith(
@@ -473,7 +866,9 @@ describe('TimeRange', () => {
         data-testid="control"
         defaultValue={{ type: 'last30Days' }}
         availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
-      />
+      >
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
     );
 
     await waitFor(() => expect(getTrigger()).toHaveTextContent('Last hour'));
@@ -492,7 +887,9 @@ describe('TimeRange', () => {
         data-testid="control"
         defaultValue={{ type: 'lastHour' }}
         availableTimeRangeTypes={['lastHour', 'last24Hours', 'range']}
-      />
+      >
+        {({ formattedValue }) => <Button>{formattedValue}</Button>}
+      </TimeRange>
     );
 
     await open();
