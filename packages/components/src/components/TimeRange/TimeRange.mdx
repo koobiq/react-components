@@ -1,0 +1,70 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './TimeRange.stories';
+
+<Meta of={Stories} />
+
+# TimeRange
+
+<Status variant="experimental" />
+
+`TimeRange` allows users to select a preset or specify a custom time range.
+
+## Import
+
+```tsx
+import { TimeRange } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Triggers
+
+Component allows you to customize the trigger element. For example, it can be a `Button`, a `Link`, or a `TimeRange.Field`.
+
+<Story of={Stories.CustomTrigger} />
+
+## Form field
+
+`TimeRange.Field` renders the trigger as a full form field, with a `label`,
+`caption`, and `errorMessage`. Mark it required with `isRequired`, stretch it
+with `fullWidth`, or change the label position via `labelPlacement` and
+`labelAlign`. Its value comes from the surrounding `TimeRange`.
+
+<Story of={Stories.WithLabel} />
+
+## Manual range only
+
+When there are no preset values, only the start and end of the period remain in the window.
+
+<Story of={Stories.NoPresets} />
+
+## Selection restriction
+
+Use `minValue`/`maxValue` to restrict the manual date fields.
+
+<Story of={Stories.MinMax} />
+
+## Custom presets
+
+The component allows you to set custom time range options.
+
+<Story of={Stories.CustomRangeTypes} />
+
+## Accessibility
+
+The trigger exposes `aria-haspopup`/`aria-expanded`. The editor is rendered in
+a `role="dialog"` popover; presets are a standard `RadioGroup` supporting
+arrow-key navigation, and the manual from/to fields reuse `DatePicker`'s and
+`TimePicker`'s existing keyboard support.

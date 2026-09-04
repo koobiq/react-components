@@ -1,0 +1,77 @@
+@import url('../../styles/mixins.css');
+
+/* ── Trigger ──────────────────────────────────────────────────── */
+
+.body {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.body > :first-child + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xs);
+}
+
+.body > :first-child + * + * {
+  margin: 0;
+  margin-block-start: var(--kbq-size-xxs);
+}
+
+/* The default chevron opens the control group when pressed. */
+.addon {
+  pointer-events: none;
+}
+
+/* ── Editor ───────────────────────────────────────────────────── */
+
+.editor {
+  min-inline-size: 360px;
+  max-inline-size: 400px;
+}
+
+.presetGrid {
+  column-count: 2;
+  align-self: stretch;
+}
+
+.presetGrid > * {
+  margin-block-end: var(--kbq-size-s);
+}
+
+.manualRange {
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--kbq-size-s);
+  padding-block-start: var(--kbq-size-m);
+}
+
+.manualRange[data-no-presets] {
+  padding-block-start: 0;
+}
+
+/* ── Manual from/to row ───────────────────────────────────────── */
+
+.dateTimeRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--kbq-size-s);
+}
+
+.dateTimeRowLabel {
+  min-inline-size: 32px;
+  color: var(--kbq-foreground-contrast-secondary);
+
+  @mixin typography text-normal;
+}
+
+.dateTimeRowFields {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--kbq-size-s);
+}
+
+.dateTimeRowFields > * {
+  flex: 1 1 0;
+}
