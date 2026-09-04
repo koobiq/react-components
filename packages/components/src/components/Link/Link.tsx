@@ -2,7 +2,7 @@
 
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
-import { deprecate } from '@koobiq/logger';
+import { deprecate, once } from '@koobiq/logger';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Link as LinkPrimitive } from '@koobiq/react-primitives';
 
@@ -34,6 +34,8 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
   const isDisabled = isDisabledProp ?? disabled;
   const isPseudo = isPseudoProp ?? pseudo;
 
+  const isButton = as === 'button';
+
   const hasIcon = Boolean(startIcon || endIcon);
 
   if (process.env.NODE_ENV !== 'production' && 'visitable' in props) {
@@ -54,11 +56,17 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
     );
   }
 
+  if (process.env.NODE_ENV !== 'production' && isButton && 'href' in props) {
+    once.warn(
+      'Link: the "href" prop is ignored with as="button". Keep the default anchor for navigation, or handle the action with "onPress".'
+    );
+  }
+
   return (
     <LinkPrimitive
       as={as}
       isDisabled={isDisabled}
-      {...(isDisabled && { tabIndex: -1 })}
+      {...(isDisabled && !isButton && { tabIndex: -1 })}
       className={({ isHovered, isPressed, isFocusVisible }) =>
         clsx(
           s.base,

@@ -1,6 +1,11 @@
 'use client';
 
-import type { ComponentPropsWithRef, ComponentRef, ElementType } from 'react';
+import type {
+  ComponentPropsWithRef,
+  ComponentRef,
+  ElementType,
+  ForwardedRef,
+} from 'react';
 
 import {
   useObjectRef,
@@ -10,25 +15,76 @@ import {
 } from '@koobiq/react-core';
 import { useRenderProps } from 'react-aria-components';
 
-import { useLink } from '../../behaviors';
+import { useButton, useLink } from '../../behaviors';
 
-import type { LinkBaseProps } from './types.js';
+import type { LinkBaseProps, LinkRenderProps } from './types.js';
 
-/**
- * A link primitive allows a user to navigate to another page or resource within
- * a web page or application.
- */
-export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
-  const { as: Tag = 'a', ...other } = props;
+type LinkInnerProps<E extends HTMLElement> = LinkBaseProps & {
+  elementRef: ForwardedRef<E>;
+};
 
-  const domRef = useObjectRef<ComponentRef<'a'>>(ref);
+const useCommonProps = (props: LinkBaseProps, values: LinkRenderProps) => {
+  const renderProps = useRenderProps({ ...props, values });
+
+  const DOMProps = filterDOMProps(props, { global: true });
+
+  delete DOMProps.onClick;
+
+  return {
+    DOMProps,
+    renderProps,
+    stateProps: {
+      'data-hovered': values.isHovered || undefined,
+      'data-pressed': values.isPressed || undefined,
+      'data-focused': values.isFocused || undefined,
+      'data-disabled': values.isDisabled || undefined,
+      'data-focus-visible': values.isFocusVisible || undefined,
+    },
+  };
+};
+
+const LinkAsButton = ({
+  elementRef,
+  ...props
+}: LinkInnerProps<HTMLButtonElement>) => {
+  const domRef = useObjectRef<ComponentRef<'button'>>(elementRef);
+
+  const { isHovered, isPressed, isFocused, isFocusVisible, buttonProps } =
+    useButton<'button'>({ ...props, elementType: 'button' }, domRef);
+
+  const { DOMProps, renderProps, stateProps } = useCommonProps(props, {
+    isHovered,
+    isPressed,
+    isFocused,
+    isFocusVisible,
+    isDisabled: props.isDisabled || false,
+  });
+
+  return (
+    <button
+      {...stateProps}
+      {...mergeProps(DOMProps, renderProps, buttonProps)}
+      {...('tabIndex' in props && { tabIndex: props.tabIndex })}
+      ref={domRef}
+    >
+      {renderProps.children}
+    </button>
+  );
+};
+
+const LinkAsAnchor = ({
+  as: Tag = 'a',
+  elementRef,
+  ...props
+}: LinkInnerProps<HTMLAnchorElement> & { as?: ElementType }) => {
+  const domRef = useObjectRef<ComponentRef<'a'>>(elementRef);
 
   const { isHovered, isPressed, isFocusVisible, isFocused, linkProps } =
     useLink(
       {
-        ...other,
+        ...props,
         elementType: `${Tag}`,
-        ...(other.isDisabled && {
+        ...(props.isDisabled && {
           onPress: undefined,
           onPressStart: undefined,
           onPressEnd: undefined,
@@ -43,29 +99,17 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
       domRef
     );
 
-  const renderValues = {
+  const { DOMProps, renderProps, stateProps } = useCommonProps(props, {
     isHovered,
     isPressed,
     isFocused,
     isFocusVisible,
     isDisabled: props.isDisabled || false,
-  };
-
-  const renderProps = useRenderProps({
-    ...props,
-    values: renderValues,
   });
-
-  const DOMProps = filterDOMProps(props, { global: true });
-  delete DOMProps.onClick;
 
   return (
     <Tag
-      data-hovered={isHovered || undefined}
-      data-pressed={isPressed || undefined}
-      data-focused={isFocused || undefined}
-      data-disabled={props.isDisabled || undefined}
-      data-focus-visible={isFocusVisible || undefined}
+      {...stateProps}
       {...mergeProps(DOMProps, renderProps, linkProps)}
       {...('tabIndex' in props && { tabIndex: props.tabIndex })}
       ref={domRef}
@@ -73,7 +117,21 @@ export const Link = polymorphicForwardRef<'a', LinkBaseProps>((props, ref) => {
       {renderProps.children}
     </Tag>
   );
-});
+};
+
+/**
+ * A link primitive allows a user to navigate to another page or resource within
+ * a web page or application. With `as="button"` it switches to button semantics
+ * instead of a button driven by link interactions.
+ */
+export const Link = polymorphicForwardRef<'a', LinkBaseProps>(
+  ({ as, ...props }, ref) =>
+    as === 'button' ? (
+      <LinkAsButton {...props} elementRef={ref} />
+    ) : (
+      <LinkAsAnchor {...props} as={as} elementRef={ref} />
+    )
+);
 
 export type LinkProps<As extends ElementType = 'a'> = ComponentPropsWithRef<
   typeof Link<As>
