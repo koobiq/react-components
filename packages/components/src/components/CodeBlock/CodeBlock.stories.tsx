@@ -25,7 +25,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['status:new', 'date:2026-08-05'],
+  tags: ['status:new', 'date:2026-09-07'],
 } satisfies Meta<typeof CodeBlock>;
 
 export default meta;

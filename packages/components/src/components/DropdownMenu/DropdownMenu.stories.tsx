@@ -54,7 +54,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new', 'date:2026-08-06'],
+  tags: ['status:new', 'date:2026-09-07'],
 } satisfies Meta<typeof DropdownMenu>;
 
 export default meta;
