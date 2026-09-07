@@ -541,7 +541,7 @@ describe('TimeRange', () => {
 
       const control = screen.getByRole('button', { name: 'Period' });
       expect(ref.current).toBe(control);
-      await userEvent.click(screen.getByRole('link', { name: 'Help' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Help' }));
       await userEvent.click(screen.getByRole('button', { name: 'Action' }));
       expect(onPress).toHaveBeenCalledTimes(2);
       expect(queryDialog()).not.toBeInTheDocument();

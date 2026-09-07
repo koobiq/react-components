@@ -82,11 +82,17 @@ const MyLink = () => (
 The Link component is a semantic anchor by default.
 If you need button-like behavior, render it as a button via `as="button"` and handle actions with `onPress`.
 
+In this mode the element is announced as a button (no `role="link"`), `type` defaults
+to `button`, `isDisabled` sets the native `disabled` attribute, and button HTML and
+ARIA props (`form`, `name`, `value`, `aria-expanded`, `aria-controls`, `aria-haspopup`,
+`aria-pressed`) reach the DOM. `href` is ignored — keep the anchor for navigation.
+
 <Story of={Stories.Button} />
 
 ## Disabled
 
 Use `isDisabled` to make the link non-interactive. It prevents navigation by removing `href`
-and removes press/click handlers to avoid accidental activation.
+and removes press/click handlers to avoid accidental activation. With `as="button"`
+the native `disabled` attribute is used instead.
 
 <Story of={Stories.Disabled} />

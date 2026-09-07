@@ -18,6 +18,7 @@
     outline var(--kbq-transition-default),
     text-decoration-color var(--kbq-transition-default);
 
+  &[data-disabled],
   &[aria-disabled='true'] {
     cursor: default;
     text-decoration: none;
@@ -59,6 +60,7 @@
 }
 
 .pseudo:where(:not(.pressed, .hovered)),
+.pseudo[data-disabled],
 .pseudo[aria-disabled='true'] {
   text-decoration-color: transparent;
 }

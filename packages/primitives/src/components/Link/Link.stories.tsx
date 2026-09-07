@@ -62,7 +62,12 @@ export const Base = (args: LinkProps) => (
 
 export const Button = {
   render: Base,
-  args: { children: 'Button', as: 'button', onPress: () => alert('Press!') },
+  args: {
+    href: undefined,
+    children: 'Button',
+    as: 'button',
+    onPress: () => alert('Press!'),
+  },
 };
 
 export const Disabled = {
