@@ -70,6 +70,11 @@
 .horizontal {
   flex-direction: column;
 
+  &:not(.stretched) .tabList {
+    /* Keep the clipped list at its content width in Safari. */
+    flex-shrink: 0;
+  }
+
   &[data-horizontal-scrollable] {
     .scrollBox {
       cursor: grab;
