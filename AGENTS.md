@@ -13,6 +13,8 @@
 
 ## Repository Structure
 
+Selected paths. The root also holds the lint, format, commit, and deploy configs not shown here.
+
 ```
 ├── packages/
 │   ├── logger/                        # Client-side logging utilities (@koobiq/logger)
@@ -36,6 +38,7 @@
 │           ├── styles/                # mixins.css, utility classes
 │           ├── utils/                 # getResponsiveValue, …
 │           ├── global.css             # --kbq-layer-* / --kbq-transition-* variables, .kbq-light / .kbq-dark
+│           ├── types.ts               # Public type re-exports (PressEvent)
 │           ├── index.ts               # Main entry (imports global.css)
 │           ├── markdown.ts            # `@koobiq/react-components/markdown` entry
 │           └── code-block.ts          # `@koobiq/react-components/code-block` entry
@@ -50,6 +53,7 @@
 ├── pnpm-workspace.yaml
 ├── turbo.json
 ├── vite.config.mts                    # Shared CSS Modules/PostCSS config + Vitest projects and coverage
+├── vitest.workspace.ts                # Legacy; Vitest 4 ignores it (projects come from vite.config.mts)
 └── tsconfig.json                      # Root TS config; `paths` map @koobiq/react-* to packages/*/src
 ```
 
@@ -104,7 +108,7 @@ pnpm test:coverage
 pnpm type-check
 pnpm lint                          # eslint + stylelint
 pnpm lint:fix
-pnpm format:write                  # prettier for json/md/mdx/html/yml/svg
+pnpm format:write                  # prettier for json/md/mdx/html/yml/yaml/svg
 pnpm format:check
 
 pnpm check-api                     # needs a fresh `pnpm build`
