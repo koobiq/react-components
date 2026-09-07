@@ -26,7 +26,7 @@ const meta = {
     'TreeSelect.Tag': TreeSelect.Tag,
   },
   argTypes: {},
-  tags: ['status:new', 'date:2026-06-26'],
+  tags: ['status:updated', 'date:2026-09-07'],
 } satisfies Meta<typeof TreeSelect>;
 
 export default meta;
