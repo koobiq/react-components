@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.37.0](https://github.com/koobiq/react-components/compare/0.36.0...0.37.0) (2026-09-07)
+
+
+### 🚀 Features
+
+* **components:** add `ClampedList` component (DS-5245) ([#461](https://github.com/koobiq/react-components/issues/461)) ([11b4f0d](https://github.com/koobiq/react-components/commit/11b4f0df090d5c96bf5a7ffe4e6b5175ba3df460))
+* **components:** add `ClampedText` component (DS-5246) ([#458](https://github.com/koobiq/react-components/issues/458)) ([9598806](https://github.com/koobiq/react-components/commit/9598806153c2cc770207fc71ff201795f6369d4f))
+* **components:** add `DropdownMenu` component (DS-5055) ([#457](https://github.com/koobiq/react-components/issues/457)) ([17f10bd](https://github.com/koobiq/react-components/commit/17f10bd3e60cf3c69f80afab44030cd986ea00f7))
+* **components:** add `Highlight` component (DS-4815) ([#462](https://github.com/koobiq/react-components/issues/462)) ([f677de6](https://github.com/koobiq/react-components/commit/f677de67b33bdbf2f7642bdf843d1973fbf30998))
+* **components:** add `SplitButton` (#DS-5241) ([#460](https://github.com/koobiq/react-components/issues/460)) ([94b5d46](https://github.com/koobiq/react-components/commit/94b5d46be45e40ea796f6f5e37eb0892f6592e4b)), closes [#DS-5241](https://github.com/koobiq/react-components/issues/DS-5241)
+* **components:** add `TimeRange` component (#DS-5239) ([#464](https://github.com/koobiq/react-components/issues/464)) ([6fd657f](https://github.com/koobiq/react-components/commit/6fd657f293b2a5cd8d14b44a865fd6b5c3a09752)), closes [#DS-5239](https://github.com/koobiq/react-components/issues/DS-5239)
+* **components:** added CodeBlock component (#DS-5224) ([#463](https://github.com/koobiq/react-components/issues/463)) ([632de05](https://github.com/koobiq/react-components/commit/632de0522d9b985f9b7f451c3c7a53adfb68343f)), closes [#DS-5224](https://github.com/koobiq/react-components/issues/DS-5224) [#DS-5224](https://github.com/koobiq/react-components/issues/DS-5224)
+
+
+### 🐞 Bug Fixes
+
+* **Link:** correct semantics with as="button" (DS-5436) ([#468](https://github.com/koobiq/react-components/issues/468)) ([45b1626](https://github.com/koobiq/react-components/commit/45b1626b5182e090ae4e5fffd1b1e83a94776b0e))
+* **Tabs:** prevent tab list from shrinking in Safari (DS-5500) ([#470](https://github.com/koobiq/react-components/issues/470)) ([94d1abc](https://github.com/koobiq/react-components/commit/94d1abce086a5099bfd3cffcd574d8d682329d98))
+
 ## [0.36.0](https://github.com/koobiq/react-components/compare/0.35.1...0.36.0) (2026-08-10)
 
 
