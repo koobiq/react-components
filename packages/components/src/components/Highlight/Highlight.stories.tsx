@@ -23,7 +23,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new', 'date:2026-08-18'],
+  tags: ['status:new', 'date:2026-09-07'],
 } satisfies Meta<typeof Highlight>;
 
 export default meta;

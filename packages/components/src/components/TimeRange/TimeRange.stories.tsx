@@ -16,7 +16,7 @@ const meta = {
   component: TimeRange,
   subcomponents: { 'TimeRange.Field': TimeRange.Field },
   parameters: { layout: 'centered' },
-  tags: ['status:new', 'date:2026-09-04'],
+  tags: ['status:new', 'date:2026-09-07'],
 } satisfies Meta<typeof TimeRange>;
 
 export default meta;

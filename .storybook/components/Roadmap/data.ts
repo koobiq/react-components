@@ -424,12 +424,14 @@ export const rows: Rows = [
   },
   {
     component: 'CodeBlock',
-    status: '🚧 Planned',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
   {
     component: 'SplitButton',
-    status: '🚧 Planned',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
   {
@@ -446,7 +448,8 @@ export const rows: Rows = [
   },
   {
     component: 'TimeRange',
-    status: '🚧 Planned',
+    status: '✅ Done',
+    stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
 ];
