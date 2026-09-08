@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import type { KeyboardEvent } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -10,6 +11,8 @@ import {
   IconXmarkS16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
+import { maskitoNumberOptionsGenerator } from '@maskito/kit';
+import { useMaskito } from '@maskito/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
@@ -450,4 +453,149 @@ export const Validation: Story = {
       <Button type="submit">Submit</Button>
     </Form>
   ),
+};
+
+export const Mask: Story = {
+  render: function Render(args) {
+    const hex = /[\dA-Fa-f]/;
+    const alphanumeric = /[\dA-Za-z]/;
+
+    const toUpperCase = ({
+      value,
+      selection,
+    }: {
+      value: string;
+      selection: readonly [number, number];
+    }) => ({ value: value.toUpperCase(), selection });
+
+    const ipv4Options = useMemo(
+      () => ({
+        mask: /^((25[0-5]|2[0-4]\d|[01]?\d?\d)\.){0,3}(25[0-5]|2[0-4]\d|[01]?\d?\d)?$/,
+      }),
+      []
+    );
+
+    const macOptions = useMemo(
+      () => ({
+        mask: Array.from({ length: 6 }).flatMap((_, index) =>
+          index === 0 ? [hex, hex] : [':', hex, hex]
+        ),
+        postprocessors: [toUpperCase],
+      }),
+      []
+    );
+
+    const ipv6Options = useMemo(
+      () => ({
+        mask: Array.from({ length: 8 }).flatMap((_, index) =>
+          index === 0 ? [hex, hex, hex, hex] : [':', hex, hex, hex, hex]
+        ),
+      }),
+      []
+    );
+
+    const portOptions = useMemo(
+      () =>
+        maskitoNumberOptionsGenerator({
+          min: 0,
+          max: 65535,
+          maximumFractionDigits: 0,
+          thousandSeparator: '',
+        }),
+      []
+    );
+
+    const licenseKeyOptions = useMemo(
+      () => ({
+        mask: Array.from({ length: 4 }).flatMap((_, index) =>
+          index === 0
+            ? [alphanumeric, alphanumeric, alphanumeric, alphanumeric]
+            : ['-', alphanumeric, alphanumeric, alphanumeric, alphanumeric]
+        ),
+        postprocessors: [toUpperCase],
+      }),
+      []
+    );
+
+    const ipv4Ref = useMaskito({ options: ipv4Options });
+    const macRef = useMaskito({ options: macOptions });
+    const ipv6Ref = useMaskito({ options: ipv6Options });
+    const portRef = useMaskito({ options: portOptions });
+    const licenseKeyRef = useMaskito({ options: licenseKeyOptions });
+
+    const [ipv4, setIpv4] = useState('192.168.0.1');
+    const [mac, setMac] = useState('AA:BB:CC:DD:EE:FF');
+
+    const [ipv6, setIpv6] = useState('2001:0db8:85a3:0000:0000:8a2e:0370:7334');
+
+    const [port, setPort] = useState('8080');
+    const [licenseKey, setLicenseKey] = useState('ABCD-1234-EFGH-5678');
+
+    const handlePortKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+
+      event.preventDefault();
+
+      const step = event.key === 'ArrowUp' ? 1 : -1;
+
+      setPort((prevPort) =>
+        String(Math.min(Math.max(Number(prevPort || 0) + step, 0), 65535))
+      );
+    };
+
+    return (
+      <FlexBox direction="column" gap="l" style={{ inlineSize: 320 }}>
+        <Input
+          label="IP address"
+          caption="Format: 192.168.0.1"
+          value={ipv4}
+          onChange={setIpv4}
+          slotProps={{ input: { ref: ipv4Ref } }}
+          isClearable
+          fullWidth
+          {...args}
+        />
+        <Input
+          label="MAC address"
+          caption="Format: AA:BB:CC:DD:EE:FF"
+          value={mac}
+          onChange={setMac}
+          slotProps={{ input: { ref: macRef } }}
+          isClearable
+          fullWidth
+          {...args}
+        />
+        <Input
+          label="IPv6 address"
+          caption="Format: 2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+          value={ipv6}
+          onChange={setIpv6}
+          slotProps={{ input: { ref: ipv6Ref } }}
+          isClearable
+          fullWidth
+          {...args}
+        />
+        <Input
+          label="Port"
+          caption="Range: 0-65535. Use ↑/↓ to increase or decrease the value"
+          value={port}
+          onChange={setPort}
+          slotProps={{ input: { ref: portRef, onKeyDown: handlePortKeyDown } }}
+          isClearable
+          fullWidth
+          {...args}
+        />
+        <Input
+          label="License key"
+          caption="Format: ABCD-1234-EFGH-5678"
+          value={licenseKey}
+          onChange={setLicenseKey}
+          slotProps={{ input: { ref: licenseKeyRef } }}
+          isClearable
+          fullWidth
+          {...args}
+        />
+      </FlexBox>
+    );
+  },
 };
