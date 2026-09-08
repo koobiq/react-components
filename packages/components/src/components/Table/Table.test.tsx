@@ -1,12 +1,12 @@
 import { createRef, useMemo, useState } from 'react';
 
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
 import { Provider } from '../Provider';
 
-import { Table } from './index';
+import { Table, TableContainer } from './index';
 import type { TableProps } from './types';
 
 const renderComponent = (props: Omit<TableProps<object>, 'children'>) => {
@@ -293,35 +293,39 @@ describe('Table', () => {
     const columns = [{ key: 'name', name: 'Name' }];
     const rows = [{ id: 1, name: 'Alpha' }];
 
+    // A resizable table warns when it is not wrapped in the container that
+    // defines its width.
     const ResizableTable = ({ isHighlighted }: { isHighlighted: boolean }) => (
-      <Table aria-label="Resizable collection" isResizable>
-        <Table.Header columns={columns}>
-          {(column) => (
-            <Table.Column
-              key={column.key}
-              allowsResizing
-              defaultWidth={200}
-              className={isHighlighted ? 'highlighted' : undefined}
-            >
-              {column.name}
-            </Table.Column>
-          )}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {(item) => (
-            <Table.Row>
-              <Table.Cell>{item.name}</Table.Cell>
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
+      <TableContainer>
+        <Table aria-label="Resizable collection" isResizable>
+          <Table.Header columns={columns}>
+            {(column) => (
+              <Table.Column
+                key={column.key}
+                allowsResizing
+                defaultWidth={200}
+                className={isHighlighted ? 'highlighted' : undefined}
+              >
+                {column.name}
+              </Table.Column>
+            )}
+          </Table.Header>
+          <Table.Body items={rows}>
+            {(item) => (
+              <Table.Row>
+                <Table.Cell>{item.name}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      </TableContainer>
     );
 
     const { rerender } = render(<ResizableTable isHighlighted={false} />);
     const initialWidth = screen.getByRole('columnheader').style.inlineSize;
     const resizer = screen.getByRole('slider');
 
-    resizer.focus();
+    act(() => resizer.focus());
     await userEvent.keyboard('{Enter}{ArrowRight}{Enter}');
 
     const resizedWidth = screen.getByRole('columnheader').style.inlineSize;

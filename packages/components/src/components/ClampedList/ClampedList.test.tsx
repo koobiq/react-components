@@ -251,7 +251,10 @@ describe('ClampedList', () => {
     expect(getRenderedItems()).toHaveLength(17);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
-    trigger.focus();
+    await user.tab();
+
+    expect(trigger).toHaveFocus();
+
     await user.keyboard('{Enter}');
 
     expect(getRenderedItems()).toHaveLength(10);

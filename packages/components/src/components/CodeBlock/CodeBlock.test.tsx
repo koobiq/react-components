@@ -154,6 +154,10 @@ describe('CodeBlock', () => {
       />
     );
 
+    await waitFor(() =>
+      expect(getCode()).toHaveAttribute('data-language', 'xml')
+    );
+
     expect(screen.queryAllByRole('tab')).toHaveLength(0);
     expect(screen.getByTestId('root')).toHaveAttribute('data-hide-tabs');
     expect(onHideTabsChange).not.toHaveBeenCalled();
@@ -351,6 +355,10 @@ describe('CodeBlock', () => {
           content: { className: 'custom-content', style: { minBlockSize: 40 } },
         }}
       />
+    );
+
+    await waitFor(() =>
+      expect(getCode()).toHaveAttribute('data-language', 'javascript')
     );
 
     expect(screen.getByTestId('code-block-header')).toHaveClass(

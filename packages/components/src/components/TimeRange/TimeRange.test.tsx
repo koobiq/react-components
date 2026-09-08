@@ -230,7 +230,7 @@ describe('TimeRange', () => {
     it.each([
       ['Button', <Button key="4" isDisabled={false} />],
       ['Link', <Link key="5" isDisabled={false} />],
-      ['Field', <TimeRange.Field key="6" isDisabled={false} />],
+      ['Field', <TimeRange.Field key="6" label="Period" isDisabled={false} />],
     ])(
       'should block a %s when the root is disabled or read-only',
       async (_, trigger) => {
@@ -259,7 +259,7 @@ describe('TimeRange', () => {
     it.each([
       <Button key="7" isDisabled />,
       <Link key="8" isDisabled />,
-      <TimeRange.Field key="9" isDisabled />,
+      <TimeRange.Field key="9" label="Period" isDisabled />,
     ])('should preserve a disabled child', async (trigger) => {
       render(<TimeRange data-testid="control">{trigger}</TimeRange>);
       await userEvent.click(getTrigger());

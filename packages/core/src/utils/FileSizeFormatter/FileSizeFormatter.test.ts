@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { FileSizeFormatter } from './FileSizeFormatter';
 
@@ -84,10 +84,19 @@ describe('FileSizeFormatter', () => {
   });
 
   it('clamps out-of-range precision instead of throwing', () => {
+    // Out-of-range precision is reported to the console on purpose.
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
     const formatter = new FileSizeFormatter('en-US');
 
     expect(formatter.format(1550, { precision: -1 })).toBe('2\u00a0KB');
     expect(() => formatter.format(1550, { precision: 101 })).not.toThrow();
+
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('FileSizeFormatter')
+    );
+
+    warn.mockRestore();
   });
 
   it('falls back to the configured precision when a per-call override is non-finite', () => {

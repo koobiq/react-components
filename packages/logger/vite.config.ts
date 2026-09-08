@@ -14,6 +14,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    setupFiles: '../../tools/vitest/setupTests.ts',
   },
   plugins: [tsconfigPaths(), react()],
   build: {
