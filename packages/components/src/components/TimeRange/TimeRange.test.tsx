@@ -230,7 +230,10 @@ describe('TimeRange', () => {
     it.each([
       ['Button', <Button key="4" isDisabled={false} />],
       ['Link', <Link key="5" isDisabled={false} />],
-      ['Field', <TimeRange.Field key="6" label="Period" isDisabled={false} />],
+      [
+        'Field',
+        <TimeRange.Field key="6" aria-label="Period" isDisabled={false} />,
+      ],
     ])(
       'should block a %s when the root is disabled or read-only',
       async (_, trigger) => {

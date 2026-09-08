@@ -1,12 +1,6 @@
 import { createRef } from 'react';
 
-import {
-  act,
-  screen,
-  render,
-  fireEvent,
-  waitFor,
-} from '@testing-library/react';
+import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
@@ -376,9 +370,7 @@ describe('Sidebar', () => {
         cancelable: true,
       });
 
-      act(() => {
-        window.dispatchEvent(event);
-      });
+      fireEvent(window, event);
 
       expect(event.defaultPrevented).toBe(true);
       expect(onOpenChange).toHaveBeenCalledWith(true);

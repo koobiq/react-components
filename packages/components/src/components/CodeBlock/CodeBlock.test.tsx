@@ -357,10 +357,6 @@ describe('CodeBlock', () => {
       />
     );
 
-    await waitFor(() =>
-      expect(getCode()).toHaveAttribute('data-language', 'javascript')
-    );
-
     expect(screen.getByTestId('code-block-header')).toHaveClass(
       'custom-header'
     );
@@ -369,6 +365,12 @@ describe('CodeBlock', () => {
 
     expect(region).toHaveClass('custom-content');
     expect(region).toHaveStyle({ minBlockSize: '40px' });
+
+    // Flushes the pending highlight update. Kept last: the assertions above
+    // must stay synchronous.
+    await waitFor(() =>
+      expect(getCode()).toHaveAttribute('data-language', 'javascript')
+    );
   });
 
   describe('highlight configuration', () => {

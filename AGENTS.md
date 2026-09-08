@@ -43,8 +43,7 @@
 ├── package.json                       # Root monorepo config
 ├── pnpm-workspace.yaml
 ├── turbo.json
-├── vite.config.mts                    # Shared Vite + Vitest config
-└── vitest.workspace.ts
+└── vite.config.mts                    # Shared Vite + Vitest config
 ```
 
 ## Tech Stack

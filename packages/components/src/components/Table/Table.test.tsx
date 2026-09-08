@@ -6,7 +6,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { Provider } from '../Provider';
 
-import { Table, TableContainer } from './index';
+import { Table } from './index';
 import type { TableProps } from './types';
 
 const renderComponent = (props: Omit<TableProps<object>, 'children'>) => {
@@ -293,35 +293,42 @@ describe('Table', () => {
     const columns = [{ key: 'name', name: 'Name' }];
     const rows = [{ id: 1, name: 'Alpha' }];
 
-    // A resizable table warns when it is not wrapped in the container that
-    // defines its width.
     const ResizableTable = ({ isHighlighted }: { isHighlighted: boolean }) => (
-      <TableContainer>
-        <Table aria-label="Resizable collection" isResizable>
-          <Table.Header columns={columns}>
-            {(column) => (
-              <Table.Column
-                key={column.key}
-                allowsResizing
-                defaultWidth={200}
-                className={isHighlighted ? 'highlighted' : undefined}
-              >
-                {column.name}
-              </Table.Column>
-            )}
-          </Table.Header>
-          <Table.Body items={rows}>
-            {(item) => (
-              <Table.Row>
-                <Table.Cell>{item.name}</Table.Cell>
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
-      </TableContainer>
+      <Table aria-label="Resizable collection" isResizable>
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column
+              key={column.key}
+              allowsResizing
+              defaultWidth={200}
+              className={isHighlighted ? 'highlighted' : undefined}
+            >
+              {column.name}
+            </Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {(item) => (
+            <Table.Row>
+              <Table.Cell>{item.name}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
     );
 
+    // Wrapping in `TableContainer` would silence this warning, but the table
+    // width would fall back to `0`: jsdom never reports a size.
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
     const { rerender } = render(<ResizableTable isHighlighted={false} />);
+
+    expect(warn).toHaveBeenCalledWith(
+      '[koobiq] Table: if the "Table" supports column resizing, then it should also be wrapped in the "TableContainer" that defines the overall table width.'
+    );
+
+    warn.mockRestore();
+
     const initialWidth = screen.getByRole('columnheader').style.inlineSize;
     const resizer = screen.getByRole('slider');
 

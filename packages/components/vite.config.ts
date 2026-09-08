@@ -8,17 +8,14 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 import { browserslist as browsers } from '../../package.json';
+import { test } from '../../tools/vitest/config';
 import { css } from '../../vite.config.mjs';
 
 const isExternal = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
 
 export default defineConfig({
   css,
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['../../tools/vitest/setupTests.ts', './setupTests.ts'],
-  },
+  test,
   plugins: [tsconfigPaths(), react(), preserveDirectives()],
   build: {
     lib: {
