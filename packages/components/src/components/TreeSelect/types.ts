@@ -119,6 +119,12 @@ export type TreeSelectProps<
   defaultInputValue?: string;
   /** Handler called when the search query changes. */
   onInputChange?: (value: string) => void;
+  /**
+   * Values the rendered items depend on. The collection caches an item by its
+   * object identity, so a value used inside the render function — a search
+   * query, for instance — has to be listed here for the items to re-render.
+   */
+  dependencies?: ReadonlyArray<unknown>;
   /** The filter function used to determine whether an item should be included in the search results. */
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
   /** The props used for each slot inside. */

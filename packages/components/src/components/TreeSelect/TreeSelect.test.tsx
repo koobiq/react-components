@@ -830,4 +830,44 @@ describe('TreeSelect', () => {
       expect(screen.getByTestId('item-7')).toBeInTheDocument();
     });
   });
+
+  describe('dependencies', () => {
+    function DependenciesFixture({ suffix }: { suffix: string }) {
+      return (
+        <Provider>
+          <TreeSelect
+            items={items}
+            label="Files"
+            dependencies={[suffix]}
+            defaultOpen
+          >
+            {function renderItem(item: FileNode) {
+              return (
+                <Tree.Item
+                  key={item.id}
+                  textValue={item.title}
+                  data-testid={`item-${item.id}`}
+                >
+                  <Tree.ItemContent>{`${item.title}-${suffix}`}</Tree.ItemContent>
+                  <Collection items={item.children} dependencies={[suffix]}>
+                    {renderItem}
+                  </Collection>
+                </Tree.Item>
+              );
+            }}
+          </TreeSelect>
+        </Provider>
+      );
+    }
+
+    it('should re-render the items when a dependency changes', () => {
+      const { rerender } = render(<DependenciesFixture suffix="a" />);
+
+      expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-a');
+
+      rerender(<DependenciesFixture suffix="b" />);
+
+      expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-b');
+    });
+  });
 });
