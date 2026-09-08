@@ -62,6 +62,46 @@ describe('TagList', () => {
     expect(ref.current).toBe(screen.getByLabelText('tag-list'));
   });
 
+  it('should apply tag root slot props and preserve keyboard navigation', async () => {
+    const ref = createRef<HTMLDivElement>();
+    const onFocus = vi.fn();
+    const user = userEvent.setup();
+
+    const { unmount } = render(
+      <TagList aria-label="tag-list">
+        <TagList.Tag
+          key="one"
+          className="tag"
+          slotProps={{
+            root: { ref, onFocus, className: 'slot', style: { padding: 20 } },
+          }}
+        >
+          one
+        </TagList.Tag>
+        <TagList.Tag key="two">two</TagList.Tag>
+      </TagList>
+    );
+
+    const [first, second] = screen.getAllByRole('row');
+
+    expect(ref.current).toBe(first);
+    expect(first).toHaveClass('tag', 'slot');
+    expect(first).toHaveStyle({ padding: '20px' });
+
+    await user.tab();
+
+    expect(first).toHaveFocus();
+    expect(onFocus).toHaveBeenCalledTimes(1);
+
+    await user.keyboard('{ArrowRight}');
+
+    expect(second).toHaveFocus();
+
+    unmount();
+
+    expect(ref.current).toBeNull();
+  });
+
   it('should merge a custom class name with the default ones', () => {
     render(renderComponent({ className: 'foo' }));
 

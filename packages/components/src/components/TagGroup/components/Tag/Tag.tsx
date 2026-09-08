@@ -1,25 +1,14 @@
 import { useRef } from 'react';
 
-import {
-  clsx,
-  useFocusRing,
-  mergeProps,
-  useHover,
-  isNotNil,
-} from '@koobiq/react-core';
-import { IconXmarkS16 } from '@koobiq/react-icons';
+import { useFocusRing, mergeProps, useHover } from '@koobiq/react-core';
 import type { AriaTagProps, ListState } from '@koobiq/react-primitives';
 import { useTag } from '@koobiq/react-primitives';
 
-import { utilClasses } from '../../../../styles/utility';
-import { IconButton, type IconButtonProps } from '../../../IconButton';
+import { Tag as BaseTag, type TagRemoveButtonProps } from '../../../Tag';
 import type {
   TagGroupPropVariant,
   TagProps as RootTagProps,
 } from '../../index';
-
-import s from './Tag.module.css';
-import { matchVariantToCloseButton } from './utils';
 
 type TagProps<T> = AriaTagProps<T> & {
   state: ListState<T>;
@@ -29,8 +18,6 @@ type TagProps<T> = AriaTagProps<T> & {
    */
   variant?: TagGroupPropVariant;
 };
-
-const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function Tag<T>(props: TagProps<T>) {
   const { item, state, variant = 'theme-fade' } = props;
@@ -43,82 +30,56 @@ export function Tag<T>(props: TagProps<T>) {
 
   const {
     rowProps,
-    gridCellProps,
-    removeButtonProps: removeButtonPropsAria,
-    allowsRemoving,
-    isDisabled,
     isPressed,
+    isDisabled,
+    gridCellProps,
+    allowsRemoving,
+    removeButtonProps: removeButtonPropsAria,
   } = useTag(props, state, ref);
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
 
   const rootProps = mergeProps(
-    {
-      className: clsx(
-        s.base,
-        s[variant],
-        isFocused && s.focused,
-        isHovered && s.hovered,
-        isDisabled && s.disabled,
-        textNormalMedium,
-        className
-      ),
-      style,
-      'data-variant': variant,
-      'data-focused': isFocused || undefined,
-      'data-pressed': isPressed || undefined,
-      'data-hovered': isHovered || undefined,
-      'aria-disabled': isDisabled || undefined,
-      'data-disabled': isDisabled || undefined,
-      'data-focus-visible': isFocusVisible || undefined,
-    },
     rowProps,
     hoverProps,
     focusProps,
-    slotProps?.root
+    {
+      'data-focused': isFocused || undefined,
+      'data-pressed': isPressed || undefined,
+      'data-hovered': isHovered || undefined,
+      'data-focus-visible': isFocusVisible || undefined,
+      'aria-disabled': isDisabled || undefined,
+    },
+    slotProps?.root,
+    { ref, style, className }
   );
 
-  const removeButtonProps = mergeProps<
-    [IconButtonProps, IconButtonProps, IconButtonProps | undefined]
-  >(
-    {
-      isDisabled,
-      tabIndex: -1,
-      isCompact: true,
-      className: s.cancelIcon,
-      variant: matchVariantToCloseButton[variant],
-    },
-    removeButtonPropsAria,
-    slotProps?.removeIcon
-  );
-
-  const contentProps = mergeProps(
-    {
-      className: s.content,
-    },
-    slotProps?.content
-  );
-
-  const iconProps = mergeProps(
-    {
-      className: s.icon,
-    },
-    slotProps?.icon
-  );
+  const removeIconProps = allowsRemoving
+    ? mergeProps<(TagRemoveButtonProps | undefined)[]>(
+        removeButtonPropsAria,
+        {
+          isDisabled,
+          tabIndex: -1,
+        },
+        slotProps?.removeIcon
+      )
+    : undefined;
 
   return (
-    <div ref={ref} {...rootProps}>
-      <div {...gridCellProps}>
-        {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
-        {isNotNil(item.rendered) && (
-          <span {...contentProps}>{item.rendered}</span>
-        )}
-        {allowsRemoving && (
-          <IconButton size="l" {...removeButtonProps}>
-            <IconXmarkS16 />
-          </IconButton>
-        )}
-      </div>
-    </div>
+    <BaseTag
+      {...rootProps}
+      icon={icon}
+      variant={variant}
+      allowsRemoving={allowsRemoving}
+      isDisabled={isDisabled}
+      slotProps={{
+        body: gridCellProps,
+        icon: slotProps?.icon,
+        content: slotProps?.content,
+        removeIcon: removeIconProps,
+      }}
+    >
+      {item.rendered}
+    </BaseTag>
   );
 }

@@ -1,25 +1,13 @@
 import { useRef } from 'react';
 
 import type { Key, Node as CollectionNode } from '@koobiq/react-core';
-import {
-  clsx,
-  isNotNil,
-  mergeProps,
-  useFocusRing,
-  useHover,
-} from '@koobiq/react-core';
-import { IconXmarkS16 } from '@koobiq/react-icons';
+import { mergeProps, useFocusRing, useHover } from '@koobiq/react-core';
 import type { ListState } from '@koobiq/react-primitives';
 import { useTagListItem } from '@koobiq/react-primitives';
 
-import { utilClasses } from '../../../../styles/utility';
-import { IconButton } from '../../../IconButton';
-import type { IconButtonProps } from '../../../IconButton';
+import { Tag as BaseTag, type TagRemoveButtonProps } from '../../../Tag';
 import type { TagProps } from '../../Tag';
 import type { TagListPropVariant } from '../../types';
-
-import s from './TagItem.module.css';
-import { matchVariantToIconButton } from './utils';
 
 type TagItemProps<T extends object> = {
   state: ListState<T>;
@@ -29,8 +17,6 @@ type TagItemProps<T extends object> = {
   isDisabled?: boolean;
   collectionId?: string;
 };
-
-const textNormalMedium = utilClasses.typography['text-normal-medium'];
 
 export function TagItem<T extends object>(props: TagItemProps<T>) {
   const {
@@ -83,58 +69,40 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     rowProps,
     hoverProps,
     focusProps,
-    slotProps?.root,
     {
-      style,
-      className: clsx(
-        s.base,
-        s[variant],
-        textNormalMedium,
-        isHovered && s.hovered,
-        isSelected && s.selected,
-        isDisabled && s.disabled,
-        isFocusVisible && s.focusVisible,
-        className
-      ),
       'data-testid': testId,
-      'data-variant': variant,
       'data-focused': isFocused || undefined,
       'data-pressed': isPressed || undefined,
       'data-hovered': isHovered || undefined,
       'data-selected': isSelected || undefined,
-      'data-disabled': isDisabled || undefined,
       'data-focus-visible': isFocusVisible || undefined,
-    }
-  );
-
-  const removeButtonProps = mergeProps<
-    [IconButtonProps, IconButtonProps | undefined, IconButtonProps]
-  >(
-    {
-      isCompact: true,
-      className: s.cancelIcon,
-      variant: matchVariantToIconButton[variant],
     },
-    slotProps?.removeIcon,
-    removeButtonPropsAria
+    slotProps?.root,
+    { ref, style, className }
   );
 
-  const contentProps = mergeProps({ className: s.content }, slotProps?.content);
-  const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
+  const removeIconProps = allowsRemoving
+    ? mergeProps<[TagRemoveButtonProps | undefined, TagRemoveButtonProps]>(
+        slotProps?.removeIcon,
+        removeButtonPropsAria
+      )
+    : undefined;
 
   return (
-    <div {...rootProps}>
-      <div {...gridCellProps}>
-        {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
-        {isNotNil(item.rendered) && (
-          <span {...contentProps}>{item.rendered}</span>
-        )}
-        {allowsRemoving && (
-          <IconButton size="l" {...removeButtonProps}>
-            <IconXmarkS16 />
-          </IconButton>
-        )}
-      </div>
-    </div>
+    <BaseTag
+      {...rootProps}
+      icon={icon}
+      variant={variant}
+      isDisabled={isDisabled}
+      slotProps={{
+        body: gridCellProps,
+        icon: slotProps?.icon,
+        content: slotProps?.content,
+        removeIcon: removeIconProps,
+      }}
+      allowsRemoving={allowsRemoving}
+    >
+      {item.rendered}
+    </BaseTag>
   );
 }

@@ -1,7 +1,8 @@
 import { createRef } from 'react';
 
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { userEvent } from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
 
 import { TagGroup, Tag, type TagGroupProps } from './index';
 
@@ -65,6 +66,46 @@ describe('TagGroup', () => {
 
   describe('check Tag', () => {
     const getTag = () => screen.getByTestId(TAG_GROUP__TEST_ID);
+
+    it('should apply root slot props and preserve keyboard navigation', async () => {
+      const ref = createRef<HTMLDivElement>();
+      const onFocus = vi.fn();
+      const user = userEvent.setup();
+
+      const { unmount } = render(
+        <TagGroup aria-label="tag-group">
+          <Tag
+            key="one"
+            className="tag"
+            slotProps={{
+              root: { ref, onFocus, className: 'slot', style: { padding: 20 } },
+            }}
+          >
+            one
+          </Tag>
+          <Tag key="two">two</Tag>
+        </TagGroup>
+      );
+
+      const [first, second] = screen.getAllByRole('row');
+
+      expect(ref.current).toBe(first);
+      expect(first).toHaveClass('tag', 'slot');
+      expect(first).toHaveStyle({ padding: '20px' });
+
+      await user.tab();
+
+      expect(first).toHaveFocus();
+      expect(onFocus).toHaveBeenCalledTimes(1);
+
+      await user.keyboard('{ArrowRight}');
+
+      expect(second).toHaveFocus();
+
+      unmount();
+
+      expect(ref.current).toBeNull();
+    });
 
     it('should set className', () => {
       render(renderComponent({}));

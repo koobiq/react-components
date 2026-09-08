@@ -35,16 +35,13 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
 
   const t = useLocalizedStringFormatter(intlMessages);
 
-  const rootProps = mergeProps(
-    {
-      ref,
-      style,
-      'data-variant': variant,
-      'data-disabled': isDisabled || undefined,
-      className: clsx(s.base, s[variant], textNormalMedium, className),
-    },
-    other
-  );
+  const rootProps = mergeProps(other, {
+    ref,
+    style,
+    className: clsx(s.base, s[variant], textNormalMedium, className),
+    'data-variant': variant,
+    'data-disabled': isDisabled || undefined,
+  });
 
   const bodyProps = mergeProps({ className: s.body }, slotProps?.body);
 
@@ -52,27 +49,27 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
 
   const iconProps = mergeProps({ className: s.icon }, slotProps?.icon);
 
-  const removeButtonProps = mergeProps<
-    [TagRemoveButtonProps, TagRemoveButtonProps | undefined]
-  >(
-    {
-      isDisabled,
-      isCompact: true,
-      size: 'l',
-      className: s.cancelIcon,
-      children: <IconXmarkS16 />,
-      variant: matchTagVariantToIconButton[variant],
-      'aria-label': t.format('remove'),
-    },
-    slotProps?.removeIcon
-  );
+  const removeButtonProps = allowsRemoving
+    ? mergeProps<[TagRemoveButtonProps, TagRemoveButtonProps | undefined]>(
+        {
+          isDisabled,
+          isCompact: true,
+          size: 'l',
+          className: s.cancelIcon,
+          children: <IconXmarkS16 />,
+          variant: matchTagVariantToIconButton[variant],
+          'aria-label': t.format('remove'),
+        },
+        slotProps?.removeIcon
+      )
+    : undefined;
 
   return (
     <div {...rootProps}>
       <div {...bodyProps}>
         {isNotNil(icon) && <span {...iconProps}>{icon}</span>}
         {isNotNil(children) && <span {...contentProps}>{children}</span>}
-        {allowsRemoving && <IconButton {...removeButtonProps} />}
+        {removeButtonProps && <IconButton {...removeButtonProps} />}
       </div>
     </div>
   );
