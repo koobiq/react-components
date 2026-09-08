@@ -93,7 +93,7 @@ export const treeSelectPropLabelPlacement: readonly ["top", "side"];
 // @public (undocumented)
 export type TreeSelectProps<T extends object, M extends SelectionMode_2 = 'single'> = {
     selectedTagsOverflow?: TreeSelectPropSelectedTagsOverflow;
-    renderTag?: (item: Node_2<T>, tagProps: TagProps) => ReactNode;
+    renderTag?: (item: Node_2<T>, tagProps: TreeSelectTagProps) => ReactNode;
     isClearable?: boolean;
     onClear?: () => void;
     startAddon?: ReactNode;
@@ -147,12 +147,13 @@ export const treeSelectPropVariant: readonly ["filled", "transparent"];
 // @public (undocumented)
 export type TreeSelectRef = ComponentRef<'div'>;
 
+// Warning: (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
 export type TreeSelectTagProps = TagProps;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TreeSelect/types.d.ts:29:5 - (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TreeSelect/types.d.ts:85:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TreeSelect/types.d.ts:86:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TreeSelect/types.d.ts:87:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts

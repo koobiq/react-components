@@ -369,6 +369,24 @@ describe('TreeSelect', () => {
   });
 
   describe('renderTag', () => {
+    const getTag = (key: number) => screen.getByTestId(`tag-${key}`);
+    const queryTag = (key: number) => screen.queryByTestId(`tag-${key}`);
+
+    const getRemoveButton = (key: number) =>
+      within(getTag(key)).getByRole('button', { hidden: true });
+
+    const renderTag: NonNullable<
+      TreeSelectProps<FileNode, 'multiple'>['renderTag']
+    > = (item, tagProps) => (
+      <TreeSelect.Tag
+        {...tagProps}
+        icon={<span data-testid={`tag-icon-${item.key}`} />}
+        data-testid={`tag-${item.key}`}
+      >
+        {item.textValue}
+      </TreeSelect.Tag>
+    );
+
     it('should ignore renderTag in single selection mode', () => {
       const renderTag = vi.fn(() => <div>Custom tag</div>);
 
@@ -381,6 +399,44 @@ describe('TreeSelect', () => {
     describe.each(['responsive', 'multiline'] as const)(
       '%s overflow',
       (selectedTagsOverflow) => {
+        it('should support custom elements and forward props for overflow measurement', () => {
+          const renderCustomTag = vi.fn<
+            NonNullable<TreeSelectProps<FileNode, 'multiple'>['renderTag']>
+          >((item, { className, ref, 'aria-hidden': ariaHidden }) => (
+            <div
+              ref={ref}
+              className={className}
+              aria-hidden={ariaHidden}
+              data-testid={`tag-${item.key}`}
+            >
+              Custom: {item.textValue}
+            </div>
+          ));
+
+          renderTreeSelect({
+            selectionMode: 'multiple',
+            defaultValue: [2, 7],
+            selectedTagsOverflow,
+            renderTag: renderCustomTag,
+          });
+
+          expect(getTag(2)).toHaveTextContent('Custom: Http');
+          expect(getTag(7)).toHaveTextContent('Custom: README.md');
+
+          const tagProps = renderCustomTag.mock.calls
+            .filter(([item]) => item.key === 2)
+            .at(-1)?.[1];
+
+          expect(tagProps?.className).toEqual(expect.any(String));
+          expect(getTag(2)).toHaveClass(tagProps!.className!);
+
+          if (selectedTagsOverflow === 'responsive') {
+            expect(tagProps?.ref).toEqual(
+              expect.objectContaining({ current: getTag(2) })
+            );
+          }
+        });
+
         it('should customize tags using selected items, including collapsed descendants', () => {
           renderTreeSelect({
             selectionMode: 'multiple',
@@ -397,18 +453,27 @@ describe('TreeSelect', () => {
             ),
           });
 
-          expect(screen.getByTestId('tag-2')).toHaveTextContent('File: Http');
+          expect(getTag(2)).toHaveTextContent('File: Http');
 
-          expect(screen.getByTestId('tag-7')).toHaveTextContent(
-            'File: README.md'
-          );
+          expect(getTag(7)).toHaveTextContent('File: README.md');
 
-          expect(screen.getByTestId('tag-2')).toHaveAttribute(
-            'data-variant',
-            'warning-fade'
-          );
+          expect(getTag(2)).toHaveAttribute('data-variant', 'warning-fade');
 
-          expect(screen.queryByTestId('tag-1')).not.toBeInTheDocument();
+          expect(queryTag(1)).not.toBeInTheDocument();
+        });
+
+        it('should preserve invalid styling when customizing tag content', () => {
+          renderTreeSelect({
+            selectionMode: 'multiple',
+            defaultValue: [7],
+            selectedTagsOverflow,
+            isInvalid: true,
+            renderTag,
+          });
+
+          expect(screen.getByTestId('tag-icon-7')).toBeInTheDocument();
+          expect(getTag(7)).toHaveAttribute('data-variant', 'error-fade');
+          expect(getRemoveButton(7)).toHaveAttribute('data-variant', 'error');
         });
 
         it('should remove a custom tag without opening the dropdown', async () => {
@@ -421,56 +486,50 @@ describe('TreeSelect', () => {
             selectedTagsOverflow,
             onChange,
             onOpenChange,
-            renderTag: (item, tagProps) => (
-              <TreeSelect.Tag {...tagProps} data-testid={`tag-${item.key}`}>
-                {item.textValue}
-              </TreeSelect.Tag>
-            ),
+            renderTag,
           });
 
-          await userEvent.click(
-            within(screen.getByTestId('tag-2')).getByRole('button', {
-              hidden: true,
-            })
-          );
+          await userEvent.click(getRemoveButton(2));
 
           expect(onChange).toHaveBeenCalledExactlyOnceWith([7]);
-          expect(screen.queryByTestId('tag-2')).not.toBeInTheDocument();
-          expect(screen.getByTestId('tag-7')).toHaveTextContent('README.md');
+          expect(queryTag(2)).not.toBeInTheDocument();
+          expect(getTag(7)).toHaveTextContent('README.md');
           expect(onOpenChange).not.toHaveBeenCalled();
           expect(queryPopover()).not.toBeInTheDocument();
         });
 
-        it.each(['isDisabled', 'isReadOnly'] as const)(
-          'should prevent custom tag removal when %s',
-          async (state) => {
+        it.each([
+          { isDisabled: true, isReadOnly: false },
+          { isDisabled: false, isReadOnly: true },
+        ] as const)(
+          'should prevent custom tag removal with %j',
+          async (states) => {
             const onChange = vi.fn();
 
             renderTreeSelect({
               selectionMode: 'multiple',
               defaultValue: [7],
               selectedTagsOverflow,
-              [state]: true,
+              ...states,
               onChange,
-              renderTag: (item, tagProps) => (
-                <TreeSelect.Tag {...tagProps} data-testid={`tag-${item.key}`}>
-                  {item.textValue}
-                </TreeSelect.Tag>
-              ),
+              renderTag,
             });
 
-            const tag = screen.getByTestId('tag-7');
-
-            const removeButton = within(tag).getByRole('button', {
-              hidden: true,
-            });
+            const tag = getTag(7);
+            const removeButton = getRemoveButton(7);
 
             expect(removeButton).toHaveAttribute('aria-disabled', 'true');
+
+            if (states.isDisabled) {
+              expect(tag).toHaveAttribute('data-disabled', 'true');
+            } else {
+              expect(tag).not.toHaveAttribute('data-disabled');
+            }
 
             await userEvent.click(removeButton);
 
             expect(onChange).not.toHaveBeenCalled();
-            expect(tag).toHaveTextContent('README.md');
+            expect(tag).toBeInTheDocument();
           }
         );
       }

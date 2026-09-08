@@ -71,7 +71,7 @@ export type TreeSelectProps<
   /** Defines how selected tags are displayed when they exceed the available space. */
   selectedTagsOverflow?: TreeSelectPropSelectedTagsOverflow;
   /** Custom renderer for selected tags in multiple selection mode. */
-  renderTag?: (item: Node<T>, tagProps: TagProps) => ReactNode;
+  renderTag?: (item: Node<T>, tagProps: TreeSelectTagProps) => ReactNode;
   /** Whether the field can be emptied. */
   isClearable?: boolean;
   /** Handler called when the clear button is clicked. */
