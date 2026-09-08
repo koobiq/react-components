@@ -1,4 +1,3 @@
-import type { KeyboardEvent } from 'react';
 import { useMemo, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
@@ -11,7 +10,6 @@ import {
   IconXmarkS16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
-import { maskitoNumberOptionsGenerator } from '@maskito/kit';
 import { useMaskito } from '@maskito/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -20,6 +18,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { IconButton } from '../IconButton';
+import { InputNumber } from '../InputNumber';
 import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
@@ -460,6 +459,17 @@ export const Mask: Story = {
     const hex = /[\dA-Fa-f]/;
     const alphanumeric = /[\dA-Za-z]/;
 
+    const maskGroups = (
+      count: number,
+      size: number,
+      character: RegExp,
+      separator: string
+    ) =>
+      Array.from({ length: count }).flatMap((_, index) => [
+        ...(index === 0 ? [] : [separator]),
+        ...Array.from<RegExp>({ length: size }).fill(character),
+      ]);
+
     const toUpperCase = ({
       value,
       selection,
@@ -477,41 +487,20 @@ export const Mask: Story = {
 
     const macOptions = useMemo(
       () => ({
-        mask: Array.from({ length: 6 }).flatMap((_, index) =>
-          index === 0 ? [hex, hex] : [':', hex, hex]
-        ),
+        mask: maskGroups(6, 2, hex, ':'),
         postprocessors: [toUpperCase],
       }),
       []
     );
 
     const ipv6Options = useMemo(
-      () => ({
-        mask: Array.from({ length: 8 }).flatMap((_, index) =>
-          index === 0 ? [hex, hex, hex, hex] : [':', hex, hex, hex, hex]
-        ),
-      }),
-      []
-    );
-
-    const portOptions = useMemo(
-      () =>
-        maskitoNumberOptionsGenerator({
-          min: 0,
-          max: 65535,
-          maximumFractionDigits: 0,
-          thousandSeparator: '',
-        }),
+      () => ({ mask: /^([\dA-Fa-f]{0,4}:){0,7}[\dA-Fa-f]{0,4}$/ }),
       []
     );
 
     const licenseKeyOptions = useMemo(
       () => ({
-        mask: Array.from({ length: 4 }).flatMap((_, index) =>
-          index === 0
-            ? [alphanumeric, alphanumeric, alphanumeric, alphanumeric]
-            : ['-', alphanumeric, alphanumeric, alphanumeric, alphanumeric]
-        ),
+        mask: maskGroups(4, 4, alphanumeric, '-'),
         postprocessors: [toUpperCase],
       }),
       []
@@ -520,28 +509,12 @@ export const Mask: Story = {
     const ipv4Ref = useMaskito({ options: ipv4Options });
     const macRef = useMaskito({ options: macOptions });
     const ipv6Ref = useMaskito({ options: ipv6Options });
-    const portRef = useMaskito({ options: portOptions });
     const licenseKeyRef = useMaskito({ options: licenseKeyOptions });
 
     const [ipv4, setIpv4] = useState('192.168.0.1');
     const [mac, setMac] = useState('AA:BB:CC:DD:EE:FF');
-
-    const [ipv6, setIpv6] = useState('2001:0db8:85a3:0000:0000:8a2e:0370:7334');
-
-    const [port, setPort] = useState('8080');
+    const [ipv6, setIpv6] = useState('2001:db8:85a3::8a2e:370:7334');
     const [licenseKey, setLicenseKey] = useState('ABCD-1234-EFGH-5678');
-
-    const handlePortKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-      if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
-
-      event.preventDefault();
-
-      const step = event.key === 'ArrowUp' ? 1 : -1;
-
-      setPort((prevPort) =>
-        String(Math.min(Math.max(Number(prevPort || 0) + step, 0), 65535))
-      );
-    };
 
     return (
       <FlexBox direction="column" gap="l" style={{ inlineSize: 320 }}>
@@ -551,6 +524,9 @@ export const Mask: Story = {
           value={ipv4}
           onChange={setIpv4}
           slotProps={{ input: { ref: ipv4Ref } }}
+          inputMode="decimal"
+          autoComplete="off"
+          spellCheck="false"
           isClearable
           fullWidth
           {...args}
@@ -561,29 +537,32 @@ export const Mask: Story = {
           value={mac}
           onChange={setMac}
           slotProps={{ input: { ref: macRef } }}
+          autoComplete="off"
+          spellCheck="false"
           isClearable
           fullWidth
           {...args}
         />
         <Input
           label="IPv6 address"
-          caption="Format: 2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+          caption="Format: 2001:db8:85a3::8a2e:370:7334"
           value={ipv6}
           onChange={setIpv6}
           slotProps={{ input: { ref: ipv6Ref } }}
+          autoComplete="off"
+          spellCheck="false"
           isClearable
           fullWidth
           {...args}
         />
-        <Input
+        <InputNumber
           label="Port"
-          caption="Range: 0-65535. Use ↑/↓ to increase or decrease the value"
-          value={port}
-          onChange={setPort}
-          slotProps={{ input: { ref: portRef, onKeyDown: handlePortKeyDown } }}
-          isClearable
+          caption="Range: 0-65535"
+          defaultValue={8080}
+          minValue={0}
+          maxValue={65535}
+          formatOptions={{ useGrouping: false }}
           fullWidth
-          {...args}
         />
         <Input
           label="License key"
@@ -591,6 +570,8 @@ export const Mask: Story = {
           value={licenseKey}
           onChange={setLicenseKey}
           slotProps={{ input: { ref: licenseKeyRef } }}
+          autoComplete="off"
+          spellCheck="false"
           isClearable
           fullWidth
           {...args}
