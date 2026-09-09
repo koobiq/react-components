@@ -53,6 +53,9 @@
     "@koobiq/internationalized-date-adapter": "^3.5.1",
     "@koobiq/react-icons": "^12.1.1",
     "@koobiq/visuals": "^12.1.0",
+    "@maskito/core": "^5.4.0",
+    "@maskito/kit": "^5.4.0",
+    "@maskito/react": "^5.4.0",
     "@microsoft/api-extractor": "^7.56.0",
     "@rushstack/node-core-library": "^3.66.1",
     "@storybook/addon-a11y": "^10.3.6",
@@ -118,7 +121,8 @@
     "typescript-eslint": "^8.66.0",
     "vite": "^7.3.6",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.9",
+    "vitest-fail-on-console": "^0.10.1"
   },
   "commit-and-tag-version": {
     "header": "# Changelog\n",

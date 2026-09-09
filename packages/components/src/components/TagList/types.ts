@@ -15,16 +15,13 @@ import type {
 } from '@koobiq/react-core';
 import type { ListState } from '@koobiq/react-primitives';
 
+import { tagPropVariant } from '../Tag';
+
 import type { TagProps } from './Tag';
 
 export type TagListTagProps<T extends object = object> = TagProps<T>;
 
-export const tagListPropVariant = [
-  'theme-fade',
-  'contrast-fade',
-  'error-fade',
-  'warning-fade',
-] as const;
+export const tagListPropVariant = tagPropVariant;
 
 export type TagListPropVariant = (typeof tagListPropVariant)[number];
 

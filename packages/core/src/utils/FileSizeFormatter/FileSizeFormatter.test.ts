@@ -1,6 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-import { FileSizeFormatter } from './FileSizeFormatter';
+import {
+  FILE_SIZE_FORMATTER_ERROR_PRECISION_RANGE,
+  FileSizeFormatter,
+} from './FileSizeFormatter';
+
+const precisionRangeWarning = `[koobiq] ${FILE_SIZE_FORMATTER_ERROR_PRECISION_RANGE}`;
 
 describe('FileSizeFormatter', () => {
   it('formats values using SI units by default', () => {
@@ -84,13 +89,23 @@ describe('FileSizeFormatter', () => {
   });
 
   it('clamps out-of-range precision instead of throwing', () => {
+    // Out-of-range precision warns on purpose.
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
     const formatter = new FileSizeFormatter('en-US');
 
     expect(formatter.format(1550, { precision: -1 })).toBe('2\u00a0KB');
     expect(() => formatter.format(1550, { precision: 101 })).not.toThrow();
+
+    expect(warn).toHaveBeenCalledWith(precisionRangeWarning);
+
+    warn.mockRestore();
   });
 
   it('falls back to the configured precision when a per-call override is non-finite', () => {
+    // A non-integer precision is out of range and warns.
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
     const formatter = new FileSizeFormatter('en-US', {
       defaultPrecision: 1,
     });
@@ -102,6 +117,10 @@ describe('FileSizeFormatter', () => {
     expect(
       formatter.format(1550, { precision: Number.POSITIVE_INFINITY })
     ).toBe('1.6\u00a0KB');
+
+    expect(warn).toHaveBeenCalledWith(precisionRangeWarning);
+
+    warn.mockRestore();
   });
 
   it('does not treat "rue" as Russian', () => {

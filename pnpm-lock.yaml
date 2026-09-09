@@ -61,6 +61,15 @@ importers:
       '@koobiq/visuals':
         specifier: ^12.1.0
         version: 12.1.0
+      '@maskito/core':
+        specifier: ^5.4.0
+        version: 5.4.0
+      '@maskito/kit':
+        specifier: ^5.4.0
+        version: 5.4.0(@maskito/core@5.4.0)
+      '@maskito/react':
+        specifier: ^5.4.0
+        version: 5.4.0(@maskito/core@5.4.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@microsoft/api-extractor':
         specifier: ^7.56.0
         version: 7.58.7(@types/node@25.8.0)
@@ -259,6 +268,9 @@ importers:
       vitest:
         specifier: ^4.1.9
         version: 4.1.9(@opentelemetry/api@1.9.0)(@types/node@25.8.0)(@vitest/coverage-v8@4.1.9)(jsdom@25.0.1)(vite@7.3.6(@types/node@25.8.0)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@5.0.1(postcss@8.5.26))(tsx@4.19.3)(yaml@2.9.0))
+      vitest-fail-on-console:
+        specifier: ^0.10.1
+        version: 0.10.1(@vitest/utils@4.1.9)(vite@7.3.6(@types/node@25.8.0)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@5.0.1(postcss@8.5.26))(tsx@4.19.3)(yaml@2.9.0))(vitest@4.1.9)
 
   packages/components:
     dependencies:
@@ -1673,6 +1685,21 @@ packages:
 
   '@koobiq/visuals@12.1.0':
     resolution: {integrity: sha512-JdrGcYrH6EpEXC+POWRa8uT8zv8XH9H6EG9Aib9PxS5jOa0zvkcqLz09dLasQOKrQe3tRb3wksruMH2YxQad7Q==}
+
+  '@maskito/core@5.4.0':
+    resolution: {integrity: sha512-g2Ps71bVidiIoIdrSqzvu85i1vbfDnQScJItikIXTrSGZN8/PwcRsnzr0Cx56dljWbVcEHe2cpZMkYo5Th64zw==}
+
+  '@maskito/kit@5.4.0':
+    resolution: {integrity: sha512-kW/U+4qoMmegkC4vyf6Lz4Hfbrel8ph3Yuh3O+XT7ePaQXV9QwSqoo3/jVuXahf46zUV0rN5FHg866bwcFWPUw==}
+    peerDependencies:
+      '@maskito/core': ^5.4.0
+
+  '@maskito/react@5.4.0':
+    resolution: {integrity: sha512-eW6pTeM9NhwCDMW6K7CVA45TZwZ0fRwqN6zcRMgJGUHmwuTQUsKLDGIPxEhpxiXPTIFN3Cs5oP1LuCirFfZRQA==}
+    peerDependencies:
+      '@maskito/core': ^5.4.0
+      react: ^19.0.0
+      react-dom: ^19.0.0
 
   '@mdx-js/react@3.1.1':
     resolution: {integrity: sha512-f++rKLQgUVYDAtECQ6fn/is15GkEH9+nZPM3MS0RcxVqoTfawHvDlSCH7JbMhAM6uJ32v3eXLvLmLvjGu7PTQw==}
@@ -4495,13 +4522,13 @@ packages:
   git-raw-commits@3.0.0:
     resolution: {integrity: sha512-b5OHmZ3vAgGrDn/X0kS+9qCfNKWe4K/jFnhwzVWWg0/k5eLa3060tZShrRg8Dja5kPc+YjS0Gc6y7cRr44Lpjw==}
     engines: {node: '>=14'}
-    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
+    deprecated: This package is no longer maintained. For the JavaScript API, please use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-raw-commits@4.0.0:
     resolution: {integrity: sha512-ICsMM1Wk8xSGMowkOmPrzo2Fgmfo4bMHLNX6ytHjajRJUqvHOw/TFapQ+QG75c3X/tTDDhOSRPGC52dDbNM8FQ==}
     engines: {node: '>=16'}
-    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
+    deprecated: This package is no longer maintained. For the JavaScript API, please use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-remote-origin-url@2.0.0:
@@ -4511,7 +4538,7 @@ packages:
   git-semver-tags@5.0.1:
     resolution: {integrity: sha512-hIvOeZwRbQ+7YEUmCkHqo8FOLQZCEn18yevLHADlFPZY02KJGsu5FZt9YW/lybfK2uhWFI7Qg/07LekJiTv7iA==}
     engines: {node: '>=14'}
-    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
+    deprecated: This package is no longer maintained. For the JavaScript API, please use @conventional-changelog/git-client instead.
     hasBin: true
 
   gitconfiglocal@1.0.0:
@@ -7025,6 +7052,13 @@ packages:
       yaml:
         optional: true
 
+  vitest-fail-on-console@0.10.1:
+    resolution: {integrity: sha512-Xjy2SpgND547qSy0s0zYVnh1G/WyGtdjAbi4PFV8mkYRmTq+6NzRUJYdc08BHrw7HJLpO2kMxHFB8PWn7FOVsg==}
+    peerDependencies:
+      '@vitest/utils': '>=0.26.2'
+      vite: '>=4.5.2'
+      vitest: '>=0.26.2'
+
   vitest@4.1.9:
     resolution: {integrity: sha512-nE3/LEyc0z87uHYLZebqCUOaJr2hdtuPp7BQ4BosVFnfltxgAvMG08NyrSGlPpOUWvR27c5flSmYFTNr78L9GQ==}
     engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
@@ -8231,6 +8265,18 @@ snapshots:
       react-dom: 19.2.3(react@19.2.3)
 
   '@koobiq/visuals@12.1.0': {}
+
+  '@maskito/core@5.4.0': {}
+
+  '@maskito/kit@5.4.0(@maskito/core@5.4.0)':
+    dependencies:
+      '@maskito/core': 5.4.0
+
+  '@maskito/react@5.4.0(@maskito/core@5.4.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@maskito/core': 5.4.0
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
   '@mdx-js/react@3.1.1(@types/react@19.2.7)(react@19.2.3)':
     dependencies:
@@ -14917,6 +14963,13 @@ snapshots:
       sugarss: 5.0.1(postcss@8.5.26)
       tsx: 4.19.3
       yaml: 2.9.0
+
+  vitest-fail-on-console@0.10.1(@vitest/utils@4.1.9)(vite@7.3.6(@types/node@25.8.0)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@5.0.1(postcss@8.5.26))(tsx@4.19.3)(yaml@2.9.0))(vitest@4.1.9):
+    dependencies:
+      '@vitest/utils': 4.1.9
+      chalk: 5.6.2
+      vite: 7.3.6(@types/node@25.8.0)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@5.0.1(postcss@8.5.26))(tsx@4.19.3)(yaml@2.9.0)
+      vitest: 4.1.9(@opentelemetry/api@1.9.0)(@types/node@25.8.0)(@vitest/coverage-v8@4.1.9)(jsdom@25.0.1)(vite@7.3.6(@types/node@25.8.0)(jiti@2.6.1)(lightningcss@1.29.3)(sugarss@5.0.1(postcss@8.5.26))(tsx@4.19.3)(yaml@2.9.0))
 
   vitest@4.1.9(@opentelemetry/api@1.9.0)(@types/node@25.6.0)(@vitest/coverage-v8@4.1.9)(jsdom@25.0.1)(vite@8.2.1(@types/node@25.6.0)(esbuild@0.28.2)(jiti@2.6.1)(sugarss@5.0.1(postcss@8.5.26))(tsx@4.19.3)(yaml@2.9.0)):
     dependencies:

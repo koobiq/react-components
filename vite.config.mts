@@ -78,7 +78,6 @@ export default defineConfig({
         '**/__tests__/**',
         '**/__stories__/**',
         '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,lint-staged,remix,astro}.config.*',
-        '**/vitest.{workspace,projects}.[jt]s?(on)',
         '**/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}',
         // Custom
         'builder/**',

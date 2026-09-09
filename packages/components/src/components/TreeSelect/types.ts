@@ -6,7 +6,7 @@ import type {
   Ref,
 } from 'react';
 
-import type { DataAttributeProps, RefObject } from '@koobiq/react-core';
+import type { DataAttributeProps, Node, RefObject } from '@koobiq/react-core';
 import type {
   SelectionMode,
   TreeProps as AriaTreeProps,
@@ -32,6 +32,7 @@ import type { IconButtonProps } from '../IconButton';
 import type { PopoverProps } from '../Popover';
 import type { SearchInputProps } from '../SearchInput';
 import { selectedTagsPropOverflow } from '../SelectedTags';
+import type { TagProps } from '../Tag';
 import type {
   TreeItemContentProps,
   TreeItemProps,
@@ -43,6 +44,7 @@ import type { TreeCollection } from './TreeInner';
 export type TreeSelectItemProps = TreeItemProps;
 export type TreeSelectItemContentProps = TreeItemContentProps;
 export type TreeSelectLoadMoreItemProps = TreeLoadMoreItemProps;
+export type TreeSelectTagProps = TagProps;
 
 export const treeSelectPropLabelPlacement = formFieldPropLabelPlacement;
 export type TreeSelectPropLabelPlacement = FormFieldPropLabelPlacement;
@@ -68,6 +70,8 @@ export type TreeSelectProps<
 > = {
   /** Defines how selected tags are displayed when they exceed the available space. */
   selectedTagsOverflow?: TreeSelectPropSelectedTagsOverflow;
+  /** Custom renderer for selected tags in multiple selection mode. */
+  renderTag?: (item: Node<T>, tagProps: TreeSelectTagProps) => ReactNode;
   /** Whether the field can be emptied. */
   isClearable?: boolean;
   /** Handler called when the clear button is clicked. */

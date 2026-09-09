@@ -1,6 +1,6 @@
 import { createRef, type ReactNode } from 'react';
 
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -251,7 +251,8 @@ describe('ClampedList', () => {
     expect(getRenderedItems()).toHaveLength(17);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
-    trigger.focus();
+    act(() => trigger.focus());
+
     await user.keyboard('{Enter}');
 
     expect(getRenderedItems()).toHaveLength(10);
