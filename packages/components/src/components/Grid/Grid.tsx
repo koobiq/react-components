@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentPropsWithRef, CSSProperties, ElementType } from 'react';
+import type { CSSProperties } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
@@ -62,15 +62,7 @@ const GridComponent = polymorphicForwardRef<'div', GridBaseProps>(
 
 GridComponent.displayName = 'Grid';
 
-export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<
-  typeof GridComponent<As>
->;
-
-type CompoundedComponent = typeof GridComponent & {
-  Item: typeof GridItem;
-};
-
 /** Grid is a base tool for organizing content on a page. */
-export const Grid = GridComponent as CompoundedComponent;
-
-Grid.Item = GridItem;
+export const Grid = Object.assign(GridComponent, {
+  Item: GridItem,
+});

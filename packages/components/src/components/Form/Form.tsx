@@ -59,18 +59,12 @@ const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
 
 FormComponent.displayName = 'Form';
 
-type CompoundedComponent = typeof FormComponent & {
-  Group: typeof FormGroup;
-  Caption: typeof FormCaption;
-  Actions: typeof FormActions;
-};
-
 /**
  * Forms allow users to enter data that can be submitted while providing
  * alignment and styling for form controls.
  */
-export const Form = FormComponent as CompoundedComponent;
-
-Form.Group = FormGroup;
-Form.Caption = FormCaption;
-Form.Actions = FormActions;
+export const Form = Object.assign(FormComponent, {
+  Group: FormGroup,
+  Caption: FormCaption,
+  Actions: FormActions,
+});

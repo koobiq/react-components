@@ -30,10 +30,20 @@ import { RefAttributes } from 'react';
 import type { RefObject } from 'react';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const DropdownMenu: CompoundedComponent;
+export const DropdownMenu: DropdownMenuComponent & {
+    Popover: typeof DropdownMenuPopover;
+    Content: typeof DropdownMenuContent;
+    Item: typeof DropdownMenuItem;
+    ItemText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Section: typeof DropdownMenuSection;
+    Header: typeof DropdownMenuHeader;
+    SubmenuTrigger: typeof DropdownMenuSubmenuTrigger;
+    Autocomplete: typeof DropdownMenuAutocomplete;
+    Footer: typeof DropdownMenuFooter;
+    Pressable: typeof Pressable;
+};
 
 // @public
 export function DropdownMenuAutocomplete(props: DropdownMenuAutocompleteProps): JSX.Element;
@@ -97,8 +107,6 @@ export namespace DropdownMenuItem {
     displayName: string;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type DropdownMenuItemAddonProps = ListItemAddonProps;
 
@@ -113,8 +121,6 @@ export type DropdownMenuItemProps<T extends object = object> = MenuItemProps<T> 
     align?: DropdownMenuItemPropAlign;
 };
 
-// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type DropdownMenuItemTextProps = ListItemTextProps;
 
@@ -207,6 +213,8 @@ export type DropdownMenuSubmenuTriggerProps = {
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/DropdownMenu/DropdownMenu.d.ts:13:5 - (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/DropdownMenu/DropdownMenu.d.ts:14:5 - (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/DropdownMenu/components/DropdownMenuPopover/types.d.ts:46:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

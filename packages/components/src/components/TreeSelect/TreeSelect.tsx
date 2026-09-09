@@ -484,15 +484,9 @@ function TreeSelectRender<T extends object, M extends SelectionMode = 'single'>(
 
 const TreeSelectComponent = forwardRef(TreeSelectRender) as TreeSelectComponent;
 
-type CompoundedComponent = typeof TreeSelectComponent & {
-  Item: typeof Tree.Item;
-  ItemContent: typeof Tree.ItemContent;
-  LoadMoreItem: typeof Tree.LoadMoreItem;
-};
-
 /** Select with hierarchical tree data. */
-export const TreeSelect = TreeSelectComponent as CompoundedComponent;
-
-TreeSelect.Item = Tree.Item;
-TreeSelect.ItemContent = Tree.ItemContent;
-TreeSelect.LoadMoreItem = Tree.LoadMoreItem;
+export const TreeSelect = Object.assign(TreeSelectComponent, {
+  Item: Tree.Item,
+  ItemContent: Tree.ItemContent,
+  LoadMoreItem: Tree.LoadMoreItem,
+});

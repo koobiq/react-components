@@ -53,27 +53,17 @@ export const FormFieldComponent = polymorphicForwardRef<
   );
 });
 
-type CompoundedComponent = typeof FormFieldComponent & {
-  Label: typeof FormFieldLabel;
-  Error: typeof FormFieldError;
-  Caption: typeof FormFieldCaption;
-  ControlGroup: typeof FormFieldControlGroup;
-  Input: typeof FormFieldInput;
-  InputDate: typeof FormFieldInputDate;
-  Select: typeof FormFieldSelect;
-};
+FormFieldComponent.displayName = 'FormField';
 
-export const FormField = FormFieldComponent as CompoundedComponent;
-
-FormField.Label = FormFieldLabel;
-FormField.Error = FormFieldError;
-FormField.Caption = FormFieldCaption;
-FormField.ControlGroup = FormFieldControlGroup;
-FormField.Input = FormFieldInput;
-FormField.InputDate = FormFieldInputDate;
-FormField.Select = FormFieldSelect;
+export const FormField = Object.assign(FormFieldComponent, {
+  Label: FormFieldLabel,
+  Error: FormFieldError,
+  Caption: FormFieldCaption,
+  ControlGroup: FormFieldControlGroup,
+  Input: FormFieldInput,
+  InputDate: FormFieldInputDate,
+  Select: FormFieldSelect,
+});
 
 export type FormFieldProps<As extends ElementType = 'div'> =
   ComponentPropsWithRef<typeof FormField<As>>;
-
-FormField.displayName = 'FormField';

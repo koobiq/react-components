@@ -12,10 +12,29 @@ import { LinkBaseProps } from '@koobiq/react-primitives';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Navbar: CompoundedComponent;
+export const Navbar: {
+    (input: NavbarProps): JSX.Element;
+    displayName: string;
+} & {
+    Header: {
+        (input: NavbarHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Body: {
+        (input: NavbarBodyProps): JSX.Element;
+        displayName: string;
+    };
+    Footer: {
+        (input: NavbarFooterProps): JSX.Element;
+        displayName: string;
+    };
+    Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
+    AppItem: {
+        (input: NavbarAppItemProps): JSX.Element;
+        displayName: string;
+    };
+};
 
 // @public (undocumented)
 export type NavbarAppItemProps = DistributiveOmit<NavbarItemProps, 'isMenu' | 'badge'>;

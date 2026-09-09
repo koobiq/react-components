@@ -13,16 +13,20 @@ import { CheckboxProps as CheckboxProps_2 } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
+import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import type { Key } from '@koobiq/react-core';
+import { Merge } from '@koobiq/react-core';
 import type { Node as Node_2 } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
@@ -39,10 +43,12 @@ import type { TreeProps } from '@koobiq/react-primitives';
 import type { TreeSelectStateOptions } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent_2" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const TreeSelect: CompoundedComponent_2;
+export const TreeSelect: TreeSelectComponent & {
+    Item: TreeItem;
+    ItemContent: TreeItemContent;
+    LoadMoreItem: TreeLoadMoreItem;
+};
 
 // @public (undocumented)
 export type TreeSelectComponent = <T extends object, M extends SelectionMode_2 = 'single'>(props: TreeSelectProps<T, M>) => ReactElement | null;
@@ -148,6 +154,9 @@ export type TreeSelectRef = ComponentRef<'div'>;
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/TreeSelect/TreeSelect.d.ts:7:5 - (ae-forgotten-export) The symbol "TreeItem" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/TreeSelect.d.ts:8:5 - (ae-forgotten-export) The symbol "TreeItemContent" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/TreeSelect.d.ts:9:5 - (ae-forgotten-export) The symbol "TreeLoadMoreItem" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TreeSelect/types.d.ts:81:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TreeSelect/types.d.ts:82:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TreeSelect/types.d.ts:83:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts

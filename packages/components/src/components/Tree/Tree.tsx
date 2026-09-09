@@ -34,22 +34,14 @@ export function TreeComponent<T extends object>({
 
 TreeComponent.displayName = 'Tree';
 
-type CompoundedComponent = typeof TreeComponent & {
-  Item: typeof TreeItem;
-  ItemContent: typeof TreeItemContent;
-  ItemContentText: typeof ListItemText;
-  ItemContentAddon: typeof ListItemAddon;
-  LoadMoreItem: typeof TreeLoadMoreItem;
-};
-
 /**
  * A tree provides users with a way to navigate nested hierarchical information,
  * with support for keyboard navigation and selection.
  */
-export const Tree = TreeComponent as CompoundedComponent;
-
-TreeComponent.Item = TreeItem;
-TreeComponent.ItemContent = TreeItemContent;
-TreeComponent.ItemContentText = ListItemText;
-TreeComponent.ItemContentAddon = ListItemAddon;
-TreeComponent.LoadMoreItem = TreeLoadMoreItem;
+export const Tree = Object.assign(TreeComponent, {
+  Item: TreeItem,
+  ItemContent: TreeItemContent,
+  ItemContentText: ListItemText,
+  ItemContentAddon: ListItemAddon,
+  LoadMoreItem: TreeLoadMoreItem,
+});

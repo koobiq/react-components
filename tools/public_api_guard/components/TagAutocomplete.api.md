@@ -14,18 +14,22 @@ import type { CollectionBase } from '@koobiq/react-core';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
+import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { FocusStrategy } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
 import type { ItemProps as ItemProps_2 } from '@koobiq/react-core';
 import type { Key } from '@koobiq/react-core';
 import { ListState } from '@koobiq/react-primitives';
+import { Merge } from '@koobiq/react-core';
 import type { MultipleSelection } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
@@ -35,10 +39,11 @@ import { TextProps } from '@koobiq/react-primitives';
 import type { TransitionProps } from 'react-transition-group/Transition';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const TagAutocomplete: CompoundedComponent;
+export const TagAutocomplete: TagAutocompleteComponent & {
+    ListItem: Item;
+    Tag: typeof Tag;
+};
 
 // @public (undocumented)
 export type TagAutocompleteComponent = <T extends object = object>(props: TagAutocompleteProps<T> & {
@@ -78,6 +83,8 @@ export type TagAutocompleteTagProps<T extends object = object> = TagProps<T>;
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/TagAutocomplete/TagAutocomplete.d.ts:5:5 - (ae-forgotten-export) The symbol "Item" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TagAutocomplete/TagAutocomplete.d.ts:6:5 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TagAutocomplete/types.d.ts:26:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TagAutocomplete/types.d.ts:28:9 - (ae-forgotten-export) The symbol "ListInnerProps" needs to be exported by the entry point index.d.ts
 

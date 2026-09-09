@@ -84,3 +84,5 @@ export type UsernameSecondaryHintProps = Omit<
   /** Hint content appended after the secondary line. Usually the site. */
   children?: ReactNode;
 };
+
+export type UsernameProps = UsernameBaseProps;

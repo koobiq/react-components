@@ -190,18 +190,12 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
 ContentPanelComponent.displayName = 'ContentPanel';
 
-type CompoundedComponent = typeof ContentPanelComponent & {
-  Header: typeof DialogHeader;
-  Body: typeof DialogBody;
-  Footer: typeof DialogFooter;
-};
-
 /**
  * ContentPanel — a side panel that slides in from the edge and pushes adjacent
  * content, commonly used for quick preview of an item from a table.
  */
-export const ContentPanel = ContentPanelComponent as CompoundedComponent;
-
-ContentPanel.Header = DialogHeader;
-ContentPanel.Body = DialogBody;
-ContentPanel.Footer = DialogFooter;
+export const ContentPanel = Object.assign(ContentPanelComponent, {
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
+});

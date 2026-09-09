@@ -145,18 +145,12 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
 
 ModalComponent.displayName = 'Modal';
 
-type CompoundedComponent = typeof ModalComponent & {
-  Header: typeof Dialog.Header;
-  Body: typeof Dialog.Body;
-  Footer: typeof Dialog.Footer;
-};
-
 /**
  * Modal is a window that appears in front of app content to provide critical
  * information or ask for a decision.
  */
-export const Modal = ModalComponent as CompoundedComponent;
-
-Modal.Header = Dialog.Header;
-Modal.Body = Dialog.Body;
-Modal.Footer = Dialog.Footer;
+export const Modal = Object.assign(ModalComponent, {
+  Header: Dialog.Header,
+  Body: Dialog.Body,
+  Footer: Dialog.Footer,
+});

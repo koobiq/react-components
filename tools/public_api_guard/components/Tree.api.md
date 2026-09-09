@@ -22,10 +22,14 @@ import type { TreeItemProps as TreeItemProps_2 } from '@koobiq/react-primitives'
 import { TreeLoadMoreItemProps as TreeLoadMoreItemProps_2 } from '@koobiq/react-primitives';
 import type { TreeProps as TreeProps_2 } from '@koobiq/react-primitives';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Tree: CompoundedComponent;
+export const Tree: typeof TreeComponent & {
+    Item: typeof TreeItem;
+    ItemContent: typeof TreeItemContent;
+    ItemContentText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemContentAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    LoadMoreItem: typeof TreeLoadMoreItem;
+};
 
 // @public
 export function TreeComponent<T extends object>(input: TreeProps<T>): JSX.Element;
@@ -34,20 +38,6 @@ export function TreeComponent<T extends object>(input: TreeProps<T>): JSX.Elemen
 export namespace TreeComponent {
     var // (undocumented)
     displayName: string;
-    var // (undocumented)
-    Item: typeof TreeItem;
-    var // (undocumented)
-    ItemContent: typeof TreeItemContent;
-    var // Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    ItemContentText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
-    var // Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    ItemContentAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
-    var // (undocumented)
-    LoadMoreItem: typeof TreeLoadMoreItem;
 }
 
 // @public (undocumented)
@@ -105,6 +95,8 @@ export type TreeProps<T extends object> = TreeProps_2<T> & {
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/Tree/Tree.d.ts:19:5 - (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Tree/Tree.d.ts:20:5 - (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:6:5 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:7:5 - (ae-forgotten-export) The symbol "CheckboxProps" needs to be exported by the entry point index.d.ts
 

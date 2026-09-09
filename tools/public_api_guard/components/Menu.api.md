@@ -28,10 +28,16 @@ import type { RefObject } from 'react';
 import type { SectionProps as SectionProps_2 } from '@koobiq/react-core';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Menu: CompoundedComponent;
+export const Menu: MenuComponent & {
+    Item: typeof Item;
+    Section: typeof Section;
+    Header: typeof Header;
+    Divider: typeof Divider;
+    ItemText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Control: typeof Pressable;
+};
 
 // @public (undocumented)
 export type MenuComponent = <T>(props: MenuProps<T>) => ReactElement | null;
@@ -49,8 +55,6 @@ export type MenuDividerProps = DividerProps;
 // @public (undocumented)
 export type MenuHeaderProps = HeaderProps;
 
-// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type MenuItemAddonProps = ListItemAddonProps;
 
@@ -59,8 +63,6 @@ export type MenuItemAddonProps = ListItemAddonProps;
 // @public (undocumented)
 export type MenuItemProps<T> = ItemProps<T>;
 
-// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type MenuItemTextProps = ListItemTextProps;
 
@@ -107,6 +109,12 @@ export type MenuSectionProps<T> = SectionProps<T>;
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/Menu/Menu.d.ts:7:5 - (ae-forgotten-export) The symbol "Item" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Menu/Menu.d.ts:8:5 - (ae-forgotten-export) The symbol "Section" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Menu/Menu.d.ts:9:5 - (ae-forgotten-export) The symbol "Header" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Menu/Menu.d.ts:10:5 - (ae-forgotten-export) The symbol "Divider" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Menu/Menu.d.ts:11:5 - (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Menu/Menu.d.ts:12:5 - (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Menu/types.d.ts:57:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Menu/types.d.ts:58:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
 

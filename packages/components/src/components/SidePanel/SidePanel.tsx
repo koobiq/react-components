@@ -157,18 +157,12 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
 
 SidePanelComponent.displayName = 'SidePanel';
 
-type CompoundedComponent = typeof SidePanelComponent & {
-  Header: typeof Dialog.Header;
-  Body: typeof Dialog.Body;
-  Footer: typeof Dialog.Footer;
-};
-
 /**
  * SidePanel is a panel that slides out from the edges of the screen. It's often
  * used for navigation, menus, or to display details about the page a user is on.
  */
-export const SidePanel = SidePanelComponent as CompoundedComponent;
-
-SidePanel.Header = Dialog.Header;
-SidePanel.Body = Dialog.Body;
-SidePanel.Footer = Dialog.Footer;
+export const SidePanel = Object.assign(SidePanelComponent, {
+  Header: Dialog.Header,
+  Body: Dialog.Body,
+  Footer: Dialog.Footer,
+});

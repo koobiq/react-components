@@ -32,10 +32,13 @@ import type { TransitionProps } from 'react-transition-group/Transition';
 import type { useMultiSelectState } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public @deprecated
-export const Select: CompoundedComponent;
+export const Select: SelectComponent & {
+    Item: typeof Item;
+    Section: typeof Section;
+    Divider: typeof Divider;
+    ItemText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+};
 
 // @public (undocumented)
 export type SelectComponent = <T>(props: SelectProps<T>) => ReactElement | null;
@@ -50,8 +53,6 @@ export type SelectDividerProps = DividerProps;
 // @public (undocumented)
 export type SelectItemProps<T> = ItemProps<T>;
 
-// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type SelectItemTextProps = ListItemTextProps;
 
@@ -130,6 +131,10 @@ export type SelectSectionProps<T> = SectionProps<T>;
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/Select/Select.d.ts:11:5 - (ae-forgotten-export) The symbol "Item" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/Select.d.ts:12:5 - (ae-forgotten-export) The symbol "Section" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/Select.d.ts:13:5 - (ae-forgotten-export) The symbol "Divider" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Select/Select.d.ts:14:5 - (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Select/types.d.ts:94:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Select/types.d.ts:95:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Select/types.d.ts:96:9 - (ae-forgotten-export) The symbol "SelectListProps" needs to be exported by the entry point index.d.ts

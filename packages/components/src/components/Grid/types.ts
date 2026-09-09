@@ -1,4 +1,11 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type {
+  ComponentPropsWithRef,
+  CSSProperties,
+  ElementType,
+  ReactNode,
+} from 'react';
+
+import type { AsProps } from '@koobiq/react-core';
 
 import type { ResponsiveValue } from '../../utils';
 
@@ -49,3 +56,9 @@ export type GridBaseProps = {
   /** Inline styles. */
   style?: CSSProperties;
 };
+
+export type GridProps<As extends ElementType = 'div'> = AsProps<
+  As,
+  GridBaseProps,
+  ComponentPropsWithRef<As>
+>;

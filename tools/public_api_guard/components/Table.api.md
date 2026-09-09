@@ -21,10 +21,14 @@ import type { TableBodyProps as TableBodyProps_2 } from '@koobiq/react-primitive
 import type { TableHeaderProps as TableHeaderProps_2 } from '@koobiq/react-primitives';
 import type { TableStateProps } from '@koobiq/react-primitives';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Table: CompoundedComponent;
+export const Table: TableComponent & {
+    Header: typeof TableHeader;
+    Body: typeof TableBody;
+    Column: typeof Column;
+    Row: typeof Row;
+    Cell: typeof Cell;
+};
 
 // @public (undocumented)
 export type TableBodyProps<T> = TableBodyProps_2<T>;
@@ -104,6 +108,11 @@ export type TableRowProps<T> = RowProps<T> & {
 // packages/components/dist/components/Collections/Cell.d.ts:23:5 - (ae-forgotten-export) The symbol "CellPropVerticalAlign" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Collections/Column.d.ts:18:5 - (ae-forgotten-export) The symbol "ColumnPropAlign" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Collections/Column.d.ts:23:5 - (ae-forgotten-export) The symbol "ColumnPropVerticalAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Table/Table.d.ts:11:5 - (ae-forgotten-export) The symbol "TableHeader" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Table/Table.d.ts:12:5 - (ae-forgotten-export) The symbol "TableBody" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Table/Table.d.ts:13:5 - (ae-forgotten-export) The symbol "Column" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Table/Table.d.ts:14:5 - (ae-forgotten-export) The symbol "Row" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Table/Table.d.ts:15:5 - (ae-forgotten-export) The symbol "Cell" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Table/types.d.ts:35:5 - (ae-forgotten-export) The symbol "TablePropSortIconRender" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

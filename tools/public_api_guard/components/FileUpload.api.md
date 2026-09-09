@@ -17,7 +17,6 @@ import type { FileSizeFormatterConfig } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
 import { HTMLAttributes } from 'react';
 import type { Key } from '@koobiq/react-core';
-import { Key as Key_2 } from 'react-aria';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import { ReactElement } from 'react';
 import { ReactNode } from 'react';
@@ -27,10 +26,26 @@ import { TextProps } from '@koobiq/react-primitives';
 import type { Validation } from '@koobiq/react-core';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const FileUpload: CompoundedComponent;
+export const FileUpload: FileUploadComponent & {
+    Empty: ForwardRefExoticComponent<Omit<FileUploadEmptyProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    EmptyIcon: ForwardRefExoticComponent<Omit<FileUploadEmptyIconProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    EmptyTitle: ForwardRefExoticComponent<Omit<FileUploadEmptyTitleProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    EmptyDescription: ForwardRefExoticComponent<Omit<FileUploadEmptyDescriptionProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    Trigger: ForwardRefExoticComponent<FileUploadTriggerProps & RefAttributes<HTMLInputElement>>;
+    Item: (props: Omit<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "file" | "id" | "isDisabled" | "isInvalid" | "textValue" | `data-${string}`> & {
+        id?: Key;
+        textValue?: string;
+        isDisabled?: boolean;
+        isInvalid?: boolean;
+        file?: FileUploadFile;
+    } & DataAttributeProps & RefAttributes<HTMLDivElement>) => ReactElement | null;
+    ItemIcon: ForwardRefExoticComponent<Omit<FileUploadItemIconProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemContent: ForwardRefExoticComponent<Omit<FileUploadItemContentProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemName: ForwardRefExoticComponent<Omit<FileUploadItemNameProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemSize: ForwardRefExoticComponent<Omit<FileUploadItemSizeProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    RemoveButton: ForwardRefExoticComponent<Omit<FileUploadRemoveButtonProps, "ref"> & RefAttributes<HTMLButtonElement>>;
+};
 
 // @public (undocumented)
 export type FileUploadComponent = <T extends object = object>(props: FileUploadProps<T>) => ReactElement | null;

@@ -241,13 +241,12 @@ const ComponentSlot = forwardRef<HTMLSpanElement, ComponentSlotProps>(
   (props, ref) => <span ref={ref} {...props} />
 );
 
-type CompoundedComponent = typeof ComponentRoot & {
-  Slot: typeof ComponentSlot;
-};
-
-export const Component = ComponentRoot as CompoundedComponent;
-Component.Slot = ComponentSlot;
+export const Component = Object.assign(ComponentRoot, {
+  Slot: ComponentSlot,
+});
 ```
+
+`Object.assign` builds the value first, so the compound type is inferred structurally — no local intersection type, and no cast claiming slots the value does not have yet. Derive the props type from the compounded component (`ComponentPropsWithRef<typeof Component>`), not from the private root, so API Extractor doesn't report the root as a forgotten export.
 
 Export the root component and all prop types publicly. Expose slot components only through the root component.
 

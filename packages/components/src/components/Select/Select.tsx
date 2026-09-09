@@ -26,7 +26,6 @@ import type {
   FormFieldControlGroupProps,
 } from '../FormField';
 import { FormField, FormFieldClearButton } from '../FormField';
-import type { ListItemText } from '../List';
 import { List } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
@@ -289,22 +288,15 @@ function SelectRender<T extends object>(
 
 const SelectComponent = forwardRef(SelectRender) as SelectComponent;
 
-type CompoundedComponent = typeof SelectComponent & {
-  Item: typeof Item;
-  Section: typeof Section;
-  Divider: typeof Divider;
-  ItemText: typeof ListItemText;
-};
-
 /**
  * A select displays a collapsible list of options and allows a user to select
  * one or more of them.
  * @deprecated This component has been deprecated, please use SelectNext
  * instead.
  */
-export const Select = SelectComponent as CompoundedComponent;
-
-Select.Item = Item;
-Select.Section = Section;
-Select.Divider = Divider;
-Select.ItemText = List.ItemText;
+export const Select = Object.assign(SelectComponent, {
+  Item,
+  Section,
+  Divider,
+  ItemText: List.ItemText,
+});
