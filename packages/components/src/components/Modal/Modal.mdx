@@ -105,3 +105,12 @@ You can adjust the interaction with the modal window using the following propert
 - `disableExitOnEscapeKeyDown` — if `true`, the component won't close when the ESC key is pressed.
 
 <Story of={Stories.Settings} />
+
+## Overlay stacking
+
+All overlays share one layer, `--kbq-layer-overlay` (`1000`), so the last one
+opened is on top. Toasts are the exception: `--kbq-layer-toast` is above them all.
+
+Keep your app's own `z-index` values below `1000`.
+
+<Story of={Stories.Stacking} />

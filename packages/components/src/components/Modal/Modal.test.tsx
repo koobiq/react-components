@@ -5,6 +5,7 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { Button } from '../Button';
+import { Popover } from '../Popover';
 
 import { Modal } from './Modal';
 import { type ModalProps, modalPropSize } from './types';
@@ -307,6 +308,52 @@ describe('Modal', () => {
       expect(onOpenChange).toHaveBeenCalledTimes(1);
 
       expect(onOpenChange.mock.results[0]?.value).toStrictEqual(false);
+    });
+  });
+
+  // Every overlay shares one z-index layer, so the DOM order of the portals
+  // decides which one is on top: whatever opens last wins.
+  describe('overlay stacking', () => {
+    it('should be portaled after a popover that was already open', () => {
+      const { rerender } = render(
+        <>
+          <Popover data-testid="popover" isOpen />
+          <Modal {...baseProps} isOpen={false} />
+        </>
+      );
+
+      rerender(
+        <>
+          <Popover data-testid="popover" isOpen />
+          <Modal {...baseProps} isOpen />
+        </>
+      );
+
+      const position = screen
+        .getByTestId('popover')
+        .compareDocumentPosition(getModal());
+
+      expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('should be portaled before a popover opened from inside it', () => {
+      const { rerender } = render(
+        <Modal {...baseProps} isOpen>
+          <Popover data-testid="popover" isOpen={false} />
+        </Modal>
+      );
+
+      rerender(
+        <Modal {...baseProps} isOpen>
+          <Popover data-testid="popover" isOpen />
+        </Modal>
+      );
+
+      const position = getModal().compareDocumentPosition(
+        screen.getByTestId('popover')
+      );
+
+      expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
   });
 });

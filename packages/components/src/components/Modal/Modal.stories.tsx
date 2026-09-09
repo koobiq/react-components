@@ -5,8 +5,10 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { Input } from '../Input';
+import { SelectNext as Select } from '../SelectNext';
 import { Textarea } from '../Textarea';
 import { Toggle } from '../Toggle';
+import { Typography } from '../Typography';
 
 import { Modal } from './index';
 import { modalPropSize } from './index.js';
@@ -22,6 +24,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  tags: ['status:updated', 'date:2026-09-09'],
 } satisfies Meta<typeof Modal>;
 
 export default meta;
@@ -207,6 +210,60 @@ export const Settings: Story = {
           </>
         )}
       </Modal>
+    );
+  },
+};
+
+export const Stacking: Story = {
+  render: function Render() {
+    const [isOpen, { on, set }] = useBoolean(false);
+
+    const items = [
+      <Select.Item id="bruteforce" key="bruteforce">
+        Bruteforce
+      </Select.Item>,
+      <Select.Item id="ddos" key="ddos">
+        DDoS
+      </Select.Item>,
+      <Select.Item id="identity-theft" key="identity-theft">
+        Identity Theft
+      </Select.Item>,
+      <Select.Item id="network-attack" key="network-attack">
+        Network Attack
+      </Select.Item>,
+    ];
+
+    return (
+      <FlexBox gap="l" direction="column" alignItems="flex-start">
+        <Select
+          label="Attack type"
+          style={{ inlineSize: 200 }}
+          placeholder="Select an option"
+        >
+          {items}
+        </Select>
+        <Button onPress={() => setTimeout(on, 1500)}>
+          Open the modal in 1.5s
+        </Button>
+        <Modal isOpen={isOpen} size="small" onOpenChange={set}>
+          <Modal.Header>Overlay stacking</Modal.Header>
+          <Modal.Body>
+            <FlexBox gap="l" direction="column" alignItems="flex-start">
+              <Typography variant="text-normal">
+                The dropdown above opened before this modal, so the modal covers
+                it. The one below opens last and stays on top.
+              </Typography>
+              <Select
+                label="Attack type"
+                style={{ inlineSize: 200 }}
+                placeholder="Select an option"
+              >
+                {items}
+              </Select>
+            </FlexBox>
+          </Modal.Body>
+        </Modal>
+      </FlexBox>
     );
   },
 };

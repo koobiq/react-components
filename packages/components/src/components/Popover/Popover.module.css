@@ -3,6 +3,7 @@
   --popover-border-radius: var(--kbq-size-m);
 
   display: flex;
+  z-index: var(--kbq-layer-overlay);
   border-radius: var(--kbq-popover-border-radius, var(--popover-border-radius));
   box-shadow: var(--kbq-shadow-overlay);
   background-color: var(--kbq-background-bg);

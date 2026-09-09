@@ -3,8 +3,11 @@
   --kbq-layer-default: 0;
   --kbq-layer-absolute: 1;
   --kbq-layer-topbar: 950;
-  --kbq-layer-modal: 1000;
+  --kbq-layer-overlay: 1000;
   --kbq-layer-toast: 1100;
+
+  /** @deprecated Use `--kbq-layer-overlay` instead. */
+  --kbq-layer-modal: var(--kbq-layer-overlay);
 
   /* transition */
   --kbq-transition-default: 120ms ease-in-out;

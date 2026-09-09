@@ -10,7 +10,7 @@
   min-inline-size: 48px;
   min-block-size: 36px;
   color: var(--tooltip-color);
-  z-index: var(--kbq-layer-modal);
+  z-index: var(--kbq-layer-overlay);
   border-radius: var(--kbq-size-s);
   background-color: var(--tooltip-bg-color);
   transition: opacity var(--kbq-transition-default);

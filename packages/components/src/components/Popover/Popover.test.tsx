@@ -50,6 +50,18 @@ describe('Popover', () => {
     expect(root).toHaveStyle({ padding: '20px' });
   });
 
+  it('should not inline the react-aria z-index, so the CSS layer applies', () => {
+    render(<Popover {...baseProps} isOpen />);
+
+    expect(getRoot().style.zIndex).toBe('');
+  });
+
+  it('should let a custom z-index override the layer', () => {
+    render(<Popover {...baseProps} style={{ zIndex: 5 }} isOpen />);
+
+    expect(getRoot()).toHaveStyle({ zIndex: '5' });
+  });
+
   describe('check the size prop', () => {
     it.each(popoverPropSize)('should apply the size as a "%s"', (size) => {
       render(<Popover {...baseProps} size={size} isOpen />);
