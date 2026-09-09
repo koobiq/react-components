@@ -17,6 +17,11 @@ export type ListItemTextProps = ExtendableComponentPropsWithRef<
     caption?: ReactNode;
     /** If `true`, prevents the component from growing to fill available inline space. */
     autoWidth?: boolean;
+    /**
+     * If `true`, hides overflow tooltips for both the text and caption.
+     * @default false
+     */
+    hideTooltip?: boolean;
     /** The props used for each slot inside. */
     slotProps?: {
       text?: TypographyProps;

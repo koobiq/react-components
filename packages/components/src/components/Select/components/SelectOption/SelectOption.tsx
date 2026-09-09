@@ -36,6 +36,7 @@ export function SelectOption<T>({ item, state }: SelectOptionProps<T>) {
 
   return (
     <Tag
+      data-slot="list-item"
       {...mergeProps(optionProps, hoverProps, pressProps)}
       className={clsx(listItem, textVariant['text-normal'], className)}
       style={style}

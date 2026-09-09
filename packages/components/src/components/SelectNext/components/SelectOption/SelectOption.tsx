@@ -88,6 +88,7 @@ export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
 
   return (
     <Tag
+      data-slot="list-item"
       ref={ref}
       style={style}
       data-align={align}

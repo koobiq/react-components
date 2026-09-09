@@ -38,6 +38,7 @@ export function DropdownMenuItem<T extends object = object>({
 
   return (
     <AriaMenuItem
+      data-slot="list-item"
       data-align={align}
       {...props}
       // The chevron wrapper below turns `children` into a render function,

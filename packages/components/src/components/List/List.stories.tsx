@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { isString, useBoolean } from '@koobiq/react-core';
 import { IconCircle16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from 'storybook/test';
 
 import {
   Badge,
@@ -29,7 +30,7 @@ const meta = {
     'List.ItemAddon': List.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-05-15'],
+  tags: ['status:updated', 'date:2026-09-09'],
 } satisfies Meta<typeof List>;
 
 export default meta;
@@ -248,6 +249,106 @@ export const Sections: Story = {
         </section>
       </FlexBox>
     );
+  },
+};
+
+export const OverflowTooltips: Story = {
+  name: 'Overflow tooltips',
+  render: function Render() {
+    const [width, setWidth] = useState(360);
+    const [hideTooltip, setHideTooltip] = useState(false);
+
+    return (
+      <FlexBox direction="column" gap="l" alignItems="flex-start">
+        <label>
+          List width: {width}px
+          <input
+            aria-label="List width"
+            type="range"
+            min={240}
+            max={1000}
+            value={width}
+            onChange={(event) => setWidth(Number(event.target.value))}
+          />
+        </label>
+        <Checkbox isSelected={hideTooltip} onChange={setHideTooltip}>
+          Hide tooltips in explicit ItemText slots
+        </Checkbox>
+        <List
+          aria-label="Security incidents"
+          style={{ inlineSize: width, maxInlineSize: '100%' }}
+          selectionMode="single"
+          disabledKeys={['disabled']}
+        >
+          <List.Item key="short">Short label</List.Item>
+          <List.Item
+            key="plain"
+            textValue="Average memory consumption on 10.0.64.224 over the last five minutes"
+          >
+            <List.ItemText>
+              Average memory consumption on 10.0.64.224 over the last five
+              minutes
+            </List.ItemText>
+          </List.Item>
+          <List.Item
+            key="details"
+            textValue="Repeated sign-in failures"
+            align="start"
+          >
+            <List.ItemAddon>
+              <IconCircle16 />
+            </List.ItemAddon>
+            <List.ItemText
+              hideTooltip={hideTooltip}
+              caption="The user attempted to sign in from localhost several times"
+              slotProps={{ caption: { ellipsis: true } }}
+            >
+              Repeated sign-in failures for user <strong>ekoz</strong> on the
+              server
+            </List.ItemText>
+          </List.Item>
+          <List.Item
+            key="wrapped"
+            textValue="Wrapped description"
+            align="start"
+          >
+            <List.ItemText
+              hideTooltip={hideTooltip}
+              slotProps={{ text: { ellipsis: false } }}
+            >
+              This description wraps onto multiple lines and remains fully
+              readable.
+            </List.ItemText>
+          </List.Item>
+          <List.Item
+            key="disabled"
+            textValue="Unavailable incident with a long description that can still be read"
+          >
+            <List.ItemText>
+              Unavailable incident with a long description that can still be
+              read
+            </List.ItemText>
+          </List.Item>
+          <List.Item key="hidden" textValue="Tooltip disabled">
+            <List.ItemText hideTooltip>
+              This truncated description has its automatic tooltip disabled
+            </List.ItemText>
+          </List.Item>
+        </List>
+      </FlexBox>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const text = canvas.getByText(/Average memory consumption/);
+    await userEvent.pointer({ target: canvasElement });
+    await userEvent.hover(text);
+
+    const tooltip = await within(canvasElement.ownerDocument.body).findByRole(
+      'tooltip'
+    );
+
+    await expect(tooltip).toHaveTextContent(text.textContent!);
   },
 };
 

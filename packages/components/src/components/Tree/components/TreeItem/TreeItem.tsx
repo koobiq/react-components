@@ -22,6 +22,7 @@ export function TreeItem({
 }: TreeItemProps) {
   return (
     <AriaTreeItem
+      data-slot="list-item"
       data-align={align}
       {...props}
       textValue={textValue ?? ''}

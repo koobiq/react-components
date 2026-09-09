@@ -44,6 +44,7 @@ export function MenuItem<T>({ item, state }: MenuItemProps<T>) {
 
   return (
     <Tag
+      data-slot="list-item"
       {...mergeProps(menuItemProps, hoverProps, pressProps)}
       data-hovered={hovered}
       data-pressed={pressed}

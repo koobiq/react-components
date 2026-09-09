@@ -34,7 +34,7 @@ const createResizeEntry = (): ResizeObserverEntry =>
     borderBoxSize: [{ inlineSize: 100, blockSize: 40 }],
   }) as unknown as ResizeObserverEntry;
 
-function TestElement() {
+function TestElement({ text }: { text?: string }) {
   const { ref, isOverflow, isOverflowX, isOverflowY } =
     useElementOverflow<HTMLDivElement>();
 
@@ -45,7 +45,9 @@ function TestElement() {
       data-overflowing={isOverflow || undefined}
       data-overflowing-x={isOverflowX || undefined}
       data-overflowing-y={isOverflowY || undefined}
-    />
+    >
+      {text}
+    </div>
   );
 }
 
@@ -77,7 +79,29 @@ describe('useElementOverflow', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
     vi.clearAllMocks();
+  });
+
+  it('measures committed text changes without a resize notification', () => {
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(100);
+
+    vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockImplementation(
+      function (this: HTMLElement) {
+        return (this.textContent?.length ?? 0) * 10;
+      }
+    );
+
+    const { rerender } = render(<TestElement text="Short" />);
+    const element = screen.getByTestId(TEST_ID);
+
+    expect(element).not.toHaveAttribute('data-overflowing-x');
+
+    rerender(<TestElement text="A much longer label" />);
+    expect(element).toHaveAttribute('data-overflowing-x');
+
+    rerender(<TestElement text="Short" />);
+    expect(element).not.toHaveAttribute('data-overflowing-x');
   });
 
   it('detects horizontal and vertical overflow', () => {

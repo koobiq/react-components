@@ -72,6 +72,20 @@ List items also have layout props, such as `align`, which sets vertical alignmen
 
 <Story of={Stories.ItemContent} />
 
+## Overflow tooltips
+
+Truncated text inside `List.ItemText` automatically shows its full content when
+hovered. The main text and caption are measured independently, and the tooltip
+appears above the item. Wrapped text that fits horizontally does not show a
+tooltip.
+
+Set `hideTooltip` on `List.ItemText` to disable both tooltips. Plain item content
+does not receive an overflow tooltip. The same prop is available on components
+that reuse this slot, such as `Select.ItemText`, `Menu.ItemText`, and
+`Tree.ItemContentText`.
+
+<Story of={Stories.OverflowTooltips} />
+
 ## Selection
 
 List supports multiple selection modes.

@@ -33,7 +33,7 @@ const meta = {
     'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-07-30'],
+  tags: ['status:updated', 'date:2026-09-09'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -72,6 +72,50 @@ export const Base: Story = {
       <Select.Item id="network-attack">Network Attack</Select.Item>
       <Select.Item id="post-compromise">Post Compromise</Select.Item>
       <Select.Item id="potential-attack">Potential Attack</Select.Item>
+    </Select>
+  ),
+};
+
+export const OverflowTooltips: Story = {
+  name: 'Overflow tooltips',
+  render: (args) => (
+    <Select
+      label="Security incident"
+      style={{ inlineSize: 320 }}
+      placeholder="Select an incident"
+      {...args}
+    >
+      <Select.Item id="short">Short label</Select.Item>
+      <Select.Item
+        id="memory"
+        textValue="Average memory consumption on 10.0.64.224 over the last five minutes"
+      >
+        <Select.ItemText>
+          Average memory consumption on 10.0.64.224 over the last five minutes
+        </Select.ItemText>
+      </Select.Item>
+      <Select.Item id="disk" textValue="Disk utilization">
+        <Select.ItemText
+          caption="Average utilization of /dev/disk/by-uuid/c14b34b3-2a52-4c55"
+          slotProps={{ caption: { ellipsis: true } }}
+        >
+          Disk utilization
+        </Select.ItemText>
+      </Select.Item>
+      <Select.Item
+        id="disabled"
+        textValue="An unavailable incident whose full description is visible on hover"
+        isDisabled
+      >
+        <Select.ItemText>
+          An unavailable incident whose full description is visible on hover
+        </Select.ItemText>
+      </Select.Item>
+      <Select.Item id="hidden" textValue="Tooltip disabled">
+        <Select.ItemText hideTooltip>
+          This incident has its automatic overflow tooltip disabled
+        </Select.ItemText>
+      </Select.Item>
     </Select>
   ),
 };
