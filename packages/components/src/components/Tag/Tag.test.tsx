@@ -4,7 +4,7 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { Tag } from './index.js';
+import { Tag } from './Tag';
 import { tagPropVariant } from './types.js';
 import { matchTagVariantToIconButton } from './utils.js';
 

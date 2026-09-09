@@ -9,12 +9,9 @@ import type {
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { AriaTagGroupProps } from '@koobiq/react-primitives';
 
-export const tagGroupPropVariant = [
-  'theme-fade',
-  'contrast-fade',
-  'error-fade',
-  'warning-fade',
-] as const;
+import { tagPropVariant } from '../Tag/types';
+
+export const tagGroupPropVariant = tagPropVariant;
 
 export type TagGroupPropVariant = (typeof tagGroupPropVariant)[number];
 

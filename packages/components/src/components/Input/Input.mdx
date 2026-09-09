@@ -3,6 +3,7 @@ import {
   Story,
   Props,
   Status,
+  Alert,
 } from '../../../../../.storybook/components';
 
 import * as Stories from './Input.stories';
@@ -115,6 +116,26 @@ See the example when an input has its value autofilled by the browser.
 See the example of how to present the component with a password input.
 
 <Story of={Stories.Password} />
+
+## Input mask
+
+A mask constrains what can be typed into a field: characters that don't fit the format
+are dropped as the user types or pastes. It is not a validation — an incomplete value such as `192.168`
+still passes the mask, so pair it with [Validation](#validation) when the field must be complete.
+
+The example uses the [Maskito](https://maskito.dev/) library:
+
+```bash
+pnpm add @maskito/core @maskito/react @maskito/kit
+```
+
+<Alert>
+  For numbers, currencies, and units consider
+  [InputNumber](?path=/docs/components-inputnumber--docs) first: it formats the
+  value out of the box and doesn't need an external library.
+</Alert>
+
+<Story of={Stories.Mask} />
 
 ## Validation
 

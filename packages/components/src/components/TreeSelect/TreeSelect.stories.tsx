@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { type Key, useBoolean } from '@koobiq/react-core';
-import { IconCrosshairs16 } from '@koobiq/react-icons';
+import { IconCrosshairs16, IconFolder16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -23,9 +23,10 @@ const meta = {
     'TreeSelect.Item': TreeSelect.Item,
     'TreeSelect.ItemContent': TreeSelect.ItemContent,
     'TreeSelect.LoadMoreItem': TreeSelect.LoadMoreItem,
+    'TreeSelect.Tag': TreeSelect.Tag,
   },
   argTypes: {},
-  tags: ['status:new', 'date:2026-06-26'],
+  tags: ['status:updated', 'date:2026-09-07'],
 } satisfies Meta<typeof TreeSelect>;
 
 export default meta;
@@ -447,6 +448,55 @@ export const SelectedTagsOverflow: Story = {
           }}
         </TreeSelect>
       </FlexBox>
+    );
+  },
+};
+
+export const CustomTagRender: Story = {
+  render: function Render() {
+    type FileNode = {
+      id: number;
+      title: string;
+      children: FileNode[];
+    };
+
+    const items: FileNode[] = [
+      {
+        id: 1,
+        title: 'app',
+        children: [{ id: 2, title: 'Http', children: [] }],
+      },
+      { id: 3, title: 'config', children: [] },
+      { id: 4, title: 'public', children: [] },
+    ];
+
+    return (
+      <TreeSelect
+        items={items}
+        label="Project folders"
+        selectionMode="multiple"
+        style={{ inlineSize: 320 }}
+        placeholder="Select folders"
+        defaultValue={[2, 3]}
+        renderTag={(item, tagProps) => (
+          <TreeSelect.Tag
+            {...tagProps}
+            variant="warning-fade"
+            icon={<IconFolder16 />}
+          >
+            {item.textValue}
+          </TreeSelect.Tag>
+        )}
+      >
+        {function renderItem(item) {
+          return (
+            <TreeSelect.Item id={item.id} textValue={item.title}>
+              <TreeSelect.ItemContent>{item.title}</TreeSelect.ItemContent>
+              <Collection items={item.children}>{renderItem}</Collection>
+            </TreeSelect.Item>
+          );
+        }}
+      </TreeSelect>
     );
   },
 };

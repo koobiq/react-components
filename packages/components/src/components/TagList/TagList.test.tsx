@@ -1,4 +1,4 @@
-import { createRef, useState } from 'react';
+import { createRef, useState, type ComponentPropsWithRef } from 'react';
 
 import { isInteractiveTarget } from '@koobiq/react-primitives';
 import { render, screen, waitFor, within } from '@testing-library/react';
@@ -60,6 +60,126 @@ describe('TagList', () => {
     render(renderComponent({ ref }));
 
     expect(ref.current).toBe(screen.getByLabelText('tag-list'));
+  });
+
+  it('should apply tag root slot props and preserve keyboard navigation', async () => {
+    const ref = createRef<HTMLDivElement>();
+    const onFocus = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <TagList aria-label="tag-list">
+        <TagList.Tag
+          key="one"
+          className="tag"
+          slotProps={{ root: { ref, onFocus, className: 'slot' } }}
+        >
+          one
+        </TagList.Tag>
+        <TagList.Tag key="two">two</TagList.Tag>
+      </TagList>
+    );
+
+    const [first, second] = screen.getAllByRole('row');
+
+    expect(ref.current).toBe(first);
+    expect(first).toHaveClass('tag', 'slot');
+
+    // Roving tabindex: `Tab` lands on the grid, and React Aria hands DOM
+    // focus to the row in a later commit.
+    await user.tab();
+
+    await waitFor(() => expect(first).toHaveFocus());
+    expect(onFocus).toHaveBeenCalled();
+
+    await user.keyboard('{ArrowRight}');
+
+    await waitFor(() => expect(second).toHaveFocus());
+  });
+
+  it('should let tag root slot props win over the tag style', () => {
+    render(
+      <TagList aria-label="tag-list">
+        <TagList.Tag
+          key="one"
+          style={{ padding: 10 }}
+          slotProps={{ root: { style: { padding: 20 } } }}
+        >
+          one
+        </TagList.Tag>
+      </TagList>
+    );
+
+    // `mergeProps` replaces `style` wholesale, so the slot — the more
+    // specific escape hatch — has to be the one that survives.
+    expect(screen.getByRole('row')).toHaveStyle({ padding: '20px' });
+  });
+
+  it('should keep the computed state attributes authoritative', () => {
+    // `data-selected` drives the selected styling, so a consumer must not be
+    // able to pin it on while `selectionManager` says otherwise.
+    const root = {
+      'data-selected': 'true',
+      'data-hovered': 'true',
+    } as ComponentPropsWithRef<'div'>;
+
+    render(
+      <TagList aria-label="tag-list">
+        <TagList.Tag key="one" slotProps={{ root }}>
+          one
+        </TagList.Tag>
+      </TagList>
+    );
+
+    const tag = screen.getByRole('row');
+
+    expect(tag).not.toHaveAttribute('data-selected');
+    expect(tag).not.toHaveAttribute('data-hovered');
+  });
+
+  it('should let the removeIcon slot props replace the default glyph', () => {
+    render(
+      <TagList aria-label="tag-list" onRemove={vi.fn()}>
+        <TagList.Tag
+          key="one"
+          slotProps={{
+            removeIcon: {
+              className: 'remove-slot',
+              children: <span data-testid="custom-glyph" />,
+            },
+          }}
+        >
+          one
+        </TagList.Tag>
+      </TagList>
+    );
+
+    const button = screen.getByRole('button');
+
+    expect(button).toHaveClass('remove-slot');
+    expect(within(button).getByTestId('custom-glyph')).toBeInTheDocument();
+  });
+
+  it('should apply the icon and content slot props', () => {
+    render(
+      <TagList aria-label="tag-list">
+        <TagList.Tag
+          key="one"
+          icon={<span data-testid="icon" />}
+          slotProps={{
+            icon: { className: 'icon-slot' },
+            content: { className: 'content-slot' },
+          }}
+        >
+          one
+        </TagList.Tag>
+      </TagList>
+    );
+
+    const tag = screen.getByRole('row');
+
+    expect(tag.querySelector('.icon-slot')).toBeInTheDocument();
+    expect(tag.querySelector('.content-slot')).toHaveTextContent('one');
   });
 
   it('should merge a custom class name with the default ones', () => {
