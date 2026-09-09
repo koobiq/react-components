@@ -154,6 +154,18 @@ and matches text anywhere in an item. To change how items match, pass your own
 
 <Story of={Stories.Searchable} />
 
+### Dependencies
+
+The collection caches a rendered item by the identity of its data object, so an item is not
+re-rendered when a value used inside the render function changes. List such values in
+`dependencies` to invalidate that cache — for example the search query when the items
+highlight it.
+
+Nested `Collection` elements inherit `dependencies` from the TreeSelect, so the prop only
+has to be set once, on the root.
+
+<Story of={Stories.Dependencies} />
+
 ### Open
 
 Use `defaultOpen` to set the initial uncontrolled open state.

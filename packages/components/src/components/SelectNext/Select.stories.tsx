@@ -13,6 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { useAsyncList, useFilter } from '../index';
 import { Typography } from '../Typography';
 
@@ -33,7 +34,7 @@ const meta = {
     'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-07-30'],
+  tags: ['status:updated', 'date:2026-09-09'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -538,6 +539,31 @@ export const Searchable: Story = {
         isSearchable
       >
         {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const Dependencies: Story = {
+  render: function Render() {
+    const [inputValue, setInputValue] = useState('');
+
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        inputValue={inputValue}
+        dependencies={[inputValue]}
+        onInputChange={setInputValue}
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        isSearchable
+      >
+        {(item) => (
+          <Select.Item id={item.id} textValue={item.name}>
+            <Highlight text={item.name} query={inputValue} />
+          </Select.Item>
+        )}
       </Select>
     );
   },
