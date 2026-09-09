@@ -61,6 +61,15 @@ importers:
       '@koobiq/visuals':
         specifier: ^12.1.0
         version: 12.1.0
+      '@maskito/core':
+        specifier: ^5.4.0
+        version: 5.4.0
+      '@maskito/kit':
+        specifier: ^5.4.0
+        version: 5.4.0(@maskito/core@5.4.0)
+      '@maskito/react':
+        specifier: ^5.4.0
+        version: 5.4.0(@maskito/core@5.4.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@microsoft/api-extractor':
         specifier: ^7.56.0
         version: 7.58.7(@types/node@25.8.0)
@@ -1676,6 +1685,21 @@ packages:
 
   '@koobiq/visuals@12.1.0':
     resolution: {integrity: sha512-JdrGcYrH6EpEXC+POWRa8uT8zv8XH9H6EG9Aib9PxS5jOa0zvkcqLz09dLasQOKrQe3tRb3wksruMH2YxQad7Q==}
+
+  '@maskito/core@5.4.0':
+    resolution: {integrity: sha512-g2Ps71bVidiIoIdrSqzvu85i1vbfDnQScJItikIXTrSGZN8/PwcRsnzr0Cx56dljWbVcEHe2cpZMkYo5Th64zw==}
+
+  '@maskito/kit@5.4.0':
+    resolution: {integrity: sha512-kW/U+4qoMmegkC4vyf6Lz4Hfbrel8ph3Yuh3O+XT7ePaQXV9QwSqoo3/jVuXahf46zUV0rN5FHg866bwcFWPUw==}
+    peerDependencies:
+      '@maskito/core': ^5.4.0
+
+  '@maskito/react@5.4.0':
+    resolution: {integrity: sha512-eW6pTeM9NhwCDMW6K7CVA45TZwZ0fRwqN6zcRMgJGUHmwuTQUsKLDGIPxEhpxiXPTIFN3Cs5oP1LuCirFfZRQA==}
+    peerDependencies:
+      '@maskito/core': ^5.4.0
+      react: ^19.0.0
+      react-dom: ^19.0.0
 
   '@mdx-js/react@3.1.1':
     resolution: {integrity: sha512-f++rKLQgUVYDAtECQ6fn/is15GkEH9+nZPM3MS0RcxVqoTfawHvDlSCH7JbMhAM6uJ32v3eXLvLmLvjGu7PTQw==}
@@ -8241,6 +8265,18 @@ snapshots:
       react-dom: 19.2.3(react@19.2.3)
 
   '@koobiq/visuals@12.1.0': {}
+
+  '@maskito/core@5.4.0': {}
+
+  '@maskito/kit@5.4.0(@maskito/core@5.4.0)':
+    dependencies:
+      '@maskito/core': 5.4.0
+
+  '@maskito/react@5.4.0(@maskito/core@5.4.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@maskito/core': 5.4.0
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
   '@mdx-js/react@3.1.1(@types/react@19.2.7)(react@19.2.3)':
     dependencies:
