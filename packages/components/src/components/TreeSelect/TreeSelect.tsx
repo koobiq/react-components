@@ -54,6 +54,7 @@ import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 import { SearchInput, type SearchInputProps } from '../SearchInput';
 import { SelectedTags } from '../SelectedTags';
+import { Tag } from '../Tag';
 import { Tree } from '../Tree';
 
 import intlMessages from './intl';
@@ -80,6 +81,7 @@ export function TreeSelectInner<
 >({ props, collection, controlRef }: TreeSelectInnerProps<T, M>) {
   const {
     selectedTagsOverflow = 'responsive',
+    renderTag,
     defaultInputValue = '',
     labelAlign,
     placeholder,
@@ -405,6 +407,7 @@ export function TreeSelectInner<
           isRequired,
         }}
         selectedTagsOverflow={selectedTagsOverflow}
+        renderTag={renderTag}
       />
     ) : (
       state.selectedItems[0]?.textValue
@@ -488,6 +491,7 @@ type CompoundedComponent = typeof TreeSelectComponent & {
   Item: typeof Tree.Item;
   ItemContent: typeof Tree.ItemContent;
   LoadMoreItem: typeof Tree.LoadMoreItem;
+  Tag: typeof Tag;
 };
 
 /** Select with hierarchical tree data. */
@@ -496,3 +500,4 @@ export const TreeSelect = TreeSelectComponent as CompoundedComponent;
 TreeSelect.Item = Tree.Item;
 TreeSelect.ItemContent = Tree.ItemContent;
 TreeSelect.LoadMoreItem = Tree.LoadMoreItem;
+TreeSelect.Tag = Tag;
