@@ -142,7 +142,8 @@ export type TreeSelectProps<
     control?: FormFieldSelectProps;
     popover?: PopoverProps;
     dropdownFooter?: DropdownFooterProps & DataAttributeProps;
-    tree?: Omit<AriaTreeProps<T>, 'children' | 'items'> & DataAttributeProps;
+    tree?: Omit<AriaTreeProps<T>, 'children' | 'items' | 'dependencies'> &
+      DataAttributeProps;
     'search-input'?: SearchInputProps;
   };
 } & Omit<AriaTreeSelectProps<T, M>, 'description' | 'validationState'>;

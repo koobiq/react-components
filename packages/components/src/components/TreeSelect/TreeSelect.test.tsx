@@ -25,9 +25,9 @@ const items: FileNode[] = [
 ];
 
 function TreeSelectFixture<M extends SelectionMode = 'single'>(
-  props: Partial<TreeSelectProps<FileNode, M>> = {}
+  props: Partial<TreeSelectProps<FileNode, M>> & { suffix?: string } = {}
 ) {
-  const { slotProps, ...otherProps } = props;
+  const { slotProps, suffix = '', ...otherProps } = props;
 
   return (
     <Provider>
@@ -59,7 +59,7 @@ function TreeSelectFixture<M extends SelectionMode = 'single'>(
               textValue={item.title}
               data-testid={`item-${item.id}`}
             >
-              <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Tree.ItemContent>{`${item.title}${suffix}`}</Tree.ItemContent>
               <Collection items={item.children}>{renderItem}</Collection>
             </Tree.Item>
           );
@@ -1000,42 +1000,25 @@ describe('TreeSelect', () => {
   });
 
   describe('dependencies', () => {
-    function DependenciesFixture({ suffix }: { suffix: string }) {
-      return (
-        <Provider>
-          <TreeSelect
-            items={items}
-            label="Files"
-            dependencies={[suffix]}
-            defaultOpen
-          >
-            {function renderItem(item: FileNode) {
-              return (
-                <Tree.Item
-                  key={item.id}
-                  textValue={item.title}
-                  data-testid={`item-${item.id}`}
-                >
-                  <Tree.ItemContent>{`${item.title}-${suffix}`}</Tree.ItemContent>
-                  <Collection items={item.children} dependencies={[suffix]}>
-                    {renderItem}
-                  </Collection>
-                </Tree.Item>
-              );
-            }}
-          </TreeSelect>
-        </Provider>
-      );
-    }
+    const renderWithSuffix = (suffix: string) => (
+      <TreeSelectFixture
+        suffix={suffix}
+        dependencies={[suffix]}
+        defaultExpandedKeys={[1]}
+        defaultOpen
+      />
+    );
 
     it('should re-render the items when a dependency changes', () => {
-      const { rerender } = render(<DependenciesFixture suffix="a" />);
+      const { rerender } = render(renderWithSuffix('-a'));
 
       expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-a');
+      expect(screen.getByTestId('item-2')).toHaveTextContent('Http-a');
 
-      rerender(<DependenciesFixture suffix="b" />);
+      rerender(renderWithSuffix('-b'));
 
       expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-b');
+      expect(screen.getByTestId('item-2')).toHaveTextContent('Http-b');
     });
   });
 });
