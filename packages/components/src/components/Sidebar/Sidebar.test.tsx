@@ -370,7 +370,7 @@ describe('Sidebar', () => {
         cancelable: true,
       });
 
-      window.dispatchEvent(event);
+      fireEvent(window, event);
 
       expect(event.defaultPrevented).toBe(true);
       expect(onOpenChange).toHaveBeenCalledWith(true);

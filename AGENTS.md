@@ -53,7 +53,6 @@ Selected paths. The root also holds the lint, format, commit, and deploy configs
 ├── pnpm-workspace.yaml
 ├── turbo.json
 ├── vite.config.mts                    # Shared CSS Modules/PostCSS config + Vitest projects and coverage
-├── vitest.workspace.ts                # Legacy; Vitest 4 ignores it (projects come from vite.config.mts)
 └── tsconfig.json                      # Root TS config; `paths` map @koobiq/react-* to packages/*/src
 ```
 

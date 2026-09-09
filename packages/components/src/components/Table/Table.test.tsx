@@ -1,6 +1,6 @@
 import { createRef, useMemo, useState } from 'react';
 
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
@@ -317,11 +317,22 @@ describe('Table', () => {
       </Table>
     );
 
+    // Wrapping in `TableContainer` would silence this warning, but the table
+    // width would fall back to `0`: jsdom never reports a size.
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
     const { rerender } = render(<ResizableTable isHighlighted={false} />);
+
+    expect(warn).toHaveBeenCalledWith(
+      '[koobiq] Table: if the "Table" supports column resizing, then it should also be wrapped in the "TableContainer" that defines the overall table width.'
+    );
+
+    warn.mockRestore();
+
     const initialWidth = screen.getByRole('columnheader').style.inlineSize;
     const resizer = screen.getByRole('slider');
 
-    resizer.focus();
+    act(() => resizer.focus());
     await userEvent.keyboard('{Enter}{ArrowRight}{Enter}');
 
     const resizedWidth = screen.getByRole('columnheader').style.inlineSize;

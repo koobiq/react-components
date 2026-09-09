@@ -7,14 +7,12 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 import { browserslist as browsers } from '../../package.json';
+import { test } from '../../tools/vitest/config';
 
 const isExternal = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
 
 export default defineConfig({
-  test: {
-    globals: true,
-    environment: 'jsdom',
-  },
+  test,
   plugins: [tsconfigPaths(), react()],
   build: {
     lib: {
