@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithRef, ElementType } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';

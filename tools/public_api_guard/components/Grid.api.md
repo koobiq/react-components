@@ -4,11 +4,10 @@
 
 ```ts
 
-import type { AsProps } from '@koobiq/react-core';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
 import { DetailedHTMLProps } from 'react';
-import { ElementType } from 'react';
+import type { ElementType } from 'react';
 import { ForwardRefExoticComponent } from 'react';
 import { HTMLAttributes } from 'react';
 import { Merge } from '@koobiq/react-core';
@@ -62,11 +61,11 @@ export type GridPropGap = (typeof gridPropGap)[number];
 export const gridPropGap: readonly [0, "3xs", "xxs", "xs", "s", "m", "l", "xl", "xxl", "3xl", "4xl", "5xl", "6xl", "7xl"];
 
 // @public (undocumented)
-export type GridProps<As extends ElementType = 'div'> = AsProps<As, GridBaseProps, ComponentPropsWithRef<As>>;
+export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof Grid<As>>;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Grid/types.d.ts:8:5 - (ae-forgotten-export) The symbol "ResponsiveValue" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Grid/types.d.ts:7:5 - (ae-forgotten-export) The symbol "ResponsiveValue" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -6,7 +6,7 @@ import { forwardRef } from 'react';
 import { deprecate } from '@koobiq/logger';
 import { useOverlayTriggerState } from '@koobiq/react-primitives';
 
-import { Dialog } from '../Dialog';
+import { DialogBody, DialogFooter, DialogHeader } from '../Dialog';
 
 import { PopoverInner } from './PopoverInner';
 import type { PopoverProps } from './types';
@@ -47,7 +47,7 @@ PopoverComponent.displayName = 'Popover';
  * the user interface.
  */
 export const Popover = Object.assign(PopoverComponent, {
-  Header: Dialog.Header,
-  Body: Dialog.Body,
-  Footer: Dialog.Footer,
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
 });

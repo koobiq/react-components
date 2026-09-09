@@ -41,7 +41,5 @@ export const DropdownMenu = Object.assign(DropdownMenuComponent, {
   SubmenuTrigger: DropdownMenuSubmenuTrigger,
   Autocomplete: DropdownMenuAutocomplete,
   Footer: DropdownMenuFooter,
-  // The assertion keeps `Pressable` nameable in the declaration output,
-  // React Aria keeps its props type internal (TS4023).
-  Pressable: Pressable as typeof Pressable,
+  Pressable,
 });

@@ -4,7 +4,7 @@
 
 ```ts
 
-import type { ComponentPropsWithRef } from 'react';
+import { ComponentPropsWithRef } from 'react';
 import { ForwardRefExoticComponent } from 'react';
 import type { ReactNode } from 'react';
 import { RefAttributes } from 'react';
@@ -73,7 +73,7 @@ export type UsernamePropMode = (typeof usernamePropMode)[number];
 export const usernamePropMode: readonly ["stacked", "inline", "text"];
 
 // @public (undocumented)
-export type UsernameProps = UsernameBaseProps;
+export type UsernameProps = ComponentPropsWithRef<typeof Username>;
 
 // @public (undocumented)
 export type UsernamePropType = (typeof usernamePropType)[number];

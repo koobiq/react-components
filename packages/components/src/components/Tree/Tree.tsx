@@ -8,7 +8,7 @@ import { utilClasses } from '../../styles/utility';
 import { ListItemAddon, ListItemText } from '../List/components';
 
 import { TreeItem, TreeItemContent, TreeLoadMoreItem } from './components';
-import type { TreeProps } from './types';
+import type { TreeComponent, TreeProps } from './types';
 
 const { list } = utilClasses;
 
@@ -16,7 +16,7 @@ const { list } = utilClasses;
  * A tree provides users with a way to navigate nested hierarchical
  * information, with support for keyboard navigation and selection.
  */
-export function TreeComponent<T extends object>({
+function TreeRender<T extends object>({
   className,
   isPadded,
   ...props
@@ -32,7 +32,9 @@ export function TreeComponent<T extends object>({
   );
 }
 
-TreeComponent.displayName = 'Tree';
+TreeRender.displayName = 'Tree';
+
+const TreeComponent = TreeRender as TreeComponent;
 
 /**
  * A tree provides users with a way to navigate nested hierarchical information,

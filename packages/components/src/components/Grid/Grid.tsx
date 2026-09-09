@@ -1,6 +1,6 @@
 'use client';
 
-import type { CSSProperties } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, ElementType } from 'react';
 
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 
@@ -66,3 +66,7 @@ GridComponent.displayName = 'Grid';
 export const Grid = Object.assign(GridComponent, {
   Item: GridItem,
 });
+
+export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<
+  typeof Grid<As>
+>;

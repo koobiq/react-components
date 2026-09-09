@@ -13,7 +13,13 @@ import {
 import { Transition } from 'react-transition-group';
 
 import { Backdrop, type BackdropProps } from '../Backdrop';
-import { Dialog, type DialogProps } from '../Dialog';
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  type DialogProps,
+} from '../Dialog';
 
 import s from './Modal.module.css';
 import type { ModalProps, ModalRef } from './types';
@@ -150,7 +156,7 @@ ModalComponent.displayName = 'Modal';
  * information or ask for a decision.
  */
 export const Modal = Object.assign(ModalComponent, {
-  Header: Dialog.Header,
-  Body: Dialog.Body,
-  Footer: Dialog.Footer,
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
 });

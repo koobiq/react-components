@@ -103,7 +103,5 @@ export const Menu = Object.assign(MenuComponent, {
   Divider,
   ItemText: ListItemText,
   ItemAddon: ListItemAddon,
-  // The assertion keeps `Pressable` nameable in the declaration output,
-  // React Aria keeps its props type internal (TS4023).
-  Control: Pressable as typeof Pressable,
+  Control: Pressable,
 });

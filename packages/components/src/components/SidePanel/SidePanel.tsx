@@ -13,7 +13,13 @@ import {
 import { Transition } from 'react-transition-group';
 
 import { Backdrop, type BackdropProps } from '../Backdrop';
-import { Dialog, type DialogProps } from '../Dialog';
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  type DialogProps,
+} from '../Dialog';
 
 import s from './SidePanel.module.css';
 import type { SidePanelProps, SidePanelRef } from './types';
@@ -162,7 +168,7 @@ SidePanelComponent.displayName = 'SidePanel';
  * used for navigation, menus, or to display details about the page a user is on.
  */
 export const SidePanel = Object.assign(SidePanelComponent, {
-  Header: Dialog.Header,
-  Body: Dialog.Body,
-  Footer: Dialog.Footer,
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
 });

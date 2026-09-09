@@ -1,3 +1,5 @@
+'use client';
+
 import { type CSSProperties, forwardRef } from 'react';
 
 import { clsx } from '@koobiq/react-core';
@@ -9,7 +11,7 @@ import { useMatchedBreakpoints } from '../Provider';
 import { FormGroup, FormCaption, FormActions } from './components';
 import s from './Form.module.css';
 import { FormContext } from './FormContext';
-import type { FormRef, FormProps } from './types';
+import type { FormProps, FormRef } from './types';
 import { templatePresets } from './utils';
 
 const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {

@@ -1,6 +1,10 @@
 'use client';
 
-import { forwardRef, type ComponentRef } from 'react';
+import {
+  forwardRef,
+  type ComponentPropsWithRef,
+  type ComponentRef,
+} from 'react';
 
 import { clsx, isNotNil } from '@koobiq/react-core';
 
@@ -93,3 +97,5 @@ export const Username = Object.assign(UsernameComponent, {
   Secondary: UsernameSecondary,
   SecondaryHint: UsernameSecondaryHint,
 });
+
+export type UsernameProps = ComponentPropsWithRef<typeof Username>;
