@@ -93,6 +93,7 @@ export const treeSelectPropLabelPlacement: readonly ["top", "side"];
 // @public (undocumented)
 export type TreeSelectProps<T extends object, M extends SelectionMode_2 = 'single'> = {
     selectedTagsOverflow?: TreeSelectPropSelectedTagsOverflow;
+    renderTag?: (item: Node_2<T>, tagProps: TreeSelectTagProps) => ReactNode;
     isClearable?: boolean;
     onClear?: () => void;
     startAddon?: ReactNode;
@@ -125,7 +126,7 @@ export type TreeSelectProps<T extends object, M extends SelectionMode_2 = 'singl
         control?: FormFieldSelectProps;
         popover?: PopoverProps;
         dropdownFooter?: DropdownFooterProps & DataAttributeProps;
-        tree?: Omit<TreeProps<T>, 'children' | 'items'> & DataAttributeProps;
+        tree?: Omit<TreeProps<T>, 'children' | 'items' | 'dependencies'> & DataAttributeProps;
         'search-input'?: SearchInputProps;
     };
 } & Omit<AriaTreeSelectProps<T, M>, 'description' | 'validationState'>;
@@ -147,19 +148,24 @@ export const treeSelectPropVariant: readonly ["filled", "transparent"];
 // @public (undocumented)
 export type TreeSelectRef = ComponentRef<'div'>;
 
+// Warning: (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type TreeSelectTagProps = TagProps;
+
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TreeSelect/types.d.ts:87:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:88:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:89:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:90:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:91:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:92:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:93:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:94:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:95:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:97:9 - (ae-forgotten-export) The symbol "SearchInputProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TreeSelect/types.d.ts:104:5 - (ae-forgotten-export) The symbol "TreeCollection" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:91:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:92:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:93:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:94:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:95:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:96:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:97:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:98:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:99:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:101:9 - (ae-forgotten-export) The symbol "SearchInputProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TreeSelect/types.d.ts:108:5 - (ae-forgotten-export) The symbol "TreeCollection" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
