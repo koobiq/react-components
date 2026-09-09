@@ -26,13 +26,10 @@ export function Tag<T>(props: TagProps<T>) {
   const { slotProps, icon, className, style } = item.props as RootTagProps<T>;
   const ref = useRef(null);
 
-  const { focusProps, isFocusVisible, isFocused } = useFocusRing({
-    within: false,
-  });
+  const { focusProps, isFocusVisible } = useFocusRing({ within: false });
 
   const {
     rowProps,
-    isPressed,
     isDisabled,
     gridCellProps,
     allowsRemoving,
@@ -41,30 +38,36 @@ export function Tag<T>(props: TagProps<T>) {
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
 
-  const rootProps = mergeProps(
-    rowProps,
-    hoverProps,
-    focusProps,
-    {
-      'data-focused': isFocused || undefined,
-      'data-pressed': isPressed || undefined,
-      'data-hovered': isHovered || undefined,
-      'data-focus-visible': isFocusVisible || undefined,
-      'aria-disabled': isDisabled || undefined,
-    },
-    slotProps?.root,
-    { ref, style, className }
-  );
+  const rootProps = {
+    ...mergeProps(
+      rowProps,
+      hoverProps,
+      focusProps,
+      { style, className },
+      // `slotProps.root` is the escape hatch, so it wins over `style`/`className`
+      slotProps?.root,
+      { ref }
+    ),
+    // The interaction state drives the styling, so it is assigned after the
+    // merge rather than inside it: `mergeProps` keeps the earlier value when
+    // the later one is `undefined`, which would let a consumer pin a state
+    // attribute on and desync the visuals from the real state.
+    'data-hovered': isHovered || undefined,
+    'data-focus-visible': isFocusVisible || undefined,
+    'aria-disabled': isDisabled || undefined,
+  };
 
+  // `tabIndex` first (`useTag` doesn't set it), then React Aria — its
+  // `isDisabled` is ungated by `disabledBehavior` and must not be overridden
+  // by the wrapper — then the consumer's slot props.
   const removeIconProps = allowsRemoving
-    ? mergeProps<(TagRemoveButtonProps | undefined)[]>(
-        removeButtonPropsAria,
-        {
-          isDisabled,
-          tabIndex: -1,
-        },
-        slotProps?.removeIcon
-      )
+    ? mergeProps<
+        [
+          TagRemoveButtonProps,
+          TagRemoveButtonProps,
+          TagRemoveButtonProps | undefined,
+        ]
+      >({ tabIndex: -1 }, removeButtonPropsAria, slotProps?.removeIcon)
     : undefined;
 
   return (

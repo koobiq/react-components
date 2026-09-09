@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef } from 'react';
 
 import type { Key, Node as CollectionNode } from '@koobiq/react-core';
@@ -34,7 +36,6 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
 
   const {
     rowProps,
-    isPressed,
     isSelected,
     isDisabled,
     gridCellProps,
@@ -51,9 +52,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     ref
   );
 
-  const { focusProps, isFocusVisible, isFocused } = useFocusRing({
-    within: false,
-  });
+  const { focusProps, isFocusVisible } = useFocusRing({ within: false });
 
   const { hoverProps, isHovered } = useHover({ isDisabled });
 
@@ -65,27 +64,37 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     'data-testid': testId,
   } = itemProps;
 
-  const rootProps = mergeProps(
-    rowProps,
-    hoverProps,
-    focusProps,
-    {
-      'data-testid': testId,
-      'data-focused': isFocused || undefined,
-      'data-pressed': isPressed || undefined,
-      'data-hovered': isHovered || undefined,
-      'data-selected': isSelected || undefined,
-      'data-focus-visible': isFocusVisible || undefined,
-    },
-    slotProps?.root,
-    { ref, style, className }
-  );
+  // `rowProps` already carries `ref`, so it is not repeated here — merging it
+  // twice would hand React a fresh callback ref on every render.
+  const rootProps = {
+    ...mergeProps(
+      rowProps,
+      hoverProps,
+      focusProps,
+      { style, className },
+      // `slotProps.root` is the escape hatch, so it wins over `style`/`className`
+      slotProps?.root,
+      { 'data-testid': testId }
+    ),
+    // The interaction state drives the styling, so it is assigned after the
+    // merge rather than inside it: `mergeProps` keeps the earlier value when
+    // the later one is `undefined`, which would let a consumer pin a state
+    // attribute on and desync the visuals from the real state.
+    'data-hovered': isHovered || undefined,
+    'data-selected': isSelected || undefined,
+    'data-focus-visible': isFocusVisible || undefined,
+  };
 
+  // Same order as the TagGroup wrapper: React Aria's props win over the
+  // defaults, the consumer's slot props win over both.
   const removeIconProps = allowsRemoving
-    ? mergeProps<[TagRemoveButtonProps | undefined, TagRemoveButtonProps]>(
-        slotProps?.removeIcon,
-        removeButtonPropsAria
-      )
+    ? mergeProps<
+        [
+          TagRemoveButtonProps,
+          TagRemoveButtonProps,
+          TagRemoveButtonProps | undefined,
+        ]
+      >({ tabIndex: -1 }, removeButtonPropsAria, slotProps?.removeIcon)
     : undefined;
 
   return (
