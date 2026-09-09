@@ -1223,12 +1223,49 @@ describe('Select', () => {
       </Select>
     );
 
+    type Group = { id: string; name: string; children: Option[] };
+
+    const groups: Group[] = [
+      { id: 'group-1', name: 'Group 1', children: items },
+    ];
+
+    const renderSectionsWithSuffix = (suffix: string) => (
+      <Select<Group>
+        label="label"
+        items={groups}
+        dependencies={[suffix]}
+        defaultOpen
+      >
+        {(group) => (
+          <Select.Section
+            id={group.id}
+            title={group.name}
+            items={group.children}
+          >
+            {(item) => (
+              <Select.Item id={item.id}>{`${item.name}-${suffix}`}</Select.Item>
+            )}
+          </Select.Section>
+        )}
+      </Select>
+    );
+
     it('should re-render the options when a dependency changes', () => {
       const { rerender } = render(renderWithSuffix('a'));
 
       expect(getOptions()[0]).toHaveTextContent('one-a');
 
       rerender(renderWithSuffix('b'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-b');
+    });
+
+    it('should re-render the options inside a section when a dependency changes', () => {
+      const { rerender } = render(renderSectionsWithSuffix('a'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-a');
+
+      rerender(renderSectionsWithSuffix('b'));
 
       expect(getOptions()[0]).toHaveTextContent('one-b');
     });

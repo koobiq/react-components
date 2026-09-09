@@ -1,6 +1,6 @@
 'use client';
 
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, ReactElement } from 'react';
 import { useContext } from 'react';
 
 import type {
@@ -13,6 +13,7 @@ import { filterDOMProps, mergeProps } from '@koobiq/react-core';
 import {
   useListBoxSection,
   createBranchComponent,
+  Collection,
   SectionNode,
 } from '@koobiq/react-primitives';
 
@@ -30,6 +31,10 @@ export type SelectSectionProps<T> = ExtendableComponentPropsWithRef<
   },
   'section'
 >;
+
+export type SelectSectionComponent = <T extends object>(
+  props: SelectSectionProps<T>
+) => ReactElement | null;
 
 function SelectSectionInner<T extends object>(
   props: SelectSectionProps<T>,
@@ -69,7 +74,15 @@ function SelectSectionInner<T extends object>(
   );
 }
 
-export const SelectSection = createBranchComponent(
+const SelectSectionRoot = createBranchComponent(
   SectionNode,
-  SelectSectionInner
+  SelectSectionInner,
+  // Render the children through `Collection` rather than the built-in
+  // `useCollectionChildren`, so the section inherits `dependencies` from the
+  // Select it is rendered in.
+  ({ items, children }) => <Collection items={items}>{children}</Collection>
 );
+
+// The type is spelled out: the inferred one leaks an unresolved type parameter
+// into the declaration output, which API Extractor cannot follow.
+export const SelectSection = SelectSectionRoot as SelectSectionComponent;
