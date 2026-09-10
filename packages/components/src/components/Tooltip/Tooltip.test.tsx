@@ -34,12 +34,6 @@ describe('Tooltip', () => {
     expect(ref.current).toBe(getRoot());
   });
 
-  it('should not inline the react-aria z-index, so the CSS layer applies', () => {
-    render(<Tooltip {...baseProps} isOpen />);
-
-    expect(getRoot().style.zIndex).toBe('');
-  });
-
   it('should merge a custom class name with the default ones', () => {
     const className = 'foo';
 

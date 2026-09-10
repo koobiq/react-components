@@ -108,9 +108,10 @@ You can adjust the interaction with the modal window using the following propert
 
 ## Overlay stacking
 
-All overlays share one layer, `--kbq-layer-overlay` (`1000`), so the last one
-opened is on top. Toasts are the exception: `--kbq-layer-toast` is above them all.
+All overlays share one layer, `--kbq-layer-overlay`, so the last one opened is
+on top. Toasts are the exception: `--kbq-layer-toast` is above them all.
 
-Keep your app's own `z-index` values below `1000`.
+Keep your app's own `z-index` values below `--kbq-layer-topbar`, the lowest
+layer the library occupies.
 
 <Story of={Stories.Stacking} />

@@ -1,4 +1,4 @@
-import { useBoolean } from '@koobiq/react-core';
+import { useBoolean, useTimer } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
@@ -24,7 +24,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:updated', 'date:2026-09-09'],
 } satisfies Meta<typeof Modal>;
 
 export default meta;
@@ -218,6 +217,12 @@ export const Stacking: Story = {
   render: function Render() {
     const [isOpen, { on, set }] = useBoolean(false);
 
+    const { count, isTimerRunning, startTimer } = useTimer({
+      startTime: 1500,
+      interval: 500,
+      onTimerEnd: on,
+    });
+
     const items = [
       <Select.Item id="bruteforce" key="bruteforce">
         Bruteforce
@@ -242,8 +247,10 @@ export const Stacking: Story = {
         >
           {items}
         </Select>
-        <Button onPress={() => setTimeout(on, 1500)}>
-          Open the modal in 1.5s
+        <Button onPress={startTimer}>
+          {isTimerRunning
+            ? `Opening the modal in ${count / 1000}s`
+            : 'Open the modal in 1.5s'}
         </Button>
         <Modal isOpen={isOpen} size="small" onOpenChange={set}>
           <Modal.Header>Overlay stacking</Modal.Header>
