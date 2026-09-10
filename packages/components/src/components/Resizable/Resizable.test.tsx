@@ -280,7 +280,100 @@ describe('Resizable', () => {
 
     fireEvent.keyDown(getHandle(), { key: 'ArrowRight' });
 
-    expect(getRoot()).toHaveStyle({ width: '261px', height: '140px' });
+    // Only the resized axis becomes managed, the other one is left to CSS.
+    expect(getRoot()).toHaveStyle({ width: '261px' });
+    expect(getRoot().style.height).toBe('');
+  });
+
+  it('manages a single dimension when the size defines one axis', () => {
+    const onResize = vi.fn();
+
+    mocks.observedSize = { width: 300, height: 200 };
+
+    renderResizable([1, 0], {
+      defaultSize: { width: 300 },
+      minSize: { width: 100 },
+      maxSize: { width: 500 },
+      onResize,
+    });
+
+    expect(getRoot()).toHaveStyle({
+      width: '300px',
+      minWidth: '100px',
+      maxWidth: '500px',
+    });
+
+    expect(getRoot().style.height).toBe('');
+    expect(getRoot().style.minHeight).toBe('');
+    expect(getRoot().style.maxHeight).toBe('');
+
+    drag(25, 40);
+
+    // The callbacks still report both dimensions, measured where unmanaged.
+    expect(onResize).toHaveBeenLastCalledWith({ width: 325, height: 200 });
+    expect(getRoot()).toHaveStyle({ width: '325px' });
+    expect(getRoot().style.height).toBe('');
+  });
+
+  it('keeps the managed axis when another axis is resized', () => {
+    render(
+      <Resizable data-testid="resizable" defaultSize={{ width: 300 }}>
+        <Resizable.Handle data-testid="handle" direction={[0, 1]} />
+      </Resizable>
+    );
+
+    fireEvent.keyDown(getHandle(), { key: 'ArrowDown' });
+
+    expect(getRoot()).toHaveStyle({ width: '300px', height: '201px' });
+  });
+
+  it('disables arrow key resizing without breaking dragging', () => {
+    renderResizable([1, 0], { defaultSize: { width: 300 } });
+
+    render(
+      <Resizable data-testid="resizable" defaultSize={{ width: 300 }}>
+        <Resizable.Handle
+          data-testid="static-handle"
+          direction={[1, 0]}
+          disableKeyboardResize
+        />
+      </Resizable>
+    );
+
+    const handle = screen.getByTestId('static-handle');
+    const root = handle.parentElement as HTMLElement;
+
+    expect(handle).toHaveAttribute('tabindex', '-1');
+
+    fireEvent.keyDown(handle, { key: 'ArrowRight' });
+
+    expect(root).toHaveStyle({ width: '300px' });
+
+    fireEvent.mouseDown(handle, { button: 0, clientX: 10, clientY: 10 });
+    fireEvent.mouseMove(window, { button: 0, clientX: 30, clientY: 10 });
+    fireEvent.mouseUp(window, { button: 0, clientX: 30, clientY: 10 });
+
+    expect(root).toHaveStyle({ width: '320px' });
+  });
+
+  it('keeps the handle focusable when tabIndex is set explicitly', () => {
+    renderResizable([1, 0], { defaultSize: { width: 300 } });
+
+    render(
+      <Resizable data-testid="resizable" defaultSize={{ width: 300 }}>
+        <Resizable.Handle
+          data-testid="static-handle"
+          direction={[1, 0]}
+          tabIndex={0}
+          disableKeyboardResize
+        />
+      </Resizable>
+    );
+
+    expect(screen.getByTestId('static-handle')).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
   });
 
   it('calls lifecycle callbacks with the snapshot and final size', () => {

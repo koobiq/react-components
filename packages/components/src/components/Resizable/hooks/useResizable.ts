@@ -8,6 +8,7 @@ import { useElementSize } from '@koobiq/react-core';
 import type {
   ResizableHandleDirection,
   ResizableMoveEvent,
+  ResizableSize,
   ResizableSizeConstraints,
 } from './types';
 import type { ResizableState } from './useResizableState';
@@ -15,7 +16,8 @@ import { clampResizableSize } from './utils';
 
 export type ResizableContextValue = {
   rootId: string;
-  size: NonNullable<ResizableState['size']>;
+  /** The current size of both axes, measured where an axis isn't managed. */
+  size: ResizableSize;
   bounds: ResizableState['bounds'];
   isDisabled: boolean;
   activeDirection: string | null;
@@ -56,18 +58,27 @@ export const useResizable = <T extends HTMLElement = HTMLElement>(
   } = useElementSize<T>({ box: 'border-box' });
 
   const observedSize = clampResizableSize({ width, height }, bounds);
-  const currentSize = managedSize ?? observedSize;
+
+  const currentSize = clampResizableSize(
+    {
+      width: managedSize?.width ?? observedSize.width,
+      height: managedSize?.height ?? observedSize.height,
+    },
+    bounds
+  );
 
   const handleMoveStart = useCallback(
     (direction: ResizableHandleDirection) => {
       const rect = targetRef.current?.getBoundingClientRect();
 
-      startResize(
-        direction,
-        rect ? { width: rect.width, height: rect.height } : currentSize
-      );
+      // A managed axis is the source of truth, the measured one may lag behind
+      // it while the element animates to the size that was set last.
+      startResize(direction, {
+        width: managedSize?.width ?? rect?.width ?? currentSize.width,
+        height: managedSize?.height ?? rect?.height ?? currentSize.height,
+      });
     },
-    [currentSize, startResize, targetRef]
+    [currentSize, managedSize, startResize, targetRef]
   );
 
   const contextValue = useMemo<ResizableContextValue>(
@@ -98,10 +109,8 @@ export const useResizable = <T extends HTMLElement = HTMLElement>(
     ...(minSize?.height !== undefined && { minHeight: bounds.minHeight }),
     ...(Number.isFinite(bounds.maxWidth) && { maxWidth: bounds.maxWidth }),
     ...(Number.isFinite(bounds.maxHeight) && { maxHeight: bounds.maxHeight }),
-    ...(managedSize && {
-      width: managedSize.width,
-      height: managedSize.height,
-    }),
+    ...(managedSize?.width !== undefined && { width: managedSize.width }),
+    ...(managedSize?.height !== undefined && { height: managedSize.height }),
   } satisfies CSSProperties;
 
   const resizableProps = {

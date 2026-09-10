@@ -53,10 +53,35 @@ export const clampResizableSize = (
   ),
 });
 
+/**
+ * Clamps only the axes the size defines, so an element can be managed in one
+ * dimension and keep its CSS size in the other.
+ */
 export const normalizeResizableSize = (
-  size: ResizableSize | undefined,
+  size: ResizableSizeConstraints | undefined,
   bounds: ResizableBounds
-) => (size ? clampResizableSize(size, bounds) : undefined);
+): ResizableSizeConstraints | undefined => {
+  if (!size) return undefined;
+
+  const { width, height } = size;
+
+  return {
+    ...(width !== undefined && {
+      width: clamp(
+        isFiniteNumber(width) ? width : bounds.minWidth,
+        bounds.minWidth,
+        bounds.maxWidth
+      ),
+    }),
+    ...(height !== undefined && {
+      height: clamp(
+        isFiniteNumber(height) ? height : bounds.minHeight,
+        bounds.minHeight,
+        bounds.maxHeight
+      ),
+    }),
+  };
+};
 
 export const getDirectionKey = ([x, y]: ResizableHandleDirection) =>
   `${x}:${y}`;

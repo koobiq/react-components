@@ -15,6 +15,7 @@ export const ResizableHandle = polymorphicForwardRef<
   const {
     as: Tag = 'div',
     direction,
+    disableKeyboardResize,
     className,
     style: styleProp,
     tabIndex: tabIndexProp,
@@ -33,6 +34,7 @@ export const ResizableHandle = polymorphicForwardRef<
   const { handleProps } = useResizableHandle(
     {
       direction,
+      disableKeyboardResize,
       'aria-label': ariaLabelProp,
       tabIndex: tabIndexProp,
     },
