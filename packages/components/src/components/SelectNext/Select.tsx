@@ -9,7 +9,6 @@ import {
   useControlledState,
   mergeProps,
   useElementSize,
-  clsx,
 } from '@koobiq/react-core';
 import { IconChevronDownS16 } from '@koobiq/react-icons';
 import {
@@ -184,7 +183,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     'data-disabled': isDisabled || undefined,
     'data-readonly': isReadOnly || undefined,
     'data-required': isRequired || undefined,
-    className: clsx(s.base, className),
+    className,
     fullWidth,
     labelPlacement,
     labelAlign,
@@ -235,7 +234,6 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
   const clearButtonProps = mergeProps(
     {
       isClearable,
-      isDisabled: isReadOnly || isDisabled,
       onPress: handleClear,
       className: s.clearButton,
       isHidden: clearButtonIsHidden,
@@ -276,6 +274,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
       ),
       isInvalid,
       isDisabled,
+      isReadOnly,
       ref: containerRef,
     },
     otherGroup

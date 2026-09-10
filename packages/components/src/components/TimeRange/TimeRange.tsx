@@ -20,6 +20,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Button } from '../Button';
+import { useForm } from '../Form';
 import { Popover } from '../Popover';
 import type { PopoverProps } from '../Popover';
 
@@ -162,14 +163,19 @@ export function TimeRangeRender<T extends DateValue>(
     hideRangeAsDefault = false,
     children,
     renderOption,
-    isDisabled,
-    isReadOnly,
+    isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
     className,
     style,
     'data-testid': testId,
     slotProps,
     ...other
   } = props;
+
+  const { isDisabled: formIsDisabled, isReadOnly: formIsReadOnly } = useForm();
+
+  const isDisabled = isDisabledProp ?? formIsDisabled;
+  const isReadOnly = isReadOnlyProp ?? formIsReadOnly;
 
   const groupRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
@@ -226,11 +232,27 @@ export function TimeRangeRender<T extends DateValue>(
   // for a controlled one it always mirrors `value` as given.
   const displayValue = correction.corrected ? correction.value : committed;
 
-  const state = useOverlayTriggerState({
+  const overlayState = useOverlayTriggerState({
     isOpen: slotProps?.popover?.isOpen,
     defaultOpen: slotProps?.popover?.defaultOpen,
     onOpenChange: slotProps?.popover?.onOpenChange,
   });
+
+  // The editor cannot be opened when the component is disabled or read-only,
+  // so the trigger's own state is neutralized instead of guarding every entry
+  // point (same approach as SelectNext).
+  const state =
+    isDisabled || isReadOnly
+      ? {
+          ...overlayState,
+          open() {
+            return undefined;
+          },
+          toggle() {
+            return undefined;
+          },
+        }
+      : overlayState;
 
   const { triggerProps, overlayProps } = useOverlayTrigger(
     { type: 'dialog' },
@@ -338,30 +360,33 @@ export function TimeRangeRender<T extends DateValue>(
     slotProps?.popover
   );
 
-  const disabled = isDisabled || isReadOnly;
-
   return (
     <>
       <TimeRangeContext.Provider
-        value={{ formattedValue, isEmpty, isDisabled: disabled, groupRef }}
+        value={{ formattedValue, isEmpty, isDisabled, isReadOnly, groupRef }}
       >
         <PressResponder
           {...triggerProps}
           {...{
             role: 'button',
             'aria-haspopup': 'dialog',
-            'aria-disabled': disabled || undefined,
+            'aria-disabled': isDisabled || undefined,
+            'aria-readonly': isReadOnly || undefined,
             'data-testid': testId,
-            tabIndex: disabled ? -1 : undefined,
+            tabIndex: isDisabled ? -1 : undefined,
           }}
           onPress={(event) => {
-            if (!disabled) triggerProps.onPress?.(event);
+            if (isDisabled || isReadOnly) return;
+
+            triggerProps.onPress?.(event);
           }}
-          isDisabled={disabled}
+          isDisabled={isDisabled}
           isPressed={state.isOpen}
           ref={mergeRefs(ref, triggerRef)}
         >
-          <ButtonContext.Provider value={{ isDisabled: disabled }}>
+          <ButtonContext.Provider
+            value={{ isDisabled: isDisabled || isReadOnly }}
+          >
             {typeof children === 'function'
               ? children({ formattedValue })
               : children}

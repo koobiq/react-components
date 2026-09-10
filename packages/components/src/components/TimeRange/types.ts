@@ -99,6 +99,7 @@ export type TimeRangeFieldProps = {
   isRequired?: boolean;
   isInvalid?: boolean;
   isDisabled?: boolean;
+  isReadOnly?: boolean;
   errorMessage?: ReactNode;
   caption?: ReactNode;
   fullWidth?: boolean;

@@ -28,4 +28,40 @@ describe('FormFieldControlGroup', () => {
       expect(getRoot()).toHaveClass(s.focused);
     });
   });
+
+  it('should mark the group and its addons as read-only', () => {
+    render(
+      <FormFieldControlGroup
+        data-testid="root"
+        isReadOnly
+        startAddon={<span>start</span>}
+        endAddon={<span>end</span>}
+      >
+        <input data-testid="input" />
+      </FormFieldControlGroup>
+    );
+
+    expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+
+    ['start', 'end'].forEach((placement) => {
+      expect(screen.getByTestId(`field-addon-${placement}`)).toHaveAttribute(
+        'data-readonly',
+        'true'
+      );
+    });
+  });
+
+  it('should not mark addons as read-only by default', () => {
+    render(
+      <FormFieldControlGroup data-testid="root" endAddon={<span>end</span>}>
+        <input data-testid="input" />
+      </FormFieldControlGroup>
+    );
+
+    expect(getRoot()).not.toHaveAttribute('data-readonly');
+
+    expect(screen.getByTestId('field-addon-end')).not.toHaveAttribute(
+      'data-readonly'
+    );
+  });
 });

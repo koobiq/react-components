@@ -744,6 +744,7 @@ export type TagFieldTagListContainerProps = HTMLAttributes<HTMLDivElement> & {
 export type TagFieldTagListProps<T extends object> = {
     state: TagListState<T>;
     isDisabled: boolean | undefined;
+    isReadOnly: boolean | undefined;
     tabIndex: -1;
     onRemove: ((keys: Set<Key_2>, context?: TagListItemRemoveContext) => void) | undefined;
     'aria-label': string;

@@ -17,6 +17,7 @@ type TagItemProps<T extends object> = {
   variant: TagListPropVariant;
   onRemove?: (keys: Set<Key>) => void;
   isDisabled?: boolean;
+  isReadOnly?: boolean;
   collectionId?: string;
 };
 
@@ -26,6 +27,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
     onRemove,
     state,
     isDisabled: isDisabledProp,
+    isReadOnly,
     variant: groupVariant,
     collectionId,
   } = props;
@@ -94,7 +96,11 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
           TagRemoveButtonProps,
           TagRemoveButtonProps | undefined,
         ]
-      >({ tabIndex: -1 }, removeButtonPropsAria, slotProps?.removeIcon)
+      >(
+        { tabIndex: -1, isDisabled: isReadOnly || isDisabled },
+        removeButtonPropsAria,
+        slotProps?.removeIcon
+      )
     : undefined;
 
   return (

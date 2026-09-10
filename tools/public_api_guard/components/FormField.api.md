@@ -68,6 +68,7 @@ export const FormFieldControlGroupContext: Context<FormFieldControlGroupContextP
 // @public (undocumented)
 export type FormFieldControlGroupContextProps = {
     isDisabled?: boolean;
+    isReadOnly?: boolean;
     hasStartAddon?: boolean;
     hasEndAddon?: boolean;
     isHovered?: boolean;
@@ -85,6 +86,7 @@ export type FormFieldControlGroupProps = ExtendableComponentPropsWithRef<{
     endAddon?: ReactNode;
     variant?: FormFieldControlGroupPropVariant;
     isDisabled?: boolean;
+    isReadOnly?: boolean;
     className?: string;
     isInvalid?: boolean;
     slotProps?: {
@@ -190,7 +192,7 @@ export const useFormFieldControlGroup: () => FormFieldControlGroupContextProps;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/FormField/FormFieldControlGroup/types.d.ts:31:9 - (ae-forgotten-export) The symbol "FormFieldAddonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/FormField/FormFieldControlGroup/types.d.ts:36:9 - (ae-forgotten-export) The symbol "FormFieldAddonProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -14,6 +14,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
     onRemove,
     className,
     isDisabled,
+    isReadOnly,
     autoFocus,
     tagListRef,
     escapeKeyBehavior,
@@ -39,6 +40,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
       'aria-label': ariaLabel,
       className: clsx(s.base, className),
       'data-disabled': isDisabled || undefined,
+      'data-readonly': isReadOnly || undefined,
     },
     gridProps,
     { tabIndex }
@@ -54,6 +56,7 @@ export function TagListInner<T extends object>(props: TagListInnerProps<T>) {
           variant={variant}
           onRemove={onRemove}
           isDisabled={isDisabled}
+          isReadOnly={isReadOnly}
           collectionId={collectionId}
         />
       ))}

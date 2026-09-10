@@ -167,6 +167,7 @@ export function TagInputInner<T extends object>(
       ),
       variant,
       isDisabled,
+      isReadOnly,
       startAddon,
       onMouseDown: (event) => {
         if (event.target !== event.currentTarget) return;

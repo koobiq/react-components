@@ -239,8 +239,7 @@ export function TreeSelectInner<
     validationDetails,
   };
 
-  const clearButtonIsHidden =
-    isDisabled || isReadOnly || !state.selectedItems.length;
+  const clearButtonIsHidden = !state.selectedItems.length;
 
   const handleClear = useCallback(() => {
     if (isReadOnly) return;
@@ -320,6 +319,7 @@ export function TreeSelectInner<
       variant,
       isInvalid: isInvalidAria,
       isDisabled,
+      isReadOnly,
       ref: triggerRef,
     },
     slotProps?.group

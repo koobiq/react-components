@@ -663,6 +663,24 @@ describe('TagInput', () => {
       expect(queryTag('a')).toBeInTheDocument();
     });
 
+    it('keeps the remove button visible but disabled when read-only', async () => {
+      const onRemove = vi.fn();
+
+      render(
+        <Wrapper initialItems={seed(['a'])} onRemove={onRemove} isReadOnly />
+      );
+
+      const tag = queryTag('a') as HTMLElement;
+      const removeBtn = within(tag).getByRole('button');
+
+      expect(removeBtn).toBeInTheDocument();
+      expect(removeBtn).toBeDisabled();
+
+      await userEvent.click(removeBtn);
+      expect(onRemove).not.toHaveBeenCalled();
+      expect(queryTag('a')).toBeInTheDocument();
+    });
+
     it('disables tag selection in read-only but keeps focus navigation', async () => {
       const user = userEvent.setup();
       render(<Wrapper initialItems={seed(['one', 'two'])} isReadOnly />);
@@ -825,9 +843,16 @@ describe('TagInput', () => {
       expect(getInput()).toHaveFocus();
     });
 
-    it('is hidden when disabled even with tags', () => {
+    it('is disabled but visible when disabled with tags', () => {
       render(<Wrapper initialItems={seed(['a'])} isDisabled />);
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
+    });
+
+    it('is disabled but visible when read-only with tags', () => {
+      render(<Wrapper initialItems={seed(['a'])} isReadOnly />);
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
     });
   });
 });
