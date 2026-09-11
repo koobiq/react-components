@@ -8,7 +8,7 @@
   box-sizing: border-box;
   max-inline-size: 300px;
   color: var(--tooltip-color);
-  z-index: var(--kbq-layer-modal);
+  z-index: var(--kbq-layer-overlay);
   border-radius: var(--kbq-size-s);
   background-color: var(--tooltip-bg-color);
   transition: opacity var(--kbq-transition-default);

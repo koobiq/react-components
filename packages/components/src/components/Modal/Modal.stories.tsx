@@ -1,12 +1,14 @@
-import { useBoolean } from '@koobiq/react-core';
+import { useBoolean, useTimer } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { Input } from '../Input';
+import { SelectNext as Select } from '../SelectNext';
 import { Textarea } from '../Textarea';
 import { Toggle } from '../Toggle';
+import { Typography } from '../Typography';
 
 import { Modal } from './index';
 import { modalPropSize } from './index.js';
@@ -207,6 +209,68 @@ export const Settings: Story = {
           </>
         )}
       </Modal>
+    );
+  },
+};
+
+export const Stacking: Story = {
+  render: function Render() {
+    const [isOpen, { on, set }] = useBoolean(false);
+
+    const { count, isTimerRunning, startTimer } = useTimer({
+      startTime: 1500,
+      interval: 500,
+      onTimerEnd: on,
+    });
+
+    const items = [
+      <Select.Item id="bruteforce" key="bruteforce">
+        Bruteforce
+      </Select.Item>,
+      <Select.Item id="ddos" key="ddos">
+        DDoS
+      </Select.Item>,
+      <Select.Item id="identity-theft" key="identity-theft">
+        Identity Theft
+      </Select.Item>,
+      <Select.Item id="network-attack" key="network-attack">
+        Network Attack
+      </Select.Item>,
+    ];
+
+    return (
+      <FlexBox gap="l" direction="column" alignItems="flex-start">
+        <Select
+          label="Attack type"
+          style={{ inlineSize: 200 }}
+          placeholder="Select an option"
+        >
+          {items}
+        </Select>
+        <Button onPress={startTimer}>
+          {isTimerRunning
+            ? `Opening the modal in ${count / 1000}s`
+            : 'Open the modal in 1.5s'}
+        </Button>
+        <Modal isOpen={isOpen} size="small" onOpenChange={set}>
+          <Modal.Header>Overlay stacking</Modal.Header>
+          <Modal.Body>
+            <FlexBox gap="l" direction="column" alignItems="flex-start">
+              <Typography variant="text-normal">
+                The dropdown above opened before this modal, so the modal covers
+                it. The one below opens last and stays on top.
+              </Typography>
+              <Select
+                label="Attack type"
+                style={{ inlineSize: 200 }}
+                placeholder="Select an option"
+              >
+                {items}
+              </Select>
+            </FlexBox>
+          </Modal.Body>
+        </Modal>
+      </FlexBox>
     );
   },
 };

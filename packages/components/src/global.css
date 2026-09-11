@@ -3,7 +3,8 @@
   --kbq-layer-default: 0;
   --kbq-layer-absolute: 1;
   --kbq-layer-topbar: 950;
-  --kbq-layer-modal: 1000;
+  --kbq-layer-modal: 1000; /* @deprecated Use `--kbq-layer-overlay`. */
+  --kbq-layer-overlay: var(--kbq-layer-modal);
   --kbq-layer-toast: 1100;
 
   /* transition */
