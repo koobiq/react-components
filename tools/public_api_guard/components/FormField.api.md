@@ -9,13 +9,17 @@ import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import { Context } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
+import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
 import { RefAttributes } from 'react';
@@ -23,10 +27,23 @@ import { TextProps } from '@koobiq/react-primitives';
 import { TextRef } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const FormField: CompoundedComponent;
+export const FormField: Omit<ForwardRefExoticComponent<Merge<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {
+fullWidth?: boolean;
+className?: string;
+labelPlacement?: FormFieldPropLabelPlacement;
+labelAlign?: FormFieldPropLabelAlign;
+} & DataAttributeProps & {
+as?: "div" | undefined;
+}>>, never> & PolymorphicWithRef<"div", FormFieldBaseProps, ElementType> & {
+    Label: PolyForwardComponent<"label", FormFieldLabelBaseProps, ElementType>;
+    Error: ForwardRefExoticComponent<Omit<FormFieldErrorProps, "ref"> & RefAttributes<HTMLParagraphElement>>;
+    Caption: ForwardRefExoticComponent<Omit<FormFieldCaptionProps, "ref"> & RefAttributes<HTMLParagraphElement>>;
+    ControlGroup: ForwardRefExoticComponent<Omit<FormFieldControlGroupProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Input: PolyForwardComponent<"input", FormFieldInputBaseProps, "input" | "textarea">;
+    InputDate: ForwardRefExoticComponent<Omit<FormFieldInputDateProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Select: PolyForwardComponent<"div", FormFieldSelectBaseProps, ElementType>;
+};
 
 // @public (undocumented)
 export type FormFieldBaseProps = {

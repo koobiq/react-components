@@ -10,19 +10,23 @@ import type { CollectionBase } from '@koobiq/react-core';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
+import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import type { FocusStrategy } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
 import type { ItemProps } from '@koobiq/react-core';
 import { JSX } from 'react/jsx-runtime';
 import type { Key } from '@koobiq/react-core';
 import type { ListState } from '@koobiq/react-primitives';
+import { Merge } from '@koobiq/react-core';
 import type { MultipleSelection } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
@@ -35,10 +39,10 @@ import { TagFieldState } from '@koobiq/react-primitives';
 import { TextProps } from '@koobiq/react-primitives';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent_2" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const TagInput: CompoundedComponent_2;
+export const TagInput: TagInputComponent & {
+    Tag: typeof Tag;
+};
 
 // @public (undocumented)
 export type TagInputAddContext<T = unknown> = TagFieldAddContext<T>;
@@ -125,6 +129,7 @@ export type TagInputTagProps<T extends object = object> = TagProps<T>;
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/TagInput/TagInput.d.ts:19:5 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TagInput/types.d.ts:60:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TagInput/types.d.ts:61:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TagInput/types.d.ts:62:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts

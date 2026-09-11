@@ -71,11 +71,7 @@ const ResizableComponent = polymorphicForwardRef<'div', ResizableBaseProps>(
 
 ResizableComponent.displayName = 'Resizable';
 
-type CompoundedComponent = typeof ResizableComponent & {
-  Handle: typeof ResizableHandle;
-};
-
 /** An element whose width and height can be changed with composed handles. */
-export const Resizable = ResizableComponent as CompoundedComponent;
-
-Resizable.Handle = ResizableHandle;
+export const Resizable = Object.assign(ResizableComponent, {
+  Handle: ResizableHandle,
+});

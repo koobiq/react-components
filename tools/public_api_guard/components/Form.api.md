@@ -7,16 +7,24 @@
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import { Context } from 'react';
-import type { ElementType } from 'react';
+import { ElementType } from 'react';
 import { FormProps as FormProps_2 } from '@koobiq/react-primitives';
 import { ForwardRefExoticComponent } from 'react';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import { RefAttributes } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Form: CompoundedComponent;
+export const Form: ForwardRefExoticComponent<    {
+isDisabled?: boolean;
+isReadOnly?: boolean;
+labelPlacement?: FormFieldPropLabelPlacement | ResponsiveValue<FormFieldPropLabelPlacement>;
+labelAlign?: FormFieldPropLabelAlign | ResponsiveValue<FormFieldPropLabelAlign>;
+labelInlineSize?: FormPropLabelInlineSize | ResponsiveValue<FormPropLabelInlineSize>;
+} & FormProps_2 & RefAttributes<HTMLFormElement>> & {
+    Group: PolyForwardComponent<"div", FormGroupBaseProps, ElementType>;
+    Caption: PolyForwardComponent<"div", FormCaptionBaseProps, ElementType>;
+    Actions: PolyForwardComponent<"div", FormActionsBaseProps, ElementType>;
+};
 
 // Warning: (ae-forgotten-export) The symbol "FormActions" needs to be exported by the entry point index.d.ts
 //
@@ -67,9 +75,12 @@ export const useForm: () => FormContextProps;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Form/FormContext.d.ts:3:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelPlacement" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Form/FormContext.d.ts:4:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelAlign" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/Form/types.d.ts:17:5 - (ae-forgotten-export) The symbol "ResponsiveValue" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Form/Form.d.ts:8:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelPlacement" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Form/Form.d.ts:8:5 - (ae-forgotten-export) The symbol "ResponsiveValue" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Form/Form.d.ts:9:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Form/Form.d.ts:12:5 - (ae-forgotten-export) The symbol "FormGroupBaseProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Form/Form.d.ts:13:5 - (ae-forgotten-export) The symbol "FormCaptionBaseProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Form/Form.d.ts:14:5 - (ae-forgotten-export) The symbol "FormActionsBaseProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

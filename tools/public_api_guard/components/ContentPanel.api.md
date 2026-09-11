@@ -22,13 +22,37 @@ import { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 import { TransitionProps } from 'react-transition-group/Transition';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
 //
 // @public
-export const ContentPanel: CompoundedComponent;
+export const ContentPanel: ForwardRefExoticComponent<    {
+children?: ReactNode;
+width?: ContentPanelSize | null;
+minWidth?: ContentPanelSize | null;
+maxWidth?: ContentPanelSize | null;
+defaultWidth?: ContentPanelSize | null;
+isResizable?: boolean;
+onResize?: (width: number) => void;
+onResizeStart?: (width: number) => void;
+onResizeEnd?: (width: number) => void;
+onResetResize?: (initialWidth: number) => number | null | undefined;
+isOpen?: boolean;
+defaultOpen?: boolean;
+onOpenChange?: (open: boolean) => void;
+className?: string;
+style?: CSSProperties;
+slotProps?: {
+dialog?: DialogProps;
+transition?: Partial<TransitionProps<HTMLElement>>;
+resizer?: ComponentPropsWithRef<"div"> & DataAttributeProps;
+};
+disableExitOnEscapeKeyDown?: boolean;
+} & Pick<DialogProps, "hideCloseButton"> & RefAttributes<HTMLDivElement>> & {
+    Header: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Body: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Footer: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
-// Warning: (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type ContentPanelBodyProps = DialogBodyProps;
 
@@ -56,18 +80,12 @@ export type ContentPanelContainerProps = ExtendableComponentPropsWithRef<{
 // @public (undocumented)
 export type ContentPanelContainerRef = ComponentRef<'div'>;
 
-// Warning: (ae-forgotten-export) The symbol "DialogFooterProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type ContentPanelFooterProps = DialogFooterProps;
 
-// Warning: (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type ContentPanelHeaderProps = DialogHeaderProps;
 
-// Warning: (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type ContentPanelProps = {
     children?: ReactNode;
@@ -105,6 +123,12 @@ export type ContentPanelStateContextProps = {
     containerWidth?: number;
     state: OverlayTriggerState;
 };
+
+// Warnings were encountered during analysis:
+//
+// packages/components/dist/components/ContentPanel/ContentPanel.d.ts:30:5 - (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/ContentPanel/ContentPanel.d.ts:31:5 - (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/ContentPanel/ContentPanel.d.ts:32:5 - (ae-forgotten-export) The symbol "DialogFooterProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

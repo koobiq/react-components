@@ -6,14 +6,21 @@
 
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
+import { DetailedHTMLProps } from 'react';
 import type { ElementType } from 'react';
+import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Grid: CompoundedComponent;
+export const Grid: Omit<ForwardRefExoticComponent<Merge<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, GridBaseProps & {
+as?: "div" | undefined;
+}>>, never> & PolymorphicWithRef<"div", GridBaseProps, ElementType> & {
+    Item: PolyForwardComponent<"div", GridItemBaseProps, ElementType>;
+};
 
 // @public (undocumented)
 export type GridBaseProps = {
@@ -53,10 +60,8 @@ export type GridPropGap = (typeof gridPropGap)[number];
 // @public (undocumented)
 export const gridPropGap: readonly [0, "3xs", "xxs", "xs", "s", "m", "l", "xl", "xxl", "3xl", "4xl", "5xl", "6xl", "7xl"];
 
-// Warning: (ae-forgotten-export) The symbol "GridComponent" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof GridComponent<As>>;
+export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<typeof Grid<As>>;
 
 // Warnings were encountered during analysis:
 //

@@ -7,14 +7,21 @@
 import type { AsProps } from '@koobiq/react-core';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
+import { DetailedHTMLProps } from 'react';
 import { ElementType } from 'react';
+import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Resizable: CompoundedComponent;
+export const Resizable: Omit<ForwardRefExoticComponent<Merge<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, ResizableBaseProps & {
+as?: "div" | undefined;
+}>>, never> & PolymorphicWithRef<"div", ResizableBaseProps, ElementType> & {
+    Handle: PolyForwardComponent<"div", ResizableHandleBaseProps, ElementType>;
+};
 
 // @public (undocumented)
 export type ResizableBaseProps = {

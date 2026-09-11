@@ -50,20 +50,13 @@ const EmptyStateComponent = polymorphicForwardRef<'div', EmptyStateBaseProps>(
 
 EmptyStateComponent.displayName = 'EmptyState';
 
-type CompoundedComponent = typeof EmptyStateComponent & {
-  Media: typeof EmptyStateMedia;
-  Title: typeof EmptyStateTitle;
-  Content: typeof EmptyStateContent;
-  Actions: typeof EmptyStateActions;
-};
-
 /**
  * EmptyState communicates that there is no data to display and, optionally,
  * suggests the next action the user can take.
  */
-export const EmptyState = EmptyStateComponent as CompoundedComponent;
-
-EmptyState.Media = EmptyStateMedia;
-EmptyState.Title = EmptyStateTitle;
-EmptyState.Content = EmptyStateContent;
-EmptyState.Actions = EmptyStateActions;
+export const EmptyState = Object.assign(EmptyStateComponent, {
+  Media: EmptyStateMedia,
+  Title: EmptyStateTitle,
+  Content: EmptyStateContent,
+  Actions: EmptyStateActions,
+});

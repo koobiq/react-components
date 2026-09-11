@@ -13,7 +13,13 @@ import {
 import { Transition } from 'react-transition-group';
 
 import { Backdrop, type BackdropProps } from '../Backdrop';
-import { Dialog, type DialogProps } from '../Dialog';
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  type DialogProps,
+} from '../Dialog';
 
 import s from './Modal.module.css';
 import type { ModalProps, ModalRef } from './types';
@@ -145,18 +151,12 @@ const ModalComponent = forwardRef<ModalRef, ModalProps>((props, ref) => {
 
 ModalComponent.displayName = 'Modal';
 
-type CompoundedComponent = typeof ModalComponent & {
-  Header: typeof Dialog.Header;
-  Body: typeof Dialog.Body;
-  Footer: typeof Dialog.Footer;
-};
-
 /**
  * Modal is a window that appears in front of app content to provide critical
  * information or ask for a decision.
  */
-export const Modal = ModalComponent as CompoundedComponent;
-
-Modal.Header = Dialog.Header;
-Modal.Body = Dialog.Body;
-Modal.Footer = Dialog.Footer;
+export const Modal = Object.assign(ModalComponent, {
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
+});

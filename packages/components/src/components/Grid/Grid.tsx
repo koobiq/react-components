@@ -62,15 +62,11 @@ const GridComponent = polymorphicForwardRef<'div', GridBaseProps>(
 
 GridComponent.displayName = 'Grid';
 
-export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<
-  typeof GridComponent<As>
->;
-
-type CompoundedComponent = typeof GridComponent & {
-  Item: typeof GridItem;
-};
-
 /** Grid is a base tool for organizing content on a page. */
-export const Grid = GridComponent as CompoundedComponent;
+export const Grid = Object.assign(GridComponent, {
+  Item: GridItem,
+});
 
-Grid.Item = GridItem;
+export type GridProps<As extends ElementType = 'div'> = ComponentPropsWithRef<
+  typeof Grid<As>
+>;

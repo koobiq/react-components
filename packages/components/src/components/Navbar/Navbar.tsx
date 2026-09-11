@@ -88,23 +88,15 @@ export const NavbarComponent = ({
 
 NavbarComponent.displayName = 'Navbar';
 
-type CompoundedComponent = typeof NavbarComponent & {
-  Header: typeof NavbarHeader;
-  Body: typeof NavbarBody;
-  Footer: typeof NavbarFooter;
-  Item: typeof NavbarItem;
-  AppItem: typeof NavbarAppItem;
-};
-
 /**
  * The main menu organizes navigation within the product. It consists of a logo,
  * section links, and can additionally include an app switcher, help section, and
  * settings block.
  */
-export const Navbar = NavbarComponent as CompoundedComponent;
-
-Navbar.Header = NavbarHeader;
-Navbar.Body = NavbarBody;
-Navbar.Footer = NavbarFooter;
-Navbar.Item = NavbarItem;
-Navbar.AppItem = NavbarAppItem;
+export const Navbar = Object.assign(NavbarComponent, {
+  Header: NavbarHeader,
+  Body: NavbarBody,
+  Footer: NavbarFooter,
+  Item: NavbarItem,
+  AppItem: NavbarAppItem,
+});

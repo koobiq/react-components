@@ -20,29 +20,50 @@ import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const SidePanel: CompoundedComponent;
+export const SidePanel: ForwardRefExoticComponent<    {
+size?: SidePanelPropSize;
+placement?: SidePanelPropPlacement;
+isOpen?: boolean;
+defaultOpen?: boolean;
+children?: SidePanelPropContent;
+control?: SidePanelPropControl;
+hideCloseButton?: boolean;
+onOpenChange?: (open: boolean) => void;
+portalContainer?: Element;
+disableExitOnClickOutside?: boolean;
+disableExitOnEscapeKeyDown?: boolean;
+hideBackdrop?: boolean;
+className?: string;
+'data-testid'?: string | number;
+disableFocusManagement?: boolean;
+shouldCloseOnInteractOutside?: (element: Element) => boolean;
+slotProps?: {
+dialog?: DialogProps;
+backdrop?: BackdropProps;
+panel?: ComponentPropsWithRef<"div">;
+};
+} & {
+open?: boolean;
+position?: SidePanelPropPosition;
+} & RefAttributes<HTMLDivElement>> & {
+    Header: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Body: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Footer: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
-// Warning: (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type SidePanelBodyProps = DialogBodyProps;
 
 // @public @deprecated (undocumented)
 export const SidePanelContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
-// Warning: (ae-forgotten-export) The symbol "DialogFooterProps" needs to be exported by the entry point index.d.ts
-//
 // @public @deprecated (undocumented)
 export const SidePanelFooter: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
 // @public (undocumented)
 export type SidePanelFooterProps = DialogFooterProps;
 
-// Warning: (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
-//
 // @public @deprecated (undocumented)
 export const SidePanelHeader: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
@@ -107,8 +128,11 @@ export type SidePanelRef = ComponentRef<'div'>;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/SidePanel/types.d.ts:92:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SidePanel/types.d.ts:93:9 - (ae-forgotten-export) The symbol "BackdropProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SidePanel/SidePanel.d.ts:25:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SidePanel/SidePanel.d.ts:26:9 - (ae-forgotten-export) The symbol "BackdropProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SidePanel/SidePanel.d.ts:33:5 - (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SidePanel/SidePanel.d.ts:34:5 - (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SidePanel/SidePanel.d.ts:35:5 - (ae-forgotten-export) The symbol "DialogFooterProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

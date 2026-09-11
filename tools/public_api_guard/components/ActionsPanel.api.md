@@ -20,10 +20,13 @@ import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const ActionsPanel: CompoundedComponent;
+export const ActionsPanel: {
+    (props: ActionsPanelProps): JSX.Element;
+    displayName: string;
+} & {
+    Action: (props: ActionsPanelActionProps) => JSX.Element;
+};
 
 // Warning: (ae-forgotten-export) The symbol "ButtonProps" needs to be exported by the entry point index.d.ts
 //

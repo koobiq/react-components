@@ -6,7 +6,7 @@ import { forwardRef } from 'react';
 import { deprecate } from '@koobiq/logger';
 import { useOverlayTriggerState } from '@koobiq/react-primitives';
 
-import { Dialog } from '../Dialog';
+import { DialogBody, DialogFooter, DialogHeader } from '../Dialog';
 
 import { PopoverInner } from './PopoverInner';
 import type { PopoverProps } from './types';
@@ -42,18 +42,12 @@ const PopoverComponent = forwardRef<ComponentRef<'div'>, PopoverProps>(
 
 PopoverComponent.displayName = 'Popover';
 
-type CompoundedComponent = typeof PopoverComponent & {
-  Header: typeof Dialog.Header;
-  Body: typeof Dialog.Body;
-  Footer: typeof Dialog.Footer;
-};
-
 /**
  * Popover component as an overlay whose position is anchored to an element in
  * the user interface.
  */
-export const Popover = PopoverComponent as CompoundedComponent;
-
-Popover.Header = Dialog.Header;
-Popover.Body = Dialog.Body;
-Popover.Footer = Dialog.Footer;
+export const Popover = Object.assign(PopoverComponent, {
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
+});

@@ -1,3 +1,5 @@
+'use client';
+
 import { type CSSProperties, forwardRef } from 'react';
 
 import { clsx } from '@koobiq/react-core';
@@ -9,7 +11,7 @@ import { useMatchedBreakpoints } from '../Provider';
 import { FormGroup, FormCaption, FormActions } from './components';
 import s from './Form.module.css';
 import { FormContext } from './FormContext';
-import type { FormRef, FormProps } from './types';
+import type { FormProps, FormRef } from './types';
 import { templatePresets } from './utils';
 
 const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
@@ -59,18 +61,12 @@ const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
 
 FormComponent.displayName = 'Form';
 
-type CompoundedComponent = typeof FormComponent & {
-  Group: typeof FormGroup;
-  Caption: typeof FormCaption;
-  Actions: typeof FormActions;
-};
-
 /**
  * Forms allow users to enter data that can be submitted while providing
  * alignment and styling for form controls.
  */
-export const Form = FormComponent as CompoundedComponent;
-
-Form.Group = FormGroup;
-Form.Caption = FormCaption;
-Form.Actions = FormActions;
+export const Form = Object.assign(FormComponent, {
+  Group: FormGroup,
+  Caption: FormCaption,
+  Actions: FormActions,
+});

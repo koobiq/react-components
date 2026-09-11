@@ -251,10 +251,6 @@ function TagInputRender<T extends object>(
 
 const TagInputComponent = forwardRef(TagInputRender) as TagInputComponent;
 
-type CompoundedComponent = typeof TagInputComponent & {
-  Tag: typeof Tag;
-};
-
-export const TagInput = TagInputComponent as CompoundedComponent;
-
-TagInput.Tag = Tag;
+export const TagInput = Object.assign(TagInputComponent, {
+  Tag,
+});
