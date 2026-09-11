@@ -201,6 +201,14 @@ The `renderEmptyState` prop of the content replaces the default message, with an
 
 <Story of={Stories.SearchEmpty} />
 
+### Highlighting matches
+
+Put [Highlight](/docs/components-highlight--docs) into `DropdownMenu.ItemText` to mark the matched
+part of an item. Pass the query in `dependencies` of `DropdownMenu.Content` — otherwise the
+highlight does not update.
+
+<Story of={Stories.HighlightingMatches} />
+
 ## Footer
 
 The `DropdownMenu.Footer` shows text under the items. It stays in place while the

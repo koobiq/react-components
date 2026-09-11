@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import {
   IconCircleInfo16,
@@ -9,6 +9,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
+import { Highlight } from '../Highlight';
 import { Button, useAsyncList, useBreakpoints, useListData } from '../index';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { tagInputPropVariant } from '../TagInput';
@@ -92,6 +93,73 @@ export const Base: Story = {
         renderListItem={(item) => (
           <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
             {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+        fullWidth
+        disableCommitOnBlur
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+  },
+};
+
+export const HighlightingMatches: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const tagCounter = useRef(0);
+
+    const [inputValue, setInputValue] = useState('');
+
+    const list = useListData<TagItem>({
+      initialItems: [{ id: 'react', name: 'React' }],
+    });
+
+    const suggestions = useMemo(
+      () =>
+        [
+          { id: 'react', name: 'React' },
+          { id: 'typescript', name: 'TypeScript' },
+          { id: 'storybook', name: 'Storybook' },
+          { id: 'vite', name: 'Vite' },
+          { id: 'vitest', name: 'Vitest' },
+          { id: 'playwright', name: 'Playwright' },
+        ].filter((item) => containsFilter(item.name, inputValue)),
+      [inputValue]
+    );
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        items={list.items}
+        listItems={suggestions}
+        onInputChange={setInputValue}
+        placeholder="Type or choose a tag"
+        style={{ inlineSize: m ? 360 : 240 }}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            <Highlight text={item.name} query={inputValue} />
           </TagAutocomplete.ListItem>
         )}
         fullWidth

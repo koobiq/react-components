@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { type Key, useBoolean } from '@koobiq/react-core';
 import { IconCrosshairs16, IconFolder16 } from '@koobiq/react-icons';
@@ -601,27 +601,52 @@ export const Searchable: Story = {
   },
 };
 
-export const Dependencies: Story = {
+export const HighlightingMatches: Story = {
   render: function Render() {
+    type FileNode = { id: number; title: string; children: FileNode[] };
+
     const [inputValue, setInputValue] = useState('');
+
+    const files = useMemo<FileNode[]>(
+      () => [
+        {
+          id: 1,
+          title: 'app',
+          children: [
+            { id: 2, title: 'index.html', children: [] },
+            { id: 3, title: 'app.js', children: [] },
+          ],
+        },
+        {
+          id: 4,
+          title: 'config',
+          children: [{ id: 5, title: 'database.js', children: [] }],
+        },
+        { id: 6, title: 'README.md', children: [] },
+      ],
+      []
+    );
 
     return (
       <TreeSelect
-        items={items}
+        items={files}
         label="Project files"
+        inputValue={inputValue}
         dependencies={[inputValue]}
-        onInputChange={setInputValue}
         style={{ inlineSize: 320 }}
+        onInputChange={setInputValue}
         placeholder="Select a file"
         isSearchable
       >
-        {function renderItem(item) {
+        {function renderItem(item: FileNode) {
           return (
             <Tree.Item key={item.id} textValue={item.title}>
               <Tree.ItemContent>
-                <Highlight text={item.title} query={inputValue} />
+                <Tree.ItemContentText>
+                  <Highlight text={item.title} query={inputValue} />
+                </Tree.ItemContentText>
               </Tree.ItemContent>
-              <Collection items={item.test}>{renderItem}</Collection>
+              <Collection items={item.children}>{renderItem}</Collection>
             </Tree.Item>
           );
         }}
