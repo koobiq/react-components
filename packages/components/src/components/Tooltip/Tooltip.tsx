@@ -142,7 +142,7 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
       className: clsx(
         s.base,
         s[variant],
-        utilClasses.typography['text-normal']
+        utilClasses.typography['text-compact']
       ),
       ref: domRef,
     },
