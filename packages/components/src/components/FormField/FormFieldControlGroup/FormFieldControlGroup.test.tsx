@@ -2,6 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
+import addonStyles from '../FormFieldAddon/FormFieldAddon.module.css';
+
 import s from './FormFieldControlGroup.module.css';
 import { FormFieldControlGroup } from './index';
 
@@ -44,10 +46,10 @@ describe('FormFieldControlGroup', () => {
     expect(getRoot()).toHaveAttribute('data-readonly', 'true');
 
     ['start', 'end'].forEach((placement) => {
-      expect(screen.getByTestId(`field-addon-${placement}`)).toHaveAttribute(
-        'data-readonly',
-        'true'
-      );
+      const addon = screen.getByTestId(`field-addon-${placement}`);
+
+      expect(addon).toHaveAttribute('data-readonly', 'true');
+      expect(addon).toHaveClass(addonStyles.readonly);
     });
   });
 

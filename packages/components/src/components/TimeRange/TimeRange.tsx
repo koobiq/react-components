@@ -238,13 +238,17 @@ export function TimeRangeRender<T extends DateValue>(
     onOpenChange: slotProps?.popover?.onOpenChange,
   });
 
-  // The editor cannot be opened when the component is disabled or read-only,
-  // so the trigger's own state is neutralized instead of guarding every entry
-  // point (same approach as SelectNext).
+  // While disabled or read-only the editor stays closed: the open state is
+  // masked and every way to change it is a no-op, including a `defaultOpen`
+  // or `isOpen` passed through `slotProps.popover`.
   const state =
     isDisabled || isReadOnly
       ? {
           ...overlayState,
+          isOpen: false,
+          setOpen() {
+            return undefined;
+          },
           open() {
             return undefined;
           },
@@ -371,7 +375,7 @@ export function TimeRangeRender<T extends DateValue>(
             role: 'button',
             'aria-haspopup': 'dialog',
             'aria-disabled': isDisabled || undefined,
-            'aria-readonly': isReadOnly || undefined,
+            'data-readonly': isReadOnly || undefined,
             'data-testid': testId,
             tabIndex: isDisabled ? -1 : undefined,
           }}
@@ -421,14 +425,14 @@ export function TimeRangeRender<T extends DateValue>(
             customTimeRangeTypes={customTimeRangeTypes}
             minValue={minValue}
             maxValue={maxValue}
-            isDisabled={isReadOnly}
+            isDisabled={isDisabled || isReadOnly}
             renderOption={renderOption}
             radioGroupProps={slotProps?.radioGroup}
           />
         </Popover.Body>
         <Popover.Footer>
           <Button
-            isDisabled={isDraftInvalid}
+            isDisabled={isDraftInvalid || isDisabled || isReadOnly}
             onPress={() => {
               handleApply();
               state.close();

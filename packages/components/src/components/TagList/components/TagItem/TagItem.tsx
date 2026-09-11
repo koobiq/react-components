@@ -48,6 +48,7 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
       key: item.key,
       onRemove,
       isDisabled: isDisabledProp,
+      isReadOnly,
       collectionId,
     },
     state,
@@ -88,17 +89,21 @@ export function TagItem<T extends object>(props: TagItemProps<T>) {
   };
 
   // Same order as the TagGroup wrapper: React Aria's props win over the
-  // defaults, the consumer's slot props win over both.
+  // defaults, the consumer's slot props win over both. The disabled state goes
+  // after React Aria's props, so an item-level `isDisabled={false}` cannot
+  // re-enable the button on a read-only list.
   const removeIconProps = allowsRemoving
     ? mergeProps<
         [
           TagRemoveButtonProps,
           TagRemoveButtonProps,
+          TagRemoveButtonProps,
           TagRemoveButtonProps | undefined,
         ]
       >(
-        { tabIndex: -1, isDisabled: isReadOnly || isDisabled },
+        { tabIndex: -1 },
         removeButtonPropsAria,
+        { isDisabled: isReadOnly || isDisabled },
         slotProps?.removeIcon
       )
     : undefined;

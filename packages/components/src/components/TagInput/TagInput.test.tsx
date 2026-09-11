@@ -663,6 +663,33 @@ describe('TagInput', () => {
       expect(queryTag('a')).toBeInTheDocument();
     });
 
+    it('ignores Delete/Backspace on a focused tag when read-only', async () => {
+      const user = userEvent.setup();
+      const onRemove = vi.fn();
+
+      render(
+        <Wrapper
+          initialItems={seed(['one', 'two'])}
+          onRemove={onRemove}
+          isReadOnly
+        />
+      );
+
+      const firstTag = queryTag('one') as HTMLElement;
+      await user.click(getInput());
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
+      await waitFor(() => expect(firstTag).toHaveFocus());
+
+      // No "Press Delete or Backspace to remove" hint for a shortcut that is off.
+      expect(firstTag).not.toHaveAttribute('aria-describedby');
+
+      await user.keyboard('{Backspace}');
+      await user.keyboard('{Delete}');
+
+      expect(onRemove).not.toHaveBeenCalled();
+      expect(queryTag('one')).toBeInTheDocument();
+    });
+
     it('keeps the remove button visible but disabled when read-only', async () => {
       const onRemove = vi.fn();
 

@@ -138,6 +138,9 @@ export const TimeRangeField = forwardRef<
           return;
         event.preventDefault();
         controlRef.current?.focus();
+
+        if (isReadOnly) return;
+
         controlRef.current?.click();
       },
     },

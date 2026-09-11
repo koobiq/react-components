@@ -99,6 +99,11 @@ export type TimeRangeFieldProps = {
   isRequired?: boolean;
   isInvalid?: boolean;
   isDisabled?: boolean;
+  /**
+   * Whether the field can be focused but not changed by the user.
+   * A read-only `TimeRange` parent overrides this value.
+   * @selector [data-readonly]
+   */
   isReadOnly?: boolean;
   errorMessage?: ReactNode;
   caption?: ReactNode;

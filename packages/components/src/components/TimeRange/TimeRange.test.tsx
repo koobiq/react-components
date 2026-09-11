@@ -234,19 +234,31 @@ describe('TimeRange', () => {
         'Field',
         <TimeRange.Field key="6" aria-label="Period" isDisabled={false} />,
       ],
+    ])('should block a %s when the root is disabled', async (_, trigger) => {
+      render(
+        <TimeRange isDisabled data-testid="control">
+          {trigger}
+        </TimeRange>
+      );
+
+      await userEvent.tab();
+      expect(getTrigger()).not.toHaveFocus();
+
+      await userEvent.click(getTrigger());
+      expect(queryDialog()).not.toBeInTheDocument();
+    });
+
+    it.each([
+      ['Button', <Button key="10" isDisabled={false} />],
+      ['Link', <Link key="11" isDisabled={false} />],
+      [
+        'Field',
+        <TimeRange.Field key="12" aria-label="Period" isDisabled={false} />,
+      ],
     ])(
-      'should block a %s when the root is disabled or read-only',
+      'should not open a %s when the root is read-only',
       async (_, trigger) => {
-        const { rerender } = render(
-          <TimeRange isDisabled data-testid="control">
-            {trigger}
-          </TimeRange>
-        );
-
-        await userEvent.click(getTrigger());
-        expect(queryDialog()).not.toBeInTheDocument();
-
-        rerender(
+        render(
           <TimeRange isReadOnly data-testid="control">
             {trigger}
           </TimeRange>
@@ -254,10 +266,63 @@ describe('TimeRange', () => {
 
         await userEvent.click(getTrigger());
         expect(queryDialog()).not.toBeInTheDocument();
-        await userEvent.tab();
-        expect(getTrigger()).not.toHaveFocus();
       }
     );
+
+    it('should keep a read-only field focusable but closed', async () => {
+      render(
+        <TimeRange isReadOnly data-testid="control">
+          <TimeRange.Field aria-label="Period" />
+        </TimeRange>
+      );
+
+      await userEvent.tab();
+      expect(getTrigger()).toHaveFocus();
+
+      await userEvent.keyboard('{Enter}');
+      expect(queryDialog()).not.toBeInTheDocument();
+      expect(getTrigger()).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it.each([
+      ['isDisabled', 'data-disabled'],
+      ['isReadOnly', 'data-readonly'],
+    ] as const)(
+      'should inherit %s from a parent Form',
+      async (state, attribute) => {
+        const formProps =
+          state === 'isDisabled' ? { isDisabled: true } : { isReadOnly: true };
+
+        render(
+          <Form {...formProps}>
+            <TimeRange data-testid="control">
+              <TimeRange.Field label="Period" />
+            </TimeRange>
+          </Form>
+        );
+
+        await userEvent.click(getTrigger());
+        expect(queryDialog()).not.toBeInTheDocument();
+
+        expect(
+          getTrigger().closest('[data-slot="form-field"]')
+        ).toHaveAttribute(attribute, 'true');
+      }
+    );
+
+    it('should keep the editor closed on a read-only root with defaultOpen', () => {
+      render(
+        <TimeRange
+          isReadOnly
+          data-testid="control"
+          slotProps={{ popover: { defaultOpen: true } }}
+        >
+          <TimeRange.Field aria-label="Period" />
+        </TimeRange>
+      );
+
+      expect(queryDialog()).not.toBeInTheDocument();
+    });
 
     it.each([
       <Button key="7" isDisabled />,

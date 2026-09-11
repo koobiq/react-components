@@ -223,6 +223,7 @@ export type AriaTagListItemProps = {
     collectionId?: string;
     onRemove?: (keys: Set<Key_2>, context?: TagListItemRemoveContext) => void;
     isDisabled?: boolean;
+    isReadOnly?: boolean;
 };
 
 // @public (undocumented)
