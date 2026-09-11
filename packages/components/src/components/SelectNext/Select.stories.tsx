@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -544,30 +544,6 @@ export const Searchable: Story = {
   },
 };
 
-export const Dependencies: Story = {
-  render: function Render() {
-    const [inputValue, setInputValue] = useState('');
-
-    return (
-      <Select
-        items={options}
-        label="Attack type"
-        dependencies={[inputValue]}
-        onInputChange={setInputValue}
-        style={{ inlineSize: 200 }}
-        placeholder="Select an option"
-        isSearchable
-      >
-        {(item) => (
-          <Select.Item id={item.id} textValue={item.name}>
-            <Highlight text={item.name} query={inputValue} />
-          </Select.Item>
-        )}
-      </Select>
-    );
-  },
-};
-
 export const SearchableMinOptionsThreshold: Story = {
   render: function Render() {
     return (
@@ -593,6 +569,45 @@ export const SearchableMinOptionsThreshold: Story = {
           {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
         </Select>
       </FlexBox>
+    );
+  },
+};
+
+export const HighlightingMatches: Story = {
+  render: function Render() {
+    const [inputValue, setInputValue] = useState('');
+
+    const items = useMemo(
+      () => [
+        { id: 1, name: 'Bruteforce' },
+        { id: 2, name: 'Complex Attack' },
+        { id: 3, name: 'DDoS' },
+        { id: 4, name: 'HIPS Alert' },
+        { id: 5, name: 'Network Attack' },
+        { id: 6, name: 'Potential Attack' },
+      ],
+      []
+    );
+
+    return (
+      <Select
+        items={items}
+        label="Attack type"
+        inputValue={inputValue}
+        dependencies={[inputValue]}
+        style={{ inlineSize: 200 }}
+        onInputChange={setInputValue}
+        placeholder="Select an option"
+        isSearchable
+      >
+        {(item) => (
+          <Select.Item id={item.id} textValue={item.name}>
+            <Select.ItemText>
+              <Highlight text={item.name} query={inputValue} />
+            </Select.ItemText>
+          </Select.Item>
+        )}
+      </Select>
     );
   },
 };

@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -26,6 +26,7 @@ import { Button } from '../Button';
 import { Divider } from '../Divider';
 import { EmptyState } from '../EmptyState';
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { spacing } from '../layout';
 import { SearchInput } from '../SearchInput';
 import { SelectNext as Select } from '../SelectNext';
@@ -619,6 +620,54 @@ export const SearchEmpty: Story = {
       </DropdownMenu.Popover>
     </DropdownMenu>
   ),
+};
+
+export const HighlightingMatches: Story = {
+  render: function Render(args) {
+    const [inputValue, setInputValue] = useState('');
+
+    const items = useMemo(
+      () => [
+        { id: 'amsterdam', name: 'Amsterdam' },
+        { id: 'belgrade', name: 'Belgrade' },
+        { id: 'berlin', name: 'Berlin' },
+        { id: 'bratislava', name: 'Bratislava' },
+        { id: 'brussels', name: 'Brussels' },
+        { id: 'bucharest', name: 'Bucharest' },
+        { id: 'budapest', name: 'Budapest' },
+        { id: 'copenhagen', name: 'Copenhagen' },
+      ],
+      []
+    );
+
+    return (
+      <DropdownMenu {...args}>
+        <Button>Cities</Button>
+        <DropdownMenu.Popover>
+          <DropdownMenu.Autocomplete
+            inputValue={inputValue}
+            onInputChange={setInputValue}
+          >
+            <SearchInput />
+            <Divider disablePaddings />
+            <DropdownMenu.Content
+              items={items}
+              dependencies={[inputValue]}
+              onAction={(key) => alert(key)}
+            >
+              {(item) => (
+                <DropdownMenu.Item id={item.id} textValue={item.name}>
+                  <DropdownMenu.ItemText>
+                    <Highlight text={item.name} query={inputValue} />
+                  </DropdownMenu.ItemText>
+                </DropdownMenu.Item>
+              )}
+            </DropdownMenu.Content>
+          </DropdownMenu.Autocomplete>
+        </DropdownMenu.Popover>
+      </DropdownMenu>
+    );
+  },
 };
 
 export const DropdownFooter: Story = {
