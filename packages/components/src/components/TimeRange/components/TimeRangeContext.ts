@@ -7,6 +7,7 @@ type TimeRangeContextValue = {
   formattedValue: string;
   isEmpty: boolean;
   isDisabled?: boolean;
+  isReadOnly?: boolean;
   groupRef: RefObject<HTMLDivElement | null>;
 };
 

@@ -80,20 +80,22 @@ describe('Input', () => {
       expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('should not render when input is disabled', () => {
+    it('should be disabled when input is disabled', () => {
       render(
         <Input {...baseProps} defaultValue="value" isDisabled isClearable />
       );
 
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
     });
 
-    it('should not render when input is read-only', () => {
+    it('should be disabled when input is read-only', () => {
       render(
         <Input {...baseProps} defaultValue="value" isReadOnly isClearable />
       );
 
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
     });
 
     it('should clear the input and call handlers when clicked', async () => {

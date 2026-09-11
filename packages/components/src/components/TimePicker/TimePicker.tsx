@@ -126,6 +126,7 @@ export function TimePickerRender<T extends TimeValue>(
       variant,
       isInvalid,
       isDisabled,
+      isReadOnly,
       endAddon,
     },
     slotProps?.group

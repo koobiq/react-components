@@ -27,7 +27,7 @@ export const FormFieldAddon = forwardRef<
   FormFieldAddonRef,
   FormFieldAddonProps
 >(({ placement = 'start', className, children, ...other }, ref) => {
-  const { isInvalid, isDisabled } = useFormFieldControlGroup();
+  const { isInvalid, isDisabled, isReadOnly } = useFormFieldControlGroup();
 
   return isNotNil(children) ? (
     <div
@@ -35,11 +35,13 @@ export const FormFieldAddon = forwardRef<
         s.base,
         s[placement],
         isInvalid && s.invalid,
+        isReadOnly && s.readonly,
         isDisabled && s.disabled,
         className
       )}
       data-placement={placement}
       data-invalid={isInvalid || undefined}
+      data-readonly={isReadOnly || undefined}
       data-disabled={isDisabled || undefined}
       data-testid={`field-addon-${placement}`}
       {...other}

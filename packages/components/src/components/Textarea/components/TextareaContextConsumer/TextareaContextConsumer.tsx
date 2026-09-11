@@ -19,6 +19,7 @@ type TextareaContextConsumerProps = {
   isRequired?: boolean;
   isInvalid?: boolean;
   isDisabled?: boolean;
+  isReadOnly?: boolean;
 } & Pick<
   TextareaProps,
   | 'slotProps'
@@ -46,6 +47,7 @@ export const TextareaContextConsumer = forwardRef<
     caption,
     variant,
     isDisabled,
+    isReadOnly,
     isRequired,
     slotProps,
     isLabelHidden,
@@ -91,6 +93,7 @@ export const TextareaContextConsumer = forwardRef<
       textareaRef.current?.focus();
     },
     isDisabled,
+    isReadOnly,
   };
 
   const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(

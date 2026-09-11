@@ -21,6 +21,7 @@ export const FormFieldControlGroup = forwardRef<
     variant = 'filled',
     isInvalid,
     isDisabled,
+    isReadOnly,
     children,
     className,
     startAddon,
@@ -60,6 +61,7 @@ export const FormFieldControlGroup = forwardRef<
       )}
       isInvalid={isInvalid}
       isDisabled={isDisabled}
+      data-readonly={isReadOnly || undefined}
       {...other}
       ref={ref}
     >
@@ -71,6 +73,7 @@ export const FormFieldControlGroup = forwardRef<
             isHovered,
             isInvalid,
             isDisabled,
+            isReadOnly,
             isFocusWithin,
           }}
         >

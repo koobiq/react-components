@@ -13,6 +13,7 @@
   --form-field-addon-color: var(--kbq-icon-error);
 }
 
+.readonly,
 .disabled {
   --form-field-addon-color: var(--kbq-states-icon-disabled);
 }

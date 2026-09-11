@@ -413,7 +413,7 @@ describe('Autocomplete', () => {
       expect(onClear).toHaveBeenCalledTimes(1);
     });
 
-    it('should NOT render clear button when the component is disabled', async () => {
+    it('should render a disabled clear button when the component is disabled', () => {
       const onClear = vi.fn();
 
       render(
@@ -432,10 +432,11 @@ describe('Autocomplete', () => {
 
       const clearButton = getClearButton();
 
-      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
+      expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
+      expect(clearButton).toBeDisabled();
     });
 
-    it('should NOT render clear button when the component is read only', async () => {
+    it('should render a disabled clear button when the component is read only', async () => {
       const onClear = vi.fn();
 
       render(
@@ -454,7 +455,12 @@ describe('Autocomplete', () => {
 
       const clearButton = getClearButton();
 
-      expect(clearButton).toHaveAttribute('aria-hidden', 'true');
+      expect(clearButton).not.toHaveAttribute('aria-hidden', 'true');
+      expect(clearButton).toBeDisabled();
+
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onClear).not.toHaveBeenCalled();
     });
 
     it('should show clear button when any value is entered with allowsCustomValue', async () => {
