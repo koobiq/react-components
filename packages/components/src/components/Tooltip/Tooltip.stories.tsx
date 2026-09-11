@@ -23,7 +23,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:updated', 'date:2026-05-15'],
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;
