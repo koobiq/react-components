@@ -153,16 +153,16 @@ export type SelectNextTagProps = TagProps;
 // Warnings were encountered during analysis:
 //
 // packages/components/dist/components/SelectNext/types.d.ts:37:5 - (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:117:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:118:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:119:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:120:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:121:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:122:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:123:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:124:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:125:9 - (ae-forgotten-export) The symbol "SelectListProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SelectNext/types.d.ts:126:9 - (ae-forgotten-export) The symbol "SearchInputProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:119:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:120:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:121:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:122:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:123:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:124:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:125:9 - (ae-forgotten-export) The symbol "DropdownFooterProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:126:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:127:9 - (ae-forgotten-export) The symbol "SelectListProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/types.d.ts:128:9 - (ae-forgotten-export) The symbol "SearchInputProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
