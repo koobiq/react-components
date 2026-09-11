@@ -37,26 +37,38 @@ export const getResizableBounds = (
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
+const clampAxis = (value: number | undefined, min: number, max: number) =>
+  clamp(isFiniteNumber(value) ? value : min, min, max);
+
 export const clampResizableSize = (
   size: ResizableSize,
   bounds: ResizableBounds
 ): ResizableSize => ({
-  width: clamp(
-    isFiniteNumber(size.width) ? size.width : bounds.minWidth,
-    bounds.minWidth,
-    bounds.maxWidth
-  ),
-  height: clamp(
-    isFiniteNumber(size.height) ? size.height : bounds.minHeight,
-    bounds.minHeight,
-    bounds.maxHeight
-  ),
+  width: clampAxis(size.width, bounds.minWidth, bounds.maxWidth),
+  height: clampAxis(size.height, bounds.minHeight, bounds.maxHeight),
 });
 
+/**
+ * Clamps only the axes the size defines, so an element can be managed in one
+ * dimension and keep its CSS size in the other.
+ */
 export const normalizeResizableSize = (
-  size: ResizableSize | undefined,
+  size: ResizableSizeConstraints | undefined,
   bounds: ResizableBounds
-) => (size ? clampResizableSize(size, bounds) : undefined);
+): ResizableSizeConstraints | undefined => {
+  if (!size) return undefined;
+
+  const { width, height } = size;
+
+  return {
+    ...(width !== undefined && {
+      width: clampAxis(width, bounds.minWidth, bounds.maxWidth),
+    }),
+    ...(height !== undefined && {
+      height: clampAxis(height, bounds.minHeight, bounds.maxHeight),
+    }),
+  };
+};
 
 export const getDirectionKey = ([x, y]: ResizableHandleDirection) =>
   `${x}:${y}`;

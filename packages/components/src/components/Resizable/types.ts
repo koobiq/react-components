@@ -21,10 +21,16 @@ export type {
 } from './hooks';
 
 export type ResizableBaseProps = {
-  /** The controlled size of the element, in CSS pixels. */
-  size?: ResizableSize;
-  /** The initial size of the element when uncontrolled, in CSS pixels. */
-  defaultSize?: ResizableSize;
+  /**
+   * The controlled size of the element, in CSS pixels.
+   * Omitted dimensions keep their CSS size and aren't managed.
+   */
+  size?: ResizableSizeConstraints;
+  /**
+   * The initial size of the element when uncontrolled, in CSS pixels.
+   * Omitted dimensions keep their CSS size and aren't managed.
+   */
+  defaultSize?: ResizableSizeConstraints;
   /** The minimum allowed size. Omitted dimensions default to zero. */
   minSize?: ResizableSizeConstraints;
   /** The maximum allowed size. Omitted dimensions have no upper limit. */
@@ -59,6 +65,12 @@ export type ResizableHandleBaseProps = {
    * and `1` means right/down.
    */
   direction: ResizableHandleDirection;
+  /**
+   * Whether resizing with the arrow keys is disabled. The handle also leaves
+   * the tab order, unless `tabIndex` says otherwise.
+   * @default false
+   */
+  disableKeyboardResize?: boolean;
   /** The accessible name of the handle. */
   'aria-label'?: string;
   /** Overrides the handle's position in the tab order. */

@@ -18,8 +18,8 @@ export const Resizable: CompoundedComponent;
 
 // @public (undocumented)
 export type ResizableBaseProps = {
-    size?: ResizableSize;
-    defaultSize?: ResizableSize;
+    size?: ResizableSizeConstraints;
+    defaultSize?: ResizableSizeConstraints;
     minSize?: ResizableSizeConstraints;
     maxSize?: ResizableSizeConstraints;
     isDisabled?: boolean;
@@ -35,6 +35,7 @@ export type ResizableBaseProps = {
 // @public (undocumented)
 export type ResizableHandleBaseProps = {
     direction: ResizableHandleDirection;
+    disableKeyboardResize?: boolean;
     'aria-label'?: string;
     tabIndex?: number;
     className?: string;

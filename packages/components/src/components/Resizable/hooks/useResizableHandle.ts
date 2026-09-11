@@ -20,6 +20,7 @@ type ResizableHandleDOMProps = DOMAttributes<HTMLElement> & {
 
 export type UseResizableHandleProps = {
   direction: ResizableHandleDirection;
+  disableKeyboardResize?: boolean;
   'aria-label'?: string;
   tabIndex?: number;
 };
@@ -29,7 +30,12 @@ export const useResizableHandle = (
   props: UseResizableHandleProps,
   state: ResizableContextValue
 ) => {
-  const { direction, 'aria-label': ariaLabel, tabIndex: tabIndexProp } = props;
+  const {
+    direction,
+    disableKeyboardResize = false,
+    'aria-label': ariaLabel,
+    tabIndex: tabIndexProp,
+  } = props;
 
   const {
     rootId,
@@ -55,6 +61,12 @@ export const useResizableHandle = (
     onMoveEnd,
   });
 
+  // `useMove` drives both pointer and arrow keys, so dropping its key handler
+  // leaves dragging intact.
+  const interactionProps = disableKeyboardResize
+    ? { ...moveProps, onKeyDown: undefined }
+    : moveProps;
+
   const { focusProps, isFocused, isFocusVisible } = useFocusRing({
     isTextInput: false,
     autoFocus: false,
@@ -70,7 +82,7 @@ export const useResizableHandle = (
     defaultLabel = t.format('resize height');
   }
 
-  let tabIndex = tabIndexProp ?? 0;
+  let tabIndex = tabIndexProp ?? (disableKeyboardResize ? -1 : 0);
 
   if (isDisabled) {
     tabIndex = -1;
@@ -93,8 +105,10 @@ export const useResizableHandle = (
   if (isCornerHandle) {
     accessibilityProps.role = 'button';
 
-    accessibilityProps['aria-keyshortcuts'] =
-      'ArrowUp ArrowDown ArrowLeft ArrowRight';
+    if (!disableKeyboardResize) {
+      accessibilityProps['aria-keyshortcuts'] =
+        'ArrowUp ArrowDown ArrowLeft ArrowRight';
+    }
   } else {
     let value = size.height;
     let minValue = bounds.minHeight;
@@ -126,7 +140,7 @@ export const useResizableHandle = (
 
   if (!isDisabled) {
     handleProps = mergeProps(
-      moveProps,
+      interactionProps,
       hoverProps,
       focusProps,
       accessibilityProps
