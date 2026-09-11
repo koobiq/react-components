@@ -609,7 +609,6 @@ export const Dependencies: Story = {
       <TreeSelect
         items={items}
         label="Project files"
-        inputValue={inputValue}
         dependencies={[inputValue]}
         onInputChange={setInputValue}
         style={{ inlineSize: 320 }}

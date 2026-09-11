@@ -28,6 +28,12 @@ export type SelectSectionProps<T> = ExtendableComponentPropsWithRef<
   SectionProps<T> & {
     /** The unique id of the item. */
     id?: Key;
+    /**
+     * Values the section's items depend on, in addition to the `dependencies`
+     * of the Select. Takes effect for a section written out in JSX; for
+     * sections rendered from the Select's `items`, list the values on the Select.
+     */
+    dependencies?: ReadonlyArray<unknown>;
   },
   'section'
 >;
@@ -79,8 +85,12 @@ const SelectSectionRoot = createBranchComponent(
   SelectSectionInner,
   // Render the children through `Collection` rather than the built-in
   // `useCollectionChildren`, so the section inherits `dependencies` from the
-  // Select it is rendered in.
-  ({ items, children }) => <Collection items={items}>{children}</Collection>
+  // Select it is rendered in and adds its own on top.
+  ({ items, children, dependencies }) => (
+    <Collection items={items} dependencies={dependencies}>
+      {children}
+    </Collection>
+  )
 );
 
 // The type is spelled out: the inferred one leaks an unresolved type parameter

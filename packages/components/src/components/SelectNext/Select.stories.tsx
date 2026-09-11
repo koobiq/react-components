@@ -552,7 +552,6 @@ export const Dependencies: Story = {
       <Select
         items={options}
         label="Attack type"
-        inputValue={inputValue}
         dependencies={[inputValue]}
         onInputChange={setInputValue}
         style={{ inlineSize: 200 }}

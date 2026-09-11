@@ -193,8 +193,12 @@ re-rendered when a value used inside the render function changes. List such valu
 `dependencies` to invalidate that cache — for example the search query when the options
 highlight it.
 
+Keep the length of the array the same between renders, otherwise the items are not
+re-rendered. To depend on a list of values, wrap it: `dependencies={[filters]}`.
+
 The same applies to `Select.Section`: it inherits `dependencies` from the Select, so the
-prop only has to be set once, on the root.
+prop only has to be set once, on the root. A section written out in JSX can also take its
+own `dependencies`, for values only its items use.
 
 <Story of={Stories.Dependencies} />
 

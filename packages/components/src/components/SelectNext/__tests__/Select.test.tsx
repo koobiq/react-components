@@ -1250,6 +1250,21 @@ describe('Select', () => {
       </Select>
     );
 
+    const renderSectionWithDependencies = (suffix: string) => (
+      <Select label="label" defaultOpen>
+        <Select.Section
+          id="group-1"
+          title="Group 1"
+          items={items}
+          dependencies={[suffix]}
+        >
+          {(item) => (
+            <Select.Item id={item.id}>{`${item.name}-${suffix}`}</Select.Item>
+          )}
+        </Select.Section>
+      </Select>
+    );
+
     it('should re-render the options when a dependency changes', () => {
       const { rerender } = render(renderWithSuffix('a'));
 
@@ -1266,6 +1281,16 @@ describe('Select', () => {
       expect(getOptions()[0]).toHaveTextContent('one-a');
 
       rerender(renderSectionsWithSuffix('b'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-b');
+    });
+
+    it('should re-render the options when a dependency of the section changes', () => {
+      const { rerender } = render(renderSectionWithDependencies('a'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-a');
+
+      rerender(renderSectionWithDependencies('b'));
 
       expect(getOptions()[0]).toHaveTextContent('one-b');
     });
