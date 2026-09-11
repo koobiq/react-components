@@ -23,6 +23,7 @@
     "Divider",
     "DropdownMenu",
     "EmptyState",
+    "FileTrigger",
     "FileUpload",
     "Flag",
     "FlexBox",

@@ -1,0 +1,103 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Alert,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './FileTrigger.stories';
+
+<Meta of={Stories} />
+
+# FileTrigger
+
+<Status variant="experimental" />
+
+FileTrigger opens the system file dialog from any pressable component. It
+renders no markup of its own, apart from a hidden file input.
+
+For a complete file field with a list of uploaded files, validation and a drop
+zone, use the [FileUpload](?path=/docs/components-fileupload--docs) component.
+
+## Import
+
+```tsx
+import { FileTrigger } from '@koobiq/react-components';
+```
+
+## Usage
+
+The component wraps the element that opens the dialog and reports the selection
+through `onSelect`:
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Trigger
+
+Any pressable component works as a trigger without extra props: `Button`,
+`IconButton`, `Link`. The trigger keeps its own `onPress` handler, the dialog
+opens in addition to it.
+
+<Story of={Stories.Triggers} />
+
+<Alert status="warning">
+  A child that is not pressable never opens the dialog — React Aria logs "A
+  PressResponder was rendered without a pressable child" instead.
+</Alert>
+
+## Multiple files
+
+<Story of={Stories.Multiple} />
+
+## File types
+
+`accept` takes file type specifiers — mime types, wildcards, or extensions:
+
+<Story of={Stories.Accept} />
+
+<Alert>
+  `accept` is a hint for the dialog, not validation. A user can still drag any
+  file into the dialog or pick one through "All files", so check the result in
+  `onSelect`.
+</Alert>
+
+## Directories
+
+With `acceptDirectory`, the dialog selects a whole directory. Every file keeps
+its path in `webkitRelativePath`. Directory selection is a recent browser
+feature: older browsers ignore `acceptDirectory` and open the regular file
+dialog:
+
+<Story of={Stories.Directory} />
+
+## Camera
+
+On mobile browsers, `defaultCamera` opens the camera instead of the file
+browser. Desktop browsers ignore it:
+
+<Story of={Stories.Camera} />
+
+## Disabled state
+
+The component has no `isDisabled` prop — disable the trigger instead:
+
+<Story of={Stories.Disabled} />
+
+## Opening programmatically
+
+The ref points to the hidden file input, so the dialog can be opened from
+anywhere with `ref.current.click()`, and the selection reset with
+`ref.current.value = ''`:
+
+<Story of={Stories.ProgrammaticOpen} />
+
+## Accessibility
+
+- The hidden input takes no `aria-*` attributes — label the trigger instead.
+- The input has no `name` and is not submitted with a native form. Collect the
+  files in `onSelect` and send them yourself.
