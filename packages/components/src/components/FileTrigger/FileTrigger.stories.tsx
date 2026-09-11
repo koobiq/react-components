@@ -189,7 +189,12 @@ export const ProgrammaticOpen: Story = {
           </FileTrigger>
           <Button
             variant="fade-contrast-filled"
-            onPress={() => inputRef.current?.click()}
+            onPress={() => {
+              if (!inputRef.current) return;
+
+              inputRef.current.value = '';
+              inputRef.current.click();
+            }}
           >
             Open from elsewhere
           </Button>

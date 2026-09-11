@@ -10,7 +10,7 @@ export type FileTriggerProps = {
    * The trigger that opens the file dialog. Any pressable component works
    * out of the box: `Button`, `IconButton`, `Link`.
    */
-  children?: ReactNode;
+  children: ReactNode;
   /** Handler that is called when a user selects files in the dialog. */
   onSelect?: (files: FileList | null) => void;
   /**
@@ -30,7 +30,7 @@ export type FileTriggerProps = {
   acceptDirectory?: boolean;
   /** Which camera the capture mechanism uses. Mobile browsers only. */
   defaultCamera?: FileTriggerPropDefaultCamera;
-  /** Unique identifier for testing purposes. */
+  /** Unique identifier for testing purposes. Set on the hidden file input. */
   'data-testid'?: string | number;
 };
 

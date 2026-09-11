@@ -69,7 +69,9 @@ opens in addition to it.
 ## Directories
 
 With `acceptDirectory`, the dialog selects a whole directory. Every file keeps
-its path in `webkitRelativePath`:
+its path in `webkitRelativePath`. Directory selection is a recent browser
+feature: older browsers ignore `acceptDirectory` and open the regular file
+dialog:
 
 <Story of={Stories.Directory} />
 

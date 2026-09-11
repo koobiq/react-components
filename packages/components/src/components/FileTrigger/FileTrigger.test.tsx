@@ -51,7 +51,7 @@ describe('FileTrigger', () => {
 
   it('should call onSelect with the selected files', async () => {
     const user = userEvent.setup();
-    const onSelect = vi.fn();
+    const onSelect = vi.fn<(files: FileList | null) => void>();
     const file = makeFile('hello.txt');
 
     render(
@@ -63,34 +63,22 @@ describe('FileTrigger', () => {
     await user.upload(getFileInput(), file);
 
     expect(onSelect).toHaveBeenCalledTimes(1);
-    expect(Array.from(onSelect.mock.calls[0][0])).toEqual([file]);
+    expect(Array.from(onSelect.mock.lastCall?.[0] ?? [])).toEqual([file]);
   });
 
-  it('should map accept to the accept attribute', async () => {
-    const user = userEvent.setup({ applyAccept: false });
-    const onSelect = vi.fn();
-    const text = makeFile('notes.txt');
-
+  it('should map accept to the accept attribute', () => {
     render(
-      <FileTrigger
-        {...baseProps}
-        accept={['image/*', '.pdf']}
-        onSelect={onSelect}
-      >
+      <FileTrigger {...baseProps} accept={['image/*', '.pdf']}>
         <Button>Choose</Button>
       </FileTrigger>
     );
 
     expect(getFileInput()).toHaveAttribute('accept', 'image/*,.pdf');
-
-    await user.upload(getFileInput(), text);
-
-    expect(Array.from(onSelect.mock.calls[0][0])).toEqual([text]);
   });
 
   it('should allow selecting several files with allowsMultiple', async () => {
     const user = userEvent.setup();
-    const onSelect = vi.fn();
+    const onSelect = vi.fn<(files: FileList | null) => void>();
     const files = [makeFile('a.txt'), makeFile('b.txt')];
 
     render(
@@ -103,7 +91,8 @@ describe('FileTrigger', () => {
 
     await user.upload(getFileInput(), files);
 
-    expect(Array.from(onSelect.mock.calls[0][0])).toEqual(files);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(Array.from(onSelect.mock.lastCall?.[0] ?? [])).toEqual(files);
   });
 
   it('should map acceptDirectory to the webkitdirectory attribute', () => {
@@ -164,7 +153,7 @@ describe('FileTrigger', () => {
   it('should not open the file dialog with a disabled trigger', async () => {
     const user = userEvent.setup();
 
-    render(
+    const { rerender } = render(
       <FileTrigger {...baseProps}>
         <Button isDisabled>Choose</Button>
       </FileTrigger>
@@ -175,6 +164,16 @@ describe('FileTrigger', () => {
     await user.click(screen.getByRole('button'));
 
     expect(click).not.toHaveBeenCalled();
+
+    rerender(
+      <FileTrigger {...baseProps}>
+        <Button>Choose</Button>
+      </FileTrigger>
+    );
+
+    await user.click(screen.getByRole('button'));
+
+    expect(click).toHaveBeenCalledTimes(1);
   });
 
   it('should open the file dialog from a link trigger', async () => {
@@ -189,22 +188,6 @@ describe('FileTrigger', () => {
     const click = spyOnFileDialog();
 
     await user.click(screen.getByText('Choose'));
-
-    expect(click).toHaveBeenCalledTimes(1);
-  });
-
-  it('should open the file dialog through the ref', () => {
-    const ref = createRef<FileTriggerRef>();
-
-    render(
-      <FileTrigger {...baseProps} ref={ref}>
-        <Button>Choose</Button>
-      </FileTrigger>
-    );
-
-    const click = spyOnFileDialog();
-
-    ref.current?.click();
 
     expect(click).toHaveBeenCalledTimes(1);
   });

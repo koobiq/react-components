@@ -20,7 +20,7 @@ export const fileTriggerPropDefaultCamera: readonly ["user", "environment"];
 
 // @public (undocumented)
 export type FileTriggerProps = {
-    children?: ReactNode;
+    children: ReactNode;
     onSelect?: (files: FileList | null) => void;
     accept?: readonly string[];
     allowsMultiple?: boolean;
