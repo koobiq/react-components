@@ -37,20 +37,15 @@ export const getResizableBounds = (
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
+const clampAxis = (value: number | undefined, min: number, max: number) =>
+  clamp(isFiniteNumber(value) ? value : min, min, max);
+
 export const clampResizableSize = (
   size: ResizableSize,
   bounds: ResizableBounds
 ): ResizableSize => ({
-  width: clamp(
-    isFiniteNumber(size.width) ? size.width : bounds.minWidth,
-    bounds.minWidth,
-    bounds.maxWidth
-  ),
-  height: clamp(
-    isFiniteNumber(size.height) ? size.height : bounds.minHeight,
-    bounds.minHeight,
-    bounds.maxHeight
-  ),
+  width: clampAxis(size.width, bounds.minWidth, bounds.maxWidth),
+  height: clampAxis(size.height, bounds.minHeight, bounds.maxHeight),
 });
 
 /**
@@ -67,18 +62,10 @@ export const normalizeResizableSize = (
 
   return {
     ...(width !== undefined && {
-      width: clamp(
-        isFiniteNumber(width) ? width : bounds.minWidth,
-        bounds.minWidth,
-        bounds.maxWidth
-      ),
+      width: clampAxis(width, bounds.minWidth, bounds.maxWidth),
     }),
     ...(height !== undefined && {
-      height: clamp(
-        isFiniteNumber(height) ? height : bounds.minHeight,
-        bounds.minHeight,
-        bounds.maxHeight
-      ),
+      height: clampAxis(height, bounds.minHeight, bounds.maxHeight),
     }),
   };
 };

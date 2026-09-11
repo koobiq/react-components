@@ -57,28 +57,24 @@ export const useResizable = <T extends HTMLElement = HTMLElement>(
     height,
   } = useElementSize<T>({ box: 'border-box' });
 
-  const observedSize = clampResizableSize({ width, height }, bounds);
-
-  const currentSize = clampResizableSize(
-    {
-      width: managedSize?.width ?? observedSize.width,
-      height: managedSize?.height ?? observedSize.height,
-    },
-    bounds
+  const currentSize = useMemo(
+    () =>
+      clampResizableSize(
+        {
+          width: managedSize?.width ?? width,
+          height: managedSize?.height ?? height,
+        },
+        bounds
+      ),
+    [managedSize?.width, managedSize?.height, width, height, bounds]
   );
 
+  // Starts from the size the handles announce. The element may lag behind a
+  // managed axis while it animates, and CSS transforms would scale its rect.
   const handleMoveStart = useCallback(
-    (direction: ResizableHandleDirection) => {
-      const rect = targetRef.current?.getBoundingClientRect();
-
-      // A managed axis is the source of truth, the measured one may lag behind
-      // it while the element animates to the size that was set last.
-      startResize(direction, {
-        width: managedSize?.width ?? rect?.width ?? currentSize.width,
-        height: managedSize?.height ?? rect?.height ?? currentSize.height,
-      });
-    },
-    [currentSize, managedSize, startResize, targetRef]
+    (direction: ResizableHandleDirection) =>
+      startResize(direction, currentSize),
+    [currentSize, startResize]
   );
 
   const contextValue = useMemo<ResizableContextValue>(

@@ -63,11 +63,9 @@ export const useResizableHandle = (
 
   // `useMove` drives both pointer and arrow keys, so dropping its key handler
   // leaves dragging intact.
-  const interactionProps = { ...moveProps };
-
-  if (disableKeyboardResize) {
-    delete interactionProps.onKeyDown;
-  }
+  const interactionProps = disableKeyboardResize
+    ? { ...moveProps, onKeyDown: undefined }
+    : moveProps;
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing({
     isTextInput: false,
@@ -107,8 +105,10 @@ export const useResizableHandle = (
   if (isCornerHandle) {
     accessibilityProps.role = 'button';
 
-    accessibilityProps['aria-keyshortcuts'] =
-      'ArrowUp ArrowDown ArrowLeft ArrowRight';
+    if (!disableKeyboardResize) {
+      accessibilityProps['aria-keyshortcuts'] =
+        'ArrowUp ArrowDown ArrowLeft ArrowRight';
+    }
   } else {
     let value = size.height;
     let minValue = bounds.minHeight;

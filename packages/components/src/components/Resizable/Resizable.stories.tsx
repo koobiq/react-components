@@ -19,7 +19,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new', 'date:2026-07-16'],
+  tags: ['status:updated', 'date:2026-09-11'],
 } satisfies Meta<typeof Resizable>;
 
 export default meta;
@@ -96,6 +96,28 @@ export const IntrinsicSize: Story = {
       <Handles />
     </Resizable>
   ),
+};
+
+export const OneDimension: Story = {
+  render: function Render(args) {
+    const [width, setWidth] = useState(240);
+
+    return (
+      <div className={s.layout}>
+        <Resizable
+          {...args}
+          className={s.content}
+          size={{ width }}
+          minSize={{ width: 160 }}
+          maxSize={{ width: 400 }}
+          onResize={(size) => setWidth(size.width)}
+        >
+          <Typography>{Math.round(width)} px × 100%</Typography>
+          <Resizable.Handle className={handleClassName} direction={[1, 0]} />
+        </Resizable>
+      </div>
+    );
+  },
 };
 
 export const SingleDirection: Story = {

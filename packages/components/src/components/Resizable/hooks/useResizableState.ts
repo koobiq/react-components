@@ -76,9 +76,6 @@ export const useResizableState = (
     ResizableSizeConstraints
   >(controlledSize, defaultSize ?? null);
 
-  const managedSizeRef = useRef(managedSize);
-  managedSizeRef.current = managedSize;
-
   const startSizeRef = useRef<ResizableSize>({ width: 0, height: 0 });
   const lastSizeRef = useRef<ResizableSize>({ width: 0, height: 0 });
   const accumulatedRef = useRef({ x: 0, y: 0 });
@@ -95,11 +92,11 @@ export const useResizableState = (
 
       lastSizeRef.current = nextSize;
 
-      setManagedSize({
-        ...managedSizeRef.current,
+      setManagedSize((prevSize) => ({
+        ...prevSize,
         ...(x !== 0 && { width: nextSize.width }),
         ...(y !== 0 && { height: nextSize.height }),
-      });
+      }));
 
       onResize?.(nextSize);
     },

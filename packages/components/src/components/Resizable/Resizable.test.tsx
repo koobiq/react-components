@@ -1,4 +1,4 @@
-import { createRef, type ComponentProps } from 'react';
+import { createRef, useState, type ComponentProps } from 'react';
 
 import type * as ReactCore from '@koobiq/react-core';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -70,33 +70,6 @@ describe('Resizable', () => {
   beforeEach(() => {
     mocks.observedSize = { width: 300, height: 200 };
     vi.stubGlobal('PointerEvent', undefined);
-
-    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
-      function getBoundingClientRect(this: HTMLElement) {
-        const width = Number.parseFloat(this.style.width);
-        const height = Number.parseFloat(this.style.height);
-
-        const resolvedWidth = Number.isNaN(width)
-          ? mocks.observedSize.width
-          : width;
-
-        const resolvedHeight = Number.isNaN(height)
-          ? mocks.observedSize.height
-          : height;
-
-        return {
-          x: 0,
-          y: 0,
-          top: 0,
-          left: 0,
-          right: resolvedWidth,
-          bottom: resolvedHeight,
-          width: resolvedWidth,
-          height: resolvedHeight,
-          toJSON: () => ({}),
-        };
-      }
-    );
   });
 
   afterEach(() => {
@@ -315,6 +288,28 @@ describe('Resizable', () => {
     expect(getRoot().style.height).toBe('');
   });
 
+  it('keeps the omitted axis unmanaged in controlled state', () => {
+    function ControlledWidth() {
+      const [width, setWidth] = useState(300);
+
+      return (
+        <Resizable
+          data-testid="resizable"
+          size={{ width }}
+          onResize={(size) => setWidth(size.width)}
+        >
+          <Resizable.Handle data-testid="handle" direction={[1, 0]} />
+        </Resizable>
+      );
+    }
+
+    render(<ControlledWidth />);
+    drag(20, 10);
+
+    expect(getRoot()).toHaveStyle({ width: '320px' });
+    expect(getRoot().style.height).toBe('');
+  });
+
   it('keeps the managed axis when another axis is resized', () => {
     render(
       <Resizable data-testid="resizable" defaultSize={{ width: 300 }}>
@@ -328,41 +323,32 @@ describe('Resizable', () => {
   });
 
   it('disables arrow key resizing without breaking dragging', () => {
-    renderResizable([1, 0], { defaultSize: { width: 300 } });
-
     render(
       <Resizable data-testid="resizable" defaultSize={{ width: 300 }}>
         <Resizable.Handle
-          data-testid="static-handle"
+          data-testid="handle"
           direction={[1, 0]}
           disableKeyboardResize
         />
       </Resizable>
     );
 
-    const handle = screen.getByTestId('static-handle');
-    const root = handle.parentElement as HTMLElement;
+    expect(getHandle()).toHaveAttribute('tabindex', '-1');
 
-    expect(handle).toHaveAttribute('tabindex', '-1');
+    fireEvent.keyDown(getHandle(), { key: 'ArrowRight' });
 
-    fireEvent.keyDown(handle, { key: 'ArrowRight' });
+    expect(getRoot()).toHaveStyle({ width: '300px' });
 
-    expect(root).toHaveStyle({ width: '300px' });
+    drag(20, 0);
 
-    fireEvent.mouseDown(handle, { button: 0, clientX: 10, clientY: 10 });
-    fireEvent.mouseMove(window, { button: 0, clientX: 30, clientY: 10 });
-    fireEvent.mouseUp(window, { button: 0, clientX: 30, clientY: 10 });
-
-    expect(root).toHaveStyle({ width: '320px' });
+    expect(getRoot()).toHaveStyle({ width: '320px' });
   });
 
   it('keeps the handle focusable when tabIndex is set explicitly', () => {
-    renderResizable([1, 0], { defaultSize: { width: 300 } });
-
     render(
       <Resizable data-testid="resizable" defaultSize={{ width: 300 }}>
         <Resizable.Handle
-          data-testid="static-handle"
+          data-testid="handle"
           direction={[1, 0]}
           tabIndex={0}
           disableKeyboardResize
@@ -370,10 +356,7 @@ describe('Resizable', () => {
       </Resizable>
     );
 
-    expect(screen.getByTestId('static-handle')).toHaveAttribute(
-      'tabindex',
-      '0'
-    );
+    expect(getHandle()).toHaveAttribute('tabindex', '0');
   });
 
   it('calls lifecycle callbacks with the snapshot and final size', () => {
@@ -529,6 +512,24 @@ describe('Resizable', () => {
     expect(getHandle()).not.toHaveAttribute('aria-valuenow');
     expect(getHandle()).not.toHaveAttribute('aria-orientation');
     expect(getHandle()).toHaveAttribute('aria-controls', getRoot().id);
+  });
+
+  it('does not advertise arrow keys when keyboard resizing is disabled', () => {
+    render(
+      <Resizable
+        data-testid="resizable"
+        defaultSize={{ width: 300, height: 200 }}
+      >
+        <Resizable.Handle
+          data-testid="handle"
+          direction={[1, 1]}
+          disableKeyboardResize
+        />
+      </Resizable>
+    );
+
+    expect(getHandle()).toHaveAttribute('role', 'button');
+    expect(getHandle()).not.toHaveAttribute('aria-keyshortcuts');
   });
 
   it('localizes default accessible labels', () => {
