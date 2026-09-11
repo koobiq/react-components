@@ -1204,4 +1204,95 @@ describe('Select', () => {
       expect(getRoot()).not.toHaveAttribute('data-disabled', 'true');
     });
   });
+
+  describe('dependencies', () => {
+    type Option = { id: string; name: string };
+
+    const items: Option[] = [{ id: '1', name: 'one' }];
+
+    const renderWithSuffix = (suffix: string) => (
+      <Select<Option>
+        label="label"
+        items={items}
+        dependencies={[suffix]}
+        defaultOpen
+      >
+        {(item) => (
+          <Select.Item id={item.id}>{`${item.name}-${suffix}`}</Select.Item>
+        )}
+      </Select>
+    );
+
+    type Group = { id: string; name: string; children: Option[] };
+
+    const groups: Group[] = [
+      { id: 'group-1', name: 'Group 1', children: items },
+    ];
+
+    const renderSectionsWithSuffix = (suffix: string) => (
+      <Select<Group>
+        label="label"
+        items={groups}
+        dependencies={[suffix]}
+        defaultOpen
+      >
+        {(group) => (
+          <Select.Section
+            id={group.id}
+            title={group.name}
+            items={group.children}
+          >
+            {(item) => (
+              <Select.Item id={item.id}>{`${item.name}-${suffix}`}</Select.Item>
+            )}
+          </Select.Section>
+        )}
+      </Select>
+    );
+
+    const renderSectionWithDependencies = (suffix: string) => (
+      <Select label="label" defaultOpen>
+        <Select.Section
+          id="group-1"
+          title="Group 1"
+          items={items}
+          dependencies={[suffix]}
+        >
+          {(item) => (
+            <Select.Item id={item.id}>{`${item.name}-${suffix}`}</Select.Item>
+          )}
+        </Select.Section>
+      </Select>
+    );
+
+    it('should re-render the options when a dependency changes', () => {
+      const { rerender } = render(renderWithSuffix('a'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-a');
+
+      rerender(renderWithSuffix('b'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-b');
+    });
+
+    it('should re-render the options inside a section when a dependency changes', () => {
+      const { rerender } = render(renderSectionsWithSuffix('a'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-a');
+
+      rerender(renderSectionsWithSuffix('b'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-b');
+    });
+
+    it('should re-render the options when a dependency of the section changes', () => {
+      const { rerender } = render(renderSectionWithDependencies('a'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-a');
+
+      rerender(renderSectionWithDependencies('b'));
+
+      expect(getOptions()[0]).toHaveTextContent('one-b');
+    });
+  });
 });

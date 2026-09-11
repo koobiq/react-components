@@ -25,9 +25,9 @@ const items: FileNode[] = [
 ];
 
 function TreeSelectFixture<M extends SelectionMode = 'single'>(
-  props: Partial<TreeSelectProps<FileNode, M>> = {}
+  props: Partial<TreeSelectProps<FileNode, M>> & { suffix?: string } = {}
 ) {
-  const { slotProps, ...otherProps } = props;
+  const { slotProps, suffix = '', ...otherProps } = props;
 
   return (
     <Provider>
@@ -59,7 +59,7 @@ function TreeSelectFixture<M extends SelectionMode = 'single'>(
               textValue={item.title}
               data-testid={`item-${item.id}`}
             >
-              <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Tree.ItemContent>{`${item.title}${suffix}`}</Tree.ItemContent>
               <Collection items={item.children}>{renderItem}</Collection>
             </Tree.Item>
           );
@@ -70,7 +70,7 @@ function TreeSelectFixture<M extends SelectionMode = 'single'>(
 }
 
 function renderTreeSelect<M extends SelectionMode = 'single'>(
-  props: Partial<TreeSelectProps<FileNode, M>> = {}
+  props: Partial<TreeSelectProps<FileNode, M>> & { suffix?: string } = {}
 ) {
   return render(<TreeSelectFixture {...props} />);
 }
@@ -996,6 +996,27 @@ describe('TreeSelect', () => {
 
       expect(getSearchInput()).toHaveValue('');
       expect(screen.getByTestId('item-7')).toBeInTheDocument();
+    });
+  });
+
+  describe('dependencies', () => {
+    const propsWithSuffix = (suffix: string) => ({
+      suffix,
+      dependencies: [suffix],
+      defaultExpandedKeys: [1],
+      defaultOpen: true,
+    });
+
+    it('should re-render the items when a dependency changes', () => {
+      const { rerender } = renderTreeSelect(propsWithSuffix('-a'));
+
+      expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-a');
+      expect(screen.getByTestId('item-2')).toHaveTextContent('Http-a');
+
+      rerender(<TreeSelectFixture {...propsWithSuffix('-b')} />);
+
+      expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-b');
+      expect(screen.getByTestId('item-2')).toHaveTextContent('Http-b');
     });
   });
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, ReactElement } from 'react';
 import { useContext } from 'react';
 
 import type {
@@ -13,6 +13,7 @@ import { filterDOMProps, mergeProps } from '@koobiq/react-core';
 import {
   useListBoxSection,
   createBranchComponent,
+  Collection,
   SectionNode,
 } from '@koobiq/react-primitives';
 
@@ -27,9 +28,19 @@ export type SelectSectionProps<T> = ExtendableComponentPropsWithRef<
   SectionProps<T> & {
     /** The unique id of the item. */
     id?: Key;
+    /**
+     * Values the section's items depend on, in addition to the `dependencies`
+     * of the Select. Takes effect for a section written out in JSX; for
+     * sections rendered from the Select's `items`, list the values on the Select.
+     */
+    dependencies?: ReadonlyArray<unknown>;
   },
   'section'
 >;
+
+export type SelectSectionComponent = <T extends object>(
+  props: SelectSectionProps<T>
+) => ReactElement | null;
 
 function SelectSectionInner<T extends object>(
   props: SelectSectionProps<T>,
@@ -69,7 +80,19 @@ function SelectSectionInner<T extends object>(
   );
 }
 
-export const SelectSection = createBranchComponent(
+const SelectSectionRoot = createBranchComponent(
   SectionNode,
-  SelectSectionInner
+  SelectSectionInner,
+  // Render the children through `Collection` rather than the built-in
+  // `useCollectionChildren`, so the section inherits `dependencies` from the
+  // Select it is rendered in and adds its own on top.
+  ({ items, children, dependencies }) => (
+    <Collection items={items} dependencies={dependencies}>
+      {children}
+    </Collection>
+  )
 );
+
+// The type is spelled out: the inferred one leaks an unresolved type parameter
+// into the declaration output, which API Extractor cannot follow.
+export const SelectSection = SelectSectionRoot as SelectSectionComponent;

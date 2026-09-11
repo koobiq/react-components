@@ -149,6 +149,14 @@ export type SelectNextProps<
     defaultInputValue?: string;
     /** Handler that is called when the Select search input value changes. */
     onInputChange?: (value: string) => void;
+    /**
+     * Values the rendered items depend on. The collection caches an item by its
+     * object identity, so a value used inside the render function — a search
+     * query, for instance — has to be listed here for the items to re-render.
+     * The array must keep the same length between renders; to depend on a
+     * list, wrap it: `[filters]`.
+     */
+    dependencies?: ReadonlyArray<unknown>;
     /** The filter function used to determine if an option should be included in the Select list. */
     defaultFilter?: (textValue: string, inputValue: string) => boolean;
     /** The props used for each slot inside. */
