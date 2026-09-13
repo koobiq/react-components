@@ -1,0 +1,34 @@
+.base {
+  --description-list-term-width: 25%;
+  --description-list-content-gap: var(--kbq-size-l);
+
+  display: grid;
+  grid-template-columns:
+    [term] var(--description-list-term-width)
+    [description] minmax(0, 1fr);
+  gap: var(--kbq-size-l) var(--description-list-content-gap);
+  margin: 0;
+}
+
+.vertical {
+  --description-list-content-gap: var(--kbq-size-3xs);
+
+  grid-template-columns: [term description] minmax(0, 1fr);
+  row-gap: calc(var(--kbq-size-3xs) + var(--kbq-size-m));
+}
+
+.alignCenter {
+  align-items: center;
+}
+
+.alignEnd {
+  align-items: end;
+}
+
+.justifyCenter {
+  justify-items: center;
+}
+
+.justifyEnd {
+  justify-items: end;
+}

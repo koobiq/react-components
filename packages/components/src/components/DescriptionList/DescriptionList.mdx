@@ -1,0 +1,153 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './DescriptionList.stories';
+
+<Meta of={Stories} />
+
+# DescriptionList
+
+<Status variant="experimental" />
+
+DescriptionList displays term-description pairs, such as the properties of an
+incident or an object.
+
+## Import
+
+```tsx
+import { DescriptionList } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Anatomy
+
+```tsx
+<DescriptionList>
+  <DescriptionList.Group>
+    <DescriptionList.Term />
+    <DescriptionList.Description />
+  </DescriptionList.Group>
+</DescriptionList>
+```
+
+- `DescriptionList` — the list (`<dl>`). It is a grid of two columns:
+  terms on the left, descriptions on the right.
+- `DescriptionList.Group` — a term with its description (`<div>`). Put only
+  groups inside the list: other children are not supported.
+- `DescriptionList.Term` — a term (`<dt>`), e.g. a field name.
+- `DescriptionList.Description` — a description (`<dd>`), e.g. a field value.
+
+## Collections
+
+DescriptionList supports static and dynamic collections.
+
+In a static collection, pass the groups as children and give each group a
+unique `id`.
+
+```tsx
+<DescriptionList>
+  <DescriptionList.Group id="status">
+    <DescriptionList.Term>Status</DescriptionList.Term>
+    <DescriptionList.Description>New</DescriptionList.Description>
+  </DescriptionList.Group>
+</DescriptionList>
+```
+
+In a dynamic collection, pass the data to `items` and a function that renders
+a group to `children`. The group id is taken from the `id` or `key` of the
+item, so you don't have to set it.
+
+<Story of={Stories.DynamicCollection} />
+
+The rendered groups are cached by item. If the function uses other values,
+e.g. the locale, list them in `dependencies` to re-render the groups when the
+values change.
+
+```tsx
+<DescriptionList items={fields} dependencies={[locale]}>
+  {(field) => (
+    <DescriptionList.Group>
+      <DescriptionList.Term>{field.label}</DescriptionList.Term>
+      <DescriptionList.Description>
+        {formatValue(field.value, locale)}
+      </DescriptionList.Description>
+    </DescriptionList.Group>
+  )}
+</DescriptionList>
+```
+
+## Orientation
+
+By default, a description goes next to its term. Set `orientation="vertical"`
+to put descriptions under the terms.
+
+<Story of={Stories.Orientation} />
+
+## Responsive orientation
+
+`orientation` accepts a value per breakpoint of the screen width.
+Resize the window to see the layout change.
+
+```tsx
+<DescriptionList orientation={{ xs: 'vertical', m: 'horizontal' }} />
+```
+
+<Story of={Stories.ResponsiveOrientation} />
+
+## Adaptive orientation
+
+To switch the orientation based on the width of the list itself, measure the
+list with [useElementSize](?path=/docs/hooks-useelementsize--docs) and pick
+the orientation. Drag the bottom right corner of the frame to resize it.
+
+<Story of={Stories.AdaptiveOrientation} />
+
+## Term width
+
+`termWidth` sets the width of the term column in the horizontal layout,
+descriptions take the remaining space. By default, terms take a quarter of the
+width. Pass a number of pixels or a CSS grid column size: `'50%'`, `'auto'`,
+`'minmax(120px, 30%)'`.
+
+<Story of={Stories.TermWidth} />
+
+## Alignment
+
+Use `alignItems` and `justifyItems` to align terms and descriptions vertically
+and horizontally.
+
+<Story of={Stories.Alignment} />
+
+## Group
+
+A group is a row of the list, so you can style it, e.g. to highlight a changed
+field. Groups use the columns of the list, so the rows stay aligned.
+
+Inline paddings of a group shift its content. Offset them with negative
+margins, as in the example.
+
+<Story of={Stories.Group} />
+
+## Long text
+
+Text wraps inside its column: regular text by words, strings without spaces
+(hashes, paths, URLs) by characters. The columns do not stretch.
+
+<Story of={Stories.LongText} />
+
+## Accessibility
+
+- The list renders native `dl`, `dt` and `dd` elements, so screen readers
+  announce terms together with their descriptions.
+- `DescriptionList.Group` renders a `div`, which is valid inside `dl`.

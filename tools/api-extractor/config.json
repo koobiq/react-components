@@ -20,6 +20,7 @@
     "ContentPanel",
     "DateInput",
     "DatePicker",
+    "DescriptionList",
     "Divider",
     "DropdownMenu",
     "EmptyState",
