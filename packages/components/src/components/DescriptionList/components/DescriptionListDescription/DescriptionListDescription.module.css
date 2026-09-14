@@ -3,7 +3,7 @@
 .base {
   @mixin typography text-normal;
 
-  grid-column: description;
+  grid-column: var(--description-list-description-column);
   min-inline-size: 0;
   margin: 0;
   color: var(--kbq-foreground-contrast);

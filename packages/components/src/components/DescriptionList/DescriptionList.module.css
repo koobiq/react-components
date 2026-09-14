@@ -1,19 +1,19 @@
 .base {
-  --description-list-term-width: 25%;
+  --description-list-columns: repeat(4, 1fr);
+  --description-list-description-column: 2 / -1;
   --description-list-content-gap: var(--kbq-size-l);
 
   display: grid;
-  grid-template-columns:
-    [term] var(--description-list-term-width)
-    [description] minmax(0, 1fr);
+  grid-template-columns: var(--description-list-columns);
   gap: var(--kbq-size-l) var(--description-list-content-gap);
   margin: 0;
 }
 
 .vertical {
+  --description-list-description-column: 1;
   --description-list-content-gap: var(--kbq-size-3xs);
 
-  grid-template-columns: [term description] minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   row-gap: calc(var(--kbq-size-3xs) + var(--kbq-size-m));
 }
 

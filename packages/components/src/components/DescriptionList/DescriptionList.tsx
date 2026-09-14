@@ -21,7 +21,6 @@ import {
 } from './components';
 import s from './DescriptionList.module.css';
 import type { DescriptionListComponent, DescriptionListProps } from './types';
-import { normalizeTermWidth } from './utils';
 
 type DescriptionListInnerProps<T extends object> = Omit<
   DescriptionListProps<T>,
@@ -38,7 +37,7 @@ function DescriptionListInner<T extends object>(
     listRef,
     collection,
     orientation: orientationProp = 'horizontal',
-    termWidth,
+    columns,
     alignItems = 'start',
     justifyItems = 'start',
     className,
@@ -54,9 +53,7 @@ function DescriptionListInner<T extends object>(
 
   const style = {
     ...styleProp,
-    ...(termWidth !== undefined && {
-      '--description-list-term-width': normalizeTermWidth(termWidth),
-    }),
+    ...(columns !== undefined && { '--description-list-columns': columns }),
   } as CSSProperties;
 
   return (

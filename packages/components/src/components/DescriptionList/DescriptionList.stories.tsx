@@ -2,6 +2,8 @@ import { useElementSize } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Badge } from '../Badge';
+import { ClampedList } from '../ClampedList';
+import { ClampedText } from '../ClampedText';
 import { FlexBox } from '../FlexBox';
 import { Link } from '../Link';
 import { Typography } from '../Typography';
@@ -44,7 +46,9 @@ export const Base: Story = {
       <DescriptionList.Group id="status">
         <DescriptionList.Term>Status</DescriptionList.Term>
         <DescriptionList.Description>
-          <Badge variant="fade-theme">New</Badge>
+          <Badge variant="fade-theme" size="compact">
+            New
+          </Badge>
         </DescriptionList.Description>
       </DescriptionList.Group>
 
@@ -62,6 +66,30 @@ export const Base: Story = {
       </DescriptionList.Group>
     </DescriptionList>
   ),
+};
+
+export const DynamicCollection: Story = {
+  render: function Render() {
+    const fields = [
+      { id: 'type', label: 'Incident type', value: 'Malware' },
+      { id: 'identifier', label: 'Identifier', value: 'INC-2022-125-78253' },
+      { id: 'status', label: 'Status', value: 'New' },
+      { id: 'assignee', label: 'Assignee', value: 'John Smith' },
+    ];
+
+    return (
+      <DescriptionList items={fields}>
+        {(field) => (
+          <DescriptionList.Group>
+            <DescriptionList.Term>{field.label}</DescriptionList.Term>
+            <DescriptionList.Description>
+              {field.value}
+            </DescriptionList.Description>
+          </DescriptionList.Group>
+        )}
+      </DescriptionList>
+    );
+  },
 };
 
 export const Orientation: Story = {
@@ -114,7 +142,7 @@ export const ResponsiveOrientation: Story = {
 };
 
 export const AdaptiveOrientation: Story = {
-  render: function Render(args) {
+  render: function Render() {
     const { ref, width } = useElementSize<HTMLDListElement>();
 
     return (
@@ -123,6 +151,7 @@ export const AdaptiveOrientation: Story = {
           inlineSize: 600,
           minInlineSize: 200,
           maxInlineSize: '100%',
+          boxSizing: 'border-box',
           padding: 'var(--kbq-size-l)',
           border: '1px dashed var(--kbq-line-contrast-less)',
           overflow: 'auto',
@@ -130,7 +159,6 @@ export const AdaptiveOrientation: Story = {
         }}
       >
         <DescriptionList
-          {...args}
           ref={ref}
           orientation={width > 0 && width <= 400 ? 'vertical' : 'horizontal'}
         >
@@ -158,22 +186,33 @@ export const AdaptiveOrientation: Story = {
   },
 };
 
-export const TermWidth: Story = {
+export const Columns: Story = {
   render: (args) => {
     const examples = [
-      { termWidth: '25%', label: 'termWidth="25%" (default)' },
-      { termWidth: '50%', label: 'termWidth="50%"' },
-      { termWidth: 200, label: 'termWidth={200}' },
-      { termWidth: 'auto', label: 'termWidth="auto"' },
+      {
+        columns: 'repeat(4, 1fr)',
+        label: 'columns="repeat(4, 1fr)" (default)',
+      },
+      { columns: 'repeat(2, 1fr)', label: 'columns="repeat(2, 1fr)"' },
+      { columns: '200px 1fr', label: 'columns="200px 1fr"' },
+      { columns: 'auto 1fr', label: 'columns="auto 1fr"' },
     ];
 
     return (
-      <FlexBox direction="column" gap="xl">
-        {examples.map(({ termWidth, label }) => (
-          <FlexBox key={label} direction="column" gap="s">
+      <FlexBox direction="column" alignItems="stretch" gap="xl">
+        {examples.map(({ columns, label }) => (
+          <FlexBox key={label} direction="column" alignItems="stretch" gap="s">
             <Typography variant="text-normal-strong">{label}</Typography>
 
-            <DescriptionList {...args} termWidth={termWidth}>
+            <DescriptionList
+              {...args}
+              columns={columns}
+              style={{
+                padding: 'var(--kbq-size-l)',
+                border: '1px solid var(--kbq-line-contrast-less)',
+                borderRadius: 'var(--kbq-size-m)',
+              }}
+            >
               <DescriptionList.Group id="type">
                 <DescriptionList.Term>Incident type</DescriptionList.Term>
                 <DescriptionList.Description>
@@ -187,6 +226,13 @@ export const TermWidth: Story = {
                   INC-2022-125-78253
                 </DescriptionList.Description>
               </DescriptionList.Group>
+
+              <DescriptionList.Group id="assignee">
+                <DescriptionList.Term>Assignee</DescriptionList.Term>
+                <DescriptionList.Description>
+                  John Smith
+                </DescriptionList.Description>
+              </DescriptionList.Group>
             </DescriptionList>
           </FlexBox>
         ))}
@@ -197,98 +243,18 @@ export const TermWidth: Story = {
 
 export const Alignment: Story = {
   render: (args) => (
-    <FlexBox direction="column" gap="xl">
-      <FlexBox direction="column" gap="s">
-        <Typography variant="text-normal-strong">
-          alignItems=&quot;center&quot;
-        </Typography>
-
-        <DescriptionList {...args} alignItems="center">
-          <DescriptionList.Group id="description">
-            <DescriptionList.Term>Description</DescriptionList.Term>
-            <DescriptionList.Description>
-              In a distributed denial-of-service attack, the incoming traffic
-              flooding the victim originates from many different sources. This
-              makes it impossible to stop the attack by blocking a single
-              source.
-            </DescriptionList.Description>
-          </DescriptionList.Group>
-        </DescriptionList>
-      </FlexBox>
-
-      <FlexBox direction="column" gap="s">
-        <Typography variant="text-normal-strong">
-          justifyItems=&quot;end&quot;
-        </Typography>
-
-        <DescriptionList {...args} justifyItems="end">
-          <DescriptionList.Group id="type">
-            <DescriptionList.Term>Incident type</DescriptionList.Term>
-            <DescriptionList.Description>Malware</DescriptionList.Description>
-          </DescriptionList.Group>
-
-          <DescriptionList.Group id="identifier">
-            <DescriptionList.Term>Identifier</DescriptionList.Term>
-            <DescriptionList.Description>
-              INC-2022-125-78253
-            </DescriptionList.Description>
-          </DescriptionList.Group>
-        </DescriptionList>
-      </FlexBox>
-    </FlexBox>
-  ),
-};
-
-export const DynamicCollection: Story = {
-  render: function Render() {
-    const fields = [
-      { id: 'type', label: 'Incident type', value: 'Malware' },
-      { id: 'identifier', label: 'Identifier', value: 'INC-2022-125-78253' },
-      { id: 'status', label: 'Status', value: 'New' },
-      { id: 'assignee', label: 'Assignee', value: 'John Smith' },
-    ];
-
-    return (
-      <DescriptionList items={fields}>
-        {(field) => (
-          <DescriptionList.Group>
-            <DescriptionList.Term>{field.label}</DescriptionList.Term>
-            <DescriptionList.Description>
-              {field.value}
-            </DescriptionList.Description>
-          </DescriptionList.Group>
-        )}
-      </DescriptionList>
-    );
-  },
-};
-
-export const Group: Story = {
-  render: (args) => (
-    <DescriptionList {...args}>
+    <DescriptionList {...args} alignItems="center">
       <DescriptionList.Group id="type">
         <DescriptionList.Term>Incident type</DescriptionList.Term>
         <DescriptionList.Description>Malware</DescriptionList.Description>
       </DescriptionList.Group>
 
-      <DescriptionList.Group
-        id="status"
-        style={{
-          marginBlock: 'calc(-1 * var(--kbq-size-xxs))',
-          marginInline: 'calc(-1 * var(--kbq-size-s))',
-          paddingBlock: 'var(--kbq-size-xxs)',
-          paddingInline: 'var(--kbq-size-s)',
-          borderRadius: 'var(--kbq-size-s)',
-          backgroundColor: 'var(--kbq-background-warning-fade)',
-        }}
-      >
-        <DescriptionList.Term>Status</DescriptionList.Term>
-        <DescriptionList.Description>Closed</DescriptionList.Description>
-      </DescriptionList.Group>
-
-      <DescriptionList.Group id="assignee">
-        <DescriptionList.Term>Assignee</DescriptionList.Term>
-        <DescriptionList.Description>John Smith</DescriptionList.Description>
+      <DescriptionList.Group id="description">
+        <DescriptionList.Term>Description</DescriptionList.Term>
+        <DescriptionList.Description>
+          In a distributed denial-of-service attack, the incoming traffic
+          flooding the victim originates from many different sources.
+        </DescriptionList.Description>
       </DescriptionList.Group>
     </DescriptionList>
   ),
@@ -342,4 +308,88 @@ export const LongText: Story = {
       </DescriptionList.Group>
     </DescriptionList>
   ),
+};
+
+export const Composition: Story = {
+  render: function Render() {
+    const hosts = [
+      'web-01',
+      'web-02',
+      'web-03',
+      'app-01',
+      'app-02',
+      'db-01',
+      'db-02',
+      'cache-01',
+      'mail-01',
+      'vpn-01',
+      'proxy-01',
+      'backup-01',
+      'dc-01',
+      'dc-02',
+    ].map((name, index) => ({ id: index, name }));
+
+    return (
+      <DescriptionList>
+        <DescriptionList.Group id="type">
+          <DescriptionList.Term>Incident type</DescriptionList.Term>
+          <DescriptionList.Description>DDoS</DescriptionList.Description>
+        </DescriptionList.Group>
+
+        <DescriptionList.Group id="description">
+          <DescriptionList.Term>Description</DescriptionList.Term>
+          <DescriptionList.Description>
+            <ClampedText rows={2}>
+              In a distributed denial-of-service attack, the incoming traffic
+              flooding the victim originates from many different sources. More
+              sophisticated strategies are required to mitigate this type of
+              attack; simply attempting to block a single source is insufficient
+              as there are multiple sources. Criminal perpetrators of such
+              attacks often target sites or services hosted on high-profile web
+              servers such as banks or credit card payment gateways.
+            </ClampedText>
+          </DescriptionList.Description>
+        </DescriptionList.Group>
+
+        <DescriptionList.Group id="hosts">
+          <DescriptionList.Term>Affected hosts</DescriptionList.Term>
+          <DescriptionList.Description>
+            <ClampedList
+              items={hosts}
+              collapsedVisibleCount={5}
+              moreText={`${hosts.length - 5} more`}
+              lessText="Collapse"
+              slotProps={{
+                content: { style: { display: 'inline' } },
+                toggle: { icon: null, style: { margin: 0 } },
+              }}
+            >
+              {({ visibleItems }) => (
+                <ul
+                  style={{
+                    display: 'inline',
+                    margin: 0,
+                    padding: 0,
+                    listStyle: 'none',
+                  }}
+                >
+                  {visibleItems.map((host) => (
+                    <li key={host.id} style={{ display: 'inline' }}>
+                      <Typography
+                        as="span"
+                        style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
+                      >
+                        {host.name}
+                        {',\u00a0'}
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </ClampedList>
+          </DescriptionList.Description>
+        </DescriptionList.Group>
+      </DescriptionList>
+    );
+  },
 };

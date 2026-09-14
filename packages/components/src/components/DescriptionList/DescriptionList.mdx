@@ -52,8 +52,8 @@ import { DescriptionList } from '@koobiq/react-components';
 
 DescriptionList supports static and dynamic collections.
 
-In a static collection, pass the groups as children and give each group a
-unique `id`.
+In a static collection, pass the groups as children and set a unique `id` prop
+for each group.
 
 ```tsx
 <DescriptionList>
@@ -64,15 +64,15 @@ unique `id`.
 </DescriptionList>
 ```
 
-In a dynamic collection, pass the data to `items` and a function that renders
-a group to `children`. The group id is taken from the `id` or `key` of the
-item, so you don't have to set it.
+In a dynamic collection, pass the data to the `items` prop and a function that
+renders a group to the `children` prop. The group id is taken from the `id` or
+`key` of the item, so you don't have to set it.
 
 <Story of={Stories.DynamicCollection} />
 
 The rendered groups are cached by item. If the function uses other values,
-e.g. the locale, list them in `dependencies` to re-render the groups when the
-values change.
+e.g. the locale, list them in the `dependencies` prop to re-render the groups
+when the values change.
 
 ```tsx
 <DescriptionList items={fields} dependencies={[locale]}>
@@ -89,14 +89,14 @@ values change.
 
 ## Orientation
 
-By default, a description goes next to its term. Set `orientation="vertical"`
-to put descriptions under the terms.
+By default, a description goes next to its term. Set the `orientation` prop to
+`vertical` to put descriptions under the terms.
 
 <Story of={Stories.Orientation} />
 
 ## Responsive orientation
 
-`orientation` accepts a value per breakpoint of the screen width.
+The `orientation` prop accepts a value per breakpoint of the screen width.
 Resize the window to see the layout change.
 
 ```tsx
@@ -108,36 +108,25 @@ Resize the window to see the layout change.
 ## Adaptive orientation
 
 To switch the orientation based on the width of the list itself, measure the
-list with [useElementSize](?path=/docs/hooks-useelementsize--docs) and pick
-the orientation. Drag the bottom right corner of the frame to resize it.
+list with [useElementSize](?path=/docs/hooks-useelementsize--docs) and pass
+the result to the `orientation` prop. Drag the bottom right corner of the frame
+to resize it.
 
 <Story of={Stories.AdaptiveOrientation} />
 
-## Term width
+## Columns
 
-`termWidth` sets the width of the term column in the horizontal layout,
-descriptions take the remaining space. By default, terms take a quarter of the
-width. Pass a number of pixels or a CSS grid column size: `'50%'`, `'auto'`,
-`'minmax(120px, 30%)'`.
+The `columns` prop sets the columns like CSS `grid-template-columns`. The term
+takes the first column, the description takes the rest.
 
-<Story of={Stories.TermWidth} />
+<Story of={Stories.Columns} />
 
 ## Alignment
 
-Use `alignItems` and `justifyItems` to align terms and descriptions vertically
-and horizontally.
+Use the `alignItems` and `justifyItems` props to align terms and descriptions
+vertically and horizontally. In the example, they are centered vertically.
 
 <Story of={Stories.Alignment} />
-
-## Group
-
-A group is a row of the list, so you can style it, e.g. to highlight a changed
-field. Groups use the columns of the list, so the rows stay aligned.
-
-Inline paddings of a group shift its content. Offset them with negative
-margins, as in the example.
-
-<Story of={Stories.Group} />
 
 ## Long text
 
@@ -145,6 +134,13 @@ Text wraps inside its column: regular text by words, strings without spaces
 (hashes, paths, URLs) by characters. The columns do not stretch.
 
 <Story of={Stories.LongText} />
+
+## Composition
+
+A description can contain any content. For example, use `ClampedText` for a
+long text and `ClampedList` for a long list.
+
+<Story of={Stories.Composition} />
 
 ## Accessibility
 

@@ -14,8 +14,8 @@ const getRoot = () => screen.getByTestId('description-list');
 const getTerms = () =>
   screen.queryAllByRole('term').map((term) => term.textContent);
 
-const getTermWidth = () =>
-  getRoot().style.getPropertyValue('--description-list-term-width');
+const getColumns = () =>
+  getRoot().style.getPropertyValue('--description-list-columns');
 
 describe('DescriptionList', () => {
   it('should forward the ref to the dl element', () => {
@@ -46,7 +46,7 @@ describe('DescriptionList', () => {
     expect(getRoot()).toHaveAttribute('data-orientation', 'horizontal');
     expect(getRoot()).toHaveAttribute('data-align-items', 'start');
     expect(getRoot()).toHaveAttribute('data-justify-items', 'start');
-    expect(getTermWidth()).toBe('');
+    expect(getColumns()).toBe('');
   });
 
   it('should apply the orientation', () => {
@@ -88,29 +88,29 @@ describe('DescriptionList', () => {
     expect(getRoot()).toHaveAttribute('data-orientation', 'horizontal');
   });
 
-  it('should set the term width', () => {
+  it('should set the columns', () => {
     const { rerender } = render(
-      <DescriptionList {...baseProps} termWidth="50%" />
+      <DescriptionList {...baseProps} columns="repeat(2, 1fr)" />
     );
 
-    expect(getTermWidth()).toBe('50%');
+    expect(getColumns()).toBe('repeat(2, 1fr)');
 
-    rerender(<DescriptionList {...baseProps} termWidth={200} />);
+    rerender(<DescriptionList {...baseProps} columns="200px 1fr" />);
 
-    expect(getTermWidth()).toBe('200px');
+    expect(getColumns()).toBe('200px 1fr');
   });
 
-  it('should keep the custom style with the term width', () => {
+  it('should keep the custom style with the columns', () => {
     render(
       <DescriptionList
         {...baseProps}
-        termWidth="auto"
+        columns="auto 1fr"
         style={{ marginBlockStart: 4 }}
       />
     );
 
     expect(getRoot()).toHaveStyle({ marginBlockStart: '4px' });
-    expect(getTermWidth()).toBe('auto');
+    expect(getColumns()).toBe('auto 1fr');
   });
 
   it('should reflect the alignment props', () => {

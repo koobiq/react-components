@@ -28,7 +28,7 @@ export const DescriptionList: DescriptionListComponent & {
 // @public (undocumented)
 export type DescriptionListBaseProps<T extends object = object> = {
     orientation?: DescriptionListPropOrientation | ResponsiveValue<DescriptionListPropOrientation>;
-    termWidth?: string | number;
+    columns?: string;
     alignItems?: DescriptionListPropAlign;
     justifyItems?: DescriptionListPropAlign;
     items?: Iterable<T>;

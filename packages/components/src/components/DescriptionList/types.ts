@@ -31,11 +31,12 @@ export type DescriptionListBaseProps<T extends object = object> = {
     | DescriptionListPropOrientation
     | ResponsiveValue<DescriptionListPropOrientation>;
   /**
-   * Width of the term column in the horizontal layout:
-   * `200` (px), `'50%'`, `'auto'` or `'minmax(120px, 30%)'`.
-   * @default '25%'
+   * Columns of the horizontal layout, as CSS `grid-template-columns`.
+   * The term takes the first column, the description takes the rest:
+   * `'repeat(2, 1fr)'`, `'200px 1fr'`, `'auto 1fr'`.
+   * @default 'repeat(4, 1fr)'
    */
-  termWidth?: string | number;
+  columns?: string;
   /**
    * Vertical alignment of terms and descriptions.
    * @default 'start'
