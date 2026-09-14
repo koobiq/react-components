@@ -16,7 +16,11 @@ export const NavbarBody = ({
   className,
   ...props
 }: NavbarBodyProps) => (
-  <ul data-padded="true" className={clsx(list, s.list, className)} {...props}>
+  <ul
+    data-padded="true"
+    className={clsx(list, s.list, s.body, className)}
+    {...props}
+  >
     {children}
   </ul>
 );

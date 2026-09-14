@@ -1,4 +1,4 @@
-import { RouterProvider } from '@koobiq/react-core';
+import { RouterProvider, useBoolean } from '@koobiq/react-core';
 import {
   IconCloud16,
   IconDashboard16,
@@ -8,7 +8,10 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Menu } from '../Menu';
+import { Button } from '../Button';
+import { DropdownMenu } from '../DropdownMenu';
+import { flex, spacing } from '../layout';
+import { Typography } from '../Typography';
 
 import { Navbar, type NavbarProps } from '.';
 
@@ -23,23 +26,9 @@ const meta = {
     'Navbar.AppItem': Navbar.AppItem,
   },
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
-  tags: ['status:new', 'date:2026-02-11'],
-  decorators: [
-    (Story) => (
-      <div
-        style={{
-          display: 'grid',
-          inlineSize: 'calc(100% - 2rem)',
-          gridTemplateColumns: 'auto auto',
-          gridTemplateRows: 'calc(100dvh - 2rem)',
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
+  tags: ['status:updated', 'date:2026-09-14'],
 } satisfies Meta<typeof Navbar>;
 
 export default meta;
@@ -63,96 +52,250 @@ const appIcon = (
 
 export const Base: Story = {
   render: (args) => (
-    <Navbar {...args}>
-      <Navbar.Header>
-        <Navbar.AppItem icon={appIcon} href="#">
-          Product name
-        </Navbar.AppItem>
-      </Navbar.Header>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'auto 1fr',
+        blockSize: 500,
+      }}
+    >
+      <Navbar aria-label="Main navigation" {...args}>
+        <Navbar.Header>
+          <Navbar.AppItem icon={appIcon} href="#">
+            App name
+          </Navbar.AppItem>
+        </Navbar.Header>
 
-      <Navbar.Body>
-        <Navbar.Item icon={<IconDatabase16 />} href="#">
-          Data Catalog
-        </Navbar.Item>
+        <Navbar.Body>
+          <Navbar.Item icon={<IconDatabase16 />} href="#" isActive>
+            Data Catalog
+          </Navbar.Item>
 
-        <Navbar.Item icon={<IconCloud16 />} href="#">
-          Integrations
-        </Navbar.Item>
+          <Navbar.Item icon={<IconCloud16 />} href="#">
+            Integrations
+          </Navbar.Item>
 
-        <Menu
-          placement="end top"
-          items={[
-            { id: 'sa', name: 'Service Accounts' },
-            { id: 'roles', name: 'Roles' },
-            { id: 'users', name: 'Users' },
-          ]}
-          onAction={(key) => alert(key)}
-          control={(props) => (
-            <Navbar.Item {...props} icon={<IconDashboard16 />} badge={2} isMenu>
+          <DropdownMenu>
+            <Navbar.Item icon={<IconDashboard16 />} badge={2} isMenu>
               Control Panel
             </Navbar.Item>
-          )}
-        >
-          {(item) => <Menu.Item key={item.id}>{item.name}</Menu.Item>}
-        </Menu>
+            <DropdownMenu.Popover placement="end top">
+              <DropdownMenu.Content onAction={(key) => alert(key)}>
+                <DropdownMenu.Item id="service-accounts">
+                  Service Accounts
+                </DropdownMenu.Item>
+                <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
+                <DropdownMenu.SubmenuTrigger>
+                  <DropdownMenu.Item id="users">Users</DropdownMenu.Item>
+                  <DropdownMenu.Popover>
+                    <DropdownMenu.Content onAction={(key) => alert(key)}>
+                      <DropdownMenu.Item id="all-users">
+                        All Users
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item id="invite-user">
+                        Invite User
+                      </DropdownMenu.Item>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Popover>
+                </DropdownMenu.SubmenuTrigger>
+              </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu>
 
-        <Menu
-          placement="end top"
-          items={[
-            { id: 'start', name: 'Getting Started' },
-            { id: 'roles', name: 'How to Create a Role' },
-            { id: 'users', name: 'How to Add a User' },
-          ]}
-          onAction={(key) => alert(key)}
-          control={(props) => (
-            <Navbar.Item {...props} icon={<IconPrinter16 />} isMenu>
+          <DropdownMenu>
+            <Navbar.Item icon={<IconPrinter16 />} isMenu>
               Documentation
             </Navbar.Item>
-          )}
-        >
-          {(item) => <Menu.Item key={item.id}>{item.name}</Menu.Item>}
-        </Menu>
-      </Navbar.Body>
 
-      <Navbar.Footer>
-        <Navbar.Item icon={<IconUser16 />} as="button" badge={2}>
-          Alexander Konstantinopolous
-        </Navbar.Item>
-      </Navbar.Footer>
-    </Navbar>
+            <DropdownMenu.Popover placement="end top">
+              <DropdownMenu.Content onAction={(key) => alert(key)}>
+                <DropdownMenu.Item id="start">
+                  Getting Started
+                </DropdownMenu.Item>
+                <DropdownMenu.Item id="create-role">
+                  How to Create a Role
+                </DropdownMenu.Item>
+                <DropdownMenu.Item id="add-user">
+                  How to Add a User
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu>
+        </Navbar.Body>
+
+        <Navbar.Footer>
+          <Navbar.Item icon={<IconUser16 />} as="button" badge={2}>
+            Alexander Walker
+          </Navbar.Item>
+        </Navbar.Footer>
+      </Navbar>
+
+      <main
+        className={flex(
+          { direction: 'column', gap: 'm' },
+          spacing({ p: 'xl' })
+        )}
+      >
+        <Typography variant="title">Main content</Typography>
+        <Typography>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
+          laudantium nulla voluptates! Assumenda dicta dolorem facilis iste
+          itaque iure provident quisquam, quos sequi? Amet aut, consectetur
+          dolor ea eaque eligendi enim eos esse excepturi fuga ipsa ipsum
+          laudantium natus necessitatibus nobis officiis perferendis porro
+          praesentium quibusdam quis soluta voluptas voluptatibus!
+        </Typography>
+      </main>
+    </div>
+  ),
+};
+
+export const Controlled: Story = {
+  render: function Render(args) {
+    const [isCollapsed, { set, toggle }] = useBoolean(false);
+
+    return (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          blockSize: 500,
+        }}
+      >
+        <Navbar {...args} isCollapsed={isCollapsed} onCollapse={set}>
+          <Navbar.Header>
+            <Navbar.AppItem icon={appIcon} href="#">
+              App name
+            </Navbar.AppItem>
+          </Navbar.Header>
+          <Navbar.Body>
+            <Navbar.Item icon={<IconDatabase16 />} href="#">
+              Data Catalog
+            </Navbar.Item>
+            <Navbar.Item icon={<IconCloud16 />} href="#">
+              Integrations
+            </Navbar.Item>
+          </Navbar.Body>
+        </Navbar>
+
+        <main className={spacing({ p: 'xl' })}>
+          <Button onPress={toggle}>
+            {isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+          </Button>
+        </main>
+      </div>
+    );
+  },
+};
+
+export const ExpandOverContent: Story = {
+  render: (args) => (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'var(--kbq-size-6xl) 1fr',
+        blockSize: 500,
+      }}
+    >
+      <Navbar {...args} defaultCollapsed>
+        <Navbar.Header>
+          <Navbar.AppItem icon={appIcon} href="#">
+            App name
+          </Navbar.AppItem>
+        </Navbar.Header>
+
+        <Navbar.Body>
+          <Navbar.Item icon={<IconDatabase16 />} href="#" isActive>
+            Data Catalog
+          </Navbar.Item>
+
+          <Navbar.Item icon={<IconCloud16 />} href="#">
+            Integrations
+          </Navbar.Item>
+        </Navbar.Body>
+
+        <Navbar.Footer>
+          <Navbar.Item icon={<IconUser16 />} as="button" badge={2}>
+            Alexander Walker
+          </Navbar.Item>
+        </Navbar.Footer>
+      </Navbar>
+
+      <main
+        className={flex(
+          { direction: 'column', gap: 'm' },
+          spacing({ p: 'xl' })
+        )}
+      >
+        <Typography variant="title">Main content</Typography>
+        <Typography>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
+          laudantium nulla voluptates! Assumenda dicta dolorem facilis iste
+          itaque iure provident quisquam, quos sequi? Amet aut, consectetur
+          dolor ea eaque eligendi enim eos esse excepturi fuga ipsa ipsum
+          laudantium natus necessitatibus nobis officiis perferendis porro
+          praesentium quibusdam quis soluta voluptas voluptatibus!
+        </Typography>
+      </main>
+    </div>
   ),
 };
 
 export const RouteProvider: Story = {
   render: (args) => (
     <RouterProvider navigate={(path) => alert(path)}>
-      <Navbar {...args}>
-        <Navbar.Header>
-          <Navbar.AppItem icon={appIcon} href="#">
-            Product name
-          </Navbar.AppItem>
-        </Navbar.Header>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          blockSize: 500,
+        }}
+      >
+        <Navbar {...args}>
+          <Navbar.Header>
+            <Navbar.AppItem icon={appIcon} href="#">
+              App name
+            </Navbar.AppItem>
+          </Navbar.Header>
 
-        <Navbar.Body>
-          <Navbar.Item icon={<IconDatabase16 />} href="/link-1">
-            Link 1
-          </Navbar.Item>
+          <Navbar.Body>
+            <Navbar.Item icon={<IconDatabase16 />} href="/link-1">
+              Link 1
+            </Navbar.Item>
 
-          <Navbar.Item icon={<IconDatabase16 />} href="/link-2">
-            Link 2
-          </Navbar.Item>
+            <Navbar.Item icon={<IconDatabase16 />} href="/link-2">
+              Link 2
+            </Navbar.Item>
 
-          <Navbar.Item icon={<IconDatabase16 />} href="/link-3">
-            Link 3
-          </Navbar.Item>
-        </Navbar.Body>
+            <Navbar.Item icon={<IconDatabase16 />} href="/link-3">
+              Link 3
+            </Navbar.Item>
+          </Navbar.Body>
 
-        <Navbar.Footer>
-          <Navbar.Item icon={<IconUser16 />} as={'button'} badge={2}>
-            Alexander Konstantinopolous
-          </Navbar.Item>
-        </Navbar.Footer>
-      </Navbar>
+          <Navbar.Footer>
+            <Navbar.Item icon={<IconUser16 />} as="button" badge={2}>
+              Alexander Walker
+            </Navbar.Item>
+          </Navbar.Footer>
+        </Navbar>
+
+        <main
+          className={flex(
+            { direction: 'column', gap: 'm' },
+            spacing({ p: 'xl' })
+          )}
+        >
+          <Typography variant="title">Main content</Typography>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
+            laudantium nulla voluptates! Assumenda dicta dolorem facilis iste
+            itaque iure provident quisquam, quos sequi? Amet aut, consectetur
+            dolor ea eaque eligendi enim eos esse excepturi fuga ipsa ipsum
+            laudantium natus necessitatibus nobis officiis perferendis porro
+            praesentium quibusdam quis soluta voluptas voluptatibus!
+          </Typography>
+        </main>
+      </div>
     </RouterProvider>
   ),
 };

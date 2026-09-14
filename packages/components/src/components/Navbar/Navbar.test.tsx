@@ -1,8 +1,13 @@
-import { render, fireEvent, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { describe, it, expect } from 'vitest';
+import { createRef } from 'react';
 
-import { Navbar } from '.';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+
+import { DropdownMenu } from '../DropdownMenu';
+
+import { Navbar, type NavbarProps } from '.';
 import {
   NavbarAppItem,
   NavbarBody,
@@ -13,7 +18,7 @@ import {
 import s from './Navbar.module.css';
 
 describe('Navbar', () => {
-  const renderNavbar = (props = {}) =>
+  const renderNavbar = (props: NavbarProps = {}) =>
     render(
       <Navbar {...props}>
         <Navbar.Header>
@@ -46,31 +51,167 @@ describe('Navbar', () => {
     expect(screen.getByText('Item 1')).toBeInTheDocument();
   });
 
-  it('toggles collapse state when toggle button is clicked', () => {
+  it('toggles collapse state when toggle button is clicked', async () => {
     renderNavbar();
 
     const nav = screen.getByRole('navigation');
-    const toggleButton = screen.getByRole('button', { hidden: true });
+    const toggleButton = screen.getByRole('button', { name: 'Hide' });
 
     expect(toggleButton).toBeInTheDocument();
 
-    fireEvent.click(toggleButton!);
+    await userEvent.click(toggleButton);
 
     expect(nav).toHaveAttribute('data-collapsed', 'true');
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('hides item content when collapsed', () => {
+  it('keeps item content during collapse and hides it after the animation', async () => {
     renderNavbar();
 
     const nav = screen.getByRole('navigation');
-    const toggleButton = screen.getByRole('button', { hidden: true });
+    const toggleButton = screen.getByRole('button', { name: 'Hide' });
 
-    fireEvent.click(toggleButton!);
+    fireEvent.click(toggleButton);
 
     expect(nav).toHaveAttribute('data-collapsed', 'true');
+    expect(nav).toHaveAttribute('data-transition', 'exiting');
+    expect(screen.getByText('Item 1')).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(nav).toHaveAttribute('data-transition', 'exited')
+    );
+
     expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
     expect(screen.queryByText('Item 2')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Item 1' })).toBeInTheDocument();
   });
+
+  it('starts collapsed and shows item content as soon as expansion starts', () => {
+    renderNavbar({ defaultCollapsed: true });
+
+    const nav = screen.getByRole('navigation');
+
+    expect(nav).toHaveAttribute('data-transition', 'exited');
+    expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Show' }));
+
+    expect(nav).toHaveAttribute('data-transition', 'entering');
+    expect(screen.getByText('Item 1')).toBeInTheDocument();
+  });
+
+  it('forwards the ref, attributes and styles to the navigation element', () => {
+    const ref = createRef<HTMLElement>();
+
+    renderNavbar({ ref, 'aria-label': 'Main', style: { color: 'red' } });
+
+    const nav = screen.getByRole('navigation', { name: 'Main' });
+
+    expect(ref.current).toBe(nav);
+    expect(nav.style.color).toBe('red');
+  });
+
+  it('reports collapse changes without changing a controlled state', async () => {
+    const onCollapse = vi.fn();
+
+    const { rerender } = render(
+      <Navbar isCollapsed={false} onCollapse={onCollapse} />
+    );
+
+    await userEvent.click(screen.getByRole('button', { name: 'Hide' }));
+
+    expect(onCollapse).toHaveBeenCalledExactlyOnceWith(true);
+
+    expect(screen.getByRole('navigation')).toHaveAttribute(
+      'data-collapsed',
+      'false'
+    );
+
+    rerender(<Navbar isCollapsed onCollapse={onCollapse} />);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Show' }));
+
+    expect(onCollapse).toHaveBeenLastCalledWith(false);
+
+    expect(screen.getByRole('navigation')).toHaveAttribute(
+      'data-collapsed',
+      'true'
+    );
+  });
+
+  it('does not toggle with the Sidebar shortcut', async () => {
+    const onCollapse = vi.fn();
+
+    renderNavbar({ onCollapse });
+
+    await userEvent.keyboard('[BracketLeft]');
+
+    expect(onCollapse).not.toHaveBeenCalled();
+
+    expect(screen.getByRole('navigation')).toHaveAttribute(
+      'data-collapsed',
+      'false'
+    );
+  });
+
+  it('hides the toggle when requested', () => {
+    renderNavbar({ isToggleButtonHidden: true });
+
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
+
+  it.each([false, true])(
+    'opens a dropdown submenu when collapsed=%s',
+    async (defaultCollapsed) => {
+      const onAction = vi.fn();
+
+      render(
+        <Navbar defaultCollapsed={defaultCollapsed}>
+          <Navbar.Body>
+            <DropdownMenu>
+              <Navbar.Item icon={<span aria-hidden>Icon</span>} isMenu>
+                Control Panel
+              </Navbar.Item>
+              <DropdownMenu.Popover placement="end top">
+                <DropdownMenu.Content>
+                  <DropdownMenu.SubmenuTrigger>
+                    <DropdownMenu.Item id="users">Users</DropdownMenu.Item>
+                    <DropdownMenu.Popover>
+                      <DropdownMenu.Content onAction={onAction}>
+                        <DropdownMenu.Item id="invite-user">
+                          Invite User
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Popover>
+                  </DropdownMenu.SubmenuTrigger>
+                </DropdownMenu.Content>
+              </DropdownMenu.Popover>
+            </DropdownMenu>
+          </Navbar.Body>
+        </Navbar>
+      );
+
+      const trigger = screen.getByRole('button', { name: 'Control Panel' });
+
+      await userEvent.click(trigger);
+
+      await userEvent.click(
+        await screen.findByRole('menuitem', { name: 'Users' })
+      );
+
+      await userEvent.click(
+        await screen.findByRole('menuitem', { name: 'Invite User' })
+      );
+
+      expect(onAction).toHaveBeenCalledExactlyOnceWith('invite-user');
+
+      await waitFor(() =>
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+      );
+
+      await waitFor(() => expect(trigger).toHaveFocus());
+    }
+  );
 
   describe('Navbar subcomponents', () => {
     it('renders NavbarHeader with children', () => {

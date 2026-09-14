@@ -305,7 +305,7 @@ export const rows: Rows = [
   {
     component: 'Navbar',
     status: '✅ Done',
-    stage: '🟠 draft',
+    stage: '🔵 experimental',
     planned: 'Q1 2026',
   },
   {

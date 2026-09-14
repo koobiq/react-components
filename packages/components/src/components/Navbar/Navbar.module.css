@@ -1,19 +1,23 @@
 @import url('../../styles/mixins.css');
 
-.navbar {
+.base {
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: none;
+  overflow: visible;
   background-color: var(--kbq-background-bg-tertiary);
   block-size: 100%;
-  min-inline-size: 240px;
   border-inline-end: 1px solid var(--kbq-line-contrast-less);
   box-sizing: content-box;
+}
 
-  &[data-collapsed='true'] {
-    min-inline-size: var(--kbq-size-6xl);
-    inline-size: var(--kbq-size-6xl);
-  }
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: hidden;
 }
 
 .list {
@@ -24,6 +28,21 @@
 
   &[data-padded] {
     padding: 0;
+  }
+
+  /* A collapsed item's badge sticks out above the item, and a scrolling list clips it. */
+  .header &,
+  .footer & {
+    overflow: visible;
+  }
+}
+
+/* The body has to scroll, so it gets room for that badge without moving the items. */
+.body {
+  margin-block-start: calc(-1 * var(--kbq-size-3xs));
+
+  &[data-padded] {
+    padding-block-start: var(--kbq-size-3xs);
   }
 }
 
@@ -50,6 +69,7 @@
   block-size: 40px;
   inline-size: 100%;
   padding: 0 var(--kbq-size-m);
+  border-block: 0;
   border-inline-width: var(--kbq-size-s);
   gap: var(--kbq-size-m);
   border-color: transparent;
@@ -59,13 +79,13 @@
     --list-item-bg-color: var(--kbq-states-background-transparent-active);
   }
 
-  .navbar[data-collapsed='true'] & {
+  .base:not([data-open]) & {
     box-sizing: border-box;
     justify-content: center;
     padding: var(--kbq-size-xxs);
   }
 
-  .navbar .list & {
+  .base .list & {
     border-inline-width: var(--kbq-size-s);
   }
 }
@@ -83,13 +103,14 @@
   margin-inline-start: auto;
   display: grid;
   place-content: center;
+  flex-shrink: 0;
   background-color: var(--kbq-background-error);
   color: var(--kbq-foreground-white);
   block-size: var(--kbq-size-l);
   inline-size: var(--kbq-size-l);
   border-radius: var(--kbq-size-xxs);
 
-  .navbar[data-collapsed='true'] & {
+  .base:not([data-open]) & {
     position: absolute;
     inset-inline-end: calc(-1 * var(--kbq-size-3xs));
     inset-block-start: calc(-1 * var(--kbq-size-3xs));
@@ -126,7 +147,7 @@
   outline: none;
   background-color: transparent;
 
-  .navbar:is(:hover, :focus-within) & {
+  .base:is(:hover, :focus-within) & {
     display: grid;
   }
 }
@@ -140,7 +161,7 @@
   background-color: var(--kbq-background-card);
   color: var(--kbq-icon-contrast-fade);
 
-  .navbar[data-collapsed='true'] & {
+  .base[data-collapsed='true'] & {
     transform: rotate(180deg);
   }
 

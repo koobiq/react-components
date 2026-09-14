@@ -77,6 +77,9 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
               className
             )}
             data-selected={isActive || undefined}
+            aria-label={
+              isCollapsed && typeof children === 'string' ? children : undefined
+            }
             {...mergeProps(props, other)}
             ref={mergeRefs(props.ref, inRef)}
           >

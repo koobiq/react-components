@@ -1,15 +1,16 @@
 'use client';
 
+import { useRef } from 'react';
+
 import {
   clsx,
-  mergeProps,
   useControlledState,
   useLocalizedStringFormatter,
-  useObjectRef,
 } from '@koobiq/react-core';
 import { IconChevronDoubleLeftS16 } from '@koobiq/react-icons';
 import { Button, useToolbar } from '@koobiq/react-primitives';
 
+import { Sidebar } from '../Sidebar';
 import { Tooltip } from '../Tooltip';
 
 import {
@@ -26,7 +27,7 @@ import type { NavbarProps } from './types';
 
 export const NavbarComponent = ({
   variant = 'vertical',
-  isCollapsed,
+  isCollapsed: isCollapsedProp,
   isToggleButtonHidden,
   defaultCollapsed,
   className,
@@ -35,11 +36,11 @@ export const NavbarComponent = ({
   ref,
   ...other
 }: NavbarProps) => {
-  const navbarRef = useObjectRef(ref);
-  const { toolbarProps } = useToolbar({ orientation: variant }, navbarRef);
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const { toolbarProps } = useToolbar({ orientation: variant }, toolbarRef);
 
-  const [isCollapsedActual, setIsCollapsedActual] = useControlledState(
-    isCollapsed,
+  const [isCollapsed, setCollapsed] = useControlledState(
+    isCollapsedProp,
     defaultCollapsed ?? false,
     onCollapse
   );
@@ -47,42 +48,54 @@ export const NavbarComponent = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
-    <NavbarContext.Provider value={{ isCollapsed: isCollapsedActual }}>
-      <nav
-        {...mergeProps(other, toolbarProps)}
-        className={clsx(s.navbar, className)}
-        role="navigation"
-        ref={navbarRef}
-        data-collapsed={isCollapsedActual}
-      >
-        {children}
+    <Sidebar
+      {...other}
+      as="nav"
+      className={clsx(s.base, className)}
+      role="navigation"
+      ref={ref}
+      isOpen={!isCollapsed}
+      onOpenChange={(isOpen) => setCollapsed(!isOpen)}
+      size={240}
+      closedSize={56}
+      keyboardShortcut={null}
+      data-collapsed={isCollapsed}
+    >
+      {({ isOpen, toggle }) => (
+        <NavbarContext.Provider value={{ isCollapsed: !isOpen }}>
+          <div className={s.content} ref={toolbarRef} {...toolbarProps}>
+            {children}
+          </div>
 
-        {!isToggleButtonHidden && (
-          <Tooltip
-            offset={8}
-            hideArrow
-            placement="end"
-            control={(tooltipProps) => (
-              <Button
-                {...tooltipProps}
-                aria-hidden
-                tabIndex={-1}
-                className={s.toggleWrapper}
-                onPress={() => setIsCollapsedActual((is) => !is)}
-              >
-                <span className={s.toggleButton}>
-                  <IconChevronDoubleLeftS16 />
-                </span>
-              </Button>
-            )}
-          >
-            {stringFormatter.format(
-              isCollapsedActual ? 'show navbar' : 'hide navbar'
-            )}
-          </Tooltip>
-        )}
-      </nav>
-    </NavbarContext.Provider>
+          {!isToggleButtonHidden && (
+            <Tooltip
+              offset={8}
+              hideArrow
+              placement="end"
+              control={(tooltipProps) => (
+                <Button
+                  {...tooltipProps}
+                  aria-label={stringFormatter.format(
+                    isCollapsed ? 'show navbar' : 'hide navbar'
+                  )}
+                  aria-expanded={!isCollapsed}
+                  className={s.toggleWrapper}
+                  onPress={toggle}
+                >
+                  <span className={s.toggleButton}>
+                    <IconChevronDoubleLeftS16 />
+                  </span>
+                </Button>
+              )}
+            >
+              {stringFormatter.format(
+                isCollapsed ? 'show navbar' : 'hide navbar'
+              )}
+            </Tooltip>
+          )}
+        </NavbarContext.Provider>
+      )}
+    </Sidebar>
   );
 };
 

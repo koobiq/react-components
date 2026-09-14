@@ -11,7 +11,7 @@ import * as Stories from './Navbar.stories';
 
 # Navbar
 
-<Status variant="draft" />
+<Status variant="experimental" />
 
 The main menu organizes navigation within the product. It consists of a logo, section links, and can additionally include an app switcher, help section, and settings block.
 
@@ -62,34 +62,20 @@ import { Navbar } from '@koobiq/react-components';
 </Navbar>;
 ```
 
+## Controlled
+
+<Story of={Stories.Controlled} />
+
+## Expand over content
+
+The navbar can expand over the page content instead of pushing it aside: make its column as wide as the collapsed navbar.
+
+<Story of={Stories.ExpandOverContent} />
+
 ## Integration
 
 ### Next.js
 
 Integrating navigation into Next.js:
-
-```tsx
-import { RouterProvider } from '@koobiq/react-core';
-
-const router = useRouter()
-
-<RouterProvider navigate={(path) => router.push(path)}>
-  <Navbar>
-    <Navbar.Header>
-      ...
-    </Navbar.Header>
-
-    <Navbar.Body>
-      <Navbar.Item href="/link-1">
-        Link 1
-      </Navbar.Item>
-
-      ...
-    </Navbar.Body>
-
-    ...
-  </Navbar>
-</RouterProvider>
-```
 
 <Story of={Stories.RouteProvider} />
