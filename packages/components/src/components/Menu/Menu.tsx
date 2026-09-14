@@ -95,23 +95,13 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
 
 const MenuComponent = forwardRef(MenuRender) as MenuComponent;
 
-type CompoundedComponent = typeof MenuComponent & {
-  Item: typeof Item;
-  Header: typeof Header;
-  Section: typeof Section;
-  Divider: typeof Divider;
-  ItemText: typeof ListItemText;
-  ItemAddon: typeof ListItemAddon;
-  Control: typeof Pressable;
-};
-
 /** A menu displays a list of actions or options that a user can choose. */
-export const Menu = MenuComponent as CompoundedComponent;
-
-Menu.Item = Item;
-Menu.Section = Section;
-Menu.Header = Header;
-Menu.Divider = Divider;
-Menu.ItemText = ListItemText;
-Menu.ItemAddon = ListItemAddon;
-Menu.Control = Pressable;
+export const Menu = Object.assign(MenuComponent, {
+  Item,
+  Section,
+  Header,
+  Divider,
+  ItemText: ListItemText,
+  ItemAddon: ListItemAddon,
+  Control: Pressable,
+});

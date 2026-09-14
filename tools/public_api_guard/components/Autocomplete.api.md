@@ -12,16 +12,20 @@ import type { ButtonOptions } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
+import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
 import type { ItemProps as ItemProps_2 } from '@koobiq/react-core';
 import { JSX } from 'react/jsx-runtime';
 import { ListState } from '@koobiq/react-primitives';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { ReactElement } from 'react';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
@@ -32,10 +36,13 @@ import { TextProps } from '@koobiq/react-primitives';
 import type { TransitionProps } from 'react-transition-group/Transition';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent_2" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Autocomplete: CompoundedComponent_2;
+export const Autocomplete: AutocompleteComponent & {
+    Item: typeof Item;
+    Section: typeof Section;
+    ItemText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
 // @public (undocumented)
 export type AutocompleteComponent = <T extends object = object>(props: AutocompleteProps<T>) => ReactElement | null;
@@ -45,8 +52,6 @@ export type AutocompleteComponent = <T extends object = object>(props: Autocompl
 // @public (undocumented)
 export type AutocompleteInputPropVariant = FormFieldControlGroupPropVariant;
 
-// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type AutocompleteItemAddonProps = ListItemAddonProps;
 
@@ -55,8 +60,6 @@ export type AutocompleteItemAddonProps = ListItemAddonProps;
 // @public (undocumented)
 export type AutocompleteItemProps<T extends object = object> = ItemProps<T>;
 
-// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type AutocompleteItemTextProps = ListItemTextProps;
 
@@ -129,6 +132,10 @@ export type AutocompleteSectionProps<T extends object = object> = SectionProps<T
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/Autocomplete/Autocomplete.d.ts:11:5 - (ae-forgotten-export) The symbol "Item" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/Autocomplete.d.ts:12:5 - (ae-forgotten-export) The symbol "Section" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/Autocomplete.d.ts:13:5 - (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Autocomplete/Autocomplete.d.ts:14:5 - (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Autocomplete/types.d.ts:59:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Autocomplete/types.d.ts:60:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Autocomplete/types.d.ts:61:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts

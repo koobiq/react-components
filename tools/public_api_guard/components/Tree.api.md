@@ -15,6 +15,7 @@ import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 import type { TreeItemContentProps as TreeItemContentProps_2 } from '@koobiq/react-primitives';
@@ -22,33 +23,17 @@ import type { TreeItemProps as TreeItemProps_2 } from '@koobiq/react-primitives'
 import { TreeLoadMoreItemProps as TreeLoadMoreItemProps_2 } from '@koobiq/react-primitives';
 import type { TreeProps as TreeProps_2 } from '@koobiq/react-primitives';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Tree: CompoundedComponent;
-
-// @public
-export function TreeComponent<T extends object>(input: TreeProps<T>): JSX.Element;
+export const Tree: TreeComponent & {
+    Item: typeof TreeItem;
+    ItemContent: typeof TreeItemContent;
+    ItemContentText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemContentAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    LoadMoreItem: typeof TreeLoadMoreItem;
+};
 
 // @public (undocumented)
-export namespace TreeComponent {
-    var // (undocumented)
-    displayName: string;
-    var // (undocumented)
-    Item: typeof TreeItem;
-    var // (undocumented)
-    ItemContent: typeof TreeItemContent;
-    var // Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    ItemContentText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
-    var // Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    ItemContentAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
-    var // (undocumented)
-    LoadMoreItem: typeof TreeLoadMoreItem;
-}
+export type TreeComponent = <T extends object>(props: TreeProps<T>) => ReactElement | null;
 
 // @public (undocumented)
 export function TreeItem(input: TreeItemProps): JSX.Element;
@@ -105,6 +90,8 @@ export type TreeProps<T extends object> = TreeProps_2<T> & {
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/Tree/Tree.d.ts:12:5 - (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Tree/Tree.d.ts:13:5 - (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:6:5 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/Tree/components/TreeItemContent/types.d.ts:7:5 - (ae-forgotten-export) The symbol "CheckboxProps" needs to be exported by the entry point index.d.ts
 

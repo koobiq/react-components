@@ -25,10 +25,12 @@ export type BuildUsernameTextOptions = {
 // @public
 export function formatUsername(userInfo: UsernameUserInfo | undefined, format?: string, options?: UsernameFormatOptions): string;
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const Username: CompoundedComponent;
+export const Username: ForwardRefExoticComponent<Omit<UsernameBaseProps, "ref"> & RefAttributes<HTMLSpanElement>> & {
+    Primary: ForwardRefExoticComponent<Omit<UsernamePrimaryProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    Secondary: ForwardRefExoticComponent<Omit<UsernameSecondaryProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    SecondaryHint: ForwardRefExoticComponent<Omit<UsernameSecondaryHintProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+};
 
 // @public (undocumented)
 export type UsernameBaseProps = Omit<ComponentPropsWithRef<'span'>, 'children'> & {
@@ -70,10 +72,8 @@ export type UsernamePropMode = (typeof usernamePropMode)[number];
 // @public (undocumented)
 export const usernamePropMode: readonly ["stacked", "inline", "text"];
 
-// Warning: (ae-forgotten-export) The symbol "UsernameComponent" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export type UsernameProps = ComponentPropsWithRef<typeof UsernameComponent>;
+export type UsernameProps = ComponentPropsWithRef<typeof Username>;
 
 // @public (undocumented)
 export type UsernamePropType = (typeof usernamePropType)[number];

@@ -21,10 +21,10 @@ import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import type { Ref } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const TagList: CompoundedComponent;
+export const TagList: TagListComponent & {
+    Tag: typeof Tag;
+};
 
 // @public (undocumented)
 export type TagListComponent = <T extends object = object>(props: TagListProps<T>) => ReactElement | null;
@@ -55,6 +55,10 @@ export type TagListRef = ComponentRef<'div'>;
 //
 // @public (undocumented)
 export type TagListTagProps<T extends object = object> = TagProps<T>;
+
+// Warnings were encountered during analysis:
+//
+// packages/components/dist/components/TagList/TagList.d.ts:9:5 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

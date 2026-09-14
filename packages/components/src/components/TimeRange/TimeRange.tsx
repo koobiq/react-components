@@ -424,14 +424,10 @@ const TimeRangeComponentImpl = forwardRef(
   TimeRangeRender
 ) as TimeRangeComponent;
 
-type CompoundedComponent = TimeRangeComponent & {
-  Field: typeof TimeRangeField;
-};
-
 /**
  * A time range picker: a popover trigger with relative-time presets
  * ("last 7 days", "current quarter", …) and a manual from/to editor.
  */
-export const TimeRange = TimeRangeComponentImpl as CompoundedComponent;
-
-TimeRange.Field = TimeRangeField;
+export const TimeRange = Object.assign(TimeRangeComponentImpl, {
+  Field: TimeRangeField,
+});

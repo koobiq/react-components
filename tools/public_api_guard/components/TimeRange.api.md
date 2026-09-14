@@ -9,16 +9,20 @@ import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primiti
 import type { ButtonOptions } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
 import { DateTimeDuration } from '@internationalized/date';
 import { DateValue } from '@koobiq/react-primitives';
+import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
 import { JSX } from 'react/jsx-runtime';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { RadioGroup } from '@koobiq/react-primitives';
 import type { RadioGroupProps as RadioGroupProps_2 } from '@koobiq/react-primitives';
 import type { ReactElement } from 'react';
@@ -45,10 +49,10 @@ export type CustomTimeRangeType = {
 // @public
 export const defaultTimeRangeTypes: TimeRangeType[];
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent_2" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const TimeRange: CompoundedComponent_2;
+export const TimeRange: TimeRangeComponent & {
+    Field: ForwardRefExoticComponent<Omit<TimeRangeFieldProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
 // @public (undocumented)
 export type TimeRangeComponent = <T extends DateValue = DateValue>(props: TimeRangeProps<T>) => ReactElement | null;

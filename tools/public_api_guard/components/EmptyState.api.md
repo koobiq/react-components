@@ -5,17 +5,33 @@
 ```ts
 
 import type { ComponentPropsWithRef } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
+import { DetailedHTMLProps } from 'react';
 import { ElementType } from 'react';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
-import type { ReactNode } from 'react';
+import { PolymorphicWithRef } from '@koobiq/react-core';
+import { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const EmptyState: CompoundedComponent;
+export const EmptyState: Omit<ForwardRefExoticComponent<Merge<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {
+size?: EmptyStatePropSize;
+isInvalid?: boolean;
+align?: EmptyStatePropAlign;
+as?: ElementType;
+className?: string;
+children?: ReactNode;
+} & DataAttributeProps & {
+as?: "div" | undefined;
+}>>, never> & PolymorphicWithRef<"div", EmptyStateBaseProps, ElementType> & {
+    Media: PolyForwardComponent<"div", EmptyStateMediaProps, ElementType>;
+    Title: PolyForwardComponent<"h3", EmptyStateTitleProps, ElementType>;
+    Content: PolyForwardComponent<"p", EmptyStateContentProps, ElementType>;
+    Actions: ForwardRefExoticComponent<Omit<EmptyStateActionsProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
 // @public
 export const EmptyStateActions: ForwardRefExoticComponent<Omit<EmptyStateActionsProps, "ref"> & RefAttributes<HTMLDivElement>>;
