@@ -1,5 +1,5 @@
 .base {
-  z-index: var(--kbq-layer-modal);
+  z-index: var(--kbq-layer-overlay);
   display: flex;
   position: fixed;
   overflow: hidden;

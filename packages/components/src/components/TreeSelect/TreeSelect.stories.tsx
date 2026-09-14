@@ -8,6 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useAsyncList } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { Tree } from '../Tree';
 import { Typography } from '../Typography';
 
@@ -26,7 +27,7 @@ const meta = {
     'TreeSelect.Tag': TreeSelect.Tag,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-09-07'],
+  tags: ['status:updated', 'date:2026-09-09'],
 } satisfies Meta<typeof TreeSelect>;
 
 export default meta;
@@ -591,6 +592,35 @@ export const Searchable: Story = {
           return (
             <Tree.Item key={item.id} textValue={item.title}>
               <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Collection items={item.test}>{renderItem}</Collection>
+            </Tree.Item>
+          );
+        }}
+      </TreeSelect>
+    );
+  },
+};
+
+export const Dependencies: Story = {
+  render: function Render() {
+    const [inputValue, setInputValue] = useState('');
+
+    return (
+      <TreeSelect
+        items={items}
+        label="Project files"
+        dependencies={[inputValue]}
+        onInputChange={setInputValue}
+        style={{ inlineSize: 320 }}
+        placeholder="Select a file"
+        isSearchable
+      >
+        {function renderItem(item) {
+          return (
+            <Tree.Item key={item.id} textValue={item.title}>
+              <Tree.ItemContent>
+                <Highlight text={item.title} query={inputValue} />
+              </Tree.ItemContent>
               <Collection items={item.test}>{renderItem}</Collection>
             </Tree.Item>
           );
