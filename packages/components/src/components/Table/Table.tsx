@@ -231,25 +231,17 @@ function TableRender<T extends object>(
 
 const TableComponent = forwardRef(TableRender) as TableComponent;
 
-type CompoundedComponent = typeof TableComponent & {
-  Header: typeof TableHeader;
-  Body: typeof TableBody;
-  Column: typeof Column;
-  Row: typeof Row;
-  Cell: typeof Cell;
-};
-
 /**
  * A table displays data in rows and columns and enables a user to navigate its
  * contents via directional navigation keys, and optionally supports row
  * selection.
  */
-export const Table = TableComponent as CompoundedComponent;
+export const Table = Object.assign(TableComponent, {
+  Header: TableHeader,
+  Body: TableBody,
+  Column,
+  Row,
+  Cell,
+});
 
 export { TableContainer };
-
-Table.Header = TableHeader;
-Table.Body = TableBody;
-Table.Column = Column;
-Table.Row = Row;
-Table.Cell = Cell;

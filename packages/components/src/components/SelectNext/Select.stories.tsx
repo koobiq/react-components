@@ -13,6 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { useAsyncList, useFilter } from '../index';
 import { Typography } from '../Typography';
 
@@ -582,6 +583,30 @@ export const Searchable: Story = {
         isSearchable
       >
         {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+      </Select>
+    );
+  },
+};
+
+export const Dependencies: Story = {
+  render: function Render() {
+    const [inputValue, setInputValue] = useState('');
+
+    return (
+      <Select
+        items={options}
+        label="Attack type"
+        dependencies={[inputValue]}
+        onInputChange={setInputValue}
+        style={{ inlineSize: 200 }}
+        placeholder="Select an option"
+        isSearchable
+      >
+        {(item) => (
+          <Select.Item id={item.id} textValue={item.name}>
+            <Highlight text={item.name} query={inputValue} />
+          </Select.Item>
+        )}
       </Select>
     );
   },

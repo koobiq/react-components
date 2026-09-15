@@ -2,7 +2,13 @@ import { createRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
 import type { Key, ValidationResult } from '@koobiq/react-core';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -1051,7 +1057,7 @@ describe('FileUpload', () => {
 
     const button = screen.getByRole('button', { name: /remove/i });
 
-    button.focus();
+    act(() => button.focus());
     fireEvent.keyDown(button, { key: 'Delete' });
 
     expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();
@@ -1068,7 +1074,7 @@ describe('FileUpload', () => {
 
     const button = screen.getByRole('button', { name: /remove/i });
 
-    button.focus();
+    act(() => button.focus());
     fireEvent.keyDown(button, { key: 'Backspace' });
 
     expect(screen.queryByText('remove-me.txt')).not.toBeInTheDocument();

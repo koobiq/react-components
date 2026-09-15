@@ -26,6 +26,7 @@
     "noUncheckedIndexedAccess": true,
     "noEmit": true,
     "paths": {
+      "@koobiq/logger": ["./packages/logger/src"],
       "@koobiq/react-primitives": ["./packages/primitives/src"],
       "@koobiq/react-components": ["./packages/components/src"],
       "@koobiq/react-core": ["./packages/core/src"]

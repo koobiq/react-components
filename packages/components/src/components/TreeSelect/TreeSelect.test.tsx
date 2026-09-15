@@ -25,9 +25,9 @@ const items: FileNode[] = [
 ];
 
 function TreeSelectFixture<M extends SelectionMode = 'single'>(
-  props: Partial<TreeSelectProps<FileNode, M>> = {}
+  props: Partial<TreeSelectProps<FileNode, M>> & { suffix?: string } = {}
 ) {
-  const { slotProps, ...otherProps } = props;
+  const { slotProps, suffix = '', ...otherProps } = props;
 
   return (
     <Provider>
@@ -59,7 +59,7 @@ function TreeSelectFixture<M extends SelectionMode = 'single'>(
               textValue={item.title}
               data-testid={`item-${item.id}`}
             >
-              <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Tree.ItemContent>{`${item.title}${suffix}`}</Tree.ItemContent>
               <Collection items={item.children}>{renderItem}</Collection>
             </Tree.Item>
           );
@@ -70,7 +70,7 @@ function TreeSelectFixture<M extends SelectionMode = 'single'>(
 }
 
 function renderTreeSelect<M extends SelectionMode = 'single'>(
-  props: Partial<TreeSelectProps<FileNode, M>> = {}
+  props: Partial<TreeSelectProps<FileNode, M>> & { suffix?: string } = {}
 ) {
   return render(<TreeSelectFixture {...props} />);
 }
@@ -368,6 +368,174 @@ describe('TreeSelect', () => {
     });
   });
 
+  describe('renderTag', () => {
+    const getTag = (key: number) => screen.getByTestId(`tag-${key}`);
+    const queryTag = (key: number) => screen.queryByTestId(`tag-${key}`);
+
+    const getRemoveButton = (key: number) =>
+      within(getTag(key)).getByRole('button', { hidden: true });
+
+    const renderTag: NonNullable<
+      TreeSelectProps<FileNode, 'multiple'>['renderTag']
+    > = (item, tagProps) => (
+      <TreeSelect.Tag
+        {...tagProps}
+        icon={<span data-testid={`tag-icon-${item.key}`} />}
+        data-testid={`tag-${item.key}`}
+      >
+        {item.textValue}
+      </TreeSelect.Tag>
+    );
+
+    it('should ignore renderTag in single selection mode', () => {
+      const renderTag = vi.fn(() => <div>Custom tag</div>);
+
+      renderTreeSelect({ defaultValue: 7, renderTag });
+
+      expect(getControl()).toHaveTextContent('README.md');
+      expect(renderTag).not.toHaveBeenCalled();
+    });
+
+    describe.each(['responsive', 'multiline'] as const)(
+      '%s overflow',
+      (selectedTagsOverflow) => {
+        it('should support custom elements and forward props for overflow measurement', () => {
+          const renderCustomTag = vi.fn<
+            NonNullable<TreeSelectProps<FileNode, 'multiple'>['renderTag']>
+          >((item, { className, ref, 'aria-hidden': ariaHidden }) => (
+            <div
+              ref={ref}
+              className={className}
+              aria-hidden={ariaHidden}
+              data-testid={`tag-${item.key}`}
+            >
+              Custom: {item.textValue}
+            </div>
+          ));
+
+          renderTreeSelect({
+            selectionMode: 'multiple',
+            defaultValue: [2, 7],
+            selectedTagsOverflow,
+            renderTag: renderCustomTag,
+          });
+
+          expect(getTag(2)).toHaveTextContent('Custom: Http');
+          expect(getTag(7)).toHaveTextContent('Custom: README.md');
+
+          const tagProps = renderCustomTag.mock.calls
+            .filter(([item]) => item.key === 2)
+            .at(-1)?.[1];
+
+          expect(tagProps?.className).toEqual(expect.any(String));
+          expect(getTag(2)).toHaveClass(tagProps!.className!);
+
+          if (selectedTagsOverflow === 'responsive') {
+            expect(tagProps?.ref).toEqual(
+              expect.objectContaining({ current: getTag(2) })
+            );
+          }
+        });
+
+        it('should customize tags using selected items, including collapsed descendants', () => {
+          renderTreeSelect({
+            selectionMode: 'multiple',
+            defaultValue: [2, 7],
+            selectedTagsOverflow,
+            renderTag: (item, tagProps) => (
+              <TreeSelect.Tag
+                {...tagProps}
+                variant="warning-fade"
+                data-testid={`tag-${item.key}`}
+              >
+                File: {item.value?.title}
+              </TreeSelect.Tag>
+            ),
+          });
+
+          expect(getTag(2)).toHaveTextContent('File: Http');
+
+          expect(getTag(7)).toHaveTextContent('File: README.md');
+
+          expect(getTag(2)).toHaveAttribute('data-variant', 'warning-fade');
+
+          expect(queryTag(1)).not.toBeInTheDocument();
+        });
+
+        it('should preserve invalid styling when customizing tag content', () => {
+          renderTreeSelect({
+            selectionMode: 'multiple',
+            defaultValue: [7],
+            selectedTagsOverflow,
+            isInvalid: true,
+            renderTag,
+          });
+
+          expect(screen.getByTestId('tag-icon-7')).toBeInTheDocument();
+          expect(getTag(7)).toHaveAttribute('data-variant', 'error-fade');
+          expect(getRemoveButton(7)).toHaveAttribute('data-variant', 'error');
+        });
+
+        it('should remove a custom tag without opening the dropdown', async () => {
+          const onChange = vi.fn();
+          const onOpenChange = vi.fn();
+
+          renderTreeSelect({
+            selectionMode: 'multiple',
+            defaultValue: [2, 7],
+            selectedTagsOverflow,
+            onChange,
+            onOpenChange,
+            renderTag,
+          });
+
+          await userEvent.click(getRemoveButton(2));
+
+          expect(onChange).toHaveBeenCalledExactlyOnceWith([7]);
+          expect(queryTag(2)).not.toBeInTheDocument();
+          expect(getTag(7)).toHaveTextContent('README.md');
+          expect(onOpenChange).not.toHaveBeenCalled();
+          expect(queryPopover()).not.toBeInTheDocument();
+        });
+
+        it.each([
+          { isDisabled: true, isReadOnly: false },
+          { isDisabled: false, isReadOnly: true },
+        ] as const)(
+          'should prevent custom tag removal with %j',
+          async (states) => {
+            const onChange = vi.fn();
+
+            renderTreeSelect({
+              selectionMode: 'multiple',
+              defaultValue: [7],
+              selectedTagsOverflow,
+              ...states,
+              onChange,
+              renderTag,
+            });
+
+            const tag = getTag(7);
+            const removeButton = getRemoveButton(7);
+
+            expect(removeButton).toHaveAttribute('aria-disabled', 'true');
+
+            if (states.isDisabled) {
+              expect(tag).toHaveAttribute('data-disabled', 'true');
+            } else {
+              expect(tag).not.toHaveAttribute('data-disabled');
+            }
+
+            await userEvent.click(removeButton);
+
+            expect(onChange).not.toHaveBeenCalled();
+            expect(tag).toBeInTheDocument();
+          }
+        );
+      }
+    );
+  });
+
   describe('disabled items', () => {
     it('should not select a disabled item', async () => {
       const onChange = vi.fn();
@@ -432,7 +600,7 @@ describe('TreeSelect', () => {
     });
 
     it.each(['responsive', 'multiline'] as const)(
-      'should hide clear and tag remove actions with %s overflow',
+      'should disable clear and tag remove actions with %s overflow',
       (selectedTagsOverflow) => {
         renderTreeSelect({
           selectionMode: 'multiple',
@@ -442,8 +610,14 @@ describe('TreeSelect', () => {
           isClearable: true,
         });
 
-        expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
-        expect(within(getControl()).queryAllByRole('button')).toHaveLength(0);
+        expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+        expect(getClearButton()).toBeDisabled();
+
+        const removeButtons = within(getControl()).getAllByLabelText('Remove');
+
+        removeButtons.forEach((button) =>
+          expect(button).toHaveAttribute('data-disabled', 'true')
+        );
       }
     );
 
@@ -548,10 +722,11 @@ describe('TreeSelect', () => {
       expect(onClear).toHaveBeenCalledTimes(1);
     });
 
-    it('should be hidden when disabled', () => {
+    it('should be disabled when the control is disabled', () => {
       renderTreeSelect({ value: 1, isClearable: true, isDisabled: true });
 
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
     });
   });
 
@@ -828,6 +1003,27 @@ describe('TreeSelect', () => {
 
       expect(getSearchInput()).toHaveValue('');
       expect(screen.getByTestId('item-7')).toBeInTheDocument();
+    });
+  });
+
+  describe('dependencies', () => {
+    const propsWithSuffix = (suffix: string) => ({
+      suffix,
+      dependencies: [suffix],
+      defaultExpandedKeys: [1],
+      defaultOpen: true,
+    });
+
+    it('should re-render the items when a dependency changes', () => {
+      const { rerender } = renderTreeSelect(propsWithSuffix('-a'));
+
+      expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-a');
+      expect(screen.getByTestId('item-2')).toHaveTextContent('Http-a');
+
+      rerender(<TreeSelectFixture {...propsWithSuffix('-b')} />);
+
+      expect(screen.getByTestId('item-7')).toHaveTextContent('README.md-b');
+      expect(screen.getByTestId('item-2')).toHaveTextContent('Http-b');
     });
   });
 });

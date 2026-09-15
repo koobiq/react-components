@@ -156,13 +156,7 @@ const TagAutocompleteComponent = forwardRef(
   TagAutocompleteRender
 ) as TagAutocompleteComponent;
 
-type CompoundedComponent = typeof TagAutocompleteComponent & {
-  ListItem: typeof TagAutocompleteListItem;
-  Tag: typeof Tag;
-};
-
-export const TagAutocomplete = TagAutocompleteComponent as CompoundedComponent;
-
-TagAutocomplete.ListItem = TagAutocompleteListItem;
-
-TagAutocomplete.Tag = Tag;
+export const TagAutocomplete = Object.assign(TagAutocompleteComponent, {
+  ListItem: TagAutocompleteListItem,
+  Tag,
+});

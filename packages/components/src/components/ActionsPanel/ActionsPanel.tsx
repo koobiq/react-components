@@ -228,14 +228,10 @@ const ActionsPanelComponent = (props: ActionsPanelProps) => {
 
 ActionsPanelComponent.displayName = 'ActionsPanel';
 
-type CompoundedComponent = typeof ActionsPanelComponent & {
-  Action: typeof ActionsPanelAction;
-};
-
 /**
  * ActionsPanel is used for single and bulk selection patterns when a user needs
  * to perform actions on one or more items at the same time.
  */
-export const ActionsPanel = ActionsPanelComponent as CompoundedComponent;
-
-ActionsPanel.Action = ActionsPanelAction;
+export const ActionsPanel = Object.assign(ActionsPanelComponent, {
+  Action: ActionsPanelAction,
+});

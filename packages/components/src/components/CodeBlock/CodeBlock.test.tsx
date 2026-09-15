@@ -154,6 +154,10 @@ describe('CodeBlock', () => {
       />
     );
 
+    await waitFor(() =>
+      expect(getCode()).toHaveAttribute('data-language', 'xml')
+    );
+
     expect(screen.queryAllByRole('tab')).toHaveLength(0);
     expect(screen.getByTestId('root')).toHaveAttribute('data-hide-tabs');
     expect(onHideTabsChange).not.toHaveBeenCalled();
@@ -361,6 +365,12 @@ describe('CodeBlock', () => {
 
     expect(region).toHaveClass('custom-content');
     expect(region).toHaveStyle({ minBlockSize: '40px' });
+
+    // Flushes the pending highlight update. Kept last: the assertions above
+    // must stay synchronous.
+    await waitFor(() =>
+      expect(getCode()).toHaveAttribute('data-language', 'javascript')
+    );
   });
 
   describe('highlight configuration', () => {

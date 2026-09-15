@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useBoolean } from '@koobiq/react-core';
 import {
@@ -10,6 +10,7 @@ import {
   IconXmarkS16,
 } from '@koobiq/react-icons';
 import * as Icons from '@koobiq/react-icons';
+import { useMaskito } from '@maskito/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { AnimatedIcon } from '../AnimatedIcon';
@@ -17,6 +18,7 @@ import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
 import { Form } from '../Form';
 import { IconButton } from '../IconButton';
+import { InputNumber } from '../InputNumber';
 import { Tooltip } from '../Tooltip';
 import { Typography } from '../Typography';
 
@@ -450,4 +452,131 @@ export const Validation: Story = {
       <Button type="submit">Submit</Button>
     </Form>
   ),
+};
+
+export const Mask: Story = {
+  render: function Render(args) {
+    const hex = /[\dA-Fa-f]/;
+    const alphanumeric = /[\dA-Za-z]/;
+
+    const maskGroups = (
+      count: number,
+      size: number,
+      character: RegExp,
+      separator: string
+    ) =>
+      Array.from({ length: count }).flatMap((_, index) => [
+        ...(index === 0 ? [] : [separator]),
+        ...Array.from<RegExp>({ length: size }).fill(character),
+      ]);
+
+    const toUpperCase = ({
+      value,
+      selection,
+    }: {
+      value: string;
+      selection: readonly [number, number];
+    }) => ({ value: value.toUpperCase(), selection });
+
+    const ipv4Options = useMemo(
+      () => ({
+        mask: /^((25[0-5]|2[0-4]\d|[01]?\d?\d)\.){0,3}(25[0-5]|2[0-4]\d|[01]?\d?\d)?$/,
+      }),
+      []
+    );
+
+    const macOptions = useMemo(
+      () => ({
+        mask: maskGroups(6, 2, hex, ':'),
+        postprocessors: [toUpperCase],
+      }),
+      []
+    );
+
+    const ipv6Options = useMemo(
+      () => ({ mask: /^([\dA-Fa-f]{0,4}:){0,7}[\dA-Fa-f]{0,4}$/ }),
+      []
+    );
+
+    const licenseKeyOptions = useMemo(
+      () => ({
+        mask: maskGroups(4, 4, alphanumeric, '-'),
+        postprocessors: [toUpperCase],
+      }),
+      []
+    );
+
+    const ipv4Ref = useMaskito({ options: ipv4Options });
+    const macRef = useMaskito({ options: macOptions });
+    const ipv6Ref = useMaskito({ options: ipv6Options });
+    const licenseKeyRef = useMaskito({ options: licenseKeyOptions });
+
+    const [ipv4, setIpv4] = useState('192.168.0.1');
+    const [mac, setMac] = useState('AA:BB:CC:DD:EE:FF');
+    const [ipv6, setIpv6] = useState('2001:db8:85a3::8a2e:370:7334');
+    const [licenseKey, setLicenseKey] = useState('ABCD-1234-EFGH-5678');
+
+    return (
+      <FlexBox direction="column" gap="l" style={{ inlineSize: 320 }}>
+        <Input
+          label="IP address"
+          caption="Format: 192.168.0.1"
+          value={ipv4}
+          onChange={setIpv4}
+          slotProps={{ input: { ref: ipv4Ref } }}
+          inputMode="decimal"
+          autoComplete="off"
+          spellCheck="false"
+          isClearable
+          fullWidth
+          {...args}
+        />
+        <Input
+          label="MAC address"
+          caption="Format: AA:BB:CC:DD:EE:FF"
+          value={mac}
+          onChange={setMac}
+          slotProps={{ input: { ref: macRef } }}
+          autoComplete="off"
+          spellCheck="false"
+          isClearable
+          fullWidth
+          {...args}
+        />
+        <Input
+          label="IPv6 address"
+          caption="Format: 2001:db8:85a3::8a2e:370:7334"
+          value={ipv6}
+          onChange={setIpv6}
+          slotProps={{ input: { ref: ipv6Ref } }}
+          autoComplete="off"
+          spellCheck="false"
+          isClearable
+          fullWidth
+          {...args}
+        />
+        <InputNumber
+          label="Port"
+          caption="Range: 0-65535"
+          defaultValue={8080}
+          minValue={0}
+          maxValue={65535}
+          formatOptions={{ useGrouping: false }}
+          fullWidth
+        />
+        <Input
+          label="License key"
+          caption="Format: ABCD-1234-EFGH-5678"
+          value={licenseKey}
+          onChange={setLicenseKey}
+          slotProps={{ input: { ref: licenseKeyRef } }}
+          autoComplete="off"
+          spellCheck="false"
+          isClearable
+          fullWidth
+          {...args}
+        />
+      </FlexBox>
+    );
+  },
 };

@@ -67,6 +67,11 @@ export type AriaTagListItemProps = {
   collectionId?: string;
   onRemove?: (keys: Set<Key>, context?: TagListItemRemoveContext) => void;
   isDisabled?: boolean;
+  /**
+   * Whether removal is blocked while the remove affordance stays rendered:
+   * the Delete/Backspace shortcut and its screen-reader hint are turned off.
+   */
+  isReadOnly?: boolean;
 };
 
 export type TagListItemAria = {
@@ -94,7 +99,13 @@ export function useTagListItem<T extends object>(
   state: ListState<T>,
   ref: RefObject<HTMLDivElement | null>
 ): TagListItemAria {
-  const { key, collectionId, onRemove, isDisabled: isDisabledProp } = props;
+  const {
+    key,
+    collectionId,
+    onRemove,
+    isDisabled: isDisabledProp,
+    isReadOnly,
+  } = props;
 
   const rowId = useId();
   const removeButtonId = useId();
@@ -112,6 +123,10 @@ export function useTagListItem<T extends object>(
   // The remove affordance stays visible on disabled tags — the button just
   // renders disabled (state propagated via `removeButtonProps.isDisabled`).
   const allowsRemoving = !!onRemove;
+
+  // Read-only keeps the remove affordance rendered, but the keyboard shortcut
+  // and its hint are off — the key then propagates like on a non-removable tag.
+  const allowsKeyboardRemoval = allowsRemoving && !isReadOnly;
 
   const allowsSelection = !isDisabled && selectionManager.canSelectItem(key);
 
@@ -133,7 +148,7 @@ export function useTagListItem<T extends object>(
   }
 
   const description =
-    allowsRemoving &&
+    allowsKeyboardRemoval &&
     !isDisabled &&
     (modality === 'keyboard' || modality === 'virtual')
       ? stringFormatter.format('removeDescription')
@@ -236,7 +251,7 @@ export function useTagListItem<T extends object>(
       }
 
       if (event.key === 'Backspace' || event.key === 'Delete') {
-        if (!allowsRemoving) {
+        if (!allowsKeyboardRemoval) {
           event.continuePropagation();
 
           return;

@@ -54,6 +54,7 @@ import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 import { SearchInput, type SearchInputProps } from '../SearchInput';
 import { SelectedTags } from '../SelectedTags';
+import { Tag } from '../Tag';
 import { Tree } from '../Tree';
 
 import intlMessages from './intl';
@@ -80,6 +81,7 @@ export function TreeSelectInner<
 >({ props, collection, controlRef }: TreeSelectInnerProps<T, M>) {
   const {
     selectedTagsOverflow = 'responsive',
+    renderTag,
     defaultInputValue = '',
     labelAlign,
     placeholder,
@@ -237,8 +239,7 @@ export function TreeSelectInner<
     validationDetails,
   };
 
-  const clearButtonIsHidden =
-    isDisabled || isReadOnly || !state.selectedItems.length;
+  const clearButtonIsHidden = !state.selectedItems.length;
 
   const handleClear = useCallback(() => {
     if (isReadOnly) return;
@@ -318,6 +319,7 @@ export function TreeSelectInner<
       variant,
       isInvalid: isInvalidAria,
       isDisabled,
+      isReadOnly,
       ref: triggerRef,
     },
     slotProps?.group
@@ -405,6 +407,7 @@ export function TreeSelectInner<
           isRequired,
         }}
         selectedTagsOverflow={selectedTagsOverflow}
+        renderTag={renderTag}
       />
     ) : (
       state.selectedItems[0]?.textValue
@@ -484,15 +487,10 @@ function TreeSelectRender<T extends object, M extends SelectionMode = 'single'>(
 
 const TreeSelectComponent = forwardRef(TreeSelectRender) as TreeSelectComponent;
 
-type CompoundedComponent = typeof TreeSelectComponent & {
-  Item: typeof Tree.Item;
-  ItemContent: typeof Tree.ItemContent;
-  LoadMoreItem: typeof Tree.LoadMoreItem;
-};
-
 /** Select with hierarchical tree data. */
-export const TreeSelect = TreeSelectComponent as CompoundedComponent;
-
-TreeSelect.Item = Tree.Item;
-TreeSelect.ItemContent = Tree.ItemContent;
-TreeSelect.LoadMoreItem = Tree.LoadMoreItem;
+export const TreeSelect = Object.assign(TreeSelectComponent, {
+  Item: Tree.Item,
+  ItemContent: Tree.ItemContent,
+  LoadMoreItem: Tree.LoadMoreItem,
+  Tag,
+});

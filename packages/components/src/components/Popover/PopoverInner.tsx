@@ -164,6 +164,10 @@ export const PopoverInner: FC<PopoverInnerProps> = (props) => {
         {
           ...props.style,
           ...popoverProps.style,
+          // React Aria hardcodes `z-index: 100000` here. Strip it so the layer
+          // comes from CSS and every overlay shares one stacking plane, where
+          // the DOM order of the portals decides. A `style` prop still wins.
+          zIndex: props.style?.zIndex,
           '--popover-inline-size': normalizeInlineSize(size),
         } as CSSProperties
       }

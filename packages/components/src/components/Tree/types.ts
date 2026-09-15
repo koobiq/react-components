@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react';
+
 import type { TreeProps as AriaTreeProps } from '@koobiq/react-primitives';
 
 import type { ListItemAddonProps, ListItemTextProps } from '../List/components';
@@ -11,3 +13,7 @@ export type TreeProps<T extends object> = AriaTreeProps<T> & {
   /** Whether the tree has outer padding. */
   isPadded?: boolean;
 };
+
+export type TreeComponent = <T extends object>(
+  props: TreeProps<T>
+) => ReactElement | null;

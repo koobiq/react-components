@@ -102,16 +102,11 @@ export const AccordionComponent = forwardRef<AccordionRef, AccordionProps>(
 
 AccordionComponent.displayName = 'Accordion';
 
-type CompoundedComponent = typeof AccordionComponent & {
-  Summary: typeof AccordionSummary;
-  Details: typeof AccordionDetails;
-};
-
 /**
  * Accordion display a list of high-level options that can expand/collapse to
  * reveal more information.
  */
-export const Accordion = AccordionComponent as CompoundedComponent;
-
-Accordion.Summary = AccordionSummary;
-Accordion.Details = AccordionDetails;
+export const Accordion = Object.assign(AccordionComponent, {
+  Summary: AccordionSummary,
+  Details: AccordionDetails,
+});

@@ -1,22 +1,22 @@
-import { describe, beforeEach, afterAll, it, expect, vi } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
+import type { LoggerType } from './index.js';
 import { logger, once, setConfig } from './index.js';
 
+const types: LoggerType[] = ['trace', 'debug', 'log', 'info', 'warn', 'error'];
+
 describe('logger', () => {
-  const initialConsole = { ...global.console };
   setConfig({ scope: undefined });
 
+  // Spying composes with `vitest-fail-on-console`; reassigning would clobber it.
   beforeEach(() => {
-    global.console.trace = vi.fn();
-    global.console.debug = vi.fn();
-    global.console.log = vi.fn();
-    global.console.info = vi.fn();
-    global.console.warn = vi.fn();
-    global.console.error = vi.fn();
+    types.forEach((type) => {
+      vi.spyOn(console, type).mockImplementation(() => {});
+    });
   });
 
-  afterAll(() => {
-    global.console = initialConsole;
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   describe('logger', () => {

@@ -62,10 +62,10 @@ describe('overflow tooltips in list items', () => {
         selectionMode="single"
         onSelectionChange={onSelectionChange}
       >
-        <List.Item key="long">
+        <List.Item key="long" textValue={label}>
           <List.ItemText>{label}</List.ItemText>
         </List.Item>
-        <List.Item key="short">
+        <List.Item key="short" textValue="Short">
           <List.ItemText>Short</List.ItemText>
         </List.Item>
       </List>
@@ -101,7 +101,7 @@ describe('overflow tooltips in list items', () => {
         disabledKeys={['long']}
         onSelectionChange={onSelectionChange}
       >
-        <List.Item key="long">
+        <List.Item key="long" textValue={label}>
           <List.ItemText>{label}</List.ItemText>
         </List.Item>
       </List>

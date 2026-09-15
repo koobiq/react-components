@@ -37,8 +37,7 @@ import type {
 import { FormField, FormFieldClearButton } from '../FormField';
 import { IconButton } from '../IconButton';
 import { List, ListInner } from '../List';
-import type { ListInnerProps, ListItemText } from '../List';
-import type { ListItemAddon } from '../List/components';
+import type { ListInnerProps } from '../List';
 import type { PopoverInnerProps, PopoverProps } from '../Popover';
 import { PopoverInner } from '../Popover/PopoverInner';
 
@@ -136,15 +135,16 @@ export function AutocompleteRender<T extends object = object>(
     state
   );
 
-  const clearButtonIsHidden =
-    isReadOnly ||
-    isDisabled ||
-    (allowsCustomValue ? !state.inputValue : !state.selectedItem);
+  const clearButtonIsHidden = allowsCustomValue
+    ? !state.inputValue
+    : !state.selectedItem;
 
   const handleClear = useCallback(() => {
+    if (isReadOnly) return;
+
     state.selectionManager.setSelectedKeys(new Set());
     onClear?.();
-  }, [onClear, state]);
+  }, [isReadOnly, onClear, state]);
 
   const { isInvalid } = validation;
 
@@ -262,6 +262,7 @@ export function AutocompleteRender<T extends object = object>(
       variant,
       isInvalid,
       isDisabled,
+      isReadOnly,
       ref: containerRef,
     },
     slotProps?.group
@@ -327,20 +328,13 @@ const AutocompleteComponent = forwardRef(
   AutocompleteRender
 ) as AutocompleteComponent;
 
-type CompoundedComponent = typeof AutocompleteComponent & {
-  Item: typeof Item;
-  Section: typeof Section;
-  ItemText: typeof ListItemText;
-  ItemAddon: typeof ListItemAddon;
-};
-
 /**
  * An autocomplete combines a text input with a listbox, allowing users to filter
  * a list of options to items matching a query.
  */
-export const Autocomplete = AutocompleteComponent as CompoundedComponent;
-
-Autocomplete.Item = Item;
-Autocomplete.Section = Section;
-Autocomplete.ItemText = List.ItemText;
-Autocomplete.ItemAddon = List.ItemAddon;
+export const Autocomplete = Object.assign(AutocompleteComponent, {
+  Item,
+  Section,
+  ItemText: List.ItemText,
+  ItemAddon: List.ItemAddon,
+});

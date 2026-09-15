@@ -18,8 +18,8 @@ import { IconXmarkS16 } from '@koobiq/react-icons';
 
 import { utilClasses } from '../../../../styles/utility';
 import { IconButton } from '../../../IconButton';
+import s from '../../../Tag/Tag.module.css';
 import type { TagGroupPropVariant } from '../../../TagGroup';
-import s from '../../../TagGroup/components/Tag/Tag.module.css';
 
 import intlMessages from './intl.json';
 import { matchVariantToCloseButton } from './utils';
@@ -58,13 +58,9 @@ export const Tag = forwardRef<ComponentRef<'div'>, TagProps>((props, ref) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const rootProps = mergeProps({
-    className: clsx(
-      s.base,
-      s[variant],
-      isDisabled && s.disabled,
-      textNormalMedium,
-      className
-    ),
+    className: clsx(s.base, s[variant], textNormalMedium, className),
+    'data-disabled': isDisabled || undefined,
+    'data-variant': variant,
     ...other,
     style,
   });

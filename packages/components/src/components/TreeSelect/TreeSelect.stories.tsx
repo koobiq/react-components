@@ -1,13 +1,14 @@
 import { useState } from 'react';
 
 import { type Key, useBoolean } from '@koobiq/react-core';
-import { IconCrosshairs16 } from '@koobiq/react-icons';
+import { IconCrosshairs16, IconFolder16 } from '@koobiq/react-icons';
 import { Collection } from '@koobiq/react-primitives';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useAsyncList } from '../../index';
 import { Button } from '../Button';
 import { FlexBox } from '../FlexBox';
+import { Highlight } from '../Highlight';
 import { Tree } from '../Tree';
 import { Typography } from '../Typography';
 
@@ -23,9 +24,10 @@ const meta = {
     'TreeSelect.Item': TreeSelect.Item,
     'TreeSelect.ItemContent': TreeSelect.ItemContent,
     'TreeSelect.LoadMoreItem': TreeSelect.LoadMoreItem,
+    'TreeSelect.Tag': TreeSelect.Tag,
   },
   argTypes: {},
-  tags: ['status:new', 'date:2026-06-26'],
+  tags: ['status:updated', 'date:2026-09-09'],
 } satisfies Meta<typeof TreeSelect>;
 
 export default meta;
@@ -451,6 +453,55 @@ export const SelectedTagsOverflow: Story = {
   },
 };
 
+export const CustomTagRender: Story = {
+  render: function Render() {
+    type FileNode = {
+      id: number;
+      title: string;
+      children: FileNode[];
+    };
+
+    const items: FileNode[] = [
+      {
+        id: 1,
+        title: 'app',
+        children: [{ id: 2, title: 'Http', children: [] }],
+      },
+      { id: 3, title: 'config', children: [] },
+      { id: 4, title: 'public', children: [] },
+    ];
+
+    return (
+      <TreeSelect
+        items={items}
+        label="Project folders"
+        selectionMode="multiple"
+        style={{ inlineSize: 320 }}
+        placeholder="Select folders"
+        defaultValue={[2, 3]}
+        renderTag={(item, tagProps) => (
+          <TreeSelect.Tag
+            {...tagProps}
+            variant="warning-fade"
+            icon={<IconFolder16 />}
+          >
+            {item.textValue}
+          </TreeSelect.Tag>
+        )}
+      >
+        {function renderItem(item) {
+          return (
+            <TreeSelect.Item id={item.id} textValue={item.title}>
+              <TreeSelect.ItemContent>{item.title}</TreeSelect.ItemContent>
+              <Collection items={item.children}>{renderItem}</Collection>
+            </TreeSelect.Item>
+          );
+        }}
+      </TreeSelect>
+    );
+  },
+};
+
 export const Disabled: Story = {
   render: function Render() {
     return (
@@ -541,6 +592,35 @@ export const Searchable: Story = {
           return (
             <Tree.Item key={item.id} textValue={item.title}>
               <Tree.ItemContent>{item.title}</Tree.ItemContent>
+              <Collection items={item.test}>{renderItem}</Collection>
+            </Tree.Item>
+          );
+        }}
+      </TreeSelect>
+    );
+  },
+};
+
+export const Dependencies: Story = {
+  render: function Render() {
+    const [inputValue, setInputValue] = useState('');
+
+    return (
+      <TreeSelect
+        items={items}
+        label="Project files"
+        dependencies={[inputValue]}
+        onInputChange={setInputValue}
+        style={{ inlineSize: 320 }}
+        placeholder="Select a file"
+        isSearchable
+      >
+        {function renderItem(item) {
+          return (
+            <Tree.Item key={item.id} textValue={item.title}>
+              <Tree.ItemContent>
+                <Highlight text={item.title} query={inputValue} />
+              </Tree.ItemContent>
               <Collection items={item.test}>{renderItem}</Collection>
             </Tree.Item>
           );

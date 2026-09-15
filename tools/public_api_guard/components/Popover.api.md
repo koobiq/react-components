@@ -23,29 +23,60 @@ import { RefAttributes } from 'react';
 import { RefObject } from 'react';
 import { TransitionProps } from 'react-transition-group/Transition';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Popover: CompoundedComponent;
+export const Popover: ForwardRefExoticComponent<    {
+isOpen?: boolean;
+defaultOpen?: boolean;
+children?: PopoverPropContent;
+control?: PopoverPropControl;
+size?: PopoverPropSize;
+hideCloseButton?: boolean;
+onOpenChange?: (open: boolean) => void;
+portalContainer?: Element;
+disableExitOnEscapeKeyDown?: boolean;
+className?: string;
+style?: CSSProperties;
+'data-testid'?: string | number;
+disableFocusManagement?: boolean;
+placement?: PopoverPropPlacement;
+shouldFlip?: boolean;
+anchorRef?: RefObject<HTMLElement | null>;
+hideArrow?: boolean;
+isNonModal?: boolean;
+arrowBoundaryOffset?: number;
+containerPadding?: number;
+offset?: number;
+crossOffset?: number;
+shouldCloseOnInteractOutside?: (element: Element) => boolean;
+type?: PopoverPropType;
+maxBlockSize?: number;
+slotProps?: {
+dialog?: DialogProps;
+arrow?: ComponentPropsWithRef<"div">;
+backdrop?: ComponentPropsWithRef<"div">;
+container?: ComponentPropsWithRef<"div">;
+transition?: Partial<TransitionProps<HTMLElement>>;
+};
+} & {
+open?: boolean;
+} & DataAttributeProps & RefAttributes<HTMLDivElement>> & {
+    Header: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Body: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Footer: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
-// Warning: (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type PopoverBodyProps = DialogBodyProps;
 
 // @public @deprecated (undocumented)
 export const PopoverContent: ForwardRefExoticComponent<Omit<DialogBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
-// Warning: (ae-forgotten-export) The symbol "DialogFooterProps" needs to be exported by the entry point index.d.ts
-//
 // @public @deprecated (undocumented)
 export const PopoverFooter: ForwardRefExoticComponent<Omit<DialogFooterProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
 // @public (undocumented)
 export type PopoverFooterProps = DialogFooterProps;
 
-// Warning: (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
-//
 // @public @deprecated (undocumented)
 export const PopoverHeader: ForwardRefExoticComponent<Omit<DialogHeaderProps, "ref"> & RefAttributes<HTMLDivElement>>;
 
@@ -128,7 +159,10 @@ export const popoverPropType: readonly ["dialog", "menu", "listbox", "tree", "gr
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/Popover/types.d.ts:132:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Popover/Popover.d.ts:32:9 - (ae-forgotten-export) The symbol "DialogProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Popover/Popover.d.ts:41:5 - (ae-forgotten-export) The symbol "DialogHeaderProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Popover/Popover.d.ts:42:5 - (ae-forgotten-export) The symbol "DialogBodyProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/Popover/Popover.d.ts:43:5 - (ae-forgotten-export) The symbol "DialogFooterProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

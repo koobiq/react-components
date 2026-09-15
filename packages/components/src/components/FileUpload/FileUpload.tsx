@@ -479,35 +479,21 @@ function FileUploadRender<T extends object = object>(
 
 const FileUploadComponent = forwardRef(FileUploadRender) as FileUploadComponent;
 
-type CompoundedComponent = typeof FileUploadComponent & {
-  Empty: typeof FileUploadEmpty;
-  EmptyIcon: typeof FileUploadEmptyIcon;
-  EmptyTitle: typeof FileUploadEmptyTitle;
-  EmptyDescription: typeof FileUploadEmptyDescription;
-  Trigger: typeof FileUploadTrigger;
-  Item: typeof FileUploadItem;
-  ItemIcon: typeof FileUploadItemIcon;
-  ItemContent: typeof FileUploadItemContent;
-  ItemName: typeof FileUploadItemName;
-  ItemSize: typeof FileUploadItemSize;
-  RemoveButton: typeof FileUploadRemoveButton;
-};
-
 /**
  * `FileUpload` lets users pick, display and remove files. It handles
  * selection (system dialog and drag-and-drop), collection rendering and remove
  * intent, but the consumer owns the item data.
  */
-export const FileUpload = FileUploadComponent as CompoundedComponent;
-
-FileUpload.Empty = FileUploadEmpty;
-FileUpload.EmptyIcon = FileUploadEmptyIcon;
-FileUpload.EmptyTitle = FileUploadEmptyTitle;
-FileUpload.EmptyDescription = FileUploadEmptyDescription;
-FileUpload.Trigger = FileUploadTrigger;
-FileUpload.Item = FileUploadItem;
-FileUpload.ItemIcon = FileUploadItemIcon;
-FileUpload.ItemContent = FileUploadItemContent;
-FileUpload.ItemName = FileUploadItemName;
-FileUpload.ItemSize = FileUploadItemSize;
-FileUpload.RemoveButton = FileUploadRemoveButton;
+export const FileUpload = Object.assign(FileUploadComponent, {
+  Empty: FileUploadEmpty,
+  EmptyIcon: FileUploadEmptyIcon,
+  EmptyTitle: FileUploadEmptyTitle,
+  EmptyDescription: FileUploadEmptyDescription,
+  Trigger: FileUploadTrigger,
+  Item: FileUploadItem,
+  ItemIcon: FileUploadItemIcon,
+  ItemContent: FileUploadItemContent,
+  ItemName: FileUploadItemName,
+  ItemSize: FileUploadItemSize,
+  RemoveButton: FileUploadRemoveButton,
+});

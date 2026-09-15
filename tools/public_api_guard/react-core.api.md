@@ -38,8 +38,10 @@ import { mergeRefs } from '@react-aria/utils';
 import { MultipleSelection } from '@react-types/shared';
 import { Node as Node_2 } from '@react-types/shared';
 import { PressEvent } from '@react-types/shared';
+import type { PressProps } from '@react-aria/interactions';
 import type { ReactElement } from 'react';
 import type { Ref as Ref_2 } from 'react';
+import type { RefAttributes } from 'react';
 import type { RefCallback } from 'react';
 import { RefObject } from '@react-types/shared';
 import { RefObject as RefObject_2 } from 'react';
@@ -220,6 +222,15 @@ export type PolymorphicWithRef<Default extends OnlyAs, Props extends object = ob
 export type PolyRefFunction = <Default extends OnlyAs, Props extends object = object, OnlyAs extends ElementType = ElementType>(Component: ForwardRefRenderFunction<any, Props & {
     as?: OnlyAs;
 }>) => PolyForwardComponent<Default, Props, OnlyAs>;
+
+// @public (undocumented)
+export const Pressable: ForwardRefExoticComponent<PressableProps & RefAttributes<FocusableElement>>;
+
+// @public
+export interface PressableProps extends PressProps {
+    // (undocumented)
+    children: ReactElement<DOMAttributes, string>;
+}
 
 export { PressEvent }
 
