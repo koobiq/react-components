@@ -1,12 +1,17 @@
 'use client';
 
-import type { ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
 import s from './NavbarHeader.module.css';
 
-export type NavbarHeaderProps = ComponentPropsWithRef<'header'>;
+export type NavbarHeaderProps = {
+  /** Additional CSS-classes. */
+  className?: string;
+  /** The header items, e.g. `Navbar.AppItem`. */
+  children?: ReactNode;
+} & ComponentPropsWithRef<'header'>;
 
 export const NavbarHeader = ({
   className,

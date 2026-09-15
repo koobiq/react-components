@@ -40,7 +40,10 @@ export const Navbar: {
 export type NavbarAppItemProps = DistributiveOmit<NavbarItemProps, 'isMenu' | 'badge'>;
 
 // @public (undocumented)
-export type NavbarBodyProps = ComponentPropsWithRef<'ul'>;
+export type NavbarBodyProps = {
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'ul'>;
 
 // @public (undocumented)
 export const NavbarComponent: {
@@ -49,10 +52,16 @@ export const NavbarComponent: {
 };
 
 // @public (undocumented)
-export type NavbarFooterProps = ComponentPropsWithRef<'footer'>;
+export type NavbarFooterProps = {
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'footer'>;
 
 // @public (undocumented)
-export type NavbarHeaderProps = ComponentPropsWithRef<'header'>;
+export type NavbarHeaderProps = {
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'header'>;
 
 // @public (undocumented)
 export type NavbarItemProps = {

@@ -1,12 +1,17 @@
 'use client';
 
-import type { ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
 import s from './NavbarBody.module.css';
 
-export type NavbarBodyProps = ComponentPropsWithRef<'ul'>;
+export type NavbarBodyProps = {
+  /** Additional CSS-classes. */
+  className?: string;
+  /** The main items, e.g. `Navbar.Item`. */
+  children?: ReactNode;
+} & ComponentPropsWithRef<'ul'>;
 
 export const NavbarBody = ({
   children,

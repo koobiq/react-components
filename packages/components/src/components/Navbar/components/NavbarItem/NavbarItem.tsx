@@ -5,6 +5,7 @@ import type { AriaAttributes, ReactNode } from 'react';
 
 import {
   clsx,
+  isNotNil,
   mergeProps,
   mergeRefs,
   polymorphicForwardRef,
@@ -101,7 +102,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
             {...mergeProps(props, other, { onKeyDown })}
             ref={mergeRefs(props.ref, inRef)}
           >
-            {icon && (
+            {isNotNil(icon) && (
               <span className={s.icon} data-slot="navbar-item-icon">
                 {icon}
               </span>
@@ -109,7 +110,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
 
             <span className={s.content}>{children}</span>
 
-            {badge && <span className={s.badge}>{badge}</span>}
+            {isNotNil(badge) && <span className={s.badge}>{badge}</span>}
 
             {isMenu && <IconChevronRight16 className={s.menuIcon} />}
           </Link>

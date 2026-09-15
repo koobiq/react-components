@@ -1,3 +1,5 @@
+import type { SVGProps } from 'react';
+
 import { RouterProvider, useBoolean } from '@koobiq/react-core';
 import {
   IconCloud16,
@@ -35,8 +37,15 @@ export default meta;
 
 type Story = StoryObj<NavbarProps>;
 
-const appIcon = (
-  <svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+const AppIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    {...props}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -61,7 +70,7 @@ export const Base: Story = {
     >
       <Navbar aria-label="Main navigation" {...args}>
         <Navbar.Header>
-          <Navbar.AppItem icon={appIcon} href="#">
+          <Navbar.AppItem icon={<AppIcon />} href="#">
             App name
           </Navbar.AppItem>
         </Navbar.Header>
@@ -161,7 +170,7 @@ export const Controlled: Story = {
       >
         <Navbar {...args} isCollapsed={isCollapsed} onCollapse={set}>
           <Navbar.Header>
-            <Navbar.AppItem icon={appIcon} href="#">
+            <Navbar.AppItem icon={<AppIcon />} href="#">
               App name
             </Navbar.AppItem>
           </Navbar.Header>
@@ -196,7 +205,7 @@ export const ExpandOverContent: Story = {
     >
       <Navbar {...args} defaultCollapsed>
         <Navbar.Header>
-          <Navbar.AppItem icon={appIcon} href="#">
+          <Navbar.AppItem icon={<AppIcon />} href="#">
             App name
           </Navbar.AppItem>
         </Navbar.Header>
@@ -250,7 +259,7 @@ export const RouteProvider: Story = {
       >
         <Navbar {...args}>
           <Navbar.Header>
-            <Navbar.AppItem icon={appIcon} href="#">
+            <Navbar.AppItem icon={<AppIcon />} href="#">
               App name
             </Navbar.AppItem>
           </Navbar.Header>

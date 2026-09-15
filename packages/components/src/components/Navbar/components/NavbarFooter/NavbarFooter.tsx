@@ -1,12 +1,17 @@
 'use client';
 
-import type { ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
 import s from './NavbarFooter.module.css';
 
-export type NavbarFooterProps = ComponentPropsWithRef<'footer'>;
+export type NavbarFooterProps = {
+  /** Additional CSS-classes. */
+  className?: string;
+  /** The footer items, e.g. the user `Navbar.Item`. */
+  children?: ReactNode;
+} & ComponentPropsWithRef<'footer'>;
 
 export const NavbarFooter = ({
   children,
