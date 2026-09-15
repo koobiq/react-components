@@ -1,32 +1,54 @@
 'use client';
 
-import type { HTMLAttributes } from 'react';
-import { useCallback, useMemo, useRef } from 'react';
+import type { MouseEventHandler } from 'react';
+import { useCallback, useRef } from 'react';
 
 import {
   isNumber,
-  useMove,
-  mergeProps,
   useControlledState,
+  useLocale,
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 
+import type {
+  ResizableHandleDirection,
+  ResizableProps,
+  ResizableSize,
+} from '../../../Resizable';
+import type { ContentPanelSize } from '../../types';
+import { parseContentPanelSize } from '../../utils';
+
 import intlMessages from './intl.json';
 
-const clamp = (v: number, min: number, max: number) =>
-  Math.max(min, Math.min(max, v));
+/** The width the panel falls back to when `defaultWidth` isn't set. */
+const DEFAULT_WIDTH = 400;
+
+/** The width the panel can't be resized below when `minWidth` isn't set. */
+const DEFAULT_MIN_WIDTH = 200;
+
+/**
+ * The handle sits at the inline start edge of the panel, and `Resizable`
+ * directions are physical, so the horizontal axis flips in RTL.
+ */
+const HANDLE_DIRECTION_LTR: ResizableHandleDirection = [-1, 0];
+const HANDLE_DIRECTION_RTL: ResizableHandleDirection = [1, 0];
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, value));
 
 export type UseContentPanelResizeProps = {
-  /** The controlled width of the panel (in pixels). */
-  width?: number | null;
-  /** If `true`, the panel can be resized by dragging the resizer. */
+  /** If `true`, the panel can be resized by dragging the handle. */
   isResizable?: boolean;
-  /** The initial width of the panel when uncontrolled (in pixels). */
-  defaultWidth?: number | null;
-  /** The minimum allowed width of the panel (in pixels). */
-  minWidth?: number | null;
-  /** The maximum allowed width of the panel (in pixels). */
-  maxWidth?: number | null;
+  /** The width of the container the panel is rendered in (in pixels). */
+  containerWidth?: number;
+  /** The controlled width of the panel. */
+  width?: ContentPanelSize | null;
+  /** The initial width of the panel when uncontrolled. */
+  defaultWidth?: ContentPanelSize | null;
+  /** The minimum allowed width of the panel. */
+  minWidth?: ContentPanelSize | null;
+  /** The maximum allowed width of the panel. */
+  maxWidth?: ContentPanelSize | null;
   /** Handler that is called whenever the panel width changes. */
   onResize?: (width: number) => void;
   /** Handler that is called when the user starts resizing the panel. */
@@ -34,7 +56,7 @@ export type UseContentPanelResizeProps = {
   /** Handler that is called when the user finishes resizing the panel. */
   onResizeEnd?: (width: number) => void;
   /**
-   * Handler that is called when the panel width is reset (double click on the resizer).
+   * Handler that is called when the panel width is reset (double click on the handle).
    * Receives the initial width and can return the width to apply.
    * If nothing is returned, the panel resets to the initial width.
    */
@@ -42,111 +64,118 @@ export type UseContentPanelResizeProps = {
 };
 
 export type UseContentPanelResizeReturnValue = {
-  /** Current panel width in pixels (only when `isResizable` is `true`). */
-  width?: number;
-  /** Props to spread on the resizer element (drag + double click reset + aria). */
-  resizerProps: HTMLAttributes<HTMLElement>;
+  /** Props to spread on the panel `Resizable`. */
+  resizableProps: Pick<
+    ResizableProps,
+    | 'size'
+    | 'minSize'
+    | 'maxSize'
+    | 'onResize'
+    | 'onResizeStart'
+    | 'onResizeEnd'
+  >;
+  /** Props to spread on the `Resizable.Handle` of the panel. */
+  handleProps: {
+    direction: ResizableHandleDirection;
+    'aria-label': string;
+    onDoubleClick: MouseEventHandler<HTMLElement>;
+  };
 };
 
+/** Resolves the panel width props into the width-only `Resizable` state. */
 export function useContentPanelResize(
   props: UseContentPanelResizeProps
 ): UseContentPanelResizeReturnValue {
   const {
     isResizable = false,
-    width: widthProp,
+    containerWidth,
+    width,
     defaultWidth,
     minWidth,
     maxWidth,
     onResize,
-    onResetResize,
     onResizeStart,
     onResizeEnd,
+    onResetResize,
   } = props;
 
   const t = useLocalizedStringFormatter(intlMessages);
+  const { direction } = useLocale();
 
-  const min = isNumber(minWidth) ? minWidth : 0;
-  const max = isNumber(maxWidth) ? maxWidth : Number.POSITIVE_INFINITY;
+  // Percentages resolve against the container, which isn't measured on the
+  // first render, so every width is resolved on each render.
+  const resolveWidth = (value: ContentPanelSize | null | undefined) =>
+    parseContentPanelSize(containerWidth, value);
 
-  const controlledWidth = isNumber(widthProp)
-    ? clamp(widthProp, min, max)
-    : undefined;
+  const min = Math.max(0, resolveWidth(minWidth) ?? DEFAULT_MIN_WIDTH);
 
-  const defaultUncontrolled = isNumber(defaultWidth)
-    ? clamp(defaultWidth, min, max)
-    : 0;
+  const max = Math.min(
+    containerWidth ?? Number.POSITIVE_INFINITY,
+    resolveWidth(maxWidth) ?? Number.POSITIVE_INFINITY
+  );
 
-  const [width, setWidth] = useControlledState(
-    controlledWidth,
-    defaultUncontrolled,
+  // `null` until the user resizes the panel, so the default width keeps
+  // following the container. `width` stays controlled while it's unresolved.
+  const [userWidth, setUserWidth] = useControlledState<number | null, number>(
+    width == null ? undefined : resolveWidth(width),
+    null,
     onResize
   );
 
-  const widthRef = useRef(width);
-  widthRef.current = width;
+  const panelWidth = clamp(
+    userWidth ?? resolveWidth(defaultWidth) ?? DEFAULT_WIDTH,
+    min,
+    max
+  );
 
-  const initialResetRef = useRef<number | null>(null);
+  // The width the panel started with, resolved again when it's reset.
+  const initialWidthRef = useRef(width ?? defaultWidth);
 
-  if (initialResetRef.current == null) {
-    initialResetRef.current = isNumber(widthProp)
-      ? clamp(widthProp, min, max)
-      : defaultUncontrolled;
-  }
+  const onDoubleClick = useCallback(() => {
+    const initialWidth = clamp(
+      parseContentPanelSize(containerWidth, initialWidthRef.current) ??
+        DEFAULT_WIDTH,
+      min,
+      max
+    );
 
-  const onReset = useCallback(() => {
-    if (!isResizable) return;
+    const nextWidth = onResetResize?.(initialWidth);
 
-    const initial = initialResetRef.current ?? 0;
-    const nextRaw = onResetResize?.(initial);
+    setUserWidth(
+      clamp(isNumber(nextWidth) ? nextWidth : initialWidth, min, max)
+    );
+  }, [containerWidth, max, min, onResetResize, setUserWidth]);
 
-    const next = clamp(isNumber(nextRaw) ? nextRaw : initial, min, max);
+  const handleResize = useCallback(
+    (size: ResizableSize) => setUserWidth(size.width),
+    [setUserWidth]
+  );
 
-    setWidth(next);
-  }, [isResizable, onResetResize, min, max, setWidth]);
+  const handleResizeStart = useCallback(
+    (size: ResizableSize) => onResizeStart?.(Math.round(size.width)),
+    [onResizeStart]
+  );
 
-  const { moveProps } = useMove({
-    onMoveStart() {
-      if (!isResizable) return;
+  const handleResizeEnd = useCallback(
+    (size: ResizableSize) => onResizeEnd?.(Math.round(size.width)),
+    [onResizeEnd]
+  );
 
-      document.body.dataset.resizing = 'true';
-      onResizeStart?.(Math.round(widthRef.current));
+  return {
+    resizableProps: {
+      // The panel only manages its inline size, the block size is left to CSS.
+      size: isResizable ? { width: panelWidth } : undefined,
+      minSize: isResizable ? { width: min } : undefined,
+      maxSize: isResizable ? { width: max } : undefined,
+      onResize: handleResize,
+      onResizeStart: handleResizeStart,
+      onResizeEnd: handleResizeEnd,
     },
-    onMoveEnd() {
-      if (!isResizable) return;
-
-      delete document.body.dataset.resizing;
-      onResizeEnd?.(Math.round(widthRef.current));
-    },
-    onMove(e) {
-      if (!isResizable) return;
-
-      setWidth((w) => {
-        const next = clamp(w - e.deltaX, min, max);
-        widthRef.current = next;
-
-        return next;
-      });
-    },
-  });
-
-  const resizerProps = useMemo(() => {
-    if (!isResizable) {
-      return {
-        tabIndex: -1,
-        'aria-hidden': 'true',
-      } as HTMLAttributes<HTMLElement>;
-    }
-
-    const aria: HTMLAttributes<HTMLElement> = {
+    handleProps: {
+      direction:
+        direction === 'rtl' ? HANDLE_DIRECTION_RTL : HANDLE_DIRECTION_LTR,
       'aria-label': t.format('resize panel'),
-      'aria-valuenow': Math.round(width),
-    };
-
-    if (isNumber(minWidth)) aria['aria-valuemin'] = min;
-    if (isNumber(maxWidth)) aria['aria-valuemax'] = max;
-
-    return mergeProps(aria, { onDoubleClick: onReset }, moveProps);
-  }, [isResizable, width, minWidth, maxWidth, min, max, moveProps, onReset]);
-
-  return { width: isResizable ? width : undefined, resizerProps };
+      onDoubleClick,
+    },
+  };
 }
