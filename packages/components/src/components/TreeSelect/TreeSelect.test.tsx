@@ -600,7 +600,7 @@ describe('TreeSelect', () => {
     });
 
     it.each(['responsive', 'multiline'] as const)(
-      'should hide clear and tag remove actions with %s overflow',
+      'should disable clear and tag remove actions with %s overflow',
       (selectedTagsOverflow) => {
         renderTreeSelect({
           selectionMode: 'multiple',
@@ -610,8 +610,14 @@ describe('TreeSelect', () => {
           isClearable: true,
         });
 
-        expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
-        expect(within(getControl()).queryAllByRole('button')).toHaveLength(0);
+        expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+        expect(getClearButton()).toBeDisabled();
+
+        const removeButtons = within(getControl()).getAllByLabelText('Remove');
+
+        removeButtons.forEach((button) =>
+          expect(button).toHaveAttribute('data-disabled', 'true')
+        );
       }
     );
 
@@ -716,10 +722,11 @@ describe('TreeSelect', () => {
       expect(onClear).toHaveBeenCalledTimes(1);
     });
 
-    it('should be hidden when disabled', () => {
+    it('should be disabled when the control is disabled', () => {
       renderTreeSelect({ value: 1, isClearable: true, isDisabled: true });
 
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
     });
   });
 

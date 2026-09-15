@@ -113,7 +113,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     <FormField as={TextField} {...rootProps}>
       {({ isInvalid, isRequired, isDisabled, state }) => {
         const hasValue = state.value !== '';
-        const clearButtonIsHidden = !hasValue || isDisabled || isReadOnly;
+        const clearButtonIsHidden = !hasValue;
 
         const labelProps = mergeProps<(FormFieldLabelProps | undefined)[]>(
           { isHidden: isLabelHidden, isRequired, children: label },
@@ -152,6 +152,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
             },
             isInvalid,
             isDisabled,
+            isReadOnly,
             startAddon,
           },
           slotProps?.group

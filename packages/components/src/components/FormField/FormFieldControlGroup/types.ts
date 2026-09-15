@@ -39,6 +39,11 @@ export type FormFieldControlGroupProps = ExtendableComponentPropsWithRef<
     variant?: FormFieldControlGroupPropVariant;
     /** Whether the input is disabled. */
     isDisabled?: boolean;
+    /**
+     * Whether the input can be selected but not changed by the user.
+     * @selector [data-readonly]
+     */
+    isReadOnly?: boolean;
     /** Additional CSS-classes. */
     className?: string;
     /** Whether the input value is invalid. */

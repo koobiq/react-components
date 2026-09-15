@@ -135,15 +135,16 @@ export function AutocompleteRender<T extends object = object>(
     state
   );
 
-  const clearButtonIsHidden =
-    isReadOnly ||
-    isDisabled ||
-    (allowsCustomValue ? !state.inputValue : !state.selectedItem);
+  const clearButtonIsHidden = allowsCustomValue
+    ? !state.inputValue
+    : !state.selectedItem;
 
   const handleClear = useCallback(() => {
+    if (isReadOnly) return;
+
     state.selectionManager.setSelectedKeys(new Set());
     onClear?.();
-  }, [onClear, state]);
+  }, [isReadOnly, onClear, state]);
 
   const { isInvalid } = validation;
 
@@ -261,6 +262,7 @@ export function AutocompleteRender<T extends object = object>(
       variant,
       isInvalid,
       isDisabled,
+      isReadOnly,
       ref: containerRef,
     },
     slotProps?.group

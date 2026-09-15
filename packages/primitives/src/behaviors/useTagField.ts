@@ -103,6 +103,7 @@ export type TagFieldClearButtonProps = {
 export type TagFieldTagListProps<T extends object> = {
   state: TagListState<T>;
   isDisabled: boolean | undefined;
+  isReadOnly: boolean | undefined;
   tabIndex: -1;
   onRemove:
     ((keys: Set<Key>, context?: TagListItemRemoveContext) => void) | undefined;
@@ -217,6 +218,8 @@ export function useTagField<T extends object>(
 
   const handleRemove = useCallback(
     (keys: Set<Key>, context?: TagListItemRemoveContext) => {
+      if (isDisabled || isReadOnly) return;
+
       if (
         remove(keys) &&
         (context?.source === 'press' || keys.size >= collection.size)
@@ -224,7 +227,7 @@ export function useTagField<T extends object>(
         inputRef.current?.focus({ preventScroll: true });
       }
     },
-    [collection, inputRef, remove]
+    [collection, inputRef, isDisabled, isReadOnly, remove]
   );
 
   const focusTagAt = useCallback(
@@ -262,8 +265,10 @@ export function useTagField<T extends object>(
   }, [autocompleteClose]);
 
   const handleClear = useCallback(() => {
+    if (isDisabled || isReadOnly) return;
+
     if (clear()) focusInput();
-  }, [clear, focusInput]);
+  }, [clear, focusInput, isDisabled, isReadOnly]);
 
   const collectionState = autocompleteListState ?? state;
   const collectionRef = listBoxRef ?? innerRef;
@@ -567,9 +572,7 @@ export function useTagField<T extends object>(
   const hasInputValue = inputValue !== '';
   const showCleaner = Boolean(isClearable);
 
-  const cleanerIsHidden = Boolean(
-    !showCleaner || (!hasTags && !hasInputValue) || isDisabled || isReadOnly
-  );
+  const cleanerIsHidden = Boolean(!showCleaner || (!hasTags && !hasInputValue));
 
   const clearButtonProps: TagFieldClearButtonProps = {
     isClearable: showCleaner,
@@ -581,8 +584,9 @@ export function useTagField<T extends object>(
   const tagListProps = {
     state,
     isDisabled,
+    isReadOnly,
     tabIndex: -1,
-    onRemove: isReadOnly ? undefined : handleRemove,
+    onRemove: handleRemove,
     'aria-label': ariaLabel ?? stringFormatter.format('tagListLabel'),
   } as const;
 

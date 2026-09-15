@@ -47,6 +47,7 @@ export const TimeRangeField = forwardRef<
     isRequired,
     isInvalid = false,
     isDisabled: isDisabledProp,
+    isReadOnly: isReadOnlyProp,
     errorMessage,
     caption,
     fullWidth,
@@ -63,6 +64,7 @@ export const TimeRangeField = forwardRef<
     formattedValue,
     isEmpty,
     isDisabled: contextDisabled,
+    isReadOnly: contextReadOnly,
     groupRef,
   } = useTimeRangeContext();
 
@@ -70,6 +72,9 @@ export const TimeRangeField = forwardRef<
 
   const isDisabled =
     contextDisabled || isDisabledProp || slotProps?.group?.isDisabled || false;
+
+  const isReadOnly =
+    contextReadOnly || isReadOnlyProp || slotProps?.group?.isReadOnly || false;
 
   const resolvedLabel = slotProps?.label?.children ?? label;
   const resolvedCaption = slotProps?.caption?.children ?? caption;
@@ -95,6 +100,7 @@ export const TimeRangeField = forwardRef<
       style,
       'data-invalid': isInvalid || undefined,
       'data-disabled': isDisabled || undefined,
+      'data-readonly': isReadOnly || undefined,
       'data-required': isRequired || undefined,
     },
     slotProps?.root
@@ -119,6 +125,7 @@ export const TimeRangeField = forwardRef<
   const groupProps = mergeProps<(FormFieldControlGroupProps | undefined)[]>(
     {
       isDisabled,
+      isReadOnly,
       isInvalid,
       endAddon: <IconChevronDownS16 className={s.addon} />,
       onMouseDown: (event) => {
@@ -131,6 +138,9 @@ export const TimeRangeField = forwardRef<
           return;
         event.preventDefault();
         controlRef.current?.focus();
+
+        if (isReadOnly) return;
+
         controlRef.current?.click();
       },
     },
@@ -173,6 +183,7 @@ export const TimeRangeField = forwardRef<
           {...groupProps}
           ref={mergeRefs(groupRef, groupProps.ref)}
           isDisabled={isDisabled}
+          isReadOnly={isReadOnly}
           startAddon={
             groupProps.startAddon != null ? (
               <FieldDecoration>{groupProps.startAddon}</FieldDecoration>
