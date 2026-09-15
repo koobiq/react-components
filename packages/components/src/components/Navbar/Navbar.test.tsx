@@ -57,18 +57,40 @@ describe('Navbar', () => {
     const nav = screen.getByRole('navigation');
     const toggleButton = screen.getByRole('button', { name: 'Hide' });
 
+    expect(toggleButton).not.toHaveAttribute('data-shown');
+
+    await userEvent.hover(nav);
+
     expect(toggleButton).toBeInTheDocument();
+    expect(toggleButton).toHaveAttribute('data-shown', 'true');
+    expect(toggleButton).not.toHaveAttribute('data-collapsed');
 
     await userEvent.click(toggleButton);
 
     expect(nav).toHaveAttribute('data-collapsed', 'true');
     expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+    expect(toggleButton).toHaveAttribute('data-collapsed', 'true');
+  });
+
+  it('shows the accessible toggle when keyboard focus enters the navbar', async () => {
+    renderNavbar();
+
+    const toggleButton = screen.getByRole('button', { name: 'Hide' });
+
+    expect(toggleButton).not.toHaveAttribute('data-shown');
+
+    await userEvent.tab();
+
+    expect(toggleButton).toHaveAttribute('data-shown', 'true');
   });
 
   it('keeps item content during collapse and hides it after the animation', async () => {
     renderNavbar();
 
     const nav = screen.getByRole('navigation');
+
+    await userEvent.hover(nav);
+
     const toggleButton = screen.getByRole('button', { name: 'Hide' });
 
     fireEvent.click(toggleButton);
@@ -86,13 +108,15 @@ describe('Navbar', () => {
     expect(screen.getByRole('link', { name: 'Item 1' })).toBeInTheDocument();
   });
 
-  it('starts collapsed and shows item content as soon as expansion starts', () => {
+  it('starts collapsed and shows item content as soon as expansion starts', async () => {
     renderNavbar({ defaultCollapsed: true });
 
     const nav = screen.getByRole('navigation');
 
     expect(nav).toHaveAttribute('data-transition', 'exited');
     expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
+
+    await userEvent.hover(nav);
 
     fireEvent.click(screen.getByRole('button', { name: 'Show' }));
 
@@ -117,6 +141,8 @@ describe('Navbar', () => {
     const { rerender } = render(
       <Navbar isCollapsed={false} onCollapse={onCollapse} />
     );
+
+    await userEvent.hover(screen.getByRole('navigation'));
 
     await userEvent.click(screen.getByRole('button', { name: 'Hide' }));
 
@@ -154,8 +180,10 @@ describe('Navbar', () => {
     );
   });
 
-  it('hides the toggle when requested', () => {
+  it('hides the toggle when requested', async () => {
     renderNavbar({ isToggleButtonHidden: true });
+
+    await userEvent.hover(screen.getByRole('navigation'));
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
