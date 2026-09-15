@@ -11,6 +11,7 @@ import {
 } from '@koobiq/react-core';
 import { useToolbar } from '@koobiq/react-primitives';
 
+import { DropdownMenuPopoverContext } from '../DropdownMenu/components/DropdownMenuPopover/DropdownMenuPopoverContext';
 import { Sidebar } from '../Sidebar';
 
 import {
@@ -24,6 +25,9 @@ import {
 import s from './Navbar.module.css';
 import { NavbarContext } from './NavbarContext';
 import type { NavbarProps } from './types';
+
+// A menu opens beside a vertical navbar, flush with its item's highlight.
+const verticalMenuPopover = { placement: 'end top', offset: -8 } as const;
 
 export const NavbarComponent = ({
   variant = 'vertical',
@@ -75,7 +79,13 @@ export const NavbarComponent = ({
     >
       {({ isOpen, toggle }) => (
         <NavbarContext.Provider value={{ isCollapsed: !isOpen }}>
-          <div {...contentProps}>{children}</div>
+          <div {...contentProps}>
+            <DropdownMenuPopoverContext.Provider
+              value={variant === 'vertical' ? verticalMenuPopover : null}
+            >
+              {children}
+            </DropdownMenuPopoverContext.Provider>
+          </div>
 
           {!isToggleButtonHidden && (
             <NavbarToggleButton

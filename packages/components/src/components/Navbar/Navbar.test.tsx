@@ -1,11 +1,19 @@
 import { createRef } from 'react';
 
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { I18nProvider } from '@koobiq/react-core';
+import {
+  act,
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
 import { DropdownMenu } from '../DropdownMenu';
+import { Menu } from '../Menu';
 
 import { Navbar, type NavbarProps } from '.';
 import {
@@ -197,10 +205,10 @@ describe('Navbar', () => {
         <Navbar defaultCollapsed={defaultCollapsed}>
           <Navbar.Body>
             <DropdownMenu>
-              <Navbar.Item icon={<span aria-hidden>Icon</span>} isMenu>
+              <Navbar.Item icon={<span aria-hidden>Icon</span>}>
                 Control Panel
               </Navbar.Item>
-              <DropdownMenu.Popover placement="end top">
+              <DropdownMenu.Popover>
                 <DropdownMenu.Content>
                   <DropdownMenu.SubmenuTrigger>
                     <DropdownMenu.Item id="users">Users</DropdownMenu.Item>
@@ -240,6 +248,206 @@ describe('Navbar', () => {
       await waitFor(() => expect(trigger).toHaveFocus());
     }
   );
+
+  describe('menu items', () => {
+    const renderDropdownMenu = (props: NavbarProps = {}) =>
+      render(
+        <Navbar {...props}>
+          <Navbar.Body>
+            <DropdownMenu>
+              <Navbar.Item icon={<span aria-hidden>Icon</span>}>
+                Control Panel
+              </Navbar.Item>
+              <DropdownMenu.Popover>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
+                  <DropdownMenu.Item id="users">Users</DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Popover>
+            </DropdownMenu>
+          </Navbar.Body>
+        </Navbar>
+      );
+
+    const renderMenu = () =>
+      render(
+        <Navbar>
+          <Navbar.Body>
+            <Menu
+              control={(props) => (
+                <Navbar.Item {...props}>Control Panel</Navbar.Item>
+              )}
+            >
+              <Menu.Item key="roles">Roles</Menu.Item>
+              <Menu.Item key="users">Users</Menu.Item>
+            </Menu>
+          </Navbar.Body>
+        </Navbar>
+      );
+
+    const getMenuIcon = () =>
+      screen
+        .getByRole('button', { name: 'Control Panel' })
+        .querySelector(`.${s.itemMenuIcon}`);
+
+    it.each([
+      ['DropdownMenu', renderDropdownMenu],
+      ['Menu', renderMenu],
+    ])('shows the menu arrow on a %s trigger', (_, renderTrigger) => {
+      renderTrigger();
+
+      expect(getMenuIcon()).toBeInTheDocument();
+    });
+
+    it.each([
+      ['vertical', 'right'],
+      ['horizontal', 'bottom'],
+    ] as const)(
+      'places the menu of a %s navbar on the %s',
+      async (variant, placement) => {
+        render(
+          <Navbar variant={variant}>
+            <DropdownMenu>
+              <Navbar.Item>Control Panel</Navbar.Item>
+              <DropdownMenu.Popover data-testid="popover">
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Popover>
+            </DropdownMenu>
+          </Navbar>
+        );
+
+        await userEvent.click(
+          screen.getByRole('button', { name: 'Control Panel' })
+        );
+
+        expect(await screen.findByTestId('popover')).toHaveAttribute(
+          'data-placement',
+          placement
+        );
+      }
+    );
+
+    it('lets isMenu hide the arrow on a menu trigger', () => {
+      render(
+        <Navbar>
+          <DropdownMenu>
+            <Navbar.Item isMenu={false}>Control Panel</Navbar.Item>
+            <DropdownMenu.Popover>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu>
+        </Navbar>
+      );
+
+      expect(getMenuIcon()).not.toBeInTheDocument();
+    });
+
+    it.each([
+      ['DropdownMenu', renderDropdownMenu],
+      ['Menu', renderMenu],
+    ])(
+      'opens a %s with ArrowRight and focuses its first item',
+      async (_, renderTrigger) => {
+        renderTrigger();
+
+        const trigger = screen.getByRole('button', { name: 'Control Panel' });
+
+        act(() => trigger.focus());
+
+        await userEvent.keyboard('{ArrowRight}');
+
+        const firstItem = await screen.findByRole('menuitem', {
+          name: 'Roles',
+        });
+
+        await waitFor(() => expect(firstItem).toHaveFocus());
+
+        await userEvent.keyboard('{Escape}');
+
+        await waitFor(() => expect(trigger).toHaveFocus());
+      }
+    );
+
+    it('opens the menu with ArrowRight while collapsed', async () => {
+      renderDropdownMenu({ defaultCollapsed: true });
+
+      act(() => screen.getByRole('button', { name: 'Control Panel' }).focus());
+
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(await screen.findByRole('menu')).toBeInTheDocument();
+    });
+
+    it('opens the menu with ArrowLeft in a right-to-left locale', async () => {
+      render(
+        <I18nProvider locale="he-IL">
+          <Navbar>
+            <DropdownMenu>
+              <Navbar.Item>Control Panel</Navbar.Item>
+              <DropdownMenu.Popover>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Popover>
+            </DropdownMenu>
+          </Navbar>
+        </I18nProvider>
+      );
+
+      act(() => screen.getByRole('button', { name: 'Control Panel' }).focus());
+
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+
+      await userEvent.keyboard('{ArrowLeft}');
+
+      expect(await screen.findByRole('menu')).toBeInTheDocument();
+    });
+
+    it('opens the menu of an app item without showing the arrow', async () => {
+      render(
+        <Navbar>
+          <Navbar.Header>
+            <DropdownMenu>
+              <Navbar.AppItem icon={<span aria-hidden>Icon</span>}>
+                Apps
+              </Navbar.AppItem>
+              <DropdownMenu.Popover>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item id="app">App</DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Popover>
+            </DropdownMenu>
+          </Navbar.Header>
+        </Navbar>
+      );
+
+      const trigger = screen.getByRole('button', { name: 'Apps' });
+
+      expect(trigger.querySelector(`.${s.itemMenuIcon}`)).toBeNull();
+
+      act(() => trigger.focus());
+
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(await screen.findByRole('menu')).toBeInTheDocument();
+    });
+
+    it('ignores ArrowRight on an item without a menu', async () => {
+      renderNavbar();
+
+      act(() => screen.getByRole('link', { name: /Item 1/ }).focus());
+
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    });
+  });
 
   describe('Navbar subcomponents', () => {
     it('renders NavbarHeader with children', () => {

@@ -1,15 +1,22 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useContext } from 'react';
+import type { AriaAttributes, ReactNode } from 'react';
 
 import {
   clsx,
   mergeProps,
   mergeRefs,
   polymorphicForwardRef,
+  useLocale,
 } from '@koobiq/react-core';
+import type { KeyboardEvents } from '@koobiq/react-core';
 import { IconChevronRight16 } from '@koobiq/react-icons';
-import { Link, type LinkBaseProps } from '@koobiq/react-primitives';
+import {
+  Link,
+  RootMenuTriggerStateContext,
+  type LinkBaseProps,
+} from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../styles/utility';
 import { Tooltip } from '../../Tooltip';
@@ -22,7 +29,8 @@ export type NavbarItemProps = {
    */
   isActive?: boolean;
   /**
-   * Whether the item is a menu trigger.
+   * Whether the item opens a menu: shows an arrow. Set automatically when the
+   * item is the trigger of a `DropdownMenu` or a `Menu`.
    */
   isMenu?: boolean;
   /**
@@ -51,7 +59,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
       as,
       className,
       isActive,
-      isMenu = false,
+      isMenu: isMenuProp,
       icon,
       badge,
       children,
@@ -60,6 +68,32 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
     inRef
   ) => {
     const { isCollapsed } = useNavbarState();
+    const { direction } = useLocale();
+
+    // A `DropdownMenu` shares its state with the trigger, a `Menu` passes `aria-haspopup` to its `control`.
+    const dropdownMenuState = useContext(RootMenuTriggerStateContext);
+
+    const isMenuTrigger =
+      !!dropdownMenuState ||
+      ['true', 'menu'].includes(
+        String((other as AriaAttributes)['aria-haspopup'])
+      );
+
+    const isMenu = isMenuProp ?? isMenuTrigger;
+
+    // A menu opens on ArrowDown, but the navbar moves between items with it.
+    const onKeyDown: KeyboardEvents['onKeyDown'] = (e) => {
+      const openKey = direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+
+      if (!isMenuTrigger || e.key !== openKey) return;
+
+      if (dropdownMenuState) {
+        e.preventDefault();
+        dropdownMenuState.open('first');
+      } else {
+        other.onKeyDown?.({ ...e, key: 'ArrowDown' });
+      }
+    };
 
     return (
       <Tooltip
@@ -80,7 +114,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
             aria-label={
               isCollapsed && typeof children === 'string' ? children : undefined
             }
-            {...mergeProps(props, other)}
+            {...mergeProps(props, other, { onKeyDown })}
             ref={mergeRefs(props.ref, inRef)}
           >
             {icon && <span className={s.itemIcon}>{icon}</span>}

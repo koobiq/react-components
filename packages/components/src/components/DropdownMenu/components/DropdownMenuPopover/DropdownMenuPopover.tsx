@@ -19,6 +19,7 @@ import type {
 import { PopoverInner } from '../../../Popover/PopoverInner';
 
 import s from './DropdownMenuPopover.module.css';
+import { DropdownMenuPopoverContext } from './DropdownMenuPopoverContext';
 import type { DropdownMenuPopoverProps } from './types';
 
 type DropdownMenuPopoverStyle = CSSProperties & {
@@ -51,6 +52,7 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
   // through context.
   const state = useContext(OverlayTriggerStateContext);
   const context = useSlottedContext(PopoverContext) ?? {};
+  const defaults = useContext(DropdownMenuPopoverContext);
 
   if (!state) {
     if (process.env.NODE_ENV !== 'production') {
@@ -66,10 +68,10 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
 
   const defaultPlacement: PopoverPropPlacement = isSubmenu
     ? 'end top'
-    : 'bottom start';
+    : (defaults?.placement ?? 'bottom start');
 
   // A submenu sits flush against its menu, a menu keeps a gap from its trigger.
-  const defaultOffset = isSubmenu ? -4 : 4;
+  const defaultOffset = isSubmenu ? -4 : (defaults?.offset ?? 4);
 
   const popoverProps = mergeProps<
     [PopoverInnerProps, PopoverProps | undefined]

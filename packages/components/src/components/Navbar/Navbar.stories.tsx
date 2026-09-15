@@ -76,10 +76,10 @@ export const Base: Story = {
           </Navbar.Item>
 
           <DropdownMenu>
-            <Navbar.Item icon={<IconDashboard16 />} badge={2} isMenu>
+            <Navbar.Item icon={<IconDashboard16 />} badge={2}>
               Control Panel
             </Navbar.Item>
-            <DropdownMenu.Popover placement="end top">
+            <DropdownMenu.Popover>
               <DropdownMenu.Content onAction={(key) => alert(key)}>
                 <DropdownMenu.Item id="service-accounts">
                   Service Accounts
@@ -103,11 +103,8 @@ export const Base: Story = {
           </DropdownMenu>
 
           <DropdownMenu>
-            <Navbar.Item icon={<IconPrinter16 />} isMenu>
-              Documentation
-            </Navbar.Item>
-
-            <DropdownMenu.Popover placement="end top">
+            <Navbar.Item icon={<IconPrinter16 />}>Documentation</Navbar.Item>
+            <DropdownMenu.Popover>
               <DropdownMenu.Content onAction={(key) => alert(key)}>
                 <DropdownMenu.Item id="start">
                   Getting Started
