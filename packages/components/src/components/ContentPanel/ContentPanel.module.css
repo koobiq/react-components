@@ -1,7 +1,6 @@
 .base {
   --content-panel-transition-duration: 300ms;
   --content-panel-start-position: 100%;
-  --content-panel-resizer-width: var(--kbq-size-l);
 
   block-size: 100%;
   inline-size: 50%;
@@ -22,11 +21,7 @@
   }
 }
 
-.resizable {
-  inline-size: unset;
-}
-
-body[data-resizing='true'] .base {
+.base[data-resizing] {
   transition: none;
 }
 
@@ -45,14 +40,4 @@ body[data-resizing='true'] .base {
 
 .base[data-transition='exited'] {
   transform: translate(var(--content-panel-start-position), 0);
-}
-
-/* resizer */
-.resizer {
-  block-size: 100%;
-  cursor: ew-resize;
-  position: absolute;
-  inset-block-start: 0;
-  inline-size: var(--content-panel-resizer-width);
-  inset-inline-start: calc(var(--content-panel-resizer-width) / -2);
 }

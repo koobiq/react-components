@@ -7,7 +7,7 @@ import type {
 } from 'react';
 import { forwardRef, useContext, useRef } from 'react';
 
-import { useDOMRef, mergeProps, clsx, isNumber } from '@koobiq/react-core';
+import { useDOMRef, mergeProps, clsx } from '@koobiq/react-core';
 import {
   useOverlay,
   useContextProps,
@@ -18,6 +18,7 @@ import { Transition } from 'react-transition-group';
 
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from '../Dialog';
 import type { DialogProps } from '../Dialog';
+import { Resizable } from '../Resizable';
 
 import { ContentPanelContainerContext } from './components';
 import { TRANSITION_TIMEOUT } from './constants';
@@ -25,7 +26,6 @@ import s from './ContentPanel.module.css';
 import { ContentPanelContext } from './ContentPanelContext';
 import { useContentPanelResize } from './hooks';
 import type { ContentPanelProps, ContentPanelRef } from './types';
-import { parseContentPanelSize } from './utils';
 
 const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
   (props, ref) => {
@@ -39,10 +39,10 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     );
 
     const {
-      defaultWidth: defaultWidthProp,
+      defaultWidth,
       disableExitOnEscapeKeyDown,
-      minWidth: minWidthProp,
-      maxWidth: maxWidthProp,
+      minWidth,
+      maxWidth,
       isResizable = false,
       hideCloseButton,
       onResizeStart,
@@ -76,40 +76,18 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
 
     const { isOpen: isOpenState, close } = state;
 
-    const maxWidthPropPx = parseContentPanelSize(containerWidth, maxWidthProp);
-    const minWidthPropPx = parseContentPanelSize(containerWidth, minWidthProp);
-
-    const defaultWidthPx = parseContentPanelSize(
+    const { resizableProps, handleProps } = useContentPanelResize({
+      width,
+      isResizable,
+      minWidth,
+      maxWidth,
       containerWidth,
-      defaultWidthProp
-    );
-
-    const maxWidth = Math.min(
-      isNumber(containerWidth) ? containerWidth : Number.POSITIVE_INFINITY,
-      isNumber(maxWidthPropPx) ? maxWidthPropPx : Number.POSITIVE_INFINITY
-    );
-
-    const minWidth = Math.max(
-      0,
-      isNumber(minWidthPropPx) ? minWidthPropPx : 200
-    );
-
-    const defaultWidth = defaultWidthPx ?? 400;
-
-    const widthPx = parseContentPanelSize(containerWidth, width);
-
-    const { width: panelWidth, resizerProps: moveProps } =
-      useContentPanelResize({
-        width: widthPx,
-        isResizable,
-        minWidth,
-        maxWidth,
-        onResize,
-        onResizeEnd,
-        onResizeStart,
-        onResetResize,
-        defaultWidth,
-      });
+      onResize,
+      onResizeEnd,
+      onResizeStart,
+      onResetResize,
+      defaultWidth,
+    });
 
     const { overlayProps } = useOverlay(
       {
@@ -123,9 +101,8 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const rootProps = mergeProps<ComponentPropsWithRef<'div'>[]>(
       {
         ref: panelRef,
-        className: clsx(s.base, isResizable && s.resizable, className),
+        className: clsx(s.base, className),
         style: {
-          inlineSize: panelWidth,
           '--content-panel-transition-duration': `${TRANSITION_TIMEOUT}ms`,
           ...style,
         } as CSSProperties,
@@ -145,13 +122,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       overlayProps
     );
 
-    const resizerProps = mergeProps(
-      {
-        className: s.resizer,
-      },
-      slotProps?.resizer,
-      moveProps
-    );
+    const resizerProps = mergeProps(slotProps?.resizer, handleProps);
 
     const transitionProps = mergeProps(
       {
@@ -166,16 +137,19 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
     const panel = (
       <Transition {...transitionProps}>
         {(transition) => (
-          <div
+          <Resizable
             {...rootProps}
+            {...resizableProps}
             data-transition={transition}
             data-resizable={isResizable || undefined}
           >
             <Dialog {...dialogProps} ref={overlayRef} role="dialog">
-              {isResizable && <div {...resizerProps} />}
+              {isResizable && (
+                <Resizable.Handle disableKeyboardResize {...resizerProps} />
+              )}
               {children}
             </Dialog>
-          </div>
+          </Resizable>
         )}
       </Transition>
     );
