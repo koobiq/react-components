@@ -5,6 +5,7 @@ import type { ForwardedRef } from 'react';
 import { clsx } from '@koobiq/react-core';
 import { CollectionNode, createLeafComponent } from '@koobiq/react-primitives';
 
+import { DescriptionListGroupContext } from '../../DescriptionListGroupContext';
 import type { DescriptionListGroupProps } from '../../types';
 
 import s from './DescriptionListGroup.module.css';
@@ -31,8 +32,13 @@ export const DescriptionListGroup = createLeafComponent(
         className={clsx(s.base, className)}
         data-slot="group"
       >
-        {children}
+        <DescriptionListGroupContext.Provider value={true}>
+          {children}
+        </DescriptionListGroupContext.Provider>
       </div>
     );
   }
 );
+
+(DescriptionListGroup as { displayName?: string }).displayName =
+  'DescriptionList.Group';

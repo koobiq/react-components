@@ -36,10 +36,10 @@ function DescriptionListInner<T extends object>(
   const {
     listRef,
     collection,
-    orientation: orientationProp = 'horizontal',
-    columns,
-    alignItems = 'start',
-    justifyItems = 'start',
+    orientation: orientationProp,
+    columns: columnsProp,
+    alignItems: alignItemsProp,
+    justifyItems: justifyItemsProp,
     className,
     style: styleProp,
     ...other
@@ -51,8 +51,18 @@ function DescriptionListInner<T extends object>(
   const orientation =
     getResponsiveValue(orientationProp, breakpoints) ?? 'horizontal';
 
+  const columns = getResponsiveValue(columnsProp, breakpoints);
+
+  const alignItems =
+    getResponsiveValue(alignItemsProp, breakpoints) ?? 'stretch';
+
+  const justifyItems =
+    getResponsiveValue(justifyItemsProp, breakpoints) ?? 'stretch';
+
   const style = {
     ...styleProp,
+    '--description-list-align-items': alignItems,
+    '--description-list-justify-items': justifyItems,
     ...(columns !== undefined && { '--description-list-columns': columns }),
   } as CSSProperties;
 
@@ -64,10 +74,6 @@ function DescriptionListInner<T extends object>(
       className={clsx(
         s.base,
         orientation === 'vertical' && s.vertical,
-        alignItems === 'center' && s.alignCenter,
-        alignItems === 'end' && s.alignEnd,
-        justifyItems === 'center' && s.justifyCenter,
-        justifyItems === 'end' && s.justifyEnd,
         className
       )}
       data-orientation={orientation}

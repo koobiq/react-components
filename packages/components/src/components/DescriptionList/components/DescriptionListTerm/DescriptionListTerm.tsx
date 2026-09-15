@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 
 import { clsx } from '@koobiq/react-core';
 
+import { useDescriptionListGroupCheck } from '../../DescriptionListGroupContext';
 import type { DescriptionListTermProps } from '../../types';
 
 import s from './DescriptionListTerm.module.css';
@@ -14,6 +15,8 @@ export const DescriptionListTerm = forwardRef<
   DescriptionListTermProps
 >((props, ref) => {
   const { className, children, ...other } = props;
+
+  useDescriptionListGroupCheck('DescriptionList.Term');
 
   return (
     <dt

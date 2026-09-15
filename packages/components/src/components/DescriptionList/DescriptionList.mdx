@@ -41,8 +41,7 @@ import { DescriptionList } from '@koobiq/react-components';
 </DescriptionList>
 ```
 
-- `DescriptionList` — the list (`<dl>`). It is a grid of two columns:
-  terms on the left, descriptions on the right.
+- `DescriptionList` — the list (`<dl>`).
 - `DescriptionList.Group` — a term with its description (`<div>`). Put only
   groups inside the list: other children are not supported.
 - `DescriptionList.Term` — a term (`<dt>`), e.g. a field name.
@@ -94,26 +93,6 @@ By default, a description goes next to its term. Set the `orientation` prop to
 
 <Story of={Stories.Orientation} />
 
-## Responsive orientation
-
-The `orientation` prop accepts a value per breakpoint of the screen width.
-Resize the window to see the layout change.
-
-```tsx
-<DescriptionList orientation={{ xs: 'vertical', m: 'horizontal' }} />
-```
-
-<Story of={Stories.ResponsiveOrientation} />
-
-## Adaptive orientation
-
-To switch the orientation based on the width of the list itself, measure the
-list with [useElementSize](?path=/docs/hooks-useelementsize--docs) and pass
-the result to the `orientation` prop. Drag the bottom right corner of the frame
-to resize it.
-
-<Story of={Stories.AdaptiveOrientation} />
-
 ## Columns
 
 The `columns` prop sets the columns like CSS `grid-template-columns`. The term
@@ -127,6 +106,30 @@ Use the `alignItems` and `justifyItems` props to align terms and descriptions
 vertically and horizontally. In the example, they are centered vertically.
 
 <Story of={Stories.Alignment} />
+
+## Responsive
+
+The `orientation`, `columns`, `alignItems` and `justifyItems` props accept a
+value per breakpoint of the screen width. Resize the window to see the layout
+change.
+
+```tsx
+<DescriptionList
+  orientation={{ xs: 'vertical', m: 'horizontal' }}
+  columns={{ m: 'repeat(2, 1fr)', xl: 'repeat(4, 1fr)' }}
+/>
+```
+
+<Story of={Stories.Responsive} />
+
+## Adaptive
+
+To change the layout based on the width of the list itself, measure the list
+with [useElementSize](?path=/docs/hooks-useelementsize--docs) and pass the
+result to the props. In the example, the `orientation` prop changes with the
+width. Drag the bottom right corner of the frame to resize it.
+
+<Story of={Stories.Adaptive} />
 
 ## Long text
 

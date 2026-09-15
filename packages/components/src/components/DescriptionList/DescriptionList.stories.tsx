@@ -115,77 +115,6 @@ export const Orientation: Story = {
   ),
 };
 
-export const ResponsiveOrientation: Story = {
-  render: (args) => (
-    <DescriptionList
-      {...args}
-      orientation={{ xs: 'vertical', m: 'horizontal' }}
-    >
-      <DescriptionList.Group id="type">
-        <DescriptionList.Term>Incident type</DescriptionList.Term>
-        <DescriptionList.Description>Malware</DescriptionList.Description>
-      </DescriptionList.Group>
-
-      <DescriptionList.Group id="identifier">
-        <DescriptionList.Term>Identifier</DescriptionList.Term>
-        <DescriptionList.Description>
-          INC-2022-125-78253
-        </DescriptionList.Description>
-      </DescriptionList.Group>
-
-      <DescriptionList.Group id="assignee">
-        <DescriptionList.Term>Assignee</DescriptionList.Term>
-        <DescriptionList.Description>John Smith</DescriptionList.Description>
-      </DescriptionList.Group>
-    </DescriptionList>
-  ),
-};
-
-export const AdaptiveOrientation: Story = {
-  render: function Render() {
-    const { ref, width } = useElementSize<HTMLDListElement>();
-
-    return (
-      <div
-        style={{
-          inlineSize: 600,
-          minInlineSize: 200,
-          maxInlineSize: '100%',
-          boxSizing: 'border-box',
-          padding: 'var(--kbq-size-l)',
-          border: '1px dashed var(--kbq-line-contrast-less)',
-          overflow: 'auto',
-          resize: 'horizontal',
-        }}
-      >
-        <DescriptionList
-          ref={ref}
-          orientation={width > 0 && width <= 400 ? 'vertical' : 'horizontal'}
-        >
-          <DescriptionList.Group id="type">
-            <DescriptionList.Term>Incident type</DescriptionList.Term>
-            <DescriptionList.Description>Malware</DescriptionList.Description>
-          </DescriptionList.Group>
-
-          <DescriptionList.Group id="identifier">
-            <DescriptionList.Term>Identifier</DescriptionList.Term>
-            <DescriptionList.Description>
-              INC-2022-125-78253
-            </DescriptionList.Description>
-          </DescriptionList.Group>
-
-          <DescriptionList.Group id="assignee">
-            <DescriptionList.Term>Assignee</DescriptionList.Term>
-            <DescriptionList.Description>
-              John Smith
-            </DescriptionList.Description>
-          </DescriptionList.Group>
-        </DescriptionList>
-      </div>
-    );
-  },
-};
-
 export const Columns: Story = {
   render: (args) => {
     const examples = [
@@ -258,6 +187,78 @@ export const Alignment: Story = {
       </DescriptionList.Group>
     </DescriptionList>
   ),
+};
+
+export const Responsive: Story = {
+  render: (args) => (
+    <DescriptionList
+      {...args}
+      orientation={{ xs: 'vertical', m: 'horizontal' }}
+      columns={{ m: 'repeat(2, 1fr)', xl: 'repeat(4, 1fr)' }}
+    >
+      <DescriptionList.Group id="type">
+        <DescriptionList.Term>Incident type</DescriptionList.Term>
+        <DescriptionList.Description>Malware</DescriptionList.Description>
+      </DescriptionList.Group>
+
+      <DescriptionList.Group id="identifier">
+        <DescriptionList.Term>Identifier</DescriptionList.Term>
+        <DescriptionList.Description>
+          INC-2022-125-78253
+        </DescriptionList.Description>
+      </DescriptionList.Group>
+
+      <DescriptionList.Group id="assignee">
+        <DescriptionList.Term>Assignee</DescriptionList.Term>
+        <DescriptionList.Description>John Smith</DescriptionList.Description>
+      </DescriptionList.Group>
+    </DescriptionList>
+  ),
+};
+
+export const Adaptive: Story = {
+  render: function Render() {
+    const { ref, width } = useElementSize<HTMLDListElement>();
+
+    return (
+      <div
+        style={{
+          inlineSize: 600,
+          minInlineSize: 200,
+          maxInlineSize: '100%',
+          boxSizing: 'border-box',
+          padding: 'var(--kbq-size-l)',
+          border: '1px dashed var(--kbq-line-contrast-less)',
+          overflow: 'auto',
+          resize: 'horizontal',
+        }}
+      >
+        <DescriptionList
+          ref={ref}
+          orientation={width > 0 && width <= 400 ? 'vertical' : 'horizontal'}
+        >
+          <DescriptionList.Group id="type">
+            <DescriptionList.Term>Incident type</DescriptionList.Term>
+            <DescriptionList.Description>Malware</DescriptionList.Description>
+          </DescriptionList.Group>
+
+          <DescriptionList.Group id="identifier">
+            <DescriptionList.Term>Identifier</DescriptionList.Term>
+            <DescriptionList.Description>
+              INC-2022-125-78253
+            </DescriptionList.Description>
+          </DescriptionList.Group>
+
+          <DescriptionList.Group id="assignee">
+            <DescriptionList.Term>Assignee</DescriptionList.Term>
+            <DescriptionList.Description>
+              John Smith
+            </DescriptionList.Description>
+          </DescriptionList.Group>
+        </DescriptionList>
+      </div>
+    );
+  },
 };
 
 export const LongText: Story = {

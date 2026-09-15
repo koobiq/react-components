@@ -28,9 +28,9 @@ export const DescriptionList: DescriptionListComponent & {
 // @public (undocumented)
 export type DescriptionListBaseProps<T extends object = object> = {
     orientation?: DescriptionListPropOrientation | ResponsiveValue<DescriptionListPropOrientation>;
-    columns?: string;
-    alignItems?: DescriptionListPropAlign;
-    justifyItems?: DescriptionListPropAlign;
+    columns?: string | ResponsiveValue<string>;
+    alignItems?: DescriptionListPropAlign | ResponsiveValue<DescriptionListPropAlign>;
+    justifyItems?: DescriptionListPropAlign | ResponsiveValue<DescriptionListPropAlign>;
     items?: Iterable<T>;
     dependencies?: ReadonlyArray<unknown>;
     children?: ReactNode | ((item: T) => ReactNode);
@@ -41,7 +41,10 @@ export type DescriptionListBaseProps<T extends object = object> = {
 export type DescriptionListComponent = <T extends object = object>(props: DescriptionListProps<T>) => ReactElement | null;
 
 // @public (undocumented)
-export type DescriptionListDescriptionProps = ComponentPropsWithRef<'dd'> & DataAttributeProps;
+export type DescriptionListDescriptionProps = ExtendableProps<{
+    className?: string;
+    children?: ReactNode;
+} & DataAttributeProps, ComponentPropsWithRef<'dd'>>;
 
 // @public (undocumented)
 export type DescriptionListGroupProps = ExtendableProps<{
@@ -52,7 +55,7 @@ export type DescriptionListGroupProps = ExtendableProps<{
 export type DescriptionListPropAlign = (typeof descriptionListPropAlign)[number];
 
 // @public (undocumented)
-export const descriptionListPropAlign: readonly ["start", "center", "end"];
+export const descriptionListPropAlign: readonly ["start", "center", "end", "stretch"];
 
 // @public (undocumented)
 export type DescriptionListPropOrientation = (typeof descriptionListPropOrientation)[number];
@@ -64,7 +67,10 @@ export const descriptionListPropOrientation: readonly ["horizontal", "vertical"]
 export type DescriptionListProps<T extends object = object> = ExtendableProps<DescriptionListBaseProps<T>, ComponentPropsWithRef<'dl'>>;
 
 // @public (undocumented)
-export type DescriptionListTermProps = ComponentPropsWithRef<'dt'> & DataAttributeProps;
+export type DescriptionListTermProps = ExtendableProps<{
+    className?: string;
+    children?: ReactNode;
+} & DataAttributeProps, ComponentPropsWithRef<'dt'>>;
 
 // Warnings were encountered during analysis:
 //

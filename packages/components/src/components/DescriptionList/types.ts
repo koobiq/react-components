@@ -16,7 +16,12 @@ export const descriptionListPropOrientation = [
 export type DescriptionListPropOrientation =
   (typeof descriptionListPropOrientation)[number];
 
-export const descriptionListPropAlign = ['start', 'center', 'end'] as const;
+export const descriptionListPropAlign = [
+  'start',
+  'center',
+  'end',
+  'stretch',
+] as const;
 
 export type DescriptionListPropAlign =
   (typeof descriptionListPropAlign)[number];
@@ -34,19 +39,24 @@ export type DescriptionListBaseProps<T extends object = object> = {
    * Columns of the horizontal layout, as CSS `grid-template-columns`.
    * The term takes the first column, the description takes the rest:
    * `'repeat(2, 1fr)'`, `'200px 1fr'`, `'auto 1fr'`.
+   * Can be set per breakpoint: `{ m: 'repeat(2, 1fr)', xl: 'repeat(4, 1fr)' }`.
    * @default 'repeat(4, 1fr)'
    */
-  columns?: string;
+  columns?: string | ResponsiveValue<string>;
   /**
    * Vertical alignment of terms and descriptions.
-   * @default 'start'
+   * Can be set per breakpoint: `{ xs: 'start', m: 'center' }`.
+   * @default 'stretch'
    */
-  alignItems?: DescriptionListPropAlign;
+  alignItems?:
+    DescriptionListPropAlign | ResponsiveValue<DescriptionListPropAlign>;
   /**
    * Horizontal alignment of terms and descriptions.
-   * @default 'start'
+   * Can be set per breakpoint: `{ xs: 'start', m: 'center' }`.
+   * @default 'stretch'
    */
-  justifyItems?: DescriptionListPropAlign;
+  justifyItems?:
+    DescriptionListPropAlign | ResponsiveValue<DescriptionListPropAlign>;
   /** Data to render with the `children` function. Each item needs an `id` or `key`. */
   items?: Iterable<T>;
   /**
@@ -73,11 +83,25 @@ export type DescriptionListGroupProps = ExtendableProps<
   ComponentPropsWithRef<'div'>
 >;
 
-export type DescriptionListTermProps = ComponentPropsWithRef<'dt'> &
-  DataAttributeProps;
+export type DescriptionListTermProps = ExtendableProps<
+  {
+    /** Additional CSS-classes. */
+    className?: string;
+    /** The term, e.g. a field name. */
+    children?: ReactNode;
+  } & DataAttributeProps,
+  ComponentPropsWithRef<'dt'>
+>;
 
-export type DescriptionListDescriptionProps = ComponentPropsWithRef<'dd'> &
-  DataAttributeProps;
+export type DescriptionListDescriptionProps = ExtendableProps<
+  {
+    /** Additional CSS-classes. */
+    className?: string;
+    /** The description of the term, e.g. a field value. */
+    children?: ReactNode;
+  } & DataAttributeProps,
+  ComponentPropsWithRef<'dd'>
+>;
 
 export type DescriptionListComponent = <T extends object = object>(
   props: DescriptionListProps<T>

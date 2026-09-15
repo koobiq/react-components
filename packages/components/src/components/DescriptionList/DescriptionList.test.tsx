@@ -44,8 +44,10 @@ describe('DescriptionList', () => {
     render(<DescriptionList {...baseProps} />);
 
     expect(getRoot()).toHaveAttribute('data-orientation', 'horizontal');
-    expect(getRoot()).toHaveAttribute('data-align-items', 'start');
-    expect(getRoot()).toHaveAttribute('data-justify-items', 'start');
+    expect(getRoot()).toHaveAttribute('data-align-items', 'stretch');
+    expect(getRoot()).toHaveAttribute('data-justify-items', 'stretch');
+    expect(getRoot()).toHaveStyle('--description-list-align-items: stretch');
+    expect(getRoot()).toHaveStyle('--description-list-justify-items: stretch');
     expect(getColumns()).toBe('');
   });
 
@@ -100,6 +102,27 @@ describe('DescriptionList', () => {
     expect(getColumns()).toBe('200px 1fr');
   });
 
+  it('should resolve the columns for the matched breakpoints', () => {
+    const renderList = (breakpoints: Partial<BreakpointsContextType>) => (
+      <BreakpointsContext.Provider
+        value={breakpoints as BreakpointsContextType}
+      >
+        <DescriptionList
+          {...baseProps}
+          columns={{ xs: '200px 1fr', m: 'repeat(2, 1fr)' }}
+        />
+      </BreakpointsContext.Provider>
+    );
+
+    const { rerender } = render(renderList({ xs: true, s: true }));
+
+    expect(getColumns()).toBe('200px 1fr');
+
+    rerender(renderList({ xs: true, s: true, m: true }));
+
+    expect(getColumns()).toBe('repeat(2, 1fr)');
+  });
+
   it('should keep the custom style with the columns', () => {
     render(
       <DescriptionList
@@ -113,13 +136,34 @@ describe('DescriptionList', () => {
     expect(getColumns()).toBe('auto 1fr');
   });
 
-  it('should reflect the alignment props', () => {
+  it('should apply the alignment props', () => {
     render(
       <DescriptionList {...baseProps} alignItems="center" justifyItems="end" />
     );
 
     expect(getRoot()).toHaveAttribute('data-align-items', 'center');
     expect(getRoot()).toHaveAttribute('data-justify-items', 'end');
+    expect(getRoot()).toHaveStyle('--description-list-align-items: center');
+    expect(getRoot()).toHaveStyle('--description-list-justify-items: end');
+  });
+
+  it('should resolve the alignment for the matched breakpoints', () => {
+    render(
+      <BreakpointsContext.Provider
+        value={{ xs: true, s: true, m: true } as BreakpointsContextType}
+      >
+        <DescriptionList
+          {...baseProps}
+          alignItems={{ xs: 'start', m: 'center' }}
+          justifyItems={{ xl: 'end' }}
+        />
+      </BreakpointsContext.Provider>
+    );
+
+    expect(getRoot()).toHaveAttribute('data-align-items', 'center');
+    expect(getRoot()).toHaveStyle('--description-list-align-items: center');
+    expect(getRoot()).toHaveAttribute('data-justify-items', 'stretch');
+    expect(getRoot()).toHaveStyle('--description-list-justify-items: stretch');
   });
 
   it('should render the parts as semantic elements', () => {
@@ -204,17 +248,33 @@ describe('DescriptionList', () => {
       expect(screen.getByTestId('group')).not.toHaveAttribute('id');
     });
 
-    it('should not render a term outside a group', () => {
+    it('should not render the parts outside a group and warn about them', () => {
+      const consoleWarn = vi
+        .spyOn(console, 'warn')
+        .mockImplementation(() => {});
+
       render(
         <DescriptionList>
           <DescriptionList.Group id="status">
             <DescriptionList.Term>Status</DescriptionList.Term>
           </DescriptionList.Group>
           <DescriptionList.Term>Orphan</DescriptionList.Term>
+          <DescriptionList.Description>Orphan</DescriptionList.Description>
         </DescriptionList>
       );
 
       expect(getTerms()).toEqual(['Status']);
+      expect(screen.queryAllByRole('definition')).toHaveLength(0);
+
+      expect(consoleWarn).toHaveBeenCalledWith(
+        '[koobiq] DescriptionList: "DescriptionList.Term" must be inside "DescriptionList.Group".'
+      );
+
+      expect(consoleWarn).toHaveBeenCalledWith(
+        '[koobiq] DescriptionList: "DescriptionList.Description" must be inside "DescriptionList.Group".'
+      );
+
+      consoleWarn.mockRestore();
     });
   });
 
