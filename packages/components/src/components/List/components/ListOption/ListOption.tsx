@@ -9,6 +9,7 @@ import type { ListState } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import type { ItemProps } from '../../../Collections';
+import { ListItemContext } from '../ListItemText/ListItemContext';
 
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
@@ -43,7 +44,6 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
 
   return (
     <Tag
-      data-slot="list-item"
       {...mergeProps(optionProps, hoverProps, pressProps)}
       className={clsx(listItem, textVariant['text-normal'], className)}
       style={style}
@@ -56,7 +56,9 @@ export function ListOption<T>({ item, state }: ListOptionProps<T>) {
       data-focus-visible={isFocusVisible || undefined}
       data-testid={dataTestId}
     >
-      {item.rendered}
+      <ListItemContext.Provider value={{ ref, isHovered }}>
+        {item.rendered}
+      </ListItemContext.Provider>
     </Tag>
   );
 }

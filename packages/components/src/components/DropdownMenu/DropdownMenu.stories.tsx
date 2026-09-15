@@ -106,7 +106,7 @@ export const ItemContent: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
       <Button>Edit</Button>
-      <DropdownMenu.Popover>
+      <DropdownMenu.Popover style={{ maxInlineSize: 240 }}>
         <DropdownMenu.Content onAction={(key) => alert(key)}>
           <DropdownMenu.Item id="copy" align="start" textValue="Copy">
             <DropdownMenu.ItemAddon>
@@ -138,7 +138,11 @@ export const ItemContent: Story = {
             <DropdownMenu.ItemAddon>
               <IconTrash16 />
             </DropdownMenu.ItemAddon>
-            <DropdownMenu.ItemText caption="Cannot be undone">
+            <DropdownMenu.ItemText
+              caption="Cannot be undone, the files are removed for everyone"
+              slotProps={{ caption: { ellipsis: true } }}
+              showOverflowTooltip
+            >
               Delete
             </DropdownMenu.ItemText>
             <DropdownMenu.ItemAddon>

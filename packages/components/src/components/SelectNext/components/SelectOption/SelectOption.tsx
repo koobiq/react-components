@@ -23,6 +23,7 @@ import {
 
 import { utilClasses } from '../../../../styles/utility';
 import { Checkbox } from '../../../Checkbox';
+import { ListItemContext } from '../../../List/components/ListItemText/ListItemContext';
 import { SelectContext } from '../../SelectContext';
 
 import s from './SelectOption.module.css';
@@ -88,7 +89,6 @@ export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
 
   return (
     <Tag
-      data-slot="list-item"
       ref={ref}
       style={style}
       data-align={align}
@@ -108,7 +108,9 @@ export const SelectOption = createLeafComponent(ItemNode, function SelectItem<
           isReadOnly
         />
       )}
-      {item.rendered}
+      <ListItemContext.Provider value={{ ref: domRef, isHovered }}>
+        {item.rendered}
+      </ListItemContext.Provider>
     </Tag>
   );
 });

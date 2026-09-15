@@ -151,11 +151,6 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
     tooltipTriggerProps
   );
 
-  const tooltipStyle = {
-    ...overlayProps.style,
-    ...other.style,
-  };
-
   return (
     <>
       {control?.({
@@ -175,7 +170,6 @@ export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
           <Overlay portalContainer={portalContainer}>
             <div
               {...tooltipProps}
-              style={tooltipStyle}
               data-variant={variant}
               data-transition={transition}
               data-arrow={showArrow || undefined}

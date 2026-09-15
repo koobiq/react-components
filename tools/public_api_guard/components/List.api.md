@@ -75,7 +75,7 @@ export type ListItemTextProps = ExtendableComponentPropsWithRef<{
     children?: ReactNode;
     caption?: ReactNode;
     autoWidth?: boolean;
-    hideTooltip?: boolean;
+    showOverflowTooltip?: boolean;
     slotProps?: {
         text?: TypographyProps;
         caption?: TypographyProps;

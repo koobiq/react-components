@@ -10,6 +10,7 @@ import { useMenuItem } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import type { ItemProps } from '../../../Collections';
+import { ListItemContext } from '../../../List/components/ListItemText/ListItemContext';
 
 const { listItem } = utilClasses;
 const textVariant = utilClasses.typography;
@@ -44,7 +45,6 @@ export function MenuItem<T>({ item, state }: MenuItemProps<T>) {
 
   return (
     <Tag
-      data-slot="list-item"
       {...mergeProps(menuItemProps, hoverProps, pressProps)}
       data-hovered={hovered}
       data-pressed={pressed}
@@ -55,7 +55,9 @@ export function MenuItem<T>({ item, state }: MenuItemProps<T>) {
       className={clsx(listItem, textVariant['text-normal'], className)}
       ref={ref}
     >
-      {item.rendered}
+      <ListItemContext.Provider value={{ ref, isHovered: hovered }}>
+        {item.rendered}
+      </ListItemContext.Provider>
     </Tag>
   );
 }

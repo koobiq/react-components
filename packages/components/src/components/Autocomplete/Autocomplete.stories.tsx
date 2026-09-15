@@ -33,7 +33,7 @@ const meta = {
     'Autocomplete.Section': Autocomplete.Section,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-05-15'],
+  tags: ['status:updated', 'date:2026-09-15'],
 } satisfies Meta<typeof Autocomplete>;
 
 export default meta;
@@ -102,6 +102,7 @@ export const ItemContent: Story = {
         <Autocomplete.ItemText
           caption="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
           slotProps={{ caption: { ellipsis: true } }}
+          showOverflowTooltip
         >
           PGP
         </Autocomplete.ItemText>

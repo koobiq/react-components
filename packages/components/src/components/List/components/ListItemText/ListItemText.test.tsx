@@ -1,16 +1,10 @@
-import { createRef } from 'react';
+import { createRef, useRef } from 'react';
 
-import {
-  act,
-  fireEvent,
-  screen,
-  render,
-  waitFor,
-} from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ListItemText, type ListItemTextProps } from './index';
+import { ListItemContext } from './ListItemContext';
 
 describe('ListItemText', () => {
   const baseProps: ListItemTextProps = {
@@ -39,22 +33,40 @@ describe('ListItemText', () => {
     expect(getRoot()).toHaveClass('foo');
   });
 
-  describe('overflow tooltips', () => {
+  describe('overflow tooltip', () => {
+    // With the mocks below, a string longer than 10 characters is cut off.
     const longText = 'A long security incident description';
     const longCaption = 'Additional details about this incident';
-    const user = userEvent.setup();
-    let notifyResize: () => void;
+    const shortText = 'Short';
 
-    const hover = async (element: HTMLElement) => {
-      fireEvent.pointerMove(element, { pointerType: 'mouse' });
-      fireEvent.mouseMove(element);
-      await user.hover(element);
+    const queryTooltip = () => screen.queryByRole('tooltip');
+
+    type ItemProps = ListItemTextProps & {
+      isHovered?: boolean;
+      hasSubmenu?: boolean;
+    };
+
+    function Item({ isHovered = false, hasSubmenu, ...props }: ItemProps) {
+      const ref = useRef<HTMLDivElement>(null);
+
+      return (
+        <div ref={ref}>
+          <ListItemContext.Provider value={{ ref, isHovered, hasSubmenu }}>
+            <ListItemText showOverflowTooltip {...props} />
+          </ListItemContext.Provider>
+        </div>
+      );
+    }
+
+    // The text is measured when the item gets hovered, so render it first.
+    const renderHovered = (props: ItemProps) => {
+      const result = render(<Item {...props} />);
+      result.rerender(<Item {...props} isHovered />);
+
+      return result;
     };
 
     beforeEach(() => {
-      const resizeCallbacks: Array<() => void> = [];
-      notifyResize = () => resizeCallbacks.forEach((callback) => callback());
-
       vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
         100
       );
@@ -64,215 +76,112 @@ describe('ListItemText', () => {
           return (this.textContent?.length ?? 0) * 10;
         }
       );
-
-      class ResizeObserverMock {
-        constructor(callback: ResizeObserverCallback) {
-          resizeCallbacks.push(() =>
-            callback(
-              [
-                {
-                  contentRect: { width: 100, height: 20 },
-                } as ResizeObserverEntry,
-              ],
-              this
-            )
-          );
-        }
-
-        observe = vi.fn();
-        unobserve = vi.fn();
-        disconnect = vi.fn();
-      }
-
-      vi.stubGlobal('ResizeObserver', ResizeObserverMock);
     });
 
     afterEach(() => {
       vi.restoreAllMocks();
-      vi.unstubAllGlobals();
     });
 
-    it.each(['Short', '1234567890'])(
-      'does not show a tooltip for fitting text: %s',
-      async (text) => {
-        render(<ListItemText>{text}</ListItemText>);
-        await hover(screen.getByText(text));
-        await new Promise((resolve) => setTimeout(resolve, 200));
+    it('does not show a tooltip unless showOverflowTooltip is set', () => {
+      renderHovered({ children: longText, showOverflowTooltip: false });
 
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-      }
-    );
-
-    it('shows only the text of the hovered line, including formatted content', async () => {
-      render(
-        <ListItemText
-          caption={longCaption}
-          slotProps={{ caption: { ellipsis: true } }}
-        >
-          <strong>{longText}</strong>
-        </ListItemText>
-      );
-
-      const text = screen.getByText(longText).parentElement!;
-      const caption = screen.getByText(longCaption);
-
-      await hover(text);
-      const tooltip = await screen.findByRole('tooltip');
-      expect(tooltip).toHaveTextContent(longText);
-      expect(tooltip).not.toHaveTextContent(longCaption);
-      expect(tooltip.querySelector('strong')).toBeNull();
-      expect(tooltip).not.toHaveAttribute('data-arrow');
-      expect(tooltip).toHaveStyle({ pointerEvents: 'none' });
-
-      await user.unhover(text);
-
-      await waitFor(() =>
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
-      );
-
-      await hover(caption);
-      expect(await screen.findByRole('tooltip')).toHaveTextContent(longCaption);
-      expect(screen.getAllByRole('tooltip')).toHaveLength(1);
+      expect(queryTooltip()).not.toBeInTheDocument();
     });
 
-    it.each(['text', 'caption'] as const)(
-      'detects %s overflow independently',
-      async (line) => {
-        render(
-          <ListItemText caption={line === 'caption' ? longCaption : 'Short'}>
-            {line === 'text' ? longText : 'Short'}
-          </ListItemText>
-        );
-
-        await hover(screen.getByText('Short'));
-        await new Promise((resolve) => setTimeout(resolve, 200));
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-
-        const content = line === 'text' ? longText : longCaption;
-        await hover(screen.getByText(content));
-        expect(await screen.findByRole('tooltip')).toHaveTextContent(content);
-      }
-    );
-
-    it('disables both tooltips and closes an open tooltip when hideTooltip changes', async () => {
+    it('does not show a tooltip outside a list item', () => {
       const { rerender } = render(
-        <ListItemText caption={longCaption}>{longText}</ListItemText>
+        <ListItemText showOverflowTooltip>{longText}</ListItemText>
       );
 
-      await hover(screen.getByText(longText));
-      expect(await screen.findByRole('tooltip')).toBeInTheDocument();
+      rerender(<ListItemText showOverflowTooltip>{longText}</ListItemText>);
 
-      rerender(
-        <ListItemText caption={longCaption} hideTooltip>
-          {longText}
-        </ListItemText>
-      );
-
-      await waitFor(() =>
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
-      );
-
-      await hover(screen.getByText(longCaption));
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+      expect(queryTooltip()).not.toBeInTheDocument();
     });
 
-    it('updates the displayed text and closes when replacement text fits', async () => {
-      const { rerender } = render(<ListItemText>{longText}</ListItemText>);
-      const text = screen.getByText(longText);
-      await hover(text);
-      expect(await screen.findByRole('tooltip')).toHaveTextContent(longText);
+    it('does not show a tooltip while the item is not hovered', () => {
+      const { rerender } = render(<Item>{longText}</Item>);
 
-      rerender(<ListItemText>{longCaption}</ListItemText>);
-      expect(screen.getByRole('tooltip')).toHaveTextContent(longCaption);
+      rerender(<Item>{longText}</Item>);
 
-      rerender(<ListItemText>Short</ListItemText>);
-
-      await waitFor(() =>
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
-      );
-
-      rerender(<ListItemText>{longText}</ListItemText>);
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-      await user.unhover(text);
-      await hover(text);
-      expect(await screen.findByRole('tooltip')).toHaveTextContent(longText);
+      expect(queryTooltip()).not.toBeInTheDocument();
     });
 
-    it('closes when a resize makes the text fit', async () => {
-      render(<ListItemText>{longText}</ListItemText>);
-      await hover(screen.getByText(longText));
-      expect(await screen.findByRole('tooltip')).toBeInTheDocument();
+    it.each([
+      { cutOff: 'the text', children: longText, caption: shortText },
+      { cutOff: 'the caption', children: shortText, caption: longCaption },
+    ])(
+      'shows only $cutOff when only it is cut off',
+      ({ children, caption }) => {
+        renderHovered({ children, caption });
 
+        expect(screen.getByRole('tooltip').textContent).toBe(
+          children === longText ? longText : longCaption
+        );
+      }
+    );
+
+    it('shows the text and the caption on separate lines when both are cut off', () => {
+      renderHovered({ children: longText, caption: longCaption });
+
+      const tooltip = screen.getByRole('tooltip');
+
+      expect(tooltip.textContent).toBe(`${longText}\n${longCaption}`);
+      expect(tooltip).toHaveStyle({ whiteSpace: 'pre-line' });
+    });
+
+    it('does not show a tooltip when nothing is cut off', () => {
+      renderHovered({ children: shortText, caption: shortText });
+
+      expect(queryTooltip()).not.toBeInTheDocument();
+    });
+
+    it('places the tooltip to the right of the item and ignores the pointer', () => {
+      renderHovered({ children: longText });
+
+      const tooltip = screen.getByRole('tooltip');
+
+      expect(tooltip).toHaveAttribute('data-placement', 'right');
+      expect(tooltip).toHaveStyle({ pointerEvents: 'none' });
+    });
+
+    it('places the tooltip above an item that opens a submenu', () => {
+      renderHovered({ children: longText, hasSubmenu: true });
+
+      expect(screen.getByRole('tooltip')).toHaveAttribute(
+        'data-placement',
+        'top'
+      );
+    });
+
+    it('closes at once when the item is no longer hovered', () => {
+      const { rerender } = renderHovered({ children: longText });
+
+      expect(screen.getByRole('tooltip')).toBeInTheDocument();
+
+      rerender(<Item>{longText}</Item>);
+
+      expect(queryTooltip()).not.toBeInTheDocument();
+    });
+
+    it('measures the current text when the item gets hovered', () => {
+      const { rerender } = renderHovered({ children: shortText });
+
+      expect(queryTooltip()).not.toBeInTheDocument();
+
+      rerender(<Item>{longText}</Item>);
+      rerender(<Item isHovered>{longText}</Item>);
+
+      expect(screen.getByRole('tooltip')).toHaveTextContent(longText);
+    });
+
+    it('measures the current width when the item gets hovered', () => {
       vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
         1000
       );
 
-      act(() => notifyResize());
+      renderHovered({ children: longText });
 
-      await waitFor(() =>
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
-      );
-    });
-
-    it('does not show a tooltip for vertical overflow or wrapped text', async () => {
-      vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(
-        100
-      );
-
-      vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(
-        20
-      );
-
-      vi.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockReturnValue(
-        40
-      );
-
-      render(
-        <ListItemText slotProps={{ text: { ellipsis: false } }}>
-          {longText}
-        </ListItemText>
-      );
-
-      await hover(screen.getByText(longText));
-      await new Promise((resolve) => setTimeout(resolve, 200));
-
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-    });
-
-    it('preserves slot refs, handlers and props without adding a tab stop', async () => {
-      const textRef = createRef<HTMLParagraphElement>();
-      const captionRef = createRef<HTMLParagraphElement>();
-      const onMouseEnter = vi.fn();
-
-      render(
-        <ListItemText
-          caption={longCaption}
-          slotProps={{
-            text: {
-              as: 'p',
-              ref: textRef,
-              onMouseEnter,
-              className: 'custom-text',
-              style: { color: 'red' },
-            },
-            caption: { ref: captionRef },
-          }}
-        >
-          {longText}
-        </ListItemText>
-      );
-
-      expect(textRef.current).toBe(screen.getByText(longText));
-      expect(textRef.current?.tagName).toBe('P');
-      expect(captionRef.current).toBe(screen.getByText(longCaption));
-      expect(textRef.current).toHaveClass('custom-text');
-      expect(textRef.current).toHaveStyle({ color: 'rgb(255, 0, 0)' });
-      expect(textRef.current).not.toHaveAttribute('tabindex');
-
-      await hover(textRef.current!);
-      expect(onMouseEnter).toHaveBeenCalledOnce();
-      expect(await screen.findByRole('tooltip')).toHaveTextContent(longText);
+      expect(queryTooltip()).not.toBeInTheDocument();
     });
   });
 });

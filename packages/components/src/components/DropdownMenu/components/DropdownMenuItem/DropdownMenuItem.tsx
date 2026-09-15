@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef } from 'react';
+
 import { once } from '@koobiq/logger';
 import { clsx } from '@koobiq/react-core';
 import { IconChevronRightS16 } from '@koobiq/react-icons';
@@ -10,6 +12,7 @@ import {
 
 import { utilClasses } from '../../../../styles/utility';
 import { ListItemAddon } from '../../../List/components';
+import { ListItemContext } from '../../../List/components/ListItemText/ListItemContext';
 
 import s from './DropdownMenuItem.module.css';
 import type { DropdownMenuItemProps } from './types';
@@ -25,6 +28,8 @@ export function DropdownMenuItem<T extends object = object>({
   align = 'center',
   ...props
 }: DropdownMenuItemProps<T>) {
+  const ref = useRef<HTMLDivElement>(null);
+
   if (
     process.env.NODE_ENV !== 'production' &&
     !textValue &&
@@ -38,9 +43,9 @@ export function DropdownMenuItem<T extends object = object>({
 
   return (
     <AriaMenuItem
-      data-slot="list-item"
       data-align={align}
       {...props}
+      ref={ref}
       // The chevron wrapper below turns `children` into a render function,
       // so React Aria can no longer read plain text out of it on its own.
       textValue={textValue ?? (typeof children === 'string' ? children : '')}
@@ -48,15 +53,15 @@ export function DropdownMenuItem<T extends object = object>({
         clsx(s.base, listItem, textVariant['text-normal'], className)
       )}
     >
-      {composeRenderProps(children, (children, { hasSubmenu }) => (
-        <>
+      {composeRenderProps(children, (children, { hasSubmenu, isHovered }) => (
+        <ListItemContext.Provider value={{ ref, isHovered, hasSubmenu }}>
           {children}
           {hasSubmenu && (
             <ListItemAddon className={s.chevron}>
               <IconChevronRightS16 />
             </ListItemAddon>
           )}
-        </>
+        </ListItemContext.Provider>
       ))}
     </AriaMenuItem>
   );

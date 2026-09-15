@@ -65,7 +65,7 @@ describe('Tooltip', () => {
 
     render(<Tooltip {...baseProps} style={style} isOpen />);
 
-    expect(getRoot()).toHaveStyle({ padding: '20px', zIndex: '100000' });
+    expect(getRoot()).toHaveStyle({ padding: '20px' });
   });
 
   describe('check the variant prop', () => {

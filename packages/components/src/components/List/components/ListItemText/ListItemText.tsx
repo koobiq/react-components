@@ -1,12 +1,22 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 
-import { clsx, isNotNil } from '@koobiq/react-core';
+import { clsx, isNotNil, useObjectRef } from '@koobiq/react-core';
 
+import { Tooltip } from '../../../Tooltip';
+import { Typography } from '../../../Typography';
+
+import { ListItemContext } from './ListItemContext';
 import s from './ListItemText.module.css';
-import { ListItemTextLine } from './ListItemTextLine';
 import type { ListItemTextProps, ListItemTextRef } from './types';
+
+/** Returns the lines that don't fit, one per row. */
+const getOverflowText = (root: HTMLElement | null) =>
+  [...(root?.children ?? [])]
+    .filter((line) => line.scrollWidth > line.clientWidth)
+    .map((line) => line.textContent)
+    .join('\n');
 
 export const ListItemText = forwardRef<ListItemTextRef, ListItemTextProps>(
   (
@@ -15,39 +25,56 @@ export const ListItemText = forwardRef<ListItemTextRef, ListItemTextProps>(
       children,
       caption,
       autoWidth,
-      hideTooltip = false,
+      showOverflowTooltip = false,
       slotProps,
       ...other
     },
     ref
-  ) => (
-    <span
-      className={clsx(s.base, autoWidth && s.autoWidth, className)}
-      {...other}
-      ref={ref}
-    >
-      <ListItemTextLine
-        align="start"
-        ellipsis
-        {...slotProps?.text}
-        hideTooltip={hideTooltip}
+  ) => {
+    const rootRef = useObjectRef(ref);
+    const item = useContext(ListItemContext);
+
+    // Measured when the item gets hovered, so the text and the width are current.
+    const overflowText =
+      showOverflowTooltip && item.isHovered
+        ? getOverflowText(rootRef.current)
+        : '';
+
+    return (
+      <span
+        className={clsx(s.base, autoWidth && s.autoWidth, className)}
+        {...other}
+        ref={rootRef}
       >
-        {children}
-      </ListItemTextLine>
-      {isNotNil(caption) && (
-        <ListItemTextLine
-          align="start"
-          color="contrast-secondary"
-          className={s.caption}
-          variant="text-compact"
-          {...slotProps?.caption}
-          hideTooltip={hideTooltip}
-        >
-          {caption}
-        </ListItemTextLine>
-      )}
-    </span>
-  )
+        <Typography as="span" align="start" ellipsis {...slotProps?.text}>
+          {children}
+        </Typography>
+        {isNotNil(caption) && (
+          <Typography
+            as="span"
+            align="start"
+            color="contrast-secondary"
+            className={s.caption}
+            variant="text-compact"
+            {...slotProps?.caption}
+          >
+            {caption}
+          </Typography>
+        )}
+        {overflowText && (
+          <Tooltip
+            isOpen
+            anchorRef={item.ref}
+            // A submenu opens to the side, so the tooltip goes above the item.
+            placement={item.hasSubmenu ? 'top' : 'end'}
+            style={{ pointerEvents: 'none', whiteSpace: 'pre-line' }}
+          >
+            {overflowText}
+          </Tooltip>
+        )}
+      </span>
+    );
+  }
 );
 
 ListItemText.displayName = 'ListItemText';

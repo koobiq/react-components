@@ -59,7 +59,7 @@ Alternatively, if the item objects contain an id property, as shown in the examp
 
 List items can be composed with helper components:
 
-- `List.ItemText` for text and captions.
+- `List.ItemText` for text and captions. Set `showOverflowTooltip` to show text that doesn't fit in a tooltip.
 - `List.ItemAddon` for icons, badges, or other secondary content.
 
 List items also have layout props, such as `align`, which sets vertical alignment. Use `align="start"` for captions or multi-line content.
@@ -71,20 +71,6 @@ List items also have layout props, such as `align`, which sets vertical alignmen
 </Alert>
 
 <Story of={Stories.ItemContent} />
-
-## Overflow tooltips
-
-Truncated text inside `List.ItemText` automatically shows its full content when
-hovered. The main text and caption are measured independently, and the tooltip
-appears above the item. Wrapped text that fits horizontally does not show a
-tooltip.
-
-Set `hideTooltip` on `List.ItemText` to disable both tooltips. Plain item content
-does not receive an overflow tooltip. The same prop is available on components
-that reuse this slot, such as `Select.ItemText`, `Menu.ItemText`, and
-`Tree.ItemContentText`.
-
-<Story of={Stories.OverflowTooltips} />
 
 ## Selection
 
