@@ -87,11 +87,13 @@ function TextFieldRender(
   }, []);
 
   const handleClear = useCallback(() => {
+    if (isDisabled || isReadOnly) return;
+
     setInputValue('');
 
     onClear?.();
     inputRef?.current?.focus();
-  }, [setInputValue, onClear]);
+  }, [isDisabled, isReadOnly, setInputValue, onClear]);
 
   useIsomorphicEffect(() => {
     if (!inputRef.current) return;

@@ -75,6 +75,11 @@ export type TagListInnerProps<T extends object = object> = {
   state: ListState<T>;
   /** Whether all tags are disabled by an owning composite component. */
   isDisabled?: boolean;
+  /**
+   * Whether the tags can be selected but not removed, e.g. when the owning
+   * composite component is read-only.
+   */
+  isReadOnly?: boolean;
   /** Ref to the root element. */
   tagListRef?: Ref<HTMLDivElement>;
 } & Omit<

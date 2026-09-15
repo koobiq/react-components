@@ -108,15 +108,9 @@ const DialogComponent = forwardRef<DialogRef, DialogProps>(
 
 DialogComponent.displayName = 'Dialog';
 
-type CompoundedComponent = typeof DialogComponent & {
-  Header: typeof DialogHeader;
-  Body: typeof DialogBody;
-  Footer: typeof DialogFooter;
-};
-
 /** Dialog presents important information and actions in a focused modal surface. */
-export const Dialog = DialogComponent as CompoundedComponent;
-
-Dialog.Header = DialogHeader;
-Dialog.Body = DialogBody;
-Dialog.Footer = DialogFooter;
+export const Dialog = Object.assign(DialogComponent, {
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
+});

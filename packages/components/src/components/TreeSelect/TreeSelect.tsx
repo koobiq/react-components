@@ -239,8 +239,7 @@ export function TreeSelectInner<
     validationDetails,
   };
 
-  const clearButtonIsHidden =
-    isDisabled || isReadOnly || !state.selectedItems.length;
+  const clearButtonIsHidden = !state.selectedItems.length;
 
   const handleClear = useCallback(() => {
     if (isReadOnly) return;
@@ -320,6 +319,7 @@ export function TreeSelectInner<
       variant,
       isInvalid: isInvalidAria,
       isDisabled,
+      isReadOnly,
       ref: triggerRef,
     },
     slotProps?.group
@@ -487,17 +487,10 @@ function TreeSelectRender<T extends object, M extends SelectionMode = 'single'>(
 
 const TreeSelectComponent = forwardRef(TreeSelectRender) as TreeSelectComponent;
 
-type CompoundedComponent = typeof TreeSelectComponent & {
-  Item: typeof Tree.Item;
-  ItemContent: typeof Tree.ItemContent;
-  LoadMoreItem: typeof Tree.LoadMoreItem;
-  Tag: typeof Tag;
-};
-
 /** Select with hierarchical tree data. */
-export const TreeSelect = TreeSelectComponent as CompoundedComponent;
-
-TreeSelect.Item = Tree.Item;
-TreeSelect.ItemContent = Tree.ItemContent;
-TreeSelect.LoadMoreItem = Tree.LoadMoreItem;
-TreeSelect.Tag = Tag;
+export const TreeSelect = Object.assign(TreeSelectComponent, {
+  Item: Tree.Item,
+  ItemContent: Tree.ItemContent,
+  LoadMoreItem: Tree.LoadMoreItem,
+  Tag,
+});

@@ -21,10 +21,11 @@ import type { ReactNode } from 'react';
 import { RefAttributes } from 'react';
 import type { TransitionProps } from 'react-transition-group/Transition';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const Accordion: CompoundedComponent;
+export const Accordion: ForwardRefExoticComponent<Omit<AccordionProps, "ref"> & RefAttributes<HTMLDivElement>> & {
+    Summary: PolyForwardComponent<"h3", AccordionSummaryProps, ElementType>;
+    Details: ForwardRefExoticComponent<Omit<AccordionDetailsProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
 // @public (undocumented)
 export const AccordionComponent: ForwardRefExoticComponent<Omit<AccordionProps, "ref"> & RefAttributes<HTMLDivElement>>;

@@ -23,10 +23,14 @@ import type { Ref } from 'react';
 import { RefAttributes } from 'react';
 import type { SectionProps as SectionProps_2 } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const List: CompoundedComponent;
+export const List: ListComponent & {
+    Item: typeof ListItem;
+    Section: typeof ListSection;
+    Divider: typeof Divider;
+    ItemText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps_2, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
 // @public (undocumented)
 export type ListComponent = <T>(props: ListProps<T>) => ReactElement | null;
@@ -57,8 +61,6 @@ export namespace ListItem {
     getCollectionNode: unknown;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps_2" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type ListItemAddonProps = ListItemAddonProps_2;
 
@@ -118,6 +120,8 @@ export type ListSectionProps<T> = SectionProps<T>;
 
 // Warnings were encountered during analysis:
 //
+// packages/components/dist/components/List/List.d.ts:19:5 - (ae-forgotten-export) The symbol "Divider" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/List/List.d.ts:21:5 - (ae-forgotten-export) The symbol "ListItemAddonProps_2" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/List/components/ListItemText/types.d.ts:14:9 - (ae-forgotten-export) The symbol "TypographyProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

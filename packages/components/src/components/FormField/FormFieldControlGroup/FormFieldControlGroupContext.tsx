@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 
 export type FormFieldControlGroupContextProps = {
   isDisabled?: boolean;
+  isReadOnly?: boolean;
   hasStartAddon?: boolean;
   hasEndAddon?: boolean;
   isHovered?: boolean;

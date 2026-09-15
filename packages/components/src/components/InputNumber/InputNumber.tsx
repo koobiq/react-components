@@ -152,6 +152,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
               variant,
               startAddon,
               isDisabled,
+              isReadOnly,
             },
             slotProps?.group
           );

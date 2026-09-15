@@ -103,7 +103,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
     const validationBehavior =
       props.validationBehavior ?? formValidationBehavior ?? 'aria';
 
-    const clearButtonIsHidden = state.value === '' || isDisabled || isReadOnly;
+    const clearButtonIsHidden = state.value === '';
 
     const {
       labelProps: labelPropsAria,
@@ -182,6 +182,7 @@ export const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
         variant,
         isInvalid,
         isDisabled,
+        isReadOnly,
       },
       slotProps?.group
     );

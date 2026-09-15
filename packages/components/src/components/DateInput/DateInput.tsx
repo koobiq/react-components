@@ -133,6 +133,7 @@ export function DateInputRender<T extends DateValue>(
       endAddon,
       isInvalid,
       isDisabled,
+      isReadOnly,
       startAddon,
       variant,
       onMouseDown: (e) => {

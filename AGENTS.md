@@ -226,27 +226,34 @@ Public `--kbq-<component>-*` variables are override points.
 
 ### Compound Components
 
-Group related components under one public API. Consumers import the root component and access its slots as properties, for example `Component.Slot`.
+Group related components under one public API. Consumers import the root component and access its slots as properties, for example `Widget.Slot`.
 
 ```tsx
-export type ComponentProps = ComponentPropsWithRef<'div'>;
-export type ComponentSlotProps = ComponentPropsWithRef<'span'>;
+// types.ts
+export type WidgetBaseProps = {
+  className?: string;
+  children?: ReactNode;
+};
 
-const ComponentRoot = forwardRef<HTMLDivElement, ComponentProps>(
+// Widget.tsx
+const WidgetComponent = forwardRef<HTMLDivElement, WidgetBaseProps>(
   (props, ref) => <div ref={ref} {...props} />
 );
 
-const ComponentSlot = forwardRef<HTMLSpanElement, ComponentSlotProps>(
-  (props, ref) => <span ref={ref} {...props} />
-);
+WidgetComponent.displayName = 'Widget';
 
-type CompoundedComponent = typeof ComponentRoot & {
-  Slot: typeof ComponentSlot;
-};
+export const Widget = Object.assign(WidgetComponent, {
+  Slot: WidgetSlot,
+});
 
-export const Component = ComponentRoot as CompoundedComponent;
-Component.Slot = ComponentSlot;
+export type WidgetProps = ComponentPropsWithRef<typeof Widget>;
 ```
+
+`Object.assign` builds the value first, so the compound type is inferred structurally — no local intersection type, and no cast claiming slots the value does not have yet.
+
+The root takes `XBaseProps`; `XProps` is derived from the compounded component (`ComponentPropsWithRef<typeof X>`), so it stays in step with the component and API Extractor doesn't report the private root as a forgotten export. Deriving `XProps` from the root would be circular, and deriving it from `XBaseProps` silently stops tracking the root's ref element.
+
+A generic component keeps its `as XComponent` cast (`const MenuComponent = forwardRef(MenuRender) as MenuComponent;`) — `forwardRef` erases the type parameter, and the cast is what brings it back.
 
 Export the root component and all prop types publicly. Expose slot components only through the root component.
 

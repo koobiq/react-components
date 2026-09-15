@@ -453,6 +453,12 @@ export const rows: Rows = [
     planned: 'Q3 2026',
   },
   {
+    component: 'FileTrigger',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
     component: 'DescriptionList',
     status: '✅ Done',
     stage: '🔵 experimental',

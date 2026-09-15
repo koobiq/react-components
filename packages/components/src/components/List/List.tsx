@@ -136,22 +136,14 @@ function ListRender<T extends object>(props: ListProps<T>, ref: Ref<ListRef>) {
 
 const ListComponent = forwardRef(ListRender) as ListComponent;
 
-type CompoundedComponent = typeof ListComponent & {
-  Item: typeof Item;
-  Section: typeof Section;
-  Divider: typeof Divider;
-  ItemText: typeof ListItemText;
-  ItemAddon: typeof ListItemAddon;
-};
-
 /**
  * List displays a list of options and allows a user to select one or more of
  * them.
  */
-export const List = ListComponent as CompoundedComponent;
-
-List.Item = Item;
-List.Section = Section;
-List.Divider = Divider;
-List.ItemText = ListItemText;
-List.ItemAddon = ListItemAddon;
+export const List = Object.assign(ListComponent, {
+  Item,
+  Section,
+  Divider,
+  ItemText: ListItemText,
+  ItemAddon: ListItemAddon,
+});

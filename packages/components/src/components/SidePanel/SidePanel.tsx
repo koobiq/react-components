@@ -13,7 +13,13 @@ import {
 import { Transition } from 'react-transition-group';
 
 import { Backdrop, type BackdropProps } from '../Backdrop';
-import { Dialog, type DialogProps } from '../Dialog';
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  type DialogProps,
+} from '../Dialog';
 
 import s from './SidePanel.module.css';
 import type { SidePanelProps, SidePanelRef } from './types';
@@ -157,18 +163,12 @@ const SidePanelComponent = forwardRef<SidePanelRef, SidePanelProps>(
 
 SidePanelComponent.displayName = 'SidePanel';
 
-type CompoundedComponent = typeof SidePanelComponent & {
-  Header: typeof Dialog.Header;
-  Body: typeof Dialog.Body;
-  Footer: typeof Dialog.Footer;
-};
-
 /**
  * SidePanel is a panel that slides out from the edges of the screen. It's often
  * used for navigation, menus, or to display details about the page a user is on.
  */
-export const SidePanel = SidePanelComponent as CompoundedComponent;
-
-SidePanel.Header = Dialog.Header;
-SidePanel.Body = Dialog.Body;
-SidePanel.Footer = Dialog.Footer;
+export const SidePanel = Object.assign(SidePanelComponent, {
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
+});

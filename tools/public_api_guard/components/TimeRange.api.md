@@ -9,16 +9,20 @@ import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primiti
 import type { ButtonOptions } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
 import { DateTimeDuration } from '@internationalized/date';
 import { DateValue } from '@koobiq/react-primitives';
+import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
 import type { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
+import { HTMLAttributes } from 'react';
 import { JSX } from 'react/jsx-runtime';
+import { Merge } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import type { RadioGroup } from '@koobiq/react-primitives';
 import type { RadioGroupProps as RadioGroupProps_2 } from '@koobiq/react-primitives';
 import type { ReactElement } from 'react';
@@ -45,10 +49,10 @@ export type CustomTimeRangeType = {
 // @public
 export const defaultTimeRangeTypes: TimeRangeType[];
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent_2" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const TimeRange: CompoundedComponent_2;
+export const TimeRange: TimeRangeComponent & {
+    Field: ForwardRefExoticComponent<Omit<TimeRangeFieldProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
 // @public (undocumented)
 export type TimeRangeComponent = <T extends DateValue = DateValue>(props: TimeRangeProps<T>) => ReactElement | null;
@@ -66,6 +70,7 @@ export type TimeRangeFieldProps = {
     isRequired?: boolean;
     isInvalid?: boolean;
     isDisabled?: boolean;
+    isReadOnly?: boolean;
     errorMessage?: ReactNode;
     caption?: ReactNode;
     fullWidth?: boolean;
@@ -164,16 +169,16 @@ export type TimeRangeValue = {
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/TimeRange/types.d.ts:60:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelPlacement" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:61:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelAlign" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:75:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:76:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:77:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:78:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:79:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:80:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:156:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:157:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:66:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelPlacement" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:67:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:81:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:82:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:83:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:84:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:85:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:86:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:162:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:163:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

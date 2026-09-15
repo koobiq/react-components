@@ -14,17 +14,20 @@ import type { ButtonOptions } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
 import type { ComponentRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import { DataAttributeProps } from '@koobiq/react-core';
 import { DetailedHTMLProps } from 'react';
 import type { DOMAttributes } from '@koobiq/react-core';
-import type { ElementType } from 'react';
+import { ElementType } from 'react';
 import { ExtendableComponentPropsWithRef } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 import { ForwardRefExoticComponent } from 'react';
 import { HTMLAttributes } from 'react';
-import type { Key } from '@koobiq/react-core';
+import { Key } from 'react-aria';
+import type { Key as Key_2 } from '@koobiq/react-core';
+import { Merge } from '@koobiq/react-core';
 import type { Node as Node_2 } from '@koobiq/react-core';
 import { PolyForwardComponent } from '@koobiq/react-core';
+import { PolymorphicWithRef } from '@koobiq/react-core';
 import { ReactElement } from 'react';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
@@ -39,10 +42,30 @@ import { TextProps } from '@koobiq/react-primitives';
 import type { TransitionProps } from 'react-transition-group/Transition';
 import { ValidationResult } from '@koobiq/react-core';
 
-// Warning: (ae-forgotten-export) The symbol "CompoundedComponent" needs to be exported by the entry point index.d.ts
-//
 // @public
-export const SelectNext: CompoundedComponent;
+export const SelectNext: SelectNextComponent & {
+    Item: <T extends object>(props: Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>, "align" | "aria-label" | "className" | "id" | "isDisabled" | "onAction" | "textValue" | "value"> & {
+        className?: string;
+        id?: Key;
+        value?: object | undefined;
+        textValue?: string;
+        'aria-label'?: string;
+        isDisabled?: boolean;
+        onAction?: () => void;
+        align?: SelectOptionPropAlign;
+    } & RefAttributes<HTMLElement>) => ReactElement | null;
+    Section: SelectSectionComponent;
+    Divider: (props: {
+        className?: string;
+        display?: DividerPropDisplay;
+        flexItem?: boolean;
+        disablePaddings?: boolean;
+        as?: ElementType;
+    } & Omit<SeparatorProps_2, "elementType"> & HTMLAttributes<HTMLElement> & RefAttributes<HTMLElement>) => ReactElement | null;
+    ItemText: ForwardRefExoticComponent<Omit<ListItemTextProps, "ref"> & RefAttributes<HTMLSpanElement>>;
+    ItemAddon: ForwardRefExoticComponent<Omit<ListItemAddonProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Tag: ForwardRefExoticComponent<Omit<TagProps, "ref"> & RefAttributes<HTMLDivElement>>;
+};
 
 // @public (undocumented)
 export type SelectNextComponent = <T extends object, M extends SelectionMode_2 = 'single'>(props: SelectNextProps<T, M>) => ReactElement | null;
@@ -52,8 +75,6 @@ export type SelectNextComponent = <T extends object, M extends SelectionMode_2 =
 // @public (undocumented)
 export type SelectNextDividerProps = DividerProps;
 
-// Warning: (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type SelectNextItemAddonProps = ListItemAddonProps;
 
@@ -62,8 +83,6 @@ export type SelectNextItemAddonProps = ListItemAddonProps;
 // @public (undocumented)
 export type SelectNextItemProps<T extends object = object> = SelectOptionProps<T>;
 
-// Warning: (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type SelectNextItemTextProps = ListItemTextProps;
 
@@ -152,7 +171,12 @@ export type SelectNextTagProps = TagProps;
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/SelectNext/types.d.ts:37:5 - (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/Select.d.ts:15:9 - (ae-forgotten-export) The symbol "SelectOptionPropAlign" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/Select.d.ts:17:5 - (ae-forgotten-export) The symbol "SelectSectionComponent" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/Select.d.ts:20:9 - (ae-forgotten-export) The symbol "DividerPropDisplay" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/Select.d.ts:25:5 - (ae-forgotten-export) The symbol "ListItemTextProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/Select.d.ts:26:5 - (ae-forgotten-export) The symbol "ListItemAddonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SelectNext/Select.d.ts:27:5 - (ae-forgotten-export) The symbol "TagProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/SelectNext/types.d.ts:119:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/SelectNext/types.d.ts:120:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/SelectNext/types.d.ts:121:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts

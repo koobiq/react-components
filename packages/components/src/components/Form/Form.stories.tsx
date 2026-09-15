@@ -1,5 +1,6 @@
 import { type FormEvent, useRef, useState } from 'react';
 
+import { Time, parseDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Alert } from '../Alert';
@@ -16,11 +17,12 @@ import { InputNumber } from '../InputNumber';
 import { spacing } from '../layout';
 import { Radio, RadioGroup } from '../RadioGroup';
 import { SearchInput } from '../SearchInput';
-import { Select } from '../Select';
+import { SelectNext } from '../SelectNext';
 import { TagInput } from '../TagInput';
 import { Textarea } from '../Textarea';
 import { TimePicker } from '../TimePicker';
 import { TimeRange } from '../TimeRange';
+import { Toggle } from '../Toggle';
 import { TreeSelect } from '../TreeSelect';
 import { Typography } from '../Typography';
 
@@ -430,6 +432,9 @@ export const FormFields: Story = {
   },
   name: 'All form fields',
   render: function Render() {
+    const [isDisabled, setDisabled] = useState(false);
+    const [isReadOnly, setReadOnly] = useState(false);
+
     const tags = useListData<{ id: string; name: string }>({
       initialItems: [{ id: 'react', name: 'React' }],
     });
@@ -450,112 +455,164 @@ export const FormFields: Story = {
     };
 
     return (
-      <Form
-        labelPlacement={{ xs: 'top', m: 'side' }}
-        labelInlineSize="2/5"
-        style={{ maxWidth: 400 }}
-      >
-        <Select label="Select" placeholder="Select an option">
-          <Select.Item key="1">Option 1</Select.Item>
-          <Select.Item key="2">Option 2</Select.Item>
-          <Select.Item key="3">Option 3</Select.Item>
-        </Select>
-        <Input label="Input" placeholder="Type a word..." />
-        <TagInput<{ id: string; name: string }>
-          label="Tag input"
-          placeholder="Type and press Enter"
-          items={tags.items}
-          onAdd={addTags}
-          onRemove={(keys) => tags.remove(...keys)}
+      <>
+        <FlexBox
+          gap="l"
+          style={{ maxWidth: 400, marginBlockEnd: 'var(--kbq-size-l)' }}
         >
-          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
-        </TagInput>
-        <Textarea label="Textarea" placeholder="Type a word..." />
-        <InputNumber label="InputNumber" placeholder="Type a number..." />
-        <SearchInput label="SearchInput" placeholder="Type a word..." />
-        <TimePicker label="TimePicker" />
-        <DatePicker label="DatePicker" />
-        <RadioGroup label="RadioGroup" defaultValue="windows">
-          <Radio value="windows">Windows</Radio>
-          <Radio value="macos">macOS</Radio>
-          <Radio value="linux">Linux</Radio>
-          <Radio value="other">Other</Radio>
-        </RadioGroup>
-        <Autocomplete
-          label="Autocomplete"
-          placeholder="Select a protocol"
-          disableShowChevron
+          <Toggle isSelected={isDisabled} onChange={setDisabled}>
+            isDisabled
+          </Toggle>
+          <Toggle isSelected={isReadOnly} onChange={setReadOnly}>
+            isReadOnly
+          </Toggle>
+        </FlexBox>
+        <Form
+          labelPlacement={{ xs: 'top', m: 'side' }}
+          labelInlineSize="2/5"
+          style={{ maxWidth: 400 }}
+          isDisabled={isDisabled}
+          isReadOnly={isReadOnly}
         >
-          <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
-          <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
-          <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
-          <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
-          <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
-        </Autocomplete>
-        <TreeSelect
-          label="TreeSelect"
-          placeholder="Pick value"
-          selectionMode="multiple"
-          isClearable
-        >
-          <TreeSelect.Item id={1} textValue="app">
-            <TreeSelect.ItemContent>app</TreeSelect.ItemContent>
-            <TreeSelect.Item id={2} textValue="Http">
-              <TreeSelect.ItemContent>Http</TreeSelect.ItemContent>
-              <TreeSelect.Item id={3} textValue="index.html">
-                <TreeSelect.ItemContent>index.html</TreeSelect.ItemContent>
+          <SelectNext
+            label="Select"
+            placeholder="Select an option"
+            defaultValue="1"
+            isClearable
+          >
+            <SelectNext.Item id="1">Option 1</SelectNext.Item>
+            <SelectNext.Item id="2">Option 2</SelectNext.Item>
+            <SelectNext.Item id="3">Option 3</SelectNext.Item>
+          </SelectNext>
+          <Input
+            label="Input"
+            placeholder="Type a word..."
+            defaultValue="Some text"
+            isClearable
+          />
+          <TagInput<{ id: string; name: string }>
+            label="Tag input"
+            placeholder="Type and press Enter"
+            items={tags.items}
+            onAdd={addTags}
+            onRemove={(keys) => tags.remove(...keys)}
+          >
+            {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+          </TagInput>
+          <Textarea
+            label="Textarea"
+            placeholder="Type a word..."
+            defaultValue="Some longer text"
+          />
+          <InputNumber
+            label="InputNumber"
+            placeholder="Type a number..."
+            defaultValue={42}
+          />
+          <SearchInput
+            label="SearchInput"
+            placeholder="Type a word..."
+            defaultValue="best js tricks"
+          />
+          <TimePicker label="TimePicker" defaultValue={new Time(11, 45)} />
+          <DatePicker
+            label="DatePicker"
+            defaultValue={parseDate('2025-02-03')}
+          />
+          <RadioGroup label="RadioGroup" defaultValue="windows">
+            <Radio value="windows">Windows</Radio>
+            <Radio value="macos">macOS</Radio>
+            <Radio value="linux">Linux</Radio>
+            <Radio value="other">Other</Radio>
+          </RadioGroup>
+          <Autocomplete
+            label="Autocomplete"
+            placeholder="Select a protocol"
+            defaultSelectedKey="tls"
+            isClearable
+          >
+            <Autocomplete.Item key="tls">TLS</Autocomplete.Item>
+            <Autocomplete.Item key="ssh">SSH</Autocomplete.Item>
+            <Autocomplete.Item key="pgp">PGP</Autocomplete.Item>
+            <Autocomplete.Item key="ipsec">IPSec</Autocomplete.Item>
+            <Autocomplete.Item key="kerberos">Kerberos</Autocomplete.Item>
+          </Autocomplete>
+          <TreeSelect
+            label="TreeSelect"
+            placeholder="Pick value"
+            selectionMode="multiple"
+            defaultValue={[1, 7]}
+            isClearable
+          >
+            <TreeSelect.Item id={1} textValue="app">
+              <TreeSelect.ItemContent>app</TreeSelect.ItemContent>
+              <TreeSelect.Item id={2} textValue="Http">
+                <TreeSelect.ItemContent>Http</TreeSelect.ItemContent>
+                <TreeSelect.Item id={3} textValue="index.html">
+                  <TreeSelect.ItemContent>index.html</TreeSelect.ItemContent>
+                </TreeSelect.Item>
+              </TreeSelect.Item>
+              <TreeSelect.Item id={4} textValue="Providers">
+                <TreeSelect.ItemContent>Providers</TreeSelect.ItemContent>
+                <TreeSelect.Item id={5} textValue="EventServiceProvider.js">
+                  <TreeSelect.ItemContent>
+                    EventServiceProvider.js
+                  </TreeSelect.ItemContent>
+                </TreeSelect.Item>
               </TreeSelect.Item>
             </TreeSelect.Item>
-            <TreeSelect.Item id={4} textValue="Providers">
-              <TreeSelect.ItemContent>Providers</TreeSelect.ItemContent>
-              <TreeSelect.Item id={5} textValue="EventServiceProvider.js">
-                <TreeSelect.ItemContent>
-                  EventServiceProvider.js
-                </TreeSelect.ItemContent>
+            <TreeSelect.Item id={6} textValue="config">
+              <TreeSelect.ItemContent>config</TreeSelect.ItemContent>
+              <TreeSelect.Item id={7} textValue="app.js">
+                <TreeSelect.ItemContent>app.js</TreeSelect.ItemContent>
+              </TreeSelect.Item>
+              <TreeSelect.Item id={8} textValue="database.js">
+                <TreeSelect.ItemContent>database.js</TreeSelect.ItemContent>
               </TreeSelect.Item>
             </TreeSelect.Item>
-          </TreeSelect.Item>
-          <TreeSelect.Item id={6} textValue="config">
-            <TreeSelect.ItemContent>config</TreeSelect.ItemContent>
-            <TreeSelect.Item id={7} textValue="app.js">
-              <TreeSelect.ItemContent>app.js</TreeSelect.ItemContent>
+            <TreeSelect.Item id={9} textValue="public">
+              <TreeSelect.ItemContent>public</TreeSelect.ItemContent>
+              <TreeSelect.Item id={10} textValue="logo.svg">
+                <TreeSelect.ItemContent>logo.svg</TreeSelect.ItemContent>
+              </TreeSelect.Item>
             </TreeSelect.Item>
-            <TreeSelect.Item id={8} textValue="database.js">
-              <TreeSelect.ItemContent>database.js</TreeSelect.ItemContent>
+            <TreeSelect.Item id={11} textValue=".env">
+              <TreeSelect.ItemContent>.env</TreeSelect.ItemContent>
             </TreeSelect.Item>
-          </TreeSelect.Item>
-          <TreeSelect.Item id={9} textValue="public">
-            <TreeSelect.ItemContent>public</TreeSelect.ItemContent>
-            <TreeSelect.Item id={10} textValue="logo.svg">
-              <TreeSelect.ItemContent>logo.svg</TreeSelect.ItemContent>
+            <TreeSelect.Item id={12} textValue=".gitignore">
+              <TreeSelect.ItemContent>.gitignore</TreeSelect.ItemContent>
             </TreeSelect.Item>
-          </TreeSelect.Item>
-          <TreeSelect.Item id={11} textValue=".env">
-            <TreeSelect.ItemContent>.env</TreeSelect.ItemContent>
-          </TreeSelect.Item>
-          <TreeSelect.Item id={12} textValue=".gitignore">
-            <TreeSelect.ItemContent>.gitignore</TreeSelect.ItemContent>
-          </TreeSelect.Item>
-          <TreeSelect.Item id={13} textValue="README.md">
-            <TreeSelect.ItemContent>README.md</TreeSelect.ItemContent>
-          </TreeSelect.Item>
-        </TreeSelect>
-        <CheckboxGroup label="CheckboxGroup" defaultValue={['one']}>
-          <Checkbox value="one">One</Checkbox>
-          <Checkbox value="two">Two</Checkbox>
-          <Checkbox value="three">Three</Checkbox>
-        </CheckboxGroup>
-        <FormField>
-          <FormField.Label as="span">Inputs</FormField.Label>
-          <FlexBox gap="m" style={{ inlineSize: '100%' }}>
-            <Input aria-label="first" placeholder="Input 1" />
-            <Input aria-label="second" placeholder="Input 2" />
-          </FlexBox>
-        </FormField>
-        <TimeRange defaultValue={null}>
-          <TimeRange.Field label="TimeRange" placeholder="Select a period" />
-        </TimeRange>
-      </Form>
+            <TreeSelect.Item id={13} textValue="README.md">
+              <TreeSelect.ItemContent>README.md</TreeSelect.ItemContent>
+            </TreeSelect.Item>
+          </TreeSelect>
+          <CheckboxGroup label="CheckboxGroup" defaultValue={['one']}>
+            <Checkbox value="one">One</Checkbox>
+            <Checkbox value="two">Two</Checkbox>
+            <Checkbox value="three">Three</Checkbox>
+          </CheckboxGroup>
+          <FormField>
+            <FormField.Label as="span">Inputs</FormField.Label>
+            <FlexBox gap="m" style={{ inlineSize: '100%' }}>
+              <Input
+                aria-label="first"
+                placeholder="Input 1"
+                defaultValue="One"
+                isClearable
+              />
+              <Input
+                aria-label="second"
+                placeholder="Input 2"
+                defaultValue="Two"
+                isClearable
+              />
+            </FlexBox>
+          </FormField>
+          <TimeRange defaultValue={null}>
+            <TimeRange.Field label="TimeRange" placeholder="Select a period" />
+          </TimeRange>
+        </Form>
+      </>
     );
   },
 };

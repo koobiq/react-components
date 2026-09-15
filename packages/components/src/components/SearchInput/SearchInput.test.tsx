@@ -81,14 +81,16 @@ describe('SearchInput', () => {
       expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('should not render when input is disabled', () => {
+    it('should be disabled when input is disabled', () => {
       render(<SearchInput {...baseProps} defaultValue="value" isDisabled />);
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
     });
 
-    it('should not render when input is read-only', () => {
+    it('should be disabled when input is read-only', () => {
       render(<SearchInput {...baseProps} defaultValue="value" isReadOnly />);
-      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(getClearButton()).toBeDisabled();
     });
 
     it('should not throw on render in modal', () => {

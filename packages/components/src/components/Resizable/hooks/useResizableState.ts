@@ -18,7 +18,7 @@ import {
 } from './utils';
 
 export type ResizableState = {
-  size: ResizableSize | null;
+  size: ResizableSizeConstraints | null;
   bounds: ReturnType<typeof getResizableBounds>;
   isDisabled: boolean;
   activeDirection: string | null;
@@ -31,8 +31,8 @@ export type ResizableState = {
 };
 
 export type UseResizableStateProps = {
-  size?: ResizableSize;
-  defaultSize?: ResizableSize;
+  size?: ResizableSizeConstraints;
+  defaultSize?: ResizableSizeConstraints;
   minSize?: ResizableSizeConstraints;
   maxSize?: ResizableSizeConstraints;
   isDisabled?: boolean;
@@ -72,15 +72,36 @@ export const useResizableState = (
   );
 
   const [managedSize, setManagedSize] = useControlledState<
-    ResizableSize | null,
-    ResizableSize
-  >(controlledSize, defaultSize ?? null, onResize);
+    ResizableSizeConstraints | null,
+    ResizableSizeConstraints
+  >(controlledSize, defaultSize ?? null);
 
   const startSizeRef = useRef<ResizableSize>({ width: 0, height: 0 });
   const lastSizeRef = useRef<ResizableSize>({ width: 0, height: 0 });
   const accumulatedRef = useRef({ x: 0, y: 0 });
   const directionRef = useRef<ResizableHandleDirection>([1, 1]);
   const [activeDirection, setActiveDirection] = useState<string | null>(null);
+
+  /**
+   * Writes the axes the interaction changes, keeping the axes that are already
+   * managed and leaving the untouched ones to CSS.
+   */
+  const applySize = useCallback(
+    (nextSize: ResizableSize, direction: ResizableHandleDirection) => {
+      const [x, y] = direction;
+
+      lastSizeRef.current = nextSize;
+
+      setManagedSize((prevSize) => ({
+        ...prevSize,
+        ...(x !== 0 && { width: nextSize.width }),
+        ...(y !== 0 && { height: nextSize.height }),
+      }));
+
+      onResize?.(nextSize);
+    },
+    [onResize, setManagedSize]
+  );
 
   const startResize = useCallback(
     (direction: ResizableHandleDirection, startSize: ResizableSize) => {
@@ -104,7 +125,8 @@ export const useResizableState = (
       accumulatedRef.current.x += event.deltaX * multiplier;
       accumulatedRef.current.y += event.deltaY * multiplier;
 
-      const [x, y] = directionRef.current;
+      const direction = directionRef.current;
+      const [x, y] = direction;
       const startSize = startSizeRef.current;
 
       const nextSize = clampResizableSize(
@@ -121,10 +143,9 @@ export const useResizableState = (
         bounds
       );
 
-      lastSizeRef.current = nextSize;
-      setManagedSize(nextSize);
+      applySize(nextSize, direction);
     },
-    [bounds, setManagedSize]
+    [applySize, bounds]
   );
 
   const endResize = useCallback(() => {

@@ -92,16 +92,10 @@ const UsernameComponent = forwardRef<ComponentRef<'span'>, UsernameBaseProps>(
 
 UsernameComponent.displayName = 'Username';
 
-type CompoundedComponent = typeof UsernameComponent & {
-  Primary: typeof UsernamePrimary;
-  Secondary: typeof UsernameSecondary;
-  SecondaryHint: typeof UsernameSecondaryHint;
-};
+export const Username = Object.assign(UsernameComponent, {
+  Primary: UsernamePrimary,
+  Secondary: UsernameSecondary,
+  SecondaryHint: UsernameSecondaryHint,
+});
 
-export const Username = UsernameComponent as CompoundedComponent;
-
-Username.Primary = UsernamePrimary;
-Username.Secondary = UsernameSecondary;
-Username.SecondaryHint = UsernameSecondaryHint;
-
-export type UsernameProps = ComponentPropsWithRef<typeof UsernameComponent>;
+export type UsernameProps = ComponentPropsWithRef<typeof Username>;
