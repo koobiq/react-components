@@ -154,20 +154,12 @@ and matches text anywhere in an item. To change how items match, pass your own
 
 <Story of={Stories.Searchable} />
 
-### Dependencies
+### Highlighting matches
 
-The collection caches a rendered item by the identity of its data object, so an item is not
-re-rendered when a value used inside the render function changes. List such values in
-`dependencies` to invalidate that cache — for example the search query when the items
-highlight it.
+Put [Highlight](/docs/components-highlight--docs) into `Tree.ItemContentText` to mark the matched
+part of an item. Pass the query in `dependencies` — otherwise the highlight does not update.
 
-Keep the length of the array the same between renders, otherwise the items are not
-re-rendered. To depend on a list of values, wrap it: `dependencies={[filters]}`.
-
-Nested `Collection` elements inherit `dependencies` from the TreeSelect, so the prop only
-has to be set once, on the root.
-
-<Story of={Stories.Dependencies} />
+<Story of={Stories.HighlightingMatches} />
 
 ### Open
 

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { isString, useDebounceCallback } from '@koobiq/react-core';
 import {
@@ -276,31 +276,35 @@ export const CustomFiltering: Story = {
 
 export const HighlightingMatches: Story = {
   render: function Render() {
-    const items = [
-      { key: 'tls', name: 'TLS' },
-      { key: 'ssh', name: 'SSH' },
-      { key: 'pgp', name: 'PGP' },
-      { key: 'ipsec', name: 'IPSec' },
-      { key: 'kerberos', name: 'Kerberos' },
-    ];
-
     const { contains } = useFilter({ sensitivity: 'base' });
 
     const [inputValue, setInputValue] = useState('');
 
-    const filtered = items.filter((item) => contains(item.name, inputValue));
+    const items = useMemo(
+      () =>
+        [
+          { key: 'tls', name: 'TLS' },
+          { key: 'ssh', name: 'SSH' },
+          { key: 'pgp', name: 'PGP' },
+          { key: 'ipsec', name: 'IPSec' },
+          { key: 'kerberos', name: 'Kerberos' },
+        ].filter((item) => contains(item.name, inputValue)),
+      [contains, inputValue]
+    );
 
     return (
       <Autocomplete
+        items={items}
         label="Protocol"
-        items={filtered}
-        placeholder="Search a protocol"
         inputValue={inputValue}
         onInputChange={setInputValue}
+        placeholder="Search a protocol"
       >
         {(item) => (
           <Autocomplete.Item key={item.key} textValue={item.name}>
-            <Highlight text={item.name} query={inputValue} />
+            <Autocomplete.ItemText>
+              <Highlight text={item.name} query={inputValue} />
+            </Autocomplete.ItemText>
           </Autocomplete.Item>
         )}
       </Autocomplete>

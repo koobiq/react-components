@@ -186,22 +186,6 @@ with `defaultInputValue`, and the `onInputChange` callback is called whenever th
 
 <Story of={Stories.Searchable} />
 
-### Dependencies
-
-The collection caches a rendered item by the identity of its data object, so an item is not
-re-rendered when a value used inside the render function changes. List such values in
-`dependencies` to invalidate that cache — for example the search query when the options
-highlight it.
-
-Keep the length of the array the same between renders, otherwise the items are not
-re-rendered. To depend on a list of values, wrap it: `dependencies={[filters]}`.
-
-The same applies to `Select.Section`: it inherits `dependencies` from the Select, so the
-prop only has to be set once, on the root. A section written out in JSX can also take its
-own `dependencies`, for values only its items use.
-
-<Story of={Stories.Dependencies} />
-
 ### Minimum options for search
 
 Short lists don't need a search input. The `minOptionsThreshold` prop shows the search only when
@@ -209,6 +193,13 @@ there are at least that many options. It works together with `isSearchable`. The
 so the search is always shown.
 
 <Story of={Stories.SearchableMinOptionsThreshold} />
+
+### Highlighting matches
+
+Put [Highlight](/docs/components-highlight--docs) into `Select.ItemText` to mark the matched part of
+an option. Pass the query in `dependencies` — otherwise the highlight does not update.
+
+<Story of={Stories.HighlightingMatches} />
 
 ### Server search
 

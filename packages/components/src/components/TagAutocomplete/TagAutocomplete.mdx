@@ -79,6 +79,14 @@ Selecting a suggestion calls `onAdd(values, context)` with
 `context.source === 'suggestion'` and exposes the original item as
 `context.suggestion`.
 
+### Highlighting matches
+
+Put [Highlight](/docs/components-highlight--docs) into `TagAutocomplete.ListItem` to mark the
+matched part of a suggestion. Build the suggestions in a `useMemo` keyed by the query — otherwise
+the highlight does not update.
+
+<Story of={Stories.HighlightingMatches} />
+
 ### Create option
 
 Show a "Create" option in the list, so new values can be added with a mouse.
