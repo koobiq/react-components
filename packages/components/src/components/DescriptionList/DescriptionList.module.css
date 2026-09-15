@@ -1,0 +1,20 @@
+.base {
+  --description-list-columns: repeat(4, 1fr);
+  --description-list-description-column: 2 / -1;
+  --description-list-content-gap: var(--kbq-size-l);
+
+  display: grid;
+  grid-template-columns: var(--description-list-columns);
+  gap: var(--kbq-size-l) var(--description-list-content-gap);
+  place-items: var(--description-list-align-items)
+    var(--description-list-justify-items);
+  margin: 0;
+}
+
+.vertical {
+  --description-list-description-column: 1;
+  --description-list-content-gap: var(--kbq-size-3xs);
+
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: calc(var(--kbq-size-3xs) + var(--kbq-size-m));
+}

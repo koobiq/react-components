@@ -458,4 +458,10 @@ export const rows: Rows = [
     stage: '🔵 experimental',
     planned: 'Q3 2026',
   },
+  {
+    component: 'DescriptionList',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
 ];

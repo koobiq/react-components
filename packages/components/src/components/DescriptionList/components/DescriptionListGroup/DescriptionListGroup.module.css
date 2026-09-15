@@ -1,0 +1,8 @@
+.base {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  row-gap: var(--description-list-content-gap);
+  align-items: inherit;
+  justify-items: inherit;
+}
