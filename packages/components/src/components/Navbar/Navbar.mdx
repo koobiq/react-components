@@ -13,7 +13,7 @@ import * as Stories from './Navbar.stories';
 
 <Status variant="experimental" />
 
-The main menu organizes navigation within the product. It consists of a logo, section links, and can additionally include an app switcher, help section, and settings block.
+The main menu of the product: the logo, section links and actions.
 
 ## Import
 
@@ -31,51 +31,32 @@ import { Navbar } from '@koobiq/react-components';
 
 ## Subcomponents
 
-The component has the following helper components:
+- `Navbar.Header`, `Navbar.Body`, `Navbar.Footer` — groups of items at the top, in the middle and at the bottom. The body scrolls.
+- `Navbar.AppItem` — the logo and the app name.
+- `Navbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu.
+- `Navbar.Action` — the main action button.
+- `Navbar.Divider` — a line between items.
 
-- `Navbar.Header` — header of the navbar, typically contains logo and app switcher
-- `Navbar.Body` — body of the navbar for placing navigation items
-- `Navbar.Footer` — footer of the navbar, can contain settings and help links
-- `Navbar.Item` — navigation item for the navbar body
-- `Navbar.AppItem` — app switcher item for the navbar header
+## Collapsing
 
-## Usage
-
-The Navbar component consists of several subcomponents that help organize the navigation structure:
-
-```tsx
-import { Navbar } from '@koobiq/react-components';
-
-<Navbar>
-  <Navbar.Header>
-    <Navbar.AppItem>App 1</Navbar.AppItem>
-  </Navbar.Header>
-
-  <Navbar.Body>
-    <Navbar.Item href="/dashboard">Dashboard</Navbar.Item>
-    <Navbar.Item href="/reports">Reports</Navbar.Item>
-  </Navbar.Body>
-
-  <Navbar.Footer>
-    <Navbar.Item href="/settings">Settings</Navbar.Item>
-  </Navbar.Footer>
-</Navbar>;
-```
-
-## Controlled
+The toggle button and <kbd>Ctrl</kbd>+<kbd>/</kbd> collapse the navbar. To control the state, pass `isCollapsed` and `onCollapse`.
 
 <Story of={Stories.Controlled} />
 
 ## Expand over content
 
-The navbar can expand over the page content instead of pushing it aside: make its column as wide as the collapsed navbar.
+Make the navbar column as wide as the collapsed navbar, and it expands over the content.
 
 <Story of={Stories.ExpandOverContent} />
 
-## Integration
+## Long app name
 
-### Next.js
+A name that does not fit into one line takes two smaller lines. A longer one is cut off and shown in a tooltip.
 
-Integrating navigation into Next.js:
+<Story of={Stories.LongAppName} />
+
+## Routing
+
+Wrap the app in `RouterProvider`, and items with `href` navigate through your router, be it **Next.js** or **React Router**.
 
 <Story of={Stories.RouteProvider} />

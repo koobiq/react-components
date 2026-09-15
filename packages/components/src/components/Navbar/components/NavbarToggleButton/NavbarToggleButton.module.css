@@ -29,10 +29,6 @@
   color: var(--kbq-icon-contrast-fade);
   background-color: var(--kbq-background-card);
 
-  .base[data-collapsed] & {
-    transform: rotate(180deg);
-  }
-
   &:hover {
     cursor: pointer;
     color: var(--kbq-states-icon-contrast-hover);

@@ -1,0 +1,4 @@
+/* Collapsed, the room left is exactly an icon-only button. */
+.base {
+  padding: var(--kbq-size-xxs) var(--kbq-size-m);
+}

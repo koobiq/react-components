@@ -3,4 +3,6 @@ export * from './NavbarFooter';
 export * from './NavbarHeader';
 export * from './NavbarItem';
 export * from './NavbarAppItem';
+export * from './NavbarDivider';
+export * from './NavbarAction';
 export * from './NavbarToggleButton';

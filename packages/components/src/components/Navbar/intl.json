@@ -1,10 +1,10 @@
 {
   "ru-RU": {
-    "show navbar": "Показать",
-    "hide navbar": "Скрыть"
+    "collapse": "Свернуть",
+    "expand": "Развернуть"
   },
   "en-US": {
-    "show navbar": "Show",
-    "hide navbar": "Hide"
+    "collapse": "Collapse",
+    "expand": "Expand"
   }
 }

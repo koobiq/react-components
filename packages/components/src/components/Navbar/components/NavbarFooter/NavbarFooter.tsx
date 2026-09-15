@@ -19,7 +19,7 @@ export const NavbarFooter = ({
   ...props
 }: NavbarFooterProps) => (
   <footer className={clsx(s.base, className)} {...props}>
-    <ul className={clsx(s.list, className)}>{children}</ul>
+    <ul className={s.list}>{children}</ul>
   </footer>
 );
 

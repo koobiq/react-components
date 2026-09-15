@@ -9,6 +9,7 @@ import {
   mergeProps,
   mergeRefs,
   polymorphicForwardRef,
+  useElementOverflow,
   useLocale,
 } from '@koobiq/react-core';
 import type { KeyboardEvents } from '@koobiq/react-core';
@@ -19,6 +20,7 @@ import {
   type LinkBaseProps,
 } from '@koobiq/react-primitives';
 
+import { Badge } from '../../../Badge';
 import { Tooltip } from '../../../Tooltip';
 import { useNavbarState } from '../../NavbarContext';
 
@@ -68,6 +70,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
   ) => {
     const { isCollapsed } = useNavbarState();
     const { direction } = useLocale();
+    const content = useElementOverflow<HTMLSpanElement>();
 
     // A `DropdownMenu` shares its state with the trigger, a `Menu` passes `aria-haspopup` to its `control`.
     const menuState = useContext(RootMenuTriggerStateContext);
@@ -91,7 +94,8 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
         offset={8}
         hideArrow
         placement="end"
-        isDisabled={!isCollapsed}
+        // Shows the text when it is hidden or cut off.
+        isDisabled={!isCollapsed && !content.isOverflow}
         control={(props) => (
           <Link
             as={as || (isMenu || !other.href ? 'button' : 'a')}
@@ -108,9 +112,19 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
               </span>
             )}
 
-            <span className={s.content}>{children}</span>
+            <span
+              ref={content.ref}
+              className={s.content}
+              data-slot="navbar-item-content"
+            >
+              {children}
+            </span>
 
-            {isNotNil(badge) && <span className={s.badge}>{badge}</span>}
+            {isNotNil(badge) && (
+              <Badge size="compact" variant="error" className={s.badge}>
+                {badge}
+              </Badge>
+            )}
 
             {isMenu && <IconChevronRight16 className={s.menuIcon} />}
           </Link>

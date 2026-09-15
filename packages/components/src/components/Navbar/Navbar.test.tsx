@@ -63,7 +63,7 @@ describe('Navbar', () => {
     renderNavbar();
 
     const nav = screen.getByRole('navigation');
-    const toggleButton = screen.getByRole('button', { name: 'Hide' });
+    const toggleButton = screen.getByRole('button', { name: 'Collapse' });
 
     expect(toggleButton).not.toHaveAttribute('data-shown');
 
@@ -83,7 +83,7 @@ describe('Navbar', () => {
   it('shows the accessible toggle when keyboard focus enters the navbar', async () => {
     renderNavbar();
 
-    const toggleButton = screen.getByRole('button', { name: 'Hide' });
+    const toggleButton = screen.getByRole('button', { name: 'Collapse' });
 
     expect(toggleButton).not.toHaveAttribute('data-shown');
 
@@ -99,7 +99,7 @@ describe('Navbar', () => {
 
     await userEvent.hover(nav);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Hide' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse' }));
 
     expect(nav).toHaveAttribute('data-collapsed', 'true');
     expect(nav).toHaveAttribute('data-open');
@@ -116,7 +116,7 @@ describe('Navbar', () => {
 
     await userEvent.hover(nav);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Expand' }));
 
     expect(nav).toHaveAttribute('data-open');
   });
@@ -173,7 +173,7 @@ describe('Navbar', () => {
 
     await userEvent.hover(screen.getByRole('navigation'));
 
-    await userEvent.click(screen.getByRole('button', { name: 'Hide' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Collapse' }));
 
     expect(onCollapse).toHaveBeenCalledExactlyOnceWith(true);
 
@@ -184,7 +184,7 @@ describe('Navbar', () => {
 
     rerender(<Navbar isCollapsed onCollapse={onCollapse} />);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Show' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Expand' }));
 
     expect(onCollapse).toHaveBeenLastCalledWith(false);
 
@@ -207,6 +207,27 @@ describe('Navbar', () => {
       'data-collapsed',
       'false'
     );
+  });
+
+  it('toggles with Ctrl+/', () => {
+    const onCollapse = vi.fn();
+
+    renderNavbar({ onCollapse });
+
+    fireEvent.keyDown(window, { code: 'Slash', ctrlKey: true });
+
+    expect(onCollapse).toHaveBeenCalledExactlyOnceWith(true);
+  });
+
+  it('hides the toggle after an item is clicked with the mouse', async () => {
+    renderNavbar();
+
+    const toggleButton = screen.getByRole('button', { name: 'Collapse' });
+
+    await userEvent.click(screen.getByRole('link', { name: /Item 1/ }));
+    await userEvent.unhover(screen.getByRole('navigation'));
+
+    expect(toggleButton).not.toHaveAttribute('data-shown');
   });
 
   it('hides the toggle when requested', async () => {
@@ -563,6 +584,49 @@ describe('Navbar', () => {
 
       expect(link).toBeInTheDocument();
       expect(link).toContainHTML('AppIcon');
+    });
+
+    it('puts the className only on the header and footer', () => {
+      render(
+        <>
+          <NavbarHeader className="custom" />
+          <NavbarFooter className="custom" />
+        </>
+      );
+
+      expect(screen.getByRole('banner')).toHaveClass('custom');
+      expect(screen.getByRole('contentinfo')).toHaveClass('custom');
+      expect(document.querySelectorAll('.custom')).toHaveLength(2);
+    });
+
+    it('hides Navbar.Divider from assistive technology', () => {
+      render(
+        <Navbar>
+          <Navbar.Body>
+            <Navbar.Divider data-testid="divider" />
+          </Navbar.Body>
+        </Navbar>
+      );
+
+      const divider = screen.getByTestId('divider');
+
+      expect(divider.tagName).toBe('LI');
+      expect(divider).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('names a collapsed Navbar.Action by its text', () => {
+      render(
+        <Navbar defaultCollapsed>
+          <Navbar.Body>
+            <Navbar.Action icon={<svg />}>New task</Navbar.Action>
+          </Navbar.Body>
+        </Navbar>
+      );
+
+      expect(screen.getByRole('button', { name: 'New task' })).toHaveAttribute(
+        'data-onlyicon',
+        'true'
+      );
     });
   });
 });

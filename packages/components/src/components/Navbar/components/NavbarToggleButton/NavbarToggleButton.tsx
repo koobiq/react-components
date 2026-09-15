@@ -1,7 +1,10 @@
 'use client';
 
-import { useLocalizedStringFormatter } from '@koobiq/react-core';
-import { IconChevronDoubleLeftS16 } from '@koobiq/react-icons';
+import { useLocale, useLocalizedStringFormatter } from '@koobiq/react-core';
+import {
+  IconChevronDoubleLeftS16,
+  IconChevronDoubleRightS16,
+} from '@koobiq/react-icons';
 import { Button } from '@koobiq/react-primitives';
 
 import { Tooltip } from '../../../Tooltip';
@@ -21,10 +24,15 @@ export const NavbarToggleButton = ({
   onPress,
 }: NavbarToggleButtonProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const { direction } = useLocale();
 
-  const label = stringFormatter.format(
-    isCollapsed ? 'show navbar' : 'hide navbar'
-  );
+  const label = stringFormatter.format(isCollapsed ? 'expand' : 'collapse');
+
+  // The arrows point where the navbar edge moves.
+  const Icon =
+    isCollapsed === (direction === 'rtl')
+      ? IconChevronDoubleLeftS16
+      : IconChevronDoubleRightS16;
 
   return (
     <Tooltip
@@ -42,7 +50,7 @@ export const NavbarToggleButton = ({
           onPress={onPress}
         >
           <span className={s.button}>
-            <IconChevronDoubleLeftS16 />
+            <Icon />
           </span>
         </Button>
       )}

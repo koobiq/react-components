@@ -5,6 +5,7 @@ import {
   IconCloud16,
   IconDashboard16,
   IconDatabase16,
+  IconPlus16,
   IconPrinter16,
   IconUser16,
 } from '@koobiq/react-icons';
@@ -26,11 +27,13 @@ const meta = {
     'Navbar.Footer': Navbar.Footer,
     'Navbar.Item': Navbar.Item,
     'Navbar.AppItem': Navbar.AppItem,
+    'Navbar.Action': Navbar.Action,
+    'Navbar.Divider': Navbar.Divider,
   },
   parameters: {
     layout: 'fullscreen',
   },
-  tags: ['status:updated', 'date:2026-09-14'],
+  tags: ['status:updated', 'date:2026-09-15'],
 } satisfies Meta<typeof Navbar>;
 
 export default meta;
@@ -85,7 +88,7 @@ export const Base: Story = {
           </Navbar.Item>
 
           <DropdownMenu>
-            <Navbar.Item icon={<IconDashboard16 />} badge={2}>
+            <Navbar.Item icon={<IconDashboard16 />} badge={12}>
               Control Panel
             </Navbar.Item>
             <DropdownMenu.Popover>
@@ -127,6 +130,15 @@ export const Base: Story = {
               </DropdownMenu.Content>
             </DropdownMenu.Popover>
           </DropdownMenu>
+
+          <Navbar.Divider />
+
+          <Navbar.Action
+            icon={<IconPlus16 />}
+            onPress={() => alert('New task')}
+          >
+            New task
+          </Navbar.Action>
         </Navbar.Body>
 
         <Navbar.Footer>
@@ -227,6 +239,48 @@ export const ExpandOverContent: Story = {
         </Navbar.Footer>
       </Navbar>
 
+      <main
+        className={flex(
+          { direction: 'column', gap: 'm' },
+          spacing({ p: 'xl' })
+        )}
+      >
+        <Typography variant="title">Main content</Typography>
+        <Typography>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
+          laudantium nulla voluptates! Assumenda dicta dolorem facilis iste
+          itaque iure provident quisquam, quos sequi? Amet aut, consectetur
+          dolor ea eaque eligendi enim eos esse excepturi fuga ipsa ipsum
+          laudantium natus necessitatibus nobis officiis perferendis porro
+          praesentium quibusdam quis soluta voluptas voluptatibus!
+        </Typography>
+      </main>
+    </div>
+  ),
+};
+
+export const LongAppName: Story = {
+  render: (args) => (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'auto 1fr',
+        blockSize: 500,
+      }}
+    >
+      <Navbar {...args}>
+        <Navbar.Header>
+          <Navbar.AppItem icon={<AppIcon />} href="#">
+            Super Long Menu Title with Line Wrap and Ellipsis Truncation
+          </Navbar.AppItem>
+        </Navbar.Header>
+
+        <Navbar.Body>
+          <Navbar.Item icon={<IconDatabase16 />} href="#">
+            Data Catalog of All Connected Sources
+          </Navbar.Item>
+        </Navbar.Body>
+      </Navbar>
       <main
         className={flex(
           { direction: 'column', gap: 'm' },

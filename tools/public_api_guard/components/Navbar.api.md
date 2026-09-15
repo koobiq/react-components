@@ -4,9 +4,13 @@
 
 ```ts
 
+import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
+import type { CSSProperties } from 'react';
+import type { DataAttributeProps } from '@koobiq/react-core';
 import { DistributiveOmit } from '@koobiq/react-core';
 import { ElementType } from 'react';
+import type { ExtendableProps } from '@koobiq/react-core';
 import { JSX } from 'react/jsx-runtime';
 import { LinkBaseProps } from '@koobiq/react-primitives';
 import { PolyForwardComponent } from '@koobiq/react-core';
@@ -34,7 +38,24 @@ export const Navbar: {
         (input: NavbarAppItemProps): JSX.Element;
         displayName: string;
     };
+    Divider: {
+        (input: NavbarDividerProps): JSX.Element;
+        displayName: string;
+    };
+    Action: {
+        (input: NavbarActionProps): JSX.Element;
+        displayName: string;
+    };
 };
+
+// Warning: (ae-forgotten-export) The symbol "ButtonProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type NavbarActionProps = ExtendableProps<{
+    icon?: ReactNode;
+    children?: ReactNode;
+    className?: string;
+}, Omit<ButtonProps, 'startIcon' | 'endIcon' | 'onlyIcon' | 'fullWidth'>>;
 
 // @public (undocumented)
 export type NavbarAppItemProps = DistributiveOmit<NavbarItemProps, 'isMenu' | 'badge'>;
@@ -50,6 +71,11 @@ export const NavbarComponent: {
     (input: NavbarProps): JSX.Element;
     displayName: string;
 };
+
+// @public (undocumented)
+export type NavbarDividerProps = {
+    className?: string;
+} & DataAttributeProps;
 
 // @public (undocumented)
 export type NavbarFooterProps = {

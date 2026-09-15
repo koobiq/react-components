@@ -10,4 +10,19 @@
   [data-slot='navbar-item-icon'] {
     min-block-size: 32px;
   }
+
+  /* Two lines take no more room than the logo. */
+  &[data-long-title] [data-slot='navbar-item-content'] {
+    @mixin typography text-normal-strong;
+
+    display: -webkit-box;
+    line-height: 16px;
+    white-space: normal;
+
+    /* Required by the legacy -webkit-line-clamp implementation. */
+    /* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
 }

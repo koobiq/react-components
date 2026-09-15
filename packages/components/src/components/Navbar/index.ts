@@ -6,4 +6,6 @@ export type {
   NavbarFooterProps,
   NavbarItemProps,
   NavbarAppItemProps,
+  NavbarDividerProps,
+  NavbarActionProps,
 } from './components';

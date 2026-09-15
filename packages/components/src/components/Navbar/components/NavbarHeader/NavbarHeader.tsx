@@ -2,8 +2,6 @@
 
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
-import { clsx } from '@koobiq/react-core';
-
 import s from './NavbarHeader.module.css';
 
 export type NavbarHeaderProps = {
@@ -19,7 +17,7 @@ export const NavbarHeader = ({
   ...props
 }: NavbarHeaderProps) => (
   <header className={className} {...props}>
-    <ul className={clsx(s.list, className)}>{children}</ul>
+    <ul className={s.list}>{children}</ul>
   </header>
 );
 
