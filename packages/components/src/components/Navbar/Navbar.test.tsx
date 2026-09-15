@@ -23,7 +23,7 @@ import {
   NavbarHeader,
   NavbarItem,
 } from './components';
-import s from './Navbar.module.css';
+import s from './components/NavbarItem/NavbarItem.module.css';
 
 describe('Navbar', () => {
   const renderNavbar = (props: NavbarProps = {}) =>
@@ -92,44 +92,65 @@ describe('Navbar', () => {
     expect(toggleButton).toHaveAttribute('data-shown', 'true');
   });
 
-  it('keeps item content during collapse and hides it after the animation', async () => {
+  it('keeps items expanded until the collapse animation ends', async () => {
     renderNavbar();
 
     const nav = screen.getByRole('navigation');
 
     await userEvent.hover(nav);
 
-    const toggleButton = screen.getByRole('button', { name: 'Hide' });
-
-    fireEvent.click(toggleButton);
+    fireEvent.click(screen.getByRole('button', { name: 'Hide' }));
 
     expect(nav).toHaveAttribute('data-collapsed', 'true');
-    expect(nav).toHaveAttribute('data-transition', 'exiting');
-    expect(screen.getByText('Item 1')).toBeInTheDocument();
+    expect(nav).toHaveAttribute('data-open');
 
-    await waitFor(() =>
-      expect(nav).toHaveAttribute('data-transition', 'exited')
-    );
-
-    expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
-    expect(screen.queryByText('Item 2')).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Item 1' })).toBeInTheDocument();
+    await waitFor(() => expect(nav).not.toHaveAttribute('data-open'));
   });
 
-  it('starts collapsed and shows item content as soon as expansion starts', async () => {
+  it('starts collapsed and expands items as soon as expansion starts', async () => {
     renderNavbar({ defaultCollapsed: true });
 
     const nav = screen.getByRole('navigation');
 
-    expect(nav).toHaveAttribute('data-transition', 'exited');
-    expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
+    expect(nav).not.toHaveAttribute('data-open');
 
     await userEvent.hover(nav);
 
     fireEvent.click(screen.getByRole('button', { name: 'Show' }));
 
-    expect(nav).toHaveAttribute('data-transition', 'entering');
-    expect(screen.getByText('Item 1')).toBeInTheDocument();
+    expect(nav).toHaveAttribute('data-open');
+  });
+
+  it('names a collapsed item by its content', () => {
+    render(
+      <Navbar defaultCollapsed>
+        <Navbar.Item href="#" icon={<span aria-hidden>Icon</span>}>
+          <span>Reports</span>
+        </Navbar.Item>
+      </Navbar>
+    );
+
+    expect(screen.getByRole('link', { name: 'Reports' })).toBeInTheDocument();
+  });
+
+  it('marks the active item as the current page', () => {
+    render(
+      <Navbar>
+        <Navbar.Item href="#" isActive>
+          Reports
+        </Navbar.Item>
+        <Navbar.Item href="#">Settings</Navbar.Item>
+      </Navbar>
+    );
+
+    expect(screen.getByRole('link', { name: 'Reports' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+
+    expect(screen.getByRole('link', { name: 'Settings' })).not.toHaveAttribute(
+      'aria-current'
+    );
   });
 
   it('forwards the ref, attributes and styles to the navigation element', () => {
@@ -288,7 +309,7 @@ describe('Navbar', () => {
     const getMenuIcon = () =>
       screen
         .getByRole('button', { name: 'Control Panel' })
-        .querySelector(`.${s.itemMenuIcon}`);
+        .querySelector(`.${s.menuIcon}`);
 
     it.each([
       ['DropdownMenu', renderDropdownMenu],
@@ -429,7 +450,7 @@ describe('Navbar', () => {
 
       const trigger = screen.getByRole('button', { name: 'Apps' });
 
-      expect(trigger.querySelector(`.${s.itemMenuIcon}`)).toBeNull();
+      expect(trigger.querySelector(`.${s.menuIcon}`)).toBeNull();
 
       act(() => trigger.focus());
 
@@ -524,7 +545,7 @@ describe('Navbar', () => {
         </Navbar>
       );
 
-      const menuIcon = document.querySelector(`.${s.itemMenuIcon}`);
+      const menuIcon = document.querySelector(`.${s.menuIcon}`);
 
       expect(menuIcon).toBeInTheDocument();
     });

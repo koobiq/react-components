@@ -1,0 +1,107 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  @mixin typography text-normal-medium;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--kbq-size-m);
+  box-sizing: border-box;
+  block-size: 40px;
+  inline-size: 100%;
+  padding: 0 var(--kbq-size-m);
+  border: 0 solid transparent;
+  border-inline-width: var(--kbq-size-s);
+  outline: none;
+  background-color: transparent;
+  color: var(--kbq-foreground-contrast);
+  text-decoration: none;
+  cursor: pointer;
+
+  /* The highlight, inside the transparent inline borders. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: var(--kbq-size-s);
+    pointer-events: none;
+    transition: background-color var(--kbq-transition-default);
+  }
+
+  &[data-hovered]::before {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &:is([data-pressed], [data-selected])::before {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  &[data-focus-visible]::before {
+    outline: var(--kbq-size-3xs) solid var(--kbq-states-line-focus-theme);
+    outline-offset: calc(-1 * var(--kbq-size-3xs));
+  }
+
+  &[data-disabled] {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  &[data-collapsed] {
+    justify-content: center;
+    padding: var(--kbq-size-xxs);
+  }
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.content {
+  @mixin ellipsis;
+
+  /* Collapsed, the text is hidden but still names the item. */
+  .base[data-collapsed] & {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    clip-path: inset(50%);
+  }
+}
+
+.badge {
+  @mixin typography text-compact-medium;
+
+  margin-inline-start: auto;
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  background-color: var(--kbq-background-error);
+  color: var(--kbq-foreground-white);
+  block-size: var(--kbq-size-l);
+  inline-size: var(--kbq-size-l);
+  border-radius: var(--kbq-size-xxs);
+
+  .base[data-collapsed] & {
+    position: absolute;
+    inset-inline-end: calc(-1 * var(--kbq-size-3xs));
+    inset-block-start: calc(-1 * var(--kbq-size-3xs));
+  }
+}
+
+.menuIcon {
+  margin-inline-start: auto;
+  color: var(--kbq-icon-contrast-fade);
+
+  .badge + & {
+    margin-inline-start: unset;
+  }
+
+  .base[data-collapsed] & {
+    display: none;
+  }
+}

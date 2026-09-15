@@ -18,14 +18,14 @@ import {
   type LinkBaseProps,
 } from '@koobiq/react-primitives';
 
-import { utilClasses } from '../../../styles/utility';
-import { Tooltip } from '../../Tooltip';
-import s from '../Navbar.module.css';
-import { useNavbarState } from '../NavbarContext';
+import { Tooltip } from '../../../Tooltip';
+import { useNavbarState } from '../../NavbarContext';
+
+import s from './NavbarItem.module.css';
 
 export type NavbarItemProps = {
   /**
-   * Whether the item is active.
+   * Whether the item is the current page: highlights it and sets `aria-current`.
    */
   isActive?: boolean;
   /**
@@ -51,8 +51,6 @@ export type NavbarItemProps = {
   children?: ReactNode;
 } & LinkBaseProps;
 
-const { listItem, typography } = utilClasses;
-
 export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
   (
     {
@@ -71,26 +69,18 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
     const { direction } = useLocale();
 
     // A `DropdownMenu` shares its state with the trigger, a `Menu` passes `aria-haspopup` to its `control`.
-    const dropdownMenuState = useContext(RootMenuTriggerStateContext);
+    const menuState = useContext(RootMenuTriggerStateContext);
+    const hasPopup = Boolean((other as AriaAttributes)['aria-haspopup']);
+    const isMenu = isMenuProp ?? (!!menuState || hasPopup);
 
-    const isMenuTrigger =
-      !!dropdownMenuState ||
-      ['true', 'menu'].includes(
-        String((other as AriaAttributes)['aria-haspopup'])
-      );
-
-    const isMenu = isMenuProp ?? isMenuTrigger;
-
-    // A menu opens on ArrowDown, but the navbar moves between items with it.
+    // The navbar moves between items with ArrowDown, so a menu opens with ArrowRight.
     const onKeyDown: KeyboardEvents['onKeyDown'] = (e) => {
-      const openKey = direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+      if (e.key !== (direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight')) return;
 
-      if (!isMenuTrigger || e.key !== openKey) return;
-
-      if (dropdownMenuState) {
+      if (menuState) {
         e.preventDefault();
-        dropdownMenuState.open('first');
-      } else {
+        menuState.open('first');
+      } else if (hasPopup) {
         other.onKeyDown?.({ ...e, key: 'ArrowDown' });
       }
     };
@@ -104,34 +94,24 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
         control={(props) => (
           <Link
             as={as || (isMenu || !other.href ? 'button' : 'a')}
-            className={clsx(
-              listItem,
-              typography['text-normal-medium'],
-              s.item,
-              className
-            )}
+            className={clsx(s.base, className)}
             data-selected={isActive || undefined}
-            aria-label={
-              isCollapsed && typeof children === 'string' ? children : undefined
-            }
+            data-collapsed={isCollapsed || undefined}
+            aria-current={isActive ? 'page' : undefined}
             {...mergeProps(props, other, { onKeyDown })}
             ref={mergeRefs(props.ref, inRef)}
           >
-            {icon && <span className={s.itemIcon}>{icon}</span>}
-
-            {!isCollapsed && <span className={s.itemContent}>{children}</span>}
-
-            {badge && (
-              <span
-                className={clsx(typography['text-compact-medium'], s.itemBadge)}
-              >
-                {badge}
+            {icon && (
+              <span className={s.icon} data-slot="navbar-item-icon">
+                {icon}
               </span>
             )}
 
-            {!isCollapsed && isMenu && (
-              <IconChevronRight16 className={s.itemMenuIcon} />
-            )}
+            <span className={s.content}>{children}</span>
+
+            {badge && <span className={s.badge}>{badge}</span>}
+
+            {isMenu && <IconChevronRight16 className={s.menuIcon} />}
           </Link>
         )}
       >

@@ -2,9 +2,9 @@
 
 import { clsx, type DistributiveOmit } from '@koobiq/react-core';
 
-import s from '../Navbar.module.css';
+import { NavbarItem, type NavbarItemProps } from '../NavbarItem';
 
-import { NavbarItem, type NavbarItemProps } from './NavbarItem';
+import s from './NavbarAppItem.module.css';
 
 export type NavbarAppItemProps = DistributiveOmit<
   NavbarItemProps,
@@ -12,11 +12,7 @@ export type NavbarAppItemProps = DistributiveOmit<
 >;
 
 export const NavbarAppItem = ({ className, ...props }: NavbarAppItemProps) => (
-  <NavbarItem
-    {...props}
-    isMenu={false}
-    className={clsx(s.appItem, className)}
-  />
+  <NavbarItem {...props} isMenu={false} className={clsx(s.base, className)} />
 );
 
 NavbarAppItem.displayName = 'NavbarAppItem';
