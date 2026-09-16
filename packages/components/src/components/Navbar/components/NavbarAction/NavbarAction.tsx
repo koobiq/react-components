@@ -46,6 +46,7 @@ export const NavbarAction = ({
               isCollapsed && isString(children) ? children : undefined
             }
             {...mergeProps(tooltipProps, other)}
+            className={s.button}
             startIcon={icon}
             onlyIcon={isCollapsed}
             fullWidth

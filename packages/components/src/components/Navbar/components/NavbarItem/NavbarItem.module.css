@@ -71,6 +71,13 @@
   min-inline-size: var(--kbq-size-3xl);
   margin: var(--kbq-size-s);
 
+  /* Extend the hit area over the spacing around the visual item. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--kbq-size-s));
+  }
+
   .content {
     padding-inline: var(--kbq-size-xxs);
 
@@ -91,10 +98,18 @@
   &:has(.content:not(:empty)):not([data-slot='navbar-app-item']) {
     margin-inline: 0;
     padding-inline: var(--kbq-size-m);
+
+    &::after {
+      inset-inline: 0;
+    }
   }
 
   &:has(.content:not(:empty)):not([data-slot='navbar-app-item']) .icon {
     padding-inline-end: var(--kbq-size-xxs);
+  }
+
+  &[data-slot='navbar-app-item']::after {
+    inset: 0;
   }
 }
 
