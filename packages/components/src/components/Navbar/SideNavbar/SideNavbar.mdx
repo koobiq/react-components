@@ -29,9 +29,10 @@ import { SideNavbar } from '@koobiq/react-components';
 
 <Props of={Stories.Base} />
 
-## Subcomponents
+## Anatomy
 
-- `SideNavbar.Header`, `SideNavbar.Body`, `SideNavbar.Footer` — groups of items at the top, in the middle and at the bottom. The body scrolls.
+- `SideNavbar` — the root navigation component. It arranges its content vertically and manages the collapsed state.
+- `SideNavbar.Header`, `SideNavbar.Body`, `SideNavbar.Footer` — structural regions at the top, in the middle and at the bottom. The body grows to fill the available space and scrolls when needed.
 - `SideNavbar.AppItem` — the logo and the app name.
 - `SideNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu.
 - `SideNavbar.Action` — the main action button.

@@ -29,10 +29,29 @@ import { TopNavbar } from '@koobiq/react-components';
 
 <Props of={Stories.Base} />
 
-## Containers
+## Anatomy
 
-Use `TopNavbar.Container` with `placement="start"` and `placement="end"` to
-group items on opposite sides of the navbar.
+- `TopNavbar` — the root navigation component. It arranges its content horizontally and provides keyboard navigation between items.
+- `TopNavbar.Container` — a group of items on the start or end side of the navbar, selected with `placement`.
+- `TopNavbar.AppItem` — the logo and the app name.
+- `TopNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu.
+- `TopNavbar.Action` — the main action button.
+- `TopNavbar.Divider` — a line between items.
+
+## Long app name
+
+A name that does not fit into one line takes two smaller lines. A longer one is
+cut off and shown in a tooltip.
+
+<Story of={Stories.LongAppName} />
+
+## Overflow
+
+Use [useHideOverflowItems](?path=/docs/hooks-usehideoverflowitems--docs) to move
+sections that do not fit into a **More** menu. Resize the example horizontally
+to see this behavior.
+
+<Story of={Stories.CollapsingItems} />
 
 ## Routing
 

@@ -66,8 +66,7 @@ export const Base: Story = {
   render: (args) => (
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'auto 1fr',
+        display: 'flex',
         blockSize: 500,
       }}
     >
@@ -155,6 +154,7 @@ export const Base: Story = {
           { direction: 'column', gap: 'm' },
           spacing({ p: 'xl' })
         )}
+        style={{ flex: '1 1 auto', minInlineSize: 0 }}
       >
         <Typography variant="title">Main content</Typography>
         <Typography>
@@ -177,8 +177,7 @@ export const Controlled: Story = {
     return (
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'auto 1fr',
+          display: 'flex',
           blockSize: 500,
         }}
       >
@@ -198,7 +197,10 @@ export const Controlled: Story = {
           </SideNavbar.Body>
         </SideNavbar>
 
-        <main className={spacing({ p: 'xl' })}>
+        <main
+          className={spacing({ p: 'xl' })}
+          style={{ flex: '1 1 auto', minInlineSize: 0 }}
+        >
           <Button onPress={toggle}>
             {isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
           </Button>
@@ -212,40 +214,42 @@ export const ExpandOverContent: Story = {
   render: (args) => (
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'var(--kbq-size-6xl) 1fr',
+        display: 'flex',
         blockSize: 500,
       }}
     >
-      <SideNavbar {...args} defaultCollapsed>
-        <SideNavbar.Header>
-          <SideNavbar.AppItem icon={<AppIcon />} href="#">
-            App name
-          </SideNavbar.AppItem>
-        </SideNavbar.Header>
+      <div style={{ flex: '0 0 var(--kbq-size-6xl)', minInlineSize: 0 }}>
+        <SideNavbar {...args} defaultCollapsed>
+          <SideNavbar.Header>
+            <SideNavbar.AppItem icon={<AppIcon />} href="#">
+              App name
+            </SideNavbar.AppItem>
+          </SideNavbar.Header>
 
-        <SideNavbar.Body>
-          <SideNavbar.Item icon={<IconDatabase16 />} href="#" isActive>
-            Data Catalog
-          </SideNavbar.Item>
+          <SideNavbar.Body>
+            <SideNavbar.Item icon={<IconDatabase16 />} href="#" isActive>
+              Data Catalog
+            </SideNavbar.Item>
 
-          <SideNavbar.Item icon={<IconCloud16 />} href="#">
-            Integrations
-          </SideNavbar.Item>
-        </SideNavbar.Body>
+            <SideNavbar.Item icon={<IconCloud16 />} href="#">
+              Integrations
+            </SideNavbar.Item>
+          </SideNavbar.Body>
 
-        <SideNavbar.Footer>
-          <SideNavbar.Item icon={<IconUser16 />} as="button" badge={2}>
-            Alexander Walker
-          </SideNavbar.Item>
-        </SideNavbar.Footer>
-      </SideNavbar>
+          <SideNavbar.Footer>
+            <SideNavbar.Item icon={<IconUser16 />} as="button" badge={2}>
+              Alexander Walker
+            </SideNavbar.Item>
+          </SideNavbar.Footer>
+        </SideNavbar>
+      </div>
 
       <main
         className={flex(
           { direction: 'column', gap: 'm' },
           spacing({ p: 'xl' })
         )}
+        style={{ flex: '1 1 auto', minInlineSize: 0 }}
       >
         <Typography variant="title">Main content</Typography>
         <Typography>
@@ -265,8 +269,7 @@ export const LongAppName: Story = {
   render: (args) => (
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'auto 1fr',
+        display: 'flex',
         blockSize: 500,
       }}
     >
@@ -288,6 +291,7 @@ export const LongAppName: Story = {
           { direction: 'column', gap: 'm' },
           spacing({ p: 'xl' })
         )}
+        style={{ flex: '1 1 auto', minInlineSize: 0 }}
       >
         <Typography variant="title">Main content</Typography>
         <Typography>
@@ -308,8 +312,7 @@ export const RouteProvider: Story = {
     <RouterProvider navigate={(path) => alert(path)}>
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'auto 1fr',
+          display: 'flex',
           blockSize: 500,
         }}
       >
@@ -346,6 +349,7 @@ export const RouteProvider: Story = {
             { direction: 'column', gap: 'm' },
             spacing({ p: 'xl' })
           )}
+          style={{ flex: '1 1 auto', minInlineSize: 0 }}
         >
           <Typography variant="title">Main content</Typography>
           <Typography>

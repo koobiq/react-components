@@ -1,6 +1,7 @@
-import type { SVGProps } from 'react';
+import { useEffect, useState } from 'react';
+import type { CSSProperties, SVGProps } from 'react';
 
-import { RouterProvider } from '@koobiq/react-core';
+import { RouterProvider, useHideOverflowItems } from '@koobiq/react-core';
 import {
   IconBell16,
   IconFolder16,
@@ -61,9 +62,9 @@ export const Base: Story = {
   render: () => (
     <div
       style={{
-        display: 'grid',
-        gridTemplateRows: 'auto 1fr',
-        blockSize: 500,
+        display: 'flex',
+        flexDirection: 'column',
+        blockSize: 240,
       }}
     >
       <TopNavbar aria-label="Main navigation">
@@ -119,6 +120,7 @@ export const Base: Story = {
 
       <main
         className={flex({ direction: 'column', gap: 'm' }, spacing({ p: 'm' }))}
+        style={{ flex: '1 1 auto', minInlineSize: 0 }}
       >
         <Typography variant="title">Main content</Typography>
         <Typography>
@@ -134,14 +136,201 @@ export const Base: Story = {
   ),
 };
 
+export const LongAppName: Story = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        blockSize: 240,
+      }}
+    >
+      <TopNavbar aria-label="Main navigation">
+        <TopNavbar.Container placement="start">
+          <TopNavbar.AppItem icon={<AppIcon />} href="#">
+            Super Long Menu Title with Line Wrap and Ellipsis Truncation
+          </TopNavbar.AppItem>
+          <TopNavbar.Item icon={<IconFolder16 />} href="#">
+            Integrations
+          </TopNavbar.Item>
+        </TopNavbar.Container>
+      </TopNavbar>
+
+      <main
+        className={flex({ direction: 'column', gap: 'm' }, spacing({ p: 'm' }))}
+        style={{ flex: '1 1 auto', minInlineSize: 0 }}
+      >
+        <Typography variant="title">Main content</Typography>
+        <Typography>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
+          laudantium nulla voluptates! Assumenda dicta dolorem facilis iste
+          itaque iure provident quisquam, quos sequi? Amet aut, consectetur
+          dolor ea eaque eligendi enim eos esse excepturi fuga ipsa ipsum
+          laudantium natus necessitatibus nobis officiis perferendis porro
+          praesentium quibusdam quis soluta voluptas voluptatibus!
+        </Typography>
+      </main>
+    </div>
+  ),
+};
+
+export const CollapsingItems: Story = {
+  parameters: {
+    docs: {
+      source: { type: 'code' },
+    },
+  },
+  render: function Render() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const sections = [
+      { key: 'overview', label: 'Overview' },
+      { key: 'incidents', label: 'Incidents' },
+      { key: 'assets', label: 'Assets' },
+      { key: 'vulnerabilities', label: 'Vulnerabilities' },
+      { key: 'integrations', label: 'Integrations' },
+      { key: 'reports', label: 'Reports' },
+      { key: 'settings', label: 'Settings' },
+    ];
+
+    const hiddenStyle: CSSProperties = {
+      visibility: 'hidden',
+      position: 'absolute',
+      insetInlineStart: '-300vw',
+    };
+
+    const moreIndex = sections.length;
+
+    const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems<
+      HTMLElement,
+      HTMLDivElement
+    >({
+      length: sections.length + 1,
+      moreIndex,
+    });
+
+    const hiddenSections = sections.filter((_, index) => !visibleMap[index]);
+
+    const isMoreVisible = visibleMap[moreIndex];
+
+    const setItemRef = (index: number, element: HTMLElement | null) => {
+      const itemRef = itemsRefs[index];
+
+      if (itemRef && element) itemRef.current = element;
+    };
+
+    useEffect(() => {
+      if (!isMoreVisible) setIsMenuOpen(false);
+    }, [isMoreVisible]);
+
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          inlineSize: 900,
+          maxInlineSize: '100%',
+          minInlineSize: 480,
+          blockSize: 240,
+          boxSizing: 'border-box',
+          resize: 'horizontal',
+          overflow: 'hidden',
+        }}
+      >
+        <TopNavbar aria-label="Main navigation" style={{ minInlineSize: 0 }}>
+          <TopNavbar.Container
+            placement="start"
+            style={{ flex: '1 1 0', overflow: 'hidden' }}
+          >
+            <TopNavbar.AppItem icon={<AppIcon />} href="#">
+              App name
+            </TopNavbar.AppItem>
+
+            <div
+              ref={parentRef}
+              style={{
+                position: 'relative',
+                display: 'flex',
+                flex: '1 1 0',
+                minInlineSize: 0,
+                overflow: 'hidden',
+              }}
+            >
+              {sections.map((section, index) => (
+                <TopNavbar.Item
+                  key={section.key}
+                  ref={(element) => setItemRef(index, element)}
+                  href="#"
+                  style={visibleMap[index] ? undefined : hiddenStyle}
+                  aria-hidden={!visibleMap[index] || undefined}
+                >
+                  {section.label}
+                </TopNavbar.Item>
+              ))}
+
+              <DropdownMenu isOpen={isMenuOpen} onOpenChange={setIsMenuOpen}>
+                <TopNavbar.Item
+                  as="button"
+                  ref={(element) => setItemRef(moreIndex, element)}
+                  style={isMoreVisible ? undefined : hiddenStyle}
+                  aria-hidden={!isMoreVisible || undefined}
+                >
+                  More
+                </TopNavbar.Item>
+                <DropdownMenu.Popover>
+                  <DropdownMenu.Content onAction={(key) => alert(key)}>
+                    {hiddenSections.map((section) => (
+                      <DropdownMenu.Item key={section.key} id={section.key}>
+                        {section.label}
+                      </DropdownMenu.Item>
+                    ))}
+                  </DropdownMenu.Content>
+                </DropdownMenu.Popover>
+              </DropdownMenu>
+            </div>
+          </TopNavbar.Container>
+
+          <TopNavbar.Container placement="end">
+            <TopNavbar.Item
+              icon={<IconBell16 />}
+              as="button"
+              badge={5}
+              aria-label="Notifications"
+            />
+            <TopNavbar.Item
+              icon={<IconUser16 />}
+              as="button"
+              aria-label="Profile"
+            />
+          </TopNavbar.Container>
+        </TopNavbar>
+
+        <main
+          className={flex(
+            { direction: 'column', gap: 'm' },
+            spacing({ p: 'm' })
+          )}
+          style={{ flex: '1 1 auto', minInlineSize: 0 }}
+        >
+          <Typography variant="title">Main content</Typography>
+          <Typography>
+            Resize this example to see navigation sections move into the More
+            menu when the available space becomes limited.
+          </Typography>
+        </main>
+      </div>
+    );
+  },
+};
+
 export const RouteProvider: Story = {
   render: () => (
     <RouterProvider navigate={(path) => alert(path)}>
       <div
         style={{
-          display: 'grid',
-          gridTemplateRows: 'auto 1fr',
-          blockSize: 500,
+          display: 'flex',
+          flexDirection: 'column',
+          blockSize: 240,
         }}
       >
         <TopNavbar aria-label="Main navigation">
@@ -160,6 +349,7 @@ export const RouteProvider: Story = {
             { direction: 'column', gap: 'm' },
             spacing({ p: 'm' })
           )}
+          style={{ flex: '1 1 auto', minInlineSize: 0 }}
         >
           <Typography variant="title">Main content</Typography>
           <Typography>
