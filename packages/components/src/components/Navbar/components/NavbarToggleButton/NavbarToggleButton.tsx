@@ -7,8 +7,8 @@ import {
 } from '@koobiq/react-icons';
 import { Button } from '@koobiq/react-primitives';
 
-import { Tooltip } from '../../../Tooltip';
 import intlMessages from '../../intl.json';
+import { NavbarTooltip } from '../NavbarTooltip';
 
 import s from './NavbarToggleButton.module.css';
 
@@ -35,10 +35,7 @@ export const NavbarToggleButton = ({
       : IconChevronDoubleRightS16;
 
   return (
-    <Tooltip
-      offset={8}
-      hideArrow
-      placement="end"
+    <NavbarTooltip
       control={(tooltipProps) => (
         <Button
           {...tooltipProps}
@@ -56,7 +53,7 @@ export const NavbarToggleButton = ({
       )}
     >
       {label}
-    </Tooltip>
+    </NavbarTooltip>
   );
 };
 

@@ -21,8 +21,8 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Badge } from '../../../Badge';
-import { Tooltip } from '../../../Tooltip';
 import { useNavbarState } from '../../NavbarContext';
+import { NavbarTooltip } from '../NavbarTooltip';
 
 import s from './NavbarItem.module.css';
 
@@ -90,10 +90,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
     };
 
     return (
-      <Tooltip
-        offset={8}
-        hideArrow
-        placement="end"
+      <NavbarTooltip
         // Shows the text when it is hidden or cut off.
         isDisabled={!isCollapsed && !content.isOverflow}
         control={(props) => (
@@ -131,7 +128,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
         )}
       >
         {children}
-      </Tooltip>
+      </NavbarTooltip>
     );
   }
 );

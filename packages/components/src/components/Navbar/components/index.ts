@@ -6,3 +6,4 @@ export * from './NavbarAppItem';
 export * from './NavbarDivider';
 export * from './NavbarAction';
 export * from './NavbarToggleButton';
+export * from './NavbarTooltip';

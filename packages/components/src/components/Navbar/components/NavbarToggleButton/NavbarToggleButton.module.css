@@ -1,4 +1,6 @@
 .base {
+  --navbar-toggle-hide-delay: 300ms;
+
   position: absolute;
   inset-block-start: var(--kbq-size-3xl);
   inset-inline-end: calc(-1 * var(--kbq-size-l));
@@ -12,11 +14,15 @@
   border: none;
   outline: none;
   background-color: transparent;
+  transition: opacity var(--kbq-transition-default)
+    var(--navbar-toggle-hide-delay);
 
+  /* Appears at once and leaves after a delay. */
   &[data-shown],
   &:focus-visible {
     opacity: 1;
     pointer-events: auto;
+    transition-delay: 0s;
   }
 }
 

@@ -6,8 +6,8 @@ import { clsx, isString, mergeProps, mergeRefs } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 
 import { Button, type ButtonProps } from '../../../Button';
-import { Tooltip } from '../../../Tooltip';
 import { useNavbarState } from '../../NavbarContext';
+import { NavbarTooltip } from '../NavbarTooltip';
 
 import s from './NavbarAction.module.css';
 
@@ -37,10 +37,7 @@ export const NavbarAction = ({
 
   return (
     <li className={clsx(s.base, className)}>
-      <Tooltip
-        offset={8}
-        hideArrow
-        placement="end"
+      <NavbarTooltip
         isDisabled={!isCollapsed}
         control={(tooltipProps) => (
           <Button
@@ -59,7 +56,7 @@ export const NavbarAction = ({
         )}
       >
         {children}
-      </Tooltip>
+      </NavbarTooltip>
     </li>
   );
 };
