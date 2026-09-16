@@ -14,6 +14,15 @@
   max-inline-size: 480px;
 }
 
+.layout {
+  box-sizing: border-box;
+  border: 1px dashed var(--kbq-line-contrast-less);
+  border-radius: var(--kbq-size-s);
+  display: flex;
+  inline-size: 560px;
+  block-size: 320px;
+}
+
 .handle {
   background-color: var(--kbq-background-transparent);
   opacity: 0.25;

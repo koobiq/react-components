@@ -50,9 +50,22 @@ All values are measured in CSS pixels.
 ### Intrinsic size
 
 When both `size` and `defaultSize` are omitted, Resizable preserves its natural CSS size.
-The measured size is fixed in pixels only after the first resize interaction.
+The first resize interaction fixes the resized axes in pixels, the others keep their CSS size.
 
 <Story of={Stories.IntrinsicSize} />
+
+### One dimension
+
+`size` and `defaultSize` accept a single dimension. The omitted one keeps its CSS size and is
+never written to the element, which suits elements sized by their layout in the other axis —
+a side panel stretched to the full height of its container, for example.
+
+An axis becomes managed as soon as it's given in `size` / `defaultSize`, or resized by a handle.
+The `onResize`, `onResizeStart` and `onResizeEnd` handlers always report both dimensions.
+An axis that isn't managed is measured once, when the resize starts. To control a single axis,
+take only that axis from the handler: passing the whole size back would manage the other one too.
+
+<Story of={Stories.OneDimension} />
 
 ## Direction
 
@@ -85,6 +98,9 @@ for geometry customization.
 Handles are focusable. Use the arrow keys to resize by one pixel, or hold <kbd>Shift</kbd> to resize
 by ten pixels. Edge handles expose the ARIA separator pattern; corner handles expose an accessible
 two-dimensional resize control.
+
+Set `disableKeyboardResize` on a handle to leave it drag-only. It also drops out of the tab order,
+unless `tabIndex` says otherwise.
 
 ## Disabled
 
