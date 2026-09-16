@@ -1,16 +1,7 @@
 .base {
   display: flex;
   flex-direction: column;
+  gap: 1px;
   margin-block-start: auto;
   padding: var(--kbq-size-xxl) 0 var(--kbq-size-s);
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  gap: 1px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }

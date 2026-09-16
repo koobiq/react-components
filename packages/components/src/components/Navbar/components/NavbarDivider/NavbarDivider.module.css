@@ -1,3 +1,12 @@
-.base {
-  padding: var(--kbq-size-xs) var(--kbq-size-l);
+/* A line across a vertical navbar. */
+.base[data-orientation='horizontal'] {
+  inline-size: auto;
+  margin: var(--kbq-size-xs) var(--kbq-size-l);
+}
+
+/* A line across a horizontal navbar. */
+.base[data-orientation='vertical'] {
+  align-self: center;
+  block-size: var(--kbq-size-m);
+  margin-inline: var(--kbq-size-m);
 }

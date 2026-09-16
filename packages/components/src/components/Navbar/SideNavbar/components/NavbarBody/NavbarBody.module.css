@@ -7,10 +7,7 @@
   flex-direction: column;
   flex: 1 1 auto;
   gap: 1px;
-  margin: 0;
   margin-block-start: calc(-1 * var(--kbq-size-3xs));
-  padding: 0;
   padding-block-start: var(--kbq-size-3xs);
   overflow: auto;
-  list-style: none;
 }

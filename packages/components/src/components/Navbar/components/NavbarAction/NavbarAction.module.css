@@ -1,4 +1,8 @@
 /* Collapsed, the room left is exactly an icon-only button. */
-.base {
+.base[data-orientation='vertical'] {
   padding: var(--kbq-size-xxs) var(--kbq-size-m);
+}
+
+.base[data-orientation='horizontal'] {
+  padding: var(--kbq-size-s) var(--kbq-size-m);
 }

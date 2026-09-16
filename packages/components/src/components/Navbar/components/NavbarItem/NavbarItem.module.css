@@ -8,14 +8,12 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  gap: var(--kbq-size-m);
   box-sizing: border-box;
-  block-size: 40px;
-  inline-size: 100%;
-  padding: 0 var(--kbq-size-m);
-  border: 0 solid transparent;
-  border-inline-width: var(--kbq-size-s);
+  margin: 0;
+  padding: 0;
+  border: 0;
   outline: none;
+  appearance: none;
   background-color: transparent;
   color: var(--kbq-foreground-contrast);
   text-decoration: none;
@@ -49,10 +47,54 @@
     color: var(--kbq-states-foreground-disabled);
     cursor: default;
   }
+}
+
+/* The item takes the whole width of a vertical navbar. */
+.base[data-orientation='vertical'] {
+  gap: var(--kbq-size-m);
+  block-size: 40px;
+  inline-size: 100%;
+  padding: 0 var(--kbq-size-m);
+  border: 0 solid transparent;
+  border-inline-width: var(--kbq-size-s);
 
   &[data-collapsed] {
     justify-content: center;
     padding: var(--kbq-size-xxs);
+  }
+}
+
+/* In a horizontal navbar the item is as wide as its content. */
+.base[data-orientation='horizontal'] {
+  justify-content: center;
+  min-block-size: var(--kbq-size-3xl);
+  min-inline-size: var(--kbq-size-3xl);
+  margin: var(--kbq-size-s);
+
+  .content {
+    padding-inline: var(--kbq-size-xxs);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .menuIcon {
+    padding-inline-start: var(--kbq-size-xxs);
+  }
+
+  /* An item with an icon alone stays a square. */
+  &:has(.content:empty) {
+    padding-inline: 0;
+  }
+
+  &:has(.content:not(:empty)):not([data-slot='navbar-app-item']) {
+    margin-inline: 0;
+    padding-inline: var(--kbq-size-m);
+  }
+
+  &:has(.content:not(:empty)):not([data-slot='navbar-app-item']) .icon {
+    padding-inline-end: var(--kbq-size-xxs);
   }
 }
 
@@ -77,6 +119,8 @@
 .content {
   @mixin ellipsis;
 
+  min-inline-size: 0;
+
   /* Collapsed, the text is hidden but still names the item. */
   .base[data-collapsed] & {
     position: absolute;
@@ -90,7 +134,9 @@
   margin-inline-start: auto;
   flex-shrink: 0;
 
-  .base[data-collapsed] & {
+  /* Without room beside the text, the badge sits in the corner of the item. */
+  .base[data-collapsed] &,
+  .base[data-orientation='horizontal'] & {
     position: absolute;
     inset-inline-end: calc(-1 * var(--kbq-size-3xs));
     inset-block-start: calc(-1 * var(--kbq-size-3xs));
@@ -100,7 +146,8 @@
 .menuIcon {
   margin-inline-start: auto;
 
-  .badge + & {
+  .badge + &,
+  .base[data-orientation='horizontal'] & {
     margin-inline-start: unset;
   }
 

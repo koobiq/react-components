@@ -1,0 +1,42 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../../.storybook/components';
+
+import * as Stories from './TopNavbar.stories';
+
+<Meta of={Stories} />
+
+# TopNavbar
+
+<Status variant="experimental" />
+
+The horizontal main menu of the product.
+
+## Import
+
+```tsx
+import { TopNavbar } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Containers
+
+Use `TopNavbar.Container` with `placement="start"` and `placement="end"` to
+group items on opposite sides of the navbar.
+
+## Routing
+
+Wrap the app in `RouterProvider` to navigate items with your application
+router.
+
+<Story of={Stories.RouteProvider} />

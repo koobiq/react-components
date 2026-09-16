@@ -9,18 +9,18 @@ import s from './NavbarBody.module.css';
 export type NavbarBodyProps = {
   /** Additional CSS-classes. */
   className?: string;
-  /** The main items, e.g. `Navbar.Item`. */
+  /** The main items, e.g. `SideNavbar.Item`. */
   children?: ReactNode;
-} & ComponentPropsWithRef<'ul'>;
+} & ComponentPropsWithRef<'div'>;
 
 export const NavbarBody = ({
   children,
   className,
   ...props
 }: NavbarBodyProps) => (
-  <ul className={clsx(s.base, className)} {...props}>
+  <div className={clsx(s.base, className)} {...props}>
     {children}
-  </ul>
+  </div>
 );
 
 NavbarBody.displayName = 'NavbarBody';

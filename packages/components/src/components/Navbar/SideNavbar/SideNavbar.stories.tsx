@@ -11,34 +11,34 @@ import {
 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from '../Button';
-import { DropdownMenu } from '../DropdownMenu';
-import { flex, spacing } from '../layout';
-import { Typography } from '../Typography';
+import { Button } from '../../Button';
+import { DropdownMenu } from '../../DropdownMenu';
+import { flex, spacing } from '../../layout';
+import { Typography } from '../../Typography';
 
-import { Navbar, type NavbarProps } from '.';
+import { SideNavbar, type SideNavbarProps } from '.';
 
 const meta = {
-  title: 'Components/Navbar',
-  component: Navbar,
+  title: 'Components/Navbar/SideNavbar',
+  component: SideNavbar,
   subcomponents: {
-    'Navbar.Header': Navbar.Header,
-    'Navbar.Body': Navbar.Body,
-    'Navbar.Footer': Navbar.Footer,
-    'Navbar.Item': Navbar.Item,
-    'Navbar.AppItem': Navbar.AppItem,
-    'Navbar.Action': Navbar.Action,
-    'Navbar.Divider': Navbar.Divider,
+    'SideNavbar.Header': SideNavbar.Header,
+    'SideNavbar.Body': SideNavbar.Body,
+    'SideNavbar.Footer': SideNavbar.Footer,
+    'SideNavbar.Item': SideNavbar.Item,
+    'SideNavbar.AppItem': SideNavbar.AppItem,
+    'SideNavbar.Action': SideNavbar.Action,
+    'SideNavbar.Divider': SideNavbar.Divider,
   },
   parameters: {
     layout: 'fullscreen',
   },
-  tags: ['status:updated', 'date:2026-09-15'],
-} satisfies Meta<typeof Navbar>;
+  tags: ['status:new', 'date:2026-09-15'],
+} satisfies Meta<typeof SideNavbar>;
 
 export default meta;
 
-type Story = StoryObj<NavbarProps>;
+type Story = StoryObj<SideNavbarProps>;
 
 const AppIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -71,26 +71,26 @@ export const Base: Story = {
         blockSize: 500,
       }}
     >
-      <Navbar aria-label="Main navigation" {...args}>
-        <Navbar.Header>
-          <Navbar.AppItem icon={<AppIcon />} href="#">
+      <SideNavbar aria-label="Main navigation" {...args}>
+        <SideNavbar.Header>
+          <SideNavbar.AppItem icon={<AppIcon />} href="#">
             App name
-          </Navbar.AppItem>
-        </Navbar.Header>
+          </SideNavbar.AppItem>
+        </SideNavbar.Header>
 
-        <Navbar.Body>
-          <Navbar.Item icon={<IconDatabase16 />} href="#" isActive>
+        <SideNavbar.Body>
+          <SideNavbar.Item icon={<IconDatabase16 />} href="#" isActive>
             Data Catalog
-          </Navbar.Item>
+          </SideNavbar.Item>
 
-          <Navbar.Item icon={<IconCloud16 />} href="#">
+          <SideNavbar.Item icon={<IconCloud16 />} href="#">
             Integrations
-          </Navbar.Item>
+          </SideNavbar.Item>
 
           <DropdownMenu>
-            <Navbar.Item icon={<IconDashboard16 />} badge={12}>
+            <SideNavbar.Item icon={<IconDashboard16 />} badge={12}>
               Control Panel
-            </Navbar.Item>
+            </SideNavbar.Item>
             <DropdownMenu.Popover>
               <DropdownMenu.Content onAction={(key) => alert(key)}>
                 <DropdownMenu.Item id="service-accounts">
@@ -115,7 +115,9 @@ export const Base: Story = {
           </DropdownMenu>
 
           <DropdownMenu>
-            <Navbar.Item icon={<IconPrinter16 />}>Documentation</Navbar.Item>
+            <SideNavbar.Item icon={<IconPrinter16 />}>
+              Documentation
+            </SideNavbar.Item>
             <DropdownMenu.Popover>
               <DropdownMenu.Content onAction={(key) => alert(key)}>
                 <DropdownMenu.Item id="start">
@@ -131,22 +133,22 @@ export const Base: Story = {
             </DropdownMenu.Popover>
           </DropdownMenu>
 
-          <Navbar.Divider />
+          <SideNavbar.Divider />
 
-          <Navbar.Action
+          <SideNavbar.Action
             icon={<IconPlus16 />}
             onPress={() => alert('New task')}
           >
             New task
-          </Navbar.Action>
-        </Navbar.Body>
+          </SideNavbar.Action>
+        </SideNavbar.Body>
 
-        <Navbar.Footer>
-          <Navbar.Item icon={<IconUser16 />} as="button" badge={2}>
+        <SideNavbar.Footer>
+          <SideNavbar.Item icon={<IconUser16 />} as="button" badge={2}>
             Alexander Walker
-          </Navbar.Item>
-        </Navbar.Footer>
-      </Navbar>
+          </SideNavbar.Item>
+        </SideNavbar.Footer>
+      </SideNavbar>
 
       <main
         className={flex(
@@ -180,21 +182,21 @@ export const Controlled: Story = {
           blockSize: 500,
         }}
       >
-        <Navbar {...args} isCollapsed={isCollapsed} onCollapse={set}>
-          <Navbar.Header>
-            <Navbar.AppItem icon={<AppIcon />} href="#">
+        <SideNavbar {...args} isCollapsed={isCollapsed} onCollapse={set}>
+          <SideNavbar.Header>
+            <SideNavbar.AppItem icon={<AppIcon />} href="#">
               App name
-            </Navbar.AppItem>
-          </Navbar.Header>
-          <Navbar.Body>
-            <Navbar.Item icon={<IconDatabase16 />} href="#">
+            </SideNavbar.AppItem>
+          </SideNavbar.Header>
+          <SideNavbar.Body>
+            <SideNavbar.Item icon={<IconDatabase16 />} href="#">
               Data Catalog
-            </Navbar.Item>
-            <Navbar.Item icon={<IconCloud16 />} href="#">
+            </SideNavbar.Item>
+            <SideNavbar.Item icon={<IconCloud16 />} href="#">
               Integrations
-            </Navbar.Item>
-          </Navbar.Body>
-        </Navbar>
+            </SideNavbar.Item>
+          </SideNavbar.Body>
+        </SideNavbar>
 
         <main className={spacing({ p: 'xl' })}>
           <Button onPress={toggle}>
@@ -215,29 +217,29 @@ export const ExpandOverContent: Story = {
         blockSize: 500,
       }}
     >
-      <Navbar {...args} defaultCollapsed>
-        <Navbar.Header>
-          <Navbar.AppItem icon={<AppIcon />} href="#">
+      <SideNavbar {...args} defaultCollapsed>
+        <SideNavbar.Header>
+          <SideNavbar.AppItem icon={<AppIcon />} href="#">
             App name
-          </Navbar.AppItem>
-        </Navbar.Header>
+          </SideNavbar.AppItem>
+        </SideNavbar.Header>
 
-        <Navbar.Body>
-          <Navbar.Item icon={<IconDatabase16 />} href="#" isActive>
+        <SideNavbar.Body>
+          <SideNavbar.Item icon={<IconDatabase16 />} href="#" isActive>
             Data Catalog
-          </Navbar.Item>
+          </SideNavbar.Item>
 
-          <Navbar.Item icon={<IconCloud16 />} href="#">
+          <SideNavbar.Item icon={<IconCloud16 />} href="#">
             Integrations
-          </Navbar.Item>
-        </Navbar.Body>
+          </SideNavbar.Item>
+        </SideNavbar.Body>
 
-        <Navbar.Footer>
-          <Navbar.Item icon={<IconUser16 />} as="button" badge={2}>
+        <SideNavbar.Footer>
+          <SideNavbar.Item icon={<IconUser16 />} as="button" badge={2}>
             Alexander Walker
-          </Navbar.Item>
-        </Navbar.Footer>
-      </Navbar>
+          </SideNavbar.Item>
+        </SideNavbar.Footer>
+      </SideNavbar>
 
       <main
         className={flex(
@@ -268,19 +270,19 @@ export const LongAppName: Story = {
         blockSize: 500,
       }}
     >
-      <Navbar {...args}>
-        <Navbar.Header>
-          <Navbar.AppItem icon={<AppIcon />} href="#">
+      <SideNavbar {...args}>
+        <SideNavbar.Header>
+          <SideNavbar.AppItem icon={<AppIcon />} href="#">
             Super Long Menu Title with Line Wrap and Ellipsis Truncation
-          </Navbar.AppItem>
-        </Navbar.Header>
+          </SideNavbar.AppItem>
+        </SideNavbar.Header>
 
-        <Navbar.Body>
-          <Navbar.Item icon={<IconDatabase16 />} href="#">
+        <SideNavbar.Body>
+          <SideNavbar.Item icon={<IconDatabase16 />} href="#">
             Data Catalog of All Connected Sources
-          </Navbar.Item>
-        </Navbar.Body>
-      </Navbar>
+          </SideNavbar.Item>
+        </SideNavbar.Body>
+      </SideNavbar>
       <main
         className={flex(
           { direction: 'column', gap: 'm' },
@@ -311,33 +313,33 @@ export const RouteProvider: Story = {
           blockSize: 500,
         }}
       >
-        <Navbar {...args}>
-          <Navbar.Header>
-            <Navbar.AppItem icon={<AppIcon />} href="#">
+        <SideNavbar {...args}>
+          <SideNavbar.Header>
+            <SideNavbar.AppItem icon={<AppIcon />} href="#">
               App name
-            </Navbar.AppItem>
-          </Navbar.Header>
+            </SideNavbar.AppItem>
+          </SideNavbar.Header>
 
-          <Navbar.Body>
-            <Navbar.Item icon={<IconDatabase16 />} href="/link-1">
+          <SideNavbar.Body>
+            <SideNavbar.Item icon={<IconDatabase16 />} href="/link-1">
               Link 1
-            </Navbar.Item>
+            </SideNavbar.Item>
 
-            <Navbar.Item icon={<IconDatabase16 />} href="/link-2">
+            <SideNavbar.Item icon={<IconDatabase16 />} href="/link-2">
               Link 2
-            </Navbar.Item>
+            </SideNavbar.Item>
 
-            <Navbar.Item icon={<IconDatabase16 />} href="/link-3">
+            <SideNavbar.Item icon={<IconDatabase16 />} href="/link-3">
               Link 3
-            </Navbar.Item>
-          </Navbar.Body>
+            </SideNavbar.Item>
+          </SideNavbar.Body>
 
-          <Navbar.Footer>
-            <Navbar.Item icon={<IconUser16 />} as="button" badge={2}>
+          <SideNavbar.Footer>
+            <SideNavbar.Item icon={<IconUser16 />} as="button" badge={2}>
               Alexander Walker
-            </Navbar.Item>
-          </Navbar.Footer>
-        </Navbar>
+            </SideNavbar.Item>
+          </SideNavbar.Footer>
+        </SideNavbar>
 
         <main
           className={flex(

@@ -9,7 +9,7 @@ import s from './NavbarFooter.module.css';
 export type NavbarFooterProps = {
   /** Additional CSS-classes. */
   className?: string;
-  /** The footer items, e.g. the user `Navbar.Item`. */
+  /** The footer items, e.g. the user `SideNavbar.Item`. */
   children?: ReactNode;
 } & ComponentPropsWithRef<'footer'>;
 
@@ -19,7 +19,7 @@ export const NavbarFooter = ({
   ...props
 }: NavbarFooterProps) => (
   <footer className={clsx(s.base, className)} {...props}>
-    <ul className={s.list}>{children}</ul>
+    {children}
   </footer>
 );
 

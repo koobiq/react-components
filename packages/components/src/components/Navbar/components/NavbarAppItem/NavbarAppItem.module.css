@@ -3,10 +3,6 @@
 .base {
   @mixin typography subheading;
 
-  block-size: auto;
-  padding: var(--kbq-size-xxs);
-  border-block-width: var(--kbq-size-s) 7px;
-
   [data-slot='navbar-item-icon'] {
     min-block-size: 32px;
   }
@@ -24,5 +20,29 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-clamp: 2;
+  }
+}
+
+.base[data-orientation='vertical'] {
+  block-size: auto;
+  padding: var(--kbq-size-xxs);
+  border-block-width: var(--kbq-size-s) 7px;
+}
+
+.base[data-orientation='horizontal'] {
+  gap: var(--kbq-size-s);
+  margin: 0;
+  padding: var(--kbq-size-s) var(--kbq-size-xs) var(--kbq-size-s)
+    var(--kbq-size-xxs);
+
+  &::before {
+    inset-block: var(--kbq-size-xxs);
+    inset-inline: 0 var(--kbq-size-xxs);
+  }
+
+  [data-slot='navbar-item-content'] {
+    box-sizing: content-box;
+    max-inline-size: 154px;
+    padding-inline: 0 var(--kbq-size-m);
   }
 }

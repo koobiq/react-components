@@ -8,7 +8,7 @@ import {
   type DistributiveOmit,
 } from '@koobiq/react-core';
 
-import { useNavbarState } from '../../NavbarContext';
+import { useNavbarState } from '../NavbarContext';
 import { NavbarItem, type NavbarItemProps } from '../NavbarItem';
 
 import s from './NavbarAppItem.module.css';
@@ -46,6 +46,7 @@ export const NavbarAppItem = ({ className, ...props }: NavbarAppItemProps) => {
       {...props}
       ref={ref}
       isMenu={false}
+      data-slot="navbar-app-item"
       data-long-title={isLongTitle || undefined}
       className={clsx(s.base, className)}
     />

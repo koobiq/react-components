@@ -6,7 +6,7 @@ import { clsx, isString, mergeProps, mergeRefs } from '@koobiq/react-core';
 import type { ExtendableProps } from '@koobiq/react-core';
 
 import { Button, type ButtonProps } from '../../../Button';
-import { useNavbarState } from '../../NavbarContext';
+import { useNavbarState } from '../NavbarContext';
 import { NavbarTooltip } from '../NavbarTooltip';
 
 import s from './NavbarAction.module.css';
@@ -33,10 +33,10 @@ export const NavbarAction = ({
   ref,
   ...other
 }: NavbarActionProps) => {
-  const { isCollapsed } = useNavbarState();
+  const { isCollapsed, orientation = 'vertical' } = useNavbarState();
 
   return (
-    <li className={clsx(s.base, className)}>
+    <div data-orientation={orientation} className={clsx(s.base, className)}>
       <NavbarTooltip
         isDisabled={!isCollapsed}
         control={(tooltipProps) => (
@@ -57,7 +57,7 @@ export const NavbarAction = ({
       >
         {children}
       </NavbarTooltip>
-    </li>
+    </div>
   );
 };
 

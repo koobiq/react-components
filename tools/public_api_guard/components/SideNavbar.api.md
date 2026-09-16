@@ -16,38 +16,6 @@ import { LinkBaseProps } from '@koobiq/react-primitives';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
 
-// @public @deprecated (undocumented)
-export const Navbar: {
-    (props: NavbarProps): JSX.Element;
-    displayName: string;
-} & {
-    Header: {
-        (input: NavbarHeaderProps): JSX.Element;
-        displayName: string;
-    };
-    Body: {
-        (input: NavbarBodyProps): JSX.Element;
-        displayName: string;
-    };
-    Footer: {
-        (input: NavbarFooterProps): JSX.Element;
-        displayName: string;
-    };
-    Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
-    AppItem: {
-        (input: NavbarAppItemProps): JSX.Element;
-        displayName: string;
-    };
-    Divider: {
-        (input: NavbarDividerProps): JSX.Element;
-        displayName: string;
-    };
-    Action: {
-        (input: NavbarActionProps): JSX.Element;
-        displayName: string;
-    };
-};
-
 // Warning: (ae-forgotten-export) The symbol "ButtonProps" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
@@ -65,12 +33,6 @@ export type NavbarBodyProps = {
     className?: string;
     children?: ReactNode;
 } & ComponentPropsWithRef<'div'>;
-
-// @public @deprecated (undocumented)
-export const NavbarComponent: {
-    (props: NavbarProps): JSX.Element;
-    displayName: string;
-};
 
 // @public (undocumented)
 export type NavbarDividerProps = {
@@ -98,21 +60,6 @@ export type NavbarItemProps = {
     badge?: ReactNode;
     children?: ReactNode;
 } & LinkBaseProps;
-
-// @public @deprecated (undocumented)
-export type NavbarProps = {
-    isCollapsed?: boolean;
-    isToggleButtonHidden?: boolean;
-    defaultCollapsed?: boolean;
-    variant?: NavbarPropVariant;
-    onCollapse?: (isCollapsed: boolean) => void;
-} & ComponentPropsWithRef<'nav'>;
-
-// @public @deprecated (undocumented)
-export type NavbarPropVariant = (typeof navbarPropVariant)[number];
-
-// @public @deprecated (undocumented)
-export const navbarPropVariant: readonly ["vertical", "horizontal"];
 
 // @public
 export const SideNavbar: {
@@ -152,49 +99,6 @@ export type SideNavbarProps = {
     isToggleButtonHidden?: boolean;
     defaultCollapsed?: boolean;
     onCollapse?: (isCollapsed: boolean) => void;
-} & ComponentPropsWithRef<'nav'>;
-
-// @public
-export const TopNavbar: {
-    (input: TopNavbarProps): JSX.Element;
-    displayName: string;
-} & {
-    Container: {
-        (input: TopNavbarContainerProps): JSX.Element;
-        displayName: string;
-    };
-    Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
-    AppItem: {
-        (input: NavbarAppItemProps): JSX.Element;
-        displayName: string;
-    };
-    Divider: {
-        (input: NavbarDividerProps): JSX.Element;
-        displayName: string;
-    };
-    Action: {
-        (input: NavbarActionProps): JSX.Element;
-        displayName: string;
-    };
-};
-
-// @public (undocumented)
-export type TopNavbarContainerPropPlacement = (typeof topNavbarContainerPropPlacement)[number];
-
-// @public (undocumented)
-export const topNavbarContainerPropPlacement: readonly ["start", "end"];
-
-// @public (undocumented)
-export type TopNavbarContainerProps = {
-    placement?: TopNavbarContainerPropPlacement;
-    className?: string;
-    children?: ReactNode;
-} & ComponentPropsWithRef<'div'>;
-
-// @public (undocumented)
-export type TopNavbarProps = {
-    className?: string;
-    children?: ReactNode;
 } & ComponentPropsWithRef<'nav'>;
 
 // (No @packageDocumentation comment for this package)

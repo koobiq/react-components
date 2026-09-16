@@ -7,8 +7,8 @@ import {
 } from '@koobiq/react-icons';
 import { Button } from '@koobiq/react-primitives';
 
+import { NavbarTooltip } from '../../../components';
 import intlMessages from '../../intl.json';
-import { NavbarTooltip } from '../NavbarTooltip';
 
 import s from './NavbarToggleButton.module.css';
 

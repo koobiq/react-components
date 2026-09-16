@@ -13,7 +13,7 @@ import {
   useLocale,
 } from '@koobiq/react-core';
 import type { KeyboardEvents } from '@koobiq/react-core';
-import { IconChevronRight16 } from '@koobiq/react-icons';
+import { IconChevronDownS16, IconChevronRight16 } from '@koobiq/react-icons';
 import {
   Link,
   RootMenuTriggerStateContext,
@@ -21,7 +21,7 @@ import {
 } from '@koobiq/react-primitives';
 
 import { Badge } from '../../../Badge';
-import { useNavbarState } from '../../NavbarContext';
+import { useNavbarState } from '../NavbarContext';
 import { NavbarTooltip } from '../NavbarTooltip';
 
 import s from './NavbarItem.module.css';
@@ -68,18 +68,30 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
     },
     inRef
   ) => {
-    const { isCollapsed } = useNavbarState();
+    const { isCollapsed, orientation = 'vertical' } = useNavbarState();
     const { direction } = useLocale();
     const content = useElementOverflow<HTMLSpanElement>();
+    const ariaLabel = (other as AriaAttributes)['aria-label'];
+    const hasChildren = isNotNil(children);
+    const hasAriaLabel = isNotNil(ariaLabel) && ariaLabel.length > 0;
+    const tooltipContent = hasChildren ? children : ariaLabel;
+
+    const isVertical = orientation === 'vertical';
 
     // A `DropdownMenu` shares its state with the trigger, a `Menu` passes `aria-haspopup` to its `control`.
     const menuState = useContext(RootMenuTriggerStateContext);
     const hasPopup = Boolean((other as AriaAttributes)['aria-haspopup']);
     const isMenu = isMenuProp ?? (!!menuState || hasPopup);
 
-    // The navbar moves between items with ArrowDown, so a menu opens with ArrowRight.
+    // A menu opens across the navbar: to the side of a vertical one, below a horizontal one.
+    const openKey = isVertical
+      ? direction === 'rtl'
+        ? 'ArrowLeft'
+        : 'ArrowRight'
+      : 'ArrowDown';
+
     const onKeyDown: KeyboardEvents['onKeyDown'] = (e) => {
-      if (e.key !== (direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight')) return;
+      if (e.key !== openKey) return;
 
       if (menuState) {
         e.preventDefault();
@@ -91,12 +103,18 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
 
     return (
       <NavbarTooltip
-        // Shows the text when it is hidden or cut off.
-        isDisabled={!isCollapsed && !content.isOverflow}
+        // Shows the text when it is hidden or cut off, or the accessible label
+        // when an icon-only item has no visible content.
+        isDisabled={
+          !hasChildren && !hasAriaLabel
+            ? true
+            : hasChildren && !isCollapsed && !content.isOverflow
+        }
         control={(props) => (
           <Link
             as={as || (isMenu || !other.href ? 'button' : 'a')}
             className={clsx(s.base, className)}
+            data-orientation={orientation}
             data-selected={isActive || undefined}
             data-collapsed={isCollapsed || undefined}
             aria-current={isActive ? 'page' : undefined}
@@ -123,11 +141,16 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
               </Badge>
             )}
 
-            {isMenu && <IconChevronRight16 className={s.menuIcon} />}
+            {isMenu &&
+              (isVertical ? (
+                <IconChevronRight16 className={s.menuIcon} />
+              ) : (
+                <IconChevronDownS16 className={s.menuIcon} />
+              ))}
           </Link>
         )}
       >
-        {children}
+        {tooltipContent}
       </NavbarTooltip>
     );
   }

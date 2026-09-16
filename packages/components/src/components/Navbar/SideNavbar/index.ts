@@ -1,16 +1,13 @@
-export * from './Navbar';
+export * from './SideNavbar';
 export * from './types';
 export type {
   NavbarItemProps,
   NavbarAppItemProps,
   NavbarDividerProps,
   NavbarActionProps,
-} from './components';
+} from '../components';
 export type {
   NavbarHeaderProps,
   NavbarBodyProps,
   NavbarFooterProps,
-} from './SideNavbar';
-
-export * from './SideNavbar';
-export * from './TopNavbar';
+} from './components';
