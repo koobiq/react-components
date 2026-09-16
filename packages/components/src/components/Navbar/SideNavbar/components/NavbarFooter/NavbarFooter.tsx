@@ -1,5 +1,6 @@
 'use client';
 
+import { forwardRef } from 'react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
@@ -13,14 +14,12 @@ export type NavbarFooterProps = {
   children?: ReactNode;
 } & ComponentPropsWithRef<'footer'>;
 
-export const NavbarFooter = ({
-  children,
-  className,
-  ...props
-}: NavbarFooterProps) => (
-  <footer className={clsx(s.base, className)} {...props}>
-    {children}
-  </footer>
+export const NavbarFooter = forwardRef<HTMLElement, NavbarFooterProps>(
+  ({ children, className, ...props }, ref) => (
+    <footer className={clsx(s.base, className)} {...props} ref={ref}>
+      {children}
+    </footer>
+  )
 );
 
 NavbarFooter.displayName = 'NavbarFooter';

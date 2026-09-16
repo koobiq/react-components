@@ -11,10 +11,12 @@ import type { DataAttributeProps } from '@koobiq/react-core';
 import { DistributiveOmit } from '@koobiq/react-core';
 import { ElementType } from 'react';
 import type { ExtendableProps } from '@koobiq/react-core';
+import { ForwardRefExoticComponent } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { LinkBaseProps } from '@koobiq/react-primitives';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
+import { RefAttributes } from 'react';
 
 // Warning: (ae-forgotten-export) The symbol "ButtonProps" needs to be exported by the entry point index.d.ts
 //
@@ -44,14 +46,8 @@ export type NavbarItemProps = {
 } & LinkBaseProps;
 
 // @public
-export const TopNavbar: {
-    (input: TopNavbarProps): JSX.Element;
-    displayName: string;
-} & {
-    Container: {
-        (input: TopNavbarContainerProps): JSX.Element;
-        displayName: string;
-    };
+export const TopNavbar: ForwardRefExoticComponent<Omit<TopNavbarProps, "ref"> & RefAttributes<HTMLElement>> & {
+    Container: ForwardRefExoticComponent<Omit<TopNavbarContainerProps, "ref"> & RefAttributes<HTMLDivElement>>;
     Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
     AppItem: {
         (input: NavbarAppItemProps): JSX.Element;
@@ -61,10 +57,7 @@ export const TopNavbar: {
         (input: NavbarDividerProps): JSX.Element;
         displayName: string;
     };
-    Action: {
-        (input: NavbarActionProps): JSX.Element;
-        displayName: string;
-    };
+    Action: ForwardRefExoticComponent<Omit<NavbarActionProps, "ref"> & RefAttributes<HTMLButtonElement>>;
 };
 
 // @public (undocumented)

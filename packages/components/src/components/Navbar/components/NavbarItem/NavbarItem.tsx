@@ -13,7 +13,11 @@ import {
   useLocale,
 } from '@koobiq/react-core';
 import type { KeyboardEvents } from '@koobiq/react-core';
-import { IconChevronDownS16, IconChevronRight16 } from '@koobiq/react-icons';
+import {
+  IconChevronDownS16,
+  IconChevronLeft16,
+  IconChevronRight16,
+} from '@koobiq/react-icons';
 import {
   Link,
   RootMenuTriggerStateContext,
@@ -143,7 +147,11 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
 
             {isMenu &&
               (isVertical ? (
-                <IconChevronRight16 className={s.menuIcon} />
+                direction === 'rtl' ? (
+                  <IconChevronLeft16 className={s.menuIcon} />
+                ) : (
+                  <IconChevronRight16 className={s.menuIcon} />
+                )
               ) : (
                 <IconChevronDownS16 className={s.menuIcon} />
               ))}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 
 import {
   clsx,
@@ -11,7 +11,7 @@ import {
 } from '@koobiq/react-core';
 import { useToolbar } from '@koobiq/react-primitives';
 
-import { DropdownMenuPopoverContext } from '../../DropdownMenu/components/DropdownMenuPopover/DropdownMenuPopoverContext';
+import { MenuPopoverContext } from '../../Menu/MenuPopoverContext';
 import { Sidebar } from '../../Sidebar';
 import {
   NavbarAction,
@@ -36,83 +36,91 @@ const menuPopover = { placement: 'end top', offset: -8 } as const;
 // The toggle button's shortcut, as in Koobiq Angular.
 const toggleShortcut = { code: 'Slash', ctrlKey: true };
 
-const SideNavbarComponent = ({
-  isCollapsed: isCollapsedProp,
-  isToggleButtonHidden,
-  defaultCollapsed,
-  className,
-  children,
-  onCollapse,
-  ref,
-  ...other
-}: SideNavbarProps) => {
-  const toolbarRef = useRef<HTMLDivElement>(null);
-  const { toolbarProps } = useToolbar({ orientation: 'vertical' }, toolbarRef);
+const SideNavbarComponent = forwardRef<HTMLElement, SideNavbarProps>(
+  (
+    {
+      isCollapsed: isCollapsedProp,
+      isToggleButtonHidden,
+      defaultCollapsed,
+      className,
+      children,
+      onCollapse,
+      ...other
+    },
+    ref
+  ) => {
+    const toolbarRef = useRef<HTMLDivElement>(null);
 
-  const contentProps = mergeProps(
-    { className: s.content, ref: toolbarRef },
-    toolbarProps
-  );
+    const { toolbarProps } = useToolbar(
+      { orientation: 'vertical' },
+      toolbarRef
+    );
 
-  const { hoverProps, isHovered } = useHover({});
-  const { focusProps, isFocusVisible } = useFocusRing({ within: true });
+    const contentProps = mergeProps(
+      { className: s.content, ref: toolbarRef },
+      toolbarProps
+    );
 
-  const [isCollapsed, setCollapsed] = useControlledState(
-    isCollapsedProp,
-    defaultCollapsed ?? false,
-    onCollapse
-  );
+    const { hoverProps, isHovered } = useHover({});
+    const { focusProps, isFocusVisible } = useFocusRing({ within: true });
 
-  const [isExpanded, setExpanded] = useState(!isCollapsed);
+    const [isCollapsed, setCollapsed] = useControlledState(
+      isCollapsedProp,
+      defaultCollapsed ?? false,
+      onCollapse
+    );
 
-  const isToggleShown = isHovered || isFocusVisible;
+    const [isExpanded, setExpanded] = useState(!isCollapsed);
 
-  return (
-    <Sidebar
-      {...mergeProps(other, hoverProps, focusProps)}
-      as="nav"
-      ref={ref}
-      size={240}
-      closedSize={56}
-      role="navigation"
-      isOpen={!isCollapsed}
-      keyboardShortcut={isToggleButtonHidden ? null : toggleShortcut}
-      slotProps={{
-        transition: {
-          onEntered: () => setExpanded(true),
-          onExit: () => setExpanded(false),
-        },
-      }}
-      data-collapsed={isCollapsed}
-      className={clsx(s.base, className)}
-      onOpenChange={(isOpen) => setCollapsed(!isOpen)}
-    >
-      {({ isOpen, toggle }) => (
-        <NavbarContext.Provider
-          value={{
-            orientation: 'vertical',
-            isCollapsed: !isOpen,
-            isExpanded,
-          }}
-        >
-          <div {...contentProps}>
-            <DropdownMenuPopoverContext.Provider value={menuPopover}>
-              {children}
-            </DropdownMenuPopoverContext.Provider>
-          </div>
+    const isToggleShown = isHovered || isFocusVisible;
 
-          {!isToggleButtonHidden && (
-            <NavbarToggleButton
-              onPress={toggle}
-              isShown={isToggleShown}
-              isCollapsed={isCollapsed}
-            />
-          )}
-        </NavbarContext.Provider>
-      )}
-    </Sidebar>
-  );
-};
+    return (
+      <Sidebar
+        {...mergeProps(other, hoverProps, focusProps)}
+        as="nav"
+        ref={ref}
+        size={240}
+        closedSize={56}
+        role="navigation"
+        isOpen={!isCollapsed}
+        keyboardShortcut={isToggleButtonHidden ? null : toggleShortcut}
+        slotProps={{
+          transition: {
+            onEntered: () => setExpanded(true),
+            onExit: () => setExpanded(false),
+          },
+        }}
+        data-collapsed={isCollapsed}
+        className={clsx(s.base, className)}
+        onOpenChange={(isOpen) => setCollapsed(!isOpen)}
+      >
+        {({ isOpen, toggle }) => (
+          <NavbarContext.Provider
+            value={{
+              orientation: 'vertical',
+              isCollapsed: !isOpen,
+              isExpanded,
+            }}
+          >
+            <div {...contentProps}>
+              <MenuPopoverContext.Provider value={menuPopover}>
+                {children}
+              </MenuPopoverContext.Provider>
+            </div>
+
+            {!isToggleButtonHidden && (
+              <NavbarToggleButton
+                onPress={toggle}
+                isShown={isToggleShown}
+                isCollapsed={isCollapsed}
+              />
+            )}
+          </NavbarContext.Provider>
+        )}
+      </Sidebar>
+    );
+  }
+);
 
 SideNavbarComponent.displayName = 'SideNavbar';
 

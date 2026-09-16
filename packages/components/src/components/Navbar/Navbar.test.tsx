@@ -1,3 +1,5 @@
+import { createRef } from 'react';
+
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, expect, it, vi } from 'vitest';
@@ -5,6 +7,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { Navbar } from '.';
 
 describe('Navbar', () => {
+  it('forwards its ref to the deprecated vertical navbar', () => {
+    const ref = createRef<HTMLElement>();
+
+    render(<Navbar ref={ref} data-testid="navbar" />);
+
+    expect(ref.current).toBe(screen.getByTestId('navbar'));
+  });
+
   it('renders the deprecated alias as a vertical navbar', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 

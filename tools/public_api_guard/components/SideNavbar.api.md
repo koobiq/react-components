@@ -11,10 +11,12 @@ import type { DataAttributeProps } from '@koobiq/react-core';
 import { DistributiveOmit } from '@koobiq/react-core';
 import { ElementType } from 'react';
 import type { ExtendableProps } from '@koobiq/react-core';
+import { ForwardRefExoticComponent } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { LinkBaseProps } from '@koobiq/react-primitives';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
+import { RefAttributes } from 'react';
 
 // Warning: (ae-forgotten-export) The symbol "ButtonProps" needs to be exported by the entry point index.d.ts
 //
@@ -62,22 +64,10 @@ export type NavbarItemProps = {
 } & LinkBaseProps;
 
 // @public
-export const SideNavbar: {
-    (input: SideNavbarProps): JSX.Element;
-    displayName: string;
-} & {
-    Header: {
-        (input: NavbarHeaderProps): JSX.Element;
-        displayName: string;
-    };
-    Body: {
-        (input: NavbarBodyProps): JSX.Element;
-        displayName: string;
-    };
-    Footer: {
-        (input: NavbarFooterProps): JSX.Element;
-        displayName: string;
-    };
+export const SideNavbar: ForwardRefExoticComponent<Omit<SideNavbarProps, "ref"> & RefAttributes<HTMLElement>> & {
+    Header: ForwardRefExoticComponent<Omit<NavbarHeaderProps, "ref"> & RefAttributes<HTMLElement>>;
+    Body: ForwardRefExoticComponent<Omit<NavbarBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Footer: ForwardRefExoticComponent<Omit<NavbarFooterProps, "ref"> & RefAttributes<HTMLElement>>;
     Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
     AppItem: {
         (input: NavbarAppItemProps): JSX.Element;
@@ -87,10 +77,7 @@ export const SideNavbar: {
         (input: NavbarDividerProps): JSX.Element;
         displayName: string;
     };
-    Action: {
-        (input: NavbarActionProps): JSX.Element;
-        displayName: string;
-    };
+    Action: ForwardRefExoticComponent<Omit<NavbarActionProps, "ref"> & RefAttributes<HTMLButtonElement>>;
 };
 
 // @public (undocumented)

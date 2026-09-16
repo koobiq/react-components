@@ -57,6 +57,25 @@ describe('TopNavbar', () => {
     expect(ref.current?.style.color).toBe('red');
   });
 
+  it('forwards refs to the container and action button', () => {
+    const containerRef = createRef<HTMLDivElement>();
+    const actionRef = createRef<HTMLButtonElement>();
+
+    render(
+      <TopNavbar>
+        <TopNavbar.Container ref={containerRef} data-testid="container">
+          <TopNavbar.Action ref={actionRef}>New task</TopNavbar.Action>
+        </TopNavbar.Container>
+      </TopNavbar>
+    );
+
+    expect(containerRef.current).toBe(screen.getByTestId('container'));
+
+    expect(actionRef.current).toBe(
+      screen.getByRole('button', { name: 'New task' })
+    );
+  });
+
   it('moves focus between items with ArrowRight and ArrowLeft', async () => {
     render(
       <TopNavbar>

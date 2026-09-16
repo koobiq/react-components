@@ -1,5 +1,6 @@
 'use client';
 
+import { forwardRef } from 'react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
@@ -13,14 +14,12 @@ export type NavbarBodyProps = {
   children?: ReactNode;
 } & ComponentPropsWithRef<'div'>;
 
-export const NavbarBody = ({
-  children,
-  className,
-  ...props
-}: NavbarBodyProps) => (
-  <div className={clsx(s.base, className)} {...props}>
-    {children}
-  </div>
+export const NavbarBody = forwardRef<HTMLDivElement, NavbarBodyProps>(
+  ({ children, className, ...props }, ref) => (
+    <div className={clsx(s.base, className)} {...props} ref={ref}>
+      {children}
+    </div>
+  )
 );
 
 NavbarBody.displayName = 'NavbarBody';

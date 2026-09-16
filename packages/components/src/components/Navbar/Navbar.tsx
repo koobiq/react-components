@@ -1,5 +1,7 @@
 'use client';
 
+import { forwardRef } from 'react';
+
 import { deprecate } from '@koobiq/logger';
 
 import {
@@ -14,18 +16,20 @@ import type { NavbarProps } from './types';
 /**
  * @deprecated Use `SideNavbar` or `TopNavbar` instead.
  */
-export const NavbarComponent = (props: NavbarProps) => {
-  if (process.env.NODE_ENV !== 'production' && 'variant' in props) {
-    deprecate(
-      'Navbar: the "variant" prop is deprecated and ignored. Use SideNavbar or TopNavbar instead.'
-    );
+export const NavbarComponent = forwardRef<HTMLElement, NavbarProps>(
+  (props, ref) => {
+    if (process.env.NODE_ENV !== 'production' && 'variant' in props) {
+      deprecate(
+        'Navbar: the "variant" prop is deprecated and ignored. Use SideNavbar or TopNavbar instead.'
+      );
+    }
+
+    const sideNavbarProps = { ...props };
+    delete sideNavbarProps.variant;
+
+    return <SideNavbar {...(sideNavbarProps as SideNavbarProps)} ref={ref} />;
   }
-
-  const sideNavbarProps = { ...props };
-  delete sideNavbarProps.variant;
-
-  return <SideNavbar {...(sideNavbarProps as SideNavbarProps)} />;
-};
+);
 
 NavbarComponent.displayName = 'Navbar';
 

@@ -11,6 +11,7 @@ import {
   OverlayTriggerStateContext,
 } from '@koobiq/react-primitives';
 
+import { MenuPopoverContext } from '../../../Menu/MenuPopoverContext';
 import type {
   PopoverProps,
   PopoverInnerProps,
@@ -19,7 +20,6 @@ import type {
 import { PopoverInner } from '../../../Popover/PopoverInner';
 
 import s from './DropdownMenuPopover.module.css';
-import { DropdownMenuPopoverContext } from './DropdownMenuPopoverContext';
 import type { DropdownMenuPopoverProps } from './types';
 
 type DropdownMenuPopoverStyle = CSSProperties & {
@@ -52,7 +52,7 @@ export function DropdownMenuPopover(props: DropdownMenuPopoverProps) {
   // through context.
   const state = useContext(OverlayTriggerStateContext);
   const context = useSlottedContext(PopoverContext) ?? {};
-  const defaults = useContext(DropdownMenuPopoverContext);
+  const defaults = useContext(MenuPopoverContext);
 
   if (!state) {
     if (process.env.NODE_ENV !== 'production') {

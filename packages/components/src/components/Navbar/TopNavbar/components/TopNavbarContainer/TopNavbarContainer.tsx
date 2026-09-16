@@ -1,5 +1,6 @@
 'use client';
 
+import { forwardRef } from 'react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 import { clsx } from '@koobiq/react-core';
@@ -23,19 +24,18 @@ export type TopNavbarContainerProps = {
   children?: ReactNode;
 } & ComponentPropsWithRef<'div'>;
 
-export const TopNavbarContainer = ({
-  placement = 'start',
-  className,
-  children,
-  ...props
-}: TopNavbarContainerProps) => (
+export const TopNavbarContainer = forwardRef<
+  HTMLDivElement,
+  TopNavbarContainerProps
+>(({ placement = 'start', className, children, ...props }, ref) => (
   <div
     data-placement={placement}
     className={clsx(s.base, className)}
     {...props}
+    ref={ref}
   >
     {children}
   </div>
-);
+));
 
 TopNavbarContainer.displayName = 'TopNavbar.Container';

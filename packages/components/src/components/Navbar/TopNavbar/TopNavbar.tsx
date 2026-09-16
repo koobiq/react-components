@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 
 import { clsx, mergeProps, useDOMRef } from '@koobiq/react-core';
 import { useToolbar } from '@koobiq/react-primitives';
@@ -17,38 +17,35 @@ import { TopNavbarContainer } from './components';
 import s from './TopNavbar.module.css';
 import type { TopNavbarProps } from './types';
 
-const TopNavbarComponent = ({
-  className,
-  children,
-  ref,
-  ...other
-}: TopNavbarProps) => {
-  const domRef = useDOMRef<HTMLElement>(ref);
-  const toolbarRef = useRef<HTMLDivElement>(null);
+const TopNavbarComponent = forwardRef<HTMLElement, TopNavbarProps>(
+  ({ className, children, ...other }, ref) => {
+    const domRef = useDOMRef<HTMLElement>(ref);
+    const toolbarRef = useRef<HTMLDivElement>(null);
 
-  // The toolbar goes on the content, so the `nav` stays a landmark.
-  const { toolbarProps } = useToolbar(
-    { orientation: 'horizontal' },
-    toolbarRef
-  );
+    // The toolbar goes on the content, so the `nav` stays a landmark.
+    const { toolbarProps } = useToolbar(
+      { orientation: 'horizontal' },
+      toolbarRef
+    );
 
-  return (
-    <nav {...other} className={clsx(s.base, className)} ref={domRef}>
-      <NavbarContext.Provider
-        value={{ orientation: 'horizontal', isExpanded: true }}
-      >
-        <div
-          {...mergeProps(
-            { className: s.content, ref: toolbarRef },
-            toolbarProps
-          )}
+    return (
+      <nav {...other} className={clsx(s.base, className)} ref={domRef}>
+        <NavbarContext.Provider
+          value={{ orientation: 'horizontal', isExpanded: true }}
         >
-          {children}
-        </div>
-      </NavbarContext.Provider>
-    </nav>
-  );
-};
+          <div
+            {...mergeProps(
+              { className: s.content, ref: toolbarRef },
+              toolbarProps
+            )}
+          >
+            {children}
+          </div>
+        </NavbarContext.Provider>
+      </nav>
+    );
+  }
+);
 
 TopNavbarComponent.displayName = 'TopNavbar';
 

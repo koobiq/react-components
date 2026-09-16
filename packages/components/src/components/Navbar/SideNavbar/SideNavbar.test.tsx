@@ -1,6 +1,7 @@
 import { createRef } from 'react';
 
 import { I18nProvider } from '@koobiq/react-core';
+import { IconChevronLeft16 } from '@koobiq/react-icons';
 import {
   act,
   render,
@@ -295,7 +296,7 @@ describe('SideNavbar', () => {
               <SideNavbar.Item icon={<span aria-hidden>Icon</span>}>
                 Control Panel
               </SideNavbar.Item>
-              <DropdownMenu.Popover>
+              <DropdownMenu.Popover data-testid="menu-popover">
                 <DropdownMenu.Content>
                   <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
                   <DropdownMenu.Item id="users">Users</DropdownMenu.Item>
@@ -311,6 +312,7 @@ describe('SideNavbar', () => {
         <SideNavbar>
           <SideNavbar.Body>
             <Menu
+              data-testid="menu-popover"
               control={(props) => (
                 <SideNavbar.Item {...props}>Control Panel</SideNavbar.Item>
               )}
@@ -336,28 +338,20 @@ describe('SideNavbar', () => {
       expect(getMenuIcon()).toBeInTheDocument();
     });
 
-    it('places the menu beside the navbar', async () => {
-      render(
-        <SideNavbar>
-          <DropdownMenu>
-            <SideNavbar.Item>Control Panel</SideNavbar.Item>
-            <DropdownMenu.Popover data-testid="popover">
-              <DropdownMenu.Content>
-                <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Popover>
-          </DropdownMenu>
-        </SideNavbar>
-      );
+    it.each([
+      ['DropdownMenu', renderDropdownMenu],
+      ['Menu', renderMenu],
+    ])('places a %s beside the navbar', async (_, renderTrigger) => {
+      renderTrigger();
 
       await userEvent.click(
         screen.getByRole('button', { name: 'Control Panel' })
       );
 
-      expect(await screen.findByTestId('popover')).toHaveAttribute(
-        'data-placement',
-        'right'
-      );
+      const popover = await screen.findByTestId('menu-popover');
+
+      expect(popover).toHaveAttribute('data-placement', 'right');
+      expect(popover).toHaveStyle({ left: '-8px' });
     });
 
     it('lets isMenu hide the arrow on a menu trigger', () => {
@@ -429,6 +423,8 @@ describe('SideNavbar', () => {
         </I18nProvider>
       );
 
+      const menuIcon = getMenuIcon();
+
       act(() => screen.getByRole('button', { name: 'Control Panel' }).focus());
 
       await userEvent.keyboard('{ArrowRight}');
@@ -438,6 +434,13 @@ describe('SideNavbar', () => {
       await userEvent.keyboard('{ArrowLeft}');
 
       expect(await screen.findByRole('menu')).toBeInTheDocument();
+
+      const { container } = render(<IconChevronLeft16 />);
+
+      expect(menuIcon?.querySelector('path')).toHaveAttribute(
+        'd',
+        container.querySelector('path')?.getAttribute('d')
+      );
     });
 
     it('opens the menu of an app item without showing the arrow', async () => {
@@ -481,6 +484,31 @@ describe('SideNavbar', () => {
   });
 
   describe('SideNavbar subcomponents', () => {
+    it('forwards refs to structural regions and the action button', () => {
+      const headerRef = createRef<HTMLElement>();
+      const bodyRef = createRef<HTMLDivElement>();
+      const footerRef = createRef<HTMLElement>();
+      const actionRef = createRef<HTMLButtonElement>();
+
+      render(
+        <SideNavbar>
+          <SideNavbar.Header ref={headerRef} data-testid="header" />
+          <SideNavbar.Body ref={bodyRef} data-testid="body">
+            <SideNavbar.Action ref={actionRef}>New task</SideNavbar.Action>
+          </SideNavbar.Body>
+          <SideNavbar.Footer ref={footerRef} data-testid="footer" />
+        </SideNavbar>
+      );
+
+      expect(headerRef.current).toBe(screen.getByTestId('header'));
+      expect(bodyRef.current).toBe(screen.getByTestId('body'));
+      expect(footerRef.current).toBe(screen.getByTestId('footer'));
+
+      expect(actionRef.current).toBe(
+        screen.getByRole('button', { name: 'New task' })
+      );
+    });
+
     it('renders NavbarHeader with children', () => {
       render(
         <NavbarHeader>
@@ -609,6 +637,23 @@ describe('SideNavbar', () => {
         <SideNavbar defaultCollapsed>
           <SideNavbar.Body>
             <SideNavbar.Action icon={<svg />}>New task</SideNavbar.Action>
+          </SideNavbar.Body>
+        </SideNavbar>
+      );
+
+      expect(screen.getByRole('button', { name: 'New task' })).toHaveAttribute(
+        'data-onlyicon',
+        'true'
+      );
+    });
+
+    it('names a collapsed SideNavbar.Action with ReactNode content', () => {
+      render(
+        <SideNavbar defaultCollapsed>
+          <SideNavbar.Body>
+            <SideNavbar.Action icon={<svg />}>
+              <span>New task</span>
+            </SideNavbar.Action>
           </SideNavbar.Body>
         </SideNavbar>
       );
