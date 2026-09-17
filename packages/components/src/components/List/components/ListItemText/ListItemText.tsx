@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useContext } from 'react';
+import { forwardRef, useContext, useLayoutEffect, useState } from 'react';
 
 import { clsx, isNotNil, useObjectRef } from '@koobiq/react-core';
 
@@ -34,11 +34,16 @@ export const ListItemText = forwardRef<ListItemTextRef, ListItemTextProps>(
     const rootRef = useObjectRef(ref);
     const item = useContext(ListItemContext);
 
-    // Measured when the item gets hovered, so the text and the width are current.
-    const overflowText =
-      showOverflowTooltip && item.isHovered
-        ? getOverflowText(rootRef.current)
-        : '';
+    const [overflowText, setOverflowText] = useState('');
+
+    // Measured after every render of a hovered item, so the text and the width are current.
+    useLayoutEffect(() => {
+      setOverflowText(
+        showOverflowTooltip && item.isHovered
+          ? getOverflowText(rootRef.current)
+          : ''
+      );
+    });
 
     return (
       <span

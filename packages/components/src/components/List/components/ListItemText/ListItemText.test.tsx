@@ -58,13 +58,8 @@ describe('ListItemText', () => {
       );
     }
 
-    // The text is measured when the item gets hovered, so render it first.
-    const renderHovered = (props: ItemProps) => {
-      const result = render(<Item {...props} />);
-      result.rerender(<Item {...props} isHovered />);
-
-      return result;
-    };
+    const renderHovered = (props: ItemProps) =>
+      render(<Item {...props} isHovered />);
 
     beforeEach(() => {
       vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
@@ -89,19 +84,13 @@ describe('ListItemText', () => {
     });
 
     it('does not show a tooltip outside a list item', () => {
-      const { rerender } = render(
-        <ListItemText showOverflowTooltip>{longText}</ListItemText>
-      );
-
-      rerender(<ListItemText showOverflowTooltip>{longText}</ListItemText>);
+      render(<ListItemText showOverflowTooltip>{longText}</ListItemText>);
 
       expect(queryTooltip()).not.toBeInTheDocument();
     });
 
     it('does not show a tooltip while the item is not hovered', () => {
-      const { rerender } = render(<Item>{longText}</Item>);
-
-      rerender(<Item>{longText}</Item>);
+      render(<Item>{longText}</Item>);
 
       expect(queryTooltip()).not.toBeInTheDocument();
     });
@@ -172,6 +161,26 @@ describe('ListItemText', () => {
       rerender(<Item isHovered>{longText}</Item>);
 
       expect(screen.getByRole('tooltip')).toHaveTextContent(longText);
+    });
+
+    it('shows the new text when it gets cut off while the item stays hovered', () => {
+      const { rerender } = renderHovered({ children: shortText });
+
+      expect(queryTooltip()).not.toBeInTheDocument();
+
+      rerender(<Item isHovered>{longText}</Item>);
+
+      expect(screen.getByRole('tooltip')).toHaveTextContent(longText);
+    });
+
+    it('hides the tooltip when the text fits again while the item stays hovered', () => {
+      const { rerender } = renderHovered({ children: longText });
+
+      expect(screen.getByRole('tooltip')).toBeInTheDocument();
+
+      rerender(<Item isHovered>{shortText}</Item>);
+
+      expect(queryTooltip()).not.toBeInTheDocument();
     });
 
     it('measures the current width when the item gets hovered', () => {
