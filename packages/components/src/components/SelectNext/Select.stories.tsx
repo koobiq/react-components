@@ -34,7 +34,7 @@ const meta = {
     'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-09-09'],
+  tags: ['status:updated', 'date:2026-09-15'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -204,7 +204,11 @@ export const ItemContent: Story = {
       { id: 'Second', icon: IconBug16, caption: 'Helper text' },
       { id: 'Third', icon: IconAnomaly16, caption: 'Helper text' },
       { id: 'Fourth', icon: IconDesktop16, caption: 'Helper text' },
-      { id: 'Fifth', icon: IconSwords16, caption: 'Helper text' },
+      {
+        id: 'Fifth option with a long name',
+        icon: IconSwords16,
+        caption: 'Helper text',
+      },
     ];
 
     const [selected, setSelected] = useState<string | number | null>('First');
@@ -223,7 +227,9 @@ export const ItemContent: Story = {
             <Select.ItemAddon>
               <Icon />
             </Select.ItemAddon>
-            <Select.ItemText caption={caption}>{id}</Select.ItemText>
+            <Select.ItemText caption={caption} showOverflowTooltip>
+              {id}
+            </Select.ItemText>
           </Select.Item>
         )}
       </Select>

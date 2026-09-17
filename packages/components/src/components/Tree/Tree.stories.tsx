@@ -32,7 +32,7 @@ const meta = {
     'Tree.LoadMoreItem': Tree.LoadMoreItem,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-07-03'],
+  tags: ['status:updated', 'date:2026-09-15'],
 } satisfies Meta<typeof Tree>;
 
 export default meta;
@@ -289,6 +289,7 @@ export const ItemContent: Story = {
               <IconCircle16 />
             </Tree.ItemContentAddon>
             <Tree.ItemContentText
+              showOverflowTooltip
               caption={longText}
               slotProps={{
                 caption: { ellipsis: true },
@@ -303,7 +304,7 @@ export const ItemContent: Story = {
             <Tree.ItemContentAddon>
               <IconCircle16 />
             </Tree.ItemContentAddon>
-            <Tree.ItemContentText caption={longText}>
+            <Tree.ItemContentText caption={longText} showOverflowTooltip>
               {longText}
             </Tree.ItemContentText>
             <Tree.ItemContentAddon>

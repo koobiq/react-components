@@ -8,6 +8,7 @@ import { type MultiSelectState, useOption } from '@koobiq/react-primitives';
 
 import { utilClasses } from '../../../../styles/utility';
 import { Checkbox } from '../../../Checkbox';
+import { ListItemContext } from '../../../List/components/ListItemText/ListItemContext';
 
 const textVariant = utilClasses.typography;
 const { listItem } = utilClasses;
@@ -49,7 +50,9 @@ export function SelectOption<T>({ item, state }: SelectOptionProps<T>) {
       {state.selectionMode === 'multiple' && (
         <Checkbox isDisabled={isDisabled} isSelected={isSelected} isReadOnly />
       )}
-      {item.rendered}
+      <ListItemContext.Provider value={{ ref, isHovered }}>
+        {item.rendered}
+      </ListItemContext.Provider>
     </Tag>
   );
 }

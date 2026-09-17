@@ -17,6 +17,11 @@ export type ListItemTextProps = ExtendableComponentPropsWithRef<
     caption?: ReactNode;
     /** If `true`, prevents the component from growing to fill available inline space. */
     autoWidth?: boolean;
+    /**
+     * If `true`, shows the full text in a tooltip when the text or caption is cut off.
+     * @default false
+     */
+    showOverflowTooltip?: boolean;
     /** The props used for each slot inside. */
     slotProps?: {
       text?: TypographyProps;
