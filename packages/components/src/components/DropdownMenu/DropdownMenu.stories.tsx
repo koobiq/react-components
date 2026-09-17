@@ -134,6 +134,26 @@ export const ItemContent: Story = {
               </Typography>
             </DropdownMenu.ItemAddon>
           </DropdownMenu.Item>
+          <DropdownMenu.SubmenuTrigger>
+            <DropdownMenu.Item id="move" align="start" textValue="Move to">
+              <DropdownMenu.ItemAddon>
+                <IconArrowRightToBracket16 />
+              </DropdownMenu.ItemAddon>
+              <DropdownMenu.ItemText
+                caption="Pick a folder in the shared workspace"
+                slotProps={{ caption: { ellipsis: true } }}
+                showOverflowTooltip
+              >
+                Move to
+              </DropdownMenu.ItemText>
+            </DropdownMenu.Item>
+            <DropdownMenu.Popover>
+              <DropdownMenu.Content onAction={(key) => alert(key)}>
+                <DropdownMenu.Item id="documents">Documents</DropdownMenu.Item>
+                <DropdownMenu.Item id="archive">Archive</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu.SubmenuTrigger>
           <DropdownMenu.Item id="delete" align="start" textValue="Delete">
             <DropdownMenu.ItemAddon>
               <IconTrash16 />
