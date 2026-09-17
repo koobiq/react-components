@@ -60,7 +60,9 @@ const ResizableComponent = polymorphicForwardRef<'div', ResizableBaseProps>(
           {...behaviorProps}
           ref={mergeRefs(targetRef, forwardedRef)}
           className={clsx(s.base, className)}
-          style={{ ...styleProp, ...resizableStyle }}
+          // The managed size comes first, so an inline `style` from the
+          // consumer stays the last word on how the element is sized.
+          style={{ ...resizableStyle, ...styleProp }}
         >
           {children}
         </Tag>

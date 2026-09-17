@@ -161,7 +161,43 @@ describe('ContentPanel', () => {
     expect(resizer).toHaveAttribute('tabindex', '-1');
   });
 
-  it('should localize the resize handle and flip it in RTL', () => {
+  it('should not announce a range for an unbounded panel', () => {
+    render(
+      <ContentPanel
+        {...baseProps}
+        slotProps={{ resizer: { 'data-testid': 'resizer' } }}
+        defaultOpen
+        isResizable
+      >
+        content
+      </ContentPanel>
+    );
+
+    expect(getResizer()).toHaveAttribute('aria-valuenow', '400');
+    expect(getResizer()).not.toHaveAttribute('aria-valuemax');
+  });
+
+  it('should localize the resize handle label', () => {
+    render(
+      <Provider locale="ru-RU">
+        <ContentPanel
+          {...baseProps}
+          slotProps={{ resizer: { 'data-testid': 'resizer' } }}
+          defaultOpen
+          isResizable
+        >
+          content
+        </ContentPanel>
+      </Provider>
+    );
+
+    expect(getResizer()).toHaveAttribute(
+      'aria-label',
+      'Изменить ширину панели'
+    );
+  });
+
+  it('should flip the resize handle in RTL', () => {
     render(
       <Provider locale="he-IL">
         <ContentPanel
@@ -381,5 +417,190 @@ describe('ContentPanel', () => {
       minWidth: '300px',
       maxWidth: '800px',
     });
+  });
+
+  it('should drop the managed width when it stops being resizable', () => {
+    const renderPanel = (isResizable: boolean) => (
+      <ContentPanel
+        {...baseProps}
+        defaultWidth={400}
+        defaultOpen
+        isResizable={isResizable}
+      >
+        content
+      </ContentPanel>
+    );
+
+    const { rerender } = render(renderPanel(true));
+
+    expect(getPanel()).toHaveStyle({ width: '400px' });
+
+    rerender(renderPanel(false));
+
+    expect(getPanel().style.width).toBe('');
+  });
+
+  it('should follow the container again after a reset', () => {
+    const onResize = vi.fn();
+
+    const renderPanel = () => (
+      <ContentPanelContainer defaultOpen>
+        <ContentPanel
+          {...baseProps}
+          defaultWidth="50%"
+          onResize={onResize}
+          slotProps={{ resizer: { 'data-testid': 'resizer' } }}
+          defaultOpen
+          isResizable
+        >
+          content
+        </ContentPanel>
+      </ContentPanelContainer>
+    );
+
+    mocks.containerWidth = 1000;
+
+    const { rerender } = render(renderPanel());
+
+    fireEvent.mouseDown(getResizer(), { button: 0, clientX: 10, clientY: 10 });
+    fireEvent.mouseMove(window, { button: 0, clientX: -90, clientY: 10 });
+    fireEvent.mouseUp(window, { button: 0, clientX: -90, clientY: 10 });
+
+    expect(getPanel()).toHaveStyle({ width: '600px' });
+
+    fireEvent.doubleClick(getResizer());
+
+    expect(getPanel()).toHaveStyle({ width: '500px' });
+    expect(onResize).toHaveBeenLastCalledWith(500);
+
+    mocks.containerWidth = 1600;
+    rerender(renderPanel());
+
+    expect(getPanel()).toHaveStyle({ width: '800px' });
+  });
+
+  it('should keep the default width it was mounted with', () => {
+    const onResetResize = vi.fn(() => undefined);
+
+    const renderPanel = (defaultWidth: number) => (
+      <ContentPanel
+        {...baseProps}
+        defaultWidth={defaultWidth}
+        onResetResize={onResetResize}
+        slotProps={{ resizer: { 'data-testid': 'resizer' } }}
+        defaultOpen
+        isResizable
+      >
+        content
+      </ContentPanel>
+    );
+
+    const { rerender } = render(renderPanel(400));
+
+    rerender(renderPanel(600));
+
+    expect(getPanel()).toHaveStyle({ width: '400px' });
+
+    fireEvent.doubleClick(getResizer());
+
+    expect(onResetResize).toHaveBeenCalledWith(400);
+    expect(getPanel()).toHaveStyle({ width: '400px' });
+  });
+
+  it('should let slotProps override the handle label', () => {
+    render(
+      <ContentPanel
+        {...baseProps}
+        slotProps={{
+          resizer: { 'data-testid': 'resizer', 'aria-label': 'Resize preview' },
+        }}
+        defaultOpen
+        isResizable
+      >
+        content
+      </ContentPanel>
+    );
+
+    expect(getResizer()).toHaveAttribute('aria-label', 'Resize preview');
+  });
+
+  it('should let a custom style win over the managed sizing', () => {
+    renderInContainer({
+      defaultWidth: 400,
+      style: { maxWidth: 'calc(100% - 48px)' },
+    });
+
+    expect(getPanel().style.maxWidth).toBe('calc(100% - 48px)');
+    expect(getPanel().style.width).toBe('400px');
+  });
+
+  it('should clamp the width returned by onResetResize', () => {
+    const onResetResize = vi.fn(() => 999);
+
+    renderInContainer({
+      defaultWidth: 400,
+      maxWidth: 600,
+      onResetResize,
+      slotProps: { resizer: { 'data-testid': 'resizer' } },
+    });
+
+    fireEvent.doubleClick(getResizer());
+
+    expect(onResetResize).toHaveBeenCalledWith(400);
+    expect(getPanel()).toHaveStyle({ width: '600px' });
+  });
+
+  it('should clamp the width to the bounds while dragging', () => {
+    render(
+      <ContentPanel
+        {...baseProps}
+        defaultWidth={400}
+        minWidth={300}
+        maxWidth={500}
+        slotProps={{ resizer: { 'data-testid': 'resizer' } }}
+        defaultOpen
+        isResizable
+      >
+        content
+      </ContentPanel>
+    );
+
+    fireEvent.mouseDown(getResizer(), { button: 0, clientX: 10, clientY: 10 });
+    fireEvent.mouseMove(window, { button: 0, clientX: -190, clientY: 10 });
+
+    expect(getPanel()).toHaveStyle({ width: '500px' });
+
+    fireEvent.mouseMove(window, { button: 0, clientX: 210, clientY: 10 });
+
+    expect(getPanel()).toHaveStyle({ width: '300px' });
+
+    fireEvent.mouseUp(window, { button: 0, clientX: 210, clientY: 10 });
+  });
+
+  it('should reset a controlled panel to the width it was mounted with', () => {
+    const onResetResize = vi.fn(() => undefined);
+
+    const renderPanel = (width: number) => (
+      <ContentPanel
+        {...baseProps}
+        width={width}
+        onResetResize={onResetResize}
+        slotProps={{ resizer: { 'data-testid': 'resizer' } }}
+        defaultOpen
+        isResizable
+      >
+        content
+      </ContentPanel>
+    );
+
+    const { rerender } = render(renderPanel(500));
+
+    rerender(renderPanel(700));
+
+    expect(getPanel()).toHaveStyle({ width: '700px' });
+
+    fireEvent.doubleClick(getResizer());
+
+    expect(onResetResize).toHaveBeenCalledWith(500);
   });
 });

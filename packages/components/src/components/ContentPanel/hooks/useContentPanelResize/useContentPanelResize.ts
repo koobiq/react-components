@@ -4,6 +4,7 @@ import type { MouseEventHandler } from 'react';
 import { useCallback, useRef } from 'react';
 
 import {
+  clamp,
   isNumber,
   useControlledState,
   useLocale,
@@ -14,6 +15,7 @@ import type {
   ResizableHandleDirection,
   ResizableProps,
   ResizableSize,
+  ResizableSizeConstraints,
 } from '../../../Resizable';
 import type { ContentPanelSize } from '../../types';
 import { parseContentPanelSize } from '../../utils';
@@ -33,8 +35,11 @@ const DEFAULT_MIN_WIDTH = 200;
 const HANDLE_DIRECTION_LTR: ResizableHandleDirection = [-1, 0];
 const HANDLE_DIRECTION_RTL: ResizableHandleDirection = [1, 0];
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.max(min, Math.min(max, value));
+/**
+ * Keeps `Resizable` controlled while no axis is managed, so a panel that stops
+ * being resizable drops its inline width instead of keeping the last one.
+ */
+const UNMANAGED_SIZE: ResizableSizeConstraints = {};
 
 export type UseContentPanelResizeProps = {
   /** If `true`, the panel can be resized by dragging the handle. */
@@ -104,47 +109,73 @@ export function useContentPanelResize(
 
   // Percentages resolve against the container, which isn't measured on the
   // first render, so every width is resolved on each render.
-  const resolveWidth = (value: ContentPanelSize | null | undefined) =>
+  const parseWidth = (value: ContentPanelSize | null | undefined) =>
     parseContentPanelSize(containerWidth, value);
 
-  const min = Math.max(0, resolveWidth(minWidth) ?? DEFAULT_MIN_WIDTH);
+  const min = Math.max(0, parseWidth(minWidth) ?? DEFAULT_MIN_WIDTH);
 
-  const max = Math.min(
-    containerWidth ?? Number.POSITIVE_INFINITY,
-    resolveWidth(maxWidth) ?? Number.POSITIVE_INFINITY
-  );
-
-  // `null` until the user resizes the panel, so the default width keeps
-  // following the container. `width` stays controlled while it's unresolved.
-  const [userWidth, setUserWidth] = useControlledState<number | null, number>(
-    width == null ? undefined : resolveWidth(width),
-    null,
-    onResize
-  );
-
-  const panelWidth = clamp(
-    userWidth ?? resolveWidth(defaultWidth) ?? DEFAULT_WIDTH,
+  // Kept at or above `min`, so the two bounds can never cross and the minimum
+  // width wins, the way `min-inline-size` does in CSS.
+  const max = Math.max(
     min,
-    max
+    Math.min(
+      containerWidth ?? Number.POSITIVE_INFINITY,
+      parseWidth(maxWidth) ?? Number.POSITIVE_INFINITY
+    )
   );
 
-  // The width the panel started with, resolved again when it's reset.
+  /** Turns a width prop into the pixel width the panel can actually take. */
+  const resolvePanelWidth = useCallback(
+    (value: ContentPanelSize | null | undefined) =>
+      clamp(
+        parseContentPanelSize(containerWidth, value) ?? DEFAULT_WIDTH,
+        min,
+        max
+      ),
+    [containerWidth, max, min]
+  );
+
+  // The unmanaged state isn't a width, and `onResize` only reports pixels.
+  const handleWidthChange = useCallback(
+    (nextWidth: number | null) => {
+      if (isNumber(nextWidth)) onResize?.(nextWidth);
+    },
+    [onResize]
+  );
+
+  // `null` until the user resizes the panel, so the width keeps following the
+  // container. `width` stays controlled while it's unresolved.
+  const [userWidth, setUserWidth] = useControlledState<number | null>(
+    width == null ? undefined : parseWidth(width),
+    null,
+    handleWidthChange
+  );
+
+  // The width the panel started with. It's read on every render, so a
+  // percentage resolves once the container is measured, and later `defaultWidth`
+  // changes are ignored, as with any `default*` prop.
   const initialWidthRef = useRef(width ?? defaultWidth);
 
-  const onDoubleClick = useCallback(() => {
-    const initialWidth = clamp(
-      parseContentPanelSize(containerWidth, initialWidthRef.current) ??
-        DEFAULT_WIDTH,
-      min,
-      max
-    );
+  const panelWidth =
+    userWidth == null
+      ? resolvePanelWidth(initialWidthRef.current)
+      : clamp(userWidth, min, max);
 
+  const onDoubleClick = useCallback(() => {
+    const initialWidth = resolvePanelWidth(initialWidthRef.current);
     const nextWidth = onResetResize?.(initialWidth);
 
-    setUserWidth(
-      clamp(isNumber(nextWidth) ? nextWidth : initialWidth, min, max)
-    );
-  }, [containerWidth, max, min, onResetResize, setUserWidth]);
+    if (isNumber(nextWidth)) {
+      setUserWidth(clamp(nextWidth, min, max));
+
+      return;
+    }
+
+    // Back to the unmanaged width, so the panel keeps following the container
+    // and a percentage `defaultWidth` the way it did before the first resize.
+    setUserWidth(null);
+    onResize?.(initialWidth);
+  }, [max, min, onResetResize, onResize, resolvePanelWidth, setUserWidth]);
 
   const handleResize = useCallback(
     (size: ResizableSize) => setUserWidth(size.width),
@@ -164,7 +195,7 @@ export function useContentPanelResize(
   return {
     resizableProps: {
       // The panel only manages its inline size, the block size is left to CSS.
-      size: isResizable ? { width: panelWidth } : undefined,
+      size: isResizable ? { width: panelWidth } : UNMANAGED_SIZE,
       minSize: isResizable ? { width: min } : undefined,
       maxSize: isResizable ? { width: max } : undefined,
       onResize: handleResize,

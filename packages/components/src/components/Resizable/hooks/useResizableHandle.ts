@@ -122,18 +122,17 @@ export const useResizableHandle = (
       orientation = 'vertical';
     }
 
-    let ariaMaxValue = Number.MAX_SAFE_INTEGER;
-
-    if (Number.isFinite(maxValue)) {
-      ariaMaxValue = maxValue;
-    }
-
     accessibilityProps.role = 'separator';
     accessibilityProps['aria-orientation'] = orientation;
     accessibilityProps['aria-valuenow'] = Math.round(value);
     accessibilityProps['aria-valuemin'] = Math.round(minValue);
-    accessibilityProps['aria-valuemax'] = Math.round(ariaMaxValue);
     accessibilityProps['aria-valuetext'] = `${Math.round(value)} px`;
+
+    // Without a maximum size there's no range to announce, and a placeholder
+    // number would be read out as one.
+    if (Number.isFinite(maxValue)) {
+      accessibilityProps['aria-valuemax'] = Math.round(maxValue);
+    }
   }
 
   let handleProps = accessibilityProps;

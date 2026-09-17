@@ -122,7 +122,7 @@ const ContentPanelComponent = forwardRef<ContentPanelRef, ContentPanelProps>(
       overlayProps
     );
 
-    const resizerProps = mergeProps(slotProps?.resizer, handleProps);
+    const resizerProps = mergeProps(handleProps, slotProps?.resizer);
 
     const transitionProps = mergeProps(
       {
