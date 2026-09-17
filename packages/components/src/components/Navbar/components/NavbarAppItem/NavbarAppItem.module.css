@@ -32,8 +32,8 @@
 .base[data-orientation='horizontal'] {
   gap: var(--kbq-size-s);
   margin: 0;
-  padding: var(--kbq-size-s) var(--kbq-size-xs) var(--kbq-size-s)
-    var(--kbq-size-xxs);
+  padding-block: var(--kbq-size-s);
+  padding-inline: var(--kbq-size-xxs) var(--kbq-size-xs);
 
   &::before {
     inset-block: var(--kbq-size-xxs);

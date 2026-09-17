@@ -90,7 +90,7 @@ const SideNavbarComponent = forwardRef<HTMLElement, SideNavbarProps>(
             onExit: () => setExpanded(false),
           },
         }}
-        data-collapsed={isCollapsed}
+        data-collapsed={isCollapsed || undefined}
         className={clsx(s.base, className)}
         onOpenChange={(isOpen) => setCollapsed(!isOpen)}
       >

@@ -51,7 +51,7 @@ describe('SideNavbar', () => {
 
     const nav = screen.getByRole('navigation');
 
-    expect(nav).toHaveAttribute('data-collapsed', 'false');
+    expect(nav).not.toHaveAttribute('data-collapsed');
     expect(screen.getByText('Item 1')).toBeInTheDocument();
   });
 
@@ -173,9 +173,8 @@ describe('SideNavbar', () => {
 
     expect(onCollapse).toHaveBeenCalledExactlyOnceWith(true);
 
-    expect(screen.getByRole('navigation')).toHaveAttribute(
-      'data-collapsed',
-      'false'
+    expect(screen.getByRole('navigation')).not.toHaveAttribute(
+      'data-collapsed'
     );
 
     rerender(<SideNavbar isCollapsed onCollapse={onCollapse} />);
@@ -199,9 +198,8 @@ describe('SideNavbar', () => {
 
     expect(onCollapse).not.toHaveBeenCalled();
 
-    expect(screen.getByRole('navigation')).toHaveAttribute(
-      'data-collapsed',
-      'false'
+    expect(screen.getByRole('navigation')).not.toHaveAttribute(
+      'data-collapsed'
     );
   });
 

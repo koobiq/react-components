@@ -12,6 +12,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
 import { DropdownMenu } from '../../DropdownMenu';
+import { Menu } from '../../Menu';
 import { NavbarTooltip } from '../components';
 
 import { TopNavbar } from '.';
@@ -126,6 +127,28 @@ describe('TopNavbar', () => {
     );
 
     await waitFor(() => expect(screen.getByRole('menuitem')).toHaveFocus());
+  });
+
+  it('opens a `Menu` with ArrowDown', async () => {
+    render(
+      <TopNavbar>
+        <TopNavbar.Container>
+          <Menu
+            control={(props) => (
+              <TopNavbar.Item {...props}>Control Panel</TopNavbar.Item>
+            )}
+          >
+            <Menu.Item key="roles">Roles</Menu.Item>
+          </Menu>
+        </TopNavbar.Container>
+      </TopNavbar>
+    );
+
+    act(() => screen.getByRole('button', { name: 'Control Panel' }).focus());
+
+    await userEvent.keyboard('{ArrowDown}');
+
+    expect(await screen.findByRole('menu')).toBeInTheDocument();
   });
 
   it('places item tooltips below the navbar', async () => {

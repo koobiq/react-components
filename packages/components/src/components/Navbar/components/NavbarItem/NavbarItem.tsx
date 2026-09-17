@@ -68,6 +68,7 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
       icon,
       badge,
       children,
+      onKeyDown: onKeyDownProp,
       ...other
     },
     inRef
@@ -94,14 +95,20 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
         : 'ArrowRight'
       : 'ArrowDown';
 
+    // Kept out of `other`, so the handler below is the only one the key reaches.
     const onKeyDown: KeyboardEvents['onKeyDown'] = (e) => {
-      if (e.key !== openKey) return;
+      if (e.key !== openKey) {
+        onKeyDownProp?.(e);
+
+        return;
+      }
 
       if (menuState) {
         e.preventDefault();
         menuState.open('first');
-      } else if (hasPopup) {
-        other.onKeyDown?.({ ...e, key: 'ArrowDown' });
+      } else {
+        // A `Menu` opens on ArrowDown, whichever key opens the menu of this item.
+        onKeyDownProp?.(hasPopup ? { ...e, key: 'ArrowDown' } : e);
       }
     };
 
