@@ -133,6 +133,7 @@ import type { Ref } from 'react';
 import { RefAttributes } from 'react';
 import { RefObject } from 'react';
 import type { RenderProps as RenderProps_2 } from 'react-aria-components';
+import { RootMenuTriggerStateContext } from 'react-aria-components';
 import type { RouterOptions } from '@koobiq/react-core';
 import type { Selection as Selection_2 } from '@koobiq/react-core';
 import { Separator } from 'react-aria-components';
@@ -597,6 +598,8 @@ export type RadioRenderProps = {
 
 // @public (undocumented)
 export function removeDataAttributes<T>(props: T): T;
+
+export { RootMenuTriggerStateContext }
 
 // @public (undocumented)
 type SelectionMode_2 = 'single' | 'multiple';

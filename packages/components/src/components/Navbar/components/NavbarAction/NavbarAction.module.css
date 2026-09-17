@@ -1,0 +1,24 @@
+/* Collapsed, the room left is exactly an icon-only button. */
+.base[data-orientation='vertical'] {
+  padding: var(--kbq-size-xxs) var(--kbq-size-m);
+
+  .button > span:first-child::before {
+    inset-block: calc(-1 * var(--kbq-size-xxs));
+    inset-inline: calc(-1 * var(--kbq-size-m));
+  }
+}
+
+.base[data-orientation='horizontal'] {
+  padding: var(--kbq-size-s) var(--kbq-size-m);
+
+  .button > span:first-child::before {
+    inset-block: calc(-1 * var(--kbq-size-s));
+    inset-inline: calc(-1 * var(--kbq-size-m));
+  }
+}
+
+/* The button's content extends its hit area over the surrounding spacing. */
+.button > span:first-child::before {
+  content: '';
+  position: absolute;
+}
