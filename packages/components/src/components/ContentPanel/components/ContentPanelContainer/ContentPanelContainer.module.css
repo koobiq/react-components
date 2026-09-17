@@ -37,7 +37,9 @@
 }
 
 /* panel */
-.panel {
+
+/* Nested in the container to win over the `position` of the Resizable root. */
+.base .panel {
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
