@@ -197,7 +197,8 @@ so the search is always shown.
 ### Highlighting matches
 
 Put [Highlight](/docs/components-highlight--docs) into `Select.ItemText` to mark the matched part of
-an option. Pass the query in `dependencies` — otherwise the highlight does not update.
+an option, and set `textValue` on the item so it keeps a plain-text label for search and
+accessibility. Pass the query in `dependencies` — otherwise the highlight does not update.
 
 <Story of={Stories.HighlightingMatches} />
 

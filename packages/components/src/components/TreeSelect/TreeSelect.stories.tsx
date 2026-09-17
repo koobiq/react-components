@@ -631,7 +631,6 @@ export const HighlightingMatches: Story = {
       <TreeSelect
         items={files}
         label="Project files"
-        inputValue={inputValue}
         dependencies={[inputValue]}
         style={{ inlineSize: 320 }}
         onInputChange={setInputValue}

@@ -97,8 +97,13 @@ The following example uses the `defaultFilter` prop to filter the list of option
 ### Highlighting matches
 
 Put [Highlight](/docs/components-highlight--docs) into `Autocomplete.ItemText` to mark the matched
-part of an option. Build the options in a `useMemo` keyed by the query — otherwise the highlight
-does not update.
+part of an option, and set `textValue` on the item so the collection keeps a plain-text label for
+typeahead and accessibility.
+
+The collection caches a rendered item by the identity of its data object, so the options have to be
+new objects when the query changes — filtering a constant array reuses them and keeps the old
+highlight. Passing pre-filtered options in `items` also turns off the built-in filtering:
+`defaultFilter` is not called, and the chevron opens the filtered list instead of all options.
 
 <Story of={Stories.HighlightingMatches} />
 

@@ -641,7 +641,12 @@ export const HighlightingMatches: Story = {
     );
 
     return (
-      <DropdownMenu {...args}>
+      <DropdownMenu
+        {...args}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setInputValue('');
+        }}
+      >
         <Button>Cities</Button>
         <DropdownMenu.Popover>
           <DropdownMenu.Autocomplete

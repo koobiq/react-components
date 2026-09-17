@@ -593,7 +593,6 @@ export const HighlightingMatches: Story = {
       <Select
         items={items}
         label="Attack type"
-        inputValue={inputValue}
         dependencies={[inputValue]}
         style={{ inlineSize: 200 }}
         onInputChange={setInputValue}

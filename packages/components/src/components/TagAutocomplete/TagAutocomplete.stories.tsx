@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import {
   IconCircleInfo16,
@@ -120,18 +120,14 @@ export const HighlightingMatches: Story = {
       initialItems: [{ id: 'react', name: 'React' }],
     });
 
-    const suggestions = useMemo(
-      () =>
-        [
-          { id: 'react', name: 'React' },
-          { id: 'typescript', name: 'TypeScript' },
-          { id: 'storybook', name: 'Storybook' },
-          { id: 'vite', name: 'Vite' },
-          { id: 'vitest', name: 'Vitest' },
-          { id: 'playwright', name: 'Playwright' },
-        ].filter((item) => containsFilter(item.name, inputValue)),
-      [inputValue]
-    );
+    const suggestions = [
+      { id: 'react', name: 'React' },
+      { id: 'typescript', name: 'TypeScript' },
+      { id: 'storybook', name: 'Storybook' },
+      { id: 'vite', name: 'Vite' },
+      { id: 'vitest', name: 'Vitest' },
+      { id: 'playwright', name: 'Playwright' },
+    ];
 
     const createTag = (name: string): TagItem => {
       tagCounter.current += 1;
@@ -143,6 +139,7 @@ export const HighlightingMatches: Story = {
       <TagAutocomplete<TagItem>
         label="Tags"
         items={list.items}
+        defaultFilter={containsFilter}
         listItems={suggestions}
         onInputChange={setInputValue}
         placeholder="Type or choose a tag"
