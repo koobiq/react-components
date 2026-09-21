@@ -7,9 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write
-  contents: write
-  packages: write
+  contents: write # clone the repository and create the GitHub release (upload-release-action)
 
 jobs:
   release:
@@ -19,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -36,13 +34,13 @@ jobs:
 
       - name: Parse Changelog
         id: changelog
-        uses: ocavue/changelog-parser-action@v1
+        uses: ocavue/changelog-parser-action@0260f7a77c97ed295575683c8036b81724fd34f5 # v1.2.0
         with:
           removeMarkdown: false
           filePath: './CHANGELOG.md'
 
       - name: Upload Binaries to Release
-        uses: svenstaro/upload-release-action@v2
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.changelog.outputs.latestVersion }}
@@ -51,7 +49,7 @@ jobs:
             ${{ steps.changelog.outputs.latestBody }}
 
       - name: Notify Mattermost
-        uses: mattermost/action-mattermost-notify@v2.1.0
+        uses: mattermost/action-mattermost-notify@ae31bb6f9e26a54336e79696f108a2c91cf55b4e # v2.1.0
         env:
           NODE_TLS_REJECT_UNAUTHORIZED: '0'
         with:
