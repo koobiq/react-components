@@ -4,6 +4,7 @@ import { defineConfig } from 'eslint/config';
 import importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import playwright from 'eslint-plugin-playwright';
 import prettier from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -19,6 +20,9 @@ export default defineConfig(
       '**/coverage/**',
       '**/dist/**',
       'storybook-static/**',
+      'storybook-static-e2e/**',
+      'playwright-report/**',
+      'test-results/**',
       'node_modules/**',
       '.snapshots/**',
       '**/*.min.js',
@@ -178,6 +182,10 @@ export default defineConfig(
     rules: {
       'no-alert': 'off',
     },
+  },
+  {
+    ...playwright.configs['flat/recommended'],
+    files: ['**/*.e2e.ts', 'packages/components/e2e/**/*.ts'],
   },
   prettier
 );

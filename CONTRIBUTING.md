@@ -73,6 +73,44 @@ Do not silence warnings globally or add blanket exceptions for React or accessib
 Console output the repository does not own — such as jsdom `Not implemented:` errors —
 belongs in the documented `silenceMessage` allowlist of `tools/vitest/setupTests.ts`.
 
+## E2E screenshot tests
+
+Visual regressions are caught by [Playwright](https://playwright.dev/) screenshot tests that run
+against a static Storybook build. A component covered by them has three more entries:
+
+```
+packages/components/src/components/Button/
+├── Button.e2e.stories.tsx  # test components
+├── Button.e2e.ts           # test cases
+└── __screenshots__/        # baselines
+```
+
+- Test components are stories under the `E2E/<Name>` title, tagged `!dev` and `!manifest`: they
+  stay out of the sidebar and `llms.txt`, and a test opens them by URL with
+  `e2eGotoStory(page, 'e2e-button--state-and-style')` from `packages/components/e2e/utils.ts`.
+- A test captures the element marked `data-testid="e2eScreenshotTarget"` in the light theme, then
+  switches to the dark one with `e2eEnableDarkTheme(page)`.
+- Hover, press and focus come from React Aria's interaction state, so a test component forces them
+  with the classes of the component's CSS Module (`className={s.hovered}`), and one screenshot
+  covers the whole grid of states.
+
+The baselines are compared pixel by pixel and have no platform suffix: they belong to the Docker
+image in `tools/e2e` (linux/arm64, the same one CI runs). A native run on macOS or Windows fails
+on font rendering alone, so run and update them with Docker:
+
+```bash
+pnpm e2e:docker                  # run the suite
+pnpm e2e:docker -g Button        # filter by test title, arguments go to `pnpm e2e:components`
+pnpm e2e:docker:update-snapshots # rewrite changed and missing baselines
+```
+
+Without Docker, comment `/approve-snapshots` on the pull request: CI regenerates the baselines in
+the same image and commits them.
+
+`pnpm e2e:components` runs the suite natively (install the browser once with `pnpm e2e:setup`).
+It helps while writing a test, for example with `pnpm e2e:components --ui`, but not for comparing
+screenshots.
+
 ## 🛡 Public API guard
 
 The public API of each component and package is pinned in `tools/public_api_guard/`. Before opening a PR:
@@ -85,7 +123,7 @@ pnpm check-api
 If the API change is intentional, refresh the snapshots and commit them:
 
 ```bash
-pnpm approve-api                # refresh all
-pnpm approve-api Button         # refresh a single component
-pnpm approve-api react-icons    # refresh a single package
+pnpm approve-api             # refresh all
+pnpm approve-api Button      # refresh a single component
+pnpm approve-api react-icons # refresh a single package
 ```

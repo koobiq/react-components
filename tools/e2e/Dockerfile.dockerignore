@@ -1,0 +1,30 @@
+# Build context of tools/e2e/Dockerfile. An allowlist, so that the host's node_modules, built for
+# its platform, stay out of the image.
+
+**
+
+!.nvmrc
+!.npmrc
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+
+# The Storybook build
+!.storybook/
+!.storybook/**
+!docs/
+!docs/**
+!packages/
+!packages/**
+!global.d.ts
+!tsconfig.json
+!vite.config.mts
+
+# The suite
+!playwright.config.ts
+!tools/e2e/
+!tools/e2e/**
+
+**/node_modules
+**/dist
+**/.turbo

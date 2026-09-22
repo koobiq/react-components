@@ -15,6 +15,11 @@ coverage
 
 # Storybook
 storybook-static
+storybook-static-e2e
+
+# Playwright
+playwright-report
+test-results
 
 # Turborepo cache directory
 .turbo

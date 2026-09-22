@@ -1,0 +1,60 @@
+# Regenerates the e2e baselines on the `/approve-snapshots` pull request comment and pushes them to
+# the pull request branch.
+#
+# ⚠️ Runs the pull request's code with a token that can push: comment only after reviewing it.
+name: E2E approve snapshots
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write # for stefanzweifel/git-auto-commit-action to push the baselines
+  pull-requests: write # for thollander/actions-comment-pull-request to report the result
+
+jobs:
+  approve_snapshots:
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/approve-snapshots') && contains(fromJSON('["OWNER", "MEMBER"]'), github.event.comment.author_association) }}
+    # On the job rather than the workflow, so that other comments on the pull request do not queue.
+    concurrency:
+      group: e2e-approve-snapshots-${{ github.event.issue.number }}
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    steps:
+      # A fork's branch name would be checked out from this repository instead.
+      - run: |
+          if [ "$(gh pr view "$PR" --repo "$REPO" --json isCrossRepository --jq .isCrossRepository)" = true ]; then
+            echo '::error::/approve-snapshots only works for branches of this repository.'
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+      - uses: xt0rted/pull-request-comment-branch@e8b8daa837e8ea7331c0003c9c316a64c6d8b0b1 # v3.0.0
+        id: comment-branch
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
+        with:
+          message: 🔄 [Updating](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) snapshots.
+      # Retries, unlike in e2e.yml: a flake here costs only another comment.
+      - run: node tools/e2e/run.mjs --update-snapshots --workers=100% --retries=2
+      - uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        id: commit-and-push
+        with:
+          commit_message: 'test: update e2e snapshots'
+          file_pattern: '**/__screenshots__/*.png'
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
+        if: ${{ steps.commit-and-push.outputs.changes_detected == 'true' }}
+        with:
+          message: ✅ Snapshots [updated](https://github.com/${{ github.repository }}/pull/${{ github.event.issue.number }}/commits/${{ steps.commit-and-push.outputs.commit_hash }})!
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
+        if: ${{ steps.commit-and-push.outputs.changes_detected != 'true' }}
+        with:
+          message: ⚠️ No snapshot changes detected.
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
+        if: ${{ failure() }}
+        with:
+          message: 🚨 Failed to [update](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) snapshots.

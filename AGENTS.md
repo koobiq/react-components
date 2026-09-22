@@ -32,6 +32,7 @@ Selected paths. The root also holds the lint, format, commit, and deploy configs
 │   │       ├── intl/                  # Translations used by primitives
 │   │       └── index.ts               # Re-exports React Aria hooks/state/types + RAC + Koobiq primitives and behaviors
 │   └── components/                    # Styled Koobiq components (@koobiq/react-components)
+│       ├── e2e/                       # Helpers for the Playwright e2e specs (e2eGotoStory, e2eEnableDarkTheme)
 │       └── src/
 │           ├── components/            # All component directories + index.ts (public exports)
 │           ├── hooks/                 # Component-level hooks
@@ -46,10 +47,12 @@ Selected paths. The root also holds the lint, format, commit, and deploy configs
 ├── .storybook/                        # Storybook config, MDX doc blocks (Meta, Story, Props, Status, Alert), decorators
 ├── tools/
 │   ├── api-extractor/                 # Public API guard runner + config.json (guarded components/packages)
+│   ├── e2e/                           # Docker image, Compose files and runner of the Playwright e2e suite
 │   └── public_api_guard/              # Generated *.api.md reports — never edit by hand
 ├── scripts/                           # Release helpers, llms.txt generation
 ├── templates/                         # Next.js and Vite starter apps (excluded from lint and type-check)
 ├── package.json                       # Root monorepo config; `browserslist` lives here
+├── playwright.config.ts               # Playwright e2e config: screenshot tests against a static Storybook build
 ├── pnpm-workspace.yaml
 ├── turbo.json
 ├── vite.config.mts                    # Shared CSS Modules/PostCSS config + Vitest projects and coverage
@@ -94,29 +97,33 @@ Dependency order is `logger → core → primitives → components`; each packag
 ## Key Commands
 
 ```bash
-pnpm install
-pnpm dev                           # pnpm install + Storybook at http://localhost:6006
-pnpm build                         # turbo: build all packages
-pnpm build-storybook               # also regenerates llms.txt
+pnpm install         # install dependencies
+pnpm dev             # pnpm install + Storybook at http://localhost:6006
+pnpm build           # turbo: build all packages
+pnpm build-storybook # also regenerates llms.txt
 
-pnpm test                          # vitest watch mode (all packages)
-pnpm vitest run                    # one-off run
-pnpm vitest run Button.test.tsx    # one test file (works from the repo root)
-pnpm test:coverage
+pnpm test                       # vitest watch mode (all packages)
+pnpm vitest run                 # one-off run
+pnpm vitest run Button.test.tsx # one test file (works from the repo root)
+pnpm test:coverage              # one-off run with coverage for packages/components
 
-pnpm type-check
-pnpm lint                          # eslint + stylelint
-pnpm lint:fix
-pnpm format:write                  # prettier for json/md/mdx/html/yml/yaml/svg
-pnpm format:check
+pnpm type-check   # turbo: tsc --noEmit in every package
+pnpm lint         # eslint + stylelint
+pnpm lint:fix     # eslint --fix + stylelint --fix
+pnpm format:write # prettier --write for every file type it can parse
+pnpm format:check # the same without writing, as CI runs it
 
-pnpm check-api                     # needs a fresh `pnpm build`
-pnpm approve-api                   # refresh all API reports
-pnpm approve-api Button            # refresh one component
-pnpm approve-api react-core        # refresh one package (react-primitives | react-core | logger)
+pnpm check-api              # needs a fresh `pnpm build`
+pnpm approve-api            # refresh all API reports
+pnpm approve-api Button     # refresh one component
+pnpm approve-api react-core # refresh one package (react-primitives | react-core | logger)
+
+pnpm e2e:docker                  # Playwright screenshot tests in Docker, where the baselines belong
+pnpm e2e:docker -g Button        # filter by test title; arguments go to `pnpm e2e:components`
+pnpm e2e:docker:update-snapshots # rewrite changed and missing baselines
 ```
 
-CI (`.github/workflows`) runs `type-check`, `format:check`, `lint:css --max-warnings=0`, `lint:js --max-warnings=0`, `vitest --run`, and `build && check-api`. Because of `--max-warnings=0`, Stylelint/ESLint **warnings fail CI**.
+CI (`.github/workflows`) runs `type-check`, `format:check`, `lint:css --max-warnings=0`, `lint:js --max-warnings=0`, `vitest --run`, `build && check-api`, and the e2e screenshot tests in Docker on an arm64 runner. Because of `--max-warnings=0`, Stylelint/ESLint **warnings fail CI**.
 
 ## Component Architecture
 
@@ -128,13 +135,16 @@ Each component lives in its own directory under `packages/components/src/compone
 
 ```
 packages/components/src/components/Button/
-├── Button.tsx            # component implementation
-├── Button.mdx            # documentation page (Storybook)
-├── types.ts              # prop types (exported as public API)
-├── Button.module.css     # CSS Modules styles
-├── Button.stories.tsx    # Storybook stories
-├── Button.test.tsx       # Vitest + Testing Library unit tests
-└── index.ts              # component entry point
+├── Button.tsx              # component implementation
+├── Button.mdx              # documentation page (Storybook)
+├── types.ts                # prop types (exported as public API)
+├── Button.module.css       # CSS Modules styles
+├── Button.stories.tsx      # Storybook stories
+├── Button.test.tsx         # Vitest + Testing Library unit tests
+├── Button.e2e.stories.tsx  # e2e test components (hidden stories)
+├── Button.e2e.ts           # Playwright e2e test cases
+├── __screenshots__/        # e2e screenshot baselines
+└── index.ts                # component entry point
 ```
 
 Some complex components may also contain `components/`, `utils.ts`, `intl.ts` or `intl.json`, and `__tests__/`. Follow nearby component patterns before adding new structure.
@@ -162,7 +172,7 @@ User-facing strings live next to the component in `intl.json` (or `intl.ts` when
 ### Storybook Stories
 
 - `title: 'Components/<Name>'`, `component`, `tags`, and `satisfies Meta<typeof X>`.
-- Define story data and helpers inside `render` so they appear in the Source panel (the docs page shows the raw text of the story export).
+- Define story data and helpers inside `render` so they appear in the Source panel (the docs page shows the raw text of the story export). E2E stories (`X.e2e.stories.tsx`) have no docs page and are exempt.
 - Don't add `argTypes` for props inferred from component types.
 - If `render` uses hooks, use a named function: `render: function Render(args) { ... }`.
 - Add every slot of a compound component to `meta.subcomponents`.
@@ -271,7 +281,7 @@ Any change to an existing component's exported types/signatures needs the same `
 
 ## Coding Conventions
 
-- Prettier for formatting (single quotes, `trailingComma: es5`, 80-column ruler).
+- Prettier for formatting (single quotes, `trailingComma: es5`, 80-column ruler). `prettier-plugin-sh` also formats shell scripts, Dockerfiles and `bash` code blocks in Markdown.
 - Type-only imports use a separate `import type { … }` statement (ESLint `consistent-type-imports` with `separate-type-imports`; the components package also has `verbatimModuleSyntax`).
 - Import order is enforced: builtin → external → internal → parent, alphabetized, blank line between groups, `react` first.
 - Blank lines are required around multiline declarations/blocks and before `return` (`@stylistic/padding-line-between-statements`); `arrow-body-style: as-needed`; `no-plusplus` outside for-loop updates. `pnpm lint:fix` fixes most of these.
@@ -284,7 +294,16 @@ Any change to an existing component's exported types/signatures needs the same `
 
 - Vitest projects are discovered from `packages/**/vite.config.ts`; the environment is jsdom with `globals: true`, jest-dom matchers, and `window.matchMedia` mocked in `packages/*/setupTests.ts`.
 - Tests are colocated as `X.test.tsx` (larger components use `__tests__/`); use `@testing-library/user-event` for interactions and the `data-testid` prop that components accept.
-- Coverage is measured for `packages/components` only, excluding stories and `index.*` files.
+- Coverage is measured for `packages/components` only, excluding stories, e2e specs and helpers, and `index.*` files.
+
+### E2E Screenshot Tests
+
+- `pnpm e2e:components` (`playwright test packages/components`) runs `X.e2e.ts` specs against a static Storybook build (`pnpm e2e:build`, served by `pnpm e2e:serve`) and compares screenshots with `threshold: 0`. `playwright.config.ts` has no `testDir`: package paths belong in the scripts. Baselines live in the component's `__screenshots__/` as `01-light.png`, `01-dark.png`, …
+- Test components are stories in `X.e2e.stories.tsx` with `title: 'E2E/<Name>'` and `tags: ['!dev', '!manifest']`: hidden from the sidebar and from `llms.txt`, but served by URL. A spec opens one with `e2eGotoStory(page, 'e2e-<name>--<story>')` from `packages/components/e2e/utils.ts`. Without the manager, whose dark-mode addon sets the theme class, the preview falls back to `kbq-light`; `e2eEnableDarkTheme` switches to the dark one. The page background comes from `tools/e2e/screenshot.css` (`toHaveScreenshot.stylePath`).
+- Capture the element marked `data-testid="e2eScreenshotTarget"`, not the page. React Aria derives hover, press and focus from interaction, so a test component forces them with the component's CSS Module classes (`className={s.hovered}`) and one screenshot covers the whole grid of states.
+- Baselines have no platform suffix and belong to the Docker image in `tools/e2e` (linux/arm64, the same in CI): run and update them only with `pnpm e2e:docker` and `pnpm e2e:docker:update-snapshots`, never from a native macOS run. On a PR, the `/approve-snapshots` comment regenerates them in CI.
+- `@playwright/test` is pinned to an exact version together with the image digest in `tools/e2e/Dockerfile`: bump both and regenerate the baselines in the same PR.
+- Specs and helpers are linted with `eslint-plugin-playwright` (`flat/recommended`), whose warnings fail CI too. `page.evaluate` callbacks run in the browser, so they must not reference outer variables (`playwright/no-unsafe-references`).
 
 ## Git Commit Convention
 

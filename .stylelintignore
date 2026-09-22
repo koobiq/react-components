@@ -4,5 +4,8 @@ dist/
 public/
 coverage/
 storybook-static/
+storybook-static-e2e/
+playwright-report/
+test-results/
 templates/nextjs/template
 templates/vite/template

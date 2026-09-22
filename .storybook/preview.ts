@@ -3,10 +3,24 @@ import '@koobiq/react-components/global.css';
 import '@koobiq/design-tokens/web/new/css-tokens.css';
 import '@koobiq/design-tokens/web/new/css-tokens-light.css';
 import '@koobiq/design-tokens/web/new/css-tokens-dark.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/inter/400-italic.css';
+import '@fontsource/inter/500-italic.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/700.css';
 
 import { DocContainer } from './components';
 import { StoryThemeProvider } from './decorators';
 import { light, dark } from './themes';
+
+// The dark mode addon sets the theme class from the manager, which a story opened in isolation
+// (iframe.html, "Open canvas in new tab") does not have.
+if (!document.body.classList.contains('kbq-dark')) {
+  document.body.classList.add('kbq-light');
+}
 
 const rawStories = import.meta.glob(
   [

@@ -5,5 +5,5 @@ export default {
   ],
   '**/*.{css}': ['stylelint --fix'],
   '**/*': () => 'pnpm type-check',
-  '**/*.{json,md,mdx,svg,html,yml,yaml}': ['prettier --write'],
+  '*': ['prettier --write --ignore-unknown'],
 };

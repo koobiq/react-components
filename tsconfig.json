@@ -39,6 +39,9 @@
     "**/dist",
     "templates",
     "coverage",
-    "storybook-static"
+    "storybook-static",
+    "storybook-static-e2e",
+    "playwright-report",
+    "test-results"
   ]
 }

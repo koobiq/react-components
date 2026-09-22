@@ -53,6 +53,12 @@ const config: StorybookConfig = {
   core: {
     disableTelemetry: true,
   },
+  build: {
+    test: {
+      // The e2e build keeps the doc blocks preview.ts imports through DocContainer.
+      disableBlocks: false,
+    },
+  },
   features: {
     componentsManifest: true,
   },

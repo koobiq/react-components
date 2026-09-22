@@ -13,6 +13,7 @@
     "**/*/__testfixtures__/*",
     "**/*.test.*",
     "**/*.stories.*",
+    "**/*.e2e.*",
     "setupTests.ts"
   ]
 }
