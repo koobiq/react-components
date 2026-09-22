@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  checks: write
-  contents: read
-  pull-requests: write
+  checks: write # create the "Deploy Preview" check run (action-hosting-deploy)
+  contents: read # clone the repository (actions/checkout)
+  pull-requests: write # comment on the PR with the preview URL (action-hosting-deploy)
 
 jobs:
   deploy-pr-preview:
@@ -18,10 +18,11 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: ./.github/actions/setup-node
 
@@ -29,7 +30,7 @@ jobs:
         run: pnpm run build-storybook
 
       - name: Deploy Preview
-        uses: FirebaseExtended/action-hosting-deploy@v0
+        uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0.11.0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KOOBIQ }}
