@@ -1,3 +1,5 @@
+@import url('../../../../styles/mixins.css');
+
 .base {
   --content-body-transition-duration: 300ms;
 
@@ -14,6 +16,8 @@
   overflow: auto;
   inline-size: 100%;
   will-change: inline-size;
+
+  @mixin native-scrollbar;
 }
 
 .base:has(.panel[data-transition='entering']) .body {

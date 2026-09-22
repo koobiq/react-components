@@ -1,3 +1,5 @@
+@import url('../../styles/mixins.css');
+
 .base {
   --dialog-padding-inline-size: var(--kbq-size-xxl);
 
@@ -21,6 +23,8 @@
   border-radius: inherit;
   flex-direction: column;
   background-color: inherit;
+
+  @mixin native-scrollbar;
 }
 
 /* header */
@@ -65,6 +69,8 @@
   box-sizing: border-box;
   padding: 0 var(--dialog-padding-inline-size) var(--kbq-size-s)
     var(--dialog-padding-inline-size);
+
+  @mixin native-scrollbar;
 
   &:focus-visible {
     outline: 2px solid var(--kbq-states-line-focus-theme);
