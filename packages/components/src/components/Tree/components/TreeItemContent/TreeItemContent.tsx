@@ -1,5 +1,7 @@
 'use client';
 
+import { useContext } from 'react';
+
 import { mergeProps } from '@koobiq/react-core';
 import { IconChevronRightS16 } from '@koobiq/react-icons';
 import { TreeItemContent as AriaTreeItemContent } from '@koobiq/react-primitives';
@@ -7,6 +9,7 @@ import { TreeItemContent as AriaTreeItemContent } from '@koobiq/react-primitives
 import { AnimatedIcon } from '../../../AnimatedIcon';
 import { Checkbox } from '../../../Checkbox';
 import { IconButton } from '../../../IconButton';
+import { ListItemContext } from '../../../List/components/ListItemText/ListItemContext';
 
 import type {
   TreeItemContentProps,
@@ -15,12 +18,18 @@ import type {
 
 export function TreeItemContent(props: TreeItemContentProps) {
   const { children, slotProps, ...other } = props;
+  const { ref } = useContext(ListItemContext);
 
   return (
     <AriaTreeItemContent {...other}>
       {(renderProps) => {
-        const { selectionBehavior, selectionMode, isDisabled, isExpanded } =
-          renderProps;
+        const {
+          selectionBehavior,
+          selectionMode,
+          isDisabled,
+          isExpanded,
+          isHovered,
+        } = renderProps;
 
         const chevronProps = mergeProps<
           (TreeItemContentPropSlotProps['chevron'] | undefined)[]
@@ -30,7 +39,7 @@ export function TreeItemContent(props: TreeItemContentProps) {
         );
 
         return (
-          <>
+          <ListItemContext.Provider value={{ ref, isHovered }}>
             <IconButton slot="chevron" data-slot="chevron" {...chevronProps}>
               <AnimatedIcon
                 icons={[<IconChevronRightS16 key="chevron" />]}
@@ -46,7 +55,7 @@ export function TreeItemContent(props: TreeItemContentProps) {
               />
             )}
             {typeof children === 'function' ? children(renderProps) : children}
-          </>
+          </ListItemContext.Provider>
         );
       }}
     </AriaTreeItemContent>

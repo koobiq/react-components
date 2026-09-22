@@ -29,7 +29,7 @@ const meta = {
     'List.ItemAddon': List.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-05-15'],
+  tags: ['status:updated', 'date:2026-09-15'],
 } satisfies Meta<typeof List>;
 
 export default meta;
@@ -329,6 +329,7 @@ export const ItemContent: Story = {
               <IconCircle16 />
             </List.ItemAddon>
             <List.ItemText
+              showOverflowTooltip
               slotProps={{
                 caption: { ellipsis: true },
               }}

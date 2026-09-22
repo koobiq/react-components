@@ -75,6 +75,7 @@ export type ListItemTextProps = ExtendableComponentPropsWithRef<{
     children?: ReactNode;
     caption?: ReactNode;
     autoWidth?: boolean;
+    showOverflowTooltip?: boolean;
     slotProps?: {
         text?: TypographyProps;
         caption?: TypographyProps;
@@ -122,7 +123,7 @@ export type ListSectionProps<T> = SectionProps<T>;
 //
 // packages/components/dist/components/List/List.d.ts:19:5 - (ae-forgotten-export) The symbol "Divider" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/List/List.d.ts:21:5 - (ae-forgotten-export) The symbol "ListItemAddonProps_2" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/List/components/ListItemText/types.d.ts:14:9 - (ae-forgotten-export) The symbol "TypographyProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/List/components/ListItemText/types.d.ts:19:9 - (ae-forgotten-export) The symbol "TypographyProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
