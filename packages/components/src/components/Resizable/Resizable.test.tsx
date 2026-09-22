@@ -487,6 +487,15 @@ describe('Resizable', () => {
     expect(getHandle()).not.toHaveAttribute('aria-keyshortcuts');
   });
 
+  it('omits aria-valuemax when the size has no maximum', () => {
+    renderResizable([1, 0], { minSize: { width: 200 } });
+
+    expect(getHandle()).toHaveAttribute('aria-valuenow', '300');
+    expect(getHandle()).toHaveAttribute('aria-valuemin', '200');
+    expect(getHandle()).not.toHaveAttribute('aria-valuemax');
+    expect(getHandle()).toHaveAttribute('aria-valuetext', '300 px');
+  });
+
   it('exposes button semantics for corner handles and allows a custom label', () => {
     render(
       <Resizable
@@ -567,6 +576,22 @@ describe('Resizable', () => {
     );
 
     expect(getHandle()).toHaveStyle({ transform: 'translateX(100%)' });
+  });
+
+  it('lets an inline style from the consumer win over the managed size', () => {
+    render(
+      <Resizable
+        data-testid="resizable"
+        defaultSize={{ width: 300, height: 200 }}
+        maxSize={{ width: 400 }}
+        style={{ width: 250, maxWidth: 'calc(100% - 48px)' }}
+      >
+        <Resizable.Handle data-testid="handle" direction={[1, 0]} />
+      </Resizable>
+    );
+
+    expect(getRoot().style.width).toBe('250px');
+    expect(getRoot().style.maxWidth).toBe('calc(100% - 48px)');
   });
 
   it('throws when a handle is rendered without Resizable', () => {
