@@ -86,13 +86,16 @@ packages/components/src/components/Button/
 ```
 
 - Test components are stories under the `E2E/<Name>` title, tagged `!dev` and `!manifest`: they
-  stay out of the sidebar and `llms.txt`, and a test opens them by URL with
-  `e2eGotoStory(page, 'e2e-button--state-and-style')` from `packages/components/e2e/utils.ts`.
-- A test captures the element marked `data-testid="e2eScreenshotTarget"` in the light theme, then
-  switches to the dark one with `e2eEnableDarkTheme(page)`.
-- Hover, press and focus come from React Aria's interaction state, so a test component forces them
-  with the classes of the component's CSS Module (`className={s.hovered}`), and one screenshot
-  covers the whole grid of states.
+  stay out of the sidebar and `llms.txt`. Usually it is one story with a grid of variants and
+  states built with `E2eGrid` from `packages/components/e2e/E2eGrid.tsx`.
+- A test opens the story with `e2eGotoStory(page, 'e2e-button--state-and-style')` and screenshots
+  it in both themes with `e2eScreenshotThemes(page, '01')`, both from
+  `packages/components/e2e/utils.ts`.
+- Hover, press and focus come from React Aria's interaction state. When the component turns them
+  into classes of its CSS Module, the grid forces them (`className={s.hovered}`); states that
+  React Aria sets as data attributes are left out.
+- Dropdowns and other overlays are opened by props and screenshotted alone: the
+  `e2eScreenshotTarget` test id goes on the overlay itself.
 
 The baselines are compared pixel by pixel and have no platform suffix: they belong to the Docker
 image in `tools/e2e` (linux/arm64, the same one CI runs). A native run on macOS or Windows fails

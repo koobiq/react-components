@@ -1,6 +1,8 @@
 import { IconChevronDownS16, IconPlay16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { E2eGrid } from '../../../e2e/E2eGrid';
+
 import s from './Button.module.css';
 import { Button, buttonPropVariant } from './index.js';
 import type { ButtonProps } from './index.js';
@@ -14,7 +16,7 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Button>;
 
 type State = { title: string } & ButtonProps;
 
@@ -37,15 +39,7 @@ const StateAndStyleGrid = ({
   endIcon,
   hideTitle,
 }: StateAndStyleGridProps) => (
-  <div
-    data-testid="e2eScreenshotTarget"
-    style={{
-      display: 'inline-grid',
-      gridTemplateColumns: `repeat(${states.length}, max-content)`,
-      gap: 'var(--kbq-size-s)',
-      padding: 'var(--kbq-size-xxs)',
-    }}
-  >
+  <E2eGrid columns={states.length}>
     {buttonPropVariant.flatMap((variant) =>
       states.map(({ title, ...state }) => (
         <Button
@@ -60,7 +54,7 @@ const StateAndStyleGrid = ({
         </Button>
       ))
     )}
-  </div>
+  </E2eGrid>
 );
 
 export const StateAndStyle: Story = {

@@ -186,6 +186,13 @@ export default defineConfig(
   {
     ...playwright.configs['flat/recommended'],
     files: ['**/*.e2e.ts', 'packages/components/e2e/**/*.ts'],
+    rules: {
+      ...playwright.configs['flat/recommended'].rules,
+      'playwright/expect-expect': [
+        'warn',
+        { assertFunctionNames: ['e2eScreenshotThemes'] },
+      ],
+    },
   },
   prettier
 );

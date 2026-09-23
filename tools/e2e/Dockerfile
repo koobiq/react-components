@@ -34,9 +34,9 @@ COPY packages/components/package.json packages/components/
 
 RUN corepack enable pnpm && pnpm install --frozen-lockfile
 
-# The suite is not an input of the Storybook build: without it, editing the suite keeps this
-# layer cached. The COPY after the build adds it back.
-COPY --exclude=**/*.e2e.ts --exclude=**/__screenshots__ --exclude=packages/components/e2e --exclude=playwright.config.ts --exclude=tools/e2e . .
+# Only the test components are an input of the Storybook build, so editing the specs or their
+# helpers keeps this layer cached. The COPY after the build adds them back.
+COPY --exclude=**/*.e2e.ts --exclude=**/__screenshots__ --exclude=packages/components/e2e/utils.ts --exclude=playwright.config.ts --exclude=tools/e2e . .
 RUN pnpm e2e:build
 
 COPY . .

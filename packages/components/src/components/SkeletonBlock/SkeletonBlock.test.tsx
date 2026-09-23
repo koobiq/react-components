@@ -37,5 +37,28 @@ describe('Skeleton', () => {
         '--skeleton-bg-color': 'black',
       });
     });
+
+    it('should take a number size as pixels and a string one verbatim', () => {
+      render(
+        <SkeletonBlock {...baseProps} inlineSize={100} blockSize="2rem" />
+      );
+
+      const skeleton = getField();
+
+      expect(skeleton).toHaveStyle({
+        '--skeleton-inline-size': '100px',
+        '--skeleton-block-size': '2rem',
+      });
+    });
+
+    it('should keep the children in the DOM to size the skeleton', () => {
+      render(
+        <SkeletonBlock {...baseProps}>
+          <span>Button</span>
+        </SkeletonBlock>
+      );
+
+      expect(screen.getByText('Button')).toBeInTheDocument();
+    });
   });
 });

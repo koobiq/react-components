@@ -128,12 +128,12 @@ describe('Flag', () => {
 
   describe('accessibility attributes', () => {
     it('should forward role and aria-label for a meaningful flag', () => {
-      render(<Flag {...baseProps} role="img" aria-label="Germany" />);
+      render(<Flag {...baseProps} role="img" aria-label="Russia" />);
 
       const flag = getRoot();
 
       expect(flag).toHaveAttribute('role', 'img');
-      expect(flag).toHaveAttribute('aria-label', 'Germany');
+      expect(flag).toHaveAttribute('aria-label', 'Russia');
     });
 
     it('should forward aria-hidden for a decorative flag', () => {

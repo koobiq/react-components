@@ -3,8 +3,8 @@ import { type CSSProperties } from 'react';
 import { IconGlobe16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import { hasFlag } from 'country-flag-icons';
-import { DE as DE1x1 } from 'country-flag-icons/react/1x1';
-import { BR, DE, FR, JP, US } from 'country-flag-icons/react/3x2';
+import { RU as RU1x1 } from 'country-flag-icons/react/1x1';
+import { BR, CN, RS, RU, US } from 'country-flag-icons/react/3x2';
 
 import { FlexBox } from '../FlexBox';
 import { SelectNext as Select } from '../SelectNext';
@@ -19,8 +19,8 @@ import {
 } from './index.js';
 
 // These small maps let examples look up a flag by ISO code.
-const flags3x2 = { BR, DE, FR, JP, US };
-const flags1x1 = { DE: DE1x1 };
+const flags3x2 = { BR, CN, RS, RU, US };
+const flags1x1 = { RU: RU1x1 };
 
 const meta = {
   title: 'Components/Flag',
@@ -47,7 +47,7 @@ type Story = StoryObj<FlagProps>;
 export const Base: Story = {
   render: (args) => (
     <Flag {...args}>
-      <flags3x2.DE />
+      <flags3x2.US />
     </Flag>
   ),
 };
@@ -58,14 +58,14 @@ export const Shape: Story = {
       {flagPropShape.map((shape) => (
         <FlexBox key={shape} gap="xs" direction="column" alignItems="center">
           <Flag {...args} shape={shape} size={32}>
-            <flags1x1.DE />
+            <flags1x1.RU />
           </Flag>
           <Typography variant="text-compact">{shape}</Typography>
         </FlexBox>
       ))}
       <FlexBox gap="xs" direction="column" alignItems="center">
         <Flag {...args} size={32} aspectRatio="1 / 1">
-          <flags1x1.DE />
+          <flags1x1.RU />
         </Flag>
         <Typography variant="text-compact">square</Typography>
       </FlexBox>
@@ -84,7 +84,7 @@ export const Shadow: Story = {
           alignItems="center"
         >
           <Flag {...args} hideShadow={hideShadow} size={32}>
-            <flags3x2.JP />
+            <flags3x2.CN />
           </Flag>
           <Typography variant="text-compact">
             hideShadow = {String(hideShadow)}
@@ -108,7 +108,7 @@ export const Empty: Story = {
 export const Fallback: Story = {
   render: (args) => (
     <FlexBox gap="l" alignItems="center">
-      {['DE', 'ZZ'].map((code) => {
+      {['BR', 'ZZ'].map((code) => {
         const known = hasFlag(code);
         const FlagIcon = flags3x2[code as keyof typeof flags3x2];
 
@@ -140,16 +140,16 @@ export const Accessibility: Story = {
   render: (args) => (
     <FlexBox gap="l" direction="row" alignItems="center">
       {/* Meaningful flag, no adjacent text. */}
-      <Flag {...args} role="img" aria-label="Germany" size={18}>
-        <flags3x2.DE />
+      <Flag {...args} role="img" aria-label="Serbia" size={18}>
+        <flags3x2.RS />
       </Flag>
 
       {/* Decorative flag beside visible text. */}
       <FlexBox gap="xs" alignItems="center">
         <Flag {...args} role="img" aria-hidden="true" size={18}>
-          <flags3x2.DE />
+          <flags3x2.RS />
         </Flag>
-        <Typography>Germany</Typography>
+        <Typography>Serbia</Typography>
       </FlexBox>
     </FlexBox>
   ),
@@ -163,8 +163,14 @@ export const Sizes: Story = {
   render: (args) => (
     <FlexBox gap="l" alignItems="center">
       {[16, 24, 32, 48].map((size) => (
-        <Flag key={size} {...args} role="img" aria-label="Germany" size={size}>
-          <flags3x2.DE />
+        <Flag
+          key={size}
+          {...args}
+          role="img"
+          aria-label="United States"
+          size={size}
+        >
+          <flags3x2.US />
         </Flag>
       ))}
     </FlexBox>
@@ -272,10 +278,10 @@ export const NotForLanguage: Story = {
 };
 
 const countries = [
-  { code: 'DE', name: 'Germany' },
-  { code: 'FR', name: 'France' },
-  { code: 'JP', name: 'Japan' },
   { code: 'US', name: 'United States' },
+  { code: 'RS', name: 'Serbia' },
+  { code: 'RU', name: 'Russia' },
+  { code: 'CN', name: 'China' },
   { code: 'BR', name: 'Brazil' },
 ];
 
