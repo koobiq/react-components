@@ -275,6 +275,7 @@
  * Customizes the browser-rendered scrollbar, as `kbqNativeScrollbar` does in
  * Koobiq Angular. `native-scrollbar-descendants` covers the element together
  * with everything inside it, for content the component does not render itself.
+ * `.list ul` is in the list because `composes` takes a single class selector.
  *
  * Chromium and Safari are styled through `::-webkit-scrollbar*`. Firefox has no
  * such pseudo-elements and gets colors only, through `scrollbar-color`, which
@@ -283,7 +284,8 @@
  */
 .native-scrollbar,
 .native-scrollbar-descendants,
-.native-scrollbar-descendants * {
+.native-scrollbar-descendants *,
+.list ul {
   --native-scrollbar-thumb-min-size: var(--kbq-size-3xl);
   --native-scrollbar-thumb-gap: 3px;
   --native-scrollbar-track-size: 14px;
