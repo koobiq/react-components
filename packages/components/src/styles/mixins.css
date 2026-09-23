@@ -36,112 +36,92 @@
 }
 
 /*
- * Custom properties of `native-scrollbar`. Colors follow the nearest
- * `.kbq-light` or `.kbq-dark` through `color-scheme`, so a dark surface in
- * the light theme opts into the dark set with `color-scheme: dark`.
- */
-@define-mixin native-scrollbar-properties {
-  --scrollbar-thumb-min-size: var(--kbq-size-3xl);
-  --scrollbar-thumb-gap: 3px;
-  --scrollbar-track-size: 14px;
-  --scrollbar-thumb-default-background: light-dark(
-    var(--kbq-semantic-contrast-a3, var(--kbq-palette-grey-50-a32)),
-    var(--kbq-semantic-dark-contrast-a9, var(--kbq-palette-grey-50-a48))
-  );
-  --scrollbar-thumb-hover-background: light-dark(
-    var(--kbq-semantic-contrast-a4, var(--kbq-palette-grey-50-a48)),
-    var(--kbq-semantic-dark-contrast-a10, var(--kbq-palette-grey-50-a60))
-  );
-  --scrollbar-thumb-active-background: light-dark(
-    var(--kbq-semantic-contrast-a5, var(--kbq-palette-grey-20-a55)),
-    var(--kbq-semantic-dark-contrast-a11, var(--kbq-palette-grey-50-a80))
-  );
-  --scrollbar-track-background: var(--kbq-background-transparent);
-}
-
-/* Scrollbar of `&`, drawn with the `native-scrollbar-properties`. */
-@define-mixin native-scrollbar-parts {
-  @supports not selector(::-webkit-scrollbar) {
-    scrollbar-color: var(--scrollbar-thumb-default-background)
-      var(--scrollbar-track-background);
-  }
-
-  &::-webkit-scrollbar {
-    inline-size: var(--scrollbar-track-size);
-    block-size: var(--scrollbar-track-size);
-    background-color: var(--scrollbar-track-background);
-    cursor: default;
-  }
-
-  /* `::-webkit-resizer` is left alone: styling it hides the resize grip. */
-  &::-webkit-scrollbar-track,
-  &::-webkit-scrollbar-corner {
-    background-color: var(--scrollbar-track-background);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    box-sizing: border-box;
-    border: var(--scrollbar-thumb-gap) solid transparent;
-    border-radius: var(--kbq-size-border-radius);
-    background-color: var(--scrollbar-thumb-default-background);
-    background-clip: content-box;
-  }
-
-  &::-webkit-scrollbar-thumb:vertical {
-    min-block-size: calc(
-      var(--scrollbar-thumb-min-size) + var(--scrollbar-thumb-gap) * 2
-    );
-  }
-
-  &::-webkit-scrollbar-thumb:horizontal {
-    min-inline-size: calc(
-      var(--scrollbar-thumb-min-size) + var(--scrollbar-thumb-gap) * 2
-    );
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover-background);
-  }
-
-  &::-webkit-scrollbar-thumb:active {
-    background-color: var(--scrollbar-thumb-active-background);
-  }
-
-  &::-webkit-scrollbar-button {
-    display: none;
-  }
-}
-
-/*
  * Styles the browser-rendered scrollbar of an element, as `kbqNativeScrollbar`
  * does in Koobiq Angular. Chromium and Safari are styled through
  * `::-webkit-scrollbar*`. Firefox has no such pseudo-elements and gets colors
  * only, through `scrollbar-color`, which is kept away from the other engines:
  * since Chrome 121 a non-`auto` `scrollbar-color` disables
  * `::-webkit-scrollbar*`.
+ *
+ * Colors follow the nearest `.kbq-light` or `.kbq-dark` through `color-scheme`,
+ * so a dark surface in the light theme opts into the dark set with
+ * `color-scheme: dark`.
  */
 @define-mixin native-scrollbar {
-  @mixin native-scrollbar-properties;
-  @mixin native-scrollbar-parts;
+  --native-scrollbar-thumb-min-size: var(--kbq-size-3xl);
+  --native-scrollbar-thumb-gap: 3px;
+  --native-scrollbar-track-size: 14px;
+  --native-scrollbar-thumb-default-background: light-dark(
+    var(--kbq-semantic-contrast-a3, var(--kbq-palette-grey-50-a32)),
+    var(--kbq-semantic-dark-contrast-a9, var(--kbq-palette-grey-50-a48))
+  );
+  --native-scrollbar-thumb-hover-background: light-dark(
+    var(--kbq-semantic-contrast-a4, var(--kbq-palette-grey-50-a48)),
+    var(--kbq-semantic-dark-contrast-a10, var(--kbq-palette-grey-50-a60))
+  );
+  --native-scrollbar-thumb-active-background: light-dark(
+    var(--kbq-semantic-contrast-a5, var(--kbq-palette-grey-20-a55)),
+    var(--kbq-semantic-dark-contrast-a11, var(--kbq-palette-grey-50-a80))
+  );
+  --native-scrollbar-track-background: var(--kbq-background-transparent);
 
-  /* `scrollbar-color` is inherited, the pseudo-elements are not. */
+  /* Inherited; a non-`auto` value disables `::-webkit-scrollbar*` in Chromium. */
+  scrollbar-color: auto;
+
   @supports not selector(::-webkit-scrollbar) {
-    :where(&) * {
+    scrollbar-color: var(--native-scrollbar-thumb-default-background)
+      var(--native-scrollbar-track-background);
+
+    /* `scrollbar-color` is inherited, the pseudo-elements are not. */
+    :where(&) > * {
       scrollbar-color: auto;
     }
   }
-}
 
-/*
- * `native-scrollbar` for the element and every descendant. The Firefox branch
- * comes with `native-scrollbar-parts`; unlike `native-scrollbar`, descendants
- * keep its colors, so there is no reset.
- */
-@define-mixin native-scrollbar-descendants {
-  @mixin native-scrollbar-properties;
-  @mixin native-scrollbar-parts;
+  &::-webkit-scrollbar {
+    inline-size: var(--native-scrollbar-track-size);
+    block-size: var(--native-scrollbar-track-size);
+    background-color: var(--native-scrollbar-track-background);
+    cursor: default;
+  }
 
-  & * {
-    @mixin native-scrollbar-parts;
+  /* `::-webkit-resizer` is left alone: styling it hides the resize grip. */
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    background-color: var(--native-scrollbar-track-background);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    box-sizing: border-box;
+    border: var(--native-scrollbar-thumb-gap) solid transparent;
+    border-radius: var(--kbq-size-border-radius);
+    background-color: var(--native-scrollbar-thumb-default-background);
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:vertical {
+    min-block-size: calc(
+      var(--native-scrollbar-thumb-min-size) +
+        var(--native-scrollbar-thumb-gap) * 2
+    );
+  }
+
+  &::-webkit-scrollbar-thumb:horizontal {
+    min-inline-size: calc(
+      var(--native-scrollbar-thumb-min-size) +
+        var(--native-scrollbar-thumb-gap) * 2
+    );
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--native-scrollbar-thumb-hover-background);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: var(--native-scrollbar-thumb-active-background);
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
   }
 }

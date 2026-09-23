@@ -5,7 +5,7 @@
   color: var(--kbq-foreground-contrast);
   background: var(--kbq-markdown-bg, transparent);
 
-  @mixin native-scrollbar-descendants;
+  @mixin native-scrollbar;
 }
 
 .base > :first-child {
@@ -156,6 +156,8 @@
   border-radius: var(--kbq-markdown-code-size-border-radius);
   color: var(--kbq-markdown-code-text);
   background-color: var(--kbq-markdown-code-background);
+
+  @mixin native-scrollbar;
 }
 
 .base code {
@@ -205,13 +207,15 @@
 
 /* A table box ignores `overflow`, so a wide table scrolls as a block. */
 .base table {
-  inline-size: max-content;
+  inline-size: fit-content;
   max-inline-size: 100%;
   overflow-x: auto;
   display: block;
   border-collapse: collapse;
   margin-block-end: var(--kbq-markdown-table-size-margin-bottom);
   color: var(--kbq-markdown-table-body);
+
+  @mixin native-scrollbar;
 }
 
 .base table td,
