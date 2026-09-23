@@ -37,8 +37,6 @@
   padding-inline: var(--form-field-control-padding-inline-start)
     var(--form-field-control-padding-inline-end);
   resize: none;
-
-  @mixin native-scrollbar;
 }
 
 .base:disabled {

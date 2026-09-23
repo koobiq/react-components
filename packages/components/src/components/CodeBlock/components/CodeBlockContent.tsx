@@ -7,9 +7,12 @@ import type {
   UIEventHandler,
 } from 'react';
 
-import { mergeProps, mergeRefs } from '@koobiq/react-core';
+import { clsx, mergeProps, mergeRefs } from '@koobiq/react-core';
 
+import { utilClasses } from '../../../styles/utility';
 import s from '../CodeBlock.module.css';
+
+const { nativeScrollbar } = utilClasses;
 
 export type CodeBlockContentProps = {
   contentRef: Ref<HTMLDivElement>;
@@ -44,7 +47,7 @@ export function CodeBlockContent(props: CodeBlockContentProps) {
     <div
       {...mergeProps(
         {
-          className: s.main,
+          className: clsx(s.main, nativeScrollbar),
           role: 'region',
           'aria-label': ariaLabel,
           // A scrollable region has to be keyboard-focusable when its content overflows.

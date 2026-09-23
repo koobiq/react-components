@@ -16,8 +16,6 @@
   padding: var(--alert-padding);
   background-color: var(--alert-bg-color);
   border-radius: var(--alert-border-radius);
-
-  @mixin native-scrollbar;
 }
 
 .content {

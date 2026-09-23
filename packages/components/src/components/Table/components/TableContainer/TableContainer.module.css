@@ -1,5 +1,3 @@
-@import url('../../../../styles/mixins.css');
-
 .base {
   --table-container-block-size: ;
   --table-container-min-block-size: unset;
@@ -17,8 +15,6 @@
   min-inline-size: var(--table-container-min-inline-size);
   max-inline-size: var(--table-container-max-inline-size);
   scroll-padding-block-start: var(--table-container-scroll-padding-top);
-
-  @mixin native-scrollbar;
 
   table:not([data-resizable='true']) {
     inline-size: 100%;

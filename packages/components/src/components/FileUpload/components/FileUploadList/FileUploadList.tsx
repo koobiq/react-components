@@ -24,6 +24,7 @@ type FileUploadListProps = Omit<ComponentPropsWithRef<'div'>, 'children'> & {
 };
 
 const textNormal = utilClasses.typography['text-normal'];
+const { nativeScrollbar } = utilClasses;
 
 const FileUploadListEmptyState = ({
   slots,
@@ -54,7 +55,7 @@ const FileUploadListFiles = ({
   return (
     <div
       {...props}
-      className={clsx(s.list, className)}
+      className={clsx(s.list, allowsMultiple && nativeScrollbar, className)}
       data-multiple={allowsMultiple || undefined}
       data-size={size}
     >

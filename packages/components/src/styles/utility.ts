@@ -77,4 +77,6 @@ export const utilClasses = {
   list: s.list,
   listItem: s['list-item'],
   listHeading: s['list-heading'],
+  nativeScrollbar: s['native-scrollbar'],
+  nativeScrollbarDescendants: s['native-scrollbar-descendants'],
 };

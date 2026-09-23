@@ -12,12 +12,15 @@ import {
 } from '@koobiq/react-core';
 import { IconXmark16 } from '@koobiq/react-icons';
 
+import { utilClasses } from '../../styles/utility';
 import { IconButton } from '../IconButton';
 
 import s from './Alert.module.css';
 import { AlertIcon } from './components';
 import type { AlertBaseProps } from './index';
 import intlMessages from './intl.json';
+
+const { nativeScrollbar } = utilClasses;
 
 /** Alert displays warning messages that require attention. */
 export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
@@ -92,6 +95,7 @@ export const Alert = polymorphicForwardRef<'div', AlertBaseProps>(
         ref={ref}
         className={clsx(
           s.base,
+          nativeScrollbar,
           s[status],
           isCompact && s.compact,
           isColored && s.colored,

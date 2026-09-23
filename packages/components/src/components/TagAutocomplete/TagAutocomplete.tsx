@@ -3,12 +3,13 @@
 import { forwardRef, useRef } from 'react';
 import type { Ref } from 'react';
 
-import { mergeProps, useElementSize } from '@koobiq/react-core';
+import { clsx, mergeProps, useElementSize } from '@koobiq/react-core';
 import {
   useTagAutocomplete,
   useTagAutocompleteState,
 } from '@koobiq/react-primitives';
 
+import { utilClasses } from '../../styles/utility';
 import { useForm } from '../Form';
 import { ListInner } from '../List';
 import { PopoverInner } from '../Popover/PopoverInner';
@@ -18,6 +19,8 @@ import { Tag } from '../TagList/Tag';
 import s from './TagAutocomplete.module.css';
 import { TagAutocompleteListItem } from './TagAutocompleteItem';
 import type { TagAutocompleteComponent, TagAutocompleteProps } from './types';
+
+const { nativeScrollbar } = utilClasses;
 
 const MIN_POPOVER_INLINE_SIZE = 200;
 
@@ -126,7 +129,7 @@ function TagAutocompleteRender<T extends object>(
       onLoadMore,
       loadingText,
       isPadded: true,
-      className: s.list,
+      className: clsx(s.list, nativeScrollbar),
       noItemsText: props.allowsEmptyCollection ? noItemsText : null,
     },
     listPropsAria,
