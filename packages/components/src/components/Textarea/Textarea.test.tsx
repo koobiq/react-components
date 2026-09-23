@@ -4,6 +4,7 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, expectTypeOf, vi } from 'vitest';
 
+import { utilClasses } from '../../styles/utility';
 import { Form } from '../Form';
 
 import { Textarea, type TextareaProps } from './index';
@@ -21,6 +22,12 @@ describe('Textarea', () => {
 
   const getRoot = () => screen.getByTestId('root');
   const getTextarea = () => screen.getByTestId('textarea');
+
+  it('should style the scrollbar of the textarea', () => {
+    render(<Textarea {...baseProps} />);
+
+    expect(getTextarea()).toHaveClass(utilClasses.nativeScrollbar);
+  });
 
   it('should not expose the isClearable prop', () => {
     expectTypeOf<TextareaProps>().not.toHaveProperty('isClearable');

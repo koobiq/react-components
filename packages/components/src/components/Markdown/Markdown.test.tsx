@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
+import { utilClasses } from '../../styles/utility';
+
 import { Markdown } from './index.js';
 
 describe('Markdown', () => {
@@ -21,6 +23,16 @@ describe('Markdown', () => {
 
     expect(ref.current?.firstElementChild).toBe(
       screen.getByRole('heading', { name: 'Heading' })
+    );
+  });
+
+  it('should style the scrollbars of the rendered content', () => {
+    // `pre` and `table` are rendered by react-markdown, so they are covered
+    // through the descendants variant instead of a class of their own.
+    const { container } = render(<Markdown># Heading</Markdown>);
+
+    expect(container.firstElementChild).toHaveClass(
+      utilClasses.nativeScrollbarDescendants
     );
   });
 
