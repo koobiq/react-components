@@ -212,6 +212,11 @@
   color: var(--kbq-markdown-table-body);
 }
 
+.base table:focus-visible {
+  outline: 2px solid var(--kbq-states-line-focus-theme);
+  outline-offset: -2px;
+}
+
 .base table td,
 .base table th {
   padding: var(--kbq-markdown-table-size-padding);

@@ -2,7 +2,7 @@ import { createRef } from 'react';
 
 import { render, screen } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { utilClasses } from '../../styles/utility';
 
@@ -24,6 +24,38 @@ describe('Markdown', () => {
     expect(ref.current?.firstElementChild).toBe(
       screen.getByRole('heading', { name: 'Heading' })
     );
+  });
+
+  it('should make a scrolling table keyboard-focusable', () => {
+    // Safari does not focus a scroll region on its own, and jsdom has no
+    // layout - so the overflow is mocked.
+    const mockWidths = (scrollWidth: number, clientWidth: number) => [
+      vi
+        .spyOn(Element.prototype, 'scrollWidth', 'get')
+        .mockReturnValue(scrollWidth),
+      vi
+        .spyOn(Element.prototype, 'clientWidth', 'get')
+        .mockReturnValue(clientWidth),
+    ];
+
+    const table = '| a | b |\n| - | - |\n| 1 | 2 |';
+
+    const fits = mockWidths(100, 100);
+
+    const { unmount } = render(<Markdown>{table}</Markdown>);
+
+    expect(screen.getByRole('table')).not.toHaveAttribute('tabindex');
+
+    fits.forEach((mock) => mock.mockRestore());
+    unmount();
+
+    const overflows = mockWidths(500, 100);
+
+    render(<Markdown>{table}</Markdown>);
+
+    expect(screen.getByRole('table')).toHaveAttribute('tabindex', '0');
+
+    overflows.forEach((mock) => mock.mockRestore());
   });
 
   it('should style the scrollbars of the rendered content', () => {

@@ -8,12 +8,15 @@ import remarkGfm from 'remark-gfm';
 
 import { utilClasses } from '../../styles/utility';
 
+import { MarkdownTable } from './components';
 import s from './Markdown.module.css';
 import type { MarkdownProps } from './types';
 
 const { nativeScrollbarDescendants } = utilClasses;
 
 const remarkPlugins = [remarkGfm];
+
+const components = { table: MarkdownTable };
 
 /** Markdown renders a Markdown string as React elements. */
 export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(
@@ -26,7 +29,9 @@ export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(
         className={clsx(s.base, nativeScrollbarDescendants, className)}
         {...other}
       >
-        <ReactMarkdown remarkPlugins={remarkPlugins}>{children}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+          {children}
+        </ReactMarkdown>
       </div>
     );
   }
