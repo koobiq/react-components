@@ -34,7 +34,7 @@ import { SideNavbar } from '@koobiq/react-components';
 - `SideNavbar` — the root navigation component. It arranges its content vertically and manages the collapsed state.
 - `SideNavbar.Header`, `SideNavbar.Body`, `SideNavbar.Footer` — structural regions at the top, in the middle and at the bottom. The body grows to fill the available space and scrolls when needed.
 - `SideNavbar.AppItem` — the logo and the app name.
-- `SideNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu.
+- `SideNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu, whose items are usually links too.
 - `SideNavbar.Action` — the main action button.
 - `SideNavbar.Divider` — a line between items.
 
@@ -58,6 +58,6 @@ A name that does not fit into one line takes two smaller lines. A longer one is 
 
 ## Routing
 
-Wrap the app in `RouterProvider`, and items with `href` navigate through your router, be it **Next.js** or **React Router**.
+Wrap the app in `RouterProvider`, and items and menu items with `href` navigate through your router, be it **Next.js** or **React Router**.
 
 <Story of={Stories.RouteProvider} />

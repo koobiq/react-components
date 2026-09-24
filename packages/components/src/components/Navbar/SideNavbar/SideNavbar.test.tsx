@@ -349,7 +349,7 @@ describe('SideNavbar', () => {
       const popover = await screen.findByTestId('menu-popover');
 
       expect(popover).toHaveAttribute('data-placement', 'right');
-      expect(popover).toHaveStyle({ left: '-8px' });
+      expect(popover).toHaveStyle({ left: '-4px' });
     });
 
     it('lets isMenu hide the arrow on a menu trigger', () => {

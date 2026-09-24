@@ -113,8 +113,9 @@
   }
 }
 
-.icon,
-.menuIcon {
+.icon {
+  display: flex;
+  flex-shrink: 0;
   color: var(--kbq-icon-contrast);
 
   .base[data-hovered] & {
@@ -124,11 +125,6 @@
   .base[data-disabled] & {
     color: var(--kbq-states-icon-disabled);
   }
-}
-
-.icon {
-  display: flex;
-  flex-shrink: 0;
 }
 
 .content {
@@ -158,8 +154,10 @@
   }
 }
 
+/* Unlike the icon, the arrow stays faded in every state but disabled. */
 .menuIcon {
   margin-inline-start: auto;
+  color: var(--kbq-icon-contrast-fade);
 
   .badge + &,
   .base[data-orientation='horizontal'] & {
@@ -168,5 +166,9 @@
 
   .base[data-collapsed] & {
     display: none;
+  }
+
+  .base[data-disabled] & {
+    color: var(--kbq-states-icon-disabled);
   }
 }

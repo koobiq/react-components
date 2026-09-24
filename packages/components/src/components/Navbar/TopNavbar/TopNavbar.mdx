@@ -34,7 +34,7 @@ import { TopNavbar } from '@koobiq/react-components';
 - `TopNavbar` — the root navigation component. It arranges its content horizontally and provides keyboard navigation between items.
 - `TopNavbar.Container` — a group of items on the start or end side of the navbar, selected with `placement`.
 - `TopNavbar.AppItem` — the logo and the app name.
-- `TopNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu.
+- `TopNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu, whose items are usually links too.
 - `TopNavbar.Action` — the main action button.
 - `TopNavbar.Divider` — a line between items.
 
@@ -55,7 +55,7 @@ to see this behavior.
 
 ## Routing
 
-Wrap the app in `RouterProvider` to navigate items with your application
-router.
+Wrap the app in `RouterProvider` to navigate items and menu items with your
+application router.
 
 <Story of={Stories.RouteProvider} />

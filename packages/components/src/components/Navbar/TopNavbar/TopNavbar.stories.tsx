@@ -83,9 +83,9 @@ export const Base: Story = {
           <DropdownMenu>
             <TopNavbar.Item>Projects</TopNavbar.Item>
             <DropdownMenu.Popover>
-              <DropdownMenu.Content onAction={(key) => alert(key)}>
-                <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
-                <DropdownMenu.Item id="users">Users</DropdownMenu.Item>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item href="#roles">Roles</DropdownMenu.Item>
+                <DropdownMenu.Item href="#users">Users</DropdownMenu.Item>
               </DropdownMenu.Content>
             </DropdownMenu.Popover>
           </DropdownMenu>
@@ -184,13 +184,13 @@ export const CollapsingItems: Story = {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const sections = [
-      { key: 'overview', label: 'Overview' },
-      { key: 'incidents', label: 'Incidents' },
-      { key: 'assets', label: 'Assets' },
-      { key: 'vulnerabilities', label: 'Vulnerabilities' },
-      { key: 'integrations', label: 'Integrations' },
-      { key: 'reports', label: 'Reports' },
-      { key: 'settings', label: 'Settings' },
+      { href: '#overview', label: 'Overview' },
+      { href: '#incidents', label: 'Incidents' },
+      { href: '#assets', label: 'Assets' },
+      { href: '#vulnerabilities', label: 'Vulnerabilities' },
+      { href: '#integrations', label: 'Integrations' },
+      { href: '#reports', label: 'Reports' },
+      { href: '#settings', label: 'Settings' },
     ];
 
     const hiddenStyle: CSSProperties = {
@@ -258,9 +258,9 @@ export const CollapsingItems: Story = {
             >
               {sections.map((section, index) => (
                 <TopNavbar.Item
-                  key={section.key}
+                  key={section.href}
                   ref={(element) => setItemRef(index, element)}
-                  href="#"
+                  href={section.href}
                   style={visibleMap[index] ? undefined : hiddenStyle}
                   aria-hidden={!visibleMap[index] || undefined}
                 >
@@ -278,9 +278,9 @@ export const CollapsingItems: Story = {
                   More
                 </TopNavbar.Item>
                 <DropdownMenu.Popover>
-                  <DropdownMenu.Content onAction={(key) => alert(key)}>
+                  <DropdownMenu.Content>
                     {hiddenSections.map((section) => (
-                      <DropdownMenu.Item key={section.key} id={section.key}>
+                      <DropdownMenu.Item key={section.href} href={section.href}>
                         {section.label}
                       </DropdownMenu.Item>
                     ))}
@@ -341,6 +341,19 @@ export const RouteProvider: Story = {
             <TopNavbar.Item icon={<IconFolder16 />} href="/integrations">
               Integrations
             </TopNavbar.Item>
+            <DropdownMenu>
+              <TopNavbar.Item>Reports</TopNavbar.Item>
+              <DropdownMenu.Popover>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item href="/reports/daily">
+                    Daily
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item href="/reports/weekly">
+                    Weekly
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Popover>
+            </DropdownMenu>
           </TopNavbar.Container>
         </TopNavbar>
 

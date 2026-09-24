@@ -30,8 +30,8 @@ import {
 import s from './SideNavbar.module.css';
 import type { SideNavbarProps } from './types';
 
-// A menu opens beside the navbar, flush with its item's highlight.
-const menuPopover = { placement: 'end top', offset: -8 } as const;
+// A menu opens beside the item, 4px from its highlight (inset by 8px).
+const menuPopover = { placement: 'end top', offset: -4 } as const;
 
 // The toggle button's shortcut, as in Koobiq Angular.
 const toggleShortcut = { code: 'Slash', ctrlKey: true };
@@ -81,7 +81,6 @@ const SideNavbarComponent = forwardRef<HTMLElement, SideNavbarProps>(
         ref={ref}
         size={240}
         closedSize={56}
-        role="navigation"
         isOpen={!isCollapsed}
         keyboardShortcut={isToggleButtonHidden ? null : toggleShortcut}
         slotProps={{

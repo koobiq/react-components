@@ -91,16 +91,16 @@ export const Base: Story = {
               Control Panel
             </SideNavbar.Item>
             <DropdownMenu.Popover>
-              <DropdownMenu.Content onAction={(key) => alert(key)}>
-                <DropdownMenu.Item id="service-accounts">
+              <DropdownMenu.Content>
+                <DropdownMenu.Item href="#service-accounts">
                   Service Accounts
                 </DropdownMenu.Item>
-                <DropdownMenu.Item id="roles">Roles</DropdownMenu.Item>
+                <DropdownMenu.Item href="#roles">Roles</DropdownMenu.Item>
                 <DropdownMenu.SubmenuTrigger>
                   <DropdownMenu.Item id="users">Users</DropdownMenu.Item>
                   <DropdownMenu.Popover>
                     <DropdownMenu.Content onAction={(key) => alert(key)}>
-                      <DropdownMenu.Item id="all-users">
+                      <DropdownMenu.Item href="#users">
                         All Users
                       </DropdownMenu.Item>
                       <DropdownMenu.Item id="invite-user">
@@ -118,14 +118,14 @@ export const Base: Story = {
               Documentation
             </SideNavbar.Item>
             <DropdownMenu.Popover>
-              <DropdownMenu.Content onAction={(key) => alert(key)}>
-                <DropdownMenu.Item id="start">
+              <DropdownMenu.Content>
+                <DropdownMenu.Item href="#getting-started">
                   Getting Started
                 </DropdownMenu.Item>
-                <DropdownMenu.Item id="create-role">
+                <DropdownMenu.Item href="#create-role">
                   How to Create a Role
                 </DropdownMenu.Item>
-                <DropdownMenu.Item id="add-user">
+                <DropdownMenu.Item href="#add-user">
                   How to Add a User
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
@@ -335,6 +335,18 @@ export const RouteProvider: Story = {
             <SideNavbar.Item icon={<IconDatabase16 />} href="/link-3">
               Link 3
             </SideNavbar.Item>
+
+            <DropdownMenu>
+              <SideNavbar.Item icon={<IconDatabase16 />}>
+                More links
+              </SideNavbar.Item>
+              <DropdownMenu.Popover>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item href="/link-4">Link 4</DropdownMenu.Item>
+                  <DropdownMenu.Item href="/link-5">Link 5</DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Popover>
+            </DropdownMenu>
           </SideNavbar.Body>
 
           <SideNavbar.Footer>
