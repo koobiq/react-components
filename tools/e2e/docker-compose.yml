@@ -1,0 +1,23 @@
+# Run it with `pnpm e2e:docker` (tools/e2e/run.mjs), which passes PLAYWRIGHT_VERSION.
+
+# Named explicitly, so that it does not share containers with other projects in an `e2e` directory.
+name: koobiq-react-components-e2e
+
+services:
+  e2e:
+    # The baselines are rendered on linux/arm64, as on the ubuntu-24.04-arm runners in CI.
+    platform: ${E2E_PLATFORM:-linux/arm64}
+    build:
+      context: ../..
+      dockerfile: tools/e2e/Dockerfile
+      args:
+        - PLAYWRIGHT_VERSION
+    init: true
+    ipc: host
+    environment:
+      # The image already holds the Storybook build.
+      WEB_SERVER_COMMAND: pnpm e2e:serve
+    # Outputs only. Updating the baselines mounts the sources, see docker-compose.update.yml.
+    volumes:
+      - ../../playwright-report:/host/playwright-report
+      - ../../test-results:/host/test-results

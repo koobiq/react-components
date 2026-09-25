@@ -1,6 +1,33 @@
+import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
+import { utilClasses } from '../../../styles/utility';
+import { SkeletonTypography } from '../index';
 import { getRowWidth } from '../utils';
+
+describe('SkeletonTypography', () => {
+  const baseProps = { 'data-testid': 'skeleton' };
+
+  const getRoot = () => screen.getByTestId('skeleton');
+
+  it('should render a row per {rows}', () => {
+    render(<SkeletonTypography {...baseProps} rows={3} />);
+
+    expect(getRoot().children).toHaveLength(3);
+  });
+
+  it('should apply the typography class of {variant}', () => {
+    render(<SkeletonTypography {...baseProps} rows={1} variant="text-big" />);
+
+    expect(getRoot()).toHaveClass(utilClasses.typography['text-big']);
+  });
+
+  it('should set {inlineSize} on the container', () => {
+    render(<SkeletonTypography {...baseProps} rows={1} inlineSize={200} />);
+
+    expect(getRoot()).toHaveStyle({ inlineSize: '200px' });
+  });
+});
 
 describe('getRowWidth', () => {
   it('returns 50% if it is the only row', () => {

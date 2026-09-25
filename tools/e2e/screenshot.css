@@ -1,0 +1,5 @@
+/* The app shell around the component: Storybook sets neither of these itself. */
+body {
+  font-family: var(--kbq-font-family-base);
+  background-color: var(--kbq-background-bg);
+}

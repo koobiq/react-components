@@ -82,6 +82,8 @@ export default defineConfig({
         // Custom
         'builder/**',
         '**/*.stories.*',
+        '**/*.e2e.*',
+        'packages/components/e2e/**',
         '**/index.*',
       ],
     },

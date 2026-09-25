@@ -1,0 +1,8 @@
+# Added by `pnpm e2e:docker:update-snapshots`: mounts the sources for the new baselines. The report
+# mounts are repeated, since some Compose versions replace the list instead of merging it.
+services:
+  e2e:
+    volumes:
+      - ../../packages/components/src:/app/packages/components/src
+      - ../../playwright-report:/host/playwright-report
+      - ../../test-results:/host/test-results
