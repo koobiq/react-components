@@ -8,12 +8,26 @@ import type { UserConfig } from 'vite';
 
 const toPath = (_path: string) => join(process.cwd(), _path);
 
+// Storybook starts a test build from the flag or from the env variable, and reads the variable as
+// truthy unless it is empty, `0` or `false`: the stories below have to follow the same rule.
+const sbTestBuild = (process.env.SB_TESTBUILD ?? '').toLowerCase();
+
+const isTestBuild =
+  process.argv.includes('--test') || !['', '0', 'false'].includes(sbTestBuild);
+
+// The e2e test components and the documentation are of no use to each other: the suite opens
+// nothing but `E2E/*`, and a docs build would keep the test components reachable by URL, since
+// `!dev` only hides a story from the sidebar.
+const stories = isTestBuild
+  ? ['../packages/**/*.e2e.stories.@(js|ts|tsx)']
+  : [
+      '../packages/**/!(*.e2e).@(mdx|stories.@(js|ts|tsx))',
+      '../docs/**/*.@(mdx|stories.@(js|ts|tsx))',
+    ];
+
 const config: StorybookConfig = {
   staticDirs: [toPath('.storybook/public')],
-  stories: [
-    '../packages/**/*.@(mdx|stories.@(js|ts|tsx))',
-    '../docs/**/*.@(mdx|stories.@(js|ts|tsx))',
-  ],
+  stories,
   addons: [
     {
       name: '@storybook/addon-docs',

@@ -28,6 +28,8 @@ const rawStories = import.meta.glob(
     '../**/*.stories.jsx',
     '../**/*.stories.ts',
     '../**/*.stories.tsx',
+    // The e2e test components have no docs page to show their source in.
+    '!../**/*.e2e.stories.@(js|ts|tsx)',
   ],
   {
     eager: true,

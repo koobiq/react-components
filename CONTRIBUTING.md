@@ -87,7 +87,8 @@ packages/components/src/components/Button/
 
 - Test components are stories under the `E2E/<Name>` title, tagged `!dev` and `!manifest`: they
   stay out of the sidebar and `llms.txt`. Usually it is one story with a grid of variants and
-  states built with `E2eGrid` from `packages/components/e2e/E2eGrid.tsx`.
+  states built with `E2eGrid` from `packages/components/e2e/E2eGrid.tsx`. Only the build the
+  suite runs against serves them; the documentation build leaves them out entirely.
 - A test opens the story with `e2eGotoStory(page, 'e2e-button--state-and-style')` and screenshots
   it in both themes with `e2eScreenshotThemes(page, '01')`, both from
   `packages/components/e2e/utils.ts`.
