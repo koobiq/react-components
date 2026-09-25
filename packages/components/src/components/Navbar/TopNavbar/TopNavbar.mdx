@@ -1,0 +1,61 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../../.storybook/components';
+
+import * as Stories from './TopNavbar.stories';
+
+<Meta of={Stories} />
+
+# TopNavbar
+
+<Status variant="experimental" />
+
+The horizontal main menu of the product.
+
+## Import
+
+```tsx
+import { TopNavbar } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Anatomy
+
+- `TopNavbar` — the root navigation component. It arranges its content horizontally and provides keyboard navigation between items.
+- `TopNavbar.Container` — a group of items on the start or end side of the navbar, selected with `placement`.
+- `TopNavbar.AppItem` — the logo and the app name.
+- `TopNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu, whose items are usually links too.
+- `TopNavbar.Action` — the main action button.
+- `TopNavbar.Divider` — a line between items.
+
+## Long app name
+
+A name that does not fit into one line takes two smaller lines. A longer one is
+cut off and shown in a tooltip.
+
+<Story of={Stories.LongAppName} />
+
+## Overflow
+
+Use [useHideOverflowItems](?path=/docs/hooks-usehideoverflowitems--docs) to move
+sections that do not fit into a **More** menu. Resize the example horizontally
+to see this behavior.
+
+<Story of={Stories.CollapsingItems} />
+
+## Routing
+
+Wrap the app in `RouterProvider` to navigate items and menu items with your
+application router.
+
+<Story of={Stories.RouteProvider} />

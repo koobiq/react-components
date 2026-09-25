@@ -4,55 +4,74 @@
 
 ```ts
 
+import type { ButtonBaseProps as ButtonBaseProps_2 } from '@koobiq/react-primitives';
 import type { ComponentPropsWithRef } from 'react';
+import type { CSSProperties } from 'react';
+import type { DataAttributeProps } from '@koobiq/react-core';
 import { DistributiveOmit } from '@koobiq/react-core';
 import { ElementType } from 'react';
+import type { ExtendableProps } from '@koobiq/react-core';
+import { ForwardRefExoticComponent } from 'react';
 import { JSX } from 'react/jsx-runtime';
 import { LinkBaseProps } from '@koobiq/react-primitives';
 import { PolyForwardComponent } from '@koobiq/react-core';
 import type { ReactNode } from 'react';
+import { RefAttributes } from 'react';
 
-// @public
-export const Navbar: {
-    (input: NavbarProps): JSX.Element;
-    displayName: string;
-} & {
-    Header: {
-        (input: NavbarHeaderProps): JSX.Element;
-        displayName: string;
-    };
-    Body: {
-        (input: NavbarBodyProps): JSX.Element;
-        displayName: string;
-    };
-    Footer: {
-        (input: NavbarFooterProps): JSX.Element;
-        displayName: string;
-    };
+// @public @deprecated (undocumented)
+export const Navbar: ForwardRefExoticComponent<Omit<NavbarProps, "ref"> & RefAttributes<HTMLElement>> & {
+    Header: ForwardRefExoticComponent<Omit<NavbarHeaderProps, "ref"> & RefAttributes<HTMLElement>>;
+    Body: ForwardRefExoticComponent<Omit<NavbarBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Footer: ForwardRefExoticComponent<Omit<NavbarFooterProps, "ref"> & RefAttributes<HTMLElement>>;
     Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
     AppItem: {
         (input: NavbarAppItemProps): JSX.Element;
         displayName: string;
     };
+    Divider: {
+        (input: NavbarDividerProps): JSX.Element;
+        displayName: string;
+    };
+    Action: ForwardRefExoticComponent<Omit<NavbarActionProps, "ref"> & RefAttributes<HTMLButtonElement>>;
 };
+
+// Warning: (ae-forgotten-export) The symbol "ButtonProps" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type NavbarActionProps = ExtendableProps<{
+    icon?: ReactNode;
+    children?: ReactNode;
+    className?: string;
+}, Omit<ButtonProps, 'startIcon' | 'endIcon' | 'onlyIcon' | 'fullWidth'>>;
 
 // @public (undocumented)
 export type NavbarAppItemProps = DistributiveOmit<NavbarItemProps, 'isMenu' | 'badge'>;
 
 // @public (undocumented)
-export type NavbarBodyProps = ComponentPropsWithRef<'ul'>;
+export type NavbarBodyProps = {
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'div'>;
+
+// @public @deprecated (undocumented)
+export const NavbarComponent: ForwardRefExoticComponent<Omit<NavbarProps, "ref"> & RefAttributes<HTMLElement>>;
 
 // @public (undocumented)
-export const NavbarComponent: {
-    (input: NavbarProps): JSX.Element;
-    displayName: string;
-};
+export type NavbarDividerProps = {
+    className?: string;
+} & DataAttributeProps;
 
 // @public (undocumented)
-export type NavbarFooterProps = ComponentPropsWithRef<'footer'>;
+export type NavbarFooterProps = {
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'footer'>;
 
 // @public (undocumented)
-export type NavbarHeaderProps = ComponentPropsWithRef<'header'>;
+export type NavbarHeaderProps = {
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'header'>;
 
 // @public (undocumented)
 export type NavbarItemProps = {
@@ -64,7 +83,7 @@ export type NavbarItemProps = {
     children?: ReactNode;
 } & LinkBaseProps;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export type NavbarProps = {
     isCollapsed?: boolean;
     isToggleButtonHidden?: boolean;
@@ -73,11 +92,70 @@ export type NavbarProps = {
     onCollapse?: (isCollapsed: boolean) => void;
 } & ComponentPropsWithRef<'nav'>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export type NavbarPropVariant = (typeof navbarPropVariant)[number];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const navbarPropVariant: readonly ["vertical", "horizontal"];
+
+// @public
+export const SideNavbar: ForwardRefExoticComponent<Omit<SideNavbarProps, "ref"> & RefAttributes<HTMLElement>> & {
+    Header: ForwardRefExoticComponent<Omit<NavbarHeaderProps, "ref"> & RefAttributes<HTMLElement>>;
+    Body: ForwardRefExoticComponent<Omit<NavbarBodyProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Footer: ForwardRefExoticComponent<Omit<NavbarFooterProps, "ref"> & RefAttributes<HTMLElement>>;
+    Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
+    AppItem: {
+        (input: NavbarAppItemProps): JSX.Element;
+        displayName: string;
+    };
+    Divider: {
+        (input: NavbarDividerProps): JSX.Element;
+        displayName: string;
+    };
+    Action: ForwardRefExoticComponent<Omit<NavbarActionProps, "ref"> & RefAttributes<HTMLButtonElement>>;
+};
+
+// @public (undocumented)
+export type SideNavbarProps = {
+    isCollapsed?: boolean;
+    isToggleButtonHidden?: boolean;
+    defaultCollapsed?: boolean;
+    onCollapse?: (isCollapsed: boolean) => void;
+} & ComponentPropsWithRef<'nav'>;
+
+// @public
+export const TopNavbar: ForwardRefExoticComponent<Omit<TopNavbarProps, "ref"> & RefAttributes<HTMLElement>> & {
+    Container: ForwardRefExoticComponent<Omit<TopNavbarContainerProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Item: PolyForwardComponent<"a", NavbarItemProps, ElementType>;
+    AppItem: {
+        (input: NavbarAppItemProps): JSX.Element;
+        displayName: string;
+    };
+    Divider: {
+        (input: NavbarDividerProps): JSX.Element;
+        displayName: string;
+    };
+    Action: ForwardRefExoticComponent<Omit<NavbarActionProps, "ref"> & RefAttributes<HTMLButtonElement>>;
+};
+
+// @public (undocumented)
+export type TopNavbarContainerPropPlacement = (typeof topNavbarContainerPropPlacement)[number];
+
+// @public (undocumented)
+export const topNavbarContainerPropPlacement: readonly ["start", "end"];
+
+// @public (undocumented)
+export type TopNavbarContainerProps = {
+    placement?: TopNavbarContainerPropPlacement;
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'div'>;
+
+// @public (undocumented)
+export type TopNavbarProps = {
+    className?: string;
+    children?: ReactNode;
+} & ComponentPropsWithRef<'nav'>;
 
 // (No @packageDocumentation comment for this package)
 

@@ -1,7 +1,7 @@
 'use client';
 
 import type { Ref } from 'react';
-import { forwardRef, useRef } from 'react';
+import { forwardRef, useContext, useRef } from 'react';
 
 import { deprecate } from '@koobiq/logger';
 import { useDOMRef, Pressable, mergeProps, clsx } from '@koobiq/react-core';
@@ -17,10 +17,13 @@ import { PopoverInner } from '../Popover/PopoverInner';
 import { MenuList } from './components';
 import type { MenuProps, MenuComponent, MenuRef } from './index';
 import s from './Menu.module.css';
+import { MenuPopoverContext } from './MenuPopoverContext';
 
 function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
+  const defaults = useContext(MenuPopoverContext);
+
   const {
-    placement = 'bottom start',
+    placement = defaults?.placement ?? 'bottom start',
     'data-testid': testId,
     control,
     style,
@@ -57,7 +60,7 @@ function MenuRender<T>(props: Omit<MenuProps<T>, 'ref'>, ref: Ref<MenuRef>) {
     {
       style,
       state,
-      offset: 4,
+      offset: defaults?.offset ?? 4,
       size: 'auto',
       hideArrow: true,
       popoverRef: domRef,

@@ -1,0 +1,19 @@
+.base {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  overflow: visible;
+  background-color: var(--kbq-background-bg-tertiary);
+  block-size: 100%;
+  border-inline-end: 1px solid var(--kbq-line-contrast-less);
+  box-sizing: content-box;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: hidden;
+}

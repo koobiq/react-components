@@ -1,102 +1,47 @@
 'use client';
 
-import {
-  clsx,
-  mergeProps,
-  useControlledState,
-  useLocalizedStringFormatter,
-  useObjectRef,
-} from '@koobiq/react-core';
-import { IconChevronDoubleLeftS16 } from '@koobiq/react-icons';
-import { Button, useToolbar } from '@koobiq/react-primitives';
+import { forwardRef } from 'react';
 
-import { Tooltip } from '../Tooltip';
+import { deprecate } from '@koobiq/logger';
 
 import {
+  NavbarAction,
   NavbarAppItem,
-  NavbarBody,
-  NavbarFooter,
-  NavbarHeader,
+  NavbarDivider,
   NavbarItem,
 } from './components';
-import intlMessages from './intl.json';
-import s from './Navbar.module.css';
-import { NavbarContext } from './NavbarContext';
+import { SideNavbar, type SideNavbarProps } from './SideNavbar';
 import type { NavbarProps } from './types';
 
-export const NavbarComponent = ({
-  variant = 'vertical',
-  isCollapsed,
-  isToggleButtonHidden,
-  defaultCollapsed,
-  className,
-  children,
-  onCollapse,
-  ref,
-  ...other
-}: NavbarProps) => {
-  const navbarRef = useObjectRef(ref);
-  const { toolbarProps } = useToolbar({ orientation: variant }, navbarRef);
+/**
+ * @deprecated Use `SideNavbar` or `TopNavbar` instead.
+ */
+export const NavbarComponent = forwardRef<HTMLElement, NavbarProps>(
+  (props, ref) => {
+    if (process.env.NODE_ENV !== 'production' && 'variant' in props) {
+      deprecate(
+        'Navbar: the "variant" prop is deprecated and ignored. Use SideNavbar or TopNavbar instead.'
+      );
+    }
 
-  const [isCollapsedActual, setIsCollapsedActual] = useControlledState(
-    isCollapsed,
-    defaultCollapsed ?? false,
-    onCollapse
-  );
+    const sideNavbarProps = { ...props };
+    delete sideNavbarProps.variant;
 
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
-
-  return (
-    <NavbarContext.Provider value={{ isCollapsed: isCollapsedActual }}>
-      <nav
-        {...mergeProps(other, toolbarProps)}
-        className={clsx(s.navbar, className)}
-        role="navigation"
-        ref={navbarRef}
-        data-collapsed={isCollapsedActual}
-      >
-        {children}
-
-        {!isToggleButtonHidden && (
-          <Tooltip
-            offset={8}
-            hideArrow
-            placement="end"
-            control={(tooltipProps) => (
-              <Button
-                {...tooltipProps}
-                aria-hidden
-                tabIndex={-1}
-                className={s.toggleWrapper}
-                onPress={() => setIsCollapsedActual((is) => !is)}
-              >
-                <span className={s.toggleButton}>
-                  <IconChevronDoubleLeftS16 />
-                </span>
-              </Button>
-            )}
-          >
-            {stringFormatter.format(
-              isCollapsedActual ? 'show navbar' : 'hide navbar'
-            )}
-          </Tooltip>
-        )}
-      </nav>
-    </NavbarContext.Provider>
-  );
-};
+    return <SideNavbar {...(sideNavbarProps as SideNavbarProps)} ref={ref} />;
+  }
+);
 
 NavbarComponent.displayName = 'Navbar';
 
 /**
- * The main menu organizes navigation within the product. It consists of a logo,
- * section links, and can additionally include an app switcher, help section, and
- * settings block.
+ * @deprecated Use `SideNavbar` or `TopNavbar` instead.
  */
 export const Navbar = Object.assign(NavbarComponent, {
-  Header: NavbarHeader,
-  Body: NavbarBody,
-  Footer: NavbarFooter,
+  Header: SideNavbar.Header,
+  Body: SideNavbar.Body,
+  Footer: SideNavbar.Footer,
   Item: NavbarItem,
   AppItem: NavbarAppItem,
+  Divider: NavbarDivider,
+  Action: NavbarAction,
 });

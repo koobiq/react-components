@@ -1,0 +1,17 @@
+.base {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  min-block-size: var(--kbq-size-5xl);
+  background-color: var(--kbq-background-bg);
+  padding: 0 var(--kbq-size-xxs);
+}
+
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--kbq-size-xxl);
+  align-items: center;
+  justify-content: space-between;
+  min-inline-size: 0;
+}
