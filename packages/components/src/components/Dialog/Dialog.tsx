@@ -51,7 +51,7 @@ const DialogComponent = forwardRef<DialogRef, DialogProps>(
     );
 
     const containerProps = mergeProps({
-      className: s.container,
+      className: clsx(s.container, utilClasses.nativeScrollbar),
     });
 
     const updateOverflow = (element: HTMLElement | null) => {

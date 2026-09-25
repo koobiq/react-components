@@ -201,13 +201,20 @@
     var(--kbq-markdown-hr-color);
 }
 
+/* A table box ignores `overflow`, so a wide table scrolls as a block. */
 .base table {
+  inline-size: fit-content;
   max-inline-size: 100%;
   overflow-x: auto;
-  display: table;
+  display: block;
   border-collapse: collapse;
   margin-block-end: var(--kbq-markdown-table-size-margin-bottom);
   color: var(--kbq-markdown-table-body);
+}
+
+.base table:focus-visible {
+  outline: 2px solid var(--kbq-states-line-focus-theme);
+  outline-offset: -2px;
 }
 
 .base table td,

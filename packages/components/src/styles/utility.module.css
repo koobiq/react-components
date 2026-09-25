@@ -271,6 +271,116 @@
   text-underline-offset: inherit;
 }
 
+/*
+ * Customizes the browser-rendered scrollbar, as `kbqNativeScrollbar` does in
+ * Koobiq Angular. `native-scrollbar-descendants` covers the element together
+ * with everything inside it, for content the component does not render itself.
+ * `.list ul` is in the list because `composes` takes a single class selector.
+ *
+ * Chromium and Safari are styled through `::-webkit-scrollbar*`. Firefox has no
+ * such pseudo-elements and gets colors only, through `scrollbar-color`, which
+ * is kept away from the other engines: since Chrome 121 a non-`auto` value
+ * disables `::-webkit-scrollbar*`.
+ */
+.native-scrollbar,
+.native-scrollbar-descendants,
+.native-scrollbar-descendants *,
+.list ul {
+  --native-scrollbar-thumb-min-size: var(--kbq-size-3xl);
+  --native-scrollbar-thumb-gap: 3px;
+  --native-scrollbar-track-size: 14px;
+  --native-scrollbar-thumb-default-background: var(
+    --kbq-semantic-contrast-a3,
+    var(--kbq-palette-grey-50-a32)
+  );
+  --native-scrollbar-thumb-hover-background: var(
+    --kbq-semantic-contrast-a4,
+    var(--kbq-palette-grey-50-a48)
+  );
+  --native-scrollbar-thumb-active-background: var(
+    --kbq-semantic-contrast-a5,
+    var(--kbq-palette-grey-20-a55)
+  );
+  --native-scrollbar-track-background: var(--kbq-background-transparent);
+
+  /* Inherited; a non-`auto` value disables `::-webkit-scrollbar*` in Chromium. */
+  scrollbar-color: auto;
+
+  :where(:global(.kbq-dark)) & {
+    --native-scrollbar-thumb-default-background: var(
+      --kbq-semantic-dark-contrast-a9,
+      var(--kbq-palette-grey-50-a48)
+    );
+    --native-scrollbar-thumb-hover-background: var(
+      --kbq-semantic-dark-contrast-a10,
+      var(--kbq-palette-grey-50-a60)
+    );
+    --native-scrollbar-thumb-active-background: var(
+      --kbq-semantic-dark-contrast-a11,
+      var(--kbq-palette-grey-50-a80)
+    );
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-color: var(--native-scrollbar-thumb-default-background)
+      var(--native-scrollbar-track-background);
+  }
+
+  &::-webkit-scrollbar {
+    inline-size: var(--native-scrollbar-track-size);
+    block-size: var(--native-scrollbar-track-size);
+    background-color: var(--native-scrollbar-track-background);
+    cursor: default;
+  }
+
+  /* `::-webkit-resizer` is left alone: styling it hides the resize grip. */
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    background-color: var(--native-scrollbar-track-background);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    box-sizing: border-box;
+    border: var(--native-scrollbar-thumb-gap) solid transparent;
+    border-radius: var(--kbq-size-border-radius);
+    background-color: var(--native-scrollbar-thumb-default-background);
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:vertical {
+    min-block-size: calc(
+      var(--native-scrollbar-thumb-min-size) +
+        var(--native-scrollbar-thumb-gap) * 2
+    );
+  }
+
+  &::-webkit-scrollbar-thumb:horizontal {
+    min-inline-size: calc(
+      var(--native-scrollbar-thumb-min-size) +
+        var(--native-scrollbar-thumb-gap) * 2
+    );
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--native-scrollbar-thumb-hover-background);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: var(--native-scrollbar-thumb-active-background);
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+/* `scrollbar-color` is inherited, the pseudo-elements are not. */
+@supports not selector(::-webkit-scrollbar) {
+  :where(.native-scrollbar:not(.native-scrollbar-descendants)) > * {
+    scrollbar-color: auto;
+  }
+}
+
 /* list */
 .list,
 .list ul {
@@ -279,6 +389,10 @@
   outline: none;
   overflow: auto;
   list-style: none;
+}
+
+.list {
+  composes: native-scrollbar;
 }
 
 .list[data-padded] {
@@ -420,41 +534,5 @@
       border-start-end-radius: 0;
       border-start-start-radius: 0;
     }
-  }
-}
-
-/* scroll */
-.scrollable {
-  --scroll-bar-size: 16px;
-
-  &::-webkit-scrollbar {
-    inline-size: var(--scroll-bar-size);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border: calc(var(--scroll-bar-size) / 4) solid transparent;
-    border-image: initial;
-    background-clip: padding-box;
-    min-block-size: calc(var(--scroll-bar-size) * 2);
-    background-color: var(--kbq-icon-contrast-fade);
-    border-radius: calc(var(--scroll-bar-size) / 2);
-
-    &:hover,
-    &:active {
-      border: calc(var(--scroll-bar-size) / 4) solid transparent;
-      background-clip: padding-box;
-    }
-
-    &:hover {
-      background-color: var(--kbq-states-icon-contrast-fade-hover);
-    }
-
-    &:active {
-      background-color: var(--kbq-states-icon-contrast-fade-active);
-    }
-  }
-
-  &::-webkit-scrollbar-corner {
-    background: transparent;
   }
 }

@@ -35,6 +35,7 @@ export const DialogBody = forwardRef<DialogBodyRef, DialogBodyProps>(
         ref={ctxRef}
         className={clsx(
           s.content,
+          utilClasses.nativeScrollbar,
           utilClasses.typography['text-normal'],
           className
         )}

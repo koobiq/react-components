@@ -12,9 +12,11 @@ import {
 import { userEvent } from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { utilClasses } from '../../styles/utility';
 import { ProgressSpinner } from '../ProgressSpinner';
 import { Provider } from '../Provider';
 
+import listStyles from './components/FileUploadList/FileUploadList.module.css';
 import { readDroppedFiles } from './hooks';
 import { FileUpload } from './index';
 import type { FileUploadFile, FileUploadProps } from './index';
@@ -134,6 +136,25 @@ const renderComponent = (props: TestFileUploadProps = {}) =>
 
 describe('FileUpload', () => {
   afterEach(() => vi.unstubAllGlobals());
+
+  it('should style the scrollbar of the file list only when multiple', () => {
+    // Only the multiple list scrolls: a single file never overflows it.
+    const initialItems = [makeItem('file.txt')];
+
+    const getList = (container: HTMLElement) =>
+      container.querySelector(`.${listStyles.list}`);
+
+    const { container, rerender } = renderComponent({
+      initialItems,
+      allowsMultiple: true,
+    });
+
+    expect(getList(container)).toHaveClass(utilClasses.nativeScrollbar);
+
+    rerender(<TestFileUpload initialItems={initialItems} />);
+
+    expect(getList(container)).not.toHaveClass(utilClasses.nativeScrollbar);
+  });
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLDivElement>();
