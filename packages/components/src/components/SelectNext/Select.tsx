@@ -23,6 +23,7 @@ import {
   Provider,
   ButtonContext,
   DEFAULT_SLOT,
+  useSelectionClear,
 } from '@koobiq/react-primitives';
 import type {
   SelectState,
@@ -86,6 +87,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     placeholder,
     loadingText,
     isClearable,
+    clearPredicate,
     noItemsText,
     inputValue: inputValueProp,
     labelAlign,
@@ -141,14 +143,14 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
     setInputValue,
   ]);
 
-  const clearButtonIsHidden = !inState.selectedItems.length;
+  const { canClear, clear: handleClear } = useSelectionClear(inState, {
+    isClearable,
+    isReadOnly,
+    clearPredicate,
+    onClear,
+  });
 
-  const handleClear = useCallback(() => {
-    if (isReadOnly) return;
-
-    inState.selectionManager.setSelectedKeys(new Set());
-    onClear?.();
-  }, [isReadOnly, onClear, inState]);
+  const clearButtonIsHidden = !canClear;
 
   const {
     menuProps,

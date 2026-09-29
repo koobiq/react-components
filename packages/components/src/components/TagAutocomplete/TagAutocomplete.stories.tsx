@@ -46,7 +46,7 @@ const meta = {
     'TagAutocomplete.Tag': TagAutocomplete.Tag,
   },
   parameters: { layout: 'centered' },
-  tags: ['status:new', 'date:2026-06-26'],
+  tags: ['status:updated', 'date:2026-09-29'],
 } satisfies Meta<typeof TagAutocomplete>;
 
 export default meta;
@@ -807,6 +807,78 @@ export const HideClearButton: Story = {
           </TagAutocomplete.Tag>
         )}
       </TagAutocomplete>
+    );
+  },
+};
+
+export const ClearPredicate: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const suggestions = [
+      { id: 'react', name: 'React' },
+      { id: 'typescript', name: 'TypeScript' },
+      { id: 'storybook', name: 'Storybook' },
+      { id: 'vite', name: 'Vite' },
+    ];
+
+    const initialItems = suggestions.slice(0, 3);
+
+    const defaultList = useListData<TagItem>({ initialItems });
+    const clearAllList = useListData<TagItem>({ initialItems });
+
+    const tagCounter = useRef(0);
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    const renderField = (
+      list: typeof defaultList,
+      props: Pick<TagAutocompleteProps<TagItem>, 'caption' | 'clearPredicate'>
+    ) => (
+      <TagAutocomplete<TagItem>
+        label="Tags"
+        items={list.items}
+        disabledKeys={['react']}
+        placeholder="Type or choose a tag"
+        listItems={suggestions}
+        style={{ inlineSize: m ? 360 : 240 }}
+        onAdd={(values, context) => {
+          if (context.source === 'suggestion') {
+            list.append(context.suggestion);
+
+            return;
+          }
+
+          list.append(...values.map(createTag));
+        }}
+        onRemove={(keys) => list.remove(...keys)}
+        renderListItem={(item) => (
+          <TagAutocomplete.ListItem key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.ListItem>
+        )}
+        {...props}
+      >
+        {(item) => (
+          <TagAutocomplete.Tag key={item.id} textValue={item.name}>
+            {item.name}
+          </TagAutocomplete.Tag>
+        )}
+      </TagAutocomplete>
+    );
+
+    return (
+      <FlexBox gap="m" direction="column">
+        {renderField(defaultList, { caption: 'Disabled tags are kept' })}
+        {renderField(clearAllList, {
+          caption: 'Every tag is cleared',
+          clearPredicate: () => true,
+        })}
+      </FlexBox>
     );
   },
 };

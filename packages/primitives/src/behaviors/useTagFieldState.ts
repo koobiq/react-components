@@ -1,8 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import type { Key } from '@koobiq/react-core';
 import { useControlledState } from '@koobiq/react-core';
 
+import { getClearKeys } from './clearPredicate';
 import type {
   TagFieldAddContext,
   TagFieldAddSource,
@@ -42,6 +43,7 @@ export function useTagFieldState<T extends object>(
     onAdd,
     onRemove,
     onClear,
+    clearPredicate,
     isDisabled,
     isReadOnly,
   } = props;
@@ -105,24 +107,31 @@ export function useTagFieldState<T extends object>(
     [isDisabled, isReadOnly, onRemove]
   );
 
+  const clearKeys = useMemo(
+    () =>
+      getClearKeys(
+        tagListState.collection.getKeys(),
+        {
+          collection: tagListState.collection,
+          disabledKeys: tagListState.disabledKeys,
+        },
+        clearPredicate
+      ),
+    [tagListState.collection, tagListState.disabledKeys, clearPredicate]
+  );
+
+  const canClear = clearKeys.size > 0 || inputValue !== '';
+
   const clear = useCallback(() => {
     if (isDisabled || isReadOnly) return false;
 
-    const allKeys = new Set<Key>(tagListState.collection.getKeys());
-    if (allKeys.size > 0) onRemove?.(allKeys);
+    if (clearKeys.size > 0) onRemove?.(clearKeys);
 
     setInputValue('');
     onClear?.();
 
     return true;
-  }, [
-    isDisabled,
-    isReadOnly,
-    onClear,
-    onRemove,
-    setInputValue,
-    tagListState.collection,
-  ]);
+  }, [clearKeys, isDisabled, isReadOnly, onClear, onRemove, setInputValue]);
 
   return {
     ...tagListState,
@@ -136,6 +145,7 @@ export function useTagFieldState<T extends object>(
     addFromInput,
     isSeparator,
     remove,
+    canClear,
     clear,
   };
 }

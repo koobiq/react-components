@@ -1,6 +1,10 @@
 import { createRef } from 'react';
 
-import { Collection, type SelectionMode } from '@koobiq/react-primitives';
+import { Collection } from '@koobiq/react-primitives';
+import type {
+  ClearPredicateItem,
+  SelectionMode,
+} from '@koobiq/react-primitives';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
@@ -498,6 +502,28 @@ describe('TreeSelect', () => {
           expect(queryPopover()).not.toBeInTheDocument();
         });
 
+        it('should disable the tag of a disabled item', async () => {
+          const onChange = vi.fn();
+
+          renderTreeSelect({
+            selectionMode: 'multiple',
+            defaultValue: [2, 7],
+            disabledKeys: [7],
+            selectedTagsOverflow,
+            onChange,
+            renderTag,
+          });
+
+          expect(getTag(7)).toHaveAttribute('data-disabled', 'true');
+          expect(getRemoveButton(7)).toHaveAttribute('aria-disabled', 'true');
+          expect(getTag(2)).not.toHaveAttribute('data-disabled');
+
+          await userEvent.click(getRemoveButton(7));
+
+          expect(onChange).not.toHaveBeenCalled();
+          expect(getTag(7)).toBeInTheDocument();
+        });
+
         it.each([
           { isDisabled: true, isReadOnly: false },
           { isDisabled: false, isReadOnly: true },
@@ -727,6 +753,150 @@ describe('TreeSelect', () => {
 
       expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
       expect(getClearButton()).toBeDisabled();
+    });
+
+    it('should keep disabled items when cleared', async () => {
+      const onChange = vi.fn();
+      const onClear = vi.fn();
+
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        value: [1, 7],
+        disabledKeys: [7],
+        onChange,
+        onClear,
+        isClearable: true,
+      });
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([7]);
+      expect(onClear).toHaveBeenCalledTimes(1);
+    });
+
+    it('should keep items disabled via the isDisabled prop when cleared', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Provider>
+          <TreeSelect
+            items={items}
+            label="Files"
+            selectionMode="multiple"
+            value={[2, 7]}
+            onChange={onChange}
+            slotProps={{ clearButton: { 'aria-label': 'clear-button' } }}
+            isClearable
+          >
+            {function renderItem(item: FileNode) {
+              return (
+                <Tree.Item
+                  key={item.id}
+                  textValue={item.title}
+                  isDisabled={item.id === 2}
+                >
+                  <Tree.ItemContent>{item.title}</Tree.ItemContent>
+                  <Collection items={item.children}>{renderItem}</Collection>
+                </Tree.Item>
+              );
+            }}
+          </TreeSelect>
+        </Provider>
+      );
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([2]);
+    });
+
+    it('should not run clearPredicate when the field is not clearable', () => {
+      const clearPredicate = vi.fn(() => true);
+
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        value: [1, 7],
+        clearPredicate,
+      });
+
+      expect(clearPredicate).not.toHaveBeenCalled();
+    });
+
+    it('should keep a disabled descendant of a collapsed item when cleared', async () => {
+      const onChange = vi.fn();
+
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        value: [2, 7],
+        disabledKeys: [2],
+        onChange,
+        isClearable: true,
+      });
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([2]);
+    });
+
+    it('should keep disabled items when disabledBehavior is "selection"', async () => {
+      const onChange = vi.fn();
+
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        value: [1, 7],
+        disabledKeys: [7],
+        disabledBehavior: 'selection',
+        onChange,
+        isClearable: true,
+      });
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([7]);
+    });
+
+    it('should be hidden when only disabled items are selected', () => {
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        value: [7],
+        disabledKeys: [7],
+        isClearable: true,
+      });
+
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should be hidden when the selected item is disabled in single mode', () => {
+      renderTreeSelect({ value: 7, disabledKeys: [7], isClearable: true });
+
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should clear the items accepted by clearPredicate', async () => {
+      const onChange = vi.fn();
+
+      const clearPredicate = vi.fn(
+        (item: ClearPredicateItem<FileNode>) => item.key !== 1
+      );
+
+      renderTreeSelect({
+        selectionMode: 'multiple',
+        value: [1, 7],
+        disabledKeys: [7],
+        clearPredicate,
+        onChange,
+        isClearable: true,
+      });
+
+      expect(clearPredicate).toHaveBeenCalledWith({
+        key: 7,
+        value: items[1],
+        textValue: 'README.md',
+        isDisabled: true,
+      });
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([1]);
     });
   });
 

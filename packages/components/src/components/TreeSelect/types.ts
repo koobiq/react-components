@@ -8,6 +8,7 @@ import type {
 
 import type { DataAttributeProps, Node, RefObject } from '@koobiq/react-core';
 import type {
+  ClearPredicate,
   SelectionMode,
   TreeProps as AriaTreeProps,
   TreeSelectStateOptions,
@@ -74,6 +75,13 @@ export type TreeSelectProps<
   renderTag?: (item: Node<T>, tagProps: TreeSelectTagProps) => ReactNode;
   /** Whether the field can be emptied. */
   isClearable?: boolean;
+  /**
+   * Decides which selected items the clear button removes: return `true` to
+   * clear the item, `false` to keep it. The clear button is hidden when it
+   * has nothing to remove. It runs during render, so keep it pure.
+   * @default (item) => !item.isDisabled
+   */
+  clearPredicate?: ClearPredicate<T>;
   /** Handler called when the clear button is clicked. */
   onClear?: () => void;
   /** Addon placed before the control. */

@@ -555,6 +555,40 @@ describe('Select', () => {
       expect(onClear).toHaveBeenCalledTimes(1);
     });
 
+    it('should hide the clear button when the selected item is disabled', () => {
+      render(
+        <Select {...baseProps} value="1" disabledKeys={['1']} isClearable>
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+        </Select>
+      );
+
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should clear a disabled item when clearPredicate accepts it', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Select
+          {...baseProps}
+          value="1"
+          onChange={onChange}
+          disabledKeys={['1']}
+          clearPredicate={() => true}
+          isClearable
+        >
+          <Select.Item id="1">1</Select.Item>
+          <Select.Item id="2">2</Select.Item>
+        </Select>
+      );
+
+      const clearButton = getClearButton();
+      if (clearButton) await userEvent.click(clearButton);
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith(null);
+    });
+
     it('should render a disabled clear button when Select is disabled', async () => {
       const onClear = vi.fn();
 

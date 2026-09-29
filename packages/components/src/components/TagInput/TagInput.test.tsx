@@ -1,7 +1,14 @@
 import { createRef, useRef, useState } from 'react';
 
 import type { Key, Selection } from '@koobiq/react-core';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { useTagField, useTagFieldState } from '@koobiq/react-primitives';
+import {
+  render,
+  renderHook,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -868,6 +875,125 @@ describe('TagInput', () => {
       });
 
       expect(getInput()).toHaveFocus();
+    });
+
+    it('keeps disabled tags on press', async () => {
+      const onRemove = vi.fn();
+
+      render(
+        <Wrapper
+          initialItems={seed(['a', 'b'])}
+          disabledKeys={['seed-0-a']}
+          onRemove={onRemove}
+        />
+      );
+
+      await userEvent.click(getClearButton() as HTMLElement);
+
+      expect(onRemove).toHaveBeenCalledExactlyOnceWith(new Set(['seed-1-b']));
+
+      await waitFor(() => expect(queryTag('b')).not.toBeInTheDocument());
+
+      expect(queryTag('a')).toBeInTheDocument();
+    });
+
+    it('keeps tags disabled via the isDisabled prop on press', async () => {
+      const onRemove = vi.fn();
+      const items = seed(['a', 'b']);
+
+      render(
+        <TagInput<TagItem>
+          label="Tags"
+          items={items}
+          onRemove={onRemove}
+          slotProps={{ clearButton: { 'aria-label': 'clear-button' } }}
+        >
+          {(item) => (
+            <TagInput.Tag key={item.id} isDisabled={item.name === 'a'}>
+              {item.name}
+            </TagInput.Tag>
+          )}
+        </TagInput>
+      );
+
+      await userEvent.click(getClearButton() as HTMLElement);
+
+      expect(onRemove).toHaveBeenCalledExactlyOnceWith(new Set(['seed-1-b']));
+    });
+
+    it('is hidden when only disabled tags are left and the input is empty', () => {
+      render(
+        <Wrapper initialItems={seed(['a'])} disabledKeys={['seed-0-a']} />
+      );
+
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('clears only the input when only disabled tags are left', async () => {
+      const onRemove = vi.fn();
+      const onClear = vi.fn();
+
+      render(
+        <Wrapper
+          initialItems={seed(['a'])}
+          disabledKeys={['seed-0-a']}
+          defaultInputValue="draft"
+          onRemove={onRemove}
+          onClear={onClear}
+        />
+      );
+
+      expect(getClearButton()).not.toHaveAttribute('aria-hidden', 'true');
+
+      await userEvent.click(getClearButton() as HTMLElement);
+
+      expect(onRemove).not.toHaveBeenCalled();
+      expect(onClear).toHaveBeenCalledTimes(1);
+      expect(getInput()).toHaveValue('');
+      expect(queryTag('a')).toBeInTheDocument();
+    });
+
+    it('removes disabled tags accepted by clearPredicate', async () => {
+      const onRemove = vi.fn();
+
+      render(
+        <Wrapper
+          initialItems={seed(['a', 'b'])}
+          disabledKeys={['seed-0-a']}
+          clearPredicate={() => true}
+          onRemove={onRemove}
+        />
+      );
+
+      await userEvent.click(getClearButton() as HTMLElement);
+
+      expect(onRemove).toHaveBeenCalledExactlyOnceWith(
+        new Set(['seed-0-a', 'seed-1-b'])
+      );
+    });
+
+    it('falls back to tags and input text when the state has no canClear', () => {
+      const items = seed(['a']);
+
+      const { result } = renderHook(() => {
+        const props = {
+          'aria-label': 'Tags',
+          items,
+          isClearable: true,
+          children: (item: TagItem) => (
+            <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>
+          ),
+        };
+
+        const state = {
+          ...useTagFieldState<TagItem>(props),
+          canClear: undefined,
+        };
+
+        return useTagField<TagItem>(props, state);
+      });
+
+      expect(result.current.clearButtonProps.isHidden).toBe(false);
     });
 
     it('is disabled but visible when disabled with tags', () => {

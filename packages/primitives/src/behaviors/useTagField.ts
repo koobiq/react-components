@@ -35,6 +35,7 @@ import { FormContext } from '../components';
 import intlMessages from '../intl/tag-field.json';
 import { removeDataAttributes } from '../utils';
 
+import type { ClearPredicate } from './clearPredicate';
 import type { TagAutocompleteState } from './useTagAutocomplete';
 import {
   isInteractiveTarget,
@@ -86,8 +87,18 @@ export type AriaTagFieldProps<T extends object> = Omit<
    * @default false
    */
   disableCommitOnBlur?: boolean;
-  /** Whether to show the cleaner button that removes all tags and the input. */
+  /**
+   * Whether to show the cleaner button that removes the tags accepted by
+   * `clearPredicate` and the input text.
+   */
   isClearable?: boolean;
+  /**
+   * Decides which tags the cleaner removes: return `true` to remove the tag,
+   * `false` to keep it. The input text is cleared either way. It runs during
+   * render, so keep it pure.
+   * @default (item) => !item.isDisabled
+   */
+  clearPredicate?: ClearPredicate<T>;
   /** Fires after the cleaner is pressed and the field is reset. */
   onClear?: () => void;
 };
@@ -141,7 +152,13 @@ export type TagFieldState<T extends object> = TagListState<T> & {
   isSeparator: (value: string) => boolean;
   /** Removes the provided tag keys. */
   remove: (keys: Set<Key>) => boolean;
-  /** Clears all tags and the input value. */
+  /**
+   * Whether the cleaner has something to remove: a tag accepted by
+   * `clearPredicate` or the input text. When omitted, the cleaner is shown
+   * whenever the field has tags or input text.
+   */
+  canClear?: boolean;
+  /** Removes the tags accepted by `clearPredicate` and clears the input value. */
   clear: () => boolean;
 };
 
@@ -199,6 +216,7 @@ export function useTagField<T extends object>(
     addFromInput,
     isSeparator,
     remove,
+    canClear,
     clear,
   } = state;
 
@@ -568,11 +586,12 @@ export function useTagField<T extends object>(
     inputRef
   );
 
-  const hasTags = collection.size > 0;
-  const hasInputValue = inputValue !== '';
-  const showCleaner = Boolean(isClearable);
+  // A state built outside useTagFieldState may not provide `canClear`.
+  const hasClearableContent =
+    canClear ?? (collection.size > 0 || inputValue !== '');
 
-  const cleanerIsHidden = Boolean(!showCleaner || (!hasTags && !hasInputValue));
+  const showCleaner = Boolean(isClearable);
+  const cleanerIsHidden = !showCleaner || !hasClearableContent;
 
   const clearButtonProps: TagFieldClearButtonProps = {
     isClearable: showCleaner,

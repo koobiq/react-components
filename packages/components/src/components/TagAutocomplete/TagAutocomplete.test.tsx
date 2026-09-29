@@ -31,6 +31,8 @@ type HarnessProps = {
   onLoadMore?: () => void;
   hideClearButton?: boolean;
   onClear?: () => void;
+  disabledKeys?: TagAutocompleteProps<TagItem>['disabledKeys'];
+  clearPredicate?: TagAutocompleteProps<TagItem>['clearPredicate'];
   defaultInputValue?: string;
   onInputChange?: (value: string) => void;
   slotProps?: TagAutocompleteProps<TagItem>['slotProps'];
@@ -60,6 +62,8 @@ function Harness(props: HarnessProps) {
     onLoadMore,
     hideClearButton,
     onClear,
+    disabledKeys,
+    clearPredicate,
     defaultInputValue,
     onInputChange,
     slotProps,
@@ -121,6 +125,8 @@ function Harness(props: HarnessProps) {
       onLoadMore={onLoadMore}
       hideClearButton={hideClearButton}
       onClear={onClear}
+      disabledKeys={disabledKeys}
+      clearPredicate={clearPredicate}
       defaultInputValue={defaultInputValue}
       onInputChange={onInputChange}
       renderListItem={(item) => (
@@ -626,6 +632,45 @@ describe('TagAutocomplete', () => {
     expect(getInput()).toHaveValue('');
     expect(screen.queryByText('Vite')).toBeNull();
     expect(getInput()).toHaveFocus();
+  });
+
+  it('keeps disabled tags when the cleaner is pressed', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Harness
+        initialTags={[
+          { id: 'vite', name: 'Vite' },
+          { id: 'webpack', name: 'Webpack' },
+        ]}
+        disabledKeys={['vite']}
+      />
+    );
+
+    await user.click(screen.getByLabelText('clear-button'));
+
+    expect(screen.getByText('Vite')).toBeInTheDocument();
+    expect(screen.queryByText('Webpack')).toBeNull();
+  });
+
+  it('removes disabled tags accepted by clearPredicate', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Harness
+        initialTags={[
+          { id: 'vite', name: 'Vite' },
+          { id: 'webpack', name: 'Webpack' },
+        ]}
+        disabledKeys={['vite']}
+        clearPredicate={() => true}
+      />
+    );
+
+    await user.click(screen.getByLabelText('clear-button'));
+
+    expect(screen.queryByText('Vite')).toBeNull();
+    expect(screen.queryByText('Webpack')).toBeNull();
   });
 
   it('returns a removed tag to the suggestions', async () => {

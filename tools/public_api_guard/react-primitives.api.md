@@ -48,6 +48,7 @@ import { ChangeEventHandler } from 'react';
 import { CheckboxGroupState } from '@react-stately/checkbox';
 import { ClipboardEventHandler } from 'react';
 import { Collection } from 'react-aria-components';
+import type { Collection as Collection_2 } from '@koobiq/react-core';
 import { CollectionBase } from '@koobiq/react-core';
 import type { CollectionChildren } from '@koobiq/react-core';
 import { CollectionRendererContext } from 'react-aria-components';
@@ -215,6 +216,7 @@ export type AriaTagFieldProps<T extends object> = Omit<AriaTextFieldProps<HTMLIn
     splitPattern?: RegExp;
     disableCommitOnBlur?: boolean;
     isClearable?: boolean;
+    clearPredicate?: ClearPredicate<T>;
     onClear?: () => void;
 };
 
@@ -325,6 +327,23 @@ export type CheckboxRenderProps = {
     isIndeterminate?: boolean;
 };
 
+// @public
+export type ClearPredicate<T> = (item: ClearPredicateItem<T>) => boolean;
+
+// @public
+export type ClearPredicateItem<T> = {
+    key: Key_2;
+    value: T | null;
+    textValue: string;
+    isDisabled: boolean;
+};
+
+// @public
+export type ClearPredicateState<T> = {
+    disabledKeys: Set<Key_2>;
+    collection: Collection_2<Node_2<T>>;
+};
+
 export { Collection }
 
 export { CollectionRendererContext }
@@ -372,6 +391,9 @@ export const FormContext: Context<ContextValue<FormProps, HTMLFormElement>>;
 export interface FormProps extends FormProps_2, DOMProps_2, GlobalDOMAttributes<HTMLFormElement> {
     validationBehavior?: 'aria' | 'native';
 }
+
+// @public
+export function getClearKeys<T>(keys: Iterable<Key_2>, input: ClearPredicateState<T>, clearPredicate?: ClearPredicate<T>): Set<Key_2>;
 
 export { getItemCount }
 
@@ -432,6 +454,9 @@ export function isCommandModifier(event: {
 
 // @public
 export function isInteractiveTarget(target: Element, root: Element): boolean;
+
+// @public
+export function isSelectionDisabled<T>(disabledKeys: Set<Key_2>, key: Key_2, item?: Node_2<T> | null): boolean;
 
 // @public (undocumented)
 export function isSpaceKey(key: string): key is " " | "Space" | "Spacebar";
@@ -601,6 +626,29 @@ export function removeDataAttributes<T>(props: T): T;
 
 export { RootMenuTriggerStateContext }
 
+// @public
+export type SelectionClearAria = {
+    canClear: boolean;
+    clear: () => void;
+};
+
+// @public
+export type SelectionClearProps<T> = {
+    isClearable?: boolean;
+    isReadOnly?: boolean;
+    clearPredicate?: ClearPredicate<T>;
+    onClear?: () => void;
+};
+
+// @public
+export type SelectionClearState<T> = ClearPredicateState<T> & {
+    selectedItems: Node_2<T>[];
+    selectionManager: {
+        selectedKeys: Set<Key_2>;
+        setSelectedKeys: (keys: Iterable<Key_2>) => void;
+    };
+};
+
 // @public (undocumented)
 type SelectionMode_2 = 'single' | 'multiple';
 export { SelectionMode_2 as SelectionMode }
@@ -732,6 +780,7 @@ export type TagFieldState<T extends object> = TagListState<T> & {
     addFromInput: (source: Exclude<TagFieldAddSource, 'suggestion'>, rawValue?: string) => boolean;
     isSeparator: (value: string) => boolean;
     remove: (keys: Set<Key_2>) => boolean;
+    canClear?: boolean;
     clear: () => boolean;
 };
 
@@ -1076,6 +1125,9 @@ export type UseRadioReturn = ReturnType<typeof useRadio>;
 export type UseRadioState = RadioGroupState;
 
 export { useRenderProps }
+
+// @public
+export function useSelectionClear<T>(state: SelectionClearState<T>, props: SelectionClearProps<T>): SelectionClearAria;
 
 export { useSlottedContext }
 

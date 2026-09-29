@@ -174,9 +174,25 @@ cannot be changed.
 ### Clear button
 
 If you pass the `isClearable` prop to the select, it will have a clear
-button which will be visible only when a value is selected.
+button which will be visible only when there is a value to clear.
 
 <Story of={Stories.ClearButton} />
+
+#### Disabled items
+
+The clear button keeps disabled items selected and is hidden when only they are left.
+To choose which items it removes, pass `clearPredicate`. It receives each selected item
+as `{ key, value, textValue, isDisabled }` and returns `true` to clear the item or `false` to keep it.
+
+```tsx
+// Clear every item, including the disabled ones
+<Select clearPredicate={() => true} />
+
+// Also keep the pinned items
+<Select clearPredicate={(item) => !item.isDisabled && !item.value?.isPinned} />
+```
+
+<Story of={Stories.ClearPredicate} />
 
 ### Searchable
 

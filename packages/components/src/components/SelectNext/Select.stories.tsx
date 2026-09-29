@@ -34,7 +34,7 @@ const meta = {
     'Select.ItemAddon': Select.ItemAddon,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-09-15'],
+  tags: ['status:updated', 'date:2026-09-29'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -528,6 +528,52 @@ export const ClearButton: Story = {
       >
         {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
       </Select>
+    );
+  },
+};
+
+export const ClearPredicate: Story = {
+  render: function Render() {
+    const options = [
+      { id: 1, name: 'Bruteforce' },
+      { id: 2, name: 'Complex Attack' },
+      { id: 3, name: 'DDoS' },
+      { id: 4, name: 'DoS' },
+      { id: 5, name: 'HIPS Alert' },
+    ];
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <Select
+          items={options}
+          label="Attack type"
+          caption="Disabled items are kept"
+          selectionMode="multiple"
+          selectedTagsOverflow="multiline"
+          defaultValue={[1, 2, 3]}
+          disabledKeys={[1]}
+          style={{ inlineSize: 320 }}
+          placeholder="Select an option"
+          isClearable
+        >
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+        </Select>
+        <Select
+          items={options}
+          label="Attack type"
+          caption="Every item is cleared"
+          selectionMode="multiple"
+          selectedTagsOverflow="multiline"
+          defaultValue={[1, 2, 3]}
+          disabledKeys={[1]}
+          clearPredicate={() => true}
+          style={{ inlineSize: 320 }}
+          placeholder="Select an option"
+          isClearable
+        >
+          {(item) => <Select.Item id={item.id}>{item.name}</Select.Item>}
+        </Select>
+      </FlexBox>
     );
   },
 };

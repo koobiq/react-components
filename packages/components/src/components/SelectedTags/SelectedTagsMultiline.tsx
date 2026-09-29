@@ -3,18 +3,18 @@ import { Fragment } from 'react';
 import { clsx, useLocalizedStringFormatter } from '@koobiq/react-core';
 
 import { useFormFieldControlGroup } from '../FormField';
-import { Tag, type TagProps } from '../Tag';
+import { Tag } from '../Tag';
 
 import intlMessages from './intl';
 import s from './SelectedTags.module.css';
 import type { SelectedTagsProps } from './types';
+import { getSelectedTagProps } from './utils';
 
 export function SelectedTagsMultiline<T extends object>({
   state,
   states,
   renderTag,
 }: SelectedTagsProps<T>) {
-  const { isDisabled, isInvalid, isReadOnly } = states;
   const t = useLocalizedStringFormatter(intlMessages);
 
   const { hasStartAddon } = useFormFieldControlGroup();
@@ -30,26 +30,7 @@ export function SelectedTagsMultiline<T extends object>({
         aria-label={t.format('selected items')}
       >
         {state.selectedItems?.map((item) => {
-          const onRemove = () => {
-            if (state.selectionManager.isSelected(item.key)) {
-              state.selectionManager.toggleSelection(item.key);
-            }
-          };
-
-          const tagProps: TagProps = {
-            className: s.tag,
-            variant: isInvalid ? 'error-fade' : 'contrast-fade',
-            allowsRemoving: true,
-            isDisabled,
-            slotProps: {
-              removeIcon: {
-                as: 'div',
-                tabIndex: undefined,
-                onPress: onRemove,
-                isDisabled: isReadOnly || isDisabled,
-              },
-            },
-          };
+          const tagProps = getSelectedTagProps(item, state, states);
 
           return (
             <Fragment key={item.key}>

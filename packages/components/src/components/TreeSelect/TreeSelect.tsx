@@ -2,7 +2,6 @@
 
 import {
   forwardRef,
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -29,6 +28,7 @@ import {
   FieldErrorContext,
   Provider,
   composeRenderProps,
+  useSelectionClear,
   useTreeSelect,
   useTreeSelectState,
   type TreeProps,
@@ -88,6 +88,7 @@ export function TreeSelectInner<
     labelPlacement,
     onClear,
     isClearable,
+    clearPredicate,
     isSearchable,
     startAddon,
     endAddon,
@@ -239,14 +240,14 @@ export function TreeSelectInner<
     validationDetails,
   };
 
-  const clearButtonIsHidden = !state.selectedItems.length;
+  const { canClear, clear: handleClear } = useSelectionClear(state, {
+    isClearable,
+    isReadOnly,
+    clearPredicate,
+    onClear,
+  });
 
-  const handleClear = useCallback(() => {
-    if (isReadOnly) return;
-
-    state.setSelectedKeys(new Set([]));
-    onClear?.();
-  }, [isReadOnly, onClear, state]);
+  const clearButtonIsHidden = !canClear;
 
   const rootProps = mergeProps<(FormFieldProps | undefined)[]>(
     {
