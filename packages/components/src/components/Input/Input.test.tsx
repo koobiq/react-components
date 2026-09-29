@@ -4,6 +4,7 @@ import { screen, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { utilClasses } from '../../styles/utility';
 import { Form } from '../Form';
 
 import { Input, type InputProps } from './index';
@@ -25,6 +26,13 @@ describe('Input', () => {
   const getRoot = () => screen.getByTestId('root');
   const getInput = () => screen.getByTestId('input');
   const getClearButton = () => screen.queryByLabelText('clear-button');
+
+  it('should not style the scrollbar of the input', () => {
+    // A single-line input never scrolls, unlike the textarea of the same slot.
+    render(<Input {...baseProps} />);
+
+    expect(getInput()).not.toHaveClass(utilClasses.nativeScrollbar);
+  });
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLInputElement>();

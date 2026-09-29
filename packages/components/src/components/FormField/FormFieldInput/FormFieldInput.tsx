@@ -3,7 +3,11 @@ import type { ComponentPropsWithRef } from 'react';
 import { clsx, polymorphicForwardRef } from '@koobiq/react-core';
 import { Input, Textarea } from '@koobiq/react-primitives';
 
+import { utilClasses } from '../../../styles/utility';
+
 import s from './FormFieldInput.module.css';
+
+const { nativeScrollbar } = utilClasses;
 
 export type FormFieldInputBaseProps = {
   className?: string;
@@ -18,7 +22,13 @@ export const FormFieldInput = polymorphicForwardRef<
 >(({ as = 'input', className, ...other }, ref) => {
   const Tag = as === 'input' ? Input : Textarea;
 
-  return <Tag {...other} className={clsx(s.base, className)} ref={ref} />;
+  return (
+    <Tag
+      {...other}
+      className={clsx(s.base, as === 'textarea' && nativeScrollbar, className)}
+      ref={ref}
+    />
+  );
 });
 
 FormFieldInput.displayName = 'FormFieldInput';

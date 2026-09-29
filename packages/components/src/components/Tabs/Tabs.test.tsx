@@ -4,6 +4,8 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { utilClasses } from '../../styles/utility';
+
 import { Tabs, Tab, type TabsProps } from './index';
 import s from './Tabs.module.css';
 
@@ -186,6 +188,23 @@ describe('Tabs', () => {
     expect(warnSpy).toHaveBeenCalledTimes(1);
 
     warnSpy.mockRestore();
+  });
+
+  it('should style the scrollbar of the vertical scroll box only', () => {
+    const getScrollBox = (container: HTMLElement) =>
+      container.querySelector(`.${s.scrollBox}`);
+
+    const { container, rerender } = render(
+      renderComponent({ orientation: 'vertical' })
+    );
+
+    expect(getScrollBox(container)).toHaveClass(utilClasses.nativeScrollbar);
+
+    rerender(renderComponent({ orientation: 'horizontal' }));
+
+    expect(getScrollBox(container)).not.toHaveClass(
+      utilClasses.nativeScrollbar
+    );
   });
 
   describe('scrolling', () => {

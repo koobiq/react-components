@@ -16,6 +16,7 @@ import {
   useOverlayTriggerState,
 } from '@koobiq/react-primitives';
 
+import { utilClasses } from '../../../../styles/utility';
 import { TRANSITION_TIMEOUT } from '../../constants';
 import { ContentPanelContext } from '../../ContentPanelContext';
 import { useContentPanelContainer } from '../../hooks';
@@ -27,6 +28,8 @@ import type {
   ContentPanelContainerProps,
   ContentPanelContainerRef,
 } from './types';
+
+const { nativeScrollbar } = utilClasses;
 
 export const ContentPanelContainer = forwardRef<
   ContentPanelContainerRef,
@@ -92,7 +95,7 @@ export const ContentPanelContainer = forwardRef<
 
   const bodyProps = {
     ...slotProps?.body,
-    className: clsx(s.body, slotProps?.body?.className),
+    className: clsx(s.body, nativeScrollbar, slotProps?.body?.className),
     children: typeof children === 'function' ? children(state) : children,
     style: {
       ...slotProps?.body?.style,

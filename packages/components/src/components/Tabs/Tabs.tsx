@@ -31,6 +31,7 @@ import type { TabsProps, TabsComponent, TabsRef } from './types';
 import { getTabsMeta, hasIconOnlyTabPanel } from './utils';
 
 const textNormalMedium = utilClasses.typography['text-normal-medium'];
+const { nativeScrollbar } = utilClasses;
 
 export function TabsRender<T extends object>(
   props: Omit<TabsProps<T>, 'ref'>,
@@ -289,7 +290,7 @@ export function TabsRender<T extends object>(
     {
       ...dragScrollProps,
       ref: scrollBoxRef,
-      className: s.scrollBox,
+      className: clsx(s.scrollBox, !isHorizontal && nativeScrollbar),
       onScroll: updateScrollState,
       'data-dragging': isDragging || undefined,
       'data-overflow-inline-start': activeHorizontalOverflow.start || undefined,

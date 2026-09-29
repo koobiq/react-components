@@ -2,13 +2,16 @@
 
 import type { ReactNode, Ref, UIEventHandler } from 'react';
 
-import { mergeProps, mergeRefs } from '@koobiq/react-core';
+import { clsx, mergeProps, mergeRefs } from '@koobiq/react-core';
 
+import { utilClasses } from '../../../styles/utility';
 import { Tab, Tabs } from '../../Tabs';
 import s from '../CodeBlock.module.css';
 import type { CodeBlockFile, CodeBlockProps } from '../types';
 
 import { getCodeBlockHeaderProps } from './CodeBlockHeader';
+
+const { nativeScrollbar } = utilClasses;
 
 export type CodeBlockTabsProps = {
   files: CodeBlockFile[];
@@ -63,7 +66,10 @@ export function CodeBlockTabs(props: CodeBlockTabsProps) {
         tabs: getCodeBlockHeaderProps(isScrolled, slotProps?.header),
         tabPanel: {
           ...mergeProps(
-            { className: s.main, onScroll: onPanelScroll },
+            {
+              className: clsx(s.main, nativeScrollbar),
+              onScroll: onPanelScroll,
+            },
             contentProps
           ),
           ref: mergeRefs(panelRef, contentRef),

@@ -9,10 +9,14 @@ import {
   useMultiRef,
 } from '@koobiq/react-core';
 
+import { utilClasses } from '../../../../styles/utility';
+
 import s from './TableContainer.module.css';
 import { TableContainerContext } from './TableContainerContext';
 import type { TableContainerBaseProps } from './types';
 import { normalizeBlockSize } from './utils';
+
+const { nativeScrollbar } = utilClasses;
 
 export const TableContainer = polymorphicForwardRef<
   'div',
@@ -43,7 +47,11 @@ export const TableContainer = polymorphicForwardRef<
 
   return (
     <TableContainerContext.Provider value={{ theadRef, tableContainerWidth }}>
-      <Tag className={clsx(s.base, className)} style={style} ref={tableRef}>
+      <Tag
+        className={clsx(s.base, nativeScrollbar, className)}
+        style={style}
+        ref={tableRef}
+      >
         {children}
       </Tag>
     </TableContainerContext.Provider>
