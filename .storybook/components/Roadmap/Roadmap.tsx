@@ -44,7 +44,7 @@ export function Roadmap() {
           {(item) => (
             <Table.Row
               key={item.component}
-              href={`/Components/${item.component}`}
+              href={item.href ?? `/Components/${item.component}`}
             >
               {(columnKey) => (
                 <Table.Cell>

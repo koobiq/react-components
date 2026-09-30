@@ -1,0 +1,4 @@
+/* The tooltip only explains the element, so the pointer goes through it. */
+.base {
+  pointer-events: none;
+}

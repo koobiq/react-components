@@ -53,6 +53,7 @@
     "Select",
     "SelectNext",
     "Sidebar",
+    "SideNavbar",
     "SidePanel",
     "SkeletonBlock",
     "SkeletonTypography",
@@ -70,11 +71,16 @@
     "Toggle",
     "Tooltip",
     "TopBar",
+    "TopNavbar",
     "Tree",
     "TreeSelect",
     "Typography",
     "Username"
   ],
+  "componentPaths": {
+    "SideNavbar": "Navbar/SideNavbar",
+    "TopNavbar": "Navbar/TopNavbar"
+  },
   "packages": [
     { "dir": "primitives", "report": "react-primitives" },
     { "dir": "core", "report": "react-core" },

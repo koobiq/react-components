@@ -1,0 +1,174 @@
+@import url('../../../../styles/mixins.css');
+
+.base {
+  @mixin typography text-normal-medium;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  appearance: none;
+  background-color: transparent;
+  color: var(--kbq-foreground-contrast);
+  text-decoration: none;
+  cursor: pointer;
+
+  /* The highlight, inside the transparent inline borders. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: var(--kbq-size-s);
+    pointer-events: none;
+    transition: background-color var(--kbq-transition-default);
+  }
+
+  &[data-hovered]::before {
+    background-color: var(--kbq-states-background-transparent-hover);
+  }
+
+  &:is([data-pressed], [data-selected])::before {
+    background-color: var(--kbq-states-background-transparent-active);
+  }
+
+  &[data-focus-visible]::before {
+    outline: var(--kbq-size-3xs) solid var(--kbq-states-line-focus-theme);
+    outline-offset: calc(-1 * var(--kbq-size-3xs));
+  }
+
+  &[data-disabled] {
+    color: var(--kbq-states-foreground-disabled);
+    cursor: default;
+  }
+}
+
+/* The item takes the whole width of a vertical navbar. */
+.base[data-orientation='vertical'] {
+  gap: var(--kbq-size-m);
+  block-size: 40px;
+  inline-size: 100%;
+  padding: 0 var(--kbq-size-m);
+  border: 0 solid transparent;
+  border-inline-width: var(--kbq-size-s);
+
+  &[data-collapsed] {
+    justify-content: center;
+    padding: var(--kbq-size-xxs);
+  }
+}
+
+/* In a horizontal navbar the item is as wide as its content. */
+.base[data-orientation='horizontal'] {
+  justify-content: center;
+  min-block-size: var(--kbq-size-3xl);
+  min-inline-size: var(--kbq-size-3xl);
+  margin: var(--kbq-size-s);
+
+  /* Extend the hit area over the spacing around the visual item. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--kbq-size-s));
+  }
+
+  .content {
+    padding-inline: var(--kbq-size-xxs);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .menuIcon {
+    padding-inline-start: var(--kbq-size-xxs);
+  }
+
+  /* An item with an icon alone stays a square. */
+  &:has(.content:empty) {
+    padding-inline: 0;
+  }
+
+  &:has(.content:not(:empty)):not([data-slot='navbar-app-item']) {
+    margin-inline: 0;
+    padding-inline: var(--kbq-size-m);
+
+    &::after {
+      inset-inline: 0;
+    }
+  }
+
+  &:has(.content:not(:empty)):not([data-slot='navbar-app-item']) .icon {
+    padding-inline-end: var(--kbq-size-xxs);
+  }
+
+  &[data-slot='navbar-app-item']::after {
+    inset: 0;
+  }
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--kbq-icon-contrast);
+
+  .base[data-hovered] & {
+    color: var(--kbq-states-icon-contrast-hover);
+  }
+
+  .base[data-disabled] & {
+    color: var(--kbq-states-icon-disabled);
+  }
+}
+
+.content {
+  @mixin ellipsis;
+
+  min-inline-size: 0;
+
+  /* Collapsed, the text is hidden but still names the item. */
+  .base[data-collapsed] & {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    clip-path: inset(50%);
+  }
+}
+
+.badge {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+
+  /* Without room beside the text, the badge sits in the corner of the item. */
+  .base[data-collapsed] &,
+  .base[data-orientation='horizontal'] & {
+    position: absolute;
+    inset-inline-end: calc(-1 * var(--kbq-size-3xs));
+    inset-block-start: calc(-1 * var(--kbq-size-3xs));
+  }
+}
+
+/* Unlike the icon, the arrow stays faded in every state but disabled. */
+.menuIcon {
+  margin-inline-start: auto;
+  color: var(--kbq-icon-contrast-fade);
+
+  .badge + &,
+  .base[data-orientation='horizontal'] & {
+    margin-inline-start: unset;
+  }
+
+  .base[data-collapsed] & {
+    display: none;
+  }
+
+  .base[data-disabled] & {
+    color: var(--kbq-states-icon-disabled);
+  }
+}

@@ -1,0 +1,63 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../../.storybook/components';
+
+import * as Stories from './SideNavbar.stories';
+
+<Meta of={Stories} />
+
+# SideNavbar
+
+<Status variant="experimental" />
+
+The main menu of the product: the logo, section links and actions.
+
+## Import
+
+```tsx
+import { SideNavbar } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Anatomy
+
+- `SideNavbar` — the root navigation component. It arranges its content vertically and manages the collapsed state.
+- `SideNavbar.Header`, `SideNavbar.Body`, `SideNavbar.Footer` — structural regions at the top, in the middle and at the bottom. The body grows to fill the available space and scrolls when needed.
+- `SideNavbar.AppItem` — the logo and the app name.
+- `SideNavbar.Item` — a link or a button. Inside a `DropdownMenu`, it opens the menu, whose items are usually links too.
+- `SideNavbar.Action` — the main action button.
+- `SideNavbar.Divider` — a line between items.
+
+## Collapsing
+
+The toggle button and <kbd>Ctrl</kbd>+<kbd>/</kbd> collapse the navbar. To control the state, pass `isCollapsed` and `onCollapse`.
+
+<Story of={Stories.Controlled} />
+
+## Expand over content
+
+Make the navbar column as wide as the collapsed navbar, and it expands over the content.
+
+<Story of={Stories.ExpandOverContent} />
+
+## Long app name
+
+A name that does not fit into one line takes two smaller lines. A longer one is cut off and shown in a tooltip.
+
+<Story of={Stories.LongAppName} />
+
+## Routing
+
+Wrap the app in `RouterProvider`, and items and menu items with `href` navigate through your router, be it **Next.js** or **React Router**.
+
+<Story of={Stories.RouteProvider} />

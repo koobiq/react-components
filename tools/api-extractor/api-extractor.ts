@@ -8,7 +8,11 @@ import chalk from 'chalk';
 const { red, green } = chalk;
 
 type PackageEntry = { dir: string; report: string };
-type BuildConfig = { components: string[]; packages: PackageEntry[] };
+type BuildConfig = {
+  components: string[];
+  componentPaths?: Record<string, string>;
+  packages: PackageEntry[];
+};
 
 const cfg = JsonFile.load('tools/api-extractor/config.json') as BuildConfig;
 
@@ -52,7 +56,9 @@ function runForComponent(name: string): ExtractorResult {
     ExtractorConfig.loadFile(configObjectFullPath);
 
   configObject.projectFolder = repoRoot;
-  configObject.mainEntryPointFilePath = `<projectFolder>/packages/components/dist/components/${name}/index.d.ts`;
+  const componentPath = cfg.componentPaths?.[name] ?? name;
+
+  configObject.mainEntryPointFilePath = `<projectFolder>/packages/components/dist/components/${componentPath}/index.d.ts`;
 
   configObject.apiReport!.reportFolder =
     '<projectFolder>/tools/public_api_guard/components';

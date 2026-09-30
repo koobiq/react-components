@@ -1,0 +1,13 @@
+.base {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  min-inline-size: 0;
+}
+
+/* Alone, a container on the end side still keeps to its side. */
+.base[data-placement='end'] {
+  margin-inline-start: auto;
+}

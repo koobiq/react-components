@@ -176,6 +176,7 @@ export {
   FieldInputContext,
   AutocompleteStateContext,
   OverlayTriggerStateContext,
+  RootMenuTriggerStateContext,
 } from 'react-aria-components';
 
 export type {

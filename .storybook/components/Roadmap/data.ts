@@ -305,7 +305,7 @@ export const rows: Rows = [
   {
     component: 'Navbar',
     status: '✅ Done',
-    stage: '🟠 draft',
+    stage: '🔴 deprecated',
     planned: 'Q1 2026',
   },
   {
@@ -460,6 +460,20 @@ export const rows: Rows = [
   },
   {
     component: 'DescriptionList',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'SideNavbar',
+    href: '/Components/Navbar/SideNavbar',
+    status: '✅ Done',
+    stage: '🔵 experimental',
+    planned: 'Q3 2026',
+  },
+  {
+    component: 'TopNavbar',
+    href: '/Components/Navbar/TopNavbar',
     status: '✅ Done',
     stage: '🔵 experimental',
     planned: 'Q3 2026',
