@@ -3,3 +3,5 @@ CHANGELOG.md
 tools/public_api_guard/
 .husky/_/
 next-env.d.ts
+plugins/koobiq/scripts/tests/fixtures/
+plugins/koobiq/evals/

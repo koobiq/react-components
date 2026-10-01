@@ -1,0 +1,17 @@
+{
+  "name": "koobiq-react",
+  "description": "Claude Code plugins for products built with Koobiq React (@koobiq/react-components).",
+  "owner": {
+    "name": "Koobiq",
+    "url": "https://github.com/koobiq"
+  },
+  "plugins": [
+    {
+      "name": "koobiq",
+      "source": "./plugins/koobiq",
+      "description": "Review product UI code against the Koobiq design system, migrate off deprecated APIs, upgrade the library and lint Koobiq usage.",
+      "category": "development",
+      "tags": ["design-system", "react", "code-review", "a11y", "koobiq"]
+    }
+  ]
+}

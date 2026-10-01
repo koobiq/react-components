@@ -18,3 +18,5 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-node
       - run: pnpm run test --run
+      - name: Claude Code plugin tests
+        run: pnpm run test:plugin

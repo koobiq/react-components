@@ -1,0 +1,11 @@
+{
+  "extraKnownMarketplaces": {
+    "koobiq-react": {
+      "source": { "source": "github", "repo": "koobiq/react-components" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "koobiq@koobiq-react": true
+  }
+}

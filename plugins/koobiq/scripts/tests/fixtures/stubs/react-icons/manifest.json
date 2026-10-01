@@ -1,0 +1,8 @@
+{
+  "icons": [
+    { "name": "IconChevronRight16", "size": "16", "keywords": ["arrow", "next"] },
+    { "name": "IconChevronRight24", "size": "24", "keywords": ["arrow", "next"] },
+    { "name": "IconTrash16", "size": "16", "keywords": ["delete", "remove"] },
+    { "name": "IconXmark16", "size": "16", "keywords": ["close", "x"] }
+  ]
+}

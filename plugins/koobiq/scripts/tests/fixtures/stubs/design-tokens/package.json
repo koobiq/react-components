@@ -1,0 +1,7 @@
+{
+  "name": "@koobiq/design-tokens",
+  "version": "3.17.2",
+  "exports": {
+    "./*": { "default": "./*" }
+  }
+}

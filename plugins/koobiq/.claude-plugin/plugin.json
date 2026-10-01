@@ -1,0 +1,20 @@
+{
+  "name": "koobiq",
+  "displayName": "Koobiq React",
+  "description": "Design-system review, upgrade and lint tooling for products built with @koobiq/react-components.",
+  "author": {
+    "name": "Koobiq",
+    "url": "https://github.com/koobiq"
+  },
+  "homepage": "https://react.koobiq.io/?path=/docs/ai-claude-code-plugin--docs",
+  "repository": "https://github.com/koobiq/react-components",
+  "license": "MIT",
+  "keywords": [
+    "koobiq",
+    "design-system",
+    "react",
+    "code-review",
+    "accessibility",
+    "design-tokens"
+  ]
+}

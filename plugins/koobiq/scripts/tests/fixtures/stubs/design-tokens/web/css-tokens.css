@@ -1,0 +1,10 @@
+/**
+ * Do not edit directly
+ */
+
+:root {
+  --kbq-size-xxs: 4px;
+  --kbq-size-s: 8px;
+  --kbq-size-m: 12px;
+  --kbq-palette-grey-50: hsla(0, 0%, 50%, 100%);
+}

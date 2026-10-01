@@ -1,0 +1,233 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="AI/Claude Code plugin" />
+
+# Claude Code plugin
+
+The `koobiq` plugin for [Claude Code](https://code.claude.com/docs/en/overview) reviews product code built with Koobiq React against the design system, helps upgrade the library and installs a lint preset that keeps the same rules in CI.
+
+It is meant for **apps that use** `@koobiq/react-components`. The plugin reads the Koobiq packages installed in the app — `@koobiq/react-components`, `@koobiq/design-tokens` and `@koobiq/react-icons` — so its advice matches the versions in `node_modules`, not the latest documentation.
+
+## What it checks
+
+| Area          | Examples                                                                                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Setup         | Token set and import order, `style.css`, `Provider`, theme class, `ToastProvider`, fonts, peer dependencies, duplicate Koobiq packages          |
+| Components    | Raw `button`, `input`, `select` or `textarea` instead of Koobiq components, other UI kits and icon sets, re-implemented widgets, compound slots |
+| Props         | Deprecated props and their verified replacements, invalid values, controlled props without a handler, `onClick` instead of `onPress`            |
+| TypeScript    | Koobiq types instead of re-declared unions, typed wrappers, suppressed Koobiq types                                                             |
+| Styles        | Unknown, deprecated or legacy `--kbq-*` tokens, literal colors that match a token, hashed `kbq-*` classes, selectors on internal markup         |
+| Accessibility | Field labels, icon-only buttons, dialog and collection names                                                                                    |
+| i18n          | `Provider` locale, literal text in localized apps, native date formatting                                                                       |
+| Public API    | Deep `dist` imports, internal packages, deprecated exports, the `markdown` and `code-block` entries                                             |
+
+Every rule has an id, such as `deprecated/prop` or `token/unknown`, a severity and a link to the page it comes from.
+
+## Requirements
+
+- Claude Code: the CLI, the desktop app or an IDE extension.
+- git: Claude Code clones the plugin marketplace with it, and reviews use it to find your changes.
+- Node.js 18.17 or newer. The plugin scripts have no dependencies.
+- The app's dependencies are installed: the rules come from the installed Koobiq packages. Yarn Plug'n'Play is not supported.
+- Optional: TypeScript in the app, for precise parsing, local barrel files and the type-checker pass of `--deep`.
+
+## Installation
+
+In Claude Code, run:
+
+```text
+/plugin marketplace add koobiq/react-components
+/plugin install koobiq@koobiq-react
+```
+
+The second command opens the plugin's details, where you choose who gets it: you in every project, everyone in this repository, or you in this repository only. In the desktop app, use **+** → **Plugins** → **Add plugin** instead. See [Install and manage plugins](https://code.claude.com/docs/en/plugins/install) for the other surfaces.
+
+### For the whole team
+
+Commit the marketplace to the app's `.claude/settings.json`, or run `/koobiq:init --share`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "koobiq-react": {
+      "source": { "source": "github", "repo": "koobiq/react-components" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "koobiq@koobiq-react": true
+  }
+}
+```
+
+Teammates get the plugin after they trust the project folder: Claude Code registers the marketplace and loads the plugin from it. If Claude Code reports that the plugin is enabled in project settings but isn't installed, run `claude plugin install koobiq@koobiq-react --scope project` once.
+
+`autoUpdate` asks for background updates of the marketplace. Each person can switch them on or off under **Marketplaces** in `/plugin`.
+
+## Commands
+
+| Command              | What it does                                                                   |
+| -------------------- | ------------------------------------------------------------------------------ |
+| `/koobiq:review`     | Reviews UI code against the design system and reports findings by severity     |
+| `/koobiq:upgrade`    | Plans an upgrade of Koobiq React and migrates the code after your confirmation |
+| `/koobiq:setup-lint` | Installs the Koobiq ESLint and Stylelint preset into the app                   |
+| `/koobiq:init`       | Adds Koobiq rules to `AGENTS.md` or `CLAUDE.md` and checks the setup           |
+
+Two parts work without a command: Claude loads the Koobiq guidelines on its own when it writes UI code in a Koobiq app, and `/koobiq:review` hands files to the read-only `koobiq:reviewer` agent.
+
+### Review
+
+```text
+/koobiq:review
+/koobiq:review src/pages/Users.tsx src/widgets
+/koobiq:review Modal SelectNext
+/koobiq:review --all
+```
+
+Without arguments, the review covers the branch changes against the merge-base plus uncommitted and untracked files. Paths narrow it to files or folders, component names to the files that use those components, and `--all` audits the whole app. Claude asks before a large run.
+
+| Option         | Effect                                                                        |
+| -------------- | ----------------------------------------------------------------------------- |
+| `--base <ref>` | Compares with this branch or commit instead of the default branch             |
+| `--all`        | Reviews every UI file                                                         |
+| `--fix`        | Applies safe fixes and asks before the rest                                   |
+| `--deep`       | Re-verifies errors and warnings in a second pass and adds a type-checker pass |
+| `--offline`    | Does not fetch the online documentation                                       |
+
+How it works:
+
+1. A script indexes the app, reads the installed Koobiq packages and finds candidate issues deterministically.
+2. Reviewer agents read the files in batches. They confirm or dismiss each candidate with a reason and look for what a script cannot see: component choice, composition, typed wrappers, theme intent.
+3. Claude checks the evidence for every error and writes the report.
+
+Severity:
+
+- **Error** — broken behavior, an accessibility blocker, an API that doesn't exist, UI that is unreadable in one of the themes.
+- **Warning** — deprecated API, values that bypass tokens, a re-implemented Koobiq component, hashed classes, missing labels.
+- **Info** — consistency and polish.
+
+Findings in tests and stories drop one level.
+
+A report looks like this:
+
+```markdown
+**Koobiq review** · DS 0.37.0 · tokens 3.17.2 (web/new) · scope: changes vs origin/main (14 files)
+
+### Project setup
+
+- ⚠️ `src/main.tsx:8` — design tokens come from the legacy set → import `@koobiq/design-tokens/web/new/*`
+
+### Errors
+
+- `src/pages/Users.tsx:42` **token/unknown** — `--kbq-foreground-contrast-secondry` does not exist → `var(--kbq-foreground-contrast-secondary)`
+
+### Warnings
+
+- `src/pages/Users.tsx:57, 61` **deprecated/prop** — `Button disabled` is deprecated → `isDisabled`
+
+Koobiq review: 1 errors | 2 warnings | 0 info
+```
+
+On its own, `--fix` applies only mechanical, behavior-preserving fixes: verified prop renames, compound slots instead of deprecated slot components, imports of the new token set, `rel` for `target="_blank"`. It asks before anything else, never edits `package.json` or lockfiles and doesn't commit. After fixing, it runs the checks and the app's type-check again.
+
+### Exceptions
+
+Keep intentional deviations out of the reports:
+
+- Lines: a `koobiq-ignore-next-line <rule id> -- <reason>` or `koobiq-ignore-line <rule id>` comment, in any comment syntax. A category works too: `token/*`.
+- Files: `koobiq-ignore-file <rule id>` within the first ten lines.
+- `eslint-disable-next-line` and `stylelint-disable-next-line` comments for `koobiq/*` lint rules count as well.
+- Project-wide: the exceptions list in the block that `/koobiq:init` adds, for example `- allow @mui/x-data-grid — no Koobiq data grid`.
+- `.koobiq/check.json`: rule severities (`"rules": { "i18n/hardcoded-text": "off" }`), ignored globs, allowed UI kits and icon sets.
+
+### Upgrade
+
+```text
+/koobiq:upgrade
+/koobiq:upgrade 0.37.0
+```
+
+The plugin collects the changelog between the installed and the target version, public API changes of the components the app uses, peer dependency changes and the lifecycle status of each component. From that it writes a migration checklist mapped to `file:line`. It asks before changing versions or code, then runs the type-check, the linters and the checks again.
+
+### Lint preset
+
+```text
+/koobiq:setup-lint --dry-run
+/koobiq:setup-lint
+```
+
+The preset is copied into `.koobiq/` and connected to the app's ESLint flat config (ESLint 8.57 or newer) and Stylelint 16 or newer, so CI enforces the rules without Claude:
+
+```js
+// eslint.config.mjs
+import koobiq from './.koobiq/eslint.koobiq.mjs';
+
+export default [
+  // your config
+  ...koobiq,
+];
+```
+
+```js
+// stylelint.config.mjs
+export default {
+  extends: ['./.koobiq/stylelint.koobiq.mjs'],
+};
+```
+
+The rules read the installed Koobiq packages at lint time and share their logic with `/koobiq:review`. Commit `.koobiq/` with the app. Running the command again updates the preset and keeps local edits. Legacy `.eslintrc` configs are not converted automatically.
+
+| ESLint rule                      | Reports                                                                                       |
+| -------------------------------- | --------------------------------------------------------------------------------------------- |
+| `koobiq/no-deep-imports`         | Imports from `dist` and other private paths, names an entry does not export                   |
+| `koobiq/no-internal-packages`    | Undocumented exports of `@koobiq/react-core`, `@koobiq/react-primitives` and `@koobiq/logger` |
+| `koobiq/no-other-ui-kits`        | Other UI kits                                                                                 |
+| `koobiq/no-other-icon-libraries` | Other icon sets                                                                               |
+| `koobiq/no-deprecated`           | Deprecated components, exports and props                                                      |
+| `koobiq/no-hashed-classes`       | Hashed `kbq-*` class names in code                                                            |
+| `koobiq/no-unknown-tokens`       | Unknown `--kbq-*` tokens in code                                                              |
+| `koobiq/no-deprecated-tokens`    | Deprecated tokens and tokens of the legacy set in code                                        |
+| `koobiq/accessible-name`         | Fields and icon-only buttons without a label                                                  |
+| `koobiq/controlled-props`        | Controlled props without a handler or next to a default value                                 |
+| `koobiq/prefer-ds-components`    | Raw controls with a Koobiq equivalent (`strict` config)                                       |
+
+| Stylelint rule                     | Reports                                                         |
+| ---------------------------------- | --------------------------------------------------------------- |
+| `koobiq/no-unknown-tokens`         | Unknown `--kbq-*` tokens                                        |
+| `koobiq/no-deprecated-tokens`      | Deprecated tokens and tokens of the legacy set                  |
+| `koobiq/no-unknown-public-vars`    | `--kbq-*` variables that are neither tokens nor override points |
+| `koobiq/no-hashed-classes`         | Selectors on hashed `kbq-*` classes                             |
+| `koobiq/prefer-color-tokens`       | Literal colors that exactly match a token                       |
+| `koobiq/no-static-token-variables` | Static SCSS token variables, which never switch themes          |
+
+## Other AI tools
+
+`/koobiq:init` writes a short managed block of Koobiq rules into `AGENTS.md` or `CLAUDE.md`, which most coding agents read. You can also copy the block from [agents-block.md](https://github.com/koobiq/react-components/blob/main/plugins/koobiq/skills/init/agents-block.md). Tools without the plugin can use [LLMs.txt](?path=/docs/ai-llms-txt--docs).
+
+## Network and files
+
+- Installing and updating the plugin clones `github.com/koobiq/react-components`.
+- The review runs locally. Besides Claude itself, it only fetches pages from `react.koobiq.io`, and not with `--offline`.
+- `/koobiq:upgrade` reads `registry.npmjs.org` and `raw.githubusercontent.com` (the changelog and API reports) and caches the responses.
+- Review runs are kept in `node_modules/.cache/koobiq/runs` (the last five). Files in the app change only after your confirmation or with `--fix`.
+
+## Updating and removing
+
+Without auto-update, get the latest version with:
+
+```text
+/plugin marketplace update koobiq-react
+```
+
+Then run `/reload-plugins` or start a new session. From your shell, `claude plugin update koobiq@koobiq-react` does the same.
+
+To remove the plugin, run `/plugin uninstall koobiq@koobiq-react`. When the project's `.claude/settings.json` enables it, Claude Code asks whether to disable it for you or to remove it for everyone.
+
+The `.koobiq/` preset belongs to the app: run `/koobiq:setup-lint` to update it, or delete the folder and its lines in the lint configs to remove it.
+
+## Troubleshooting
+
+- **The plugin says Koobiq React is not installed.** Install the app's dependencies. Until then, rules that need the installed packages are skipped.
+- **Monorepo.** Run Claude from the repository root. Each package is checked against its own installed Koobiq version, and setup checks apply to apps only; `setup.appPackages` in `.koobiq/check.json` overrides the detection.
+- **Too many findings in an existing app.** Review changed files only, or install the lint preset and fix one rule at a time.
+- **Permission prompts.** The review runs its own scripts and read-only git commands without asking; anything else asks first.
