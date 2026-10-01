@@ -39,7 +39,7 @@ describe('fixtures', () => {
     try {
       const report = check(app.dir);
 
-      assert.equal(report.meta.tsTier, 'parser');
+      assert.equal(report.meta.tsTier, 'resolver');
       assert.equal(report.meta.tokenSet, 'legacy');
       assert.equal(report.meta.errors.length, 0);
       assertMatches(app.dir, report);
@@ -104,6 +104,69 @@ describe('fixtures', () => {
       assert.ok(ids.has('setup/legacy-token-set'));
       assert.ok(!ids.has('deprecated/prop'));
       assert.equal(report.meta.errors.length, 0);
+    } finally {
+      app.cleanup();
+    }
+  });
+
+  test('i18n: literal text and the Provider locale in a localized app', () => {
+    const app = makeApp('good-app');
+
+    try {
+      const pkgFile = path.join(app.dir, 'package.json');
+      const pkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'));
+
+      pkg.dependencies['react-i18next'] = '^15.0.0';
+      fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
+
+      fs.writeFileSync(
+        path.join(app.dir, 'src', 'Texts.tsx'),
+        [
+          "import { useTranslation } from 'react-i18next';",
+          "import { Button, Input } from '@koobiq/react-components';",
+          '',
+          'export const Texts = () => {',
+          '  const { t } = useTranslation();',
+          '',
+          '  return (',
+          '    <>',
+          "      <Button>{t('save')}</Button>",
+          "      <Input label={t('email')} />",
+          '      <Button>Save</Button>',
+          '      <Input label="Email" />',
+          '    </>',
+          '  );',
+          '};',
+          '',
+        ].join('\n')
+      );
+
+      const keys = actualKeys(check(app.dir));
+
+      assert.deepEqual(
+        keys.filter((key) => key.startsWith('src/Texts.tsx')),
+        [
+          'src/Texts.tsx:11:i18n/hardcoded-text',
+          'src/Texts.tsx:12:i18n/hardcoded-text',
+        ]
+      );
+
+      assert.ok(keys.includes('src/main.tsx:12:i18n/provider-without-locale'));
+
+      const main = path.join(app.dir, 'src', 'main.tsx');
+
+      fs.writeFileSync(
+        main,
+        fs
+          .readFileSync(main, 'utf8')
+          .replace('<Provider>', '<Provider locale="ru-RU">')
+      );
+
+      assert.ok(
+        !actualKeys(check(app.dir)).some((key) =>
+          key.endsWith('i18n/provider-without-locale')
+        )
+      );
     } finally {
       app.cleanup();
     }

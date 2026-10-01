@@ -56,7 +56,11 @@ the guidelines skill directory), read the report and continue with
 2. **Triage every candidate**: confirm, adjust (with a reason) or dismiss
    (with a reason). Candidates are good leads, not verdicts — e.g. a literal
    color inside a chart config, or a raw `<button>` inside a third-party
-   widget wrapper, is a dismissal.
+   widget wrapper, is a dismissal. A candidate's `source` says how it was
+   found: `ast` or `css` (parsed code), `project` (package.json and entry
+   files), `ts` (the TypeScript compiler resolved a deprecated Koobiq member,
+   e.g. through a wrapper typed with Koobiq props), `regex` (fallback parser
+   without TypeScript: read the code before confirming).
 3. **Read each file fully**; focus on the changed ranges.
 4. **Look for what the script cannot see**, across five dimensions:
    component choice and composition (re-implemented widgets, slots, overlay

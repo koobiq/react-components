@@ -2,6 +2,7 @@ import path from 'node:path';
 
 import { RULES, PRESET_VERSION } from '../../lint/koobiq-core.mjs';
 
+import { createBarrelResolver } from './barrels.mjs';
 import { checkScriptFile } from './checks/script.mjs';
 import { checkPackageSetup } from './checks/setup.mjs';
 import { checkStyleFacts } from './checks/style.mjs';
@@ -11,6 +12,7 @@ import { parseStyle, styleSyntaxFor } from './parse-style.mjs';
 import { buildProject } from './project.mjs';
 import { finalizeFindings } from './report.mjs';
 import { loadTypeScript } from './ts.mjs';
+import { runTypecheck } from './typecheck.mjs';
 import {
   fileKind,
   isTestFile,
@@ -91,12 +93,14 @@ export function runCheck(options) {
       check: 'typescript-parser',
       reason: 'typescript not found; using the regex tier',
     });
-  if (options.typecheck)
-    skipped.push({
-      check: 'typecheck',
-      reason: 'language-service pass not available in this version',
-    });
-  else skipped.push({ check: 'typecheck', reason: 'off (pass --typecheck)' });
+
+  if (!options.typecheck) {
+    skipped.push({ check: 'typecheck', reason: 'off (pass --typecheck)' });
+  } else if (!ts) {
+    skipped.push({ check: 'typecheck', reason: 'typescript not found' });
+  }
+
+  const resolveBarrel = createBarrelResolver({ root, ts });
 
   t = Date.now();
 
@@ -138,6 +142,9 @@ export function runCheck(options) {
       hasI18n: pkg.hasI18n,
       isTest: isTestFile(rel),
       vendored: pkg.index.vendoredFiles.has(rel),
+      absFile: path.join(root, rel),
+      resolveBarrel,
+      relative: (file) => path.relative(root, file).split(path.sep).join('/'),
     };
 
     try {
@@ -191,6 +198,63 @@ export function runCheck(options) {
   }
 
   mark('analyze', t);
+
+  if (options.typecheck && ts) {
+    t = Date.now();
+
+    const dsDirs = [...project.packages.values()]
+      .map((pkg) => pkg.knowledge?.ds?.dir)
+      .filter(Boolean)
+      .map((dir) => path.resolve(dir).split(path.sep).join('/').toLowerCase());
+
+    const isKoobiqFile = (file) => {
+      const normalized = path
+        .resolve(file)
+        .split(path.sep)
+        .join('/')
+        .toLowerCase();
+
+      return (
+        normalized.includes('/node_modules/@koobiq/') ||
+        dsDirs.some((dir) => normalized.startsWith(`${dir}/`))
+      );
+    };
+
+    const result = runTypecheck({
+      ts,
+      root,
+      files: [...sources.keys()]
+        .filter((rel) => fileKind(rel) === 'script')
+        .map((rel) => path.join(root, rel)),
+      isKoobiqFile,
+    });
+
+    const seen = new Set(
+      raw
+        .filter((f) => f.offset != null && sources.has(f.file))
+        .map(
+          (f) =>
+            `${f.id}|${f.file}|${positionAt(sources.get(f.file).starts, f.offset).line}`
+        )
+    );
+
+    for (const found of result.findings) {
+      const rel = path.relative(root, found.file).split(path.sep).join('/');
+      const source = sources.get(rel);
+
+      if (!source) continue;
+
+      const key = `${found.id}|${rel}|${positionAt(source.starts, found.offset).line}`;
+
+      if (seen.has(key)) continue;
+      seen.add(key);
+      raw.push({ ...found, file: rel });
+    }
+
+    skipped.push(...result.skipped);
+    mark('typecheck', t);
+  }
+
   t = Date.now();
 
   const setupPackages =
@@ -300,7 +364,7 @@ export function runCheck(options) {
       tokenSet: primary?.tokenSet || 'none',
       typescript: Boolean(ts),
       ...(ts && { typescriptVersion: ts.version }),
-      tsTier: ts ? 'parser' : 'none',
+      tsTier: !ts ? 'none' : options.typecheck ? 'languageService' : 'resolver',
       packages,
       files: discovery.targets,
       filesScanned,

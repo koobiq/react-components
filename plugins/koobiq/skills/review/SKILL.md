@@ -32,8 +32,12 @@ the scope, or stop.
 ## 1. Prepare (one deterministic call)
 
 ```text
-node "${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-review-prep.mjs" --root "<git top-level or cwd>" [--base <ref> | --all | --paths <a,b> | --components <A,B>]
+node "${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-review-prep.mjs" --root "<git top-level or cwd>" [--base <ref> | --all | --paths <a,b> | --components <A,B>] [--typecheck]
 ```
+
+Add `--typecheck` with `--deep`: the TypeScript language service then also
+finds deprecated Koobiq props reached through product wrappers typed with
+Koobiq props, aliases and destructuring (slower; at most 200 files).
 
 It prints a manifest: `runDir`, DS and token versions, the token set,
 checker counts, `skipped` / `errors`, and `batches` (each with its JSON

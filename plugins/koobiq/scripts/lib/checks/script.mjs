@@ -88,6 +88,32 @@ export function checkScriptFile(facts, ctx) {
         if (spec.kind === 'namespace')
           bindings.set(spec.local, { namespace: true, source: imp.source });
       }
+    } else if (
+      ctx.resolveBarrel &&
+      imp.kind === 'static' &&
+      !imp.typeOnly &&
+      !imp.source.startsWith('@koobiq/')
+    ) {
+      // T2: named imports from local barrels that re-export Koobiq.
+      for (const spec of imp.specifiers) {
+        if (spec.kind !== 'named' || spec.typeOnly) continue;
+
+        const target = ctx.resolveBarrel(
+          ctx.absFile,
+          imp.source,
+          spec.imported
+        );
+
+        if (!target) continue;
+        if (target.wildcard && !ctx.knowledge?.ds?.exportIndex.has(target.name))
+          continue;
+
+        bindings.set(spec.local, {
+          name: target.name,
+          source: target.source,
+          via: ctx.relative ? ctx.relative(target.via) : target.via,
+        });
+      }
     }
   }
 
@@ -117,6 +143,7 @@ export function checkScriptFile(facts, ctx) {
       ...(element.root !== dsName.split('.')[0] &&
         !binding.namespace && { local: element.root }),
       source: binding.source,
+      ...(binding.via && { via: binding.via }),
       offset: element.offset,
       props: element.attrs.map(({ name, kind, value }) => ({
         name,

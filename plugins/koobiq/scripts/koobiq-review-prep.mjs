@@ -32,6 +32,9 @@ Batches:
   --max-lines <n>        Lines per batch (default 1500)
   --run-dir <dir>        Where to write the run (default: node_modules/.cache/koobiq/runs/<id>)
 
+Checks:
+  --typecheck            Also run the TypeScript language-service tier (slower)
+
 Knowledge: --typescript <path>, --ds-dir <dir>, --tokens-dir <dir>
 `;
 
@@ -54,7 +57,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const [flag, inline] = argv[i].replace(/^--/, '').split(/=(.*)/s);
 
-    if (flag === 'all' || flag === 'help') {
+    if (flag === 'all' || flag === 'help' || flag === 'typecheck') {
       options[flag] = true;
       continue;
     }
@@ -243,11 +246,14 @@ export function prepare(options) {
     inventory: 'full',
   };
 
+  // The language-service tier only runs on the final, scoped check.
+  const scoped = { ...common, ...(options.typecheck && { typecheck: true }) };
+
   let report;
   let mode;
 
   if (options.all || options.components) {
-    report = runCheck(common);
+    report = runCheck(scoped);
     mode = options.components ? 'components' : 'all';
   } else if (options.paths) {
     const requested = expandPaths(
@@ -269,12 +275,12 @@ export function prepare(options) {
     );
 
     report = files.length
-      ? runCheck({ ...common, files })
+      ? runCheck({ ...scoped, files })
       : { ...full, findings: [], meta: { ...full.meta, files: [] } };
 
     mode = 'paths';
   } else {
-    report = runCheck({ ...common, changed: true, base: options.base });
+    report = runCheck({ ...scoped, changed: true, base: options.base });
     mode = 'changed';
   }
 
@@ -340,6 +346,7 @@ export function prepare(options) {
     typescript: {
       available: report.meta.typescript,
       version: report.meta.typescriptVersion || null,
+      tier: report.meta.tsTier,
     },
     packages: report.meta.packages,
     exceptions,

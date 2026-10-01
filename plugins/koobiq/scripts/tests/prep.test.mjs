@@ -96,7 +96,34 @@ describe('review prep', () => {
       assert.ok(batch.candidates.length > 0);
       assert.ok(batch.candidates.every((c) => c.category !== 'setup'));
       assert.equal(batch.ds.version, '9.9.0');
+      assert.equal(manifest.typescript.tier, 'resolver');
       assert.ok(fs.existsSync(path.join(manifest.runDir, 'report.json')));
+    } finally {
+      app.cleanup();
+    }
+  });
+
+  test('--typecheck runs the language-service tier on the scoped check', () => {
+    const app = makeApp('good-app');
+
+    try {
+      clearKnowledgeCache();
+
+      const manifest = prepare({
+        root: app.dir,
+        paths: 'src/App.tsx',
+        typecheck: true,
+        typescript: REPO_TYPESCRIPT,
+        maxFiles: 12,
+        maxLines: 1500,
+      });
+
+      assert.equal(manifest.mode, 'paths');
+
+      assert.equal(
+        manifest.typescript.tier,
+        REPO_TYPESCRIPT ? 'languageService' : 'none'
+      );
     } finally {
       app.cleanup();
     }
