@@ -55,8 +55,9 @@ type TagInputBaseProps<T extends object> = Omit<
 
 export type TagInputProps<T extends object = object> = TagInputBaseProps<T> & {
   /**
-   * Whether to hide the cleaner button. By default a button that removes all
-   * tags and resets the input is rendered.
+   * Whether to hide the cleaner button. By default a button that removes the
+   * tags accepted by `clearPredicate` (all but the disabled ones) and resets
+   * the input is rendered.
    * @default false
    */
   hideClearButton?: boolean;

@@ -7,7 +7,11 @@ import type {
 } from 'react';
 
 import type { ExtendableProps, Node } from '@koobiq/react-core';
-import type { AriaSelectProps, SelectState } from '@koobiq/react-primitives';
+import type {
+  AriaSelectProps,
+  ClearPredicate,
+  SelectState,
+} from '@koobiq/react-primitives';
 import type { SelectionMode } from '@react-types/select';
 
 import type { DividerProps } from '../Divider';
@@ -83,6 +87,13 @@ export type SelectNextProps<
     className?: string;
     /** Whether the field can be emptied. */
     isClearable?: boolean;
+    /**
+     * Decides which selected items the clear button removes: return `true` to
+     * clear the item, `false` to keep it. The clear button is hidden when it
+     * has nothing to remove. It runs during render, so keep it pure.
+     * @default (item) => !item.isDisabled
+     */
+    clearPredicate?: ClearPredicate<T>;
     /** Whether the selection can be focused but not changed by the user. */
     isReadOnly?: boolean;
     /** Addon placed before the children. */

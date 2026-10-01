@@ -178,11 +178,23 @@ and remove buttons are not rendered.
 
 ### Cleaner
 
-The cleaner button is shown by default. Pressing it removes all tags, clears
+The cleaner button is shown by default. Pressing it removes the tags, clears
 the text input, calls `onClear`, and returns focus to the input. Pass
 `hideClearButton` to hide it.
 
 <Story of={Stories.HideClearButton} />
+
+The cleaner keeps disabled tags and is hidden when only they are left and the
+input is empty. To choose which tags it removes, pass `clearPredicate`. It
+receives each tag as `{ key, value, textValue, isDisabled }` and returns `true`
+to remove the tag or `false` to keep it. The text input is cleared either way.
+
+```tsx
+// Remove every tag, including the disabled ones
+<TagAutocomplete clearPredicate={() => true} />
+```
+
+<Story of={Stories.ClearPredicate} />
 
 ### Keeping the popover open
 

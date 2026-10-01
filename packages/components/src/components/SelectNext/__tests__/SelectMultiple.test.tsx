@@ -1,3 +1,4 @@
+import type { ClearPredicateItem } from '@koobiq/react-primitives';
 import { render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeAll, afterAll } from 'vitest';
@@ -135,6 +136,172 @@ describe('Select_multiple', () => {
     expect(onChange).not.toHaveBeenCalled();
     expect(onClear).not.toHaveBeenCalled();
   });
+
+  describe('clear button', () => {
+    const clearButtonProps = {
+      isClearable: true,
+      defaultOpen: false,
+      slotProps: {
+        clearButton: {
+          'aria-label': 'clear-button',
+        },
+      },
+    };
+
+    const getClearButton = () => screen.getByLabelText('clear-button');
+
+    it('should keep disabled items when cleared', async () => {
+      const onChange = vi.fn();
+      const onClear = vi.fn();
+
+      render(
+        renderComponent({
+          ...clearButtonProps,
+          value: [1, 3],
+          disabledKeys: [1],
+          onChange,
+          onClear,
+        })
+      );
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([1]);
+      expect(onClear).toHaveBeenCalledTimes(1);
+    });
+
+    it('should keep items disabled via the isDisabled prop when cleared', async () => {
+      const onChange = vi.fn();
+
+      render(
+        <Select
+          {...clearButtonProps}
+          label="Select"
+          selectionMode="multiple"
+          value={[1, 3]}
+          onChange={onChange}
+        >
+          <Select.Item id={1} isDisabled>
+            1
+          </Select.Item>
+          <Select.Item id={2}>2</Select.Item>
+          <Select.Item id={3}>3</Select.Item>
+        </Select>
+      );
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([1]);
+    });
+
+    it('should hide the clear button when only disabled items are selected', () => {
+      render(
+        renderComponent({
+          ...clearButtonProps,
+          value: [1],
+          disabledKeys: [1],
+        })
+      );
+
+      expect(getClearButton()).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should clear disabled items when clearPredicate accepts them', async () => {
+      const onChange = vi.fn();
+
+      render(
+        renderComponent({
+          ...clearButtonProps,
+          value: [1, 3],
+          disabledKeys: [1],
+          clearPredicate: () => true,
+          onChange,
+        })
+      );
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([]);
+    });
+
+    it('should not run clearPredicate when the field is not clearable', () => {
+      const clearPredicate = vi.fn(() => true);
+
+      render(
+        renderComponent({
+          value: [1, 3],
+          defaultOpen: false,
+          clearPredicate,
+        })
+      );
+
+      expect(clearPredicate).not.toHaveBeenCalled();
+    });
+
+    it('should pass selected items to clearPredicate and keep the rejected ones', async () => {
+      const onChange = vi.fn();
+
+      const clearPredicate = vi.fn(
+        (item: ClearPredicateItem<{ key: number }>) => item.key !== 3
+      );
+
+      render(
+        renderComponent({
+          ...clearButtonProps,
+          value: [1, 2, 3],
+          disabledKeys: [1],
+          clearPredicate,
+          onChange,
+        })
+      );
+
+      expect(clearPredicate).toHaveBeenCalledWith({
+        key: 1,
+        value: { key: 1 },
+        textValue: '1',
+        isDisabled: true,
+      });
+
+      expect(clearPredicate).toHaveBeenCalledWith({
+        key: 3,
+        value: { key: 3 },
+        textValue: '3',
+        isDisabled: false,
+      });
+
+      await userEvent.click(getClearButton());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith([3]);
+    });
+  });
+
+  it.each(['responsive', 'multiline'] as const)(
+    'should disable the tag of a disabled item with %s overflow',
+    async (selectedTagsOverflow) => {
+      const onChange = vi.fn();
+
+      render(
+        renderComponent({
+          value: [1, 3],
+          disabledKeys: [1],
+          defaultOpen: false,
+          selectedTagsOverflow,
+          onChange,
+        })
+      );
+
+      const [disabledRemoveButton, removeButton] = within(
+        screen.getByLabelText('Selected items')
+      ).getAllByRole('button', { hidden: true });
+
+      expect(disabledRemoveButton).toHaveAttribute('aria-disabled', 'true');
+      expect(removeButton).not.toHaveAttribute('aria-disabled');
+
+      if (disabledRemoveButton) await userEvent.click(disabledRemoveButton);
+
+      expect(onChange).not.toHaveBeenCalled();
+    }
+  );
 
   it.each(['responsive', 'multiline'] as const)(
     'should render disabled tag remove actions with %s overflow in read-only state',

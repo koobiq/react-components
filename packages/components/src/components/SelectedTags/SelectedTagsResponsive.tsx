@@ -12,14 +12,13 @@ import { Tag, type TagProps } from '../Tag';
 import intlMessages from './intl';
 import s from './SelectedTags.module.css';
 import type { SelectedTagsProps } from './types';
-import { getHiddenCount } from './utils';
+import { getHiddenCount, getSelectedTagProps } from './utils';
 
 export function SelectedTagsResponsive<T extends object>({
   state,
   states,
   renderTag,
 }: SelectedTagsProps<T>) {
-  const { isDisabled, isInvalid, isReadOnly } = states;
   const length = state?.selectedItems?.length || 0;
 
   const { parentRef, visibleMap, itemsRefs } = useHideOverflowItems({
@@ -44,27 +43,10 @@ export function SelectedTagsResponsive<T extends object>({
         aria-label={t.format('selected items')}
       >
         {state.selectedItems?.map((item, i) => {
-          const onRemove = () => {
-            if (state.selectionManager.isSelected(item.key)) {
-              state.selectionManager.toggleSelection(item.key);
-            }
-          };
-
           const tagProps: TagProps = {
+            ...getSelectedTagProps(item, state, states),
             ref: itemsRefs[i],
-            className: s.tag,
             'aria-hidden': !visibleMap[i] || undefined,
-            allowsRemoving: true,
-            isDisabled,
-            variant: isInvalid ? 'error-fade' : 'contrast-fade',
-            slotProps: {
-              removeIcon: {
-                as: 'div',
-                tabIndex: undefined,
-                onPress: onRemove,
-                isDisabled: isReadOnly || isDisabled,
-              },
-            },
           };
 
           return (

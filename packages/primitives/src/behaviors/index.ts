@@ -18,3 +18,5 @@ export * from './useTagListState';
 export * from './useTagField';
 export * from './useTagFieldState';
 export * from './useTagAutocomplete';
+export * from './clearPredicate';
+export * from './useSelectionClear';

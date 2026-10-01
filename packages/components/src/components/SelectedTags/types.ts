@@ -12,6 +12,7 @@ export type SelectedTagsPropOverflow =
 /** Minimal selection state the tags read; any selection state fits structurally. */
 export interface SelectedTagsSelectionState<T extends object> {
   selectedItems: Node<T>[] | null;
+  disabledKeys: Set<Key>;
   selectionManager: {
     isSelected: (key: Key) => boolean;
     toggleSelection: (key: Key) => void;

@@ -27,7 +27,7 @@ const meta = {
     'TreeSelect.Tag': TreeSelect.Tag,
   },
   argTypes: {},
-  tags: ['status:updated', 'date:2026-09-09'],
+  tags: ['status:updated', 'date:2026-09-29'],
 } satisfies Meta<typeof TreeSelect>;
 
 export default meta;
@@ -574,6 +574,66 @@ export const ClearButton: Story = {
           );
         }}
       </TreeSelect>
+    );
+  },
+};
+
+export const ClearPredicate: Story = {
+  render: function Render() {
+    const files = [
+      {
+        id: 1,
+        title: 'config',
+        children: [
+          { id: 2, title: 'app.js', children: [] },
+          { id: 3, title: 'database.js', children: [] },
+        ],
+      },
+      { id: 4, title: '.env', children: [] },
+      { id: 5, title: 'README.md', children: [] },
+    ];
+
+    function renderItem(item: (typeof files)[number]) {
+      return (
+        <Tree.Item key={item.id} textValue={item.title}>
+          <Tree.ItemContent>{item.title}</Tree.ItemContent>
+          <Collection items={item.children}>{renderItem}</Collection>
+        </Tree.Item>
+      );
+    }
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <TreeSelect
+          items={files}
+          label="Project files"
+          caption="Disabled items are kept"
+          selectionMode="multiple"
+          selectedTagsOverflow="multiline"
+          defaultValue={[2, 4, 5]}
+          disabledKeys={[4]}
+          style={{ inlineSize: 320 }}
+          placeholder="Select files"
+          isClearable
+        >
+          {renderItem}
+        </TreeSelect>
+        <TreeSelect
+          items={files}
+          label="Project files"
+          caption="Every item is cleared"
+          selectionMode="multiple"
+          selectedTagsOverflow="multiline"
+          defaultValue={[2, 4, 5]}
+          disabledKeys={[4]}
+          clearPredicate={() => true}
+          style={{ inlineSize: 320 }}
+          placeholder="Select files"
+          isClearable
+        >
+          {renderItem}
+        </TreeSelect>
+      </FlexBox>
     );
   },
 };

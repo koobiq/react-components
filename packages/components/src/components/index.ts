@@ -81,6 +81,8 @@ export {
   type AsyncListLoadOptions,
   type TimeValue,
   type DateValue,
+  type ClearPredicate,
+  type ClearPredicateItem,
 } from '@koobiq/react-primitives';
 export {
   useRouter,

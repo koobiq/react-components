@@ -22,7 +22,7 @@ const meta = {
   component: TagInput,
   subcomponents: { 'TagInput.Tag': TagInput.Tag },
   parameters: { layout: 'centered' },
-  tags: ['status:new', 'date:2026-06-26'],
+  tags: ['status:updated', 'date:2026-09-29'],
 } satisfies Meta<typeof TagInput>;
 
 export default meta;
@@ -250,6 +250,59 @@ export const HideClearButton: Story = {
       >
         {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
       </TagInput>
+    );
+  },
+};
+
+export const ClearPredicate: Story = {
+  render: function Render() {
+    const { m } = useBreakpoints();
+
+    const initialItems = [
+      { id: 'react', name: 'React' },
+      { id: 'typescript', name: 'TypeScript' },
+      { id: 'storybook', name: 'Storybook' },
+    ];
+
+    const defaultList = useListData<TagItem>({ initialItems });
+    const clearAllList = useListData<TagItem>({ initialItems });
+
+    const tagCounter = useRef(0);
+
+    const createTag = (name: string): TagItem => {
+      tagCounter.current += 1;
+
+      return { id: `tag-${tagCounter.current}-${name}`, name };
+    };
+
+    return (
+      <FlexBox gap="m" direction="column">
+        <TagInput<TagItem>
+          label="Tags"
+          caption="Disabled tags are kept"
+          items={defaultList.items}
+          disabledKeys={['react']}
+          placeholder="Add tag"
+          style={{ inlineSize: m ? 360 : 240 }}
+          onRemove={(keys) => defaultList.remove(...keys)}
+          onAdd={(values) => defaultList.append(...values.map(createTag))}
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
+        <TagInput<TagItem>
+          label="Tags"
+          caption="Every tag is cleared"
+          items={clearAllList.items}
+          disabledKeys={['react']}
+          clearPredicate={() => true}
+          placeholder="Add tag"
+          style={{ inlineSize: m ? 360 : 240 }}
+          onRemove={(keys) => clearAllList.remove(...keys)}
+          onAdd={(values) => clearAllList.append(...values.map(createTag))}
+        >
+          {(item) => <TagInput.Tag key={item.id}>{item.name}</TagInput.Tag>}
+        </TagInput>
+      </FlexBox>
     );
   },
 };
