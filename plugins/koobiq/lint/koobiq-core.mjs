@@ -17,6 +17,25 @@ export const INTERNAL_PACKAGES = [
   '@koobiq/logger',
 ];
 
+// Exports of the internal packages that the docs present to consumers.
+export const DOCUMENTED_INTERNAL_EXPORTS = {
+  '@koobiq/react-core': [
+    'useBoolean',
+    'useCopyToClipboard',
+    'useDebounceCallback',
+    'useElementOverflow',
+    'useElementSize',
+    'useEventListener',
+    'useHideOverflowItems',
+    'useInterval',
+    'useMediaQuery',
+    'useRefs',
+    'useResizeObserver',
+    'FileSizeFormatter',
+  ],
+  '@koobiq/react-primitives': ['Button', 'Link'],
+};
+
 export const docsUrl = (id) => `${DOCS_BASE}${id}`;
 
 const DOCS_ID_EXCEPTIONS = {
@@ -197,14 +216,14 @@ export const RULES = {
     'warning',
     'script',
     'welcome--docs',
-    'Import from an internal Koobiq layer (react-core, react-primitives, logger).'
+    'Import of an undocumented export of an internal Koobiq layer (react-core, react-primitives, logger).'
   ),
   'import/direct-core-dependency': rule(
     'import',
     'warning',
     'script',
     'welcome--docs',
-    'The app declares an internal Koobiq package as its own dependency.'
+    'The app declares an internal Koobiq package it never imports.'
   ),
   'import/react-aria-direct': rule(
     'import',
@@ -1994,9 +2013,17 @@ export function checkImport(fact, ctx = {}) {
       if (!reexported) return results;
     }
 
+    const documented = DOCUMENTED_INTERNAL_EXPORTS[internal] || [];
+
+    // Documented hooks/utilities/primitives are public API of these
+    // packages (Storybook "Hooks/*", "Utilities/*", "Primitives/*").
     const names = (fact.specifiers || [])
       .map((s) => s.imported)
-      .filter(Boolean);
+      .filter((name) => name && !documented.includes(name));
+
+    if ((fact.specifiers || []).length > 0 && names.length === 0) {
+      return results;
+    }
 
     const reexported = ds ? names.filter((n) => ds.exportIndex.has(n)) : [];
 

@@ -1,8 +1,27 @@
 [
-  { "file": "package.json", "line": 1, "id": "setup/missing-peer-dependency" },
-  { "file": "package.json", "line": 1, "id": "setup/missing-peer-dependency" },
-  { "file": "package.json", "line": 7, "id": "import/direct-core-dependency" },
-  { "file": "src/main.tsx", "line": 1, "id": "setup/no-provider" },
-  { "file": "src/main.tsx", "line": 1, "id": "setup/no-theme-class" },
-  { "file": "src/main.tsx", "line": 1, "id": "setup/missing-fonts" }
+  {
+    "file": "package.json",
+    "line": 1,
+    "id": "setup/missing-peer-dependency"
+  },
+  {
+    "file": "package.json",
+    "line": 1,
+    "id": "setup/missing-peer-dependency"
+  },
+  {
+    "file": "src/main.tsx",
+    "line": 1,
+    "id": "setup/no-provider"
+  },
+  {
+    "file": "src/main.tsx",
+    "line": 1,
+    "id": "setup/no-theme-class"
+  },
+  {
+    "file": "src/main.tsx",
+    "line": 1,
+    "id": "setup/missing-fonts"
+  }
 ]

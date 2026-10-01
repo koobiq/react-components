@@ -202,6 +202,23 @@ describe('knowledge from installed packages', () => {
       []
     );
 
+    // Documented hooks and primitives are public API of those packages.
+    assert.deepEqual(
+      ids({
+        source: '@koobiq/react-core',
+        specifiers: [{ imported: 'useBoolean', kind: 'named' }],
+      }),
+      []
+    );
+
+    assert.deepEqual(
+      ids({
+        source: '@koobiq/react-primitives',
+        specifiers: [{ imported: 'Button', kind: 'named' }],
+      }),
+      []
+    );
+
     assert.deepEqual(
       ids({
         source: '@mui/material',

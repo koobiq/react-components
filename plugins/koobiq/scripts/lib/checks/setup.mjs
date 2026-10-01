@@ -187,21 +187,29 @@ export function checkPackageSetup(pkg, { root, config = {} }) {
       !/^workspace:/.test(pinned) &&
       !satisfies(pinned.replace(/^[\^~]/, ''), range);
 
-    findings.push(
-      finding(
-        skew ? 'setup/ds-version-skew' : 'import/direct-core-dependency',
-        skew
-          ? `${name}@${range} does not match ${pinned} that ${DS_PACKAGE}@${ds.version} uses.`
-          : `${name} is an internal Koobiq package; ${DS_PACKAGE} already brings it.`,
-        pkgFile(pkg),
-        packageJsonLine(pkg, name),
-        {
-          suggestion: skew
-            ? `Remove ${name} from package.json or align it with ${pinned}.`
-            : `Remove ${name} from package.json and import public APIs from ${DS_PACKAGE}.`,
-        }
-      )
-    );
+    // Declaring the package is right when the app imports its documented
+    // hooks; it only matters when versions drift or nothing uses it.
+    if (skew) {
+      findings.push(
+        finding(
+          'setup/ds-version-skew',
+          `${name}@${range} does not match ${pinned} that ${DS_PACKAGE}@${ds.version} uses.`,
+          pkgFile(pkg),
+          packageJsonLine(pkg, name),
+          { suggestion: `Align ${name} with ${pinned}, or remove it.` }
+        )
+      );
+    } else if (!index.internalImports.has(name)) {
+      findings.push(
+        finding(
+          'import/direct-core-dependency',
+          `${name} is declared but never imported; ${DS_PACKAGE} already brings it.`,
+          pkgFile(pkg),
+          packageJsonLine(pkg, name),
+          { suggestion: `Remove ${name} from package.json.` }
+        )
+      );
+    }
   }
 
   // Duplicate installs of internal packages.

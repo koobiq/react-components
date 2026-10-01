@@ -76,6 +76,9 @@ const DS_IMPORT_RE =
 
 const THEME_CLASS_RE = /\bkbq-(?:light|dark)\b/g;
 
+const INTERNAL_IMPORT_RE =
+  /(?:from|import\(|require\()\s*['"](@koobiq\/(?:react-core|react-primitives|logger))['"]/g;
+
 const FONT_RE =
   /@fontsource(?:-variable)?\/(?:inter|jetbrains-mono)|fonts\.googleapis\.com[^'"\s)]*family=Inter|from\s*['"]next\/font\/google['"][\s\S]{0,200}?\bInter\b|\bInter\b[\s\S]{0,40}?from\s*['"]next\/font\/google['"]|@font-face[^}]*Inter/;
 
@@ -243,6 +246,7 @@ function indexPackage(root, pkg) {
     definedVars: new Set(),
     vendoredFiles: new Set(),
     presetFiles: [],
+    internalImports: new Set(),
   };
 
   for (const rel of pkg.files) {
@@ -299,6 +303,10 @@ function indexPackage(root, pkg) {
       );
 
       continue;
+    }
+
+    for (const match of text.matchAll(INTERNAL_IMPORT_RE)) {
+      index.internalImports.add(match[1]);
     }
 
     pushMatches(index.dsImports, text, starts, DS_IMPORT_RE, (m, line) => ({
