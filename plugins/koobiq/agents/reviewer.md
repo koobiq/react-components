@@ -36,7 +36,8 @@ The orchestrator (`/koobiq:review`) sends a header like
 Called directly without a batch file: find the package root of the given
 files, run `node "<PLUGIN_ROOT>/scripts/koobiq-check.mjs" --root <root>
 --files <paths> --out <tmp>/report.json` (the plugin root is two levels above
-the guidelines skill directory), read the report and continue with
+the guidelines skill directory), read the report (its fields are described in
+`<PLUGIN_ROOT>/scripts/koobiq-check.schema.json`) and continue with
 `OUTPUT=markdown`.
 
 ## Boundaries

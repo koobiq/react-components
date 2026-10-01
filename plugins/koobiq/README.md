@@ -6,14 +6,14 @@ The plugin reviews **product code** that uses `@koobiq/react-components`; it is 
 
 ## Layout
 
-| Path                         | What it holds                                                                                                                                           |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.claude-plugin/plugin.json` | The manifest. It has no `version`, so users track commits                                                                                               |
-| `agents/reviewer.md`         | `koobiq:reviewer`, the read-only agent that `/koobiq:review` delegates batches to                                                                       |
-| `skills/`                    | `review`, `upgrade`, `setup-lint`, `init` (slash commands) and `guidelines` (model-invoked only) with its `references/`                                 |
-| `lint/koobiq-core.mjs`       | Knowledge extraction from the installed `@koobiq/*` packages and every rule decision. The checker and both lint presets use it, and products get a copy |
-| `lint/*.koobiq.mjs`          | The ESLint and Stylelint presets that `/koobiq:setup-lint` copies into a product's `.koobiq/`                                                           |
-| `scripts/`                   | `koobiq-check` (the deterministic checker), `koobiq-review-prep`, `koobiq-upgrade`, `setup-lint`, `init-agents`, their `lib/` and `tests/`              |
+| Path                         | What it holds                                                                                                                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.claude-plugin/plugin.json` | The manifest. It has no `version`, so users track commits                                                                                                                     |
+| `agents/reviewer.md`         | `koobiq:reviewer`, the read-only agent that `/koobiq:review` delegates batches to                                                                                             |
+| `skills/`                    | `review`, `upgrade`, `setup-lint`, `init` (slash commands) and `guidelines` (model-invoked only) with its `references/`                                                       |
+| `lint/koobiq-core.mjs`       | Knowledge extraction from the installed `@koobiq/*` packages and every rule decision. The checker and both lint presets use it, and products get a copy                       |
+| `lint/*.koobiq.mjs`          | The ESLint and Stylelint presets that `/koobiq:setup-lint` copies into a product's `.koobiq/`                                                                                 |
+| `scripts/`                   | `koobiq-check` (the deterministic checker) with the JSON Schema of its report, `koobiq-review-prep`, `koobiq-upgrade`, `setup-lint`, `init-agents`, their `lib/` and `tests/` |
 
 ## Conventions
 

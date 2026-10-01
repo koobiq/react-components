@@ -1,0 +1,412 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/koobiq/react-components/blob/main/plugins/koobiq/scripts/koobiq-check.schema.json",
+  "title": "koobiq-check report",
+  "description": "The JSON report of koobiq-check (--format json or --out). schemaVersion changes only when a field is removed or changes meaning; new optional fields keep it.",
+  "type": "object",
+  "required": ["schemaVersion", "tool", "meta", "findings", "inventory"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "tool": {
+      "type": "object",
+      "required": ["name", "version", "presetVersion"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "const": "koobiq-check" },
+        "version": { "type": "string" },
+        "presetVersion": {
+          "type": "string",
+          "description": "Version of the lint preset files this checker ships."
+        }
+      }
+    },
+    "meta": { "$ref": "#/$defs/meta" },
+    "findings": {
+      "type": "array",
+      "description": "Sorted by file, line, column and id.",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "inventory": { "$ref": "#/$defs/inventory" }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "count": { "type": "integer", "minimum": 0 },
+    "tokenSet": {
+      "enum": ["new", "legacy", "mixed", "none"],
+      "description": "Which @koobiq/design-tokens CSS set the app imports: web/new, the legacy web/css-tokens*, both, or none found."
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "root",
+        "mode",
+        "dsVersion",
+        "dsDir",
+        "tokensVersion",
+        "tokensDir",
+        "tokenSet",
+        "typescript",
+        "tsTier",
+        "packages",
+        "files",
+        "filesScanned",
+        "filesIndexed",
+        "filesSkipped",
+        "configFile",
+        "durationMs",
+        "timings",
+        "counts",
+        "suppressed",
+        "skipped",
+        "truncated",
+        "errors",
+        "rules"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "type": "string",
+          "description": "Absolute project root with / separators."
+        },
+        "mode": {
+          "enum": ["full", "files", "changed"],
+          "description": "full: every file; files: --files / --files-from; changed: --changed."
+        },
+        "base": {
+          "type": "string",
+          "description": "The ref compared against in changed mode."
+        },
+        "mergeBase": { "$ref": "#/$defs/nullableString" },
+        "shallow": {
+          "type": "boolean",
+          "description": "The clone is shallow, so the merge-base may be wrong."
+        },
+        "changedLines": {
+          "type": "object",
+          "description": "Changed line ranges per file in changed mode; an end of null means to the end of the file.",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": ["integer", "null"] }
+            }
+          }
+        },
+        "dsVersion": { "$ref": "#/$defs/nullableString" },
+        "dsDir": { "$ref": "#/$defs/nullableString" },
+        "tokensVersion": { "$ref": "#/$defs/nullableString" },
+        "tokensDir": { "$ref": "#/$defs/nullableString" },
+        "tokenSet": { "$ref": "#/$defs/tokenSet" },
+        "typescript": {
+          "type": "boolean",
+          "description": "TypeScript was found in the project and used for parsing."
+        },
+        "typescriptVersion": { "type": "string" },
+        "tsTier": {
+          "enum": ["none", "resolver", "languageService"],
+          "description": "none: regex parser; resolver: TypeScript parser and module resolution for local barrels; languageService: also --typecheck."
+        },
+        "packages": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/package" }
+        },
+        "files": {
+          "type": "array",
+          "description": "Files in scope, relative to root.",
+          "items": { "type": "string" }
+        },
+        "filesScanned": { "$ref": "#/$defs/count" },
+        "filesIndexed": { "$ref": "#/$defs/count" },
+        "filesSkipped": { "$ref": "#/$defs/count" },
+        "configFile": { "$ref": "#/$defs/nullableString" },
+        "durationMs": { "type": "number", "minimum": 0 },
+        "timings": {
+          "type": "object",
+          "description": "Milliseconds per stage.",
+          "additionalProperties": { "type": "number", "minimum": 0 }
+        },
+        "counts": {
+          "type": "object",
+          "required": ["error", "warning", "info"],
+          "additionalProperties": false,
+          "properties": {
+            "error": { "$ref": "#/$defs/count" },
+            "warning": { "$ref": "#/$defs/count" },
+            "info": { "$ref": "#/$defs/count" }
+          }
+        },
+        "suppressed": {
+          "$ref": "#/$defs/count",
+          "description": "Findings dropped by inline koobiq-ignore / eslint-disable / stylelint-disable comments."
+        },
+        "skipped": {
+          "type": "array",
+          "description": "Checks that did not run, and why.",
+          "items": {
+            "type": "object",
+            "required": ["check", "reason"],
+            "additionalProperties": false,
+            "properties": {
+              "check": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        },
+        "truncated": {
+          "type": "array",
+          "description": "Findings dropped by --max-per-file / --max-findings, per rule id.",
+          "items": {
+            "type": "object",
+            "required": ["id", "dropped"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "dropped": { "$ref": "#/$defs/count" }
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "description": "Internal failures; the rest of the run still completed.",
+          "items": {
+            "type": "object",
+            "required": ["message"],
+            "additionalProperties": false,
+            "properties": {
+              "stage": { "type": "string" },
+              "file": { "type": "string" },
+              "package": { "type": "string" },
+              "message": { "type": "string" }
+            }
+          }
+        },
+        "rules": {
+          "$ref": "#/$defs/count",
+          "description": "Number of rules in the registry."
+        }
+      }
+    },
+    "package": {
+      "type": "object",
+      "required": [
+        "dir",
+        "name",
+        "app",
+        "usesDs",
+        "framework",
+        "dsVersion",
+        "dsDeclared",
+        "tokensVersion",
+        "tokenSet",
+        "entry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "dir": {
+          "type": "string",
+          "description": "Package folder relative to root; \".\" for the root package."
+        },
+        "name": { "$ref": "#/$defs/nullableString" },
+        "app": {
+          "type": "boolean",
+          "description": "An application (setup checks apply) rather than a library."
+        },
+        "usesDs": { "type": "boolean" },
+        "framework": { "enum": ["next", "vite", "cra", "remix", "unknown"] },
+        "dsVersion": {
+          "$ref": "#/$defs/nullableString",
+          "description": "Installed @koobiq/react-components version."
+        },
+        "dsDeclared": {
+          "$ref": "#/$defs/nullableString",
+          "description": "Declared @koobiq/react-components range."
+        },
+        "tokensVersion": { "$ref": "#/$defs/nullableString" },
+        "tokenSet": { "$ref": "#/$defs/tokenSet" },
+        "entry": {
+          "$ref": "#/$defs/nullableString",
+          "description": "The detected app entry file."
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": [
+        "id",
+        "category",
+        "severity",
+        "file",
+        "line",
+        "column",
+        "message",
+        "confidence",
+        "source",
+        "fixable",
+        "fingerprint"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+/[a-z0-9-]+$",
+          "description": "Rule id from RULES in lint/koobiq-core.mjs (koobiq-check --list-rules)."
+        },
+        "category": { "type": "string" },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "file": {
+          "type": "string",
+          "description": "Relative to root, / separators."
+        },
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1 },
+        "message": { "type": "string" },
+        "evidence": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The source line, trimmed."
+        },
+        "suggestion": { "type": "string" },
+        "docs": {
+          "type": "string",
+          "pattern": "^https://react\\.koobiq\\.io/"
+        },
+        "confidence": { "enum": ["high", "medium"] },
+        "source": {
+          "enum": ["ast", "css", "project", "regex", "ts"],
+          "description": "ast/css: parsed code; project: package.json and entry files; regex: fallback parser without TypeScript; ts: the TypeScript language service (--typecheck)."
+        },
+        "inDiff": {
+          "type": "boolean",
+          "description": "Changed mode: the line is inside a changed range."
+        },
+        "fixable": {
+          "enum": ["safe", "assisted", "manual"],
+          "description": "safe: mechanical and behavior-preserving; assisted: needs a choice; manual: needs design or product input."
+        },
+        "fix": {
+          "type": "object",
+          "required": ["kind"],
+          "properties": { "kind": { "type": "string" } }
+        },
+        "data": {
+          "type": "object",
+          "description": "Rule-specific details (component, prop, replacement, token, …)."
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{16}$",
+          "description": "Stable across line shifts: rule id, file, evidence and occurrence."
+        }
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "required": ["mode"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": ["none", "summary", "full"],
+          "description": "--inventory; the default is summary for a full scan and full otherwise."
+        },
+        "components": {
+          "type": "array",
+          "description": "Every Koobiq component usage (full mode).",
+          "items": { "$ref": "#/$defs/componentUse" }
+        },
+        "imports": {
+          "type": "array",
+          "description": "Imports from @koobiq/* and imports with findings (full mode).",
+          "items": { "$ref": "#/$defs/importUse" }
+        },
+        "summary": {
+          "type": "object",
+          "required": ["components", "files"],
+          "additionalProperties": false,
+          "properties": {
+            "components": {
+              "type": "object",
+              "description": "Usage count per component name.",
+              "additionalProperties": { "$ref": "#/$defs/count" }
+            },
+            "files": {
+              "$ref": "#/$defs/count",
+              "description": "Files that use Koobiq components."
+            }
+          }
+        }
+      }
+    },
+    "componentUse": {
+      "type": "object",
+      "required": ["name", "source", "file", "line", "column", "props"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Koobiq name, with the slot for compound components (Modal.Header)."
+        },
+        "local": {
+          "type": "string",
+          "description": "The local name when imported under an alias."
+        },
+        "source": {
+          "type": "string",
+          "description": "The Koobiq entry point."
+        },
+        "via": {
+          "type": "string",
+          "description": "The local barrel file the component was imported through."
+        },
+        "file": { "type": "string" },
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1 },
+        "props": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "value": {
+                "type": ["string", "number", "boolean"],
+                "description": "Literal values only."
+              }
+            }
+          }
+        },
+        "spread": {
+          "type": "boolean",
+          "description": "The element also spreads props, so the list is incomplete."
+        }
+      }
+    },
+    "importUse": {
+      "type": "object",
+      "required": ["source", "specifiers", "file", "line"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string" },
+        "specifiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "kind"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "alias": { "type": "string" },
+              "kind": { "type": "string" },
+              "typeOnly": { "type": "boolean" }
+            }
+          }
+        },
+        "file": { "type": "string" },
+        "line": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

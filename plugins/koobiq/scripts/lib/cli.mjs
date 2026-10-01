@@ -12,7 +12,7 @@ Scope (default: every tracked file):
   --base <ref>             Base ref for --changed (default: origin/HEAD, main, master)
 
 Output:
-  --format json|text       Output format (default: json)
+  --format json|text       Output format (default: json; schema: koobiq-check.schema.json)
   --out <file>             Write the report to a file; print a short summary
   --inventory full|summary|none   Component inventory detail
   --max-findings <n>       Cap on findings (default: 2000)
