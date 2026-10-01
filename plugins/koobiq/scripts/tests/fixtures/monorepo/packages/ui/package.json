@@ -1,0 +1,9 @@
+{
+  "name": "@acme/ui",
+  "private": true,
+  "main": "src/index.ts",
+  "peerDependencies": {
+    "@koobiq/react-components": "9.9.0",
+    "react": "^19.0.0"
+  }
+}

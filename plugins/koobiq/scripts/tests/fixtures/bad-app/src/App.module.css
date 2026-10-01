@@ -1,0 +1,30 @@
+.root {
+  color: #ffffff; /* expect: style/hardcoded-color */
+  background-color: rgb(255, 255, 255); /* expect: style/hardcoded-color */
+  border-color: var(--kbq-line-contrast-less);
+  padding: var(--kbq-size-m);
+  margin: var(--kbq-size-mm); /* expect: token/unknown */
+  outline-color: var(--kbq-theme-default); /* expect: token/deprecated, token/legacy-only */
+  fill: var(--kbq-palette-grey-50); /* expect: token/legacy-only */
+  caret-color: var(--kbq-foreground-success-tertiary); /* expect: token/unknown */
+  --kbq-flag-size: 24px;
+  --kbq-my-custom: 1px; /* expect: token/defines-unknown-public-var */
+  z-index: 10;
+}
+
+.root [data-slot='button'] {
+  color: var(--kbq-foreground-contrast) !important; /* expect: style/important-on-ds */
+}
+
+:global(.kbq-button-hovered-1a2b3c) { /* expect: style/hashed-class */
+  opacity: 0.5;
+}
+
+[class*='kbq-'] { /* expect: style/hashed-class */
+  margin: 0;
+}
+
+:global(.kbq-dark) .root {
+  --card-bg: #000000;
+  color: #000000;
+}

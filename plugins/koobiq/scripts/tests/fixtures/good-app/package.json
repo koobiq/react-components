@@ -1,0 +1,16 @@
+{
+  "name": "good-app",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@koobiq/design-tokens": "^3.17.2",
+    "@koobiq/react-components": "9.9.0",
+    "@koobiq/react-icons": "^12.1.1",
+    "react": "^19.0.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}

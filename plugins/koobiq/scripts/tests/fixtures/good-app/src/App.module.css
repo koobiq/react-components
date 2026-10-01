@@ -1,0 +1,15 @@
+.root {
+  display: flex;
+  gap: var(--kbq-size-m);
+  color: var(--kbq-foreground-contrast);
+  background: var(--kbq-background-bg);
+  --kbq-flag-size: 24px;
+}
+
+.root [data-slot='button'][data-variant='fade-contrast-filled'] {
+  margin-inline-start: var(--kbq-size-s);
+}
+
+:global(.kbq-dark) .root {
+  --accent: #000000;
+}
