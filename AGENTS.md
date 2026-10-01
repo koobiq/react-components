@@ -45,6 +45,8 @@ Selected paths. The root also holds the lint, format, commit, and deploy configs
 │           └── code-block.ts          # `@koobiq/react-components/code-block` entry
 ├── docs/                              # Guide MDX pages rendered in Storybook (numeric prefix sets the order)
 ├── .storybook/                        # Storybook config, MDX doc blocks (Meta, Story, Props, Status, Alert), decorators
+├── .claude-plugin/                    # Claude Code plugin marketplace `koobiq-react` (for product teams)
+├── plugins/koobiq/                    # The `koobiq` Claude Code plugin: reviewer agent, skills, checker, lint preset
 ├── tools/
 │   ├── api-extractor/                 # Public API guard runner + config.json (guarded components/packages)
 │   ├── e2e/                           # Docker image, Compose files and runner of the Playwright e2e suite
@@ -121,6 +123,8 @@ pnpm approve-api react-core # refresh one package (react-primitives | react-core
 pnpm e2e:docker                  # Playwright screenshot tests in Docker, where the baselines belong
 pnpm e2e:docker -g Button        # filter by test title; arguments go to `pnpm e2e:components`
 pnpm e2e:docker:update-snapshots # rewrite changed and missing baselines
+
+pnpm test:plugin # node --test for the Claude Code plugin in plugins/koobiq
 ```
 
 CI (`.github/workflows`) runs `type-check`, `format:check`, `lint:css --max-warnings=0`, `lint:js --max-warnings=0`, `vitest --run`, `build && check-api`, and the e2e screenshot tests in Docker on an arm64 runner. Because of `--max-warnings=0`, Stylelint/ESLint **warnings fail CI**.
@@ -216,8 +220,8 @@ Public `--kbq-<component>-*` variables are override points.
 - Props with a fixed set of allowed values are exported as `as const` arrays plus a derived union type:
 
   ```ts
-  export const buttonVariant = ['contrast-filled', 'fade-contrast-filled', ...] as const;
-  export type ButtonVariant = (typeof buttonVariant)[number];
+  export const buttonPropVariant = ['contrast-filled', 'fade-contrast-filled', ...] as const;
+  export type ButtonPropVariant = (typeof buttonPropVariant)[number];
   ```
 
 - All boolean props default to `false`. If `true` would be the natural default, invert the name (e.g. `hideArrow` instead of `showArrow={true}`).
@@ -225,7 +229,9 @@ Public `--kbq-<component>-*` variables are override points.
 
   ```tsx
   if (process.env.NODE_ENV !== 'production' && 'disabled' in props) {
-    deprecate('Button: "disabled" is deprecated. Use "isDisabled" instead.');
+    deprecate(
+      'Button: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+    );
   }
   ```
 
@@ -314,7 +320,7 @@ Any change to an existing component's exported types/signatures needs the same `
 
 All commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are validated by commitlint — the `commit-msg` hook locally and the **PR title** in CI. `main` history is one squash commit per PR, so the PR title becomes the commit message. Only `feat` and `fix` appear in the changelog. Keep titles short (≤100 chars).
 
-Format in practice: `type(scope): subject (DS-NNNN)` — scope is the component name (`fix(Button): …`; several: `fix(Flag, Sidebar): …`) or `components` when adding a new component; `DS-NNNN` is the tracker ticket, when there is one.
+Format in practice: `type(scope): subject (DS-NNNN)` — scope is the component name (`fix(Button): …`; several: `fix(Flag, Sidebar): …`), `components` when adding a new component, or `plugin` for the Claude Code plugin; `DS-NNNN` is the tracker ticket, when there is one.
 
 | Type       | When to use                              |
 | ---------- | ---------------------------------------- |
@@ -338,6 +344,15 @@ chore(deps): bump `typescript` from 5.7.3 to 6.0.3
 ```
 
 `CHANGELOG.md` is generated at release time (`pnpm release`) — don't edit it by hand.
+
+## Claude Code Plugin
+
+`plugins/koobiq/` is a Claude Code plugin for **product teams**, published through `.claude-plugin/marketplace.json`. It reviews apps that use the library, not this repository. Maintainer notes are in `plugins/koobiq/README.md`.
+
+- The plugin parses the built package. Keep the `deprecate()` message format above, the `kbq-<file>-<class>-<hash>` class names, the `<component>Prop<Name>` value arrays and the entry points stable, or update the plugin in the same PR. After `pnpm build`, `KOOBIQ_DS_DIR=packages/components pnpm test:plugin` checks the contract.
+- When the setup steps in `docs/0-welcome.mdx` change, update `plugins/koobiq/skills/guidelines/references/setup.md` and `plugins/koobiq/skills/init/agents-block.md`.
+- After editing `marketplace.json` or `plugin.json`, run `claude plugin validate .`.
+- Plugin scripts are dependency-free ESM (`.mjs`, Node.js 18.17+) and are excluded from `tsconfig.json`; test them with `pnpm test:plugin`.
 
 ## Important Notes for Agents
 
