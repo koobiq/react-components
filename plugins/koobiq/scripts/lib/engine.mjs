@@ -279,6 +279,19 @@ export function runCheck(options) {
         mergeBase: discovery.mergeBase,
       }),
       ...(discovery.shallow && { shallow: true }),
+      ...(discovery.changedLines && {
+        changedLines: Object.fromEntries(
+          [...discovery.changedLines]
+            .filter(([file]) => discovery.targets.includes(file))
+            .map(([file, ranges]) => [
+              file,
+              ranges.map(([start, end]) => [
+                start,
+                end === Number.MAX_SAFE_INTEGER ? null : end,
+              ]),
+            ])
+        ),
+      }),
       dsVersion: primary?.knowledge?.ds?.version || null,
       dsDir: primary?.knowledge?.ds?.dir?.split(path.sep).join('/') || null,
       tokensVersion: primary?.knowledge?.tokens?.version || null,

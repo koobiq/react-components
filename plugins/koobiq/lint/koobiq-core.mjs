@@ -612,6 +612,147 @@ export const RULES = {
     'utilities-dateformatter--docs',
     'Date components get Date objects or strings instead of @internationalized/date values.'
   ),
+  'i18n/validation-messages': rule(
+    'i18n',
+    'info',
+    'agent',
+    'forms--docs',
+    'Browser validation messages ignore the Provider locale; localize errorMessage when it matters.'
+  ),
+  // Judgment rules the reviewer agent checks (no deterministic detector).
+  'setup/library-peer': rule(
+    'setup',
+    'warning',
+    'agent',
+    'welcome--docs',
+    'A UI library package lists the DS as a dependency instead of a peer dependency.'
+  ),
+  'props/responsive-keys': rule(
+    'props',
+    'error',
+    'agent',
+    'responsive-ui--docs',
+    'A responsive value uses keys that are not Provider breakpoints.'
+  ),
+  'props/render-dependencies': rule(
+    'props',
+    'warning',
+    'agent',
+    'welcome--docs',
+    'A collection render function reads outer state without listing it in dependencies.'
+  ),
+  'props/error-without-invalid': rule(
+    'props',
+    'warning',
+    'agent',
+    'forms--docs',
+    'errorMessage text is passed without isInvalid or validation, so it never shows.'
+  ),
+  'props/style-instead-of-prop': rule(
+    'props',
+    'info',
+    'agent',
+    'welcome--docs',
+    'Inline styles re-create something a prop already does (fullWidth, align, ellipsis…).'
+  ),
+  'typescript/ref-types': rule(
+    'typescript',
+    'info',
+    'agent',
+    'welcome--docs',
+    'Refs to Koobiq components are typed by hand instead of with the exported XRef types.'
+  ),
+  'typescript/collection-generics': rule(
+    'typescript',
+    'info',
+    'agent',
+    'welcome--docs',
+    'Collection components get untyped items; pass a typed item shape with an id.'
+  ),
+  'typescript/polymorphic-cast': rule(
+    'typescript',
+    'info',
+    'agent',
+    'welcome--docs',
+    'A polymorphic component is cast instead of letting `as` infer its props.'
+  ),
+  'typescript/handler-types': rule(
+    'typescript',
+    'info',
+    'agent',
+    'welcome--docs',
+    'Handlers are typed as DOM events instead of PressEvent / the value type.'
+  ),
+  'token/raw-shadow': rule(
+    'token',
+    'info',
+    'agent',
+    'welcome--docs',
+    'A literal box-shadow is used where a --kbq-shadow-* token exists.'
+  ),
+  'token/raw-transition': rule(
+    'token',
+    'info',
+    'agent',
+    'welcome--docs',
+    'A literal transition is used where --kbq-transition-* exists.'
+  ),
+  'style/tailwind-raw': rule(
+    'style',
+    'warning',
+    'agent',
+    'welcome--docs',
+    'Tailwind palette or arbitrary colors are used instead of Koobiq tokens.'
+  ),
+  'a11y/item-text-value': rule(
+    'a11y',
+    'warning',
+    'agent',
+    'welcome--docs',
+    'A collection item with non-text content has no textValue.'
+  ),
+  'a11y/heading-semantics': rule(
+    'a11y',
+    'info',
+    'agent',
+    'components-typography--docs',
+    'Heading-looking text is not a heading (Typography as="h1…h6").'
+  ),
+  'a11y/landmarks': rule(
+    'a11y',
+    'warning',
+    'agent',
+    'welcome--docs',
+    'Navigation or sidebar regions lack a landmark role or an accessible name.'
+  ),
+  'a11y/status-announcement': rule(
+    'a11y',
+    'info',
+    'agent',
+    'components-emptystate--docs',
+    'Dynamic status content is not announced (role="status").'
+  ),
+  'a11y/img-alt': rule(
+    'a11y',
+    'error',
+    'agent',
+    'welcome--docs',
+    'An informative image has no alt text.'
+  ),
+  'a11y/error-association': rule(
+    'a11y',
+    'warning',
+    'agent',
+    'forms--docs',
+    'Field errors are rendered outside errorMessage, so they are not associated with the field.'
+  ),
+  'a11y/color-only': rule(
+    'a11y',
+    'info',
+    'agent',
+    'welcome--docs',
+    'Meaning is conveyed by color alone.'
+  ),
 };
 
 export const RULE_IDS = Object.keys(RULES);
