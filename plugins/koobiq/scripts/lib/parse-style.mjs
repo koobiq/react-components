@@ -1,3 +1,7 @@
+import { VAR_REF_RE } from '../../lint/koobiq-core.mjs';
+
+export { VAR_REF_RE };
+
 // Tolerant scanner for CSS / SCSS / LESS (and CSS inside tagged templates).
 // It does not build a full AST: it finds selectors, declarations, imports,
 // custom-property references/definitions and SCSS token variables with
@@ -63,11 +67,6 @@ export function maskComments(text, { lineComments = false } = {}) {
 
   return out.join('');
 }
-
-// Template placeholders are filled with "___", so a run of three
-// underscores ends a name and marks it as dynamic.
-export const VAR_REF_RE =
-  /var\(\s*(--kbq-(?:[A-Za-z0-9-]|_(?!__))*)(\s*(?:#\{|@\{|\$\{|_{3,}))?(\s*,)?/g;
 
 const SCSS_TOKEN_VAR_RE =
   /(?<![\w-])(?:[\w-]+\.)?\$((?:light|dark)-[a-z0-9-]+)/g;

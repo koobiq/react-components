@@ -1658,6 +1658,35 @@ export function findColorLiterals(value) {
   return results;
 }
 
+// Template placeholders are filled with "___", so a run of three
+// underscores ends a name and marks it as dynamic.
+export const VAR_REF_RE =
+  /var\(\s*(--kbq-(?:[A-Za-z0-9-]|_(?!__))*)(\s*(?:#\{|@\{|\$\{|_{3,}))?(\s*,)?/g;
+
+/** var(--kbq-*) references in a CSS value or string, with offsets. */
+export function findVarRefs(text) {
+  return [...String(text).matchAll(VAR_REF_RE)].map((match) => {
+    const dynamic = Boolean(match[2]);
+
+    return {
+      name: dynamic ? undefined : match[1],
+      dynamicPrefix: dynamic ? match[1] : undefined,
+      hasFallback: Boolean(match[3]),
+      index: match.index + match[0].indexOf('--'),
+    };
+  });
+}
+
+const SCSS_TOKEN_VAR_RE =
+  /(?<![\w-])(?:[\w-]+\.)?\$((?:light|dark)-[a-z0-9-]+)/g;
+
+/** Static SCSS token variables ($light-*, $dark-*) in a value. */
+export const findScssTokenVars = (text) =>
+  [...String(text).matchAll(SCSS_TOKEN_VAR_RE)].map((match) => ({
+    name: `$${match[1]}`,
+    index: match.index,
+  }));
+
 /* ------------------------------------------------------------------ */
 /* Tokens                                                              */
 /* ------------------------------------------------------------------ */
