@@ -69,6 +69,11 @@ describe('contract with the built DS', () => {
 
     const ds = loadDsKnowledge(path.resolve(dsDir));
 
+    assert.ok(
+      ds.exportIndex.size > 0,
+      `no exports found in ${dsDir}: build the package first (pnpm build)`
+    );
+
     const runtime = [...ds.deprecatedProps.values()]
       .flatMap((m) => [...m.values()])
       .filter((i) => i.source === 'runtime');

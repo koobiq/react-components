@@ -78,9 +78,10 @@ describe('TypeScript tiers', () => {
 
   test('T3: --typecheck follows wrappers typed with Koobiq props', (t) => {
     const types = path.join(REPO_ROOT, 'node_modules', '@types', 'react');
+    const csstype = path.join(REPO_ROOT, 'node_modules', 'csstype');
 
-    if (!REPO_TYPESCRIPT || !fs.existsSync(types)) {
-      t.skip('typescript / @types/react are not installed');
+    if (!REPO_TYPESCRIPT || !fs.existsSync(types) || !fs.existsSync(csstype)) {
+      t.skip('typescript, @types/react or csstype is not installed');
 
       return;
     }
@@ -92,11 +93,9 @@ describe('TypeScript tiers', () => {
         recursive: true,
       });
 
-      fs.cpSync(
-        path.join(REPO_ROOT, 'node_modules', 'csstype'),
-        path.join(app.dir, 'node_modules', 'csstype'),
-        { recursive: true }
-      );
+      fs.cpSync(csstype, path.join(app.dir, 'node_modules', 'csstype'), {
+        recursive: true,
+      });
 
       write(
         app.dir,
