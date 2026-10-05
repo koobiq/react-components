@@ -9,3 +9,5 @@ playwright-report/
 test-results/
 templates/nextjs/template
 templates/vite/template
+plugins/koobiq/scripts/tests/fixtures/
+plugins/koobiq/evals/

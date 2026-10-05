@@ -1,0 +1,5 @@
+@use '@koobiq/design-tokens/web/new/variables' as tokens;
+
+.box {
+  color: tokens.$light-foreground-contrast; // expect: token/scss-static-variable
+}

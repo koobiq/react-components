@@ -1,0 +1,11 @@
+:root {
+  --kbq-layer-modal: 1000;
+  --kbq-layer-overlay: var(--kbq-layer-modal);
+  --kbq-transition-default: 0.12s ease-in-out;
+}
+.kbq-button-5c3f2a { color: var(--kbq-foreground-contrast); }
+.kbq-button-hovered-1a2b3c { background: var(--kbq-background-bg); }
+.kbq-flag-9f8e7d { inline-size: var(--kbq-flag-size, var(--flag-size)); }
+.kbq-tag-77aa11 { color: var(--kbq-tag-color, var(--tag-color)); }
+.kbq-light, .kbq-dark { color-scheme: light dark; }
+.kbq-Tree { display: block; }
