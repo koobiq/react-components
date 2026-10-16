@@ -26,7 +26,7 @@ RUN set -eux; \
 
 # Manifests only, so that the dependencies are reinstalled only when they change.
 # A new package under packages/ has to be listed here.
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/logger/package.json packages/logger/
 COPY packages/core/package.json packages/core/
 COPY packages/primitives/package.json packages/primitives/

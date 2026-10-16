@@ -63,7 +63,7 @@ Selected paths. The root also holds the lint, format, commit, and deploy configs
 
 | Concern                  | Tool                                                                      |
 | ------------------------ | ------------------------------------------------------------------------- |
-| Package manager          | pnpm 9.12.2                                                               |
+| Package manager          | pnpm 11.28.5                                                              |
 | Node version             | 24 (`.nvmrc`; `engines` requires `^24`)                                   |
 | Monorepo orchestration   | Turborepo                                                                 |
 | Language                 | TypeScript 6 (strict)                                                     |
