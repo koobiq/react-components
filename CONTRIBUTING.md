@@ -15,7 +15,7 @@ All development is conducted there. For convenience, you can go directly to the 
 
 ## Prerequisites
 
-- Node.js v20
+- Node.js v24 (the exact version is in `.nvmrc`)
 - pnpm v11 (`corepack enable` picks the version from `packageManager` in `package.json`)
 
 ## Tech stack
