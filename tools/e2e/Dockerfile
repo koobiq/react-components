@@ -25,12 +25,17 @@ RUN set -eux; \
     test "v$node_version" = "$(node --version)"
 
 # Manifests only, so that the dependencies are reinstalled only when they change.
-# A new package under packages/ has to be listed here.
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+# A new package under packages/ or templates/ has to be listed here. The templates are needed too:
+# they pin a published @koobiq/react-components, and that copy (with its built dist/style.css) is
+# what .storybook/manager.tsx imports. Without them pnpm links the unbuilt workspace package there.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/logger/package.json packages/logger/
 COPY packages/core/package.json packages/core/
 COPY packages/primitives/package.json packages/primitives/
 COPY packages/components/package.json packages/components/
+COPY templates/nextjs/package.json templates/nextjs/
+COPY templates/nextjs/template/package.json templates/nextjs/template/
+COPY templates/vite/template/package.json templates/vite/template/
 
 RUN corepack enable pnpm && pnpm install --frozen-lockfile
 

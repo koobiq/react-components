@@ -4,7 +4,6 @@
 **
 
 !.nvmrc
-!.npmrc
 !package.json
 !pnpm-lock.yaml
 !pnpm-workspace.yaml
@@ -16,6 +15,9 @@
 !docs/**
 !packages/
 !packages/**
+!templates/nextjs/package.json
+!templates/nextjs/template/package.json
+!templates/vite/template/package.json
 !global.d.ts
 !tsconfig.json
 !vite.config.mts
