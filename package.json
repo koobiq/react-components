@@ -109,7 +109,7 @@
     "nano-staged": "^1.0.2",
     "postcss-lightningcss": "^1.1.0",
     "postcss-mixins": "^11.0.3",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "prettier-plugin-sh": "^0.20.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
