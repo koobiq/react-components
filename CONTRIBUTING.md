@@ -131,3 +131,39 @@ pnpm approve-api             # refresh all
 pnpm approve-api Button      # refresh a single component
 pnpm approve-api react-icons # refresh a single package
 ```
+
+## 🤖 Claude Code plugin
+
+`plugins/koobiq/` is a Claude Code plugin for teams that build products with Koobiq React
+([user guide](https://react.koobiq.io/?path=/docs/ai-claude-code-plugin--docs)). It reads the built
+package, so some changes to the library reach it:
+
+- Write prop deprecations in the format from the
+  [Deprecation Strategy](https://react.koobiq.io/?path=/docs/deprecation-strategy--docs) page:
+  `pnpm test:plugin` checks every `deprecate()` call.
+- Keep the generated class names (`kbq-<file>-<class>-<hash>`), the `<component>Prop<Name>` value
+  arrays and the package entry points stable, or update the plugin in the same pull request. After
+  `pnpm build`, the contract test checks them:
+
+```bash
+KOOBIQ_DS_DIR=packages/components pnpm test:plugin
+```
+
+- When the setup steps on the Welcome page change, update
+  `plugins/koobiq/skills/guidelines/references/setup.md` and `plugins/koobiq/skills/init/agents-block.md`.
+
+When you change the plugin itself:
+
+- Bump `version` in `plugins/koobiq/.claude-plugin/plugin.json` (semver) and add a section to
+  `plugins/koobiq/CHANGELOG.md`: users receive a change only when the version changes. CI checks both:
+
+```bash
+node scripts/check-plugin-version.mjs origin/main
+```
+
+- Use the `plugin` commit scope, for example `fix(plugin): …`. These commits stay out of the
+  library's changelog.
+- Run `pnpm test:plugin` and `claude plugin validate .`, and try the plugin in a product with
+  `claude --plugin-dir /path/to/react-components/plugins/koobiq`.
+
+Maintainer notes: [plugins/koobiq/README.md](https://github.com/koobiq/react-components/blob/main/plugins/koobiq/README.md).
