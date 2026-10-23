@@ -82,3 +82,8 @@ const Component = (props) => {
   // ...
 };
 ```
+
+Keep the message in exactly this form: `<Component>: the "<prop>" prop is deprecated. Use "<replacement>" prop to replace it.`
+The [Claude Code plugin](?path=/docs/ai-claude-code-plugin--docs) reads these messages and the `@deprecated` tags from the built package
+to find deprecated props in product code and suggest the replacement, and it suggests a replacement only when that prop exists.
+`pnpm test:plugin` checks every `deprecate()` call in the source against this format, and CI runs it on each pull request.

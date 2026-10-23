@@ -1,0 +1,15 @@
+/**
+ * Do not edit directly
+ */
+
+:root {
+  --kbq-size-3xs: 2px;
+  --kbq-size-xxs: 4px;
+  --kbq-size-s: 8px;
+  --kbq-size-m: 12px;
+  --kbq-size-l: 16px;
+  --kbq-size-border-radius: 8px;
+  --kbq-typography-text-normal-font-size: 14px;
+  --kbq-code-block-hljs-built_in-color: #000000;
+  --kbq-tooltip-size-max-width: 300px; /* DEPRECATED: `component` token will be removed - use `global` token or raw value */
+}

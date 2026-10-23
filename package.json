@@ -42,7 +42,9 @@
     "release:version": "bumpp",
     "release:publish": "pnpm publish -r",
     "check-api": "tsx tools/api-extractor/api-extractor.ts onlyCheck",
-    "approve-api": "tsx tools/api-extractor/api-extractor.ts"
+    "approve-api": "tsx tools/api-extractor/api-extractor.ts",
+    "test:plugin": "node --test \"plugins/koobiq/scripts/tests/*.test.mjs\"",
+    "koobiq-check": "node plugins/koobiq/scripts/koobiq-check.mjs"
   },
   "keywords": [],
   "author": "",
@@ -139,6 +141,16 @@
     "header": "# Changelog\n",
     "tagPrefix": "",
     "types": [
+      {
+        "type": "feat",
+        "scope": "plugin",
+        "hidden": true
+      },
+      {
+        "type": "fix",
+        "scope": "plugin",
+        "hidden": true
+      },
       {
         "type": "feat",
         "section": "🚀 Features"

@@ -21,3 +21,7 @@ jobs:
         run: pnpm run build
       - name: Check public API
         run: pnpm run check-api
+      - name: Check the Claude Code plugin against the build
+        run: node --test plugins/koobiq/scripts/tests/real.test.mjs
+        env:
+          KOOBIQ_DS_DIR: packages/components

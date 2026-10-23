@@ -26,3 +26,6 @@ test-results
 
 # api-extractor temp
 tools/public_api_guard/temp
+
+# Claude Code plugin eval results
+plugins/*/evals/results/

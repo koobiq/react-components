@@ -1,0 +1,16 @@
+/**
+ * Do not edit directly
+ */
+
+.kbq-dark {
+  --kbq-foreground-contrast: oklch(95% 0 0);
+  --kbq-foreground-contrast-secondary: oklch(70% 0 0);
+  --kbq-foreground-white: #ffffff;
+  --kbq-foreground-error-less: oklch(65% 0.2 30.6 / 0.55); /* DEPRECATED: use --kbq-foreground-error-tertiary */
+  --kbq-foreground-error-tertiary: oklch(65% 0.2 30.6 / 0.55);
+  --kbq-foreground-success-tertiary: oklch(60% 0.2 143.5 / 0.63);
+  --kbq-background-bg: #0d0d0d;
+  --kbq-background-card: #161616;
+  --kbq-line-contrast-less: oklch(30% 0 0);
+  --kbq-icon-contrast: oklch(95% 0 0);
+}

@@ -3,7 +3,7 @@ export default {
     'eslint --fix',
     'vitest related --run',
   ],
-  '**/*.{css}': ['stylelint --fix'],
+  '**/*.{css}': ['stylelint --fix --allow-empty-input'],
   '**/*': () => 'pnpm type-check',
   '*': ['prettier --write --ignore-unknown'],
 };
