@@ -107,6 +107,13 @@ describe('init-agents', () => {
         plan.settings.content.enabledPlugins['koobiq@koobiq-react'],
         true
       );
+
+      // Teammates clone only the marketplace and the plugin, not the DS repo.
+      assert.deepEqual(
+        plan.settings.content.extraKnownMarketplaces['koobiq-react'].source
+          .sparsePaths,
+        ['.claude-plugin', 'plugins']
+      );
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }

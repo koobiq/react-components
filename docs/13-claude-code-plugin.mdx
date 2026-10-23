@@ -42,6 +42,12 @@ In Claude Code, run:
 
 The second command opens the plugin's details, where you choose who gets it: you in every project, everyone in this repository, or you in this repository only. In the desktop app, use **+** → **Plugins** → **Add plugin** instead. See [Install and manage plugins](https://code.claude.com/docs/en/plugins/install) for the other surfaces.
 
+The marketplace is the Koobiq React repository, and Claude Code clones all of it. To download only the plugin, add the marketplace from your shell instead:
+
+```bash
+claude plugin marketplace add koobiq/react-components --sparse .claude-plugin plugins
+```
+
 ### For the whole team
 
 Commit the marketplace to the app's `.claude/settings.json`, or run `/koobiq:init --share`:
@@ -50,7 +56,11 @@ Commit the marketplace to the app's `.claude/settings.json`, or run `/koobiq:ini
 {
   "extraKnownMarketplaces": {
     "koobiq-react": {
-      "source": { "source": "github", "repo": "koobiq/react-components" },
+      "source": {
+        "source": "github",
+        "repo": "koobiq/react-components",
+        "sparsePaths": [".claude-plugin", "plugins"]
+      },
       "autoUpdate": true
     }
   },
@@ -62,7 +72,8 @@ Commit the marketplace to the app's `.claude/settings.json`, or run `/koobiq:ini
 
 Teammates get the plugin after they trust the project folder: Claude Code registers the marketplace and loads the plugin from it. If Claude Code reports that the plugin is enabled in project settings but isn't installed, run `claude plugin install koobiq@koobiq-react --scope project` once.
 
-`autoUpdate` asks for background updates of the marketplace. Each person can switch them on or off under **Marketplaces** in `/plugin`.
+- `sparsePaths` limits the clone to the marketplace file and the plugin.
+- `autoUpdate` turns on background updates: Claude Code checks for a new plugin version after a session starts. Each person can switch them on or off under **Marketplaces** in `/plugin`.
 
 ## Commands
 
@@ -206,14 +217,16 @@ The rules read the installed Koobiq packages at lint time and share their logic 
 
 ## Network and files
 
-- Installing and updating the plugin clones `github.com/koobiq/react-components`.
+- Installing and updating the plugin clones `github.com/koobiq/react-components`: the whole repository, or only `.claude-plugin` and `plugins` with `--sparse` or `sparsePaths`.
 - The review runs locally. Besides Claude itself, it only fetches pages from `react.koobiq.io`, and not with `--offline`.
 - `/koobiq:upgrade` reads `registry.npmjs.org` and `raw.githubusercontent.com` (the changelog and API reports) and caches the responses.
 - Review runs are kept in `node_modules/.cache/koobiq/runs` (the last five). Files in the app change only after your confirmation or with `--fix`.
 
 ## Updating and removing
 
-Without auto-update, get the latest version with:
+The plugin has its own version, apart from Koobiq React: `/plugin` shows it on the **Installed** tab, and [its changelog](https://github.com/koobiq/react-components/blob/main/plugins/koobiq/CHANGELOG.md) lists what each version changed. A new version reaches you only when that number changes.
+
+With auto-update on, a new version installs in the background, and the next session uses it. Without auto-update, get the latest version with:
 
 ```text
 /plugin marketplace update koobiq-react
