@@ -57,6 +57,83 @@ describe('starter templates', () => {
   }
 });
 
+describe('contract with the DS source', () => {
+  // A prop deprecation the plugin can't parse is invisible to it, and the
+  // build-level test below only counts messages, so check each call.
+  const LOOKS_LIKE_PROP = /^[A-Z][\w.]*:.*"[\w$.-]+".*\bdeprecated\b/s;
+
+  const FORMAT =
+    /^[A-Z][\w.]*: the "[\w$-]+" prop is deprecated(?:\. Use "[\w$.-]+" prop to replace it\.| and ignored\..*)$/s;
+
+  const CALL_RE = /deprecate\(\s*(['"`])([\s\S]*?)\1\s*[,)]/g;
+
+  const sources = (dir, out = []) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+
+      if (entry.isDirectory()) sources(full, out);
+      else if (
+        /\.tsx?$/.test(entry.name) &&
+        !/\.(?:test|stories|e2e)\./.test(entry.name)
+      )
+        out.push(full);
+    }
+
+    return out;
+  };
+
+  test('deprecate() messages about props use the parsed format', (t) => {
+    const roots = ['components', 'primitives']
+      .map((name) => path.join(REPO_ROOT, 'packages', name, 'src'))
+      .filter((dir) => fs.existsSync(dir));
+
+    if (roots.length === 0) {
+      t.skip('not running inside the Koobiq React repository');
+
+      return;
+    }
+
+    let checked = 0;
+    const wrong = [];
+
+    for (const file of roots.flatMap((dir) => sources(dir))) {
+      for (const [, , message] of fs
+        .readFileSync(file, 'utf8')
+        .matchAll(CALL_RE)) {
+        if (!LOOKS_LIKE_PROP.test(message)) continue;
+
+        checked += 1;
+
+        if (!FORMAT.test(message))
+          wrong.push(`${path.relative(REPO_ROOT, file)}: ${message}`);
+      }
+    }
+
+    assert.ok(checked >= 50, `prop deprecations found: ${checked}`);
+    assert.deepEqual(wrong, []);
+  });
+
+  test('the format check catches the old style', () => {
+    assert.ok(
+      LOOKS_LIKE_PROP.test(
+        'Button: "disabled" is deprecated. Use "isDisabled" instead.'
+      )
+    );
+
+    assert.ok(
+      !FORMAT.test(
+        'Button: "disabled" is deprecated. Use "isDisabled" instead.'
+      )
+    );
+
+    assert.ok(
+      FORMAT.test(
+        'Button: the "disabled" prop is deprecated. Use "isDisabled" prop to replace it.'
+      )
+    );
+  });
+});
+
 describe('contract with the built DS', () => {
   const dsDir = process.env.KOOBIQ_DS_DIR;
 

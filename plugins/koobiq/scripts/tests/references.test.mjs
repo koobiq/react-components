@@ -39,6 +39,46 @@ test('every rule id used by skills and agents exists', () => {
   assert.deepEqual(unknown, []);
 });
 
+test('the docs page lists every rule in the right column', (t) => {
+  const page = path.join(
+    PLUGIN_ROOT,
+    '..',
+    '..',
+    'docs',
+    '13-claude-code-plugin.mdx'
+  );
+
+  if (!fs.existsSync(page)) {
+    t.skip('not running inside the Koobiq React repository');
+
+    return;
+  }
+
+  const listed = new Map();
+  const ROW_RE = /^\|\s*`([a-z0-9]+)\/`\s*\|(.*?)\|(.*?)\|\s*$/gm;
+
+  for (const [, category, checker, agent] of fs
+    .readFileSync(page, 'utf8')
+    .matchAll(ROW_RE)) {
+    for (const [cell, column] of [
+      [checker, 'checker'],
+      [agent, 'agent'],
+    ]) {
+      for (const [, name] of cell.matchAll(/`([a-z0-9-]+)`/g))
+        listed.set(`${category}/${name}`, column);
+    }
+  }
+
+  const expected = Object.fromEntries(
+    Object.entries(RULES).map(([id, rule]) => [
+      id,
+      rule.detector === 'agent' ? 'agent' : 'checker',
+    ])
+  );
+
+  assert.deepEqual(Object.fromEntries(listed), expected);
+});
+
 test('every rule the reviewer judges is documented in the references', () => {
   const referenced = new Set(
     docs.flatMap(({ text }) => [...text.matchAll(ID_RE)].map((m) => m[0]))
