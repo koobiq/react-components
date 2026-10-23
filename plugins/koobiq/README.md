@@ -35,9 +35,22 @@ These details of the built `@koobiq/react-components` are parsed by the plugin. 
 
 When the setup guidance in `docs/0-welcome.mdx` changes, update `skills/guidelines/references/setup.md` and `skills/init/agents-block.md`.
 
-## Lint preset versions
+## Releases
 
-Files copied into products start with a header carrying `PRESET_VERSION` and a hash of their content. Bump `PRESET_VERSION` in `lint/koobiq-core.mjs` when products should re-run `/koobiq:setup-lint`: the checker then reports `setup/lint-preset-outdated` for older copies, and `setup/lint-preset-modified` for copies edited by hand.
+The plugin is released by merging to `main`: the marketplace is this repository. Users receive a change only when `version` in `.claude-plugin/plugin.json` changes, so a pull request that changes what users get bumps it (semver) and adds a section to [CHANGELOG.md](CHANGELOG.md). Changes to `scripts/tests/`, `evals/`, this README and the changelog need no bump.
+
+- `scripts/check-plugin-version.mjs` checks the bump and the changelog section in CI (`units.yml`); run `node scripts/check-plugin-version.mjs origin/main` from the repository root before pushing.
+- `koobiq-check --version` and the report's `tool.version` read the same `version`.
+- Plugin changes stay out of the design system's `CHANGELOG.md`: `feat(plugin)` and `fix(plugin)` are hidden in the `commit-and-tag-version` config. Don't mark them breaking with `!`, which the design-system changelog would still show; a breaking plugin change is a major version here.
+- The version has nothing to do with the design system's version: the plugin reads whatever `@koobiq/react-components` the product has installed.
+
+Other versions inside the plugin, each bumped only when its own format changes:
+
+| What              | Where                              | Bump when                                                                                                                                                                        |
+| ----------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PRESET_VERSION`  | `lint/koobiq-core.mjs`             | Products should re-run `/koobiq:setup-lint`. The checker then reports `setup/lint-preset-outdated` for older copies (and `setup/lint-preset-modified` for copies edited by hand) |
+| `schemaVersion`   | `scripts/koobiq-check.schema.json` | A report field is removed or changes meaning. New fields keep it, but go into the schema (`schema.test.mjs` fails otherwise)                                                     |
+| `koobiq:begin v1` | `skills/init/agents-block.md`      | The block's markers change so that `/koobiq:init` can't update an old block in place                                                                                             |
 
 ## Test
 
@@ -58,7 +71,7 @@ Fixtures in `scripts/tests/fixtures/` are excluded from ESLint, Stylelint and Pr
 Try the plugin from a product folder without installing it:
 
 ```bash
-claude --plugin-dir to this repository < path > /plugins/koobiq
+claude --plugin-dir /path/to/react-components/plugins/koobiq
 ```
 
 After editing the plugin, run `/reload-plugins` in the session.

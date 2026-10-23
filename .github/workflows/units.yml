@@ -20,3 +20,10 @@ jobs:
       - run: pnpm run test --run
       - name: Claude Code plugin tests
         run: pnpm run test:plugin
+      - name: Claude Code plugin version
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags --depth=1 origin "+refs/heads/$BASE_REF:refs/remotes/origin/$BASE_REF"
+          node scripts/check-plugin-version.mjs "origin/$BASE_REF"
+        env:
+          BASE_REF: ${{ github.base_ref }}

@@ -1,6 +1,7 @@
 {
   "name": "koobiq",
   "displayName": "Koobiq React",
+  "version": "1.0.0",
   "description": "Design-system review, upgrade and lint tooling for products built with @koobiq/react-components.",
   "author": {
     "name": "Koobiq",

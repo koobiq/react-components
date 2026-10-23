@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { RULES, PRESET_VERSION } from '../../lint/koobiq-core.mjs';
 
@@ -24,7 +25,12 @@ import {
 } from './util.mjs';
 
 export const TOOL_NAME = 'koobiq-check';
-export const TOOL_VERSION = '0.1.0';
+
+// The checker ships with the plugin, so it reports the plugin's version.
+export const TOOL_VERSION =
+  readJsonFile(
+    fileURLToPath(new URL('../../.claude-plugin/plugin.json', import.meta.url))
+  )?.version || '0.0.0';
 
 const loadConfig = (root, explicit) => {
   const file = explicit

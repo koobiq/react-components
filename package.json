@@ -143,6 +143,16 @@
     "types": [
       {
         "type": "feat",
+        "scope": "plugin",
+        "hidden": true
+      },
+      {
+        "type": "fix",
+        "scope": "plugin",
+        "hidden": true
+      },
+      {
+        "type": "feat",
         "section": "🚀 Features"
       },
       {

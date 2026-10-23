@@ -127,7 +127,7 @@ pnpm e2e:docker:update-snapshots # rewrite changed and missing baselines
 pnpm test:plugin # node --test for the Claude Code plugin in plugins/koobiq
 ```
 
-CI (`.github/workflows`) runs `type-check`, `format:check`, `lint:css --max-warnings=0`, `lint:js --max-warnings=0`, `vitest --run`, `test:plugin`, `build && check-api` (plus the plugin contract test against the build), and the e2e screenshot tests in Docker on an arm64 runner. Because of `--max-warnings=0`, Stylelint/ESLint **warnings fail CI**.
+CI (`.github/workflows`) runs `type-check`, `format:check`, `lint:css --max-warnings=0`, `lint:js --max-warnings=0`, `vitest --run`, `test:plugin` (plus the plugin version check on pull requests), `build && check-api` (plus the plugin contract test against the build), and the e2e screenshot tests in Docker on an arm64 runner. Because of `--max-warnings=0`, Stylelint/ESLint **warnings fail CI**.
 
 ## Component Architecture
 
@@ -351,6 +351,7 @@ chore(deps): bump `typescript` from 5.7.3 to 6.0.3
 
 - The plugin parses the built package. Keep the `deprecate()` message format above, the `kbq-<file>-<class>-<hash>` class names, the `<component>Prop<Name>` value arrays and the entry points stable, or update the plugin in the same PR. After `pnpm build`, `KOOBIQ_DS_DIR=packages/components pnpm test:plugin` checks the contract.
 - When the setup steps in `docs/0-welcome.mdx` change, update `plugins/koobiq/skills/guidelines/references/setup.md` and `plugins/koobiq/skills/init/agents-block.md`.
+- The plugin has its own semver in `plugins/koobiq/.claude-plugin/plugin.json`, and users receive a change only when it changes. A PR that changes the plugin bumps it and adds a section to `plugins/koobiq/CHANGELOG.md` (CI runs `node scripts/check-plugin-version.mjs`). `feat(plugin)` / `fix(plugin)` commits are hidden from the design system's `CHANGELOG.md`, so don't mark them breaking with `!`.
 - After editing `marketplace.json` or `plugin.json`, run `claude plugin validate .`.
 - Plugin scripts are dependency-free ESM (`.mjs`, Node.js 18.17+) and are excluded from `tsconfig.json`; test them with `pnpm test:plugin`.
 
