@@ -2,7 +2,7 @@
 name: upgrade
 description: Plan and carry out an upgrade of @koobiq/react-components (and its design-tokens / react-icons peers) in a product — changelog range, public API changes of the components the app uses, new deprecations, lifecycle risks, peer bumps — as a file-by-file migration checklist, then apply it after confirmation.
 when_to_use: The user asks to update Koobiq or asks what breaks or changes between Koobiq versions ("обнови koobiq до 0.38", "what changes if we upgrade to 0.37?", "migrate off deprecated Koobiq APIs").
-argument-hint: '[target version|latest] [--apply]'
+argument-hint: '[target version|latest] [--offline]'
 allowed-tools: Bash(node "${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-upgrade.mjs" *) Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-upgrade.mjs *) Bash(node "${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-check.mjs" *) Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-check.mjs *) Bash(npm view *) Bash(git rev-parse *) WebFetch(domain:react.koobiq.io) WebFetch(domain:raw.githubusercontent.com)
 ---
 
@@ -20,17 +20,20 @@ explicit confirmation from the user.
 2. **Gather.**
 
    ```text
-   node "${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-upgrade.mjs" --root <root> --to <version|latest> --cache-dir "${CLAUDE_PLUGIN_DATA}/upgrade-cache"
+   node "${CLAUDE_PLUGIN_ROOT}/scripts/koobiq-upgrade.mjs" --root <root> --to <version|latest> --cache-dir "${CLAUDE_PLUGIN_DATA}/upgrade-cache" [--offline]
    ```
 
    It returns JSON: `from`, `to`, `versions` in between, `components` the
    app uses, `peerDependencies.changed`, `changelog` (per version: entries
    with `type` feat / fix / breaking, `scopes`, `relevant` for components in
    use), `apiDiffs` (removed / added lines of the public API reports, from
-   0.34.0 on) and `status` per component. Without network it uses the cache
-   (`--offline`) and lists what it could not fetch in `errors`. If `status`
-   is empty, fetch `https://react.koobiq.io/llms/components-<name>.txt` and
-   read `<Status variant>`.
+   0.34.0 on) and `status` per component, and lists what it could not fetch
+   in `errors`. Pass `--offline` when the user asked for it or the network
+   is unavailable: it reads only the cache of earlier runs, so `latest`
+   may be unknown and needs an explicit version. If `status` is empty and
+   you are online, fetch
+   `https://react.koobiq.io/llms/components-<name>.txt` and read
+   `<Status variant>`.
 
 3. **Usages.** Run the checker on the whole app for the current
    deprecations and the component inventory:
