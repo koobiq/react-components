@@ -39,7 +39,7 @@
   "sideEffects": false,
   "dependencies": {
     "@internationalized/date": "^3.12.0",
-    "@koobiq/design-tokens": "^3.17.2",
+    "@koobiq/design-tokens": "^4.1.0",
     "@koobiq/logger": "workspace:*",
     "@koobiq/react-core": "workspace:*",
     "@koobiq/react-icons": "^12.1.1",
@@ -48,7 +48,7 @@
     "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
-    "@koobiq/design-tokens": "^3.17.2",
+    "@koobiq/design-tokens": "^4.1.0",
     "@koobiq/react-icons": "^12.1.1",
     "highlight.js": "^11.0.0",
     "react": "18.x || 19.x",

@@ -8,6 +8,8 @@ import remarkGfm from 'remark-gfm';
 
 import { utilClasses } from '../../styles/utility';
 
+import './markdown-tokens.css';
+
 import { MarkdownTable } from './components';
 import s from './Markdown.module.css';
 import type { MarkdownProps } from './types';
