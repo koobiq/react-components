@@ -39,7 +39,7 @@ When the setup guidance in `docs/0-welcome.mdx` changes, update `skills/guidelin
 
 The plugin is released by merging to `main`: the marketplace is this repository. Users receive a change only when `version` in `.claude-plugin/plugin.json` changes, so a pull request that changes what users get bumps it (semver) and adds a section to [CHANGELOG.md](CHANGELOG.md). Changes to `scripts/tests/`, `evals/`, this README and the changelog need no bump.
 
-- `scripts/check-plugin-version.mjs` checks the bump and the changelog section in CI (`units.yml`); run `node scripts/check-plugin-version.mjs origin/main` from the repository root before pushing.
+- `scripts/check-plugin-version.mjs` checks the bump and the changelog section in CI (`.github/workflows/plugin.yml`, which also runs the tests and the contract test against a build); run `node scripts/check-plugin-version.mjs origin/main` from the repository root before pushing.
 - `koobiq-check --version` and the report's `tool.version` read the same `version`.
 - Plugin changes stay out of the design system's `CHANGELOG.md`: `feat(plugin)` and `fix(plugin)` are hidden in the `commit-and-tag-version` config. Don't mark them breaking with `!`, which the design-system changelog would still show; a breaking plugin change is a major version here.
 - The version has nothing to do with the design system's version: the plugin reads whatever `@koobiq/react-components` the product has installed.

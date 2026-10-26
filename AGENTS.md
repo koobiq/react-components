@@ -127,7 +127,7 @@ pnpm e2e:docker:update-snapshots # rewrite changed and missing baselines
 pnpm test:plugin # node --test for the Claude Code plugin in plugins/koobiq
 ```
 
-CI (`.github/workflows`) runs `type-check`, `format:check`, `lint:css --max-warnings=0`, `lint:js --max-warnings=0`, `vitest --run`, `test:plugin` (plus the plugin version check on pull requests), `build && check-api` (plus the plugin contract test against the build), and the e2e screenshot tests in Docker on an arm64 runner. Because of `--max-warnings=0`, Stylelint/ESLint **warnings fail CI**.
+CI (`.github/workflows`) runs `type-check`, `format:check`, `lint:css --max-warnings=0`, `lint:js --max-warnings=0`, `vitest --run`, `build && check-api`, the e2e screenshot tests in Docker on an arm64 runner, and, in `plugin.yml`, the Claude Code plugin checks (`test:plugin`, the version check on pull requests, the contract test against a build). Because of `--max-warnings=0`, Stylelint/ESLint **warnings fail CI**.
 
 ## Component Architecture
 

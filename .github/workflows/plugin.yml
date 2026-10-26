@@ -1,0 +1,42 @@
+name: Claude Code plugin
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read # clone the repository (actions/checkout)
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-node
+      - name: Plugin tests
+        run: pnpm run test:plugin
+      - name: Plugin version
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags --depth=1 origin "+refs/heads/$BASE_REF:refs/remotes/origin/$BASE_REF"
+          node scripts/check-plugin-version.mjs "origin/$BASE_REF"
+        env:
+          BASE_REF: ${{ github.base_ref }}
+
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-node
+      - name: Build packages
+        run: pnpm run build
+      - name: Check the plugin against the build
+        run: node --test plugins/koobiq/scripts/tests/real.test.mjs
+        env:
+          KOOBIQ_DS_DIR: packages/components
