@@ -1,71 +1,91 @@
-/* @koobiq/design-tokens v4 removed the markdown component tokens; the values react renders
-   are declared here now, taken verbatim from the v3 package (theme-dependent values are
-   split by theme). */
+/* Markdown tokens, kept in sync with koobiq/angular-components
+   packages/components/markdown/markdown-tokens.scss. Declared under
+   :where(.kbq-markdown) — zero specificity — so consumer overrides always win. */
 
-:root {
-  --kbq-markdown-blockquote-size-line-width: 4px;
-  --kbq-markdown-blockquote-size-margin-bottom: 12px;
-  --kbq-markdown-blockquote-size-margin-top: 12px;
-  --kbq-markdown-blockquote-size-padding: 2px 12px;
-  --kbq-markdown-code-size-border-radius: 8px;
-  --kbq-markdown-code-size-inline-padding: 0 4px;
-  --kbq-markdown-code-size-multiline-margin-bottom: 24px;
-  --kbq-markdown-code-size-multiline-margin-top: 12px;
-  --kbq-markdown-code-size-multiline-padding: 12px 16px;
-  --kbq-markdown-h1-size-margin-bottom: 16px;
+:where(.kbq-markdown) {
+  --kbq-markdown-bg: transparent;
+  --kbq-markdown-h1-size-max-width: var(--kbq-markdown-size-max-width);
   --kbq-markdown-h1-size-margin-top: 0;
-  --kbq-markdown-h2-size-margin-bottom: 12px;
-  --kbq-markdown-h2-size-margin-top: 24px;
-  --kbq-markdown-h3-size-margin-bottom: 12px;
-  --kbq-markdown-h3-size-margin-top: 24px;
-  --kbq-markdown-h4-size-margin-bottom: 12px;
-  --kbq-markdown-h4-size-margin-top: 24px;
-  --kbq-markdown-h5-size-margin-bottom: 8px;
-  --kbq-markdown-h5-size-margin-top: 24px;
-  --kbq-markdown-h6-size-margin-bottom: 8px;
-  --kbq-markdown-h6-size-margin-top: 24px;
-  --kbq-markdown-hr-size-margin-vertical: 24px;
+  --kbq-markdown-h1-size-margin-bottom: var(--kbq-size-l);
+  --kbq-markdown-h2-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-h2-size-margin-top: var(--kbq-size-xxl);
+  --kbq-markdown-h2-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-h3-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-h3-size-margin-top: var(--kbq-size-xxl);
+  --kbq-markdown-h3-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-h4-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-h4-size-margin-top: var(--kbq-size-xxl);
+  --kbq-markdown-h4-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-h5-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-h5-size-margin-top: var(--kbq-size-xxl);
+  --kbq-markdown-h5-size-margin-bottom: var(--kbq-size-s);
+  --kbq-markdown-h6-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-h6-size-margin-top: var(--kbq-size-xxl);
+  --kbq-markdown-h6-size-margin-bottom: var(--kbq-size-s);
+  --kbq-markdown-p-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-p-size-margin-top: var(--kbq-size-m);
+  --kbq-markdown-p-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-list-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-list-size-margin-top: var(--kbq-size-m);
+  --kbq-markdown-list-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-list-size-margin-top-after-paragraph: calc(
+    -1 * var(--kbq-size-s)
+  );
+  --kbq-markdown-list-size-ol-number-padding-right: var(--kbq-size-xxs);
+  --kbq-markdown-list-size-ul-padding: 0 0 0 var(--kbq-size-xxl);
+  --kbq-markdown-list-size-item-margin-bottom: var(--kbq-size-xxs);
+  --kbq-markdown-blockquote-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-blockquote-size-margin-top: var(--kbq-size-m);
+  --kbq-markdown-blockquote-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-blockquote-size-padding: var(--kbq-size-3xs) var(--kbq-size-m);
+  --kbq-markdown-blockquote-size-line-width: var(--kbq-size-xxs);
+  --kbq-markdown-blockquote-size-border-radius: 0;
+  --kbq-markdown-blockquote-size-border-width: 0;
+  --kbq-markdown-code-size-multiline-margin-top: var(--kbq-size-m);
+  --kbq-markdown-code-size-multiline-margin-bottom: var(--kbq-size-xxl);
+  --kbq-markdown-code-size-inline-padding: var(--kbq-size-3xs)
+    var(--kbq-size-xs);
+  --kbq-markdown-code-size-multiline-padding: var(--kbq-size-m)
+    var(--kbq-size-l);
+  --kbq-markdown-code-size-border-radius: var(--kbq-size-border-radius);
+  --kbq-markdown-code-size-border-width: var(--kbq-size-border-width);
+  --kbq-markdown-image-size-max-width: var(--kbq-markdown-size-max-width);
+  --kbq-markdown-image-size-margin-top: var(--kbq-size-m);
+  --kbq-markdown-image-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-image-size-caption-margin-top: calc(-1 * var(--kbq-size-s));
+  --kbq-markdown-image-size-caption-margin-bottom: var(--kbq-size-xxl);
   --kbq-markdown-hr-size-width: 1px;
-  --kbq-markdown-image-size-caption-margin-bottom: 24px;
-  --kbq-markdown-image-size-caption-margin-top: -8px;
-  --kbq-markdown-image-size-margin-bottom: 12px;
-  --kbq-markdown-image-size-margin-top: 12px;
-  --kbq-markdown-link-size-state-focused-outline-offset: 0px;
-  --kbq-markdown-link-size-state-focused-outline-width: 2px;
-  --kbq-markdown-list-size-item-margin-bottom: 4px;
-  --kbq-markdown-list-size-margin-bottom: 12px;
-  --kbq-markdown-list-size-margin-top: 12px;
-  --kbq-markdown-list-size-margin-top-after-paragraph: -8px;
-  --kbq-markdown-list-size-ol-number-padding-right: 4px;
-  --kbq-markdown-p-size-margin-bottom: 12px;
-  --kbq-markdown-p-size-margin-top: 12px;
-  --kbq-markdown-table-size-border-width: 1px;
-  --kbq-markdown-table-size-margin-bottom: 12px;
-  --kbq-markdown-table-size-padding: 8px;
-}
+  --kbq-markdown-hr-size-margin-vertical: var(--kbq-size-xxl);
+  --kbq-markdown-table-size-border-width: var(--kbq-size-border-width);
+  --kbq-markdown-table-size-padding: var(--kbq-size-s);
+  --kbq-markdown-table-size-margin-bottom: var(--kbq-size-m);
+  --kbq-markdown-size-max-width: 650px;
 
-.kbq-light {
-  --kbq-markdown-blockquote-background: hsl(229deg 15% 90% / 100%);
-  --kbq-markdown-blockquote-line: hsl(229deg 15% 6% / 12%);
-  --kbq-markdown-blockquote-text: hsl(229deg 15% 15% / 100%);
-  --kbq-markdown-code-background: hsl(229deg 15% 90% / 100%);
-  --kbq-markdown-code-text: hsl(229deg 15% 15% / 100%);
-  --kbq-markdown-hr-color: hsl(229deg 15% 6% / 12%);
-  --kbq-markdown-image-caption-text: hsl(229deg 15% 50% / 100%);
-  --kbq-markdown-table-body: hsl(229deg 15% 15% / 100%);
-  --kbq-markdown-table-border: hsl(229deg 15% 6% / 12%);
-  --kbq-markdown-table-header: hsl(229deg 15% 50% / 100%);
-}
+  /* THEME TOKENS */
+  --kbq-markdown-h1-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-h2-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-h3-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-h4-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-h5-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-h6-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-p-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-list-color: var(--kbq-foreground-contrast);
+  --kbq-markdown-blockquote-text: var(--kbq-foreground-contrast);
+  --kbq-markdown-blockquote-line: var(--kbq-line-contrast-less);
+  --kbq-markdown-blockquote-background: var(--kbq-background-contrast-fade);
+  --kbq-markdown-blockquote-border: transparent;
+  --kbq-markdown-code-text: var(--kbq-foreground-contrast);
+  --kbq-markdown-code-background: var(--kbq-background-contrast-fade);
+  --kbq-markdown-code-border: var(--kbq-line-contrast-less);
+  --kbq-markdown-image-caption-text: var(--kbq-foreground-contrast-secondary);
+  --kbq-markdown-hr-color: var(--kbq-line-contrast-less);
+  --kbq-markdown-table-header: var(--kbq-foreground-contrast-secondary);
+  --kbq-markdown-table-body: var(--kbq-foreground-contrast);
+  --kbq-markdown-table-border: var(--kbq-line-contrast-less);
 
-.kbq-dark {
-  --kbq-markdown-blockquote-background: hsl(229deg 15% 23% / 100%);
-  --kbq-markdown-blockquote-line: hsl(229deg 15% 22% / 100%);
-  --kbq-markdown-blockquote-text: hsl(229deg 15% 80% / 100%);
-  --kbq-markdown-code-background: hsl(229deg 15% 23% / 100%);
-  --kbq-markdown-code-text: hsl(229deg 15% 80% / 100%);
-  --kbq-markdown-hr-color: hsl(229deg 15% 22% / 100%);
-  --kbq-markdown-image-caption-text: hsl(229deg 15% 60% / 100%);
-  --kbq-markdown-table-body: hsl(229deg 15% 80% / 100%);
-  --kbq-markdown-table-border: hsl(229deg 15% 22% / 100%);
-  --kbq-markdown-table-header: hsl(229deg 15% 60% / 100%);
+  /* React-only extras */
+  --kbq-markdown-link-size-state-focused-outline-width: var(
+    --kbq-size-border-width
+  );
+  --kbq-markdown-link-size-state-focused-outline-offset: 0;
 }
