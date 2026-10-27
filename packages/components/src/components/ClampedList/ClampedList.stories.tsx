@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { useElementOverflow } from '@koobiq/react-core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { FlexBox } from '../FlexBox';
@@ -571,6 +572,74 @@ export const FlatListWithDotSeparators: Story = {
           </ul>
         )}
       </ClampedList>
+    );
+  },
+};
+
+/**
+ * Прототип (не часть публичного API): скрытие по факту переполнения через
+ * `useElementOverflow` вместо фиксированного `collapsedVisibleCount`.
+ * Показывает ограничения хука: после раскрытия переполнение исчезает,
+ * поэтому кнопку приходится «защёлкивать» вручную, а число скрытых
+ * элементов хук не отдаёт — оно считается отдельным замером.
+ */
+export const OverflowPrototype: Story = {
+  tags: ['!dev', '!manifest'],
+  render: function Render() {
+    const rows = 3;
+    const rowHeight = 24;
+    const items = Array.from({ length: 40 }, (_, index) => `Tag ${index + 1}`);
+
+    const [isExpanded, setExpanded] = useState(false);
+    const [hadOverflow, setHadOverflow] = useState(false);
+    const [hiddenCount, setHiddenCount] = useState(0);
+    const { ref, isOverflowY } = useElementOverflow<HTMLUListElement>();
+
+    useEffect(() => {
+      if (isOverflowY) setHadOverflow(true);
+    }, [isOverflowY]);
+
+    useEffect(() => {
+      const list = ref.current;
+
+      if (!list || isExpanded) return;
+
+      const bottom = list.getBoundingClientRect().bottom;
+
+      setHiddenCount(
+        Array.from(list.children).filter(
+          (child) => child.getBoundingClientRect().bottom > bottom + 0.5
+        ).length
+      );
+    }, [ref, isExpanded, isOverflowY]);
+
+    return (
+      <div style={{ inlineSize: 320 }}>
+        <ul
+          ref={ref}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 0,
+            margin: 0,
+            padding: 0,
+            listStyle: 'none',
+            overflow: 'hidden',
+            maxBlockSize: isExpanded ? 'none' : rows * rowHeight,
+          }}
+        >
+          {items.map((item) => (
+            <li key={item} style={{ blockSize: rowHeight, marginInlineEnd: 8 }}>
+              {item}
+            </li>
+          ))}
+        </ul>
+        {(isOverflowY || hadOverflow) && (
+          <button type="button" onClick={() => setExpanded((value) => !value)}>
+            {isExpanded ? 'Collapse' : `Show ${hiddenCount} more`}
+          </button>
+        )}
+      </div>
     );
   },
 };
