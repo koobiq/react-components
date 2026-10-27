@@ -48,7 +48,7 @@
   --markdown-image-size-margin-bottom: var(--kbq-size-m);
   --markdown-image-size-caption-margin-top: calc(-1 * var(--kbq-size-s));
   --markdown-image-size-caption-margin-bottom: var(--kbq-size-xxl);
-  --markdown-hr-size-width: 1px;
+  --markdown-hr-size-width: var(--kbq-size-border-width);
   --markdown-hr-size-margin-vertical: var(--kbq-size-xxl);
   --markdown-table-size-border-width: var(--kbq-size-border-width);
   --markdown-table-size-padding: var(--kbq-size-s);
