@@ -26,12 +26,7 @@ export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(
     return (
       <div
         ref={ref}
-        className={clsx(
-          s.base,
-          'kbq-markdown',
-          nativeScrollbarDescendants,
-          className
-        )}
+        className={clsx(s.base, nativeScrollbarDescendants, className)}
         {...other}
       >
         <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
