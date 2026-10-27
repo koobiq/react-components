@@ -17,6 +17,7 @@ export function useCollapseAnimation(
   duration = DEFAULT_DURATION
 ) {
   const lastRef = useRef<{ isExpanded: boolean; height: number }>(undefined);
+  const animationRef = useRef<Animation>(undefined);
 
   const [prefersReducedMotion] = useMediaQuery([
     '(prefers-reduced-motion: reduce)',
@@ -29,12 +30,14 @@ export function useCollapseAnimation(
     if (!element) return;
 
     const last = lastRef.current;
-    const animations = element.getAnimations?.() ?? [];
+    // Only the own animation matters: the consumer may animate the element too.
+    const animation = animationRef.current;
+    const isAnimating = animation?.playState === 'running';
     const currentHeight = element.getBoundingClientRect().height;
 
     if (!last || last.isExpanded === isExpanded) {
       // The height measured during an animation is not the natural one.
-      if (!animations.length) {
+      if (!isAnimating) {
         lastRef.current = { isExpanded, height: currentHeight };
       }
 
@@ -42,9 +45,9 @@ export function useCollapseAnimation(
     }
 
     // Continue from the visible height if the previous animation was running.
-    const from = animations.length ? currentHeight : last.height;
+    const from = isAnimating ? currentHeight : last.height;
 
-    animations.forEach((animation) => animation.cancel());
+    animation?.cancel();
 
     const height = element.getBoundingClientRect().height;
 
@@ -52,13 +55,20 @@ export function useCollapseAnimation(
 
     if (prefersReducedMotion || !element.animate || from === height) return;
 
-    element.animate(
+    animationRef.current = element.animate(
       {
         blockSize: [`${from}px`, `${height}px`],
         // Hides the content that does not fit yet, without a scroll container.
         overflow: ['clip', 'clip'],
       },
-      { duration, easing: 'ease-in-out' }
+      {
+        // The Web Animations API throws on negative and non-finite durations.
+        duration:
+          Number.isFinite(duration) && duration >= 0
+            ? duration
+            : DEFAULT_DURATION,
+        easing: 'ease-in-out',
+      }
     );
   });
 }

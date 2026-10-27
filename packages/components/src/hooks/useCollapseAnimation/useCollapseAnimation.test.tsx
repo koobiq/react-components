@@ -68,6 +68,24 @@ describe('useCollapseAnimation', () => {
     });
   });
 
+  it.each([-1, Number.NaN, Number.POSITIVE_INFINITY])(
+    'falls back to the default duration for %s',
+    (duration) => {
+      setup([60, 120, 120]);
+
+      const { rerender } = render(
+        <Test isExpanded={false} duration={duration} />
+      );
+
+      rerender(<Test isExpanded duration={duration} />);
+
+      expect(animate).toHaveBeenCalledWith(expect.anything(), {
+        duration: 100,
+        easing: 'ease-in-out',
+      });
+    }
+  );
+
   it('does not animate on the first render or when the height is the same', () => {
     setup([60, 60, 60]);
 
