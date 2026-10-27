@@ -25,6 +25,7 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<{
     onExpandedChange?: (isExpanded: boolean) => void;
     moreText?: ReactNode;
     lessText?: ReactNode;
+    duration?: number;
     slotProps?: {
         content?: Omit<ComponentPropsWithRef<'div'>, 'children'> & DataAttributeProps;
         toggle?: Omit<ClampedTextTriggerProps, 'children' | 'icon'> & {

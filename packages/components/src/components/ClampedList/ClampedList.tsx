@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, useRef, type ReactNode } from 'react';
 
 import { once } from '@koobiq/logger';
 import {
@@ -10,6 +10,8 @@ import {
   useLocalizedStringFormatter,
 } from '@koobiq/react-core';
 import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
+
+import { useCollapseAnimation } from '../../hooks/useCollapseAnimation';
 
 import s from './ClampedList.module.css';
 import { ClampedListTrigger } from './components';
@@ -33,6 +35,7 @@ export function ClampedList<T>({
   onExpandedChange,
   moreText,
   lessText,
+  duration,
   slotProps,
 }: ClampedListProps<T>) {
   const allItems = useMemo(() => Array.from(items), [items]);
@@ -90,6 +93,10 @@ export function ClampedList<T>({
     [allItems, isExpanded, normalizedCollapsedVisibleCount]
   );
 
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useCollapseAnimation(contentRef, preferredExpanded, duration);
+
   const state = useMemo<ClampedListState<T>>(
     () => ({ visibleItems, hiddenItemCount, isExpanded }),
     [visibleItems, hiddenItemCount, isExpanded]
@@ -98,7 +105,7 @@ export function ClampedList<T>({
   const onToggle = () => setPreferredExpanded((value) => !value);
 
   const contentProps = mergeProps(
-    { className: s.content },
+    { className: s.content, ref: contentRef },
     slotProps?.content,
     { id: contentId, role: 'group' }
   );

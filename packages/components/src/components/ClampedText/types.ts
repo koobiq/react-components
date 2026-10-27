@@ -29,6 +29,11 @@ export type ClampedTextProps = ExtendableComponentPropsWithRef<
     moreText?: ReactNode;
     /** Content displayed in the toggle when the text is expanded. */
     lessText?: ReactNode;
+    /**
+     * Duration of the expand and collapse animation in milliseconds.
+     * @default 100
+     */
+    duration?: number;
     /** The props used for each slot inside. */
     slotProps?: {
       content?: Omit<ComponentPropsWithRef<'div'>, 'children'> &

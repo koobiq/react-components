@@ -24,6 +24,7 @@ export type ClampedListProps<T> = {
     onExpandedChange?: (isExpanded: boolean) => void;
     moreText?: ReactNode;
     lessText?: ReactNode;
+    duration?: number;
     slotProps?: {
         content?: Omit<ComponentPropsWithRef<'div'>, 'children'> & DataAttributeProps;
         toggle?: Omit<ClampedListTriggerProps, 'children' | 'icon' | 'aria-controls' | 'aria-expanded'> & {

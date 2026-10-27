@@ -15,7 +15,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['status:new', 'date:2026-09-07'],
+  tags: ['status:updated', 'date:2026-10-27'],
 } satisfies Meta<typeof ClampedText>;
 
 export default meta;

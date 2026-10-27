@@ -22,6 +22,8 @@ import {
 } from '@koobiq/react-core';
 import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
 
+import { useCollapseAnimation } from '../../hooks/useCollapseAnimation';
+
 import s from './ClampedText.module.css';
 import { ClampedTextTrigger } from './components';
 import intlMessages from './intl.json';
@@ -46,6 +48,7 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       onExpandedChange,
       moreText,
       lessText,
+      duration,
       slotProps,
       className,
       ...other
@@ -83,7 +86,8 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
     useIsomorphicEffect(() => {
       const contentElement = contentRef.current;
 
-      if (!contentElement) return;
+      // The height changes on every frame of the collapse animation.
+      if (!contentElement || contentElement.getAnimations?.().length) return;
 
       const wasClamped = contentElement.classList.contains(s.clamped);
 
@@ -116,6 +120,8 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
     const effectiveExpanded = isMeasured
       ? !hasToggle || preferredExpanded
       : preferredExpanded;
+
+    useCollapseAnimation(contentRef, preferredExpanded, duration);
 
     const isClamped = isMeasured
       ? hasToggle && !effectiveExpanded
