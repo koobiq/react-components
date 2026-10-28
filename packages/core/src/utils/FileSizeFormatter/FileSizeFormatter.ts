@@ -1,5 +1,7 @@
 import { once } from '@koobiq/logger';
 
+import { DecimalFormatter } from '../DecimalFormatter';
+
 /** Measurement systems supported by `FileSizeFormatter`. */
 export const fileSizeMeasurementSystem = ['SI', 'IEC'] as const;
 
@@ -164,10 +166,16 @@ export class FileSizeFormatter {
     FileSizeMeasurementSystem,
     FileSizeUnitSystem
   >;
-  private readonly numberFormatters = new Map<number, Intl.NumberFormat>();
+  private readonly decimalFormatter: DecimalFormatter;
 
   constructor(locale?: string, config: FileSizeFormatterConfig = {}) {
-    this.locale = new Intl.NumberFormat(locale).resolvedOptions().locale;
+    // Take the language from the requested locale: resolving it through Intl
+    // swaps a locale the runtime has no data for (e.g. `rue`) for the system one.
+    this.locale = locale
+      ? new Intl.Locale(locale).toString()
+      : new Intl.NumberFormat().resolvedOptions().locale;
+
+    this.decimalFormatter = new DecimalFormatter(this.locale);
 
     const localizedUnitSystems = getLocalizedUnitSystems(this.locale);
 
@@ -203,7 +211,14 @@ export class FileSizeFormatter {
       precision
     );
 
-    return `${this.getNumberFormatter(precision).format(formattedSize.value)}${NON_BREAKING_SPACE}${formattedSize.unit}`;
+    // Same digit rules as numbers elsewhere, as in Koobiq Angular `kbqDataSize`:
+    // Russian leaves values below 10 000 ungrouped and groups with a thin space.
+    const formattedValue = this.decimalFormatter.format(
+      formattedSize.value,
+      `1.0-${precision}`
+    );
+
+    return `${formattedValue}${NON_BREAKING_SPACE}${formattedSize.unit}`;
   }
 
   private resolvePrecision(
@@ -220,19 +235,5 @@ export class FileSizeFormatter {
     }
 
     return clampPrecision(precision, fallback);
-  }
-
-  private getNumberFormatter(precision: number): Intl.NumberFormat {
-    let formatter = this.numberFormatters.get(precision);
-
-    if (!formatter) {
-      formatter = new Intl.NumberFormat(this.locale, {
-        maximumFractionDigits: precision,
-      });
-
-      this.numberFormatters.set(precision, formatter);
-    }
-
-    return formatter;
   }
 }

@@ -55,6 +55,16 @@ describe('FileSizeFormatter', () => {
     expect(formatter.format(1536, { unitSystem: 'IEC' })).toBe('1,5\u00a0КиБ');
   });
 
+  it('groups digits by the DecimalFormatter rules', () => {
+    const formatter = new FileSizeFormatter('ru-RU');
+
+    // Russian leaves numbers below 10 000 ungrouped...
+    expect(formatter.format(1023, { unitSystem: 'IEC' })).toBe('1023\u00a0Б');
+
+    // ...and separates the groups with a thin space.
+    expect(formatter.format(1000 ** 6)).toBe('1\u2009000\u2009000\u00a0ТБ');
+  });
+
   it('allows overriding a localized unit system', () => {
     const formatter = new FileSizeFormatter('en-US', {
       unitSystems: {
