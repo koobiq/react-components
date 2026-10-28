@@ -93,6 +93,44 @@ export { CollectionElement }
 // @public (undocumented)
 export type DataAttributeProps = Record<DataAttributeKey, unknown>;
 
+// @public
+export class DecimalFormatter {
+    constructor(locale?: string, config?: DecimalFormatterConfig);
+    format(value: DecimalFormatterValue, digitsInfo?: string): string | null;
+    formatRounded(value: DecimalFormatterValue): string | null;
+    formatTable(value: DecimalFormatterValue, digitsInfo?: string): string | null;
+}
+
+// @public
+export type DecimalFormatterConfig = {
+    options?: Partial<DecimalFormatterDigitsInfo>;
+    decimal?: {
+        viewGroupSeparator?: string;
+    };
+    rounding?: Partial<DecimalFormatterRoundingConfig>;
+};
+
+// @public
+export type DecimalFormatterDigitsInfo = {
+    useGrouping: boolean;
+    minimumIntegerDigits: number;
+    minimumFractionDigits: number;
+    maximumFractionDigits: number;
+};
+
+// @public
+export type DecimalFormatterRoundingConfig = {
+    separator: string;
+    groupSeparator: string;
+    thousand: string;
+    million: string;
+    billion: string;
+    trillion: string;
+};
+
+// @public
+export type DecimalFormatterValue = number | string | null | undefined;
+
 // @public (undocumented)
 export type DistributiveMerge<A, B> = DistributiveOmit<A, keyof B> & B;
 
@@ -327,6 +365,9 @@ export type UseDebounceCallbackReturnValue<CB extends FunctionCallback> = [
 CB,
 () => void
 ];
+
+// @public
+export function useDecimalFormatter(config?: DecimalFormatterConfig): DecimalFormatter;
 
 export { useDescription }
 
