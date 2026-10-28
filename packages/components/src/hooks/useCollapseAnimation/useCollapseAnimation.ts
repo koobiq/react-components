@@ -10,6 +10,7 @@ const DEFAULT_DURATION = 100;
  * Smoothly animates the block size of an element when `isExpanded` changes.
  * The new content is already rendered when the animation starts, so it only
  * animates the box between the heights before and after the change.
+ * Returns a ref to the animation that is currently set up by the hook.
  */
 export function useCollapseAnimation(
   ref: RefObject<HTMLElement | null>,
@@ -71,4 +72,6 @@ export function useCollapseAnimation(
       }
     );
   });
+
+  return animationRef;
 }

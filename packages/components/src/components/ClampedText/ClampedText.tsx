@@ -121,11 +121,38 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       ? !hasToggle || preferredExpanded
       : preferredExpanded;
 
-    useCollapseAnimation(contentRef, preferredExpanded, duration);
+    const animationRef = useCollapseAnimation(
+      contentRef,
+      preferredExpanded,
+      duration
+    );
 
     const isClamped = isMeasured
       ? hasToggle && !effectiveExpanded
       : !preferredExpanded;
+
+    // Keeps the lines that are being collapsed visible until the animation
+    // is over, the clamp is applied back when it finishes.
+    useIsomorphicEffect(() => {
+      const contentElement = contentRef.current;
+      const animation = animationRef.current;
+
+      if (
+        preferredExpanded ||
+        animation?.playState !== 'running' ||
+        !contentElement?.classList.contains(s.clamped)
+      ) {
+        return;
+      }
+
+      contentElement.classList.remove(s.clamped);
+
+      // Rejects when the animation is canceled, e.g. by the next toggle.
+      animation.finished.then(
+        () => contentElement.classList.add(s.clamped),
+        () => {}
+      );
+    }, [preferredExpanded]);
 
     useEffect(() => {
       return () => window.clearTimeout(scrollTimeoutRef.current);
