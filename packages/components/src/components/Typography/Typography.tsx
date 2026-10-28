@@ -32,13 +32,13 @@ export const Typography = polymorphicForwardRef<'p', TypographyBaseProps>(
   ) => {
     if (process.env.NODE_ENV !== 'production' && color === 'error-less') {
       deprecate(
-        'Typography: the "error-less" color is deprecated. Use "error-tertiary" to replace it.'
+        'The Typography "error-less" color is deprecated. Use "error-tertiary" to replace it.'
       );
     }
 
     if (process.env.NODE_ENV !== 'production' && color === 'success-less') {
       deprecate(
-        'Typography: the "success-less" color is deprecated. Use "success-tertiary" to replace it.'
+        'The Typography "success-less" color is deprecated. Use "success-tertiary" to replace it.'
       );
     }
 

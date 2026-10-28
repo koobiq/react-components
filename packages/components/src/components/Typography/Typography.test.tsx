@@ -110,7 +110,7 @@ describe('Typography', () => {
         render(<Typography {...baseProps} color={color} />);
 
         expect(warn).toHaveBeenCalledWith(
-          expect.stringContaining(`the "${color}" color is deprecated`)
+          expect.stringContaining(`"${color}" color is deprecated`)
         );
 
         warn.mockRestore();
