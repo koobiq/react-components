@@ -22,6 +22,8 @@ import {
 } from '@koobiq/react-core';
 import { IconChevronDown16, IconChevronUp16 } from '@koobiq/react-icons';
 
+import { useCollapseAnimation } from '../../hooks/useCollapseAnimation';
+
 import s from './ClampedText.module.css';
 import { ClampedTextTrigger } from './components';
 import intlMessages from './intl.json';
@@ -46,6 +48,7 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       onExpandedChange,
       moreText,
       lessText,
+      duration,
       slotProps,
       className,
       ...other
@@ -83,7 +86,8 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
     useIsomorphicEffect(() => {
       const contentElement = contentRef.current;
 
-      if (!contentElement) return;
+      // The height changes on every frame of the collapse animation.
+      if (!contentElement || contentElement.getAnimations?.().length) return;
 
       const wasClamped = contentElement.classList.contains(s.clamped);
 
@@ -117,9 +121,48 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       ? !hasToggle || preferredExpanded
       : preferredExpanded;
 
+    const animationRef = useCollapseAnimation(
+      contentRef,
+      preferredExpanded,
+      duration
+    );
+
     const isClamped = isMeasured
       ? hasToggle && !effectiveExpanded
       : !preferredExpanded;
+
+    // Keeps the lines that are being collapsed visible until the animation
+    // is over, the clamp is applied back when it finishes.
+    useIsomorphicEffect(() => {
+      const contentElement = contentRef.current;
+      const animation = animationRef.current;
+
+      if (
+        !isClamped ||
+        preferredExpanded ||
+        animation?.playState !== 'running' ||
+        !contentElement?.classList.contains(s.clamped)
+      ) {
+        return;
+      }
+
+      contentElement.classList.remove(s.clamped);
+
+      let isCurrent = true;
+
+      // Rejects when the animation is canceled, e.g. by the next toggle.
+      animation.finished.then(
+        () => {
+          if (isCurrent) contentElement.classList.add(s.clamped);
+        },
+        () => {}
+      );
+
+      // The clamp may become unnecessary while collapsing, e.g. after `rows` change.
+      return () => {
+        isCurrent = false;
+      };
+    }, [isClamped, preferredExpanded]);
 
     useEffect(() => {
       return () => window.clearTimeout(scrollTimeoutRef.current);

@@ -21,7 +21,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['status:new', 'date:2026-09-07'],
+  tags: ['status:updated', 'date:2026-10-27'],
 } satisfies Meta<typeof ClampedList>;
 
 export default meta;
