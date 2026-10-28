@@ -13,4 +13,10 @@ test.describe('Tabs', () => {
     await page.keyboard.press('Tab');
     await e2eScreenshotThemes(page, '02');
   });
+
+  test('focus visible on the first tab when scrollable', async ({ page }) => {
+    await e2eGotoStory(page, 'e2e-tabs--focus-visible-scrollable');
+    await page.keyboard.press('Tab');
+    await e2eScreenshotThemes(page, '03');
+  });
 });

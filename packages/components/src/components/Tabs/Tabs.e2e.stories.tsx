@@ -63,3 +63,19 @@ export const FocusVisible: Story = {
     </E2eGrid>
   ),
 };
+
+// A list wider than its container scrolls, which clips it by the scroll box.
+export const FocusVisibleScrollable: Story = {
+  render: () => (
+    <E2eGrid columns={1}>
+      <div style={{ inlineSize: 200 }}>
+        <Tabs aria-label="focus scrollable" isUnderlined>
+          <Tab key="first">first</Tab>
+          <Tab key="second">second</Tab>
+          <Tab key="third">third</Tab>
+          <Tab key="fourth">fourth</Tab>
+        </Tabs>
+      </div>
+    </E2eGrid>
+  ),
+};
