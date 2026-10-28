@@ -84,10 +84,13 @@ export const typographyPropColor = [
   'error',
   'error-secondary',
   'error-tertiary',
+  /** @deprecated The "error-less" color is deprecated. Use "error-tertiary" to replace it. */
   'error-less',
   'success',
+  /** @deprecated The "success-less" color is deprecated. Use "success-tertiary" to replace it. */
   'success-less',
   'success-secondary',
+  'success-tertiary',
   'warning',
   'warning-secondary',
   'visited',

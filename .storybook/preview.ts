@@ -1,8 +1,11 @@
 import type { Preview } from '@storybook/react';
 import '@koobiq/react-components/global.css';
-import '@koobiq/design-tokens/web/new/css-tokens.css';
-import '@koobiq/design-tokens/web/new/css-tokens-light.css';
-import '@koobiq/design-tokens/web/new/css-tokens-dark.css';
+import '@koobiq/design-tokens/web/css-tokens.css';
+import '@koobiq/design-tokens/web/css-tokens-light.css';
+import '@koobiq/design-tokens/web/css-tokens-dark.css';
+import '@koobiq/design-tokens/web/component-tokens.css';
+import '@koobiq/design-tokens/web/component-tokens-light.css';
+import '@koobiq/design-tokens/web/component-tokens-dark.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';

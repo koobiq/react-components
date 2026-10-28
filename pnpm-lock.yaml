@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  '@koobiq/design-tokens': ^4.1.0
   react: ^19.0.0
   react-dom: ^19.0.0
   '@types/react-dom': ^19.0.0
@@ -57,8 +58,8 @@ importers:
         specifier: ^3.5.1
         version: 3.5.1(@koobiq/date-adapter@3.5.1)(@messageformat/core@3.4.0)
       '@koobiq/design-tokens':
-        specifier: ^3.17.2
-        version: 3.17.2
+        specifier: ^4.1.0
+        version: 4.1.0
       '@koobiq/internationalized-date-adapter':
         specifier: ^3.5.1
         version: 3.5.1(@internationalized/date@3.12.1)(@koobiq/date-adapter@3.5.1)
@@ -294,8 +295,8 @@ importers:
         specifier: ^3.12.0
         version: 3.12.1
       '@koobiq/design-tokens':
-        specifier: ^3.17.2
-        version: 3.17.2
+        specifier: ^4.1.0
+        version: 4.1.0
       '@koobiq/logger':
         specifier: workspace:*
         version: link:../logger
@@ -556,11 +557,11 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@koobiq/design-tokens':
-        specifier: ^3.17.2
-        version: 3.17.2
+        specifier: ^4.1.0
+        version: 4.1.0
       '@koobiq/react-components':
         specifier: 0.36.0
-        version: 0.36.0(@koobiq/design-tokens@3.17.2)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(remark-gfm@4.0.1(supports-color@8.1.1))
+        version: 0.36.0(@koobiq/design-tokens@4.1.0)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(remark-gfm@4.0.1(supports-color@8.1.1))
       '@koobiq/react-icons':
         specifier: ^12.1.1
         version: 12.1.1(react@19.2.3)
@@ -615,7 +616,7 @@ importers:
     dependencies:
       '@koobiq/react-components':
         specifier: 0.36.0
-        version: 0.36.0(@koobiq/design-tokens@3.17.2)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(remark-gfm@4.0.1(supports-color@8.1.1))
+        version: 0.36.0(@koobiq/design-tokens@4.1.0)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(remark-gfm@4.0.1(supports-color@8.1.1))
       '@koobiq/react-core':
         specifier: 0.36.0
         version: 0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -1673,8 +1674,9 @@ packages:
       '@koobiq/date-adapter': ^3.0.0
       '@messageformat/core': ^3.2.0
 
-  '@koobiq/design-tokens@3.17.2':
-    resolution: {integrity: sha512-bSpCQS1V82BBJ6q2Wf80ZW/eVBjAQ6+7t8rM4kAIgJ//1RFuU+o9AMigcRSpHZQ5l9KTqpa95BPk993HR2JPEA==}
+  '@koobiq/design-tokens@4.1.0':
+    resolution: {integrity: sha512-SnTBBsd7aDI9Xsilau02STVu1zDnRpTLOFUH0aHxZH8uN//liidr0XnPYzqsBVDgst7Oy5wKg2uB4wolvXNvwg==}
+    hasBin: true
 
   '@koobiq/internationalized-date-adapter@3.5.1':
     resolution: {integrity: sha512-Wl6soze8EAadgX3Js+JNwwQPNiMjLTXMlIxej6sGYFaE2Nk3CMOKyMZFOHlz+KWCXLF7mAa8TDYvpPlkI5EKNw==}
@@ -1688,7 +1690,7 @@ packages:
   '@koobiq/react-components@0.36.0':
     resolution: {integrity: sha512-xGmSGZ+ZeQ4IsGoPyT8yvILT+sNq6kFg+jM8dr6h/PMGevt3ZwYxrBAPXI35ZXrS0q8omrdwTJfvLma3yC5XDA==}
     peerDependencies:
-      '@koobiq/design-tokens': ^3.17.2
+      '@koobiq/design-tokens': ^4.1.0
       '@koobiq/react-icons': ^12.1.1
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -8147,7 +8149,7 @@ snapshots:
       '@koobiq/date-adapter': 3.5.1
       '@messageformat/core': 3.4.0
 
-  '@koobiq/design-tokens@3.17.2': {}
+  '@koobiq/design-tokens@4.1.0': {}
 
   '@koobiq/internationalized-date-adapter@3.5.1(@internationalized/date@3.12.1)(@koobiq/date-adapter@3.5.1)':
     dependencies:
@@ -8156,10 +8158,10 @@ snapshots:
 
   '@koobiq/logger@0.36.0': {}
 
-  '@koobiq/react-components@0.36.0(@koobiq/design-tokens@3.17.2)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(remark-gfm@4.0.1(supports-color@8.1.1))':
+  '@koobiq/react-components@0.36.0(@koobiq/design-tokens@4.1.0)(@koobiq/react-icons@12.1.1(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(remark-gfm@4.0.1(supports-color@8.1.1))':
     dependencies:
       '@internationalized/date': 3.12.1
-      '@koobiq/design-tokens': 3.17.2
+      '@koobiq/design-tokens': 4.1.0
       '@koobiq/logger': 0.36.0
       '@koobiq/react-core': 0.36.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@koobiq/react-icons': 12.1.1(react@19.2.3)

@@ -1,9 +1,91 @@
 @import url('../../styles/mixins.css');
 
 .base {
+  --markdown-bg: transparent;
+  --markdown-h1-size-max-width: var(--markdown-size-max-width);
+  --markdown-h1-size-margin-top: 0;
+  --markdown-h1-size-margin-bottom: var(--kbq-size-l);
+  --markdown-h2-size-max-width: var(--markdown-size-max-width);
+  --markdown-h2-size-margin-top: var(--kbq-size-xxl);
+  --markdown-h2-size-margin-bottom: var(--kbq-size-m);
+  --markdown-h3-size-max-width: var(--markdown-size-max-width);
+  --markdown-h3-size-margin-top: var(--kbq-size-xxl);
+  --markdown-h3-size-margin-bottom: var(--kbq-size-m);
+  --markdown-h4-size-max-width: var(--markdown-size-max-width);
+  --markdown-h4-size-margin-top: var(--kbq-size-xxl);
+  --markdown-h4-size-margin-bottom: var(--kbq-size-m);
+  --markdown-h5-size-max-width: var(--markdown-size-max-width);
+  --markdown-h5-size-margin-top: var(--kbq-size-xxl);
+  --markdown-h5-size-margin-bottom: var(--kbq-size-s);
+  --markdown-h6-size-max-width: var(--markdown-size-max-width);
+  --markdown-h6-size-margin-top: var(--kbq-size-xxl);
+  --markdown-h6-size-margin-bottom: var(--kbq-size-s);
+  --markdown-p-size-max-width: var(--markdown-size-max-width);
+  --markdown-p-size-margin-top: var(--kbq-size-m);
+  --markdown-p-size-margin-bottom: var(--kbq-size-m);
+  --markdown-list-size-max-width: var(--markdown-size-max-width);
+  --markdown-list-size-margin-top: var(--kbq-size-m);
+  --markdown-list-size-margin-bottom: var(--kbq-size-m);
+  --markdown-list-size-margin-top-after-paragraph: calc(-1 * var(--kbq-size-s));
+  --markdown-list-size-ol-number-padding-right: var(--kbq-size-xxs);
+  --markdown-list-size-ul-padding: 0 0 0 var(--kbq-size-xxl);
+  --markdown-list-size-item-margin-bottom: var(--kbq-size-xxs);
+  --markdown-blockquote-size-max-width: var(--markdown-size-max-width);
+  --markdown-blockquote-size-margin-top: var(--kbq-size-m);
+  --markdown-blockquote-size-margin-bottom: var(--kbq-size-m);
+  --markdown-blockquote-size-padding: var(--kbq-size-3xs) var(--kbq-size-m);
+  --markdown-blockquote-size-line-width: var(--kbq-size-xxs);
+  --markdown-blockquote-size-border-radius: 0;
+  --markdown-blockquote-size-border-width: 0;
+  --markdown-code-size-multiline-margin-top: var(--kbq-size-m);
+  --markdown-code-size-multiline-margin-bottom: var(--kbq-size-xxl);
+  --markdown-code-size-inline-padding: var(--kbq-size-3xs) var(--kbq-size-xs);
+  --markdown-code-size-multiline-padding: var(--kbq-size-m) var(--kbq-size-l);
+  --markdown-code-size-border-radius: var(--kbq-size-border-radius);
+  --markdown-code-size-border-width: var(--kbq-size-border-width);
+  --markdown-image-size-max-width: var(--markdown-size-max-width);
+  --markdown-image-size-margin-top: var(--kbq-size-m);
+  --markdown-image-size-margin-bottom: var(--kbq-size-m);
+  --markdown-image-size-caption-margin-top: calc(-1 * var(--kbq-size-s));
+  --markdown-image-size-caption-margin-bottom: var(--kbq-size-xxl);
+  --markdown-hr-size-width: var(--kbq-size-border-width);
+  --markdown-hr-size-margin-vertical: var(--kbq-size-xxl);
+  --markdown-table-size-border-width: var(--kbq-size-border-width);
+  --markdown-table-size-padding: var(--kbq-size-s);
+  --markdown-table-size-margin-bottom: var(--kbq-size-m);
+  --markdown-size-max-width: 650px;
+
+  /* THEME TOKENS */
+  --markdown-h1-color: var(--kbq-foreground-contrast);
+  --markdown-h2-color: var(--kbq-foreground-contrast);
+  --markdown-h3-color: var(--kbq-foreground-contrast);
+  --markdown-h4-color: var(--kbq-foreground-contrast);
+  --markdown-h5-color: var(--kbq-foreground-contrast);
+  --markdown-h6-color: var(--kbq-foreground-contrast);
+  --markdown-p-color: var(--kbq-foreground-contrast);
+  --markdown-list-color: var(--kbq-foreground-contrast);
+  --markdown-blockquote-text: var(--kbq-foreground-contrast);
+  --markdown-blockquote-line: var(--kbq-line-contrast-less);
+  --markdown-blockquote-background: var(--kbq-background-contrast-fade);
+  --markdown-blockquote-border: transparent;
+  --markdown-code-text: var(--kbq-foreground-contrast);
+  --markdown-code-background: var(--kbq-background-contrast-fade);
+  --markdown-code-border: var(--kbq-line-contrast-less);
+  --markdown-image-caption-text: var(--kbq-foreground-contrast-secondary);
+  --markdown-hr-color: var(--kbq-line-contrast-less);
+  --markdown-table-header: var(--kbq-foreground-contrast-secondary);
+  --markdown-table-body: var(--kbq-foreground-contrast);
+  --markdown-table-border: var(--kbq-line-contrast-less);
+
+  /* React-only extras */
+  --markdown-link-size-state-focused-outline-width: var(
+    --kbq-size-border-width
+  );
+  --markdown-link-size-state-focused-outline-offset: 0;
+
   display: block;
   color: var(--kbq-foreground-contrast);
-  background: var(--kbq-markdown-bg, transparent);
+  background: var(--kbq-markdown-bg, var(--markdown-bg));
 }
 
 .base > :first-child {
@@ -28,50 +110,92 @@
 }
 
 .base h1 {
-  margin-block: var(--kbq-markdown-h1-size-margin-top)
-    var(--kbq-markdown-h1-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-h1-size-margin-top,
+      var(--markdown-h1-size-margin-top)
+    )
+    var(
+      --kbq-markdown-h1-size-margin-bottom,
+      var(--markdown-h1-size-margin-bottom)
+    );
 
   @mixin markdown-typography h1;
 }
 
 .base h2 {
-  margin-block: var(--kbq-markdown-h2-size-margin-top)
-    var(--kbq-markdown-h2-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-h2-size-margin-top,
+      var(--markdown-h2-size-margin-top)
+    )
+    var(
+      --kbq-markdown-h2-size-margin-bottom,
+      var(--markdown-h2-size-margin-bottom)
+    );
 
   @mixin markdown-typography h2;
 }
 
 .base h3 {
-  margin-block: var(--kbq-markdown-h3-size-margin-top)
-    var(--kbq-markdown-h3-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-h3-size-margin-top,
+      var(--markdown-h3-size-margin-top)
+    )
+    var(
+      --kbq-markdown-h3-size-margin-bottom,
+      var(--markdown-h3-size-margin-bottom)
+    );
 
   @mixin markdown-typography h3;
 }
 
 .base h4 {
-  margin-block: var(--kbq-markdown-h4-size-margin-top)
-    var(--kbq-markdown-h4-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-h4-size-margin-top,
+      var(--markdown-h4-size-margin-top)
+    )
+    var(
+      --kbq-markdown-h4-size-margin-bottom,
+      var(--markdown-h4-size-margin-bottom)
+    );
 
   @mixin markdown-typography h4;
 }
 
 .base h5 {
-  margin-block: var(--kbq-markdown-h5-size-margin-top)
-    var(--kbq-markdown-h5-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-h5-size-margin-top,
+      var(--markdown-h5-size-margin-top)
+    )
+    var(
+      --kbq-markdown-h5-size-margin-bottom,
+      var(--markdown-h5-size-margin-bottom)
+    );
 
   @mixin markdown-typography h5;
 }
 
 .base h6 {
-  margin-block: var(--kbq-markdown-h6-size-margin-top)
-    var(--kbq-markdown-h6-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-h6-size-margin-top,
+      var(--markdown-h6-size-margin-top)
+    )
+    var(
+      --kbq-markdown-h6-size-margin-bottom,
+      var(--markdown-h6-size-margin-bottom)
+    );
 
   @mixin markdown-typography h6;
 }
 
 .base p {
-  margin-block: var(--kbq-markdown-p-size-margin-top)
-    var(--kbq-markdown-p-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-p-size-margin-top,
+      var(--markdown-p-size-margin-top)
+    )
+    var(
+      --kbq-markdown-p-size-margin-bottom,
+      var(--markdown-p-size-margin-bottom)
+    );
   color: var(--kbq-foreground-contrast);
 
   @mixin markdown-typography body;
@@ -79,8 +203,14 @@
 
 .base ul,
 .base ol {
-  margin-block: var(--kbq-markdown-list-size-margin-top)
-    var(--kbq-markdown-list-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-list-size-margin-top,
+      var(--markdown-list-size-margin-top)
+    )
+    var(
+      --kbq-markdown-list-size-margin-bottom,
+      var(--markdown-list-size-margin-bottom)
+    );
   color: var(--kbq-foreground-contrast);
 
   @mixin markdown-typography body;
@@ -88,7 +218,10 @@
 
 .base p + ul,
 .base p + ol {
-  margin-block-start: var(--kbq-markdown-list-size-margin-top-after-paragraph);
+  margin-block-start: var(
+    --kbq-markdown-list-size-margin-top-after-paragraph,
+    var(--markdown-list-size-margin-top-after-paragraph)
+  );
 }
 
 .base ul {
@@ -119,7 +252,10 @@
 
 .base ol > li::before {
   content: counter(li) '.';
-  padding-inline-end: var(--kbq-markdown-list-size-ol-number-padding-right);
+  padding-inline-end: var(
+    --kbq-markdown-list-size-ol-number-padding-right,
+    var(--markdown-list-size-ol-number-padding-right)
+  );
 }
 
 .base ol > li > * {
@@ -127,18 +263,36 @@
 }
 
 .base li {
-  margin-block-end: var(--kbq-markdown-list-size-item-margin-bottom);
+  margin-block-end: var(
+    --kbq-markdown-list-size-item-margin-bottom,
+    var(--markdown-list-size-item-margin-bottom)
+  );
 }
 
 .base blockquote {
-  margin-block: var(--kbq-markdown-blockquote-size-margin-top)
-    var(--kbq-markdown-blockquote-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-blockquote-size-margin-top,
+      var(--markdown-blockquote-size-margin-top)
+    )
+    var(
+      --kbq-markdown-blockquote-size-margin-bottom,
+      var(--markdown-blockquote-size-margin-bottom)
+    );
   margin-inline: 0;
-  padding: var(--kbq-markdown-blockquote-size-padding);
-  border-inline-start: var(--kbq-markdown-blockquote-size-line-width) solid
-    var(--kbq-markdown-blockquote-line);
-  color: var(--kbq-markdown-blockquote-text);
-  background: var(--kbq-markdown-blockquote-background);
+  padding: var(
+    --kbq-markdown-blockquote-size-padding,
+    var(--markdown-blockquote-size-padding)
+  );
+  border-inline-start: var(
+      --kbq-markdown-blockquote-size-line-width,
+      var(--markdown-blockquote-size-line-width)
+    )
+    solid var(--kbq-markdown-blockquote-line, var(--markdown-blockquote-line));
+  color: var(--kbq-markdown-blockquote-text, var(--markdown-blockquote-text));
+  background: var(
+    --kbq-markdown-blockquote-background,
+    var(--markdown-blockquote-background)
+  );
 }
 
 .base blockquote > p {
@@ -148,57 +302,105 @@
 .base pre {
   position: relative;
   overflow-x: auto;
-  margin-block: var(--kbq-markdown-code-size-multiline-margin-top)
-    var(--kbq-markdown-code-size-multiline-margin-bottom);
-  padding: var(--kbq-markdown-code-size-multiline-padding);
-  border-radius: var(--kbq-markdown-code-size-border-radius);
-  color: var(--kbq-markdown-code-text);
-  background-color: var(--kbq-markdown-code-background);
+  margin-block: var(
+      --kbq-markdown-code-size-multiline-margin-top,
+      var(--markdown-code-size-multiline-margin-top)
+    )
+    var(
+      --kbq-markdown-code-size-multiline-margin-bottom,
+      var(--markdown-code-size-multiline-margin-bottom)
+    );
+  padding: var(
+    --kbq-markdown-code-size-multiline-padding,
+    var(--markdown-code-size-multiline-padding)
+  );
+  border-radius: var(
+    --kbq-markdown-code-size-border-radius,
+    var(--markdown-code-size-border-radius)
+  );
+  color: var(--kbq-markdown-code-text, var(--markdown-code-text));
+  background-color: var(
+    --kbq-markdown-code-background,
+    var(--markdown-code-background)
+  );
 }
 
 .base code {
-  border-radius: var(--kbq-markdown-code-size-border-radius);
+  border-radius: var(
+    --kbq-markdown-code-size-border-radius,
+    var(--markdown-code-size-border-radius)
+  );
 
   @mixin markdown-typography inline-code;
 }
 
 .base code:not(pre > code) {
   white-space: nowrap;
-  padding: var(--kbq-markdown-code-size-inline-padding);
+  padding: var(
+    --kbq-markdown-code-size-inline-padding,
+    var(--markdown-code-size-inline-padding)
+  );
 }
 
 .base code:not(pre > code, a code) {
-  color: var(--kbq-markdown-code-text);
-  background-color: var(--kbq-markdown-code-background);
+  color: var(--kbq-markdown-code-text, var(--markdown-code-text));
+  background-color: var(
+    --kbq-markdown-code-background,
+    var(--markdown-code-background)
+  );
 }
 
 .base a code {
-  background-color: var(--kbq-markdown-code-background);
+  background-color: var(
+    --kbq-markdown-code-background,
+    var(--markdown-code-background)
+  );
 
   @mixin markdown-typography inline-code-as-link;
 }
 
 .base img {
   max-inline-size: 100%;
-  margin-block: var(--kbq-markdown-image-size-margin-top)
-    var(--kbq-markdown-image-size-margin-bottom);
+  margin-block: var(
+      --kbq-markdown-image-size-margin-top,
+      var(--markdown-image-size-margin-top)
+    )
+    var(
+      --kbq-markdown-image-size-margin-bottom,
+      var(--markdown-image-size-margin-bottom)
+    );
 }
 
 .base img + em {
   display: block;
-  margin-block: var(--kbq-markdown-image-size-caption-margin-top)
-    var(--kbq-markdown-image-size-caption-margin-bottom);
-  color: var(--kbq-markdown-image-caption-text);
+  margin-block: var(
+      --kbq-markdown-image-size-caption-margin-top,
+      var(--markdown-image-size-caption-margin-top)
+    )
+    var(
+      --kbq-markdown-image-size-caption-margin-bottom,
+      var(--markdown-image-size-caption-margin-bottom)
+    );
+  color: var(
+    --kbq-markdown-image-caption-text,
+    var(--markdown-image-caption-text)
+  );
 
   @mixin markdown-typography caption;
 }
 
 .base hr {
   block-size: 0;
-  margin-block: var(--kbq-markdown-hr-size-margin-vertical);
+  margin-block: var(
+    --kbq-markdown-hr-size-margin-vertical,
+    var(--markdown-hr-size-margin-vertical)
+  );
   border: none;
-  border-block-end: var(--kbq-markdown-hr-size-width) solid
-    var(--kbq-markdown-hr-color);
+  border-block-end: var(
+      --kbq-markdown-hr-size-width,
+      var(--markdown-hr-size-width)
+    )
+    solid var(--kbq-markdown-hr-color, var(--markdown-hr-color));
 }
 
 /* A table box ignores `overflow`, so a wide table scrolls as a block. */
@@ -208,8 +410,11 @@
   overflow-x: auto;
   display: block;
   border-collapse: collapse;
-  margin-block-end: var(--kbq-markdown-table-size-margin-bottom);
-  color: var(--kbq-markdown-table-body);
+  margin-block-end: var(
+    --kbq-markdown-table-size-margin-bottom,
+    var(--markdown-table-size-margin-bottom)
+  );
+  color: var(--kbq-markdown-table-body, var(--markdown-table-body));
 }
 
 .base table:focus-visible {
@@ -219,15 +424,21 @@
 
 .base table td,
 .base table th {
-  padding: var(--kbq-markdown-table-size-padding);
+  padding: var(
+    --kbq-markdown-table-size-padding,
+    var(--markdown-table-size-padding)
+  );
   vertical-align: top;
 }
 
 .base thead {
-  border-block-end: var(--kbq-markdown-table-size-border-width) solid
-    var(--kbq-markdown-table-border);
+  border-block-end: var(
+      --kbq-markdown-table-size-border-width,
+      var(--markdown-table-size-border-width)
+    )
+    solid var(--kbq-markdown-table-border, var(--markdown-table-border));
   text-align: start;
-  color: var(--kbq-markdown-table-header);
+  color: var(--kbq-markdown-table-header, var(--markdown-table-header));
 
   @mixin markdown-typography table-header;
 }
@@ -256,9 +467,15 @@
   color: var(--kbq-foreground-theme);
   text-decoration-line: underline;
   text-decoration-color: var(--kbq-line-theme-less);
-  outline: var(--kbq-markdown-link-size-state-focused-outline-width) solid
-    transparent;
-  outline-offset: var(--kbq-markdown-link-size-state-focused-outline-offset);
+  outline: var(
+      --kbq-markdown-link-size-state-focused-outline-width,
+      var(--markdown-link-size-state-focused-outline-width)
+    )
+    solid transparent;
+  outline-offset: var(
+    --kbq-markdown-link-size-state-focused-outline-offset,
+    var(--markdown-link-size-state-focused-outline-offset)
+  );
   transition:
     color var(--kbq-transition-default),
     outline-color var(--kbq-transition-default),

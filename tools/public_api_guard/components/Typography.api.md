@@ -36,7 +36,7 @@ export const typographyPropAlign: readonly ["start", "center", "end", "initial",
 export type TypographyPropColor = (typeof typographyPropColor)[number];
 
 // @public (undocumented)
-export const typographyPropColor: readonly ["white", "white-secondary", "theme", "theme-secondary", "contrast", "on-contrast", "contrast-secondary", "contrast-tertiary", "error", "error-secondary", "error-tertiary", "error-less", "success", "success-less", "success-secondary", "warning", "warning-secondary", "visited", "inherit"];
+export const typographyPropColor: readonly ["white", "white-secondary", "theme", "theme-secondary", "contrast", "on-contrast", "contrast-secondary", "contrast-tertiary", "error", "error-secondary", "error-tertiary", "error-less", "success", "success-less", "success-secondary", "success-tertiary", "warning", "warning-secondary", "visited", "inherit"];
 
 // @public (undocumented)
 export type TypographyPropDisplay = (typeof typographyPropDisplay)[number];

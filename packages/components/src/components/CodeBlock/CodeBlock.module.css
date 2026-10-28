@@ -1,4 +1,45 @@
 .base {
+  /* @koobiq/design-tokens v4 removed the code-block container tokens (it only ships the hljs
+     syntax colors), so the values this component renders are declared here now. */
+  --kbq-code-block-filled-container-background: var(
+    --kbq-background-contrast-less
+  );
+  --kbq-code-block-filled-header-background: var(
+    --kbq-background-contrast-less
+  );
+  --kbq-code-block-filled-actionbar-background: var(
+    --kbq-background-contrast-less
+  );
+  --kbq-code-block-filled-collapse-expanded-background: transparent;
+  --kbq-code-block-filled-collapse-collapsed-background: linear-gradient(
+    180deg,
+    transparent,
+    var(--kbq-background-bg-secondary) 100%
+  );
+  --kbq-code-block-filled-collapse-button-expand-background: var(
+    --kbq-background-contrast-less
+  );
+  --kbq-code-block-filled-header-scroll-shadow: var(
+    --kbq-shadow-overflow-normal-bottom
+  );
+  --kbq-code-block-outline-container-background: var(--kbq-background-card);
+  --kbq-code-block-outline-container-border-color: var(
+    --kbq-line-contrast-fade
+  );
+  --kbq-code-block-outline-header-background: var(--kbq-background-card);
+  --kbq-code-block-outline-actionbar-background: var(--kbq-background-card);
+  --kbq-code-block-outline-collapse-expanded-background: transparent;
+  --kbq-code-block-outline-collapse-collapsed-background: linear-gradient(
+    180deg,
+    transparent,
+    var(--kbq-background-bg) 100%
+  );
+  --kbq-code-block-outline-collapse-button-expand-background: var(
+    --kbq-background-card
+  );
+  --kbq-code-block-outline-header-scroll-shadow: 0 1px 0 0
+    var(--kbq-line-contrast-fade);
+
   /* Vertically centers a single line of code against the floating action bar. */
   --code-block-floating-code-padding-block: calc(
     var(--kbq-size-m) + var(--kbq-size-3xs)
@@ -556,5 +597,15 @@
 .code :global(.hljs-variable.language_) {
   background-color: var(--kbq-code-block-hljs-variable-language-background);
   color: var(--kbq-code-block-hljs-variable-language-color);
+}
+
+/* The dark theme drew the outline border and the header shadows differently, so the values above
+   are overridden here to keep the pre-v4 rendering. */
+:global(.kbq-dark) .base {
+  --kbq-code-block-outline-container-border-color: transparent;
+  --kbq-code-block-filled-header-scroll-shadow: 0 1px 0 0
+    var(--kbq-line-white-fade);
+  --kbq-code-block-outline-header-scroll-shadow: 0 1px 0 0
+    var(--kbq-line-white-fade);
 }
 /* stylelint-enable selector-class-pattern */

@@ -49,3 +49,21 @@ describe('native scrollbar', () => {
     ].forEach((selector) => expect(css).toContain(selector));
   });
 });
+
+// The `-less` foreground tokens were renamed to `-tertiary` in design-tokens v4,
+// while the deprecated classes keep their public names for the Typography API.
+describe('deprecated foreground colors', () => {
+  it('should keep the legacy `-less` classes on the renamed `-tertiary` tokens', () => {
+    expect(css).toMatch(
+      /\.foreground-error-less \{\n {2}color: var\(--kbq-foreground-error-tertiary\);\n\}/
+    );
+
+    expect(css).toMatch(
+      /\.foreground-success-less \{\n {2}color: var\(--kbq-foreground-success-tertiary\);\n\}/
+    );
+
+    expect(css).toMatch(
+      /\.foreground-success-tertiary \{\n {2}color: var\(--kbq-foreground-success-tertiary\);\n\}/
+    );
+  });
+});
