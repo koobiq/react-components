@@ -1,11 +1,13 @@
 import { createRef } from 'react';
 
+import { once } from '@koobiq/logger';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import {
   Typography,
   typographyPropAlign,
+  typographyPropColor,
   typographyPropDisplay,
   typographyPropVariant,
 } from './index';
@@ -78,6 +80,40 @@ describe('Typography', () => {
         render(<Typography {...baseProps} align={align} />);
 
         expect(getTypography()).toHaveAttribute('data-align', align);
+      }
+    );
+  });
+
+  describe('check the color prop', () => {
+    it.each(typographyPropColor)(
+      'should apply the color as a "%s"',
+      (color) => {
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+        render(<Typography {...baseProps} color={color} />);
+
+        expect(getTypography()).toHaveAttribute('data-color', color);
+
+        warn.mockRestore();
+      }
+    );
+
+    const deprecatedColors = ['error-less', 'success-less'] as const;
+
+    it.each(deprecatedColors)(
+      'should warn about the deprecated "%s" color',
+      (color) => {
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+        once.clear();
+
+        render(<Typography {...baseProps} color={color} />);
+
+        expect(warn).toHaveBeenCalledWith(
+          expect.stringContaining(`the "${color}" color is deprecated`)
+        );
+
+        warn.mockRestore();
       }
     );
   });

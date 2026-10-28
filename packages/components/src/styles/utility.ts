@@ -13,10 +13,13 @@ const color = {
     error: s['foreground-error'],
     'error-secondary': s['foreground-error-secondary'],
     'error-tertiary': s['foreground-error-tertiary'],
+    /** @deprecated Use `error-tertiary` instead. */
     'error-less': s['foreground-error-less'],
     success: s['foreground-success'],
-    'success-less': s['foreground-success-less'],
     'success-secondary': s['foreground-success-secondary'],
+    'success-tertiary': s['foreground-success-tertiary'],
+    /** @deprecated Use `success-tertiary` instead. */
+    'success-less': s['foreground-success-less'],
     warning: s['foreground-warning'],
     'warning-secondary': s['foreground-warning-secondary'],
     visited: s['foreground-visited'],

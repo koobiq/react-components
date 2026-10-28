@@ -58,6 +58,10 @@
   color: var(--kbq-foreground-error-tertiary);
 }
 
+/*
+ * Deprecated: the token was renamed to `foreground-error-tertiary` in
+ * design-tokens v4. Kept under the old name for the `Typography` color API.
+ */
 .foreground-error-less {
   color: var(--kbq-foreground-error-tertiary);
 }
@@ -66,12 +70,20 @@
   color: var(--kbq-foreground-success);
 }
 
-.foreground-success-less {
+.foreground-success-secondary {
+  color: var(--kbq-foreground-success-secondary);
+}
+
+.foreground-success-tertiary {
   color: var(--kbq-foreground-success-tertiary);
 }
 
-.foreground-success-secondary {
-  color: var(--kbq-foreground-success-secondary);
+/*
+ * Deprecated: the token was renamed to `foreground-success-tertiary` in
+ * design-tokens v4. Kept under the old name for the `Typography` color API.
+ */
+.foreground-success-less {
+  color: var(--kbq-foreground-success-tertiary);
 }
 
 .foreground-warning {
