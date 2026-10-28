@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.38.0](https://github.com/koobiq/react-components/compare/0.37.0...0.38.0) (2026-10-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **SelectNext, TreeSelect, TagInput, TagAutocomplete:** the clear button keeps disabled items and is hidden when
+only disabled items are selected. Pass `clearPredicate={() => true}` to
+restore the previous behavior.
+
+### 🚀 Features
+
+* **components:** add `FileTrigger` component (DS-5421) ([#482](https://github.com/koobiq/react-components/issues/482)) ([ea7e9ad](https://github.com/koobiq/react-components/commit/ea7e9ad96ef7352526ba0250621a44e05c6b889e))
+* **components:** add DescriptionList component (DS-5248) ([#485](https://github.com/koobiq/react-components/issues/485)) ([e19af56](https://github.com/koobiq/react-components/commit/e19af5613448012ec60efaa1cba3a178c49261f7))
+* **components:** add overflow tooltip to item text (DS-5341) ([#488](https://github.com/koobiq/react-components/issues/488)) ([4143afb](https://github.com/koobiq/react-components/commit/4143afb915a7e3cf275e1e679d7243a14264fa55))
+* **components:** add TopNavbar and SideNavbar components (DS-5259) ([#487](https://github.com/koobiq/react-components/issues/487)) ([9bc8362](https://github.com/koobiq/react-components/commit/9bc8362f85ea53bb75f00ff64decf6628b8de1b6))
+* **components:** customize native scrollbars (DS-4987) ([#492](https://github.com/koobiq/react-components/issues/492)) ([33d0ba5](https://github.com/koobiq/react-components/commit/33d0ba5d0747e5a3ffaba15265bb17a3f84e73d4))
+* **core:** add DecimalFormatter utility and hook (DS-5801) ([#515](https://github.com/koobiq/react-components/issues/515)) ([4000b25](https://github.com/koobiq/react-components/commit/4000b25dfc45d9b2089ca20ba6749f4b5d265845))
+* **Resizable:** support single-axis sizing (DS-5552) ([#483](https://github.com/koobiq/react-components/issues/483)) ([ae3f99a](https://github.com/koobiq/react-components/commit/ae3f99a66d296b82d5d1ff1e70bcf781b400bebf))
+* **SelectNext, TreeSelect:** add `dependencies` prop (DS-5530) ([#475](https://github.com/koobiq/react-components/issues/475)) ([2b51a4a](https://github.com/koobiq/react-components/commit/2b51a4ac6f6441867fb6dcbed54fd8c03b6bf3fd))
+* **Tag, TagGroup, TagList:** reuse the shared Tag component (DS-5278) ([#473](https://github.com/koobiq/react-components/issues/473)) ([ac7530c](https://github.com/koobiq/react-components/commit/ac7530c96a97ca63b010c338bf2e7c917713fdd0))
+* **TreeSelect:** add renderTag prop (DS-5277) ([#472](https://github.com/koobiq/react-components/issues/472)) ([a6d5774](https://github.com/koobiq/react-components/commit/a6d5774e059c9fa6f1b51cb6d390ffbef570b5cd))
+
+
+### 🐞 Bug Fixes
+
+* **ClampedText, ClampedList:** add smooth expand and collapse animation (DS-5644) ([#513](https://github.com/koobiq/react-components/issues/513)) ([752df6a](https://github.com/koobiq/react-components/commit/752df6a234ae6a2b848c4579a57f875ef24641e5))
+* **ContentPanel:** build resizing on Resizable (DS-5422) ([#486](https://github.com/koobiq/react-components/issues/486)) ([0a9072e](https://github.com/koobiq/react-components/commit/0a9072eea3d83d0736503ef7d82b726eb4461967))
+* **FormField:** unify addon and action states in readonly and disabled (DS-5292) ([#481](https://github.com/koobiq/react-components/issues/481)) ([0e94424](https://github.com/koobiq/react-components/commit/0e944245482bcaddf3a8caf446a7e7c0e21aa3a1))
+* **Popover, Modal, SidePanel:** unify the overlay z-index layer (DS-5504) ([#480](https://github.com/koobiq/react-components/issues/480)) ([664eb2f](https://github.com/koobiq/react-components/commit/664eb2faade79a8fff3f810a66e06e74387baabb))
+* **SelectNext, TreeSelect, TagInput, TagAutocomplete:** keep disabled items on clear (DS-5487) ([#494](https://github.com/koobiq/react-components/issues/494)) ([a5cf41b](https://github.com/koobiq/react-components/commit/a5cf41ba641524d064bb8f69179be8780dba944d))
+* **Tooltip:** align styles with design guidelines (DS-5340) ([#479](https://github.com/koobiq/react-components/issues/479)) ([d745456](https://github.com/koobiq/react-components/commit/d74545624e6104436c90126b000a9a8bd6fa3b1b))
+
 ## [0.37.0](https://github.com/koobiq/react-components/compare/0.36.0...0.37.0) (2026-09-07)
 
 
