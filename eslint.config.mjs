@@ -29,6 +29,8 @@ export default defineConfig(
       'templates/nextjs/template/**',
       'templates/vite/template/**',
       'tools/public_api_guard/**',
+      'plugins/koobiq/scripts/tests/fixtures/**',
+      'plugins/koobiq/evals/**',
     ],
   },
   {
@@ -181,6 +183,13 @@ export default defineConfig(
     files: ['**/*.stories.{js,cjs,mjs,jsx,ts,tsx,mts,cts}'],
     rules: {
       'no-alert': 'off',
+    },
+  },
+  {
+    // The Claude Code plugin is plain ESM JavaScript; JSDoc types document it.
+    files: ['plugins/koobiq/**/*.mjs'],
+    rules: {
+      'jsdoc/no-types': 'off',
     },
   },
   {

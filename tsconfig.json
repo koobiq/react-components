@@ -38,6 +38,7 @@
     "node_modules",
     "**/dist",
     "templates",
+    "plugins",
     "coverage",
     "storybook-static",
     "storybook-static-e2e",

@@ -1,0 +1,10 @@
+/**
+ * Do not edit directly
+ */
+
+.kbq-dark {
+  --kbq-theme-default: hsla(216, 100%, 60%, 100%); /* DEPRECATED: true */
+  --kbq-foreground-contrast: hsla(0, 0%, 95%, 100%);
+  --kbq-background-bg: hsla(0, 0%, 5%, 100%);
+  --kbq-line-contrast-less: hsla(0, 0%, 30%, 100%);
+}

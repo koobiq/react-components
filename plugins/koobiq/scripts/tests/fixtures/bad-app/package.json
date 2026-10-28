@@ -1,0 +1,15 @@
+{
+  "name": "bad-app",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@koobiq/react-components": "9.9.0",
+    "@koobiq/react-core": "9.9.0",
+    "react": "^19.0.0",
+    "react-markdown": "^10.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vite": "^7.0.0"
+  }
+}

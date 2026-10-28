@@ -1,0 +1,8 @@
+{
+  "name": "@koobiq/react-icons",
+  "version": "12.1.1",
+  "exports": {
+    ".": { "types": "./lib/index.d.ts", "default": "./lib/index.js" },
+    "./manifest.json": "./manifest.json"
+  }
+}
