@@ -138,6 +138,7 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
       const animation = animationRef.current;
 
       if (
+        !isClamped ||
         preferredExpanded ||
         animation?.playState !== 'running' ||
         !contentElement?.classList.contains(s.clamped)
@@ -147,12 +148,21 @@ export const ClampedText = forwardRef<ClampedTextRef, ClampedTextProps>(
 
       contentElement.classList.remove(s.clamped);
 
+      let isCurrent = true;
+
       // Rejects when the animation is canceled, e.g. by the next toggle.
       animation.finished.then(
-        () => contentElement.classList.add(s.clamped),
+        () => {
+          if (isCurrent) contentElement.classList.add(s.clamped);
+        },
         () => {}
       );
-    }, [preferredExpanded]);
+
+      // The clamp may become unnecessary while collapsing, e.g. after `rows` change.
+      return () => {
+        isCurrent = false;
+      };
+    }, [isClamped, preferredExpanded]);
 
     useEffect(() => {
       return () => window.clearTimeout(scrollTimeoutRef.current);
