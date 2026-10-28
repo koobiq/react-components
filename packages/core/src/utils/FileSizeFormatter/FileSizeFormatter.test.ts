@@ -55,6 +55,52 @@ describe('FileSizeFormatter', () => {
     expect(formatter.format(1536, { unitSystem: 'IEC' })).toBe('1,5\u00a0КиБ');
   });
 
+  it('groups digits by the DecimalFormatter rules', () => {
+    const formatter = new FileSizeFormatter('ru-RU');
+
+    // Russian leaves numbers below 10 000 ungrouped...
+    expect(formatter.format(1023, { unitSystem: 'IEC' })).toBe('1023\u00a0Б');
+
+    // ...and separates the groups with a thin space.
+    expect(formatter.format(1000 ** 6)).toBe('1\u2009000\u2009000\u00a0ТБ');
+  });
+
+  it('applies the Russian rules to every Russian locale', () => {
+    for (const locale of ['ru-UA', 'ru-KZ', 'ru-RU-u-ca-gregory']) {
+      expect(
+        new FileSizeFormatter(locale).format(1023, { unitSystem: 'IEC' })
+      ).toBe('1023\u00a0Б');
+    }
+  });
+
+  it('follows the grouping rule of other locales', () => {
+    const formatter = new FileSizeFormatter('es-ES');
+
+    expect(formatter.format(1023, { unitSystem: 'IEC' })).toBe('1023\u00a0B');
+  });
+
+  it('overrides the number format', () => {
+    const ungrouped = new FileSizeFormatter('en-US', {
+      numberFormat: { useGrouping: false },
+    });
+
+    const grouped = new FileSizeFormatter('ru-RU', {
+      numberFormat: { useGrouping: true },
+    });
+
+    const separated = new FileSizeFormatter('ru-RU', {
+      numberFormat: { viewGroupSeparator: '\u00a0' },
+    });
+
+    expect(ungrouped.format(1000 ** 6)).toBe('1000000\u00a0TB');
+
+    expect(grouped.format(1023, { unitSystem: 'IEC' })).toBe(
+      '1\u2009023\u00a0Б'
+    );
+
+    expect(separated.format(1000 ** 6)).toBe('1\u00a0000\u00a0000\u00a0ТБ');
+  });
+
   it('allows overriding a localized unit system', () => {
     const formatter = new FileSizeFormatter('en-US', {
       unitSystems: {
@@ -127,6 +173,13 @@ describe('FileSizeFormatter', () => {
     const formatter = new FileSizeFormatter('rue');
 
     expect(formatter.format(1000)).toContain('KB');
+  });
+
+  // Without data for the locale, `Intl` would use the system locale instead.
+  it('formats a locale the runtime has no data for in English', () => {
+    const formatter = new FileSizeFormatter('rue');
+
+    expect(formatter.format(1500)).toBe('1.5\u00a0KB');
   });
 
   it('throws for non-finite values', () => {

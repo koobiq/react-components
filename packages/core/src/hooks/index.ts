@@ -23,3 +23,4 @@ export * from './useCopyToClipboard';
 export * from './useTimer';
 export * from './useKeyedRefs';
 export * from './useFileSizeFormatter';
+export * from './useDecimalFormatter';

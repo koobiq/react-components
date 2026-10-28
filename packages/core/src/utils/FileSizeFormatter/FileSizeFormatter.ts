@@ -1,5 +1,8 @@
 import { once } from '@koobiq/logger';
 
+import { DecimalFormatter } from '../DecimalFormatter';
+import { resolveLocale } from '../resolveLocale';
+
 /** Measurement systems supported by `FileSizeFormatter`. */
 export const fileSizeMeasurementSystem = ['SI', 'IEC'] as const;
 
@@ -39,6 +42,23 @@ export type FileSizeFormatterConfig = {
   unitSystems?: Partial<
     Record<FileSizeMeasurementSystem, Partial<FileSizeUnitSystem>>
   >;
+  /**
+   * Overrides the digit grouping of the value, which follows `DecimalFormatter`
+   * rules by default. The number of fraction digits still comes from
+   * `defaultPrecision` and `precision`.
+   */
+  numberFormat?: {
+    /**
+     * Groups the digits of every value (`true`) or of none (`false`). When not
+     * set, the grouping rule of the locale applies.
+     */
+    useGrouping?: boolean;
+    /**
+     * Replaces the group separator of the locale; an empty string keeps it.
+     * Russian uses a thin space.
+     */
+    viewGroupSeparator?: string;
+  };
 };
 
 /** Overrides for formatting an individual byte value. */
@@ -85,10 +105,8 @@ const localizedAbbreviations: Record<
 };
 
 const getLocalizedUnitSystems = (
-  locale: string
+  language: string
 ): Record<FileSizeMeasurementSystem, FileSizeUnitSystem> => {
-  const language = new Intl.Locale(locale).language;
-
   const abbreviations =
     localizedAbbreviations[language] ??
     localizedAbbreviations[DEFAULT_LANGUAGE];
@@ -157,19 +175,27 @@ const getHumanizedSize = (
 
 /** Formats byte values using Koobiq SI or IEC file-size conventions. */
 export class FileSizeFormatter {
-  private readonly locale: string;
   private readonly defaultPrecision: number;
   private readonly defaultUnitSystem: FileSizeMeasurementSystem;
   private readonly unitSystems: Record<
     FileSizeMeasurementSystem,
     FileSizeUnitSystem
   >;
-  private readonly numberFormatters = new Map<number, Intl.NumberFormat>();
+  private readonly decimalFormatter: DecimalFormatter;
+  private readonly useGrouping: boolean | undefined;
 
   constructor(locale?: string, config: FileSizeFormatterConfig = {}) {
-    this.locale = new Intl.NumberFormat(locale).resolvedOptions().locale;
+    const resolved = resolveLocale(locale);
 
-    const localizedUnitSystems = getLocalizedUnitSystems(this.locale);
+    this.decimalFormatter = new DecimalFormatter(resolved.locale, {
+      decimal: {
+        viewGroupSeparator: config.numberFormat?.viewGroupSeparator,
+      },
+    });
+
+    this.useGrouping = config.numberFormat?.useGrouping;
+
+    const localizedUnitSystems = getLocalizedUnitSystems(resolved.language);
 
     this.defaultPrecision = this.resolvePrecision(
       config.defaultPrecision,
@@ -203,7 +229,19 @@ export class FileSizeFormatter {
       precision
     );
 
-    return `${this.getNumberFormatter(precision).format(formattedSize.value)}${NON_BREAKING_SPACE}${formattedSize.unit}`;
+    // Same digit rules as numbers in running text, as in Koobiq Angular
+    // `kbqDataSize`. A grouping set in the config overrides them.
+    const digitsInfo =
+      this.useGrouping === undefined
+        ? `1.0-${precision}`
+        : `1.0-${precision}-${this.useGrouping}`;
+
+    const formattedValue = this.decimalFormatter.format(
+      formattedSize.value,
+      digitsInfo
+    );
+
+    return `${formattedValue}${NON_BREAKING_SPACE}${formattedSize.unit}`;
   }
 
   private resolvePrecision(
@@ -220,19 +258,5 @@ export class FileSizeFormatter {
     }
 
     return clampPrecision(precision, fallback);
-  }
-
-  private getNumberFormatter(precision: number): Intl.NumberFormat {
-    let formatter = this.numberFormatters.get(precision);
-
-    if (!formatter) {
-      formatter = new Intl.NumberFormat(this.locale, {
-        maximumFractionDigits: precision,
-      });
-
-      this.numberFormatters.set(precision, formatter);
-    }
-
-    return formatter;
   }
 }

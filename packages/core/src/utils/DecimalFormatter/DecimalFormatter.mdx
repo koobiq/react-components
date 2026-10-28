@@ -1,0 +1,172 @@
+import { Meta, Story, Status } from '../../../../../.storybook/components';
+
+import * as Stories from './DecimalFormatter.stories';
+
+<Meta of={Stories} />
+
+# DecimalFormatter
+
+<Status variant="experimental" />
+
+Formats numbers using Koobiq conventions for digit grouping and abbreviation.
+The rules match the `kbqNumber`, `kbqTableNumber` and `kbqRoundNumber` pipes
+of Koobiq Angular.
+
+## Import
+
+```tsx
+import { DecimalFormatter } from '@koobiq/react-core';
+```
+
+## Usage
+
+Create one formatter for a locale and reuse it.
+
+```tsx
+const formatter = new DecimalFormatter('en-US');
+
+formatter.format(12345.6789);
+// 12,345.679
+
+formatter.formatTable(1234);
+// 1,234
+
+formatter.formatRounded(15300);
+// 15K
+```
+
+<Story of={Stories.Base} />
+
+## Hook
+
+Use `useDecimalFormatter` inside components. It reads the current locale from
+context and memoizes the formatter, so it's only recreated when the locale or
+`config` changes.
+
+```tsx
+import { useDecimalFormatter } from '@koobiq/react-core';
+
+function Count({ value }: { value: number }) {
+  const formatter = useDecimalFormatter();
+
+  return <span>{formatter.format(value)}</span>;
+}
+```
+
+## Digit grouping
+
+In large numbers, digits are grouped by three, counting from the right. Use
+`format` in running text and `formatTable` in tables. They differ in where
+grouping starts.
+
+`format` follows the grouping rule of the locale for running text. In Russian,
+digits are grouped from 10 000, that is, from five digits: 1234, 56 789,
+987 654. A short number without a separator reads more naturally in text. The
+rule applies to every Russian locale, such as `ru-RU`, `ru-KZ` or `ru-BY`, and
+to the number as displayed: 9999.9996 is shown as 10 000.
+
+`formatTable` groups every number: 1 234, 56 789, 987 654. In a table, aligned
+columns let readers compare values digit by digit.
+
+Russian separates the groups with a thin space (`\u2009`).
+
+## Digits info
+
+Both methods accept an optional `digitsInfo` string that sets the number of
+integer and fraction digits:
+
+```
+{minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}-{useGrouping}
+```
+
+| Parameter           | Default     | Description                           |
+| ------------------- | ----------- | ------------------------------------- |
+| `minIntegerDigits`  | `1`         | The minimum number of integer digits  |
+| `minFractionDigits` | `0`         | The minimum number of fraction digits |
+| `maxFractionDigits` | `3`         | The maximum number of fraction digits |
+| `useGrouping`       | Locale rule | Turns digit grouping on or off        |
+
+Without `useGrouping`, `format` follows the grouping rule of the locale and
+`formatTable` groups every number.
+
+For example, `'4.0-2-false'` keeps at least 4 integer digits and up to 2
+fraction digits, and turns grouping off. A malformed string throws an error.
+
+```tsx
+formatter.format(1234.5678, '1.0-2');
+// 1,234.57
+
+formatter.format(1234.5678, '4.0-2-false');
+// 1234.57
+```
+
+<Story of={Stories.DigitsInfo} />
+
+## Abbreviation
+
+`formatRounded` shows large numbers in a short form: a thousand as `K`, a
+million as `M`, a billion as `B`, and a trillion as `T`. Numbers below a
+thousand are not abbreviated.
+
+```tsx
+formatter.formatRounded(152352);
+// 152K
+
+formatter.formatRounded(1034000);
+// 1.0M
+```
+
+<Story of={Stories.Rounding} />
+
+## Localization
+
+The locale controls the separators and unit labels. Built-in labels cover
+English and Russian; other languages use the English labels with their own
+separators. A locale the runtime has no number data for is formatted in
+English, and extensions of the locale tag, such as `-u-ca-gregory`, do not
+change the rules. To format a value in a specific locale regardless of the
+active one, create a formatter for that locale.
+
+```tsx
+const formatter = new DecimalFormatter('ru-RU');
+
+formatter.formatRounded(15300);
+// 15 К
+```
+
+<Story of={Stories.Localization} />
+
+## Configuration
+
+Pass a `config` to change the default digit options or override the localized
+rules. A `digitsInfo` passed to a call still wins over `options`.
+
+```tsx
+const formatter = new DecimalFormatter('en-US', {
+  options: { maximumFractionDigits: 2 },
+  decimal: { viewGroupSeparator: '\u2009' },
+  rounding: { separator: ' ', thousand: 'k' },
+});
+
+formatter.format(12345.6789);
+// 12 345.68
+
+formatter.formatRounded(15300);
+// 15 k
+```
+
+An empty `viewGroupSeparator` keeps the group separator of the locale, which
+for Russian is a no-break space instead of the thin one.
+
+The hook accepts the same `config`:
+
+```tsx
+const formatter = useDecimalFormatter({
+  options: { maximumFractionDigits: 2 },
+});
+```
+
+## Empty values
+
+All methods return `null` for `null`, `undefined`, `''` and `NaN`. Numeric
+strings are coerced to numbers; any other string throws an error.

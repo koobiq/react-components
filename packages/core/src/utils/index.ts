@@ -4,3 +4,4 @@ export * from './setRef.js';
 export * from './isBrowser.js';
 export * from './capitalizeFirstLetter';
 export * from './FileSizeFormatter';
+export * from './DecimalFormatter';
