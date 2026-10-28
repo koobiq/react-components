@@ -137,7 +137,7 @@ export class DecimalFormatter {
   /**
    * Formats a number for running text. Digits are grouped by the rule of the
    * locale: Russian, for one, leaves numbers below 10 000 ungrouped. A grouping
-   * set in `digitsInfo` overrides the rule.
+   * set in `digitsInfo` or `config.options` overrides the rule.
    * @param value The number to format. Strings are coerced to numbers.
    * @param digitsInfo Digit options in the format
    * `{minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}-{useGrouping}`,
@@ -217,7 +217,7 @@ export class DecimalFormatter {
 
     if (
       isRunningText &&
-      parsed.useGrouping === undefined &&
+      options.useGrouping === undefined &&
       this.shortNumberLimit !== undefined &&
       isBelowLimitWhenRounded(
         num,

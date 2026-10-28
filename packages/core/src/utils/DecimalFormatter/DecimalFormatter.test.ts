@@ -32,6 +32,20 @@ describe('DecimalFormatter', () => {
       expect(formatter.format(12345, '1.0-3-false')).toBe('12345');
     });
 
+    it('groups short Russian numbers when the config sets the grouping', () => {
+      const grouped = new DecimalFormatter('ru-RU', {
+        options: { useGrouping: true },
+      });
+
+      const ungrouped = new DecimalFormatter('ru-RU', {
+        options: { useGrouping: false },
+      });
+
+      expect(grouped.format(1234)).toBe(`1${THIN_SPACE}234`);
+      expect(grouped.format(1234, '1.0-3-false')).toBe('1234');
+      expect(ungrouped.format(12345)).toBe('12345');
+    });
+
     it('groups English numbers with the locale separator', () => {
       const formatter = new DecimalFormatter('en-US');
 
