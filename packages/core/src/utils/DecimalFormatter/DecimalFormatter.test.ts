@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { DecimalFormatter } from './DecimalFormatter';
 
 const THIN_SPACE = '\u2009';
+const NO_BREAK_SPACE = '\u00a0';
 
 describe('DecimalFormatter', () => {
   describe('format', () => {
@@ -36,6 +37,32 @@ describe('DecimalFormatter', () => {
 
       expect(formatter.format(1234)).toBe('1,234');
       expect(formatter.format(12345.6789)).toBe('12,345.679');
+    });
+
+    it('applies the Russian rules to every Russian locale', () => {
+      expect(new DecimalFormatter('ru-KZ').format(1234)).toBe('1234');
+      expect(new DecimalFormatter('ru-UA').format(1234)).toBe('1234');
+
+      expect(new DecimalFormatter('ru-BY').format(12345)).toBe(
+        `12${THIN_SPACE}345`
+      );
+    });
+
+    it('checks the Russian limit on the rounded number', () => {
+      const formatter = new DecimalFormatter('ru-RU');
+
+      expect(formatter.format(9999.9996)).toBe(`10${THIN_SPACE}000`);
+      expect(formatter.format(9999.5, '1.0-0')).toBe(`10${THIN_SPACE}000`);
+      expect(formatter.format(9999.4, '1.0-0')).toBe('9999');
+      expect(formatter.format(-9999.9996)).toBe(`-10${THIN_SPACE}000`);
+    });
+
+    it('follows the grouping rule of other locales', () => {
+      const formatter = new DecimalFormatter('es-ES');
+
+      expect(formatter.format(1234)).toBe('1234');
+      expect(formatter.format(12345)).toBe('12.345');
+      expect(formatter.format(1234, '1.0-3-true')).toBe('1.234');
     });
 
     it('applies digitsInfo', () => {
@@ -157,6 +184,14 @@ describe('DecimalFormatter', () => {
       expect(formatter.formatRounded(152.456)).toBe('152,456');
     });
 
+    it('does not abbreviate infinite values', () => {
+      const formatter = new DecimalFormatter('en-US');
+
+      expect(formatter.formatRounded(Number.POSITIVE_INFINITY)).toBe('∞');
+      expect(formatter.formatRounded(Number.NEGATIVE_INFINITY)).toBe('-∞');
+      expect(formatter.formatRounded('1e400')).toBe('∞');
+    });
+
     // Koobiq Angular `kbqRoundNumber` prints these, so the React port does too.
     it('matches Koobiq Angular output', () => {
       const formatter = new DecimalFormatter('en-US');
@@ -224,6 +259,27 @@ describe('DecimalFormatter', () => {
       expect(formatter.format(12345)).toBe('12 345');
     });
 
+    it('keeps the locale separator for an empty group separator', () => {
+      const en = new DecimalFormatter('en-US', {
+        decimal: { viewGroupSeparator: '' },
+      });
+
+      const ru = new DecimalFormatter('ru-RU', {
+        decimal: { viewGroupSeparator: '' },
+      });
+
+      expect(en.format(12345)).toBe('12,345');
+      expect(ru.formatTable(1234)).toBe(`1${NO_BREAK_SPACE}234`);
+    });
+
+    it('overrides the fraction separator of rounded numbers', () => {
+      const formatter = new DecimalFormatter('en-US', {
+        rounding: { groupSeparator: ',' },
+      });
+
+      expect(formatter.formatRounded(2015)).toBe('2,0K');
+    });
+
     it('overrides the rounding labels', () => {
       const formatter = new DecimalFormatter('en-US', {
         rounding: { separator: ' ', thousand: 'k' },
@@ -243,17 +299,40 @@ describe('DecimalFormatter', () => {
   });
 
   describe('locale', () => {
-    it('falls back to English data for other languages', () => {
+    it('uses English labels with the separators of other locales', () => {
       const formatter = new DecimalFormatter('de-DE');
 
       expect(formatter.format(12345)).toBe('12.345');
-      expect(formatter.formatRounded(1.5e9)).toBe('1.5B');
+      expect(formatter.formatRounded(1.5e9)).toBe('1,5B');
+      expect(formatter.formatRounded(2015)).toBe('2,0K');
     });
 
     it('does not treat "rue" as Russian', () => {
       const formatter = new DecimalFormatter('rue');
 
       expect(formatter.formatRounded(15_300)).toContain('K');
+    });
+
+    // Without data for the locale, `Intl` would use the system locale instead.
+    it('formats a locale the runtime has no data for in English', () => {
+      const formatter = new DecimalFormatter('rue');
+
+      expect(formatter.format(1234.5)).toBe('1,234.5');
+      expect(formatter.formatRounded(1515)).toBe('2K');
+    });
+
+    it('ignores the script and extensions of the locale tag', () => {
+      expect(new DecimalFormatter('ru-RU-u-ca-gregory').format(1234)).toBe(
+        '1234'
+      );
+
+      expect(new DecimalFormatter('ru-Cyrl-RU').formatRounded(1515)).toBe(
+        '2 К'
+      );
+
+      expect(new DecimalFormatter('en-US-u-hc-h23').formatRounded(1515)).toBe(
+        '2K'
+      );
     });
   });
 });

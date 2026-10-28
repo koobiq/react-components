@@ -112,7 +112,7 @@ export type DecimalFormatterConfig = {
 
 // @public
 export type DecimalFormatterDigitsInfo = {
-    useGrouping: boolean;
+    useGrouping?: boolean;
     minimumIntegerDigits: number;
     minimumFractionDigits: number;
     maximumFractionDigits: number;
@@ -167,6 +167,10 @@ export type FileSizeFormatterConfig = {
     defaultUnitSystem?: FileSizeMeasurementSystem;
     defaultPrecision?: number;
     unitSystems?: Partial<Record<FileSizeMeasurementSystem, Partial<FileSizeUnitSystem>>>;
+    numberFormat?: {
+        useGrouping?: boolean;
+        viewGroupSeparator?: string;
+    };
 };
 
 // @public

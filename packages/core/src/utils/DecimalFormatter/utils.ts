@@ -1,10 +1,10 @@
 /** Digit options that a `digitsInfo` string resolves to. */
 export type DecimalFormatterDigitsInfo = {
   /**
-   * Whether to group the integer digits.
-   * @default true
+   * Whether to group the integer digits. When not set, `format` follows the
+   * grouping rule of the locale and `formatTable` groups every number.
    */
-  useGrouping: boolean;
+  useGrouping?: boolean;
   /**
    * The minimum number of integer digits.
    * @default 1
@@ -98,18 +98,46 @@ export const withDefaults = <T extends object>(
   ),
 });
 
-/** Formats with `formatter`, replacing the locale group separator if one is given. */
+/**
+ * Formats with `formatter`, replacing the locale group separator if one is
+ * given. An empty string keeps the separator of the locale, as in Angular.
+ */
 export const formatWithGroupSeparator = (
   value: number,
   formatter: Intl.NumberFormat,
   groupSeparator?: string
 ): string => {
-  if (groupSeparator === undefined) return formatter.format(value);
+  if (!groupSeparator) return formatter.format(value);
 
   return formatter
     .formatToParts(value)
     .map((part) => (part.type === 'group' ? groupSeparator : part.value))
     .join('');
+};
+
+/**
+ * Whether `value`, rounded to `maximumFractionDigits` the way `Intl` displays
+ * it, stays below `limit` in magnitude.
+ */
+export const isBelowLimitWhenRounded = (
+  value: number,
+  maximumFractionDigits: number,
+  limit: number
+): boolean => {
+  const magnitude = Math.abs(value);
+
+  // Rounding moves a value by half a unit at most, so only a value right
+  // below the limit can be carried up to it.
+  if (magnitude < limit - 0.5) return true;
+
+  if (magnitude >= limit) return false;
+
+  const rounded = new Intl.NumberFormat('en-US', {
+    useGrouping: false,
+    maximumFractionDigits,
+  }).format(magnitude);
+
+  return Number(rounded) < limit;
 };
 
 const ROUNDING_UNITS = {
@@ -126,7 +154,8 @@ export type RoundingUnit = keyof typeof ROUNDING_UNITS;
 export type RoundedParts = { num: number; fraction?: number };
 
 // Ported as is from Koobiq Angular `KbqRoundDecimalPipe`, quirks included, so
-// both libraries print the same string for the same number.
+// both libraries print the same string for the same number. Angular matches
+// these against its locale ids, which carry only a language and a region.
 const INTERVAL_LOCALES = ['ru-RU', 'en-US', 'es-LA', 'pt-BR'];
 
 const INTERVALS: Array<{
@@ -191,15 +220,18 @@ const getThousandsParts = (value: number): RoundedParts => {
     : { num: Math.round(dividedValue) };
 };
 
-/** Splits `value` into the integer and the fraction shown before `unit`. */
+/**
+ * Splits `value` into the integer and the fraction shown before `unit`.
+ * `localeId` is the language and region of the locale, e.g. `ru-RU`.
+ */
 export const getRoundedParts = (
   value: number,
   unit: RoundingUnit,
-  locale: string
+  localeId: string
 ): RoundedParts => {
   const divider = ROUNDING_UNITS[unit];
 
-  if (INTERVAL_LOCALES.includes(locale)) {
+  if (INTERVAL_LOCALES.includes(localeId)) {
     const interval = INTERVALS.find(({ startRange, endRange }) =>
       isWithin(startRange, endRange, value)
     );

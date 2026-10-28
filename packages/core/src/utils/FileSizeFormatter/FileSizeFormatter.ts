@@ -1,6 +1,7 @@
 import { once } from '@koobiq/logger';
 
 import { DecimalFormatter } from '../DecimalFormatter';
+import { resolveLocale } from '../resolveLocale';
 
 /** Measurement systems supported by `FileSizeFormatter`. */
 export const fileSizeMeasurementSystem = ['SI', 'IEC'] as const;
@@ -41,6 +42,23 @@ export type FileSizeFormatterConfig = {
   unitSystems?: Partial<
     Record<FileSizeMeasurementSystem, Partial<FileSizeUnitSystem>>
   >;
+  /**
+   * Overrides the digit grouping of the value, which follows `DecimalFormatter`
+   * rules by default. The number of fraction digits still comes from
+   * `defaultPrecision` and `precision`.
+   */
+  numberFormat?: {
+    /**
+     * Groups the digits of every value (`true`) or of none (`false`). When not
+     * set, the grouping rule of the locale applies.
+     */
+    useGrouping?: boolean;
+    /**
+     * Replaces the group separator of the locale; an empty string keeps it.
+     * Russian uses a thin space.
+     */
+    viewGroupSeparator?: string;
+  };
 };
 
 /** Overrides for formatting an individual byte value. */
@@ -87,10 +105,8 @@ const localizedAbbreviations: Record<
 };
 
 const getLocalizedUnitSystems = (
-  locale: string
+  language: string
 ): Record<FileSizeMeasurementSystem, FileSizeUnitSystem> => {
-  const language = new Intl.Locale(locale).language;
-
   const abbreviations =
     localizedAbbreviations[language] ??
     localizedAbbreviations[DEFAULT_LANGUAGE];
@@ -159,7 +175,6 @@ const getHumanizedSize = (
 
 /** Formats byte values using Koobiq SI or IEC file-size conventions. */
 export class FileSizeFormatter {
-  private readonly locale: string;
   private readonly defaultPrecision: number;
   private readonly defaultUnitSystem: FileSizeMeasurementSystem;
   private readonly unitSystems: Record<
@@ -167,17 +182,20 @@ export class FileSizeFormatter {
     FileSizeUnitSystem
   >;
   private readonly decimalFormatter: DecimalFormatter;
+  private readonly useGrouping: boolean | undefined;
 
   constructor(locale?: string, config: FileSizeFormatterConfig = {}) {
-    // Take the language from the requested locale: resolving it through Intl
-    // swaps a locale the runtime has no data for (e.g. `rue`) for the system one.
-    this.locale = locale
-      ? new Intl.Locale(locale).toString()
-      : new Intl.NumberFormat().resolvedOptions().locale;
+    const resolved = resolveLocale(locale);
 
-    this.decimalFormatter = new DecimalFormatter(this.locale);
+    this.decimalFormatter = new DecimalFormatter(resolved.locale, {
+      decimal: {
+        viewGroupSeparator: config.numberFormat?.viewGroupSeparator,
+      },
+    });
 
-    const localizedUnitSystems = getLocalizedUnitSystems(this.locale);
+    this.useGrouping = config.numberFormat?.useGrouping;
+
+    const localizedUnitSystems = getLocalizedUnitSystems(resolved.language);
 
     this.defaultPrecision = this.resolvePrecision(
       config.defaultPrecision,
@@ -211,11 +229,16 @@ export class FileSizeFormatter {
       precision
     );
 
-    // Same digit rules as numbers elsewhere, as in Koobiq Angular `kbqDataSize`:
-    // Russian leaves values below 10 000 ungrouped and groups with a thin space.
+    // Same digit rules as numbers in running text, as in Koobiq Angular
+    // `kbqDataSize`. A grouping set in the config overrides them.
+    const digitsInfo =
+      this.useGrouping === undefined
+        ? `1.0-${precision}`
+        : `1.0-${precision}-${this.useGrouping}`;
+
     const formattedValue = this.decimalFormatter.format(
       formattedSize.value,
-      `1.0-${precision}`
+      digitsInfo
     );
 
     return `${formattedValue}${NON_BREAKING_SPACE}${formattedSize.unit}`;

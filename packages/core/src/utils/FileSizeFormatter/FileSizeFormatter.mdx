@@ -89,7 +89,22 @@ formatter.format(1550, { precision: 2 });
 The locale controls number formatting and unit abbreviations. Numbers follow
 the [DecimalFormatter](?path=/docs/utilities-decimalformatter--docs) rules for
 running text: in Russian, values below 10 000 are not grouped, and larger ones
-are grouped with a thin space. A non-breaking space is always used between the
-value and unit.
+are grouped with a thin space; other locales follow their own grouping rule. A
+non-breaking space is always used between the value and unit.
 
 <Story of={Stories.Localization} />
+
+## Number format
+
+Pass `numberFormat` to change the digit grouping. `useGrouping` groups the
+digits of every value or of none, and `viewGroupSeparator` replaces the group
+separator; an empty string keeps the separator of the locale.
+
+```tsx
+const formatter = new FileSizeFormatter('ru-RU', {
+  numberFormat: { viewGroupSeparator: '' },
+});
+
+formatter.format(1000 ** 6);
+// 1 000 000 ТБ
+```
