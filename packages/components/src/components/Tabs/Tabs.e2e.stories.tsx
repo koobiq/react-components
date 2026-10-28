@@ -52,14 +52,19 @@ export const StateAndStyle: Story = {
   ),
 };
 
+// The focus outline of the first tab sticks out of the list, so the screenshot needs room for it.
+const focusStyle = { paddingInline: 'var(--kbq-size-m)' };
+
 // The keyboard focus ring is drawn by React Aria, so the spec focuses the first tab with Tab.
 export const FocusVisible: Story = {
   render: () => (
     <E2eGrid columns={1}>
-      <Tabs aria-label="focus" isUnderlined>
-        <Tab key="first">first</Tab>
-        <Tab key="second">second</Tab>
-      </Tabs>
+      <div style={focusStyle}>
+        <Tabs aria-label="focus" isUnderlined>
+          <Tab key="first">first</Tab>
+          <Tab key="second">second</Tab>
+        </Tabs>
+      </div>
     </E2eGrid>
   ),
 };
@@ -68,7 +73,7 @@ export const FocusVisible: Story = {
 export const FocusVisibleScrollable: Story = {
   render: () => (
     <E2eGrid columns={1}>
-      <div style={{ inlineSize: 200 }}>
+      <div style={{ ...focusStyle, inlineSize: 200 }}>
         <Tabs aria-label="focus scrollable" isUnderlined>
           <Tab key="first">first</Tab>
           <Tab key="second">second</Tab>
