@@ -7,6 +7,7 @@ import { DecimalFormatter } from './DecimalFormatter';
 
 const meta = {
   title: 'Utilities/DecimalFormatter',
+  tags: ['status:new', 'date:2026-10-28'],
   parameters: { layout: 'padded' },
 } satisfies Meta;
 
