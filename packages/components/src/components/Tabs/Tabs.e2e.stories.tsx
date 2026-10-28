@@ -51,3 +51,15 @@ export const StateAndStyle: Story = {
     </E2eGrid>
   ),
 };
+
+// The keyboard focus ring is drawn by React Aria, so the spec focuses the first tab with Tab.
+export const FocusVisible: Story = {
+  render: () => (
+    <E2eGrid columns={1}>
+      <Tabs aria-label="focus" isUnderlined>
+        <Tab key="first">first</Tab>
+        <Tab key="second">second</Tab>
+      </Tabs>
+    </E2eGrid>
+  ),
+};

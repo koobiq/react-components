@@ -7,4 +7,10 @@ test.describe('Tabs', () => {
     await e2eGotoStory(page, 'e2e-tabs--state-and-style');
     await e2eScreenshotThemes(page, '01');
   });
+
+  test('focus visible on the first tab', async ({ page }) => {
+    await e2eGotoStory(page, 'e2e-tabs--focus-visible');
+    await page.keyboard.press('Tab');
+    await e2eScreenshotThemes(page, '02');
+  });
 });
