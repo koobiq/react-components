@@ -30,6 +30,7 @@ import { ReactNode } from 'react';
 import { Ref } from 'react';
 import { RefAttributes } from 'react';
 import type { RefObject } from 'react';
+import type { RequireAtLeastOne } from '@koobiq/react-core';
 import { TextProps } from '@koobiq/react-primitives';
 import type { Time } from '@internationalized/date';
 import type { TransitionProps } from 'react-transition-group/Transition';
@@ -51,7 +52,7 @@ export const defaultTimeRangeTypes: TimeRangeType[];
 
 // @public
 export const TimeRange: TimeRangeComponent & {
-    Field: ForwardRefExoticComponent<Omit<TimeRangeFieldProps, "ref"> & RefAttributes<HTMLDivElement>>;
+    Field: ForwardRefExoticComponent<(Omit<Omit<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby" | "label"> & Required<Pick<TimeRangeFieldBaseProps, "aria-label">> & Partial<Pick<TimeRangeFieldBaseProps, "aria-labelledby" | "label">> & DataAttributeProps, "ref"> | Omit<Omit<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby" | "label"> & Required<Pick<TimeRangeFieldBaseProps, "aria-labelledby">> & Partial<Pick<TimeRangeFieldBaseProps, "aria-label" | "label">> & DataAttributeProps, "ref"> | Omit<Omit<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby" | "label"> & Required<Pick<TimeRangeFieldBaseProps, "label">> & Partial<Pick<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby">> & DataAttributeProps, "ref">) & RefAttributes<HTMLDivElement>>;
 };
 
 // @public (undocumented)
@@ -63,8 +64,8 @@ export type TimeRangeConfigEntry = {
     translationType: TimeRangeTranslationType;
 };
 
-// @public
-export type TimeRangeFieldProps = {
+// @public (undocumented)
+export type TimeRangeFieldBaseProps = {
     label?: ReactNode;
     isLabelHidden?: boolean;
     isRequired?: boolean;
@@ -91,7 +92,10 @@ export type TimeRangeFieldProps = {
         caption?: FormFieldCaptionProps;
         errorMessage?: FormFieldErrorProps;
     };
-} & DataAttributeProps;
+};
+
+// @public
+export type TimeRangeFieldProps = RequireAtLeastOne<TimeRangeFieldBaseProps, 'label' | 'aria-label' | 'aria-labelledby'> & DataAttributeProps;
 
 // @public (undocumented)
 export type TimeRangeFieldRef = HTMLDivElement;
@@ -171,14 +175,14 @@ export type TimeRangeValue = {
 //
 // packages/components/dist/components/TimeRange/types.d.ts:66:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelPlacement" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TimeRange/types.d.ts:67:5 - (ae-forgotten-export) The symbol "FormFieldPropLabelAlign" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:81:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:82:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:83:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:84:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:85:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:86:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:162:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:163:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:83:9 - (ae-forgotten-export) The symbol "FormFieldProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:84:9 - (ae-forgotten-export) The symbol "FormFieldLabelProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:85:9 - (ae-forgotten-export) The symbol "FormFieldControlGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:86:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:87:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:88:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:170:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:171:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactElement, ReactNode, Ref } from 'react';
 
 import type { DateTimeDuration, Time } from '@internationalized/date';
-import type { DataAttributeProps } from '@koobiq/react-core';
+import type { DataAttributeProps, RequireAtLeastOne } from '@koobiq/react-core';
 import type { ButtonOptions, DateValue } from '@koobiq/react-primitives';
 
 import type {
@@ -92,8 +92,8 @@ export type TimeRangeOptionContext = {
   units: DateTimeDuration;
 };
 
-/** A form field that displays the selected range and opens its editor. */
-export type TimeRangeFieldProps = {
+export type TimeRangeFieldBaseProps = {
+  /** The visible label. Provide `label`, `aria-label` or `aria-labelledby`. */
   label?: ReactNode;
   isLabelHidden?: boolean;
   isRequired?: boolean;
@@ -118,7 +118,9 @@ export type TimeRangeFieldProps = {
   style?: CSSProperties;
   /** Ref to the focusable control. */
   ref?: Ref<TimeRangeFieldRef>;
+  /** Accessible name of the field when there is no visible `label`. */
   'aria-label'?: string;
+  /** Id of the element that labels the field when there is no visible `label`. */
   'aria-labelledby'?: string;
   'aria-describedby'?: string;
   /** Props for the field's parts. */
@@ -130,7 +132,18 @@ export type TimeRangeFieldProps = {
     caption?: FormFieldCaptionProps;
     errorMessage?: FormFieldErrorProps;
   };
-} & DataAttributeProps;
+};
+
+/**
+ * A form field that displays the selected range and opens its editor.
+ * At least one of `label`, `aria-label` or `aria-labelledby` is required,
+ * so the field always has an accessible name.
+ */
+export type TimeRangeFieldProps = RequireAtLeastOne<
+  TimeRangeFieldBaseProps,
+  'label' | 'aria-label' | 'aria-labelledby'
+> &
+  DataAttributeProps;
 
 export type TimeRangeFieldRef = HTMLDivElement;
 
