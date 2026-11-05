@@ -66,7 +66,7 @@ export type TimeRangeConfigEntry = {
 
 // @public (undocumented)
 export type TimeRangeFieldBaseProps = {
-    label?: ReactNode;
+    label?: Exclude<ReactNode, boolean | null | undefined>;
     isLabelHidden?: boolean;
     isRequired?: boolean;
     isInvalid?: boolean;

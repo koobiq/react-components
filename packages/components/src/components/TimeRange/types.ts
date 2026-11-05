@@ -94,7 +94,7 @@ export type TimeRangeOptionContext = {
 
 export type TimeRangeFieldBaseProps = {
   /** The visible label. Provide `label`, `aria-label` or `aria-labelledby`. */
-  label?: ReactNode;
+  label?: Exclude<ReactNode, boolean | null | undefined>;
   isLabelHidden?: boolean;
   isRequired?: boolean;
   isInvalid?: boolean;
