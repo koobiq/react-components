@@ -29,11 +29,12 @@ test.describe('Tabs', () => {
         .locator('[role="tablist"]')
         .locator('..');
 
-    const scrollTo = (edge: string, position: 'middle' | 'end') =>
+    const scrollTo = (edge: string, position: 'start' | 'middle' | 'end') =>
       scrollBox(edge).evaluate((el, to) => {
         const max = el.scrollHeight - el.clientHeight;
+        const targets = { start: 0, middle: Math.round(max / 2), end: max };
 
-        el.scrollTop = to === 'end' ? max : Math.round(max / 2);
+        el.scrollTop = targets[to];
       }, position);
 
     await scrollTo('both', 'middle');
@@ -60,5 +61,14 @@ test.describe('Tabs', () => {
     );
 
     await e2eScreenshotThemes(page, '04');
+
+    // Back at the top, the start edge is no longer faded.
+    await scrollTo('both', 'start');
+
+    await expect(scrollBox('both')).not.toHaveAttribute(
+      'data-overflow-block-start'
+    );
+
+    await expect(scrollBox('both')).toHaveAttribute('data-overflow-block-end');
   });
 });
