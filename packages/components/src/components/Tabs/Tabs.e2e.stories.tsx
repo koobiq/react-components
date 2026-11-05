@@ -84,3 +84,28 @@ export const FocusVisibleScrollable: Story = {
     </E2eGrid>
   ),
 };
+
+// Each list is scrolled by the spec to the edge its test id says is faded out.
+const scrollMaskCases = ['end', 'both', 'start'];
+
+const scrollMaskTabs = Array.from({ length: 10 }, (_, i) => `Tab ${i + 1}`);
+
+export const VerticalScrollMask: Story = {
+  render: () => (
+    <E2eGrid columns={scrollMaskCases.length}>
+      {scrollMaskCases.map((edge) => (
+        <div key={edge} data-testid={`e2eTabsScrollMask-${edge}`}>
+          <Tabs
+            aria-label={edge}
+            orientation="vertical"
+            style={{ blockSize: 160, inlineSize: 120 }}
+          >
+            {scrollMaskTabs.map((tab) => (
+              <Tab key={tab}>{tab}</Tab>
+            ))}
+          </Tabs>
+        </div>
+      ))}
+    </E2eGrid>
+  ),
+};
