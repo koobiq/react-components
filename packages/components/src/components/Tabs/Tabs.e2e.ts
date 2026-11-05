@@ -29,16 +29,21 @@ test.describe('Tabs', () => {
         .locator('[role="tablist"]')
         .locator('..');
 
-    const scrollTo = (edge: string, position: 'start' | 'middle' | 'end') =>
-      scrollBox(edge).evaluate((el, to) => {
-        const max = el.scrollHeight - el.clientHeight;
-        const targets = { start: 0, middle: Math.round(max / 2), end: max };
+    // The correction scrolls smoothly, so the shot waits for it to bring the selected tab to the bottom.
+    for (const edge of ['both', 'start']) {
+      await expect
+        .poll(() =>
+          scrollBox(edge).evaluate((el) => {
+            const tab = el.querySelector('[aria-selected="true"]')!;
 
-        el.scrollTop = targets[to];
-      }, position);
-
-    await scrollTo('both', 'middle');
-    await scrollTo('start', 'end');
+            return Math.round(
+              el.getBoundingClientRect().bottom -
+                tab.getBoundingClientRect().bottom
+            );
+          })
+        )
+        .toBe(0);
+    }
 
     await expect(scrollBox('end')).not.toHaveAttribute(
       'data-overflow-block-start'
@@ -63,7 +68,9 @@ test.describe('Tabs', () => {
     await e2eScreenshotThemes(page, '04');
 
     // Back at the top, the start edge is no longer faded.
-    await scrollTo('both', 'start');
+    await scrollBox('both').evaluate((el) => {
+      el.scrollTop = 0;
+    });
 
     await expect(scrollBox('both')).not.toHaveAttribute(
       'data-overflow-block-start'
