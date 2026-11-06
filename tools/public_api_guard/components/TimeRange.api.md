@@ -30,7 +30,6 @@ import { ReactNode } from 'react';
 import { Ref } from 'react';
 import { RefAttributes } from 'react';
 import type { RefObject } from 'react';
-import type { RequireAtLeastOne } from '@koobiq/react-core';
 import { TextProps } from '@koobiq/react-primitives';
 import type { Time } from '@internationalized/date';
 import type { TransitionProps } from 'react-transition-group/Transition';
@@ -52,7 +51,13 @@ export const defaultTimeRangeTypes: TimeRangeType[];
 
 // @public
 export const TimeRange: TimeRangeComponent & {
-    Field: ForwardRefExoticComponent<(Omit<Omit<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby" | "label"> & Required<Pick<TimeRangeFieldBaseProps, "aria-label">> & Partial<Pick<TimeRangeFieldBaseProps, "aria-labelledby" | "label">> & DataAttributeProps, "ref"> | Omit<Omit<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby" | "label"> & Required<Pick<TimeRangeFieldBaseProps, "aria-labelledby">> & Partial<Pick<TimeRangeFieldBaseProps, "aria-label" | "label">> & DataAttributeProps, "ref"> | Omit<Omit<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby" | "label"> & Required<Pick<TimeRangeFieldBaseProps, "label">> & Partial<Pick<TimeRangeFieldBaseProps, "aria-label" | "aria-labelledby">> & DataAttributeProps, "ref">) & RefAttributes<HTMLDivElement>>;
+    Field: ForwardRefExoticComponent<(Omit<TimeRangeFieldBaseProps & {
+    label: Exclude<ReactNode, boolean | null | undefined>;
+    } & DataAttributeProps, "ref"> | Omit<TimeRangeFieldBaseProps & {
+    'aria-label': string;
+    } & DataAttributeProps, "ref"> | Omit<TimeRangeFieldBaseProps & {
+    'aria-labelledby': string;
+    } & DataAttributeProps, "ref">) & RefAttributes<HTMLDivElement>>;
 };
 
 // @public (undocumented)
@@ -95,7 +100,13 @@ export type TimeRangeFieldBaseProps = {
 };
 
 // @public
-export type TimeRangeFieldProps = RequireAtLeastOne<TimeRangeFieldBaseProps, 'label' | 'aria-label' | 'aria-labelledby'> & DataAttributeProps;
+export type TimeRangeFieldProps = TimeRangeFieldBaseProps & ({
+    label: Exclude<ReactNode, boolean | null | undefined>;
+} | {
+    'aria-label': string;
+} | {
+    'aria-labelledby': string;
+}) & DataAttributeProps;
 
 // @public (undocumented)
 export type TimeRangeFieldRef = HTMLDivElement;
@@ -181,8 +192,8 @@ export type TimeRangeValue = {
 // packages/components/dist/components/TimeRange/types.d.ts:86:9 - (ae-forgotten-export) The symbol "FormFieldSelectProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TimeRange/types.d.ts:87:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/TimeRange/types.d.ts:88:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:170:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/TimeRange/types.d.ts:171:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:176:9 - (ae-forgotten-export) The symbol "PopoverProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/TimeRange/types.d.ts:177:9 - (ae-forgotten-export) The symbol "RadioGroupProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

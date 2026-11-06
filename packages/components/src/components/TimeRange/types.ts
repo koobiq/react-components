@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactElement, ReactNode, Ref } from 'react';
 
 import type { DateTimeDuration, Time } from '@internationalized/date';
-import type { DataAttributeProps, RequireAtLeastOne } from '@koobiq/react-core';
+import type { DataAttributeProps } from '@koobiq/react-core';
 import type { ButtonOptions, DateValue } from '@koobiq/react-primitives';
 
 import type {
@@ -139,10 +139,12 @@ export type TimeRangeFieldBaseProps = {
  * At least one of `label`, `aria-label` or `aria-labelledby` is required,
  * so the field always has an accessible name.
  */
-export type TimeRangeFieldProps = RequireAtLeastOne<
-  TimeRangeFieldBaseProps,
-  'label' | 'aria-label' | 'aria-labelledby'
-> &
+export type TimeRangeFieldProps = TimeRangeFieldBaseProps &
+  (
+    | { label: Exclude<ReactNode, boolean | null | undefined> }
+    | { 'aria-label': string }
+    | { 'aria-labelledby': string }
+  ) &
   DataAttributeProps;
 
 export type TimeRangeFieldRef = HTMLDivElement;
