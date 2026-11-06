@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, ElementType } from 'react';
 
 import {
   clsx,
   useElementSize,
+  useIsomorphicEffect,
   polymorphicForwardRef,
   useMultiRef,
 } from '@koobiq/react-core';
@@ -33,9 +35,23 @@ export const TableContainer = polymorphicForwardRef<
   } = props;
 
   const { ref: theadRef, height } = useElementSize();
-  const { ref: tableSizeRef, width: tableContainerWidth } = useElementSize();
+  const { ref: tableSizeRef, width: observedWidth } = useElementSize();
+  const [initialWidth, setInitialWidth] = useState<number>();
 
   const tableRef = useMultiRef([tableSizeRef, ref]);
+
+  // `ResizeObserver` reports asynchronously and the observed width is `0` until
+  // then, which would render the resizable columns with zero width. Measure the
+  // container before the first paint instead.
+  useIsomorphicEffect(() => {
+    const width = tableSizeRef.current?.getBoundingClientRect().width;
+
+    if (width) setInitialWidth(width);
+  }, []);
+
+  // `undefined` is reserved for a table rendered outside the container.
+  const tableContainerWidth =
+    observedWidth > 0 ? observedWidth : (initialWidth ?? 0);
 
   const style = {
     ...styleProp,
