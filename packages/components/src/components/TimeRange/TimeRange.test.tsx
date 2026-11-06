@@ -282,6 +282,10 @@ describe('TimeRange', () => {
       await userEvent.keyboard('{Enter}');
       expect(queryDialog()).not.toBeInTheDocument();
       expect(getTrigger()).toHaveAttribute('aria-expanded', 'false');
+
+      expect(
+        screen.getByTestId('field-addon-end').querySelector('svg')
+      ).toHaveAttribute('data-readonly', 'true');
     });
 
     it.each([

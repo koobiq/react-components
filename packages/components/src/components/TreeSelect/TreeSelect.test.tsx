@@ -189,6 +189,22 @@ describe('TreeSelect', () => {
   });
 
   describe('states', () => {
+    it('should not open and should mark the chevron when read-only', async () => {
+      const onOpenChange = vi.fn();
+
+      renderTreeSelect({ isReadOnly: true, onOpenChange });
+
+      await userEvent.click(getControl());
+
+      expect(getRoot()).toHaveAttribute('data-readonly', 'true');
+      expect(onOpenChange).not.toHaveBeenCalled();
+      expect(queryPopover()).not.toBeInTheDocument();
+
+      expect(
+        screen.getByTestId('field-addon-end').lastElementChild
+      ).toHaveAttribute('data-readonly', 'true');
+    });
+
     it('should not open when disabled', async () => {
       const onOpenChange = vi.fn();
 

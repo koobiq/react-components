@@ -20,6 +20,10 @@
 /* The default chevron opens the control group when pressed. */
 .addon {
   pointer-events: none;
+
+  &[data-readonly] {
+    color: var(--kbq-states-icon-disabled);
+  }
 }
 
 /* ── Editor ───────────────────────────────────────────────────── */

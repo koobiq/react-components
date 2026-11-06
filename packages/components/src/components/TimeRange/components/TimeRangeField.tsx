@@ -127,7 +127,12 @@ export const TimeRangeField = forwardRef<
       isDisabled,
       isReadOnly,
       isInvalid,
-      endAddon: <IconChevronDownS16 className={s.addon} />,
+      endAddon: (
+        <IconChevronDownS16
+          className={s.addon}
+          data-readonly={isReadOnly || undefined}
+        />
+      ),
       onMouseDown: (event) => {
         const target = event.target as Element;
         if (
