@@ -539,6 +539,7 @@ describe('TimeRange', () => {
       render(
         <TimeRange>
           <TimeRange.Field
+            label="Period"
             isInvalid
             slotProps={{
               root: { className: 'field-root' },
@@ -574,6 +575,40 @@ describe('TimeRange', () => {
       await userEvent.click(control);
       await getDialog();
       expect(onPress).toHaveBeenCalledTimes(1);
+    });
+
+    it.each([
+      ['label', <TimeRange.Field key="a" label="Period" />],
+      ['aria-label', <TimeRange.Field key="b" aria-label="Period" />],
+      [
+        'aria-labelledby',
+        <TimeRange.Field key="c" aria-labelledby="period-name" />,
+      ],
+    ])('should have an accessible name from %s', (_, field) => {
+      render(
+        <>
+          <span id="period-name">Period</span>
+          <TimeRange>{field}</TimeRange>
+        </>
+      );
+
+      expect(screen.getByRole('button')).toHaveAccessibleName('Period');
+    });
+
+    it('should require an accessible name in types', () => {
+      const types = (
+        <>
+          <TimeRange.Field label="Period" />
+          <TimeRange.Field aria-label="Period" />
+          <TimeRange.Field aria-labelledby="period-name" />
+          {/* @ts-expect-error: the field needs a label, aria-label or aria-labelledby */}
+          <TimeRange.Field placeholder="Select a period" />
+          {/* @ts-expect-error: `null` is not a valid label, so it gives no accessible name */}
+          <TimeRange.Field label={null} />
+        </>
+      );
+
+      expect(types).toBeDefined();
     });
 
     it('should open when clicking the group outside the control', async () => {
