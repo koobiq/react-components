@@ -187,6 +187,14 @@ describe('InputNumber', () => {
 
       expect(getRoot()).toHaveAttribute('data-readonly', 'true');
     });
+
+    it('should disable the stepper buttons when isReadOnly is true', () => {
+      render(<InputNumber {...baseProps} defaultValue={5} isReadOnly />);
+
+      screen
+        .getAllByRole('button', { hidden: true })
+        .forEach((button) => expect(button).toBeDisabled());
+    });
   });
 
   describe('form', () => {

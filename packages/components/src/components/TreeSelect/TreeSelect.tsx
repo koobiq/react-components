@@ -305,7 +305,7 @@ export function TreeSelectInner<
         <>
           {endAddon}
           <FormFieldClearButton {...clearButtonProps} />
-          <span className={s.chevron}>
+          <span className={s.chevron} data-readonly={isReadOnly || undefined}>
             <IconChevronDownS16 />
           </span>
         </>

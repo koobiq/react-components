@@ -267,7 +267,7 @@ function SelectInner<T extends object, M extends SelectionMode = 'single'>({
         <>
           {endAddon}
           <FormFieldClearButton {...clearButtonProps} />
-          <span className={s.chevron}>
+          <span className={s.chevron} data-readonly={isReadOnly || undefined}>
             <IconChevronDownS16 />
           </span>
         </>
