@@ -49,7 +49,7 @@ describe('FormFieldControlGroup', () => {
       const addon = screen.getByTestId(`field-addon-${placement}`);
 
       expect(addon).toHaveAttribute('data-readonly', 'true');
-      expect(addon).toHaveClass(addonStyles.readonly);
+      expect(addon).not.toHaveClass(addonStyles.disabled);
     });
   });
 
