@@ -44,7 +44,9 @@ export const TableContainer = polymorphicForwardRef<
   // then, which would render the resizable columns with zero width. Measure the
   // container before the first paint instead.
   useIsomorphicEffect(() => {
-    setInitialWidth(tableSizeRef.current?.getBoundingClientRect().width);
+    const width = tableSizeRef.current?.getBoundingClientRect().width;
+
+    if (width) setInitialWidth(width);
   }, []);
 
   // `undefined` is reserved for a table rendered outside the container.
