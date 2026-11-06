@@ -603,7 +603,7 @@ describe('TimeRange', () => {
           <TimeRange.Field aria-labelledby="period-name" />
           {/* @ts-expect-error: the field needs a label, aria-label or aria-labelledby */}
           <TimeRange.Field placeholder="Select a period" />
-          {/* @ts-expect-error: an empty label is not an accessible name */}
+          {/* @ts-expect-error: `null` is not a valid label, so it gives no accessible name */}
           <TimeRange.Field label={null} />
         </>
       );
