@@ -84,3 +84,34 @@ export const FocusVisibleScrollable: Story = {
     </E2eGrid>
   ),
 };
+
+// The mount-time scroll correction brings the selected tab to the bottom edge, leaving each list
+// with the edges its test id names faded out.
+const scrollMaskCases = [
+  { edge: 'end', selected: 'Tab 1' },
+  { edge: 'both', selected: 'Tab 6' },
+  { edge: 'start', selected: 'Tab 10' },
+];
+
+const scrollMaskTabs = Array.from({ length: 10 }, (_, i) => `Tab ${i + 1}`);
+
+export const VerticalScrollMask: Story = {
+  render: () => (
+    <E2eGrid columns={scrollMaskCases.length}>
+      {scrollMaskCases.map(({ edge, selected }) => (
+        <div key={edge} data-testid={`e2eTabsScrollMask-${edge}`}>
+          <Tabs
+            aria-label={edge}
+            orientation="vertical"
+            defaultSelectedKey={selected}
+            style={{ blockSize: 160, inlineSize: 120 }}
+          >
+            {scrollMaskTabs.map((tab) => (
+              <Tab key={tab}>{tab}</Tab>
+            ))}
+          </Tabs>
+        </div>
+      ))}
+    </E2eGrid>
+  ),
+};
