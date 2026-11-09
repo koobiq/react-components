@@ -273,6 +273,18 @@ describe('Select', () => {
   });
 
   describe('read only', () => {
+    it('should mark the chevron as read-only', () => {
+      const { rerender } = render(<Select {...baseProps} isReadOnly />);
+
+      const getChevron = () =>
+        screen.getByTestId('field-addon-end').lastElementChild;
+
+      expect(getChevron()).toHaveAttribute('data-readonly', 'true');
+
+      rerender(<Select {...baseProps} />);
+      expect(getChevron()).not.toHaveAttribute('data-readonly');
+    });
+
     it('should remain focusable but not open the dropdown', async () => {
       const onOpenChange = vi.fn();
 

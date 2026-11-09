@@ -35,7 +35,6 @@ export const FormFieldAddon = forwardRef<
         s.base,
         s[placement],
         isInvalid && s.invalid,
-        isReadOnly && s.readonly,
         isDisabled && s.disabled,
         className
       )}

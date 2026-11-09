@@ -282,6 +282,30 @@ describe('TimeRange', () => {
       await userEvent.keyboard('{Enter}');
       expect(queryDialog()).not.toBeInTheDocument();
       expect(getTrigger()).toHaveAttribute('aria-expanded', 'false');
+
+      expect(
+        screen.getByTestId('field-addon-end').firstElementChild
+      ).toHaveAttribute('data-readonly', 'true');
+    });
+
+    it('should mark a custom end addon as read-only', () => {
+      render(
+        <TimeRange isReadOnly data-testid="control">
+          <TimeRange.Field
+            aria-label="Period"
+            slotProps={{
+              group: {
+                endAddon: <IconCalendarO16 data-testid="custom-addon" />,
+              },
+            }}
+          />
+        </TimeRange>
+      );
+
+      expect(screen.getByTestId('custom-addon').parentElement).toHaveAttribute(
+        'data-readonly',
+        'true'
+      );
     });
 
     it.each([

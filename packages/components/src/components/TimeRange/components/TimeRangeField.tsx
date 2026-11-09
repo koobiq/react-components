@@ -191,7 +191,14 @@ export const TimeRangeField = forwardRef<
           }
           endAddon={
             groupProps.endAddon != null ? (
-              <FieldDecoration>{groupProps.endAddon}</FieldDecoration>
+              <FieldDecoration>
+                <span
+                  className={s.endAddon}
+                  data-readonly={isReadOnly || undefined}
+                >
+                  {groupProps.endAddon}
+                </span>
+              </FieldDecoration>
             ) : undefined
           }
         >

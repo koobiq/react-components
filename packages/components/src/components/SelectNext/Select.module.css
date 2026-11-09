@@ -17,6 +17,10 @@
   & > svg {
     margin: auto;
   }
+
+  &[data-readonly] {
+    color: var(--kbq-states-icon-disabled);
+  }
 }
 
 .body {
