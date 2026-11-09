@@ -1,6 +1,9 @@
 @import url('../../../../styles/mixins.css');
 
-.base {
+/* NavbarItem always renders data-orientation, and this item is marked with
+   data-slot; chaining them wins over the composed .base regardless of source
+   order. */
+.base[data-slot='navbar-app-item'] {
   @mixin typography subheading;
 
   [data-slot='navbar-item-icon'] {
@@ -23,13 +26,18 @@
   }
 }
 
-.base[data-orientation='vertical'] {
+.base[data-slot='navbar-app-item'][data-orientation='vertical'] {
   block-size: auto;
   padding: var(--kbq-size-xxs);
   border-block-width: var(--kbq-size-s) 7px;
+
+  /* Strictly beats NavbarItem's [data-collapsed] rule, which also sets padding. */
+  &[data-collapsed] {
+    padding: var(--kbq-size-xxs);
+  }
 }
 
-.base[data-orientation='horizontal'] {
+.base[data-slot='navbar-app-item'][data-orientation='horizontal'] {
   gap: var(--kbq-size-s);
   margin: 0;
   padding-block: var(--kbq-size-s);

@@ -1,4 +1,5 @@
-.base {
+/* Sidebar always renders data-placement; chaining it wins over the composed .base regardless of source order. */
+.base[data-placement] {
   position: relative;
   display: flex;
   flex-direction: column;
