@@ -191,9 +191,8 @@ describe('InputNumber', () => {
     it('should disable the stepper buttons when isReadOnly is true', () => {
       render(<InputNumber {...baseProps} defaultValue={5} isReadOnly />);
 
-      screen
-        .getAllByRole('button', { hidden: true })
-        .forEach((button) => expect(button).toBeDisabled());
+      expect(screen.getByRole('button', { name: /increase/i })).toBeDisabled();
+      expect(screen.getByRole('button', { name: /decrease/i })).toBeDisabled();
     });
   });
 
