@@ -1,11 +1,26 @@
 import { expect, test } from '@playwright/test';
 
-import { e2eGotoStory, e2eScreenshotThemes } from '../../../../e2e/utils';
+import { e2eGotoStory } from '../../../../e2e/utils';
 
 test.describe('SideNavbar', () => {
-  test('state', async ({ page }) => {
+  test('overrides the composed Sidebar and NavbarItem rules', async ({
+    page,
+  }) => {
     await e2eGotoStory(page, 'e2e-sidenavbar--state');
-    await e2eScreenshotThemes(page, '01');
+
+    const navbar = page.locator('nav').first();
+
+    // The toggle button overflows the menu edge, so the root must not clip it.
+    await expect(navbar).toHaveCSS('overflow', 'visible');
+
+    // The generic vertical item rules (block-size: 40px, padding: 0 12px,
+    // border-width: 0) must not win over the AppItem overrides.
+    const appItem = navbar.getByRole('link', { name: 'App name' });
+
+    await expect(appItem).not.toHaveCSS('height', '40px');
+    await expect(appItem).not.toHaveCSS('padding-top', '0px');
+    await expect(appItem).not.toHaveCSS('padding-bottom', '0px');
+    await expect(appItem).not.toHaveCSS('border-top-width', '0px');
   });
 
   test('the collapse button is not clipped by the menu edge', async ({
@@ -32,7 +47,5 @@ test.describe('SideNavbar', () => {
     expect(buttonBox!.x + buttonBox!.width).toBeGreaterThan(
       navbarBox!.x + navbarBox!.width
     );
-
-    await expect(navbar).toHaveCSS('overflow', 'visible');
   });
 });
