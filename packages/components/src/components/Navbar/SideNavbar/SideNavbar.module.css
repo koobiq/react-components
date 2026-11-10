@@ -8,8 +8,11 @@
   border-inline-end: 1px solid var(--kbq-line-contrast-less);
 }
 
-/* Sidebar's .base sets these too; the chained attribute wins regardless of source order. */
-.base[data-placement] {
+/* Sidebar's .base sets these too. SideNavbar always renders Sidebar as a `nav`
+   (a caller cannot override the element), so qualifying with it wins over the
+   composed .base regardless of source order — unlike a data attribute, which a
+   caller could strip. */
+nav.base {
   overflow: visible;
   box-sizing: content-box;
 }
