@@ -42,6 +42,10 @@ Component allows you to customize the trigger element. For example, it can be a 
 with `fullWidth`, or change the label position via `labelPlacement` and
 `labelAlign`. Its value comes from the surrounding `TimeRange`.
 
+The field must have an accessible name: pass at least one of `label`,
+`aria-label` or `aria-labelledby`. Use `aria-label` or `aria-labelledby`
+when there is no visible label.
+
 <Story of={Stories.WithLabel} />
 
 ## Manual range only

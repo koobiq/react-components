@@ -17,12 +17,13 @@
 
 .scrollBox {
   --mask-size: 32px;
+  --mask-start: var(--mask-size);
 
   &[data-overflow-inline-start] {
     mask-image: linear-gradient(
       to right,
-      transparent var(--mask-size),
-      #000 calc(var(--mask-size) * 1.5)
+      transparent var(--mask-start),
+      #000 calc(var(--mask-start) + var(--mask-size) * 0.5)
     );
   }
 
@@ -37,8 +38,8 @@
   &[data-overflow-inline-start][data-overflow-inline-end] {
     mask-image: linear-gradient(
       to right,
-      transparent var(--mask-size),
-      #000 calc(var(--mask-size) * 1.5),
+      transparent var(--mask-start),
+      #000 calc(var(--mask-start) + var(--mask-size) * 0.5),
       #000 calc(100% - var(--mask-size) * 1.5),
       transparent calc(100% - var(--mask-size))
     );
@@ -64,6 +65,24 @@
 
   .tabList {
     overflow: clip;
+  }
+
+  /*
+   * The first tab has no inline-start border, so its content (and focus outline) sticks out by
+   * the tab offset. Widen the clipping boxes by the same amount, keeping the tabs where they were.
+   */
+  .scrollBox,
+  .tabList {
+    --clip-offset: var(--kbq-size-m);
+
+    margin-inline-start: calc(-1 * var(--clip-offset));
+    padding-inline-start: var(--clip-offset);
+  }
+
+  .scrollBox {
+    --mask-start: calc(var(--mask-size) + var(--clip-offset));
+
+    inline-size: calc(100% + var(--clip-offset));
   }
 }
 

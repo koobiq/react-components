@@ -22,6 +22,15 @@
   pointer-events: none;
 }
 
+/* The end addon is the trigger, so it looks disabled in read-only. */
+.endAddon {
+  display: contents;
+
+  &[data-readonly] {
+    color: var(--kbq-states-icon-disabled);
+  }
+}
+
 /* ── Editor ───────────────────────────────────────────────────── */
 
 .editor {

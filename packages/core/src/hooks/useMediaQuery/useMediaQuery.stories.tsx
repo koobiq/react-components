@@ -16,8 +16,8 @@ export const Base = () => {
   const [isMatch] = useMediaQuery(['(max-width: 1024px)']);
 
   const background = isMatch
-    ? 'var(--kbq-palette-cyan-40)'
-    : 'var(--kbq-palette-blue-40)';
+    ? 'var(--kbq-plt-teal-13)'
+    : 'var(--kbq-plt-blue-17)';
 
   const containerStyle: CSSProperties = {
     background,

@@ -6,7 +6,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { Provider } from '../Provider';
 
-import { Table } from './index';
+import { Table, TableContainer } from './index';
 import type { TableProps } from './types';
 
 const renderComponent = (props: Omit<TableProps<object>, 'children'>) => {
@@ -347,6 +347,49 @@ describe('Table', () => {
 
     expect(screen.getByRole('columnheader')).toHaveClass('highlighted');
   });
+
+  it.each([
+    // measured container width, expected column widths
+    [600, [300, 300]],
+    // a hidden container reports no width: the table falls back to 300
+    [0, [150, 150]],
+  ])(
+    'should size resizable columns on the first render (container width: %s)',
+    (containerWidth, expected) => {
+      // jsdom has no layout and ResizeObserver, so the observer never reports
+      // a width: only the synchronous measurement can provide one.
+      const rect = vi
+        .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+        .mockReturnValue({ width: containerWidth, height: 300 } as DOMRect);
+
+      try {
+        render(
+          <TableContainer>
+            <Table aria-label="Resizable columns" isResizable>
+              <Table.Header>
+                <Table.Column allowsResizing>Name</Table.Column>
+                <Table.Column allowsResizing>Type</Table.Column>
+              </Table.Header>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell>home</Table.Cell>
+                  <Table.Cell>File folder</Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+          </TableContainer>
+        );
+      } finally {
+        rect.mockRestore();
+      }
+
+      const widths = screen
+        .getAllByRole('columnheader')
+        .map((header) => parseFloat(header.style.inlineSize));
+
+      expect(widths).toEqual(expected);
+    }
+  );
 
   it('should accept a ref', () => {
     const ref = createRef<HTMLTableElement>();

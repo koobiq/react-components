@@ -92,9 +92,9 @@ export type TimeRangeOptionContext = {
   units: DateTimeDuration;
 };
 
-/** A form field that displays the selected range and opens its editor. */
-export type TimeRangeFieldProps = {
-  label?: ReactNode;
+export type TimeRangeFieldBaseProps = {
+  /** The visible label. Provide `label`, `aria-label` or `aria-labelledby`. */
+  label?: Exclude<ReactNode, boolean | null | undefined>;
   isLabelHidden?: boolean;
   isRequired?: boolean;
   isInvalid?: boolean;
@@ -118,7 +118,9 @@ export type TimeRangeFieldProps = {
   style?: CSSProperties;
   /** Ref to the focusable control. */
   ref?: Ref<TimeRangeFieldRef>;
+  /** Accessible name of the field when there is no visible `label`. */
   'aria-label'?: string;
+  /** Id of the element that labels the field when there is no visible `label`. */
   'aria-labelledby'?: string;
   'aria-describedby'?: string;
   /** Props for the field's parts. */
@@ -130,7 +132,20 @@ export type TimeRangeFieldProps = {
     caption?: FormFieldCaptionProps;
     errorMessage?: FormFieldErrorProps;
   };
-} & DataAttributeProps;
+};
+
+/**
+ * A form field that displays the selected range and opens its editor.
+ * At least one of `label`, `aria-label` or `aria-labelledby` is required,
+ * so the field always has an accessible name.
+ */
+export type TimeRangeFieldProps = TimeRangeFieldBaseProps &
+  (
+    | { label: Exclude<ReactNode, boolean | null | undefined> }
+    | { 'aria-label': string }
+    | { 'aria-labelledby': string }
+  ) &
+  DataAttributeProps;
 
 export type TimeRangeFieldRef = HTMLDivElement;
 

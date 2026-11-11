@@ -9,7 +9,12 @@
   pointer-events: none;
   color: var(--file-upload-text-color);
   border-radius: var(--kbq-size-s);
-  background-color: var(--kbq-background-overlay-theme);
+  background-color: color-mix(
+    in srgb,
+    var(--kbq-background-overlay-base-theme)
+      calc(var(--kbq-opacity-overlay) * 100%),
+    transparent
+  );
   border: var(--kbq-size-border-width) dashed var(--kbq-line-theme-fade);
 }
 

@@ -195,7 +195,8 @@ function ResizableTable<T extends object>(props: ResizableTableProps<T>) {
   const layoutState = useTableColumnResizeState(
     {
       // Matches the width of the table itself
-      tableWidth: tableContainerWidth ?? 300,
+      // A container that is not measured yet (or is hidden) reports `0`
+      tableWidth: tableContainerWidth || 300,
       getDefaultMinWidth,
       getDefaultWidth,
     },

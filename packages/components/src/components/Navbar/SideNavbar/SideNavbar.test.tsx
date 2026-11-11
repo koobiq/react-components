@@ -149,6 +149,21 @@ describe('SideNavbar', () => {
     );
   });
 
+  it('keeps data-orientation from the context over a caller-provided value', () => {
+    render(
+      <SideNavbar>
+        <SideNavbar.Item href="#" data-orientation="horizontal">
+          Reports
+        </SideNavbar.Item>
+      </SideNavbar>
+    );
+
+    expect(screen.getByRole('link', { name: 'Reports' })).toHaveAttribute(
+      'data-orientation',
+      'vertical'
+    );
+  });
+
   it('forwards the ref, attributes and styles to the navigation element', () => {
     const ref = createRef<HTMLElement>();
 

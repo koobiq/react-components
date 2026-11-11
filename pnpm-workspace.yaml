@@ -29,6 +29,9 @@ allowBuilds:
   unrs-resolver: false
 
 overrides:
+  # Force v4 workspace-wide while the starter templates still pin the published
+  # @koobiq/react-components@0.36.0, whose peer range is ^3.17.2.
+  '@koobiq/design-tokens': '^4.1.0'
   react: '^19.0.0'
   react-dom: '^19.0.0'
   '@types/react-dom': '^19.0.0'

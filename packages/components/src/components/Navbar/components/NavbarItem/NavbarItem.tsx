@@ -125,11 +125,11 @@ export const NavbarItem = polymorphicForwardRef<'a', NavbarItemProps>(
           <Link
             as={as || (isMenu || !other.href ? 'button' : 'a')}
             className={clsx(s.base, className)}
-            data-orientation={orientation}
             data-selected={isActive || undefined}
             data-collapsed={isCollapsed || undefined}
             aria-current={isActive ? 'page' : undefined}
             {...mergeProps(props, other, { onKeyDown })}
+            data-orientation={orientation}
             ref={mergeRefs(props.ref, inRef)}
           >
             {isNotNil(icon) && (

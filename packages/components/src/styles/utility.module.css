@@ -58,20 +58,32 @@
   color: var(--kbq-foreground-error-tertiary);
 }
 
+/*
+ * Deprecated: the token was renamed to `foreground-error-tertiary` in
+ * design-tokens v4. Kept under the old name for the `Typography` color API.
+ */
 .foreground-error-less {
-  color: var(--kbq-foreground-error-less);
+  color: var(--kbq-foreground-error-tertiary);
 }
 
 .foreground-success {
   color: var(--kbq-foreground-success);
 }
 
-.foreground-success-less {
-  color: var(--kbq-foreground-success-less);
-}
-
 .foreground-success-secondary {
   color: var(--kbq-foreground-success-secondary);
+}
+
+.foreground-success-tertiary {
+  color: var(--kbq-foreground-success-tertiary);
+}
+
+/*
+ * Deprecated: the token was renamed to `foreground-success-tertiary` in
+ * design-tokens v4. Kept under the old name for the `Typography` color API.
+ */
+.foreground-success-less {
+  color: var(--kbq-foreground-success-tertiary);
 }
 
 .foreground-warning {
@@ -289,18 +301,9 @@
   --native-scrollbar-thumb-min-size: var(--kbq-size-3xl);
   --native-scrollbar-thumb-gap: 3px;
   --native-scrollbar-track-size: 14px;
-  --native-scrollbar-thumb-default-background: var(
-    --kbq-semantic-contrast-a3,
-    var(--kbq-palette-grey-50-a32)
-  );
-  --native-scrollbar-thumb-hover-background: var(
-    --kbq-semantic-contrast-a4,
-    var(--kbq-palette-grey-50-a48)
-  );
-  --native-scrollbar-thumb-active-background: var(
-    --kbq-semantic-contrast-a5,
-    var(--kbq-palette-grey-20-a55)
-  );
+  --native-scrollbar-thumb-default-background: var(--kbq-semantic-contrast-a3);
+  --native-scrollbar-thumb-hover-background: var(--kbq-semantic-contrast-a4);
+  --native-scrollbar-thumb-active-background: var(--kbq-semantic-contrast-a5);
   --native-scrollbar-track-background: var(--kbq-background-transparent);
 
   /* Inherited; a non-`auto` value disables `::-webkit-scrollbar*` in Chromium. */
@@ -308,16 +311,13 @@
 
   :where(:global(.kbq-dark)) & {
     --native-scrollbar-thumb-default-background: var(
-      --kbq-semantic-dark-contrast-a9,
-      var(--kbq-palette-grey-50-a48)
+      --kbq-semantic-dark-contrast-a9
     );
     --native-scrollbar-thumb-hover-background: var(
-      --kbq-semantic-dark-contrast-a10,
-      var(--kbq-palette-grey-50-a60)
+      --kbq-semantic-dark-contrast-a10
     );
     --native-scrollbar-thumb-active-background: var(
-      --kbq-semantic-dark-contrast-a11,
-      var(--kbq-palette-grey-50-a80)
+      --kbq-semantic-dark-contrast-a11
     );
   }
 
