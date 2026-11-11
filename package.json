@@ -86,6 +86,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/coverage-v8": "^4.1.11",
     "@vueless/storybook-dark-mode": "^10.0.8",
+    "axe-core": "4.11.4",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
     "bumpp": "^10.1.0",

@@ -43,7 +43,7 @@ group?: FormFieldControlGroupProps;
 input?: FormFieldInputProps;
 caption?: FormFieldCaptionProps;
 errorMessage?: FormFieldErrorProps;
-clearButton?: IconButtonProps;
+clearButton?: FormFieldClearButtonProps;
 };
 caption?: ReactNode;
 variant?: SearchInputPropVariant;
@@ -82,7 +82,7 @@ export type SearchInputProps = ExtendableProps<{
         input?: FormFieldInputProps;
         caption?: FormFieldCaptionProps;
         errorMessage?: FormFieldErrorProps;
-        clearButton?: IconButtonProps;
+        clearButton?: FormFieldClearButtonProps;
     };
     caption?: ReactNode;
     variant?: SearchInputPropVariant;
@@ -108,7 +108,7 @@ export type SearchInputRef = ComponentRef<'input'>;
 // packages/components/dist/components/SearchInput/SearchInput.d.ts:15:9 - (ae-forgotten-export) The symbol "FormFieldInputProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/SearchInput/SearchInput.d.ts:16:9 - (ae-forgotten-export) The symbol "FormFieldCaptionProps" needs to be exported by the entry point index.d.ts
 // packages/components/dist/components/SearchInput/SearchInput.d.ts:17:9 - (ae-forgotten-export) The symbol "FormFieldErrorProps" needs to be exported by the entry point index.d.ts
-// packages/components/dist/components/SearchInput/SearchInput.d.ts:18:9 - (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/SearchInput/SearchInput.d.ts:18:9 - (ae-forgotten-export) The symbol "FormFieldClearButtonProps" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

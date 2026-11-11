@@ -50,6 +50,7 @@
     "RadioGroup",
     "Resizable",
     "SearchInput",
+    "SearchExpandable",
     "Select",
     "SelectNext",
     "Sidebar",

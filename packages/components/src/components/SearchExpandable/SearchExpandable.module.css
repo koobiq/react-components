@@ -1,0 +1,9 @@
+.base {
+  display: inline-flex;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+
+.base[data-fullwidth] {
+  inline-size: 100%;
+}
