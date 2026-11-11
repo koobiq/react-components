@@ -90,8 +90,9 @@ must not change.
 
 `tooltipText` sets the collapsed button tooltip and accessible name, and
 `placeholder` sets the input placeholder and accessible name. Omitting them, or
-passing `null`, uses the localized "Search" string. The close button label can
-be overridden per instance through `slotProps.closeButton['aria-label']`.
+passing `null` or an empty string, uses the localized "Search" string. The close
+button label can be overridden per instance through
+`slotProps.closeButton['aria-label']`.
 
 <Story of={Stories.CustomLabels} />
 

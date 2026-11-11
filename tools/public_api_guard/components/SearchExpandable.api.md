@@ -56,14 +56,16 @@ closeButton?: SearchExpandableCloseButtonSlotProps;
 } & DataAttributeProps & RefAttributes<SearchExpandableRef>>;
 
 // Warning: (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "searchExpandableOwnedButtonSlotKeys" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type SearchExpandableButtonSlotProps = Omit<IconButtonProps, 'aria-disabled' | 'disabled' | 'hidden' | 'isDisabled'>;
+export type SearchExpandableButtonSlotProps = Omit<IconButtonProps, (typeof searchExpandableOwnedButtonSlotKeys)[number]>;
 
 // Warning: (ae-forgotten-export) The symbol "FormFieldClearButtonProps" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "searchExpandableOwnedCloseButtonSlotKeys" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type SearchExpandableCloseButtonSlotProps = Omit<FormFieldClearButtonProps, 'aria-disabled' | 'aria-hidden' | 'disabled' | 'excludeFromTabOrder' | 'hidden' | 'isClearable' | 'isDisabled' | 'isHidden' | 'tabIndex'>;
+export type SearchExpandableCloseButtonSlotProps = Omit<FormFieldClearButtonProps, (typeof searchExpandableOwnedCloseButtonSlotKeys)[number]>;
 
 // @public
 export const searchExpandableDefaultEmitValueTimeout = 200;
@@ -72,9 +74,10 @@ export const searchExpandableDefaultEmitValueTimeout = 200;
 export const searchExpandableDefaultValue = "";
 
 // Warning: (ae-forgotten-export) The symbol "FormFieldInputProps" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "searchExpandableOwnedInputSlotKeys" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type SearchExpandableInputSlotProps = Omit<FormFieldInputProps, 'aria-disabled' | 'aria-label' | 'aria-labelledby' | 'aria-readonly' | 'as' | 'autoComplete' | 'defaultValue' | 'disabled' | 'hidden' | 'onChange' | 'readOnly' | 'tabIndex' | 'type' | 'value'>;
+export type SearchExpandableInputSlotProps = Omit<FormFieldInputProps, (typeof searchExpandableOwnedInputSlotKeys)[number]>;
 
 // @public (undocumented)
 export type SearchExpandableProps = ExtendableProps<{

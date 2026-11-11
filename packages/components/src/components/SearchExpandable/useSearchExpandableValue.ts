@@ -3,7 +3,6 @@
 import { useCallback, useRef, useState } from 'react';
 
 import {
-  useControlledState,
   useDebounceCallback,
   useIsomorphicEffect,
   useMutableRef,
@@ -41,34 +40,24 @@ export function useSearchExpandableValue({
   onExternalValue,
 }: UseSearchExpandableValueOptions): UseSearchExpandableValueResult {
   const normalizedValue = normalizeSearchExpandableValue(valueProp);
-  const isControlled = normalizedValue !== undefined;
 
-  const [modelValue, setModelValue] = useControlledState(
-    normalizedValue,
-    defaultValue
-  );
+  const initialValue = normalizedValue ?? defaultValue;
 
-  const [draftValue, setDraftValue] = useState(() => modelValue);
+  const [draftValue, setDraftValue] = useState(() => initialValue);
 
   const draftRef = useMutableRef(draftValue);
-  const lastExchangedValueRef = useRef(modelValue);
+  const lastExchangedValueRef = useRef(initialValue);
   const previousControlledValueRef = useRef(normalizedValue);
-  const isControlledRef = useMutableRef(isControlled);
   const onChangeRef = useMutableRef(onChange);
   const onExternalValueRef = useMutableRef(onExternalValue);
 
-  const emitValue = useCallback(
-    (nextValue: string) => {
-      if (nextValue === lastExchangedValueRef.current) return;
+  const emitValue = useCallback((nextValue: string) => {
+    if (nextValue === lastExchangedValueRef.current) return;
 
-      lastExchangedValueRef.current = nextValue;
+    lastExchangedValueRef.current = nextValue;
 
-      if (!isControlledRef.current) setModelValue(nextValue);
-
-      onChangeRef.current?.(nextValue);
-    },
-    [setModelValue]
-  );
+    onChangeRef.current?.(nextValue);
+  }, []);
 
   const [debouncedEmit, cancelPendingEmit] = useDebounceCallback({
     callback: emitValue,
@@ -103,10 +92,8 @@ export function useSearchExpandableValue({
     setDraftValue('');
     lastExchangedValueRef.current = '';
 
-    if (!isControlledRef.current) setModelValue('');
-
     onChangeRef.current?.('');
-  }, [cancelPendingEmit, draftRef, setModelValue]);
+  }, [cancelPendingEmit, draftRef]);
 
   useIsomorphicEffect(() => {
     if (isEmitValueByEnterEnabled) cancelPendingEmit();
@@ -117,6 +104,12 @@ export function useSearchExpandableValue({
     if (previousControlledValueRef.current === normalizedValue) return;
 
     previousControlledValueRef.current = normalizedValue;
+
+    // A bound control commonly echoes a value right after this hook emitted
+    // it (a transitioned store, a router query). The echo is not an external
+    // write: it must not clobber keystrokes typed since the emission nor the
+    // debounce still waiting to send them.
+    if (normalizedValue === lastExchangedValueRef.current) return;
 
     cancelPendingEmit();
 

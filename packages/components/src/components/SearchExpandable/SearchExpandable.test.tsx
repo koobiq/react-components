@@ -40,6 +40,11 @@ import {
   type SearchExpandableRef,
 } from './index';
 import { useSearchExpandableValue } from './useSearchExpandableValue';
+import type {
+  searchExpandableOwnedButtonSlotKeys,
+  searchExpandableOwnedCloseButtonSlotKeys,
+  searchExpandableOwnedInputSlotKeys,
+} from './utils';
 import {
   normalizeSearchExpandableValue,
   resolveSearchExpandableText,
@@ -66,14 +71,12 @@ type ReadOnlyIsPublic = 'isReadOnly' extends keyof SearchExpandableProps
   ? true
   : false;
 
-type OwnedInputSlotKeys =
-  'aria-disabled' | 'aria-readonly' | 'as' | 'disabled' | 'hidden' | 'readOnly';
+type OwnedInputSlotKeys = (typeof searchExpandableOwnedInputSlotKeys)[number];
 
 type OwnedCloseButtonSlotKeys =
-  'aria-disabled' | 'disabled' | 'hidden' | 'isDisabled';
+  (typeof searchExpandableOwnedCloseButtonSlotKeys)[number];
 
-type OwnedButtonSlotKeys =
-  'aria-disabled' | 'disabled' | 'hidden' | 'isDisabled';
+type OwnedButtonSlotKeys = (typeof searchExpandableOwnedButtonSlotKeys)[number];
 
 type RemovedInputSlotKeysArePrivate = [
   Extract<OwnedInputSlotKeys, keyof SearchExpandableInputSlotProps>,
@@ -159,6 +162,60 @@ describe('SearchExpandable', () => {
 
     expect(ref.current?.element).toBe(getRoot());
     expect(ref.current?.element?.tagName).toBe('DIV');
+  });
+
+  it('keeps a stable ref handle across renders', () => {
+    const handles: Array<SearchExpandableRef | null> = [];
+
+    const refCallback = (handle: SearchExpandableRef | null) => {
+      handles.push(handle);
+    };
+
+    const { rerender } = render(
+      <Provider locale="en-US">
+        <SearchExpandable ref={refCallback} />
+      </Provider>
+    );
+
+    rerender(
+      <Provider locale="en-US">
+        <SearchExpandable ref={refCallback} />
+      </Provider>
+    );
+
+    expect(handles).toHaveLength(1);
+  });
+
+  it('renders the placeholder attribute on the expanded input', async () => {
+    renderSearchExpandable();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(screen.getByRole('textbox', { name: 'Search' })).toHaveAttribute(
+      'placeholder',
+      'Search'
+    );
+  });
+
+  it('contains non-Escape keys on the collapsed trigger', () => {
+    const onParentKeyDown = vi.fn();
+
+    render(
+      <Provider locale="en-US">
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+        <div onKeyDown={onParentKeyDown}>
+          <SearchExpandable />
+        </div>
+      </Provider>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Search' });
+
+    fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+    expect(onParentKeyDown).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(trigger, { key: 'Escape' });
+    expect(onParentKeyDown).toHaveBeenCalledTimes(1);
   });
 
   it('should keep the owned tab index over the input slot', async () => {
@@ -503,7 +560,7 @@ describe('SearchExpandable value pipeline', () => {
     expect(onChange).toHaveBeenCalledExactlyOnceWith('typed');
   });
 
-  it('prevents the default action but skips an IME Enter', async () => {
+  it('skips an IME Enter without preventing its default action', async () => {
     const onChange = vi.fn();
 
     renderExpanded({ onChange, isEmitValueByEnterEnabled: true });
@@ -517,7 +574,7 @@ describe('SearchExpandable value pipeline', () => {
 
     fireEvent(getInput(), composingEvent);
 
-    expect(composingEvent.defaultPrevented).toBe(true);
+    expect(composingEvent.defaultPrevented).toBe(false);
     expect(onChange).not.toHaveBeenCalled();
 
     const legacyEvent = createEvent.keyDown(getInput(), {
@@ -527,7 +584,7 @@ describe('SearchExpandable value pipeline', () => {
 
     fireEvent(getInput(), legacyEvent);
 
-    expect(legacyEvent.defaultPrevented).toBe(true);
+    expect(legacyEvent.defaultPrevented).toBe(false);
     expect(onChange).not.toHaveBeenCalled();
   });
 
@@ -622,6 +679,58 @@ describe('SearchExpandable value pipeline', () => {
     advance(200);
     expect(onChange).toHaveBeenCalledExactlyOnceWith('typed');
     expect(getInput()).toHaveValue('typed');
+  });
+
+  it('keeps the draft and the pending emit when the control echoes the emitted value', async () => {
+    const onChange = vi.fn();
+
+    const tree = (nextValue: string) => (
+      <Provider locale="en-US">
+        <SearchExpandable defaultOpen value={nextValue} onChange={onChange} />
+      </Provider>
+    );
+
+    const { rerender } = render(tree(''));
+
+    await user.type(getInput(), 're');
+
+    advance(200);
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('re');
+
+    await user.type(getInput(), 'act');
+
+    // The bound control lands the echoed value while a new emit is pending:
+    // neither the newer keystrokes nor the debounce may be clobbered.
+    rerender(tree('re'));
+
+    expect(getInput()).toHaveValue('react');
+
+    advance(200);
+    expect(onChange).toHaveBeenCalledTimes(2);
+    expect(onChange).toHaveBeenLastCalledWith('react');
+  });
+
+  it('cancels a pending emit when the field becomes disabled', () => {
+    const onChange = vi.fn();
+
+    const tree = (disabled: boolean) => (
+      <Provider locale="en-US">
+        <SearchExpandable
+          defaultOpen
+          isDisabled={disabled}
+          onChange={onChange}
+        />
+      </Provider>
+    );
+
+    const { rerender } = render(tree(false));
+
+    fireEvent.change(getInput(), { target: { value: 'typed' } });
+
+    rerender(tree(true));
+
+    advance(1000);
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   it('does not echo controlled props at mount in Strict Mode', () => {
@@ -1122,6 +1231,23 @@ describe('SearchExpandable disclosure', () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(false);
   });
 
+  it('expands then collapses when toggle is called twice in one batch', () => {
+    const onOpenChange = vi.fn();
+    const ref = createRef<SearchExpandableRef>();
+
+    renderField(<SearchExpandable ref={ref} onOpenChange={onOpenChange} />);
+
+    act(() => {
+      ref.current?.toggle();
+      ref.current?.toggle();
+    });
+
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+    expect(onOpenChange).toHaveBeenCalledTimes(2);
+    expect(onOpenChange).toHaveBeenNthCalledWith(1, true);
+    expect(onOpenChange).toHaveBeenNthCalledWith(2, false);
+  });
+
   it('ignores toggle and trigger clicks while disabled', async () => {
     const onOpenChange = vi.fn();
     const ref = createRef<SearchExpandableRef>();
@@ -1161,7 +1287,7 @@ describe('SearchExpandable disclosure', () => {
     expect(onOpenChange).not.toHaveBeenCalled();
   });
 
-  it('leaves an expanded field expanded when it becomes disabled', () => {
+  it('re-enables the expanded field and its controls when isDisabled turns false', () => {
     const tree = (isDisabled: boolean) => (
       <Provider locale="en-US">
         <SearchExpandable
@@ -1200,7 +1326,7 @@ describe('SearchExpandable disclosure', () => {
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
   });
 
-  it('applies a finite tab index to the trigger and input', async () => {
+  it('applies a finite tab index to the trigger, input, and close button', async () => {
     renderField(<SearchExpandable tabIndex={-2} />);
 
     expect(getTrigger()).toHaveAttribute('tabindex', '-2');
@@ -1208,6 +1334,7 @@ describe('SearchExpandable disclosure', () => {
     await user.click(getTrigger());
 
     expect(getInput()).toHaveAttribute('tabindex', '-2');
+    expect(getCloseButton()).toHaveAttribute('tabindex', '-2');
   });
 
   it('falls back to 0 for null and non-finite tab indices', () => {
@@ -1571,6 +1698,72 @@ describe('SearchExpandable focus', () => {
     expect(getInput()).toHaveFocus();
   });
 
+  it('does not focus a controlled disclosure opened by a model write', () => {
+    function Harness() {
+      const [open, setOpen] = useState(false);
+      const [modelValue, setModelValue] = useState('');
+
+      return (
+        <>
+          <button type="button" data-testid="outside">
+            outside
+          </button>
+          <button
+            type="button"
+            data-testid="write"
+            onClick={() => setModelValue('typed')}
+          >
+            write
+          </button>
+          <SearchExpandable
+            isOpen={open}
+            onOpenChange={setOpen}
+            value={modelValue}
+            onChange={setModelValue}
+          />
+        </>
+      );
+    }
+
+    render(
+      <Provider locale="en-US">
+        <Harness />
+      </Provider>
+    );
+
+    screen.getByTestId('outside').focus();
+
+    fireEvent.click(screen.getByTestId('write'));
+
+    expect(getInput()).toHaveValue('typed');
+    expect(screen.getByTestId('outside')).toHaveFocus();
+  });
+
+  it('does not focus on mount when a controlled initial value requests opening', () => {
+    function Harness() {
+      const [open, setOpen] = useState(false);
+
+      return (
+        <>
+          <button type="button" data-testid="outside">
+            outside
+          </button>
+          <SearchExpandable isOpen={open} onOpenChange={setOpen} value="seed" />
+        </>
+      );
+    }
+
+    render(
+      <Provider locale="en-US">
+        <Harness />
+      </Provider>
+    );
+
+    expect(getInput()).toHaveValue('seed');
+    expect(getInput()).not.toHaveFocus();
+    expect(document.body).toHaveFocus();
+  });
+
   it('restores focus to the collapsed button after an input Escape', async () => {
     renderField(<SearchExpandable defaultOpen />);
 
@@ -1736,6 +1929,23 @@ describe('SearchExpandable tooltip', () => {
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
+  it('applies the tooltip slot props', async () => {
+    renderField(
+      <SearchExpandable
+        slotProps={{ tooltip: { className: 'custom-tooltip' } }}
+      />
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Search' });
+
+    fireEvent.mouseMove(document.body);
+
+    await user.hover(trigger);
+    advance(500);
+
+    expect(screen.getByRole('tooltip')).toHaveClass('custom-tooltip');
+  });
+
   it('keeps later keyboard focus and hover working after focus restoration', async () => {
     renderField(
       <>
@@ -1827,14 +2037,18 @@ describe('SearchExpandable localization', () => {
     expect(screen.getByRole('textbox', { name: 'Search' })).toBeInTheDocument();
   });
 
-  it('preserves an empty tooltip label instead of falling back', () => {
+  it('falls back to the locale label for empty custom text', async () => {
     render(
       <Provider locale="en-US">
-        <SearchExpandable tooltipText="" />
+        <SearchExpandable tooltipText="" placeholder="" />
       </Provider>
     );
 
-    expect(screen.getByRole('button')).toHaveAttribute('aria-label', '');
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(screen.getByRole('textbox', { name: 'Search' })).toBeInTheDocument();
   });
 
   it('applies custom labels and the close-button slot override', async () => {
@@ -1852,7 +2066,11 @@ describe('SearchExpandable localization', () => {
 
     await user.click(screen.getByRole('button', { name: 'Find' }));
 
-    expect(screen.getByRole('textbox', { name: 'Query' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Query' })).toHaveAttribute(
+      'placeholder',
+      'Query'
+    );
+
     expect(screen.getByRole('button', { name: 'Dismiss' })).toBeInTheDocument();
   });
 });
@@ -1941,9 +2159,11 @@ describe('SearchExpandable form integration', () => {
   });
 
   it('stays editable under a read-only Form', async () => {
-    const readOnlyIsPublic: ReadOnlyIsPublic = false;
+    // Compile-time assertion: this annotation, not the runtime expectation
+    // below, fails type-check if `isReadOnly` ever re-enters the public props.
+    const readOnlyIsPublic: [ReadOnlyIsPublic] = [false];
 
-    expect(readOnlyIsPublic).toBe(false);
+    expect(readOnlyIsPublic).toEqual([false]);
 
     const onChange = vi.fn();
     const onOpenChange = vi.fn();
@@ -2078,8 +2298,8 @@ describe('SearchExpandable value normalization', () => {
     expect(normalizeSearchExpandableValue(undefined)).toBeUndefined();
   });
 
-  it('preserves empty strings in the label fallback', () => {
-    expect(resolveSearchExpandableText('', 'Search')).toBe('');
+  it('falls back on empty strings in the label resolution', () => {
+    expect(resolveSearchExpandableText('', 'Search')).toBe('Search');
     expect(resolveSearchExpandableText(null, 'Search')).toBe('Search');
     expect(resolveSearchExpandableText(undefined, 'Search')).toBe('Search');
     expect(resolveSearchExpandableText('Find', 'Search')).toBe('Find');

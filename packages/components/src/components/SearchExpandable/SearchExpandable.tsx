@@ -57,7 +57,7 @@ function normalizeTabIndex(
 function propagateTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
   if (event.key !== 'Escape') return;
 
-  // The Tooltip control wraps keydown in a focusable handler that stops
+  // IconButton is a React Aria component whose keyboard handler stops event
   // propagation by default; let an enclosing dialog still handle Escape.
   (event as SearchExpandableTriggerKeyDownEvent).continuePropagation?.();
 }
@@ -137,12 +137,12 @@ export const SearchExpandable = forwardRef<
     onExternalValue: (nextValue) => {
       if (nextValue === '' || isDisabled || isOpen) return;
 
-      if (isOpenProp === undefined) {
-        focusCauseRef.current = 'model';
+      // For both controlled and uncontrolled disclosure the focus moves into
+      // the input only when focus is already inside the component.
+      focusCauseRef.current = 'model';
 
-        modelOpenHadFocusRef.current =
-          rootRef.current?.contains(document.activeElement) ?? false;
-      }
+      modelOpenHadFocusRef.current =
+        rootRef.current?.contains(document.activeElement) ?? false;
 
       setOpen(true);
     },
@@ -168,6 +168,11 @@ export const SearchExpandable = forwardRef<
 
     if (initial.value === '') return;
 
+    // The request expands the field without taking focus: the user has not
+    // interacted with the component yet.
+    focusCauseRef.current = 'model';
+    modelOpenHadFocusRef.current = false;
+
     if (initial.isControlled) {
       if (initial.isOpen === false) onOpenChangeRef.current?.(true);
 
@@ -177,6 +182,8 @@ export const SearchExpandable = forwardRef<
     if (!initial.defaultOpen) onOpenChangeRef.current?.(true);
   }, []);
 
+  // Cancels a pending debounced emit on every transition into the closed
+  // state and on disable, so a hidden or inert field never emits.
   const previousOpenRef = useRef(isOpen);
 
   useIsomorphicEffect(() => {
@@ -187,6 +194,12 @@ export const SearchExpandable = forwardRef<
     if (wasOpen && !isOpen) cancelPendingEmit();
   }, [cancelPendingEmit, isOpen]);
 
+  useIsomorphicEffect(() => {
+    if (isDisabled) cancelPendingEmit();
+  }, [cancelPendingEmit, isDisabled]);
+
+  // Drives focus transitions; runs only when the rendered state actually
+  // flips, so an isDisabled-only re-render leaves focus alone.
   const previousRenderedOpenRef = useRef(isOpen);
 
   useIsomorphicEffect(() => {
@@ -230,12 +243,20 @@ export const SearchExpandable = forwardRef<
     requestOpenChange(false);
   };
 
+  const isOpenRef = useMutableRef(isOpen);
+
   const toggle = () => {
     if (isDisabled) return;
 
-    if (isOpen) resetValue();
+    // Write-through mirror: two toggle() calls in one batch must see each
+    // other's effect, which a render-closure isOpen cannot provide.
+    const nextOpen = !isOpenRef.current;
 
-    requestOpenChange(!isOpen);
+    isOpenRef.current = nextOpen;
+
+    if (!nextOpen) resetValue();
+
+    requestOpenChange(nextOpen);
   };
 
   const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -244,9 +265,12 @@ export const SearchExpandable = forwardRef<
     if (event.key === 'Enter') {
       if (!isEmitValueByEnterEnabled) return;
 
-      event.preventDefault();
-
+      // Never intercept the Enter that confirms an IME composition: WebKit
+      // and Gecko deliver it with `isComposing` still set, and preventing
+      // its default action would cancel the committed text.
       if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+
+      event.preventDefault();
 
       commitDraft();
 
@@ -256,18 +280,28 @@ export const SearchExpandable = forwardRef<
     if (event.key === 'Escape') {
       event.preventDefault();
 
-      // An already stopped event is already contained, and stopping it twice
-      // triggers React Aria's development-mode duplicate-stop warning.
+      // useSearchField calls continuePropagation() on Escape in an empty
+      // field so the key can reach an enclosing dialog; React Aria then
+      // leaves the native event alone and this handler stops it. When
+      // nothing called continuePropagation(), React Aria stops the event
+      // after its own handler chain, and stopping it here as well would
+      // trigger its development-mode duplicate-stop warning.
       if (!event.isPropagationStopped()) event.stopPropagation();
 
       close();
     }
   };
 
-  useImperativeHandle(ref, () => ({
-    element: rootRef.current,
-    toggle,
-  }));
+  const toggleRef = useMutableRef(toggle);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      element: rootRef.current,
+      toggle: () => toggleRef.current(),
+    }),
+    []
+  );
 
   const resolvedTooltipText = resolveSearchExpandableText(
     tooltipText,
@@ -320,6 +354,7 @@ export const SearchExpandable = forwardRef<
                 isHidden: false,
                 isClearable: true,
                 excludeFromTabOrder: false,
+                tabIndex: normalizedTabIndex,
                 'aria-label': closeButtonLabel,
                 onPress: close,
                 // React Aria focuses the input on press start, which cancels

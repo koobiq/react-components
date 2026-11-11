@@ -14,10 +14,15 @@ export function resolveSearchExpandableText(
   value: string | null | undefined,
   fallback: string
 ): string {
-  return value ?? fallback;
+  return value || fallback;
 }
 
-const ownedInputSlotKeys = [
+/**
+ * Keys owned by the component in each slot. The slot prop types in `types.ts`
+ * are derived from these tuples, so the runtime omission and the public types
+ * cannot drift apart.
+ */
+export const searchExpandableOwnedInputSlotKeys = [
   'aria-disabled',
   'aria-label',
   'aria-labelledby',
@@ -34,7 +39,7 @@ const ownedInputSlotKeys = [
   'value',
 ] as const;
 
-const ownedCloseButtonSlotKeys = [
+export const searchExpandableOwnedCloseButtonSlotKeys = [
   'aria-disabled',
   'aria-hidden',
   'disabled',
@@ -46,7 +51,7 @@ const ownedCloseButtonSlotKeys = [
   'tabIndex',
 ] as const;
 
-const ownedButtonSlotKeys = [
+export const searchExpandableOwnedButtonSlotKeys = [
   'aria-disabled',
   'disabled',
   'hidden',
@@ -71,17 +76,17 @@ function omitSlotProps<T extends object>(
 export function omitSearchExpandableOwnedInputSlotProps(
   props: SearchExpandableInputSlotProps | undefined
 ): SearchExpandableInputSlotProps | undefined {
-  return omitSlotProps(props, ownedInputSlotKeys);
+  return omitSlotProps(props, searchExpandableOwnedInputSlotKeys);
 }
 
 export function omitSearchExpandableOwnedCloseButtonSlotProps(
   props: SearchExpandableCloseButtonSlotProps | undefined
 ): SearchExpandableCloseButtonSlotProps | undefined {
-  return omitSlotProps(props, ownedCloseButtonSlotKeys);
+  return omitSlotProps(props, searchExpandableOwnedCloseButtonSlotKeys);
 }
 
 export function omitSearchExpandableOwnedButtonSlotProps(
   props: SearchExpandableButtonSlotProps | undefined
 ): SearchExpandableButtonSlotProps | undefined {
-  return omitSlotProps(props, ownedButtonSlotKeys);
+  return omitSlotProps(props, searchExpandableOwnedButtonSlotKeys);
 }

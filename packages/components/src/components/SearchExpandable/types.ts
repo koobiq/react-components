@@ -10,6 +10,12 @@ import type { IconButtonProps } from '../IconButton';
 import type { SearchInputProps } from '../SearchInput';
 import type { TooltipProps } from '../Tooltip';
 
+import type {
+  searchExpandableOwnedButtonSlotKeys,
+  searchExpandableOwnedCloseButtonSlotKeys,
+  searchExpandableOwnedInputSlotKeys,
+} from './utils';
+
 /** The default committed value of SearchExpandable. */
 export const searchExpandableDefaultValue = '';
 
@@ -29,7 +35,7 @@ export type SearchExpandableRef = {
  */
 export type SearchExpandableButtonSlotProps = Omit<
   IconButtonProps,
-  'aria-disabled' | 'disabled' | 'hidden' | 'isDisabled'
+  (typeof searchExpandableOwnedButtonSlotKeys)[number]
 >;
 
 /**
@@ -38,20 +44,7 @@ export type SearchExpandableButtonSlotProps = Omit<
  */
 export type SearchExpandableInputSlotProps = Omit<
   FormFieldInputProps,
-  | 'aria-disabled'
-  | 'aria-label'
-  | 'aria-labelledby'
-  | 'aria-readonly'
-  | 'as'
-  | 'autoComplete'
-  | 'defaultValue'
-  | 'disabled'
-  | 'hidden'
-  | 'onChange'
-  | 'readOnly'
-  | 'tabIndex'
-  | 'type'
-  | 'value'
+  (typeof searchExpandableOwnedInputSlotKeys)[number]
 >;
 
 /**
@@ -60,15 +53,7 @@ export type SearchExpandableInputSlotProps = Omit<
  */
 export type SearchExpandableCloseButtonSlotProps = Omit<
   FormFieldClearButtonProps,
-  | 'aria-disabled'
-  | 'aria-hidden'
-  | 'disabled'
-  | 'excludeFromTabOrder'
-  | 'hidden'
-  | 'isClearable'
-  | 'isDisabled'
-  | 'isHidden'
-  | 'tabIndex'
+  (typeof searchExpandableOwnedCloseButtonSlotKeys)[number]
 >;
 
 export type SearchExpandableProps = ExtendableProps<
@@ -106,12 +91,12 @@ export type SearchExpandableProps = ExtendableProps<
     isEmitValueByEnterEnabled?: boolean;
     /**
      * The collapsed button tooltip and accessible name.
-     * When `null` or `undefined`, the localized label is used.
+     * When `null`, `undefined` or empty, the localized label is used.
      */
     tooltipText?: string | null;
     /**
      * The expanded input placeholder and accessible name.
-     * When `null` or `undefined`, the localized label is used.
+     * When `null`, `undefined` or empty, the localized label is used.
      */
     placeholder?: string | null;
     /**
@@ -120,7 +105,8 @@ export type SearchExpandableProps = ExtendableProps<
      */
     isDisabled?: boolean;
     /**
-     * The tab index of the collapsed button and the expanded input.
+     * The tab index of the collapsed button, the expanded input, and the
+     * close button.
      * @default 0
      */
     tabIndex?: number | null;
