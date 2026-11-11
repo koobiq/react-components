@@ -120,8 +120,6 @@
 }
 
 .label {
-  padding: 0;
-
   @mixin ellipsis;
 }
 
