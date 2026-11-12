@@ -1,7 +1,7 @@
 @import url('../../styles/mixins.css');
 
 .base {
-  --button-gap: var(--kbq-size-xxs);
+  --button-gap: var(--kbq-size-xs);
   --button-border-color: transparent;
   --button-outline-color: transparent;
   --button-block-size: var(--kbq-size-3xl);
@@ -10,7 +10,6 @@
   --button-padding-inline: var(--kbq-size-m);
   --button-outline-width: var(--kbq-size-3xs);
   --button-border-width: var(--kbq-size-border-width);
-  --button-label-padding: 0 var(--kbq-size-xxs);
 
   border: none;
   outline: none;
@@ -121,8 +120,6 @@
 }
 
 .label {
-  padding: var(--button-label-padding);
-
   @mixin ellipsis;
 }
 
