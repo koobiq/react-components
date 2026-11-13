@@ -1,0 +1,107 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './SearchExpandable.stories';
+
+<Meta of={Stories} />
+
+# SearchExpandable
+
+<Status variant="experimental" />
+
+`SearchExpandable` is an icon-only search button that expands into a compact
+search field.
+
+## Import
+
+```tsx
+import { SearchExpandable } from '@koobiq/react-components';
+```
+
+## Usage
+
+`SearchExpandable` stays collapsed to preserve space and expands into a
+`SearchInput` when the user presses the button. Press <kbd>Escape</kbd> or the
+close button to collapse it again; both actions reset the query.
+
+The committed value is reported through `onChange` after a short debounce, so
+filtering is not triggered on every keystroke. The expanded field keeps the
+draft, so typing stays responsive regardless of the delay.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Controlled value and open state
+
+Pass `value` and `onChange` to control the committed value, and `isOpen` with
+`onOpenChange` to control the disclosure. A controlled `isOpen` is
+authoritative over automatic expansion: the component never opens unless the
+parent applies the requested state, including on the initial render.
+
+`isOpen` changes never clear the query, and they do not echo through
+`onOpenChange`. Closing through `isOpen` preserves the draft and cancels a
+pending emission, so reopening restores the text; closing through the button,
+the <kbd>Escape</kbd> key, or a ref `toggle()` resets the draft and emits
+`onChange('')`.
+
+<Story of={Stories.Controlled} />
+
+## Debounce
+
+`emitValueTimeout` sets the delay before `onChange` fires, in milliseconds
+(default `200`). Every keystroke restarts the timer, so only the last value is
+committed. The field itself updates immediately; only the public value is
+delayed. In controlled mode the draft is not rolled back when the parent
+ignores an emission.
+
+<Story of={Stories.Debounce} />
+
+## Enter mode
+
+Set `isEmitValueByEnterEnabled` to commit only on <kbd>Enter</kbd> and disable
+debounced emissions. This is useful for forms and expensive queries. Enter mode
+also prevents the native form submission while committing the latest draft, and
+an IME composition confirmation does not commit.
+
+<Story of={Stories.EnterMode} />
+
+## Disabled
+
+`isDisabled` disables the trigger, the input, and the close button. It does not
+change the open state: an already expanded field stays open and cannot be
+closed by the user until the component is re-enabled or the parent closes it
+through `isOpen`. The `Form` disabled context is honored as well.
+
+Read-only is intentionally not supported: the component owns clearing the query
+on close, which conflicts with an immutable value. The expanded field therefore
+stays editable even inside `<Form isReadOnly>`; use `isDisabled` when the value
+must not change.
+
+<Story of={Stories.Disabled} />
+
+## Custom labels
+
+`tooltipText` sets the collapsed button tooltip and accessible name, and
+`placeholder` sets the input placeholder and accessible name. Omitting them, or
+passing `null` or an empty string, uses the localized "Search" string. The close
+button label can be overridden per instance through
+`slotProps.closeButton['aria-label']`.
+
+<Story of={Stories.CustomLabels} />
+
+## Accessibility
+
+The trigger exposes `aria-expanded`. The initial render never moves focus.
+Opening through the button, a ref `toggle()`, or an external `isOpen` change
+moves focus into the field, and closing returns it to the button without opening
+the tooltip. A value-driven opening focuses the field only when focus was
+already inside the component. The component has no visible label: the collapsed
+button and the input take their accessible names from `tooltipText` and
+`placeholder`.

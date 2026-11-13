@@ -12,6 +12,7 @@ import type {
   FormFieldPropLabelAlign,
   FormFieldControlGroupProps,
   FormFieldPropLabelPlacement,
+  FormFieldClearButtonProps,
   FormFieldControlGroupPropVariant,
 } from '../FormField';
 import {
@@ -19,7 +20,6 @@ import {
   formFieldPropLabelAlign,
   formFieldPropLabelPlacement,
 } from '../FormField';
-import type { IconButtonProps } from '../IconButton';
 
 export const searchInputPropVariant = formFieldControlGroupPropVariant;
 export type SearchInputPropVariant = FormFieldControlGroupPropVariant;
@@ -61,7 +61,7 @@ export type SearchInputProps = ExtendableProps<
       input?: FormFieldInputProps;
       caption?: FormFieldCaptionProps;
       errorMessage?: FormFieldErrorProps;
-      clearButton?: IconButtonProps;
+      clearButton?: FormFieldClearButtonProps;
     };
     /** The helper text content. */
     caption?: ReactNode;

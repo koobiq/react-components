@@ -47,6 +47,7 @@ export * from './DatePicker';
 export * from './TimePicker';
 export * from './TimeRange';
 export * from './SearchInput';
+export * from './SearchExpandable';
 export * from './Form';
 export * from './Tabs';
 export * from './Autocomplete';

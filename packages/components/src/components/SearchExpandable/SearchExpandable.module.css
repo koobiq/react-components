@@ -1,0 +1,17 @@
+.base {
+  display: inline-flex;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+
+.base[data-fullwidth] {
+  inline-size: 100%;
+}
+
+/* The collapsed trigger matches the control height of the expanded field
+   (and of the Angular component); the largest IconButton canvas is smaller.
+   The root always renders the button as its only child while collapsed. */
+.base > button {
+  block-size: var(--kbq-size-3xl);
+  inline-size: var(--kbq-size-3xl);
+}
