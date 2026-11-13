@@ -31,7 +31,8 @@ export type SearchExpandableRef = {
 
 /**
  * The props of the collapsed trigger slot. The trigger stays visible and
- * enabled according to the component.
+ * enabled according to the component, and keeps its own accessible name,
+ * tab index, button type, and `aria-expanded`.
  */
 export type SearchExpandableButtonSlotProps = Omit<
   IconButtonProps,
@@ -117,7 +118,11 @@ export type SearchExpandableProps = ExtendableProps<
     /** The props used for each slot inside. */
     slotProps?: {
       button?: SearchExpandableButtonSlotProps;
-      tooltip?: TooltipProps;
+      /**
+       * The props of the tooltip slot. The content, the control, and the
+       * disabled state are owned by the component and cannot be overridden.
+       */
+      tooltip?: Omit<TooltipProps, 'children' | 'control' | 'isDisabled'>;
       input?: SearchExpandableInputSlotProps;
       closeButton?: SearchExpandableCloseButtonSlotProps;
     };

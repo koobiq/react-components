@@ -49,7 +49,7 @@ className?: string;
 style?: CSSProperties;
 slotProps?: {
 button?: SearchExpandableButtonSlotProps;
-tooltip?: TooltipProps;
+tooltip?: Omit<TooltipProps, "children" | "control" | "isDisabled">;
 input?: SearchExpandableInputSlotProps;
 closeButton?: SearchExpandableCloseButtonSlotProps;
 };
@@ -97,7 +97,7 @@ export type SearchExpandableProps = ExtendableProps<{
     style?: CSSProperties;
     slotProps?: {
         button?: SearchExpandableButtonSlotProps;
-        tooltip?: TooltipProps;
+        tooltip?: Omit<TooltipProps, 'children' | 'control' | 'isDisabled'>;
         input?: SearchExpandableInputSlotProps;
         closeButton?: SearchExpandableCloseButtonSlotProps;
     };

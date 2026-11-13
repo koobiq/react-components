@@ -35,6 +35,7 @@ import {
   omitSearchExpandableOwnedCloseButtonSlotProps,
   omitSearchExpandableOwnedInputSlotProps,
   resolveSearchExpandableText,
+  splitSearchExpandableDataProps,
 } from './utils';
 
 type SearchExpandableFocusCause = 'user' | 'external' | 'model';
@@ -94,6 +95,10 @@ export const SearchExpandable = forwardRef<
 
   const t = useLocalizedStringFormatter(intlMessages);
 
+  // `data-*` attributes belong to the component root in both states, the rest
+  // of the passthrough props describe the expanded field.
+  const { dataProps, fieldProps } = splitSearchExpandableDataProps(other);
+
   const { isDisabled: formIsDisabled } = useForm();
 
   const isDisabled = isDisabledProp ?? formIsDisabled ?? false;
@@ -117,7 +122,10 @@ export const SearchExpandable = forwardRef<
   );
 
   const requestOpenChange = (nextOpen: boolean) => {
-    if (isOpenProp === undefined) focusCauseRef.current = 'user';
+    // Every request through this path is user-initiated (the trigger, the
+    // close button, `toggle()`); model openings record their own cause. A
+    // stale cause would skip the focus the user activation expects.
+    focusCauseRef.current = 'user';
 
     setOpen(nextOpen);
   };
@@ -319,6 +327,7 @@ export const SearchExpandable = forwardRef<
   return (
     <div
       ref={rootRef}
+      {...dataProps}
       data-slot="search-expandable"
       data-testid={testId}
       data-open={isOpen || undefined}
@@ -329,7 +338,7 @@ export const SearchExpandable = forwardRef<
     >
       {isOpen ? (
         <SearchInput
-          {...other}
+          {...fieldProps}
           ref={inputRef}
           value={draftValue}
           onChange={handleDraftChange}
@@ -381,7 +390,9 @@ export const SearchExpandable = forwardRef<
                 omitSearchExpandableOwnedButtonSlotProps(slotProps?.button),
                 {
                   ref: triggerRef,
-                  type: 'button',
+                  // `mergeProps` widens object literals, and the slot type no
+                  // longer carries the narrow union to intersect with.
+                  type: 'button' as const,
                   'aria-label': resolvedTooltipText,
                   'aria-expanded': false,
                   isDisabled,

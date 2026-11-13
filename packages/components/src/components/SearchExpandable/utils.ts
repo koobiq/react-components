@@ -1,3 +1,5 @@
+import type { DataAttributeProps } from '@koobiq/react-core';
+
 import type {
   SearchExpandableButtonSlotProps,
   SearchExpandableCloseButtonSlotProps,
@@ -53,9 +55,13 @@ export const searchExpandableOwnedCloseButtonSlotKeys = [
 
 export const searchExpandableOwnedButtonSlotKeys = [
   'aria-disabled',
+  'aria-expanded',
+  'aria-label',
   'disabled',
   'hidden',
   'isDisabled',
+  'tabIndex',
+  'type',
 ] as const;
 
 function omitSlotProps<T extends object>(
@@ -89,4 +95,28 @@ export function omitSearchExpandableOwnedButtonSlotProps(
   props: SearchExpandableButtonSlotProps | undefined
 ): SearchExpandableButtonSlotProps | undefined {
   return omitSlotProps(props, searchExpandableOwnedButtonSlotKeys);
+}
+
+/**
+ * Separates the `data-*` attributes, which the component renders on its root
+ * in both states, from the passthrough props of the expanded field.
+ */
+export function splitSearchExpandableDataProps<T extends object>(
+  props: T
+): {
+  dataProps: DataAttributeProps;
+  fieldProps: T;
+} {
+  const dataProps: Record<string, unknown> = {};
+  const fieldProps: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(props)) {
+    if (key.startsWith('data-')) dataProps[key] = value;
+    else fieldProps[key] = value;
+  }
+
+  return {
+    dataProps: dataProps as DataAttributeProps,
+    fieldProps: fieldProps as T,
+  };
 }

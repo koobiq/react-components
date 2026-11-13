@@ -368,7 +368,25 @@ describe('SearchExpandable', () => {
     ).toHaveAttribute('data-fullwidth', 'true');
   });
 
-  it('should keep the trigger enabled and visible despite the slot keys', async () => {
+  it('should render data attributes on the root in both states', async () => {
+    render(
+      <Provider locale="en-US">
+        <SearchExpandable data-testid="root" data-foo="bar" />
+      </Provider>
+    );
+
+    expect(getRoot()).toHaveAttribute('data-foo', 'bar');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(getRoot()).toHaveAttribute('data-foo', 'bar');
+
+    expect(
+      screen.getByRole('textbox').closest('[data-slot="form-field"]')
+    ).not.toHaveAttribute('data-foo');
+  });
+
+  it('should keep the trigger enabled, visible, and named despite the slot keys', async () => {
     const onButtonPress = vi.fn();
 
     render(
@@ -377,10 +395,14 @@ describe('SearchExpandable', () => {
           slotProps={{
             button: {
               'aria-disabled': true,
+              'aria-expanded': true,
+              'aria-label': 'Hijacked',
               disabled: true,
               hidden: true,
               isDisabled: true,
               onPress: onButtonPress,
+              tabIndex: 7,
+              type: 'submit',
             } as unknown as SearchExpandableButtonSlotProps,
           }}
         />
@@ -393,6 +415,8 @@ describe('SearchExpandable', () => {
     expect(trigger).not.toHaveAttribute('aria-disabled', 'true');
     expect(trigger).not.toHaveAttribute('hidden');
     expect(trigger).toHaveAttribute('tabindex', '0');
+    expect(trigger).toHaveAttribute('type', 'button');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
     await userEvent.click(trigger);
 
@@ -1762,6 +1786,43 @@ describe('SearchExpandable focus', () => {
     expect(getInput()).toHaveValue('seed');
     expect(getInput()).not.toHaveFocus();
     expect(document.body).toHaveFocus();
+  });
+
+  it('focuses the input when the trigger opens a field whose mount request was rejected', async () => {
+    function Harness() {
+      const [open, setOpen] = useState(false);
+      const [isAccepting, setIsAccepting] = useState(false);
+
+      return (
+        <>
+          <button
+            type="button"
+            data-testid="accept"
+            onClick={() => setIsAccepting(true)}
+          >
+            accept
+          </button>
+          <SearchExpandable
+            isOpen={open}
+            onOpenChange={(nextOpen) => {
+              if (isAccepting) setOpen(nextOpen);
+            }}
+            value="seed"
+          />
+        </>
+      );
+    }
+
+    renderField(<Harness />);
+
+    // The parent rejects the mount-time open request, so no focus transition
+    // runs and the cause recorded for it would otherwise stay in place.
+    expect(getTrigger()).toBeInTheDocument();
+
+    await user.click(screen.getByTestId('accept'));
+    await user.click(getTrigger());
+
+    expect(getInput()).toHaveFocus();
   });
 
   it('restores focus to the collapsed button after an input Escape', async () => {
