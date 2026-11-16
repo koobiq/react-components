@@ -62,6 +62,7 @@ export const searchExpandableOwnedButtonSlotKeys = [
   'isDisabled',
   'tabIndex',
   'type',
+  'variant',
 ] as const;
 
 function omitSlotProps<T extends object>(

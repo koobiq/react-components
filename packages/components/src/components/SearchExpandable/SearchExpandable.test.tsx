@@ -403,6 +403,7 @@ describe('SearchExpandable', () => {
               onPress: onButtonPress,
               tabIndex: 7,
               type: 'submit',
+              variant: 'error',
             } as unknown as SearchExpandableButtonSlotProps,
           }}
         />
@@ -416,6 +417,7 @@ describe('SearchExpandable', () => {
     expect(trigger).not.toHaveAttribute('hidden');
     expect(trigger).toHaveAttribute('tabindex', '0');
     expect(trigger).toHaveAttribute('type', 'button');
+    expect(trigger).toHaveAttribute('data-variant', 'theme-contrast');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
     await userEvent.click(trigger);

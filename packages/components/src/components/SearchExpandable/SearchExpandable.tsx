@@ -390,9 +390,12 @@ export const SearchExpandable = forwardRef<
                 omitSearchExpandableOwnedButtonSlotProps(slotProps?.button),
                 {
                   ref: triggerRef,
-                  // `mergeProps` widens object literals, and the slot type no
-                  // longer carries the narrow union to intersect with.
+                  // `mergeProps` widens object literals, so narrow unions need
+                  // `as const` to survive the intersection.
                   type: 'button' as const,
+                  // Angular parity: the trigger icon uses the contrast color
+                  // on a transparent background.
+                  variant: 'theme-contrast' as const,
                   'aria-label': resolvedTooltipText,
                   'aria-expanded': false,
                   isDisabled,
