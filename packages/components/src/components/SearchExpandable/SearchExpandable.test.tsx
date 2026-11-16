@@ -1857,7 +1857,7 @@ describe('SearchExpandable focus', () => {
     expect(getTrigger()).toHaveFocus();
   });
 
-  it('restores focus to the collapsed button after an external close', () => {
+  it('restores focus to the collapsed button after an external close while focused inside', async () => {
     const tree = (isOpen: boolean) => (
       <Provider locale="en-US">
         <SearchExpandable isOpen={isOpen} />
@@ -1866,9 +1866,31 @@ describe('SearchExpandable focus', () => {
 
     const { rerender } = render(tree(true));
 
+    await user.click(getInput());
+
     rerender(tree(false));
 
     expect(getTrigger()).toHaveFocus();
+  });
+
+  it('does not steal focus on an external close while focus is outside', () => {
+    const tree = (isOpen: boolean) => (
+      <Provider locale="en-US">
+        <button type="button" data-testid="outside">
+          outside
+        </button>
+        <SearchExpandable isOpen={isOpen} />
+      </Provider>
+    );
+
+    const { rerender } = render(tree(true));
+
+    screen.getByTestId('outside').focus();
+
+    rerender(tree(false));
+
+    expect(screen.getByTestId('outside')).toHaveFocus();
+    expect(getTrigger()).not.toHaveFocus();
   });
 
   it('does not restore focus on a disabled external close', () => {

@@ -101,7 +101,9 @@ button label can be overridden per instance through
 The trigger exposes `aria-expanded`. The initial render never moves focus.
 Opening through the button, a ref `toggle()`, or an external `isOpen` change
 moves focus into the field, and closing returns it to the button without opening
-the tooltip. A value-driven opening focuses the field only when focus was
+the tooltip — unless the field was closed externally while focus was somewhere
+else on the page, in which case focus stays there. A value-driven opening
+focuses the field only when focus was
 already inside the component. The component has no visible label: the collapsed
 button and the input take their accessible names from `tooltipText` and
 `placeholder`.

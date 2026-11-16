@@ -113,6 +113,9 @@ export const SearchExpandable = forwardRef<
   const triggerRef = useRef<HTMLButtonElement>(null);
   const focusCauseRef = useRef<SearchExpandableFocusCause>('external');
   const modelOpenHadFocusRef = useRef(false);
+  // Whether focus is currently inside the component; an external close may
+  // only return focus to the trigger when it did not take it from elsewhere.
+  const rootHadFocusRef = useRef(false);
   const [isTooltipRestoring, setIsTooltipRestoring] = useState(false);
 
   const [isOpen, setOpen] = useControlledState(
@@ -231,7 +234,13 @@ export const SearchExpandable = forwardRef<
       return;
     }
 
-    setIsTooltipRestoring(true);
+    // A user-initiated close always returns focus to the collapsed trigger;
+    // an external `isOpen` close does so only when focus was inside the
+    // component, so closing programmatically never steals the focus the
+    // user left somewhere else on the page.
+    if (focusCause === 'user' || rootHadFocusRef.current) {
+      setIsTooltipRestoring(true);
+    }
   }, [isDisabled, isOpen]);
 
   useIsomorphicEffect(() => {
@@ -335,6 +344,21 @@ export const SearchExpandable = forwardRef<
       data-fullwidth={fullWidth || undefined}
       className={clsx(s.base, className)}
       style={style}
+      onFocus={() => {
+        rootHadFocusRef.current = true;
+      }}
+      onBlur={(event) => {
+        const nextTarget = event.relatedTarget;
+
+        if (
+          nextTarget instanceof Node &&
+          rootRef.current?.contains(nextTarget)
+        ) {
+          return;
+        }
+
+        rootHadFocusRef.current = false;
+      }}
     >
       {isOpen ? (
         <SearchInput

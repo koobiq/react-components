@@ -155,7 +155,7 @@ Use refs plus an isomorphic layout effect that can distinguish the initial rende
 - Initial collapsed or expanded rendering does not move focus.
 - Opening after mount through the collapsed button, `toggle()`, or an external `isOpen` change focuses the enabled input.
 - Automatic opening from a model value focuses the input only if focus was already inside the component; otherwise focus stays where it was.
-- Closing after mount by any path, including external `isOpen`, focuses the enabled collapsed button. A disabled transition does not move focus.
+- Closing after mount by a user path (the close button, Escape, `toggle()`) focuses the enabled collapsed button. An external `isOpen` close focuses it only when focus was inside the component, so a programmatic close never steals the focus the user left elsewhere on the page. A disabled transition does not move focus.
 - Returning focus to the collapsed button must not open its tooltip. Temporarily suppress only that focus-triggered tooltip behavior, then restore normal hover/focus behavior.
 - Disabled components do not focus either control and do not show the tooltip.
 - The root tracks whether focus was inside it; no Angular focus-origin API is reproduced.
