@@ -476,15 +476,24 @@
 }
 
 .list-item:where([data-selected='true']) {
-  --list-item-bg-color: var(--kbq-background-theme-less);
+  --list-item-bg-color: var(
+    --list-item-selected-bg-color,
+    var(--kbq-background-theme-less)
+  );
 }
 
 .list-item:where([data-selected='true'][data-hovered='true']) {
-  --list-item-bg-color: var(--kbq-states-background-theme-less-hover);
+  --list-item-bg-color: var(
+    --list-item-selected-hover-bg-color,
+    var(--kbq-states-background-theme-less-hover)
+  );
 }
 
 .list-item:where([data-selected='true'][data-pressed='true']) {
-  --list-item-bg-color: var(--kbq-states-background-theme-less-active);
+  --list-item-bg-color: var(
+    --list-item-selected-active-bg-color,
+    var(--kbq-states-background-theme-less-active)
+  );
 }
 
 .list-item:where([data-disabled='true']),
@@ -497,7 +506,10 @@
 
 .list-item:where([data-selected='true'][data-disabled='true']),
 .list-item:where([data-selected='true'][aria-disabled='true']) {
-  --list-item-bg-color: var(--kbq-background-theme-less);
+  --list-item-bg-color: var(
+    --list-item-selected-bg-color,
+    var(--kbq-background-theme-less)
+  );
 }
 
 /*
@@ -508,15 +520,24 @@
 .list[aria-multiselectable='true'] .list-item,
 .list-item:where([data-selection-mode='multiple']) {
   &:where([data-selected='true']) {
-    --list-item-bg-color: var(--kbq-background-contrast-less);
+    --list-item-bg-color: var(
+      --list-item-selected-bg-color,
+      var(--kbq-background-contrast-less)
+    );
   }
 
   &:where([data-selected='true'][data-hovered='true']) {
-    --list-item-bg-color: var(--kbq-states-background-contrast-less-hover);
+    --list-item-bg-color: var(
+      --list-item-selected-hover-bg-color,
+      var(--kbq-states-background-contrast-less-hover)
+    );
   }
 
   &:where([data-selected='true'][data-pressed='true']) {
-    --list-item-bg-color: var(--kbq-states-background-contrast-less-active);
+    --list-item-bg-color: var(
+      --list-item-selected-active-bg-color,
+      var(--kbq-states-background-contrast-less-active)
+    );
   }
 
   &:is([data-selected='true'], [data-focus-visible='true']):has(

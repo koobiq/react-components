@@ -120,3 +120,46 @@ export const Open: Story = {
     </TreeSelect>
   ),
 };
+
+export const OpenMultiple: Story = {
+  render: () => (
+    <TreeSelect
+      aria-label="Project files"
+      defaultOpen
+      selectionMode="multiple"
+      defaultValue={[1, 3]}
+      disabledKeys={[3, 4]}
+      style={{ inlineSize: 200 }}
+      slotProps={{ popover: { 'data-testid': 'e2eScreenshotTarget' } }}
+    >
+      <TreeSelect.Item
+        id={1}
+        textValue="main.js"
+        data-testid="treeselect-option-selected"
+      >
+        <TreeSelect.ItemContent>main.js</TreeSelect.ItemContent>
+      </TreeSelect.Item>
+      <TreeSelect.Item
+        id={2}
+        textValue="app.js"
+        data-testid="treeselect-option-unselected"
+      >
+        <TreeSelect.ItemContent>app.js</TreeSelect.ItemContent>
+      </TreeSelect.Item>
+      <TreeSelect.Item
+        id={3}
+        textValue="index.html"
+        data-testid="treeselect-option-disabled-selected"
+      >
+        <TreeSelect.ItemContent>index.html</TreeSelect.ItemContent>
+      </TreeSelect.Item>
+      <TreeSelect.Item
+        id={4}
+        textValue="README.md"
+        data-testid="treeselect-option-disabled-unselected"
+      >
+        <TreeSelect.ItemContent>README.md</TreeSelect.ItemContent>
+      </TreeSelect.Item>
+    </TreeSelect>
+  ),
+};
