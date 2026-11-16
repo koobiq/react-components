@@ -56,6 +56,16 @@
     display: none;
   }
 
+  .list[aria-multiselectable='true'] {
+    --list-item-selected-bg-color: ;
+    --list-item-selected-hover-bg-color: var(
+      --kbq-states-background-transparent-hover
+    );
+    --list-item-selected-active-bg-color: var(
+      --kbq-states-background-transparent-active
+    );
+  }
+
   &[data-transition='entering'] {
     opacity: 1;
     transform: translateY(0);

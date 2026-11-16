@@ -77,6 +77,16 @@
         align-items: normal;
         justify-content: normal;
       }
+
+      &[data-selection-mode='multiple'] {
+        --list-item-selected-bg-color: ;
+        --list-item-selected-hover-bg-color: var(
+          --kbq-states-background-transparent-hover
+        );
+        --list-item-selected-active-bg-color: var(
+          --kbq-states-background-transparent-active
+        );
+      }
     }
   }
 

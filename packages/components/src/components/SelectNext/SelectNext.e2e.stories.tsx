@@ -103,3 +103,39 @@ export const Open: Story = {
     </SelectNext>
   ),
 };
+
+export const OpenMultiple: Story = {
+  render: () => (
+    <SelectNext
+      aria-label="Attack type"
+      defaultOpen
+      selectionMode="multiple"
+      defaultValue={['ddos', 'dos']}
+      disabledKeys={['dos', 'complex-attack']}
+      style={{ inlineSize: 200 }}
+      slotProps={{ popover: { 'data-testid': 'e2eScreenshotTarget' } }}
+    >
+      <SelectNext.Item id="ddos" data-testid="selectnext-option-selected">
+        DDoS
+      </SelectNext.Item>
+      <SelectNext.Item
+        id="bruteforce"
+        data-testid="selectnext-option-unselected"
+      >
+        Bruteforce
+      </SelectNext.Item>
+      <SelectNext.Item
+        id="dos"
+        data-testid="selectnext-option-disabled-selected"
+      >
+        DoS
+      </SelectNext.Item>
+      <SelectNext.Item
+        id="complex-attack"
+        data-testid="selectnext-option-disabled-unselected"
+      >
+        Complex Attack
+      </SelectNext.Item>
+    </SelectNext>
+  ),
+};
