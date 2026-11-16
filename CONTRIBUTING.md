@@ -45,7 +45,7 @@ What the checks expect:
 - **The public API** of every component and package is pinned in `tools/public_api_guard/`. After an intentional change, run `pnpm build && pnpm approve-api <Name>` with a component name or `react-primitives`, `react-core`, `logger`, and commit the reports. A new component is also added to `tools/api-extractor/config.json`.
 - **Screenshot baselines** belong to the linux/arm64 Docker image in `tools/e2e` and have no platform suffix, so a native run fails on font rendering. Update them with `pnpm e2e:docker:update-snapshots`. On a branch of this repository, a maintainer can comment `/approve-snapshots` on the pull request instead, and CI commits the new baselines. While writing a test, `pnpm e2e:components --ui` runs the suite natively (install the browser once with `pnpm e2e:setup`), but its screenshots are not comparable.
 - **The Claude Code plugin** in `plugins/koobiq/` reads the built package. Keep the `deprecate()` message format, the generated class names, the `<component>Prop<Name>` value arrays and the entry points stable, or update the plugin in the same pull request. A change to the plugin itself bumps `version` in `plugins/koobiq/.claude-plugin/plugin.json` and adds a section to `plugins/koobiq/CHANGELOG.md`; CI checks both. See the plugin's [maintainer notes](https://github.com/koobiq/react-components/blob/main/plugins/koobiq/README.md).
-- **New dependencies**: pnpm installs only versions published at least a day ago (`minimumReleaseAge` in `pnpm-workspace.yaml`).
+- **New dependencies**: pnpm installs only versions published at least a day ago, except `@koobiq/*` packages (`minimumReleaseAge` in `pnpm-workspace.yaml`).
 
 ## Commit messages and pull request titles
 
