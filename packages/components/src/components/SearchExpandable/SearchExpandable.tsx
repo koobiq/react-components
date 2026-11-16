@@ -19,8 +19,8 @@ import {
 import type { PressEvent } from '@koobiq/react-core';
 import { IconMagnifyingGlass16 } from '@koobiq/react-icons';
 
+import { Button } from '../Button';
 import { useForm } from '../Form';
-import { IconButton } from '../IconButton';
 import { SearchInput } from '../SearchInput';
 import { Tooltip } from '../Tooltip';
 
@@ -383,7 +383,7 @@ export const SearchExpandable = forwardRef<
           {...slotProps?.tooltip}
           isDisabled={isDisabled || isTooltipRestoring}
           control={({ ref: controlRef, ...controlProps }) => (
-            <IconButton
+            <Button
               {...mergeProps(
                 { ref: controlRef },
                 controlProps,
@@ -393,9 +393,11 @@ export const SearchExpandable = forwardRef<
                   // `mergeProps` widens object literals, so narrow unions need
                   // `as const` to survive the intersection.
                   type: 'button' as const,
-                  // Angular parity: the trigger icon uses the contrast color
-                  // on a transparent background.
-                  variant: 'theme-contrast' as const,
+                  // Angular parity: a transparent contrast button with an
+                  // icon, not a bare icon button.
+                  variant: 'contrast-transparent' as const,
+                  onlyIcon: true,
+                  startIcon: <IconMagnifyingGlass16 />,
                   'aria-label': resolvedTooltipText,
                   'aria-expanded': false,
                   isDisabled,
@@ -404,9 +406,7 @@ export const SearchExpandable = forwardRef<
                   onPress: toggle,
                 }
               )}
-            >
-              <IconMagnifyingGlass16 />
-            </IconButton>
+            />
           )}
         >
           {resolvedTooltipText}

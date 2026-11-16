@@ -2,11 +2,11 @@ import type { CSSProperties } from 'react';
 
 import type { DataAttributeProps, ExtendableProps } from '@koobiq/react-core';
 
+import type { ButtonProps } from '../Button';
 import type {
   FormFieldClearButtonProps,
   FormFieldInputProps,
 } from '../FormField';
-import type { IconButtonProps } from '../IconButton';
 import type { SearchInputProps } from '../SearchInput';
 import type { TooltipProps } from '../Tooltip';
 
@@ -32,10 +32,11 @@ export type SearchExpandableRef = {
 /**
  * The props of the collapsed trigger slot. The trigger stays visible and
  * enabled according to the component, and keeps its own accessible name,
- * tab index, button type, variant, and `aria-expanded`.
+ * tab index, button type, icon-only transparent contrast variant, and
+ * `aria-expanded`.
  */
 export type SearchExpandableButtonSlotProps = Omit<
-  IconButtonProps,
+  ButtonProps,
   (typeof searchExpandableOwnedButtonSlotKeys)[number]
 >;
 

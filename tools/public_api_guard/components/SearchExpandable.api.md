@@ -55,11 +55,11 @@ closeButton?: SearchExpandableCloseButtonSlotProps;
 };
 } & DataAttributeProps & RefAttributes<SearchExpandableRef>>;
 
-// Warning: (ae-forgotten-export) The symbol "IconButtonProps" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ButtonProps" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "searchExpandableOwnedButtonSlotKeys" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type SearchExpandableButtonSlotProps = Omit<IconButtonProps, (typeof searchExpandableOwnedButtonSlotKeys)[number]>;
+export type SearchExpandableButtonSlotProps = Omit<ButtonProps, (typeof searchExpandableOwnedButtonSlotKeys)[number]>;
 
 // Warning: (ae-forgotten-export) The symbol "FormFieldClearButtonProps" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "searchExpandableOwnedCloseButtonSlotKeys" needs to be exported by the entry point index.d.ts

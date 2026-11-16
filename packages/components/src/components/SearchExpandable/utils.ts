@@ -60,6 +60,7 @@ export const searchExpandableOwnedButtonSlotKeys = [
   'disabled',
   'hidden',
   'isDisabled',
+  'onlyIcon',
   'tabIndex',
   'type',
   'variant',

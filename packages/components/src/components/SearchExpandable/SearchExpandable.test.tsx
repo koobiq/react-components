@@ -401,6 +401,7 @@ describe('SearchExpandable', () => {
               hidden: true,
               isDisabled: true,
               onPress: onButtonPress,
+              onlyIcon: false,
               tabIndex: 7,
               type: 'submit',
               variant: 'error',
@@ -417,7 +418,8 @@ describe('SearchExpandable', () => {
     expect(trigger).not.toHaveAttribute('hidden');
     expect(trigger).toHaveAttribute('tabindex', '0');
     expect(trigger).toHaveAttribute('type', 'button');
-    expect(trigger).toHaveAttribute('data-variant', 'theme-contrast');
+    expect(trigger).toHaveAttribute('data-variant', 'contrast-transparent');
+    expect(trigger).toHaveAttribute('data-onlyicon', 'true');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
     await userEvent.click(trigger);
