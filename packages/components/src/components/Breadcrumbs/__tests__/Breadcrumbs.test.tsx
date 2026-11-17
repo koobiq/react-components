@@ -292,5 +292,47 @@ describe('Breadcrumbs', () => {
 
       expect(item).toHaveAttribute('href', '/b');
     });
+
+    it('should show a tooltip for a truncated hidden breadcrumb item on hover', async () => {
+      vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(50);
+
+      vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockImplementation(
+        function (this: HTMLElement) {
+          return (this.textContent?.length ?? 0) * 10;
+        }
+      );
+
+      useHideOverflowItemsMock.mockReturnValueOnce({
+        parentRef: { current: null },
+        itemsRefs: Array.from({ length: 4 }, () => ({ current: null })),
+        visibleMap: [true, true, false, true],
+        parentSize: 0,
+      });
+
+      render(
+        <Breadcrumbs overflowMode="collapse" ellipsisIndex={1}>
+          <BreadcrumbItem key="a">A</BreadcrumbItem>
+          <BreadcrumbItem key="b">
+            Very long hidden breadcrumb label
+          </BreadcrumbItem>
+          <BreadcrumbItem key="c">C</BreadcrumbItem>
+        </Breadcrumbs>
+      );
+
+      await user.click(screen.getByRole('button'));
+
+      const item = await screen.findByRole('menuitem', {
+        name: /Very long hidden breadcrumb label/,
+      });
+
+      await user.hover(item);
+
+      const tooltip = document.querySelector<HTMLElement>('[role="tooltip"]');
+
+      expect(tooltip).toBeInTheDocument();
+      expect(tooltip).toHaveTextContent('Very long hidden breadcrumb label');
+
+      vi.restoreAllMocks();
+    });
   });
 });
