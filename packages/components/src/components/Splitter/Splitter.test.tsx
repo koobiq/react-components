@@ -1208,6 +1208,28 @@ describe('Splitter', () => {
       );
     });
 
+    it('starts a drag from the panels on screen when the host declined a collapse', () => {
+      const onLayoutChange = vi.fn();
+
+      renderSplitter(
+        [
+          {
+            id: 'first',
+            minSize: 100,
+            isCollapsible: true,
+            isCollapsed: false,
+          },
+          { id: 'second' },
+        ],
+        { onLayoutChange }
+      );
+
+      pressKey('Enter');
+      drag([60]);
+
+      expect(onLayoutChange).toHaveBeenLastCalledWith([60, 40]);
+    });
+
     it('asks again for a collapsed state the host declined', () => {
       const onCollapsedChange = vi.fn();
 

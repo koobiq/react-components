@@ -283,6 +283,9 @@ const SplitterComponent = forwardRef<HTMLDivElement, SplitterBaseProps>(
       );
 
     const handleResizeStart = (index: number) => {
+      // A host that declined the last change never re-rendered it.
+      liveRef.current = input;
+
       const live = liveModel();
 
       // Without a measurement every size is zero, and a drag would collapse every collapsible panel it touches.
