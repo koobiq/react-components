@@ -6,6 +6,7 @@ import { Button } from '../Button';
 import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { FlexBox } from '../FlexBox';
 import { Toggle } from '../Toggle';
+import { Typography } from '../Typography';
 
 import {
   Splitter,
@@ -34,10 +35,16 @@ export const Base: Story = {
   render: (args) => {
     const content = {
       flex: 1,
-      display: 'grid',
-      placeItems: 'center',
-      color: 'var(--kbq-foreground-contrast-secondary)',
-    };
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
+    } as const;
 
     return (
       <Splitter
@@ -49,10 +56,14 @@ export const Base: Story = {
         {...args}
       >
         <Splitter.Panel minSize={100}>
-          <div style={content}>Panel 1</div>
+          <div style={content}>
+            <Typography {...text}>Panel 1</Typography>
+          </div>
         </Splitter.Panel>
         <Splitter.Panel minSize={100}>
-          <div style={content}>Panel 2</div>
+          <div style={content}>
+            <Typography {...text}>Panel 2</Typography>
+          </div>
         </Splitter.Panel>
       </Splitter>
     );
@@ -66,12 +77,18 @@ export const Appearance: Story = {
 
     const content = {
       flex: 1,
-      display: 'grid',
-      placeItems: 'center',
-      color: 'var(--kbq-foreground-contrast-secondary)',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
       backgroundColor: 'var(--kbq-background-bg-secondary)',
       borderRadius: 'var(--kbq-size-border-radius)',
-    };
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
+    } as const;
 
     return (
       <FlexBox direction="column" alignItems="center" gap="l">
@@ -94,12 +111,12 @@ export const Appearance: Story = {
         >
           <Splitter.Panel minSize={125}>
             <div style={{ ...content, marginInlineEnd: 'var(--kbq-size-s)' }}>
-              Panel 1
+              <Typography {...text}>Panel 1</Typography>
             </div>
           </Splitter.Panel>
           <Splitter.Panel minSize={125}>
             <div style={{ ...content, marginInlineStart: 'var(--kbq-size-s)' }}>
-              Panel 2
+              <Typography {...text}>Panel 2</Typography>
             </div>
           </Splitter.Panel>
         </Splitter>
@@ -115,10 +132,16 @@ export const Orientation: Story = {
 
     const content = {
       flex: 1,
-      display: 'grid',
-      placeItems: 'center',
-      color: 'var(--kbq-foreground-contrast-secondary)',
-    };
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
+    } as const;
 
     return (
       <FlexBox direction="column" alignItems="center" gap="l">
@@ -145,10 +168,14 @@ export const Orientation: Story = {
           {...args}
         >
           <Splitter.Panel minSize={70}>
-            <div style={content}>Panel 1</div>
+            <div style={content}>
+              <Typography {...text}>Panel 1</Typography>
+            </div>
           </Splitter.Panel>
           <Splitter.Panel minSize={70}>
-            <div style={content}>Panel 2</div>
+            <div style={content}>
+              <Typography {...text}>Panel 2</Typography>
+            </div>
           </Splitter.Panel>
         </Splitter>
       </FlexBox>
@@ -162,10 +189,16 @@ export const Disabled: Story = {
 
     const content = {
       flex: 1,
-      display: 'grid',
-      placeItems: 'center',
-      color: 'var(--kbq-foreground-contrast-secondary)',
-    };
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
+    } as const;
 
     return (
       <FlexBox direction="column" alignItems="center" gap="l">
@@ -183,10 +216,14 @@ export const Disabled: Story = {
           {...args}
         >
           <Splitter.Panel minSize={100}>
-            <div style={content}>Panel 1</div>
+            <div style={content}>
+              <Typography {...text}>Panel 1</Typography>
+            </div>
           </Splitter.Panel>
           <Splitter.Panel minSize={100}>
-            <div style={content}>Panel 2</div>
+            <div style={content}>
+              <Typography {...text}>Panel 2</Typography>
+            </div>
           </Splitter.Panel>
         </Splitter>
       </FlexBox>
@@ -200,30 +237,44 @@ export const Constraints: Story = {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
       justifyContent: 'center',
-      whiteSpace: 'nowrap',
-      color: 'var(--kbq-foreground-contrast-secondary)',
       backgroundColor: 'var(--kbq-background-bg-secondary)',
       borderRadius: 'var(--kbq-size-border-radius)',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
     } as const;
 
     return (
       <Splitter appearance="transparent" style={{ blockSize: 200 }} {...args}>
         <Splitter.Panel minSize={125}>
           <div style={{ ...content, marginInlineEnd: 'var(--kbq-size-s)' }}>
-            Panel 1<small>min: 125px</small>
+            <Typography {...text}>Panel 1</Typography>
+            <Typography {...text} variant="text-compact">
+              min: 125px
+            </Typography>
           </div>
         </Splitter.Panel>
         <Splitter.Panel size="30%" minSize={150} maxSize="30vw">
           <div style={{ ...content, marginInline: 'var(--kbq-size-s)' }}>
-            Panel 2<small>size: 30%</small>
-            <small>min: 150px, max: 30vw</small>
+            <Typography {...text}>Panel 2</Typography>
+            <Typography {...text} variant="text-compact">
+              size: 30%
+            </Typography>
+            <Typography {...text} variant="text-compact">
+              min: 150px, max: 30vw
+            </Typography>
           </div>
         </Splitter.Panel>
         <Splitter.Panel minSize={125}>
           <div style={{ ...content, marginInlineStart: 'var(--kbq-size-s)' }}>
-            Panel 3<small>min: 125px</small>
+            <Typography {...text}>Panel 3</Typography>
+            <Typography {...text} variant="text-compact">
+              min: 125px
+            </Typography>
           </div>
         </Splitter.Panel>
       </Splitter>
@@ -237,10 +288,13 @@ export const Snapping: Story = {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
       justifyContent: 'center',
-      whiteSpace: 'nowrap',
-      color: 'var(--kbq-foreground-contrast-secondary)',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
     } as const;
 
     return (
@@ -253,7 +307,9 @@ export const Snapping: Story = {
         {...args}
       >
         <Splitter.Panel>
-          <div style={content}>Panel 1</div>
+          <div style={content}>
+            <Typography {...text}>Panel 1</Typography>
+          </div>
         </Splitter.Panel>
         <Splitter.Panel
           minSize={200}
@@ -262,8 +318,13 @@ export const Snapping: Story = {
           snapTolerance={100}
         >
           <div style={content}>
-            Panel 2<small>snap: 300px, 400px</small>
-            <small>tolerance: 100px</small>
+            <Typography {...text}>Panel 2</Typography>
+            <Typography {...text} variant="text-compact">
+              snap: 300px, 400px
+            </Typography>
+            <Typography {...text} variant="text-compact">
+              tolerance: 100px
+            </Typography>
           </div>
         </Splitter.Panel>
       </Splitter>
@@ -280,11 +341,13 @@ export const Collapsible: Story = {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
       justifyContent: 'center',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      color: 'var(--kbq-foreground-contrast-secondary)',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
     } as const;
 
     return (
@@ -321,14 +384,20 @@ export const Collapsible: Story = {
             onCollapsedChange={setSidebarCollapsed}
           >
             <div style={content}>
-              Sidebar
-              {!isSidebarCollapsed && <small>Drag left to collapse</small>}
+              <Typography {...text}>Sidebar</Typography>
+              {!isSidebarCollapsed && (
+                <Typography {...text} variant="text-compact">
+                  Drag left to collapse
+                </Typography>
+              )}
             </div>
           </Splitter.Panel>
           <Splitter.Panel>
             <Splitter orientation="vertical" style={{ flex: 1 }}>
               <Splitter.Panel minSize={100}>
-                <div style={content}>Editor</div>
+                <div style={content}>
+                  <Typography {...text}>Editor</Typography>
+                </div>
               </Splitter.Panel>
               <Splitter.Panel
                 size={100}
@@ -339,9 +408,11 @@ export const Collapsible: Story = {
                 onCollapsedChange={setTerminalCollapsed}
               >
                 <div style={content}>
-                  Terminal
+                  <Typography {...text}>Terminal</Typography>
                   {!isTerminalCollapsed && (
-                    <small>Drag bottom to collapse</small>
+                    <Typography {...text} variant="text-compact">
+                      Drag bottom to collapse
+                    </Typography>
                   )}
                 </div>
               </Splitter.Panel>
@@ -357,10 +428,16 @@ export const Nested: Story = {
   render: (args) => {
     const content = {
       flex: 1,
-      display: 'grid',
-      placeItems: 'center',
-      color: 'var(--kbq-foreground-contrast-secondary)',
-    };
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
+    } as const;
 
     return (
       <Splitter
@@ -372,22 +449,30 @@ export const Nested: Story = {
         {...args}
       >
         <Splitter.Panel maxSize={200}>
-          <div style={content}>Sidebar</div>
+          <div style={content}>
+            <Typography {...text}>Sidebar</Typography>
+          </div>
         </Splitter.Panel>
         <Splitter.Panel>
           <Splitter orientation="vertical" style={{ flex: 1 }}>
             <Splitter.Panel minSize={100}>
               <Splitter style={{ flex: 1 }}>
                 <Splitter.Panel minSize={100}>
-                  <div style={content}>Editor 1</div>
+                  <div style={content}>
+                    <Typography {...text}>Editor 1</Typography>
+                  </div>
                 </Splitter.Panel>
                 <Splitter.Panel minSize={100}>
-                  <div style={content}>Editor 2</div>
+                  <div style={content}>
+                    <Typography {...text}>Editor 2</Typography>
+                  </div>
                 </Splitter.Panel>
               </Splitter>
             </Splitter.Panel>
             <Splitter.Panel size={50}>
-              <div style={content}>Terminal</div>
+              <div style={content}>
+                <Typography {...text}>Terminal</Typography>
+              </div>
             </Splitter.Panel>
           </Splitter>
         </Splitter.Panel>
@@ -402,10 +487,16 @@ export const ControlledLayout: Story = {
 
     const content = {
       flex: 1,
-      display: 'grid',
-      placeItems: 'center',
-      color: 'var(--kbq-foreground-contrast-secondary)',
-    };
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    } as const;
+
+    const text = {
+      align: 'center',
+      color: 'contrast-secondary',
+      ellipsis: true,
+    } as const;
 
     return (
       <FlexBox direction="column" gap="l">
@@ -435,10 +526,14 @@ export const ControlledLayout: Story = {
           {...args}
         >
           <Splitter.Panel size="25%" minSize={100}>
-            <div style={content}>Panel 1</div>
+            <div style={content}>
+              <Typography {...text}>Panel 1</Typography>
+            </div>
           </Splitter.Panel>
           <Splitter.Panel minSize={100}>
-            <div style={content}>Panel 2</div>
+            <div style={content}>
+              <Typography {...text}>Panel 2</Typography>
+            </div>
           </Splitter.Panel>
         </Splitter>
       </FlexBox>
