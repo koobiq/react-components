@@ -1,6 +1,12 @@
 import { createRef, useState } from 'react';
 
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  createEvent,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Provider } from '../Provider';
@@ -657,6 +663,33 @@ describe('Splitter', () => {
       fireEvent.mouseUp(window, { button: 0, clientX: 50 });
 
       expect(getSplitter()).not.toHaveAttribute('data-resizing');
+    });
+
+    it('captures the pointer, so a release over an iframe still ends the drag', () => {
+      renderSplitter();
+
+      const separator = getSeparator();
+      const setPointerCapture = vi.fn();
+      // jsdom has no pointer capture.
+      separator.setPointerCapture = setPointerCapture;
+
+      const press = (button: number, pointerId: number) => {
+        // Stubbed out `PointerEvent` leaves the event without a button and a pointer.
+        const event = createEvent.pointerDown(separator);
+
+        Object.defineProperties(event, {
+          button: { value: button },
+          pointerId: { value: pointerId },
+        });
+
+        fireEvent(separator, event);
+      };
+
+      press(2, 1);
+      press(0, 2);
+
+      expect(setPointerCapture).toHaveBeenCalledTimes(1);
+      expect(setPointerCapture).toHaveBeenCalledWith(2);
     });
 
     it('leaves a derived layout derived after a press that moved nothing', () => {

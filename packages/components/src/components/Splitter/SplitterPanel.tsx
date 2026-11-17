@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useEffect, useRef } from 'react';
-import type { MouseEvent } from 'react';
+import type { MouseEvent, PointerEvent } from 'react';
 
 import { once } from '@koobiq/logger';
 import {
@@ -129,7 +129,14 @@ export const SplitterPanel = forwardRef<HTMLDivElement, SplitterPanelBaseProps>(
     const interactionProps = isDisabled
       ? {}
       : mergeProps(pointerMoveProps, hoverProps, {
-          onPointerDown: focusSeparator,
+          onPointerDown: (event: PointerEvent<HTMLElement>) => {
+            // Uncaptured, a release over an iframe never reaches the window, and the drag goes on.
+            if (event.button === 0) {
+              event.currentTarget.setPointerCapture?.(event.pointerId);
+            }
+
+            focusSeparator();
+          },
           onMouseDown: focusSeparator,
           onKeyDown: context?.onSeparatorKeyDown,
           onDoubleClick: (event: MouseEvent) => {
