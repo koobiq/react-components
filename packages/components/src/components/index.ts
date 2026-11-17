@@ -62,6 +62,7 @@ export * from './EmptyState';
 export * from './Flag';
 export * from './Sidebar';
 export * from './Resizable';
+export * from './Splitter';
 export * from './FileUpload';
 export * from './Username';
 export * from './TopBar';
