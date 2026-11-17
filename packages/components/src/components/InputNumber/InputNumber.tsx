@@ -120,7 +120,7 @@ export const InputNumber = forwardRef<InputNumberRef, InputNumberProps>(
           );
 
           const inputProps = mergeProps<(FormFieldInputProps | undefined)[]>(
-            { ref: inputRef },
+            { ref: inputRef, className: s.input },
             slotProps?.input
           );
 

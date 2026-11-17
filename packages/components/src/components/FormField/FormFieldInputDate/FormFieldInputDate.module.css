@@ -15,7 +15,8 @@
     color var(--kbq-transition-default),
     background-color var(--kbq-transition-default);
 
-  @mixin typography text-normal;
+  /* tabular digits keep the field width stable when segments change via keyboard */
+  @mixin typography tabular-normal;
 
   scrollbar-width: none;
   overflow-x: auto;

@@ -1,6 +1,14 @@
+@import url('../../styles/mixins.css');
+
 .body {
   inline-size: 100%;
   min-inline-size: fit-content;
+}
+
+/* the input qualifier wins over the composed FormFieldInput text-normal */
+input.input {
+  /* tabular digits keep the field width stable when the value changes via stepper or keyboard */
+  @mixin typography tabular-normal;
 }
 
 .body > :first-child + * {
