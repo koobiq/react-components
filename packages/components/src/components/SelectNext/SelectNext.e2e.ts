@@ -3,6 +3,26 @@ import type { Locator } from '@playwright/test';
 
 import { e2eGotoStory, e2eScreenshotThemes } from '../../../e2e/utils';
 
+// The alpha of a computed color, whatever function it serializes as:
+// `rgba()` keeps it behind the last comma, the wider-gamut functions
+// (`oklch()`, `hsl()`, `color()`) behind a `/`, and no alpha part means
+// opaque. A color can be invisible with nonzero channels — like
+// `rgba(255, 0, 0, 0)` — so the alpha is parsed instead of comparing
+// the string against `transparent`.
+function getOutlineAlpha(color: string) {
+  const rgba = /rgba\(.*,\s*([\d.]+)\s*\)$/.exec(color)?.[1];
+
+  if (rgba !== undefined) return Number(rgba);
+
+  const functional = /\/\s*([\d.]+)(%?)\s*\)$/.exec(color);
+
+  if (!functional) return 1;
+
+  const value = Number(functional[1]);
+
+  return functional[2] ? value / 100 : value;
+}
+
 test.describe('SelectNext', () => {
   test('state and style', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-selectnext--state-and-style');
@@ -116,15 +136,10 @@ test.describe('SelectNext', () => {
       return { outlineColor, outlineStyle, outlineWidth };
     });
 
-    const restingOutlineColor = await unselected.evaluate(
-      (el) => getComputedStyle(el, '::before').outlineColor
-    );
-
-    // `getComputedStyle` serializes `transparent` as `rgba(0, 0, 0, 0)`, so
-    // the resting outline color is pinned first: the focused color then has
-    // to be a visible one, whatever format the theme color serializes to.
-    expect(restingOutlineColor).toBe('rgba(0, 0, 0, 0)');
-    expect(outline.outlineColor).not.toBe(restingOutlineColor);
+    // The outline has to be visible: the focused color's alpha is parsed —
+    // a computed color can be invisible with nonzero channels, like
+    // `rgba(255, 0, 0, 0)` — and the style and width have to draw it.
+    expect(getOutlineAlpha(outline.outlineColor)).toBeGreaterThan(0);
     expect(outline.outlineStyle).not.toBe('none');
     expect(parseFloat(outline.outlineWidth)).toBeGreaterThan(0);
   });
