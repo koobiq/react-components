@@ -87,10 +87,24 @@ test.describe('TreeSelect', () => {
     const focusedSelected = await getBackground(selected);
     expect(focusedSelected).toBe(restingUnselected);
 
-    const outlineColor = await selected.evaluate(
+    const outline = await selected.evaluate((el) => {
+      const { outlineColor, outlineStyle, outlineWidth } = getComputedStyle(
+        el,
+        '::before'
+      );
+
+      return { outlineColor, outlineStyle, outlineWidth };
+    });
+
+    const restingOutlineColor = await unselected.evaluate(
       (el) => getComputedStyle(el, '::before').outlineColor
     );
 
-    expect(outlineColor).not.toBe('transparent');
+    // The resting outline is transparent (serialized as `rgba(0, 0, 0, 0)`),
+    // so comparing against it rejects an invisible outline without assuming
+    // the focus theme color's serialization format.
+    expect(outline.outlineColor).not.toBe(restingOutlineColor);
+    expect(outline.outlineStyle).not.toBe('none');
+    expect(parseFloat(outline.outlineWidth)).toBeGreaterThan(0);
   });
 });
