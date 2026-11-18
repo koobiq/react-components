@@ -44,6 +44,20 @@ test.describe('TreeSelect', () => {
         (el) => getComputedStyle(el, '::before').backgroundColor
       );
 
+    // The background comparisons are only meaningful for known selection
+    // states, so each row's state is asserted before anything is measured.
+    await expect(selected).toHaveAttribute('data-selected', 'true');
+    await expect(unselected).not.toHaveAttribute('data-selected', 'true');
+    await expect(disabledSelected).toHaveAttribute('data-selected', 'true');
+    await expect(disabledSelected).toHaveAttribute('data-disabled', 'true');
+
+    await expect(disabledUnselected).not.toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+
+    await expect(disabledUnselected).toHaveAttribute('data-disabled', 'true');
+
     const restingSelected = await getBackground(selected);
     const restingUnselected = await getBackground(unselected);
     expect(restingSelected).toBe(restingUnselected);
@@ -61,14 +75,17 @@ test.describe('TreeSelect', () => {
     const hoveredUnselected = await getBackground(unselected);
     expect(hoveredSelected).toBe(hoveredUnselected);
 
-    // Each press is canceled by moving the pointer away before releasing it,
-    // so it never toggles the selection it is meant to observe.
+    // React Aria toggles a multiple-selection item on pointer down, so a
+    // press cannot be canceled by moving the pointer away: it is the story's
+    // pinned selection that keeps each row's state, not the cancel. The
+    // selection is reasserted after each press to prove that.
     await selected.hover();
     await page.mouse.down();
     await expect(selected).toHaveAttribute('data-pressed', 'true');
     const pressedSelected = await getBackground(selected);
     await page.mouse.move(0, 0);
     await page.mouse.up();
+    await expect(selected).toHaveAttribute('data-selected', 'true');
 
     await unselected.hover();
     await page.mouse.down();
@@ -76,13 +93,16 @@ test.describe('TreeSelect', () => {
     const pressedUnselected = await getBackground(unselected);
     await page.mouse.move(0, 0);
     await page.mouse.up();
+    await expect(unselected).not.toHaveAttribute('data-selected', 'true');
     expect(pressedSelected).toBe(pressedUnselected);
 
     // Focus stays indicated by the outline, not by a background: move the
     // keyboard focus away and back, so the item receives a visible focus.
+    // The focused row is still the selected one, pinned by the story.
     await selected.press('ArrowDown');
     await page.keyboard.press('ArrowUp');
     await expect(selected).toHaveAttribute('data-focus-visible', 'true');
+    await expect(selected).toHaveAttribute('data-selected', 'true');
 
     const focusedSelected = await getBackground(selected);
     expect(focusedSelected).toBe(restingUnselected);
@@ -100,9 +120,10 @@ test.describe('TreeSelect', () => {
       (el) => getComputedStyle(el, '::before').outlineColor
     );
 
-    // The resting outline is transparent (serialized as `rgba(0, 0, 0, 0)`),
-    // so comparing against it rejects an invisible outline without assuming
-    // the focus theme color's serialization format.
+    // `getComputedStyle` serializes `transparent` as `rgba(0, 0, 0, 0)`, so
+    // the resting outline color is pinned first: the focused color then has
+    // to be a visible one, whatever format the theme color serializes to.
+    expect(restingOutlineColor).toBe('rgba(0, 0, 0, 0)');
     expect(outline.outlineColor).not.toBe(restingOutlineColor);
     expect(outline.outlineStyle).not.toBe('none');
     expect(parseFloat(outline.outlineWidth)).toBeGreaterThan(0);

@@ -104,13 +104,16 @@ export const Open: Story = {
   ),
 };
 
+// A controlled `value` without a change handler pins the selection: React
+// Aria toggles a multiple-selection item on pointer down, so the test's
+// press-and-cancel sequence cannot restore what it would otherwise toggle.
 export const OpenMultiple: Story = {
   render: () => (
     <SelectNext
       aria-label="Attack type"
       defaultOpen
       selectionMode="multiple"
-      defaultValue={['ddos', 'dos']}
+      value={['ddos', 'dos']}
       disabledKeys={['dos', 'complex-attack']}
       style={{ inlineSize: 200 }}
       slotProps={{ popover: { 'data-testid': 'e2eScreenshotTarget' } }}
