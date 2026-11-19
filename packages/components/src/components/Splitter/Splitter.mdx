@@ -1,0 +1,151 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './Splitter.stories';
+
+<Meta of={Stories} />
+
+# Splitter
+
+<Status variant="experimental" />
+
+Splitter resizes neighboring panels by dragging the separator.
+
+## Import
+
+```tsx
+import { Splitter } from '@koobiq/react-components';
+```
+
+## Usage
+
+Only `Splitter.Panel` elements placed directly inside `Splitter`, without a wrapper element or a component of your own around them, participate in the layout.
+
+<Story of={Stories.Base} />
+
+## Props
+
+<Props of={Stories.Base} />
+
+## Components
+
+- `Splitter` — the area split into resizable panels.
+- `Splitter.Panel` — a resizable region. Every panel but the last renders the separator that follows it, so the separator sits between the two panels it resizes in the tab order as well as on screen.
+
+## Appearance
+
+The `appearance` prop sets how the separator is drawn:
+
+| Variant       | Description                                                                            |
+| ------------- | -------------------------------------------------------------------------------------- |
+| `divider`     | Dividing line. Used by default                                                         |
+| `transparent` | Invisible separator. Use it when panels differ by background or have their own borders |
+| `handle`      | Drag handle at the center of the boundary                                              |
+
+<Story of={Stories.Appearance} />
+
+## Orientation
+
+The `orientation` prop sets the layout direction: `horizontal` places panels in a row, `vertical` in a column.
+
+<Story of={Stories.Orientation} />
+
+## Disabled
+
+The `isDisabled` prop forbids resizing: the separators stop reacting to the pointer and the keyboard, leave the tab order and show the plain cursor.
+
+<Story of={Stories.Disabled} />
+
+## Size and constraints
+
+Three props of `Splitter.Panel` set its size:
+
+| Prop      | Description                                                   |
+| --------- | ------------------------------------------------------------- |
+| `size`    | Initial size. Panels without `size` share the remaining space |
+| `minSize` | Smallest size the panel can be reduced to                     |
+| `maxSize` | Largest size the panel can be expanded to                     |
+
+The panel size is set in pixels, percentages, `vw`, or `vh`:
+
+```tsx
+<Splitter.Panel size="30%" minSize="240px" maxSize="50vw">
+  …
+</Splitter.Panel>
+```
+
+When a neighboring panel reaches its constraint, the separator keeps moving: the panels after it give up space, so the next separator moves too.
+
+<Story of={Stories.Constraints} />
+
+## Snapping
+
+The `snapSizes` prop sets the sizes a panel snaps to. If either panel beside a separator has `snapSizes`, the `minSize` and `maxSize` of both panels also become snap points. The separator follows the pointer during a drag. The panel snaps after the drag ends.
+
+The `snapTolerance` prop sets the distance from a snap point at which a panel snaps to it. The default is 32 pixels.
+
+<Story of={Stories.Snapping} />
+
+## Collapsed panel
+
+The `isCollapsible` prop lets a panel be collapsed by dragging, and `collapsedSize` sets the width of the collapsed strip. Such a panel has no sizes in between: a drag stops at `minSize`, and pulling further collapses it.
+
+When `collapsedSize` is zero, the panel is completely hidden and no separator remains to restore it. The panel can be expanded through the controlled `isCollapsed` prop paired with `onCollapsedChange`, for example with a button or keyboard shortcut. Use `defaultCollapsed` when the state is not controlled.
+
+<Story of={Stories.Collapsible} />
+
+## Nested areas
+
+One of the panels can hold nested resizable areas.
+
+<Story of={Stories.Nested} />
+
+## Layout
+
+The `layout` prop holds the sizes of the panels as percentages of the splitter, in panel order. While it is `null`, the sizes are derived from what the panels declare. Read it through `onLayoutChange` to persist the layout, pass it back to restore one, or share one state between two splitters to keep their panels the same size. Setting it back to `null` returns the panels to their declared sizes. Use `defaultLayout` when the layout is not controlled.
+
+<Story of={Stories.ControlledLayout} />
+
+## Accessibility
+
+The separator has the `separator` role with `aria-valuenow`, `aria-valuemin` and `aria-valuemax` as percentages of the splitter, and `aria-controls` pointing at the panel before it. Its accessible name defaults to a localized "Resize panels"; pass `slotProps.separator['aria-label']` to name it after the panel it resizes.
+
+### Keyboard interaction
+
+The separator is placed in the tab order between the content of neighboring panels.
+
+| Key                          | Behavior                                                                                                         |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `Left Arrow` \ `Right Arrow` | Moves a vertical separator in the direction of the arrow.                                                        |
+| `Up Arrow` \ `Down Arrow`    | Moves a horizontal separator in the direction of the arrow.                                                      |
+| `Home`                       | Sets the smallest available size of the panel. A panel already at its minimum collapses, when it is collapsible. |
+| `End`                        | Sets the largest available size of the panel, squeezing the neighboring panels when needed.                      |
+| `Enter`                      | Collapses and expands the panel, when `isCollapsible` is set.                                                    |
+| `F6` \ `Shift + F6`          | Moves focus to the next or the previous panel.                                                                   |
+| Double-click                 | Resets the sizes to the ones the panels declare. A second double-click sets the panel to its minimum size.       |
+
+## Styling
+
+Each part can be targeted with a `data-slot` attribute (`splitter-panel`, `splitter-separator`), and the state with `data-orientation`, `data-appearance`, `data-disabled`, `data-resizing` on `Splitter` and `data-collapsed` on `Splitter.Panel`. The separator is customized with CSS variables:
+
+| Variable                                   | Description                                 |
+| ------------------------------------------ | ------------------------------------------- |
+| `--kbq-splitter-size-hit-area`             | Width of the area that reacts to the cursor |
+| `--kbq-splitter-size-line-width`           | Width of the dividing line                  |
+| `--kbq-splitter-size-active-line-width`    | Width of the line while it is dragged       |
+| `--kbq-splitter-line-color`                | Color of the dividing line                  |
+| `--kbq-splitter-state-hover-line-color`    | Color of the line under the cursor          |
+| `--kbq-splitter-state-active-line-color`   | Color of the line while it is dragged       |
+| `--kbq-splitter-handle-color`              | Color of the handle                         |
+| `--kbq-splitter-state-active-handle-color` | Color of the handle under the cursor        |
+| `--kbq-splitter-size-handle-length`        | Length of the handle                        |
+| `--kbq-splitter-size-handle-thickness`     | Thickness of the handle                     |
+| `--kbq-splitter-size-handle-border-radius` | Border radius of the handle                 |
+| `--kbq-splitter-focus-outline-color`       | Color of the keyboard focus frame           |
+| `--kbq-splitter-size-focus-outline-width`  | Width of the keyboard focus frame           |
+
+The content of a panel is a column flex container, so its child can fill the panel with `flex: 1`.

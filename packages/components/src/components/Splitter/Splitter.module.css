@@ -1,0 +1,233 @@
+.base {
+  --splitter-size-line-width: var(--kbq-size-border-width);
+  --splitter-size-active-line-width: 3px;
+  --splitter-size-focus-outline-width: var(--kbq-size-3xs);
+
+  /* Wider than the line, so the separator is easy to hit. It overlays the panels, so they never shift. */
+  --splitter-size-hit-area: calc(
+    2 * var(--kbq-size-s) +
+      var(--kbq-splitter-size-line-width, var(--splitter-size-line-width))
+  );
+  --splitter-size-handle-length: var(--kbq-size-3xl);
+  --splitter-size-handle-thickness: var(--kbq-size-xxs);
+  --splitter-size-handle-border-radius: var(--kbq-size-3xs);
+  --splitter-line-color: var(--kbq-line-contrast-less);
+  --splitter-state-hover-line-color: var(--kbq-line-contrast-fade);
+  --splitter-state-active-line-color: var(--kbq-states-line-focus-theme);
+  --splitter-focus-outline-color: var(--kbq-states-line-focus-theme);
+  --splitter-handle-color: var(--kbq-line-contrast-fade);
+  --splitter-state-active-handle-color: var(--kbq-states-line-focus-theme);
+
+  display: grid;
+  position: relative;
+
+  /* As a flex or grid item the splitter would otherwise grow with its own content-based minimum. */
+  min-inline-size: 0;
+  min-block-size: 0;
+
+  /* `clip`, not `hidden`: a scroll container would let focus or find-in-page displace the panels. */
+  overflow: clip;
+
+  /* The tracks of the resize axis are inline styles; the cross axis is a single track. */
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.base[data-orientation='vertical'] {
+  grid-template-rows: none;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* A drag must not land on the content it flies over. */
+.base[data-resizing] > .panel > .content {
+  pointer-events: none;
+  user-select: none;
+}
+
+.panel {
+  position: relative;
+
+  /* Clipped rather than `min-*: auto`, so the content can't veto the track size. */
+  min-inline-size: 0;
+  min-block-size: 0;
+  outline: none;
+
+  &:focus-visible {
+    outline: var(
+        --kbq-splitter-size-focus-outline-width,
+        var(--splitter-size-focus-outline-width)
+      )
+      solid
+      var(
+        --kbq-splitter-focus-outline-color,
+        var(--splitter-focus-outline-color)
+      );
+    outline-offset: calc(
+      -1 *
+        var(
+          --kbq-splitter-size-focus-outline-width,
+          var(--splitter-size-focus-outline-width)
+        )
+    );
+  }
+}
+
+/* A column flex container, so content can fill the panel with `flex: 1`. */
+.content {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+.separator {
+  --separator-hit-area: var(
+    --kbq-splitter-size-hit-area,
+    var(--splitter-size-hit-area)
+  );
+  --separator-line-width: var(
+    --kbq-splitter-size-line-width,
+    var(--splitter-size-line-width)
+  );
+  --separator-outline-width: var(
+    --kbq-splitter-size-focus-outline-width,
+    var(--splitter-size-focus-outline-width)
+  );
+
+  position: absolute;
+  z-index: 1;
+
+  /* Centred on the boundary with the next panel, half of the hit area in each. */
+  inset-block: 0;
+  inset-inline-end: calc(var(--separator-hit-area) / -2);
+  inline-size: var(--separator-hit-area);
+  touch-action: none;
+  outline: none;
+
+  &::after {
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 0;
+    inline-size: var(--separator-line-width);
+    margin-inline: auto;
+    background-color: var(
+      --kbq-splitter-line-color,
+      var(--splitter-line-color)
+    );
+    content: '';
+  }
+
+  &.hovered::after {
+    background-color: var(
+      --kbq-splitter-state-hover-line-color,
+      var(--splitter-state-hover-line-color)
+    );
+  }
+
+  &.active::after {
+    inline-size: var(
+      --kbq-splitter-size-active-line-width,
+      var(--splitter-size-active-line-width)
+    );
+    background-color: var(
+      --kbq-splitter-state-active-line-color,
+      var(--splitter-state-active-line-color)
+    );
+  }
+
+  &.focusVisible {
+    outline: var(--separator-outline-width) solid
+      var(
+        --kbq-splitter-focus-outline-color,
+        var(--splitter-focus-outline-color)
+      );
+    outline-offset: calc(-1 * var(--separator-outline-width));
+  }
+}
+
+/*
+ * The rules below reach the splitter's own panels through child combinators:
+ * a nested splitter sits inside a panel and must not inherit the outer
+ * orientation, appearance or disabled state.
+ */
+
+/* Out of hit-testing, so a disabled separator neither lights up nor shows a resize cursor. */
+.base[data-disabled] > .panel > .separator {
+  pointer-events: none;
+}
+
+.base[data-orientation='vertical'] > .panel > .separator {
+  inset-block: auto;
+  inset-inline: 0;
+  inset-block-end: calc(var(--separator-hit-area) / -2);
+  inline-size: auto;
+  block-size: var(--separator-hit-area);
+
+  &::after {
+    inset-block: 0;
+    inset-inline: 0;
+    inline-size: auto;
+    block-size: var(--separator-line-width);
+    margin-inline: 0;
+    margin-block: auto;
+  }
+
+  &.active::after {
+    inline-size: auto;
+    block-size: var(
+      --kbq-splitter-size-active-line-width,
+      var(--splitter-size-active-line-width)
+    );
+  }
+}
+
+/* The cursor alone gives the separator away; the focus frame stays for keyboard users. */
+.base[data-appearance='transparent'] > .panel > .separator::after {
+  opacity: 0;
+}
+
+.base[data-appearance='handle'] > .panel > .separator {
+  &::after {
+    inset-block: 0;
+    inline-size: var(
+      --kbq-splitter-size-handle-thickness,
+      var(--splitter-size-handle-thickness)
+    );
+    block-size: var(
+      --kbq-splitter-size-handle-length,
+      var(--splitter-size-handle-length)
+    );
+    margin-block: auto;
+    border-radius: var(
+      --kbq-splitter-size-handle-border-radius,
+      var(--splitter-size-handle-border-radius)
+    );
+    background-color: var(
+      --kbq-splitter-handle-color,
+      var(--splitter-handle-color)
+    );
+  }
+
+  &:is(.hovered, .active, .focusVisible)::after {
+    background-color: var(
+      --kbq-splitter-state-active-handle-color,
+      var(--splitter-state-active-handle-color)
+    );
+  }
+}
+
+.base[data-appearance='handle'][data-orientation='vertical']
+  > .panel
+  > .separator::after {
+  inset-inline: 0;
+  inline-size: var(
+    --kbq-splitter-size-handle-length,
+    var(--splitter-size-handle-length)
+  );
+  block-size: var(
+    --kbq-splitter-size-handle-thickness,
+    var(--splitter-size-handle-thickness)
+  );
+  margin-inline: auto;
+  margin-block: auto;
+}
