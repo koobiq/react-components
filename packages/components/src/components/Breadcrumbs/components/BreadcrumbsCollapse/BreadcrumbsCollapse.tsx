@@ -48,7 +48,7 @@ const renderEllipsisDefault: BreadcrumbsPropRenderEllipsis = ({
           {...item.props}
           textValue={isString(item.children) ? item.children : `${index}`}
         >
-          <Menu.ItemText>{item.children}</Menu.ItemText>
+          <Menu.ItemText showOverflowTooltip>{item.children}</Menu.ItemText>
         </Menu.Item>
       ))}
     </Menu>
