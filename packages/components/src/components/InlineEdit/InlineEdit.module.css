@@ -95,6 +95,15 @@
   border-radius: inherit;
 }
 
+.panelDialog[data-slot='inline-edit-dialog'],
+.panelDialog[data-slot='inline-edit-dialog'] > div {
+  overflow: visible;
+}
+
+.panelDialog[data-slot='inline-edit-dialog'] {
+  min-block-size: 0;
+}
+
 .controlContainer {
   box-sizing: border-box;
   inline-size: 100%;

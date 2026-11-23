@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -230,36 +229,6 @@ export const ProgrammaticMode: Story = {
           )}
         />
       </FlexBox>
-    );
-  },
-};
-
-export const CustomDesign: Story = {
-  render: () => {
-    const style = {
-      inlineSize: 320,
-      '--kbq-inline-edit-height': '48px',
-      '--kbq-inline-edit-background':
-        'var(--kbq-states-background-transparent-hover)',
-      '--kbq-inline-edit-label-color': 'var(--kbq-foreground-theme)',
-    } as CSSProperties;
-
-    return (
-      <InlineEdit
-        aria-label="Name"
-        label="Name"
-        defaultValue="Security team"
-        style={style}
-        renderView={(value) => value}
-        renderEdit={({ value, onChange }) => (
-          <Input
-            aria-label="Name"
-            value={value}
-            onChange={onChange}
-            fullWidth
-          />
-        )}
-      />
     );
   },
 };

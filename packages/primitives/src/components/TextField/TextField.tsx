@@ -133,6 +133,7 @@ function TextFieldRender(
       ...removeDataAttributes(props),
       value: inputValue,
       onKeyDown: (e) => {
+        e.continuePropagation();
         props?.onKeyDown?.(e);
         handleKeyDown(e);
       },

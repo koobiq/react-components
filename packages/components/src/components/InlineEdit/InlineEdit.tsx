@@ -10,7 +10,14 @@ import type {
   ReactElement,
   Ref,
 } from 'react';
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   clsx,
@@ -92,6 +99,7 @@ function InlineEditRender<T>(
   const restoreFocusRef = useRef(false);
 
   const isEdit = mode === 'edit';
+  const hasLabel = Boolean(label);
 
   const changeMode = useCallback(
     (nextMode: InlineEditPropMode) => {
@@ -213,14 +221,14 @@ function InlineEditRender<T>(
     return () => clearTimeout(timer);
   }, [isEdit]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isEdit || !anchorRef.current) return;
 
     setAnchorSize({
       width: anchorRef.current.offsetWidth,
       height: anchorRef.current.offsetHeight,
     });
-  }, [anchorRef, isEdit, rect.height, rect.width]);
+  }, [anchorRef, hasLabel, isEdit, rect.height, rect.width]);
 
   // React events from a portal bubble through the editor's logical tree. The
   // capture handler below records those targets before this native document
@@ -344,13 +352,15 @@ function InlineEditRender<T>(
       className={clsx(s.base, label ? s.withLabel : undefined, className)}
       onClick={handleRootClick}
       {...other}
-      ref={mergeRefs(ref, rootRef)}
+      ref={
+        hasLabel ? mergeRefs(ref, rootRef) : mergeRefs(ref, rootRef, anchorRef)
+      }
     >
       {label && <div className={s.label}>{label}</div>}
       <div
         className={s.viewContainer}
         data-slot="inline-edit-view-container"
-        ref={anchorRef}
+        ref={hasLabel ? anchorRef : undefined}
       >
         <div
           className={s.viewContent}
@@ -391,6 +401,7 @@ function InlineEditRender<T>(
         disableFocusManagement
         disableExitOnEscapeKeyDown
         slotProps={{
+          backdrop: { hidden: true },
           container: {
             'data-slot': 'inline-edit-panel-container',
             className: s.panelContainer,

@@ -13,6 +13,7 @@ import { createPortal } from 'react-dom';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Provider } from '../Provider';
+import { Textarea } from '../Textarea';
 
 import { InlineEdit } from './index';
 import type { InlineEditProps } from './index';
@@ -506,11 +507,7 @@ it.each(['{Control>}{Enter}{/Control}', '{Meta>}{Enter}{/Meta}'])(
       defaultMode: 'edit',
       onSaved,
       renderEdit: ({ value, onChange }) => (
-        <textarea
-          aria-label="Editor"
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-        />
+        <Textarea aria-label="Editor" value={value} onChange={onChange} />
       ),
     });
 
@@ -662,23 +659,25 @@ it('uses editModeWidth for the Popover inline size', async () => {
   });
 });
 
-it('measures the anchor and follows ResizeObserver width changes', async () => {
+it('measures the root without a label and follows its resize', async () => {
   renderStringEdit();
 
-  const anchor = document.querySelector<HTMLElement>(
+  const root = screen.getByTestId('root');
+
+  const viewContainer = document.querySelector<HTMLElement>(
     '[data-slot="inline-edit-view-container"]'
   )!;
 
-  const width = vi.spyOn(anchor, 'offsetWidth', 'get').mockReturnValue(240);
-  const height = vi.spyOn(anchor, 'offsetHeight', 'get').mockReturnValue(40);
+  const width = vi.spyOn(root, 'offsetWidth', 'get').mockReturnValue(240);
+  const height = vi.spyOn(root, 'offsetHeight', 'get').mockReturnValue(40);
+  vi.spyOn(viewContainer, 'offsetWidth', 'get').mockReturnValue(200);
+  vi.spyOn(viewContainer, 'offsetHeight', 'get').mockReturnValue(20);
 
   await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
   const dialog = await screen.findByRole('dialog');
   const panel = dialog.closest('[data-slot="inline-edit-panel"]');
 
-  await vi.waitFor(() =>
-    expect(panel).toHaveStyle({ '--popover-inline-size': '240px' })
-  );
+  expect(panel).toHaveStyle({ '--popover-inline-size': '240px' });
 
   width.mockReturnValue(320);
   height.mockReturnValue(48);
@@ -706,6 +705,23 @@ it('measures the anchor and follows ResizeObserver width changes', async () => {
   await vi.waitFor(() =>
     expect(panel).toHaveStyle({ '--popover-inline-size': '320px' })
   );
+});
+
+it('measures the view container when a label is present', async () => {
+  renderStringEdit({ label: 'Name' });
+
+  const anchor = document.querySelector<HTMLElement>(
+    '[data-slot="inline-edit-view-container"]'
+  )!;
+
+  vi.spyOn(anchor, 'offsetWidth', 'get').mockReturnValue(240);
+  vi.spyOn(anchor, 'offsetHeight', 'get').mockReturnValue(40);
+
+  await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+  const dialog = await screen.findByRole('dialog');
+  const panel = dialog.closest('[data-slot="inline-edit-panel"]');
+
+  expect(panel).toHaveStyle({ '--popover-inline-size': '240px' });
 });
 
 describe('InlineEdit style contract', () => {

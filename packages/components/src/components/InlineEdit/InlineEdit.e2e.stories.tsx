@@ -1,6 +1,10 @@
+import { useState } from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { E2eGrid } from '../../../e2e/E2eGrid';
+import { Input } from '../Input';
+import { Textarea } from '../Textarea';
 
 import { InlineEdit } from './index';
 
@@ -22,13 +26,7 @@ const renderEdit = ({
 }: {
   value: string;
   onChange(value: string): void;
-}) => (
-  <input
-    aria-label="Value"
-    value={value}
-    onChange={(event) => onChange(event.target.value)}
-  />
-);
+}) => <Input aria-label="Value" value={value} onChange={onChange} fullWidth />;
 
 export const ViewStates: Story = {
   render: () => (
@@ -76,4 +74,84 @@ export const EditState: Story = {
       />
     </div>
   ),
+};
+
+export const EditStateWithoutLabel: Story = {
+  render: () => (
+    <div data-testid="e2eScreenshotTarget" style={{ inlineSize: 320 }}>
+      <InlineEdit
+        defaultValue="Security team"
+        defaultMode="edit"
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+    </div>
+  ),
+};
+
+const OutsideInteractionExample = () => {
+  const [controlledMode, setControlledMode] = useState<'view' | 'edit'>('view');
+  const [saveCount, setSaveCount] = useState(0);
+
+  const onSaved = () => setSaveCount((count) => count + 1);
+
+  return (
+    <div style={{ display: 'grid', gap: 16, inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Controlled"
+        data-testid="controlled"
+        mode={controlledMode}
+        onModeChange={setControlledMode}
+        defaultValue="Controlled value"
+        onSaved={onSaved}
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+      <InlineEdit
+        aria-label="Uncontrolled"
+        data-testid="uncontrolled"
+        defaultValue="Uncontrolled value"
+        onSaved={onSaved}
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+      <button data-testid="outside-button" type="button">
+        Outside
+      </button>
+      <div data-testid="outside-nonfocusable">Non-focusable outside</div>
+      <output data-testid="save-count">{saveCount}</output>
+    </div>
+  );
+};
+
+export const OutsideInteraction: Story = {
+  render: () => <OutsideInteractionExample />,
+};
+
+const TextareaInteractionExample = () => {
+  const [savedValue, setSavedValue] = useState('');
+
+  return (
+    <div style={{ display: 'grid', gap: 16, inlineSize: 320 }}>
+      <InlineEdit
+        defaultValue="Monitors incidents"
+        defaultMode="edit"
+        onSaved={setSavedValue}
+        renderView={renderView}
+        renderEdit={({ value, onChange }) => (
+          <Textarea
+            aria-label="Value"
+            value={value}
+            onChange={onChange}
+            fullWidth
+          />
+        )}
+      />
+      <output data-testid="saved-value">{savedValue}</output>
+    </div>
+  );
+};
+
+export const TextareaInteraction: Story = {
+  render: () => <TextareaInteractionExample />,
 };
