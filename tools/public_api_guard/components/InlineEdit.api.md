@@ -44,6 +44,7 @@ export type InlineEditProps<T> = Omit<ComponentPropsWithRef<'div'>, 'children' |
     label?: ReactNode;
     menu?: ReactNode;
     menuAriaLabel?: string;
+    interactiveSelectors?: string[];
     renderView: (value: T) => ReactNode;
     renderEdit: (props: InlineEditRenderEditProps<T>) => ReactNode;
     isDisabled?: boolean;
@@ -93,7 +94,7 @@ export const InlineEditSaveErrorHandlerProvider: Provider<InlineEditSaveErrorHan
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/InlineEdit/types.d.ts:64:5 - (ae-forgotten-export) The symbol "TooltipPropPlacement" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/InlineEdit/types.d.ts:66:5 - (ae-forgotten-export) The symbol "TooltipPropPlacement" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

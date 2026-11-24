@@ -61,6 +61,8 @@ type InlineEditComponent = <T>(
 const focusableSelector =
   'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]';
 
+const defaultInteractiveSelectors = ['a', 'button'];
+
 const inlineEditRegistry = new WeakMap<HTMLElement, () => void>();
 
 type SelectEditorProps = {
@@ -89,6 +91,7 @@ function InlineEditRender<T>(
     label,
     menu,
     menuAriaLabel,
+    interactiveSelectors = defaultInteractiveSelectors,
     renderView,
     renderEdit,
     isDisabled = false,
@@ -139,8 +142,11 @@ function InlineEditRender<T>(
   const [saveErrorContext, setSaveErrorContext] =
     useState<InlineEditSaveErrorContextType | null>(null);
 
+  const [hasInteractiveContent, setHasInteractiveContent] = useState(false);
+
   const rootRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
+  const focusAnchorRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const controlContainerRef = useRef<HTMLDivElement>(null);
   const initialValueRef = useRef(value);
@@ -178,6 +184,7 @@ function InlineEditRender<T>(
 
   const isEdit = mode === 'edit';
   const hasLabel = Boolean(label);
+  const interactiveSelector = interactiveSelectors.join(',');
   const currentValidationError = validate?.(value);
 
   const validationError =
@@ -582,6 +589,24 @@ function InlineEditRender<T>(
   const hasSelectFooter = Boolean(selectElement?.props.dropdownFooter);
 
   useEffect(() => {
+    const view = viewRef.current;
+    if (!view) return;
+
+    const detect = () => {
+      setHasInteractiveContent(
+        Boolean(interactiveSelector && view.querySelector(interactiveSelector))
+      );
+    };
+
+    detect();
+
+    const observer = new MutationObserver(detect);
+    observer.observe(view, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, [interactiveSelector]);
+
+  useEffect(() => {
     if (isInvalid && isEdit) return;
 
     hideValidationTooltip();
@@ -613,7 +638,7 @@ function InlineEditRender<T>(
           activeElement === document.body ||
           (activeElement && panelRef.current?.contains(activeElement))
         ) {
-          viewRef.current?.focus();
+          (focusAnchorRef.current ?? viewRef.current)?.focus();
         }
       }, 0);
 
@@ -775,9 +800,19 @@ function InlineEditRender<T>(
     );
   }, []);
 
+  const isInteractiveViewTarget = (target: EventTarget | null) => {
+    if (!(target instanceof Element) || !interactiveSelector) return false;
+
+    const match = target.closest(interactiveSelector);
+    const view = viewRef.current;
+
+    return Boolean(match && match !== view && view?.contains(match));
+  };
+
   const handleRootClick = (event: MouseEvent<HTMLDivElement>) => {
     onClick?.(event);
     if (event.defaultPrevented || isDisabled) return;
+    if (isInteractiveViewTarget(event.target)) return;
 
     if (mode === 'edit') {
       // The panel is portaled, so a click bubbling from inside it is not
@@ -838,7 +873,7 @@ function InlineEditRender<T>(
           }
 
           if (!adjacent) {
-            viewRef.current?.focus();
+            (focusAnchorRef.current ?? viewRef.current)?.focus();
 
             return;
           }
@@ -1002,6 +1037,7 @@ function InlineEditRender<T>(
       data-slot="inline-edit"
       data-mode={mode}
       data-save-status={saveStatus}
+      data-interactive={hasInteractiveContent || undefined}
       data-editor={isSingleSelect ? 'select' : undefined}
       data-disabled={isDisabled || undefined}
       className={clsx(s.base, label ? s.withLabel : undefined, className)}
@@ -1030,16 +1066,34 @@ function InlineEditRender<T>(
       >
         <div
           className={s.viewContent}
-          role="button"
-          tabIndex={isEdit || isDisabled ? -1 : 0}
-          aria-expanded={isEdit}
-          aria-disabled={isDisabled || undefined}
-          aria-label={ariaLabel || stringFormatter.format('edit')}
-          onKeyDown={handleViewKeyDown}
+          role={hasInteractiveContent ? undefined : 'button'}
+          tabIndex={
+            hasInteractiveContent ? undefined : isEdit || isDisabled ? -1 : 0
+          }
+          aria-expanded={hasInteractiveContent ? undefined : isEdit}
+          aria-disabled={!hasInteractiveContent && (isDisabled || undefined)}
+          aria-label={
+            hasInteractiveContent
+              ? undefined
+              : ariaLabel || stringFormatter.format('edit')
+          }
+          onKeyDown={hasInteractiveContent ? undefined : handleViewKeyDown}
           ref={viewRef}
         >
           {renderView(value)}
         </div>
+        {hasInteractiveContent && !isEdit && !isDisabled && (
+          <div
+            aria-expanded="false"
+            aria-label={ariaLabel || stringFormatter.format('edit')}
+            className={clsx(s.focusAnchor, utilClasses.hideVisually)}
+            data-slot="inline-edit-focus-anchor"
+            role="button"
+            tabIndex={0}
+            onKeyDown={handleViewKeyDown}
+            ref={focusAnchorRef}
+          />
+        )}
         {menu && !isEdit && (
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the group only isolates nested menu events from the root click delegate
           <div

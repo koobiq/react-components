@@ -11,6 +11,7 @@ import { IconButton } from '../IconButton';
 import { InlineEdit, type InlineEditProps } from '../index';
 import { Input } from '../Input';
 import { SelectNext } from '../SelectNext';
+import { Tag } from '../Tag';
 import { Textarea as TextareaComponent } from '../Textarea';
 
 const meta = {
@@ -323,6 +324,32 @@ export const ActionButtons: Story = {
         renderEdit={({ value, onChange }) => (
           <Input
             aria-label="Name"
+            value={value}
+            onChange={onChange}
+            fullWidth
+          />
+        )}
+      />
+    </div>
+  ),
+};
+
+export const InteractiveView: Story = {
+  render: () => (
+    <div style={{ inlineSize: 360 }}>
+      <InlineEdit
+        aria-label="Team"
+        label="Team"
+        defaultValue="Security team"
+        renderView={(value) => (
+          <FlexBox gap="xs" alignItems="center">
+            <a href="#team">{value}</a>
+            <Tag allowsRemoving>On call</Tag>
+          </FlexBox>
+        )}
+        renderEdit={({ value, onChange }) => (
+          <Input
+            aria-label="Team"
             value={value}
             onChange={onChange}
             fullWidth

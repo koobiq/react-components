@@ -56,6 +56,8 @@ export type InlineEditProps<T> = Omit<
   menu?: ReactNode;
   /** Accessible name for the menu group. */
   menuAriaLabel?: string;
+  /** Interactive view selectors. The supplied array replaces the default list. */
+  interactiveSelectors?: string[];
   /** Renders the current value in view mode. */
   renderView: (value: T) => ReactNode;
   /** Renders the editor inside the edit overlay. */

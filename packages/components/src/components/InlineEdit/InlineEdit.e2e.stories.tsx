@@ -9,6 +9,7 @@ import { DropdownMenu } from '../DropdownMenu';
 import { IconButton } from '../IconButton';
 import { Input } from '../Input';
 import { SelectNext } from '../SelectNext';
+import { Tag } from '../Tag';
 import { Textarea } from '../Textarea';
 
 import { InlineEdit } from './index';
@@ -439,4 +440,51 @@ export const ActionsState: Story = {
       />
     </div>
   ),
+};
+
+const InteractiveViewExample = () => {
+  const [showTag, setShowTag] = useState(true);
+  const [showDynamicLink, setShowDynamicLink] = useState(false);
+
+  return (
+    <div style={{ display: 'grid', gap: 16, inlineSize: 360 }}>
+      <InlineEdit
+        aria-label="Interactive team"
+        data-testid="interactive-root"
+        defaultValue="Security team"
+        renderView={(value) => (
+          <div style={{ display: 'flex', gap: 8 }}>
+            <a href="#team">{value}</a>
+            {showTag && (
+              <Tag
+                allowsRemoving
+                slotProps={{
+                  removeIcon: { onPress: () => setShowTag(false) },
+                }}
+              >
+                On call
+              </Tag>
+            )}
+          </div>
+        )}
+        renderEdit={renderEdit}
+      />
+      <button type="button" onClick={() => setShowDynamicLink(true)}>
+        Add dynamic link
+      </button>
+      <InlineEdit
+        aria-label="Dynamic team"
+        data-testid="dynamic-interactive-root"
+        defaultValue="Dynamic value"
+        renderView={(value) =>
+          showDynamicLink ? <a href="#dynamic">{value}</a> : value
+        }
+        renderEdit={renderEdit}
+      />
+    </div>
+  );
+};
+
+export const InteractiveViewInteraction: Story = {
+  render: () => <InteractiveViewExample />,
 };

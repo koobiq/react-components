@@ -77,6 +77,12 @@ Set `showActions` to render icon buttons with localized accessible names. Save a
 
 <Story of={Stories.ActionButtons} />
 
+## Interactive view
+
+Links, buttons, and removable tags handle their own interactions without opening the editor. `interactiveSelectors` replaces the default `['a', 'button']` list. Content inserted after mount is detected automatically, and a separate visually hidden anchor provides keyboard editing and focus restoration without nested interactive roles.
+
+<Story of={Stories.InteractiveView} />
+
 ## Select
 
 A direct single `SelectNext` in `renderEdit` opens its dropdown automatically. Call `commit(nextValue)` from `onChange` to save the selected option. Multiple and multiline selects stay in the regular editor panel.
@@ -107,4 +113,3 @@ A direct single `SelectNext` in `renderEdit` opens its dropdown automatically. C
 - Tab and Shift+Tab at a panel boundary save and move focus in that direction; an adjacent enabled InlineEdit opens automatically.
 - `onSaved` fires immediately for a local save or after a successful `onSave` request.
 - Programmatic mode changes do not emit `onSaved` or `onCanceled`.
-- MVP view content must not contain links, buttons or other interactive descendants.

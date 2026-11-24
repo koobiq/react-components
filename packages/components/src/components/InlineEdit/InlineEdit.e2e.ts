@@ -472,6 +472,52 @@ test.describe('InlineEdit', () => {
     await expect(root).toHaveAttribute('data-disabled', 'true');
   });
 
+  test('keeps interactive view actions and dynamic content accessible', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--interactive-view-interaction');
+
+    const root = page.getByTestId('interactive-root');
+    await expect(root).toHaveAttribute('data-interactive', 'true');
+
+    await page.getByRole('link', { name: 'Security team' }).click();
+    await expect(root).toHaveAttribute('data-mode', 'view');
+    await expect(page.getByRole('textbox')).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Remove' }).click();
+    await expect(root).toHaveAttribute('data-mode', 'view');
+
+    const anchor = root.locator('[data-slot="inline-edit-focus-anchor"]');
+    await anchor.focus();
+    await page.keyboard.press('Enter');
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+    await page.keyboard.press('Escape');
+
+    const restoredAnchor = root.locator(
+      '[data-slot="inline-edit-focus-anchor"]'
+    );
+
+    await expect(restoredAnchor).toBeFocused();
+
+    expect(
+      await restoredAnchor.evaluate((element) =>
+        element.matches(':focus-visible')
+      )
+    ).toBe(true);
+
+    const dynamicRoot = page.getByTestId('dynamic-interactive-root');
+
+    await expect(
+      dynamicRoot.locator('[data-slot="inline-edit-focus-anchor"]')
+    ).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Add dynamic link' }).click();
+
+    await expect(
+      dynamicRoot.locator('[data-slot="inline-edit-focus-anchor"]')
+    ).toHaveCount(1);
+  });
+
   test('resolves the default and root-level panel shadow', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--edit-state');
 

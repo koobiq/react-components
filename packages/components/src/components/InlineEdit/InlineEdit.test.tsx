@@ -879,6 +879,96 @@ it('measures the view container when a label is present', async () => {
   expect(panel).toHaveStyle({ '--popover-inline-size': '240px' });
 });
 
+it('keeps interactive view content independent and restores anchor focus', async () => {
+  renderStringEdit({
+    renderView: () => <a href="#team">Team</a>,
+  });
+
+  const link = screen.getByRole('link', { name: 'Team' });
+  expect(link.parentElement).not.toHaveAttribute('role');
+
+  await userEvent.click(link);
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+
+  const editAnchor = screen.getByRole('button', { name: 'Edit' });
+  await userEvent.click(editAnchor);
+  await userEvent.keyboard('{Escape}');
+
+  await waitFor(() =>
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+  );
+
+  await vi.waitFor(() =>
+    expect(screen.getByRole('button', { name: 'Edit' })).toHaveFocus()
+  );
+});
+
+it('detects interactive content inserted after mount', async () => {
+  const { rerender } = render(
+    <InlineEdit
+      defaultValue="Security team"
+      renderView={(value) => value}
+      renderEdit={() => <input aria-label="Editor" />}
+    />
+  );
+
+  expect(
+    document.querySelector('[data-slot="inline-edit-focus-anchor"]')
+  ).not.toBeInTheDocument();
+
+  rerender(
+    <InlineEdit
+      defaultValue="Security team"
+      renderView={(value) => <a href="#team">{value}</a>}
+      renderEdit={() => <input aria-label="Editor" />}
+    />
+  );
+
+  await waitFor(() =>
+    expect(
+      document.querySelector('[data-slot="inline-edit-focus-anchor"]')
+    ).toBeInTheDocument()
+  );
+});
+
+it('replaces interactive selectors instead of extending defaults', async () => {
+  renderStringEdit({
+    interactiveSelectors: ['.custom-action'],
+    renderView: () => (
+      <>
+        <a href="#team">Team</a>
+        <button className="custom-action" type="button">
+          Custom
+        </button>
+      </>
+    ),
+  });
+
+  await userEvent.click(screen.getByRole('link', { name: 'Team' }));
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+
+  await userEvent.keyboard('{Escape}');
+  await userEvent.click(screen.getByRole('button', { name: 'Custom' }));
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+});
+
+it('does not inherit an interactive match from an outer link', async () => {
+  render(
+    <a href="#outer">
+      <InlineEdit
+        defaultValue="Security team"
+        data-testid="root"
+        renderView={(value) => value}
+        renderEdit={() => <input aria-label="Editor" />}
+      />
+    </a>
+  );
+
+  await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+});
+
 it('saves once when Enter activates the Save action', async () => {
   const onSaved = vi.fn();
 
