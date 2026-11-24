@@ -18,6 +18,7 @@ const tabStopSelector = [
 const overlaySelector = [
   '[data-slot="inline-edit-panel"]',
   '[data-slot="popover"]',
+  '[data-slot="dropdown"]',
   '[role="dialog"]',
   '[role="menu"]',
   '[role="listbox"]',

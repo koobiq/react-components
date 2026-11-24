@@ -6,6 +6,8 @@ export type InlineEditPropMode = (typeof inlineEditPropMode)[number];
 export type InlineEditRenderEditProps<T> = {
   value: T;
   onChange(value: T): void;
+  /** Saves the current draft, or the supplied value when selection changes first. */
+  commit(value?: T): void;
 };
 
 export type InlineEditProps<T> = Omit<

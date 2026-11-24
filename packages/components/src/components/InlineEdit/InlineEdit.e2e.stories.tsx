@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { E2eGrid } from '../../../e2e/E2eGrid';
 import { DescriptionList } from '../DescriptionList';
 import { Input } from '../Input';
+import { SelectNext } from '../SelectNext';
 import { Textarea } from '../Textarea';
 
 import { InlineEdit } from './index';
@@ -289,6 +290,67 @@ export const TabMiddleControls: Story = {
       <button data-testid="tab-after" type="button">
         After
       </button>
+    </div>
+  ),
+};
+
+const selectItems = [{ name: 'Bruteforce' }, { name: 'DDoS' }, { name: 'DoS' }];
+
+export const SelectInteraction: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 8, inlineSize: 240 }}>
+      <InlineEdit
+        aria-label="Attack type"
+        data-testid="select-root"
+        defaultValue="Bruteforce"
+        defaultMode="edit"
+        renderView={renderView}
+        renderEdit={({ value, commit }) => (
+          <SelectNext
+            aria-label="Attack type editor"
+            items={selectItems}
+            value={value}
+            onChange={(next) => commit(next as string)}
+            fullWidth
+          >
+            {(item) => (
+              <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+            )}
+          </SelectNext>
+        )}
+      />
+      <button data-testid="select-after" type="button">
+        After
+      </button>
+    </div>
+  ),
+};
+
+export const SelectMultilineInteraction: Story = {
+  render: () => (
+    <div style={{ inlineSize: 280 }}>
+      <InlineEdit
+        aria-label="Attack types"
+        data-testid="select-multiline-root"
+        defaultValue={['Bruteforce']}
+        defaultMode="edit"
+        renderView={(value) => value.join(', ')}
+        renderEdit={({ value, onChange }) => (
+          <SelectNext
+            aria-label="Attack types editor"
+            items={selectItems}
+            value={value}
+            onChange={(next) => onChange(next as string[])}
+            selectionMode="multiple"
+            selectedTagsOverflow="multiline"
+            fullWidth
+          >
+            {(item) => (
+              <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+            )}
+          </SelectNext>
+        )}
+      />
     </div>
   ),
 };

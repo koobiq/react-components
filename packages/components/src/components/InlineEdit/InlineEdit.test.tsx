@@ -572,6 +572,27 @@ it('leaves Enter on a nested button to that button', async () => {
   expect(button).toBeInTheDocument();
 });
 
+it('commits a supplied editor value exactly once', async () => {
+  const onSaved = vi.fn();
+
+  renderStringEdit({
+    defaultMode: 'edit',
+    onSaved,
+    renderEdit: ({ commit }) => (
+      <button type="button" onClick={() => commit('Next value')}>
+        Commit
+      </button>
+    ),
+  });
+
+  await userEvent.click(screen.getByRole('button', { name: 'Commit' }));
+
+  expect(onSaved).toHaveBeenCalledTimes(1);
+  expect(onSaved).toHaveBeenCalledWith('Next value');
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+  expect(screen.getByText('Next value')).toBeInTheDocument();
+});
+
 it('does not save when the editor handled Tab and moved focus', () => {
   const onSaved = vi.fn();
 

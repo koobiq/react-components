@@ -11,7 +11,9 @@ import type {
   Ref,
 } from 'react';
 import {
+  cloneElement,
   forwardRef,
+  isValidElement,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -29,6 +31,8 @@ import {
 import type { DataAttributeProps } from '@koobiq/react-core';
 
 import { Popover } from '../Popover';
+import type { PopoverProps } from '../Popover';
+import { SelectNext } from '../SelectNext';
 
 import { focusAdjacentTabStop, getTabStops } from './focus';
 import s from './InlineEdit.module.css';
@@ -44,6 +48,15 @@ const focusableSelector =
   'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]';
 
 const inlineEditRegistry = new WeakMap<HTMLElement, () => void>();
+
+type SelectEditorProps = {
+  selectionMode?: 'single' | 'multiple';
+  selectedTagsOverflow?: 'responsive' | 'multiline';
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
+  dropdownFooter?: unknown;
+  slotProps?: { popover?: PopoverProps };
+};
 
 function InlineEditRender<T>(
   props: Omit<InlineEditProps<T>, 'ref'>,
@@ -86,6 +99,7 @@ function InlineEditRender<T>(
   const [anchorRef, rect] = useResizeObserver<HTMLDivElement>();
   const [anchorSize, setAnchorSize] = useState({ width: 0, height: 0 });
   const [panelShadow, setPanelShadow] = useState<string>();
+  const [selectOpen, setSelectOpen] = useState(true);
   const rootRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -95,6 +109,8 @@ function InlineEditRender<T>(
   const requestTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const logicalPanelTargetRef = useRef<Element | null>(null);
   const ignoreScrollCloseRef = useRef(false);
+  const selectOpenRef = useRef(true);
+  const selectTabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const logicalTargetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
@@ -103,6 +119,7 @@ function InlineEditRender<T>(
   const restoreFocusRef = useRef(false);
   const chainingRef = useRef(false);
   const tabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const focusFrameRef = useRef<number | null>(null);
   const openRef = useRef<() => void>(() => undefined);
 
   const isEdit = mode === 'edit';
@@ -143,6 +160,14 @@ function InlineEditRender<T>(
       if (tabTimerRef.current !== null) {
         clearTimeout(tabTimerRef.current);
       }
+
+      if (focusFrameRef.current !== null) {
+        cancelAnimationFrame(focusFrameRef.current);
+      }
+
+      if (selectTabTimerRef.current !== null) {
+        clearTimeout(selectTabTimerRef.current);
+      }
     },
     []
   );
@@ -154,6 +179,8 @@ function InlineEditRender<T>(
 
     initialValueRef.current = value;
     restoreFocusRef.current = false;
+    selectOpenRef.current = true;
+    setSelectOpen(true);
     changeMode('edit');
   }, [changeMode, isDisabled, mode, value]);
 
@@ -171,13 +198,16 @@ function InlineEditRender<T>(
     };
   }, []);
 
-  const save = useCallback(() => {
-    if (mode !== 'edit' || requestedModeRef.current === 'view') return;
+  const save = useCallback(
+    (nextValue: T = value) => {
+      if (mode !== 'edit' || requestedModeRef.current === 'view') return;
 
-    restoreFocusRef.current = true;
-    changeMode('view');
-    onSaved?.(value);
-  }, [changeMode, mode, onSaved, value]);
+      restoreFocusRef.current = true;
+      changeMode('view');
+      onSaved?.(nextValue);
+    },
+    [changeMode, mode, onSaved, value]
+  );
 
   const cancel = useCallback(() => {
     if (mode !== 'edit' || requestedModeRef.current === 'view') return;
@@ -187,6 +217,36 @@ function InlineEditRender<T>(
     changeMode('view');
     onCanceled?.();
   }, [changeMode, mode, onCanceled, setValue]);
+
+  const commit = useCallback(
+    (nextValue?: T) => {
+      if (nextValue === undefined) {
+        save();
+
+        return;
+      }
+
+      setValue(nextValue);
+      save(nextValue);
+    },
+    [save, setValue]
+  );
+
+  const renderedEditor = renderEdit({ value, onChange: setValue, commit });
+
+  const selectElement =
+    isValidElement<SelectEditorProps>(renderedEditor) &&
+    renderedEditor.type === SelectNext
+      ? renderedEditor
+      : null;
+
+  const isSingleSelect = Boolean(
+    selectElement &&
+    selectElement.props.selectionMode !== 'multiple' &&
+    selectElement.props.selectedTagsOverflow !== 'multiline'
+  );
+
+  const hasSelectFooter = Boolean(selectElement?.props.dropdownFooter);
 
   useEffect(() => {
     const wasEdit = previousModeRef.current === 'edit';
@@ -233,7 +293,32 @@ function InlineEditRender<T>(
   }, [isEdit]);
 
   useEffect(() => {
-    if (!isEdit) return;
+    if (!isEdit || !isSingleSelect) return;
+
+    selectOpenRef.current = true;
+    setSelectOpen(true);
+  }, [isEdit, isSingleSelect]);
+
+  useEffect(() => {
+    if (!isEdit || !isSingleSelect || !selectOpen) return;
+
+    const timer = setTimeout(() => {
+      const dropdown = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-slot="dropdown"]')
+      ).find((element) => element.getClientRects().length > 0);
+
+      const target = dropdown?.querySelector<HTMLElement>(
+        '[role="option"][aria-selected="true"], [role="option"], [tabindex="0"]'
+      );
+
+      target?.focus();
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [isEdit, isSingleSelect, selectOpen]);
+
+  useEffect(() => {
+    if (!isEdit || isSingleSelect) return;
 
     const timer = setTimeout(() => {
       const panel = panelRef.current;
@@ -250,7 +335,7 @@ function InlineEditRender<T>(
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [isEdit]);
+  }, [isEdit, isSingleSelect]);
 
   useLayoutEffect(() => {
     if (!isEdit || !anchorRef.current) return;
@@ -372,6 +457,68 @@ function InlineEditRender<T>(
     open();
   };
 
+  const saveAndFocusAdjacent = useCallback(
+    (backwards: boolean, waitForSelect = false) => {
+      chainingRef.current = true;
+
+      try {
+        save();
+      } catch (error) {
+        chainingRef.current = false;
+
+        throw error;
+      }
+
+      tabTimerRef.current = setTimeout(() => {
+        tabTimerRef.current = null;
+
+        const root = rootRef.current;
+        restoreFocusRef.current = false;
+        chainingRef.current = false;
+
+        if (!root || root.dataset.mode === 'edit') return;
+
+        const focusWhenReady = () => {
+          focusFrameRef.current = null;
+
+          const adjacent = focusAdjacentTabStop(root, backwards);
+
+          if (
+            !adjacent &&
+            waitForSelect &&
+            document.querySelector('[data-slot="dropdown"]')
+          ) {
+            focusFrameRef.current = requestAnimationFrame(focusWhenReady);
+
+            return;
+          }
+
+          if (!adjacent) {
+            viewRef.current?.focus();
+
+            return;
+          }
+
+          const nextRoot = adjacent.closest<HTMLElement>(
+            '[data-slot="inline-edit"]'
+          );
+
+          if (
+            nextRoot &&
+            nextRoot !== root &&
+            nextRoot.dataset.mode === 'view' &&
+            nextRoot.dataset.disabled !== 'true'
+          ) {
+            inlineEditRegistry.get(nextRoot)?.();
+          }
+        };
+
+        focusWhenReady();
+      }, 0);
+    },
+    [save]
+  );
+
   const handlePanelTab = (event: KeyboardEvent<HTMLElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
 
@@ -387,46 +534,58 @@ function InlineEditRender<T>(
 
     event.preventDefault();
     event.stopPropagation();
-    chainingRef.current = true;
+    saveAndFocusAdjacent(event.shiftKey);
+  };
 
-    try {
-      save();
-    } catch (error) {
-      chainingRef.current = false;
+  useEffect(() => {
+    if (!isEdit || !isSingleSelect) return;
 
-      throw error;
-    }
+    const handleSelectTab = (event: globalThis.KeyboardEvent) => {
+      if (
+        event.key !== 'Tab' ||
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey
+      ) {
+        return;
+      }
 
-    tabTimerRef.current = setTimeout(() => {
-      tabTimerRef.current = null;
+      const backwards = event.shiftKey;
 
-      const root = rootRef.current;
-      chainingRef.current = false;
-
-      if (!root || root.dataset.mode === 'edit') return;
-
-      const adjacent = focusAdjacentTabStop(root, event.shiftKey);
-
-      if (!adjacent) {
-        viewRef.current?.focus();
+      if (!hasSelectFooter) {
+        event.preventDefault();
+        saveAndFocusAdjacent(backwards, true);
 
         return;
       }
 
-      const nextRoot = adjacent.closest<HTMLElement>(
-        '[data-slot="inline-edit"]'
-      );
+      selectTabTimerRef.current = setTimeout(() => {
+        selectTabTimerRef.current = setTimeout(() => {
+          selectTabTimerRef.current = null;
 
-      if (
-        nextRoot &&
-        nextRoot !== root &&
-        nextRoot.dataset.mode === 'view' &&
-        nextRoot.dataset.disabled !== 'true'
-      ) {
-        inlineEditRegistry.get(nextRoot)?.();
+          if (
+            selectOpenRef.current ||
+            rootRef.current?.dataset.mode !== 'edit'
+          ) {
+            return;
+          }
+
+          saveAndFocusAdjacent(backwards, true);
+        }, 0);
+      }, 0);
+    };
+
+    document.addEventListener('keydown', handleSelectTab, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleSelectTab, true);
+
+      if (selectTabTimerRef.current !== null) {
+        clearTimeout(selectTabTimerRef.current);
+        selectTabTimerRef.current = null;
       }
-    }, 0);
-  };
+    };
+  }, [hasSelectFooter, isEdit, isSingleSelect, saveAndFocusAdjacent]);
 
   const handlePanelKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.nativeEvent.isComposing) return;
@@ -473,11 +632,32 @@ function InlineEditRender<T>(
     save();
   };
 
+  const editor =
+    selectElement && isSingleSelect
+      ? cloneElement(selectElement, {
+          isOpen: selectOpen,
+          onOpenChange: (nextOpen) => {
+            selectElement.props.onOpenChange?.(nextOpen);
+            selectOpenRef.current = nextOpen;
+            setSelectOpen(nextOpen);
+          },
+          slotProps: {
+            ...selectElement.props.slotProps,
+            popover: {
+              ...selectElement.props.slotProps?.popover,
+              anchorRef,
+              size: editModeWidth ?? (anchorSize.width || 'auto'),
+            },
+          },
+        })
+      : renderedEditor;
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- the keyboard path lives on the inner role="button" view; the host handler only delegates clicks from the label and panel chrome
     <div
       data-slot="inline-edit"
       data-mode={mode}
+      data-editor={isSingleSelect ? 'select' : undefined}
       data-disabled={isDisabled || undefined}
       className={clsx(s.base, label ? s.withLabel : undefined, className)}
       onClick={handleRootClick}
@@ -508,6 +688,7 @@ function InlineEditRender<T>(
       <Popover
         ref={panelRef}
         data-slot="inline-edit-panel"
+        data-editor={isSingleSelect ? 'select' : undefined}
         isOpen={isEdit}
         onOpenChange={(open) => {
           if (!open && !ignoreScrollCloseRef.current) save();
@@ -544,9 +725,7 @@ function InlineEditRender<T>(
           },
         }}
       >
-        <div className={s.controlContainer}>
-          {renderEdit({ value, onChange: setValue })}
-        </div>
+        <div className={s.controlContainer}>{editor}</div>
       </Popover>
     </div>
   );

@@ -332,6 +332,74 @@ test.describe('InlineEdit', () => {
     await expect(page.getByTestId('tab-before')).toBeFocused();
   });
 
+  test('opens a single Select dropdown with the InlineEdit anchor and width', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--select-interaction');
+
+    const root = page.getByTestId('select-root');
+    const dropdown = page.locator('[data-slot="dropdown"]');
+    await expect(dropdown).toBeVisible();
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await expect(
+      page.locator('[data-slot="inline-edit-panel"] [data-slot="form-field"]')
+    ).toBeHidden();
+
+    const rootBox = await root.boundingBox();
+    const dropdownBox = await dropdown.boundingBox();
+    expect(dropdownBox!.width).toBeCloseTo(rootBox!.width, 5);
+  });
+
+  test('keeps a multiple multiline Select in the regular editor panel', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--select-multiline-interaction');
+
+    await expect(page.getByTestId('select-multiline-root')).toHaveAttribute(
+      'data-mode',
+      'edit'
+    );
+
+    await expect(page.getByRole('listbox')).toHaveCount(0);
+
+    await expect(
+      page.locator('[data-slot="inline-edit-panel"] [data-slot="form-field"]')
+    ).toBeVisible();
+  });
+
+  test('commits a Select option through the common save path', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--select-interaction');
+
+    await page.getByRole('option', { name: 'DDoS' }).click();
+
+    await expect(page.getByTestId('select-root')).toHaveAttribute(
+      'data-mode',
+      'view'
+    );
+
+    await expect(page.getByTestId('select-root')).toHaveText('DDoS');
+    await expect(page.locator('[data-slot="dropdown"]')).toHaveCount(0);
+  });
+
+  test('saves and moves focus when Tab closes the Select dropdown', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--select-interaction');
+
+    await expect(page.locator('[data-slot="dropdown"]')).toBeVisible();
+    await page.keyboard.press('Tab');
+
+    await expect(page.getByTestId('select-root')).toHaveAttribute(
+      'data-mode',
+      'view'
+    );
+
+    await expect(page.getByTestId('select-after')).toBeFocused();
+  });
+
   test('resolves the default and root-level panel shadow', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--edit-state');
 

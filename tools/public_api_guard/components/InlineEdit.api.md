@@ -53,6 +53,7 @@ export type InlineEditProps<T> = Omit<ComponentPropsWithRef<'div'>, 'children' |
 export type InlineEditRenderEditProps<T> = {
     value: T;
     onChange(value: T): void;
+    commit(value?: T): void;
 };
 
 // (No @packageDocumentation comment for this package)

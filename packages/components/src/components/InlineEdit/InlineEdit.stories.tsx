@@ -7,6 +7,7 @@ import { DescriptionList } from '../DescriptionList';
 import { FlexBox } from '../FlexBox';
 import { InlineEdit, type InlineEditProps } from '../index';
 import { Input } from '../Input';
+import { SelectNext } from '../SelectNext';
 import { Textarea as TextareaComponent } from '../Textarea';
 
 const meta = {
@@ -21,6 +22,8 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<InlineEditProps<string>>;
+
+const selectItems = [{ name: 'Bruteforce' }, { name: 'DDoS' }, { name: 'DoS' }];
 
 export const Controlled: Story = {
   render: function Render() {
@@ -171,6 +174,92 @@ export const Textarea: Story = {
       </FlexBox>
     );
   },
+};
+
+export const SelectBasic: Story = {
+  render: () => (
+    <div style={{ inlineSize: 240 }}>
+      <InlineEdit
+        aria-label="Attack type"
+        label="Attack type"
+        defaultValue="Bruteforce"
+        renderView={(value) => value}
+        renderEdit={({ value, commit }) => (
+          <SelectNext
+            aria-label="Attack type"
+            items={selectItems}
+            value={value}
+            onChange={(next) => commit(next as string)}
+            fullWidth
+          >
+            {(item) => (
+              <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+            )}
+          </SelectNext>
+        )}
+      />
+    </div>
+  ),
+};
+
+export const SelectReset: Story = {
+  render: () => (
+    <div style={{ inlineSize: 240 }}>
+      <InlineEdit
+        aria-label="Attack type"
+        label="Attack type"
+        defaultValue="Bruteforce"
+        renderView={(value) =>
+          value === 'Not specified' ? (
+            <InlineEdit.Placeholder>{value}</InlineEdit.Placeholder>
+          ) : (
+            value
+          )
+        }
+        renderEdit={({ value, commit }) => (
+          <SelectNext
+            aria-label="Attack type"
+            items={[{ name: 'Not specified' }, ...selectItems]}
+            value={value}
+            onChange={(next) => commit(next as string)}
+            fullWidth
+          >
+            {(item) => (
+              <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+            )}
+          </SelectNext>
+        )}
+      />
+    </div>
+  ),
+};
+
+export const SelectMultiline: Story = {
+  render: () => (
+    <div style={{ inlineSize: 280 }}>
+      <InlineEdit
+        aria-label="Attack types"
+        label="Attack types"
+        defaultValue={['Bruteforce']}
+        renderView={(value) => value.join(', ')}
+        renderEdit={({ value, onChange }) => (
+          <SelectNext
+            aria-label="Attack types"
+            items={selectItems}
+            value={value}
+            onChange={(next) => onChange(next as string[])}
+            selectionMode="multiple"
+            selectedTagsOverflow="multiline"
+            fullWidth
+          >
+            {(item) => (
+              <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+            )}
+          </SelectNext>
+        )}
+      />
+    </div>
+  ),
 };
 
 export const Disabled: Story = {
