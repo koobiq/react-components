@@ -55,6 +55,16 @@ Return an error node from `validate` to keep the editor open. The render args ex
 
 <Story of={Stories.Validation} />
 
+## Async save
+
+`onSave` closes the editor optimistically and keeps the draft visible. Unchanged values are skipped with `compareWith`; progress appears after 100 ms and stays for at least 300 ms. A rejected value keeps its error state until retry, another successful save, or rollback.
+
+`renderSaveError` receives `retrySave`, `open`, `toggleMode`, and `rollback`. Use `InlineEditSaveErrorHandlerProvider` to handle errors from multiple instances in one place. Requests are not cancelled on unmount; their late UI updates and callbacks are ignored.
+
+<Story of={Stories.SaveProgress} />
+
+<Story of={Stories.SaveError} />
+
 ## Select
 
 A direct single `SelectNext` in `renderEdit` opens its dropdown automatically. Call `commit(nextValue)` from `onChange` to save the selected option. Multiple and multiline selects stay in the regular editor panel.
@@ -83,7 +93,7 @@ A direct single `SelectNext` in `renderEdit` opens its dropdown automatically. C
 - Enter and outside click save locally; Escape restores the value captured on open.
 - In a textarea, Enter inserts a newline and Ctrl/Cmd+Enter saves.
 - Tab and Shift+Tab at a panel boundary save and move focus in that direction; an adjacent enabled InlineEdit opens automatically.
-- `onSaved` is a local event, not an asynchronous persistence handler.
+- `onSaved` fires immediately for a local save or after a successful `onSave` request.
 - Programmatic mode changes do not emit `onSaved` or `onCanceled`.
 - MVP view content must not contain links, buttons or other interactive descendants.
-- MVP does not provide background save, action buttons or menus.
+- MVP does not provide action buttons or menus.

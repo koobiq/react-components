@@ -16,6 +16,7 @@ import {
   forwardRef,
   isValidElement,
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -31,16 +32,24 @@ import {
 } from '@koobiq/react-core';
 import type { DataAttributeProps } from '@koobiq/react-core';
 
+import { utilClasses } from '../../styles/utility';
 import { Popover } from '../Popover';
 import type { PopoverProps } from '../Popover';
+import { ProgressSpinner } from '../ProgressSpinner';
 import { SelectNext } from '../SelectNext';
 import { Tooltip } from '../Tooltip';
 
 import { focusAdjacentTabStop, getTabStops } from './focus';
 import s from './InlineEdit.module.css';
 import { InlineEditPlaceholder } from './InlineEditPlaceholder';
+import { InlineEditSaveErrorHandlerContext } from './InlineEditSaveErrorContext';
 import intlMessages from './intl.json';
-import type { InlineEditProps, InlineEditPropMode } from './types';
+import type {
+  InlineEditProps,
+  InlineEditPropMode,
+  InlineEditPropSaveStatus,
+  InlineEditSaveErrorContext as InlineEditSaveErrorContextType,
+} from './types';
 import { isElementFullyVisible } from './validation';
 
 type InlineEditComponent = <T>(
@@ -83,6 +92,10 @@ function InlineEditRender<T>(
     validate,
     showTooltipOnError = true,
     validationTooltipPlacement = 'top start',
+    onSave,
+    compareWith = Object.is,
+    onSaveError,
+    renderSaveError,
     onSaved,
     onCanceled,
     className,
@@ -92,6 +105,7 @@ function InlineEditRender<T>(
   } = props;
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const contextSaveErrorHandler = useContext(InlineEditSaveErrorHandlerContext);
 
   const [value, setValue] = useControlledState<T, T>(
     valueProp as Exclude<T, undefined> | undefined,
@@ -114,6 +128,12 @@ function InlineEditRender<T>(
   const [validationTooltipVisible, setValidationTooltipVisible] =
     useState(false);
 
+  const [saveStatus, setSaveStatus] =
+    useState<InlineEditPropSaveStatus>('idle');
+
+  const [saveErrorContext, setSaveErrorContext] =
+    useState<InlineEditSaveErrorContextType | null>(null);
+
   const rootRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -127,6 +147,18 @@ function InlineEditRender<T>(
   const selectOpenRef = useRef(true);
   const validationErrorRef = useRef<ReactNode>(null);
   const validationCleanupRef = useRef<(() => void) | null>(null);
+  const saveStatusRef = useRef<InlineEditPropSaveStatus>('idle');
+  const mountedRef = useRef(true);
+  const saveTimersRef = useRef(new Set<ReturnType<typeof setTimeout>>());
+  const lastSavedValueRef = useRef(value);
+  const submittedValueRef = useRef(value);
+
+  const saveActionsRef = useRef<{
+    retrySave(): void;
+    rollback(): void;
+    toggleMode(): void;
+  } | null>(null);
+
   const selectTabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const logicalTargetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -173,6 +205,16 @@ function InlineEditRender<T>(
     [modeProp, onModeChange, setMode]
   );
 
+  useEffect(() => {
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+      saveTimersRef.current.forEach((timer) => clearTimeout(timer));
+      saveTimersRef.current.clear();
+    };
+  }, []);
+
   useEffect(
     () => () => {
       if (requestTimerRef.current !== null) {
@@ -199,6 +241,133 @@ function InlineEditRender<T>(
     },
     []
   );
+
+  const updateSaveStatus = useCallback((status: InlineEditPropSaveStatus) => {
+    saveStatusRef.current = status;
+
+    if (mountedRef.current) setSaveStatus(status);
+  }, []);
+
+  const scheduleSaveCallback = useCallback(
+    (callback: () => void, delay: number) => {
+      const timer = setTimeout(() => {
+        saveTimersRef.current.delete(timer);
+
+        if (mountedRef.current) callback();
+      }, delay);
+
+      saveTimersRef.current.add(timer);
+
+      return timer;
+    },
+    []
+  );
+
+  const startSave = useCallback(
+    (request: Promise<unknown>, submittedValue: T) => {
+      submittedValueRef.current = submittedValue;
+      setSaveErrorContext(null);
+      updateSaveStatus('pending');
+
+      let progressStarted: number | null = null;
+
+      const progressTimer = scheduleSaveCallback(() => {
+        progressStarted = Date.now();
+        updateSaveStatus('progress');
+      }, 100);
+
+      const complete = (callback: () => void) => {
+        const remaining =
+          progressStarted === null
+            ? 0
+            : Math.max(0, 300 - (Date.now() - progressStarted));
+
+        if (remaining === 0) {
+          callback();
+        } else {
+          scheduleSaveCallback(callback, remaining);
+        }
+      };
+
+      const succeed = () => {
+        if (!mountedRef.current) return;
+
+        clearTimeout(progressTimer);
+        saveTimersRef.current.delete(progressTimer);
+
+        complete(() => {
+          lastSavedValueRef.current = submittedValue;
+          setSaveErrorContext(null);
+          updateSaveStatus('idle');
+          onSaved?.(submittedValue);
+        });
+      };
+
+      const fail = (error: unknown) => {
+        if (!mountedRef.current) return;
+
+        clearTimeout(progressTimer);
+        saveTimersRef.current.delete(progressTimer);
+
+        complete(() => {
+          const context: InlineEditSaveErrorContextType = {
+            error,
+            retrySave: () => saveActionsRef.current?.retrySave(),
+            open: () => openRef.current(),
+            toggleMode: () => saveActionsRef.current?.toggleMode(),
+            rollback: () => saveActionsRef.current?.rollback(),
+          };
+
+          setSaveErrorContext(context);
+          updateSaveStatus('error');
+          onSaveError?.(context);
+          contextSaveErrorHandler?.(context);
+        });
+      };
+
+      request.then(succeed, fail);
+    },
+    [
+      contextSaveErrorHandler,
+      onSaveError,
+      onSaved,
+      scheduleSaveCallback,
+      updateSaveStatus,
+    ]
+  );
+
+  const retrySave = useCallback(() => {
+    if (saveStatusRef.current !== 'error' || !onSave) return;
+
+    const value = submittedValueRef.current;
+    startSave(onSave(value), value);
+  }, [onSave, startSave]);
+
+  const rollback = useCallback(() => {
+    if (saveStatusRef.current !== 'error') return;
+
+    const lastSavedValue = lastSavedValueRef.current;
+    setValue(lastSavedValue);
+    initialValueRef.current = lastSavedValue;
+    setSaveErrorContext(null);
+    updateSaveStatus('idle');
+
+    if (rootRef.current?.dataset.mode === 'edit') {
+      restoreFocusRef.current = true;
+      changeMode('view');
+    }
+  }, [changeMode, setValue, updateSaveStatus]);
+
+  const toggleMode = useCallback(() => {
+    if (rootRef.current?.dataset.mode === 'edit') {
+      restoreFocusRef.current = true;
+      changeMode('view');
+    } else {
+      openRef.current();
+    }
+  }, [changeMode]);
+
+  saveActionsRef.current = { retrySave, rollback, toggleMode };
 
   const hideValidationTooltip = useCallback(() => {
     validationCleanupRef.current?.();
@@ -267,11 +436,22 @@ function InlineEditRender<T>(
   );
 
   const open = useCallback(() => {
-    if (isDisabled || mode === 'edit' || requestedModeRef.current === 'edit') {
+    if (
+      isDisabled ||
+      mode === 'edit' ||
+      requestedModeRef.current === 'edit' ||
+      saveStatusRef.current === 'pending' ||
+      saveStatusRef.current === 'progress'
+    ) {
       return;
     }
 
     initialValueRef.current = value;
+
+    if (saveStatusRef.current !== 'error') {
+      lastSavedValueRef.current = value;
+    }
+
     restoreFocusRef.current = false;
     setValidationAttempted(false);
     validationErrorRef.current = null;
@@ -310,21 +490,39 @@ function InlineEditRender<T>(
         return false;
       }
 
+      let request: Promise<unknown> | null = null;
+
+      if (onSave) {
+        const unchanged =
+          saveStatusRef.current !== 'error' &&
+          compareWith(nextValue, initialValueRef.current);
+
+        if (!unchanged) request = onSave(nextValue);
+      }
+
       setValidationAttempted(false);
       validationErrorRef.current = null;
       hideValidationTooltip();
       restoreFocusRef.current = true;
       changeMode('view');
-      onSaved?.(nextValue);
+
+      if (request) {
+        startSave(request, nextValue);
+      } else if (!onSave) {
+        onSaved?.(nextValue);
+      }
 
       return true;
     },
     [
       changeMode,
+      compareWith,
       hideValidationTooltip,
       mode,
+      onSave,
       onSaved,
       showValidationTooltip,
+      startSave,
       validate,
       value,
     ]
@@ -798,6 +996,7 @@ function InlineEditRender<T>(
     <div
       data-slot="inline-edit"
       data-mode={mode}
+      data-save-status={saveStatus}
       data-editor={isSingleSelect ? 'select' : undefined}
       data-disabled={isDisabled || undefined}
       className={clsx(s.base, label ? s.withLabel : undefined, className)}
@@ -807,6 +1006,17 @@ function InlineEditRender<T>(
         hasLabel ? mergeRefs(ref, rootRef) : mergeRefs(ref, rootRef, anchorRef)
       }
     >
+      <span
+        className={utilClasses.hideVisually}
+        role="status"
+        aria-live="polite"
+      >
+        {saveStatus === 'pending' || saveStatus === 'progress'
+          ? stringFormatter.format('saving')
+          : saveStatus === 'error'
+            ? stringFormatter.format('saveFailed')
+            : ''}
+      </span>
       {label && <div className={s.label}>{label}</div>}
       <div
         className={s.viewContainer}
@@ -826,6 +1036,21 @@ function InlineEditRender<T>(
           {renderView(value)}
         </div>
       </div>
+      {saveStatus === 'progress' && (
+        <ProgressSpinner
+          aria-label={stringFormatter.format('saving')}
+          className={s.saveProgress}
+          data-slot="inline-edit-save-progress"
+          isIndeterminate
+        />
+      )}
+      {saveStatus === 'error' && saveErrorContext && (
+        <div className={s.saveError} data-slot="inline-edit-save-error">
+          {renderSaveError
+            ? renderSaveError(saveErrorContext)
+            : stringFormatter.format('saveFailed')}
+        </div>
+      )}
       <Popover
         ref={panelRef}
         data-slot="inline-edit-panel"

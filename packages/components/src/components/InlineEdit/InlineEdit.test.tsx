@@ -10,12 +10,12 @@ import {
 } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { createPortal } from 'react-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, afterEach } from 'vitest';
 
 import { Provider } from '../Provider';
 import { Textarea } from '../Textarea';
 
-import { InlineEdit } from './index';
+import { InlineEdit, InlineEditSaveErrorHandlerProvider } from './index';
 import type { InlineEditProps } from './index';
 
 const resizeCallbacks: ResizeObserverCallback[] = [];
@@ -39,6 +39,22 @@ vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
 });
 
 vi.stubGlobal('cancelAnimationFrame', () => undefined);
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+const deferred = <T,>() => {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  let reject!: (reason?: unknown) => void;
+
+  const promise = new Promise<T>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
+    reject = rejectPromise;
+  });
+
+  return { promise, resolve, reject };
+};
 
 const renderStringEdit = (props: Partial<InlineEditProps<string>> = {}) => {
   const defaultProps: InlineEditProps<string> = {
@@ -861,6 +877,216 @@ it('measures the view container when a label is present', async () => {
   const panel = dialog.closest('[data-slot="inline-edit-panel"]');
 
   expect(panel).toHaveStyle({ '--popover-inline-size': '240px' });
+});
+
+describe('InlineEdit async save', () => {
+  it('closes optimistically and emits onSaved only after success', async () => {
+    const request = deferred<void>();
+    const onSave = vi.fn(() => request.promise);
+    const onSaved = vi.fn();
+
+    renderStringEdit({ defaultMode: 'edit', onSave, onSaved });
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+    fireEvent.change(input, { target: { value: 'Next value' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+    expect(screen.getByText('Next value')).toBeInTheDocument();
+    expect(onSave).toHaveBeenCalledWith('Next value');
+    expect(onSaved).not.toHaveBeenCalled();
+
+    await act(async () => {
+      request.resolve();
+      await request.promise;
+    });
+
+    expect(onSaved).toHaveBeenCalledWith('Next value');
+  });
+
+  it('skips an unchanged request using the comparator', () => {
+    const onSave = vi.fn(() => Promise.resolve());
+    const onSaved = vi.fn();
+
+    renderStringEdit({
+      defaultMode: 'edit',
+      onSave,
+      onSaved,
+      compareWith: (draft, initial) => draft === initial,
+    });
+
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    expect(onSave).not.toHaveBeenCalled();
+    expect(onSaved).not.toHaveBeenCalled();
+    expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+  });
+
+  it('delays progress for 100ms and keeps it visible for 300ms', async () => {
+    vi.useFakeTimers();
+    const request = deferred<void>();
+
+    renderStringEdit({ defaultMode: 'edit', onSave: () => request.promise });
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+    fireEvent.change(input, { target: { value: 'Next value' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    act(() => vi.advanceTimersByTime(99));
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+
+    act(() => vi.advanceTimersByTime(1));
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+
+    await act(async () => {
+      request.resolve();
+      await request.promise;
+    });
+
+    act(() => vi.advanceTimersByTime(299));
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+
+    act(() => vi.advanceTimersByTime(1));
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+  });
+
+  it('reports errors through local and context handlers and retries', async () => {
+    const first = deferred<void>();
+    const second = deferred<void>();
+
+    const onSave = vi
+      .fn()
+      .mockReturnValueOnce(first.promise)
+      .mockReturnValueOnce(second.promise);
+
+    const onSaved = vi.fn();
+    const onSaveError = vi.fn();
+    const contextHandler = vi.fn();
+
+    render(
+      <InlineEditSaveErrorHandlerProvider value={contextHandler}>
+        <InlineEdit
+          defaultValue="Security team"
+          defaultMode="edit"
+          onSave={onSave}
+          onSaved={onSaved}
+          onSaveError={onSaveError}
+          data-testid="root"
+          renderView={(value) => value}
+          renderSaveError={({ retrySave }) => (
+            <button type="button" onClick={retrySave}>
+              Retry
+            </button>
+          )}
+          renderEdit={({ value, onChange }) => (
+            <input
+              aria-label="Editor"
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+            />
+          )}
+        />
+      </InlineEditSaveErrorHandlerProvider>
+    );
+
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+    fireEvent.change(input, { target: { value: 'Next value' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    await act(async () => {
+      first.reject(new Error('Rejected'));
+      await Promise.resolve();
+    });
+
+    expect(screen.getByTestId('root')).toHaveAttribute(
+      'data-save-status',
+      'error'
+    );
+
+    expect(screen.getByRole('status')).toHaveTextContent('Save failed');
+    expect(onSaveError).toHaveBeenCalledTimes(1);
+    expect(contextHandler).toHaveBeenCalledTimes(1);
+
+    expect(onSaveError.mock.calls[0][0]).toMatchObject({
+      retrySave: expect.any(Function),
+      open: expect.any(Function),
+      toggleMode: expect.any(Function),
+      rollback: expect.any(Function),
+    });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Retry' }));
+    expect(onSave).toHaveBeenCalledTimes(2);
+
+    await act(async () => {
+      second.resolve();
+      await second.promise;
+    });
+
+    expect(onSaved).toHaveBeenCalledWith('Next value');
+
+    expect(screen.getByTestId('root')).toHaveAttribute(
+      'data-save-status',
+      'idle'
+    );
+  });
+
+  it('rolls back a rejected optimistic value', async () => {
+    const request = deferred<void>();
+
+    renderStringEdit({
+      defaultMode: 'edit',
+      onSave: () => request.promise,
+      renderSaveError: ({ rollback }) => (
+        <button type="button" onClick={rollback}>
+          Rollback
+        </button>
+      ),
+    });
+
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+    fireEvent.change(input, { target: { value: 'Next value' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    await act(async () => {
+      request.reject(new Error('Rejected'));
+      await Promise.resolve();
+    });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Rollback' }));
+
+    expect(screen.getByText('Security team')).toBeInTheDocument();
+
+    expect(screen.getByTestId('root')).toHaveAttribute(
+      'data-save-status',
+      'idle'
+    );
+  });
+
+  it('blocks reopening while pending and ignores completion after unmount', async () => {
+    const request = deferred<void>();
+    const onSaved = vi.fn();
+
+    const { unmount } = renderStringEdit({
+      defaultMode: 'edit',
+      onSave: () => request.promise,
+      onSaved,
+    });
+
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+    fireEvent.change(input, { target: { value: 'Next value' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+
+    unmount();
+
+    await act(async () => {
+      request.resolve();
+      await request.promise;
+    });
+
+    expect(onSaved).not.toHaveBeenCalled();
+  });
 });
 
 describe('InlineEdit style contract', () => {

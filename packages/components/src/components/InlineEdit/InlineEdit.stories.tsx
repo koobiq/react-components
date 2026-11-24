@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -199,6 +199,78 @@ export const Validation: Story = {
       />
     </div>
   ),
+};
+
+export const SaveProgress: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Name"
+        label="Name"
+        defaultValue="Security team"
+        onSave={() =>
+          new Promise((resolve) => {
+            setTimeout(resolve, 1200);
+          })
+        }
+        renderView={(value) => value}
+        renderEdit={({ value, onChange }) => (
+          <Input
+            aria-label="Name"
+            value={value}
+            onChange={onChange}
+            fullWidth
+          />
+        )}
+      />
+    </div>
+  ),
+};
+
+export const SaveError: Story = {
+  render: function Render() {
+    const attempts = useRef(0);
+
+    return (
+      <div style={{ inlineSize: 320 }}>
+        <InlineEdit
+          aria-label="Name"
+          label="Name"
+          defaultValue="Security team"
+          onSave={() =>
+            new Promise((resolve, reject) => {
+              attempts.current += 1;
+              const attempt = attempts.current;
+
+              setTimeout(
+                () =>
+                  attempt === 1
+                    ? reject(new Error('Server is unavailable'))
+                    : resolve(undefined),
+                600
+              );
+            })
+          }
+          renderView={(value) => value}
+          renderSaveError={({ retrySave, rollback, open }) => (
+            <FlexBox gap="xs">
+              <Button onPress={retrySave}>Retry</Button>
+              <Button onPress={open}>Edit</Button>
+              <Button onPress={rollback}>Rollback</Button>
+            </FlexBox>
+          )}
+          renderEdit={({ value, onChange }) => (
+            <Input
+              aria-label="Name"
+              value={value}
+              onChange={onChange}
+              fullWidth
+            />
+          )}
+        />
+      </div>
+    );
+  },
 };
 
 export const SelectBasic: Story = {

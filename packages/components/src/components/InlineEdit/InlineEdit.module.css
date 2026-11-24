@@ -49,6 +49,10 @@
   --inline-edit-background: var(--kbq-states-background-transparent-active);
 }
 
+.base[data-mode='view'][data-save-status='error'] {
+  --inline-edit-background: var(--kbq-states-background-error-less);
+}
+
 .base:has(.viewContent:focus-visible) {
   border-color: var(--kbq-states-line-focus-theme);
   box-shadow: inset 0 0 0.1px 1px var(--kbq-states-line-focus-theme);
@@ -81,6 +85,20 @@
 
 .placeholder {
   color: var(--kbq-foreground-contrast-secondary);
+}
+
+.saveProgress {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--kbq-size-m);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.saveError {
+  display: flex;
+  gap: var(--kbq-size-xs);
+  color: var(--kbq-foreground-error);
 }
 
 .panel[data-slot='inline-edit-panel'] {

@@ -16,6 +16,21 @@ export type InlineEditRenderEditProps<T> = {
   commit(value?: T): void;
 };
 
+export type InlineEditPropSaveStatus =
+  'idle' | 'pending' | 'progress' | 'error';
+
+export type InlineEditSaveErrorContext = {
+  error: unknown;
+  retrySave(): void;
+  open(): void;
+  toggleMode(): void;
+  rollback(): void;
+};
+
+export type InlineEditSaveErrorHandler = (
+  context: InlineEditSaveErrorContext
+) => void;
+
 export type InlineEditProps<T> = Omit<
   ComponentPropsWithRef<'div'>,
   'children' | 'defaultValue' | 'onChange'
@@ -54,6 +69,14 @@ export type InlineEditProps<T> = Omit<
   showTooltipOnError?: boolean;
   /** Validation tooltip placement. */
   validationTooltipPlacement?: TooltipPropPlacement;
+  /** Saves a changed value in the background after the editor closes. */
+  onSave?: (value: T) => Promise<unknown>;
+  /** Compares the draft with the opening value to skip an unchanged request. */
+  compareWith?: (draft: T, initialValue: T) => boolean;
+  /** Called when a background save rejects. */
+  onSaveError?: InlineEditSaveErrorHandler;
+  /** Renders custom error actions below the value. */
+  renderSaveError?: (context: InlineEditSaveErrorContext) => ReactNode;
   /** Called after a local save. */
   onSaved?: (value: T) => void;
   /** Called after cancel restores the opening value. */

@@ -1,8 +1,12 @@
 {
   "ru-RU": {
-    "edit": "Редактировать"
+    "edit": "Редактировать",
+    "saving": "Сохранение",
+    "saveFailed": "Не удалось сохранить"
   },
   "en-US": {
-    "edit": "Edit"
+    "edit": "Edit",
+    "saving": "Saving",
+    "saveFailed": "Save failed"
   }
 }

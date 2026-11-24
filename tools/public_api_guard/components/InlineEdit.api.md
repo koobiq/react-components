@@ -5,9 +5,11 @@
 ```ts
 
 import type { ComponentPropsWithRef } from 'react';
+import { Context } from 'react';
 import { DetailedHTMLProps } from 'react';
 import { ForwardRefExoticComponent } from 'react';
 import { HTMLAttributes } from 'react';
+import { Provider } from 'react';
 import type { ReactElement } from 'react';
 import type { ReactNode } from 'react';
 import { RefAttributes } from 'react';
@@ -47,10 +49,17 @@ export type InlineEditProps<T> = Omit<ComponentPropsWithRef<'div'>, 'children' |
     validate?: (value: T) => ReactNode;
     showTooltipOnError?: boolean;
     validationTooltipPlacement?: TooltipPropPlacement;
+    onSave?: (value: T) => Promise<unknown>;
+    compareWith?: (draft: T, initialValue: T) => boolean;
+    onSaveError?: InlineEditSaveErrorHandler;
+    renderSaveError?: (context: InlineEditSaveErrorContext) => ReactNode;
     onSaved?: (value: T) => void;
     onCanceled?: () => void;
     'data-testid'?: string | number;
 };
+
+// @public (undocumented)
+export type InlineEditPropSaveStatus = 'idle' | 'pending' | 'progress' | 'error';
 
 // @public (undocumented)
 export type InlineEditRenderEditProps<T> = {
@@ -61,9 +70,27 @@ export type InlineEditRenderEditProps<T> = {
     commit(value?: T): void;
 };
 
+// @public (undocumented)
+export type InlineEditSaveErrorContext = {
+    error: unknown;
+    retrySave(): void;
+    open(): void;
+    toggleMode(): void;
+    rollback(): void;
+};
+
+// @public (undocumented)
+export type InlineEditSaveErrorHandler = (context: InlineEditSaveErrorContext) => void;
+
+// @public (undocumented)
+export const InlineEditSaveErrorHandlerContext: Context<InlineEditSaveErrorHandler | null>;
+
+// @public (undocumented)
+export const InlineEditSaveErrorHandlerProvider: Provider<InlineEditSaveErrorHandler | null>;
+
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/InlineEdit/types.d.ts:49:5 - (ae-forgotten-export) The symbol "TooltipPropPlacement" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/InlineEdit/types.d.ts:58:5 - (ae-forgotten-export) The symbol "TooltipPropPlacement" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
