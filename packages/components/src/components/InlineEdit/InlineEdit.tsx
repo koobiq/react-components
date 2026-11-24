@@ -85,6 +85,8 @@ function InlineEditRender<T>(
     defaultMode = 'view',
     onModeChange,
     label,
+    menu,
+    menuAriaLabel,
     renderView,
     renderEdit,
     isDisabled = false,
@@ -1035,6 +1037,20 @@ function InlineEditRender<T>(
         >
           {renderView(value)}
         </div>
+        {menu && !isEdit && (
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the group only isolates nested menu events from the root click delegate
+          <div
+            aria-label={menuAriaLabel}
+            className={s.menuMask}
+            data-slot="inline-edit-menu"
+            role="group"
+            onClick={(event) => event.stopPropagation()}
+            onKeyDown={(event) => event.stopPropagation()}
+          >
+            <div className={s.menuFade} />
+            <div className={s.menuContainer}>{menu}</div>
+          </div>
+        )}
       </div>
       {saveStatus === 'progress' && (
         <ProgressSpinner

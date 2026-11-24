@@ -52,6 +52,10 @@ export type InlineEditProps<T> = Omit<
   onModeChange?: (mode: InlineEditPropMode) => void;
   /** Label rendered above the value. */
   label?: ReactNode;
+  /** Action button or menu rendered at the end of the view value. */
+  menu?: ReactNode;
+  /** Accessible name for the menu group. */
+  menuAriaLabel?: string;
   /** Renders the current value in view mode. */
   renderView: (value: T) => ReactNode;
   /** Renders the editor inside the edit overlay. */

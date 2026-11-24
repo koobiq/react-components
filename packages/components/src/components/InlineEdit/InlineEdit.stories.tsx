@@ -1,10 +1,13 @@
 import { useRef, useState } from 'react';
 
+import { IconEllipsisHorizontal16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { DescriptionList } from '../DescriptionList';
+import { DropdownMenu } from '../DropdownMenu';
 import { FlexBox } from '../FlexBox';
+import { IconButton } from '../IconButton';
 import { InlineEdit, type InlineEditProps } from '../index';
 import { Input } from '../Input';
 import { SelectNext } from '../SelectNext';
@@ -271,6 +274,41 @@ export const SaveError: Story = {
       </div>
     );
   },
+};
+
+export const ActionMenu: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Name"
+        label="Name"
+        defaultValue="Security team"
+        menuAriaLabel="Value actions"
+        menu={
+          <DropdownMenu>
+            <IconButton aria-label="Value actions" isCompact>
+              <IconEllipsisHorizontal16 />
+            </IconButton>
+            <DropdownMenu.Popover>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item id="duplicate">Duplicate</DropdownMenu.Item>
+                <DropdownMenu.Item id="archive">Archive</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu>
+        }
+        renderView={(value) => value}
+        renderEdit={({ value, onChange }) => (
+          <Input
+            aria-label="Name"
+            value={value}
+            onChange={onChange}
+            fullWidth
+          />
+        )}
+      />
+    </div>
+  ),
 };
 
 export const SelectBasic: Story = {

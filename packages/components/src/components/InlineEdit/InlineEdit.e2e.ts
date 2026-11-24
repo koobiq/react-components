@@ -432,6 +432,27 @@ test.describe('InlineEdit', () => {
     await expect(root).toHaveText('Valid name');
   });
 
+  test('keeps an open action menu visible without enabling a disabled editor', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--menu-interaction');
+
+    const root = page.getByTestId('menu-root');
+    const mask = page.locator('[data-slot="inline-edit-menu"]');
+    await root.hover();
+    await expect(mask).toHaveCSS('opacity', '1');
+
+    await page.getByRole('button', { name: 'Open value actions' }).click();
+    await expect(page.getByRole('menu')).toBeVisible();
+    await page.mouse.move(0, 0);
+    await expect(mask).toHaveCSS('opacity', '1');
+
+    await page.getByRole('menuitem', { name: 'Duplicate' }).click();
+    await expect(page.getByTestId('menu-action')).toHaveText('duplicate');
+    await expect(root).toHaveAttribute('data-mode', 'view');
+    await expect(root).toHaveAttribute('data-disabled', 'true');
+  });
+
   test('resolves the default and root-level panel shadow', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--edit-state');
 

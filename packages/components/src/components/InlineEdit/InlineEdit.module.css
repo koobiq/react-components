@@ -83,6 +83,42 @@
   outline: none;
 }
 
+.menuMask {
+  position: absolute;
+  inset-block: -1px;
+  inset-inline-end: -1px;
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  transition: opacity var(--kbq-transition-default);
+}
+
+.base:hover .menuMask,
+.base:focus-within .menuMask,
+.menuMask:has([aria-expanded='true']) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.menuFade {
+  inline-size: 32px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--inline-edit-background)
+  );
+}
+
+.menuContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-inline-size: 40px;
+  border-radius: inherit;
+  background: var(--inline-edit-background);
+}
+
 .placeholder {
   color: var(--kbq-foreground-contrast-secondary);
 }

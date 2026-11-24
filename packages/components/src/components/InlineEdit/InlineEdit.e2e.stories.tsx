@@ -1,9 +1,12 @@
 import { useState } from 'react';
 
+import { IconEllipsisHorizontal16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { E2eGrid } from '../../../e2e/E2eGrid';
 import { DescriptionList } from '../DescriptionList';
+import { DropdownMenu } from '../DropdownMenu';
+import { IconButton } from '../IconButton';
 import { Input } from '../Input';
 import { SelectNext } from '../SelectNext';
 import { Textarea } from '../Textarea';
@@ -382,4 +385,40 @@ export const ValidationInteraction: Story = {
       <div style={{ blockSize: 400 }} />
     </div>
   ),
+};
+
+const MenuInteractionExample = () => {
+  const [action, setAction] = useState('');
+
+  return (
+    <div style={{ display: 'grid', gap: 8, inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Disabled value"
+        data-testid="menu-root"
+        defaultValue="Security team"
+        isDisabled
+        menuAriaLabel="Value actions"
+        menu={
+          <DropdownMenu>
+            <IconButton aria-label="Open value actions" isCompact>
+              <IconEllipsisHorizontal16 />
+            </IconButton>
+            <DropdownMenu.Popover>
+              <DropdownMenu.Content onAction={(key) => setAction(String(key))}>
+                <DropdownMenu.Item id="duplicate">Duplicate</DropdownMenu.Item>
+                <DropdownMenu.Item id="archive">Archive</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu>
+        }
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+      <output data-testid="menu-action">{action}</output>
+    </div>
+  );
+};
+
+export const MenuInteraction: Story = {
+  render: () => <MenuInteractionExample />,
 };

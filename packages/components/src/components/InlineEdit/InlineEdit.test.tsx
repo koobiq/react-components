@@ -879,6 +879,44 @@ it('measures the view container when a label is present', async () => {
   expect(panel).toHaveStyle({ '--popover-inline-size': '240px' });
 });
 
+it('keeps the action menu independent from a disabled editor', async () => {
+  const onAction = vi.fn();
+
+  renderStringEdit({
+    isDisabled: true,
+    menuAriaLabel: 'Value actions',
+    menu: (
+      <button type="button" onClick={onAction}>
+        Run action
+      </button>
+    ),
+  });
+
+  expect(
+    screen.getByRole('group', { name: 'Value actions' })
+  ).toBeInTheDocument();
+
+  const action = screen.getByRole('button', { name: 'Run action' });
+  await userEvent.click(action);
+  action.focus();
+  await userEvent.keyboard('{Enter}');
+
+  expect(onAction).toHaveBeenCalledTimes(2);
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+});
+
+it('hides the action menu in edit mode', () => {
+  renderStringEdit({
+    defaultMode: 'edit',
+    menu: <button type="button">Run action</button>,
+  });
+
+  expect(
+    screen.queryByRole('button', { name: 'Run action' })
+  ).not.toBeInTheDocument();
+});
+
 describe('InlineEdit async save', () => {
   it('closes optimistically and emits onSaved only after success', async () => {
     const request = deferred<void>();
