@@ -30,6 +30,7 @@ import type { DataAttributeProps } from '@koobiq/react-core';
 
 import { Popover } from '../Popover';
 
+import { focusAdjacentTabStop, getTabStops } from './focus';
 import s from './InlineEdit.module.css';
 import { InlineEditPlaceholder } from './InlineEditPlaceholder';
 import intlMessages from './intl.json';
@@ -41,6 +42,8 @@ type InlineEditComponent = <T>(
 
 const focusableSelector =
   'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]';
+
+const inlineEditRegistry = new WeakMap<HTMLElement, () => void>();
 
 function InlineEditRender<T>(
   props: Omit<InlineEditProps<T>, 'ref'>,
@@ -98,6 +101,9 @@ function InlineEditRender<T>(
   );
 
   const restoreFocusRef = useRef(false);
+  const chainingRef = useRef(false);
+  const tabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openRef = useRef<() => void>(() => undefined);
 
   const isEdit = mode === 'edit';
   const hasLabel = Boolean(label);
@@ -133,6 +139,10 @@ function InlineEditRender<T>(
       if (logicalTargetTimerRef.current !== null) {
         clearTimeout(logicalTargetTimerRef.current);
       }
+
+      if (tabTimerRef.current !== null) {
+        clearTimeout(tabTimerRef.current);
+      }
     },
     []
   );
@@ -146,6 +156,20 @@ function InlineEditRender<T>(
     restoreFocusRef.current = false;
     changeMode('edit');
   }, [changeMode, isDisabled, mode, value]);
+
+  openRef.current = open;
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const openFromKeyboard = () => openRef.current();
+    inlineEditRegistry.set(root, openFromKeyboard);
+
+    return () => {
+      inlineEditRegistry.delete(root);
+    };
+  }, []);
 
   const save = useCallback(() => {
     if (mode !== 'edit' || requestedModeRef.current === 'view') return;
@@ -171,6 +195,12 @@ function InlineEditRender<T>(
 
     if (!isEdit && wasEdit && restoreFocusRef.current) {
       restoreFocusRef.current = false;
+
+      if (chainingRef.current) {
+        previousModeRef.current = mode;
+
+        return;
+      }
 
       const timer = setTimeout(() => {
         const activeElement = document.activeElement;
@@ -342,8 +372,72 @@ function InlineEditRender<T>(
     open();
   };
 
+  const handlePanelTab = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+
+    const panel = panelRef.current;
+    const target = event.target;
+    if (!panel || !(target instanceof HTMLElement)) return;
+
+    const tabStops = getTabStops(panel);
+    const boundary = event.shiftKey ? tabStops.at(0) : tabStops.at(-1);
+    if (!boundary || boundary !== target) return;
+
+    if (event.defaultPrevented && document.activeElement !== boundary) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    chainingRef.current = true;
+
+    try {
+      save();
+    } catch (error) {
+      chainingRef.current = false;
+
+      throw error;
+    }
+
+    tabTimerRef.current = setTimeout(() => {
+      tabTimerRef.current = null;
+
+      const root = rootRef.current;
+      chainingRef.current = false;
+
+      if (!root || root.dataset.mode === 'edit') return;
+
+      const adjacent = focusAdjacentTabStop(root, event.shiftKey);
+
+      if (!adjacent) {
+        viewRef.current?.focus();
+
+        return;
+      }
+
+      const nextRoot = adjacent.closest<HTMLElement>(
+        '[data-slot="inline-edit"]'
+      );
+
+      if (
+        nextRoot &&
+        nextRoot !== root &&
+        nextRoot.dataset.mode === 'view' &&
+        nextRoot.dataset.disabled !== 'true'
+      ) {
+        inlineEditRegistry.get(nextRoot)?.();
+      }
+    }, 0);
+  };
+
   const handlePanelKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.defaultPrevented || event.nativeEvent.isComposing) return;
+    if (event.nativeEvent.isComposing) return;
+
+    if (event.key === 'Tab') {
+      handlePanelTab(event);
+
+      return;
+    }
+
+    if (event.defaultPrevented) return;
 
     if (event.key === 'Escape') {
       event.preventDefault();

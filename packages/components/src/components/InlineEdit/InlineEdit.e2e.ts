@@ -230,6 +230,108 @@ test.describe('InlineEdit', () => {
     await expect(root).toHaveText('Italy');
   });
 
+  test('chains Tab into the adjacent InlineEdit with keyboard focus', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--tab-navigation');
+
+    const first = page.getByTestId('tab-first');
+    const second = page.getByTestId('tab-second');
+    const editor = page.getByRole('textbox', { name: 'Value' }).last();
+    await expect(first).toHaveAttribute('data-mode', 'edit');
+    await expect(editor).toBeFocused();
+
+    await editor.press('Tab');
+
+    await expect(first).toHaveAttribute('data-mode', 'view');
+    await expect(second).toHaveAttribute('data-mode', 'edit');
+    await expect(editor).toBeFocused();
+    await expect(page.getByTestId('tab-save-count')).toHaveText('1');
+
+    await editor.press('Escape');
+    const secondView = second.getByRole('button');
+    await expect(secondView).toBeFocused();
+
+    expect(
+      await secondView.evaluate((element) => element.matches(':focus-visible'))
+    ).toBe(true);
+  });
+
+  test('moves Tab to adjacent tab stops and skips disabled or hidden controls', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--tab-navigation');
+
+    const editor = page.getByRole('textbox', { name: 'Value' }).last();
+    await editor.press('Tab');
+    await editor.press('Tab');
+
+    await expect(page.getByTestId('tab-third')).toHaveAttribute(
+      'data-mode',
+      'edit'
+    );
+
+    await editor.press('Tab');
+
+    await expect(page.getByTestId('tab-after')).toBeFocused();
+    await expect(page.getByTestId('tab-save-count')).toHaveText('3');
+
+    await e2eGotoStory(page, 'e2e-inlineedit--tab-navigation');
+    await editor.press('Tab');
+    await editor.press('Tab');
+
+    await expect(page.getByTestId('tab-third')).toHaveAttribute(
+      'data-mode',
+      'edit'
+    );
+
+    await expect(editor).toBeFocused();
+    await editor.press('Shift+Tab');
+
+    await expect(page.getByTestId('tab-second')).toHaveAttribute(
+      'data-mode',
+      'edit'
+    );
+
+    await expect(editor).toBeFocused();
+    await editor.press('Shift+Tab');
+
+    await expect(page.getByTestId('tab-first')).toHaveAttribute(
+      'data-mode',
+      'edit'
+    );
+
+    await expect(editor).toBeFocused();
+    await editor.press('Shift+Tab');
+
+    await expect(page.getByTestId('tab-before')).toBeFocused();
+    await expect(page.getByTestId('tab-save-count')).toHaveText('5');
+  });
+
+  test('keeps Tab between middle panel controls and saves at the boundary', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--tab-middle-controls');
+
+    const root = page.getByTestId('tab-middle');
+    const first = page.getByRole('textbox', { name: 'First editor' });
+    const second = page.getByRole('textbox', { name: 'Second editor' });
+    await expect(first).toBeFocused();
+
+    await first.press('Tab');
+    await expect(second).toBeFocused();
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await second.press('Tab');
+    await expect(root).toHaveAttribute('data-mode', 'view');
+    await expect(page.getByTestId('tab-after')).toBeFocused();
+
+    await e2eGotoStory(page, 'e2e-inlineedit--tab-middle-controls');
+    await first.press('Shift+Tab');
+    await expect(root).toHaveAttribute('data-mode', 'view');
+    await expect(page.getByTestId('tab-before')).toBeFocused();
+  });
+
   test('resolves the default and root-level panel shadow', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--edit-state');
 

@@ -66,7 +66,8 @@ import { InlineEdit } from '@koobiq/react-components';
 - Click, Enter and Space open the editor.
 - Enter and outside click save locally; Escape restores the value captured on open.
 - In a textarea, Enter inserts a newline and Ctrl/Cmd+Enter saves.
+- Tab and Shift+Tab at a panel boundary save and move focus in that direction; an adjacent enabled InlineEdit opens automatically.
 - `onSaved` is a local event, not an asynchronous persistence handler.
 - Programmatic mode changes do not emit `onSaved` or `onCanceled`.
 - MVP view content must not contain links, buttons or other interactive descendants.
-- MVP does not provide validation, background save, action buttons, menus, select-specific editing or custom Tab chaining.
+- MVP does not provide validation, background save, action buttons, menus or select-specific editing.

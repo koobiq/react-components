@@ -217,3 +217,78 @@ export const DescriptionListInteraction: Story = {
     </DescriptionList>
   ),
 };
+
+const TabNavigationExample = () => {
+  const [saveCount, setSaveCount] = useState(0);
+  const onSaved = () => setSaveCount((count) => count + 1);
+
+  return (
+    <div style={{ display: 'grid', gap: 8, inlineSize: 320 }}>
+      <button data-testid="tab-before" type="button">
+        Before
+      </button>
+      <button disabled type="button">
+        Disabled before
+      </button>
+      <button hidden type="button">
+        Hidden before
+      </button>
+      {['first', 'second', 'third'].map((id, index) => (
+        <InlineEdit
+          aria-label={id}
+          data-testid={`tab-${id}`}
+          defaultValue={`${id} value`}
+          defaultMode={index === 0 ? 'edit' : 'view'}
+          key={id}
+          onSaved={onSaved}
+          renderView={renderView}
+          renderEdit={renderEdit}
+        />
+      ))}
+      <button disabled type="button">
+        Disabled after
+      </button>
+      <button hidden type="button">
+        Hidden after
+      </button>
+      <button data-testid="tab-after" type="button">
+        After
+      </button>
+      <output data-testid="tab-save-count">{saveCount}</output>
+    </div>
+  );
+};
+
+export const TabNavigation: Story = {
+  render: () => <TabNavigationExample />,
+};
+
+export const TabMiddleControls: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 8, inlineSize: 320 }}>
+      <button data-testid="tab-before" type="button">
+        Before
+      </button>
+      <InlineEdit
+        aria-label="Middle controls"
+        data-testid="tab-middle"
+        defaultValue="Value"
+        defaultMode="edit"
+        renderView={renderView}
+        renderEdit={({ value, onChange }) => (
+          <>
+            <input
+              aria-label="First editor"
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+            />
+            <input aria-label="Second editor" defaultValue="Other" />
+          </>
+        )}
+      />
+      <button data-testid="tab-after" type="button">
+        After
+      </button>
+    </div>
+  ),
+};

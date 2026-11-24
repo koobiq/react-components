@@ -572,6 +572,37 @@ it('leaves Enter on a nested button to that button', async () => {
   expect(button).toBeInTheDocument();
 });
 
+it('does not save when the editor handled Tab and moved focus', () => {
+  const onSaved = vi.fn();
+
+  renderStringEdit({
+    defaultMode: 'edit',
+    onSaved,
+    renderEdit: () => (
+      <>
+        <input
+          aria-label="Editor"
+          onKeyDown={(event) => {
+            if (event.key !== 'Tab') return;
+
+            event.preventDefault();
+            screen.getByRole('textbox', { name: 'Other' }).focus();
+          }}
+        />
+        <input aria-label="Other" />
+      </>
+    ),
+  });
+
+  const editor = screen.getByRole('textbox', { name: 'Editor' });
+  editor.focus();
+  fireEvent.keyDown(editor, { key: 'Tab' });
+
+  expect(screen.getByRole('textbox', { name: 'Other' })).toHaveFocus();
+  expect(onSaved).not.toHaveBeenCalled();
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+});
+
 it('does not cancel an Escape already handled by the editor', async () => {
   const onCanceled = vi.fn();
 
