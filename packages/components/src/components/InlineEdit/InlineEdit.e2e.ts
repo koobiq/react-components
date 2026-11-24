@@ -18,6 +18,25 @@ test.describe('InlineEdit', () => {
     await e2eScreenshotThemes(page, '03');
   });
 
+  test('action buttons state', async ({ page }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--actions-state');
+
+    await expect(page.getByRole('button', { name: 'Save' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible();
+
+    const panelBox = await page
+      .locator('[data-slot="inline-edit-panel"]')
+      .boundingBox();
+
+    const inputBox = await page
+      .getByRole('textbox', { name: 'Value' })
+      .boundingBox();
+
+    expect(panelBox!.height).toBeGreaterThan(inputBox!.height);
+
+    await e2eScreenshotThemes(page, '04');
+  });
+
   test('matches the editor geometry', async ({ page }) => {
     for (const [story, anchorSelector] of [
       [

@@ -67,6 +67,8 @@ export type InlineEditProps<T> = Omit<
   isDisabled?: boolean;
   /** Fixed overlay width in pixels. By default the anchor width is used. */
   editModeWidth?: number;
+  /** Shows localized Save and Cancel icon buttons in the editor panel. */
+  showActions?: boolean;
   /** Returns an error node for an invalid draft, or null/undefined when valid. */
   validate?: (value: T) => ReactNode;
   /** Whether an invalid save attempt shows the validation tooltip. */

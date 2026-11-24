@@ -2,11 +2,15 @@
   "ru-RU": {
     "edit": "Редактировать",
     "saving": "Сохранение",
-    "saveFailed": "Не удалось сохранить"
+    "saveFailed": "Не удалось сохранить",
+    "save": "Сохранить",
+    "cancel": "Отменить"
   },
   "en-US": {
     "edit": "Edit",
     "saving": "Saving",
-    "saveFailed": "Save failed"
+    "saveFailed": "Save failed",
+    "save": "Save",
+    "cancel": "Cancel"
   }
 }

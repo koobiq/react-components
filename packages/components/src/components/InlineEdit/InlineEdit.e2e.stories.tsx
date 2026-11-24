@@ -422,3 +422,21 @@ const MenuInteractionExample = () => {
 export const MenuInteraction: Story = {
   render: () => <MenuInteractionExample />,
 };
+
+export const ActionsState: Story = {
+  render: () => (
+    <div
+      data-testid="e2eScreenshotTarget"
+      style={{ blockSize: 120, inlineSize: 320 }}
+    >
+      <InlineEdit
+        defaultValue="Security team"
+        defaultMode="edit"
+        label="Name"
+        showActions
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+    </div>
+  ),
+};

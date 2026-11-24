@@ -31,8 +31,10 @@ import {
   useResizeObserver,
 } from '@koobiq/react-core';
 import type { DataAttributeProps } from '@koobiq/react-core';
+import { IconCheck16, IconXmark16 } from '@koobiq/react-icons';
 
 import { utilClasses } from '../../styles/utility';
+import { IconButton } from '../IconButton';
 import { Popover } from '../Popover';
 import type { PopoverProps } from '../Popover';
 import { ProgressSpinner } from '../ProgressSpinner';
@@ -91,6 +93,7 @@ function InlineEditRender<T>(
     renderEdit,
     isDisabled = false,
     editModeWidth,
+    showActions = false,
     validate,
     showTooltipOnError = true,
     validationTooltipPlacement = 'top start',
@@ -1114,6 +1117,30 @@ function InlineEditRender<T>(
         >
           {editor}
         </div>
+        {showActions && (
+          <div
+            className={s.actionButtons}
+            data-slot="inline-edit-action-buttons"
+            role="group"
+          >
+            <IconButton
+              aria-label={stringFormatter.format('save')}
+              variant="theme-contrast"
+              isCompact
+              onPress={() => save()}
+            >
+              <IconCheck16 />
+            </IconButton>
+            <IconButton
+              aria-label={stringFormatter.format('cancel')}
+              variant="fade-contrast"
+              isCompact
+              onPress={cancel}
+            >
+              <IconXmark16 />
+            </IconButton>
+          </div>
+        )}
       </Popover>
       {isEdit && isInvalid && showTooltipOnError && (
         <Tooltip

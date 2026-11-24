@@ -879,6 +879,65 @@ it('measures the view container when a label is present', async () => {
   expect(panel).toHaveStyle({ '--popover-inline-size': '240px' });
 });
 
+it('saves once when Enter activates the Save action', async () => {
+  const onSaved = vi.fn();
+
+  renderStringEdit({ defaultMode: 'edit', onSaved, showActions: true });
+  const input = screen.getByRole('textbox', { name: 'Editor' });
+  await userEvent.clear(input);
+  await userEvent.type(input, 'Next value');
+
+  const saveButton = screen.getByRole('button', { name: 'Save' });
+  act(() => saveButton.focus());
+  await userEvent.keyboard('{Enter}');
+
+  expect(onSaved).toHaveBeenCalledTimes(1);
+  expect(onSaved).toHaveBeenCalledWith('Next value');
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+});
+
+it('cancels once when Enter activates the Cancel action', async () => {
+  const onSaved = vi.fn();
+  const onCanceled = vi.fn();
+
+  renderStringEdit({
+    defaultMode: 'edit',
+    onSaved,
+    onCanceled,
+    showActions: true,
+  });
+
+  const input = screen.getByRole('textbox', { name: 'Editor' });
+  await userEvent.clear(input);
+  await userEvent.type(input, 'Discard me');
+
+  const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+  act(() => cancelButton.focus());
+  await userEvent.keyboard('{Enter}');
+
+  expect(onCanceled).toHaveBeenCalledTimes(1);
+  expect(onSaved).not.toHaveBeenCalled();
+  expect(screen.getByText('Security team')).toBeInTheDocument();
+});
+
+it('localizes Save and Cancel accessible names', () => {
+  render(
+    <Provider locale="ru-RU">
+      <InlineEdit
+        defaultValue="Значение"
+        defaultMode="edit"
+        showActions
+        renderView={(value) => value}
+        renderEdit={() => <input aria-label="Редактор" />}
+      />
+    </Provider>
+  );
+
+  expect(screen.getByRole('button', { name: 'Сохранить' })).toBeInTheDocument();
+
+  expect(screen.getByRole('button', { name: 'Отменить' })).toBeInTheDocument();
+});
+
 it('keeps the action menu independent from a disabled editor', async () => {
   const onAction = vi.fn();
 

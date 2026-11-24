@@ -311,6 +311,28 @@ export const ActionMenu: Story = {
   ),
 };
 
+export const ActionButtons: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Name"
+        label="Name"
+        defaultValue="Security team"
+        showActions
+        renderView={(value) => value}
+        renderEdit={({ value, onChange }) => (
+          <Input
+            aria-label="Name"
+            value={value}
+            onChange={onChange}
+            fullWidth
+          />
+        )}
+      />
+    </div>
+  ),
+};
+
 export const SelectBasic: Story = {
   render: () => (
     <div style={{ inlineSize: 240 }}>
