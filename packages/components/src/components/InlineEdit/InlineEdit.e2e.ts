@@ -149,6 +149,87 @@ test.describe('InlineEdit', () => {
     await expect(page.getByTestId('saved-value')).toHaveText('Line 1\nLine 2');
   });
 
+  test('keeps Textarea width equal to its trigger while typing', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--textarea-interaction');
+
+    const root = page.locator('[data-slot="inline-edit"]');
+    const panel = page.locator('[data-slot="inline-edit-panel"]');
+    const textarea = page.getByRole('textbox', { name: 'Value' });
+    const initialWidth = (await root.boundingBox())!.width;
+
+    expect((await panel.boundingBox())!.width).toBeCloseTo(initialWidth, 5);
+
+    await textarea.fill('W'.repeat(200));
+
+    expect((await root.boundingBox())!.width).toBeCloseTo(initialWidth, 5);
+    expect((await panel.boundingBox())!.width).toBeCloseTo(initialWidth, 5);
+  });
+
+  test('stays open and follows the trigger on parent scroll', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--scroll-interaction');
+
+    const root = page.getByTestId('scroll-root');
+    const panel = page.locator('[data-slot="inline-edit-panel"]');
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await page
+      .getByTestId('scroll-container')
+      .evaluate((element) => (element.scrollTop = 60));
+
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await expect
+      .poll(async () => {
+        const rootBox = await root.boundingBox();
+        const panelBox = await panel.boundingBox();
+
+        return panelBox!.y - rootBox!.y;
+      })
+      .toBeCloseTo(0, 5);
+  });
+
+  test('stays open and follows the trigger on window scroll', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--window-scroll-interaction');
+
+    const root = page.getByTestId('window-scroll-root');
+    const panel = page.locator('[data-slot="inline-edit-panel"]');
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await page.evaluate(() => window.scrollTo(0, 80));
+
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await expect
+      .poll(async () => {
+        const rootBox = await root.boundingBox();
+        const panelBox = await panel.boundingBox();
+
+        return panelBox!.y - rootBox!.y;
+      })
+      .toBeCloseTo(0, 5);
+  });
+
+  test('edits a label-less value inside DescriptionList', async ({ page }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--description-list-interaction');
+
+    const root = page.getByTestId('description-inline-edit');
+    await root.getByRole('button').click();
+
+    const input = page.getByRole('textbox', { name: 'Value' });
+    await expect(input).toBeFocused();
+    await input.fill('Italy');
+    await input.press('Enter');
+
+    await expect(root).toHaveAttribute('data-mode', 'view');
+    await expect(root).toHaveText('Italy');
+  });
+
   test('resolves the default and root-level panel shadow', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--edit-state');
 

@@ -91,6 +91,7 @@ function InlineEditRender<T>(
   const requestedModeRef = useRef<InlineEditPropMode | null>(null);
   const requestTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const logicalPanelTargetRef = useRef<Element | null>(null);
+  const ignoreScrollCloseRef = useRef(false);
 
   const logicalTargetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
@@ -229,6 +230,41 @@ function InlineEditRender<T>(
       height: anchorRef.current.offsetHeight,
     });
   }, [anchorRef, hasLabel, isEdit, rect.height, rect.width]);
+
+  useLayoutEffect(() => {
+    if (!isEdit) return;
+
+    const handleScroll = (event: Event) => {
+      const anchor = anchorRef.current;
+      const panel = panelRef.current;
+      const target = event.target;
+
+      if (!anchor || !panel) return;
+
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      if (target instanceof Node && !target.contains(anchor)) return;
+
+      ignoreScrollCloseRef.current = true;
+
+      const anchorRect = anchor.getBoundingClientRect();
+      panel.style.left = `${anchorRect.left + window.scrollX}px`;
+      panel.style.top = `${anchorRect.top + window.scrollY}px`;
+
+      setTimeout(() => {
+        ignoreScrollCloseRef.current = false;
+      }, 0);
+    };
+
+    window.addEventListener('scroll', handleScroll, true);
+
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [anchorRef, isEdit]);
 
   // React events from a portal bubble through the editor's logical tree. The
   // capture handler below records those targets before this native document
@@ -380,7 +416,7 @@ function InlineEditRender<T>(
         data-slot="inline-edit-panel"
         isOpen={isEdit}
         onOpenChange={(open) => {
-          if (!open) save();
+          if (!open && !ignoreScrollCloseRef.current) save();
         }}
         anchorRef={anchorRef}
         className={s.panel}

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { DescriptionList } from '../DescriptionList';
 import { FlexBox } from '../FlexBox';
 import { InlineEdit, type InlineEditProps } from '../index';
 import { Input } from '../Input';
@@ -87,6 +88,38 @@ export const WithoutLabel: Story = {
         )}
       />
     </div>
+  ),
+};
+
+export const InDescriptionList: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <DescriptionList style={{ inlineSize: 480 }}>
+      {[
+        ['country', 'Country', 'Spain'],
+        ['capital', 'Capital', 'Madrid'],
+        ['currency', 'Currency', 'Euro'],
+      ].map(([id, name, value]) => (
+        <DescriptionList.Group id={id} key={id}>
+          <DescriptionList.Term>{name}</DescriptionList.Term>
+          <DescriptionList.Description>
+            <InlineEdit
+              aria-label={name}
+              defaultValue={value}
+              renderView={(currentValue) => currentValue}
+              renderEdit={({ value: draft, onChange }) => (
+                <Input
+                  aria-label={name}
+                  value={draft}
+                  onChange={onChange}
+                  fullWidth
+                />
+              )}
+            />
+          </DescriptionList.Description>
+        </DescriptionList.Group>
+      ))}
+    </DescriptionList>
   ),
 };
 

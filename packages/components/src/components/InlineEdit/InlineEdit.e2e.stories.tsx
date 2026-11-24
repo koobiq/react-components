@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { E2eGrid } from '../../../e2e/E2eGrid';
+import { DescriptionList } from '../DescriptionList';
 import { Input } from '../Input';
 import { Textarea } from '../Textarea';
 
@@ -154,4 +155,65 @@ const TextareaInteractionExample = () => {
 
 export const TextareaInteraction: Story = {
   render: () => <TextareaInteractionExample />,
+};
+
+export const ScrollInteraction: Story = {
+  render: () => (
+    <div
+      data-testid="scroll-container"
+      style={{ blockSize: 120, inlineSize: 320, overflow: 'auto' }}
+    >
+      <div style={{ blockSize: 80 }} />
+      <InlineEdit
+        aria-label="Scrollable value"
+        data-testid="scroll-root"
+        defaultValue="Security team"
+        defaultMode="edit"
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+      <div style={{ blockSize: 400 }} />
+    </div>
+  ),
+};
+
+export const WindowScrollInteraction: Story = {
+  render: () => (
+    <div style={{ paddingBlockStart: 100 }}>
+      <div style={{ inlineSize: 320 }}>
+        <InlineEdit
+          aria-label="Window scroll value"
+          data-testid="window-scroll-root"
+          defaultValue="Security team"
+          defaultMode="edit"
+          renderView={renderView}
+          renderEdit={renderEdit}
+        />
+      </div>
+      <div style={{ blockSize: 1000 }} />
+    </div>
+  ),
+};
+
+export const DescriptionListInteraction: Story = {
+  render: () => (
+    <DescriptionList style={{ inlineSize: 480 }}>
+      <DescriptionList.Group id="country">
+        <DescriptionList.Term>Country</DescriptionList.Term>
+        <DescriptionList.Description>
+          <InlineEdit
+            aria-label="Country"
+            data-testid="description-inline-edit"
+            defaultValue="Spain"
+            renderView={renderView}
+            renderEdit={renderEdit}
+          />
+        </DescriptionList.Description>
+      </DescriptionList.Group>
+      <DescriptionList.Group id="capital">
+        <DescriptionList.Term>Capital</DescriptionList.Term>
+        <DescriptionList.Description>Madrid</DescriptionList.Description>
+      </DescriptionList.Group>
+    </DescriptionList>
+  ),
 };

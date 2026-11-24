@@ -20,6 +20,7 @@
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  min-inline-size: 0;
   min-block-size: var(--kbq-inline-edit-height, var(--inline-edit-height));
   padding-block: var(
     --kbq-inline-edit-padding-vertical,
