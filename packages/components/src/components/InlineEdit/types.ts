@@ -1,11 +1,17 @@
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
+import type { TooltipPropPlacement } from '../Tooltip';
+
 export const inlineEditPropMode = ['view', 'edit'] as const;
 export type InlineEditPropMode = (typeof inlineEditPropMode)[number];
 
 export type InlineEditRenderEditProps<T> = {
   value: T;
   onChange(value: T): void;
+  /** Whether the last save attempt exposed a validation error. */
+  isInvalid: boolean;
+  /** Validation error for the current draft after a save attempt. */
+  validationError: ReactNode;
   /** Saves the current draft, or the supplied value when selection changes first. */
   commit(value?: T): void;
 };
@@ -42,6 +48,12 @@ export type InlineEditProps<T> = Omit<
   isDisabled?: boolean;
   /** Fixed overlay width in pixels. By default the anchor width is used. */
   editModeWidth?: number;
+  /** Returns an error node for an invalid draft, or null/undefined when valid. */
+  validate?: (value: T) => ReactNode;
+  /** Whether an invalid save attempt shows the validation tooltip. */
+  showTooltipOnError?: boolean;
+  /** Validation tooltip placement. */
+  validationTooltipPlacement?: TooltipPropPlacement;
   /** Called after a local save. */
   onSaved?: (value: T) => void;
   /** Called after cancel restores the opening value. */

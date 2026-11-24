@@ -400,6 +400,38 @@ test.describe('InlineEdit', () => {
     await expect(page.getByTestId('select-after')).toBeFocused();
   });
 
+  test('scrolls an invalid editor into view before showing its tooltip', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--validation-interaction');
+
+    const root = page.getByTestId('validation-root');
+    const input = page.getByRole('textbox', { name: 'Required name editor' });
+    const container = page.getByTestId('validation-scroll-container');
+    await expect(input).toBeFocused();
+
+    await container.evaluate((element) => (element.scrollTop = 0));
+    await page.keyboard.press('Enter');
+
+    const tooltip = page.getByRole('tooltip');
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toHaveText('Name is required');
+    await expect(tooltip).toHaveAttribute('data-placement', /^top/);
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+
+    expect(
+      await container.evaluate((element) => element.scrollTop)
+    ).toBeGreaterThan(0);
+
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await input.fill('Valid name');
+    await expect(tooltip).toHaveCount(0);
+    await input.press('Enter');
+    await expect(root).toHaveAttribute('data-mode', 'view');
+    await expect(root).toHaveText('Valid name');
+  });
+
   test('resolves the default and root-level panel shadow', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--edit-state');
 

@@ -8,6 +8,7 @@ import type {
   MouseEvent,
   PointerEvent as ReactPointerEvent,
   ReactElement,
+  ReactNode,
   Ref,
 } from 'react';
 import {
@@ -33,12 +34,14 @@ import type { DataAttributeProps } from '@koobiq/react-core';
 import { Popover } from '../Popover';
 import type { PopoverProps } from '../Popover';
 import { SelectNext } from '../SelectNext';
+import { Tooltip } from '../Tooltip';
 
 import { focusAdjacentTabStop, getTabStops } from './focus';
 import s from './InlineEdit.module.css';
 import { InlineEditPlaceholder } from './InlineEditPlaceholder';
 import intlMessages from './intl.json';
 import type { InlineEditProps, InlineEditPropMode } from './types';
+import { isElementFullyVisible } from './validation';
 
 type InlineEditComponent = <T>(
   props: InlineEditProps<T>
@@ -58,6 +61,9 @@ type SelectEditorProps = {
   slotProps?: { popover?: PopoverProps };
 };
 
+const hasValidationError = (error: ReactNode) =>
+  error !== null && error !== undefined && error !== false;
+
 function InlineEditRender<T>(
   props: Omit<InlineEditProps<T>, 'ref'>,
   ref: Ref<ComponentRef<'div'>>
@@ -74,6 +80,9 @@ function InlineEditRender<T>(
     renderEdit,
     isDisabled = false,
     editModeWidth,
+    validate,
+    showTooltipOnError = true,
+    validationTooltipPlacement = 'top start',
     onSaved,
     onCanceled,
     className,
@@ -100,9 +109,15 @@ function InlineEditRender<T>(
   const [anchorSize, setAnchorSize] = useState({ width: 0, height: 0 });
   const [panelShadow, setPanelShadow] = useState<string>();
   const [selectOpen, setSelectOpen] = useState(true);
+  const [validationAttempted, setValidationAttempted] = useState(false);
+
+  const [validationTooltipVisible, setValidationTooltipVisible] =
+    useState(false);
+
   const rootRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const controlContainerRef = useRef<HTMLDivElement>(null);
   const initialValueRef = useRef(value);
   const previousModeRef = useRef(mode);
   const requestedModeRef = useRef<InlineEditPropMode | null>(null);
@@ -110,6 +125,8 @@ function InlineEditRender<T>(
   const logicalPanelTargetRef = useRef<Element | null>(null);
   const ignoreScrollCloseRef = useRef(false);
   const selectOpenRef = useRef(true);
+  const validationErrorRef = useRef<ReactNode>(null);
+  const validationCleanupRef = useRef<(() => void) | null>(null);
   const selectTabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const logicalTargetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -124,6 +141,15 @@ function InlineEditRender<T>(
 
   const isEdit = mode === 'edit';
   const hasLabel = Boolean(label);
+  const currentValidationError = validate?.(value);
+
+  const validationError =
+    validationAttempted && hasValidationError(currentValidationError)
+      ? currentValidationError
+      : null;
+
+  const isInvalid = hasValidationError(validationError);
+  validationErrorRef.current = validationError;
 
   const changeMode = useCallback(
     (nextMode: InlineEditPropMode) => {
@@ -168,8 +194,76 @@ function InlineEditRender<T>(
       if (selectTabTimerRef.current !== null) {
         clearTimeout(selectTabTimerRef.current);
       }
+
+      validationCleanupRef.current?.();
     },
     []
+  );
+
+  const hideValidationTooltip = useCallback(() => {
+    validationCleanupRef.current?.();
+    validationCleanupRef.current = null;
+    setValidationTooltipVisible(false);
+  }, []);
+
+  const showValidationTooltip = useCallback(
+    (error: ReactNode) => {
+      hideValidationTooltip();
+
+      if (!showTooltipOnError || !hasValidationError(error)) return;
+
+      const anchor = anchorRef.current;
+      const window = anchor?.ownerDocument.defaultView;
+      if (!anchor || !window) return;
+
+      const finish = () => {
+        if (
+          rootRef.current?.dataset.mode !== 'edit' ||
+          !hasValidationError(validationErrorRef.current)
+        ) {
+          return;
+        }
+
+        setValidationTooltipVisible(true);
+      };
+
+      if (isElementFullyVisible(anchor)) {
+        finish();
+
+        return;
+      }
+
+      let timer: ReturnType<typeof setTimeout> | null = null;
+
+      const cleanup = () => {
+        window.removeEventListener('scrollend', onScrollEnd, true);
+
+        if (timer !== null) clearTimeout(timer);
+
+        validationCleanupRef.current = null;
+      };
+
+      const onScrollEnd = () => {
+        cleanup();
+        finish();
+      };
+
+      window.addEventListener('scrollend', onScrollEnd, true);
+
+      timer = setTimeout(() => {
+        cleanup();
+        finish();
+      }, 800);
+
+      validationCleanupRef.current = cleanup;
+
+      anchor.scrollIntoView({
+        block: 'center',
+        inline: 'nearest',
+        behavior: 'smooth',
+      });
+    },
+    [anchorRef, hideValidationTooltip, showTooltipOnError]
   );
 
   const open = useCallback(() => {
@@ -179,10 +273,13 @@ function InlineEditRender<T>(
 
     initialValueRef.current = value;
     restoreFocusRef.current = false;
+    setValidationAttempted(false);
+    validationErrorRef.current = null;
+    hideValidationTooltip();
     selectOpenRef.current = true;
     setSelectOpen(true);
     changeMode('edit');
-  }, [changeMode, isDisabled, mode, value]);
+  }, [changeMode, hideValidationTooltip, isDisabled, mode, value]);
 
   openRef.current = open;
 
@@ -200,23 +297,50 @@ function InlineEditRender<T>(
 
   const save = useCallback(
     (nextValue: T = value) => {
-      if (mode !== 'edit' || requestedModeRef.current === 'view') return;
+      if (mode !== 'edit' || requestedModeRef.current === 'view') return false;
 
+      const error = validate?.(nextValue);
+
+      if (hasValidationError(error)) {
+        restoreFocusRef.current = false;
+        setValidationAttempted(true);
+        validationErrorRef.current = error;
+        showValidationTooltip(error);
+
+        return false;
+      }
+
+      setValidationAttempted(false);
+      validationErrorRef.current = null;
+      hideValidationTooltip();
       restoreFocusRef.current = true;
       changeMode('view');
       onSaved?.(nextValue);
+
+      return true;
     },
-    [changeMode, mode, onSaved, value]
+    [
+      changeMode,
+      hideValidationTooltip,
+      mode,
+      onSaved,
+      showValidationTooltip,
+      validate,
+      value,
+    ]
   );
 
   const cancel = useCallback(() => {
     if (mode !== 'edit' || requestedModeRef.current === 'view') return;
 
     setValue(initialValueRef.current);
+    setValidationAttempted(false);
+    validationErrorRef.current = null;
+    hideValidationTooltip();
     restoreFocusRef.current = true;
     changeMode('view');
     onCanceled?.();
-  }, [changeMode, mode, onCanceled, setValue]);
+  }, [changeMode, hideValidationTooltip, mode, onCanceled, setValue]);
 
   const commit = useCallback(
     (nextValue?: T) => {
@@ -232,7 +356,13 @@ function InlineEditRender<T>(
     [save, setValue]
   );
 
-  const renderedEditor = renderEdit({ value, onChange: setValue, commit });
+  const renderedEditor = renderEdit({
+    value,
+    onChange: setValue,
+    commit,
+    isInvalid,
+    validationError,
+  });
 
   const selectElement =
     isValidElement<SelectEditorProps>(renderedEditor) &&
@@ -247,6 +377,17 @@ function InlineEditRender<T>(
   );
 
   const hasSelectFooter = Boolean(selectElement?.props.dropdownFooter);
+
+  useEffect(() => {
+    if (isInvalid && isEdit) return;
+
+    hideValidationTooltip();
+
+    if (!isEdit) {
+      setValidationAttempted(false);
+      validationErrorRef.current = null;
+    }
+  }, [hideValidationTooltip, isEdit, isInvalid]);
 
   useEffect(() => {
     const wasEdit = previousModeRef.current === 'edit';
@@ -725,8 +866,26 @@ function InlineEditRender<T>(
           },
         }}
       >
-        <div className={s.controlContainer}>{editor}</div>
+        <div
+          className={s.controlContainer}
+          data-invalid={isInvalid || undefined}
+          ref={controlContainerRef}
+        >
+          {editor}
+        </div>
       </Popover>
+      {isEdit && isInvalid && showTooltipOnError && (
+        <Tooltip
+          data-slot="inline-edit-validation-tooltip"
+          anchorRef={controlContainerRef}
+          isOpen={validationTooltipVisible}
+          placement={validationTooltipPlacement}
+          variant="error"
+          hideArrow
+        >
+          {validationError}
+        </Tooltip>
+      )}
     </div>
   );
 }

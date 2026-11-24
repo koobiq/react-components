@@ -49,6 +49,12 @@ import { InlineEdit } from '@koobiq/react-components';
 
 <Story of={Stories.Textarea} />
 
+## Validation
+
+Return an error node from `validate` to keep the editor open. The render args expose `isInvalid` and `validationError`; the optional error tooltip scrolls the field into view before opening.
+
+<Story of={Stories.Validation} />
+
 ## Select
 
 A direct single `SelectNext` in `renderEdit` opens its dropdown automatically. Call `commit(nextValue)` from `onChange` to save the selected option. Multiple and multiline selects stay in the regular editor panel.
@@ -80,4 +86,4 @@ A direct single `SelectNext` in `renderEdit` opens its dropdown automatically. C
 - `onSaved` is a local event, not an asynchronous persistence handler.
 - Programmatic mode changes do not emit `onSaved` or `onCanceled`.
 - MVP view content must not contain links, buttons or other interactive descendants.
-- MVP does not provide validation, background save, action buttons or menus.
+- MVP does not provide background save, action buttons or menus.

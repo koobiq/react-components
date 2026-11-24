@@ -354,3 +354,32 @@ export const SelectMultilineInteraction: Story = {
     </div>
   ),
 };
+
+export const ValidationInteraction: Story = {
+  render: () => (
+    <div
+      data-testid="validation-scroll-container"
+      style={{ blockSize: 140, inlineSize: 320, overflow: 'auto' }}
+    >
+      <div style={{ blockSize: 220 }} />
+      <InlineEdit
+        aria-label="Required name"
+        data-testid="validation-root"
+        defaultValue=""
+        defaultMode="edit"
+        validate={(value) => (value ? null : 'Name is required')}
+        renderView={renderView}
+        renderEdit={({ value, onChange, isInvalid }) => (
+          <Input
+            aria-label="Required name editor"
+            value={value}
+            onChange={onChange}
+            isInvalid={isInvalid}
+            fullWidth
+          />
+        )}
+      />
+      <div style={{ blockSize: 400 }} />
+    </div>
+  ),
+};

@@ -176,6 +176,31 @@ export const Textarea: Story = {
   },
 };
 
+export const Validation: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Name"
+        label="Name"
+        defaultValue=""
+        validate={(value) => (value.trim() ? null : 'Name is required')}
+        renderView={(value) =>
+          value || <InlineEdit.Placeholder>Not filled</InlineEdit.Placeholder>
+        }
+        renderEdit={({ value, onChange, isInvalid }) => (
+          <Input
+            aria-label="Name"
+            value={value}
+            onChange={onChange}
+            isInvalid={isInvalid}
+            fullWidth
+          />
+        )}
+      />
+    </div>
+  ),
+};
+
 export const SelectBasic: Story = {
   render: () => (
     <div style={{ inlineSize: 240 }}>

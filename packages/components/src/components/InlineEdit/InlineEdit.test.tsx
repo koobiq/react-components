@@ -572,6 +572,93 @@ it('leaves Enter on a nested button to that button', async () => {
   expect(button).toBeInTheDocument();
 });
 
+it('rejects an untouched invalid value and shows its validation tooltip', async () => {
+  const onSaved = vi.fn();
+
+  renderStringEdit({
+    defaultValue: '',
+    defaultMode: 'edit',
+    onSaved,
+    validate: (value) => (value ? null : 'Required'),
+    renderEdit: ({ value, onChange, isInvalid }) => (
+      <input
+        aria-label="Editor"
+        aria-invalid={isInvalid || undefined}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    ),
+  });
+
+  const input = screen.getByRole('textbox', { name: 'Editor' });
+  input.focus();
+  await userEvent.keyboard('{Enter}');
+
+  expect(onSaved).not.toHaveBeenCalled();
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+  expect(input).toHaveAttribute('aria-invalid', 'true');
+  expect(await screen.findByRole('tooltip')).toHaveTextContent('Required');
+});
+
+it('hides validation after correction and saves the valid value', async () => {
+  const onSaved = vi.fn();
+
+  renderStringEdit({
+    defaultValue: '',
+    defaultMode: 'edit',
+    onSaved,
+    validate: (value) => (value ? null : 'Required'),
+  });
+
+  const input = screen.getByRole('textbox', { name: 'Editor' });
+  input.focus();
+  await userEvent.keyboard('{Enter}');
+  expect(await screen.findByRole('tooltip')).toBeInTheDocument();
+
+  await userEvent.type(input, 'Valid');
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+
+  await userEvent.keyboard('{Enter}');
+  expect(onSaved).toHaveBeenCalledWith('Valid');
+});
+
+it('keeps invalid edits open on outside click without an optional tooltip', async () => {
+  const onSaved = vi.fn();
+
+  renderStringEdit({
+    defaultValue: '',
+    defaultMode: 'edit',
+    onSaved,
+    showTooltipOnError: false,
+    validate: (value) => (value ? null : 'Required'),
+  });
+
+  fireEvent.pointerDown(document.body, { button: 0 });
+
+  expect(onSaved).not.toHaveBeenCalled();
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+});
+
+it('keeps focus in an invalid editor after a Tab save attempt', async () => {
+  const onSaved = vi.fn();
+
+  renderStringEdit({
+    defaultValue: '',
+    defaultMode: 'edit',
+    onSaved,
+    validate: (value) => (value ? null : 'Required'),
+  });
+
+  const input = screen.getByRole('textbox', { name: 'Editor' });
+  input.focus();
+  await userEvent.keyboard('{Tab}');
+
+  expect(onSaved).not.toHaveBeenCalled();
+  expect(input).toHaveFocus();
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+});
+
 it('commits a supplied editor value exactly once', async () => {
   const onSaved = vi.fn();
 
