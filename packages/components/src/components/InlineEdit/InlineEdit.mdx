@@ -25,6 +25,8 @@ import { InlineEdit } from '@koobiq/react-components';
 
 <Story of={Stories.Controlled} />
 
+Keep the controlled draft separate from the displayed value: `onChange` updates the draft, while `onSaved` commits it to the view after the editor closes.
+
 ## Props
 
 <Props of={Stories.Controlled} />
@@ -57,9 +59,9 @@ Return an error node from `validate` to keep the editor open. The render args ex
 
 ## Async save
 
-`onSave` closes the editor optimistically and keeps the draft visible. Unchanged values are skipped with `compareWith`; progress appears after 100 ms and stays for at least 300 ms. A rejected value keeps its error state until retry, another successful save, or rollback.
+`onSave` closes the editor optimistically and keeps the draft visible. Unchanged values are skipped with `compareWith`; striped progress appears over the trigger after 100 ms and stays for at least 300 ms. Use **Server response time** in the example to compare fast and slow requests. A rejected value keeps its red error background until retry, another successful save, or rollback.
 
-`renderSaveError` receives `retrySave`, `open`, `toggleMode`, and `rollback`. Use `InlineEditSaveErrorHandlerProvider` to handle errors from multiple instances in one place. Requests are not cancelled on unmount; their late UI updates and callbacks are ignored.
+`onSaveError` can present `retrySave`, `open`, and `rollback` in an external toast, as in the error example. `renderSaveError` is available for custom error content; `InlineEditSaveErrorHandlerProvider` handles errors from multiple instances in one place. Requests are not cancelled on unmount; their late UI updates and callbacks are ignored.
 
 <Story of={Stories.SaveProgress} />
 
@@ -73,7 +75,7 @@ Use `menu` for a button or `DropdownMenu` at the end of the value, and provide `
 
 ## Save and Cancel buttons
 
-Set `showActions` to render icon buttons with localized accessible names. Save and Cancel use the same validation, async-save, cancel, and focus paths as keyboard interactions.
+Set `showActions` to render icon buttons below the editor with independent backgrounds and shadows. Save and Cancel use the same validation, async-save, cancel, and focus paths as keyboard interactions.
 
 <Story of={Stories.ActionButtons} />
 
@@ -85,7 +87,7 @@ Links, buttons, and removable tags handle their own interactions without opening
 
 ## Select
 
-A direct single `SelectNext` in `renderEdit` opens its dropdown automatically. Call `commit(nextValue)` from `onChange` to save the selected option. Multiple and multiline selects stay in the regular editor panel.
+A direct single `SelectNext` in `renderEdit` opens its dropdown automatically below the full trigger width. Call `commit(nextValue)` from `onChange` to save the selected option. Multiple and multiline selects stay in the regular editor panel.
 
 <Story of={Stories.SelectBasic} />
 

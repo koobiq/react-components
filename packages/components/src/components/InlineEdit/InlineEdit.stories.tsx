@@ -4,15 +4,18 @@ import { IconEllipsisHorizontal16 } from '@koobiq/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { ButtonToggle, ButtonToggleGroup } from '../ButtonToggleGroup';
 import { DescriptionList } from '../DescriptionList';
 import { DropdownMenu } from '../DropdownMenu';
 import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
 import { InlineEdit, type InlineEditProps } from '../index';
 import { Input } from '../Input';
+import { Link } from '../Link';
 import { SelectNext } from '../SelectNext';
 import { Tag } from '../Tag';
 import { Textarea as TextareaComponent } from '../Textarea';
+import { toast } from '../ToastProvider';
 
 const meta = {
   title: 'Components/InlineEdit',
@@ -32,6 +35,7 @@ const selectItems = [{ name: 'Bruteforce' }, { name: 'DDoS' }, { name: 'DoS' }];
 export const Controlled: Story = {
   render: function Render() {
     const [name, setName] = useState('Security team');
+    const [displayName, setDisplayName] = useState(name);
 
     return (
       <div style={{ inlineSize: 320 }}>
@@ -40,8 +44,11 @@ export const Controlled: Story = {
           label="Name"
           value={name}
           onChange={setName}
-          renderView={(value) =>
-            value || <InlineEdit.Placeholder>Not filled</InlineEdit.Placeholder>
+          onSaved={setDisplayName}
+          renderView={() =>
+            displayName || (
+              <InlineEdit.Placeholder>Not filled</InlineEdit.Placeholder>
+            )
           }
           renderEdit={({ value, onChange }) => (
             <Input
@@ -101,7 +108,7 @@ export const WithoutLabel: Story = {
 export const InDescriptionList: Story = {
   parameters: { layout: 'padded' },
   render: () => (
-    <DescriptionList style={{ inlineSize: 480 }}>
+    <DescriptionList style={{ inlineSize: 480 }} alignItems="center">
       {[
         ['country', 'Country', 'Spain'],
         ['capital', 'Capital', 'Madrid'],
@@ -156,6 +163,7 @@ export const Placeholder: Story = {
 export const Textarea: Story = {
   render: function Render() {
     const [description, setDescription] = useState('Monitors incidents');
+    const [displayDescription, setDisplayDescription] = useState(description);
 
     return (
       <FlexBox direction="column" gap="s" style={{ inlineSize: 320 }}>
@@ -164,7 +172,8 @@ export const Textarea: Story = {
           label="Description"
           value={description}
           onChange={setDescription}
-          renderView={(value) => value}
+          onSaved={setDisplayDescription}
+          renderView={() => displayDescription}
           renderEdit={({ value, onChange }) => (
             <TextareaComponent
               aria-label="Description"
@@ -205,30 +214,52 @@ export const Validation: Story = {
   ),
 };
 
+const delayOptions = [100, 250, 500, 3000];
+
 export const SaveProgress: Story = {
-  render: () => (
-    <div style={{ inlineSize: 320 }}>
-      <InlineEdit
-        aria-label="Name"
-        label="Name"
-        defaultValue="Security team"
-        onSave={() =>
-          new Promise((resolve) => {
-            setTimeout(resolve, 1200);
-          })
-        }
-        renderView={(value) => value}
-        renderEdit={({ value, onChange }) => (
-          <Input
-            aria-label="Name"
-            value={value}
-            onChange={onChange}
-            fullWidth
-          />
-        )}
-      />
-    </div>
-  ),
+  render: function Render() {
+    const [delay, setDelay] = useState<string | number>(500);
+
+    return (
+      <FlexBox direction="column" gap="l" style={{ inlineSize: 320 }}>
+        <FlexBox
+          direction="column"
+          gap="xs"
+          style={{ alignSelf: 'flex-start' }}
+        >
+          <span>Server response time</span>
+          <ButtonToggleGroup selectedKey={delay} onSelectionChange={setDelay}>
+            {delayOptions.map((option) => (
+              <ButtonToggle id={option} key={option}>
+                {option} ms
+              </ButtonToggle>
+            ))}
+          </ButtonToggleGroup>
+        </FlexBox>
+        <InlineEdit
+          aria-label="Name"
+          label="Name"
+          defaultValue="Security team"
+          showActions
+          style={{ inlineSize: '100%' }}
+          onSave={() =>
+            new Promise((resolve) => {
+              setTimeout(resolve, Number(delay));
+            })
+          }
+          renderView={(value) => value}
+          renderEdit={({ value, onChange }) => (
+            <Input
+              aria-label="Name"
+              value={value}
+              onChange={onChange}
+              fullWidth
+            />
+          )}
+        />
+      </FlexBox>
+    );
+  },
 };
 
 export const SaveError: Story = {
@@ -256,13 +287,54 @@ export const SaveError: Story = {
             })
           }
           renderView={(value) => value}
-          renderSaveError={({ retrySave, rollback, open }) => (
-            <FlexBox gap="xs">
-              <Button onPress={retrySave}>Retry</Button>
-              <Button onPress={open}>Edit</Button>
-              <Button onPress={rollback}>Rollback</Button>
-            </FlexBox>
-          )}
+          onSaveError={({ retrySave, rollback, open }) => {
+            let toastKey: string | null = null;
+
+            const closeToast = () => {
+              if (toastKey !== null) toast.close(toastKey);
+            };
+
+            toastKey = toast.add({
+              title: "Couldn't update Name",
+              caption: 'Server is unavailable',
+              status: 'error',
+              timeout: Infinity,
+              action: (
+                <FlexBox gap="m">
+                  <Link
+                    as="button"
+                    isPseudo
+                    onPress={() => {
+                      retrySave();
+                      closeToast();
+                    }}
+                  >
+                    Retry
+                  </Link>
+                  <Link
+                    as="button"
+                    isPseudo
+                    onPress={() => {
+                      open();
+                      closeToast();
+                    }}
+                  >
+                    Edit
+                  </Link>
+                  <Link
+                    as="button"
+                    isPseudo
+                    onPress={() => {
+                      rollback();
+                      closeToast();
+                    }}
+                  >
+                    Rollback
+                  </Link>
+                </FlexBox>
+              ),
+            });
+          }}
           renderEdit={({ value, onChange }) => (
             <Input
               aria-label="Name"
@@ -287,7 +359,11 @@ export const ActionMenu: Story = {
         menuAriaLabel="Value actions"
         menu={
           <DropdownMenu>
-            <IconButton aria-label="Value actions" isCompact>
+            <IconButton
+              aria-label="Value actions"
+              variant="fade-contrast"
+              isCompact
+            >
               <IconEllipsisHorizontal16 />
             </IconButton>
             <DropdownMenu.Popover>

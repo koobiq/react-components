@@ -12,7 +12,13 @@ import { SelectNext } from '../SelectNext';
 import { Tag } from '../Tag';
 import { Textarea } from '../Textarea';
 
-import { InlineEdit } from './index';
+import { InlineEdit, type InlineEditProps } from './index';
+import {
+  Controlled as ControlledStory,
+  SaveError as SaveErrorStory,
+  SaveProgress as SaveProgressStory,
+  Textarea as TextareaStory,
+} from './InlineEdit.stories';
 
 const meta = {
   title: 'E2E/InlineEdit',
@@ -23,6 +29,7 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof InlineEdit>;
+type StringStory = StoryObj<InlineEditProps<string>>;
 
 const renderView = (value: string) => value || 'Not filled';
 
@@ -66,6 +73,35 @@ export const ViewStates: Story = {
       />
     </E2eGrid>
   ),
+};
+
+export const ViewOverflow: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        data-testid="overflow-root"
+        defaultValue="asdasdasdasdasdasdkajsldkjasldkjasldkjaslkdjlaksjdlkajslkdjalskdjl"
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+    </div>
+  ),
+};
+
+export const ControlledViewInteraction: StringStory = {
+  render: ControlledStory.render,
+};
+
+export const TextareaExampleInteraction: StringStory = {
+  render: TextareaStory.render,
+};
+
+export const SaveProgressExampleInteraction: StringStory = {
+  render: SaveProgressStory.render,
+};
+
+export const SaveErrorExampleInteraction: StringStory = {
+  render: SaveErrorStory.render,
 };
 
 export const EditState: Story = {
@@ -202,7 +238,7 @@ export const WindowScrollInteraction: Story = {
 
 export const DescriptionListInteraction: Story = {
   render: () => (
-    <DescriptionList style={{ inlineSize: 480 }}>
+    <DescriptionList style={{ inlineSize: 480 }} alignItems="center">
       <DescriptionList.Group id="country">
         <DescriptionList.Term>Country</DescriptionList.Term>
         <DescriptionList.Description>
@@ -308,6 +344,7 @@ export const SelectInteraction: Story = {
         data-testid="select-root"
         defaultValue="Bruteforce"
         defaultMode="edit"
+        label="Attack type"
         renderView={renderView}
         renderEdit={({ value, commit }) => (
           <SelectNext
@@ -388,6 +425,38 @@ export const ValidationInteraction: Story = {
   ),
 };
 
+export const SaveProgressInteraction: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Async value"
+        data-testid="async-progress-root"
+        defaultValue="Security team"
+        defaultMode="edit"
+        onSave={() => new Promise(() => undefined)}
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+    </div>
+  ),
+};
+
+export const SaveErrorInteraction: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Async value"
+        data-testid="async-error-root"
+        defaultValue="Security team"
+        defaultMode="edit"
+        onSave={() => Promise.reject(new Error('Server is unavailable'))}
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+    </div>
+  ),
+};
+
 const MenuInteractionExample = () => {
   const [action, setAction] = useState('');
 
@@ -401,7 +470,11 @@ const MenuInteractionExample = () => {
         menuAriaLabel="Value actions"
         menu={
           <DropdownMenu>
-            <IconButton aria-label="Open value actions" isCompact>
+            <IconButton
+              aria-label="Open value actions"
+              variant="fade-contrast"
+              isCompact
+            >
               <IconEllipsisHorizontal16 />
             </IconButton>
             <DropdownMenu.Popover>

@@ -19,6 +19,7 @@ import {
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -37,7 +38,6 @@ import { utilClasses } from '../../styles/utility';
 import { IconButton } from '../IconButton';
 import { Popover } from '../Popover';
 import type { PopoverProps } from '../Popover';
-import { ProgressSpinner } from '../ProgressSpinner';
 import { SelectNext } from '../SelectNext';
 import { Tooltip } from '../Tooltip';
 
@@ -184,6 +184,13 @@ function InlineEditRender<T>(
 
   const isEdit = mode === 'edit';
   const hasLabel = Boolean(label);
+
+  const rootMergedRef = useMemo(
+    () =>
+      hasLabel ? mergeRefs(ref, rootRef) : mergeRefs(ref, rootRef, anchorRef),
+    [anchorRef, hasLabel, ref]
+  );
+
   const interactiveSelector = interactiveSelectors.join(',');
   const currentValidationError = validate?.(value);
 
@@ -1024,8 +1031,10 @@ function InlineEditRender<T>(
             ...selectElement.props.slotProps,
             popover: {
               ...selectElement.props.slotProps?.popover,
-              anchorRef,
-              size: editModeWidth ?? (anchorSize.width || 'auto'),
+              anchorRef: rootRef,
+              size:
+                editModeWidth ??
+                (rootRef.current?.offsetWidth || anchorSize.width || 'auto'),
             },
           },
         })
@@ -1043,9 +1052,7 @@ function InlineEditRender<T>(
       className={clsx(s.base, label ? s.withLabel : undefined, className)}
       onClick={handleRootClick}
       {...other}
-      ref={
-        hasLabel ? mergeRefs(ref, rootRef) : mergeRefs(ref, rootRef, anchorRef)
-      }
+      ref={rootMergedRef}
     >
       <span
         className={utilClasses.hideVisually}
@@ -1110,18 +1117,16 @@ function InlineEditRender<T>(
         )}
       </div>
       {saveStatus === 'progress' && (
-        <ProgressSpinner
+        <span
           aria-label={stringFormatter.format('saving')}
-          className={s.saveProgress}
+          className={utilClasses.hideVisually}
           data-slot="inline-edit-save-progress"
-          isIndeterminate
+          role="progressbar"
         />
       )}
-      {saveStatus === 'error' && saveErrorContext && (
+      {saveStatus === 'error' && saveErrorContext && renderSaveError && (
         <div className={s.saveError} data-slot="inline-edit-save-error">
-          {renderSaveError
-            ? renderSaveError(saveErrorContext)
-            : stringFormatter.format('saveFailed')}
+          {renderSaveError(saveErrorContext)}
         </div>
       )}
       <Popover
@@ -1166,6 +1171,7 @@ function InlineEditRender<T>(
       >
         <div
           className={s.controlContainer}
+          data-slot="inline-edit-control"
           data-invalid={isInvalid || undefined}
           ref={controlContainerRef}
         >
@@ -1177,22 +1183,32 @@ function InlineEditRender<T>(
             data-slot="inline-edit-action-buttons"
             role="group"
           >
-            <IconButton
-              aria-label={stringFormatter.format('save')}
-              variant="theme-contrast"
-              isCompact
-              onPress={() => save()}
+            <div
+              className={s.actionButton}
+              data-slot="inline-edit-action-button"
             >
-              <IconCheck16 />
-            </IconButton>
-            <IconButton
-              aria-label={stringFormatter.format('cancel')}
-              variant="fade-contrast"
-              isCompact
-              onPress={cancel}
+              <IconButton
+                aria-label={stringFormatter.format('save')}
+                variant="theme-contrast"
+                isCompact
+                onPress={() => save()}
+              >
+                <IconCheck16 />
+              </IconButton>
+            </div>
+            <div
+              className={s.actionButton}
+              data-slot="inline-edit-action-button"
             >
-              <IconXmark16 />
-            </IconButton>
+              <IconButton
+                aria-label={stringFormatter.format('cancel')}
+                variant="fade-contrast"
+                isCompact
+                onPress={cancel}
+              >
+                <IconXmark16 />
+              </IconButton>
+            </div>
           </div>
         )}
       </Popover>
