@@ -156,8 +156,10 @@ function InlineEditRender<T>(
   const logicalPanelTargetRef = useRef<Element | null>(null);
   const ignoreScrollCloseRef = useRef(false);
   const selectOpenRef = useRef(true);
+
   const selectOpenChangeRef =
     useRef<SelectEditorProps['onOpenChange']>(undefined);
+
   const validationErrorRef = useRef<ReactNode>(null);
   const validationCleanupRef = useRef<(() => void) | null>(null);
   const saveStatusRef = useRef<InlineEditPropSaveStatus>('idle');
@@ -735,9 +737,11 @@ function InlineEditRender<T>(
 
       selectOpenChangeRef.current?.(false);
       selectOpenRef.current = false;
+
       panelRef.current
         ?.querySelector<HTMLElement>('[data-slot="select-value"]')
         ?.focus();
+
       setSelectOpen(false);
     };
 

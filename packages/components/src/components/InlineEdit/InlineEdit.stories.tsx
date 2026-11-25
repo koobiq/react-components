@@ -270,6 +270,7 @@ export const SaveError: Story = {
     const [name, setName] = useState('Security team');
     const [displayName, setDisplayName] = useState(name);
     const lastSavedName = useRef(name);
+
     const [saveError, setSaveError] =
       useState<InlineEditSaveErrorContext | null>(null);
 

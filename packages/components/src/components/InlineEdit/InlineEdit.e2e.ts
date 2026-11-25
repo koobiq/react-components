@@ -81,6 +81,7 @@ test.describe('InlineEdit', () => {
     await expect(saveButton).toBeVisible();
     await expect(cancelButton).toBeVisible();
     await expect(saveButton).toHaveAttribute('data-variant', 'contrast-filled');
+
     await expect(cancelButton).toHaveAttribute(
       'data-variant',
       'fade-contrast-filled'
@@ -100,6 +101,7 @@ test.describe('InlineEdit', () => {
     expect(panelBox!.height).toBeCloseTo(inputBox!.height, 5);
 
     expect(actionsBox!.x).toBeCloseTo(panelBox!.x, 5);
+
     expect(actionsBox!.y).toBeGreaterThanOrEqual(
       panelBox!.y + panelBox!.height
     );
@@ -487,9 +489,11 @@ test.describe('InlineEdit', () => {
     const rootBox = await root.boundingBox();
     const dropdownBox = await dropdown.boundingBox();
     expect(dropdownBox!.x).toBeCloseTo(rootBox!.x, 5);
+
     expect(
       Math.abs(dropdownBox!.y - (rootBox!.y + rootBox!.height + 4))
     ).toBeLessThanOrEqual(1);
+
     expect(dropdownBox!.width).toBeCloseTo(rootBox!.width, 5);
 
     await e2eGotoStory(page, 'e2e-inlineedit--select-open-state');
@@ -737,6 +741,7 @@ test.describe('InlineEdit', () => {
     const menuButton = page.getByRole('button', {
       name: 'Open value actions',
     });
+
     await page.keyboard.press('Tab');
     await expect(menuButton).toBeFocused();
 
@@ -760,6 +765,7 @@ test.describe('InlineEdit', () => {
     const menuContainer = page.locator(
       '[data-slot="inline-edit-menu-container"]'
     );
+
     await expect(menuContainer).toHaveCSS('border-top-left-radius', '0px');
     await expect(menuContainer).toHaveCSS('border-bottom-left-radius', '0px');
 
@@ -792,6 +798,7 @@ test.describe('InlineEdit', () => {
     await page
       .getByRole('button', { name: 'Open enabled value actions' })
       .click();
+
     await expect(page.getByRole('menu')).toBeVisible();
     await page.mouse.move(0, 0);
 
