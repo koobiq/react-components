@@ -123,7 +123,10 @@ export const SaveErrorExampleInteraction: StringStory = {
 
 export const EditState: Story = {
   render: () => (
-    <div data-testid="e2eScreenshotTarget" style={{ inlineSize: 320 }}>
+    <div
+      data-testid="e2eScreenshotTarget"
+      style={{ blockSize: 80, inlineSize: 320 }}
+    >
       <InlineEdit
         defaultValue="Security team"
         defaultMode="edit"
@@ -137,7 +140,10 @@ export const EditState: Story = {
 
 export const EditStateWithoutLabel: Story = {
   render: () => (
-    <div data-testid="e2eScreenshotTarget" style={{ inlineSize: 320 }}>
+    <div
+      data-testid="e2eScreenshotTarget"
+      style={{ blockSize: 48, inlineSize: 320 }}
+    >
       <InlineEdit
         defaultValue="Security team"
         defaultMode="edit"
