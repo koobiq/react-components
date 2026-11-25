@@ -73,8 +73,11 @@ export type InlineEditProps<T> = Omit<
   showActions?: boolean;
   /** Returns an error node for an invalid draft, or null/undefined when valid. */
   validate?: (value: T) => ReactNode;
-  /** Whether an invalid save attempt shows the validation tooltip. */
-  showTooltipOnError?: boolean;
+  /**
+   * Hides the validation tooltip on an invalid save attempt.
+   * @default false
+   */
+  hideTooltipOnError?: boolean;
   /** Validation tooltip placement. */
   validationTooltipPlacement?: TooltipPropPlacement;
   /** Saves a changed value in the background after the editor closes. */

@@ -301,7 +301,9 @@ describe('InlineEdit interactions', () => {
     );
 
     expect(screen.getByText('Security team')).toBeInTheDocument();
-    await vi.waitFor(() => expect(view).toHaveFocus());
+
+    // A pointer-driven close must not steal focus back to the view.
+    await vi.waitFor(() => expect(view).not.toHaveFocus());
   });
 
   it('keeps the editor open for a portaled popup action and saves outside', async () => {
@@ -484,7 +486,6 @@ describe('InlineEdit interactions', () => {
     renderStringEdit({ defaultMode: 'edit', onSaved });
 
     const root = screen.getByTestId('root');
-    const view = screen.getByRole('button', { name: 'Edit' });
     await userEvent.click(root);
 
     expect(onSaved).toHaveBeenCalledTimes(1);
@@ -494,7 +495,8 @@ describe('InlineEdit interactions', () => {
       expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
     );
 
-    await vi.waitFor(() => expect(view).toHaveFocus());
+    // A pointer-driven close must not steal focus back to the view.
+    expect(screen.getByRole('button', { name: 'Edit' })).not.toHaveFocus();
   });
 
   it('uses the ru-RU accessible name from Provider', () => {
@@ -645,7 +647,7 @@ it('keeps invalid edits open on outside click without an optional tooltip', asyn
     defaultValue: '',
     defaultMode: 'edit',
     onSaved,
-    showTooltipOnError: false,
+    hideTooltipOnError: true,
     validate: (value) => (value ? null : 'Required'),
   });
 

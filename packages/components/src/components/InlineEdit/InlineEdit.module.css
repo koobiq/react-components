@@ -104,11 +104,6 @@
   white-space: nowrap;
 }
 
-.base[data-mode='view'] .viewContainer,
-.base[data-mode='view'] .viewContent {
-  text-overflow: ellipsis;
-}
-
 .viewContent,
 .focusAnchor {
   outline: none;

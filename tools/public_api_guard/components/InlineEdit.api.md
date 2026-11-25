@@ -51,7 +51,7 @@ export type InlineEditProps<T> = Omit<ComponentPropsWithRef<'div'>, 'children' |
     editModeWidth?: number;
     showActions?: boolean;
     validate?: (value: T) => ReactNode;
-    showTooltipOnError?: boolean;
+    hideTooltipOnError?: boolean;
     validationTooltipPlacement?: TooltipPropPlacement;
     onSave?: (value: T) => Promise<unknown>;
     compareWith?: (draft: T, initialValue: T) => boolean;
@@ -94,7 +94,7 @@ export const InlineEditSaveErrorHandlerProvider: Provider<InlineEditSaveErrorHan
 
 // Warnings were encountered during analysis:
 //
-// packages/components/dist/components/InlineEdit/types.d.ts:66:5 - (ae-forgotten-export) The symbol "TooltipPropPlacement" needs to be exported by the entry point index.d.ts
+// packages/components/dist/components/InlineEdit/types.d.ts:69:5 - (ae-forgotten-export) The symbol "TooltipPropPlacement" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

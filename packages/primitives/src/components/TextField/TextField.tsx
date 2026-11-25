@@ -111,7 +111,11 @@ function TextFieldRender(
       ) {
         setInputValue('');
         onClear?.();
+
+        return true;
       }
+
+      return false;
     },
     [inputValue, setInputValue, onClear, isClearable, isReadOnly]
   );
@@ -133,9 +137,12 @@ function TextFieldRender(
       ...removeDataAttributes(props),
       value: inputValue,
       onKeyDown: (e) => {
-        e.continuePropagation();
         props?.onKeyDown?.(e);
-        handleKeyDown(e);
+
+        // An Escape the field handles itself (clearing a populated,
+        // clearable value) stays local: ancestors such as InlineEdit must
+        // not cancel on the same key press. Other keys keep propagating.
+        if (!handleKeyDown(e)) e.continuePropagation();
       },
       onChange: setInputValue,
       inputElementType,

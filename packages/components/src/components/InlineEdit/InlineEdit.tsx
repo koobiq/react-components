@@ -71,7 +71,9 @@ type SelectEditorProps = {
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
   dropdownFooter?: unknown;
-  slotProps?: { popover?: PopoverProps };
+  slotProps?: {
+    popover?: PopoverProps & { popoverRef?: Ref<HTMLDivElement> };
+  };
 };
 
 const hasValidationError = (error: ReactNode) =>
@@ -98,7 +100,7 @@ function InlineEditRender<T>(
     editModeWidth,
     showActions = false,
     validate,
-    showTooltipOnError = true,
+    hideTooltipOnError = false,
     validationTooltipPlacement = 'top start',
     onSave,
     compareWith = Object.is,
@@ -149,6 +151,7 @@ function InlineEditRender<T>(
   const focusAnchorRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const controlContainerRef = useRef<HTMLDivElement>(null);
+  const selectPopoverRef = useRef<HTMLDivElement>(null);
   const initialValueRef = useRef(value);
   const previousModeRef = useRef(mode);
   const requestedModeRef = useRef<InlineEditPropMode | null>(null);
@@ -163,6 +166,7 @@ function InlineEditRender<T>(
   const validationErrorRef = useRef<ReactNode>(null);
   const validationCleanupRef = useRef<(() => void) | null>(null);
   const saveStatusRef = useRef<InlineEditPropSaveStatus>('idle');
+  const saveRequestIdRef = useRef(0);
   const mountedRef = useRef(true);
   const saveTimersRef = useRef(new Set<ReturnType<typeof setTimeout>>());
   const lastSavedValueRef = useRef(value);
@@ -182,6 +186,12 @@ function InlineEditRender<T>(
 
   const restoreFocusRef = useRef(false);
   const chainingRef = useRef(false);
+
+  const pendingTabNavRef = useRef<{
+    backwards: boolean;
+    waitForSelect: boolean;
+  } | null>(null);
+
   const tabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const focusFrameRef = useRef<number | null>(null);
   const openRef = useRef<() => void>(() => undefined);
@@ -196,12 +206,12 @@ function InlineEditRender<T>(
   );
 
   const interactiveSelector = interactiveSelectors.join(',');
-  const currentValidationError = validate?.(value);
 
-  const validationError =
-    validationAttempted && hasValidationError(currentValidationError)
-      ? currentValidationError
-      : null;
+  const currentValidationError = validationAttempted ? validate?.(value) : null;
+
+  const validationError = hasValidationError(currentValidationError)
+    ? currentValidationError
+    : null;
 
   const isInvalid = hasValidationError(validationError);
   validationErrorRef.current = validationError;
@@ -288,6 +298,8 @@ function InlineEditRender<T>(
 
   const startSave = useCallback(
     (request: Promise<unknown>, submittedValue: T) => {
+      saveRequestIdRef.current += 1;
+      const requestId = saveRequestIdRef.current;
       submittedValueRef.current = submittedValue;
       setSaveErrorContext(null);
       updateSaveStatus('pending');
@@ -318,7 +330,12 @@ function InlineEditRender<T>(
         clearTimeout(progressTimer);
         saveTimersRef.current.delete(progressTimer);
 
+        // A newer save owns the submission state now; drop this result.
+        if (requestId !== saveRequestIdRef.current) return;
+
         complete(() => {
+          if (requestId !== saveRequestIdRef.current) return;
+
           lastSavedValueRef.current = submittedValue;
           setSaveErrorContext(null);
           updateSaveStatus('idle');
@@ -332,7 +349,11 @@ function InlineEditRender<T>(
         clearTimeout(progressTimer);
         saveTimersRef.current.delete(progressTimer);
 
+        if (requestId !== saveRequestIdRef.current) return;
+
         complete(() => {
+          if (requestId !== saveRequestIdRef.current) return;
+
           const context: InlineEditSaveErrorContextType = {
             error,
             retrySave: () => saveActionsRef.current?.retrySave(),
@@ -402,7 +423,7 @@ function InlineEditRender<T>(
     (error: ReactNode) => {
       hideValidationTooltip();
 
-      if (!showTooltipOnError || !hasValidationError(error)) return;
+      if (hideTooltipOnError || !hasValidationError(error)) return;
 
       const anchor = anchorRef.current;
       const window = anchor?.ownerDocument.defaultView;
@@ -455,7 +476,7 @@ function InlineEditRender<T>(
         behavior: 'smooth',
       });
     },
-    [anchorRef, hideValidationTooltip, showTooltipOnError]
+    [anchorRef, hideTooltipOnError, hideValidationTooltip]
   );
 
   const open = useCallback(() => {
@@ -476,6 +497,7 @@ function InlineEditRender<T>(
     }
 
     restoreFocusRef.current = false;
+    pendingTabNavRef.current = null;
     setValidationAttempted(false);
     validationErrorRef.current = null;
     hideValidationTooltip();
@@ -502,6 +524,15 @@ function InlineEditRender<T>(
     (nextValue: T = value) => {
       if (mode !== 'edit' || requestedModeRef.current === 'view') return false;
 
+      // Reserve the save slot until the attempt settles; an explicit retry
+      // after a failure is still allowed (status 'error').
+      if (
+        saveStatusRef.current === 'pending' ||
+        saveStatusRef.current === 'progress'
+      ) {
+        return false;
+      }
+
       const error = validate?.(nextValue);
 
       if (hasValidationError(error)) {
@@ -520,7 +551,13 @@ function InlineEditRender<T>(
           saveStatusRef.current !== 'error' &&
           compareWith(nextValue, initialValueRef.current);
 
-        if (!unchanged) request = onSave(nextValue);
+        if (!unchanged) {
+          try {
+            request = Promise.resolve(onSave(nextValue));
+          } catch (error) {
+            request = Promise.reject(error);
+          }
+        }
       }
 
       setValidationAttempted(false);
@@ -577,13 +614,15 @@ function InlineEditRender<T>(
     [save, setValue]
   );
 
-  const renderedEditor = renderEdit({
-    value,
-    onChange: setValue,
-    commit,
-    isInvalid,
-    validationError,
-  });
+  const renderedEditor = isEdit
+    ? renderEdit({
+        value,
+        onChange: setValue,
+        commit,
+        isInvalid,
+        validationError,
+      })
+    : null;
 
   const selectElement =
     isValidElement<SelectEditorProps>(renderedEditor) &&
@@ -601,6 +640,18 @@ function InlineEditRender<T>(
   selectOpenChangeRef.current = selectElement?.props.onOpenChange;
 
   const hasSelectFooter = Boolean(selectElement?.props.dropdownFooter);
+
+  // The Select dropdown is portaled; its own popover ref is what tells this
+  // instance's events apart from another control's.
+  const isOwnEditorTarget = useCallback((target: EventTarget | null) => {
+    if (!(target instanceof Node)) return false;
+
+    return Boolean(
+      rootRef.current?.contains(target) ||
+      panelRef.current?.contains(target) ||
+      selectPopoverRef.current?.contains(target)
+    );
+  }, []);
 
   useEffect(() => {
     const view = viewRef.current;
@@ -631,16 +682,80 @@ function InlineEditRender<T>(
     }
   }, [hideValidationTooltip, isEdit, isInvalid]);
 
+  const focusAdjacentWhenReady = useCallback(() => {
+    const nav = pendingTabNavRef.current;
+    const root = rootRef.current;
+
+    restoreFocusRef.current = false;
+    chainingRef.current = false;
+    pendingTabNavRef.current = null;
+
+    if (!nav || !root || root.dataset.mode === 'edit') return;
+
+    const { backwards, waitForSelect } = nav;
+
+    const focusWhenReady = () => {
+      focusFrameRef.current = null;
+
+      const adjacent = focusAdjacentTabStop(root, backwards);
+
+      if (
+        !adjacent &&
+        waitForSelect &&
+        document.querySelector('[data-slot="dropdown"]')
+      ) {
+        focusFrameRef.current = requestAnimationFrame(focusWhenReady);
+
+        return;
+      }
+
+      if (!adjacent) {
+        (focusAnchorRef.current ?? viewRef.current)?.focus();
+
+        return;
+      }
+
+      const nextRoot = adjacent.closest<HTMLElement>(
+        '[data-slot="inline-edit"]'
+      );
+
+      if (
+        nextRoot &&
+        nextRoot !== root &&
+        nextRoot.dataset.mode === 'view' &&
+        nextRoot.dataset.disabled !== 'true'
+      ) {
+        inlineEditRegistry.get(nextRoot)?.();
+      }
+    };
+
+    focusWhenReady();
+  }, []);
+
   useEffect(() => {
     const wasEdit = previousModeRef.current === 'edit';
 
-    if (isEdit && !wasEdit) initialValueRef.current = value;
+    if (isEdit && !wasEdit) {
+      initialValueRef.current = value;
+
+      // Keep the failed-save baseline when reopening to correct an error.
+      if (saveStatusRef.current !== 'error') lastSavedValueRef.current = value;
+    }
 
     if (!isEdit && wasEdit && restoreFocusRef.current) {
       restoreFocusRef.current = false;
 
       if (chainingRef.current) {
         previousModeRef.current = mode;
+
+        // A controlled parent may commit the view mode after the Tab timer
+        // has already fired; run the pending navigation on the actual close.
+        if (pendingTabNavRef.current && tabTimerRef.current === null) {
+          tabTimerRef.current = setTimeout(() => {
+            tabTimerRef.current = null;
+            focusAdjacentWhenReady();
+          }, 0);
+        }
 
         return;
       }
@@ -662,7 +777,7 @@ function InlineEditRender<T>(
     }
 
     previousModeRef.current = mode;
-  }, [isEdit, mode, value]);
+  }, [focusAdjacentWhenReady, isEdit, mode, value]);
 
   useEffect(() => {
     if (!isEdit || !rootRef.current) return;
@@ -686,9 +801,7 @@ function InlineEditRender<T>(
     if (!isEdit || !isSelect || !selectOpen) return;
 
     const timer = setTimeout(() => {
-      const dropdown = Array.from(
-        document.querySelectorAll<HTMLElement>('[data-slot="dropdown"]')
-      ).find((element) => element.getClientRects().length > 0);
+      const dropdown = selectPopoverRef.current;
 
       const target = dropdown?.querySelector<HTMLElement>(
         '[role="option"][aria-selected="true"], [role="option"], [tabindex="0"]'
@@ -725,6 +838,7 @@ function InlineEditRender<T>(
 
     const handleSelectEscape = (event: globalThis.KeyboardEvent) => {
       if (event.key !== 'Escape' || event.isComposing) return;
+      if (!isOwnEditorTarget(event.target)) return;
 
       event.preventDefault();
       event.stopPropagation();
@@ -750,7 +864,7 @@ function InlineEditRender<T>(
     return () => {
       document.removeEventListener('keydown', handleSelectEscape, true);
     };
-  }, [cancel, isEdit, isSelect, isSingleSelect]);
+  }, [cancel, isEdit, isOwnEditorTarget, isSelect, isSingleSelect]);
 
   useLayoutEffect(() => {
     if (!isEdit || !anchorRef.current) return;
@@ -812,6 +926,9 @@ function InlineEditRender<T>(
       if (logicalPanelTargetRef.current === target) return;
 
       save();
+      // A pointer-driven close must not steal focus back to the view: the
+      // user chose where to click. Keyboard saves restore focus as before.
+      restoreFocusRef.current = false;
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
@@ -863,7 +980,10 @@ function InlineEditRender<T>(
     if (mode === 'edit') {
       // The panel is portaled, so a click bubbling from inside it is not
       // hosted by the root element. Only a real click on the host saves.
-      if (event.currentTarget.contains(event.target as Node)) save();
+      if (event.currentTarget.contains(event.target as Node)) {
+        save();
+        restoreFocusRef.current = false;
+      }
 
       return;
     }
@@ -887,61 +1007,32 @@ function InlineEditRender<T>(
       chainingRef.current = true;
 
       try {
-        save();
+        // No navigation intent when validation (or a pending save) blocks
+        // the transition to view mode.
+        if (!save()) {
+          chainingRef.current = false;
+
+          return;
+        }
       } catch (error) {
         chainingRef.current = false;
 
         throw error;
       }
 
+      pendingTabNavRef.current = { backwards, waitForSelect };
+
       tabTimerRef.current = setTimeout(() => {
         tabTimerRef.current = null;
 
-        const root = rootRef.current;
-        restoreFocusRef.current = false;
-        chainingRef.current = false;
+        // Controlled parent still holds edit mode: keep the intent, the
+        // mode-change effect consumes it when view mode actually commits.
+        if (rootRef.current?.dataset.mode === 'edit') return;
 
-        if (!root || root.dataset.mode === 'edit') return;
-
-        const focusWhenReady = () => {
-          focusFrameRef.current = null;
-
-          const adjacent = focusAdjacentTabStop(root, backwards);
-
-          if (
-            !adjacent &&
-            waitForSelect &&
-            document.querySelector('[data-slot="dropdown"]')
-          ) {
-            focusFrameRef.current = requestAnimationFrame(focusWhenReady);
-
-            return;
-          }
-
-          if (!adjacent) {
-            (focusAnchorRef.current ?? viewRef.current)?.focus();
-
-            return;
-          }
-
-          const nextRoot = adjacent.closest<HTMLElement>(
-            '[data-slot="inline-edit"]'
-          );
-
-          if (
-            nextRoot &&
-            nextRoot !== root &&
-            nextRoot.dataset.mode === 'view' &&
-            nextRoot.dataset.disabled !== 'true'
-          ) {
-            inlineEditRegistry.get(nextRoot)?.();
-          }
-        };
-
-        focusWhenReady();
+        focusAdjacentWhenReady();
       }, 0);
     },
-    [save]
+    [focusAdjacentWhenReady, save]
   );
 
   const handlePanelTab = (event: KeyboardEvent<HTMLElement>) => {
@@ -977,6 +1068,8 @@ function InlineEditRender<T>(
 
       const backwards = event.shiftKey;
 
+      if (!isOwnEditorTarget(event.target)) return;
+
       if (!hasSelectFooter) {
         event.preventDefault();
         saveAndFocusAdjacent(backwards, true);
@@ -1010,7 +1103,13 @@ function InlineEditRender<T>(
         selectTabTimerRef.current = null;
       }
     };
-  }, [hasSelectFooter, isEdit, isSingleSelect, saveAndFocusAdjacent]);
+  }, [
+    hasSelectFooter,
+    isEdit,
+    isOwnEditorTarget,
+    isSingleSelect,
+    saveAndFocusAdjacent,
+  ]);
 
   const handlePanelKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.nativeEvent.isComposing) return;
@@ -1065,18 +1164,19 @@ function InlineEditRender<T>(
           selectOpenRef.current = nextOpen;
           setSelectOpen(nextOpen);
         },
-        ...(isSingleSelect && {
-          slotProps: {
-            ...selectElement.props.slotProps,
-            popover: {
-              ...selectElement.props.slotProps?.popover,
+        slotProps: {
+          ...selectElement.props.slotProps,
+          popover: {
+            ...selectElement.props.slotProps?.popover,
+            popoverRef: selectPopoverRef,
+            ...(isSingleSelect && {
               anchorRef: rootRef,
               size:
                 editModeWidth ??
                 (rootRef.current?.offsetWidth || anchorSize.width || 'auto'),
-            },
+            }),
           },
-        }),
+        },
       })
     : renderedEditor;
 
@@ -1182,7 +1282,12 @@ function InlineEditRender<T>(
         data-editor={isSingleSelect ? 'select' : undefined}
         isOpen={isEdit}
         onOpenChange={(open) => {
-          if (!open && !ignoreScrollCloseRef.current) save();
+          if (open || ignoreScrollCloseRef.current) return;
+
+          save();
+          // The popover closes on outside interaction; keep focus where the
+          // user put it instead of restoring the view anchor.
+          restoreFocusRef.current = false;
         }}
         anchorRef={anchorRef}
         className={s.panel}
@@ -1257,7 +1362,7 @@ function InlineEditRender<T>(
           </div>
         )}
       </Popover>
-      {isEdit && isInvalid && showTooltipOnError && (
+      {isEdit && isInvalid && !hideTooltipOnError && (
         <Tooltip
           data-slot="inline-edit-validation-tooltip"
           anchorRef={controlContainerRef}
@@ -1273,8 +1378,10 @@ function InlineEditRender<T>(
   );
 }
 
-const InlineEditRoot = forwardRef(InlineEditRender) as InlineEditComponent;
+const InlineEditRoot = forwardRef(InlineEditRender);
 
-export const InlineEdit = Object.assign(InlineEditRoot, {
+InlineEditRoot.displayName = 'InlineEdit';
+
+export const InlineEdit = Object.assign(InlineEditRoot as InlineEditComponent, {
   Placeholder: InlineEditPlaceholder,
 });
