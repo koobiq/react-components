@@ -35,7 +35,7 @@ import type { DataAttributeProps } from '@koobiq/react-core';
 import { IconCheck16, IconXmark16 } from '@koobiq/react-icons';
 
 import { utilClasses } from '../../styles/utility';
-import { IconButton } from '../IconButton';
+import { Button } from '../Button';
 import { Popover } from '../Popover';
 import type { PopoverProps } from '../Popover';
 import { SelectNext } from '../SelectNext';
@@ -156,6 +156,8 @@ function InlineEditRender<T>(
   const logicalPanelTargetRef = useRef<Element | null>(null);
   const ignoreScrollCloseRef = useRef(false);
   const selectOpenRef = useRef(true);
+  const selectOpenChangeRef =
+    useRef<SelectEditorProps['onOpenChange']>(undefined);
   const validationErrorRef = useRef<ReactNode>(null);
   const validationCleanupRef = useRef<(() => void) | null>(null);
   const saveStatusRef = useRef<InlineEditPropSaveStatus>('idle');
@@ -593,6 +595,9 @@ function InlineEditRender<T>(
     selectElement.props.selectedTagsOverflow !== 'multiline'
   );
 
+  const isSelect = Boolean(selectElement);
+  selectOpenChangeRef.current = selectElement?.props.onOpenChange;
+
   const hasSelectFooter = Boolean(selectElement?.props.dropdownFooter);
 
   useEffect(() => {
@@ -669,14 +674,14 @@ function InlineEditRender<T>(
   }, [isEdit]);
 
   useEffect(() => {
-    if (!isEdit || !isSingleSelect) return;
+    if (!isEdit || !isSelect) return;
 
     selectOpenRef.current = true;
     setSelectOpen(true);
-  }, [isEdit, isSingleSelect]);
+  }, [isEdit, isSelect]);
 
   useEffect(() => {
-    if (!isEdit || !isSingleSelect || !selectOpen) return;
+    if (!isEdit || !isSelect || !selectOpen) return;
 
     const timer = setTimeout(() => {
       const dropdown = Array.from(
@@ -691,10 +696,10 @@ function InlineEditRender<T>(
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [isEdit, isSingleSelect, selectOpen]);
+  }, [isEdit, isSelect, selectOpen]);
 
   useEffect(() => {
-    if (!isEdit || isSingleSelect) return;
+    if (!isEdit || isSelect) return;
 
     const timer = setTimeout(() => {
       const panel = panelRef.current;
@@ -711,7 +716,37 @@ function InlineEditRender<T>(
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [isEdit, isSingleSelect]);
+  }, [isEdit, isSelect]);
+
+  useEffect(() => {
+    if (!isEdit || !isSelect || isSingleSelect) return;
+
+    const handleSelectEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== 'Escape' || event.isComposing) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!selectOpenRef.current) {
+        cancel();
+
+        return;
+      }
+
+      selectOpenChangeRef.current?.(false);
+      selectOpenRef.current = false;
+      panelRef.current
+        ?.querySelector<HTMLElement>('[data-slot="select-value"]')
+        ?.focus();
+      setSelectOpen(false);
+    };
+
+    document.addEventListener('keydown', handleSelectEscape, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleSelectEscape, true);
+    };
+  }, [cancel, isEdit, isSelect, isSingleSelect]);
 
   useLayoutEffect(() => {
     if (!isEdit || !anchorRef.current) return;
@@ -1018,15 +1053,15 @@ function InlineEditRender<T>(
     save();
   };
 
-  const editor =
-    selectElement && isSingleSelect
-      ? cloneElement(selectElement, {
-          isOpen: selectOpen,
-          onOpenChange: (nextOpen) => {
-            selectElement.props.onOpenChange?.(nextOpen);
-            selectOpenRef.current = nextOpen;
-            setSelectOpen(nextOpen);
-          },
+  const editor = selectElement
+    ? cloneElement(selectElement, {
+        isOpen: selectOpen,
+        onOpenChange: (nextOpen) => {
+          selectElement.props.onOpenChange?.(nextOpen);
+          selectOpenRef.current = nextOpen;
+          setSelectOpen(nextOpen);
+        },
+        ...(isSingleSelect && {
           slotProps: {
             ...selectElement.props.slotProps,
             popover: {
@@ -1037,8 +1072,9 @@ function InlineEditRender<T>(
                 (rootRef.current?.offsetWidth || anchorSize.width || 'auto'),
             },
           },
-        })
-      : renderedEditor;
+        }),
+      })
+    : renderedEditor;
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- the keyboard path lives on the inner role="button" view; the host handler only delegates clicks from the label and panel chrome
@@ -1112,7 +1148,14 @@ function InlineEditRender<T>(
             onKeyDown={(event) => event.stopPropagation()}
           >
             <div className={s.menuFade} />
-            <div className={s.menuContainer}>{menu}</div>
+            <div
+              className={s.menuContainer}
+              data-slot="inline-edit-menu-container"
+            >
+              <div className={s.menu} data-slot="inline-edit-menu-button">
+                {menu}
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -1187,27 +1230,25 @@ function InlineEditRender<T>(
               className={s.actionButton}
               data-slot="inline-edit-action-button"
             >
-              <IconButton
+              <Button
                 aria-label={stringFormatter.format('save')}
-                variant="theme-contrast"
-                isCompact
+                variant="contrast-filled"
+                onlyIcon
+                startIcon={<IconCheck16 />}
                 onPress={() => save()}
-              >
-                <IconCheck16 />
-              </IconButton>
+              />
             </div>
             <div
               className={s.actionButton}
               data-slot="inline-edit-action-button"
             >
-              <IconButton
+              <Button
                 aria-label={stringFormatter.format('cancel')}
-                variant="fade-contrast"
-                isCompact
+                variant="fade-contrast-filled"
+                onlyIcon
+                startIcon={<IconXmark16 />}
                 onPress={cancel}
-              >
-                <IconXmark16 />
-              </IconButton>
+              />
             </div>
           </div>
         )}

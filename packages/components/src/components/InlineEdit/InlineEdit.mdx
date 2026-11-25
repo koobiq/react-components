@@ -59,11 +59,13 @@ Return an error node from `validate` to keep the editor open. The render args ex
 
 ## Async save
 
-`onSave` closes the editor optimistically and keeps the draft visible. Unchanged values are skipped with `compareWith`; striped progress appears over the trigger after 100 ms and stays for at least 300 ms. Use **Server response time** in the example to compare fast and slow requests. A rejected value keeps its red error background until retry, another successful save, or rollback.
-
-`onSaveError` can present `retrySave`, `open`, and `rollback` in an external toast, as in the error example. `renderSaveError` is available for custom error content; `InlineEditSaveErrorHandlerProvider` handles errors from multiple instances in one place. Requests are not cancelled on unmount; their late UI updates and callbacks are ignored.
+`onSave` closes the editor optimistically and keeps the draft visible. Unchanged values are skipped with `compareWith`; striped progress appears over the trigger after 100 ms and stays for at least 300 ms. Use **Server response time** in the example to compare fast and slow requests.
 
 <Story of={Stories.SaveProgress} />
+
+To see error recovery, edit and save the value: typing changes only the draft, while `onSave` updates the displayed value after the editor closes. The first request fails and enables **Save error actions** below the editor. **Edit** reopens the rejected value, **Retry** repeats the request, and **Rollback** restores the last accepted value. Every second attempt succeeds, so the recovery paths can be exercised repeatedly.
+
+`onSaveError` can present `retrySave`, `open`, and `rollback` in external controls, as in the error example. `renderSaveError` is available for custom error content; `InlineEditSaveErrorHandlerProvider` handles errors from multiple instances in one place. Requests are not cancelled on unmount; their late UI updates and callbacks are ignored.
 
 <Story of={Stories.SaveError} />
 
@@ -75,7 +77,7 @@ Use `menu` for a button or `DropdownMenu` at the end of the value, and provide `
 
 ## Save and Cancel buttons
 
-Set `showActions` to render icon buttons below the editor with independent backgrounds and shadows. Save and Cancel use the same validation, async-save, cancel, and focus paths as keyboard interactions.
+Set `showActions` to render icon-only buttons at the left edge below the editor. Save uses `contrast-filled`, Cancel uses `fade-contrast-filled`, and both have independent backgrounds and shadows. They share the validation, async-save, cancel, and focus paths with keyboard interactions.
 
 <Story of={Stories.ActionButtons} />
 
@@ -89,9 +91,15 @@ Links, buttons, and removable tags handle their own interactions without opening
 
 A direct single `SelectNext` in `renderEdit` opens its dropdown automatically below the full trigger width. Call `commit(nextValue)` from `onChange` to save the selected option. Multiple and multiline selects stay in the regular editor panel.
 
+**Single Select.** Selecting an option commits it immediately and closes the editor.
+
 <Story of={Stories.SelectBasic} />
 
+**Reset option.** “Not specified” is a selectable reset value and appears as a placeholder in view mode.
+
 <Story of={Stories.SelectReset} />
+
+**Multiple Select.** The dropdown opens automatically while selected values use multiline tags in the regular Popover. The first Escape closes only the dropdown; the second cancels editing. Save on outside click.
 
 <Story of={Stories.SelectMultiline} />
 

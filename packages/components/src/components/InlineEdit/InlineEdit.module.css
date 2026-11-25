@@ -52,6 +52,15 @@
   );
 }
 
+.base[data-mode='view']:not([data-disabled]):has(
+    .menuMask [aria-expanded='true']
+  ) {
+  --inline-edit-background: var(--kbq-states-background-transparent-hover);
+  --inline-edit-mask-background: var(
+    --kbq-states-background-contrast-less-hover
+  );
+}
+
 .base[data-editor='select'][data-mode='edit'] {
   --inline-edit-background: var(--kbq-states-background-transparent-active);
 }
@@ -110,8 +119,9 @@
   inset-block: -1px;
   inset-inline-end: -1px;
   display: flex;
+  z-index: 1;
   opacity: 0;
-  overflow: hidden;
+  overflow: visible;
   pointer-events: none;
   border-radius: var(--kbq-size-border-radius);
   transition: opacity var(--kbq-transition-default);
@@ -136,7 +146,21 @@
   justify-content: flex-end;
   min-inline-size: 40px;
   border-radius: inherit;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
   background: var(--inline-edit-mask-background);
+}
+
+.menu {
+  display: inline-flex;
+  z-index: 2;
+  align-self: flex-start;
+}
+
+.menu button {
+  inline-size: auto;
+  block-size: auto;
+  padding: var(--kbq-size-s);
 }
 
 .placeholder {
@@ -229,19 +253,17 @@
   );
 }
 
+.controlContainer > [data-slot='form-field'] {
+  display: flex;
+}
+
 .actionButtons {
   position: absolute;
   inset-block-start: 100%;
-  inset-inline-start: calc(
-    -1 *
-      var(
-        --kbq-inline-edit-padding-horizontal,
-        var(--inline-edit-padding-horizontal)
-      )
-  );
+  inset-inline-start: 0;
   display: flex;
   gap: var(--kbq-size-xxs);
-  padding: var(--kbq-size-xxs) var(--kbq-size-s) var(--kbq-size-s);
+  padding: var(--kbq-size-xxs) 0 var(--kbq-size-s);
   animation: inline-edit-actions-enter 50ms cubic-bezier(0, 0, 0.2, 1);
 }
 

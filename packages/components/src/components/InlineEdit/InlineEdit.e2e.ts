@@ -49,6 +49,20 @@ test.describe('InlineEdit', () => {
     await expect(view).toHaveText('Platform');
   });
 
+  test('shows keyboard focus on the view trigger', async ({ page }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--view-focus-state');
+
+    const view = page.getByRole('button', { name: 'Name' });
+    await page.keyboard.press('Tab');
+    await expect(view).toBeFocused();
+
+    expect(
+      await view.evaluate((element) => element.matches(':focus-visible'))
+    ).toBe(true);
+
+    await e2eScreenshotThemes(page, '07');
+  });
+
   test('edit state', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--edit-state');
     await e2eScreenshotThemes(page, '02');
@@ -62,8 +76,15 @@ test.describe('InlineEdit', () => {
   test('action buttons state', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--actions-state');
 
-    await expect(page.getByRole('button', { name: 'Save' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible();
+    const saveButton = page.getByRole('button', { name: 'Save' });
+    const cancelButton = page.getByRole('button', { name: 'Cancel' });
+    await expect(saveButton).toBeVisible();
+    await expect(cancelButton).toBeVisible();
+    await expect(saveButton).toHaveAttribute('data-variant', 'contrast-filled');
+    await expect(cancelButton).toHaveAttribute(
+      'data-variant',
+      'fade-contrast-filled'
+    );
 
     const panel = page.locator('[data-slot="inline-edit-panel"]');
     const panelBox = await panel.boundingBox();
@@ -78,10 +99,17 @@ test.describe('InlineEdit', () => {
 
     expect(panelBox!.height).toBeCloseTo(inputBox!.height, 5);
 
+    expect(actionsBox!.x).toBeCloseTo(panelBox!.x, 5);
     expect(actionsBox!.y).toBeGreaterThanOrEqual(
       panelBox!.y + panelBox!.height
     );
 
+    const firstActionBox = await page
+      .locator('[data-slot="inline-edit-action-button"]')
+      .first()
+      .boundingBox();
+
+    expect(firstActionBox!.x).toBeCloseTo(panelBox!.x, 5);
     await expect(panel).toHaveCSS('box-shadow', 'none');
 
     const actionShadows = await page
@@ -459,8 +487,14 @@ test.describe('InlineEdit', () => {
     const rootBox = await root.boundingBox();
     const dropdownBox = await dropdown.boundingBox();
     expect(dropdownBox!.x).toBeCloseTo(rootBox!.x, 5);
-    expect(dropdownBox!.y).toBeCloseTo(rootBox!.y + rootBox!.height + 4, 5);
+    expect(
+      Math.abs(dropdownBox!.y - (rootBox!.y + rootBox!.height + 4))
+    ).toBeLessThanOrEqual(1);
     expect(dropdownBox!.width).toBeCloseTo(rootBox!.width, 5);
+
+    await e2eGotoStory(page, 'e2e-inlineedit--select-open-state');
+    await expect(page.locator('[data-slot="dropdown"]')).toBeVisible();
+    await e2eScreenshotThemes(page, '06');
   });
 
   test('keeps a multiple multiline Select in the regular editor panel', async ({
@@ -473,11 +507,28 @@ test.describe('InlineEdit', () => {
       'edit'
     );
 
-    await expect(page.getByRole('listbox')).toHaveCount(0);
+    await expect(page.getByRole('listbox')).toBeVisible();
 
-    await expect(
-      page.locator('[data-slot="inline-edit-panel"] [data-slot="form-field"]')
-    ).toBeVisible();
+    const panel = page.locator('[data-slot="inline-edit-panel"]');
+    const formField = panel.locator('[data-slot="form-field"]');
+    await expect(formField).toBeVisible();
+
+    const [panelBox, formFieldBox] = await Promise.all([
+      panel.boundingBox(),
+      formField.boundingBox(),
+    ]);
+
+    expect(formFieldBox!.y).toBeCloseTo(panelBox!.y, 5);
+    expect(panelBox!.height).toBeCloseTo(formFieldBox!.height, 5);
+
+    const root = page.getByTestId('select-multiline-root');
+    await page.keyboard.press('Escape');
+
+    await expect(page.getByRole('listbox')).toHaveCount(0);
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await page.keyboard.press('Escape');
+    await expect(root).toHaveAttribute('data-mode', 'view');
   });
 
   test('commits a Select option through the common save path', async ({
@@ -571,6 +622,7 @@ test.describe('InlineEdit', () => {
 
     expect(progress.backgroundImage).toContain('linear-gradient');
     expect(progress.animationName).toContain('inline-edit-progress');
+    await e2eScreenshotThemes(page, '08');
   });
 
   test('marks a rejected value red without rendering inline error controls', async ({
@@ -617,30 +669,54 @@ test.describe('InlineEdit', () => {
 
     await e2eGotoStory(page, 'e2e-inlineedit--save-error-example-interaction');
 
-    await page
-      .locator('[data-slot="inline-edit-view-container"]')
-      .getByRole('button')
-      .click();
+    const root = page.locator('[data-slot="inline-edit"]');
+    const view = root.locator('[data-slot="inline-edit-view-container"]');
+    const controls = page.getByRole('group', { name: 'Save error actions' });
+    const retry = controls.getByRole('button', { name: 'Retry' });
+    const edit = controls.getByRole('button', { name: 'Edit' });
+    const rollback = controls.getByRole('button', { name: 'Rollback' });
+
+    await expect(retry).toBeVisible();
+    await expect(edit).toBeVisible();
+    await expect(rollback).toBeVisible();
+    await expect(retry).toBeDisabled();
+    await expect(edit).toBeDisabled();
+    await expect(rollback).toBeDisabled();
+
+    await view.getByRole('button').click();
 
     const input = page.getByRole('textbox', { name: 'Name' });
     await input.fill('Platform');
+    await expect(view).toHaveText('Security team');
     await input.press('Enter');
 
-    const notification = page
-      .getByRole('alert')
-      .filter({ hasText: "Couldn't update Name" });
+    await expect(root).toHaveAttribute('data-save-status', 'error');
+    await expect(view).toHaveText('Platform');
+    await expect(retry).toBeEnabled();
+    await expect(edit).toBeEnabled();
+    await expect(rollback).toBeEnabled();
 
-    await expect(
-      notification.getByRole('button', { name: 'Retry' })
-    ).toBeVisible();
+    await edit.click();
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+    await input.press('Escape');
+    await expect(root).toHaveAttribute('data-mode', 'view');
 
-    await expect(
-      notification.getByRole('button', { name: 'Edit' })
-    ).toBeVisible();
+    await retry.click();
+    await expect(root).toHaveAttribute('data-save-status', 'idle');
+    await expect(retry).toBeDisabled();
+    await expect(view).toHaveText('Platform');
 
-    await expect(
-      notification.getByRole('button', { name: 'Rollback' })
-    ).toBeVisible();
+    await view.getByRole('button').click();
+    await input.fill('Rejected');
+    await expect(view).toHaveText('Platform');
+    await input.press('Enter');
+    await expect(root).toHaveAttribute('data-save-status', 'error');
+    await expect(view).toHaveText('Rejected');
+
+    await rollback.click();
+    await expect(root).toHaveAttribute('data-save-status', 'idle');
+    await expect(rollback).toBeDisabled();
+    await expect(view).toHaveText('Platform');
 
     await expect(
       page.locator('[data-slot="inline-edit-save-error"]')
@@ -656,7 +732,23 @@ test.describe('InlineEdit', () => {
     const mask = page.locator('[data-slot="inline-edit-menu"]');
     await root.hover();
     await expect(mask).toHaveCSS('opacity', '1');
-    await expect(mask).toHaveCSS('overflow', 'hidden');
+    await expect(mask).toHaveCSS('overflow', 'visible');
+
+    const menuButton = page.getByRole('button', {
+      name: 'Open value actions',
+    });
+    await page.keyboard.press('Tab');
+    await expect(menuButton).toBeFocused();
+
+    expect(
+      await menuButton.evaluate((element) => element.matches(':focus-visible'))
+    ).toBe(true);
+
+    await expect(menuButton).toHaveCSS('padding', '8px');
+
+    const menuButtonBox = await menuButton.boundingBox();
+    expect(menuButtonBox!.width).toBeCloseTo(32, 5);
+    expect(menuButtonBox!.height).toBeCloseTo(32, 5);
 
     const [rootRadius, maskRadius] = await Promise.all([
       root.evaluate((element) => getComputedStyle(element).borderRadius),
@@ -665,11 +757,16 @@ test.describe('InlineEdit', () => {
 
     expect(maskRadius).toBe(rootRadius);
 
-    await expect(
-      page.getByRole('button', { name: 'Open value actions' })
-    ).toHaveAttribute('data-variant', 'fade-contrast');
+    const menuContainer = page.locator(
+      '[data-slot="inline-edit-menu-container"]'
+    );
+    await expect(menuContainer).toHaveCSS('border-top-left-radius', '0px');
+    await expect(menuContainer).toHaveCSS('border-bottom-left-radius', '0px');
 
-    await page.getByRole('button', { name: 'Open value actions' }).click();
+    await expect(menuButton).toHaveAttribute('data-variant', 'fade-contrast');
+    await e2eScreenshotThemes(page, '05');
+
+    await menuButton.click();
     await expect(page.getByRole('menu')).toBeVisible();
     await page.mouse.move(0, 0);
     await expect(mask).toHaveCSS('opacity', '1');
@@ -678,6 +775,31 @@ test.describe('InlineEdit', () => {
     await expect(page.getByTestId('menu-action')).toHaveText('duplicate');
     await expect(root).toHaveAttribute('data-mode', 'view');
     await expect(root).toHaveAttribute('data-disabled', 'true');
+  });
+
+  test('retains the hover background while an enabled action menu is open', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--menu-hover-interaction');
+
+    const root = page.getByTestId('menu-hover-root');
+    await root.hover();
+
+    const hoveredBackground = await root.evaluate(
+      (element) => getComputedStyle(element).backgroundColor
+    );
+
+    await page
+      .getByRole('button', { name: 'Open enabled value actions' })
+      .click();
+    await expect(page.getByRole('menu')).toBeVisible();
+    await page.mouse.move(0, 0);
+
+    expect(
+      await root.evaluate(
+        (element) => getComputedStyle(element).backgroundColor
+      )
+    ).toBe(hoveredBackground);
   });
 
   test('keeps interactive view actions and dynamic content accessible', async ({

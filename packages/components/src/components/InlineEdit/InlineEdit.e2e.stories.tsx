@@ -88,6 +88,23 @@ export const ViewOverflow: Story = {
   ),
 };
 
+export const ViewFocusState: Story = {
+  render: () => (
+    <div
+      data-testid="e2eScreenshotTarget"
+      style={{ inlineSize: 336, padding: 8 }}
+    >
+      <InlineEdit
+        aria-label="Name"
+        defaultValue="Security team"
+        label="Name"
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+    </div>
+  ),
+};
+
 export const ControlledViewInteraction: StringStory = {
   render: ControlledStory.render,
 };
@@ -336,6 +353,36 @@ export const TabMiddleControls: Story = {
 
 const selectItems = [{ name: 'Bruteforce' }, { name: 'DDoS' }, { name: 'DoS' }];
 
+export const SelectOpenState: Story = {
+  render: () => (
+    <div
+      data-testid="e2eScreenshotTarget"
+      style={{ blockSize: 200, inlineSize: 256, padding: 8 }}
+    >
+      <InlineEdit
+        aria-label="Attack type"
+        defaultValue="Bruteforce"
+        defaultMode="edit"
+        label="Attack type"
+        renderView={renderView}
+        renderEdit={({ value, commit }) => (
+          <SelectNext
+            aria-label="Attack type editor"
+            items={selectItems}
+            value={value}
+            onChange={(next) => commit(next as string)}
+            fullWidth
+          >
+            {(item) => (
+              <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+            )}
+          </SelectNext>
+        )}
+      />
+    </div>
+  ),
+};
+
 export const SelectInteraction: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 8, inlineSize: 240 }}>
@@ -427,7 +474,10 @@ export const ValidationInteraction: Story = {
 
 export const SaveProgressInteraction: Story = {
   render: () => (
-    <div style={{ inlineSize: 320 }}>
+    <div
+      data-testid="e2eScreenshotTarget"
+      style={{ inlineSize: 336, padding: 8 }}
+    >
       <InlineEdit
         aria-label="Async value"
         data-testid="async-progress-root"
@@ -461,7 +511,10 @@ const MenuInteractionExample = () => {
   const [action, setAction] = useState('');
 
   return (
-    <div style={{ display: 'grid', gap: 8, inlineSize: 320 }}>
+    <div
+      data-testid="e2eScreenshotTarget"
+      style={{ display: 'grid', gap: 8, inlineSize: 336, padding: 8 }}
+    >
       <InlineEdit
         aria-label="Disabled value"
         data-testid="menu-root"
@@ -495,6 +548,37 @@ const MenuInteractionExample = () => {
 
 export const MenuInteraction: Story = {
   render: () => <MenuInteractionExample />,
+};
+
+export const MenuHoverInteraction: Story = {
+  render: () => (
+    <div style={{ inlineSize: 320 }}>
+      <InlineEdit
+        aria-label="Enabled value"
+        data-testid="menu-hover-root"
+        defaultValue="Security team"
+        menuAriaLabel="Value actions"
+        menu={
+          <DropdownMenu>
+            <IconButton
+              aria-label="Open enabled value actions"
+              variant="fade-contrast"
+              isCompact
+            >
+              <IconEllipsisHorizontal16 />
+            </IconButton>
+            <DropdownMenu.Popover>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item id="duplicate">Duplicate</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Popover>
+          </DropdownMenu>
+        }
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
+    </div>
+  ),
 };
 
 export const ActionsState: Story = {

@@ -9,13 +9,15 @@ import { DescriptionList } from '../DescriptionList';
 import { DropdownMenu } from '../DropdownMenu';
 import { FlexBox } from '../FlexBox';
 import { IconButton } from '../IconButton';
-import { InlineEdit, type InlineEditProps } from '../index';
+import {
+  InlineEdit,
+  type InlineEditProps,
+  type InlineEditSaveErrorContext,
+} from '../index';
 import { Input } from '../Input';
-import { Link } from '../Link';
 import { SelectNext } from '../SelectNext';
 import { Tag } from '../Tag';
 import { Textarea as TextareaComponent } from '../Textarea';
-import { toast } from '../ToastProvider';
 
 const meta = {
   title: 'Components/InlineEdit',
@@ -265,75 +267,41 @@ export const SaveProgress: Story = {
 export const SaveError: Story = {
   render: function Render() {
     const attempts = useRef(0);
+    const [name, setName] = useState('Security team');
+    const [displayName, setDisplayName] = useState(name);
+    const lastSavedName = useRef(name);
+    const [saveError, setSaveError] =
+      useState<InlineEditSaveErrorContext | null>(null);
 
     return (
-      <div style={{ inlineSize: 320 }}>
+      <FlexBox direction="column" gap="m" style={{ inlineSize: 320 }}>
         <InlineEdit
           aria-label="Name"
           label="Name"
-          defaultValue="Security team"
-          onSave={() =>
-            new Promise((resolve, reject) => {
+          value={name}
+          onChange={setName}
+          showActions
+          onSave={(nextValue) => {
+            setDisplayName(nextValue);
+
+            return new Promise((resolve, reject) => {
               attempts.current += 1;
               const attempt = attempts.current;
 
               setTimeout(
                 () =>
-                  attempt === 1
+                  attempt % 2 === 1
                     ? reject(new Error('Server is unavailable'))
                     : resolve(undefined),
                 600
               );
-            })
-          }
-          renderView={(value) => value}
-          onSaveError={({ retrySave, rollback, open }) => {
-            let toastKey: string | null = null;
-
-            const closeToast = () => {
-              if (toastKey !== null) toast.close(toastKey);
-            };
-
-            toastKey = toast.add({
-              title: "Couldn't update Name",
-              caption: 'Server is unavailable',
-              status: 'error',
-              timeout: Infinity,
-              action: (
-                <FlexBox gap="m">
-                  <Link
-                    as="button"
-                    isPseudo
-                    onPress={() => {
-                      retrySave();
-                      closeToast();
-                    }}
-                  >
-                    Retry
-                  </Link>
-                  <Link
-                    as="button"
-                    isPseudo
-                    onPress={() => {
-                      open();
-                      closeToast();
-                    }}
-                  >
-                    Edit
-                  </Link>
-                  <Link
-                    as="button"
-                    isPseudo
-                    onPress={() => {
-                      rollback();
-                      closeToast();
-                    }}
-                  >
-                    Rollback
-                  </Link>
-                </FlexBox>
-              ),
             });
+          }}
+          renderView={() => displayName}
+          onSaveError={setSaveError}
+          onSaved={(savedValue) => {
+            lastSavedName.current = savedValue;
+            setSaveError(null);
           }}
           renderEdit={({ value, onChange }) => (
             <Input
@@ -344,7 +312,34 @@ export const SaveError: Story = {
             />
           )}
         />
-      </div>
+        <FlexBox gap="xs" role="group" aria-label="Save error actions">
+          <Button
+            variant="fade-contrast-filled"
+            isDisabled={!saveError}
+            onPress={() => saveError?.retrySave()}
+          >
+            Retry
+          </Button>
+          <Button
+            variant="fade-contrast-filled"
+            isDisabled={!saveError}
+            onPress={() => saveError?.open()}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="fade-contrast-filled"
+            isDisabled={!saveError}
+            onPress={() => {
+              saveError?.rollback();
+              setDisplayName(lastSavedName.current);
+              setSaveError(null);
+            }}
+          >
+            Rollback
+          </Button>
+        </FlexBox>
+      </FlexBox>
     );
   },
 };
