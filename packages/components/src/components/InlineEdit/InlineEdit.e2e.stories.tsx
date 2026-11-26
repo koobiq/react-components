@@ -88,23 +88,6 @@ export const ViewOverflow: Story = {
   ),
 };
 
-export const ViewFocusState: Story = {
-  render: () => (
-    <div
-      data-testid="e2eScreenshotTarget"
-      style={{ inlineSize: 336, padding: 8 }}
-    >
-      <InlineEdit
-        aria-label="Name"
-        defaultValue="Security team"
-        label="Name"
-        renderView={renderView}
-        renderEdit={renderEdit}
-      />
-    </div>
-  ),
-};
-
 export const ControlledViewInteraction: StringStory = {
   render: ControlledStory.render,
 };
@@ -493,6 +476,16 @@ export const SaveProgressInteraction: Story = {
         renderView={renderView}
         renderEdit={renderEdit}
       />
+      <InlineEdit
+        aria-label="Async labeled value"
+        data-testid="async-progress-label-root"
+        defaultValue="Security team"
+        defaultMode="edit"
+        label="Name"
+        onSave={() => new Promise(() => undefined)}
+        renderView={renderView}
+        renderEdit={renderEdit}
+      />
     </div>
   ),
 };
@@ -558,7 +551,7 @@ export const MenuInteraction: Story = {
 
 export const MenuHoverInteraction: Story = {
   render: () => (
-    <div style={{ inlineSize: 320 }}>
+    <div data-testid="e2eScreenshotTarget" style={{ inlineSize: 320 }}>
       <InlineEdit
         aria-label="Enabled value"
         data-testid="menu-hover-root"

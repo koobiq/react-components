@@ -5,6 +5,17 @@ import { e2eGotoStory, e2eScreenshotThemes } from '../../../e2e/utils';
 test.describe('InlineEdit', () => {
   test('view states', async ({ page }) => {
     await e2eGotoStory(page, 'e2e-inlineedit--view-states');
+
+    // Keyboard focus lands on the first view trigger, so a single grid
+    // screenshot captures every view variant plus the focus ring.
+    const view = page.getByRole('button', { name: 'Edit' }).first();
+    await page.keyboard.press('Tab');
+    await expect(view).toBeFocused();
+
+    expect(
+      await view.evaluate((element) => element.matches(':focus-visible'))
+    ).toBe(true);
+
     await e2eScreenshotThemes(page, '01');
   });
 
@@ -47,20 +58,6 @@ test.describe('InlineEdit', () => {
     await input.fill('Discarded');
     await input.press('Escape');
     await expect(view).toHaveText('Platform');
-  });
-
-  test('shows keyboard focus on the view trigger', async ({ page }) => {
-    await e2eGotoStory(page, 'e2e-inlineedit--view-focus-state');
-
-    const view = page.getByRole('button', { name: 'Name' });
-    await page.keyboard.press('Tab');
-    await expect(view).toBeFocused();
-
-    expect(
-      await view.evaluate((element) => element.matches(':focus-visible'))
-    ).toBe(true);
-
-    await e2eScreenshotThemes(page, '07');
   });
 
   test('edit state', async ({ page }) => {
@@ -609,10 +606,20 @@ test.describe('InlineEdit', () => {
     await e2eGotoStory(page, 'e2e-inlineedit--save-progress-interaction');
 
     const root = page.getByTestId('async-progress-root');
+    const labeledRoot = page.getByTestId('async-progress-label-root');
     const input = page.getByRole('textbox', { name: 'Value' });
+
+    // Only one editor overlay can be open at a time: the labeled instance
+    // mounted in edit mode, the first one was closed on mount.
     await input.fill('Platform');
     await input.press('Enter');
+    await expect(labeledRoot).toHaveAttribute('data-save-status', 'progress');
 
+    // Reopen the first editor and save it too; both triggers then show the
+    // striped progress at once.
+    await root.getByRole('button', { name: 'Async value' }).click();
+    await input.fill('Platform');
+    await input.press('Enter');
     await expect(root).toHaveAttribute('data-save-status', 'progress');
 
     const progress = await root.evaluate((element) => {
@@ -626,7 +633,7 @@ test.describe('InlineEdit', () => {
 
     expect(progress.backgroundImage).toContain('linear-gradient');
     expect(progress.animationName).toContain('inline-edit-progress');
-    await e2eScreenshotThemes(page, '08');
+    await e2eScreenshotThemes(page, '07');
   });
 
   test('marks a rejected value red without rendering inline error controls', async ({
@@ -770,7 +777,6 @@ test.describe('InlineEdit', () => {
     await expect(menuContainer).toHaveCSS('border-bottom-left-radius', '0px');
 
     await expect(menuButton).toHaveAttribute('data-variant', 'fade-contrast');
-    await e2eScreenshotThemes(page, '05');
 
     await menuButton.click();
     await expect(page.getByRole('menu')).toBeVisible();
@@ -795,9 +801,28 @@ test.describe('InlineEdit', () => {
       (element) => getComputedStyle(element).backgroundColor
     );
 
-    await page
-      .getByRole('button', { name: 'Open enabled value actions' })
-      .click();
+    const menuButton = page.getByRole('button', {
+      name: 'Open enabled value actions',
+    });
+
+    // Park the pointer on the menu button: the root keeps its hover
+    // background and the button shows hover and focus ring in one shot.
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Tab');
+    await expect(menuButton).toBeFocused();
+    await menuButton.hover();
+
+    expect(
+      await menuButton.evaluate((element) => element.matches(':hover'))
+    ).toBe(true);
+
+    expect(
+      await menuButton.evaluate((element) => element.matches(':focus-visible'))
+    ).toBe(true);
+
+    await e2eScreenshotThemes(page, '05');
+
+    await menuButton.click();
 
     await expect(page.getByRole('menu')).toBeVisible();
     await page.mouse.move(0, 0);
