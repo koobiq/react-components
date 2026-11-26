@@ -384,7 +384,15 @@ function InlineEditRender<T>(
     if (saveStatusRef.current !== 'error' || !onSave) return;
 
     const value = submittedValueRef.current;
-    startSave(onSave(value), value);
+    let request: Promise<unknown>;
+
+    try {
+      request = Promise.resolve(onSave(value));
+    } catch (error) {
+      request = Promise.reject(error);
+    }
+
+    startSave(request, value);
   }, [onSave, startSave]);
 
   const rollback = useCallback(() => {
@@ -608,6 +616,15 @@ function InlineEditRender<T>(
         return;
       }
 
+      // Do not apply the value while a save is already in flight; otherwise the
+      // optimistic value would persist if the pending guard rejects save().
+      if (
+        saveStatusRef.current === 'pending' ||
+        saveStatusRef.current === 'progress'
+      ) {
+        return;
+      }
+
       setValue(nextValue);
       save(nextValue);
     },
@@ -739,7 +756,7 @@ function InlineEditRender<T>(
       initialValueRef.current = value;
 
       // Keep the failed-save baseline when reopening to correct an error.
-      if (saveStatusRef.current !== 'error') lastSavedValueRef.current = value;
+      if (saveStatusRef.current === 'idle') lastSavedValueRef.current = value;
     }
 
     if (!isEdit && wasEdit && restoreFocusRef.current) {

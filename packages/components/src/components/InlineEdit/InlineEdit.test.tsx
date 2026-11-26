@@ -12,6 +12,7 @@ import { userEvent } from '@testing-library/user-event';
 import { createPortal } from 'react-dom';
 import { describe, expect, it, vi, afterEach } from 'vitest';
 
+import { Input } from '../Input';
 import { Provider } from '../Provider';
 import { SelectNext } from '../SelectNext';
 import { Textarea } from '../Textarea';
@@ -512,6 +513,37 @@ describe('InlineEdit interactions', () => {
     expect(
       screen.getByRole('button', { name: 'Редактировать' })
     ).toBeInTheDocument();
+  });
+
+  it('keeps editing when Escape clears a populated clearable field after another key', async () => {
+    render(
+      <InlineEdit
+        data-testid="root"
+        defaultMode="edit"
+        defaultValue="text"
+        renderView={(value: string) => value}
+        renderEdit={({ value, onChange }) => (
+          <Input
+            aria-label="Editor"
+            value={value}
+            onChange={onChange}
+            isClearable
+          />
+        )}
+      />
+    );
+
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+
+    await act(async () => {
+      input.focus();
+    });
+
+    await userEvent.keyboard('{ArrowLeft}');
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => expect(input).toHaveValue(''));
+    expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
   });
 });
 

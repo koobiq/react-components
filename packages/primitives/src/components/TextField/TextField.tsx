@@ -139,10 +139,17 @@ function TextFieldRender(
       onKeyDown: (e) => {
         props?.onKeyDown?.(e);
 
-        // An Escape the field handles itself (clearing a populated,
-        // clearable value) stays local: ancestors such as InlineEdit must
-        // not cancel on the same key press. Other keys keep propagating.
-        if (!handleKeyDown(e)) e.continuePropagation();
+        // A handled Escape must never reach ancestors: createEventHandler's
+        // continuePropagation flag persists across events, so the library's
+        // default stopPropagation cannot be relied on. Ancestors such as
+        // InlineEdit skip default-prevented keys instead.
+        if (handleKeyDown(e)) {
+          e.preventDefault();
+
+          return;
+        }
+
+        e.continuePropagation();
       },
       onChange: setInputValue,
       inputElementType,
