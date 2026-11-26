@@ -609,8 +609,8 @@ test.describe('InlineEdit', () => {
     const labeledRoot = page.getByTestId('async-progress-label-root');
     const input = page.getByRole('textbox', { name: 'Value' });
 
-    // Only one editor overlay can be open at a time: the labeled instance
-    // mounted in edit mode, the first one was closed on mount.
+    // Only one editor overlay can be open at a time: only the labeled
+    // instance mounts in edit mode, the first one starts in view.
     await input.fill('Platform');
     await input.press('Enter');
     await expect(labeledRoot).toHaveAttribute('data-save-status', 'progress');

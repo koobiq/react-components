@@ -471,7 +471,7 @@ export const SaveProgressInteraction: Story = {
         aria-label="Async value"
         data-testid="async-progress-root"
         defaultValue="Security team"
-        defaultMode="edit"
+        defaultMode="view"
         onSave={() => new Promise(() => undefined)}
         renderView={renderView}
         renderEdit={renderEdit}
