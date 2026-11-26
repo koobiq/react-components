@@ -466,7 +466,7 @@
 .base a {
   color: var(--kbq-foreground-theme);
   text-decoration-line: underline;
-  text-decoration-color: var(--kbq-line-theme-less);
+  text-decoration-color: color-mix(in srgb, currentcolor 40%, transparent);
   outline: var(
       --kbq-markdown-link-size-state-focused-outline-width,
       var(--markdown-link-size-state-focused-outline-width)
@@ -484,6 +484,10 @@
   @mixin markdown-typography body;
 }
 
+.base a:is(:focus, :hover, :active) {
+  text-decoration-color: currentcolor;
+}
+
 .base a:hover {
   color: var(--kbq-states-foreground-theme-hover);
 }
@@ -498,7 +502,14 @@
 
 .base a:visited {
   color: var(--kbq-foreground-visited);
-  text-decoration-color: var(--kbq-line-visited);
+}
+
+.base a:visited:hover {
+  color: var(--kbq-states-foreground-visited-hover);
+}
+
+.base a:visited:active {
+  color: var(--kbq-states-foreground-visited-active);
 }
 
 .base a:has(code) {

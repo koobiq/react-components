@@ -29,16 +29,15 @@
 
   &[data-hovered] {
     color: var(--kbq-states-foreground-theme-hover);
-    text-decoration-color: var(--kbq-line-theme-less);
+    text-decoration-color: currentcolor;
   }
 
   &[data-pressed] {
     color: var(--kbq-states-foreground-theme-active);
-    text-decoration-color: var(--kbq-line-theme-less);
+    text-decoration-color: currentcolor;
   }
 
   &[data-focus-visible] {
-    color: var(--kbq-foreground-theme);
     outline-color: var(--kbq-states-line-focus-theme);
   }
 }

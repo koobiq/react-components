@@ -12,7 +12,7 @@
   color: var(--kbq-foreground-theme);
   outline: var(--link-outline-width) solid;
   outline-color: transparent;
-  text-decoration-color: var(--kbq-line-theme-less);
+  text-decoration-color: color-mix(in srgb, currentcolor 40%, transparent);
   transition:
     color var(--kbq-transition-default),
     outline var(--kbq-transition-default),
@@ -21,42 +21,41 @@
   &[data-disabled],
   &[aria-disabled='true'] {
     cursor: default;
-    text-decoration: none;
     outline-color: transparent;
     color: var(--kbq-states-foreground-disabled);
     text-decoration-color: var(--kbq-states-line-disabled);
   }
 }
 
+.base:where(:focus),
+.focusVisible,
+.hovered,
+.pressed {
+  text-decoration-color: currentcolor;
+}
+
 .hovered {
   color: var(--kbq-states-foreground-theme-hover);
-  text-decoration-color: var(--kbq-line-theme-less);
 }
 
 .pressed {
   color: var(--kbq-states-foreground-theme-active);
-  text-decoration-color: var(--kbq-line-theme-less);
 }
 
 .focusVisible {
-  color: var(--kbq-foreground-theme);
   outline-color: var(--kbq-states-line-focus-theme);
-  text-decoration-color: var(--kbq-line-theme-less);
 }
 
 .allowVisited:where(:visited) {
   color: var(--kbq-foreground-visited);
-  text-decoration-color: var(--kbq-line-visited);
 }
 
 .allowVisited:where(.hovered:visited) {
   color: var(--kbq-states-foreground-visited-hover);
-  text-decoration-color: var(--kbq-line-visited);
 }
 
 .allowVisited:where(.pressed:visited) {
   color: var(--kbq-states-foreground-visited-active);
-  text-decoration-color: var(--kbq-line-visited);
 }
 
 .pseudo:where(:not(.pressed, .hovered)),
