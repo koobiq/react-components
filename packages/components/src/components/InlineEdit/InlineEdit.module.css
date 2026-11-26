@@ -104,6 +104,10 @@
   white-space: nowrap;
 }
 
+.viewContent {
+  min-block-size: var(--kbq-typography-text-normal-line-height);
+}
+
 .viewContent,
 .focusAnchor {
   outline: none;

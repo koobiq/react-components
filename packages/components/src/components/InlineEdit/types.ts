@@ -82,8 +82,8 @@ export type InlineEditProps<T> = Omit<
   validationTooltipPlacement?: TooltipPropPlacement;
   /** Saves a changed value in the background after the editor closes. */
   onSave?: (value: T) => Promise<unknown>;
-  /** Compares the draft with the opening value to skip an unchanged request. */
-  compareWith?: (draft: T, initialValue: T) => boolean;
+  /** Compares the draft with the last saved value to skip an unchanged request. */
+  compareWith?: (draft: T, lastSavedValue: T) => boolean;
   /** Called when a background save rejects. */
   onSaveError?: InlineEditSaveErrorHandler;
   /** Renders custom error actions below the value. */

@@ -279,6 +279,7 @@ export const SaveError: Story = {
         <InlineEdit
           aria-label="Name"
           label="Name"
+          style={{ inlineSize: '100%' }}
           value={name}
           onChange={setName}
           showActions
@@ -415,7 +416,9 @@ export const InteractiveView: Story = {
         defaultValue="Security team"
         renderView={(value) => (
           <FlexBox gap="xs" alignItems="center">
-            <a href="#team">{value}</a>
+            <a href="#team" target="_blank" rel="noreferrer">
+              {value}
+            </a>
             <Tag allowsRemoving>On call</Tag>
           </FlexBox>
         )}

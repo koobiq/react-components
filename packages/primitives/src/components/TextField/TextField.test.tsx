@@ -40,6 +40,34 @@ describe('TextField primitive', () => {
     expect(parentSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('keeps propagation stopped by the consumer keydown handler', async () => {
+    const parentSpy = vi.fn();
+
+    render(
+      <div
+        aria-label="Parent"
+        role="button"
+        tabIndex={-1}
+        onKeyDown={parentSpy}
+      >
+        <TextField
+          aria-label="Search"
+          defaultValue="text"
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') event.stopPropagation();
+          }}
+        >
+          <Input />
+        </TextField>
+      </div>
+    );
+
+    await userEvent.click(screen.getByRole('textbox', { name: 'Search' }));
+    await userEvent.keyboard('{Enter}');
+
+    expect(parentSpy).not.toHaveBeenCalled();
+  });
+
   it.each([
     ['Input', () => <Input />],
     ['Textarea', () => <Textarea />],

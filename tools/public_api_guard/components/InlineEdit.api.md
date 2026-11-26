@@ -54,7 +54,7 @@ export type InlineEditProps<T> = Omit<ComponentPropsWithRef<'div'>, 'children' |
     hideTooltipOnError?: boolean;
     validationTooltipPlacement?: TooltipPropPlacement;
     onSave?: (value: T) => Promise<unknown>;
-    compareWith?: (draft: T, initialValue: T) => boolean;
+    compareWith?: (draft: T, lastSavedValue: T) => boolean;
     onSaveError?: InlineEditSaveErrorHandler;
     renderSaveError?: (context: InlineEditSaveErrorContext) => ReactNode;
     onSaved?: (value: T) => void;

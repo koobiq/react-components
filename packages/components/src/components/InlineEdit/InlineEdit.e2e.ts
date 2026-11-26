@@ -367,6 +367,28 @@ test.describe('InlineEdit', () => {
     await expect(root).toHaveText('Italy');
   });
 
+  test('keeps the trigger geometry stable when the draft is cleared', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--description-list-interaction');
+
+    const root = page.getByTestId('description-inline-edit');
+    await root.getByRole('button').click();
+
+    const input = page.getByRole('textbox', { name: 'Value' });
+    const initialBox = await root.boundingBox();
+
+    await input.fill('');
+    await expect(root).toHaveText('');
+    const emptyBox = await root.boundingBox();
+    expect(emptyBox!.height).toBeCloseTo(initialBox!.height, 5);
+
+    await input.fill('Euro');
+    await expect(root).toHaveText('Euro');
+    const filledBox = await root.boundingBox();
+    expect(filledBox!.height).toBeCloseTo(initialBox!.height, 5);
+  });
+
   test('chains Tab into the adjacent InlineEdit with keyboard focus', async ({
     page,
   }) => {
@@ -553,6 +575,40 @@ test.describe('InlineEdit', () => {
     await expect(page.locator('[data-slot="dropdown"]')).toHaveCount(0);
   });
 
+  test('closes a single Select when the selected option is chosen again', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--select-interaction');
+
+    await page.getByRole('option', { name: 'Bruteforce' }).click();
+
+    await expect(page.getByTestId('select-root')).toHaveAttribute(
+      'data-mode',
+      'view'
+    );
+
+    await expect(page.locator('[data-slot="dropdown"]')).toHaveCount(0);
+  });
+
+  test('cancels a single Select on the Escape after the dropdown closes', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--select-interaction');
+
+    const root = page.getByTestId('select-root');
+    await page.keyboard.press('Escape');
+
+    await expect(page.locator('[data-slot="dropdown"]')).toHaveCount(0);
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await page.keyboard.press('Escape');
+    await expect(root).toHaveAttribute('data-mode', 'view');
+
+    await expect(
+      root.locator('[data-slot="inline-edit-view-container"]')
+    ).toHaveText('Bruteforce');
+  });
+
   test('saves and moves focus when Tab closes the Select dropdown', async ({
     page,
   }) => {
@@ -599,6 +655,29 @@ test.describe('InlineEdit', () => {
     await input.press('Enter');
     await expect(root).toHaveAttribute('data-mode', 'view');
     await expect(root).toHaveText('Valid name');
+  });
+
+  test('cancels an invalid editor with Escape after an outside click', async ({
+    page,
+  }) => {
+    await e2eGotoStory(page, 'e2e-inlineedit--validation-interaction');
+
+    const root = page.getByTestId('validation-root');
+    const input = page.getByRole('textbox', { name: 'Required name editor' });
+    await input.fill('Temporary');
+    await input.fill('');
+
+    await page
+      .getByTestId('validation-scroll-container')
+      .click({ position: { x: 4, y: 4 } });
+
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+    await expect(root).toHaveAttribute('data-mode', 'edit');
+
+    await page.keyboard.press('Escape');
+
+    await expect(root).toHaveAttribute('data-mode', 'view');
+    await expect(root).toHaveText('Not filled');
   });
 
   test('shows striped progress over the trigger', async ({ page }) => {

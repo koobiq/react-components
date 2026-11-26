@@ -32,6 +32,19 @@ class ResizeObserverMock {
   disconnect() {}
 }
 
+class PointerEventMock extends MouseEvent {
+  pointerId: number;
+  pointerType: string;
+
+  constructor(type: string, init: PointerEventInit = {}) {
+    super(type, init);
+    this.pointerId = init.pointerId ?? 0;
+    this.pointerType = init.pointerType ?? '';
+  }
+}
+
+const NativePointerEvent = globalThis.PointerEvent;
+
 vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 
 vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
@@ -44,6 +57,7 @@ vi.stubGlobal('cancelAnimationFrame', () => undefined);
 
 afterEach(() => {
   vi.useRealTimers();
+  vi.stubGlobal('PointerEvent', NativePointerEvent);
 });
 
 const deferred = <T,>() => {
@@ -72,10 +86,28 @@ const renderStringEdit = (props: Partial<InlineEditProps<string>> = {}) => {
     ),
   };
 
-  return render(<InlineEdit {...defaultProps} {...props} />);
+  return render(
+    <InlineEdit
+      {...defaultProps}
+      {...props}
+      defaultValue={props.defaultValue ?? 'Security team'}
+    />
+  );
 };
 
 describe('InlineEdit rendering', () => {
+  it('requires an initial value in the public props', () => {
+    const renderWithoutInitialValue = () => (
+      // @ts-expect-error -- either value or defaultValue must be supplied.
+      <InlineEdit<string>
+        renderView={(value) => value}
+        renderEdit={() => null}
+      />
+    );
+
+    expect(renderWithoutInitialValue).toBeTypeOf('function');
+  });
+
   it('renders only the view by default', () => {
     renderStringEdit();
 
@@ -95,6 +127,12 @@ describe('InlineEdit rendering', () => {
     expect(screen.getByRole('textbox', { name: 'Editor' })).toHaveValue(
       'Security team'
     );
+  });
+
+  it('gives the editor dialog the visible label as its accessible name', () => {
+    renderStringEdit({ defaultMode: 'edit', label: 'Name' });
+
+    expect(screen.getByRole('dialog', { name: 'Name' })).toBeInTheDocument();
   });
 
   it('updates an uncontrolled value through renderEdit', async () => {
@@ -598,6 +636,50 @@ it('does not save for a non-primary pointer button', () => {
   expect(screen.getByRole('textbox', { name: 'Editor' })).toBeInTheDocument();
 });
 
+it('keeps editing when an outside touch gesture is canceled', () => {
+  vi.stubGlobal('PointerEvent', PointerEventMock);
+  const onSaved = vi.fn();
+  renderStringEdit({ defaultMode: 'edit', onSaved });
+
+  fireEvent.pointerDown(document.body, {
+    button: 0,
+    pointerId: 1,
+    pointerType: 'touch',
+  });
+
+  fireEvent.pointerCancel(document.body, {
+    button: 0,
+    pointerId: 1,
+    pointerType: 'touch',
+  });
+
+  expect(onSaved).not.toHaveBeenCalled();
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+});
+
+it('saves after a completed outside touch tap', () => {
+  vi.stubGlobal('PointerEvent', PointerEventMock);
+  const onSaved = vi.fn();
+  renderStringEdit({ defaultMode: 'edit', onSaved });
+
+  fireEvent.pointerDown(document.body, {
+    button: 0,
+    pointerId: 1,
+    pointerType: 'touch',
+  });
+
+  fireEvent.pointerUp(document.body, {
+    button: 0,
+    pointerId: 1,
+    pointerType: 'touch',
+  });
+
+  fireEvent.click(document.body);
+
+  expect(onSaved).toHaveBeenCalledTimes(1);
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+});
+
 it('leaves Enter on a nested button to that button', async () => {
   const onAction = vi.fn();
   const onSaved = vi.fn();
@@ -689,6 +771,36 @@ it('keeps invalid edits open on outside click without an optional tooltip', asyn
   expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
 });
 
+it('cancels an invalid editor with Escape after focus moved outside', async () => {
+  const onCanceled = vi.fn();
+
+  renderStringEdit({
+    defaultMode: 'edit',
+    onCanceled,
+    hideTooltipOnError: true,
+    validate: (value) => (value ? null : 'Required'),
+    renderEdit: ({ value, onChange, isInvalid }) => (
+      <input
+        aria-label="Editor"
+        aria-invalid={isInvalid || undefined}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    ),
+  });
+
+  const input = screen.getByRole('textbox', { name: 'Editor' });
+  fireEvent.change(input, { target: { value: '' } });
+  input.focus();
+  await userEvent.keyboard('{Enter}');
+  await waitFor(() => expect(input).toHaveAttribute('aria-invalid', 'true'));
+  fireEvent.keyDown(document.body, { key: 'Escape' });
+
+  expect(onCanceled).toHaveBeenCalledTimes(1);
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+  expect(screen.getByText('Security team')).toBeInTheDocument();
+});
+
 it('keeps focus in an invalid editor after a Tab save attempt', async () => {
   const onSaved = vi.fn();
 
@@ -749,6 +861,33 @@ it('cancels a multiline multi Select on the Escape after the dropdown closes', a
   await waitFor(() =>
     expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view')
   );
+});
+
+it('focuses the selected option when a single Select opens', async () => {
+  render(
+    <InlineEdit
+      aria-label="Attack type"
+      defaultValue="DDoS"
+      defaultMode="edit"
+      renderView={(value: string) => value}
+      renderEdit={({ value, onChange }) => (
+        <SelectNext
+          aria-label="Attack type editor"
+          items={[{ name: 'Bruteforce' }, { name: 'DDoS' }]}
+          value={value}
+          onChange={(next) => onChange(next as string)}
+        >
+          {(item) => (
+            <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+          )}
+        </SelectNext>
+      )}
+    />
+  );
+
+  const selected = await screen.findByRole('option', { name: 'DDoS' });
+
+  await waitFor(() => expect(selected).toHaveFocus());
 });
 
 it('commits a supplied editor value exactly once', async () => {
@@ -978,6 +1117,40 @@ it('keeps interactive view content independent and restores anchor focus', async
   await vi.waitFor(() =>
     expect(screen.getByRole('button', { name: 'Edit' })).toHaveFocus()
   );
+});
+
+it('leaves an adjacent InlineEdit link focused without opening its editor', async () => {
+  render(
+    <>
+      <InlineEdit
+        aria-label="First"
+        defaultValue="First value"
+        defaultMode="edit"
+        renderView={(value) => value}
+        renderEdit={({ value, onChange }) => (
+          <input
+            aria-label="First editor"
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+          />
+        )}
+      />
+      <InlineEdit
+        aria-label="Second"
+        data-testid="second"
+        defaultValue="Second value"
+        renderView={(value) => <a href="#second">{value}</a>}
+        renderEdit={() => <input aria-label="Second editor" />}
+      />
+    </>
+  );
+
+  screen.getByRole('textbox', { name: 'First editor' }).focus();
+  await userEvent.keyboard('{Tab}');
+
+  const link = screen.getByRole('link', { name: 'Second value' });
+  await waitFor(() => expect(link).toHaveFocus());
+  expect(screen.getByTestId('second')).toHaveAttribute('data-mode', 'view');
 });
 
 it('detects interactive content inserted after mount', async () => {
@@ -1235,6 +1408,27 @@ describe('InlineEdit async save', () => {
     expect(onSave).not.toHaveBeenCalled();
     expect(onSaved).not.toHaveBeenCalled();
     expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view');
+  });
+
+  it('saves a return to the opening value after a successful controlled save', async () => {
+    const onSave = vi.fn(() => Promise.resolve());
+    const onSaved = vi.fn();
+
+    renderStringEdit({ mode: 'edit', onSave, onSaved });
+    const input = screen.getByRole('textbox', { name: 'Editor' });
+
+    fireEvent.change(input, { target: { value: 'Next value' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    await waitFor(() => expect(onSaved).toHaveBeenCalledWith('Next value'));
+    await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
+
+    fireEvent.change(input, { target: { value: 'Security team' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    await waitFor(() =>
+      expect(onSave.mock.calls).toEqual([['Next value'], ['Security team']])
+    );
   });
 
   it('delays progress for 100ms and keeps it visible for 300ms', async () => {

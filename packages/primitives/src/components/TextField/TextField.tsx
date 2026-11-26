@@ -137,30 +137,24 @@ function TextFieldRender(
       ...removeDataAttributes(props),
       value: inputValue,
       onKeyDown: (e) => {
+        // React Aria stops events by default and keeps this flag across events.
+        // Reset it first so a stop explicitly requested by the consumer or by
+        // handleKeyDown is distinguishable from the library default.
+        e.continuePropagation();
         props?.onKeyDown?.(e);
 
-        // A handled Escape must never reach ancestors: createEventHandler's
-        // continuePropagation flag persists across events, so the library's
-        // default stopPropagation cannot be relied on. Ancestors such as
-        // InlineEdit skip default-prevented keys instead.
-        if (handleKeyDown(e)) {
-          // The wrapper exposes isPropagationStopped() at runtime but it is not
-          // declared on the React Aria KeyboardEvent type. Restore the stop
-          // flag so the library's post-handler logic blocks the event again.
-          if (
-            !(
-              e as unknown as { isPropagationStopped(): boolean }
-            ).isPropagationStopped()
-          ) {
-            e.stopPropagation();
-          }
-
-          e.preventDefault();
-
+        if (
+          (
+            e as unknown as { isPropagationStopped(): boolean }
+          ).isPropagationStopped()
+        ) {
           return;
         }
 
-        e.continuePropagation();
+        if (handleKeyDown(e)) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
       },
       onChange: setInputValue,
       inputElementType,

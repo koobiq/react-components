@@ -18,6 +18,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -54,9 +55,15 @@ import type {
 } from './types';
 import { isElementFullyVisible } from './validation';
 
+type InlineEditInitialValueProps<T> =
+  { value: T; defaultValue?: T } | { value?: T; defaultValue: T };
+
 type InlineEditComponent = <T>(
-  props: InlineEditProps<T>
+  props: InlineEditProps<T> & InlineEditInitialValueProps<T>
 ) => ReactElement | null;
+
+type InlineEditRenderProps<T> = InlineEditProps<T> &
+  InlineEditInitialValueProps<T>;
 
 const focusableSelector =
   'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]';
@@ -80,7 +87,7 @@ const hasValidationError = (error: ReactNode) =>
   error !== null && error !== undefined && error !== false;
 
 function InlineEditRender<T>(
-  props: Omit<InlineEditProps<T>, 'ref'>,
+  props: InlineEditRenderProps<T>,
   ref: Ref<ComponentRef<'div'>>
 ) {
   const {
@@ -115,6 +122,7 @@ function InlineEditRender<T>(
   } = props;
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const labelId = useId();
   const contextSaveErrorHandler = useContext(InlineEditSaveErrorHandlerContext);
 
   const [value, setValue] = useControlledState<T, T>(
@@ -157,8 +165,10 @@ function InlineEditRender<T>(
   const requestedModeRef = useRef<InlineEditPropMode | null>(null);
   const requestTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const logicalPanelTargetRef = useRef<Element | null>(null);
+  const touchOutsideTargetRef = useRef<Node | null>(null);
   const ignoreScrollCloseRef = useRef(false);
   const selectOpenRef = useRef(true);
+  const selectActionRef = useRef(false);
 
   const selectOpenChangeRef =
     useRef<SelectEditorProps['onOpenChange']>(undefined);
@@ -562,7 +572,7 @@ function InlineEditRender<T>(
       if (onSave) {
         const unchanged =
           saveStatusRef.current !== 'error' &&
-          compareWith(nextValue, initialValueRef.current);
+          compareWith(nextValue, lastSavedValueRef.current);
 
         if (!unchanged) {
           updateSaveStatus('pending');
@@ -747,7 +757,8 @@ function InlineEditRender<T>(
         nextRoot &&
         nextRoot !== root &&
         nextRoot.dataset.mode === 'view' &&
-        nextRoot.dataset.disabled !== 'true'
+        nextRoot.dataset.disabled !== 'true' &&
+        adjacent.matches('[data-edit-trigger]')
       ) {
         inlineEditRegistry.get(nextRoot)?.();
       }
@@ -827,9 +838,11 @@ function InlineEditRender<T>(
     const timer = setTimeout(() => {
       const dropdown = selectPopoverRef.current;
 
-      const target = dropdown?.querySelector<HTMLElement>(
-        '[role="option"][aria-selected="true"], [role="option"], [tabindex="0"]'
-      );
+      const target =
+        dropdown?.querySelector<HTMLElement>(
+          '[role="option"][aria-selected="true"]'
+        ) ??
+        dropdown?.querySelector<HTMLElement>('[role="option"], [tabindex="0"]');
 
       target?.focus();
     }, 0);
@@ -858,9 +871,19 @@ function InlineEditRender<T>(
   }, [isEdit, isSelect]);
 
   useEffect(() => {
-    if (!isEdit || !isSelect || isSingleSelect) return;
+    if (!isEdit || !isSelect) return;
 
     const handleSelectEscape = (event: globalThis.KeyboardEvent) => {
+      if (
+        isSingleSelect &&
+        (event.key === 'Enter' || event.key === ' ') &&
+        event.target instanceof Element &&
+        selectPopoverRef.current?.contains(event.target) &&
+        event.target.closest('[role="option"]')
+      ) {
+        selectActionRef.current = true;
+      }
+
       if (event.key !== 'Escape' || event.isComposing) return;
 
       // document.body means no control owns the focus (e.g. it was just lost
@@ -871,6 +894,7 @@ function InlineEditRender<T>(
 
       if (!isBodyTarget && !isOwnEditorTarget(event.target)) return;
 
+      selectActionRef.current = false;
       event.preventDefault();
       event.stopPropagation();
 
@@ -886,12 +910,70 @@ function InlineEditRender<T>(
       setSelectOpen(false);
     };
 
+    const handleSelectPointerDown = (event: PointerEvent) => {
+      if (!isSingleSelect) return;
+
+      selectActionRef.current = false;
+
+      if (
+        event.button === 0 &&
+        event.target instanceof Element &&
+        selectPopoverRef.current?.contains(event.target) &&
+        event.target.closest('[role="option"]')
+      ) {
+        selectActionRef.current = true;
+      }
+    };
+
+    const handleSelectPointerCancel = () => {
+      selectActionRef.current = false;
+    };
+
     document.addEventListener('keydown', handleSelectEscape, true);
+    document.addEventListener('pointerdown', handleSelectPointerDown, true);
+    document.addEventListener('pointercancel', handleSelectPointerCancel, true);
 
     return () => {
       document.removeEventListener('keydown', handleSelectEscape, true);
+
+      document.removeEventListener(
+        'pointerdown',
+        handleSelectPointerDown,
+        true
+      );
+
+      document.removeEventListener(
+        'pointercancel',
+        handleSelectPointerCancel,
+        true
+      );
     };
   }, [cancel, isEdit, isOwnEditorTarget, isSelect, isSingleSelect]);
+
+  useEffect(() => {
+    if (!isEdit || !isInvalid) return;
+
+    const handleInvalidEscape = (event: globalThis.KeyboardEvent) => {
+      if (
+        event.key !== 'Escape' ||
+        event.isComposing ||
+        event.defaultPrevented
+      ) {
+        return;
+      }
+
+      // A failed outside save can leave focus outside the panel, beyond the
+      // reach of its keydown handler. Bubble handling still lets the editor
+      // consume Escape locally first (for example, to clear a TextField).
+      event.preventDefault();
+      event.stopPropagation();
+      cancel();
+    };
+
+    document.addEventListener('keydown', handleInvalidEscape);
+
+    return () => document.removeEventListener('keydown', handleInvalidEscape);
+  }, [cancel, isEdit, isInvalid]);
 
   useLayoutEffect(() => {
     if (!isEdit || !anchorRef.current) return;
@@ -946,18 +1028,46 @@ function InlineEditRender<T>(
     const handlePointerDown = (event: PointerEvent) => {
       if (event.button !== 0) return;
 
+      touchOutsideTargetRef.current = null;
+
       const target = event.target;
       if (!(target instanceof Node)) return;
       if (rootRef.current?.contains(target)) return;
       if (panelRef.current?.contains(target)) return;
       if (logicalPanelTargetRef.current === target) return;
 
+      if (event.pointerType === 'touch') {
+        // A touch is not a tap until the browser emits click without a
+        // preceding pointercancel. React Aria uses the same gesture boundary.
+        touchOutsideTargetRef.current = target;
+
+        return;
+      }
+
+      save();
+    };
+
+    const handlePointerCancel = () => {
+      touchOutsideTargetRef.current = null;
+    };
+
+    const handleClick = () => {
+      if (!touchOutsideTargetRef.current) return;
+
+      touchOutsideTargetRef.current = null;
       save();
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('pointercancel', handlePointerCancel);
+    document.addEventListener('click', handleClick);
 
-    return () => document.removeEventListener('pointerdown', handlePointerDown);
+    return () => {
+      touchOutsideTargetRef.current = null;
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('pointercancel', handlePointerCancel);
+      document.removeEventListener('click', handleClick);
+    };
   }, [isEdit, save]);
 
   const handlePanelPointerDownCapture = (
@@ -1181,9 +1291,24 @@ function InlineEditRender<T>(
     ? cloneElement(selectElement, {
         isOpen: selectOpen,
         onOpenChange: (nextOpen) => {
+          const hadSelectionAction = selectActionRef.current;
+          selectActionRef.current = false;
+
           selectElement.props.onOpenChange?.(nextOpen);
           selectOpenRef.current = nextOpen;
           setSelectOpen(nextOpen);
+
+          // Selecting an already selected option closes the dropdown without
+          // onChange. Commit through the common path unless a selection or an
+          // outside interaction has already requested the view mode.
+          if (
+            isSingleSelect &&
+            !nextOpen &&
+            hadSelectionAction &&
+            requestedModeRef.current !== 'view'
+          ) {
+            commit();
+          }
         },
         slotProps: {
           ...selectElement.props.slotProps,
@@ -1226,7 +1351,11 @@ function InlineEditRender<T>(
             ? stringFormatter.format('saveFailed')
             : ''}
       </span>
-      {label && <div className={s.label}>{label}</div>}
+      {label && (
+        <div className={s.label} id={labelId}>
+          {label}
+        </div>
+      )}
       <div
         className={s.viewContainer}
         data-slot="inline-edit-view-container"
@@ -1234,6 +1363,7 @@ function InlineEditRender<T>(
       >
         <div
           className={s.viewContent}
+          data-edit-trigger=""
           role={hasInteractiveContent ? undefined : 'button'}
           tabIndex={
             hasInteractiveContent ? undefined : isEdit || isDisabled ? -1 : 0
@@ -1256,6 +1386,7 @@ function InlineEditRender<T>(
             aria-label={ariaLabel || stringFormatter.format('edit')}
             className={clsx(s.focusAnchor, utilClasses.hideVisually)}
             data-slot="inline-edit-focus-anchor"
+            data-edit-trigger=""
             role="button"
             tabIndex={0}
             onKeyDown={handleViewKeyDown}
@@ -1330,6 +1461,10 @@ function InlineEditRender<T>(
             className: s.panelContainer,
           } as ComponentPropsWithRef<'div'> & DataAttributeProps,
           dialog: {
+            'aria-label':
+              ariaLabel ||
+              (hasLabel ? undefined : stringFormatter.format('edit')),
+            'aria-labelledby': hasLabel && !ariaLabel ? labelId : undefined,
             'data-slot': 'inline-edit-dialog',
             className: s.panelDialog,
             onKeyDown: handlePanelKeyDown,

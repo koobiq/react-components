@@ -252,7 +252,7 @@ export const DescriptionListInteraction: Story = {
             aria-label="Country"
             data-testid="description-inline-edit"
             defaultValue="Spain"
-            renderView={renderView}
+            renderView={(value) => value}
             renderEdit={renderEdit}
           />
         </DescriptionList.Description>
