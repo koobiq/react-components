@@ -36,6 +36,7 @@
     "IconItem",
     "Input",
     "InputNumber",
+    "InlineEdit",
     "layout",
     "Link",
     "List",

@@ -1,0 +1,125 @@
+import {
+  Meta,
+  Story,
+  Props,
+  Status,
+} from '../../../../../.storybook/components';
+
+import * as Stories from './InlineEdit.stories';
+
+<Meta of={Stories} />
+
+# InlineEdit
+
+<Status variant="experimental" />
+
+InlineEdit updates a single displayed value in an overlay without navigating to a separate form.
+
+## Import
+
+```tsx
+import { InlineEdit } from '@koobiq/react-components';
+```
+
+## Usage
+
+<Story of={Stories.Controlled} />
+
+Keep the controlled draft separate from the displayed value: `onChange` updates the draft, while `onSaved` commits it to the view after the editor closes.
+
+## Props
+
+<Props of={Stories.Controlled} />
+
+## Uncontrolled value
+
+<Story of={Stories.Uncontrolled} />
+
+## Label and placeholder
+
+<Story of={Stories.Placeholder} />
+
+## Without a label
+
+<Story of={Stories.WithoutLabel} />
+
+## Description list
+
+<Story of={Stories.InDescriptionList} />
+
+## Textarea
+
+<Story of={Stories.Textarea} />
+
+## Validation
+
+Return an error node from `validate` to keep the editor open. The render args expose `isInvalid` and `validationError`; the optional error tooltip scrolls the field into view before opening.
+
+<Story of={Stories.Validation} />
+
+## Async save
+
+`onSave` closes the editor optimistically and keeps the draft visible. Unchanged values are skipped with `compareWith`; striped progress appears over the trigger after 100 ms and stays for at least 300 ms. Use **Server response time** in the example to compare fast and slow requests.
+
+<Story of={Stories.SaveProgress} />
+
+To see error recovery, edit and save the value: typing changes only the draft, while `onSave` updates the displayed value after the editor closes. The first request fails and enables **Save error actions** below the editor. **Edit** reopens the rejected value, **Retry** repeats the request, and **Rollback** restores the last accepted value. Every second attempt succeeds, so the recovery paths can be exercised repeatedly.
+
+`onSaveError` can present `retrySave`, `open`, and `rollback` in external controls, as in the error example. `renderSaveError` is available for custom error content; `InlineEditSaveErrorHandlerProvider` handles errors from multiple instances in one place. Requests are not cancelled on unmount; their late UI updates and callbacks are ignored.
+
+<Story of={Stories.SaveError} />
+
+## Action menu
+
+Use `menu` for a button or `DropdownMenu` at the end of the value, and provide `menuAriaLabel`. Menu events do not open the editor; the menu stays available for a disabled InlineEdit and remains visible while its dropdown is open.
+
+<Story of={Stories.ActionMenu} />
+
+## Save and Cancel buttons
+
+Set `showActions` to render icon-only buttons at the left edge below the editor. Save uses `contrast-filled`, Cancel uses `fade-contrast-filled`, and both have independent backgrounds and shadows. They share the validation, async-save, cancel, and focus paths with keyboard interactions.
+
+<Story of={Stories.ActionButtons} />
+
+## Interactive view
+
+Links, buttons, and removable tags handle their own interactions without opening the editor. `interactiveSelectors` replaces the default `['a', 'button']` list. Content inserted after mount is detected automatically, and a separate visually hidden anchor provides keyboard editing and focus restoration without nested interactive roles.
+
+<Story of={Stories.InteractiveView} />
+
+## Select
+
+A direct single `SelectNext` in `renderEdit` opens its dropdown automatically below the full trigger width. Call `commit(nextValue)` from `onChange` to save the selected option. Multiple and multiline selects stay in the regular editor panel.
+
+**Single Select.** Selecting an option commits it immediately and closes the editor.
+
+<Story of={Stories.SelectBasic} />
+
+**Reset option.** “Not specified” is a selectable reset value and appears as a placeholder in view mode.
+
+<Story of={Stories.SelectReset} />
+
+**Multiple Select.** The dropdown opens automatically while selected values use multiline tags in the regular Popover. The first Escape closes only the dropdown; the second cancels editing. Save on outside click.
+
+<Story of={Stories.SelectMultiline} />
+
+## Disabled
+
+<Story of={Stories.Disabled} />
+
+## Edit width
+
+<Story of={Stories.FixedWidth} />
+
+## Programmatic mode
+
+<Story of={Stories.ProgrammaticMode} />
+
+## Behavior
+
+- Click, Enter and Space open the editor.
+- Enter and outside click save locally; Escape restores the value captured on open.
+- In a textarea, Enter inserts a newline and Ctrl/Cmd+Enter saves.
+- Tab and Shift+Tab at a panel boundary save and move focus in that direction; an adjacent enabled InlineEdit opens automatically.
+- `onSaved` fires immediately for a local save or after a successful `onSave` request.
+- Programmatic mode changes do not emit `onSaved` or `onCanceled`.

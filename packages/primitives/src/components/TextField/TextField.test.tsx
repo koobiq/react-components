@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Autocomplete, Menu, MenuItem } from 'react-aria-components';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { Input } from '../Input';
 import { Textarea } from '../Textarea';
@@ -9,6 +9,65 @@ import { Textarea } from '../Textarea';
 import { TextField } from './TextField';
 
 describe('TextField primitive', () => {
+  it('stops propagation for a handled Escape but keeps it for other keys', async () => {
+    const parentSpy = vi.fn();
+
+    render(
+      <div
+        aria-label="Parent"
+        onKeyDown={parentSpy}
+        role="button"
+        tabIndex={-1}
+      >
+        <TextField aria-label="Search" defaultValue="text" isClearable>
+          <Input />
+        </TextField>
+      </div>
+    );
+
+    const input = screen.getByRole('textbox', { name: 'Search' });
+
+    await userEvent.click(input);
+    await userEvent.keyboard('{ArrowLeft}');
+
+    expect(parentSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ key: 'ArrowLeft' })
+    );
+
+    await userEvent.keyboard('{Escape}');
+
+    expect(input).toHaveValue('');
+    expect(parentSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps propagation stopped by the consumer keydown handler', async () => {
+    const parentSpy = vi.fn();
+
+    render(
+      <div
+        aria-label="Parent"
+        role="button"
+        tabIndex={-1}
+        onKeyDown={parentSpy}
+      >
+        <TextField
+          aria-label="Search"
+          defaultValue="text"
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') event.stopPropagation();
+          }}
+        >
+          <Input />
+        </TextField>
+      </div>
+    );
+
+    await userEvent.click(screen.getByRole('textbox', { name: 'Search' }));
+    await userEvent.keyboard('{Enter}');
+
+    expect(parentSpy).not.toHaveBeenCalled();
+  });
+
   it.each([
     ['Input', () => <Input />],
     ['Textarea', () => <Textarea />],

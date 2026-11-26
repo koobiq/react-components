@@ -111,7 +111,11 @@ function TextFieldRender(
       ) {
         setInputValue('');
         onClear?.();
+
+        return true;
       }
+
+      return false;
     },
     [inputValue, setInputValue, onClear, isClearable, isReadOnly]
   );
@@ -133,8 +137,24 @@ function TextFieldRender(
       ...removeDataAttributes(props),
       value: inputValue,
       onKeyDown: (e) => {
+        // React Aria stops events by default and keeps this flag across events.
+        // Reset it first so a stop explicitly requested by the consumer or by
+        // handleKeyDown is distinguishable from the library default.
+        e.continuePropagation();
         props?.onKeyDown?.(e);
-        handleKeyDown(e);
+
+        if (
+          (
+            e as unknown as { isPropagationStopped(): boolean }
+          ).isPropagationStopped()
+        ) {
+          return;
+        }
+
+        if (handleKeyDown(e)) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
       },
       onChange: setInputValue,
       inputElementType,

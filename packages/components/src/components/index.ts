@@ -15,6 +15,7 @@ export * from './ClampedText';
 export * from './ClampedList';
 export * from './Link';
 export * from './Badge';
+export * from './InlineEdit';
 export * from './Input';
 export * from './Textarea';
 export * from './InputNumber';
