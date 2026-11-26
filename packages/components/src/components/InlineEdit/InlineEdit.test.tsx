@@ -1143,6 +1143,58 @@ it('hides the action menu in edit mode', () => {
 });
 
 describe('InlineEdit async save', () => {
+  it('blocks a synchronous re-entrant commit and does not leave the status at progress', async () => {
+    vi.useFakeTimers();
+
+    try {
+      const request = deferred<void>();
+      let commitRef: ((value?: string) => void) | undefined;
+
+      const onSave = vi.fn((value: string) => {
+        void value;
+        commitRef?.('C');
+
+        return request.promise;
+      });
+
+      renderStringEdit({
+        mode: 'edit',
+        onModeChange: () => {},
+        onSave,
+        renderEdit: ({ commit }) => {
+          commitRef = commit;
+
+          return (
+            <input aria-label="Editor" value="B" readOnly onChange={() => {}} />
+          );
+        },
+      });
+
+      act(() => {
+        commitRef?.('B');
+      });
+
+      expect(onSave).toHaveBeenCalledTimes(1);
+      expect(onSave).toHaveBeenCalledWith('B');
+
+      await act(async () => {
+        request.resolve();
+        await request.promise;
+      });
+
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+
+      expect(screen.getByTestId('root')).toHaveAttribute(
+        'data-save-status',
+        'idle'
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('closes optimistically and emits onSaved only after success', async () => {
     const request = deferred<void>();
     const onSave = vi.fn(() => request.promise);

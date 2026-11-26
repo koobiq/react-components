@@ -307,6 +307,8 @@ function InlineEditRender<T>(
       let progressStarted: number | null = null;
 
       const progressTimer = scheduleSaveCallback(() => {
+        if (requestId !== saveRequestIdRef.current) return;
+
         progressStarted = Date.now();
         updateSaveStatus('progress');
       }, 100);
@@ -384,6 +386,9 @@ function InlineEditRender<T>(
     if (saveStatusRef.current !== 'error' || !onSave) return;
 
     const value = submittedValueRef.current;
+
+    updateSaveStatus('pending');
+
     let request: Promise<unknown>;
 
     try {
@@ -393,7 +398,7 @@ function InlineEditRender<T>(
     }
 
     startSave(request, value);
-  }, [onSave, startSave]);
+  }, [onSave, startSave, updateSaveStatus]);
 
   const rollback = useCallback(() => {
     if (saveStatusRef.current !== 'error') return;
@@ -560,6 +565,8 @@ function InlineEditRender<T>(
           compareWith(nextValue, initialValueRef.current);
 
         if (!unchanged) {
+          updateSaveStatus('pending');
+
           try {
             request = Promise.resolve(onSave(nextValue));
           } catch (error) {

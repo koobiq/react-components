@@ -144,6 +144,17 @@ function TextFieldRender(
         // default stopPropagation cannot be relied on. Ancestors such as
         // InlineEdit skip default-prevented keys instead.
         if (handleKeyDown(e)) {
+          // The wrapper exposes isPropagationStopped() at runtime but it is not
+          // declared on the React Aria KeyboardEvent type. Restore the stop
+          // flag so the library's post-handler logic blocks the event again.
+          if (
+            !(
+              e as unknown as { isPropagationStopped(): boolean }
+            ).isPropagationStopped()
+          ) {
+            e.stopPropagation();
+          }
+
           e.preventDefault();
 
           return;
