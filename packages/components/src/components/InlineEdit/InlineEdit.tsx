@@ -838,7 +838,14 @@ function InlineEditRender<T>(
 
     const handleSelectEscape = (event: globalThis.KeyboardEvent) => {
       if (event.key !== 'Escape' || event.isComposing) return;
-      if (!isOwnEditorTarget(event.target)) return;
+
+      // document.body means no control owns the focus (e.g. it was just lost
+      // from this editor's closing dropdown), so the Escape is still ours.
+      const isBodyTarget =
+        event.target instanceof HTMLElement &&
+        event.target === event.target.ownerDocument.body;
+
+      if (!isBodyTarget && !isOwnEditorTarget(event.target)) return;
 
       event.preventDefault();
       event.stopPropagation();
@@ -851,10 +858,6 @@ function InlineEditRender<T>(
 
       selectOpenChangeRef.current?.(false);
       selectOpenRef.current = false;
-
-      panelRef.current
-        ?.querySelector<HTMLElement>('[data-slot="select-value"]')
-        ?.focus();
 
       setSelectOpen(false);
     };
@@ -926,9 +929,6 @@ function InlineEditRender<T>(
       if (logicalPanelTargetRef.current === target) return;
 
       save();
-      // A pointer-driven close must not steal focus back to the view: the
-      // user chose where to click. Keyboard saves restore focus as before.
-      restoreFocusRef.current = false;
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
@@ -980,10 +980,7 @@ function InlineEditRender<T>(
     if (mode === 'edit') {
       // The panel is portaled, so a click bubbling from inside it is not
       // hosted by the root element. Only a real click on the host saves.
-      if (event.currentTarget.contains(event.target as Node)) {
-        save();
-        restoreFocusRef.current = false;
-      }
+      if (event.currentTarget.contains(event.target as Node)) save();
 
       return;
     }
@@ -1282,12 +1279,7 @@ function InlineEditRender<T>(
         data-editor={isSingleSelect ? 'select' : undefined}
         isOpen={isEdit}
         onOpenChange={(open) => {
-          if (open || ignoreScrollCloseRef.current) return;
-
-          save();
-          // The popover closes on outside interaction; keep focus where the
-          // user put it instead of restoring the view anchor.
-          restoreFocusRef.current = false;
+          if (!open && !ignoreScrollCloseRef.current) save();
         }}
         anchorRef={anchorRef}
         className={s.panel}

@@ -13,6 +13,7 @@ import { createPortal } from 'react-dom';
 import { describe, expect, it, vi, afterEach } from 'vitest';
 
 import { Provider } from '../Provider';
+import { SelectNext } from '../SelectNext';
 import { Textarea } from '../Textarea';
 
 import { InlineEdit, InlineEditSaveErrorHandlerProvider } from './index';
@@ -301,9 +302,7 @@ describe('InlineEdit interactions', () => {
     );
 
     expect(screen.getByText('Security team')).toBeInTheDocument();
-
-    // A pointer-driven close must not steal focus back to the view.
-    await vi.waitFor(() => expect(view).not.toHaveFocus());
+    await vi.waitFor(() => expect(view).toHaveFocus());
   });
 
   it('keeps the editor open for a portaled popup action and saves outside', async () => {
@@ -486,6 +485,7 @@ describe('InlineEdit interactions', () => {
     renderStringEdit({ defaultMode: 'edit', onSaved });
 
     const root = screen.getByTestId('root');
+    const view = screen.getByRole('button', { name: 'Edit' });
     await userEvent.click(root);
 
     expect(onSaved).toHaveBeenCalledTimes(1);
@@ -495,8 +495,7 @@ describe('InlineEdit interactions', () => {
       expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
     );
 
-    // A pointer-driven close must not steal focus back to the view.
-    expect(screen.getByRole('button', { name: 'Edit' })).not.toHaveFocus();
+    await vi.waitFor(() => expect(view).toHaveFocus());
   });
 
   it('uses the ru-RU accessible name from Provider', () => {
@@ -675,6 +674,49 @@ it('keeps focus in an invalid editor after a Tab save attempt', async () => {
   expect(onSaved).not.toHaveBeenCalled();
   expect(input).toHaveFocus();
   expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+});
+
+it('cancels a multiline multi Select on the Escape after the dropdown closes', async () => {
+  render(
+    <InlineEdit
+      aria-label="Attack types"
+      data-testid="root"
+      defaultValue={['Bruteforce']}
+      defaultMode="edit"
+      renderView={(value: string[]) => value.join(', ')}
+      renderEdit={({ value, onChange }) => (
+        <SelectNext
+          aria-label="Attack types editor"
+          items={[{ name: 'Bruteforce' }, { name: 'Phishing' }]}
+          value={value}
+          onChange={(next) => onChange(next as string[])}
+          selectionMode="multiple"
+          selectedTagsOverflow="multiline"
+          fullWidth
+        >
+          {(item) => (
+            <SelectNext.Item id={item.name}>{item.name}</SelectNext.Item>
+          )}
+        </SelectNext>
+      )}
+    />
+  );
+
+  await screen.findByRole('listbox');
+
+  await userEvent.keyboard('{Escape}');
+
+  await waitFor(() =>
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+  );
+
+  expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'edit');
+
+  await userEvent.keyboard('{Escape}');
+
+  await waitFor(() =>
+    expect(screen.getByTestId('root')).toHaveAttribute('data-mode', 'view')
+  );
 });
 
 it('commits a supplied editor value exactly once', async () => {
