@@ -16,7 +16,10 @@
     "number-max-precision": null,
     "no-descending-specificity": null,
     "media-query-no-invalid": null,
-    "property-no-unknown": [true, { "ignoreProperties": ["composes"] }],
+    "property-no-unknown": [
+      true,
+      { "ignoreProperties": ["composes", "corner-shape"] }
+    ],
     "custom-property-pattern": "^([a-z][a-z0-9_]*)(-[a-z0-9_]+)*$",
     "order/order": ["custom-properties", "declarations", "rules"],
     "selector-pseudo-class-no-unknown": [

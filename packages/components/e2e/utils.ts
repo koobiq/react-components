@@ -1,6 +1,8 @@
 import { expect } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
 
+type PseudoElement = '::before' | '::after' | undefined;
+
 type StorybookWindow = Window & {
   __STORYBOOK_PREVIEW__?: { currentRender?: { phase?: string } };
 };
@@ -64,4 +66,63 @@ export const e2eScreenshotThemes = async (
     document.body.classList.remove('kbq-dark');
     document.body.classList.add('kbq-light');
   });
+};
+
+/** Asserts that the element's computed surface shape is a squircle with the given radius. */
+export const e2eExpectSurface = async (
+  locator: Locator,
+  radius: string,
+  pseudo?: '::before' | '::after'
+): Promise<void> => {
+  const actual = await locator.evaluate(
+    (element, currentPseudo: PseudoElement) => {
+      const style = getComputedStyle(element, currentPseudo ?? null);
+
+      return {
+        borderRadius: style.borderRadius,
+        cornerShape: style.getPropertyValue('corner-shape'),
+      };
+    },
+    pseudo
+  );
+
+  expect(actual).toEqual({ borderRadius: radius, cornerShape: 'squircle' });
+};
+
+/** Asserts that the element's computed color resolves to the value of the given token. */
+export const e2eExpectTokenColor = async (
+  locator: Locator,
+  property: string,
+  token: `--kbq-${string}`,
+  pseudo?: '::before' | '::after'
+): Promise<void> => {
+  const expected = await locator.evaluate(
+    (element, { property: currentProperty, currentToken }) => {
+      const probe = element.ownerDocument.createElement('div');
+      probe.hidden = true;
+      probe.style.setProperty(currentProperty, `var(${currentToken})`);
+      element.ownerDocument.body.append(probe);
+
+      const value = getComputedStyle(probe)
+        .getPropertyValue(currentProperty)
+        .trim();
+
+      probe.remove();
+
+      return value;
+    },
+    { property, currentToken: token }
+  );
+
+  await expect
+    .poll(() =>
+      locator.evaluate(
+        (element, { property: currentProperty, currentPseudo }) =>
+          getComputedStyle(element, currentPseudo ?? null)
+            .getPropertyValue(currentProperty)
+            .trim(),
+        { property, currentPseudo: pseudo }
+      )
+    )
+    .toBe(expected);
 };

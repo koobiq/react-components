@@ -199,7 +199,13 @@ export default defineConfig(
       ...playwright.configs['flat/recommended'].rules,
       'playwright/expect-expect': [
         'warn',
-        { assertFunctionNames: ['e2eScreenshotThemes'] },
+        {
+          assertFunctionNames: [
+            'e2eScreenshotThemes',
+            'e2eExpectSurface',
+            'e2eExpectTokenColor',
+          ],
+        },
       ],
     },
   },

@@ -433,6 +433,13 @@
     border-radius var(--kbq-transition-default),
     color var(--kbq-transition-default);
 
+  @mixin squircle var(--kbq-size-xs);
+
+  /*
+   * Chromium does not inherit the squircle custom property into ::before when
+   * the fallback lives inside an @supports block; apply the shape to the item
+   * and let the pseudo-element inherit both radius and corner-shape.
+   */
   & > * {
     z-index: var(--kbq-layer-absolute);
   }
@@ -444,7 +451,8 @@
     transition: background-color var(--kbq-transition-default);
     background-color: var(--list-item-bg-color);
     position: absolute;
-    border-radius: var(--kbq-size-s);
+    border-radius: inherit;
+    corner-shape: inherit;
     pointer-events: none;
     z-index: -1;
     inset: 0;

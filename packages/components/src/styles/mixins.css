@@ -34,3 +34,16 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+@define-mixin squircle $radius {
+  border-radius: var(--kbq-squircle-border-radius, $radius);
+
+  @supports (corner-shape: squircle) {
+    --kbq-squircle-border-radius: clamp(
+      calc($radius * 1.85),
+      calc($radius * 2.3 - 3.6px),
+      calc($radius * 2)
+    );
+    corner-shape: squircle;
+  }
+}

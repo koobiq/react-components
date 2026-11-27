@@ -10,6 +10,9 @@
   pointer-events: auto;
   flex-direction: column;
   box-sizing: border-box;
+  border-radius: inherit;
+  corner-shape: inherit;
+  background-color: inherit;
 }
 
 /* container */
@@ -19,6 +22,7 @@
   overflow: auto;
   max-block-size: 100%;
   border-radius: inherit;
+  corner-shape: inherit;
   flex-direction: column;
   background-color: inherit;
 }
