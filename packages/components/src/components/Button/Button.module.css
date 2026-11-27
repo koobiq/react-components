@@ -25,7 +25,9 @@
   color: var(--button-color);
   block-size: var(--button-block-size);
   background-color: var(--button-bg-color);
-  border-radius: var(--button-border-radius);
+
+  @mixin squircle var(--button-border-radius);
+
   padding: var(--button-padding-block) var(--button-padding-inline);
   transition:
     border-color var(--kbq-transition-default),
@@ -41,6 +43,7 @@
     position: absolute;
     pointer-events: none;
     border-radius: inherit;
+    corner-shape: inherit;
     z-index: var(--kbq-layer-absolute);
     transition: border-color var(--kbq-transition-default);
     border: var(--button-border-width) solid
@@ -54,6 +57,7 @@
     position: absolute;
     pointer-events: none;
     border-radius: inherit;
+    corner-shape: inherit;
     z-index: var(--kbq-layer-absolute);
     transition: outline-color var(--kbq-transition-default);
     outline-offset: calc(-1 * var(--button-outline-width) / 2);
@@ -92,6 +96,7 @@
   inset: 0;
   position: absolute;
   border-radius: inherit;
+  corner-shape: inherit;
   background-image: linear-gradient(
     135deg,
     #0000000a 25%,

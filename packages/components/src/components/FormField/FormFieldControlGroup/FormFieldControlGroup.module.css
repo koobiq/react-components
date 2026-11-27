@@ -6,7 +6,7 @@
   --form-field-control-size-height: 32px;
   --form-field-control-placeholder-color: ;
   --form-field-control-group-border-color: var(--kbq-background-transparent);
-  --form-field-control-group-outline-width: var(--kbq-size-3xs);
+  --form-field-control-group-outline-width: 1px;
   --form-field-control-group-outline-color: var(--kbq-background-transparent);
   --form-field-control-group-border-radius: var(--kbq-size-s);
   --form-field-control-group-border-width: var(--kbq-size-border-width);
@@ -22,7 +22,9 @@
   @mixin typography text-normal;
 
   box-sizing: border-box;
-  border-radius: var(--form-field-control-group-border-radius);
+
+  @mixin squircle var(--form-field-control-group-border-radius);
+
   background: var(--form-field-control-bg-color);
   padding-inline: var(--form-field-control-padding-inline-start)
     var(--form-field-control-padding-inline-end);
@@ -34,6 +36,7 @@
     position: absolute;
     pointer-events: none;
     border-radius: inherit;
+    corner-shape: inherit;
     z-index: var(--kbq-layer-absolute);
     transition: border-color var(--kbq-transition-default);
     border: var(--form-field-control-group-border-width) solid
@@ -47,11 +50,10 @@
     position: absolute;
     pointer-events: none;
     border-radius: inherit;
+    corner-shape: inherit;
     z-index: var(--kbq-layer-absolute);
     transition: outline-color var(--kbq-transition-default);
-    outline-offset: calc(
-      -1 * var(--form-field-control-group-outline-width) / 2
-    );
+    outline-offset: calc(-1 * var(--form-field-control-group-outline-width));
     outline: var(--form-field-control-group-outline-width) solid
       var(--form-field-control-group-outline-color);
   }

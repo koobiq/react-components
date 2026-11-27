@@ -1,3 +1,5 @@
+@import url('../../styles/mixins.css');
+
 .base {
   --actions-panel-start-position: 100%;
   --actions-panel-padding: var(--kbq-size-s);
@@ -68,7 +70,8 @@
   background: var(--actions-panel-bg-color);
   block-size: var(--actions-panel-block-size);
   box-shadow: var(--actions-panel-box-shadow);
-  border-radius: var(--actions-panel-border-radius);
+
+  @mixin squircle var(--actions-panel-border-radius);
 }
 
 .actions[data-only-counter-hidden='true'] {

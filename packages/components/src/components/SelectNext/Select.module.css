@@ -1,3 +1,5 @@
+@import url('../../styles/mixins.css');
+
 /* addons */
 .addon {
   pointer-events: none;
@@ -43,9 +45,11 @@
 
 /* popover */
 .popover[data-slot='dropdown'] {
-  border-radius: var(--kbq-size-s);
+  @mixin squircle var(--kbq-size-s);
+
   opacity: 0;
   transform: translateY(-8px);
+  background-color: var(--kbq-background-card);
 
   /* list */
   .list {

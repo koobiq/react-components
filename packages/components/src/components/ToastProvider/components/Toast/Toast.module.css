@@ -1,3 +1,5 @@
+@import url('../../../../styles/mixins.css');
+
 .base {
   --toast-inline-size: 360px;
   --toast-transition-z-index: ;
@@ -6,7 +8,9 @@
 
   outline: none;
   position: relative;
-  border-radius: var(--kbq-size-s);
+
+  @mixin squircle var(--kbq-size-s);
+
   inline-size: var(--toast-inline-size);
   z-index: var(--toast-transition-z-index);
   transition:
@@ -18,7 +22,10 @@
 
   .closeIcon {
     order: 1;
-    margin-block-start: var(--kbq-size-m);
+    margin-block-start: calc(
+      var(--kbq-size-l) -
+        (24px - var(--kbq-typography-text-normal-line-height)) / 2
+    );
     margin-inline-end: var(--kbq-size-xxs);
   }
 }
@@ -31,6 +38,7 @@
   display: flex;
   inline-size: inherit;
   border-radius: inherit;
+  corner-shape: inherit;
   box-sizing: border-box;
   box-shadow: var(--kbq-shadow-popup);
   background-color: var(--kbq-background-card);

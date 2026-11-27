@@ -18,7 +18,9 @@
   justify-content: center;
   gap: var(--kbq-size-xs);
   color: var(--breadcrumb-color);
-  border-radius: var(--kbq-size-xs);
+
+  @mixin squircle var(--kbq-size-xs);
+
   background-color: var(--breadcrumb-bg-color);
   outline: var(--breadcrumb-outline-width) solid;
   outline-color: var(--breadcrumb-outline-color);
@@ -80,14 +82,6 @@
   @mixin typography subheading;
 
   --breadcrumb-size: var(--kbq-size-3xl);
-}
-
-.compact:where(.current) {
-  @mixin typography text-normal-medium;
-}
-
-.normal:where(.current) {
-  @mixin typography text-big-medium;
 }
 
 .big:where(.current) {
