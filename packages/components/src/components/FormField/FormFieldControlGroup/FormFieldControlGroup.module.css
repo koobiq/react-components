@@ -6,7 +6,7 @@
   --form-field-control-size-height: 32px;
   --form-field-control-placeholder-color: ;
   --form-field-control-group-border-color: var(--kbq-background-transparent);
-  --form-field-control-group-outline-width: 1px;
+  --form-field-control-group-outline-width: var(--kbq-size-3xs);
   --form-field-control-group-outline-color: var(--kbq-background-transparent);
   --form-field-control-group-border-radius: var(--kbq-size-s);
   --form-field-control-group-border-width: var(--kbq-size-border-width);

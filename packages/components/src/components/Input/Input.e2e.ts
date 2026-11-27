@@ -35,6 +35,6 @@ test.describe('Input', () => {
       return { width: style.outlineWidth, offset: style.outlineOffset };
     });
 
-    expect(outline).toEqual({ width: '1px', offset: '-1px' });
+    expect(outline).toEqual({ width: '2px', offset: '-2px' });
   });
 });
